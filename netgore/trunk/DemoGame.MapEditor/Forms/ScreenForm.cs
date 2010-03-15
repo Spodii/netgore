@@ -988,21 +988,8 @@ namespace DemoGame.MapEditor
         {
             base.OnLoad(e);
 
-            // Create the database connection
-            DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController = new ServerDbController(settings.GetMySqlConnectionString());
-
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
-
-            // Grab the audio manager instances, which will ensure that they are property initialized
-            // before something that can't pass it an ContentManager (such as the UITypeEditor) tries to get an instance.
-            SoundManager.GetInstance(_content);
-            MusicManager.GetInstance(_content);
-
-            // Font
-            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
-            Character.NameFont = SpriteFont;
 
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
@@ -1011,6 +998,22 @@ namespace DemoGame.MapEditor
 
             _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
             DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+
+            // Prepare the GrhImageList to avoid stalling the loading later
+            GrhImageList.Prepare();
+
+            // Grab the audio manager instances, which will ensure that they are property initialized
+            // before something that can't pass it an ContentManager (such as the UITypeEditor) tries to get an instance.
+            SoundManager.GetInstance(_content);
+            MusicManager.GetInstance(_content);
+
+            // Create the database connection
+            DbConnectionSettings settings = new DbConnectionSettings();
+            _dbController = new ServerDbController(settings.GetMySqlConnectionString());
+
+            // Create the font
+            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
+            Character.NameFont = SpriteFont;
 
             // Hook all controls to forward camera movement keys Form
             KeyEventHandler kehDown = OnKeyDownForward;
@@ -1026,6 +1029,13 @@ namespace DemoGame.MapEditor
             PopulateSettingsManager();
 
             SelectedObjs.Clear();
+
+            // Set up the ContextMenu on all the PropertyGrids that don't have one already
+            foreach (var pg in this.GetControls().OfType<PropertyGrid>())
+            {
+                if (pg.ContextMenu == null && pg.ContextMenuStrip == null)
+                    pg.ContextMenu = new GeneralPropertyGridContextMenu();
+            }
 
             // Read the first map
             // ReSharper disable EmptyGeneralCatchClause
@@ -1051,10 +1061,10 @@ namespace DemoGame.MapEditor
 
             _mapDrawingExtensions.Add(new MapPersistentNPCDrawer(lstPersistentNPCs));
 
+            _camera.Size = GameScreenSize;
+
             // Handle any command-line switches
             HandleSwitches(_switches);
-
-            _camera.Size = GameScreenSize;
         }
 
         /// <summary>

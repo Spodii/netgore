@@ -226,6 +226,10 @@ namespace NetGore
             return true;
         }
 
+        /// <summary>
+        /// Gets the <see cref="Func{T,U}"/> for filtering the types.
+        /// </summary>
+        /// <returns>The <see cref="Func{T,U}"/> for filtering the types.</returns>
         public Func<Type, bool> GetFilter()
         {
             return Filter;
