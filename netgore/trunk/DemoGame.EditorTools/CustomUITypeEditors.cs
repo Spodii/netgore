@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
+using System.Windows.Forms;
 using DemoGame.Client.NPCChat;
 using DemoGame.DbObjs;
 using DemoGame.Server;
 using DemoGame.Server.DbObjs;
 using NetGore;
+using NetGore.AI;
 using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Features.Shops;
@@ -57,9 +59,27 @@ namespace DemoGame.EditorTools
                                                                                              new BodyPaperDollTypeEditor()));
         }
 
+        /// <summary>
+        /// Adds all the extra text providers for the <see cref="AdvancedPropertyDescriptor"/>s.
+        /// </summary>
         static void AddExtraTextProviders()
         {
-            AdvancedPropertyDescriptor.SetExtraTextProvider<GrhIndex>(x => GrhInfo.GetData(x).Categorization.ToString());
+            AdvancedPropertyDescriptor.SetExtraTextProvider<GrhIndex>(ExtraTextProvider_GrhIndex);
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="GrhIndex"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_GrhIndex(GrhIndex v)
+        {
+            var grhData = GrhInfo.GetData(v);
+            if (grhData != null)
+                return grhData.Categorization.ToString();
+
+            return null;
         }
 
         /// <summary>
