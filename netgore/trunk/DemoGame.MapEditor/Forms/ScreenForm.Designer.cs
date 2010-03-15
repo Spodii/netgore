@@ -820,7 +820,6 @@ namespace DemoGame.MapEditor
             this.pgSelected.Name = "pgSelected";
             this.pgSelected.Size = new System.Drawing.Size(176, 269);
             this.pgSelected.TabIndex = 1;
-            this.pgSelected.ToolbarVisible = false;
             // 
             // lstSelected
             // 

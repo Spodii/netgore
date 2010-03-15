@@ -423,12 +423,9 @@ namespace DemoGame.DbEditor
             // Process all the PropertyGrids
             foreach (var pg in this.GetControls().OfType<PropertyGrid>())
             {
-                // Hook the one-time shrinking
-                pg.SelectedObjectsChanged += PropertyGrid_ShrinkColumns;
-
-                // Add the context menu (only if one wasn't already provided)
-                if (pg.ContextMenu == null && pg.ContextMenuStrip == null)
-                    pg.ContextMenu = new GeneralPropertyGridContextMenu();
+                PropertyGridHelper.AttachRefresherEventHandler(pg);
+                PropertyGridHelper.AttachShrinkerEventHandler(pg);
+                PropertyGridHelper.SetContextMenuIfNone(pg);
             }
         }
 
@@ -461,26 +458,6 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// When attached to the <see cref="PropertyGrid.SelectedObjectsChanged"/> event on a <see cref="PropertyGrid"/>,
-        /// shrinks the <see cref="PropertyGrid"/>'s left column to fit the first item added to it, then detatches
-        /// itself from the event.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        static void PropertyGrid_ShrinkColumns(object sender, EventArgs e)
-        {
-            var pg = sender as PropertyGrid;
-            if (pg == null)
-                return;
-
-            // First time a valid object is set, shrink the PropertyGrid
-            pg.ShrinkPropertiesColumn(10);
-
-            // Remove this event hook from the PropertyGrid to make it only happen on the first call
-            pg.SelectedObjectsChanged -= PropertyGrid_ShrinkColumns;
-        }
-
-        /// <summary>
         /// Gets and reserves the next free <see cref="CharacterTemplateID"/>.
         /// </summary>
         /// <param name="dbController">The db controller.</param>
@@ -508,19 +485,6 @@ namespace DemoGame.DbEditor
 
             return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
                              x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
-        }
-
-        /// <summary>
-        /// Handles the SelectedGridItemChanged event of the PropertyGrid control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.SelectedGridItemChangedEventArgs"/> instance containing the
-        /// event data.</param>
-        private void PropertyGrid_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
-        {
-            var pg = sender as PropertyGrid;
-            if (pg != null)
-                pg.Refresh();
         }
     }
 }

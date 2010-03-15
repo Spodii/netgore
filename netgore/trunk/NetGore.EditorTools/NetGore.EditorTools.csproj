@@ -147,6 +147,7 @@
     <Compile Include="WinForms\ParticleEffectListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WinForms\PropertyGridHelper.cs" />
     <Compile Include="WinForms\Typed Controls\ITypedControl.cs" />
     <Compile Include="WinForms\Typed Controls\TypedControlHelper.cs" />
     <Compile Include="UI Editors\XnaColorEditor.cs" />

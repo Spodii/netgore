@@ -400,6 +400,7 @@ namespace NetGore.Graphics
         /// Gets or sets if this <see cref="IDrawable"/> will be drawn. All <see cref="IDrawable"/>s are initially
         /// visible.
         /// </summary>
+        [Browsable(false)]
         public bool IsVisible
         {
             get { return _isVisible; }

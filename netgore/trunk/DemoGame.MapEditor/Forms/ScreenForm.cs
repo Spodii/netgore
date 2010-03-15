@@ -872,6 +872,9 @@ namespace DemoGame.MapEditor
         /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             GrhInfo.Save(ContentPaths.Dev);
             SettingsManager.Save();
 
@@ -884,6 +887,9 @@ namespace DemoGame.MapEditor
         /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             base.OnKeyDown(e);
 
             Control focusControl = FindFocusControl(this);
@@ -940,6 +946,9 @@ namespace DemoGame.MapEditor
         /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             Vector2 startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
 
             switch (e.KeyCode)
@@ -988,6 +997,12 @@ namespace DemoGame.MapEditor
         {
             base.OnLoad(e);
 
+            if (DesignMode)
+                return;
+
+            Show();
+            Refresh();
+
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
 
@@ -1024,17 +1039,15 @@ namespace DemoGame.MapEditor
             CustomUITypeEditors.AddEditors(_dbController);
 
             // Populate the SettingsManager
-            Show();
-            Refresh();
             PopulateSettingsManager();
-
             SelectedObjs.Clear();
 
-            // Set up the ContextMenu on all the PropertyGrids that don't have one already
+            // Set up the PropertyGrids
+            PropertyGridHelper.AttachShrinkerEventHandler(pgMap);
             foreach (var pg in this.GetControls().OfType<PropertyGrid>())
             {
-                if (pg.ContextMenu == null && pg.ContextMenuStrip == null)
-                    pg.ContextMenu = new GeneralPropertyGridContextMenu();
+                PropertyGridHelper.AttachRefresherEventHandler(pg);
+                PropertyGridHelper.SetContextMenuIfNone(pg);
             }
 
             // Read the first map
