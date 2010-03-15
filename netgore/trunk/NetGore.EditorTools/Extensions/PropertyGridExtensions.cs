@@ -17,12 +17,14 @@ namespace NetGore.EditorTools
         /// <param name="x">The new position of the horizontal splitter.</param>
         public static void MoveSplitter(this PropertyGrid propertyGrid, int x)
         {
-            object propertyGridView = typeof(PropertyGrid).InvokeMember("gridView",
-                                                                        BindingFlags.GetField | BindingFlags.NonPublic |
-                                                                        BindingFlags.Instance, null, propertyGrid, null);
-            propertyGridView.GetType().InvokeMember("MoveSplitterTo",
-                                                    BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance,
-                                                    null, propertyGridView, new object[] { x });
+            const BindingFlags gridViewFlags = BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance;
+            const BindingFlags moveSplitterToFlags = BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance;
+
+            object propertyGridView = typeof(PropertyGrid).InvokeMember("gridView", gridViewFlags, null, propertyGrid, null);
+
+            var pgvType = propertyGridView.GetType();
+            var invokeParams = new object[] { x };
+            pgvType.InvokeMember("MoveSplitterTo", moveSplitterToFlags, null, propertyGridView, invokeParams);
         }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace NetGore.EditorTools
                 var tabs = propertyGrid.PropertyTabs.Cast<PropertyTab>();
                 var font = propertyGrid.Font;
                 var w = tabs.Max(x => g.MeasureString(x.TabName, font).Width + (x.Bitmap != null ? x.Bitmap.Width : 0));
-                MoveSplitter(propertyGrid, (int)w + 20);
+                MoveSplitter(propertyGrid, (int)w + padding);
             }
         }
     }
