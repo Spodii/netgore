@@ -67,6 +67,7 @@ namespace DemoGame.EditorTools
             AdvancedPropertyDescriptor.SetExtraTextProvider<GrhIndex>(ExtraTextProvider_GrhIndex);
             AdvancedPropertyDescriptor.SetExtraTextProvider<AIID>(ExtraTextProvider_AIID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<IAI>(ExtraTextProvider_IAI);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<AllianceID>(ExtraTextProvider_AllianceID);
         }
 
         /// <summary>
@@ -93,6 +94,21 @@ namespace DemoGame.EditorTools
         static string ExtraTextProvider_AIID(AIID v)
         {
             return AIFactory.Instance.GetAIName(v);
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="AllianceID"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_AllianceID(AllianceID v)
+        {
+            var alliance = AllianceManager.Instance[v];
+            if (alliance == null)
+                return null;
+
+            return alliance.Name;
         }
 
         /// <summary>
