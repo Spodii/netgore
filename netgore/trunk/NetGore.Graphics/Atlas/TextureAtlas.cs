@@ -478,7 +478,7 @@ namespace NetGore.Graphics
                 try
                 {
                     ret = RenderTarget2DHelper.CreateTexture2D(device, _width, _height, _backColor,
-                                                                         x => DrawAtlasDrawingHandler(x, padding, successful));
+                                                               x => DrawAtlasDrawingHandler(x, padding, successful));
                 }
                 catch (ObjectDisposedException ex)
                 {
@@ -497,7 +497,9 @@ namespace NetGore.Graphics
                 if (ret == null)
                 {
                     foreach (var node in Nodes)
+                    {
                         node.ITextureAtlasable.RemoveAtlas();
+                    }
 
                     successful.Clear();
 
@@ -629,7 +631,8 @@ namespace NetGore.Graphics
             }
 
             /// <summary>
-            /// Saves the texture to a temp file.
+            /// Saves the texture to a temp file so the generated atlases can be viewed. Only for when using
+            /// debug mode.
             /// </summary>
             [Conditional("DEBUG")]
             static void SaveTextureToTempFile(Texture texture)
