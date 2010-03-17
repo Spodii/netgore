@@ -163,21 +163,24 @@ namespace DemoGame.MapEditor
                 _selectedWalls.Clear();
                 _selectedWalls.Add(w);
                 TransBox.SurroundEntity(w, Container.TransBoxes);
-                foreach (TransBox transBox in Container.TransBoxes)
-                {
-                    if (transBox.TransType != TransBoxType.Move)
-                        continue;
 
-                    cursorPos = transBox.Position;
-                    cursorPos.X -= (TransBox.MoveSize.X / 2) + 16f;
-                    Point pts = Container.GameScreen.PointToScreen(Container.GameScreen.Location);
-                    Vector2 screenPos = Container.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
+                // Grab the move box
+                var moveBox = Container.TransBoxes.FirstOrDefault(x => x.TransType == TransBoxType.Move);
+                if (moveBox == null)
+                    return;
 
-                    Cursor.Position = new Point((int)screenPos.X, (int)screenPos.Y);
-                    Container.SelectedTransBox = transBox;
-                    Container.CursorPos = cursorPos;
-                    break;
-                }
+                // Set the cursor to the center of the move box
+                cursorPos = moveBox.Position;
+                cursorPos += (moveBox.Size / 2f).Ceiling();
+                Container.CursorPos = cursorPos;
+
+                // Get the system cursor to the center of the box, too
+                Point pts = Container.GameScreen.PointToScreen(Container.GameScreen.Location);
+                Vector2 screenPos = Container.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
+                Cursor.Position = new Point((int)screenPos.X, (int)screenPos.Y);
+
+                // Set the move box as selected
+                Container.SelectedTransBox = moveBox;
             }
         }
 
