@@ -61,10 +61,7 @@ namespace DemoGame.MapEditor
         /// <param name="position">Position to create the transformation box.</param>
         public TransBox(TransBoxType transType, Entity entity, Vector2 position)
         {
-            TransType = transType;
-            Position = position;
-            Entity = entity;
-
+            // Get the sprite to use
             GrhData sourceGrhData;
 
             if (transType == TransBoxType.Move)
@@ -72,7 +69,23 @@ namespace DemoGame.MapEditor
             else
                 sourceGrhData = Scale;
 
+            // Get the size based on the sprite
             Vector2 size = sourceGrhData.Size;
+
+            // For move boxes, ensure it is in view
+            if (transType == TransBoxType.Move)
+            {
+                if (position.X < 0)
+                    position.X = 0;
+                if (position.Y < 0)
+                    position.Y = 0;
+            }
+
+            // Store the values
+            TransType = transType;
+            Position = position;
+            Entity = entity;
+
             Area = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
             _grh = new Grh(sourceGrhData);
         }
