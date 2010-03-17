@@ -516,6 +516,17 @@ namespace NetGore.Graphics
                 return ret;
             }
 
+            /// <summary>
+            /// Handles the actual drawing of the atlas items onto a single <see cref="RenderTarget2D"/> through an
+            /// <see cref="ISpriteBatch"/>.
+            /// </summary>
+            /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
+            /// <param name="padding">The amount of padding, in pixels, to place around each sprite in the atlas. If this
+            /// values is greater than 0, all 4 sides of the atlas item will be copied one pixel outwards. This
+            /// is to help prevent issues when using filtering with sprites.</param>
+            /// <param name="successful">The <see cref="ICollection{T}"/> to populate with the 
+            /// <see cref="AtlasTextureItem"/>s that were successfully drawn. Usually, an item will fail to draw
+            /// when the item's texture cannot be loaded.</param>
             void DrawAtlasDrawingHandler(ISpriteBatch sb, int padding, ICollection<AtlasTextureItem> successful)
             {
                 // Start the SpriteBatch
