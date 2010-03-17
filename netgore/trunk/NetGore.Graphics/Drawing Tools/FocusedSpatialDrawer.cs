@@ -15,7 +15,9 @@ namespace NetGore.Graphics
         const int _maxSteps = 700;
 
         static readonly Color _highlightBorderColor = new Color(0, 0, 0, 150);
-        static readonly Color _highlightColor = new Color(0, 255, 0, 100);
+        static readonly Color _highlightColor = new Color(0, 255, 0, 75);
+        static readonly Color _nonfocusedHighlightColor = new Color(0, 0, 0, 0);
+        static readonly Color _nonfocusedBorderColor = new Color(0, 0, 0, 150);
         static readonly Color _trackColor = new Color(0, 0, 0, 0);
         static readonly Color _trackInnerBorderColor = new Color(255, 255, 255, 150);
         static readonly Color _trackOutterBorderColor = new Color(0, 0, 0, 150);
@@ -59,10 +61,26 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to focus on.</param>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        public void Draw(ISpatial spatial, ISpriteBatch sb)
+        public void DrawFocused(ISpatial spatial, ISpriteBatch sb)
         {
             Focused = spatial;
             Draw(sb);
+        }
+
+        /// <summary>
+        /// Draws a <see cref="ISpatial"/> that is selected, but NOT focused on. This is primarily
+        /// intended for when selecting multiple items at once to give an indication on what other
+        /// objects are selected but to distinguish that they are not the focused objects.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> that is selected but not focused on.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        public static void DrawNotFocused(ISpatial spatial, ISpriteBatch sb)
+        {
+            if (spatial == null)
+                return;
+
+            var r = spatial.ToRectangle();
+            XNARectangle.Draw(sb, r, _nonfocusedHighlightColor, _nonfocusedBorderColor);
         }
 
         /// <summary>

@@ -630,8 +630,13 @@ namespace DemoGame.MapEditor
             CursorManager.DrawInterface(sb);
 
             // Focused selected object (don't draw it for lights, though)
-            if (!(SelectedObjs.Focused is ILight))
-                _focusedSpatialDrawer.Draw(SelectedObjs.Focused as ISpatial, sb);
+            foreach (var selected in SelectedObjs.SelectedObjects.Where(x => !(x is ILight)))
+            {
+                if (selected == SelectedObjs.Focused)
+                    _focusedSpatialDrawer.DrawFocused(selected as ISpatial, sb);
+                else
+                    FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
+            }
 
             // End map rendering
             DrawingManager.EndDrawWorld();
