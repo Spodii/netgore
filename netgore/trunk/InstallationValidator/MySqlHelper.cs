@@ -139,6 +139,15 @@ namespace InstallationValidator
         /// <param name="cmds">The additional commands to input when running the process.</param>
         public static void MySqlCommand(string command, out string output, out string error, params string[] cmds)
         {
+            // Build the default command string
+            if (string.IsNullOrEmpty(command))
+            {
+                string username = ConnectionSettings.User;
+                string password = ConnectionSettings.Pass;
+                string host = ConnectionSettings.Host;
+                command = string.Format("--user={0} --password={1} --host={2}", username, password, host);
+            }
+
             ProcessStartInfo psi = new ProcessStartInfo(MySqlPath, command)
             {
                 CreateNoWindow = true,
@@ -182,15 +191,6 @@ namespace InstallationValidator
                 if (!string.IsNullOrEmpty(MySqlPath))
                     retStr += "\nSupplied path: " + MySqlPath;
                 return false;
-            }
-
-            // Build the default command string
-            if (string.IsNullOrEmpty(command))
-            {
-                string username = ConnectionSettings.User;
-                string password = ConnectionSettings.Pass;
-                string host = ConnectionSettings.Host;
-                command = string.Format("--user={0} --password={1} --host={2}", username, password, host);
             }
 
             // Run the mysql.exe process
