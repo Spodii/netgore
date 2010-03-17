@@ -467,11 +467,42 @@ namespace NetGore.Graphics
             /// <returns>A <see cref="Texture2D"/> of the atlas.</returns>
             Texture2D DrawAtlas(GraphicsDevice device, int padding, out IEnumerable<AtlasTextureItem> successfulItems)
             {
+                // Create the list for successful items
                 List<AtlasTextureItem> successful = new List<AtlasTextureItem>();
                 successfulItems = successful;
 
-                Texture2D ret = RenderTarget2DHelper.CreateTexture2D(device, _width, _height, _backColor,
-                                                                     x => DrawAtlasDrawingHandler(x, padding, successful));
+                // Try to create the atlas texture. If any exceptions are thrown when trying to create the texture,
+                // do not use a texture atlas at all.
+                const string errmsg = "Failed to create TextureAtlas texture. Exception: {0}";
+                Texture2D ret = null;
+                try
+                {
+                    ret = RenderTarget2DHelper.CreateTexture2D(device, _width, _height, _backColor,
+                                                                         x => DrawAtlasDrawingHandler(x, padding, successful));
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+                }
+                catch (Exception ex)
+                {
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+                    Debug.Fail(string.Format(errmsg, ex));
+                }
+
+                // If we have a null Texture2D right here, it means we failed completely to create the atlas.
+                // So clear the successful list completely, remove the atlas from all items, and return a null texture.
+                if (ret == null)
+                {
+                    foreach (var node in Nodes)
+                        node.ITextureAtlasable.RemoveAtlas();
+
+                    successful.Clear();
+
+                    return null;
+                }
 
 #pragma warning disable 162
                 // Save the generated atlas

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -30,6 +31,14 @@ namespace NetGore.Graphics
             // Store the old graphics device values
             var oldDepthStencilBuffer = device.DepthStencilBuffer;
             var oldRenderTarget = device.GetRenderTarget(0) as RenderTarget2D;
+
+            // If the old render target is (for some odd reason) disposed, use null instead
+            if (oldRenderTarget != null && oldRenderTarget.IsDisposed)
+                oldRenderTarget = null;
+
+            // Same goes for if the depth stencil buffer is disposed
+            if (oldDepthStencilBuffer != null && oldDepthStencilBuffer.IsDisposed)
+                oldDepthStencilBuffer = null;
 
             // Grab the values to use to create the render target
             var pp = device.PresentationParameters;
