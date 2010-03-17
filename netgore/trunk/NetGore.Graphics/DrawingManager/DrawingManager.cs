@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,6 +10,7 @@ namespace NetGore.Graphics
 {
     public class DrawingManager : IDrawingManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly GraphicsDevice _gd;
         readonly ILightManager _lightManager;
         readonly ISpriteBatch _sb;
@@ -60,7 +64,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Begins drawing the graphical user interface, which is not affected by the camera.
         /// </summary>
-        /// <returns>The <see cref="ISpriteBatch"/> to use to draw the GUI.</returns>
+        /// <returns>
+        /// The <see cref="ISpriteBatch"/> to use to draw the GUI, or null if an unexpected
+        /// error was encountered when preparing the <see cref="ISpriteBatch"/>. When null, all drawing
+        /// should be aborted completely instead of trying to draw with a different <see cref="ISpriteBatch"/>
+        /// or manually recovering the error.
+        /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
         public ISpriteBatch BeginDrawGUI()
@@ -70,7 +79,20 @@ namespace NetGore.Graphics
 
             _state = DrawingManagerState.DrawingGUI;
 
-            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            try
+            {
+                _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Failed to Begin() the SpriteBatch - abort!
+                const string errmsg = "SpriteBatch.Begin() failed. Aborting drawing. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+
+                _state = DrawingManagerState.Idle;
+                return null;
+            }
 
             return _sb;
         }
@@ -79,7 +101,12 @@ namespace NetGore.Graphics
         /// Begins drawing of the world.
         /// </summary>
         /// <param name="camera">The camera describing the the current view of the world.</param>
-        /// <returns>The <see cref="ISpriteBatch"/> to use to draw the world objects.</returns>
+        /// <returns>
+        /// The <see cref="ISpriteBatch"/> to use to draw the world objects, or null if an unexpected
+        /// error was encountered when preparing the <see cref="ISpriteBatch"/>. When null, all drawing
+        /// should be aborted completely instead of trying to draw with a different <see cref="ISpriteBatch"/>
+        /// or manually recovering the error.
+        /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
         public ISpriteBatch BeginDrawWorld(ICamera2D camera)
@@ -96,7 +123,10 @@ namespace NetGore.Graphics
         /// <param name="bypassClear">If true, the backbuffer will not be cleared before the drawing starts,
         /// resulting in the new images being drawn on top of the previous frame instead of from a fresh screen.</param>
         /// <returns>
-        /// The <see cref="ISpriteBatch"/> to use to draw the world objects.
+        /// The <see cref="ISpriteBatch"/> to use to draw the world objects, or null if an unexpected
+        /// error was encountered when preparing the <see cref="ISpriteBatch"/>. When null, all drawing
+        /// should be aborted completely instead of trying to draw with a different <see cref="ISpriteBatch"/>
+        /// or manually recovering the error.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
@@ -107,18 +137,55 @@ namespace NetGore.Graphics
 
             _state = DrawingManagerState.DrawingWorld;
 
-            // If using lighting, grab the light map
-            if (useLighting)
-                _lightMap = _lightManager.Draw(camera);
-            else
-                _lightMap = null;
+            _lightMap = null;
 
-            // Clear the buffer
-            if (!bypassClear)
-                _gd.Clear(Color.CornflowerBlue);
+            try
+            {
+                // If using lighting, grab the light map
+                if (useLighting)
+                {
+                    try
+                    {
+                        _lightMap = _lightManager.Draw(camera);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        const string errmsg = "Failed to create light map. Exception: {0}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, ex);
+                    }
+                }
 
-            // Start the SpriteBatch
-            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, camera.Matrix);
+                // Clear the buffer
+                if (!bypassClear)
+                    _gd.Clear(Color.CornflowerBlue);
+
+                // Start the SpriteBatch
+                try
+                {
+                    _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, camera.Matrix);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    // Failed to Begin() the SpriteBatch - abort!
+                    const string errmsg = "SpriteBatch.Begin() failed. Aborting drawing. Exception: {0}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+
+                    _state = DrawingManagerState.Idle;
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to properly begin drawing due to an unhandled exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+
+                _state = DrawingManagerState.Idle;
+                return null;
+            }
 
             return _sb;
         }
@@ -135,7 +202,17 @@ namespace NetGore.Graphics
 
             _state = DrawingManagerState.Idle;
 
-            _sb.End();
+            try
+            {
+                _sb.End();
+            }
+            catch (InvalidOperationException ex)
+            {
+                const string errmsg = "SpriteBatch.End() failed. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                return;
+            }
         }
 
         /// <summary>
@@ -150,34 +227,69 @@ namespace NetGore.Graphics
 
             _state = DrawingManagerState.Idle;
 
-            _sb.End();
-
-            // We only have to go through all these extra steps if we are using a light map.
-            if (_lightMap != null)
+            try
             {
-                var rs = _gd.RenderState;
+                try
+                {
+                    _sb.End();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    const string errmsg = "SpriteBatch.End() failed. Exception: {0}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+                    return;
+                }
 
-                // Store the old state values
-                var oldSourceBlend = rs.SourceBlend;
-                var oldDestinationBlend = rs.DestinationBlend;
-                var oldBlendFunction = rs.BlendFunction;
+                // We only have to go through all these extra steps if we are using a light map.
+                if (_lightMap != null)
+                {
+                    var rs = _gd.RenderState;
 
-                // Start drawing
-                _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+                    // Store the old state values
+                    var oldSourceBlend = rs.SourceBlend;
+                    var oldDestinationBlend = rs.DestinationBlend;
+                    var oldBlendFunction = rs.BlendFunction;
 
-                // Set the blending mode
-                rs.SourceBlend = Blend.Zero;
-                rs.DestinationBlend = Blend.SourceColor;
-                rs.BlendFunction = BlendFunction.Add;
+                    // Start drawing
+                    try
+                    {
+                        _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        const string errmsg = "SpriteBatch.End() failed. Exception: {0}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, ex);
+                        return;
+                    }
 
-                // Draw the light map
-                _sb.Draw(_lightMap, Vector2.Zero, Color.White);
-                _sb.End();
+                    // Set the blending mode
+                    rs.SourceBlend = Blend.Zero;
+                    rs.DestinationBlend = Blend.SourceColor;
+                    rs.BlendFunction = BlendFunction.Add;
 
-                // Restore the old blend mode
-                rs.SourceBlend = oldSourceBlend;
-                rs.DestinationBlend = oldDestinationBlend;
-                rs.BlendFunction = oldBlendFunction;
+                    try
+                    {
+                        // Draw the light map
+                        _sb.Draw(_lightMap, Vector2.Zero, Color.White);
+                        _sb.End();
+                    }
+                    finally
+                    {
+                        // Restore the old blend mode
+                        rs.SourceBlend = oldSourceBlend;
+                        rs.DestinationBlend = oldDestinationBlend;
+                        rs.BlendFunction = oldBlendFunction;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to properly end drawing due to an unhandled exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
             }
         }
 

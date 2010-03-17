@@ -573,6 +573,8 @@ namespace DemoGame.MapEditor
             // Begin the rendering
             DrawingManager.LightManager.Ambient = Map.AmbientLight;
             sb = DrawingManager.BeginDrawWorld(_camera);
+            if (sb == null) 
+                return;
 
             // Map
             Map.Draw(sb);
@@ -599,6 +601,8 @@ namespace DemoGame.MapEditor
             // End drawing with lighting, start drawing world without lighting
             DrawingManager.EndDrawWorld();
             sb = DrawingManager.BeginDrawWorld(Camera, false, true);
+            if (sb == null)
+                return;
 
             // Border
             _mapBorderDrawer.Draw(sb, Map, _camera);
@@ -643,6 +647,8 @@ namespace DemoGame.MapEditor
 
             // Begin GUI rendering
             sb = DrawingManager.BeginDrawGUI();
+            if (sb == null)
+                return;
 
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - new Vector2(100, 30);

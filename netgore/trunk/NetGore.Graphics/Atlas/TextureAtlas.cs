@@ -487,82 +487,91 @@ namespace NetGore.Graphics
 
             void DrawAtlasDrawingHandler(ISpriteBatch sb, int padding, ICollection<AtlasTextureItem> successful)
             {
-                // Draw every atlas item to the texture
+                // Start the SpriteBatch
                 sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.SaveState);
-                foreach (AtlasTextureItem item in Nodes)
+
+                // Use a try/finally block to make sure that the SpriteBatch ends. If End() is not called, it could
+                // prevent other SpriteBatches from Begin()ing.
+                try
                 {
-                    // Make sure this item is not already part of an atlas. While it is handy to have an atlas
-                    // draw to another atlas, the benefits of that are likely minimal, and it is far more important
-                    // to avoid having an invalid atlas (such as when the device is lost) drawing to another atlas
-                    item.ITextureAtlasable.RemoveAtlas();
-
-                    // Grab the texture and make sure it is valid
-                    Texture2D tex = item.ITextureAtlasable.Texture;
-                    if (tex == null || tex.IsDisposed)
+                    // Draw every atlas item to the texture
+                    foreach (AtlasTextureItem item in Nodes)
                     {
-                        const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
-                        if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, item);
-                        Debug.Fail(string.Format(errmsg, item));
-                        continue;
+                        // Make sure this item is not already part of an atlas. While it is handy to have an atlas
+                        // draw to another atlas, the benefits of that are likely minimal, and it is far more important
+                        // to avoid having an invalid atlas (such as when the device is lost) drawing to another atlas
+                        item.ITextureAtlasable.RemoveAtlas();
+
+                        // Grab the texture and make sure it is valid
+                        Texture2D tex = item.ITextureAtlasable.Texture;
+                        if (tex == null || tex.IsDisposed)
+                        {
+                            const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, item);
+                            continue;
+                        }
+
+                        // Draw the actual image (raw, no borders)
+                        Rectangle srcRect = item.ITextureAtlasable.SourceRect;
+                        Vector2 dest = new Vector2(item.Rect.X + padding, item.Y + padding);
+                        Rectangle src = srcRect;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Create the borders if padded
+                        if (padding == 0)
+                            continue;
+
+                        // Left border
+                        src.Width = 1;
+                        dest.X -= 1;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Right border
+                        src.X += srcRect.Width - 1;
+                        dest.X += srcRect.Width + 1;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Top border
+                        src = new Rectangle(srcRect.X, srcRect.Y, srcRect.Width, 1);
+                        dest.X = item.X + padding;
+                        dest.Y = item.Y + padding - 1;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Bottom border
+                        src.Y += srcRect.Height - 1;
+                        dest.Y += srcRect.Height + 1;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Top-left corner
+                        src = new Rectangle(srcRect.X, srcRect.Y, 1, 1);
+                        dest.X = item.X + padding - 1;
+                        dest.Y = item.Y + padding - 1;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Top-right corner
+                        src.X += srcRect.Width - 1;
+                        dest.X += srcRect.Width + 1;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Bottom-right corner
+                        src.Y += srcRect.Height - 1;
+                        dest.Y += srcRect.Height + 1;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Bottom-left corner
+                        src.X -= srcRect.Width - 1;
+                        dest.X -= srcRect.Width + 1;
+                        DrawToAtlas(sb, tex, dest, src);
+
+                        // Successfully drawn
+                        successful.Add(item);
                     }
-
-                    // Draw the actual image (raw, no borders)
-                    Rectangle srcRect = item.ITextureAtlasable.SourceRect;
-                    Vector2 dest = new Vector2(item.Rect.X + padding, item.Y + padding);
-                    Rectangle src = srcRect;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Create the borders if padded
-                    if (padding == 0)
-                        continue;
-
-                    // Left border
-                    src.Width = 1;
-                    dest.X -= 1;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Right border
-                    src.X += srcRect.Width - 1;
-                    dest.X += srcRect.Width + 1;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Top border
-                    src = new Rectangle(srcRect.X, srcRect.Y, srcRect.Width, 1);
-                    dest.X = item.X + padding;
-                    dest.Y = item.Y + padding - 1;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Bottom border
-                    src.Y += srcRect.Height - 1;
-                    dest.Y += srcRect.Height + 1;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Top-left corner
-                    src = new Rectangle(srcRect.X, srcRect.Y, 1, 1);
-                    dest.X = item.X + padding - 1;
-                    dest.Y = item.Y + padding - 1;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Top-right corner
-                    src.X += srcRect.Width - 1;
-                    dest.X += srcRect.Width + 1;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Bottom-right corner
-                    src.Y += srcRect.Height - 1;
-                    dest.Y += srcRect.Height + 1;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Bottom-left corner
-                    src.X -= srcRect.Width - 1;
-                    dest.X -= srcRect.Width + 1;
-                    DrawToAtlas(sb, tex, dest, src);
-
-                    // Successfully drawn
-                    successful.Add(item);
                 }
-                sb.End();
+                finally
+                {
+                    sb.End();
+                }
             }
 
             /// <summary>

@@ -225,15 +225,24 @@ namespace NetGore.EditorTools
         {
             string beginDrawError = BeginDraw();
 
+            // Check if BeginDraw() created an error before attempting to actually draw
             if (string.IsNullOrEmpty(beginDrawError))
             {
                 // Draw the control using the GraphicsDevice
-                Draw(SpriteBatch);
-                EndDraw();
+                try
+                {
+                    Draw(SpriteBatch);
+                    EndDraw();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    beginDrawError = ex.ToString();
+                }
             }
-            else
+
+            // If BeginDraw failed, show an error message using System.Drawing
+            if (!string.IsNullOrEmpty(beginDrawError))
             {
-                // If BeginDraw failed, show an error message using System.Drawing
                 PaintUsingSystemDrawing(e.Graphics, beginDrawError);
             }
         }

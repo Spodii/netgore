@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Collections;
 
@@ -10,6 +12,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class LightManager : VirtualList<ILight>, ILightManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         Color _ambient;
         Grh _defaultSprite;
         GraphicsDevice _gd;
@@ -79,11 +83,32 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
         /// <returns>
-        /// The <see cref="Texture2D"/> containing the light map.
+        /// The <see cref="Texture2D"/> containing the light map. If the light map failed to be generated
+        /// for whatever reason, a null value will be returned instead.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
         public Texture2D Draw(ICamera2D camera)
         {
+            return DrawInternal(camera, 0);
+        }
+
+        /// <summary>
+        /// Draws all of the lights in this <see cref="ILightManager"/>.
+        /// </summary>
+        /// <param name="camera">The camera describing the current view.</param>
+        /// <param name="recursionCount">The recursion count. When this number reaches its limit, any recursion
+        /// this method may normally do will not be attempted. Should be initially set to 0.</param>
+        /// <returns>
+        /// The <see cref="Texture2D"/> containing the light map. If the light map failed to be generated
+        /// for whatever reason, a null value will be returned instead.
+        /// </returns>
+        /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
+        Texture2D DrawInternal(ICamera2D camera, int recursionCount)
+        {
+            // Check for too much recursion
+            if (++recursionCount > 8)
+                return null;
+
             if (!IsInitialized)
                 throw new InvalidOperationException("You must initialize the ILightManager before drawing.");
 
@@ -132,11 +157,19 @@ namespace NetGore.Graphics
             }
             catch (ArgumentException)
             {
-                // If there was an exception, it was probably due to the backbuffer being resized. So reinitailize and
-                // redraw. This could go into an infinite recursion and overflow the stack, but if that happens, we
-                // are stuck with an error of not being able to create the lightmap anyways, so who cares. :]
+                // If there was an ArgumentException, it was probably due to the backbuffer being resized. So reinitailize and
+                // redraw. This could go into an infinite recursion and overflow the stack, so we count
+                // the number of recursions to avoid this.
                 Initialize(_gd);
-                Draw(camera);
+                return DrawInternal(camera, recursionCount);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Quite a few things can cause this, none of which we can really fix (as far as I know).
+                const string errmsg = "InvalidOperationException occured when trying to create the light map - returning NULL instead. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                return null;
             }
 
             return _lightMap;
