@@ -34,7 +34,14 @@ namespace DemoGame.MapEditor
 
         public MapSpawnValues SelectedItemReal
         {
-            get { return ((NPCSpawnsListBoxItem)SelectedItem).Value; }
+            get
+            {
+                var item = SelectedItem as NPCSpawnsListBoxItem;
+                if (item == null)
+                    return null;
+
+                return item.Value;
+            }
         }
 
         public void AddNewItem()
