@@ -251,7 +251,7 @@ namespace DemoGame.MapEditor
             if (mapGrh == null)
                 return;
 
-            mapGrh.LayerDepth = (byte)(mapGrh.LayerDepth + amount).Clamp(byte.MinValue, byte.MaxValue);
+            mapGrh.LayerDepth = (short)(mapGrh.LayerDepth + amount).Clamp(short.MinValue, short.MaxValue);
         }
 
         /// <summary>
@@ -259,13 +259,17 @@ namespace DemoGame.MapEditor
         /// </summary>
         public override void PressDelete()
         {
-            foreach (MapGrh mg in _selectedMapGrhs)
-            {
-                Container.Map.RemoveMapGrh(mg);
-            }
+            // Find the stuff to delete
+            var toDelete = Container.SelectedObjs.SelectedObjects.OfType<MapGrh>().ToImmutable();
 
+            // Clear selection
+            Container.SelectedObjs.Clear();
             _selectedMapGrhs.Clear();
             _mapGrhMoveBox = null;
+
+            // Delete all selected
+            foreach (var mg in toDelete)
+                Container.Map.RemoveMapGrh(mg);
         }
 
         /// <summary>
