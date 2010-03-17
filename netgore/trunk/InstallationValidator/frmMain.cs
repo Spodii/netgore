@@ -144,6 +144,7 @@ namespace InstallationValidator
             {
                 new LocateMySqlExe(), new CheckForXNA(), new LoadXNA(), new CheckForMySqlConnector(), new LoadMySqlData(),
                 new DatabaseFileExists(), new LoadDbConnectionSettings(), new ConnectToDatabase(), new DatabaseExists(),
+                new DatabaseVersion(),
                 new LoadSchemaFile(), new DatabasePopulated()
             };
 

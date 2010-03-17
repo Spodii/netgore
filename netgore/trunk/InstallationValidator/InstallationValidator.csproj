@@ -76,6 +76,7 @@
     <Compile Include="Tests\DatabaseExists.cs" />
     <Compile Include="Tests\DatabaseFileExists.cs" />
     <Compile Include="Tests\DatabasePopulated.cs" />
+    <Compile Include="Tests\DatabaseVersion.cs" />
     <Compile Include="Tests\LoadDbConnectionSettings.cs" />
     <Compile Include="Tests\LoadMySqlData.cs" />
     <Compile Include="Tests\LoadSchemaFile.cs" />
