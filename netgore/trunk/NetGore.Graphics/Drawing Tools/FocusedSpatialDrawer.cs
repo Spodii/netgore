@@ -22,7 +22,7 @@ namespace NetGore.Graphics
         static readonly Color _nonfocusedBorderColorOuter = new Color(255, 255, 255, 150);
         static readonly Color _trackColor = new Color(0, 0, 0, 0);
         static readonly Color _trackInnerBorderColor = new Color(255, 255, 255, 150);
-        static readonly Color _trackOutterBorderColor = new Color(0, 0, 0, 150);
+        static readonly Color _trackOuterBorderColor = new Color(0, 0, 0, 150);
 
         ISpatial _focused;
         int _steps;
@@ -101,13 +101,13 @@ namespace NetGore.Graphics
             XNARectangle.Draw(sb, r, _focusedColor, _focusedBorderColorInner);
 
             var r2 = new Rectangle(r.X - 1, r.Y - 1, r.Width + 2, r.Height + 2);
-            XNARectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _nonfocusedBorderColorOuter);
+            XNARectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _focusedBorderColorOuter);
 
             if (_steps > 0)
             {
                 XNARectangle.Draw(sb, ApplyStepping(r, _steps), _trackColor, _trackInnerBorderColor);
-                XNARectangle.Draw(sb, ApplyStepping(r, _steps - 1), _trackColor, _trackOutterBorderColor);
-                XNARectangle.Draw(sb, ApplyStepping(r, _steps + 1), _trackColor, _trackOutterBorderColor);
+                XNARectangle.Draw(sb, ApplyStepping(r, _steps - 1), _trackColor, _trackOuterBorderColor);
+                XNARectangle.Draw(sb, ApplyStepping(r, _steps + 1), _trackColor, _trackOuterBorderColor);
                 _steps -= 4 + (_steps / 10);
             }
         }
