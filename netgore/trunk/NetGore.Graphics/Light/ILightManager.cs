@@ -32,7 +32,8 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
         /// <returns>
-        /// The <see cref="Texture2D"/> containing the light map.
+        /// The <see cref="Texture2D"/> containing the light map. If the light map failed to be generated
+        /// for whatever reason, a null value will be returned instead.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
         Texture2D Draw(ICamera2D camera);

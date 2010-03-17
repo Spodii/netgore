@@ -184,6 +184,9 @@ namespace NetGore.Graphics.GUI
         public virtual void Draw(int gameTime)
         {
             var spriteBatch = DrawingManager.BeginDrawGUI();
+            if (spriteBatch == null)
+                return;
+
             GUIManager.Draw(spriteBatch);
             DrawingManager.EndDrawGUI();
         }

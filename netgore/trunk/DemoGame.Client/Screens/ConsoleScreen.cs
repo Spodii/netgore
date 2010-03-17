@@ -73,6 +73,8 @@ namespace DemoGame.Client
         public override void Draw(int gameTime)
         {
             var spriteBatch = DrawingManager.BeginDrawGUI();
+            if (spriteBatch == null)
+                return;
 
             // Draw an overlay on top of the old screen
             XNARectangle.Draw(spriteBatch, _cScreen.GetScreenArea(), _overlayColor);

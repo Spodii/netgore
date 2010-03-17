@@ -295,6 +295,9 @@ namespace DemoGame.Client
 
             // Draw the world layer
             var sb = DrawingManager.BeginDrawWorld(World.Camera);
+            if (sb == null)
+                return;
+
             World.Draw(sb);
             _chatBubbleManager.Draw(sb);
             _damageTextPool.Draw(sb, _damageFont);
