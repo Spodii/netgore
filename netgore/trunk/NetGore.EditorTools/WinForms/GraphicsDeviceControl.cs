@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
@@ -17,6 +19,8 @@ namespace NetGore.EditorTools
     /// </summary>
     public class GraphicsDeviceControl : Control
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly ServiceContainer _services = new ServiceContainer();
 
         GraphicsDeviceService _gds;
@@ -110,12 +114,17 @@ namespace NetGore.EditorTools
                 Rectangle sourceRectangle = new Rectangle(0, 0, ClientSize.Width, ClientSize.Height);
                 GraphicsDevice.Present(sourceRectangle, null, Handle);
             }
-            catch (Exception ex)
+            catch (DeviceLostException ex)
             {
                 // Present might throw if the device became lost while we were
                 // drawing. The lost device will be handled by the next BeginDraw,
                 // so we just swallow the exception.
-                Debug.Fail("GraphicsDeviceControl caught exception: " + ex);
+                const string errmsg = "Caught DeviceLostException when drawing device to a WinForms control." +
+                    " Usually, this is not a problem, and often indicates something such as minimizing, Ctrl+Alt+Del, etc." +
+                    " Only treat this as an error if the application crashes shortly after this log entry. Exception: {0}";
+
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, ex);
             }
         }
 
