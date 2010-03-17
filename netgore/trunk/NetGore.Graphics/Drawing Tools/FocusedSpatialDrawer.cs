@@ -14,10 +14,12 @@ namespace NetGore.Graphics
         /// </summary>
         const int _maxSteps = 700;
 
-        static readonly Color _highlightBorderColor = new Color(0, 0, 0, 150);
-        static readonly Color _highlightColor = new Color(0, 255, 0, 75);
-        static readonly Color _nonfocusedHighlightColor = new Color(0, 0, 0, 0);
-        static readonly Color _nonfocusedBorderColor = new Color(0, 0, 0, 150);
+        static readonly Color _focusedBorderColorInner = new Color(0, 0, 0, 150);
+        static readonly Color _focusedBorderColorOuter = new Color(255,255,255, 150);
+        static readonly Color _focusedColor = new Color(0, 255, 0, 75);
+        static readonly Color _nonfocusedColor = new Color(0, 0, 0, 0);
+        static readonly Color _nonfocusedBorderColorInner = new Color(0, 0, 0, 150);
+        static readonly Color _nonfocusedBorderColorOuter = new Color(255, 255, 255, 150);
         static readonly Color _trackColor = new Color(0, 0, 0, 0);
         static readonly Color _trackInnerBorderColor = new Color(255, 255, 255, 150);
         static readonly Color _trackOutterBorderColor = new Color(0, 0, 0, 150);
@@ -80,7 +82,10 @@ namespace NetGore.Graphics
                 return;
 
             var r = spatial.ToRectangle();
-            XNARectangle.Draw(sb, r, _nonfocusedHighlightColor, _nonfocusedBorderColor);
+            XNARectangle.Draw(sb, r, _nonfocusedColor, _nonfocusedBorderColorInner);
+
+            var r2 = new Rectangle(r.X-1, r.Y-1, r.Width+2, r.Height+2);
+            XNARectangle.Draw(sb, r2, new Color(0,0,0,0), _nonfocusedBorderColorOuter);
         }
 
         /// <summary>
@@ -93,7 +98,10 @@ namespace NetGore.Graphics
                 return;
 
             var r = Focused.ToRectangle();
-            XNARectangle.Draw(sb, r, _highlightColor, _highlightBorderColor);
+            XNARectangle.Draw(sb, r, _focusedColor, _focusedBorderColorInner);
+
+            var r2 = new Rectangle(r.X - 1, r.Y - 1, r.Width + 2, r.Height + 2);
+            XNARectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _nonfocusedBorderColorOuter);
 
             if (_steps > 0)
             {
