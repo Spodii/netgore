@@ -32,10 +32,27 @@ namespace NetGore.Graphics.ParticleEngine
         static readonly ParticleEmitterFactory _instance;
 
         /// <summary>
+        /// The type filter used for the <see cref="ParticleEmitter"/> types.
+        /// </summary>
+        static readonly Func<Type, bool> _particleEmitterFilter;
+
+        /// <summary>
         /// Initializes the <see cref="ParticleEmitterFactory"/> class.
         /// </summary>
         static ParticleEmitterFactory()
         {
+            // Create the filter
+            var filterCreator = new TypeFilterCreator
+            {
+                IsClass = true,
+                IsAbstract = false,
+                RequireConstructor = true,
+                ConstructorParameters = Type.EmptyTypes,
+                Subclass = typeof(ParticleEmitter)
+            };
+
+            _particleEmitterFilter = filterCreator.GetFilter();
+
             // Create the factory instance
             _instance = new ParticleEmitterFactory();
         }
@@ -43,7 +60,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterFactory"/> class.
         /// </summary>
-        ParticleEmitterFactory() : base(GetTypeFilter(), null, false)
+        ParticleEmitterFactory()
+            : base(_particleEmitterFilter, null, false)
         {
         }
 
@@ -56,13 +74,24 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Gets the name of all the <see cref="ParticleEmitter"/> files in a given <see cref="ContentPaths"/>.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to get the effect files from.</param>
+        /// <returns>The name of all the <see cref="ParticleEmitter"/> files in the <paramref name="contentPath"/>.</returns>
+        public static IEnumerable<string> GetEffectsFromFile(ContentPaths contentPath)
+        {
+            var files = Directory.GetFiles(contentPath.ParticleEffects, "*." + EmitterFileSuffix, SearchOption.TopDirectoryOnly);
+            var names = files.Select(x => GetEffectNameFromPath(x));
+            return names.ToImmutable();
+        }
+
+        /// <summary>
         /// Gets the name of a particle effect from the file path.
         /// </summary>
         /// <param name="filePath">The file path for the particle effect.</param>
         /// <returns>The name of the particle effect, or "Unnamed" if the <paramref name="filePath"/> is invalid.</returns>
         public static string GetEffectNameFromPath(string filePath)
         {
-            // TODO: Create unit tests for this, and ensure it is nice and sturdy
             try
             {
                 return Path.GetFileNameWithoutExtension(filePath);
@@ -73,23 +102,15 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
+        /// <summary>
+        /// Gets the file path for a <see cref="ParticleEmitter"/> by name.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
+        /// <param name="emitterName">The name of the <see cref="ParticleEmitter"/>.</param>
+        /// <returns>The path for the <see cref="ParticleEmitter"/>.</returns>
         static string GetFilePath(ContentPaths contentPath, string emitterName)
         {
             return contentPath.ParticleEffects.Join(emitterName + "." + EmitterFileSuffix);
-        }
-
-        static Func<Type, bool> GetTypeFilter()
-        {
-            var filterCreator = new TypeFilterCreator
-            {
-                IsClass = true,
-                IsAbstract = false,
-                RequireConstructor = true,
-                ConstructorParameters = Type.EmptyTypes,
-                Subclass = typeof(ParticleEmitter)
-            };
-
-            return filterCreator.GetFilter();
         }
 
         /// <summary>
