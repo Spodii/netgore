@@ -16,7 +16,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _restPeriodKeyName = "RestPeriod";
 
         VariableUShort _emitterReleaseAmount = 0;
-        bool _isBursting = true;
+        bool _isBursting = false;
         int _timeout = 0;
 
         /// <summary>
