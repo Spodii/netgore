@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using InstallationValidator.Properties;
 using InstallationValidator.Tests;
 using Microsoft.Win32;
+using NetGore.IO;
 
 namespace InstallationValidator
 {
@@ -31,24 +32,11 @@ namespace InstallationValidator
                 return;
             }
 
-            try
-            {
-                Process.Start("notepad.exe", MySqlHelper.DbSettingsFile);
-            }
-            catch (Exception ex)
-            {
-                Debug.Fail("Failed to open file in notepad. Attempting to open with default program for xml files... " + ex);
+            var ex = FileHelper.TryOpenWithNotepad(MySqlHelper.DbSettingsFile);
 
-                try
-                {
-                    Process.Start(MySqlHelper.DbSettingsFile);
-                }
-                catch (Exception ex2)
-                {
-                    MessageBox.Show(string.Format("Failed to open file {0}.{1}{1}{2}", MySqlHelper.DbSettingsFile,
-                                                  Environment.NewLine, ex2));
-                }
-            }
+            if (ex != null)
+                MessageBox.Show(string.Format("Failed to open file {0}.{1}{1}{2}", MySqlHelper.DbSettingsFile,
+                                              Environment.NewLine, ex));
         }
 
         void btnRun_Click(object sender, EventArgs e)
