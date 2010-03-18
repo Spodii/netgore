@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -21,9 +20,22 @@ namespace NetGore.EditorTools
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// The maximum amount of time we must wait to repaint with PaintUsingSystemDrawing().
+        /// The reason for this is to avoid excessive overhead of constantly repainting and to avoid
+        /// making the message constantly flickering.
+        /// </summary>
+        const int _minSystemPaintDelay = 500;
+
         readonly ServiceContainer _services = new ServiceContainer();
 
         GraphicsDeviceService _gds;
+
+        /// <summary>
+        /// The last time a message was painted using PaintUsingSystemDrawing().
+        /// </summary>
+        int _lastSystemPaintTime;
+
         ISpriteBatch _spriteBatch;
 
         /// <summary>
@@ -119,7 +131,8 @@ namespace NetGore.EditorTools
                 // Present might throw if the device became lost while we were
                 // drawing. The lost device will be handled by the next BeginDraw,
                 // so we just swallow the exception.
-                const string errmsg = "Caught DeviceLostException when drawing device to a WinForms control." +
+                const string errmsg =
+                    "Caught DeviceLostException when drawing device to a WinForms control." +
                     " Usually, this is not a problem, and often indicates something such as minimizing, Ctrl+Alt+Del, etc." +
                     " Only treat this as an error if the application crashes shortly after this log entry. Exception: {0}";
 
@@ -242,9 +255,7 @@ namespace NetGore.EditorTools
 
             // If BeginDraw failed, show an error message using System.Drawing
             if (!string.IsNullOrEmpty(beginDrawError))
-            {
                 PaintUsingSystemDrawing(e.Graphics, beginDrawError);
-            }
         }
 
         /// <summary>
@@ -265,19 +276,32 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="graphics">Graphic to paint to.</param>
         /// <param name="text">Text to write.</param>
-        protected void PaintUsingSystemDrawing(System.Drawing.Graphics graphics, string text)
+        void PaintUsingSystemDrawing(System.Drawing.Graphics graphics, string text)
         {
-            graphics.Clear(Color.CornflowerBlue);
+            if (graphics == null)
+                return;
 
-            using (Brush brush = new SolidBrush(Color.Black))
-            {
-                using (StringFormat format = new StringFormat())
-                {
-                    format.Alignment = StringAlignment.Center;
-                    format.LineAlignment = StringAlignment.Center;
-                    graphics.DrawString(text, Font, brush, ClientRectangle, format);
-                }
-            }
+            // Ensure enough time has elapsed since last painting
+            var currentTime = Environment.TickCount;
+            if (_lastSystemPaintTime > currentTime - _minSystemPaintDelay)
+                return;
+
+            _lastSystemPaintTime = currentTime;
+
+            // Clear the screen
+            graphics.Clear(Color.Black);
+
+            // Can only write a message if we have a valid string
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            // Write the message
+            graphics.DrawString(text, Font, Brushes.Black, ClientRectangle, _errorMessageStringFormat);
         }
+
+        /// <summary>
+        /// The <see cref="StringFormat"/> for drawing the error message on the control.
+        /// </summary>
+        static readonly StringFormat _errorMessageStringFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
     }
 }
