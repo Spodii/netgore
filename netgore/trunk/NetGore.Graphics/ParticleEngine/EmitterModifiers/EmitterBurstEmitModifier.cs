@@ -67,18 +67,22 @@ namespace NetGore.Graphics.ParticleEngine
         {
             _timeout -= elapsedTime;
 
-            // Change from Emit to Rest or vise versa when time runs out
+            // Store the original value
+            _emitterReleaseAmount = emitter.ReleaseAmount;
+
+            // If bursting, set the release amount to 0 (it will be restored later in HandleRestore)
+            if (!_isBursting)
+                emitter.ReleaseAmount = 0;
+
+            // After enough time has elapsed, flip between bursting and not bursting
             if (_timeout <= 0)
             {
                 if (_isBursting)
                 {
-                    _emitterReleaseAmount = emitter.ReleaseAmount;
-                    emitter.ReleaseAmount = 0;
                     _timeout = RestPeriod;
                 }
                 else
                 {
-                    emitter.ReleaseAmount = _emitterReleaseAmount;
                     _timeout = EmitPeriod;
                 }
 
