@@ -163,7 +163,7 @@
     <Compile Include="Map\MapRenderLayer.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\Core\EmitterModifierCollection.cs" />
     <Compile Include="ParticleEngine\EmitterModifiers\Core\EmitterModifierFactory.cs" />
-    <Compile Include="ParticleEngine\EmitterModifiers\EmitterCircularMovementModifier.cs" />
+    <Compile Include="ParticleEngine\EmitterModifiers\EmitterBurstEmitModifier.cs" />
     <Compile Include="ParticleEngine\Emitters\CircleEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\ConeEmitter.cs" />
     <Compile Include="ParticleEngine\Emitters\LineEmitter.cs" />
