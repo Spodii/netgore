@@ -22,7 +22,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         /// <summary>
         /// Gets or sets the <see cref="SpriteBlendMode"/> the <see cref="SpriteBatch"/> is using
-        /// when the <see cref="SpriteBatchRenderer"/> is called to render.
+        /// when the <see cref="SpriteBatchParticleRenderer"/> is called to render.
         /// </summary>
         public SpriteBlendMode StartingBlendMode
         {

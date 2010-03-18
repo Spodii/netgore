@@ -30,6 +30,14 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets all of the available items to choose from.
+        /// </summary>
+        public IEnumerable<T> AvailableItems
+        {
+            get { return lstItems.Items.OfType<T>(); }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.
         /// </summary>
         /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
