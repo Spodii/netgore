@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbConnectionSettings.cs" />
+    <Compile Include="DbConnectionSettingsExtensions.cs" />
     <Compile Include="Exceptions\DatabaseConnectionException.cs" />
     <Compile Include="Exceptions\DatabaseException.cs" />
     <Compile Include="DataReaderContainer.cs" />

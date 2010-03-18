@@ -61,7 +61,6 @@ namespace NetGore.Db
             string msg = string.Format(errmsg, Environment.NewLine, innerException.Message, connectionString);
             if (log.IsFatalEnabled)
                 log.Fatal(msg, innerException);
-            Debug.Fail(msg);
             throw new DatabaseConnectionException(msg, innerException);
         }
 

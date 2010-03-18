@@ -90,6 +90,7 @@
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Extensions\Vector4Extensions.cs" />
+    <Compile Include="IO\FileHelper.cs" />
     <Compile Include="InventorySlot.cs" />
     <Compile Include="InventorySlotTypeConverter.cs" />
     <Compile Include="Network\ExternalIPParsingRule.cs" />

@@ -77,7 +77,7 @@ namespace NetGore.IO
                     }
 
                     if (r.EOF)
-                        throw new Exception(string.Format("Failed to find the node `{0}` in the file.", rootNodeName));
+                        throw new XmlException(string.Format("Failed to find the node `{0}` in the file.", rootNodeName));
 
                     _values = ReadNodesIntoDictionary(r, rootNodeName, true);
                 }

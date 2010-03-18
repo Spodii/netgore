@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
+    <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\PropertyGridExtensions.cs" />
     <Compile Include="UI Editors\AdvancedClassTypeConverter.cs" />
     <Compile Include="UI Editors\AdvancedPropertyDescriptor.cs" />
@@ -263,6 +264,11 @@
     <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
       <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
       <Name>NetGore.Audio</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
+      <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
+      <Name>NetGore.Db</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
