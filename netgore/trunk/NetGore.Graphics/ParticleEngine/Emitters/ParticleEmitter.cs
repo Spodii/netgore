@@ -559,6 +559,13 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// The maximum value allowed for the delta time for updating particles and emitters. If the real delta
+        /// time is greater than this value, is will be reduced to this value. This is to prevent ugly side-effects
+        /// from emitters trying to play too much catch-up. Recommended to keep this at the default value.
+        /// </summary>
+        const int _maxDeltaTime = 200;
+
+        /// <summary>
         /// Updates the <see cref="ParticleEmitter"/> and all <see cref="Particle"/>s it has created.
         /// </summary>
         /// <param name="currentTime">The current time.</param>>
@@ -574,7 +581,9 @@ namespace NetGore.Graphics.ParticleEngine
                 elapsedTime = 10;
             }
             else
-                elapsedTime = currentTime - _lastUpdateTime;
+            {
+                elapsedTime = Math.Min(_maxDeltaTime, currentTime - _lastUpdateTime);
+            }
 
             _lastUpdateTime = currentTime;
 
@@ -597,6 +606,11 @@ namespace NetGore.Graphics.ParticleEngine
             // Check to spawn more particles
             if (RemainingLife != 0)
             {
+                // Do not allow the releasing catch-up time to exceed the _maxDeltaTime
+                if (_nextReleaseTime < currentTime - _maxDeltaTime)
+                    _nextReleaseTime = currentTime - _maxDeltaTime;
+
+                // Keep calculating the releases until we catch up to the current time
                 int amountToRelease = 0;
                 while (_nextReleaseTime < currentTime)
                 {
@@ -604,6 +618,7 @@ namespace NetGore.Graphics.ParticleEngine
                     _nextReleaseTime += ReleaseRate.GetNext();
                 }
 
+                // Release the particles, if there are any
                 if (amountToRelease > 0)
                     ReleaseParticles(currentTime, amountToRelease);
             }
