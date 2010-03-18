@@ -58,17 +58,10 @@ namespace DemoGame.MapEditor
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpNPCs = new System.Windows.Forms.TabPage();
-            this.tcSpawns = new System.Windows.Forms.TabControl();
-            this.tpSpawns = new System.Windows.Forms.TabPage();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
             this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
             this.btnDeleteSpawn = new System.Windows.Forms.Button();
             this.btnAddSpawn = new System.Windows.Forms.Button();
-            this.tpPersistent = new System.Windows.Forms.TabPage();
-            this.splitContainer8 = new System.Windows.Forms.SplitContainer();
-            this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
-            this.btnDeletePersistentNPC = new System.Windows.Forms.Button();
-            this.btnAddPersistentNPC = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.chkLightSources = new NetGore.EditorTools.PersistableCheckBox();
@@ -123,15 +116,9 @@ namespace DemoGame.MapEditor
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
             this.tpNPCs.SuspendLayout();
-            this.tcSpawns.SuspendLayout();
-            this.tpSpawns.SuspendLayout();
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.Panel2.SuspendLayout();
             this.splitContainer7.SuspendLayout();
-            this.tpPersistent.SuspendLayout();
-            this.splitContainer8.Panel1.SuspendLayout();
-            this.splitContainer8.Panel2.SuspendLayout();
-            this.splitContainer8.SuspendLayout();
             this.tpSettings.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -486,7 +473,7 @@ namespace DemoGame.MapEditor
             // 
             // tpNPCs
             // 
-            this.tpNPCs.Controls.Add(this.tcSpawns);
+            this.tpNPCs.Controls.Add(this.splitContainer7);
             this.tpNPCs.Location = new System.Drawing.Point(4, 22);
             this.tpNPCs.Name = "tpNPCs";
             this.tpNPCs.Size = new System.Drawing.Size(320, 302);
@@ -495,33 +482,11 @@ namespace DemoGame.MapEditor
             this.tpNPCs.ToolTipText = "Mob and NPC spawning and settings";
             this.tpNPCs.UseVisualStyleBackColor = true;
             // 
-            // tcSpawns
-            // 
-            this.tcSpawns.Controls.Add(this.tpSpawns);
-            this.tcSpawns.Controls.Add(this.tpPersistent);
-            this.tcSpawns.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcSpawns.Location = new System.Drawing.Point(0, 0);
-            this.tcSpawns.Name = "tcSpawns";
-            this.tcSpawns.SelectedIndex = 0;
-            this.tcSpawns.Size = new System.Drawing.Size(320, 302);
-            this.tcSpawns.TabIndex = 7;
-            // 
-            // tpSpawns
-            // 
-            this.tpSpawns.Controls.Add(this.splitContainer7);
-            this.tpSpawns.Location = new System.Drawing.Point(4, 22);
-            this.tpSpawns.Name = "tpSpawns";
-            this.tpSpawns.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSpawns.Size = new System.Drawing.Size(312, 276);
-            this.tpSpawns.TabIndex = 0;
-            this.tpSpawns.Text = "Spawns";
-            this.tpSpawns.UseVisualStyleBackColor = true;
-            // 
             // splitContainer7
             // 
             this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer7.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer7.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer7.Location = new System.Drawing.Point(0, 0);
             this.splitContainer7.Name = "splitContainer7";
             this.splitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -533,9 +498,9 @@ namespace DemoGame.MapEditor
             // 
             this.splitContainer7.Panel2.Controls.Add(this.btnDeleteSpawn);
             this.splitContainer7.Panel2.Controls.Add(this.btnAddSpawn);
-            this.splitContainer7.Size = new System.Drawing.Size(306, 270);
-            this.splitContainer7.SplitterDistance = 241;
-            this.splitContainer7.TabIndex = 8;
+            this.splitContainer7.Size = new System.Drawing.Size(320, 302);
+            this.splitContainer7.SplitterDistance = 273;
+            this.splitContainer7.TabIndex = 9;
             // 
             // lstNPCSpawns
             // 
@@ -544,14 +509,14 @@ namespace DemoGame.MapEditor
             this.lstNPCSpawns.Location = new System.Drawing.Point(0, 0);
             this.lstNPCSpawns.Map = null;
             this.lstNPCSpawns.Name = "lstNPCSpawns";
-            this.lstNPCSpawns.Size = new System.Drawing.Size(306, 238);
+            this.lstNPCSpawns.Size = new System.Drawing.Size(320, 264);
             this.lstNPCSpawns.TabIndex = 6;
             this.lstNPCSpawns.SelectedIndexChanged += new System.EventHandler(this.lstNPCSpawns_SelectedIndexChanged);
             // 
             // btnDeleteSpawn
             // 
             this.btnDeleteSpawn.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnDeleteSpawn.Location = new System.Drawing.Point(158, 0);
+            this.btnDeleteSpawn.Location = new System.Drawing.Point(172, 0);
             this.btnDeleteSpawn.Name = "btnDeleteSpawn";
             this.btnDeleteSpawn.Size = new System.Drawing.Size(74, 25);
             this.btnDeleteSpawn.TabIndex = 9;
@@ -562,77 +527,13 @@ namespace DemoGame.MapEditor
             // btnAddSpawn
             // 
             this.btnAddSpawn.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAddSpawn.Location = new System.Drawing.Point(232, 0);
+            this.btnAddSpawn.Location = new System.Drawing.Point(246, 0);
             this.btnAddSpawn.Name = "btnAddSpawn";
             this.btnAddSpawn.Size = new System.Drawing.Size(74, 25);
             this.btnAddSpawn.TabIndex = 8;
-            this.btnAddSpawn.Text = "Add";
+            this.btnAddSpawn.Text = "New Spawn";
             this.btnAddSpawn.UseVisualStyleBackColor = true;
             this.btnAddSpawn.Click += new System.EventHandler(this.btnAddSpawn_Click);
-            // 
-            // tpPersistent
-            // 
-            this.tpPersistent.Controls.Add(this.splitContainer8);
-            this.tpPersistent.Location = new System.Drawing.Point(4, 22);
-            this.tpPersistent.Name = "tpPersistent";
-            this.tpPersistent.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPersistent.Size = new System.Drawing.Size(312, 276);
-            this.tpPersistent.TabIndex = 1;
-            this.tpPersistent.Text = "Persistent";
-            this.tpPersistent.UseVisualStyleBackColor = true;
-            // 
-            // splitContainer8
-            // 
-            this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer8.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer8.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer8.Name = "splitContainer8";
-            this.splitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer8.Panel1
-            // 
-            this.splitContainer8.Panel1.Controls.Add(this.lstPersistentNPCs);
-            // 
-            // splitContainer8.Panel2
-            // 
-            this.splitContainer8.Panel2.Controls.Add(this.btnDeletePersistentNPC);
-            this.splitContainer8.Panel2.Controls.Add(this.btnAddPersistentNPC);
-            this.splitContainer8.Size = new System.Drawing.Size(306, 270);
-            this.splitContainer8.SplitterDistance = 241;
-            this.splitContainer8.TabIndex = 12;
-            // 
-            // lstPersistentNPCs
-            // 
-            this.lstPersistentNPCs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstPersistentNPCs.FormattingEnabled = true;
-            this.lstPersistentNPCs.Location = new System.Drawing.Point(0, 0);
-            this.lstPersistentNPCs.Map = null;
-            this.lstPersistentNPCs.Name = "lstPersistentNPCs";
-            this.lstPersistentNPCs.PropertyGrid = this.pgSelected;
-            this.lstPersistentNPCs.Size = new System.Drawing.Size(306, 238);
-            this.lstPersistentNPCs.TabIndex = 12;
-            this.lstPersistentNPCs.SelectedIndexChanged += new System.EventHandler(this.lstPersistentNPCs_SelectedIndexChanged);
-            // 
-            // btnDeletePersistentNPC
-            // 
-            this.btnDeletePersistentNPC.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnDeletePersistentNPC.Location = new System.Drawing.Point(158, 0);
-            this.btnDeletePersistentNPC.Name = "btnDeletePersistentNPC";
-            this.btnDeletePersistentNPC.Size = new System.Drawing.Size(74, 25);
-            this.btnDeletePersistentNPC.TabIndex = 12;
-            this.btnDeletePersistentNPC.Text = "Delete";
-            this.btnDeletePersistentNPC.UseVisualStyleBackColor = true;
-            this.btnDeletePersistentNPC.Click += new System.EventHandler(this.btnDeletePersistentNPC_Click);
-            // 
-            // btnAddPersistentNPC
-            // 
-            this.btnAddPersistentNPC.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAddPersistentNPC.Location = new System.Drawing.Point(232, 0);
-            this.btnAddPersistentNPC.Name = "btnAddPersistentNPC";
-            this.btnAddPersistentNPC.Size = new System.Drawing.Size(74, 25);
-            this.btnAddPersistentNPC.TabIndex = 11;
-            this.btnAddPersistentNPC.Text = "Add";
-            this.btnAddPersistentNPC.UseVisualStyleBackColor = true;
             // 
             // tpSettings
             // 
@@ -933,15 +834,9 @@ namespace DemoGame.MapEditor
             this.splitContainer6.Panel2.ResumeLayout(false);
             this.splitContainer6.ResumeLayout(false);
             this.tpNPCs.ResumeLayout(false);
-            this.tcSpawns.ResumeLayout(false);
-            this.tpSpawns.ResumeLayout(false);
             this.splitContainer7.Panel1.ResumeLayout(false);
             this.splitContainer7.Panel2.ResumeLayout(false);
             this.splitContainer7.ResumeLayout(false);
-            this.tpPersistent.ResumeLayout(false);
-            this.splitContainer8.Panel1.ResumeLayout(false);
-            this.splitContainer8.Panel2.ResumeLayout(false);
-            this.splitContainer8.ResumeLayout(false);
             this.tpSettings.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -964,9 +859,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.TabPage tpBackground;
         private System.Windows.Forms.TabPage tpEffects;
         private System.Windows.Forms.TabPage tpNPCs;
-        private System.Windows.Forms.TabControl tcSpawns;
-        private System.Windows.Forms.TabPage tpSpawns;
-        private System.Windows.Forms.TabPage tpPersistent;
         private System.Windows.Forms.TabPage tpSettings;
         private System.Windows.Forms.GroupBox groupBox3;
         private PersistableCheckBox chkDrawPersistentNPCs;
@@ -991,14 +883,6 @@ namespace DemoGame.MapEditor
         private BackgroundItemListBox lstBGItems;
         private System.Windows.Forms.SplitContainer splitContainer6;
         private MapParticleEffectsListBox lstMapParticleEffects;
-        private System.Windows.Forms.SplitContainer splitContainer7;
-        private NPCSpawnsListBox lstNPCSpawns;
-        private System.Windows.Forms.Button btnDeleteSpawn;
-        private System.Windows.Forms.Button btnAddSpawn;
-        private System.Windows.Forms.SplitContainer splitContainer8;
-        private PersistentNPCListBox lstPersistentNPCs;
-        private System.Windows.Forms.Button btnDeletePersistentNPC;
-        private System.Windows.Forms.Button btnAddPersistentNPC;
         public GameScreenControl GameScreen;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.Panel panToolBar;
@@ -1009,5 +893,9 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnDeleteBGItem;
         private System.Windows.Forms.Button btnDeleteEmitter;
         private System.Windows.Forms.Button btnNewEmitter;
+        private System.Windows.Forms.SplitContainer splitContainer7;
+        private NPCSpawnsListBox lstNPCSpawns;
+        private System.Windows.Forms.Button btnDeleteSpawn;
+        private System.Windows.Forms.Button btnAddSpawn;
     }
 }
