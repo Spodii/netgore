@@ -856,6 +856,7 @@ namespace DemoGame.MapEditor
             this.btnSaveAs.TabIndex = 9;
             this.btnSaveAs.Text = "Save As";
             this.btnSaveAs.UseVisualStyleBackColor = true;
+            this.btnSaveAs.Click += new System.EventHandler(this.btnSaveAs_Click);
             // 
             // btnSave
             // 

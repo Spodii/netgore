@@ -462,6 +462,14 @@ namespace DemoGame.MapEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmdSave_Click(object sender, EventArgs e)
         {
+            SaveMap();
+        }
+
+        /// <summary>
+        /// Saves the current map.
+        /// </summary>
+        void SaveMap()
+        {
             if (Map == null)
                 return;
 
@@ -476,7 +484,7 @@ namespace DemoGame.MapEditor
             }
 
             // Write the map
-            Map.Save(Map.ID, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
+            Map.Save(ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
 
             // Remove the extra walls
             foreach (WallEntityBase wall in extraWalls)
@@ -1421,6 +1429,34 @@ namespace DemoGame.MapEditor
                 Map.ParticleEffects.Remove(emitter);
 
             SelectedObjs.Clear();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSaveAs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnSaveAs_Click(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            MapID newID;
+
+            using (var f = new InputNewMapIDForm(Map.ID))
+            {
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                if (!f.Value.HasValue)
+                    return;
+
+                newID = f.Value.Value;
+            }
+
+            Map.ChangeID(newID);
+
+            SaveMap();
         }
     }
 }
