@@ -88,7 +88,6 @@ namespace DemoGame.MapEditor
             this.scSelectedItems = new System.Windows.Forms.SplitContainer();
             this.pgSelected = new System.Windows.Forms.PropertyGrid();
             this.lstSelected = new System.Windows.Forms.ListBox();
-            this.btnOptimize = new System.Windows.Forms.Button();
             this.btnSaveAs = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
@@ -269,7 +268,6 @@ namespace DemoGame.MapEditor
             // 
             // splitContainer3.Panel2
             // 
-            splitContainer3.Panel2.Controls.Add(this.btnOptimize);
             splitContainer3.Panel2.Controls.Add(this.btnSaveAs);
             splitContainer3.Panel2.Controls.Add(this.btnSave);
             splitContainer3.Panel2.Controls.Add(this.btnLoad);
@@ -849,16 +847,6 @@ namespace DemoGame.MapEditor
             this.lstSelected.TabIndex = 0;
             this.lstSelected.Click += new System.EventHandler(this.lstSelected_Click);
             // 
-            // btnOptimize
-            // 
-            this.btnOptimize.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnOptimize.Location = new System.Drawing.Point(260, 0);
-            this.btnOptimize.Name = "btnOptimize";
-            this.btnOptimize.Size = new System.Drawing.Size(65, 25);
-            this.btnOptimize.TabIndex = 10;
-            this.btnOptimize.Text = "Optimize";
-            this.btnOptimize.UseVisualStyleBackColor = true;
-            // 
             // btnSaveAs
             // 
             this.btnSaveAs.Dock = System.Windows.Forms.DockStyle.Left;
@@ -963,7 +951,6 @@ namespace DemoGame.MapEditor
             this.ResumeLayout(false);
 
         }
-        private System.Windows.Forms.Button btnOptimize;
         private System.Windows.Forms.Button btnSaveAs;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoad;
