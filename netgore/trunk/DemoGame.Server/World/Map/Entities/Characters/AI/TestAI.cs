@@ -67,6 +67,7 @@ namespace DemoGame.Server
         void UpdateNoTarget()
         {
             // Move around randomly
+#if !TOPDOWN
             if (Rand(0, 40) == 0)
             {
                 if (Actor.IsMoving)
@@ -79,10 +80,46 @@ namespace DemoGame.Server
                         Actor.MoveRight();
                 }
             }
+#elif TOPDOWN
+            if (Rand(0, 40) == 0)
+            {
+                if (Actor.IsMoving)
+                    Actor.StopMoving();
+                else
+                {
+                    if (Rand(0, 2) == 0)
+                    {
+                        Actor.MoveUp();
+                        return;
+                    }
+                    
+                    if (Rand(0,2) == 0)
+                    {
+                        Actor.MoveDown();
+                        return;
+                    }
+
+                    if (Rand(0, 2) == 0)
+                    {
+                        Actor.MoveLeft();
+                        return;
+                    }
+
+                    if (Rand(0, 2) == 0)
+                    {
+                        Actor.MoveRight();
+                        return;
+                    }
+                }
+            }
+#endif
+
         }
 
         void UpdateWithTarget()
         {
+           
+            #if !TOPDOWN
             // Move towards an enemy
             if (_target.Position.X > Actor.Position.X + 10)
                 Actor.MoveRight();
@@ -99,10 +136,80 @@ namespace DemoGame.Server
                 else
                     Actor.SetHeading(Direction.East);
             }
+#elif TOPDOWN
 
+            //Checks whether the _target is above the Actor.
+            if (_target.Position.Y < Actor.Position.Y)
+            {
+                //_target above
+                //Move upwards
+                Actor.MoveUp();
+                Actor.SetHeading(Direction.North);
+
+                //Move right because _target is to the right.
+                if (_target.Position.X > Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                    Actor.SetHeading(Direction.NorthEast);
+                }
+
+                //Move left becuase target is to the left.
+                if (_target.Position.X < Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                    Actor.SetHeading(Direction.NorthWest);
+                }
+            }
+
+            if (_target.Position.Y > Actor.Position.Y)
+            {
+                //_target below
+                //Move downwards
+
+                Actor.MoveDown();
+                Actor.SetHeading(Direction.South);
+
+                if (_target.Position.X >= Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                    Actor.SetHeading(Direction.SouthEast);
+                }
+
+                if (_target.Position.X <= Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                    Actor.SetHeading(Direction.SouthWest);
+                }
+            }
+
+
+            if (_target.Position.Y == Actor.Position.Y)
+            {
+                //target is level
+                if (_target.Position.X >= Actor.Position.X)
+                {
+                    Actor.MoveRight();
+                    Actor.SetHeading(Direction.East);
+                }
+
+                if (_target.Position.X <= Actor.Position.X)
+                {
+                    Actor.MoveLeft();
+                    Actor.SetHeading(Direction.West);
+                }
+            }
+
+
+#endif
+
+
+            //Instead of attacking EVERY loop attack occasionally to save resources.
             // Attack if in range
-            if (IsInMeleeRange(_target))
-                Actor.Attack(_target);
+            if (Rand(0, 100) == 1)
+            {
+                if (IsInMeleeRange(_target))
+                    Actor.Attack(_target);
+            }
         }
     }
 }

@@ -263,6 +263,7 @@ namespace DemoGame.Server
                 else
                 {
                     //There is no hostile target therefore just Patrol.
+                    _target = null;
                     _isAttackingTarget = false;
                     _characterState = State.Patrol;
                 }
@@ -278,6 +279,9 @@ namespace DemoGame.Server
         public void Patrol()
         {
             //Move randomly.
+
+            //Force target to null.
+            _target = null;
             if (Rand(0, 40) == 0)
             {
                 if (Actor.IsMoving)
