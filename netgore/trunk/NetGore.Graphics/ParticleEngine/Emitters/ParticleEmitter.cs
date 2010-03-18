@@ -29,8 +29,8 @@ namespace NetGore.Graphics.ParticleEngine
         const int _initialParticleArraySize = 64;
 
         const string _lifeKeyName = "Life";
-        const string _modifiersNodeName = "ParticleModifiers";
-
+        const string _particleModifiersNodeName = "ParticleModifiers";
+        const string _emitterModifiersNodeName = "EmitterModifiers";
         const string _nameKeyName = "Name";
         const string _originKeyName = "Origin";
         const string _particleCategoryName = "Particle";
@@ -451,7 +451,8 @@ namespace NetGore.Graphics.ParticleEngine
             ReadCustomValues(customValuesReader);
 
             // Read the modifier collection
-            ParticleModifiers.Read(_modifiersNodeName, reader);
+            ParticleModifiers.Read(_particleModifiersNodeName, reader);
+            EmitterModifiers.Read(_emitterModifiersNodeName, reader);
         }
 
         /// <summary>
@@ -680,7 +681,8 @@ namespace NetGore.Graphics.ParticleEngine
             writer.WriteEndNode(_customValuesNodeName);
 
             // Write the modifier collection
-            ParticleModifiers.Write(_modifiersNodeName, writer);
+            ParticleModifiers.Write(_particleModifiersNodeName, writer);
+            EmitterModifiers.Write(_emitterModifiersNodeName, writer);
         }
 
         /// <summary>
