@@ -22,6 +22,9 @@ namespace NetGore.EditorTools
             DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
+        /// <summary>
+        /// Notifies listeners when the selected <see cref="ParticleEmitter"/> has changed.
+        /// </summary>
         public event ParticleEmitterComboBoxHandler SelectedEmitterChanged;
 
         /// <summary>

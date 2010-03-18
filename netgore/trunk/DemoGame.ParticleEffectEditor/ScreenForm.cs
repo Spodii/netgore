@@ -93,15 +93,15 @@ namespace DemoGame.ParticleEffectEditor
 
         void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
         {
-            if (_emitter == null)
-            {
-                Emitter = CreateInitialEmitter();
+            // Ensure the selected emitter is valid
+            if (_emitter == null || emitter == null)
                 return;
-            }
 
+            // Ensure the type is actually different (no need to recreate if its the same kind of emitter)
             if (_emitter.GetType() == emitter.GetType())
                 return;
 
+            // Copy over the values of this emitter to the new emitter, and use the new emitter
             _emitter.CopyValuesTo(emitter);
             Emitter = emitter;
         }
@@ -169,10 +169,15 @@ namespace DemoGame.ParticleEffectEditor
 
             GameScreen.ScreenForm = this;
 
+            // Load the content
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
             GrhInfo.Load(ContentPaths.Build, _content);
 
+            // Load the additional UI editors for the property grid
             CustomUITypeEditors.AddEditors();
+
+            // Set the initial emitter
+            Emitter = CreateInitialEmitter();
         }
 
         /// <summary>
