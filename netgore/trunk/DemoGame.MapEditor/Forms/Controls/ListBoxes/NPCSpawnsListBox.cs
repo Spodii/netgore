@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
@@ -18,6 +19,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets or sets the map used to populate this list box.
         /// </summary>
+        [Browsable(false)]
         public MapBase Map
         {
             get { return _map; }
@@ -117,6 +119,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
         /// </summary>
+        [Browsable(false)]
         IMap IMapBoundControl.IMap
         {
             get { return Map; }

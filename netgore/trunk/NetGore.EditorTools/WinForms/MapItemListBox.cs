@@ -19,6 +19,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets or sets the Map.
         /// </summary>
+        [Browsable(false)]
         public TMap Map
         {
             get { return _map; }
