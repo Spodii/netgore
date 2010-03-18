@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DemoGame.Client;
+using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
 using NetGore.Db;
@@ -11,14 +13,23 @@ namespace DemoGame.MapEditor
     public class MapEditorCharacter : Character
     {
         readonly CharacterID _characterID;
+        readonly ICharacterTable _table;
 
-        public MapEditorCharacter(CharacterID characterID, Map map)
+        public ICharacterTable CharacterTable { get { return _table; } }
+
+        public MapEditorCharacter(ICharacterTable table, Map map)
         {
-            _characterID = characterID;
+            if (table == null)
+                throw new ArgumentNullException("table");
+            if (map == null)
+                throw new ArgumentNullException("map");
+
+            _table = table;
+            _characterID = table.ID;
 
             var dbController = DbControllerBase.GetInstance();
 
-            var charInfo = dbController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
+            var charInfo = dbController.GetQuery<SelectCharacterByIDQuery>().Execute(_characterID);
             BodyID = charInfo.BodyID;
             Teleport(new Vector2(charInfo.RespawnX, charInfo.RespawnY));
             Resize(BodyInfo.Size);

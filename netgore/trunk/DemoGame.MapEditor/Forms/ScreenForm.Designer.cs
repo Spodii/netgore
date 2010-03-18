@@ -608,6 +608,7 @@ namespace DemoGame.MapEditor
             this.lstPersistentNPCs.Location = new System.Drawing.Point(0, 0);
             this.lstPersistentNPCs.Map = null;
             this.lstPersistentNPCs.Name = "lstPersistentNPCs";
+            this.lstPersistentNPCs.PropertyGrid = this.pgSelected;
             this.lstPersistentNPCs.Size = new System.Drawing.Size(306, 238);
             this.lstPersistentNPCs.TabIndex = 12;
             this.lstPersistentNPCs.SelectedIndexChanged += new System.EventHandler(this.lstPersistentNPCs_SelectedIndexChanged);

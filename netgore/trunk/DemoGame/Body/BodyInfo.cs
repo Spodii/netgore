@@ -36,6 +36,13 @@ namespace DemoGame
             Size = reader.ReadVector2(_sizeValueKey);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BodyInfo"/> class.
+        /// </summary>
+        public BodyInfo()
+        {
+        }
+
         public string Body { get; private set; }
         public string Fall { get; private set; }
         public BodyID ID { get; private set; }
