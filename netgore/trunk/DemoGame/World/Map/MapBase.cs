@@ -67,10 +67,7 @@ namespace DemoGame
         /// </summary>
         readonly IGetTime _getTime;
 
-        /// <summary>
-        /// Index of the map
-        /// </summary>
-        readonly MapID _mapID;
+        MapID _mapID;
 
         readonly ISpatialCollection _spatialCollection;
 
@@ -696,8 +693,19 @@ namespace DemoGame
         /// <see cref="DynamicEntity"/>s.</param>
         public void Load(ContentPaths contentPath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
-            string path = contentPath.Maps.Join(ID + "." + MapFileSuffix);
+            string path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
+        }
+
+        /// <summary>
+        /// Gets the path to a map file.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
+        /// <param name="id">The ID of the map.</param>
+        /// <returns>The path to the map file.</returns>
+        public static string GetMapFilePath(ContentPaths contentPath, MapID id)
+        {
+            return contentPath.Maps.Join(id + "." + MapFileSuffix);
         }
 
         /// <summary>
@@ -885,6 +893,17 @@ namespace DemoGame
 
             // Teleport to the altered position
             entity.Teleport(pos);
+        }
+
+        /// <summary>
+        /// Saves the map to a file to the specified content path.
+        /// </summary>
+        /// <param name="contentPath">Content path to save the map file to.</param>
+        /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
+        /// <see cref="DynamicEntity"/>s.</param>
+        public void Save(ContentPaths contentPath, IDynamicEntityFactory dynamicEntityFactory)
+        {
+            Save(ID, contentPath, dynamicEntityFactory);
         }
 
         /// <summary>
@@ -1095,6 +1114,15 @@ namespace DemoGame
 
             var fileName = Path.GetFileNameWithoutExtension(path);
             return Parser.Invariant.TryParse(fileName, out mapID);
+        }
+
+        /// <summary>
+        /// Changes the ID of the map. This is generally only something you will want to do in editors.
+        /// </summary>
+        /// <param name="newID">The new map ID.</param>
+        public void ChangeID(MapID newID)
+        {
+            _mapID = newID;
         }
 
         /// <summary>

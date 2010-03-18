@@ -96,6 +96,12 @@
     <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\InputNewMapIDForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InputNewMapIDForm.Designer.cs">
+      <DependentUpon>InputNewMapIDForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MapEditorCharacter.cs" />
     <Compile Include="MapEditorDynamicEntityFactory.cs" />
     <Compile Include="MapPersistentNPCDrawer.cs" />
@@ -108,6 +114,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\InputNewMapIDForm.resx">
+      <DependentUpon>InputNewMapIDForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScreenForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ScreenForm.cs</DependentUpon>
