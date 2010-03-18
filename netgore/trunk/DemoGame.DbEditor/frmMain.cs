@@ -415,7 +415,15 @@ namespace DemoGame.DbEditor
 
             // Create the database connection
             DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController = new ServerDbController(settings.GetMySqlConnectionString());
+            _dbController =
+                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
+                                                                 x => settings.PromptEditFileMessageBox(x));
+
+            if (_dbController == null)
+            {
+                Close();
+                return;
+            }
 
             // Load the custom UITypeEditors
             CustomUITypeEditors.AddEditors(_dbController);

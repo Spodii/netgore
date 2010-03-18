@@ -1109,7 +1109,15 @@ namespace DemoGame.MapEditor
 
             // Create the database connection
             DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController = new ServerDbController(settings.GetMySqlConnectionString());
+            _dbController =
+                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
+                                                                 x => settings.PromptEditFileMessageBox(x));
+
+            if (_dbController == null)
+            {
+                Close();
+                return;
+            }
 
             // Create the font
             _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));

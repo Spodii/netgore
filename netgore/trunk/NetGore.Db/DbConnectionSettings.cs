@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml;
 using log4net;
 using NetGore.IO;
 
@@ -20,6 +23,13 @@ namespace NetGore.Db
         /// </summary>
         const string _settingsFileName = "DbSettings.xml";
 
+        readonly string _filePath;
+
+        /// <summary>
+        /// Gets the path to the file that these settings were loaded from and will be saved to by default.
+        /// </summary>
+        public string FilePath { get { return _filePath; } }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
         /// </summary>
@@ -33,18 +43,25 @@ namespace NetGore.Db
             string destSettingsFile;
 
             if (forceDefaultSettings)
+            {
                 destSettingsFile = Path.GetFullPath(fileName);
+                _filePath = destSettingsFile;
+            }
             else
             {
                 // Copy over the default settings file to the destination settings file
                 // This way, project developers don't end up constantly overwriting each other's database settings
                 destSettingsFile = DefaultFilePath;
+                _filePath = destSettingsFile;
+
                 if (!File.Exists(destSettingsFile))
                 {
                     if (log.IsInfoEnabled)
                         log.InfoFormat("Settings file for local server settings copied to `{0}`.", destSettingsFile);
 
-                    File.Copy(Path.GetFullPath(fileName), destSettingsFile);
+                    var copyPath = Path.GetFullPath(fileName);
+                    File.Copy(copyPath, destSettingsFile);
+                    _filePath = copyPath;
                 }
             }
 
@@ -103,10 +120,41 @@ namespace NetGore.Db
         /// </summary>
         public void Save()
         {
-            using (var writer = new XmlValueWriter(DefaultFilePath, _rootNodeName))
+            using (var writer = new XmlValueWriter(FilePath, _rootNodeName))
             {
                 ((IPersistable)this).WriteState(writer);
             }
+        }
+
+        /// <summary>
+        /// Opens the settings file for editing.
+        /// </summary>
+        /// <returns>True if the file was successfully opened; otherwise false.</returns>
+        public bool OpenFileForEdit()
+        {
+            // Try to open the file to edit
+            var ex = FileHelper.TryOpenWithNotepad(FilePath);
+
+            // If the file could not be opened, then we obviously can't edit it, can we?
+            if (ex != null)
+            {
+                const string errmsg ="Failed to open DbConnectionSettings file to edit. File path: {0}. Exception: {1}";
+                string msg = string.Format(errmsg, FilePath, ex);
+                log.Fatal(msg);
+                Debug.Fail(msg);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Reloads the settings from the file.
+        /// </summary>
+        public void Reload()
+        {
+            var reader = new XmlValueReader(FilePath, _rootNodeName);
+            ((IPersistable)this).ReadState(reader);
         }
 
         #region IPersistable Members
