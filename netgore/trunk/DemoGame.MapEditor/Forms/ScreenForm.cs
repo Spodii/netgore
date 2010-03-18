@@ -353,31 +353,6 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnDeletePersistentNPC control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnDeletePersistentNPC_Click(object sender, EventArgs e)
-        {
-            var selectedChar = lstPersistentNPCs.SelectedItem as MapEditorCharacter;
-            if (selectedChar == null)
-                return;
-
-            string s = string.Format("Are you sure you wish to delete Character `{0}`? This cannot be undone.", selectedChar);
-            if (MessageBox.Show(s) == DialogResult.No)
-                return;
-
-            if (DbController.GetQuery<DeletePersistentNPCQuery>().Execute(selectedChar.CharacterID) == 0)
-            {
-                s = string.Format("Failed to delete Character `{0}` from the database.", selectedChar);
-                MessageBox.Show(s);
-                return;
-            }
-
-            lstPersistentNPCs.RemoveItemAndReselect(selectedChar);
-        }
-
-        /// <summary>
         /// Handles the Click event of the btnDeleteSpawn control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -870,7 +845,7 @@ namespace DemoGame.MapEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void lstNPCSpawns_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tcMenu.SelectedTab != tpNPCs || tcSpawns.SelectedTab != tpSpawns)
+            if (tcMenu.SelectedTab != tpNPCs)
                 return;
 
             var selected = lstNPCSpawns.SelectedItemReal;
@@ -878,23 +853,6 @@ namespace DemoGame.MapEditor
                 return;
 
             SelectedObjs.SetSelected(new EditorMapSpawnValues(selected, Map));
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the lstPersistentNPCs control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lstPersistentNPCs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tcMenu.SelectedTab != tpNPCs || tcSpawns.SelectedTab != tpPersistent)
-                return;
-
-            var selected = lstPersistentNPCs.SelectedItem;
-            if (selected == null)
-                return;
-
-            SelectedObjs.SetSelected(selected);
         }
 
         /// <summary>
@@ -1172,8 +1130,6 @@ namespace DemoGame.MapEditor
 
             MapSpawnDrawer v = CreateMapDrawExtension<MapSpawnDrawer>(chkDrawSpawnAreas);
             lstNPCSpawns.SelectedIndexChanged += ((o, x) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
-
-            _mapDrawingExtensions.Add(new MapPersistentNPCDrawer(lstPersistentNPCs));
 
             _camera.Size = GameScreenSize;
 

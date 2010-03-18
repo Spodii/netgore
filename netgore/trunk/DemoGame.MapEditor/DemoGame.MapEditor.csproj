@@ -90,9 +90,6 @@
     <Compile Include="Forms\Controls\ListBoxes\MapParticleEffectsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\Controls\ListBoxes\PersistentNPCListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -104,7 +101,6 @@
     </Compile>
     <Compile Include="MapEditorCharacter.cs" />
     <Compile Include="MapEditorDynamicEntityFactory.cs" />
-    <Compile Include="MapPersistentNPCDrawer.cs" />
     <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Forms\ScreenForm.cs">
       <SubType>Form</SubType>
