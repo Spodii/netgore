@@ -69,12 +69,12 @@ namespace DemoGame.MapEditor
         /// </summary>
         static readonly Type[] _focusOverrideTypes = new Type[] { typeof(TextBox), typeof(ListBox) };
 
-        readonly ICamera2D _camera;
-        readonly EditorCursorManager<ScreenForm> _cursorManager;
+        ICamera2D _camera;
+        EditorCursorManager<ScreenForm> _cursorManager;
         readonly FocusedSpatialDrawer _focusedSpatialDrawer = new FocusedSpatialDrawer();
         readonly ScreenGrid _grid = new ScreenGrid();
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
-        readonly IMapBoundControl[] _mapBoundControls;
+        IMapBoundControl[] _mapBoundControls;
         readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
 
@@ -88,7 +88,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         readonly Grh _selectedGrh = new Grh(null, AnimType.Loop, 0);
 
-        readonly SelectedObjectsManager<object> _selectedObjectsManager;
+        SelectedObjectsManager<object> _selectedObjectsManager;
 
         readonly SettingsManager _settingsManager = new SettingsManager("MapEditor",
                                                                         ContentPaths.Build.Settings.Join("MapEditor.xml"));
@@ -114,7 +114,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Current world - used for reference by the map being edited only.
         /// </summary>
-        readonly World _world;
+        World _world;
 
         /// <summary>
         /// All content used by the map editor
@@ -154,36 +154,7 @@ namespace DemoGame.MapEditor
         public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
             _switches = switches;
-
             InitializeComponent();
-            scTabsAndSelected.Panel2Collapsed = true;
-
-            _camera = new Camera2D(GameScreenSize);
-
-            // Set up the object manager
-            _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
-            SelectedObjs.SelectedChanged += SelectedObjectsManager_SelectedChanged;
-            SelectedObjs.FocusedChanged += SelectedObjectsManager_FocusedChanged;
-
-            // Get the IMapBoundControls
-            _mapBoundControls = this.GetControls().OfType<IMapBoundControl>().ToArray();
-
-            // Create and set up the cursor manager
-            _cursorManager = new EditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
-                                                                 x => Map != null && !treeGrhs.IsEditingGrhData);
-            CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
-            CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
-            CursorManager.CurrentCursorChanged += CursorManager_CurrentCursorChanged;
-
-            // Create the world
-            _world = new World(this, _camera, null);
-
-            // Set up the GameScreenControl
-            GameScreen.Camera = _camera;
-            GameScreen.UpdateHandler = UpdateGame;
-            GameScreen.DrawHandler = DrawGame;
-            GameScreen.MouseWheel += GameScreen_MouseWheel;
-            GameScreen.Resize += GameScreen_Resize;
         }
 
         /// <summary>
@@ -1008,11 +979,41 @@ namespace DemoGame.MapEditor
         {
             base.OnLoad(e);
 
+            Show();
+            Refresh();
+
+            // Make sure we skip doing all of this loading when in design mode
             if (DesignMode)
                 return;
 
-            Show();
-            Refresh();
+            scTabsAndSelected.Panel2Collapsed = true;
+
+            _camera = new Camera2D(GameScreenSize);
+
+            // Set up the object manager
+            _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
+            SelectedObjs.SelectedChanged += SelectedObjectsManager_SelectedChanged;
+            SelectedObjs.FocusedChanged += SelectedObjectsManager_FocusedChanged;
+
+            // Get the IMapBoundControls
+            _mapBoundControls = this.GetControls().OfType<IMapBoundControl>().ToArray();
+
+            // Create and set up the cursor manager
+            _cursorManager = new EditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
+                                                                 x => Map != null && !treeGrhs.IsEditingGrhData);
+            CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
+            CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
+            CursorManager.CurrentCursorChanged += CursorManager_CurrentCursorChanged;
+
+            // Create the world
+            _world = new World(this, _camera, null);
+
+            // Set up the GameScreenControl
+            GameScreen.Camera = _camera;
+            GameScreen.UpdateHandler = UpdateGame;
+            GameScreen.DrawHandler = DrawGame;
+            GameScreen.MouseWheel += GameScreen_MouseWheel;
+            GameScreen.Resize += GameScreen_Resize;
 
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
