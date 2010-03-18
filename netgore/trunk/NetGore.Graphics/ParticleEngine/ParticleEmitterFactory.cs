@@ -78,7 +78,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to get the effect files from.</param>
         /// <returns>The name of all the <see cref="ParticleEmitter"/> files in the <paramref name="contentPath"/>.</returns>
-        public static IEnumerable<string> GetEffectsFromFile(ContentPaths contentPath)
+        public static IEnumerable<string> GetEffectsInPath(ContentPaths contentPath)
         {
             var files = Directory.GetFiles(contentPath.ParticleEffects, "*." + EmitterFileSuffix, SearchOption.TopDirectoryOnly);
             var names = files.Select(x => GetEffectNameFromPath(x));
