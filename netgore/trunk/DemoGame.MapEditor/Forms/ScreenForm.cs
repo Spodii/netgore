@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
+using NetGore.Collections;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.EditorTools;
@@ -560,18 +561,56 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Draws a <see cref="ParticleEmitter"/> as the only item on the screen.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to draw.</param>
+        void DrawParticleEmitterOnly(ISpriteBatch sb, ParticleEmitter emitter)
+        {
+            // Set up the particle renderer
+            if (_particleEmitterRenderer == null)
+                _particleEmitterRenderer = new SpriteBatchParticleRenderer();
+
+            _particleEmitterRenderer.SpriteBatch = sb;
+
+            // Start drawing
+            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, Camera.Matrix);
+
+            try
+            {
+                _particleEmitterRenderer.Draw(Camera, new ParticleEmitter[] { _emitterSelectionForm.SelectedItem });
+            }
+            finally
+            {
+                sb.End();
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="IParticleRenderer"/> used when drawing the <see cref="ParticleEmitter"/> only.
+        /// </summary>
+        SpriteBatchParticleRenderer _particleEmitterRenderer;
+
+        /// <summary>
         /// Draws the game.
         /// </summary>
         /// <param name="sb">The sprite batch.</param>
         void DrawGame(ISpriteBatch sb)
         {
             // Clear the background
-            GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);
+            GameScreen.GraphicsDevice.Clear(Color.Black);
 
             // Draw the GrhTreeView if needed
             if (treeGrhs.NeedsToDraw)
             {
                 treeGrhs.Draw(sb);
+                return;
+            }
+
+            // Draw the selected ParticleEmitter if needed
+            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null && !_emitterSelectionForm.SelectedItem.IsDisposed)
+            {
+                DrawParticleEmitterOnly(sb, _emitterSelectionForm.SelectedItem);
                 return;
             }
 
@@ -792,25 +831,6 @@ namespace DemoGame.MapEditor
                 default:
                     return false;
             }
-        }
-
-        void lstAvailableParticleEffects_RequestCreateEffect(ParticleEffectListBox sender, string effectName)
-        {
-            ParticleEmitter effect;
-
-            try
-            {
-                effect = ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev, effectName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to load particle emitter: " + ex);
-                return;
-            }
-
-            effect.Origin = Camera.Center;
-            effect.SetEmitterLife(0, 0);
-            Map.ParticleEffects.Add(effect);
         }
 
         /// <summary>
@@ -1280,12 +1300,24 @@ namespace DemoGame.MapEditor
             CursorManager.Update();
         }
 
+        /// <summary>
+        /// Updates the game.
+        /// </summary>
         void UpdateGame()
         {
             // Update the time
             int currTime = (int)_stopWatch.ElapsedMilliseconds;
             int deltaTime = currTime - _currentTime;
             _currentTime = currTime;
+
+            // Update stuff in selection forms (moving it to the center of the camera so it draws centered)
+            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null && !_emitterSelectionForm.SelectedItem.IsDisposed)
+            {
+                var originalOrigin = _emitterSelectionForm.SelectedItem.Origin;
+                _emitterSelectionForm.SelectedItem.Origin = Camera.Center;
+                _emitterSelectionForm.SelectedItem.Update(_currentTime);
+                _emitterSelectionForm.SelectedItem.Origin = originalOrigin;
+            }
 
             // Check for a map
             if (Map == null)
@@ -1313,5 +1345,74 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        /// <summary>
+        /// If set to a value other than null, the selected <see cref="ParticleEmitter"/> on this form
+        /// will be drawn instead of the map.
+        /// </summary>
+        ParticleEmitterUITypeEditorForm _emitterSelectionForm = null;
+
+        /// <summary>
+        /// Handles the Click event of the btnNewEmitter control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnNewEmitter_Click(object sender, EventArgs e)
+        {
+            ParticleEmitter newEmitter = null;
+
+            // Create the selection form
+            using (var f = new ParticleEmitterUITypeEditorForm(null))
+            {
+                _emitterSelectionForm = f;
+
+                try
+                {
+                    if (f.ShowDialog(this) == DialogResult.OK)
+                    {
+                        var em = f.SelectedItem;
+                        if (em == null)
+                            return;
+
+                        newEmitter = (ParticleEmitter)TypeFactory.GetTypeInstance(em.GetType());
+                        if (newEmitter == null)
+                            return;
+
+                        em.CopyValuesTo(newEmitter);
+                    }
+                }
+                finally
+                {
+                    // Clear the selected form
+                    _emitterSelectionForm = null;
+                }
+            }
+
+            if (newEmitter == null)
+                return;
+
+            // Set up the new emitter and add it to the map
+            newEmitter.Origin = Camera.Center;
+            newEmitter.SetEmitterLife(GetTime(), 0);
+            newEmitter.Update(GetTime());
+            Map.ParticleEffects.Add(newEmitter);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnDeleteEmitter control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnDeleteEmitter_Click(object sender, EventArgs e)
+        {
+            var selectedEmitters = SelectedObjs.SelectedObjects.OfType<ParticleEmitter>().ToImmutable();
+            if (selectedEmitters.IsEmpty())
+                return;
+
+            foreach (var emitter in selectedEmitters)
+                Map.ParticleEffects.Remove(emitter);
+
+            SelectedObjs.Clear();
+        }
     }
 }

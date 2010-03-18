@@ -50,12 +50,13 @@ namespace DemoGame.MapEditor
             this.tpBackground = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
-            this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
+            this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.tpEffects = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.lstMapParticleEffects = new DemoGame.MapEditor.MapParticleEffectsListBox();
-            this.lstAvailableParticleEffects = new NetGore.EditorTools.ParticleEffectListBox();
+            this.btnDeleteEmitter = new System.Windows.Forms.Button();
+            this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpNPCs = new System.Windows.Forms.TabPage();
             this.tcSpawns = new System.Windows.Forms.TabControl();
             this.tpSpawns = new System.Windows.Forms.TabPage();
@@ -382,8 +383,8 @@ namespace DemoGame.MapEditor
             // 
             // splitContainer5.Panel2
             // 
-            this.splitContainer5.Panel2.Controls.Add(this.btnNewBGLayer);
             this.splitContainer5.Panel2.Controls.Add(this.btnDeleteBGItem);
+            this.splitContainer5.Panel2.Controls.Add(this.btnNewBGLayer);
             this.splitContainer5.Size = new System.Drawing.Size(320, 302);
             this.splitContainer5.SplitterDistance = 273;
             this.splitContainer5.TabIndex = 4;
@@ -399,27 +400,27 @@ namespace DemoGame.MapEditor
             this.lstBGItems.TabIndex = 1;
             this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
             // 
+            // btnDeleteBGItem
+            // 
+            this.btnDeleteBGItem.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDeleteBGItem.Location = new System.Drawing.Point(172, 0);
+            this.btnDeleteBGItem.Name = "btnDeleteBGItem";
+            this.btnDeleteBGItem.Size = new System.Drawing.Size(74, 25);
+            this.btnDeleteBGItem.TabIndex = 6;
+            this.btnDeleteBGItem.Text = "Delete";
+            this.btnDeleteBGItem.UseVisualStyleBackColor = true;
+            this.btnDeleteBGItem.Click += new System.EventHandler(this.btnDeleteBGItem_Click);
+            // 
             // btnNewBGLayer
             // 
-            this.btnNewBGLayer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnNewBGLayer.Location = new System.Drawing.Point(74, 0);
+            this.btnNewBGLayer.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnNewBGLayer.Location = new System.Drawing.Point(246, 0);
             this.btnNewBGLayer.Name = "btnNewBGLayer";
             this.btnNewBGLayer.Size = new System.Drawing.Size(74, 25);
             this.btnNewBGLayer.TabIndex = 5;
             this.btnNewBGLayer.Text = "New Layer";
             this.btnNewBGLayer.UseVisualStyleBackColor = true;
             this.btnNewBGLayer.Click += new System.EventHandler(this.btnNewBGLayer_Click);
-            // 
-            // btnDeleteBGItem
-            // 
-            this.btnDeleteBGItem.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnDeleteBGItem.Location = new System.Drawing.Point(0, 0);
-            this.btnDeleteBGItem.Name = "btnDeleteBGItem";
-            this.btnDeleteBGItem.Size = new System.Drawing.Size(74, 25);
-            this.btnDeleteBGItem.TabIndex = 4;
-            this.btnDeleteBGItem.Text = "Delete";
-            this.btnDeleteBGItem.UseVisualStyleBackColor = true;
-            this.btnDeleteBGItem.Click += new System.EventHandler(this.btnDeleteBGItem_Click);
             // 
             // tpEffects
             // 
@@ -434,6 +435,8 @@ namespace DemoGame.MapEditor
             // splitContainer6
             // 
             this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer6.IsSplitterFixed = true;
             this.splitContainer6.Location = new System.Drawing.Point(0, 0);
             this.splitContainer6.Name = "splitContainer6";
             this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -444,9 +447,10 @@ namespace DemoGame.MapEditor
             // 
             // splitContainer6.Panel2
             // 
-            this.splitContainer6.Panel2.Controls.Add(this.lstAvailableParticleEffects);
+            this.splitContainer6.Panel2.Controls.Add(this.btnDeleteEmitter);
+            this.splitContainer6.Panel2.Controls.Add(this.btnNewEmitter);
             this.splitContainer6.Size = new System.Drawing.Size(320, 302);
-            this.splitContainer6.SplitterDistance = 144;
+            this.splitContainer6.SplitterDistance = 273;
             this.splitContainer6.TabIndex = 4;
             // 
             // lstMapParticleEffects
@@ -456,19 +460,31 @@ namespace DemoGame.MapEditor
             this.lstMapParticleEffects.Location = new System.Drawing.Point(0, 0);
             this.lstMapParticleEffects.Map = null;
             this.lstMapParticleEffects.Name = "lstMapParticleEffects";
-            this.lstMapParticleEffects.Size = new System.Drawing.Size(320, 134);
+            this.lstMapParticleEffects.Size = new System.Drawing.Size(320, 264);
             this.lstMapParticleEffects.TabIndex = 4;
             this.lstMapParticleEffects.SelectedIndexChanged += new System.EventHandler(this.lstMapParticleEffects_SelectedIndexChanged);
             // 
-            // lstAvailableParticleEffects
+            // btnDeleteEmitter
             // 
-            this.lstAvailableParticleEffects.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstAvailableParticleEffects.FormattingEnabled = true;
-            this.lstAvailableParticleEffects.Location = new System.Drawing.Point(0, 0);
-            this.lstAvailableParticleEffects.Name = "lstAvailableParticleEffects";
-            this.lstAvailableParticleEffects.Size = new System.Drawing.Size(320, 147);
-            this.lstAvailableParticleEffects.TabIndex = 1;
-            this.lstAvailableParticleEffects.RequestCreateEffect += new NetGore.EditorTools.ParticleEffectListBoxCreateEventHandler(this.lstAvailableParticleEffects_RequestCreateEffect);
+            this.btnDeleteEmitter.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDeleteEmitter.Location = new System.Drawing.Point(172, 0);
+            this.btnDeleteEmitter.Name = "btnDeleteEmitter";
+            this.btnDeleteEmitter.Size = new System.Drawing.Size(74, 25);
+            this.btnDeleteEmitter.TabIndex = 13;
+            this.btnDeleteEmitter.Text = "Delete";
+            this.btnDeleteEmitter.UseVisualStyleBackColor = true;
+            this.btnDeleteEmitter.Click += new System.EventHandler(this.btnDeleteEmitter_Click);
+            // 
+            // btnNewEmitter
+            // 
+            this.btnNewEmitter.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnNewEmitter.Location = new System.Drawing.Point(246, 0);
+            this.btnNewEmitter.Name = "btnNewEmitter";
+            this.btnNewEmitter.Size = new System.Drawing.Size(74, 25);
+            this.btnNewEmitter.TabIndex = 12;
+            this.btnNewEmitter.Text = "New Effect";
+            this.btnNewEmitter.UseVisualStyleBackColor = true;
+            this.btnNewEmitter.Click += new System.EventHandler(this.btnNewEmitter_Click);
             // 
             // tpNPCs
             // 
@@ -983,11 +999,9 @@ namespace DemoGame.MapEditor
         public GrhTreeView treeGrhs;
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.Button btnNewBGLayer;
-        private System.Windows.Forms.Button btnDeleteBGItem;
         private BackgroundItemListBox lstBGItems;
         private System.Windows.Forms.SplitContainer splitContainer6;
         private MapParticleEffectsListBox lstMapParticleEffects;
-        private ParticleEffectListBox lstAvailableParticleEffects;
         private System.Windows.Forms.SplitContainer splitContainer7;
         private NPCSpawnsListBox lstNPCSpawns;
         private System.Windows.Forms.Button btnDeleteSpawn;
@@ -1003,5 +1017,8 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.NumericUpDown numZoom;
         private PersistableCheckBox chkLightSources;
         private System.Windows.Forms.PropertyGrid pgMap;
+        private System.Windows.Forms.Button btnDeleteBGItem;
+        private System.Windows.Forms.Button btnDeleteEmitter;
+        private System.Windows.Forms.Button btnNewEmitter;
     }
 }

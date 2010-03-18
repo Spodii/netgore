@@ -27,14 +27,6 @@ namespace NetGore.EditorTools
         public event ParticleEffectListBoxCreateEventHandler RequestCreateEffect;
 
         /// <summary>
-        /// Gets the path to the particle effects directory.
-        /// </summary>
-        static PathString EffectsDirectory
-        {
-            get { return ContentPaths.Dev.ParticleEffects; }
-        }
-
-        /// <summary>
         /// Gets the items to initially populate the <see cref="Control"/>'s collection with.
         /// </summary>
         /// <returns>
@@ -46,8 +38,7 @@ namespace NetGore.EditorTools
             if (DesignMode)
                 return Enumerable.Empty<string>();
 
-            var effectFiles = Directory.GetFiles(EffectsDirectory);
-            return effectFiles.Select(x => ParticleEmitterFactory.GetEffectNameFromPath(x));
+            return ParticleEmitterFactory.GetEffectsInPath(ContentPaths.Dev);
         }
 
         /// <summary>
