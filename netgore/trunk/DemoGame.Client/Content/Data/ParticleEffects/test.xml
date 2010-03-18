@@ -50,5 +50,8 @@
         </CustomValues>
       </Item0>
     </ParticleModifiers>
+    <EmitterModifiers>
+      <Count>0</Count>
+    </EmitterModifiers>
   </Emitter>
 </ParticleEffect>
