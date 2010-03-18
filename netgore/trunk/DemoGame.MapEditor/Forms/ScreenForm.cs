@@ -376,27 +376,55 @@ namespace DemoGame.MapEditor
             lstPersistentNPCs.RemoveItemAndReselect(selectedChar);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnDeleteSpawn control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnDeleteSpawn_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("Are you sure you wish to delete this spawn? This cannot be undone.", "Delete?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
             lstNPCSpawns.DeleteSelectedItem();
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnNewBGLayer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnNewBGLayer_Click(object sender, EventArgs e)
         {
             BackgroundLayer bgLayer = new BackgroundLayer(Map, Map);
             Map.AddBackgroundImage(bgLayer);
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkDrawBackground control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
         {
             MapDrawFilterHelper.DrawBackground = chkDrawBackground.Checked;
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkShowGrhs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void chkShowGrhs_CheckedChanged(object sender, EventArgs e)
         {
             MapDrawFilterHelper.DrawMapGrhs = chkShowGrhs.Checked;
         }
 
+        /// <summary>
+        /// Handles the Click event of the cmdLoad control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmdLoad_Click(object sender, EventArgs e)
         {
             string filePath;
@@ -405,6 +433,11 @@ namespace DemoGame.MapEditor
                 Map = (Map)loadedMap;
         }
 
+        /// <summary>
+        /// Handles the Click event of the cmdNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmdNew_Click(object sender, EventArgs e)
         {
             if (
@@ -421,6 +454,11 @@ namespace DemoGame.MapEditor
             Map = newMap;
         }
 
+        /// <summary>
+        /// Handles the Click event of the cmdSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmdSave_Click(object sender, EventArgs e)
         {
             if (Map == null)
@@ -775,12 +813,22 @@ namespace DemoGame.MapEditor
             Map.ParticleEffects.Add(effect);
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstBGItems control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstBGItems.SelectedItem != null)
                 SelectedObjs.SetSelected(lstBGItems.SelectedItem);
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstMapParticleEffects control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void lstMapParticleEffects_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstMapParticleEffects.SelectedItem != null)
@@ -821,6 +869,11 @@ namespace DemoGame.MapEditor
             SelectedObjs.SetSelected(selected);
         }
 
+        /// <summary>
+        /// Handles the Click event of the lstSelected control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void lstSelected_Click(object sender, EventArgs e)
         {
             var current = lstSelected.SelectedItem as ISpatial;
@@ -1157,11 +1210,21 @@ namespace DemoGame.MapEditor
             scSelectedItems.Panel2Collapsed = SelectedObjs.SelectedObjects.Count() < 2;
         }
 
+        /// <summary>
+        /// Handles the Enter event of the tabPageGrhs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void tabPageGrhs_Enter(object sender, EventArgs e)
         {
             treeGrhs.Select();
         }
 
+        /// <summary>
+        /// Handles the GrhAfterSelect event of the treeGrhs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.EditorTools.GrhTreeViewEventArgs"/> instance containing the event data.</param>
         void treeGrhs_GrhAfterSelect(object sender, GrhTreeViewEventArgs e)
         {
             if (_selectedGrh.GrhData != null && e.GrhData.GrhIndex == _selectedGrh.GrhData.GrhIndex)
@@ -1170,6 +1233,11 @@ namespace DemoGame.MapEditor
             _selectedGrh.SetGrh(e.GrhData.GrhIndex, AnimType.Loop, _currentTime);
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtGridHeight control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtGridHeight_TextChanged(object sender, EventArgs e)
         {
             if (Map == null)
@@ -1180,6 +1248,11 @@ namespace DemoGame.MapEditor
                 Grid.Height = result;
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtGridWidth control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtGridWidth_TextChanged(object sender, EventArgs e)
         {
             if (Map == null)
