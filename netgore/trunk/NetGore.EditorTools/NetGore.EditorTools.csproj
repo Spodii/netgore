@@ -148,6 +148,7 @@
     <Compile Include="WinForms\MapParticleEffectsListBoxBase.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WinForms\MenuHelper.cs" />
     <Compile Include="WinForms\ParticleEffectListBox.cs">
       <SubType>Component</SubType>
     </Compile>
