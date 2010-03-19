@@ -31,6 +31,32 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ContextMenu.Popup"/> event
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnPopup(EventArgs e)
+        {
+            // Hide all menu items by default
+            foreach (var menuItem in MenuItems.OfType<MenuItem>())
+                menuItem.Visible = false;
+
+            // Get the PropertyGrid that created the menu
+            var pg = SourceControl as PropertyGrid;
+            if (pg == null)
+                return;
+
+            // Ensure we have the references that we need
+            if (pg.SelectedObject == null || pg.SelectedGridItem == null || pg.SelectedGridItem.PropertyDescriptor == null)
+                return;
+
+            if (pg.SelectedGridItem.PropertyDescriptor is AdvancedPropertyDescriptor)
+            {
+                foreach (var menuItem in MenuItems.OfType<MenuItem>())
+                    menuItem.Visible = true;
+            }
+        }
+
+        /// <summary>
         /// Handles the Click event of the Reset menu item.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -38,7 +64,7 @@ namespace NetGore.EditorTools
         protected virtual void ClickMenuItem_Reset(object sender, EventArgs e)
         {
             // Get the PropertyGrid that created the menu
-            var pg = TryGetMenuSourceControl(sender) as PropertyGrid;
+            var pg = SourceControl as PropertyGrid;
             if (pg == null)
                 return;
 
@@ -61,7 +87,7 @@ namespace NetGore.EditorTools
         protected virtual void ClickMenuItem_ViewOriginal(object sender, EventArgs e)
         {
             // Get the PropertyGrid that created the menu
-            var pg = TryGetMenuSourceControl(sender) as PropertyGrid;
+            var pg = SourceControl as PropertyGrid;
             if (pg == null)
                 return;
 
@@ -76,32 +102,6 @@ namespace NetGore.EditorTools
             // Show the original value
             MessageBox.Show(string.Format("Original value for `{0}`: {1}", asAdvPropDesc.DisplayName,
                                           asAdvPropDesc.OriginalValue ?? "[NULL]"));
-        }
-
-        /// <summary>
-        /// Tries to get the <see cref="Control"/> that a menu item originates from.
-        /// </summary>
-        /// <param name="sender">The menu item.</param>
-        /// <returns>The <see cref="Control"/> that the <paramref name="sender"/> menu item was invoked on;
-        /// otherwise null.</returns>
-        public static Control TryGetMenuSourceControl(object sender)
-        {
-            if (sender == null)
-                return null;
-
-            if (sender is ToolStripItem)
-                return TryGetMenuSourceControl(((ToolStripItem)sender).Owner);
-
-            if (sender is MenuItem)
-                return TryGetMenuSourceControl(((MenuItem)sender).Parent);
-
-            if (sender is ContextMenuStrip)
-                return ((ContextMenuStrip)sender).SourceControl;
-
-            if (sender is ContextMenu)
-                return ((ContextMenu)sender).SourceControl;
-
-            return null;
         }
     }
 }
