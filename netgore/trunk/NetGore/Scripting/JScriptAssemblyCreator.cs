@@ -6,15 +6,26 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.JScript;
 
-namespace NetGore
+namespace NetGore.Scripting
 {
     /// <summary>
     /// Helps with creating an <see cref="Assembly"/> using JScript.
     /// </summary>
     public class JScriptAssemblyCreator
     {
+        static readonly ScriptAssemblyCache _scriptAssemblyCache = ScriptAssemblyCache.Instance;
         readonly List<string> _members = new List<string>();
-        readonly Regex _regexGetSafeFunction = new Regex(@"function\s+GetSafe\s*\([^,]+,[^,]+\)\s*:\s*String", RegexOptions.IgnoreCase);
+
+        readonly Regex _regexGetSafeFunction = new Regex(@"function\s+GetSafe\s*\([^,]+,[^,]+\)\s*:\s*String",
+                                                         RegexOptions.IgnoreCase);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JScriptAssemblyCreator"/> class.
+        /// </summary>
+        public JScriptAssemblyCreator()
+        {
+            RequireGetSafeFunction = true;
+        }
 
         /// <summary>
         /// Gets or sets the name of the class to generate. This value must be set before calling Compile().
@@ -28,11 +39,11 @@ namespace NetGore
         public bool RequireGetSafeFunction { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JScriptAssemblyCreator"/> class.
+        /// Adds the default GetSafe JScript function.
         /// </summary>
-        public JScriptAssemblyCreator()
+        protected virtual void AddDefaultGetSafeFunction()
         {
-            RequireGetSafeFunction = true;
+            AddMethod("GetSafe", "public", "String", "p, i : int", "return p.Length > i ? p[i] : \"<Param Missing>\";");
         }
 
         /// <summary>
@@ -94,25 +105,38 @@ namespace NetGore
         /// <returns>A <see cref="AssemblyClassInvoker"/> to invoke the compiled <see cref="Assembly"/>.</returns>
         public AssemblyClassInvoker Compile()
         {
-            CompilerResults r;
-            return Compile(out r);
+            Assembly asm;
+            return Compile(out asm);
         }
 
         /// <summary>
         /// Compiles the source code.
         /// </summary>
-        /// <param name="results">The results of the compilation.</param>
+        /// <param name="asm">The created <see cref="Assembly"/>.</param>
         /// <returns>A <see cref="AssemblyClassInvoker"/> to invoke the compiled <see cref="Assembly"/>.</returns>
-        public virtual AssemblyClassInvoker Compile(out CompilerResults results)
+        public virtual AssemblyClassInvoker Compile(out Assembly asm)
         {
             var sourceCode = GetSourceCode(_members);
 
+            asm = _scriptAssemblyCache.CreateInCache(sourceCode, CompileSourceToAssembly);
+
+            return CreateAssemblyClassInvoker(asm, ClassName);
+        }
+
+        /// <summary>
+        /// Performs the actual compiling of the <see cref="Assembly"/>. Will be called by the
+        /// <see cref="ScriptAssemblyCache"/> if the source didn't exist in the cache.
+        /// </summary>
+        /// <param name="sourceCode">The source code to compile.</param>
+        /// <param name="filePath">The file path to give the generated <see cref="Assembly"/>.</param>
+        /// <returns>The generated <see cref="Assembly"/>. Can be null if there was any errors generating it.</returns>
+        protected virtual Assembly CompileSourceToAssembly(string sourceCode, string filePath)
+        {
             var provider = new JScriptCodeProvider();
-            var p = new CompilerParameters { GenerateInMemory = true, IncludeDebugInformation = false };
-
-            results = provider.CompileAssemblyFromSource(p, sourceCode);
-
-            return CreateAssemblyClassInvoker(results.CompiledAssembly, ClassName);
+            var p = new CompilerParameters
+            { GenerateInMemory = false, IncludeDebugInformation = false, OutputAssembly = filePath };
+            var results = provider.CompileAssemblyFromSource(p, sourceCode);
+            return results.CompiledAssembly;
         }
 
         /// <summary>
@@ -143,9 +167,7 @@ namespace NetGore
             if (RequireGetSafeFunction)
             {
                 if (!members.Any(x => _regexGetSafeFunction.IsMatch(x)))
-                {
                     AddDefaultGetSafeFunction();
-                }
             }
 
             // Add the members
@@ -158,14 +180,6 @@ namespace NetGore
             sb.AppendLine("}");
 
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// Adds the default GetSafe JScript function.
-        /// </summary>
-        protected virtual void AddDefaultGetSafeFunction()
-        {
-            AddMethod("GetSafe", "public", "String", "p, i : int", "return p.Length > i ? p[i] : \"<Param Missing>\";");
         }
 
         /// <summary>

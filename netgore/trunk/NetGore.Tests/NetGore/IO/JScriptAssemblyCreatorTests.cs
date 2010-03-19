@@ -1,5 +1,7 @@
 using System.CodeDom.Compiler;
 using System.Linq;
+using System.Reflection;
+using NetGore.Scripting;
 using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore.IO
@@ -15,11 +17,10 @@ namespace NetGore.Tests.NetGore.IO
             JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", null, null, "");
 
-            CompilerResults r;
-            c.Compile(out r);
+            Assembly asm;
+            c.Compile(out asm);
 
-            Assert.IsNotNull(r.CompiledAssembly);
-            Assert.AreEqual(0, r.Errors.Count);
+            Assert.IsNotNull(asm);
         }
 
         [Test]
@@ -28,11 +29,10 @@ namespace NetGore.Tests.NetGore.IO
             JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", "String", null, "return \"hi\";");
 
-            CompilerResults r;
-            c.Compile(out r);
+            Assembly asm;
+            c.Compile(out asm);
 
-            Assert.IsNotNull(r.CompiledAssembly);
-            Assert.AreEqual(0, r.Errors.Count);
+            Assert.IsNotNull(asm);
         }
 
         [Test]
@@ -41,11 +41,10 @@ namespace NetGore.Tests.NetGore.IO
             JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", "String", "a", "return \"hi \" + a;");
 
-            CompilerResults r;
-            c.Compile(out r);
+            Assembly asm;
+            c.Compile(out asm);
 
-            Assert.IsNotNull(r.CompiledAssembly);
-            Assert.AreEqual(0, r.Errors.Count);
+            Assert.IsNotNull(asm);
         }
 
         #endregion

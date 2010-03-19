@@ -97,6 +97,7 @@
     <Compile Include="Scripting\AssemblyClassInvoker.cs" />
     <Compile Include="IO\Bits\BitStreamExtensions.cs" />
     <Compile Include="IO\IMessageCollection.cs" />
+    <Compile Include="ByteArrayEqualityComparer.cs" />
     <Compile Include="Scripting\JScriptAssemblyCreator.cs" />
     <Compile Include="IO\PropertyInterface\IPropertyInterface.cs" />
     <Compile Include="IO\PropertyInterface\PropertyInterfaceManager.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="IO\Persistable\IPersistable.cs" />
     <Compile Include="IO\Persistable\PersistableHelper.cs" />
     <Compile Include="LogHelper.cs" />
+    <Compile Include="Scripting\ScriptAssemblyCache.cs" />
     <Compile Include="Strings\NaturalStringComparer.cs" />
     <Compile Include="Network\Sockets\IUDPSocket.cs" />
     <Compile Include="Network\Sockets\UDPSocketEventHandler.cs" />
