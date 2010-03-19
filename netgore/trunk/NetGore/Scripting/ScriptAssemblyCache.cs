@@ -137,19 +137,85 @@ namespace NetGore.Scripting
         }
 
         /// <summary>
+        /// Calculates the hash from the source code.
+        /// </summary>
+        /// <param name="files">The source code files.</param>
+        /// <returns>The byte array representation of the hash.</returns>
+        protected static byte[] CalculateHash(IEnumerable<string> files)
+        {
+            MD5 hasher = MD5.Create();
+            byte[] hash = null;
+
+            // Loop through each file
+            foreach (var file in files)
+            {
+                // Calculate the file hash
+                byte[] fileHash;
+                using (var fs = File.OpenRead(file))
+                {
+                    fileHash = hasher.ComputeHash(fs);
+                }
+
+                if (hash == null)
+                {
+                    // If its the first file, just use the single hash
+                    hash = fileHash;
+                }
+                else
+                {
+                    // For each successive file, XOR the hashes together to create a single hash. We use XOR
+                    // since the file order shouldn't matter, and XOR will give the same output no matter
+                    // what order we hash the files.
+                    for (int i = 0; i < hash.Length; i++)
+                    {
+                        hash[i] ^= fileHash[i];
+                    }
+                }
+            }
+
+            return hash;
+        }
+
+        /// <summary>
         /// Creates an <see cref="Assembly"/> inside of the cache. This will only actually generate the assembly
         /// if a cached version of the source code could not be found.
         /// </summary>
         /// <param name="code">The source code to compile.</param>
         /// <param name="assemblyCreator">A <see cref="Func{T1,T2,TResult}"/> describing how to compile the <see cref="Assembly"/>.
-        /// The first argument is the source code to compile, and the second argument is the file path to give
-        /// the generated <see cref="Assembly"/>.</param>
+        /// The passed argument is the file path to give the generated <see cref="Assembly"/>.</param>
         /// <returns>The <see cref="Assembly"/>, or null if the <see cref="Assembly"/> failed to compile or load.</returns>
-        public Assembly CreateInCache(string code, Func<string, string, Assembly> assemblyCreator)
+        public Assembly CreateInCache(string code, Func<string, Assembly> assemblyCreator)
+        {
+            var hash = CalculateHash(code);
+            return CreateInCache(hash, assemblyCreator);
+        }
+
+        /// <summary>
+        /// Creates an <see cref="Assembly"/> inside of the cache. This will only actually generate the assembly
+        /// if a cached version of the source code could not be found.
+        /// </summary>
+        /// <param name="codeFiles">The source code files to use.</param>
+        /// <param name="assemblyCreator">A <see cref="Func{T1,T2,TResult}"/> describing how to compile the <see cref="Assembly"/>.
+        /// The passed argument is the file path to give the generated <see cref="Assembly"/>.</param>
+        /// <returns>The <see cref="Assembly"/>, or null if the <see cref="Assembly"/> failed to compile or load.</returns>
+        public Assembly CreateInCache(IEnumerable<string> codeFiles, Func<string, Assembly> assemblyCreator)
+        {
+            var hash = CalculateHash(codeFiles);
+            return CreateInCache(hash, assemblyCreator);
+        }
+
+        /// <summary>
+        /// Creates an <see cref="Assembly"/> inside of the cache. This will only actually generate the assembly
+        /// if a cached version of the source code could not be found.
+        /// </summary>
+        /// <param name="hash">The hash of the source code.</param>
+        /// <param name="assemblyCreator">A <see cref="Func{T1,T2,TResult}"/> describing how to compile the <see cref="Assembly"/>.
+        /// The passed argument is the file path to give the generated <see cref="Assembly"/>.</param>
+        /// <returns>The <see cref="Assembly"/>, or null if the <see cref="Assembly"/> failed to compile or load.</returns>
+        Assembly CreateInCache(byte[] hash, Func<string, Assembly> assemblyCreator)
         {
             CacheItem item;
 
-            var hash = CalculateHash(code);
             bool createdNew = false;
 
             // Get the cache item, or adding it if it does not already exist
@@ -177,7 +243,7 @@ namespace NetGore.Scripting
                 // If we had to create the file, we will have to generate the assembly
                 try
                 {
-                    asm = assemblyCreator(code, filePath);
+                    asm = assemblyCreator(filePath);
                 }
                 catch (Exception ex)
                 {
