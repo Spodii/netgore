@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NetGore.Scripting;
 using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore.IO
