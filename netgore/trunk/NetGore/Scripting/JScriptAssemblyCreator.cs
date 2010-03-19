@@ -118,7 +118,7 @@ namespace NetGore.Scripting
         {
             var sourceCode = GetSourceCode(_members);
 
-            asm = _scriptAssemblyCache.CreateInCache(sourceCode, CompileSourceToAssembly);
+            asm = _scriptAssemblyCache.CreateInCache(sourceCode, x => CompileSourceToAssembly(sourceCode, x));
 
             return CreateAssemblyClassInvoker(asm, ClassName);
         }

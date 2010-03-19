@@ -110,17 +110,16 @@ namespace NetGore.Scripting
         CompilerErrorCollection AddScriptFiles(IEnumerable<string> scriptFiles, ScriptLanguage language)
         {
             // Check for files
-            if (scriptFiles.Count() == 0)
-            {
-                string outputFilePath = GetOutputFilePath(language);
-                if (File.Exists(outputFilePath))
-                    File.Delete(outputFilePath);
+            if (scriptFiles == null)
                 return null;
-            }
 
-            // Compile the code
-            CompilerErrorCollection errors;
-            Assembly asm = CompileCode(scriptFiles, language, out errors);
+            scriptFiles = scriptFiles.ToImmutable();
+            if (scriptFiles.IsEmpty())
+                return null;
+
+            // Get the assembly
+            CompilerErrorCollection errors = null;
+            var asm = _scriptAssemblyCache.CreateInCache(scriptFiles, x => CompileCode(x, scriptFiles, language, out errors));
 
             if (asm == null)
                 _compilationFailed = true;
@@ -137,14 +136,19 @@ namespace NetGore.Scripting
             return errors;
         }
 
+        static readonly ScriptAssemblyCache _scriptAssemblyCache = ScriptAssemblyCache.Instance;
+
         /// <summary>
         /// Compiles the source code files.
         /// </summary>
+        /// <param name="outputFilePath">The output file path.</param>
         /// <param name="files">Files to compile.</param>
         /// <param name="language">Language to use to compile the source code.</param>
         /// <param name="errors">Errors and warnings output from the compiler.</param>
-        /// <returns>The resulting Assembly from the compiler.</returns>
-        Assembly CompileCode(IEnumerable<string> files, ScriptLanguage language, out CompilerErrorCollection errors)
+        /// <returns>
+        /// The resulting Assembly from the compiler.
+        /// </returns>
+        static Assembly CompileCode(string outputFilePath, IEnumerable<string> files, ScriptLanguage language, out CompilerErrorCollection errors)
         {
             Debug.Assert(files.Count() > 0);
 
@@ -167,14 +171,12 @@ namespace NetGore.Scripting
                     throw new ArgumentOutOfRangeException("language");
             }
 
-            // FUTURE: Add a cache to see if the scripts need to be recompiled. Can be done easily enough with a MD5 hash of the input files.
-
             // Compile
             CompilerResults result;
             using (codeDomProvider)
             {
                 CompilerParameters options = new CompilerParameters
-                { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = GetOutputFilePath(language) };
+                { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = outputFilePath };
 
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 options.ReferencedAssemblies.AddRange(assemblies.Select(x => x.Location).ToArray());
@@ -189,11 +191,6 @@ namespace NetGore.Scripting
                 return null;
 
             return result.CompiledAssembly;
-        }
-
-        string GetOutputFilePath(ScriptLanguage language)
-        {
-            return Name + "." + language + ".dll";
         }
 
         static string[] SafeGetFiles(string dir, string searchPattern, SearchOption searchOptions)
