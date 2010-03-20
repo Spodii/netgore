@@ -12,7 +12,7 @@ namespace InstallationValidator.Tests
         /// <summary>
         /// The prefix to give to every <see cref="_supportedVersionStrs"/> regex.
         /// </summary>
-        const string _regexPrefix = @"version()[\\r\\n]*";
+        const string _regexPrefix = @"version\(\)[\r\n]*";
 
         /// <summary>
         /// A collection of Regex strings for the supported versions.
@@ -56,7 +56,7 @@ namespace InstallationValidator.Tests
                 return false;
             }
 
-            var regexes = _supportedVersionStrs.Select(x => new Regex(_regexPrefix + x, RegexOptions.IgnoreCase | RegexOptions.Multiline));
+            var regexes = _supportedVersionStrs.Select(x => new Regex(_regexPrefix + x, RegexOptions.IgnoreCase));
             var success =  regexes.Any(x => x.IsMatch(output));
 
             if (!success)
