@@ -250,7 +250,6 @@ namespace NetGore.Scripting
                     const string errmsg = "Failed to generate assembly: {0}";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, ex);
-                    Debug.Fail(string.Format(errmsg, ex));
                 }
             }
             else

@@ -113,12 +113,16 @@ namespace NetGore.Scripting
         /// Compiles the source code.
         /// </summary>
         /// <param name="asm">The created <see cref="Assembly"/>.</param>
-        /// <returns>A <see cref="AssemblyClassInvoker"/> to invoke the compiled <see cref="Assembly"/>.</returns>
+        /// <returns>A <see cref="AssemblyClassInvoker"/> to invoke the compiled <see cref="Assembly"/>, or
+        /// null if the compilation failed.</returns>
         public virtual AssemblyClassInvoker Compile(out Assembly asm)
         {
             var sourceCode = GetSourceCode(_members);
 
             asm = _scriptAssemblyCache.CreateInCache(sourceCode, x => CompileSourceToAssembly(sourceCode, x));
+
+            if (asm == null)
+                return null;
 
             return CreateAssemblyClassInvoker(asm, ClassName);
         }
@@ -133,11 +137,34 @@ namespace NetGore.Scripting
         protected virtual Assembly CompileSourceToAssembly(string sourceCode, string filePath)
         {
             var provider = new JScriptCodeProvider();
+            
+            // Set up the compiler parameters
             var p = new CompilerParameters
             { GenerateInMemory = false, IncludeDebugInformation = false, OutputAssembly = filePath };
+            
+            // Compile
             var results = provider.CompileAssemblyFromSource(p, sourceCode);
+
+            // Store the compilation errors
+            if (results.Errors.Count > 0)
+                _compilationErrors = results.Errors.OfType<CompilerError>().ToImmutable();
+            else
+                _compilationErrors = _emptyCompilerErrors;
+
+            // Return the compiled assembly
             return results.CompiledAssembly;
         }
+
+        static readonly CompilerError[] _emptyCompilerErrors = new CompilerError[0];
+
+        IEnumerable<CompilerError> _compilationErrors = _emptyCompilerErrors;
+
+        /// <summary>
+        /// Gets the <see cref="CompilerError"/>s that resulted from the last compilation. Will be empty if the
+        /// <see cref="Assembly"/> has not yet been compiled, if the <see cref="Assembly"/> was loaded from cache
+        /// instead of compiling, or if the compilation completed without error.
+        /// </summary>
+        public IEnumerable<CompilerError> CompilationErrors { get { return _compilationErrors; } }
 
         /// <summary>
         /// Creates the <see cref="AssemblyClassInvoker"/>.

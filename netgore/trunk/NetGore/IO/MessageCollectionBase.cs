@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ namespace NetGore.IO
     public abstract class MessageCollectionBase<T> : IMessageCollection<T>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly IEnumerable<CompilerError> _compilationErrors = Enumerable.Empty<CompilerError>();
 
         readonly AssemblyClassInvoker _invoker;
 
@@ -65,18 +67,18 @@ namespace NetGore.IO
 
             // Create the assembly and assembly invoker
             _invoker = CompileAssembly(assemblyCreator);
+            _compilationErrors = assemblyCreator.CompilationErrors;
 
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
-        
+
         /// <summary>
-        /// Compiles the assembly.
+        /// Gets the <see cref="CompilerError"/>s from trying to compile the messages. Will be empty if
+        /// the compilation was successful or has not happened yet.
         /// </summary>
-        /// <param name="assemblyCreator">The assembly creator to compile.</param>
-        /// <returns>The <see cref="AssemblyClassInvoker"/> for the compiled assembly.</returns>
-        protected virtual AssemblyClassInvoker CompileAssembly(JScriptAssemblyCreator assemblyCreator)
+        public IEnumerable<CompilerError> CompilationErrors
         {
-            return assemblyCreator.Compile();
+            get { return _compilationErrors; }
         }
 
         /// <summary>
@@ -95,6 +97,16 @@ namespace NetGore.IO
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Added message `{0}` from default messages.", sourceMsg.Key.ToString());
             }
+        }
+
+        /// <summary>
+        /// Compiles the assembly.
+        /// </summary>
+        /// <param name="assemblyCreator">The assembly creator to compile.</param>
+        /// <returns>The <see cref="AssemblyClassInvoker"/> for the compiled assembly.</returns>
+        protected virtual AssemblyClassInvoker CompileAssembly(JScriptAssemblyCreator assemblyCreator)
+        {
+            return assemblyCreator.Compile();
         }
 
         /// <summary>

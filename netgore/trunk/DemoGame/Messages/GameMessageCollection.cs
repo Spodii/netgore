@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -192,6 +193,18 @@ namespace DemoGame
             var coll = new GameMessageCollection(language, true);
             var messages = coll.ToImmutable();
             return messages;
+        }
+
+        /// <summary>
+        /// Tests if the <see cref="GameMessageCollection"/> for a certain language exists and can compile
+        /// successfully without error.
+        /// </summary>
+        /// <param name="language">The language to try to compile.</param>
+        /// <returns>True if the <paramref name="language"/>'s <see cref="GameMessageCollection"/> compiled
+        /// successfully; otherwise false.</returns>
+        public static bool TestCompilation(string language)
+        {
+            return false;// TODO: ...
         }
 
         /// <summary>
