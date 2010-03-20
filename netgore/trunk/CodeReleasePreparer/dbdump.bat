@@ -1,5 +1,8 @@
 @echo off
 echo This file is to generate the db.sql dump file
-echo You will probably need to change the database connection strings within the .bat file.
+SET /P A= Type your database password. 
+echo -
+SET /P B= Type your port number (Note 3306 is default mysql port). 
+echo -
 @echo on
-mysqldump demogame --user=root --password= --host=localhost --port=3306 --all-tables --routines --create-options > db.sql
+mysqldump demogame --user=root --password=%A% --host=localhost --port=%B% --all-tables --routines --create-options > db.sql
