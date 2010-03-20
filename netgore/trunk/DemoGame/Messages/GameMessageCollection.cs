@@ -200,11 +200,16 @@ namespace DemoGame
         /// successfully without error.
         /// </summary>
         /// <param name="language">The language to try to compile.</param>
-        /// <returns>True if the <paramref name="language"/>'s <see cref="GameMessageCollection"/> compiled
-        /// successfully; otherwise false.</returns>
-        public static bool TestCompilation(string language)
+        /// <param name="errors">When this method returns false, contains the compilation errors.</param>
+        /// <returns>
+        /// True if the <paramref name="language"/>'s <see cref="GameMessageCollection"/> compiled
+        /// successfully; otherwise false.
+        /// </returns>
+        public static bool TestCompilation(string language, out IEnumerable<CompilerError> errors)
         {
-            return false;// TODO: ...
+            var coll = new GameMessageCollection(language, true);
+            errors = coll.CompilationErrors;
+            return coll.CompilationErrors.IsEmpty();
         }
 
         /// <summary>
@@ -232,6 +237,20 @@ namespace DemoGame
         protected override bool TryParseID(string str, out GameMessage id)
         {
             return ParseEnumHelper(str, out id);
+        }
+
+        /// <summary>
+        /// Gets the names of all of the available languages.
+        /// </summary>
+        /// <returns>The names of all of the available languages.</returns>
+        public static IEnumerable<string> GetLanguages()
+        {
+            var comp = StringComparer.OrdinalIgnoreCase;
+
+            var dir = ContentPaths.Build.Languages;
+            var files = Directory.GetFiles(dir, "*.txt", SearchOption.TopDirectoryOnly);
+
+            return files.Distinct(comp).OrderBy(x => x, comp).ToImmutable();
         }
     }
 }

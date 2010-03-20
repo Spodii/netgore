@@ -33,16 +33,13 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.btnItemTemplate = new System.Windows.Forms.Button();
             this.btnItemTemplateSave = new System.Windows.Forms.Button();
-            this.txtItemTemplate = new System.Windows.Forms.TextBox();
             this.btnItemTemplateNew = new System.Windows.Forms.Button();
             this.btnItemTemplateDelete = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.pgItemTemplate = new System.Windows.Forms.PropertyGrid();
             this.tpCharacterTemplate = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.btnCharacterTemplate = new System.Windows.Forms.Button();
             this.btnCharacterTemplateSave = new System.Windows.Forms.Button();
-            this.txtCharacterTemplate = new System.Windows.Forms.TextBox();
             this.btnCharacterTemplateNew = new System.Windows.Forms.Button();
             this.btnCharacterTemplateDelete = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -56,6 +53,17 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.tpMessages = new System.Windows.Forms.TabPage();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtItemTemplate = new System.Windows.Forms.TextBox();
+            this.txtCharacterTemplate = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.tc.SuspendLayout();
             this.tpItemTemplate.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -68,6 +76,9 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.tpMessages.SuspendLayout();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tc
@@ -76,6 +87,7 @@
             this.tc.Controls.Add(this.tpCharacterTemplate);
             this.tc.Controls.Add(this.tpQuests);
             this.tc.Controls.Add(this.tpAlliances);
+            this.tc.Controls.Add(this.tpMessages);
             this.tc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tc.Location = new System.Drawing.Point(6, 6);
             this.tc.Name = "tc";
@@ -105,9 +117,9 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.txtItemTemplate);
             this.splitContainer1.Panel1.Controls.Add(this.btnItemTemplate);
             this.splitContainer1.Panel1.Controls.Add(this.btnItemTemplateSave);
-            this.splitContainer1.Panel1.Controls.Add(this.txtItemTemplate);
             this.splitContainer1.Panel1.Controls.Add(this.btnItemTemplateNew);
             this.splitContainer1.Panel1.Controls.Add(this.btnItemTemplateDelete);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
@@ -142,16 +154,6 @@
             this.btnItemTemplateSave.UseVisualStyleBackColor = true;
             this.btnItemTemplateSave.Click += new System.EventHandler(this.btnItemTemplateSave_Click);
             // 
-            // txtItemTemplate
-            // 
-            this.txtItemTemplate.BackColor = System.Drawing.SystemColors.Window;
-            this.txtItemTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtItemTemplate.Location = new System.Drawing.Point(52, 0);
-            this.txtItemTemplate.Name = "txtItemTemplate";
-            this.txtItemTemplate.ReadOnly = true;
-            this.txtItemTemplate.Size = new System.Drawing.Size(307, 20);
-            this.txtItemTemplate.TabIndex = 13;
-            // 
             // btnItemTemplateNew
             // 
             this.btnItemTemplateNew.Dock = System.Windows.Forms.DockStyle.Right;
@@ -173,17 +175,6 @@
             this.btnItemTemplateDelete.Text = "Delete";
             this.btnItemTemplateDelete.UseVisualStyleBackColor = true;
             this.btnItemTemplateDelete.Click += new System.EventHandler(this.btnItemTemplateDelete_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.label1.Size = new System.Drawing.Size(52, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Selected:";
             // 
             // pgItemTemplate
             // 
@@ -215,9 +206,9 @@
             // 
             // splitContainer3.Panel1
             // 
+            this.splitContainer3.Panel1.Controls.Add(this.txtCharacterTemplate);
             this.splitContainer3.Panel1.Controls.Add(this.btnCharacterTemplate);
             this.splitContainer3.Panel1.Controls.Add(this.btnCharacterTemplateSave);
-            this.splitContainer3.Panel1.Controls.Add(this.txtCharacterTemplate);
             this.splitContainer3.Panel1.Controls.Add(this.btnCharacterTemplateNew);
             this.splitContainer3.Panel1.Controls.Add(this.btnCharacterTemplateDelete);
             this.splitContainer3.Panel1.Controls.Add(this.label3);
@@ -251,16 +242,6 @@
             this.btnCharacterTemplateSave.Text = "Save";
             this.btnCharacterTemplateSave.UseVisualStyleBackColor = true;
             this.btnCharacterTemplateSave.Click += new System.EventHandler(this.btnCharacterTemplateSave_Click);
-            // 
-            // txtCharacterTemplate
-            // 
-            this.txtCharacterTemplate.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCharacterTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtCharacterTemplate.Location = new System.Drawing.Point(52, 0);
-            this.txtCharacterTemplate.Name = "txtCharacterTemplate";
-            this.txtCharacterTemplate.ReadOnly = true;
-            this.txtCharacterTemplate.Size = new System.Drawing.Size(307, 20);
-            this.txtCharacterTemplate.TabIndex = 13;
             // 
             // btnCharacterTemplateNew
             // 
@@ -405,6 +386,127 @@
             this.propertyGrid1.Size = new System.Drawing.Size(450, 345);
             this.propertyGrid1.TabIndex = 0;
             // 
+            // tpMessages
+            // 
+            this.tpMessages.Controls.Add(this.splitContainer4);
+            this.tpMessages.Location = new System.Drawing.Point(4, 22);
+            this.tpMessages.Name = "tpMessages";
+            this.tpMessages.Size = new System.Drawing.Size(456, 377);
+            this.tpMessages.TabIndex = 4;
+            this.tpMessages.Text = "Messages";
+            this.tpMessages.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.textBox2);
+            this.splitContainer4.Panel1.Controls.Add(this.button4);
+            this.splitContainer4.Panel1.Controls.Add(this.button5);
+            this.splitContainer4.Panel1.Controls.Add(this.button6);
+            this.splitContainer4.Panel1.Controls.Add(this.button7);
+            this.splitContainer4.Panel1.Controls.Add(this.label4);
+            this.splitContainer4.Size = new System.Drawing.Size(456, 377);
+            this.splitContainer4.SplitterDistance = 25;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label1.Size = new System.Drawing.Size(52, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Selected:";
+            // 
+            // txtItemTemplate
+            // 
+            this.txtItemTemplate.BackColor = System.Drawing.SystemColors.Window;
+            this.txtItemTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtItemTemplate.Location = new System.Drawing.Point(52, 0);
+            this.txtItemTemplate.Name = "txtItemTemplate";
+            this.txtItemTemplate.ReadOnly = true;
+            this.txtItemTemplate.Size = new System.Drawing.Size(240, 20);
+            this.txtItemTemplate.TabIndex = 16;
+            // 
+            // txtCharacterTemplate
+            // 
+            this.txtCharacterTemplate.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCharacterTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtCharacterTemplate.Location = new System.Drawing.Point(52, 0);
+            this.txtCharacterTemplate.Name = "txtCharacterTemplate";
+            this.txtCharacterTemplate.ReadOnly = true;
+            this.txtCharacterTemplate.Size = new System.Drawing.Size(240, 20);
+            this.txtCharacterTemplate.TabIndex = 16;
+            // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.SystemColors.Window;
+            this.textBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox2.Location = new System.Drawing.Point(52, 0);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(246, 20);
+            this.textBox2.TabIndex = 22;
+            // 
+            // button4
+            // 
+            this.button4.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button4.Location = new System.Drawing.Point(298, 0);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(26, 25);
+            this.button4.TabIndex = 21;
+            this.button4.Text = "...";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button5.Location = new System.Drawing.Point(324, 0);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(41, 25);
+            this.button5.TabIndex = 20;
+            this.button5.Text = "Save";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button6.Location = new System.Drawing.Point(365, 0);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(41, 25);
+            this.button6.TabIndex = 19;
+            this.button6.Text = "New";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button7.Location = new System.Drawing.Point(406, 0);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(50, 25);
+            this.button7.TabIndex = 18;
+            this.button7.Text = "Delete";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label4.Size = new System.Drawing.Size(52, 17);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Selected:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -430,6 +532,10 @@
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.ResumeLayout(false);
+            this.tpMessages.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel1.PerformLayout();
+            this.splitContainer4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -440,13 +546,10 @@
         private System.Windows.Forms.TabPage tpItemTemplate;
         private System.Windows.Forms.TabPage tpCharacterTemplate;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PropertyGrid pgItemTemplate;
         private System.Windows.Forms.Button btnItemTemplateNew;
         private System.Windows.Forms.Button btnItemTemplateDelete;
-        private System.Windows.Forms.TextBox txtItemTemplate;
         private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.TextBox txtCharacterTemplate;
         private System.Windows.Forms.Button btnCharacterTemplateNew;
         private System.Windows.Forms.Button btnCharacterTemplateDelete;
         private System.Windows.Forms.Label label3;
@@ -464,6 +567,17 @@
         private System.Windows.Forms.Button btnItemTemplateSave;
         private System.Windows.Forms.Button btnCharacterTemplate;
         private System.Windows.Forms.Button btnCharacterTemplateSave;
+        private System.Windows.Forms.TextBox txtItemTemplate;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtCharacterTemplate;
+        private System.Windows.Forms.TabPage tpMessages;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label label4;
     }
 }
 
