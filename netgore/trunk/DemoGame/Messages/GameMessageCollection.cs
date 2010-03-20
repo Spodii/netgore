@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using log4net;
 using NetGore;
 using NetGore.IO;
@@ -39,6 +40,7 @@ namespace DemoGame
         static readonly Dictionary<string, GameMessageCollection> _instances;
 
         readonly string _language;
+        readonly bool _rawMessagesOnly;
 
         /// <summary>
         /// Initializes the <see cref="GameMessageCollection"/> class.
@@ -53,9 +55,11 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="GameMessageCollection"/> class.
         /// </summary>
         /// <param name="language">Name of the language to load.</param>
-        GameMessageCollection(string language)
-            : base(ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix), _defaultMessages)
+        /// <param name="rawMessagesOnly">If true, only the raw messages will be loaded, and invoking the messages
+        /// will not be supported.</param>
+        GameMessageCollection(string language, bool rawMessagesOnly) : base(GetLanguageFile(language), _defaultMessages)
         {
+            _rawMessagesOnly = rawMessagesOnly;
             _language = language;
 
             // Ensure we have all the messages loaded
@@ -71,11 +75,34 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the file path to the global JScript file included in all generated <see cref="GameMessageCollection"/>s.
+        /// </summary>
+        public static string GlobalJScriptFilePath
+        {
+            get { return ContentPaths.Build.Languages.Join("global.js"); }
+        }
+
+        /// <summary>
         /// Gets the name of this language.
         /// </summary>
         public string Language
         {
             get { return _language; }
+        }
+
+        /// <summary>
+        /// Compiles the assembly.
+        /// </summary>
+        /// <param name="assemblyCreator">The assembly creator to compile.</param>
+        /// <returns>
+        /// The <see cref="AssemblyClassInvoker"/> for the compiled assembly.
+        /// </returns>
+        protected override AssemblyClassInvoker CompileAssembly(JScriptAssemblyCreator assemblyCreator)
+        {
+            if (_rawMessagesOnly)
+                return null;
+
+            return base.CompileAssembly(assemblyCreator);
         }
 
         /// <summary>
@@ -97,7 +124,7 @@ namespace DemoGame
             GameMessageCollection instance;
             if (!_instances.TryGetValue(language, out instance))
             {
-                instance = new GameMessageCollection(language);
+                instance = new GameMessageCollection(language, false);
                 _instances.Add(language, instance);
             }
 
@@ -116,6 +143,26 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the <see cref="GameMessageCollection"/> file for a certain language.
+        /// </summary>
+        /// <param name="language">The language to get the file for.</param>
+        /// <returns>The <see cref="GameMessageCollection"/> file for the <paramref name="language"/>.</returns>
+        public static string GetLanguageFile(string language)
+        {
+            return ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GameMessageCollection"/> JScript file for a certain language.
+        /// </summary>
+        /// <param name="languageFilePath">The path to the language file to get the additional JScript file for.</param>
+        /// <returns>The path to the JScript file.</returns>
+        public static string GetLanguageJScriptFile(string languageFilePath)
+        {
+            return languageFilePath + ".js";
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional code to be added to the generated JScript.
         /// </summary>
         /// <param name="file">The file that is being loaded.</param>
@@ -123,16 +170,44 @@ namespace DemoGame
         protected override void LoadAdditionalJScriptMembers(string file, JScriptAssemblyCreator assemblyCreator)
         {
             // global.js
-            var globalFile = ContentPaths.Build.Languages.Join("global.js");
+            var globalFile = GlobalJScriptFilePath;
             if (File.Exists(globalFile))
                 assemblyCreator.AddRawMember(File.ReadAllText(globalFile));
 
             // language.js
-            var languageFile = file + ".js";
+            var languageFile = GetLanguageJScriptFile(file);
             if (File.Exists(languageFile))
                 assemblyCreator.AddRawMember(File.ReadAllText(languageFile));
 
             base.LoadAdditionalJScriptMembers(file, assemblyCreator);
+        }
+
+        /// <summary>
+        /// Loads the raw <see cref="GameMessage"/>s for a language.
+        /// </summary>
+        /// <param name="language">The language to load the messages for.</param>
+        /// <returns>The raw <see cref="GameMessage"/>s for the <paramref name="language"/>.</returns>
+        public static IEnumerable<KeyValuePair<GameMessage, string>> LoadRawMessages(string language)
+        {
+            var coll = new GameMessageCollection(language, true);
+            var messages = coll.ToImmutable();
+            return messages;
+        }
+
+        /// <summary>
+        /// Writes the raw <see cref="GameMessage"/>s to file.
+        /// </summary>
+        /// <param name="language">The language.</param>
+        /// <param name="messages">The messages.</param>
+        public static void SaveRawMessages(string language, IEnumerable<KeyValuePair<GameMessage, string>> messages)
+        {
+            StringBuilder sb = new StringBuilder(2048);
+            foreach (var msg in messages)
+            {
+                sb.AppendLine(msg.Key + ": " + msg.Value);
+            }
+
+            File.WriteAllText(GetLanguageFile(language), sb.ToString());
         }
 
         /// <summary>
