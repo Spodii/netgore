@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{927E889E-AC38-4549-A717-A4FFCA22ADB6}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -65,14 +65,6 @@
     <Compile Include="MemberVisibilityLevel.cs" />
     <Compile Include="MethodParameter.cs" />
     <Compile Include="Generators\MySqlClassGenerator.cs" />
-    <Compile Include="Persistable Controls\PersistableCheckBox.cs">
-    </Compile>
-    <Compile Include="Persistable Controls\PersistableForm.cs">
-    </Compile>
-    <Compile Include="Persistable Controls\PersistableRadioButton.cs">
-    </Compile>
-    <Compile Include="Persistable Controls\PersistableTextBox.cs">
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
