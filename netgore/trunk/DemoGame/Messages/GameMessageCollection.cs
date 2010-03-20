@@ -71,7 +71,6 @@ namespace DemoGame
                 string err = string.Format(errmsg, this, _language, missingKeys.Implode());
                 if (log.IsErrorEnabled)
                     log.Error(err);
-                Debug.Fail(err);
             }
         }
 
@@ -154,6 +153,42 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Deletes the files for a language.
+        /// </summary>
+        /// <param name="language">The language to delete the files for.</param>
+        public static void DeleteLanguageFiles(string language)
+        {
+            var file = GetLanguageFile(language);
+            var jsFile = GetLanguageJScriptFile(file);
+
+            // Delete the anguage messages file
+            try
+            {
+                if (File.Exists(file))
+                    File.Delete(file);
+            }
+            catch (IOException ex)
+            {
+                const string errmsg = "Failed to delete language file `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, file, ex);
+            }
+
+            // Delete the JScript file
+            try
+            {
+                if (File.Exists(jsFile))
+                    File.Delete(jsFile);
+            }
+            catch (IOException ex)
+            {
+                const string errmsg = "Failed to delete language file `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, file, ex);
+            }
+        }
+
+        /// <summary>
         /// Gets the <see cref="GameMessageCollection"/> JScript file for a certain language.
         /// </summary>
         /// <param name="languageFilePath">The path to the language file to get the additional JScript file for.</param>
@@ -213,6 +248,97 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Tests if the <see cref="GameMessageCollection"/> for a certain language exists and can compile
+        /// successfully without error.
+        /// </summary>
+        /// <param name="language">The language to try to compile.</param>
+        /// <param name="errors">When this method returns false, contains the compilation errors as a string.</param>
+        /// <returns>
+        /// True if the <paramref name="language"/>'s <see cref="GameMessageCollection"/> compiled
+        /// successfully; otherwise false.
+        /// </returns>
+        public static bool TestCompilation(string language, out string errors)
+        {
+            errors = string.Empty;
+
+            IEnumerable<CompilerError> cerrors;
+            var ret = TestCompilation(language, out cerrors);
+
+            if (!ret)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("The following errors have caused the compilation to fail:");
+                foreach (var e in cerrors)
+                    sb.AppendLine(e.ErrorNumber + ": " + e.ErrorText);
+                errors = sb.ToString();
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Tests if the <see cref="GameMessageCollection"/> for a certain language exists and can compile
+        /// successfully without error.
+        /// </summary>
+        /// <param name="messages">The messages to try to compile.</param>
+        /// <param name="errors">When this method returns false, contains the compilation errors as a string.</param>
+        /// <returns>
+        /// True if the <paramref name="messages"/>s compiled successfully; otherwise false.
+        /// </returns>
+        public static bool TestCompilation(IEnumerable<KeyValuePair<GameMessage, string>> messages, out string errors)
+        {
+            DeleteLanguageFiles(_tempLanguageName);
+
+            bool success;
+            try
+            {
+                SaveRawMessages(_tempLanguageName, messages);
+
+                success = TestCompilation(_tempLanguageName, out errors);
+            }
+            finally
+            {
+                DeleteLanguageFiles(_tempLanguageName);
+            }
+
+            return success;
+        }
+
+        const string _tempLanguageName = "TEMPORARY_COMPILATION_TEST_LANGUAGE";
+
+        /// <summary>
+        /// Tests if the <see cref="GameMessageCollection"/> for a certain language exists and can compile
+        /// successfully without error.
+        /// </summary>
+        /// <param name="messages">The messages to try to compile.</param>
+        /// <param name="errors">When this method returns false, contains the compilation errors.</param>
+        /// <returns>
+        /// True if the <paramref name="messages"/>s compiled successfully; otherwise false.
+        /// </returns>
+        public static bool TestCompilation(IEnumerable<KeyValuePair<GameMessage, string>> messages, out IEnumerable<CompilerError> errors)
+        {
+            bool success;
+            try
+            {
+                SaveRawMessages(_tempLanguageName, messages);
+
+                success = TestCompilation(_tempLanguageName, out errors);
+            }
+            finally
+            {
+                var langFile = GetLanguageFile(_tempLanguageName);
+                if (File.Exists(langFile))
+                    File.Delete(langFile);
+
+                var jsFile = GetLanguageJScriptFile(langFile);
+                if (File.Exists(jsFile))
+                    File.Delete(jsFile);
+            }
+
+            return success;
+        }
+
+        /// <summary>
         /// Writes the raw <see cref="GameMessage"/>s to file.
         /// </summary>
         /// <param name="language">The language.</param>
@@ -248,9 +374,13 @@ namespace DemoGame
             var comp = StringComparer.OrdinalIgnoreCase;
 
             var dir = ContentPaths.Build.Languages;
-            var files = Directory.GetFiles(dir, "*.txt", SearchOption.TopDirectoryOnly);
+            var filePaths = Directory.GetFiles(dir, "*.txt", SearchOption.TopDirectoryOnly);
 
-            return files.Distinct(comp).OrderBy(x => x, comp).ToImmutable();
+            var files = filePaths.Select(x => Path.GetFileNameWithoutExtension(x));
+            files = files.Distinct(comp);
+            files = files.OrderBy(x => x, comp);
+
+            return files.ToImmutable();
         }
     }
 }

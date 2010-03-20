@@ -31,13 +31,16 @@
             this.tc = new System.Windows.Forms.TabControl();
             this.tpItemTemplate = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.txtItemTemplate = new System.Windows.Forms.TextBox();
             this.btnItemTemplate = new System.Windows.Forms.Button();
             this.btnItemTemplateSave = new System.Windows.Forms.Button();
             this.btnItemTemplateNew = new System.Windows.Forms.Button();
             this.btnItemTemplateDelete = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.pgItemTemplate = new System.Windows.Forms.PropertyGrid();
             this.tpCharacterTemplate = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.txtCharacterTemplate = new System.Windows.Forms.TextBox();
             this.btnCharacterTemplate = new System.Windows.Forms.Button();
             this.btnCharacterTemplateSave = new System.Windows.Forms.Button();
             this.btnCharacterTemplateNew = new System.Windows.Forms.Button();
@@ -46,6 +49,26 @@
             this.pgCharacterTemplate = new System.Windows.Forms.PropertyGrid();
             this.tpQuests = new System.Windows.Forms.TabPage();
             this.tpAlliances = new System.Windows.Forms.TabPage();
+            this.tpMessages = new System.Windows.Forms.TabPage();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.txtMessages = new System.Windows.Forms.TextBox();
+            this.btnMessages = new System.Windows.Forms.Button();
+            this.btnMessagesSave = new System.Windows.Forms.Button();
+            this.btnMessagesNew = new System.Windows.Forms.Button();
+            this.btnMessagesDelete = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.lstMessages = new DemoGame.DbEditor.GameMessageValueListBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtSelectedMessage = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.lstMissingMessages = new System.Windows.Forms.ListBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnMessagesGlobalJS = new System.Windows.Forms.Button();
+            this.btnMessagesLanguageJS = new System.Windows.Forms.Button();
+            this.btnMessagesTest = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -53,17 +76,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.tpMessages = new System.Windows.Forms.TabPage();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtItemTemplate = new System.Windows.Forms.TextBox();
-            this.txtCharacterTemplate = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.tc.SuspendLayout();
             this.tpItemTemplate.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -73,12 +85,22 @@
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.tpMessages.SuspendLayout();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
+            this.splitContainer5.Panel1.SuspendLayout();
+            this.splitContainer5.Panel2.SuspendLayout();
+            this.splitContainer5.SuspendLayout();
+            this.splitContainer7.Panel1.SuspendLayout();
+            this.splitContainer7.Panel2.SuspendLayout();
+            this.splitContainer7.SuspendLayout();
+            this.splitContainer6.Panel1.SuspendLayout();
+            this.splitContainer6.Panel2.SuspendLayout();
+            this.splitContainer6.SuspendLayout();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.tpMessages.SuspendLayout();
-            this.splitContainer4.Panel1.SuspendLayout();
-            this.splitContainer4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tc
@@ -132,6 +154,16 @@
             this.splitContainer1.SplitterDistance = 22;
             this.splitContainer1.TabIndex = 0;
             // 
+            // txtItemTemplate
+            // 
+            this.txtItemTemplate.BackColor = System.Drawing.SystemColors.Window;
+            this.txtItemTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtItemTemplate.Location = new System.Drawing.Point(52, 0);
+            this.txtItemTemplate.Name = "txtItemTemplate";
+            this.txtItemTemplate.ReadOnly = true;
+            this.txtItemTemplate.Size = new System.Drawing.Size(240, 20);
+            this.txtItemTemplate.TabIndex = 16;
+            // 
             // btnItemTemplate
             // 
             this.btnItemTemplate.Dock = System.Windows.Forms.DockStyle.Right;
@@ -175,6 +207,17 @@
             this.btnItemTemplateDelete.Text = "Delete";
             this.btnItemTemplateDelete.UseVisualStyleBackColor = true;
             this.btnItemTemplateDelete.Click += new System.EventHandler(this.btnItemTemplateDelete_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label1.Size = new System.Drawing.Size(52, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Selected:";
             // 
             // pgItemTemplate
             // 
@@ -220,6 +263,16 @@
             this.splitContainer3.Size = new System.Drawing.Size(450, 371);
             this.splitContainer3.SplitterDistance = 22;
             this.splitContainer3.TabIndex = 1;
+            // 
+            // txtCharacterTemplate
+            // 
+            this.txtCharacterTemplate.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCharacterTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtCharacterTemplate.Location = new System.Drawing.Point(52, 0);
+            this.txtCharacterTemplate.Name = "txtCharacterTemplate";
+            this.txtCharacterTemplate.ReadOnly = true;
+            this.txtCharacterTemplate.Size = new System.Drawing.Size(240, 20);
+            this.txtCharacterTemplate.TabIndex = 16;
             // 
             // btnCharacterTemplate
             // 
@@ -302,6 +355,259 @@
             this.tpAlliances.TabIndex = 3;
             this.tpAlliances.Text = "Alliances";
             this.tpAlliances.UseVisualStyleBackColor = true;
+            // 
+            // tpMessages
+            // 
+            this.tpMessages.Controls.Add(this.splitContainer4);
+            this.tpMessages.Location = new System.Drawing.Point(4, 22);
+            this.tpMessages.Name = "tpMessages";
+            this.tpMessages.Size = new System.Drawing.Size(456, 377);
+            this.tpMessages.TabIndex = 4;
+            this.tpMessages.Text = "Messages";
+            this.tpMessages.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer4.IsSplitterFixed = true;
+            this.splitContainer4.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.txtMessages);
+            this.splitContainer4.Panel1.Controls.Add(this.btnMessages);
+            this.splitContainer4.Panel1.Controls.Add(this.btnMessagesSave);
+            this.splitContainer4.Panel1.Controls.Add(this.btnMessagesNew);
+            this.splitContainer4.Panel1.Controls.Add(this.btnMessagesDelete);
+            this.splitContainer4.Panel1.Controls.Add(this.label4);
+            this.splitContainer4.Panel1MinSize = 22;
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.splitContainer5);
+            this.splitContainer4.Size = new System.Drawing.Size(450, 371);
+            this.splitContainer4.SplitterDistance = 22;
+            this.splitContainer4.TabIndex = 30;
+            // 
+            // txtMessages
+            // 
+            this.txtMessages.BackColor = System.Drawing.SystemColors.Window;
+            this.txtMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtMessages.Location = new System.Drawing.Point(52, 0);
+            this.txtMessages.Name = "txtMessages";
+            this.txtMessages.ReadOnly = true;
+            this.txtMessages.Size = new System.Drawing.Size(240, 20);
+            this.txtMessages.TabIndex = 33;
+            // 
+            // btnMessages
+            // 
+            this.btnMessages.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMessages.Location = new System.Drawing.Point(292, 0);
+            this.btnMessages.Name = "btnMessages";
+            this.btnMessages.Size = new System.Drawing.Size(26, 22);
+            this.btnMessages.TabIndex = 32;
+            this.btnMessages.Text = "...";
+            this.btnMessages.UseVisualStyleBackColor = true;
+            this.btnMessages.Click += new System.EventHandler(this.btnMessages_Click);
+            // 
+            // btnMessagesSave
+            // 
+            this.btnMessagesSave.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMessagesSave.Location = new System.Drawing.Point(318, 0);
+            this.btnMessagesSave.Name = "btnMessagesSave";
+            this.btnMessagesSave.Size = new System.Drawing.Size(41, 22);
+            this.btnMessagesSave.TabIndex = 31;
+            this.btnMessagesSave.Text = "Save";
+            this.btnMessagesSave.UseVisualStyleBackColor = true;
+            this.btnMessagesSave.Click += new System.EventHandler(this.btnMessagesSave_Click);
+            // 
+            // btnMessagesNew
+            // 
+            this.btnMessagesNew.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMessagesNew.Location = new System.Drawing.Point(359, 0);
+            this.btnMessagesNew.Name = "btnMessagesNew";
+            this.btnMessagesNew.Size = new System.Drawing.Size(41, 22);
+            this.btnMessagesNew.TabIndex = 30;
+            this.btnMessagesNew.Text = "New";
+            this.btnMessagesNew.UseVisualStyleBackColor = true;
+            this.btnMessagesNew.Click += new System.EventHandler(this.btnMessagesNew_Click);
+            // 
+            // btnMessagesDelete
+            // 
+            this.btnMessagesDelete.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMessagesDelete.Location = new System.Drawing.Point(400, 0);
+            this.btnMessagesDelete.Name = "btnMessagesDelete";
+            this.btnMessagesDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnMessagesDelete.TabIndex = 29;
+            this.btnMessagesDelete.Text = "Delete";
+            this.btnMessagesDelete.UseVisualStyleBackColor = true;
+            this.btnMessagesDelete.Click += new System.EventHandler(this.btnMessagesDelete_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label4.Size = new System.Drawing.Size(52, 17);
+            this.label4.TabIndex = 28;
+            this.label4.Text = "Selected:";
+            // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.splitContainer7);
+            // 
+            // splitContainer5.Panel2
+            // 
+            this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
+            this.splitContainer5.Size = new System.Drawing.Size(450, 345);
+            this.splitContainer5.SplitterDistance = 261;
+            this.splitContainer5.TabIndex = 0;
+            // 
+            // splitContainer7
+            // 
+            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer7.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer7.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer7.Name = "splitContainer7";
+            this.splitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer7.Panel1
+            // 
+            this.splitContainer7.Panel1.Controls.Add(this.lstMessages);
+            this.splitContainer7.Panel1.Controls.Add(this.label5);
+            // 
+            // splitContainer7.Panel2
+            // 
+            this.splitContainer7.Panel2.Controls.Add(this.txtSelectedMessage);
+            this.splitContainer7.Panel2.Controls.Add(this.label7);
+            this.splitContainer7.Size = new System.Drawing.Size(450, 261);
+            this.splitContainer7.SplitterDistance = 225;
+            this.splitContainer7.TabIndex = 0;
+            // 
+            // lstMessages
+            // 
+            this.lstMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstMessages.FormattingEnabled = true;
+            this.lstMessages.Location = new System.Drawing.Point(0, 13);
+            this.lstMessages.Name = "lstMessages";
+            this.lstMessages.Size = new System.Drawing.Size(450, 212);
+            this.lstMessages.TabIndex = 5;
+            this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label5.Location = new System.Drawing.Point(0, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(138, 13);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Added language messages:";
+            // 
+            // txtSelectedMessage
+            // 
+            this.txtSelectedMessage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSelectedMessage.Location = new System.Drawing.Point(0, 13);
+            this.txtSelectedMessage.Name = "txtSelectedMessage";
+            this.txtSelectedMessage.Size = new System.Drawing.Size(450, 20);
+            this.txtSelectedMessage.TabIndex = 7;
+            this.txtSelectedMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSelectedMessage_KeyDown);
+            this.txtSelectedMessage.Leave += new System.EventHandler(this.txtSelectedMessage_Leave);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.Location = new System.Drawing.Point(0, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(97, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Selected message:";
+            // 
+            // splitContainer6
+            // 
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer6.Name = "splitContainer6";
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.lstMissingMessages);
+            this.splitContainer6.Panel1.Controls.Add(this.label6);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.btnMessagesGlobalJS);
+            this.splitContainer6.Panel2.Controls.Add(this.btnMessagesLanguageJS);
+            this.splitContainer6.Panel2.Controls.Add(this.btnMessagesTest);
+            this.splitContainer6.Size = new System.Drawing.Size(450, 80);
+            this.splitContainer6.SplitterDistance = 373;
+            this.splitContainer6.TabIndex = 0;
+            // 
+            // lstMissingMessages
+            // 
+            this.lstMissingMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMissingMessages.FormattingEnabled = true;
+            this.lstMissingMessages.Location = new System.Drawing.Point(0, 13);
+            this.lstMissingMessages.Name = "lstMissingMessages";
+            this.lstMissingMessages.Size = new System.Drawing.Size(373, 56);
+            this.lstMissingMessages.TabIndex = 6;
+            this.lstMissingMessages.DoubleClick += new System.EventHandler(this.lstMissingMessages_DoubleClick);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label6.Location = new System.Drawing.Point(0, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(95, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Missing messages:";
+            // 
+            // btnMessagesGlobalJS
+            // 
+            this.btnMessagesGlobalJS.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnMessagesGlobalJS.Location = new System.Drawing.Point(0, 44);
+            this.btnMessagesGlobalJS.Name = "btnMessagesGlobalJS";
+            this.btnMessagesGlobalJS.Size = new System.Drawing.Size(73, 22);
+            this.btnMessagesGlobalJS.TabIndex = 34;
+            this.btnMessagesGlobalJS.Text = "Global.js";
+            this.btnMessagesGlobalJS.UseVisualStyleBackColor = true;
+            this.btnMessagesGlobalJS.Click += new System.EventHandler(this.btnMessagesGlobalJS_Click);
+            // 
+            // btnMessagesLanguageJS
+            // 
+            this.btnMessagesLanguageJS.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnMessagesLanguageJS.Location = new System.Drawing.Point(0, 22);
+            this.btnMessagesLanguageJS.Name = "btnMessagesLanguageJS";
+            this.btnMessagesLanguageJS.Size = new System.Drawing.Size(73, 22);
+            this.btnMessagesLanguageJS.TabIndex = 33;
+            this.btnMessagesLanguageJS.Text = "Language.js";
+            this.btnMessagesLanguageJS.UseVisualStyleBackColor = true;
+            this.btnMessagesLanguageJS.Click += new System.EventHandler(this.btnMessagesLanguageJS_Click);
+            // 
+            // btnMessagesTest
+            // 
+            this.btnMessagesTest.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnMessagesTest.Location = new System.Drawing.Point(0, 0);
+            this.btnMessagesTest.Name = "btnMessagesTest";
+            this.btnMessagesTest.Size = new System.Drawing.Size(73, 22);
+            this.btnMessagesTest.TabIndex = 32;
+            this.btnMessagesTest.Text = "Test Build";
+            this.btnMessagesTest.UseVisualStyleBackColor = true;
+            this.btnMessagesTest.Click += new System.EventHandler(this.btnMessagesTest_Click);
             // 
             // splitContainer2
             // 
@@ -386,127 +692,6 @@
             this.propertyGrid1.Size = new System.Drawing.Size(450, 345);
             this.propertyGrid1.TabIndex = 0;
             // 
-            // tpMessages
-            // 
-            this.tpMessages.Controls.Add(this.splitContainer4);
-            this.tpMessages.Location = new System.Drawing.Point(4, 22);
-            this.tpMessages.Name = "tpMessages";
-            this.tpMessages.Size = new System.Drawing.Size(456, 377);
-            this.tpMessages.TabIndex = 4;
-            this.tpMessages.Text = "Messages";
-            this.tpMessages.UseVisualStyleBackColor = true;
-            // 
-            // splitContainer4
-            // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.textBox2);
-            this.splitContainer4.Panel1.Controls.Add(this.button4);
-            this.splitContainer4.Panel1.Controls.Add(this.button5);
-            this.splitContainer4.Panel1.Controls.Add(this.button6);
-            this.splitContainer4.Panel1.Controls.Add(this.button7);
-            this.splitContainer4.Panel1.Controls.Add(this.label4);
-            this.splitContainer4.Size = new System.Drawing.Size(456, 377);
-            this.splitContainer4.SplitterDistance = 25;
-            this.splitContainer4.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.label1.Size = new System.Drawing.Size(52, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Selected:";
-            // 
-            // txtItemTemplate
-            // 
-            this.txtItemTemplate.BackColor = System.Drawing.SystemColors.Window;
-            this.txtItemTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtItemTemplate.Location = new System.Drawing.Point(52, 0);
-            this.txtItemTemplate.Name = "txtItemTemplate";
-            this.txtItemTemplate.ReadOnly = true;
-            this.txtItemTemplate.Size = new System.Drawing.Size(240, 20);
-            this.txtItemTemplate.TabIndex = 16;
-            // 
-            // txtCharacterTemplate
-            // 
-            this.txtCharacterTemplate.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCharacterTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtCharacterTemplate.Location = new System.Drawing.Point(52, 0);
-            this.txtCharacterTemplate.Name = "txtCharacterTemplate";
-            this.txtCharacterTemplate.ReadOnly = true;
-            this.txtCharacterTemplate.Size = new System.Drawing.Size(240, 20);
-            this.txtCharacterTemplate.TabIndex = 16;
-            // 
-            // textBox2
-            // 
-            this.textBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.textBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox2.Location = new System.Drawing.Point(52, 0);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(246, 20);
-            this.textBox2.TabIndex = 22;
-            // 
-            // button4
-            // 
-            this.button4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button4.Location = new System.Drawing.Point(298, 0);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(26, 25);
-            this.button4.TabIndex = 21;
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button5.Location = new System.Drawing.Point(324, 0);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(41, 25);
-            this.button5.TabIndex = 20;
-            this.button5.Text = "Save";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button6.Location = new System.Drawing.Point(365, 0);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(41, 25);
-            this.button6.TabIndex = 19;
-            this.button6.Text = "New";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            this.button7.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button7.Location = new System.Drawing.Point(406, 0);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(50, 25);
-            this.button7.TabIndex = 18;
-            this.button7.Text = "Delete";
-            this.button7.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label4.Location = new System.Drawing.Point(0, 0);
-            this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.label4.Size = new System.Drawing.Size(52, 17);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "Selected:";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -528,14 +713,27 @@
             this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
             this.splitContainer3.ResumeLayout(false);
+            this.tpMessages.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel1.PerformLayout();
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            this.splitContainer4.ResumeLayout(false);
+            this.splitContainer5.Panel1.ResumeLayout(false);
+            this.splitContainer5.Panel2.ResumeLayout(false);
+            this.splitContainer5.ResumeLayout(false);
+            this.splitContainer7.Panel1.ResumeLayout(false);
+            this.splitContainer7.Panel1.PerformLayout();
+            this.splitContainer7.Panel2.ResumeLayout(false);
+            this.splitContainer7.Panel2.PerformLayout();
+            this.splitContainer7.ResumeLayout(false);
+            this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel1.PerformLayout();
+            this.splitContainer6.Panel2.ResumeLayout(false);
+            this.splitContainer6.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.ResumeLayout(false);
-            this.tpMessages.ResumeLayout(false);
-            this.splitContainer4.Panel1.ResumeLayout(false);
-            this.splitContainer4.Panel1.PerformLayout();
-            this.splitContainer4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -572,12 +770,24 @@
         private System.Windows.Forms.TextBox txtCharacterTemplate;
         private System.Windows.Forms.TabPage tpMessages;
         private System.Windows.Forms.SplitContainer splitContainer4;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.TextBox txtMessages;
+        private System.Windows.Forms.Button btnMessages;
+        private System.Windows.Forms.Button btnMessagesSave;
+        private System.Windows.Forms.Button btnMessagesNew;
+        private System.Windows.Forms.Button btnMessagesDelete;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.SplitContainer splitContainer5;
+        private System.Windows.Forms.SplitContainer splitContainer6;
+        private System.Windows.Forms.ListBox lstMissingMessages;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnMessagesGlobalJS;
+        private System.Windows.Forms.Button btnMessagesLanguageJS;
+        private System.Windows.Forms.Button btnMessagesTest;
+        private System.Windows.Forms.SplitContainer splitContainer7;
+        private GameMessageValueListBox lstMessages;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtSelectedMessage;
+        private System.Windows.Forms.Label label7;
     }
 }
 
