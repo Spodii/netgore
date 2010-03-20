@@ -43,22 +43,20 @@ namespace NetGore.IO
         /// to this collection from this secondary collection.</param>
         protected MessageCollectionBase(string file, IEnumerable<KeyValuePair<T, string>> secondary)
         {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+
             if (log.IsDebugEnabled)
                 log.DebugFormat("Loading MessageCollectionBase from file `{0}`.", file);
 
             // Load the script messages
             _messages = Load(file, secondary);
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             var assemblyCreator = GetAssemblyCreator();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Populate the assembly creator
             assemblyCreator.ClassName = "Messages";
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             LoadAdditionalJScriptMembers(file, assemblyCreator);
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             foreach (var msg in _messages)
             {
@@ -66,7 +64,19 @@ namespace NetGore.IO
             }
 
             // Create the assembly and assembly invoker
-            _invoker = assemblyCreator.Compile();
+            _invoker = CompileAssembly(assemblyCreator);
+
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+        
+        /// <summary>
+        /// Compiles the assembly.
+        /// </summary>
+        /// <param name="assemblyCreator">The assembly creator to compile.</param>
+        /// <returns>The <see cref="AssemblyClassInvoker"/> for the compiled assembly.</returns>
+        protected virtual AssemblyClassInvoker CompileAssembly(JScriptAssemblyCreator assemblyCreator)
+        {
+            return assemblyCreator.Compile();
         }
 
         /// <summary>
