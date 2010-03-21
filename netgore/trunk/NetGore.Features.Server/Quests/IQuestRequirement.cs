@@ -2,6 +2,12 @@
 
 namespace NetGore.Features.Quests
 {
+    /// <summary>
+    /// Interface for a single requirement for a quest. Requirements can be used in multiple places for quests, such
+    /// as the requirements to start a quest, to finish it, etc.
+    /// </summary>
+    /// <typeparam name="TCharacter">The type of the <see cref="IQuestPerformer{TCharacter}"/>
+    /// that can perform the quest.</typeparam>
     public interface IQuestRequirement<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>

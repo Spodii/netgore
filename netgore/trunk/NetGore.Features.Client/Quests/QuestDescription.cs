@@ -3,6 +3,9 @@ using NetGore.IO;
 
 namespace NetGore.Features.Quests
 {
+    /// <summary>
+    /// Contains the description of a quest.
+    /// </summary>
     public class QuestDescription : IQuestDescription
     {
         /// <summary>

@@ -1,0 +1,305 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Forms;
+using DemoGame.DbObjs;
+using DemoGame.Server.DbObjs;
+using DemoGame.Server.Queries;
+using DemoGame.Server.Quests;
+using NetGore.Db;
+using NetGore.EditorTools;
+using NetGore.Features.Quests;
+using NetGore.IO;
+
+namespace DemoGame.EditorTools
+{
+    /// <summary>
+    /// A <see cref="Quest"/> that is to be used in editors in a <see cref="PropertyGrid"/>.
+    /// </summary>
+    public class EditorQuest : IQuestTable
+    {
+        const string _categoryQuest = "Quest";
+        const string _categoryQuestFinishReqs = "Quest Finish Requirements";
+        const string _categoryQuestRewards = "Quest Rewards";
+        const string _categoryQuestStartReqs = "Quest Start Requirements";
+        static readonly IQuestDescriptionCollection _questDescriptions = QuestDescriptionCollection.Create(ContentPaths.Dev);
+
+        readonly QuestID _id;
+
+        List<MutablePair<ItemTemplateID, byte>> _finishItems;
+        List<QuestID> _finishQuests;
+        List<MutablePair<CharacterTemplateID, ushort>> _kills;
+        bool _repeatable;
+        List<MutablePair<ItemTemplateID, byte>> _rewardItems;
+        List<MutablePair<ItemTemplateID, byte>> _startItems;
+        List<QuestID> _startQuests;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorQuest"/> class.
+        /// </summary>
+        /// <param name="questID">The quest ID.</param>
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        public EditorQuest(QuestID questID, IDbController dbController)
+        {
+            _id = questID;
+
+            // Get the quest database table row
+            var questTable = dbController.GetQuery<SelectQuestQuery>().Execute(questID);
+            if (questTable == null)
+                throw new ArgumentException(
+                    string.Format("Invalid QuestID ({0}) supplied - no quests with this ID exists.", questID), "questID");
+
+            Debug.Assert(questID == questTable.ID);
+
+            // Get the quest description stuff from the client-side
+            var qd = _questDescriptions[ID];
+            if (qd != null)
+            {
+                Name = qd.Name;
+                Description = qd.Description;
+            }
+            else
+            {
+                Name = string.Empty;
+                Description = string.Empty;
+            }
+
+            // Get the quest details from the server side
+            RewardExp = questTable.RewardExp;
+            RewardCash = questTable.RewardCash;
+            Repeatable = questTable.Repeatable;
+
+            _startItems =
+                dbController.GetQuery<SelectQuestRequireStartItemQuery>().Execute(questID).Select(
+                    x => new MutablePair<ItemTemplateID, byte>(x.ItemTemplateID, x.Amount)).ToList();
+            _finishItems =
+                dbController.GetQuery<SelectQuestRequireFinishItemQuery>().Execute(questID).Select(
+                    x => new MutablePair<ItemTemplateID, byte>(x.ItemTemplateID, x.Amount)).ToList();
+
+            _startQuests = dbController.GetQuery<SelectQuestRequireStartCompleteQuestsQuery>().Execute(questID).ToList();
+            _finishQuests = dbController.GetQuery<SelectQuestRequireFinishCompleteQuestsQuery>().Execute(questID).ToList();
+
+            _rewardItems =
+                dbController.GetQuery<SelectQuestRewardItemQuery>().Execute(questID).Select(
+                    x => new MutablePair<ItemTemplateID, byte>(x.ItemTemplateID, x.Amount)).ToList();
+
+            _kills =
+                dbController.GetQuery<SelectQuestRequireKillQuery>().Execute(questID).Select(
+                    x => new MutablePair<CharacterTemplateID, ushort>(x.CharacterTemplateID, x.Amount)).ToList();
+        }
+
+        /// <summary>
+        /// Gets or sets the description of the quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The long description of the quest.")]
+        [Category(_categoryQuest)]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the items required to finish the quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The items required to finish the quest.")]
+        [Category(_categoryQuestFinishReqs)]
+        public List<MutablePair<ItemTemplateID, byte>> FinishItems
+        {
+            get
+            {
+                EnsureListDistinct(_finishItems, (x, y) => x.Key == y.Key);
+                return _finishItems;
+            }
+            set
+            {
+                EnsureListDistinct(_finishItems, (x, y) => x.Key == y.Key);
+                _finishItems = value ?? new List<MutablePair<ItemTemplateID, byte>>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the quests required to be completed to be able to finish the quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The quests required to be completed to be able to finish the quest.")]
+        [Category(_categoryQuestFinishReqs)]
+        public List<QuestID> FinishQuests
+        {
+            get
+            {
+                EnsureListDistinct(_finishQuests, (x, y) => x == y);
+                return _finishQuests;
+            }
+            set
+            {
+                EnsureListDistinct(_finishQuests, (x, y) => x == y);
+                _finishQuests = value ?? new List<QuestID>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the characters required to kill, and the amount to kill, to finish the quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The characters required to kill, and the amount to kill, to finish the quest.")]
+        [Category(_categoryQuestFinishReqs)]
+        public List<MutablePair<CharacterTemplateID, ushort>> Kills
+        {
+            get
+            {
+                EnsureListDistinct(_kills, (x, y) => x.Key == y.Key);
+                return _kills;
+            }
+            set
+            {
+                EnsureListDistinct(_kills, (x, y) => x.Key == y.Key);
+                _kills = value ?? new List<MutablePair<CharacterTemplateID, ushort>>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The short name of the quest. Doesn't need to be unique, but is usually a good idea.")]
+        [Category(_categoryQuest)]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the item templates and amounts given as a reward for finishing this quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The item templates and amounts given as a reward for finishing this quest.")]
+        [Category(_categoryQuestRewards)]
+        public List<MutablePair<ItemTemplateID, byte>> RewardItems
+        {
+            get
+            {
+                EnsureListDistinct(_rewardItems, (x, y) => x.Key == y.Key);
+                return _rewardItems;
+            }
+            set
+            {
+                EnsureListDistinct(_rewardItems, (x, y) => x.Key == y.Key);
+                _rewardItems = value ?? new List<MutablePair<ItemTemplateID, byte>>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the item templates and amounts required to start this quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The item templates and amounts required to start this quest.")]
+        [Category(_categoryQuestStartReqs)]
+        public List<MutablePair<ItemTemplateID, byte>> StartItems
+        {
+            get
+            {
+                EnsureListDistinct(_startItems, (x, y) => x.Key == y.Key);
+                return _startItems;
+            }
+            set
+            {
+                EnsureListDistinct(_startItems, (x, y) => x.Key == y.Key);
+                _startItems = value ?? new List<MutablePair<ItemTemplateID, byte>>();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the quests that must be finished before starting this quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The quests that must be finished before starting this quest.")]
+        [Category(_categoryQuestStartReqs)]
+        public List<QuestID> StartQuests
+        {
+            get
+            {
+                EnsureListDistinct(_startQuests, (x, y) => x == y);
+                return _startQuests;
+            }
+            set
+            {
+                EnsureListDistinct(_startQuests, (x, y) => x == y);
+                _startQuests = value ?? new List<QuestID>();
+            }
+        }
+
+        /// <summary>
+        /// Ensures the items in a <see cref="IList{T}"/> are distinct.
+        /// </summary>
+        /// <typeparam name="T">The type of list items.</typeparam>
+        /// <param name="list">The list.</param>
+        /// <param name="equalityComparer">The equality comparer.</param>
+        static void EnsureListDistinct<T>(IList<T> list, Func<T, T, bool> equalityComparer)
+        {
+            for (int i = 0; i < list.Count - 1; i++)
+            {
+                for (int j = i + 1; j < list.Count; j++)
+                {
+                    if (equalityComparer(list[i], list[j]))
+                    {
+                        list.RemoveAt(j);
+                        j--;
+                    }
+                }
+            }
+        }
+
+        #region IQuestTable Members
+
+        /// <summary>
+        /// Gets the unique ID of the quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The unique ID of the quest.")]
+        [Category(_categoryQuest)]
+        public QuestID ID
+        {
+            get { return _id; }
+        }
+
+        /// <summary>
+        /// Gets or sets if this quest can be repeated.
+        /// </summary>
+        [Browsable(true)]
+        [Description("If the quest can be repeated by someone multiple times. If false, this quest can only be done once.")]
+        [Category(_categoryQuest)]
+        public bool Repeatable
+        {
+            get { return _repeatable; }
+            set { _repeatable = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of cash given as a reward for finishing this quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The amount of cash given as a reward for finishing this quest.")]
+        [Category(_categoryQuestRewards)]
+        public int RewardCash { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of experience given as a reward for finishing this quest.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The amount of experience given as a reward for finishing this quest.")]
+        [Category(_categoryQuestRewards)]
+        public int RewardExp { get; set; }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IQuestTable IQuestTable.DeepCopy()
+        {
+            return new QuestTable(this);
+        }
+
+        #endregion
+    }
+}

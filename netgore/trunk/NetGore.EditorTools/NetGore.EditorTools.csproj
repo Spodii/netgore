@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -84,6 +84,7 @@
     <Compile Include="AutoCompleteSources.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\PropertyGridExtensions.cs" />
+    <Compile Include="MutablePair.cs" />
     <Compile Include="UI Editors\AdvancedClassTypeConverter.cs" />
     <Compile Include="UI Editors\AdvancedPropertyDescriptor.cs" />
     <Compile Include="UI Editors\AIIDEditor.cs" />

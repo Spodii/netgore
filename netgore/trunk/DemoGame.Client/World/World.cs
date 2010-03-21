@@ -15,7 +15,6 @@ namespace DemoGame.Client
         readonly ICamera2D _camera;
         readonly IGetTime _getTime;
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
-        readonly QuestDescriptionCollection _questDescriptions = new QuestDescriptionCollection();
         readonly UserInfo _userInfo;
 
         Map _map;
@@ -35,8 +34,6 @@ namespace DemoGame.Client
 
             MapDrawingExtensions.Add(new EmoticonMapDrawingExtension(_emoticonDisplayManager));
 
-            _questDescriptions.Load(ContentPaths.Build);
-
             if (userInfo != null)
             {
                 Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
@@ -49,11 +46,13 @@ namespace DemoGame.Client
                                                                 m =>
                                                                 m.Spatial.GetMany<Character>(m.Camera.GetViewArea(),
                                                                                              c => !c.ProvidedQuests.IsEmpty()),
-                                                                c => c.ProvidedQuests);
-                e.QuestAvailableCanStartIndicator = new Grh(GrhInfo.GetData("Quest", "can start"));
-                e.QuestStartedIndicator = new Grh(GrhInfo.GetData("Quest", "started"));
-                e.QuestAvailableCannotStartIndicator = new Grh(GrhInfo.GetData("Quest", "cannot start"));
-                e.QuestTurnInIndicator = new Grh(GrhInfo.GetData("Quest", "turnin"));
+                                                                c => c.ProvidedQuests)
+                {
+                    QuestAvailableCanStartIndicator = new Grh(GrhInfo.GetData("Quest", "can start")),
+                    QuestStartedIndicator = new Grh(GrhInfo.GetData("Quest", "started")),
+                    QuestAvailableCannotStartIndicator = new Grh(GrhInfo.GetData("Quest", "cannot start")),
+                    QuestTurnInIndicator = new Grh(GrhInfo.GetData("Quest", "turnin"))
+                };
 
                 MapDrawingExtensions.Add(e);
             }
@@ -116,11 +115,6 @@ namespace DemoGame.Client
         public MapDrawingExtensionCollection MapDrawingExtensions
         {
             get { return _mapDrawingExtensions; }
-        }
-
-        public IQuestDescriptionCollection QuestDescriptions
-        {
-            get { return _questDescriptions; }
         }
 
         /// <summary>

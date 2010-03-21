@@ -1,8 +1,6 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Features.Quests;
@@ -10,30 +8,18 @@ using NetGore.Features.Quests;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectQuestQuery : DbQueryReader<QuestID>
+    public class DeleteQuestQuery : DbQueryNonReader<QuestID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", QuestTable.TableName);
+        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `id`=@id", QuestTable.TableName);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectQuestQuery"/> class.
+        /// Initializes a new instance of the <see cref="DeleteQuestQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectQuestQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
+        /// execute the query on.</param>
+        public DeleteQuestQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, _queryStr)
         {
-            QueryAsserts.ArePrimaryKeys(QuestTable.DbKeyColumns, "id");
-        }
-
-        public IQuestTable Execute(QuestID id)
-        {
-            using (var r = ExecuteReader(id))
-            {
-                if (!r.Read())
-                    return null;
-
-                var ret = new QuestTable();
-                ret.ReadValues(r);
-                return ret;
-            }
         }
 
         /// <summary>

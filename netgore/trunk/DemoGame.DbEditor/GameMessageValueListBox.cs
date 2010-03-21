@@ -15,6 +15,9 @@ namespace DemoGame.DbEditor
         /// </summary>
         public GameMessageValueListBox()
         {
+            if (DesignMode)
+                return;
+
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             DrawMode = DrawMode.OwnerDrawFixed;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
@@ -26,6 +29,9 @@ namespace DemoGame.DbEditor
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             // Ensure a valid index
             if (e.Index < 0 || e.Index >= Items.Count)
             {

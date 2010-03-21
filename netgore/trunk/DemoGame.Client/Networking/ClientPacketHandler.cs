@@ -39,6 +39,7 @@ namespace DemoGame.Client
         public delegate void CreateAccountEventHandler(IIPSocket sender, bool successful, string errorMessage);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly IQuestDescriptionCollection _questDescriptions = QuestDescriptionCollection.Create(ContentPaths.Build);
 
         readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
         readonly IDynamicEntityFactory _dynamicEntityFactory;
@@ -787,11 +788,10 @@ namespace DemoGame.Client
             }
 
             // Grab the descriptions for both the available quests and quests we can turn in
-            var questDescriptions =
-                availableQuests.Concat(turnInQuests).Distinct().Select(x => World.QuestDescriptions.GetOrDefault(x));
+            var qds = availableQuests.Concat(turnInQuests).Distinct().Select(x => _questDescriptions.GetOrDefault(x));
 
             // Display the form
-            GameplayScreen.AvailableQuestsForm.Display(questDescriptions, npcIndex);
+            GameplayScreen.AvailableQuestsForm.Display(qds, npcIndex);
         }
 
         [MessageHandler((byte)ServerPacketID.StartShopping)]

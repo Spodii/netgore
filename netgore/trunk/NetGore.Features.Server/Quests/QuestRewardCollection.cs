@@ -4,6 +4,11 @@ using System.Linq;
 
 namespace NetGore.Features.Quests
 {
+    /// <summary>
+    /// A collection of <see cref="IQuestReward{TCharacter}"/>s.
+    /// </summary>
+    /// <typeparam name="TCharacter">The type of the <see cref="IQuestPerformer{TCharacter}"/>
+    /// that can perform the quest.</typeparam>
     public class QuestRewardCollection<TCharacter> : IQuestRewardCollection<TCharacter>
         where TCharacter : IQuestPerformer<TCharacter>
     {
