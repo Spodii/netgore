@@ -368,9 +368,10 @@
             // 
             // splitContainer4
             // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer4.IsSplitterFixed = true;
-            this.splitContainer4.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
             this.splitContainer4.Name = "splitContainer4";
             this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -387,7 +388,7 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.splitContainer5);
-            this.splitContainer4.Size = new System.Drawing.Size(450, 371);
+            this.splitContainer4.Size = new System.Drawing.Size(456, 377);
             this.splitContainer4.SplitterDistance = 22;
             this.splitContainer4.TabIndex = 30;
             // 
@@ -398,13 +399,13 @@
             this.txtMessages.Location = new System.Drawing.Point(52, 0);
             this.txtMessages.Name = "txtMessages";
             this.txtMessages.ReadOnly = true;
-            this.txtMessages.Size = new System.Drawing.Size(240, 20);
+            this.txtMessages.Size = new System.Drawing.Size(246, 20);
             this.txtMessages.TabIndex = 33;
             // 
             // btnMessages
             // 
             this.btnMessages.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMessages.Location = new System.Drawing.Point(292, 0);
+            this.btnMessages.Location = new System.Drawing.Point(298, 0);
             this.btnMessages.Name = "btnMessages";
             this.btnMessages.Size = new System.Drawing.Size(26, 22);
             this.btnMessages.TabIndex = 32;
@@ -415,7 +416,7 @@
             // btnMessagesSave
             // 
             this.btnMessagesSave.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMessagesSave.Location = new System.Drawing.Point(318, 0);
+            this.btnMessagesSave.Location = new System.Drawing.Point(324, 0);
             this.btnMessagesSave.Name = "btnMessagesSave";
             this.btnMessagesSave.Size = new System.Drawing.Size(41, 22);
             this.btnMessagesSave.TabIndex = 31;
@@ -426,7 +427,7 @@
             // btnMessagesNew
             // 
             this.btnMessagesNew.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMessagesNew.Location = new System.Drawing.Point(359, 0);
+            this.btnMessagesNew.Location = new System.Drawing.Point(365, 0);
             this.btnMessagesNew.Name = "btnMessagesNew";
             this.btnMessagesNew.Size = new System.Drawing.Size(41, 22);
             this.btnMessagesNew.TabIndex = 30;
@@ -437,7 +438,7 @@
             // btnMessagesDelete
             // 
             this.btnMessagesDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMessagesDelete.Location = new System.Drawing.Point(400, 0);
+            this.btnMessagesDelete.Location = new System.Drawing.Point(406, 0);
             this.btnMessagesDelete.Name = "btnMessagesDelete";
             this.btnMessagesDelete.Size = new System.Drawing.Size(50, 22);
             this.btnMessagesDelete.TabIndex = 29;
@@ -470,8 +471,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
-            this.splitContainer5.Size = new System.Drawing.Size(450, 345);
-            this.splitContainer5.SplitterDistance = 261;
+            this.splitContainer5.Size = new System.Drawing.Size(456, 351);
+            this.splitContainer5.SplitterDistance = 265;
             this.splitContainer5.TabIndex = 0;
             // 
             // splitContainer7
@@ -491,8 +492,8 @@
             // 
             this.splitContainer7.Panel2.Controls.Add(this.txtSelectedMessage);
             this.splitContainer7.Panel2.Controls.Add(this.label7);
-            this.splitContainer7.Size = new System.Drawing.Size(450, 261);
-            this.splitContainer7.SplitterDistance = 225;
+            this.splitContainer7.Size = new System.Drawing.Size(456, 265);
+            this.splitContainer7.SplitterDistance = 229;
             this.splitContainer7.TabIndex = 0;
             // 
             // lstMessages
@@ -502,7 +503,7 @@
             this.lstMessages.FormattingEnabled = true;
             this.lstMessages.Location = new System.Drawing.Point(0, 13);
             this.lstMessages.Name = "lstMessages";
-            this.lstMessages.Size = new System.Drawing.Size(450, 212);
+            this.lstMessages.Size = new System.Drawing.Size(456, 212);
             this.lstMessages.TabIndex = 5;
             this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
             // 
@@ -521,7 +522,7 @@
             this.txtSelectedMessage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtSelectedMessage.Location = new System.Drawing.Point(0, 13);
             this.txtSelectedMessage.Name = "txtSelectedMessage";
-            this.txtSelectedMessage.Size = new System.Drawing.Size(450, 20);
+            this.txtSelectedMessage.Size = new System.Drawing.Size(456, 20);
             this.txtSelectedMessage.TabIndex = 7;
             this.txtSelectedMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSelectedMessage_KeyDown);
             this.txtSelectedMessage.Leave += new System.EventHandler(this.txtSelectedMessage_Leave);
@@ -552,8 +553,8 @@
             this.splitContainer6.Panel2.Controls.Add(this.btnMessagesGlobalJS);
             this.splitContainer6.Panel2.Controls.Add(this.btnMessagesLanguageJS);
             this.splitContainer6.Panel2.Controls.Add(this.btnMessagesTest);
-            this.splitContainer6.Size = new System.Drawing.Size(450, 80);
-            this.splitContainer6.SplitterDistance = 373;
+            this.splitContainer6.Size = new System.Drawing.Size(456, 82);
+            this.splitContainer6.SplitterDistance = 377;
             this.splitContainer6.TabIndex = 0;
             // 
             // lstMissingMessages
@@ -562,7 +563,7 @@
             this.lstMissingMessages.FormattingEnabled = true;
             this.lstMissingMessages.Location = new System.Drawing.Point(0, 13);
             this.lstMissingMessages.Name = "lstMissingMessages";
-            this.lstMissingMessages.Size = new System.Drawing.Size(373, 56);
+            this.lstMissingMessages.Size = new System.Drawing.Size(377, 69);
             this.lstMissingMessages.TabIndex = 6;
             this.lstMissingMessages.DoubleClick += new System.EventHandler(this.lstMissingMessages_DoubleClick);
             // 
@@ -581,7 +582,7 @@
             this.btnMessagesGlobalJS.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnMessagesGlobalJS.Location = new System.Drawing.Point(0, 44);
             this.btnMessagesGlobalJS.Name = "btnMessagesGlobalJS";
-            this.btnMessagesGlobalJS.Size = new System.Drawing.Size(73, 22);
+            this.btnMessagesGlobalJS.Size = new System.Drawing.Size(75, 22);
             this.btnMessagesGlobalJS.TabIndex = 34;
             this.btnMessagesGlobalJS.Text = "Global.js";
             this.btnMessagesGlobalJS.UseVisualStyleBackColor = true;
@@ -592,7 +593,7 @@
             this.btnMessagesLanguageJS.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnMessagesLanguageJS.Location = new System.Drawing.Point(0, 22);
             this.btnMessagesLanguageJS.Name = "btnMessagesLanguageJS";
-            this.btnMessagesLanguageJS.Size = new System.Drawing.Size(73, 22);
+            this.btnMessagesLanguageJS.Size = new System.Drawing.Size(75, 22);
             this.btnMessagesLanguageJS.TabIndex = 33;
             this.btnMessagesLanguageJS.Text = "Language.js";
             this.btnMessagesLanguageJS.UseVisualStyleBackColor = true;
@@ -603,7 +604,7 @@
             this.btnMessagesTest.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnMessagesTest.Location = new System.Drawing.Point(0, 0);
             this.btnMessagesTest.Name = "btnMessagesTest";
-            this.btnMessagesTest.Size = new System.Drawing.Size(73, 22);
+            this.btnMessagesTest.Size = new System.Drawing.Size(75, 22);
             this.btnMessagesTest.TabIndex = 32;
             this.btnMessagesTest.Text = "Test Build";
             this.btnMessagesTest.UseVisualStyleBackColor = true;

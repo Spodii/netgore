@@ -663,7 +663,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL);
+INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(1,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(2,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(3,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1042,7 +1042,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-03-12 06:58:04');
+INSERT INTO `server_time` VALUES ('2010-03-20 10:33:55');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1152,44 +1152,44 @@ SET character_set_client = @saved_cs_client;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `CreateUserOnAccount`(accountName VARCHAR(50), characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
-BEGIN
-		
-		DECLARE character_count INT DEFAULT 0;
-		DECLARE max_character_count INT DEFAULT 3;
-		DECLARE is_id_free INT DEFAULT 0;
-		DECLARE is_name_free INT DEFAULT 0;
-		DECLARE errorMsg VARCHAR(100) DEFAULT "";
-		DECLARE accountID INT DEFAULT NULL;
-
-		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
-
-		IF ISNULL(accountID) THEN
-			SET errorMsg = "Account with the specified name does not exist.";
-		ELSE
-			SELECT COUNT(*) INTO character_count FROM `character` WHERE `account_id` = accountID;
-			SELECT `max_characters_per_account` INTO max_character_count FROM `game_constant`;
-
-			IF character_count > max_character_count THEN
-				SET errorMsg = "No free character slots available in the account.";
-			ELSE
-				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
-				
-				IF is_id_free > 0 THEN
-					SET errorMsg = "The specified CharacterID is not available for use.";
-				ELSE
-					SELECT COUNT(*) INTO is_name_free FROM `user_character` WHERE `name` = characterName;
-						
-					IF is_name_free > 0 THEN
-						SET errorMsg = "The specified character name is not available for use.";
-					ELSE
-						INSERT INTO `character` SET `id` = characterID, `name`	= characterName, `account_id`= 	accountID;
-					END IF;
-				END IF;
-			END IF;
-		END IF;
-				
-		RETURN errorMsg;
-  
+BEGIN
+		
+		DECLARE character_count INT DEFAULT 0;
+		DECLARE max_character_count INT DEFAULT 3;
+		DECLARE is_id_free INT DEFAULT 0;
+		DECLARE is_name_free INT DEFAULT 0;
+		DECLARE errorMsg VARCHAR(100) DEFAULT "";
+		DECLARE accountID INT DEFAULT NULL;
+
+		SELECT `id` INTO accountID FROM `account` WHERE `name` = accountName;
+
+		IF ISNULL(accountID) THEN
+			SET errorMsg = "Account with the specified name does not exist.";
+		ELSE
+			SELECT COUNT(*) INTO character_count FROM `character` WHERE `account_id` = accountID;
+			SELECT `max_characters_per_account` INTO max_character_count FROM `game_constant`;
+
+			IF character_count > max_character_count THEN
+				SET errorMsg = "No free character slots available in the account.";
+			ELSE
+				SELECT COUNT(*) INTO is_id_free FROM `character` WHERE `id` = characterID;
+				
+				IF is_id_free > 0 THEN
+					SET errorMsg = "The specified CharacterID is not available for use.";
+				ELSE
+					SELECT COUNT(*) INTO is_name_free FROM `user_character` WHERE `name` = characterName;
+						
+					IF is_name_free > 0 THEN
+						SET errorMsg = "The specified character name is not available for use.";
+					ELSE
+						INSERT INTO `character` SET `id` = characterID, `name`	= characterName, `account_id`= 	accountID;
+					END IF;
+				END IF;
+			END IF;
+		END IF;
+				
+		RETURN errorMsg;
+  
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1207,10 +1207,10 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_Views`()
-BEGIN
-	
-	CALL Rebuild_View_NPC_Character();
-    
+BEGIN
+	
+	CALL Rebuild_View_NPC_Character();
+    
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1250,8 +1250,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `TestProc`(a INT)
-BEGIN
-		UPDATE `test` SET `fvalue`="asdfasdfasdfasdf" WHERE `id`=a;
+BEGIN
+		UPDATE `test` SET `fvalue`="asdfasdfasdfasdf" WHERE `id`=a;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1306,4 +1306,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-03-12  7:57:49
+-- Dump completed on 2010-03-21  9:33:12
