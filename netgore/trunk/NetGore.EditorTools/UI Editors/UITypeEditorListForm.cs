@@ -38,6 +38,15 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets or sets a <see cref="Func{T,U}"/> used to determine what items in the list to skip adding.
+        /// </summary>
+        public Func<T, bool> SkipItems
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.
         /// </summary>
         /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
@@ -124,7 +133,12 @@ namespace NetGore.EditorTools
             lstItems.Items.Clear();
             var items = GetListItems();
             if (items != null)
+            {
+                if (SkipItems != null)
+                    items = items.Where(x => !SkipItems(x));
+
                 lstItems.Items.AddRange(items.Cast<object>().ToArray());
+            }
 
             // Set the default selected item
             lstItems.SelectedItem = SetDefaultSelectedItem(lstItems.Items.Cast<T>());

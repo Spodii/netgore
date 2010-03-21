@@ -424,7 +424,7 @@ namespace DemoGame.MapEditor
             MapID index = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
             var newMap = new Map(index, Camera, _world, GameScreen.GraphicsDevice);
-            DbController.GetQuery<InsertMapQuery>().Execute(newMap);
+            DbController.GetQuery<ReplaceMapQuery>().Execute(newMap);
             newMap.SetDimensions(new Vector2(30, 20) * 32);
             newMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
             Map = newMap;

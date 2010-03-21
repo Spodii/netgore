@@ -7,7 +7,8 @@ namespace NetGore.Features.Quests
     /// <summary>
     /// Assists in keeping track of the quests for a quest performer.
     /// </summary>
-    /// <typeparam name="TCharacter">The type of <see cref="IQuestPerformer{TCharacter}"/>.</typeparam>
+    /// <typeparam name="TCharacter">The type of the <see cref="IQuestPerformer{TCharacter}"/>
+    /// that can perform the quest.</typeparam>
     public abstract class QuestPerformerStatusHelper<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
         public delegate void QuestEventHandler(QuestPerformerStatusHelper<TCharacter> sender, IQuest<TCharacter> quest);

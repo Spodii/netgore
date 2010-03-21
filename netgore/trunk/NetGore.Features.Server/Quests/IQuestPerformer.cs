@@ -6,6 +6,8 @@ namespace NetGore.Features.Quests
     /// <summary>
     /// Interface for an object that is able to accept and complete quests.
     /// </summary>
+    /// <typeparam name="TCharacter">The type of the <see cref="IQuestPerformer{TCharacter}"/>
+    /// that can perform the quest.</typeparam>
     public interface IQuestPerformer<TCharacter> where TCharacter : IQuestPerformer<TCharacter>
     {
         /// <summary>

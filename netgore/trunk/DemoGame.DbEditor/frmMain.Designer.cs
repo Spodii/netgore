@@ -48,6 +48,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.pgCharacterTemplate = new System.Windows.Forms.PropertyGrid();
             this.tpQuests = new System.Windows.Forms.TabPage();
+            this.splitContainer8 = new System.Windows.Forms.SplitContainer();
+            this.txtQuest = new System.Windows.Forms.TextBox();
+            this.btnQuest = new System.Windows.Forms.Button();
+            this.btnQuestSave = new System.Windows.Forms.Button();
+            this.btnQuestNew = new System.Windows.Forms.Button();
+            this.btnQuestDelete = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.pgQuest = new System.Windows.Forms.PropertyGrid();
             this.tpAlliances = new System.Windows.Forms.TabPage();
             this.tpMessages = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
@@ -59,7 +67,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.lstMessages = new DemoGame.DbEditor.GameMessageValueListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtSelectedMessage = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -76,6 +83,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.lstMessages = new DemoGame.DbEditor.GameMessageValueListBox();
             this.tc.SuspendLayout();
             this.tpItemTemplate.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -85,6 +93,10 @@
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            this.tpQuests.SuspendLayout();
+            this.splitContainer8.Panel1.SuspendLayout();
+            this.splitContainer8.Panel2.SuspendLayout();
+            this.splitContainer8.SuspendLayout();
             this.tpMessages.SuspendLayout();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
@@ -340,12 +352,111 @@
             // 
             // tpQuests
             // 
+            this.tpQuests.Controls.Add(this.splitContainer8);
             this.tpQuests.Location = new System.Drawing.Point(4, 22);
             this.tpQuests.Name = "tpQuests";
             this.tpQuests.Size = new System.Drawing.Size(456, 377);
             this.tpQuests.TabIndex = 2;
             this.tpQuests.Text = "Quests";
             this.tpQuests.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer8
+            // 
+            this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer8.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer8.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer8.Name = "splitContainer8";
+            this.splitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer8.Panel1
+            // 
+            this.splitContainer8.Panel1.Controls.Add(this.txtQuest);
+            this.splitContainer8.Panel1.Controls.Add(this.btnQuest);
+            this.splitContainer8.Panel1.Controls.Add(this.btnQuestSave);
+            this.splitContainer8.Panel1.Controls.Add(this.btnQuestNew);
+            this.splitContainer8.Panel1.Controls.Add(this.btnQuestDelete);
+            this.splitContainer8.Panel1.Controls.Add(this.label8);
+            this.splitContainer8.Panel1MinSize = 22;
+            // 
+            // splitContainer8.Panel2
+            // 
+            this.splitContainer8.Panel2.Controls.Add(this.pgQuest);
+            this.splitContainer8.Size = new System.Drawing.Size(456, 377);
+            this.splitContainer8.SplitterDistance = 22;
+            this.splitContainer8.TabIndex = 2;
+            // 
+            // txtQuest
+            // 
+            this.txtQuest.BackColor = System.Drawing.SystemColors.Window;
+            this.txtQuest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtQuest.Location = new System.Drawing.Point(52, 0);
+            this.txtQuest.Name = "txtQuest";
+            this.txtQuest.ReadOnly = true;
+            this.txtQuest.Size = new System.Drawing.Size(246, 20);
+            this.txtQuest.TabIndex = 16;
+            // 
+            // btnQuest
+            // 
+            this.btnQuest.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnQuest.Location = new System.Drawing.Point(298, 0);
+            this.btnQuest.Name = "btnQuest";
+            this.btnQuest.Size = new System.Drawing.Size(26, 22);
+            this.btnQuest.TabIndex = 15;
+            this.btnQuest.Text = "...";
+            this.btnQuest.UseVisualStyleBackColor = true;
+            this.btnQuest.Click += new System.EventHandler(this.btnQuest_Click);
+            // 
+            // btnQuestSave
+            // 
+            this.btnQuestSave.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnQuestSave.Location = new System.Drawing.Point(324, 0);
+            this.btnQuestSave.Name = "btnQuestSave";
+            this.btnQuestSave.Size = new System.Drawing.Size(41, 22);
+            this.btnQuestSave.TabIndex = 14;
+            this.btnQuestSave.Text = "Save";
+            this.btnQuestSave.UseVisualStyleBackColor = true;
+            this.btnQuestSave.Click += new System.EventHandler(this.btnQuestSave_Click);
+            // 
+            // btnQuestNew
+            // 
+            this.btnQuestNew.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnQuestNew.Location = new System.Drawing.Point(365, 0);
+            this.btnQuestNew.Name = "btnQuestNew";
+            this.btnQuestNew.Size = new System.Drawing.Size(41, 22);
+            this.btnQuestNew.TabIndex = 11;
+            this.btnQuestNew.Text = "New";
+            this.btnQuestNew.UseVisualStyleBackColor = true;
+            this.btnQuestNew.Click += new System.EventHandler(this.btnQuestNew_Click);
+            // 
+            // btnQuestDelete
+            // 
+            this.btnQuestDelete.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnQuestDelete.Location = new System.Drawing.Point(406, 0);
+            this.btnQuestDelete.Name = "btnQuestDelete";
+            this.btnQuestDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnQuestDelete.TabIndex = 10;
+            this.btnQuestDelete.Text = "Delete";
+            this.btnQuestDelete.UseVisualStyleBackColor = true;
+            this.btnQuestDelete.Click += new System.EventHandler(this.btnQuestDelete_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label8.Location = new System.Drawing.Point(0, 0);
+            this.label8.Name = "label8";
+            this.label8.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label8.Size = new System.Drawing.Size(52, 17);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Selected:";
+            // 
+            // pgQuest
+            // 
+            this.pgQuest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgQuest.Location = new System.Drawing.Point(0, 0);
+            this.pgQuest.Name = "pgQuest";
+            this.pgQuest.Size = new System.Drawing.Size(456, 351);
+            this.pgQuest.TabIndex = 0;
             // 
             // tpAlliances
             // 
@@ -495,17 +606,6 @@
             this.splitContainer7.Size = new System.Drawing.Size(456, 265);
             this.splitContainer7.SplitterDistance = 229;
             this.splitContainer7.TabIndex = 0;
-            // 
-            // lstMessages
-            // 
-            this.lstMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstMessages.FormattingEnabled = true;
-            this.lstMessages.Location = new System.Drawing.Point(0, 13);
-            this.lstMessages.Name = "lstMessages";
-            this.lstMessages.Size = new System.Drawing.Size(456, 212);
-            this.lstMessages.TabIndex = 5;
-            this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -693,6 +793,17 @@
             this.propertyGrid1.Size = new System.Drawing.Size(450, 345);
             this.propertyGrid1.TabIndex = 0;
             // 
+            // lstMessages
+            // 
+            this.lstMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstMessages.FormattingEnabled = true;
+            this.lstMessages.Location = new System.Drawing.Point(0, 13);
+            this.lstMessages.Name = "lstMessages";
+            this.lstMessages.Size = new System.Drawing.Size(456, 212);
+            this.lstMessages.TabIndex = 5;
+            this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -714,6 +825,11 @@
             this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
             this.splitContainer3.ResumeLayout(false);
+            this.tpQuests.ResumeLayout(false);
+            this.splitContainer8.Panel1.ResumeLayout(false);
+            this.splitContainer8.Panel1.PerformLayout();
+            this.splitContainer8.Panel2.ResumeLayout(false);
+            this.splitContainer8.ResumeLayout(false);
             this.tpMessages.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel1.PerformLayout();
@@ -789,6 +905,14 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtSelectedMessage;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.SplitContainer splitContainer8;
+        private System.Windows.Forms.TextBox txtQuest;
+        private System.Windows.Forms.Button btnQuest;
+        private System.Windows.Forms.Button btnQuestSave;
+        private System.Windows.Forms.Button btnQuestNew;
+        private System.Windows.Forms.Button btnQuestDelete;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.PropertyGrid pgQuest;
     }
 }
 

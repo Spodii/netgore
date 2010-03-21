@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -176,24 +176,32 @@
     <Compile Include="Queries\Item\Template\InsertItemTemplateIDOnlyQuery.cs" />
     <Compile Include="Queries\Item\Template\ReplaceItemTemplateQuery.cs" />
     <Compile Include="Queries\Map\SelectMapIDsQuery.cs" />
-    <Compile Include="Queries\Quest\DeleteCharacterQuestStatusQuery.cs" />
-    <Compile Include="Queries\Quest\InsertCharacterQuestStatusStartQuery.cs" />
-    <Compile Include="Queries\Quest\DeleteCharacterQuestStatusKillsQuery.cs" />
-    <Compile Include="Queries\Quest\SelectActiveQuestsQuery.cs" />
-    <Compile Include="Queries\Quest\SelectCompletedQuestsQuery.cs" />
+    <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusQuery.cs" />
+    <Compile Include="Queries\Quest\Character\InsertCharacterQuestStatusStartQuery.cs" />
+    <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusKillsQuery.cs" />
+    <Compile Include="Queries\Quest\DeleteQuestQuery.cs" />
+    <Compile Include="Queries\Quest\InsertQuestQuery.cs" />
+    <Compile Include="Queries\Quest\ReplaceQuestQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\ReplaceQuestRequireFinishItemQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\ReplaceQuestRequireFinishQuestQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\ReplaceQuestRequireKillQuery.cs" />
+    <Compile Include="Queries\Quest\Start Reqs\ReplaceQuestRequireStartItemQuery.cs" />
+    <Compile Include="Queries\Quest\Start Reqs\ReplaceQuestRequireStartQuestQuery.cs" />
+    <Compile Include="Queries\Quest\Rewards\ReplaceQuestRewardItemQuery.cs" />
+    <Compile Include="Queries\Quest\Character\SelectActiveQuestsQuery.cs" />
+    <Compile Include="Queries\Quest\Character\SelectCompletedQuestsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestIDsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestQuery.cs" />
-    <Compile Include="Queries\Quest\SelectQuestRequireFinishCompleteQuestsQuery.cs" />
-    <Compile Include="Queries\Quest\SelectQuestRequireFinishItemQuery.cs" />
-    <Compile Include="Queries\Quest\SelectQuestRequireKillQuery.cs" />
-    <Compile Include="Queries\Quest\SelectQuestRequireStartCompleteQuestsQuery.cs" />
-    <Compile Include="Queries\Quest\SelectQuestRequireStartItemQuery.cs" />
-    <Compile Include="Queries\Quest\SelectQuestRequireStartQuestQuery.cs" />
-    <Compile Include="Queries\Quest\SelectQuestRewardItemQuery.cs" />
-    <Compile Include="Queries\Quest\SelectQuestStatusKillsQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\SelectQuestRequireFinishCompleteQuestsQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\SelectQuestRequireFinishItemQuery.cs" />
+    <Compile Include="Queries\Quest\Finish Reqs\SelectQuestRequireKillQuery.cs" />
+    <Compile Include="Queries\Quest\Start Reqs\SelectQuestRequireStartCompleteQuestsQuery.cs" />
+    <Compile Include="Queries\Quest\Start Reqs\SelectQuestRequireStartItemQuery.cs" />
+    <Compile Include="Queries\Quest\Rewards\SelectQuestRewardItemQuery.cs" />
+    <Compile Include="Queries\Quest\Character\SelectQuestStatusKillsQuery.cs" />
     <Compile Include="Queries\Quest\SelectQuestValuesQueryBase.cs" />
-    <Compile Include="Queries\Quest\UpdateCharacterQuestStatusFinishedQuery.cs" />
-    <Compile Include="Queries\Quest\UpdateCharacterQuestStatusKillsQuery.cs" />
+    <Compile Include="Queries\Quest\Character\UpdateCharacterQuestStatusFinishedQuery.cs" />
+    <Compile Include="Queries\Quest\Character\UpdateCharacterQuestStatusKillsQuery.cs" />
     <Compile Include="Quests\QuestPerformerKillCounter.cs" />
     <Compile Include="Quests\QuestPerformerStatusHelper.cs" />
     <Compile Include="Quests\Requirements\CompleteQuestQuestRequirement.cs" />

@@ -9,11 +9,12 @@ namespace NetGore.Features.Quests
     /// <summary>
     /// A collection of <see cref="IQuestDescription"/>s.
     /// </summary>
-    public class QuestDescriptionCollection : IQuestDescriptionCollection
+    public sealed class QuestDescriptionCollection : IQuestDescriptionCollection
     {
         const string _questDescriptionsNodeName = "QuestDescriptions";
         const string _rootFileNodeName = "QuestData";
 
+        readonly ContentPaths _contentPath;
         readonly DArray<IQuestDescription> _questDescriptions = new DArray<IQuestDescription>(false);
 
         /// <summary>
@@ -26,13 +27,44 @@ namespace NetGore.Features.Quests
             return contentPath.Data.Join("questdata.xml");
         }
 
+        static readonly ThreadSafeHashCache<ContentPaths, QuestDescriptionCollection> _instanceCache
+            = new ThreadSafeHashCache<ContentPaths, QuestDescriptionCollection>(x => new QuestDescriptionCollection(x));
+
+        /// <summary>
+        /// Creates a <see cref="QuestDescriptionCollection"/>.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
+        /// <returns>The <see cref="QuestDescriptionCollection"/> for the given <paramref name="contentPath"/>.</returns>
+        public static IQuestDescriptionCollection Create(ContentPaths contentPath)
+        {
+            return _instanceCache[contentPath];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuestDescriptionCollection"/> class.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
+        QuestDescriptionCollection(ContentPaths contentPath)
+        {
+            _contentPath = contentPath;
+            Load(contentPath);
+        }
+
         /// <summary>
         /// Loads the quest descriptions from file.
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
-        public void Load(ContentPaths contentPath)
+        void Load(ContentPaths contentPath)
         {
             ReadState(new XmlValueReader(GetFilePath(contentPath), _rootFileNodeName));
+        }
+
+        /// <summary>
+        /// Saves the quest descriptions to file.
+        /// </summary>
+        public void Save()
+        {
+            Save(_contentPath);
         }
 
         /// <summary>
@@ -174,7 +206,7 @@ namespace NetGore.Features.Quests
         /// <param name="questID">The ID of the quest to get the <see cref="IQuestDescription"/> for.</param>
         /// <returns>The <see cref="IQuestDescription"/> for a quest, or an empty description if the quest
         /// description could not be found for the specified <paramref name="questID"/>.</returns>
-        public virtual IQuestDescription GetOrDefault(QuestID questID)
+        public IQuestDescription GetOrDefault(QuestID questID)
         {
             var ret = this[questID];
 

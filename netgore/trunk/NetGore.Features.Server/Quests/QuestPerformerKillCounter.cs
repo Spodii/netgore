@@ -8,7 +8,8 @@ namespace NetGore.Features.Quests
     /// Interface for an object that keeps track of how many kills remain for quests that require killing a
     /// certain number of characters.
     /// </summary>
-    /// <typeparam name="TCharacter">The type of quest performer.</typeparam>
+    /// <typeparam name="TCharacter">The type of the <see cref="IQuestPerformer{TCharacter}"/>
+    /// that can perform the quest.</typeparam>
     /// <typeparam name="TKillID">The type of identifier for the targets to kill.</typeparam>
     public interface IQuestPerformerKillCounter<TCharacter, TKillID> : IDisposable where TCharacter : IQuestPerformer<TCharacter>
     {
