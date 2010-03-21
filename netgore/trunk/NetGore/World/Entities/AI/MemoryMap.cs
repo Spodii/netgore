@@ -1,28 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
+using NetGore.IO;
+using NetGore;
 
 namespace NetGore.AI
 {
-    /*TODO: Expand to "remember" strategies in some form - TODO: design how this part of memory will exist.
-     *TODO: Remember NPC's AND Player Characters who have recently posed a threat i.e. Attacked so we can identify who we need to either target
-     *      or evade or call for help (get alliances)?
-     *TODO: Interact with "EMOTIVE CONTROLLER" by directly providing information about certain past events for initial "post processin" of input data
-     *      TODO: design how to interact with "EMOTIVE CONTROLLER"
-     *TODO: Optimize so as little physical memory is used as possible.
-     *TODO: PreLoad a memoryMap from a file?
-     * 
-     *              PLEASE NOTE:    These ideas and theories are very much in a pre design stage and i just want to outline what to expect in the future
-     *                              note not all of these ideas will be implemented, some will probably be implemented differently.  I've researched different methods extensively for a while
-     *                              and these ideas are an amalgamation of different ideas i've read and studied as well as my own ideas.
-     *                              It's also just to give me an idea of what i need to include in the future.
-     *                                                                                                                                 aPhRo_
-     */
-
     public class MemoryMap
     {
         //2 dimensional List<T> holding data for each MemoryCell.
         readonly double _cellSize;
-        readonly List<List<MemoryCell>> _memoryCells = new List<List<MemoryCell>>();
+        List<List<MemoryCell>> _memoryCells = new List<List<MemoryCell>>();
 
         //Holds some information about the list.
         int _cellsX;
@@ -65,19 +53,35 @@ namespace NetGore.AI
             _maxX = maxX;
             _minY = minY;
 
+            int next_powY = 0;
+            int next_powX = 0;
+            bool arrayInc = false;
+
             _cellsX = (int)(maxX / _cellSize) + 1;
             _cellsY = (int)(minY / _cellSize) + 1;
 
-            for (int X = 0; X < _cellsX; ++X)
+            if (Math.Log(_cellsX, 2) != (int)Math.Log(_cellsX, 2) || Math.Log(_cellsY, 2) != (int)Math.Log(_cellsY, 2))
+            {
+                arrayInc = true;
+                next_powX = (int)Math.Pow(Math.Ceiling(Math.Log((double)_cellsX,2)), 2);
+                next_powY = (int)Math.Pow(Math.Ceiling(Math.Log((double)_cellsY, 2)), 2);
+            }
+            
+            for (int X = 0; X < (arrayInc ? next_powX : _cellsX); ++X)
             {
                 List<MemoryCell> _temp = new List<MemoryCell>();
 
-                for (int Y = 0; Y < _cellsY; ++Y)
+                for (int Y = 0; Y < (arrayInc ? next_powY : _cellsY); ++Y)
                 {
                     _temp.Add(new MemoryCell((int)(X * _cellSize), (int)((X + 1) * _cellSize), (int)(Y * _cellSize),
                                              (int)((Y + 1) * _cellSize)));
                 }
                 _memoryCells.Add(_temp);
+            }
+            // Double check, (remove after debugging complete)
+            if (Math.Log(_cellsX, 2) != (int)Math.Log(_cellsX, 2) || Math.Log(_cellsY, 2) != (int)Math.Log(_cellsY, 2))
+            {
+                throw new Exception("Grid not 2^n. _cellsX = " + _cellsX.ToString() + ". _cellsY = " + _cellsY.ToString() + ".");
             }
 
             _totalCells = _cellsX * _cellsY;
@@ -95,7 +99,7 @@ namespace NetGore.AI
             {
                 for (int Y = 0; Y < _cellsY; ++Y)
                 {
-                    if (_memoryCells[X][Y].TickCount > 0)
+                    if (_memoryCells[X][Y].Weight > 0)
                         ++total;
                 }
             }
@@ -113,7 +117,7 @@ namespace NetGore.AI
             int cellX = (int)(xPos / _cellSize);
             int cellY = (int)(yPos / _cellSize);
 
-            return _memoryCells[cellX][cellY].TickCount;
+            return _memoryCells[cellX][cellY].Weight;
         }
 
         /// <summary>
@@ -143,10 +147,57 @@ namespace NetGore.AI
             int cellX = (int)(xPos / _cellSize);
             int cellY = (int)(yPos / _cellSize);
 
-            if (_memoryCells[cellX][cellY].TickCount > 0)
+            if (_memoryCells[cellX][cellY].Weight > 0)
                 return true;
             else
                 return false;
         }
+
+        public void SaveMemoryMap(ContentPaths contentPath, int ID)
+        {
+            var path = contentPath.Maps.Join("AIMap" + ID + ".xml");
+            using (var writer = new XmlValueWriter(path, "MemoryMap"))
+            {
+                for (int X = 0; X < _cellsX; X++)
+                {
+                    for (int Y = 0; Y < _cellsY; Y++)
+                    {
+                        writer.Write("_cell" + X.ToString() + Y.ToString(), _memoryCells[X][Y].Weight);
+                    }
+                }
+            }
+        }
+
+        public void LoadMemoryMap(ContentPaths contentPath, int ID)
+        {
+
+            var path = contentPath.Maps.Join("AIMap" + ID + ".xml");
+
+            XmlValueReader read = new XmlValueReader(path, "MemoryMap");
+
+            for (int X = 0; X < _cellsX; X++)
+            {
+                for (int Y = 0; Y < _cellsY; Y++)
+                {
+                    _memoryCells[X][Y].Weight = read.ReadInt("_cell" + X.ToString() + Y.ToString());
+                }
+            }
+        }
+
+        public sbyte[,] ToByteArray()
+        {
+            sbyte[,] temp = new sbyte[_cellsX,_cellsY];
+            for (int X = 0; X < _cellsX; X++)
+            {
+                for (int Y = 0; Y < _cellsY; Y++)
+                {
+                    temp[X, Y] = (sbyte)_memoryCells[X][Y].Weight; 
+                }
+            }
+
+            return temp;
+        }
+
+
     }
 }

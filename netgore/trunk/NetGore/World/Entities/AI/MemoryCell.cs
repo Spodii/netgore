@@ -3,13 +3,11 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore.AI
 {
-    struct MemoryCell
+    public class MemoryCell
     {
-        //The number of ticks that the unit spends at a particular MemoryCell
-
         //The rectangle that holds the position of the MemoryCell
-        readonly Rectangle _cell;
-        int _ticks;
+        Rectangle _cell;
+        int _weight;
 
         /// <summary>
         /// MemoryCell constuctor
@@ -21,7 +19,7 @@ namespace NetGore.AI
         public MemoryCell(int XMinimum, int XMaximum, int YMinimum, int YMaximum)
         {
             _cell = new Rectangle(XMinimum, YMinimum, XMaximum - XMinimum, YMaximum - YMinimum);
-            _ticks = 0;
+            _weight = 0;
         }
 
         /// <summary>
@@ -30,14 +28,16 @@ namespace NetGore.AI
         public Rectangle Cell
         {
             get { return _cell; }
+            set { _cell = value; }
         }
 
         /// <summary>
-        /// Number of ticks this MemoryCell has been occupied.
+        /// The weighting of this MemoryCell.
         /// </summary>
-        public int TickCount
+        public int Weight
         {
-            get { return _ticks; }
+            get { return _weight; }
+            set { _weight = value; }
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace NetGore.AI
         /// </summary>
         public void Reset()
         {
-            _ticks = 0;
+            _weight = 0;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace NetGore.AI
         /// </summary>
         public void Update()
         {
-            ++_ticks;
+            ++_weight;
         }
     }
 }
