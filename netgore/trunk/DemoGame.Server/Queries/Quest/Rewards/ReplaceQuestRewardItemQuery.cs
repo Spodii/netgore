@@ -19,8 +19,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceQuestRewardItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public ReplaceQuestRewardItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -38,7 +39,7 @@ namespace DemoGame.DbEditor
                 base.OnDrawItem(e);
                 return;
             }
-            
+
             // Ensure a valid type
             var itemObj = Items[e.Index];
             if (!(itemObj is KeyValuePair<GameMessage, string>))
@@ -51,7 +52,7 @@ namespace DemoGame.DbEditor
 
             var item = (KeyValuePair<GameMessage, string>)itemObj;
 
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 
             // Draw the message key
             var keyStr = item.Key.ToString();

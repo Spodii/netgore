@@ -96,8 +96,9 @@ namespace NetGore
 
             if (typeName == null)
             {
-                throw new ArgumentException(string.Format("Failed to write. The specified DynamicEntity `{0}` is not of a supported type ({1}).",
-                    dEntity, dEntity.GetType()));
+                throw new ArgumentException(
+                    string.Format("Failed to write. The specified DynamicEntity `{0}` is not of a supported type ({1}).", dEntity,
+                                  dEntity.GetType()));
             }
 
             writer.Write(TypeNameStringKey, typeName);

@@ -42,8 +42,8 @@ namespace DemoGame
         /// </summary>
         const int _findValidPlacementPadding = 128;
 
-        const string _headerNodeIndoorsKey = "Indoors";
         const string _headerNodeHasMusicKey = "HasMusic";
+        const string _headerNodeIndoorsKey = "Indoors";
         const string _headerNodeMusicKey = "MusicID";
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
@@ -67,8 +67,6 @@ namespace DemoGame
         /// </summary>
         readonly IGetTime _getTime;
 
-        MapID _mapID;
-
         readonly ISpatialCollection _spatialCollection;
 
         readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
@@ -78,17 +76,19 @@ namespace DemoGame
         /// </summary>
         readonly Stopwatch _updateStopWatch = new Stopwatch();
 
-        Vector2 _size = new Vector2(float.MinValue);
-
         /// <summary>
         /// If the map is actively updating (set to false to "pause" the physics)
         /// </summary>
         bool _isUpdating = true;
 
+        MapID _mapID;
+
         /// <summary>
         /// Name of the map
         /// </summary>
         string _name = string.Empty;
+
+        Vector2 _size = new Vector2(float.MinValue);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
@@ -243,6 +243,15 @@ namespace DemoGame
 
             // Allow for additional processing
             EntityAdded(entity);
+        }
+
+        /// <summary>
+        /// Changes the ID of the map. This is generally only something you will want to do in editors.
+        /// </summary>
+        /// <param name="newID">The new map ID.</param>
+        public void ChangeID(MapID newID)
+        {
+            _mapID = newID;
         }
 
         void CheckCollisionAgainstEntities(Entity entity)
@@ -423,6 +432,17 @@ namespace DemoGame
 
             // Get the entity at the index
             return _entities[index];
+        }
+
+        /// <summary>
+        /// Gets the path to a map file.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
+        /// <param name="id">The ID of the map.</param>
+        /// <returns>The path to the map file.</returns>
+        public static string GetMapFilePath(ContentPaths contentPath, MapID id)
+        {
+            return contentPath.Maps.Join(id + "." + MapFileSuffix);
         }
 
         /// <summary>
@@ -695,17 +715,6 @@ namespace DemoGame
         {
             string path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
-        }
-
-        /// <summary>
-        /// Gets the path to a map file.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
-        /// <param name="id">The ID of the map.</param>
-        /// <returns>The path to the map file.</returns>
-        public static string GetMapFilePath(ContentPaths contentPath, MapID id)
-        {
-            return contentPath.Maps.Join(id + "." + MapFileSuffix);
         }
 
         /// <summary>
@@ -1114,15 +1123,6 @@ namespace DemoGame
 
             var fileName = Path.GetFileNameWithoutExtension(path);
             return Parser.Invariant.TryParse(fileName, out mapID);
-        }
-
-        /// <summary>
-        /// Changes the ID of the map. This is generally only something you will want to do in editors.
-        /// </summary>
-        /// <param name="newID">The new map ID.</param>
-        public void ChangeID(MapID newID)
-        {
-            _mapID = newID;
         }
 
         /// <summary>

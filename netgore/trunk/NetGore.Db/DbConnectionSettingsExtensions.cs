@@ -20,7 +20,9 @@ namespace NetGore.Db
         /// The <see cref="IDbController"/> instance, or null if the user aborted before making
         /// a successful connection.
         /// </returns>
-        public static IDbController CreateDbControllerPromptEditWhenInvalid(this DbConnectionSettings s, Func<DbConnectionSettings, IDbController> createController, Func<string, bool> createPrompt)
+        public static IDbController CreateDbControllerPromptEditWhenInvalid(this DbConnectionSettings s,
+                                                                            Func<DbConnectionSettings, IDbController>
+                                                                                createController, Func<string, bool> createPrompt)
         {
             IDbController ret = null;
 

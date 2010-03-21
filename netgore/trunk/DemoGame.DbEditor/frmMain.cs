@@ -423,6 +423,119 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Handles the Click event of the btnQuestDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnQuestDelete_Click(object sender, EventArgs e)
+        {
+            var quest = pgQuest.SelectedObject as EditorQuest;
+            if (quest == null)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to delete the quest `{0}` [ID: {1}]?";
+            if (MessageBox.Show(string.Format(confirmMsg, quest.Name, quest.ID), "Delete?", MessageBoxButtons.YesNo) ==
+                DialogResult.No)
+                return;
+
+            // Delete from database
+            _dbController.GetQuery<DeleteQuestQuery>().Execute(quest.ID);
+
+            // Delete descriptions
+            var qdc = (QuestDescriptionCollection)QuestDescriptionCollection.Create(ContentPaths.Dev);
+            var qd = qdc[quest.ID];
+            if (qd != null)
+            {
+                qdc.Remove(qd);
+                qdc.Save();
+            }
+
+            MessageBox.Show(string.Format("Quest `{0}` [ID: {1}] successfully deleted.", quest.Name, quest.ID));
+
+            pgQuest.SelectedObject = null;
+            txtQuest.Text = string.Empty;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnQuestNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnQuestNew_Click(object sender, EventArgs e)
+        {
+            const string confirmMsg = "Are you sure you wish to create a new quest?";
+            if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Get the next free ID
+            var id = ReserveFreeQuestID(_dbController);
+
+            // Set the new quest
+            SetQuest(id, true);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnQuestSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnQuestSave_Click(object sender, EventArgs e)
+        {
+            var v = pgQuest.SelectedObject as EditorQuest;
+            if (v == null)
+                return;
+
+            // Description
+            var qdc = (QuestDescriptionCollection)QuestDescriptionCollection.Create(ContentPaths.Dev);
+            var qd = qdc[v.ID] as QuestDescription;
+            if (qd == null)
+            {
+                // Remove an existing IQuestDescription that is not of type QuestDescription, so we can write to it
+                var rawQD = qdc[v.ID];
+                if (rawQD != null)
+                    qdc.Remove(rawQD);
+
+                // Add the new QuestDescription type
+                qd = new QuestDescription { QuestID = v.ID };
+                qdc.Add(qd);
+            }
+
+            qd.Name = v.Name;
+            qd.Description = v.Description;
+
+            qdc.Save();
+
+            // Main quest table values
+            _dbController.GetQuery<ReplaceQuestQuery>().Execute(v);
+
+            // Required items to start/finish
+            _dbController.GetQuery<ReplaceQuestRequireStartItemQuery>().Execute(v.ID,
+                                                                                v.StartItems.Select(
+                                                                                    x => (KeyValuePair<ItemTemplateID, byte>)x));
+            _dbController.GetQuery<ReplaceQuestRequireFinishItemQuery>().Execute(v.ID,
+                                                                                 v.FinishItems.Select(
+                                                                                     x => (KeyValuePair<ItemTemplateID, byte>)x));
+
+            // Required quests to start/finish
+            _dbController.GetQuery<ReplaceQuestRequireStartQuestQuery>().Execute(v.ID, v.StartQuests);
+            _dbController.GetQuery<ReplaceQuestRequireFinishQuestQuery>().Execute(v.ID, v.FinishQuests);
+
+            // Other requirements
+            _dbController.GetQuery<ReplaceQuestRequireKillQuery>().Execute(v.ID,
+                                                                           v.Kills.Select(
+                                                                               x => (KeyValuePair<CharacterTemplateID, ushort>)x));
+
+            // Rewards
+            _dbController.GetQuery<ReplaceQuestRewardItemQuery>().Execute(v.ID,
+                                                                          v.RewardItems.Select(
+                                                                              x => (KeyValuePair<ItemTemplateID, byte>)x));
+
+            SetQuest(v.ID, false);
+
+            MessageBox.Show("Quest ID `" + v.ID + "` successfully saved!");
+        }
+
+        /// <summary>
         /// Changes the selected game messages language.
         /// </summary>
         /// <param name="newLanguage">The new language name. Can be null or empty to select no language.</param>
@@ -717,6 +830,21 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Gets and reserves the next free <see cref="ItemTemplateID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="ItemTemplateID"/>.</returns>
+        public static ItemTemplateID ReserveFreeItemTemplateID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectItemTemplateIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectItemTemplateQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
+
+            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
+                             x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
+        }
+
+        /// <summary>
         /// Gets and reserves the next free <see cref="QuestID"/>.
         /// </summary>
         /// <param name="dbController">The db controller.</param>
@@ -732,18 +860,35 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Gets and reserves the next free <see cref="ItemTemplateID"/>.
+        /// Sets the current quest.
         /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="ItemTemplateID"/>.</returns>
-        public static ItemTemplateID ReserveFreeItemTemplateID(IDbController dbController)
+        /// <param name="questID">The quest ID.</param>
+        /// <param name="isNew">Set to new if this is a new quest; otherwise set as false.</param>
+        void SetQuest(QuestID questID, bool isNew)
         {
-            var getUsedQuery = dbController.GetQuery<SelectItemTemplateIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectItemTemplateQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
+            pgQuest.SelectedObject = new EditorQuest(questID, _dbController);
 
-            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                             x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
+            var qdc = (QuestDescriptionCollection)QuestDescriptionCollection.Create(ContentPaths.Dev);
+            var qd = qdc[questID];
+
+            if (isNew)
+            {
+                if (qd != null)
+                {
+                    qdc.Remove(qd);
+                    qdc.Save();
+                    qd = null;
+                }
+            }
+
+            string s = questID + ". ";
+
+            if (qd != null)
+                s += qd.Name + " - " + qd.Description;
+            else
+                s += "<Unnamed>";
+
+            txtQuest.Text = s;
         }
 
         /// <summary>
@@ -788,147 +933,6 @@ namespace DemoGame.DbEditor
             lstMessages.Items[msgIndex] = new KeyValuePair<GameMessage, string>(original.Key, txtSelectedMessage.Text);
 
             lstMessages.SelectedIndex = oldSelectedIndex;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnQuestSave control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnQuestSave_Click(object sender, EventArgs e)
-        {
-            var v = pgQuest.SelectedObject as EditorQuest;
-            if (v == null)
-                return;
-
-            // Description
-            var qdc = (QuestDescriptionCollection)QuestDescriptionCollection.Create(ContentPaths.Dev);
-            var qd = qdc[v.ID] as QuestDescription;
-            if (qd == null)
-            {
-                // Remove an existing IQuestDescription that is not of type QuestDescription, so we can write to it
-                var rawQD = qdc[v.ID];
-                if (rawQD != null)
-                    qdc.Remove(rawQD);
-
-                // Add the new QuestDescription type
-                qd = new QuestDescription { QuestID = v.ID };
-                qdc.Add(qd);
-            }
-
-            qd.Name = v.Name;
-            qd.Description = v.Description;
-
-            qdc.Save();
-
-            // Main quest table values
-            _dbController.GetQuery<ReplaceQuestQuery>().Execute(v);
-
-            // Required items to start/finish
-            _dbController.GetQuery<ReplaceQuestRequireStartItemQuery>().Execute(v.ID, v.StartItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
-            _dbController.GetQuery<ReplaceQuestRequireFinishItemQuery>().Execute(v.ID, v.FinishItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
-
-            // Required quests to start/finish
-            _dbController.GetQuery<ReplaceQuestRequireStartQuestQuery>().Execute(v.ID, v.StartQuests);
-            _dbController.GetQuery<ReplaceQuestRequireFinishQuestQuery>().Execute(v.ID, v.FinishQuests);
-
-            // Other requirements
-            _dbController.GetQuery<ReplaceQuestRequireKillQuery>().Execute(v.ID, v.Kills.Select(x => (KeyValuePair<CharacterTemplateID, ushort>)x));
-
-            // Rewards
-            _dbController.GetQuery<ReplaceQuestRewardItemQuery>().Execute(v.ID, v.RewardItems.Select(x => (KeyValuePair<ItemTemplateID, byte>)x));
-
-            SetQuest(v.ID, false);
-
-            MessageBox.Show("Quest ID `" + v.ID + "` successfully saved!");
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnQuestNew control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnQuestNew_Click(object sender, EventArgs e)
-        {
-            const string confirmMsg = "Are you sure you wish to create a new quest?";
-            if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            // Get the next free ID
-            var id = ReserveFreeQuestID(_dbController);
-
-            // Set the new quest
-            SetQuest(id, true);
-        }
-
-        /// <summary>
-        /// Sets the current quest.
-        /// </summary>
-        /// <param name="questID">The quest ID.</param>
-        /// <param name="isNew">Set to new if this is a new quest; otherwise set as false.</param>
-        void SetQuest(QuestID questID, bool isNew)
-        {
-            pgQuest.SelectedObject = new EditorQuest(questID, _dbController);
-
-            var qdc = (QuestDescriptionCollection)QuestDescriptionCollection.Create(ContentPaths.Dev);
-            var qd = qdc[questID];
-
-            if (isNew)
-            {
-                if (qd != null)
-                {
-                    qdc.Remove(qd);
-                    qdc.Save();
-                    qd = null;
-                }
-            }
-
-            string s = questID + ". ";
-
-            if (qd != null)
-            {
-                s += qd.Name + " - " + qd.Description;
-            }
-            else
-            {
-                s += "<Unnamed>";
-            }
-
-            txtQuest.Text = s;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnQuestDelete control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnQuestDelete_Click(object sender, EventArgs e)
-        {
-            var quest = pgQuest.SelectedObject as EditorQuest;
-            if (quest == null)
-                return;
-
-            const string confirmMsg = "Are you sure you wish to delete the quest `{0}` [ID: {1}]?";
-            if (MessageBox.Show(string.Format(confirmMsg, quest.Name, quest.ID), "Delete?", MessageBoxButtons.YesNo) ==
-                DialogResult.No)
-                return;
-
-            // Delete from database
-            _dbController.GetQuery<DeleteQuestQuery>().Execute(quest.ID);
-
-            // Delete descriptions
-            var qdc = (QuestDescriptionCollection)QuestDescriptionCollection.Create(ContentPaths.Dev);
-            var qd = qdc[quest.ID];
-            if (qd != null)
-            {
-                qdc.Remove(qd);
-                qdc.Save();
-            }
-
-            MessageBox.Show(string.Format("Quest `{0}` [ID: {1}] successfully deleted.", quest.Name, quest.ID));
-
-            pgQuest.SelectedObject = null;
-            txtQuest.Text = string.Empty;
         }
     }
 }

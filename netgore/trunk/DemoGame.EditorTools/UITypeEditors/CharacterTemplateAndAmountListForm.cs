@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore;
 using NetGore.EditorTools;
@@ -16,11 +13,6 @@ namespace DemoGame.EditorTools
         readonly List<MutablePair<CharacterTemplateID, ushort>> _list;
 
         CharacterTemplateID? _selectedItem;
-
-        /// <summary>
-        /// Gets or sets if the <see cref="CharacterTemplateID"/>s must be distinct. Default value is true.
-        /// </summary>
-        public bool RequireDistinct { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterTemplateAndAmountListForm"/> class.
@@ -45,50 +37,16 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// Gets or sets if the <see cref="CharacterTemplateID"/>s must be distinct. Default value is true.
         /// </summary>
-        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            if (DesignMode)
-                return;
-
-            _list.Clear();
-            _list.AddRange(lstItems.Items.OfType<MutablePair<CharacterTemplateID, ushort>>());
-
-            base.OnClosing(e);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnBrowse control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnBrowse_Click(object sender, EventArgs e)
-        {
-            using (var f = new CharacterTemplateUITypeEditorForm(null))
-            {
-                // If we require distinct, skip items we already have in the list
-                if (RequireDistinct)
-                {
-                    var listItems = lstItems.Items.OfType<MutablePair<CharacterTemplateID, ushort>>().ToImmutable();
-                    f.SkipItems = (x => !listItems.Any(y => y.Key == x.ID));
-                }
-
-                if (f.ShowDialog(this) != DialogResult.OK)
-                    return;
-
-                var item = f.SelectedItem;
-                txtItem.Text = item.ID + " [" + item.Name + "]";
-            }
-        }
+        public bool RequireDistinct { get; set; }
 
         /// <summary>
         /// Handles the Click event of the btnAdd control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnAdd_Click(object sender, EventArgs e)
+        void btnAdd_Click(object sender, EventArgs e)
         {
             // Validate
             if (!_selectedItem.HasValue)
@@ -129,11 +87,76 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
+        /// Handles the Click event of the btnBrowse control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnBrowse_Click(object sender, EventArgs e)
+        {
+            using (var f = new CharacterTemplateUITypeEditorForm(null))
+            {
+                // If we require distinct, skip items we already have in the list
+                if (RequireDistinct)
+                {
+                    var listItems = lstItems.Items.OfType<MutablePair<CharacterTemplateID, ushort>>().ToImmutable();
+                    f.SkipItems = (x => !listItems.Any(y => y.Key == x.ID));
+                }
+
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                var item = f.SelectedItem;
+                txtItem.Text = item.ID + " [" + item.Name + "]";
+            }
+        }
+
+        /// <summary>
+        /// Handles the KeyDown event of the lstItems control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
+        void lstItems_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                txtAmount_Leave(sender, null);
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstItems control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstItems_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get the selected item
+            var sel = lstItems.SelectedItem as MutablePair<CharacterTemplateID, ushort>;
+            if (sel == null)
+                return;
+
+            txtAmount.Text = sel.Value.ToString();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (DesignMode)
+                return;
+
+            _list.Clear();
+            _list.AddRange(lstItems.Items.OfType<MutablePair<CharacterTemplateID, ushort>>());
+
+            base.OnClosing(e);
+        }
+
+        /// <summary>
         /// Handles the Leave event of the txtAmount control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void txtAmount_Leave(object sender, EventArgs e)
+        void txtAmount_Leave(object sender, EventArgs e)
         {
             // Get the selected item
             var sel = lstItems.SelectedItem as MutablePair<CharacterTemplateID, ushort>;
@@ -154,32 +177,6 @@ namespace DemoGame.EditorTools
 
             // Force the text to refresh
             lstItems.Items[lstItems.SelectedIndex] = sel;
-        }
-
-        /// <summary>
-        /// Handles the KeyDown event of the lstItems control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
-        private void lstItems_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-                txtAmount_Leave(sender, null);
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the lstItems control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstItems_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Get the selected item
-            var sel = lstItems.SelectedItem as MutablePair<CharacterTemplateID, ushort>;
-            if (sel == null)
-                return;
-
-            txtAmount.Text = sel.Value.ToString();
         }
     }
 }

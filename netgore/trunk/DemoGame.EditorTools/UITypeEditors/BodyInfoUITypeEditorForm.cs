@@ -88,7 +88,6 @@ namespace DemoGame.EditorTools
         }
     }
 
-
     /// <summary>
     /// A <see cref="Form"/> for listing the <see cref="GameMessageCollection"/> language.
     /// </summary>

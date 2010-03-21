@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace NetGore.EditorTools
@@ -11,8 +9,8 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class PropertyGridHelper
     {
-        static readonly EventHandler _shrinker;
         static readonly SelectedGridItemChangedEventHandler _refresher;
+        static readonly EventHandler _shrinker;
 
         /// <summary>
         /// Initializes the <see cref="PropertyGridHelper"/> class.
@@ -24,28 +22,22 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the event handler for refreshing a <see cref="PropertyGrid"/> when the selected grid item changes.
+        /// This is usually attached to the <see cref="PropertyGrid.SelectedGridItemChanged"/> event.
+        /// </summary>
+        public static SelectedGridItemChangedEventHandler RefresherEventHandler
+        {
+            get { return _refresher; }
+        }
+
+        /// <summary>
         /// Gets the event handler for shrinking the left column of a <see cref="PropertyGrid"/>
         /// when the selected value changes for the first time, then removes itself from the event.
         /// This should be attached to the <see cref="PropertyGrid.SelectedObjectsChanged"/> event.
         /// </summary>
         public static EventHandler ShrinkerEventHandler
         {
-            get
-            {
-                return _shrinker;
-            }
-        }
-
-        /// <summary>
-        /// Attaches the <see cref="ShrinkerEventHandler"/> to a <see cref="PropertyGrid"/>.
-        /// </summary>
-        /// <param name="pg">The <see cref="PropertyGrid"/> to attach the event to.</param>
-        public static void AttachShrinkerEventHandler(PropertyGrid pg)
-        {
-            if (pg == null)
-                return;
-
-            pg.SelectedObjectsChanged += ShrinkerEventHandler;
+            get { return _shrinker; }
         }
 
         /// <summary>
@@ -61,15 +53,27 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the event handler for refreshing a <see cref="PropertyGrid"/> when the selected grid item changes.
-        /// This is usually attached to the <see cref="PropertyGrid.SelectedGridItemChanged"/> event.
+        /// Attaches the <see cref="ShrinkerEventHandler"/> to a <see cref="PropertyGrid"/>.
         /// </summary>
-        public static SelectedGridItemChangedEventHandler RefresherEventHandler
+        /// <param name="pg">The <see cref="PropertyGrid"/> to attach the event to.</param>
+        public static void AttachShrinkerEventHandler(PropertyGrid pg)
         {
-            get
-            {
-                return _refresher;
-            }
+            if (pg == null)
+                return;
+
+            pg.SelectedObjectsChanged += ShrinkerEventHandler;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="PropertyGrid.SelectedGridItemChanged"/> event of the <see cref="PropertyGrid"/> control.
+        /// This method is bound to all <see cref="PropertyGrid"/>s automatically at runtime.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        static void RefreshHandler(object sender)
+        {
+            var pg = sender as PropertyGrid;
+            if (pg != null)
+                pg.Refresh();
         }
 
         /// <summary>
@@ -104,18 +108,6 @@ namespace NetGore.EditorTools
 
             // Remove this event hook from the PropertyGrid to make it only happen on the first call
             pg.SelectedObjectsChanged -= _shrinker;
-        }
-
-        /// <summary>
-        /// Handles the <see cref="PropertyGrid.SelectedGridItemChanged"/> event of the <see cref="PropertyGrid"/> control.
-        /// This method is bound to all <see cref="PropertyGrid"/>s automatically at runtime.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        static void RefreshHandler(object sender)
-        {
-            var pg = sender as PropertyGrid;
-            if (pg != null)
-                pg.Refresh();
         }
     }
 }

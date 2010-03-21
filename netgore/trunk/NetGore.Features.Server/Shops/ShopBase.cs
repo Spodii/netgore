@@ -11,8 +11,8 @@ namespace NetGore.Features.Shops
     public abstract class ShopBase<TShopItem> : IShop<TShopItem>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly ShopSettings _shopSettings = ShopSettings.Instance;
         static readonly TShopItem[] _emptyShopItems = new TShopItem[0];
+        static readonly ShopSettings _shopSettings = ShopSettings.Instance;
 
         readonly bool _canBuy;
         readonly ShopID _id;

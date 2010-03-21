@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -20,8 +18,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public ReplaceQuestQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public ReplaceQuestQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

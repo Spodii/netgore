@@ -60,8 +60,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterFactory"/> class.
         /// </summary>
-        ParticleEmitterFactory()
-            : base(_particleEmitterFilter, null, false)
+        ParticleEmitterFactory() : base(_particleEmitterFilter, null, false)
         {
         }
 
@@ -71,18 +70,6 @@ namespace NetGore.Graphics.ParticleEngine
         public static ParticleEmitterFactory Instance
         {
             get { return _instance; }
-        }
-
-        /// <summary>
-        /// Gets the name of all the <see cref="ParticleEmitter"/> files in a given <see cref="ContentPaths"/>.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/> to get the effect files from.</param>
-        /// <returns>The name of all the <see cref="ParticleEmitter"/> files in the <paramref name="contentPath"/>.</returns>
-        public static IEnumerable<string> GetEffectsInPath(ContentPaths contentPath)
-        {
-            var files = Directory.GetFiles(contentPath.ParticleEffects, "*." + EmitterFileSuffix, SearchOption.TopDirectoryOnly);
-            var names = files.Select(x => GetEffectNameFromPath(x));
-            return names.ToImmutable();
         }
 
         /// <summary>
@@ -100,6 +87,18 @@ namespace NetGore.Graphics.ParticleEngine
             {
                 return filePath ?? "Unnamed";
             }
+        }
+
+        /// <summary>
+        /// Gets the name of all the <see cref="ParticleEmitter"/> files in a given <see cref="ContentPaths"/>.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to get the effect files from.</param>
+        /// <returns>The name of all the <see cref="ParticleEmitter"/> files in the <paramref name="contentPath"/>.</returns>
+        public static IEnumerable<string> GetEffectsInPath(ContentPaths contentPath)
+        {
+            var files = Directory.GetFiles(contentPath.ParticleEffects, "*." + EmitterFileSuffix, SearchOption.TopDirectoryOnly);
+            var names = files.Select(x => GetEffectNameFromPath(x));
+            return names.ToImmutable();
         }
 
         /// <summary>

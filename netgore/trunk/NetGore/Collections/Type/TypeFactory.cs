@@ -104,12 +104,14 @@ namespace NetGore.Collections
         /// or is not part of this collection.</returns>
         public string this[Type type]
         {
-            get {
+            get
+            {
                 string ret;
                 if (!_typeToName.TryGetValue(type, out ret))
                     return null;
 
-                return ret; }
+                return ret;
+            }
         }
 
         /// <summary>

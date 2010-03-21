@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
@@ -24,39 +25,6 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            if (DesignMode)
-                return;
-
-            base.OnKeyDown(e);
-
-            if (e.KeyCode == Keys.Delete)
-            {
-                if (SelectedIndex >= 0 && SelectedIndex < Items.Count)
-                {
-                    this.RemoveItemAtAndReselect(SelectedIndex);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sorts the items in the <see cref="T:System.Windows.Forms.ListBox"/>.
-        /// </summary>
-        protected override void Sort()
-        {
-            if (DesignMode)
-                return;
-
-            var v = Items.Cast<MutablePair<CharacterTemplateID, ushort>>().ToImmutable();
-            Items.Clear();
-            Items.AddRange(v.Cast<object>().ToArray());
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
@@ -75,7 +43,7 @@ namespace DemoGame.EditorTools
 
             e.DrawBackground();
 
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 
             // Draw the key
             var keyStr = item.Key.ToString();
@@ -105,6 +73,37 @@ namespace DemoGame.EditorTools
 
             if ((e.State & DrawItemState.Selected) != 0)
                 e.DrawFocusRectangle();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (DesignMode)
+                return;
+
+            base.OnKeyDown(e);
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (SelectedIndex >= 0 && SelectedIndex < Items.Count)
+                    this.RemoveItemAtAndReselect(SelectedIndex);
+            }
+        }
+
+        /// <summary>
+        /// Sorts the items in the <see cref="T:System.Windows.Forms.ListBox"/>.
+        /// </summary>
+        protected override void Sort()
+        {
+            if (DesignMode)
+                return;
+
+            var v = Items.Cast<MutablePair<CharacterTemplateID, ushort>>().ToImmutable();
+            Items.Clear();
+            Items.AddRange(v.Cast<object>().ToArray());
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -29,6 +28,8 @@ namespace DemoGame
         /// Suffix for the language files.
         /// </summary>
         const string _languageFileSuffix = ".txt";
+
+        const string _tempLanguageName = "TEMPORARY_COMPILATION_TEST_LANGUAGE";
 
         /// <summary>
         /// The <see cref="GameMessageCollection"/> instance for the default language.
@@ -132,27 +133,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the IEqualityComparer to use for collections created by this collection.
-        /// </summary>
-        /// <returns>
-        /// The IEqualityComparer to use for collections created by this collection.
-        /// </returns>
-        protected override IEqualityComparer<GameMessage> GetEqualityComparer()
-        {
-            return EnumComparer<GameMessage>.Instance;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="GameMessageCollection"/> file for a certain language.
-        /// </summary>
-        /// <param name="language">The language to get the file for.</param>
-        /// <returns>The <see cref="GameMessageCollection"/> file for the <paramref name="language"/>.</returns>
-        public static string GetLanguageFile(string language)
-        {
-            return ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix);
-        }
-
-        /// <summary>
         /// Deletes the files for a language.
         /// </summary>
         /// <param name="language">The language to delete the files for.</param>
@@ -189,6 +169,27 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the IEqualityComparer to use for collections created by this collection.
+        /// </summary>
+        /// <returns>
+        /// The IEqualityComparer to use for collections created by this collection.
+        /// </returns>
+        protected override IEqualityComparer<GameMessage> GetEqualityComparer()
+        {
+            return EnumComparer<GameMessage>.Instance;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GameMessageCollection"/> file for a certain language.
+        /// </summary>
+        /// <param name="language">The language to get the file for.</param>
+        /// <returns>The <see cref="GameMessageCollection"/> file for the <paramref name="language"/>.</returns>
+        public static string GetLanguageFile(string language)
+        {
+            return ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix);
+        }
+
+        /// <summary>
         /// Gets the <see cref="GameMessageCollection"/> JScript file for a certain language.
         /// </summary>
         /// <param name="languageFilePath">The path to the language file to get the additional JScript file for.</param>
@@ -196,6 +197,24 @@ namespace DemoGame
         public static string GetLanguageJScriptFile(string languageFilePath)
         {
             return languageFilePath + ".js";
+        }
+
+        /// <summary>
+        /// Gets the names of all of the available languages.
+        /// </summary>
+        /// <returns>The names of all of the available languages.</returns>
+        public static IEnumerable<string> GetLanguages()
+        {
+            var comp = StringComparer.OrdinalIgnoreCase;
+
+            var dir = ContentPaths.Build.Languages;
+            var filePaths = Directory.GetFiles(dir, "*.txt", SearchOption.TopDirectoryOnly);
+
+            var files = filePaths.Select(x => Path.GetFileNameWithoutExtension(x));
+            files = files.Distinct(comp);
+            files = files.OrderBy(x => x, comp);
+
+            return files.ToImmutable();
         }
 
         /// <summary>
@@ -228,6 +247,22 @@ namespace DemoGame
             var coll = new GameMessageCollection(language, true);
             var messages = coll.ToImmutable();
             return messages;
+        }
+
+        /// <summary>
+        /// Writes the raw <see cref="GameMessage"/>s to file.
+        /// </summary>
+        /// <param name="language">The language.</param>
+        /// <param name="messages">The messages.</param>
+        public static void SaveRawMessages(string language, IEnumerable<KeyValuePair<GameMessage, string>> messages)
+        {
+            StringBuilder sb = new StringBuilder(2048);
+            foreach (var msg in messages)
+            {
+                sb.AppendLine(msg.Key + ": " + msg.Value);
+            }
+
+            File.WriteAllText(GetLanguageFile(language), sb.ToString());
         }
 
         /// <summary>
@@ -269,7 +304,9 @@ namespace DemoGame
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("The following errors have caused the compilation to fail:");
                 foreach (var e in cerrors)
+                {
                     sb.AppendLine(e.ErrorNumber + ": " + e.ErrorText);
+                }
                 errors = sb.ToString();
             }
 
@@ -304,8 +341,6 @@ namespace DemoGame
             return success;
         }
 
-        const string _tempLanguageName = "TEMPORARY_COMPILATION_TEST_LANGUAGE";
-
         /// <summary>
         /// Tests if the <see cref="GameMessageCollection"/> for a certain language exists and can compile
         /// successfully without error.
@@ -315,7 +350,8 @@ namespace DemoGame
         /// <returns>
         /// True if the <paramref name="messages"/>s compiled successfully; otherwise false.
         /// </returns>
-        public static bool TestCompilation(IEnumerable<KeyValuePair<GameMessage, string>> messages, out IEnumerable<CompilerError> errors)
+        public static bool TestCompilation(IEnumerable<KeyValuePair<GameMessage, string>> messages,
+                                           out IEnumerable<CompilerError> errors)
         {
             bool success;
             try
@@ -339,22 +375,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Writes the raw <see cref="GameMessage"/>s to file.
-        /// </summary>
-        /// <param name="language">The language.</param>
-        /// <param name="messages">The messages.</param>
-        public static void SaveRawMessages(string language, IEnumerable<KeyValuePair<GameMessage, string>> messages)
-        {
-            StringBuilder sb = new StringBuilder(2048);
-            foreach (var msg in messages)
-            {
-                sb.AppendLine(msg.Key + ": " + msg.Value);
-            }
-
-            File.WriteAllText(GetLanguageFile(language), sb.ToString());
-        }
-
-        /// <summary>
         /// When overridden in the derived class, tries to parse a string to get the ID.
         /// </summary>
         /// <param name="str">String to parse.</param>
@@ -363,24 +383,6 @@ namespace DemoGame
         protected override bool TryParseID(string str, out GameMessage id)
         {
             return ParseEnumHelper(str, out id);
-        }
-
-        /// <summary>
-        /// Gets the names of all of the available languages.
-        /// </summary>
-        /// <returns>The names of all of the available languages.</returns>
-        public static IEnumerable<string> GetLanguages()
-        {
-            var comp = StringComparer.OrdinalIgnoreCase;
-
-            var dir = ContentPaths.Build.Languages;
-            var filePaths = Directory.GetFiles(dir, "*.txt", SearchOption.TopDirectoryOnly);
-
-            var files = filePaths.Select(x => Path.GetFileNameWithoutExtension(x));
-            files = files.Distinct(comp);
-            files = files.OrderBy(x => x, comp);
-
-            return files.ToImmutable();
         }
     }
 }

@@ -22,14 +22,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the selected item.
-        /// </summary>
-        public T SelectedItem
-        {
-            get { return (T)lstItems.SelectedItem; }
-        }
-
-        /// <summary>
         /// Gets all of the available items to choose from.
         /// </summary>
         public IEnumerable<T> AvailableItems
@@ -38,13 +30,17 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets or sets a <see cref="Func{T,U}"/> used to determine what items in the list to skip adding.
+        /// Gets the selected item.
         /// </summary>
-        public Func<T, bool> SkipItems
+        public T SelectedItem
         {
-            get;
-            set;
+            get { return (T)lstItems.SelectedItem; }
         }
+
+        /// <summary>
+        /// Gets or sets a <see cref="Func{T,TResult}"/> used to determine what items in the list to skip adding.
+        /// </summary>
+        public Func<T, bool> SkipItems { get; set; }
 
         /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.

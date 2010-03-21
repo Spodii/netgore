@@ -50,8 +50,7 @@ namespace NetGore.EditorTools
 
             _added = true;
 
-            AddEditorsHelper(new EditorTypes(typeof(Grh), typeof(GrhEditor)),
-                             new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)),
+            AddEditorsHelper(new EditorTypes(typeof(Grh), typeof(GrhEditor)), new EditorTypes(typeof(GrhIndex), typeof(GrhEditor)),
                              new EditorTypes(typeof(GrhIndex?), typeof(GrhEditor)),
                              new EditorTypes(typeof(GrhData), typeof(GrhEditor)),
                              new EditorTypes(typeof(MusicID), typeof(MusicEditor)),

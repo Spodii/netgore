@@ -20,78 +20,6 @@ namespace NetGore.Graphics
         ResolveTexture2D _lightMap;
         ISpriteBatch _sb;
 
-        #region ILightManager Members
-
-        /// <summary>
-        /// Gets or sets the ambient light color. The alpha value has no affect and will always be set to 255.
-        /// </summary>
-        public Color Ambient
-        {
-            get { return _ambient; }
-            set { _ambient = new Color(value, 255); }
-        }
-
-        /// <summary>
-        /// Gets or sets the default sprite to use for all lights added to this <see cref="ILightManager"/>.
-        /// When this value changes, all <see cref="ILight"/>s in this <see cref="ILightManager"/> who's
-        /// <see cref="ILight.Sprite"/> is equal to the old value will have their sprite set to the new value.
-        /// </summary>
-        public Grh DefaultSprite
-        {
-            get { return _defaultSprite; }
-            set
-            {
-                if (_defaultSprite == value)
-                    return;
-
-                var oldValue = _defaultSprite;
-                _defaultSprite = value;
-
-                foreach (var light in this)
-                {
-                    if (light.Sprite == oldValue)
-                        light.Sprite = _defaultSprite;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets if the <see cref="ILightManager"/> has been initialized.
-        /// </summary>
-        public bool IsInitialized
-        {
-            get { return _lightMap != null; }
-        }
-
-        /// <summary>
-        /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
-        public override void Add(ILight item)
-        {
-            if (item.Sprite == null)
-                item.Sprite = DefaultSprite;
-
-            if (!Contains(item))
-                base.Add(item);
-        }
-
-        /// <summary>
-        /// Draws all of the lights in this <see cref="ILightManager"/>.
-        /// </summary>
-        /// <param name="camera">The camera describing the current view.</param>
-        /// <returns>
-        /// The <see cref="Texture2D"/> containing the light map. If the light map failed to be generated
-        /// for whatever reason, a null value will be returned instead.
-        /// </returns>
-        /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
-        public Texture2D Draw(ICamera2D camera)
-        {
-            return DrawInternal(camera, 0);
-        }
-
         /// <summary>
         /// Draws all of the lights in this <see cref="ILightManager"/>.
         /// </summary>
@@ -166,13 +94,86 @@ namespace NetGore.Graphics
             catch (InvalidOperationException ex)
             {
                 // Quite a few things can cause this, none of which we can really fix (as far as I know).
-                const string errmsg = "InvalidOperationException occured when trying to create the light map - returning NULL instead. Exception: {0}";
+                const string errmsg =
+                    "InvalidOperationException occured when trying to create the light map - returning NULL instead. Exception: {0}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, ex);
                 return null;
             }
 
             return _lightMap;
+        }
+
+        #region ILightManager Members
+
+        /// <summary>
+        /// Gets or sets the ambient light color. The alpha value has no affect and will always be set to 255.
+        /// </summary>
+        public Color Ambient
+        {
+            get { return _ambient; }
+            set { _ambient = new Color(value, 255); }
+        }
+
+        /// <summary>
+        /// Gets or sets the default sprite to use for all lights added to this <see cref="ILightManager"/>.
+        /// When this value changes, all <see cref="ILight"/>s in this <see cref="ILightManager"/> who's
+        /// <see cref="ILight.Sprite"/> is equal to the old value will have their sprite set to the new value.
+        /// </summary>
+        public Grh DefaultSprite
+        {
+            get { return _defaultSprite; }
+            set
+            {
+                if (_defaultSprite == value)
+                    return;
+
+                var oldValue = _defaultSprite;
+                _defaultSprite = value;
+
+                foreach (var light in this)
+                {
+                    if (light.Sprite == oldValue)
+                        light.Sprite = _defaultSprite;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets if the <see cref="ILightManager"/> has been initialized.
+        /// </summary>
+        public bool IsInitialized
+        {
+            get { return _lightMap != null; }
+        }
+
+        /// <summary>
+        /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <exception cref="T:System.NotSupportedException">
+        /// The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        public override void Add(ILight item)
+        {
+            if (item.Sprite == null)
+                item.Sprite = DefaultSprite;
+
+            if (!Contains(item))
+                base.Add(item);
+        }
+
+        /// <summary>
+        /// Draws all of the lights in this <see cref="ILightManager"/>.
+        /// </summary>
+        /// <param name="camera">The camera describing the current view.</param>
+        /// <returns>
+        /// The <see cref="Texture2D"/> containing the light map. If the light map failed to be generated
+        /// for whatever reason, a null value will be returned instead.
+        /// </returns>
+        /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
+        public Texture2D Draw(ICamera2D camera)
+        {
+            return DrawInternal(camera, 0);
         }
 
         /// <summary>

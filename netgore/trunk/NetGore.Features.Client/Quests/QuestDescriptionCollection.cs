@@ -14,21 +14,21 @@ namespace NetGore.Features.Quests
         const string _questDescriptionsNodeName = "QuestDescriptions";
         const string _rootFileNodeName = "QuestData";
 
+        static readonly ThreadSafeHashCache<ContentPaths, QuestDescriptionCollection> _instanceCache =
+            new ThreadSafeHashCache<ContentPaths, QuestDescriptionCollection>(x => new QuestDescriptionCollection(x));
+
         readonly ContentPaths _contentPath;
         readonly DArray<IQuestDescription> _questDescriptions = new DArray<IQuestDescription>(false);
 
         /// <summary>
-        /// Gets the file path for the quest descriptions file.
+        /// Initializes a new instance of the <see cref="QuestDescriptionCollection"/> class.
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
-        /// <returns>The file path for the quest descriptions file.</returns>
-        public static string GetFilePath(ContentPaths contentPath)
+        QuestDescriptionCollection(ContentPaths contentPath)
         {
-            return contentPath.Data.Join("questdata.xml");
+            _contentPath = contentPath;
+            Load(contentPath);
         }
-
-        static readonly ThreadSafeHashCache<ContentPaths, QuestDescriptionCollection> _instanceCache
-            = new ThreadSafeHashCache<ContentPaths, QuestDescriptionCollection>(x => new QuestDescriptionCollection(x));
 
         /// <summary>
         /// Creates a <see cref="QuestDescriptionCollection"/>.
@@ -41,13 +41,13 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="QuestDescriptionCollection"/> class.
+        /// Gets the file path for the quest descriptions file.
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to use to get the file path.</param>
-        QuestDescriptionCollection(ContentPaths contentPath)
+        /// <returns>The file path for the quest descriptions file.</returns>
+        public static string GetFilePath(ContentPaths contentPath)
         {
-            _contentPath = contentPath;
-            Load(contentPath);
+            return contentPath.Data.Join("questdata.xml");
         }
 
         /// <summary>

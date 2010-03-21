@@ -411,7 +411,7 @@ namespace NetGore
         /// <returns>The given IEnumerable as a compact IEnumerable.</returns>
         public static IEnumerable<T> ToCompact<T>(this IEnumerable<T> e)
         {
-            return e.ToArray<T>();
+            return e.ToArray();
         }
 
         /// <summary>
@@ -424,7 +424,7 @@ namespace NetGore
         /// <returns>The given IEnumerable as an immutable IEnumerable.</returns>
         public static IEnumerable<T> ToImmutable<T>(this IEnumerable<T> e)
         {
-            return e.ToArray<T>();
+            return e.ToArray();
         }
     }
 }

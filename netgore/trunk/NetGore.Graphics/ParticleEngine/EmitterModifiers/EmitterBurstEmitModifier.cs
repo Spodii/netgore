@@ -78,13 +78,9 @@ namespace NetGore.Graphics.ParticleEngine
             if (_timeout <= 0)
             {
                 if (_isBursting)
-                {
                     _timeout = RestPeriod;
-                }
                 else
-                {
                     _timeout = EmitPeriod;
-                }
 
                 _isBursting = !_isBursting;
             }

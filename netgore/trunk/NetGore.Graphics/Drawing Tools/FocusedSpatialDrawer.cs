@@ -15,11 +15,11 @@ namespace NetGore.Graphics
         const int _maxSteps = 700;
 
         static readonly Color _focusedBorderColorInner = new Color(0, 0, 0, 150);
-        static readonly Color _focusedBorderColorOuter = new Color(255,255,255, 150);
+        static readonly Color _focusedBorderColorOuter = new Color(255, 255, 255, 150);
         static readonly Color _focusedColor = new Color(0, 255, 0, 75);
-        static readonly Color _nonfocusedColor = new Color(0, 0, 0, 0);
         static readonly Color _nonfocusedBorderColorInner = new Color(0, 0, 0, 150);
         static readonly Color _nonfocusedBorderColorOuter = new Color(255, 255, 255, 150);
+        static readonly Color _nonfocusedColor = new Color(0, 0, 0, 0);
         static readonly Color _trackColor = new Color(0, 0, 0, 0);
         static readonly Color _trackInnerBorderColor = new Color(255, 255, 255, 150);
         static readonly Color _trackOuterBorderColor = new Color(0, 0, 0, 150);
@@ -61,6 +61,30 @@ namespace NetGore.Graphics
         /// <summary>
         /// Draws the <see cref="FocusedSpatialDrawer"/>.
         /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        public void Draw(ISpriteBatch sb)
+        {
+            if (Focused == null)
+                return;
+
+            var r = Focused.ToRectangle();
+            XNARectangle.Draw(sb, r, _focusedColor, _focusedBorderColorInner);
+
+            var r2 = new Rectangle(r.X - 1, r.Y - 1, r.Width + 2, r.Height + 2);
+            XNARectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _focusedBorderColorOuter);
+
+            if (_steps > 0)
+            {
+                XNARectangle.Draw(sb, ApplyStepping(r, _steps), _trackColor, _trackInnerBorderColor);
+                XNARectangle.Draw(sb, ApplyStepping(r, _steps - 1), _trackColor, _trackOuterBorderColor);
+                XNARectangle.Draw(sb, ApplyStepping(r, _steps + 1), _trackColor, _trackOuterBorderColor);
+                _steps -= 4 + (_steps / 10);
+            }
+        }
+
+        /// <summary>
+        /// Draws the <see cref="FocusedSpatialDrawer"/>.
+        /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to focus on.</param>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
         public void DrawFocused(ISpatial spatial, ISpriteBatch sb)
@@ -84,32 +108,8 @@ namespace NetGore.Graphics
             var r = spatial.ToRectangle();
             XNARectangle.Draw(sb, r, _nonfocusedColor, _nonfocusedBorderColorInner);
 
-            var r2 = new Rectangle(r.X-1, r.Y-1, r.Width+2, r.Height+2);
-            XNARectangle.Draw(sb, r2, new Color(0,0,0,0), _nonfocusedBorderColorOuter);
-        }
-
-        /// <summary>
-        /// Draws the <see cref="FocusedSpatialDrawer"/>.
-        /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        public void Draw(ISpriteBatch sb)
-        {
-            if (Focused == null)
-                return;
-
-            var r = Focused.ToRectangle();
-            XNARectangle.Draw(sb, r, _focusedColor, _focusedBorderColorInner);
-
             var r2 = new Rectangle(r.X - 1, r.Y - 1, r.Width + 2, r.Height + 2);
-            XNARectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _focusedBorderColorOuter);
-
-            if (_steps > 0)
-            {
-                XNARectangle.Draw(sb, ApplyStepping(r, _steps), _trackColor, _trackInnerBorderColor);
-                XNARectangle.Draw(sb, ApplyStepping(r, _steps - 1), _trackColor, _trackOuterBorderColor);
-                XNARectangle.Draw(sb, ApplyStepping(r, _steps + 1), _trackColor, _trackOuterBorderColor);
-                _steps -= 4 + (_steps / 10);
-            }
+            XNARectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _nonfocusedBorderColorOuter);
         }
 
         /// <summary>

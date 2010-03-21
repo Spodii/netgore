@@ -15,8 +15,6 @@ namespace DemoGame.MapEditor
         readonly CharacterID _characterID;
         readonly ICharacterTable _table;
 
-        public ICharacterTable CharacterTable { get { return _table; } }
-
         public MapEditorCharacter(ICharacterTable table, Map map)
         {
             if (table == null)
@@ -41,6 +39,11 @@ namespace DemoGame.MapEditor
         public CharacterID CharacterID
         {
             get { return _characterID; }
+        }
+
+        public ICharacterTable CharacterTable
+        {
+            get { return _table; }
         }
 
         /// <summary>

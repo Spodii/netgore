@@ -269,7 +269,9 @@ namespace DemoGame.MapEditor
 
             // Delete all selected
             foreach (var mg in toDelete)
+            {
                 Container.Map.RemoveMapGrh(mg);
+            }
         }
 
         /// <summary>

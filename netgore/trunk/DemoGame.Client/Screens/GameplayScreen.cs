@@ -591,9 +591,7 @@ namespace DemoGame.Client
 
             // Set the new music
             if (!newMap.MusicID.HasValue)
-            {
                 ScreenMusic = null;
-            }
             else if (!MusicManager.TryPlay(newMap.MusicID.Value))
             {
                 IMusic musicTrack = MusicManager.GetItem(newMap.MusicID.Value);

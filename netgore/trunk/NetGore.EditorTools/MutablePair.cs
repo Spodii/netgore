@@ -52,17 +52,6 @@ namespace NetGore.EditorTools
         public TValue Value { get; set; }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NetGore.EditorTools.MutablePair{TKey,TValue}"/>
-        /// to <see cref="System.Collections.Generic.KeyValuePair{TKey,TValue}"/>.
-        /// </summary>
-        /// <param name="v">The value.</param>
-        /// <returns>The result of the conversion.</returns>
-        public static implicit operator KeyValuePair<TKey, TValue>(MutablePair<TKey, TValue> v)
-        {
-            return new KeyValuePair<TKey, TValue>(v.Key, v.Value);
-        }
-
-        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
@@ -71,6 +60,17 @@ namespace NetGore.EditorTools
         public override string ToString()
         {
             return "{" + Key + ", " + Value + "}";
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="NetGore.EditorTools.MutablePair{TKey,TValue}"/>
+        /// to <see cref="System.Collections.Generic.KeyValuePair{TKey,TValue}"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator KeyValuePair<TKey, TValue>(MutablePair<TKey, TValue> v)
+        {
+            return new KeyValuePair<TKey, TValue>(v.Key, v.Value);
         }
 
         /// <summary>
