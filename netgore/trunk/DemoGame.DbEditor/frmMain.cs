@@ -26,9 +26,9 @@ namespace DemoGame.DbEditor
             "Changes made to the current object will be lost. Continue loading the new object and lose changes to the current object?";
 
         IDbController _dbController;
+        GameMessage? _editingGameMessage;
         ICharacterTemplateTable _originalCharacterTemplateValues = null;
         IItemTemplateTable _originalItemTemplateValues = null;
-        GameMessage? _editingGameMessage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
@@ -266,6 +266,172 @@ namespace DemoGame.DbEditor
             MessageBox.Show(v.Name + " successfully saved!");
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnMessages control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnMessages_Click(object sender, EventArgs e)
+        {
+            using (var f = new GameMessageCollectionLanguageEditorUITypeEditorForm(null))
+            {
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                ChangeGameMessagesLanguage(f.SelectedItem);
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnMessagesDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnMessagesDelete_Click(object sender, EventArgs e)
+        {
+            var lang = txtMessages.Text;
+            if (string.IsNullOrEmpty(lang))
+                return;
+
+            // Confirm the deletion
+            const string confirmMsg =
+                "Are you sure you wish to delete the messages for the language `{0}`? This cannot be undone!";
+            if (MessageBox.Show(string.Format(confirmMsg, lang), "Delete language message?", MessageBoxButtons.YesNo) ==
+                DialogResult.No)
+                return;
+
+            // Clear screen
+            ChangeGameMessagesLanguage(null);
+
+            // Delete
+            GameMessageCollection.DeleteLanguageFiles(lang);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnMessagesGlobalJS control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnMessagesGlobalJS_Click(object sender, EventArgs e)
+        {
+            FileHelper.TryOpenWithNotepad(GameMessageCollection.GlobalJScriptFilePath);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnMessagesLanguageJS control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnMessagesLanguageJS_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtMessages.Text))
+                return;
+
+            var filePath = GameMessageCollection.GetLanguageJScriptFile(txtMessages.Text);
+            if (!File.Exists(filePath))
+                File.WriteAllText(filePath, string.Empty);
+
+            FileHelper.TryOpenWithNotepad(filePath);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnMessagesNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnMessagesNew_Click(object sender, EventArgs e)
+        {
+            // Confirm
+            const string confirmMsg = "Are you sure you wish to create a new game messages language?";
+            if (MessageBox.Show(confirmMsg, "Create new language?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Get the name to use
+            string name;
+            using (var f = new LanguageNameForm())
+            {
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                name = f.Value;
+            }
+
+            // Create the new language files, and select it
+            var langFile = GameMessageCollection.GetLanguageFile(name);
+            if (!File.Exists(langFile))
+                File.WriteAllText(langFile, string.Empty);
+
+            var jsFile = GameMessageCollection.GetLanguageJScriptFile(langFile);
+            if (!File.Exists(jsFile))
+                File.WriteAllText(jsFile, string.Empty);
+
+            ChangeGameMessagesLanguage(name);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnMessagesSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnMessagesSave_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtMessages.Text))
+                return;
+
+            GameMessageCollection.SaveRawMessages(txtMessages.Text, lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>());
+
+            MessageBox.Show(
+                string.Format("The game messages for language `{0}` have been successfully saved.", txtMessages.Text), "Saved!");
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnMessagesTest control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnMessagesTest_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtMessages.Text))
+                return;
+
+            string msg;
+            bool success = GameMessageCollection.TestCompilation(lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>(),
+                                                                 out msg);
+
+            if (!success)
+                MessageBox.Show(msg);
+            else
+                MessageBox.Show("Compilation successful!");
+        }
+
+        /// <summary>
+        /// Changes the selected game messages language.
+        /// </summary>
+        /// <param name="newLanguage">The new language name. Can be null or empty to select no language.</param>
+        void ChangeGameMessagesLanguage(string newLanguage)
+        {
+            txtMessages.Text = newLanguage;
+
+            // Clear old values
+            lstMessages.Items.Clear();
+            lstMissingMessages.Items.Clear();
+            _editingGameMessage = null;
+            txtSelectedMessage.Text = string.Empty;
+
+            // Set new values
+            if (!string.IsNullOrEmpty(newLanguage))
+            {
+                // Existing messages
+                var existing = GameMessageCollection.LoadRawMessages(newLanguage).OrderBy(x => x.Key.ToString(),
+                                                                                          NaturalStringComparer.Instance);
+                lstMessages.Items.AddRange(existing.Cast<object>().ToArray());
+
+                // Missing messages
+                var missing = EnumHelper<GameMessage>.Values.Except(existing.Select(x => x.Key));
+                lstMissingMessages.Items.AddRange(missing.Cast<object>().ToArray());
+            }
+        }
+
         void frmMain_Load(object sender, EventArgs e)
         {
         }
@@ -358,6 +524,56 @@ namespace DemoGame.DbEditor
                 return false;
 
             return !_originalItemTemplateValues.HasSameValues(v);
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstMessages control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstMessages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstMessages.SelectedItem == null || !(lstMessages.SelectedItem is KeyValuePair<GameMessage, string>))
+            {
+                _editingGameMessage = null;
+                return;
+            }
+
+            var sel = (KeyValuePair<GameMessage, string>)lstMessages.SelectedItem;
+            _editingGameMessage = sel.Key;
+            txtSelectedMessage.Text = sel.Value;
+        }
+
+        /// <summary>
+        /// Handles the DoubleClick event of the lstMissingMessages control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstMissingMessages_DoubleClick(object sender, EventArgs e)
+        {
+            if (lstMissingMessages.SelectedItem == null)
+                return;
+
+            var msg = (GameMessage)lstMissingMessages.SelectedItem;
+
+            // Remove item from this list
+            lstMissingMessages.Items.RemoveAt(lstMissingMessages.SelectedIndex);
+
+            // Do not add if already exists in the added list
+            if (lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>().Any(x => x.Key == msg))
+                return;
+
+            // Add and re-sort
+            var newItem = new KeyValuePair<GameMessage, string>(msg, "\"\"");
+            var msgs =
+                lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>().Concat(new KeyValuePair<GameMessage, string>[]
+                { newItem }).ToImmutable();
+            lstMessages.Items.Clear();
+            lstMessages.Items.AddRange(
+                msgs.OrderBy(x => x.Key.ToString(), NaturalStringComparer.Instance).Cast<object>().ToArray());
+
+            // Select the new item
+            lstMessages.SelectedIndex = lstMessages.Items.IndexOf(newItem);
         }
 
         /// <summary>
@@ -498,147 +714,11 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnMessages control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnMessages_Click(object sender, EventArgs e)
-        {
-            using (var f = new GameMessageCollectionLanguageEditorUITypeEditorForm(null))
-            {
-                if (f.ShowDialog(this) != DialogResult.OK)
-                    return;
-
-                ChangeGameMessagesLanguage(f.SelectedItem);
-            }
-        }
-
-        /// <summary>
-        /// Changes the selected game messages language.
-        /// </summary>
-        /// <param name="newLanguage">The new language name. Can be null or empty to select no language.</param>
-        void ChangeGameMessagesLanguage(string newLanguage)
-        {
-            txtMessages.Text = newLanguage;
-
-            // Clear old values
-            lstMessages.Items.Clear();
-            lstMissingMessages.Items.Clear();
-            _editingGameMessage = null;
-            txtSelectedMessage.Text = string.Empty;
-
-            // Set new values
-            if (!string.IsNullOrEmpty(newLanguage))
-            {
-                // Existing messages
-                var existing = GameMessageCollection.LoadRawMessages(newLanguage).OrderBy(x => x.Key.ToString(), NaturalStringComparer.Instance);
-                lstMessages.Items.AddRange(existing.Cast<object>().ToArray());
-
-                // Missing messages
-                var missing = EnumHelper<GameMessage>.Values.Except(existing.Select(x => x.Key));
-                lstMissingMessages.Items.AddRange(missing.Cast<object>().ToArray());
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnMessagesGlobalJS control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnMessagesGlobalJS_Click(object sender, EventArgs e)
-        {
-            FileHelper.TryOpenWithNotepad(GameMessageCollection.GlobalJScriptFilePath);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnMessagesLanguageJS control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnMessagesLanguageJS_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtMessages.Text))
-                return;
-
-            var filePath = GameMessageCollection.GetLanguageJScriptFile(txtMessages.Text);
-            if (!File.Exists(filePath))
-                File.WriteAllText(filePath, string.Empty);
-
-            FileHelper.TryOpenWithNotepad(filePath);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnMessagesTest control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnMessagesTest_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtMessages.Text))
-                return;
-            
-            string msg;
-            bool success = GameMessageCollection.TestCompilation(lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>(), out msg);
-
-            if (!success)
-                MessageBox.Show(msg);
-            else
-                MessageBox.Show("Compilation successful!");
-        }
-
-        /// <summary>
-        /// Handles the DoubleClick event of the lstMissingMessages control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstMissingMessages_DoubleClick(object sender, EventArgs e)
-        {
-            if (lstMissingMessages.SelectedItem == null)
-                return;
-
-            var msg = (GameMessage)lstMissingMessages.SelectedItem;
-
-            // Remove item from this list
-            lstMissingMessages.Items.RemoveAt(lstMissingMessages.SelectedIndex);
-
-            // Do not add if already exists in the added list
-            if (lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>().Any(x => x.Key == msg))
-                return;
-
-            // Add and re-sort
-            var newItem = new KeyValuePair<GameMessage, string>(msg, "\"\"");
-            var msgs = lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>().Concat(new KeyValuePair<GameMessage, string>[] { newItem}).ToImmutable(); 
-            lstMessages.Items.Clear();
-            lstMessages.Items.AddRange(msgs.OrderBy(x => x.Key.ToString(), NaturalStringComparer.Instance).Cast<object>().ToArray());
-
-            // Select the new item
-            lstMessages.SelectedIndex = lstMessages.Items.IndexOf(newItem);
-        }
-
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the lstMessages control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lstMessages_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstMessages.SelectedItem == null || !(lstMessages.SelectedItem is KeyValuePair<GameMessage, string>))
-            {
-                _editingGameMessage = null;
-                return;
-            }
-
-            var sel = (KeyValuePair<GameMessage, string>)lstMessages.SelectedItem;
-            _editingGameMessage = sel.Key;
-            txtSelectedMessage.Text = sel.Value;
-        }
-
-        /// <summary>
         /// Handles the KeyDown event of the txtSelectedMessage control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
-        private void txtSelectedMessage_KeyDown(object sender, KeyEventArgs e)
+        void txtSelectedMessage_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Return || _editingGameMessage == null)
                 return;
@@ -651,7 +731,7 @@ namespace DemoGame.DbEditor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void txtSelectedMessage_Leave(object sender, EventArgs e)
+        void txtSelectedMessage_Leave(object sender, EventArgs e)
         {
             var v = _editingGameMessage;
             _editingGameMessage = null;
@@ -675,78 +755,6 @@ namespace DemoGame.DbEditor
             lstMessages.Items[msgIndex] = new KeyValuePair<GameMessage, string>(original.Key, txtSelectedMessage.Text);
 
             lstMessages.SelectedIndex = oldSelectedIndex;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnMessagesSave control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnMessagesSave_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtMessages.Text))
-                return;
-
-            GameMessageCollection.SaveRawMessages(txtMessages.Text, lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>());
-
-            MessageBox.Show(string.Format("The game messages for language `{0}` have been successfully saved.", txtMessages.Text), "Saved!");
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnMessagesDelete control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnMessagesDelete_Click(object sender, EventArgs e)
-        {
-            var lang = txtMessages.Text;
-            if (string.IsNullOrEmpty(lang))
-                return;
-
-            // Confirm the deletion
-            const string confirmMsg = "Are you sure you wish to delete the messages for the language `{0}`? This cannot be undone!";
-            if (MessageBox.Show(string.Format(confirmMsg, lang), "Delete language message?", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            // Clear screen
-            ChangeGameMessagesLanguage(null);
-
-            // Delete
-            GameMessageCollection.DeleteLanguageFiles(lang);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnMessagesNew control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnMessagesNew_Click(object sender, EventArgs e)
-        {
-            // Confirm
-            const string confirmMsg = "Are you sure you wish to create a new game messages language?";
-            if (MessageBox.Show(confirmMsg, "Create new language?", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            // Get the name to use
-            string name;
-            using (var f = new LanguageNameForm())
-            {
-                if (f.ShowDialog(this) != DialogResult.OK)
-                    return;
-
-                name = f.Value;
-            }
-
-            // Create the new language files, and select it
-            var langFile = GameMessageCollection.GetLanguageFile(name);
-            if (!File.Exists(langFile))
-                File.WriteAllText(langFile, string.Empty);
-
-            var jsFile = GameMessageCollection.GetLanguageJScriptFile(langFile);
-            if (!File.Exists(jsFile))
-                File.WriteAllText(jsFile, string.Empty);
-
-            ChangeGameMessagesLanguage(name);
         }
     }
 }
