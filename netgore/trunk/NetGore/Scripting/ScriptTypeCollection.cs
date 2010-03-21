@@ -16,6 +16,7 @@ namespace NetGore.Scripting
     /// </summary>
     public class ScriptTypeCollection : IEnumerable<Type>
     {
+        static readonly ScriptAssemblyCache _scriptAssemblyCache = ScriptAssemblyCache.Instance;
         readonly List<CompilerError> _compilerErrors = new List<CompilerError>();
         readonly string _name;
         readonly Dictionary<string, Type> _types = new Dictionary<string, Type>();
@@ -136,8 +137,6 @@ namespace NetGore.Scripting
             return errors;
         }
 
-        static readonly ScriptAssemblyCache _scriptAssemblyCache = ScriptAssemblyCache.Instance;
-
         /// <summary>
         /// Compiles the source code files.
         /// </summary>
@@ -148,7 +147,8 @@ namespace NetGore.Scripting
         /// <returns>
         /// The resulting Assembly from the compiler.
         /// </returns>
-        static Assembly CompileCode(string outputFilePath, IEnumerable<string> files, ScriptLanguage language, out CompilerErrorCollection errors)
+        static Assembly CompileCode(string outputFilePath, IEnumerable<string> files, ScriptLanguage language,
+                                    out CompilerErrorCollection errors)
         {
             Debug.Assert(files.Count() > 0);
 

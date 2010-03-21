@@ -27,6 +27,12 @@ namespace NetGore.EditorTools
         /// </summary>
         const int _minSystemPaintDelay = 500;
 
+        /// <summary>
+        /// The <see cref="StringFormat"/> for drawing the error message on the control.
+        /// </summary>
+        static readonly StringFormat _errorMessageStringFormat = new StringFormat
+        { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+
         readonly ServiceContainer _services = new ServiceContainer();
 
         GraphicsDeviceService _gds;
@@ -298,10 +304,5 @@ namespace NetGore.EditorTools
             // Write the message
             graphics.DrawString(text, Font, Brushes.Black, ClientRectangle, _errorMessageStringFormat);
         }
-
-        /// <summary>
-        /// The <see cref="StringFormat"/> for drawing the error message on the control.
-        /// </summary>
-        static readonly StringFormat _errorMessageStringFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
     }
 }

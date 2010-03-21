@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore.Db;
 
@@ -26,13 +24,14 @@ namespace NetGore.EditorTools
             if (!s.OpenFileForEdit())
                 return false;
 
-            const string instructions = "Please edit the database settings with the appropriate values. Press Retry when done editing, or Cancel to abort.";
+            const string instructions =
+                "Please edit the database settings with the appropriate values. Press Retry when done editing, or Cancel to abort.";
 
             if (msg == null)
                 msg = instructions;
             else
                 msg += Environment.NewLine + Environment.NewLine + instructions;
-            
+
             if (MessageBox.Show(msg, "Edit database settings", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                 return false;
 

@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using log4net;
 using NetGore.IO;
 
@@ -24,11 +22,6 @@ namespace NetGore.Db
         const string _settingsFileName = "DbSettings.xml";
 
         readonly string _filePath;
-
-        /// <summary>
-        /// Gets the path to the file that these settings were loaded from and will be saved to by default.
-        /// </summary>
-        public string FilePath { get { return _filePath; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
@@ -92,6 +85,14 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets the path to the file that these settings were loaded from and will be saved to by default.
+        /// </summary>
+        public string FilePath
+        {
+            get { return _filePath; }
+        }
+
+        /// <summary>
         /// Gets or sets the Sql connection host address.
         /// </summary>
         [SyncValue]
@@ -116,17 +117,6 @@ namespace NetGore.Db
         public string User { get; set; }
 
         /// <summary>
-        /// Saves the <see cref="DbConnectionSettings"/> to file.
-        /// </summary>
-        public void Save()
-        {
-            using (var writer = new XmlValueWriter(FilePath, _rootNodeName))
-            {
-                ((IPersistable)this).WriteState(writer);
-            }
-        }
-
-        /// <summary>
         /// Opens the settings file for editing.
         /// </summary>
         /// <returns>True if the file was successfully opened; otherwise false.</returns>
@@ -138,7 +128,7 @@ namespace NetGore.Db
             // If the file could not be opened, then we obviously can't edit it, can we?
             if (ex != null)
             {
-                const string errmsg ="Failed to open DbConnectionSettings file to edit. File path: {0}. Exception: {1}";
+                const string errmsg = "Failed to open DbConnectionSettings file to edit. File path: {0}. Exception: {1}";
                 string msg = string.Format(errmsg, FilePath, ex);
                 log.Fatal(msg);
                 Debug.Fail(msg);
@@ -155,6 +145,17 @@ namespace NetGore.Db
         {
             var reader = new XmlValueReader(FilePath, _rootNodeName);
             ((IPersistable)this).ReadState(reader);
+        }
+
+        /// <summary>
+        /// Saves the <see cref="DbConnectionSettings"/> to file.
+        /// </summary>
+        public void Save()
+        {
+            using (var writer = new XmlValueWriter(FilePath, _rootNodeName))
+            {
+                ((IPersistable)this).WriteState(writer);
+            }
         }
 
         #region IPersistable Members

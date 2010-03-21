@@ -35,8 +35,7 @@ namespace DemoGame.Server
         /// <param name="mapID">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
         public MapSpawnValues(IDbController dbController, MapID mapID, CharacterTemplateID characterTemplateID)
-            : this(
-                dbController, GetFreeID(dbController), mapID, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
+            : this(dbController, GetFreeID(dbController), mapID, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
         {
             DbController.GetQuery<InsertMapSpawnQuery>().Execute(this);
         }

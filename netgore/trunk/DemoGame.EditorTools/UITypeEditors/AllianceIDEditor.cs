@@ -89,7 +89,6 @@ namespace DemoGame.EditorTools
         }
     }
 
-
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="QuestRequirementCollection{TCharacter}"/>.
     /// </summary>

@@ -66,8 +66,7 @@ namespace DemoGame.EditorTools
             // really matter what you add here. In general, you should just add to this when you notice that
             // a PropertyGrid isn't using the AdvancedClassTypeConverter.
             AdvancedClassTypeConverter.AddTypes(typeof(MutablePair<ItemTemplateID, byte>),
-                                                typeof(MutablePair<CharacterTemplateID, ushort>),
-                                                typeof(EditorQuest));
+                                                typeof(MutablePair<CharacterTemplateID, ushort>), typeof(EditorQuest));
 
             // Set the properties we want to force being readonly in the PropertyGrid
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(CharacterTemplateTable), "ID");

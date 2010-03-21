@@ -13,11 +13,14 @@ namespace NetGore.Scripting
     /// </summary>
     public class JScriptAssemblyCreator
     {
+        static readonly CompilerError[] _emptyCompilerErrors = new CompilerError[0];
         static readonly ScriptAssemblyCache _scriptAssemblyCache = ScriptAssemblyCache.Instance;
         readonly List<string> _members = new List<string>();
 
         readonly Regex _regexGetSafeFunction = new Regex(@"function\s+GetSafe\s*\([^,]+,[^,]+\)\s*:\s*String",
                                                          RegexOptions.IgnoreCase);
+
+        IEnumerable<CompilerError> _compilationErrors = _emptyCompilerErrors;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JScriptAssemblyCreator"/> class.
@@ -31,6 +34,16 @@ namespace NetGore.Scripting
         /// Gets or sets the name of the class to generate. This value must be set before calling Compile().
         /// </summary>
         public string ClassName { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="CompilerError"/>s that resulted from the last compilation. Will be empty if the
+        /// <see cref="Assembly"/> has not yet been compiled, if the <see cref="Assembly"/> was loaded from cache
+        /// instead of compiling, or if the compilation completed without error.
+        /// </summary>
+        public IEnumerable<CompilerError> CompilationErrors
+        {
+            get { return _compilationErrors; }
+        }
 
         /// <summary>
         /// Gets or sets if the JScript GetSafe function is required to be defined. If true, then it will
@@ -137,11 +150,11 @@ namespace NetGore.Scripting
         protected virtual Assembly CompileSourceToAssembly(string sourceCode, string filePath)
         {
             var provider = new JScriptCodeProvider();
-            
+
             // Set up the compiler parameters
             var p = new CompilerParameters
             { GenerateInMemory = false, IncludeDebugInformation = false, OutputAssembly = filePath };
-            
+
             // Compile
             var results = provider.CompileAssemblyFromSource(p, sourceCode);
 
@@ -154,17 +167,6 @@ namespace NetGore.Scripting
             // Return the compiled assembly
             return results.CompiledAssembly;
         }
-
-        static readonly CompilerError[] _emptyCompilerErrors = new CompilerError[0];
-
-        IEnumerable<CompilerError> _compilationErrors = _emptyCompilerErrors;
-
-        /// <summary>
-        /// Gets the <see cref="CompilerError"/>s that resulted from the last compilation. Will be empty if the
-        /// <see cref="Assembly"/> has not yet been compiled, if the <see cref="Assembly"/> was loaded from cache
-        /// instead of compiling, or if the compilation completed without error.
-        /// </summary>
-        public IEnumerable<CompilerError> CompilationErrors { get { return _compilationErrors; } }
 
         /// <summary>
         /// Creates the <see cref="AssemblyClassInvoker"/>.

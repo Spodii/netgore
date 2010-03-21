@@ -67,39 +67,15 @@ namespace DemoGame.Server
         int _tick;
 
         /// <summary>
-        /// Creates the prompt for editing the <see cref="DbConnectionSettings"/> file.
-        /// </summary>
-        /// <param name="s">The <see cref="DbConnectionSettings"/>.</param>
-        /// <param name="msg">The message to display.</param>
-        /// <returns>True if to retry the connection; false to abort.</returns>
-        static bool PromptEditDbSettingsFile(DbConnectionSettings s, string msg)
-        {
-            if (!s.OpenFileForEdit())
-                return false;
-
-            const string instructions = "Please edit the database settings with the appropriate values. Press Retry when done editing, or Cancel to abort.";
-
-            if (msg == null)
-                msg = instructions;
-            else
-                msg += Environment.NewLine + Environment.NewLine + instructions;
-
-            if (MessageBox.Show(msg, "Edit database settings", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
-                return false;
-
-            s.Reload();
-
-            return true;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
         /// </summary>
         public Server()
         {
             // Create the DbController
             DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController = settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()), x => PromptEditDbSettingsFile(settings, x));
+            _dbController =
+                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
+                                                                 x => PromptEditDbSettingsFile(settings, x));
 
             if (_dbController == null)
                 return;
@@ -508,6 +484,33 @@ namespace DemoGame.Server
 
             // Send the account characters
             userAccount.SendAccountCharacterInfos();
+        }
+
+        /// <summary>
+        /// Creates the prompt for editing the <see cref="DbConnectionSettings"/> file.
+        /// </summary>
+        /// <param name="s">The <see cref="DbConnectionSettings"/>.</param>
+        /// <param name="msg">The message to display.</param>
+        /// <returns>True if to retry the connection; false to abort.</returns>
+        static bool PromptEditDbSettingsFile(DbConnectionSettings s, string msg)
+        {
+            if (!s.OpenFileForEdit())
+                return false;
+
+            const string instructions =
+                "Please edit the database settings with the appropriate values. Press Retry when done editing, or Cancel to abort.";
+
+            if (msg == null)
+                msg = instructions;
+            else
+                msg += Environment.NewLine + Environment.NewLine + instructions;
+
+            if (MessageBox.Show(msg, "Edit database settings", MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
+                return false;
+
+            s.Reload();
+
+            return true;
         }
 
         /// <summary>

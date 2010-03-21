@@ -14,6 +14,13 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public abstract class ParticleEmitter : IDisposable
     {
+        /// <summary>
+        /// The maximum value allowed for the delta time for updating particles and emitters. If the real delta
+        /// time is greater than this value, is will be reduced to this value. This is to prevent ugly side-effects
+        /// from emitters trying to play too much catch-up. Recommended to keep this at the default value.
+        /// </summary>
+        public const int MaxDeltaTime = 200;
+
         const string _blendModeKeyName = "BlendMode";
         const string _budgetKeyName = "Budget";
         const string _customValuesNodeName = "CustomValues";
@@ -21,6 +28,7 @@ namespace NetGore.Graphics.ParticleEngine
         const int _defaultBudget = 5000;
         const string _defaultName = "Unnamed";
         const string _emitterCategoryName = "Emitter";
+        const string _emitterModifiersNodeName = "EmitterModifiers";
         const string _grhIndexKeyName = "Grh";
 
         /// <summary>
@@ -29,11 +37,10 @@ namespace NetGore.Graphics.ParticleEngine
         const int _initialParticleArraySize = 64;
 
         const string _lifeKeyName = "Life";
-        const string _particleModifiersNodeName = "ParticleModifiers";
-        const string _emitterModifiersNodeName = "EmitterModifiers";
         const string _nameKeyName = "Name";
         const string _originKeyName = "Origin";
         const string _particleCategoryName = "Particle";
+        const string _particleModifiersNodeName = "ParticleModifiers";
         const string _releaseAmountKeyName = "ReleaseAmount";
         const string _releaseColorKeyName = "ReleaseColor";
         const string _releaseRateKeyName = "ReleaseRate";
@@ -560,13 +567,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// The maximum value allowed for the delta time for updating particles and emitters. If the real delta
-        /// time is greater than this value, is will be reduced to this value. This is to prevent ugly side-effects
-        /// from emitters trying to play too much catch-up. Recommended to keep this at the default value.
-        /// </summary>
-        public const int MaxDeltaTime = 200;
-
-        /// <summary>
         /// Updates the <see cref="ParticleEmitter"/> and all <see cref="Particle"/>s it has created.
         /// </summary>
         /// <param name="currentTime">The current time.</param>>
@@ -582,9 +582,7 @@ namespace NetGore.Graphics.ParticleEngine
                 elapsedTime = 10;
             }
             else
-            {
                 elapsedTime = Math.Min(MaxDeltaTime, currentTime - _lastUpdateTime);
-            }
 
             _lastUpdateTime = currentTime;
 

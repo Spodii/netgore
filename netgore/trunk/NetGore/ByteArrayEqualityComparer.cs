@@ -19,17 +19,20 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the <see cref="ByteArrayEqualityComparer"/> instance.
-        /// </summary>
-        public static IEqualityComparer<byte[]> Instance { get { return _instance; }}
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ByteArrayEqualityComparer"/> class.
         /// </summary>
         ByteArrayEqualityComparer()
         {
         }
-            
+
+        /// <summary>
+        /// Gets the <see cref="ByteArrayEqualityComparer"/> instance.
+        /// </summary>
+        public static IEqualityComparer<byte[]> Instance
+        {
+            get { return _instance; }
+        }
+
         /// <summary>
         /// Determines whether the specified objects are equal.
         /// </summary>
@@ -52,22 +55,6 @@ namespace NetGore
             return true;
         }
 
-        #region IEqualityComparer<byte[]> Members
-
-        /// <summary>
-        /// Determines whether the specified objects are equal.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>
-        /// true if the specified objects are equal; otherwise, false.
-        /// </returns>
-        bool IEqualityComparer<byte[]>.Equals(byte[] x, byte[] y)
-        {
-            return AreEqual(x,y);
-        }
-            
-            
         /// <summary>
         /// Returns a hash code for the specified object.
         /// </summary>
@@ -96,6 +83,21 @@ namespace NetGore
                 hash += hash << 5;
                 return hash;
             }
+        }
+
+        #region IEqualityComparer<byte[]> Members
+
+        /// <summary>
+        /// Determines whether the specified objects are equal.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>
+        /// true if the specified objects are equal; otherwise, false.
+        /// </returns>
+        bool IEqualityComparer<byte[]>.Equals(byte[] x, byte[] y)
+        {
+            return AreEqual(x, y);
         }
 
         /// <summary>

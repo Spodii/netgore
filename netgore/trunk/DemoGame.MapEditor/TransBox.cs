@@ -49,11 +49,6 @@ namespace DemoGame.MapEditor
         public readonly TransBoxType TransType;
 
         /// <summary>
-        /// Gets the size of the box.
-        /// </summary>
-        public Vector2 Size { get { return new Vector2(Area.Width, Area.Height); } }
-
-        /// <summary>
         /// Grh used to draw the TransBox.
         /// </summary>
         readonly Grh _grh;
@@ -125,6 +120,14 @@ namespace DemoGame.MapEditor
         public static Vector2 ScaleSize
         {
             get { return _scaleSize; }
+        }
+
+        /// <summary>
+        /// Gets the size of the box.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return new Vector2(Area.Width, Area.Height); }
         }
 
         /// <summary>

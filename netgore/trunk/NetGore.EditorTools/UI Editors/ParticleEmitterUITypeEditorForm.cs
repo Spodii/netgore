@@ -43,17 +43,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the items to add to the list.
-        /// </summary>
-        /// <returns>The items to add to the list.</returns>
-        protected override IEnumerable<ParticleEmitter> GetListItems()
-        {
-            var emitterNames = ParticleEmitterFactory.GetEffectsInPath(ContentPaths.Build);
-            var validEffects = EmitterLoader(emitterNames);
-            return validEffects;
-        }
-
-        /// <summary>
         /// Loads the <see cref="ParticleEmitter"/> instances from their name, only returning those
         /// who were created without error.
         /// </summary>
@@ -82,6 +71,17 @@ namespace NetGore.EditorTools
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the items to add to the list.
+        /// </summary>
+        /// <returns>The items to add to the list.</returns>
+        protected override IEnumerable<ParticleEmitter> GetListItems()
+        {
+            var emitterNames = ParticleEmitterFactory.GetEffectsInPath(ContentPaths.Build);
+            var validEffects = EmitterLoader(emitterNames);
+            return validEffects;
         }
 
         /// <summary>

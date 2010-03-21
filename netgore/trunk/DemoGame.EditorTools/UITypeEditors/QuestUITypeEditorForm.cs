@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
-using DemoGame.Server;
 using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
 using NetGore.Features.Quests;
@@ -17,8 +16,8 @@ namespace DemoGame.EditorTools
     /// </summary>
     public class QuestUITypeEditorForm : UITypeEditorDbListForm<IQuestTable>
     {
-        readonly object _selected;
         readonly IQuestDescriptionCollection _questDescriptions = QuestDescriptionCollection.Create(ContentPaths.Dev);
+        readonly object _selected;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestUITypeEditorForm"/> class.

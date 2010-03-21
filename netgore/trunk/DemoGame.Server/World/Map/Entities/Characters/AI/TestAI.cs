@@ -113,13 +113,11 @@ namespace DemoGame.Server
                 }
             }
 #endif
-
         }
 
         void UpdateWithTarget()
         {
-           
-            #if !TOPDOWN
+#if !TOPDOWN
             // Move towards an enemy
             if (_target.Position.X > Actor.Position.X + 10)
                 Actor.MoveRight();
@@ -138,7 +136,7 @@ namespace DemoGame.Server
             }
 #elif TOPDOWN
 
-            //Checks whether the _target is above the Actor.
+    //Checks whether the _target is above the Actor.
             if (_target.Position.Y < Actor.Position.Y)
             {
                 //_target above
@@ -199,9 +197,7 @@ namespace DemoGame.Server
                 }
             }
 
-
 #endif
-
 
             //Instead of attacking EVERY loop attack occasionally to save resources.
             // Attack if in range

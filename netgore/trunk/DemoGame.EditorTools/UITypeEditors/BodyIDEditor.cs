@@ -10,7 +10,6 @@ using log4net;
 
 namespace DemoGame.EditorTools
 {
-
     /// <summary>
     /// A <see cref="UITypeEditor"/> for selecting the <see cref="GameMessageCollection"/>.
     /// </summary>

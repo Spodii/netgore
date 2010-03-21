@@ -45,12 +45,13 @@ namespace NetGore.Db
         /// the <paramref name="id"/> is invalid or not item exists for the <paramref name="id"/>.</returns>
         public TItem this[TID id]
         {
-            get {
+            get
+            {
                 var i = IDToInt(id);
                 if (!_items.CanGet(i))
                     return default(TItem);
 
-                return _items[i]; 
+                return _items[i];
             }
         }
 

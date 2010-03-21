@@ -31,32 +31,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.ContextMenu.Popup"/> event
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnPopup(EventArgs e)
-        {
-            // Hide all menu items by default
-            foreach (var menuItem in MenuItems.OfType<MenuItem>())
-                menuItem.Visible = false;
-
-            // Get the PropertyGrid that created the menu
-            var pg = SourceControl as PropertyGrid;
-            if (pg == null)
-                return;
-
-            // Ensure we have the references that we need
-            if (pg.SelectedObject == null || pg.SelectedGridItem == null || pg.SelectedGridItem.PropertyDescriptor == null)
-                return;
-
-            if (pg.SelectedGridItem.PropertyDescriptor is AdvancedPropertyDescriptor)
-            {
-                foreach (var menuItem in MenuItems.OfType<MenuItem>())
-                    menuItem.Visible = true;
-            }
-        }
-
-        /// <summary>
         /// Handles the Click event of the Reset menu item.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -102,6 +76,36 @@ namespace NetGore.EditorTools
             // Show the original value
             MessageBox.Show(string.Format("Original value for `{0}`: {1}", asAdvPropDesc.DisplayName,
                                           asAdvPropDesc.OriginalValue ?? "[NULL]"));
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ContextMenu.Popup"/> event
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnPopup(EventArgs e)
+        {
+            // Hide all menu items by default
+            foreach (var menuItem in MenuItems.OfType<MenuItem>())
+            {
+                menuItem.Visible = false;
+            }
+
+            // Get the PropertyGrid that created the menu
+            var pg = SourceControl as PropertyGrid;
+            if (pg == null)
+                return;
+
+            // Ensure we have the references that we need
+            if (pg.SelectedObject == null || pg.SelectedGridItem == null || pg.SelectedGridItem.PropertyDescriptor == null)
+                return;
+
+            if (pg.SelectedGridItem.PropertyDescriptor is AdvancedPropertyDescriptor)
+            {
+                foreach (var menuItem in MenuItems.OfType<MenuItem>())
+                {
+                    menuItem.Visible = true;
+                }
+            }
         }
     }
 }

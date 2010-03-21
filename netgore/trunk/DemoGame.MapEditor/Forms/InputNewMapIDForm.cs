@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore;
 using NetGore.EditorTools;
@@ -15,11 +11,6 @@ namespace DemoGame.MapEditor
     public partial class InputNewMapIDForm : Form
     {
         MapID? _value;
-
-        /// <summary>
-        /// Gets the currently entered <see cref="MapID"/> value.
-        /// </summary>
-        public MapID? Value { get { return _value; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InputNewMapIDForm"/> class.
@@ -41,11 +32,44 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Gets the currently entered <see cref="MapID"/> value.
+        /// </summary>
+        public MapID? Value
+        {
+            get { return _value; }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnAccept control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnAccept_Click(object sender, EventArgs e)
+        {
+            if (!_value.HasValue)
+            {
+                MessageBox.Show("You must enter a valid map ID first.", "Invalid map ID", MessageBoxButtons.OK);
+                return;
+            }
+
+            if (MapBase.IsValidMapFile(MapBase.GetMapFilePath(ContentPaths.Dev, _value.Value)))
+            {
+                const string msg =
+                    "That map ID is already in use. Are you sure you wish to use it? The existing map will be overwritten and lost.";
+                if (MessageBox.Show(msg, "Overwrite map?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+            }
+
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnCancel control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnCancel_Click(object sender, EventArgs e)
+        void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
@@ -56,34 +80,10 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnFindFree_Click(object sender, EventArgs e)
+        void btnFindFree_Click(object sender, EventArgs e)
         {
             var freeID = MapBase.GetNextFreeIndex(ContentPaths.Dev);
             txtID.Text = freeID.ToString();
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnAccept control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnAccept_Click(object sender, EventArgs e)
-        {
-            if (!_value.HasValue)
-            {
-                MessageBox.Show("You must enter a valid map ID first.", "Invalid map ID", MessageBoxButtons.OK);
-                return;
-            }
-
-            if (MapBase.IsValidMapFile(MapBase.GetMapFilePath(ContentPaths.Dev, _value.Value)))
-            {
-                const string msg = "That map ID is already in use. Are you sure you wish to use it? The existing map will be overwritten and lost.";
-                if (MessageBox.Show(msg, "Overwrite map?", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;
-            }
-
-            DialogResult = DialogResult.OK;
-            Close();
         }
 
         /// <summary>
@@ -91,13 +91,11 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void txtID_TextChanged(object sender, EventArgs e)
+        void txtID_TextChanged(object sender, EventArgs e)
         {
             int i;
             if (!int.TryParse(txtID.Text, out i))
-            {
                 _value = null;
-            }
             else
             {
                 try

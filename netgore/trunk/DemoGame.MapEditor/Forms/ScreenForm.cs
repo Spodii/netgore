@@ -70,12 +70,9 @@ namespace DemoGame.MapEditor
         /// </summary>
         static readonly Type[] _focusOverrideTypes = new Type[] { typeof(TextBox), typeof(ListBox) };
 
-        ICamera2D _camera;
-        EditorCursorManager<ScreenForm> _cursorManager;
         readonly FocusedSpatialDrawer _focusedSpatialDrawer = new FocusedSpatialDrawer();
         readonly ScreenGrid _grid = new ScreenGrid();
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
-        IMapBoundControl[] _mapBoundControls;
         readonly MapDrawFilterHelper _mapDrawFilterHelper = new MapDrawFilterHelper();
         readonly MapDrawingExtensionCollection _mapDrawingExtensions = new MapDrawingExtensionCollection();
 
@@ -88,8 +85,6 @@ namespace DemoGame.MapEditor
         /// Currently selected Grh to draw to the map.
         /// </summary>
         readonly Grh _selectedGrh = new Grh(null, AnimType.Loop, 0);
-
-        SelectedObjectsManager<object> _selectedObjectsManager;
 
         readonly SettingsManager _settingsManager = new SettingsManager("MapEditor",
                                                                         ContentPaths.Build.Settings.Join("MapEditor.xml"));
@@ -112,10 +107,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         readonly List<TransBox> _transBoxes = new List<TransBox>(9);
 
-        /// <summary>
-        /// Current world - used for reference by the map being edited only.
-        /// </summary>
-        World _world;
+        ICamera2D _camera;
 
         /// <summary>
         /// All content used by the map editor
@@ -128,15 +120,32 @@ namespace DemoGame.MapEditor
         /// </summary>
         int _currentTime = 0;
 
+        EditorCursorManager<ScreenForm> _cursorManager;
+
         IDbController _dbController;
         DrawingManager _drawingManager;
+
+        /// <summary>
+        /// If set to a value other than null, the selected <see cref="ParticleEmitter"/> on this form
+        /// will be drawn instead of the map.
+        /// </summary>
+        ParticleEmitterUITypeEditorForm _emitterSelectionForm = null;
+
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
         Map _map;
+        IMapBoundControl[] _mapBoundControls;
 
         /// <summary>
         /// Modifier values for the camera moving
         /// </summary>
         Vector2 _moveCamera;
+
+        /// <summary>
+        /// The <see cref="IParticleRenderer"/> used when drawing the <see cref="ParticleEmitter"/> only.
+        /// </summary>
+        SpriteBatchParticleRenderer _particleEmitterRenderer;
+
+        SelectedObjectsManager<object> _selectedObjectsManager;
 
         /// <summary>
         /// Currently selected transformation box
@@ -147,6 +156,11 @@ namespace DemoGame.MapEditor
         /// The Default SpriteFont.
         /// </summary>
         SpriteFont _spriteFont;
+
+        /// <summary>
+        /// Current world - used for reference by the map being edited only.
+        /// </summary>
+        World _world;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -353,13 +367,34 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Handles the Click event of the btnDeleteEmitter control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnDeleteEmitter_Click(object sender, EventArgs e)
+        {
+            var selectedEmitters = SelectedObjs.SelectedObjects.OfType<ParticleEmitter>().ToImmutable();
+            if (selectedEmitters.IsEmpty())
+                return;
+
+            foreach (var emitter in selectedEmitters)
+            {
+                Map.ParticleEffects.Remove(emitter);
+            }
+
+            SelectedObjs.Clear();
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnDeleteSpawn control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnDeleteSpawn_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you wish to delete this spawn? This cannot be undone.", "Delete?", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (
+                MessageBox.Show("Are you sure you wish to delete this spawn? This cannot be undone.", "Delete?",
+                                MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             lstNPCSpawns.DeleteSelectedItem();
@@ -374,6 +409,80 @@ namespace DemoGame.MapEditor
         {
             BackgroundLayer bgLayer = new BackgroundLayer(Map, Map);
             Map.AddBackgroundImage(bgLayer);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnNewEmitter control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnNewEmitter_Click(object sender, EventArgs e)
+        {
+            ParticleEmitter newEmitter = null;
+
+            // Create the selection form
+            using (var f = new ParticleEmitterUITypeEditorForm(null))
+            {
+                _emitterSelectionForm = f;
+
+                try
+                {
+                    if (f.ShowDialog(this) == DialogResult.OK)
+                    {
+                        var em = f.SelectedItem;
+                        if (em == null)
+                            return;
+
+                        newEmitter = (ParticleEmitter)TypeFactory.GetTypeInstance(em.GetType());
+                        if (newEmitter == null)
+                            return;
+
+                        em.CopyValuesTo(newEmitter);
+                    }
+                }
+                finally
+                {
+                    // Clear the selected form
+                    _emitterSelectionForm = null;
+                }
+            }
+
+            if (newEmitter == null)
+                return;
+
+            // Set up the new emitter and add it to the map
+            newEmitter.Origin = Camera.Center;
+            newEmitter.SetEmitterLife(GetTime(), 0);
+            newEmitter.Update(GetTime());
+            Map.ParticleEffects.Add(newEmitter);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSaveAs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnSaveAs_Click(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            MapID newID;
+
+            using (var f = new InputNewMapIDForm(Map.ID))
+            {
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                if (!f.Value.HasValue)
+                    return;
+
+                newID = f.Value.Value;
+            }
+
+            Map.ChangeID(newID);
+
+            SaveMap();
         }
 
         /// <summary>
@@ -438,37 +547,6 @@ namespace DemoGame.MapEditor
         void cmdSave_Click(object sender, EventArgs e)
         {
             SaveMap();
-        }
-
-        /// <summary>
-        /// Saves the current map.
-        /// </summary>
-        void SaveMap()
-        {
-            if (Map == null)
-                return;
-
-            Cursor = Cursors.WaitCursor;
-            Enabled = false;
-
-            // Add the MapGrh-bound walls
-            var extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
-            foreach (WallEntityBase wall in extraWalls)
-            {
-                Map.AddEntity(wall);
-            }
-
-            // Write the map
-            Map.Save(ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
-
-            // Remove the extra walls
-            foreach (WallEntityBase wall in extraWalls)
-            {
-                Map.RemoveEntity(wall);
-            }
-
-            Enabled = true;
-            Cursor = Cursors.Default;
         }
 
         /// <summary>
@@ -544,37 +622,6 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Draws a <see cref="ParticleEmitter"/> as the only item on the screen.
-        /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to draw.</param>
-        void DrawParticleEmitterOnly(ISpriteBatch sb, ParticleEmitter emitter)
-        {
-            // Set up the particle renderer
-            if (_particleEmitterRenderer == null)
-                _particleEmitterRenderer = new SpriteBatchParticleRenderer();
-
-            _particleEmitterRenderer.SpriteBatch = sb;
-
-            // Start drawing
-            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, Camera.Matrix);
-
-            try
-            {
-                _particleEmitterRenderer.Draw(Camera, new ParticleEmitter[] { _emitterSelectionForm.SelectedItem });
-            }
-            finally
-            {
-                sb.End();
-            }
-        }
-
-        /// <summary>
-        /// The <see cref="IParticleRenderer"/> used when drawing the <see cref="ParticleEmitter"/> only.
-        /// </summary>
-        SpriteBatchParticleRenderer _particleEmitterRenderer;
-
-        /// <summary>
         /// Draws the game.
         /// </summary>
         /// <param name="sb">The sprite batch.</param>
@@ -591,7 +638,8 @@ namespace DemoGame.MapEditor
             }
 
             // Draw the selected ParticleEmitter if needed
-            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null && !_emitterSelectionForm.SelectedItem.IsDisposed)
+            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null &&
+                !_emitterSelectionForm.SelectedItem.IsDisposed)
             {
                 DrawParticleEmitterOnly(sb, _emitterSelectionForm.SelectedItem);
                 return;
@@ -604,7 +652,7 @@ namespace DemoGame.MapEditor
             // Begin the rendering
             DrawingManager.LightManager.Ambient = Map.AmbientLight;
             sb = DrawingManager.BeginDrawWorld(_camera);
-            if (sb == null) 
+            if (sb == null)
                 return;
 
             // Map
@@ -687,6 +735,32 @@ namespace DemoGame.MapEditor
 
             // End GUI rendering
             DrawingManager.EndDrawGUI();
+        }
+
+        /// <summary>
+        /// Draws a <see cref="ParticleEmitter"/> as the only item on the screen.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to draw.</param>
+        void DrawParticleEmitterOnly(ISpriteBatch sb, ParticleEmitter emitter)
+        {
+            // Set up the particle renderer
+            if (_particleEmitterRenderer == null)
+                _particleEmitterRenderer = new SpriteBatchParticleRenderer();
+
+            _particleEmitterRenderer.SpriteBatch = sb;
+
+            // Start drawing
+            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, Camera.Matrix);
+
+            try
+            {
+                _particleEmitterRenderer.Draw(Camera, new ParticleEmitter[] { _emitterSelectionForm.SelectedItem });
+            }
+            finally
+            {
+                sb.End();
+            }
         }
 
         /// <summary>
@@ -1192,6 +1266,37 @@ namespace DemoGame.MapEditor
             SettingsManager.Add("Grid", Grid);
         }
 
+        /// <summary>
+        /// Saves the current map.
+        /// </summary>
+        void SaveMap()
+        {
+            if (Map == null)
+                return;
+
+            Cursor = Cursors.WaitCursor;
+            Enabled = false;
+
+            // Add the MapGrh-bound walls
+            var extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
+            foreach (WallEntityBase wall in extraWalls)
+            {
+                Map.AddEntity(wall);
+            }
+
+            // Write the map
+            Map.Save(ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
+
+            // Remove the extra walls
+            foreach (WallEntityBase wall in extraWalls)
+            {
+                Map.RemoveEntity(wall);
+            }
+
+            Enabled = true;
+            Cursor = Cursors.Default;
+        }
+
         void SelectedObjectsManager_FocusedChanged(SelectedObjectsManager<object> sender, object newFocused)
         {
             scTabsAndSelected.Panel2Collapsed = (SelectedObjs.SelectedObjects.Count() == 0 && SelectedObjs.Focused == null);
@@ -1283,7 +1388,8 @@ namespace DemoGame.MapEditor
             _currentTime = currTime;
 
             // Update stuff in selection forms (moving it to the center of the camera so it draws centered)
-            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null && !_emitterSelectionForm.SelectedItem.IsDisposed)
+            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null &&
+                !_emitterSelectionForm.SelectedItem.IsDisposed)
             {
                 var originalOrigin = _emitterSelectionForm.SelectedItem.Origin;
                 _emitterSelectionForm.SelectedItem.Origin = Camera.Center;
@@ -1317,102 +1423,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        /// <summary>
-        /// If set to a value other than null, the selected <see cref="ParticleEmitter"/> on this form
-        /// will be drawn instead of the map.
-        /// </summary>
-        ParticleEmitterUITypeEditorForm _emitterSelectionForm = null;
-
-        /// <summary>
-        /// Handles the Click event of the btnNewEmitter control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnNewEmitter_Click(object sender, EventArgs e)
-        {
-            ParticleEmitter newEmitter = null;
-
-            // Create the selection form
-            using (var f = new ParticleEmitterUITypeEditorForm(null))
-            {
-                _emitterSelectionForm = f;
-
-                try
-                {
-                    if (f.ShowDialog(this) == DialogResult.OK)
-                    {
-                        var em = f.SelectedItem;
-                        if (em == null)
-                            return;
-
-                        newEmitter = (ParticleEmitter)TypeFactory.GetTypeInstance(em.GetType());
-                        if (newEmitter == null)
-                            return;
-
-                        em.CopyValuesTo(newEmitter);
-                    }
-                }
-                finally
-                {
-                    // Clear the selected form
-                    _emitterSelectionForm = null;
-                }
-            }
-
-            if (newEmitter == null)
-                return;
-
-            // Set up the new emitter and add it to the map
-            newEmitter.Origin = Camera.Center;
-            newEmitter.SetEmitterLife(GetTime(), 0);
-            newEmitter.Update(GetTime());
-            Map.ParticleEffects.Add(newEmitter);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnDeleteEmitter control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnDeleteEmitter_Click(object sender, EventArgs e)
-        {
-            var selectedEmitters = SelectedObjs.SelectedObjects.OfType<ParticleEmitter>().ToImmutable();
-            if (selectedEmitters.IsEmpty())
-                return;
-
-            foreach (var emitter in selectedEmitters)
-                Map.ParticleEffects.Remove(emitter);
-
-            SelectedObjs.Clear();
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnSaveAs control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnSaveAs_Click(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            MapID newID;
-
-            using (var f = new InputNewMapIDForm(Map.ID))
-            {
-                if (f.ShowDialog(this) != DialogResult.OK)
-                    return;
-
-                if (!f.Value.HasValue)
-                    return;
-
-                newID = f.Value.Value;
-            }
-
-            Map.ChangeID(newID);
-
-            SaveMap();
-        }
     }
 }
