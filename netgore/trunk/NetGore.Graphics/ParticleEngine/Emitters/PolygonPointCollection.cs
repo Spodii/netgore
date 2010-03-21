@@ -40,29 +40,61 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
+        /// <summary>
+        /// Gets the translation <see cref="Matrix"/> for the average center point.
+        /// </summary>
+        /// <param name="matrix">The translation <see cref="Matrix"/> for the average center point.</param>
         void GetCenterTranslation(out Matrix matrix)
         {
             // Creates a rectangle around the polygon and use its center as the polygon center
-            float left = base[0].X, right = base[0].X, top = base[0].Y, bottom = base[0].Y;
+            Vector2 v0;
+            if (Count > 0)
+                v0 = base[0];
+            else
+                v0 = Vector2.Zero;
+
+            float left = v0.X;
+            float right = v0.X;
+            float top = v0.Y;
+            float bottom = v0.Y;
 
             // Check all the points to make the rectangle surround the entire polygon
             for (int i = 1; i < Count; i++)
             {
-                left = base[i].X < left ? base[i].X : left;
-                right = base[i].X > right ? base[i].X : right;
-                top = base[i].Y < top ? base[i].Y : top;
-                bottom = base[i].Y > bottom ? base[i].Y : bottom;
+                var v = base[i];
+
+                if (v.X < left)
+                    left = v.X;
+
+                if (v.X > right)
+                    right = v.X;
+
+                if (v.Y < top)
+                    top = v.Y;
+
+                if (v.Y > bottom)
+                    bottom = v.Y;
             }
 
             // Apply the translation offset
-            matrix = Matrix.CreateTranslation(-((right - left) / 2 + left), -((bottom - top) / 2 + top), 0f);
+            var x = -((right - left) / 2 + left);
+            var y = -((bottom - top) / 2 + top);
+            matrix = Matrix.CreateTranslation(x, y, 0f);
         }
 
+        /// <summary>
+        /// Gets the default translation <see cref="Matrix"/>.
+        /// </summary>
+        /// <param name="matrix">The default translation <see cref="Matrix"/>.</param>
         static void GetDefaultTranslation(out Matrix matrix)
         {
             matrix = Matrix.Identity;
         }
 
+        /// <summary>
+        /// Gets the translation <see cref="Matrix"/> for the origin.
+        /// </summary>
+        /// <param name="matrix">The translation <see cref="Matrix"/> for the origin.</param>
         void GetOriginTranslation(out Matrix matrix)
         {
             Vector2 point = Vector2.Zero;
@@ -88,28 +120,24 @@ namespace NetGore.Graphics.ParticleEngine
             AddRange(values);
         }
 
+        /// <summary>
+        /// Calculates the translation based on the <see cref="PolygonOrigin"/> used.
+        /// </summary>
         void RecalculateTranslation()
         {
             switch (Origin)
             {
                 case PolygonOrigin.Default:
-                {
                     GetDefaultTranslation(out TranslationMatrix);
-
                     break;
-                }
+
                 case PolygonOrigin.Center:
-                {
                     GetCenterTranslation(out TranslationMatrix);
-
                     break;
-                }
+
                 case PolygonOrigin.Origin:
-                {
                     GetOriginTranslation(out TranslationMatrix);
-
                     break;
-                }
             }
         }
 
