@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore.Collections;
 
+
+
 namespace NetGore.AI
 {
     public struct Node
@@ -20,7 +22,14 @@ namespace NetGore.AI
 
     public class PathFinder : IPathFinder
     {
+
         readonly List<Node> _close;
+
+#if TOPDOWN
+        bool topDown = true;
+#else
+        bool topDown = false;
+#endif
 
         readonly sbyte[,] _direction = new sbyte[8,2]
         { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 }, { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
@@ -121,7 +130,7 @@ namespace NetGore.AI
                         return null;
                     }
 
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 0; i <  (topDown ? 8 : 4); i++)
                     {
                         _newLocationX = (ushort)(_locationX + _direction[i, 0]);
                         _newLocationY = (ushort)(_locationY + _direction[i, 1]);
@@ -129,6 +138,11 @@ namespace NetGore.AI
 
                         if (_newLocationX >= _grid.GridX || _newLocationY >= _grid.GridY)
                             continue;
+
+                        if (_grid._grid[_newLocationX,_newLocationY] == 0)
+                        {
+                            continue;
+                        }
 
                         _newG = _nodeGrid[_location].G + _grid._grid[_newLocationX, _newLocationY];
 
