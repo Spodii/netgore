@@ -63,8 +63,8 @@ namespace NetGore.AI
             if (Math.Log(_cellsX, 2) != (int)Math.Log(_cellsX, 2) || Math.Log(_cellsY, 2) != (int)Math.Log(_cellsY, 2))
             {
                 arrayInc = true;
-                next_powX = NextPowerOf2(_cellsX);
-                next_powY = NextPowerOf2(_cellsY);
+                next_powX = BitOps.NextPowerOf2(_cellsX);
+                next_powY = BitOps.NextPowerOf2(_cellsY);
             }
             
             for (int X = 0; X < (arrayInc ?  next_powX :_cellsX ); ++X)
@@ -197,19 +197,5 @@ namespace NetGore.AI
 
             return temp;
         }
-
-        private int NextPowerOf2(int val)
-        {
-            val--;
-            val = (val >> 1) | val;
-            val = (val >> 2) | val;
-            val = (val >> 4) | val;
-            val = (val >> 8) | val;
-            val = (val >> 16) | val;
-            val++;
-            return val;
-        }
-
-
     }
 }
