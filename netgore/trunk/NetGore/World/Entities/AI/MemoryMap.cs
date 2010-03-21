@@ -63,15 +63,15 @@ namespace NetGore.AI
             if (Math.Log(_cellsX, 2) != (int)Math.Log(_cellsX, 2) || Math.Log(_cellsY, 2) != (int)Math.Log(_cellsY, 2))
             {
                 arrayInc = true;
-                next_powX = (int)Math.Pow(Math.Ceiling(Math.Log((double)_cellsX,2)), 2);
-                next_powY = (int)Math.Pow(Math.Ceiling(Math.Log((double)_cellsY, 2)), 2);
+                next_powX = NextPowerOf2(_cellsX);
+                next_powY = NextPowerOf2(_cellsY);
             }
             
-            for (int X = 0; X < (arrayInc ? next_powX : _cellsX); ++X)
+            for (int X = 0; X < (arrayInc ?  next_powX :_cellsX ); ++X)
             {
                 List<MemoryCell> _temp = new List<MemoryCell>();
 
-                for (int Y = 0; Y < (arrayInc ? next_powY : _cellsY); ++Y)
+                for (int Y = 0; Y < (arrayInc ? next_powY: _cellsY); ++Y)
                 {
                     _temp.Add(new MemoryCell((int)(X * _cellSize), (int)((X + 1) * _cellSize), (int)(Y * _cellSize),
                                              (int)((Y + 1) * _cellSize)));
@@ -79,7 +79,7 @@ namespace NetGore.AI
                 _memoryCells.Add(_temp);
             }
             // Double check, (remove after debugging complete)
-            if (Math.Log(_cellsX, 2) != (int)Math.Log(_cellsX, 2) || Math.Log(_cellsY, 2) != (int)Math.Log(_cellsY, 2))
+            if (Math.Log(_memoryCells.Count, 2) != (int)Math.Log(_memoryCells.Count, 2) || Math.Log(_memoryCells[1].Count, 2) != (int)Math.Log(_memoryCells[1].Count, 2))
             {
                 throw new Exception("Grid not 2^n. _cellsX = " + _cellsX.ToString() + ". _cellsY = " + _cellsY.ToString() + ".");
             }
@@ -155,7 +155,7 @@ namespace NetGore.AI
 
         public void SaveMemoryMap(ContentPaths contentPath, int ID)
         {
-            var path = contentPath.Maps.Join("AIMap" + ID + ".xml");
+            var path = contentPath.Maps.Join("\\AIMap" + ID + ".xml");
             using (var writer = new XmlValueWriter(path, "MemoryMap"))
             {
                 for (int X = 0; X < _cellsX; X++)
@@ -171,7 +171,7 @@ namespace NetGore.AI
         public void LoadMemoryMap(ContentPaths contentPath, int ID)
         {
 
-            var path = contentPath.Maps.Join("AIMap" + ID + ".xml");
+            var path = contentPath.Maps.Join("\\AIMap" + ID + ".xml");
 
             XmlValueReader read = new XmlValueReader(path, "MemoryMap");
 
@@ -196,6 +196,18 @@ namespace NetGore.AI
             }
 
             return temp;
+        }
+
+        private int NextPowerOf2(int val)
+        {
+            val--;
+            val = (val >> 1) | val;
+            val = (val >> 2) | val;
+            val = (val >> 4) | val;
+            val = (val >> 8) | val;
+            val = (val >> 16) | val;
+            val++;
+            return val;
         }
 
 
