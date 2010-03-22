@@ -13,7 +13,7 @@ namespace NetGore.Audio
     public sealed class MusicManager : AudioManagerBase<IMusic, MusicID>
     {
         static readonly object _instanceLock = new object();
-        static MusicManager _instance;
+        static volatile MusicManager _instance;
 
         IMusic _currentlyPlaying;
 
@@ -51,22 +51,23 @@ namespace NetGore.Audio
 
         /// <summary>
         /// Gets an instance of the <see cref="MusicManager"/> for the given <paramref name="contentManager"/>.
+        /// Only the first <see cref="ContentManager"/> passed to this method will be used. Successive calls
+        /// can pass a null <see cref="ContentManager"/>, but doing so is not recommended if it can be avoided.
+        /// This method is thread-safe, but it is recommended that you store the returned object in a local
+        /// member if you want to access it frequently to avoid the overhead of thread synchronization.
         /// </summary>
         /// <param name="contentManager">The <see cref="ContentManager"/>.</param>
         /// <returns>An instance of the <see cref="MusicManager"/> for the given
         /// <paramref name="contentManager"/>.</returns>
         public static MusicManager GetInstance(ContentManager contentManager)
         {
-            if (_instance == null)
+            lock (_instanceLock)
             {
-                lock (_instanceLock)
-                {
-                    if (_instance == null)
-                        _instance = new MusicManager(contentManager);
-                }
-            }
+                if (_instance == null)
+                    _instance = new MusicManager(contentManager);
 
-            return _instance;
+                return _instance;
+            }
         }
 
         /// <summary>

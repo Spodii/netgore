@@ -316,13 +316,17 @@ namespace NetGore.Collections
             // Use thread synchronization if needed
             if (_threadSync != null)
             {
+                // Thread-safe acquiring
                 lock (_threadSync)
                 {
                     ret = InternalAcquire();
                 }
             }
             else
+            {
+                // Non thread-safe acquiring
                 ret = InternalAcquire();
+            }
 
             // Initialize
             if (Initializer != null)
@@ -339,13 +343,17 @@ namespace NetGore.Collections
             // Use thread synchronization if needed
             if (_threadSync != null)
             {
+                // Thread-safe clearing
                 lock (_threadSync)
                 {
                     InternalClear();
                 }
             }
             else
+            {
+                // Non thread-safe clearing
                 InternalClear();
+            }
         }
 
         /// <summary>
@@ -378,13 +386,17 @@ namespace NetGore.Collections
             // Use thread synchronization if needed
             if (_threadSync != null)
             {
+                // Thread-safe freeing
                 lock (_threadSync)
                 {
                     InternalFree(poolObject, throwArgumentException);
                 }
             }
             else
+            {
+                // Non thread-safe freeing
                 InternalFree(poolObject, throwArgumentException);
+            }
         }
 
         /// <summary>
@@ -402,13 +414,17 @@ namespace NetGore.Collections
             int ret;
             if (_threadSync != null)
             {
+                // Thread-safe freeing
                 lock (_threadSync)
                 {
                     ret = InternalFreeAll(condition);
                 }
             }
             else
+            {
+                // Non thread-safe freeing
                 ret = InternalFreeAll(condition);
+            }
 
             return ret;
         }
@@ -422,13 +438,17 @@ namespace NetGore.Collections
             // Use thread synchronization if needed
             if (_threadSync != null)
             {
+                // Thread-safe performing
                 lock (_threadSync)
                 {
                     InternalPerform(action);
                 }
             }
             else
+            {
+                // Non thread-safe performing
                 InternalPerform(action);
+            }
         }
 
         #endregion
