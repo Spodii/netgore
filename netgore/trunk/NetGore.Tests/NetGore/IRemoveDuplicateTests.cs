@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore
@@ -9,17 +7,7 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class IRemoveDuplicateTests
     {
-        [Test]
-        public void RemoveNoneTest()
-        {
-            var original = new int[] { 1, 2, 3, 4, 5, 6 };
-            List<int> l = new List<int>(original);
-
-            Assert.AreEqual(original.Length, l.Count());
-            l.RemoveDuplicates((x, y) => x == y);
-
-            Assert.AreEqual(original.Length, l.Count());
-        }
+        #region Unit tests
 
         [Test]
         public void RemoveAllTest()
@@ -31,21 +19,6 @@ namespace NetGore.Tests.NetGore
             l.RemoveDuplicates((x, y) => x == y);
 
             Assert.AreEqual(1, l.Count());
-        }
-
-        [Test]
-        public void RemoveFromStartTest()
-        {
-            var original = new int[] { 1, 1, 2, 3, 4 };
-            List<int> l = new List<int>(original);
-
-            Assert.AreEqual(original.Length, l.Count());
-            l.RemoveDuplicates((x, y) => x == y);
-
-            Assert.AreEqual(1, l[0]);
-            Assert.AreEqual(2, l[1]);
-            Assert.AreEqual(3, l[2]);
-            Assert.AreEqual(4, l[3]);
         }
 
         [Test]
@@ -79,9 +52,36 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
+        public void RemoveFromStartTest()
+        {
+            var original = new int[] { 1, 1, 2, 3, 4 };
+            List<int> l = new List<int>(original);
+
+            Assert.AreEqual(original.Length, l.Count());
+            l.RemoveDuplicates((x, y) => x == y);
+
+            Assert.AreEqual(1, l[0]);
+            Assert.AreEqual(2, l[1]);
+            Assert.AreEqual(3, l[2]);
+            Assert.AreEqual(4, l[3]);
+        }
+
+        [Test]
+        public void RemoveNoneTest()
+        {
+            var original = new int[] { 1, 2, 3, 4, 5, 6 };
+            List<int> l = new List<int>(original);
+
+            Assert.AreEqual(original.Length, l.Count());
+            l.RemoveDuplicates((x, y) => x == y);
+
+            Assert.AreEqual(original.Length, l.Count());
+        }
+
+        [Test]
         public void RemoveRandomTest()
         {
-            var original = new int[] { 4,4,4,3,2,1,1,2,3,3,4,4,1,1,2,34,4,1,1,1,2,3,4,5,1 };
+            var original = new int[] { 4, 4, 4, 3, 2, 1, 1, 2, 3, 3, 4, 4, 1, 1, 2, 34, 4, 1, 1, 1, 2, 3, 4, 5, 1 };
             List<int> l = new List<int>(original);
 
             Assert.AreEqual(original.Length, l.Count());
@@ -94,5 +94,7 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(l[4], 34);
             Assert.AreEqual(l[5], 5);
         }
+
+        #endregion
     }
 }

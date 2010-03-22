@@ -3,7 +3,6 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
-using DemoGame.Server.Quests;
 using NetGore;
 using NetGore.EditorTools;
 

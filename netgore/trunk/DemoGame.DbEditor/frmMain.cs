@@ -40,6 +40,83 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Handles the Click event of the btnAlliance control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnAlliance_Click(object sender, EventArgs e)
+        {
+            using (var f = new AllianceUITypeEditorForm(pgAlliance.SelectedObject))
+            {
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                var item = f.SelectedItem;
+                pgAlliance.SelectedObject = new EditorAlliance(item.ID, _dbController);
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnAllianceDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnAllianceDelete_Click(object sender, EventArgs e)
+        {
+            var a = pgAlliance.SelectedObject as EditorAlliance;
+            if (a == null)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to delete the alliance `{0}` [ID: {1}]?";
+            if (MessageBox.Show(string.Format(confirmMsg, a.Name, a.ID), "Delete?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            _dbController.GetQuery<DeleteAllianceQuery>().Execute(a.ID);
+
+            pgAlliance.SelectedObject = null;
+
+            MessageBox.Show(string.Format("Alliance `{0}` [ID: {1}] successfully deleted!", a.Name, a.ID));
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnAllianceNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnAllianceNew_Click(object sender, EventArgs e)
+        {
+            const string confirmMsg = "Are you sure you wish to create a new alliance?";
+            if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Get the next free ID
+            var id = ReserveFreeAllianceID(_dbController);
+
+            // Set the new alliance
+            pgAlliance.SelectedObject = new EditorAlliance(id, _dbController);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnAllianceSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnAllianceSave_Click(object sender, EventArgs e)
+        {
+            var a = pgAlliance.SelectedObject as EditorAlliance;
+            if (a == null)
+                return;
+
+            // Main values
+            _dbController.GetQuery<DeleteAllianceQuery>().Execute(a.ID);
+            _dbController.GetQuery<ReplaceAllianceQuery>().Execute(a);
+
+            // Attackable/hostile lists
+            _dbController.GetQuery<ReplaceAllianceAttackableQuery>().Execute(a.ID, a.Attackable);
+            _dbController.GetQuery<ReplaceAllianceHostileQuery>().Execute(a.ID, a.Hostile);
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnCharacterTemplate control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -787,6 +864,20 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Handles the SelectedObjectsChanged event of the pgAlliance control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void pgAlliance_SelectedObjectsChanged(object sender, EventArgs e)
+        {
+            var c = pgAlliance.SelectedObject as EditorAlliance;
+            if (c == null)
+                txtAlliance.Text = string.Empty;
+            else
+                txtAlliance.Text = string.Format("{0}. {1}", c.ID, c.Name);
+        }
+
+        /// <summary>
         /// Handles the SelectedObjectsChanged event of the pgCharacterTemplate control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -812,6 +903,36 @@ namespace DemoGame.DbEditor
                 txtItemTemplate.Text = string.Empty;
             else
                 txtItemTemplate.Text = string.Format("{0}. {1}", item.ID, item.Name);
+        }
+
+        /// <summary>
+        /// Handles the SelectedObjectsChanged event of the pgQuest control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void pgQuest_SelectedObjectsChanged(object sender, EventArgs e)
+        {
+            var q = pgQuest.SelectedObject as EditorQuest;
+            if (q == null)
+                txtQuest.Text = string.Empty;
+            else
+                txtQuest.Text = string.Format("{0}. {1}", q.ID, q.Name);
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="AllianceID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="AllianceID"/>.</returns>
+        public static AllianceID ReserveFreeAllianceID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectAllianceIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectAllianceQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertAllianceQuery>();
+
+            return GetFreeID(dbController, true, t => new AllianceID(t), x => (int)x, getUsedQuery.Execute,
+                             x => selectQuery.Execute(x),
+                             x => insertByIDQuery.Execute(new AllianceTable { ID = x, Name = string.Empty }));
         }
 
         /// <summary>
@@ -857,21 +978,6 @@ namespace DemoGame.DbEditor
 
             return GetFreeID(dbController, true, t => new QuestID(t), x => (int)x, getUsedQuery.Execute,
                              x => selectQuery.Execute(x), x => insertByIDQuery.Execute(new QuestTable { ID = x }));
-        }
-
-        /// <summary>
-        /// Gets and reserves the next free <see cref="AllianceID"/>.
-        /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="AllianceID"/>.</returns>
-        public static AllianceID ReserveFreeAllianceID(IDbController dbController)
-        {
-            var getUsedQuery = dbController.GetQuery<SelectAllianceIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectAllianceQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertAllianceQuery>();
-
-            return GetFreeID(dbController, true, t => new AllianceID(t), x => (int)x, getUsedQuery.Execute,
-                             x => selectQuery.Execute(x), x => insertByIDQuery.Execute(new AllianceTable { ID = x, Name = string.Empty }));
         }
 
         /// <summary>
@@ -938,112 +1044,6 @@ namespace DemoGame.DbEditor
             lstMessages.Items[msgIndex] = new KeyValuePair<GameMessage, string>(original.Key, txtSelectedMessage.Text);
 
             lstMessages.SelectedIndex = oldSelectedIndex;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnAlliance control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnAlliance_Click(object sender, EventArgs e)
-        {
-            using (var f = new AllianceUITypeEditorForm(pgAlliance.SelectedObject))
-            {
-                if (f.ShowDialog(this) != DialogResult.OK)
-                    return;
-
-                var item = f.SelectedItem;
-                pgAlliance.SelectedObject = new EditorAlliance(item.ID, _dbController);
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnAllianceSave control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnAllianceSave_Click(object sender, EventArgs e)
-        {
-            var a = pgAlliance.SelectedObject as EditorAlliance;
-            if (a == null)
-                return;
-
-            // Main values
-            _dbController.GetQuery<DeleteAllianceQuery>().Execute(a.ID);
-            _dbController.GetQuery<ReplaceAllianceQuery>().Execute(a);
-
-            // Attackable/hostile lists
-            _dbController.GetQuery<ReplaceAllianceAttackableQuery>().Execute(a.ID, a.Attackable);
-            _dbController.GetQuery<ReplaceAllianceHostileQuery>().Execute(a.ID, a.Hostile);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnAllianceDelete control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnAllianceDelete_Click(object sender, EventArgs e)
-        {
-            var a = pgAlliance.SelectedObject as EditorAlliance;
-            if (a == null)
-                return;
-
-            const string confirmMsg = "Are you sure you wish to delete the alliance `{0}` [ID: {1}]?";
-            if (MessageBox.Show(string.Format(confirmMsg, a.Name, a.ID), "Delete?", MessageBoxButtons.YesNo) ==
-                DialogResult.No)
-                return;
-
-            _dbController.GetQuery<DeleteAllianceQuery>().Execute(a.ID);
-
-            pgAlliance.SelectedObject = null;
-
-            MessageBox.Show(string.Format("Alliance `{0}` [ID: {1}] successfully deleted!", a.Name, a.ID));
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnAllianceNew control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnAllianceNew_Click(object sender, EventArgs e)
-        {
-            const string confirmMsg = "Are you sure you wish to create a new alliance?";
-            if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            // Get the next free ID
-            var id = ReserveFreeAllianceID(_dbController);
-
-            // Set the new alliance
-            pgAlliance.SelectedObject = new EditorAlliance(id, _dbController);
-        }
-
-        /// <summary>
-        /// Handles the SelectedObjectsChanged event of the pgAlliance control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void pgAlliance_SelectedObjectsChanged(object sender, EventArgs e)
-        {
-            var c = pgAlliance.SelectedObject as EditorAlliance;
-            if (c == null)
-                txtAlliance.Text = string.Empty;
-            else
-                txtAlliance.Text = string.Format("{0}. {1}", c.ID, c.Name);
-        }
-
-        /// <summary>
-        /// Handles the SelectedObjectsChanged event of the pgQuest control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void pgQuest_SelectedObjectsChanged(object sender, EventArgs e)
-        {
-            var q = pgQuest.SelectedObject as EditorQuest;
-            if (q == null)
-                txtQuest.Text = string.Empty;
-            else
-                txtQuest.Text = string.Format("{0}. {1}", q.ID, q.Name);
         }
     }
 }
