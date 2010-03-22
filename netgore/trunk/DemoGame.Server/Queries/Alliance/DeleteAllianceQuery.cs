@@ -16,8 +16,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public DeleteAllianceQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public DeleteAllianceQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

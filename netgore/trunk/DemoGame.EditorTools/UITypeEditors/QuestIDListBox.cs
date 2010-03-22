@@ -44,10 +44,10 @@ namespace DemoGame.EditorTools
 
             e.DrawBackground();
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-            
+
             string str;
 
-            var qdc = QuestDescriptionCollection.Create( ContentPaths.Dev);
+            var qdc = QuestDescriptionCollection.Create(ContentPaths.Dev);
             var t = qdc[item];
 
             if (t == null)
