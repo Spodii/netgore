@@ -8,6 +8,7 @@ using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
+using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Features.Quests;
@@ -108,13 +109,13 @@ namespace DemoGame.EditorTools
         {
             get
             {
-                EnsureListDistinct(_finishItems, (x, y) => x.Key == y.Key);
+                _finishItems.RemoveDuplicates((x, y) => x.Key == y.Key);
                 return _finishItems;
             }
             set
             {
-                EnsureListDistinct(_finishItems, (x, y) => x.Key == y.Key);
                 _finishItems = value ?? new List<MutablePair<ItemTemplateID, byte>>();
+                _finishItems.RemoveDuplicates((x, y) => x.Key == y.Key);
             }
         }
 
@@ -128,13 +129,13 @@ namespace DemoGame.EditorTools
         {
             get
             {
-                EnsureListDistinct(_finishQuests, (x, y) => x == y);
+                _finishQuests.RemoveDuplicates((x, y) => x == y);
                 return _finishQuests;
             }
             set
             {
-                EnsureListDistinct(_finishQuests, (x, y) => x == y);
                 _finishQuests = value ?? new List<QuestID>();
+                _finishQuests.RemoveDuplicates((x, y) => x == y);
             }
         }
 
@@ -148,13 +149,13 @@ namespace DemoGame.EditorTools
         {
             get
             {
-                EnsureListDistinct(_kills, (x, y) => x.Key == y.Key);
+                _kills.RemoveDuplicates((x, y) => x.Key == y.Key);
                 return _kills;
             }
             set
             {
-                EnsureListDistinct(_kills, (x, y) => x.Key == y.Key);
                 _kills = value ?? new List<MutablePair<CharacterTemplateID, ushort>>();
+                _kills.RemoveDuplicates((x, y) => x.Key == y.Key);
             }
         }
 
@@ -176,13 +177,13 @@ namespace DemoGame.EditorTools
         {
             get
             {
-                EnsureListDistinct(_rewardItems, (x, y) => x.Key == y.Key);
+                _rewardItems.RemoveDuplicates((x, y) => x.Key == y.Key);
                 return _rewardItems;
             }
             set
             {
-                EnsureListDistinct(_rewardItems, (x, y) => x.Key == y.Key);
                 _rewardItems = value ?? new List<MutablePair<ItemTemplateID, byte>>();
+                _rewardItems.RemoveDuplicates((x, y) => x.Key == y.Key);
             }
         }
 
@@ -196,13 +197,13 @@ namespace DemoGame.EditorTools
         {
             get
             {
-                EnsureListDistinct(_startItems, (x, y) => x.Key == y.Key);
+                _startItems.RemoveDuplicates((x, y) => x.Key == y.Key);
                 return _startItems;
             }
             set
             {
-                EnsureListDistinct(_startItems, (x, y) => x.Key == y.Key);
                 _startItems = value ?? new List<MutablePair<ItemTemplateID, byte>>();
+                _startItems.RemoveDuplicates((x, y) => x.Key == y.Key);
             }
         }
 
@@ -216,34 +217,13 @@ namespace DemoGame.EditorTools
         {
             get
             {
-                EnsureListDistinct(_startQuests, (x, y) => x == y);
+                _startQuests.RemoveDuplicates((x, y) => x == y);
                 return _startQuests;
             }
             set
             {
-                EnsureListDistinct(_startQuests, (x, y) => x == y);
                 _startQuests = value ?? new List<QuestID>();
-            }
-        }
-
-        /// <summary>
-        /// Ensures the items in a <see cref="IList{T}"/> are distinct.
-        /// </summary>
-        /// <typeparam name="T">The type of list items.</typeparam>
-        /// <param name="list">The list.</param>
-        /// <param name="equalityComparer">The equality comparer.</param>
-        static void EnsureListDistinct<T>(IList<T> list, Func<T, T, bool> equalityComparer)
-        {
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                for (int j = i + 1; j < list.Count; j++)
-                {
-                    if (equalityComparer(list[i], list[j]))
-                    {
-                        list.RemoveAt(j);
-                        j--;
-                    }
-                }
+                _startQuests.RemoveDuplicates((x, y) => x == y);
             }
         }
 

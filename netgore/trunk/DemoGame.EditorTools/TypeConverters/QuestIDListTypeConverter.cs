@@ -9,7 +9,7 @@ using NetGore.Features.Quests;
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="TypeConverter"/> for a collection of <see cref="ItemTemplateID"/>s and values.
+    /// A <see cref="TypeConverter"/> for a collection of <see cref="QuestID"/>s and values.
     /// </summary>
     public class QuestIDListTypeConverter : TypeConverter
     {
@@ -65,9 +65,6 @@ namespace DemoGame.EditorTools
                         sb.Length--;
 
                     sb.Append("}");
-
-                    if (sb.Length > 2)
-                        sb.Length -= 2;
 
                     return sb.ToString();
                 }

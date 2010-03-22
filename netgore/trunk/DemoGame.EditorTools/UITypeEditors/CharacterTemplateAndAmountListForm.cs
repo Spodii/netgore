@@ -99,7 +99,7 @@ namespace DemoGame.EditorTools
                 if (RequireDistinct)
                 {
                     var listItems = lstItems.Items.OfType<MutablePair<CharacterTemplateID, ushort>>().ToImmutable();
-                    f.SkipItems = (x => !listItems.Any(y => y.Key == x.ID));
+                    f.SkipItems = (x => listItems.Any(y => y.Key == x.ID));
                 }
 
                 if (f.ShowDialog(this) != DialogResult.OK)

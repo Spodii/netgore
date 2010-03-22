@@ -57,6 +57,14 @@
             this.label8 = new System.Windows.Forms.Label();
             this.pgQuest = new System.Windows.Forms.PropertyGrid();
             this.tpAlliances = new System.Windows.Forms.TabPage();
+            this.splitContainer9 = new System.Windows.Forms.SplitContainer();
+            this.txtAlliance = new System.Windows.Forms.TextBox();
+            this.btnAlliance = new System.Windows.Forms.Button();
+            this.btnAllianceSave = new System.Windows.Forms.Button();
+            this.btnAllianceNew = new System.Windows.Forms.Button();
+            this.btnAllianceDelete = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pgAlliance = new System.Windows.Forms.PropertyGrid();
             this.tpMessages = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.txtMessages = new System.Windows.Forms.TextBox();
@@ -67,6 +75,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.lstMessages = new DemoGame.DbEditor.GameMessageValueListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtSelectedMessage = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -83,7 +92,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.lstMessages = new DemoGame.DbEditor.GameMessageValueListBox();
             this.tc.SuspendLayout();
             this.tpItemTemplate.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -97,6 +105,10 @@
             this.splitContainer8.Panel1.SuspendLayout();
             this.splitContainer8.Panel2.SuspendLayout();
             this.splitContainer8.SuspendLayout();
+            this.tpAlliances.SuspendLayout();
+            this.splitContainer9.Panel1.SuspendLayout();
+            this.splitContainer9.Panel2.SuspendLayout();
+            this.splitContainer9.SuspendLayout();
             this.tpMessages.SuspendLayout();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
@@ -457,15 +469,117 @@
             this.pgQuest.Name = "pgQuest";
             this.pgQuest.Size = new System.Drawing.Size(456, 351);
             this.pgQuest.TabIndex = 0;
+            this.pgQuest.SelectedObjectsChanged += new System.EventHandler(this.pgQuest_SelectedObjectsChanged);
             // 
             // tpAlliances
             // 
+            this.tpAlliances.Controls.Add(this.splitContainer9);
             this.tpAlliances.Location = new System.Drawing.Point(4, 22);
             this.tpAlliances.Name = "tpAlliances";
             this.tpAlliances.Size = new System.Drawing.Size(456, 377);
             this.tpAlliances.TabIndex = 3;
             this.tpAlliances.Text = "Alliances";
             this.tpAlliances.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer9
+            // 
+            this.splitContainer9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer9.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer9.IsSplitterFixed = true;
+            this.splitContainer9.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer9.Name = "splitContainer9";
+            this.splitContainer9.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer9.Panel1
+            // 
+            this.splitContainer9.Panel1.Controls.Add(this.txtAlliance);
+            this.splitContainer9.Panel1.Controls.Add(this.btnAlliance);
+            this.splitContainer9.Panel1.Controls.Add(this.btnAllianceSave);
+            this.splitContainer9.Panel1.Controls.Add(this.btnAllianceNew);
+            this.splitContainer9.Panel1.Controls.Add(this.btnAllianceDelete);
+            this.splitContainer9.Panel1.Controls.Add(this.label9);
+            this.splitContainer9.Panel1MinSize = 22;
+            // 
+            // splitContainer9.Panel2
+            // 
+            this.splitContainer9.Panel2.Controls.Add(this.pgAlliance);
+            this.splitContainer9.Size = new System.Drawing.Size(456, 377);
+            this.splitContainer9.SplitterDistance = 22;
+            this.splitContainer9.TabIndex = 1;
+            // 
+            // txtAlliance
+            // 
+            this.txtAlliance.BackColor = System.Drawing.SystemColors.Window;
+            this.txtAlliance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtAlliance.Location = new System.Drawing.Point(52, 0);
+            this.txtAlliance.Name = "txtAlliance";
+            this.txtAlliance.ReadOnly = true;
+            this.txtAlliance.Size = new System.Drawing.Size(246, 20);
+            this.txtAlliance.TabIndex = 16;
+            // 
+            // btnAlliance
+            // 
+            this.btnAlliance.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAlliance.Location = new System.Drawing.Point(298, 0);
+            this.btnAlliance.Name = "btnAlliance";
+            this.btnAlliance.Size = new System.Drawing.Size(26, 22);
+            this.btnAlliance.TabIndex = 15;
+            this.btnAlliance.Text = "...";
+            this.btnAlliance.UseVisualStyleBackColor = true;
+            this.btnAlliance.Click += new System.EventHandler(this.btnAlliance_Click);
+            // 
+            // btnAllianceSave
+            // 
+            this.btnAllianceSave.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAllianceSave.Location = new System.Drawing.Point(324, 0);
+            this.btnAllianceSave.Name = "btnAllianceSave";
+            this.btnAllianceSave.Size = new System.Drawing.Size(41, 22);
+            this.btnAllianceSave.TabIndex = 14;
+            this.btnAllianceSave.Text = "Save";
+            this.btnAllianceSave.UseVisualStyleBackColor = true;
+            this.btnAllianceSave.Click += new System.EventHandler(this.btnAllianceSave_Click);
+            // 
+            // btnAllianceNew
+            // 
+            this.btnAllianceNew.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAllianceNew.Location = new System.Drawing.Point(365, 0);
+            this.btnAllianceNew.Name = "btnAllianceNew";
+            this.btnAllianceNew.Size = new System.Drawing.Size(41, 22);
+            this.btnAllianceNew.TabIndex = 11;
+            this.btnAllianceNew.Text = "New";
+            this.btnAllianceNew.UseVisualStyleBackColor = true;
+            this.btnAllianceNew.Click += new System.EventHandler(this.btnAllianceNew_Click);
+            // 
+            // btnAllianceDelete
+            // 
+            this.btnAllianceDelete.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAllianceDelete.Location = new System.Drawing.Point(406, 0);
+            this.btnAllianceDelete.Name = "btnAllianceDelete";
+            this.btnAllianceDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnAllianceDelete.TabIndex = 10;
+            this.btnAllianceDelete.Text = "Delete";
+            this.btnAllianceDelete.UseVisualStyleBackColor = true;
+            this.btnAllianceDelete.Click += new System.EventHandler(this.btnAllianceDelete_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label9.Location = new System.Drawing.Point(0, 0);
+            this.label9.Name = "label9";
+            this.label9.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label9.Size = new System.Drawing.Size(52, 17);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Selected:";
+            // 
+            // pgAlliance
+            // 
+            this.pgAlliance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgAlliance.Location = new System.Drawing.Point(0, 0);
+            this.pgAlliance.Name = "pgAlliance";
+            this.pgAlliance.Size = new System.Drawing.Size(456, 351);
+            this.pgAlliance.TabIndex = 0;
+            this.pgAlliance.SelectedObjectsChanged += new System.EventHandler(this.pgAlliance_SelectedObjectsChanged);
             // 
             // tpMessages
             // 
@@ -606,6 +720,17 @@
             this.splitContainer7.Size = new System.Drawing.Size(456, 265);
             this.splitContainer7.SplitterDistance = 229;
             this.splitContainer7.TabIndex = 0;
+            // 
+            // lstMessages
+            // 
+            this.lstMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstMessages.FormattingEnabled = true;
+            this.lstMessages.Location = new System.Drawing.Point(0, 13);
+            this.lstMessages.Name = "lstMessages";
+            this.lstMessages.Size = new System.Drawing.Size(456, 212);
+            this.lstMessages.TabIndex = 5;
+            this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -793,17 +918,6 @@
             this.propertyGrid1.Size = new System.Drawing.Size(450, 345);
             this.propertyGrid1.TabIndex = 0;
             // 
-            // lstMessages
-            // 
-            this.lstMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstMessages.FormattingEnabled = true;
-            this.lstMessages.Location = new System.Drawing.Point(0, 13);
-            this.lstMessages.Name = "lstMessages";
-            this.lstMessages.Size = new System.Drawing.Size(456, 212);
-            this.lstMessages.TabIndex = 5;
-            this.lstMessages.SelectedIndexChanged += new System.EventHandler(this.lstMessages_SelectedIndexChanged);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -830,6 +944,11 @@
             this.splitContainer8.Panel1.PerformLayout();
             this.splitContainer8.Panel2.ResumeLayout(false);
             this.splitContainer8.ResumeLayout(false);
+            this.tpAlliances.ResumeLayout(false);
+            this.splitContainer9.Panel1.ResumeLayout(false);
+            this.splitContainer9.Panel1.PerformLayout();
+            this.splitContainer9.Panel2.ResumeLayout(false);
+            this.splitContainer9.ResumeLayout(false);
             this.tpMessages.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel1.PerformLayout();
@@ -913,6 +1032,14 @@
         private System.Windows.Forms.Button btnQuestDelete;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.PropertyGrid pgQuest;
+        private System.Windows.Forms.SplitContainer splitContainer9;
+        private System.Windows.Forms.TextBox txtAlliance;
+        private System.Windows.Forms.Button btnAlliance;
+        private System.Windows.Forms.Button btnAllianceSave;
+        private System.Windows.Forms.Button btnAllianceNew;
+        private System.Windows.Forms.Button btnAllianceDelete;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.PropertyGrid pgAlliance;
     }
 }
 

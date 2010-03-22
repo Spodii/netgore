@@ -179,8 +179,13 @@
     <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusQuery.cs" />
     <Compile Include="Queries\Quest\Character\InsertCharacterQuestStatusStartQuery.cs" />
     <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusKillsQuery.cs" />
+    <Compile Include="Queries\Alliance\DeleteAllianceQuery.cs" />
     <Compile Include="Queries\Quest\DeleteQuestQuery.cs" />
+    <Compile Include="Queries\Alliance\ReplaceAllianceAttackableQuery.cs" />
+    <Compile Include="Queries\Alliance\ReplaceAllianceHostileQuery.cs" />
+    <Compile Include="Queries\Alliance\InsertAllianceQuery.cs" />
     <Compile Include="Queries\Quest\InsertQuestQuery.cs" />
+    <Compile Include="Queries\Alliance\ReplaceAllianceQuery.cs" />
     <Compile Include="Queries\Quest\ReplaceQuestQuery.cs" />
     <Compile Include="Queries\Quest\Finish Reqs\ReplaceQuestRequireFinishItemQuery.cs" />
     <Compile Include="Queries\Quest\Finish Reqs\ReplaceQuestRequireFinishQuestQuery.cs" />
