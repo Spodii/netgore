@@ -178,8 +178,10 @@ namespace NetGore.Network
                 const string errmsg = "BeginSend() failed since the socket is null (this.Disposed == `{0}`).";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, _disposed);
+
                 lock (_sendLock)
                     _isSending = false;
+
                 return;
             }
 
@@ -189,8 +191,10 @@ namespace NetGore.Network
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
                 Debug.Fail(errmsg);
+
                 lock (_sendLock)
                     _isSending = false;
+
                 return;
             }
 

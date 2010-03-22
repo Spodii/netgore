@@ -47,6 +47,10 @@ namespace NetGore.Audio
 
         /// <summary>
         /// Gets an instance of the <see cref="SoundManager"/> for the given <paramref name="contentManager"/>.
+        /// Only the first <see cref="ContentManager"/> passed to this method will be used. Successive calls
+        /// can pass a null <see cref="ContentManager"/>, but doing so is not recommended if it can be avoided.
+        /// This method is thread-safe, but it is recommended that you store the returned object in a local
+        /// member if you want to access it frequently to avoid the overhead of thread synchronization.
         /// </summary>
         /// <param name="contentManager">The <see cref="ContentManager"/>.</param>
         /// <returns>An instance of the <see cref="SoundManager"/> for the given
@@ -54,13 +58,7 @@ namespace NetGore.Audio
         public static SoundManager GetInstance(ContentManager contentManager)
         {
             if (_instance == null)
-            {
-                lock (_instanceLock)
-                {
-                    if (_instance == null)
-                        _instance = new SoundManager(contentManager);
-                }
-            }
+                _instance = new SoundManager(contentManager);
 
             return _instance;
         }

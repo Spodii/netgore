@@ -120,8 +120,9 @@ namespace NetGore.Network
             // Push the received data into the receive queue
             if (received != null)
             {
+                var addressedPacket = new AddressedPacket(received, remoteEndPoint);
                 lock (_receiveQueue)
-                    _receiveQueue.Enqueue(new AddressedPacket(received, remoteEndPoint));
+                    _receiveQueue.Enqueue(addressedPacket);
             }
         }
 

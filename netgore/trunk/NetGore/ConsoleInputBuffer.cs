@@ -10,6 +10,8 @@ namespace NetGore
     /// </summary>
     public class ConsoleInputBuffer : IDisposable
     {
+        static readonly IEnumerable<string> _emptyStrings = Enumerable.Empty<string>();
+
         readonly Queue<string> _buffer = new Queue<string>();
         readonly object _syncObj = new object();
         bool _isRunning = true;
@@ -30,13 +32,13 @@ namespace NetGore
         public IEnumerable<string> GetBuffer()
         {
             if (_buffer.Count == 0)
-                return Enumerable.Empty<string>();
+                return _emptyStrings;
 
             IEnumerable<string> ret;
             lock (_syncObj)
             {
                 if (_buffer.Count == 0)
-                    ret = Enumerable.Empty<string>();
+                    ret = _emptyStrings;
                 else
                 {
                     ret = _buffer.ToArray();

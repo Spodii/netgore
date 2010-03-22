@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -36,7 +37,15 @@ namespace NetGore.Audio
                 lock (_freeObjectsSync)
                 {
                     if (_freeObjects.Count > 0)
-                        ret = _freeObjects.Pop();
+                    {
+                        try
+                        {
+                            ret = _freeObjects.Pop();
+                        }
+                        catch (InvalidOperationException)
+                        {
+                        }
+                    }
                 }
             }
 

@@ -25,12 +25,7 @@ namespace NetGore.EditorTools
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// Lock used when loading the <see cref="GrhImageList"/> instance to ensure it is only loaded once.
-        /// </summary>
-        static readonly object _loadSync = new object();
-
-        static GrhImageList _instance;
+        static readonly GrhImageList _instance;
 
         readonly Dictionary<string, GrhImageListCacheItem> _imageCache =
             new Dictionary<string, GrhImageListCacheItem>(StringComparer.OrdinalIgnoreCase);
@@ -129,19 +124,8 @@ namespace NetGore.EditorTools
         {
             get
             {
-                // Use a double-test lock method to only lock when the instance has to be created
-                if (_instance == null)
-                {
-                    lock (_loadSync)
-                    {
-                        if (_instance != null)
-                            _instance = new GrhImageList();
-                    }
-                }
-
                 return _instance;
             }
-            set { _instance = value; }
         }
 
         /// <summary>

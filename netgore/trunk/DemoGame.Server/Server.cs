@@ -321,18 +321,30 @@ namespace DemoGame.Server
                 // Update the time
                 serverTimeUpdater.Update(GetTime());
 
-                // Execute the queued commands
+                // Handle the queued commands
                 if (_consoleCommandQueue.Count > 0)
                 {
+                    string[] commandsToExecute = null;
+
+                    // Grab the commands to be executed into a local array so we can release the lock quickly
                     lock (_consoleCommandSync)
                     {
-                        while (_consoleCommandQueue.Count > 0)
+                        if (_consoleCommandQueue.Count > 0)
                         {
-                            var command = _consoleCommandQueue.Dequeue();
-                            var ret = _consoleCommands.ExecuteCommand(command);
+                            commandsToExecute = _consoleCommandQueue.ToArray();
+                            _consoleCommandQueue.Clear();
+                        }
+                    }
+
+                    // Execute the commands
+                    if (commandsToExecute != null)
+                    {
+                        foreach (var cmd in commandsToExecute)
+                        {
+                            var ret = _consoleCommands.ExecuteCommand(cmd);
 
                             if (ConsoleCommandExecuted != null)
-                                ConsoleCommandExecuted.Invoke(this, command, ret);
+                                ConsoleCommandExecuted.Invoke(this, cmd, ret);
                         }
                     }
                 }

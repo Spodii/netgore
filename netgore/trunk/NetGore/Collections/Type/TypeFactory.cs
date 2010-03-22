@@ -223,6 +223,7 @@ namespace NetGore.Collections
             {
                 if (_loadedAssemblies.Contains(assembly))
                     return;
+
                 _loadedAssemblies.Add(assembly);
             }
 
