@@ -4,14 +4,14 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using NetGore.Features.Quests;
+using DemoGame.Server;
 
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="TypeConverter"/> for a collection of <see cref="QuestID"/>s and values.
+    /// A <see cref="TypeConverter"/> for a collection of <see cref="AllianceID"/>s and values.
     /// </summary>
-    public class QuestIDListTypeConverter : TypeConverter
+    public class AllianceIDListTypeConverter : TypeConverter
     {
         /// <summary>
         /// Returns whether this converter can convert the object to the specified type, using the specified context.
@@ -50,19 +50,21 @@ namespace DemoGame.EditorTools
         {
             if (destinationType == typeof(string))
             {
-                var ev = value as IEnumerable<QuestID>;
+                var ev = value as IEnumerable<AllianceID>;
                 if (ev != null)
                 {
+                    var am = AllianceManager.Instance;
+
                     StringBuilder sb = new StringBuilder();
                     sb.Append("{");
                     foreach (var v in ev)
                     {
-                        sb.Append(v);
-                        sb.Append(",");
+                        sb.Append(am[v].Name);
+                        sb.Append(", ");
                     }
 
-                    if (sb.Length > 1)
-                        sb.Length--;
+                    if (sb.Length > 2)
+                        sb.Length -= 2;
 
                     sb.Append("}");
 

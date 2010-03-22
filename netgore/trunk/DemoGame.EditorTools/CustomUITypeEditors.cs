@@ -66,7 +66,8 @@ namespace DemoGame.EditorTools
             // really matter what you add here. In general, you should just add to this when you notice that
             // a PropertyGrid isn't using the AdvancedClassTypeConverter.
             AdvancedClassTypeConverter.AddTypes(typeof(MutablePair<ItemTemplateID, byte>),
-                                                typeof(MutablePair<CharacterTemplateID, ushort>), typeof(EditorQuest));
+                                                typeof(MutablePair<CharacterTemplateID, ushort>), typeof(EditorQuest),
+                                                typeof(EditorAlliance));
 
             // Set the properties we want to force being readonly in the PropertyGrid
             AdvancedClassTypeConverter.SetForceReadOnlyProperties(typeof(CharacterTemplateTable), "ID");
@@ -110,6 +111,8 @@ namespace DemoGame.EditorTools
                 new EditorTypes(typeof(ShopID?), typeof(ShopIDEditor)),
                 new EditorTypes(typeof(IEnumerable<KeyValuePair<StatType, int>>), typeof(StatTypeConstDictionaryEditor)),
                 new EditorTypes(typeof(List<MutablePair<ItemTemplateID, byte>>), typeof(ItemTemplateAndAmountEditor)),
+                new EditorTypes(typeof(List<QuestID>), typeof(QuestIDListEditor)),
+                new EditorTypes(typeof(List<AllianceID>), typeof(AllianceIDListEditor)),
                 new EditorTypes(typeof(List<MutablePair<CharacterTemplateID, ushort>>), typeof(CharacterTemplateAndAmountEditor)),
                 new EditorTypes(typeof(StatTypeConstDictionary), typeof(StatTypeConstDictionaryEditor)));
 
@@ -129,6 +132,9 @@ namespace DemoGame.EditorTools
 
             TypeDescriptor.AddAttributes(typeof(IEnumerable<QuestID>),
                                          new TypeConverterAttribute(typeof(QuestIDListTypeConverter)));
+
+            TypeDescriptor.AddAttributes(typeof(IEnumerable<AllianceID>),
+                                         new TypeConverterAttribute(typeof(AllianceIDListTypeConverter)));
 
             // Add the custom UITypeEditors defined by the base engine
             NetGore.EditorTools.CustomUITypeEditors.AddEditors();
