@@ -23,7 +23,7 @@ namespace NetGore.Scripting
         bool _compilationFailed = false;
 
         /// <summary>
-        /// ScriptTypeCollection constructor.
+        /// Initializes a new instance of the <see cref="ScriptTypeCollection"/> class.
         /// </summary>
         /// <param name="name">The name of this ScriptTypeCollection. This name should be unique from all other
         /// ScriptTypeCollections.</param>
@@ -34,7 +34,7 @@ namespace NetGore.Scripting
         }
 
         /// <summary>
-        /// ScriptTypeCollection constructor.
+        /// Initializes a new instance of the <see cref="ScriptTypeCollection"/> class.
         /// </summary>
         /// <param name="name">The name of this ScriptTypeCollection. This name should be unique from all other
         /// ScriptTypeCollections.</param>
