@@ -330,18 +330,18 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Finds the Users close enough to the <paramref name="entityToSynchronize"/> to synchronize their
+        /// Finds the Users close enough to the <paramref name="toSynchronize"/> to synchronize their
         /// Position and Velocity to.
         /// </summary>
-        /// <param name="entityToSynchronize">The DyanmicEntity to synchronize.</param>
-        /// <returns>An IEnumerable of Users close enough to the <paramref name="entityToSynchronize"/> that they
-        /// need to have the <paramref name="entityToSynchronize"/>'s Position and Velocity synchronized.</returns>
-        IEnumerable<User> GetUsersToSyncPandVTo(ISpatial entityToSynchronize)
+        /// <param name="toSynchronize">The <see cref="ISpatial"/> to synchronize.</param>
+        /// <returns>An IEnumerable of Users close enough to the <paramref name="toSynchronize"/> that they
+        /// need to have the <paramref name="toSynchronize"/>'s Position and Velocity synchronized.</returns>
+        IEnumerable<User> GetUsersToSyncPandVTo(ISpatial toSynchronize)
         {
-            int xPad = (int)GameData.ScreenSize.X;
-            int yPad = (int)GameData.ScreenSize.Y;
+            int xPad = (int)(GameData.ScreenSize.X * 1.5);
+            int yPad = (int)(GameData.ScreenSize.Y * 1.5);
 
-            Rectangle r = entityToSynchronize.ToRectangle();
+            Rectangle r = toSynchronize.ToRectangle();
             Rectangle syncRegion = new Rectangle(r.X - xPad, r.Y - yPad, r.Width + xPad * 2, r.Height + xPad * 2);
 
             foreach (User user in Users)
