@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using log4net;
 
 namespace NetGore.IO
@@ -164,12 +165,24 @@ namespace NetGore.IO
         /// <summary>
         /// Gets the <see cref="ContentPaths"/> for the Development content.
         /// </summary>
+        /// <exception cref="DirectoryNotFoundException">The <see cref="ContentPaths"/> for the Development
+        /// content could not be found.</exception>
         public static ContentPaths Dev
         {
             get
             {
                 if (_devPaths == null)
-                    _devPaths = new ContentPaths(GetDevContentPath(_appRoot));
+                {
+                    var devPath = GetDevContentPath();
+                    if (devPath == null)
+                    {
+                        throw new DirectoryNotFoundException(@"Could not find the directory to the development content path (ContentPaths.Dev)." +
+                            @" Please make sure that the path to this directory is defined in the \Content\Data\devpath.txt file in the build directory.");
+                    }
+
+                    _devPaths = new ContentPaths(devPath);
+                }
+
                 return _devPaths;
             }
         }
@@ -352,39 +365,56 @@ namespace NetGore.IO
         /// <summary>
         /// Gets the full file path to the development content directory.
         /// </summary>
-        /// <param name="rootPath">Root application path.</param>
-        /// <returns>The full file path to the development content directory.</returns>
-        static string GetDevContentPath(string rootPath)
+        /// <returns>The full file path to the development content directory, or null if a valid
+        /// path could not be found.</returns>
+        static string GetDevContentPath()
         {
-            // Check if this directory contains the content directory
-            var subDirectories = Directory.GetDirectories(rootPath, "*", SearchOption.AllDirectories);
-            foreach (string subDirectory in subDirectories)
+            // Get the devpath.txt file path
+            var devPathFile = Build.Data.Join("devpath.txt");
+            if (!File.Exists(devPathFile))
+                return null;
+
+            // Read all the lines in the file
+            var lines = File.ReadAllLines(devPathFile);
+
+            // Parse each of the lines
+            foreach (var rawLine in lines)
             {
-                if (IsDevContentDirectory(subDirectory))
-                    return subDirectory;
+                // Skip empty lines
+                if (string.IsNullOrEmpty(rawLine))
+                    continue;
+
+                // Trim down the line
+                var line = rawLine.Trim();
+                if (line.Length == 0 || line.StartsWith("#"))
+                    continue;
+
+                // Try to get the full path, ignoring when it generates an exception
+                string fullPath = null;
+                try
+                {
+                    fullPath = Path.GetFullPath(line);
+
+                    // Ensure the directory exists
+                    if (!Directory.Exists(fullPath))
+                        continue;
+                }
+                catch (ArgumentException)
+                {
+                }
+                catch (SecurityException)
+                {
+                }
+                catch (IOException)
+                {
+                }
+
+                // If not null, a valid path has been found
+                if (fullPath != null)
+                    return fullPath;
             }
 
-            // Get the parent directory
-            DirectoryInfo parent;
-            try
-            {
-                parent = Directory.GetParent(rootPath);
-            }
-            catch (Exception)
-            {
-                parent = null;
-            }
-
-            if (parent == null)
-            {
-                const string errmsg = "Failed to locate the development content directory.";
-                Debug.Fail(errmsg);
-                log.Fatal(errmsg);
-                throw new DirectoryNotFoundException();
-            }
-
-            // Recursively crawl down the tree looking for the development content directory
-            return GetDevContentPath(parent.FullName);
+            return null;
         }
 
         /// <summary>
@@ -421,35 +451,6 @@ namespace NetGore.IO
             }
 
             return filePath;
-        }
-
-        /// <summary>
-        /// Checks if the given <paramref name="path"/> is the development content directory.
-        /// </summary>
-        /// <param name="path">Path to check.</param>
-        /// <returns>True if the development content directory, else false.</returns>
-        static bool IsDevContentDirectory(string path)
-        {
-            // Assume the dev content directory will be the one with a *.contentproj file
-            // and contain the Data and Grh folders
-
-            // Check for the *.contentproj file
-            var files = Directory.GetFiles(path, "*.contentproj", SearchOption.TopDirectoryOnly);
-            if (files.Count() == 0)
-                return false;
-
-            // Check for the required child directories
-            var reqFolders = new List<string> { DataFolder, GrhsFolder };
-            var req = reqFolders.Select(d => Path.GetFileNameWithoutExtension(d).ToLower());
-
-            var dirs = Directory.GetDirectories(path);
-            var dirNames = dirs.Select(d => Path.GetFileNameWithoutExtension(d).ToLower());
-
-            if (dirNames.Intersect(req).Count() != req.Count())
-                return false;
-
-            // All conditions met
-            return true;
         }
     }
 }
