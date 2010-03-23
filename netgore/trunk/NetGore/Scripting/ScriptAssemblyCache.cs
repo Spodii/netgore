@@ -223,7 +223,7 @@ namespace NetGore.Scripting
             {
                 if (!_cache.TryGetValue(hash, out item))
                 {
-                    item = new CacheItem(hash, GetFreeFileName());
+                    item = new CacheItem(hash, GetFreeCacheFileName());
                     _cache.Add(hash, item);
 
                     createdNew = true;
@@ -328,18 +328,21 @@ namespace NetGore.Scripting
         /// this method returns to reserve the file.
         /// </summary>
         /// <returns>A random free file name for the cache directory.</returns>
-        protected string GetFreeFileName()
+        protected string GetFreeCacheFileName()
         {
             // Find a free file name
             string ret;
+            string fullPath;
             do
             {
-                ret = Path.GetRandomFileName();
+                ret = Path.GetRandomFileName().Replace(".", string.Empty);
+                fullPath = GetCacheFilePath(ret);
+                
             }
-            while (File.Exists(CacheDirectory + ret));
+            while (File.Exists(fullPath));
 
             // Create the file to reserve it
-            File.WriteAllBytes(ret, new byte[0]);
+            File.WriteAllBytes(fullPath, new byte[0]);
 
             return ret;
         }
