@@ -86,6 +86,7 @@
     <Compile Include="Cursors\AddGrhCursor.cs" />
     <Compile Include="Cursors\AddLightCursor.cs" />
     <Compile Include="Cursors\AddWallCursor.cs" />
+    <Compile Include="Cursors\AINodeCursor.cs" />
     <Compile Include="Cursors\EntityCursor.cs" />
     <Compile Include="Cursors\GrhCursor.cs" />
     <Compile Include="Cursors\LightCursor.cs" />

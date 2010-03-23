@@ -12,6 +12,7 @@ using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
 using NetGore.Network;
+using NetGore.AI;
 
 namespace DemoGame.Server
 {
@@ -33,6 +34,8 @@ namespace DemoGame.Server
         readonly List<NPC> _npcs = new List<NPC>();
         readonly TSList<User> _users = new TSList<User>();
         readonly World _world;
+
+        
 
         bool _disposed;
 
@@ -57,7 +60,6 @@ namespace DemoGame.Server
         public Map(MapID mapID, World world) : base(mapID, world)
         {
             _world = world;
-
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created Map `{0}`.", this);
         }

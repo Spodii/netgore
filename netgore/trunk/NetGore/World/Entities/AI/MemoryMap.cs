@@ -20,11 +20,11 @@ namespace NetGore.AI
         int _totalCells;
 
         /// <summary>
-        /// Constructor for a MemoryMap, uses default value of 64 for MemoryCell dimensions.
+        /// Constructor for a MemoryMap, uses default value of 16 for MemoryCell dimensions.
         /// </summary>
         public MemoryMap()
         {
-            _cellSize = 64;
+            _cellSize = 16;
         }
 
         /// <summary>
@@ -194,5 +194,13 @@ namespace NetGore.AI
             else
                 return false;
         }
+
+        public List<List<MemoryCell>> MemoryCells
+        {
+            get
+            {return _memoryCells;}
+        }
     }
 }
+
+
