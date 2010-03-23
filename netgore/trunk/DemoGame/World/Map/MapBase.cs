@@ -12,6 +12,7 @@ using NetGore;
 using NetGore.Audio;
 using NetGore.Collections;
 using NetGore.IO;
+using NetGore.AI;
 
 namespace DemoGame
 {
@@ -89,6 +90,9 @@ namespace DemoGame
         string _name = string.Empty;
 
         Vector2 _size = new Vector2(float.MinValue);
+
+        MemoryMap _memoryMap = new MemoryMap(16);
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
@@ -715,6 +719,8 @@ namespace DemoGame
         {
             string path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
+            _memoryMap.Initialize((int)Width, (int)Height);
+            _memoryMap.LoadMemoryMap(contentPath, (int)ID.GetRawValue());
         }
 
         /// <summary>
@@ -1210,6 +1216,12 @@ namespace DemoGame
         public float Width
         {
             get { return Size.X; }
+        }
+
+        [Browsable(false)]
+        public MemoryMap MemoryMap
+        {
+            get { return _memoryMap; }
         }
 
         /// <summary>
