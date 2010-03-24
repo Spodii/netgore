@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,18 +18,47 @@ namespace DemoGame.MapEditor
     sealed class AINodeCursor : EditorCursor <ScreenForm>
     {
         readonly ContextMenu _contextMenu;
+        readonly MenuItem _mnuBlocked;
         readonly MenuItem _mnuWeight;
+        readonly MenuItem _mnuFill;
+        readonly MenuItem _mnu1;
+        readonly MenuItem _mnu10;
+        readonly MenuItem _mnu20;
+        readonly MenuItem _mnu50;
+        readonly MenuItem _mnu100;
 
-        Vector2 _selectionOffset;
+        int UpdateCellTo;
+
         string _toolTip = string.Empty;
         object _toolTipObject = null;
         Vector2 _toolTipPos;
 
         public AINodeCursor()
         {
-            _mnuWeight = new MenuItem("Block", Menu_Clear_OnClick) { Checked = false };
-            _contextMenu = new ContextMenu(new MenuItem[] {_mnuWeight});
+
+
+
+            _mnuBlocked = new MenuItem("Block", Menu_Block_OnClick) { Checked = false };
+            _mnuFill = new MenuItem("Fill", Menu_Fill_OnClick) { Enabled = true };
+            
+            List<MenuItem> items = new List<MenuItem>();
+            items.Add(_mnu1 = new MenuItem("1", Menu_1_OnClick) { Checked = false});
+            items.Add(_mnu10 = new MenuItem("10", Menu_10_OnClick) { Checked = false});
+            items.Add(_mnu20 = new MenuItem("20", Menu_20_OnClick) { Checked = false});
+            items.Add(_mnu50 = new MenuItem("50", Menu_50_OnClick) { Checked = false});
+            items.Add(_mnu100 = new MenuItem("100", Menu_100_OnClick) { Checked = false});
+
+
+
+
+            _mnuWeight = new MenuItem("Weight", items.ToArray());
+            _contextMenu = new ContextMenu(new MenuItem[] {_mnuBlocked, _mnuFill, _mnuWeight});
         }
+
+
+
+
+
 
         /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
@@ -122,9 +152,9 @@ namespace DemoGame.MapEditor
             int[] id = GetMemoryCellUnderCursor(Container);
             Container.SelectedObjs.SetSelected(Container.Map.MemoryMap.MemoryCells[id[0]][id[1]]);
 
-            if (!_mnuWeight.Checked)
+            if (!_mnuBlocked.Checked)
             {
-                Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight += 10;
+                Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = UpdateCellTo;
             }
             else
             {
@@ -148,6 +178,18 @@ namespace DemoGame.MapEditor
                 int[] id = GetMemoryCellUnderCursor(Container);
                 MemoryCell hoverNode = Container.Map.MemoryMap.MemoryCells[id[0]][id[1]];
 
+                if (e.Button == MouseButtons.Left)
+                {
+                    if (!_mnuBlocked.Checked)
+                    {
+                        Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = UpdateCellTo;
+                    }
+                    else
+                    {
+                        Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
+                    }
+                }
+
                 if (hoverNode == null)
                 {
                     _toolTip = string.Empty;
@@ -170,10 +212,28 @@ namespace DemoGame.MapEditor
             Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
         }
 
-        void Menu_Clear_OnClick(object sender, EventArgs e)
+        void Menu_Block_OnClick(object sender, EventArgs e)
         {
-            _mnuWeight.Checked = !_mnuWeight.Checked;
+            _mnuBlocked.Checked = !_mnuBlocked.Checked;
         }
+
+        void Menu_Fill_OnClick(object sender, EventArgs e)
+        {
+            for (int X = 0; X < Container.Map.MemoryMap.MemoryCells.Count; X++)
+            {
+                for (int Y = 0; Y < Container.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                {
+                    Container.Map.MemoryMap.MemoryCells[X][Y].Weight = 100;
+                }
+            }
+        }
+
+
+        void Menu_1_OnClick(object sender, EventArgs e) { UpdateCellTo = 1; }
+        void Menu_10_OnClick(object sender, EventArgs e) { UpdateCellTo = 10; }
+        void Menu_20_OnClick(object sender, EventArgs e) { UpdateCellTo = 20; }
+        void Menu_50_OnClick(object sender, EventArgs e) { UpdateCellTo = 50; }
+        void Menu_100_OnClick(object sender, EventArgs e) { UpdateCellTo = 100; }
 
 
     }

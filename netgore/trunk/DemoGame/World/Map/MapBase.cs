@@ -716,11 +716,14 @@ namespace DemoGame
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
         /// <see cref="DynamicEntity"/>s.</param>
         public void Load(ContentPaths contentPath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
-        {
+        {            
+            
+
+
             string path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
             _memoryMap.Initialize((int)Width, (int)Height);
-            //_memoryMap.LoadMemoryMap(contentPath, (int)ID.GetRawValue());
+            _memoryMap.LoadMemoryMap(contentPath, (int)ID.GetRawValue());
         }
 
         /// <summary>
@@ -932,6 +935,8 @@ namespace DemoGame
         {
             var path = contentPath.Maps.Join(mapID + "." + MapFileSuffix);
             Save(path, dynamicEntityFactory);
+
+            _memoryMap.SaveMemoryMap(contentPath, (int)mapID.GetRawValue());
 
             if (Saved != null)
                 Saved(this);

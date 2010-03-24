@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
+using System.IO;
 
 namespace NetGore.AI
 {
@@ -48,39 +49,32 @@ namespace NetGore.AI
         /// <param name="minY">Y size of map</param>
         public void Initialize(int maxX, int minY)
         {
+            _memoryCells.Clear();
             //Store map size values for use by MemoryMap
             _maxX = maxX;
             _minY = minY;
 
-            int next_powY = 0;
-            int next_powX = 0;
-            bool arrayInc = false;
 
-            _cellsX = (int)(maxX / _cellSize) + 1;
-            _cellsY = (int)(minY / _cellSize) + 1;
+            _cellsX = (int)(_maxX / _cellSize) + 1;
+            _cellsY = (int)(_minY / _cellSize) + 1;
 
             if (Math.Log(_cellsX, 2) != (int)Math.Log(_cellsX, 2) || Math.Log(_cellsY, 2) != (int)Math.Log(_cellsY, 2))
             {
-                arrayInc = true;
-                next_powX = BitOps.NextPowerOf2(_cellsX);
-                next_powY = BitOps.NextPowerOf2(_cellsY);
+                _cellsX = BitOps.NextPowerOf2(_cellsX);
+                _cellsY = BitOps.NextPowerOf2(_cellsY);
             }
 
-            for (int X = 0; X < (arrayInc ? next_powX : _cellsX); ++X)
+            for (int X = 0; X < _cellsX; X++)
             {
                 List<MemoryCell> _temp = new List<MemoryCell>();
 
-                for (int Y = 0; Y < (arrayInc ? next_powY : _cellsY); ++Y)
+                for (int Y = 0; Y < _cellsY; Y++)
                 {
                     _temp.Add(new MemoryCell((int)(X * _cellSize), (int)((X + 1) * _cellSize), (int)(Y * _cellSize),
                                              (int)((Y + 1) * _cellSize)));
                 }
                 _memoryCells.Add(_temp);
             }
-            // Double check, (remove after debugging complete)
-            if (Math.Log(_memoryCells.Count, 2) != (int)Math.Log(_memoryCells.Count, 2) ||
-                Math.Log(_memoryCells[1].Count, 2) != (int)Math.Log(_memoryCells[1].Count, 2))
-                throw new Exception("Grid not 2^n. _cellsX = " + _cellsX + ". _cellsY = " + _cellsY + ".");
 
             _totalCells = _cellsX * _cellsY;
         }
@@ -88,15 +82,30 @@ namespace NetGore.AI
         public void LoadMemoryMap(ContentPaths contentPath, int ID)
         {
             var path = contentPath.Maps.Join("\\AIMap" + ID + ".xml");
+            if (!File.Exists(path))
+            {
+                Initialize(1024, 1024);
+                SaveMemoryMap(contentPath, ID);
+            }
+           
+
 
             XmlValueReader read = new XmlValueReader(path, "MemoryMap");
+            
+            Initialize(1024 , 1024);
+      
+            if ((_cellsX * _cellsY) != (read.ReadInt("TotalCells")))
+            {
+                throw new Exception((_cellsX.ToString()) + "*" + (_cellsY.ToString()) + " was not equal to the Total cells value from the file: " + read.ReadInt("TotalCells").ToString());
+            }
 
             for (int X = 0; X < _cellsX; X++)
             {
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    _memoryCells[X][Y].Weight = read.ReadInt("_cell" + X + Y);
+                    _memoryCells[X][Y].Weight = read.ReadNode("CELLX" + X).ReadInt("_cell" + Y);
                 }
+                
             }
         }
 
@@ -108,9 +117,9 @@ namespace NetGore.AI
         {
             int total = 0;
 
-            for (int X = 0; X < _cellsX; ++X)
+            for (int X = 0; X < _cellsX; X++)
             {
-                for (int Y = 0; Y < _cellsY; ++Y)
+                for (int Y = 0; Y < _cellsY; Y++)
                 {
                     if (_memoryCells[X][Y].Weight > 0)
                         ++total;
@@ -121,15 +130,23 @@ namespace NetGore.AI
 
         public void SaveMemoryMap(ContentPaths contentPath, int ID)
         {
+
             var path = contentPath.Maps.Join("\\AIMap" + ID + ".xml");
             using (var writer = new XmlValueWriter(path, "MemoryMap"))
             {
+                writer.Write("TotalCells", _totalCells);
+                writer.Write("CellsX", _cellsX);
+                writer.Write("CellsY", _cellsY);
+
                 for (int X = 0; X < _cellsX; X++)
                 {
+                    writer.WriteStartNode("CELLX" + X);
                     for (int Y = 0; Y < _cellsY; Y++)
                     {
-                        writer.Write("_cell" + X + Y, _memoryCells[X][Y].Weight);
+                        
+                            writer.Write("_cell" + Y, _memoryCells[X][Y].Weight);
                     }
+                    writer.WriteEndNode("CELLX" + X);
                 }
             }
         }
