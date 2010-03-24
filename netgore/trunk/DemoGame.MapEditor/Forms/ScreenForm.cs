@@ -722,21 +722,26 @@ namespace DemoGame.MapEditor
             }
 
             // I didn't want to mess around with the interfaces too much.
+            
+            if (chkAIGrid.Checked)
+            {
+            
             var visibleArea = Map.Camera.GetViewArea();
-
+            Color B = new Color(100, 100, 100);
+            B.A = 100;
             for (int X = 0; X < Map.MemoryMap.MemoryCells.Count; X++)
             {
                 for (int Y = 0; Y < Map.MemoryMap.MemoryCells[X].Count; Y++)
                 {
-                    if (!visibleArea.Intersects(Map.MemoryMap.MemoryCells[X][Y].Cell))
+                    if (visibleArea.Contains(Map.MemoryMap.MemoryCells[X][Y].Cell))
                     {
-                        float modifier = (Map.MemoryMap.MemoryCells[X][Y].Weight + 1) / 100;
-                        Color C = new Color(Color.SkyBlue, modifier);
-
-                        XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, C);
+                        Color C = new Color(255,255,255) ;
+                        C.A = (byte)MathHelper.Clamp(Map.MemoryMap.MemoryCells[X][Y].Weight*2, 0, 255);
+                        XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, C, B);
                     }
                 }
             }
+        }
 
             // End map rendering
             DrawingManager.EndDrawWorld();
