@@ -446,6 +446,7 @@ namespace NetGore
             if (_syncPnVDupeCounter > 0)
                 --_syncPnVDupeCounter;
 
+            writer.Write("Tick", (byte)(Environment.TickCount % byte.MaxValue));
             writer.Write("Position", Position);
             writer.Write("Velocity", Velocity);
 
@@ -453,6 +454,8 @@ namespace NetGore
             _lastSentVelocity = Velocity;
             _syncPnVLastTime = currentTime;
         }
+
+
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of a property that is
