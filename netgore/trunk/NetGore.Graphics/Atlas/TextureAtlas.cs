@@ -72,10 +72,6 @@ namespace NetGore.Graphics
             _device = device;
             UpdateMaxTextureSize(_device);
 
-            // Create an event listener that will allow us to rebuild and reapply the atlas textures
-            // whenever the device is lost
-            _device.DeviceReset += HandleDeviceLost;
-
             // Build the layout for all the items that will be in the atlas
             _atlasTextureInfos = Combine(atlasItems);
 
@@ -273,8 +269,8 @@ namespace NetGore.Graphics
                 throw new Exception("One or more ITextureAtlases can not fit into the atlas with the given maximum texture size");
 
             // Use the higher of the two values and round to the next power of 2
-            width = NextPowerOf2(Math.Max(guessedSize, maxWidth));
-            height = NextPowerOf2(Math.Max(guessedSize, maxHeight));
+            width = BitOps.NextPowerOf2(Math.Max(guessedSize, maxWidth));
+            height = BitOps.NextPowerOf2(Math.Max(guessedSize, maxHeight));
 
             // If possible, divide one of the sizes in half
             if (width / 2 > maxWidth)
@@ -285,35 +281,6 @@ namespace NetGore.Graphics
             // Finally, force below the maximum size
             width = Math.Min(width, maxSize);
             height = Math.Min(height, maxSize);
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="GraphicsDevice"/> is reset.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void HandleDeviceLost(object sender, EventArgs e)
-        {
-            foreach (var atlasTextureInfo in _atlasTextureInfos)
-            {
-                atlasTextureInfo.BuildTexture(_device, Padding);
-            }
-        }
-
-        /// <summary>
-        /// Finds the next highest power of 2 for a given value unless the value is already a power of 2.
-        /// </summary>
-        /// <param name="value">Value to check.</param>
-        /// <returns>Next highest power of 2 of the value.</returns>
-        static int NextPowerOf2(int value)
-        {
-            value--;
-            value |= value >> 1;
-            value |= value >> 2;
-            value |= value >> 4;
-            value |= value >> 8;
-            value |= value >> 16;
-            return value + 1;
         }
 
         /// <summary>
@@ -376,8 +343,6 @@ namespace NetGore.Graphics
                 return;
 
             _isDisposed = true;
-
-            GraphicsDevice.DeviceReset -= HandleDeviceLost;
 
             if (_atlasTextureInfos != null)
             {
@@ -470,7 +435,7 @@ namespace NetGore.Graphics
                 // Create the list for successful items
                 List<AtlasTextureItem> successful = new List<AtlasTextureItem>();
                 successfulItems = successful;
-
+   
                 // Try to create the atlas texture. If any exceptions are thrown when trying to create the texture,
                 // do not use a texture atlas at all.
                 const string errmsg = "Failed to create TextureAtlas texture. Exception: {0}";
@@ -533,7 +498,7 @@ namespace NetGore.Graphics
             {
                 // Start the SpriteBatch
                 sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.SaveState);
-
+         
                 // Use a try/finally block to make sure that the SpriteBatch ends. If End() is not called, it could
                 // prevent other SpriteBatches from Begin()ing.
                 try
@@ -562,7 +527,10 @@ namespace NetGore.Graphics
                         Rectangle src = srcRect;
                         DrawToAtlas(sb, tex, dest, src);
 
-                        // Create the borders if padded
+                        // Successfully drawn
+                        successful.Add(item);
+
+                        // Create the 1px borders only if padded
                         if (padding == 0)
                             continue;
 
@@ -607,9 +575,6 @@ namespace NetGore.Graphics
                         src.X -= srcRect.Width - 1;
                         dest.X -= srcRect.Width + 1;
                         DrawToAtlas(sb, tex, dest, src);
-
-                        // Successfully drawn
-                        successful.Add(item);
                     }
                 }
                 finally

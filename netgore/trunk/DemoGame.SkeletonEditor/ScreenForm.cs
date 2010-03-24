@@ -504,27 +504,33 @@ namespace DemoGame.SkeletonEditor
             // Screen
             sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
 
-            foreach (XNALine l in _centerLines)
+            try
             {
-                l.Draw(sb);
-            }
+                foreach (XNALine l in _centerLines)
+                {
+                    l.Draw(sb);
+                }
 
-            if (radioEdit.Checked)
-            {
-                // Edit skeleton
-                _skeletonDrawer.Draw(_skeleton, _camera, sb, SelectedNode);
-                if (_frameBody != null && chkDrawBody.Checked)
-                    _frameBody.Draw(sb, Vector2.Zero);
+                if (radioEdit.Checked)
+                {
+                    // Edit skeleton
+                    _skeletonDrawer.Draw(_skeleton, _camera, sb, SelectedNode);
+                    if (_frameBody != null && chkDrawBody.Checked)
+                        _frameBody.Draw(sb, Vector2.Zero);
+                }
+                else
+                {
+                    // Animate skeletons
+                    if (chkDrawBody.Checked)
+                        _skeletonAnim.Draw(sb);
+                    if (chkDrawSkel.Checked)
+                        _skeletonDrawer.Draw(_skeletonAnim.Skeleton, _camera, sb);
+                }
             }
-            else
+            finally
             {
-                // Animate skeletons
-                if (chkDrawBody.Checked)
-                    _skeletonAnim.Draw(sb);
-                if (chkDrawSkel.Checked)
-                    _skeletonDrawer.Draw(_skeletonAnim.Skeleton, _camera, sb);
+                sb.End();
             }
-            sb.End();
         }
 
         void GameScreen_MouseDown(object sender, MouseEventArgs e)

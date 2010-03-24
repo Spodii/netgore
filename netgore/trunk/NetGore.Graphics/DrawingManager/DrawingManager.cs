@@ -258,7 +258,7 @@ namespace NetGore.Graphics
                     }
                     catch (InvalidOperationException ex)
                     {
-                        const string errmsg = "SpriteBatch.End() failed. Exception: {0}";
+                        const string errmsg = "SpriteBatch.Begin() failed. Exception: {0}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, ex);
                         return;
@@ -273,10 +273,11 @@ namespace NetGore.Graphics
                     {
                         // Draw the light map
                         _sb.Draw(_lightMap, Vector2.Zero, Color.White);
-                        _sb.End();
                     }
                     finally
                     {
+                        _sb.End();
+
                         // Restore the old blend mode
                         rs.SourceBlend = oldSourceBlend;
                         rs.DestinationBlend = oldDestinationBlend;
