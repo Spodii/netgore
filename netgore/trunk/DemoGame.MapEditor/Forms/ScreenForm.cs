@@ -728,6 +728,10 @@ namespace DemoGame.MapEditor
             {
             
             var visibleArea = Map.Camera.GetViewArea();
+            visibleArea.X -= 50;
+            visibleArea.Y -= 50;
+            visibleArea.Width += 100;
+            visibleArea.Height += 100;
             Color B = new Color(100, 100, 100);
             B.A = 100;
             for (int X = 0; X < Map.MemoryMap.MemoryCells.Count; X++)
