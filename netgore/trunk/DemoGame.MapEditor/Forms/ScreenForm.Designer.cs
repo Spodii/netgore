@@ -85,6 +85,7 @@ namespace DemoGame.MapEditor
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
+            this.chkAIGrid = new NetGore.EditorTools.PersistableCheckBox();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -549,6 +550,7 @@ namespace DemoGame.MapEditor
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chkAIGrid);
             this.groupBox3.Controls.Add(this.chkLightSources);
             this.groupBox3.Controls.Add(this.chkDrawPersistentNPCs);
             this.groupBox3.Controls.Add(this.chkDrawSpawnAreas);
@@ -793,6 +795,16 @@ namespace DemoGame.MapEditor
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.cmdNew_Click);
             // 
+            // chkAIGrid
+            // 
+            this.chkAIGrid.AutoSize = true;
+            this.chkAIGrid.Location = new System.Drawing.Point(120, 113);
+            this.chkAIGrid.Name = "chkAIGrid";
+            this.chkAIGrid.Size = new System.Drawing.Size(90, 17);
+            this.chkAIGrid.TabIndex = 18;
+            this.chkAIGrid.Text = "Show AI Map";
+            this.chkAIGrid.UseVisualStyleBackColor = true;
+            // 
             // ScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -897,5 +909,6 @@ namespace DemoGame.MapEditor
         private NPCSpawnsListBox lstNPCSpawns;
         private System.Windows.Forms.Button btnDeleteSpawn;
         private System.Windows.Forms.Button btnAddSpawn;
+        private PersistableCheckBox chkAIGrid;
     }
 }

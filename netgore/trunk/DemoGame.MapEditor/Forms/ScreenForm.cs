@@ -721,6 +721,23 @@ namespace DemoGame.MapEditor
                     FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
             }
 
+            // I didn't want to mess around with the interfaces too much.
+            var visibleArea = Map.Camera.GetViewArea();
+
+            for (int X = 0; X < Map.MemoryMap.MemoryCells.Count; X++)
+            {
+                for (int Y = 0; Y < Map.MemoryMap.MemoryCells[X].Count; Y++)
+                {
+                    if (!visibleArea.Intersects(Map.MemoryMap.MemoryCells[X][Y].Cell))
+                    {
+                        float modifier = (Map.MemoryMap.MemoryCells[X][Y].Weight + 1) / 100;
+                        Color C = new Color(Color.SkyBlue, modifier);
+
+                        XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, C);
+                    }
+                }
+            }
+
             // End map rendering
             DrawingManager.EndDrawWorld();
 
