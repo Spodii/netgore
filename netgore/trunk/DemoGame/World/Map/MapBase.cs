@@ -720,7 +720,7 @@ namespace DemoGame
             string path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
             _memoryMap.Initialize((int)Width, (int)Height);
-            _memoryMap.LoadMemoryMap(contentPath, (int)ID.GetRawValue());
+            //_memoryMap.LoadMemoryMap(contentPath, (int)ID.GetRawValue());
         }
 
         /// <summary>
