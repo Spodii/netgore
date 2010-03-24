@@ -292,28 +292,22 @@ namespace NetGore.EditorTools
             // Begin rendering
             sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
 
-            // Try/catch since invalid texture will throw an Exception that we will want to ignore in releases
-#if !DEBUG
             try
             {
-#endif
-            _grh.Draw(sb, Vector2.Zero);
-#if !DEBUG
-            }
-            catch
-            {
-            }
-#endif
+                _grh.Draw(sb, Vector2.Zero);
 
-            // Draw the walls
-            foreach (var wall in lstWalls.Items.OfType<WallEntityBase>())
-            {
-                var rect = wall.ToRectangle();
-                XNARectangle.Draw(sb, rect, _autoWallColor);
+                // Draw the walls
+                foreach (var wall in lstWalls.Items.OfType<WallEntityBase>())
+                {
+                    var rect = wall.ToRectangle();
+                    XNARectangle.Draw(sb, rect, _autoWallColor);
+                }
             }
-
-            // End rendering
-            sb.End();
+            finally
+            {
+                // End rendering
+                sb.End();
+            }
         }
 
         void lstWalls_SelectedIndexChanged(object sender, EventArgs e)

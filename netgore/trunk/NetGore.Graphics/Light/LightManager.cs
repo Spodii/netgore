@@ -57,19 +57,24 @@ namespace NetGore.Graphics
                 // Start the SpriteBatch
                 _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, camera.Matrix);
 
-                // Set the render state
-                rs.DestinationBlend = Blend.One;
-                rs.SourceBlend = Blend.DestinationAlpha;
-                rs.BlendFunction = BlendFunction.Add;
-                rs.SeparateAlphaBlendEnabled = true;
-
-                // Draw the lights
-                foreach (var light in this)
+                try
                 {
-                    light.Draw(_sb);
-                }
+                    // Set the render state
+                    rs.DestinationBlend = Blend.One;
+                    rs.SourceBlend = Blend.DestinationAlpha;
+                    rs.BlendFunction = BlendFunction.Add;
+                    rs.SeparateAlphaBlendEnabled = true;
 
-                _sb.End();
+                    // Draw the lights
+                    foreach (var light in this)
+                    {
+                        light.Draw(_sb);
+                    }
+                }
+                finally
+                {
+                    _sb.End();
+                }
 
                 // Restore the render states
                 rs.DestinationBlend = oldDestinationBlend;
