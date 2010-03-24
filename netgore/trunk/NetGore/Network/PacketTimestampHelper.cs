@@ -13,7 +13,7 @@ namespace NetGore.Network
         /// <summary>
         /// The maximum size of the timestamp. Once this value is hit, it will roll over back to zero.
         /// </summary>
-        public const int MaxTimeStampSize = byte.MaxValue;
+        public const int MaxTimeStampSize = ushort.MaxValue;
 
         /// <summary>
         /// The resolution of the time stamps in milliseconds.
@@ -25,11 +25,11 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="currentTime">The time to get the time stamp for.</param>
         /// <returns>The time stamp for the given time.</returns>
-        public static byte GetTimeStamp(int currentTime)
+        public static ushort GetTimeStamp(int currentTime)
         {
             unchecked
             {
-                return (byte)((currentTime >> 3) % (MaxTimeStampSize + 1));
+                return (ushort)((currentTime >> 3) % (MaxTimeStampSize + 1));
             }
         }
 
@@ -37,7 +37,7 @@ namespace NetGore.Network
         /// Gets the time stamp.
         /// </summary>
         /// <returns>The time stamp for the current time.</returns>
-        public static byte GetTimeStamp()
+        public static ushort GetTimeStamp()
         {
             return GetTimeStamp(Environment.TickCount);
         }
@@ -52,7 +52,7 @@ namespace NetGore.Network
         /// <returns>True if the <paramref name="newestTimeStamp"/> is newer than the <paramref name="lastTimeStamp"/>, or
         /// if the <paramref name="newestTimeStamp"/> is equal to the <paramref name="lastTimeStamp"/>;
         /// otherwise false.</returns>
-        public static bool IsTimeStampNewer(byte newestTimeStamp, byte lastTimeStamp)
+        public static bool IsTimeStampNewer(ushort newestTimeStamp, ushort lastTimeStamp)
         {
             if (newestTimeStamp == lastTimeStamp)
                 return true;
@@ -63,7 +63,7 @@ namespace NetGore.Network
             else
                 diff = newestTimeStamp + (MaxTimeStampSize - lastTimeStamp);
 
-            return diff < 127;
+            return diff < (MaxTimeStampSize / 2);
         }
     }
 }

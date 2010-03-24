@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
+using NetGore.Network;
 
 /* NOTE ON THE POSITION AND VELOCITY SYNCING:
  * --------------------------------------------------------------------------------------------------------------
@@ -278,6 +279,9 @@ namespace NetGore
             }
         }
 
+        bool _isFirstPVSync = true;
+        ushort _lastTimeStamp = 0;
+
         /// <summary>
         /// Reads the Position and Velocity from the specified IValueReader. Use in conjunction with
         /// SerializePositionAndVelocity();
@@ -285,22 +289,32 @@ namespace NetGore
         /// <param name="reader">IValueReader to read the values from.</param>
         public void DeserializePositionAndVelocity(IValueReader reader)
         {
-            Vector2 position, velocity;
-            DeserializePositionAndVelocity(reader, out position, out velocity);
+            Vector2 position;
+            Vector2 velocity;
+            ushort timeStamp;
+            DeserializePositionAndVelocity(reader, out position, out velocity, out timeStamp);
 
-            SetPositionRaw(position);
-            SetVelocityRaw(velocity);
+            if (_isFirstPVSync || (PacketTimeStampHelper.IsTimeStampNewer(timeStamp, _lastTimeStamp)))
+            {
+                _lastTimeStamp = timeStamp;
+                _isFirstPVSync = false;
+
+                SetPositionRaw(position);
+                SetVelocityRaw(velocity);
+            }
         }
 
         /// <summary>
         /// Reads the Position and Velocity from the specified IValueReader. Use in conjunction with
         /// SerializePositionAndVelocity();
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        /// <param name="position">Position read from the IValueReader.</param>
-        /// <param name="velocity">Position read from the IValueReader.</param>
-        static void DeserializePositionAndVelocity(IValueReader reader, out Vector2 position, out Vector2 velocity)
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        /// <param name="position">The read position value.</param>
+        /// <param name="velocity">The read velocity value.</param>
+        /// <param name="timeStamp">The time stamp of the read values.</param>
+        static void DeserializePositionAndVelocity(IValueReader reader, out Vector2 position, out Vector2 velocity, out ushort timeStamp)
         {
+            timeStamp = reader.ReadUShort("TimeStamp");
             position = reader.ReadVector2("Position");
             velocity = reader.ReadVector2("velocity");
         }
@@ -325,8 +339,10 @@ namespace NetGore
         public static void FlushPositionAndVelocity(IValueReader reader)
         {
             // Do nothing with the values, just read them to progress the reader
-            Vector2 position, velocity;
-            DeserializePositionAndVelocity(reader, out position, out velocity);
+            Vector2 position;
+            Vector2 velocity;
+            ushort timeStamp;
+            DeserializePositionAndVelocity(reader, out position, out velocity, out timeStamp);
         }
 
         /// <summary>
@@ -446,7 +462,7 @@ namespace NetGore
             if (_syncPnVDupeCounter > 0)
                 --_syncPnVDupeCounter;
 
-            writer.Write("Tick", (byte)(Environment.TickCount % byte.MaxValue));
+            writer.Write("TimeStamp", PacketTimeStampHelper.GetTimeStamp());
             writer.Write("Position", Position);
             writer.Write("Velocity", Velocity);
 
@@ -454,8 +470,6 @@ namespace NetGore
             _lastSentVelocity = Velocity;
             _syncPnVLastTime = currentTime;
         }
-
-
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of a property that is
