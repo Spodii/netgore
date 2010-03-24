@@ -405,7 +405,6 @@
     <Compile Include="Networking\ServerSockets.cs" />
     <Compile Include="World\Map\Entities\Characters\User.cs" />
     <Compile Include="World\Map\MapItemsCleaner.cs" />
-    <Compile Include="World\Map\MapSpawn\EditorMapSpawnValues.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnRect.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnRectEditor.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnValues.cs" />

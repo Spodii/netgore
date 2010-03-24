@@ -1,7 +1,8 @@
 using System.ComponentModel;
 using System.Linq;
+using DemoGame.Server;
 
-namespace DemoGame.Server
+namespace DemoGame.EditorTools
 {
     /// <summary>
     /// Wrapper for the <see cref="MapSpawnValues"/> for using in a property grid.

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using DemoGame.EditorTools;
 using DemoGame.Server;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
