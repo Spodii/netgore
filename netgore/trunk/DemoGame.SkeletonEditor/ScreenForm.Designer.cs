@@ -166,9 +166,9 @@ namespace DemoGame.SkeletonEditor
             this.GameScreen.Size = new System.Drawing.Size(800, 575);
             this.GameScreen.TabIndex = 2;
             this.GameScreen.Text = "Game Screen";
-            this.GameScreen.MouseDown += GameScreen_MouseDown;
-            GameScreen.MouseMove += GameScreen_MouseMove;
-            GameScreen.MouseUp += GameScreen_MouseUp;
+            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
+            this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
+            this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
             // tcMenu
             // 
@@ -293,7 +293,7 @@ namespace DemoGame.SkeletonEditor
             this.chkIsMod.TabIndex = 24;
             this.chkIsMod.Text = "Is Modifier";
             this.chkIsMod.UseVisualStyleBackColor = true;
-            this.chkIsMod.CheckedChanged += chkIsMod_CheckedChanged;
+            this.chkIsMod.CheckedChanged += new System.EventHandler(this.chkIsMod_CheckedChanged);
             // 
             // txtAngle
             // 
@@ -301,7 +301,7 @@ namespace DemoGame.SkeletonEditor
             this.txtAngle.Name = "txtAngle";
             this.txtAngle.Size = new System.Drawing.Size(131, 20);
             this.txtAngle.TabIndex = 20;
-            txtAngle.TextChanged += txtAngle_TextChanged;
+            this.txtAngle.TextChanged += new System.EventHandler(this.txtAngle_TextChanged);
             // 
             // label5
             // 
@@ -318,7 +318,7 @@ namespace DemoGame.SkeletonEditor
             this.txtLength.Name = "txtLength";
             this.txtLength.Size = new System.Drawing.Size(131, 20);
             this.txtLength.TabIndex = 18;
-            txtLength.TextChanged += txtLength_TextChanged;
+            this.txtLength.TextChanged += new System.EventHandler(this.txtLength_TextChanged);
             // 
             // label4
             // 
@@ -335,7 +335,7 @@ namespace DemoGame.SkeletonEditor
             this.txtY.Name = "txtY";
             this.txtY.Size = new System.Drawing.Size(47, 20);
             this.txtY.TabIndex = 16;
-            txtY.TextChanged += txtY_TextChanged;
+            this.txtY.TextChanged += new System.EventHandler(this.txtY_TextChanged);
             // 
             // label3
             // 
@@ -352,7 +352,7 @@ namespace DemoGame.SkeletonEditor
             this.txtX.Name = "txtX";
             this.txtX.Size = new System.Drawing.Size(47, 20);
             this.txtX.TabIndex = 14;
-            txtX.TextChanged += txtX_TextChanged;
+            this.txtX.TextChanged += new System.EventHandler(this.txtX_TextChanged);
             // 
             // label2
             // 
@@ -369,7 +369,7 @@ namespace DemoGame.SkeletonEditor
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(131, 20);
             this.txtName.TabIndex = 12;
-            txtName.TextChanged += txtName_TextChanged;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
             // label1
             // 
@@ -391,7 +391,7 @@ namespace DemoGame.SkeletonEditor
             this.cmbSkeletonNodes.Size = new System.Drawing.Size(196, 21);
             this.cmbSkeletonNodes.Sorted = true;
             this.cmbSkeletonNodes.TabIndex = 48;
-            this.cmbSkeletonNodes.SelectedIndexChanged += cmbSkeletonNodes_SelectedIndexChanged;
+            this.cmbSkeletonNodes.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonNodes_SelectedIndexChanged);
             // 
             // gbSkeletonIO
             // 
@@ -468,7 +468,7 @@ namespace DemoGame.SkeletonEditor
             this.txtFrames.Name = "txtFrames";
             this.txtFrames.Size = new System.Drawing.Size(196, 293);
             this.txtFrames.TabIndex = 36;
-            txtFrames.TextChanged += txtFrames_TextChanged;
+            this.txtFrames.TextChanged += new System.EventHandler(this.txtFrames_TextChanged);
             // 
             // groupBox2
             // 
@@ -654,7 +654,7 @@ namespace DemoGame.SkeletonEditor
             this.lstBodies.Name = "lstBodies";
             this.lstBodies.Size = new System.Drawing.Size(196, 186);
             this.lstBodies.TabIndex = 35;
-            lstBodies.SelectedIndexChanged += lstBodies_SelectedIndexChanged;
+            this.lstBodies.SelectedIndexChanged += new System.EventHandler(this.lstBodies_SelectedIndexChanged);
             // 
             // btnUp
             // 
@@ -735,7 +735,7 @@ namespace DemoGame.SkeletonEditor
             this.btnClearTarget.TabIndex = 48;
             this.btnClearTarget.Text = "X";
             this.btnClearTarget.UseVisualStyleBackColor = true;
-            btnClearTarget.Click += btnClearTarget_Click;
+            this.btnClearTarget.TextChanged += new System.EventHandler(this.btnClearTarget_Click);
             // 
             // cmbTarget
             // 
@@ -747,7 +747,7 @@ namespace DemoGame.SkeletonEditor
             this.cmbTarget.Size = new System.Drawing.Size(99, 21);
             this.cmbTarget.Sorted = true;
             this.cmbTarget.TabIndex = 47;
-            cmbTarget.SelectedIndexChanged += cmbTarget_SelectedIndexChanged;
+            this.cmbTarget.SelectedIndexChanged += new System.EventHandler(this.cmbTarget_SelectedIndexChanged);
             // 
             // label15
             // 
@@ -768,7 +768,7 @@ namespace DemoGame.SkeletonEditor
             this.cmbSource.Size = new System.Drawing.Size(124, 21);
             this.cmbSource.Sorted = true;
             this.cmbSource.TabIndex = 45;
-            this.cmbSource.SelectedIndexChanged += cmbSource_SelectedIndexChanged;
+            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
             // 
             // label14
             // 
@@ -785,7 +785,7 @@ namespace DemoGame.SkeletonEditor
             this.txtGrhIndex.Name = "txtGrhIndex";
             this.txtGrhIndex.Size = new System.Drawing.Size(124, 20);
             this.txtGrhIndex.TabIndex = 43;
-            txtGrhIndex.TextChanged += txtGrhIndex_TextChanged;
+            this.txtGrhIndex.TextChanged += new System.EventHandler(this.txtGrhIndex_TextChanged);
             // 
             // label13
             // 
@@ -802,7 +802,7 @@ namespace DemoGame.SkeletonEditor
             this.txtOriginY.Name = "txtOriginY";
             this.txtOriginY.Size = new System.Drawing.Size(35, 20);
             this.txtOriginY.TabIndex = 41;
-            txtOriginY.TextChanged += txtOriginY_TextChanged;
+            this.txtOriginY.TextChanged += new System.EventHandler(this.txtOriginY_TextChanged);
             // 
             // label10
             // 
@@ -819,7 +819,7 @@ namespace DemoGame.SkeletonEditor
             this.txtOriginX.Name = "txtOriginX";
             this.txtOriginX.Size = new System.Drawing.Size(35, 20);
             this.txtOriginX.TabIndex = 39;
-            txtOriginX.TextChanged += txtOriginX_TextChanged;
+            this.txtOriginX.TextChanged += new System.EventHandler(this.txtOriginX_TextChanged);
             // 
             // label11
             // 
@@ -845,7 +845,7 @@ namespace DemoGame.SkeletonEditor
             this.txtOffsetY.Name = "txtOffsetY";
             this.txtOffsetY.Size = new System.Drawing.Size(35, 20);
             this.txtOffsetY.TabIndex = 36;
-            txtOffsetY.TextChanged += txtOffsetY_TextChanged;
+            this.txtOffsetY.TextChanged += new System.EventHandler(this.txtOffsetY_TextChanged);
             // 
             // label8
             // 
@@ -862,7 +862,7 @@ namespace DemoGame.SkeletonEditor
             this.txtOffsetX.Name = "txtOffsetX";
             this.txtOffsetX.Size = new System.Drawing.Size(35, 20);
             this.txtOffsetX.TabIndex = 34;
-            txtOffsetX.TextChanged += txtOffsetX_TextChanged;
+            this.txtOffsetX.TextChanged += new System.EventHandler(this.txtOffsetX_TextChanged);
             // 
             // label9
             // 
@@ -1026,7 +1026,7 @@ namespace DemoGame.SkeletonEditor
             this.radioAnimate.TabIndex = 2;
             this.radioAnimate.Text = "Animated";
             this.radioAnimate.UseVisualStyleBackColor = true;
-            radioAnimate.CheckedChanged += radioAnimate_CheckedChanged;
+            this.radioAnimate.CheckedChanged += new System.EventHandler(this.radioAnimate_CheckedChanged);
             // 
             // radioEdit
             // 

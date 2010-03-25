@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,7 +11,6 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.IO;
-using Color=System.Drawing.Color;
 
 namespace DemoGame.SkeletonEditor
 {
@@ -36,6 +34,8 @@ namespace DemoGame.SkeletonEditor
         /// </summary>
         Vector2 _cursorPos = new Vector2();
 
+        DrawingManager _drawingManager;
+
         string _fileAnim = string.Empty;
         string _fileBody = string.Empty;
         string _fileFrame = string.Empty;
@@ -44,8 +44,8 @@ namespace DemoGame.SkeletonEditor
         Skeleton _skeleton;
         SkeletonAnimation _skeletonAnim;
         SkeletonDrawer _skeletonDrawer;
+        SpriteFont _spriteFont;
         KeyEventArgs ks = new KeyEventArgs(Keys.None);
-        DrawingManager _drawingManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -123,10 +123,7 @@ namespace DemoGame.SkeletonEditor
         public SkeletonNode SelectedNode
         {
             get { return cmbSkeletonNodes.TypedSelectedItem; }
-            set
-            {
-                cmbSkeletonNodes.SelectedItem = value;
-            }
+            set { cmbSkeletonNodes.SelectedItem = value; }
         }
 
         /// <summary>
@@ -236,6 +233,16 @@ namespace DemoGame.SkeletonEditor
                 SkeletonBody.BodyInfo.Save(result);
                 FileBody = result;
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnClearTarget control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnClearTarget_Click(object sender, EventArgs e)
+        {
+            cmbTarget.SelectedItem = null;
         }
 
         /// <summary>
@@ -461,8 +468,20 @@ namespace DemoGame.SkeletonEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnShiftNodes_Click(object sender, EventArgs e)
         {
-            // TODO: ...
-            MessageBox.Show("Make this button shift all nodes in all seleced files by a defined amount");
+            using (var f = new ShiftNodesInputForm())
+            {
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                var p = f.Value;
+                if (p != Vector2.Zero)
+                {
+                    foreach (var node in _skeleton.RootNode.GetAllNodes())
+                    {
+                        node.Position += p;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -623,15 +642,13 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
-        SpriteFont _spriteFont;
-
         /// <summary>
         /// Draws the screen.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
         internal void DrawGame(ISpriteBatch sb)
         {
-            GameScreen.GraphicsDevice.Clear(Microsoft.Xna.Framework.Graphics.Color.CornflowerBlue);
+            GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Screen
             sb = _drawingManager.BeginDrawWorld(_camera, false, true);
@@ -668,9 +685,12 @@ namespace DemoGame.SkeletonEditor
             sb = _drawingManager.BeginDrawGUI();
             try
             {
-                string cursorPosText = _cursorPos.ToString();
-                sb.DrawStringShaded(_spriteFont, cursorPosText, new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - _spriteFont.MeasureString(cursorPosText),
-                     Microsoft.Xna.Framework.Graphics.Color.White, Microsoft.Xna.Framework.Graphics.Color.Black);
+                string cursorPosText = _cursorPos.Round().ToString();
+                var screenSize = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
+                var strSize = _spriteFont.MeasureString(cursorPosText);
+                var fontColor = Color.White;
+                var borderColor = Color.Black;
+                sb.DrawStringShaded(_spriteFont, cursorPosText, screenSize - strSize - new Vector2(3), fontColor, borderColor);
             }
             finally
             {
@@ -1050,8 +1070,8 @@ namespace DemoGame.SkeletonEditor
             LoadBody(SkeletonBodyInfo.GetFilePath(SkeletonLoader.BasicSkeletonBodyName, ContentPaths.Dev));
 
             // Center lines
-            _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0), Microsoft.Xna.Framework.Graphics.Color.Lime));
-            _centerLines.Add(new XNALine(new Vector2(0, -5), new Vector2(0, 5), Microsoft.Xna.Framework.Graphics.Color.Red));
+            _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0), Color.Lime));
+            _centerLines.Add(new XNALine(new Vector2(0, -5), new Vector2(0, 5), Color.Red));
 
             _watch.Start();
 
@@ -1318,7 +1338,7 @@ namespace DemoGame.SkeletonEditor
         void UpdateAnimationNodeCBs()
         {
             var nodes = _skeletonAnim.Skeleton.RootNode.GetAllNodes();
-            
+
             cmbSource.Items.Clear();
             cmbSource.AddItems(nodes);
 
@@ -1372,16 +1392,6 @@ namespace DemoGame.SkeletonEditor
         void UpdateSelectedDSI()
         {
             lstBodies.RefreshItemAt(lstBodies.SelectedIndex);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnClearTarget control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnClearTarget_Click(object sender, EventArgs e)
-        {
-            cmbTarget.SelectedItem = null;
         }
     }
 }
