@@ -5,9 +5,9 @@ namespace NetGore.AI
 {
     public struct AIGrid
     {
-        public byte[,] _grid;
+        public sbyte[,] _grid;
 
-        public AIGrid(byte[,] Grid)
+        public AIGrid(sbyte[,] Grid)
         {
             _grid = Grid;
         }
@@ -25,6 +25,11 @@ namespace NetGore.AI
         public double Log2GridY
         {
             get { return Math.Log((_grid.GetUpperBound(1) + 1), 2); }
+        }
+
+        public double Log2GridX
+        {
+            get { return Math.Log((_grid.GetUpperBound(0) + 1), 2); }
         }
 
         public int TotalNumberofCells
