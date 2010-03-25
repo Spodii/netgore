@@ -35,7 +35,7 @@ namespace NetGore.AI
         readonly Node[] _nodeGrid;
         readonly PriorityQueue<int> _open;
         int _closeNodeCounter;
-        byte _closeNodeValue;
+        byte _closeNodeValue = 2;
         int _endLocation;
         bool _found;
         int _h;
@@ -49,7 +49,7 @@ namespace NetGore.AI
         int _newLocation;
         ushort _newLocationX;
         ushort _newLocationY;
-        byte _openNodeValue;
+        byte _openNodeValue = 1;
 
         int _searchLimit;
         bool _stop;
@@ -61,6 +61,7 @@ namespace NetGore.AI
             _nodeGrid = new Node[_grid.TotalNumberofCells];
 
             _open = new PriorityQueue<int>(new CompareNodes(_nodeGrid));
+            _close = new List<Node>();
         }
 
         public int SearchLimit
@@ -88,12 +89,12 @@ namespace NetGore.AI
             {
                 _closeNodeCounter = 0;
                 _openNodeValue += 2;
-                _closeNodeCounter += 2;
+                _closeNodeValue += 2;
 
                 _open.Clear();
                 _close.Clear();
 
-                _location = ((int)Start.X << (int)_grid.Log2GridY) + (int)Start.X;
+                _location = ((int)Start.Y << (int)_grid.Log2GridY) + (int)Start.X;
                 _endLocation = ((int)End.Y << (int)_grid.Log2GridY) + (int)End.X;
 
                 _nodeGrid[_location].G = 0;
@@ -112,7 +113,7 @@ namespace NetGore.AI
                         continue;
 
                     _locationX = (ushort)(_location & (_grid.GridX - 1));
-                    _locationY = (ushort)(_location >> (int)(_grid.Log2GridY));
+                    _locationY = (ushort)((int)_location >> (int)_grid.Log2GridY );
 
                     if (_location == _endLocation)
                     {
@@ -131,7 +132,7 @@ namespace NetGore.AI
                     {
                         _newLocationX = (ushort)(_locationX + _direction[i, 0]);
                         _newLocationY = (ushort)(_locationY + _direction[i, 1]);
-                        _newLocation = (_newLocationY << (ushort)_grid.Log2GridY) + _newLocationX;
+                        _newLocation = ((int)_newLocationY<<(int)_grid.Log2GridY) + _newLocationX;
 
                         if (_newLocationX >= _grid.GridX || _newLocationY >= _grid.GridY)
                             continue;
