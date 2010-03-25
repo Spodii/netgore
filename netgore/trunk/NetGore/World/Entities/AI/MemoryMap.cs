@@ -95,18 +95,20 @@ namespace NetGore.AI
             if (!File.Exists(path))
             {
                 Initialize(1024, 1024);
-                SaveMemoryMap(contentPath, ID);
+                return;
             }
            
-
-
             XmlValueReader read = new XmlValueReader(path, "MemoryMap");
             
             Initialize(1024 , 1024);
       
-            if ((_cellsX * _cellsY) != (read.ReadInt("TotalCells")))
+            int totalCells = read.ReadInt("TotalCells");
+            _cellsX = read.ReadInt("CellsX");
+            _cellsY = read.ReadInt("CellsY");
+
+            if ((_cellsX * _cellsY) != totalCells)
             {
-                throw new Exception((_cellsX.ToString()) + "*" + (_cellsY.ToString()) + " was not equal to the Total cells value from the file: " + read.ReadInt("TotalCells").ToString());
+                throw new Exception(_cellsX + "*" + _cellsY + " was not equal to the Total cells value from the file: " + read.ReadInt("TotalCells").ToString());
             }
 
             for (int X = 0; X < _cellsX; X++)
@@ -115,7 +117,6 @@ namespace NetGore.AI
                 {
                     _memoryCells[X][Y].Weight = read.ReadNode("CELLX" + X).ReadInt("_cell" + Y);
                 }
-                
             }
         }
 
@@ -140,7 +141,6 @@ namespace NetGore.AI
 
         public void SaveMemoryMap(ContentPaths contentPath, int ID)
         {
-
             var path = contentPath.Maps.Join("\\AIMap" + ID + ".xml");
             using (var writer = new XmlValueWriter(path, "MemoryMap"))
             {
@@ -153,8 +153,7 @@ namespace NetGore.AI
                     writer.WriteStartNode("CELLX" + X);
                     for (int Y = 0; Y < _cellsY; Y++)
                     {
-                        
-                            writer.Write("_cell" + Y, _memoryCells[X][Y].Weight);
+                        writer.Write("_cell" + Y, _memoryCells[X][Y].Weight);
                     }
                     writer.WriteEndNode("CELLX" + X);
                 }
