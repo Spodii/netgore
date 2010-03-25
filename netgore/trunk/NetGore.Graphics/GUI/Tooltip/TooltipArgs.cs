@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// Contains the arguments used for altering the behavior of the <see cref="Tooltip"/>.
+    /// Contains the arguments used for altering the behavior of the <see cref="ITooltip"/>.
     /// </summary>
     public class TooltipArgs
     {
@@ -18,7 +18,7 @@ namespace NetGore.Graphics.GUI
         public Color BackgroundColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="ControlBorder"/> to use for drawing the backdrop of the <see cref="Tooltip"/>.
+        /// Gets or sets the <see cref="ControlBorder"/> to use for drawing the backdrop of the <see cref="ITooltip"/>.
         /// </summary>
         public ControlBorder Border { get; set; }
 
@@ -38,7 +38,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the timeout time for the <see cref="Tooltip"/>.
+        /// Gets or sets the timeout time for the <see cref="ITooltip"/>.
         /// </summary>
         public int Timeout
         {
@@ -49,8 +49,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Restores the default values.
         /// </summary>
-        /// <param name="tooltip">The <see cref="Tooltip"/>.</param>
-        public void RestoreDefaults(Tooltip tooltip)
+        /// <param name="tooltip">The <see cref="ITooltip"/>.</param>
+        public void RestoreDefaults(ITooltip tooltip)
         {
             FontColor = tooltip.FontColor;
             BackgroundColor = tooltip.BackgroundColor;

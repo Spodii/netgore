@@ -89,7 +89,6 @@ namespace NetGore.Stats
         /// <summary>
         /// Gets the <typeparamref name="TStatType"/> of this <see cref="IStat{TStatType}"/>.
         /// </summary>
-        /// <value></value>
         public TStatType StatType
         {
             get { return _statType; }
@@ -98,7 +97,6 @@ namespace NetGore.Stats
         /// <summary>
         /// Gets or sets the value of this <see cref="IStat{TStatType}"/> as an integer.
         /// </summary>
-        /// <value></value>
         public int Value
         {
             get { return _value.GetValue(); }

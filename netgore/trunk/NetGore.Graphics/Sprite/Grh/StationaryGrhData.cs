@@ -131,7 +131,6 @@ namespace NetGore.Graphics
         /// When overridden in the derived class, gets the frames in an animated <see cref="GrhData"/>, or an
         /// IEnumerable containing a reference to its self if stationary.
         /// </summary>
-        /// <value></value>
         public override IEnumerable<StationaryGrhData> Frames
         {
             get { return new StationaryGrhData[] { this }; }
@@ -141,7 +140,6 @@ namespace NetGore.Graphics
         /// When overridden in the derived class, gets the number of frames in this <see cref="GrhData"/>. If this
         /// is not an animated <see cref="GrhData"/>, this value will always return 0.
         /// </summary>
-        /// <value></value>
         public override int FramesCount
         {
             get { return 0; }

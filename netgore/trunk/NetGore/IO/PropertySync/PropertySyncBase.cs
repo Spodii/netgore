@@ -92,7 +92,6 @@ namespace NetGore.IO.PropertySync
         /// Gets the name of the synchronized value. This is what populates the Name parameter of the
         /// <see cref="IValueReader"/> and <see cref="IValueWriter"/> functions.
         /// </summary>
-        /// <value></value>
         public string Name
         {
             get { return _syncValueAttributeInfo.Name; }
@@ -101,7 +100,6 @@ namespace NetGore.IO.PropertySync
         /// <summary>
         /// Gets if this property should be skipped when synchronizing over the network.
         /// </summary>
-        /// <value></value>
         public bool SkipNetworkSync
         {
             get { return _syncValueAttributeInfo.SkipNetworkSync; }

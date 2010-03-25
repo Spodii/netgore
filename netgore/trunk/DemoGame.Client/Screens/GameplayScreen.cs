@@ -361,7 +361,7 @@ namespace DemoGame.Client
         {
             _guiFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
             GUIManager.Font = _guiFont;
-            ((GUIManager)GUIManager).Tooltip.Font = _guiFont; // TODO: Probably should have the IGUIManager include the tooltip
+            GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
 
             Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };

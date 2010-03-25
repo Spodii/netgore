@@ -172,7 +172,6 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the currently active <see cref="IGameScreen"/>.
         /// </summary>
-        /// <value></value>
         /// <exception cref="ArgumentException"><paramref name="value"/> does not belong to this
         /// <see cref="IScreenManager"/>.</exception>
         public IGameScreen ActiveScreen
