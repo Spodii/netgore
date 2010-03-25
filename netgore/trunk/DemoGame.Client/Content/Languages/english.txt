@@ -86,6 +86,7 @@ GuildInsufficientPermissions: "Your rank in the guild is not high enough to perf
 GuildJoin: "You have joined guild \"$0\"."
 GuildJoinFailedInvalidOrNoInvite: "Unable to join guild $0 - the guild either does not exist or you do not have an invite to this guild."
 GuildLeave: "You have left guild \"$0\"."
+GuildSay: "[Guild] $0 says: \"$1\""
 
 QuestAccepted: "You have accepted a new quest!"
 QuestAcceptFailedAlreadyCompleted: "You cannot accept that quest since you have already completed it."

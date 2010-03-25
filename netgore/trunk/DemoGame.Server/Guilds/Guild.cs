@@ -119,7 +119,6 @@ namespace DemoGame.Server.Guilds
 
             foreach (var e in events)
             {
-                // TODO: Need to implement a GOOD output of events
                 using (var pw = ServerPacket.Chat(e.ID + ": " + (GuildEvents)e.EventID))
                 {
                     user.Send(pw);
