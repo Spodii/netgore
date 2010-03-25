@@ -645,13 +645,12 @@ namespace DemoGame.SkeletonEditor
         /// <summary>
         /// Draws the screen.
         /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
-        internal void DrawGame(ISpriteBatch sb)
+        internal void DrawGame()
         {
             GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Screen
-            sb = _drawingManager.BeginDrawWorld(_camera, false, true);
+            var sb = _drawingManager.BeginDrawWorld(_camera, false, true);
 
             try
             {
