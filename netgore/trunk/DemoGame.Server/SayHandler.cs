@@ -229,13 +229,14 @@ namespace DemoGame.Server
                 }
             }
 
-            [SayCommand("GSay")]
-            public void GSay()
+            [SayCommand("GuildSay")]
+            public void GuildSay(string message)
             {
                 if (!RequireUserInGuild())
                     return;
 
-                // TODO: ...
+                foreach (var guildMember in User.Guild.GetMembers().OfType<User>())
+                    guildMember.Send(GameMessage.GuildSay, User.Name, message);
             }
 
             [SayCommand("GuildHelp")]
@@ -255,7 +256,7 @@ namespace DemoGame.Server
                 sb.AppendLine("/RetagGuild [tag]");
                 sb.AppendLine("/GuildInvite [user]");
                 sb.AppendLine("/GuildLog");
-                sb.AppendLine("/GSay [message]");
+                sb.AppendLine("/GuildSay [message]");
 
                 using (var pw = ServerPacket.Chat(sb.ToString()))
                 {
