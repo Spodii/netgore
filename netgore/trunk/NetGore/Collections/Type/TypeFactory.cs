@@ -41,7 +41,7 @@ namespace NetGore.Collections
         /// Initializes a new instance of the <see cref="TypeFactory"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this <see cref="TypeFactory"/>.</param>
-        /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
+        /// <param name="loadTypeHandler">Initial handler for the TypeLoaded event.</param>
         public TypeFactory(Func<Type, bool> typeFilter, TypeFactoryLoadedHandler loadTypeHandler)
             : this(typeFilter, loadTypeHandler, false)
         {
@@ -51,7 +51,7 @@ namespace NetGore.Collections
         /// Initializes a new instance of the <see cref="TypeFactory"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this <see cref="TypeFactory"/>.</param>
-        /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
+        /// <param name="loadTypeHandler">Initial handler for the TypeLoaded event.</param>
         /// <param name="useGAC">If true, Assemblies from the Global Assembly Cache will be included. If false,
         /// the Assemblies in the Global Assembly Cache will be ignored and no Types from these Assemblies will
         /// be found by this <see cref="TypeFactory"/>.</param>

@@ -31,21 +31,13 @@ namespace NetGore.EditorTools
         public static NPCChatManagerBase NPCChatManager { get; set; }
 
         /// <summary>
-        /// When overridden in the derived class, draws the <paramref name="item"/>.
+        /// Gets the string to display for an item.
         /// </summary>
-        /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
-        /// <param name="item">The item being drawn.</param>
-        protected override void DrawListItem(DrawItemEventArgs e, NPCChatDialogBase item)
+        /// <param name="item">The item to get the display string for.</param>
+        /// <returns>The string to display for the <paramref name="item"/>.</returns>
+        protected override string GetItemDisplayString(NPCChatDialogBase item)
         {
-            e.DrawBackground();
-
-            if (item == null)
-                return;
-
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(item.ID + ". " + item.Title, e.Font, brush, e.Bounds);
-            }
+            return item.ID + ". " + item.Title;
         }
 
         /// <summary>
@@ -71,7 +63,7 @@ namespace NetGore.EditorTools
         protected override IEnumerable<NPCChatDialogBase> GetListItems()
         {
             if (!EnsureNPCChatManagerSet())
-                return base.GetListItems();
+                return null;
 
             return NPCChatManager.OrderBy(x => (int)x.ID);
         }

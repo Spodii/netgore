@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.EditorTools;
@@ -8,17 +7,17 @@ using NetGore.EditorTools;
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="Form"/> for listing the <see cref="BodyInfo"/>.
+    /// A <see cref="Form"/> for listing the <see cref="GameMessageCollection"/> language.
     /// </summary>
-    public class BodyInfoUITypeEditorForm : UITypeEditorListForm<BodyInfo>
+    public class GameMessageCollectionLanguageEditorUITypeEditorForm : UITypeEditorListForm<string>
     {
         readonly object _selected;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BodyInfoUITypeEditorForm"/> class.
+        /// Initializes a new instance of the <see cref="GameMessageCollectionLanguageEditorUITypeEditorForm"/> class.
         /// </summary>
         /// <param name="selected">The default selected item.</param>
-        public BodyInfoUITypeEditorForm(object selected)
+        public GameMessageCollectionLanguageEditorUITypeEditorForm(object selected)
         {
             _selected = selected;
         }
@@ -28,18 +27,18 @@ namespace DemoGame.EditorTools
         /// </summary>
         /// <param name="item">The item to get the display string for.</param>
         /// <returns>The string to display for the <paramref name="item"/>.</returns>
-        protected override string GetItemDisplayString(BodyInfo item)
+        protected override string GetItemDisplayString(string item)
         {
-            return item.ID + ". " + item.Body;
+            return item;
         }
 
         /// <summary>
         /// When overridden in the derived class, gets the items to add to the list.
         /// </summary>
         /// <returns>The items to add to the list.</returns>
-        protected override IEnumerable<BodyInfo> GetListItems()
+        protected override IEnumerable<string> GetListItems()
         {
-            return BodyInfoManager.Instance.Bodies;
+            return GameMessageCollection.GetLanguages();
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace DemoGame.EditorTools
         /// <returns>
         /// The item that will be selected by default.
         /// </returns>
-        protected override BodyInfo SetDefaultSelectedItem(IEnumerable<BodyInfo> items)
+        protected override string SetDefaultSelectedItem(IEnumerable<string> items)
         {
             if (_selected == null)
                 return base.SetDefaultSelectedItem(items);
@@ -58,19 +57,13 @@ namespace DemoGame.EditorTools
             {
                 var stringComp = StringComparer.Ordinal;
                 var asString = (string)_selected;
-                return items.FirstOrDefault(x => stringComp.Equals(x.ID, asString));
+                return items.FirstOrDefault(x => stringComp.Equals(x, asString));
             }
 
-            if (_selected is BodyID)
+            if (_selected is GameMessageCollection)
             {
-                var asID = (BodyID)_selected;
-                return items.FirstOrDefault(x => x.ID == asID);
-            }
-
-            if (_selected is BodyInfo)
-            {
-                var asBody = (BodyInfo)_selected;
-                return items.FirstOrDefault(x => x == asBody);
+                var asColl = (GameMessageCollection)_selected;
+                return items.FirstOrDefault(x => x == asColl.Language);
             }
 
             return base.SetDefaultSelectedItem(items);

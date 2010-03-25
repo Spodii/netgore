@@ -29,17 +29,12 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// When overridden in the derived class, draws the <paramref name="item"/>.
+        /// Gets the string to display for an item.
         /// </summary>
-        /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
-        /// <param name="item">The item being drawn.</param>
-        protected override void DrawListItem(DrawItemEventArgs e, IQuestTable item)
+        /// <param name="item">The item to get the display string for.</param>
+        /// <returns>The string to display for the <paramref name="item"/>.</returns>
+        protected override string GetItemDisplayString(IQuestTable item)
         {
-            e.DrawBackground();
-
-            if (item == null)
-                return;
-
             var desc = _questDescriptions[item.ID];
 
             string extraText;
@@ -48,13 +43,7 @@ namespace DemoGame.EditorTools
             else
                 extraText = string.Empty;
 
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(string.Format("{0}. {1}", item.ID, extraText), e.Font, brush, e.Bounds);
-            }
-
-            if (e.State == DrawItemState.Selected)
-                e.DrawFocusRectangle();
+            return item.ID + ". " + extraText;
         }
 
         /// <summary>

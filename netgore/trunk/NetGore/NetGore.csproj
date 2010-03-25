@@ -98,6 +98,7 @@
     <Compile Include="Extensions\ITypeDescriptorContextExtensions.cs" />
     <Compile Include="Extensions\KeysExtensions.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Extensions\Vector4Extensions.cs" />
     <Compile Include="IO\FileHelper.cs" />
@@ -235,7 +236,12 @@
     <Compile Include="Scripting\ScriptLanguage.cs" />
     <Compile Include="Scripting\ScriptTypeCollection.cs" />
     <Compile Include="Scripting\ScriptTypeHelper.cs" />
+    <Compile Include="Strings\Text Filter\BasicTextFilter.cs" />
+    <Compile Include="Strings\Text Filter\RegexTextFilter.cs" />
+    <Compile Include="Strings\Text Filter\TextFilter.cs" />
+    <Compile Include="Strings\Text Filter\TextFilterContainerEventHandler.cs" />
     <Compile Include="SystemPerformance.cs" />
+    <Compile Include="Strings\Text Filter\TextFilterContainer.cs" />
     <Compile Include="Type\TypeFilterCreator.cs" />
     <Compile Include="Type\TypeFilterException.cs" />
     <Compile Include="Type\TypeHelper.cs" />
