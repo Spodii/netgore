@@ -8,7 +8,7 @@ namespace DemoGame.EditorTools
     /// A <see cref="UITypeEditorListForm{T}"/> for listing items from the database.
     /// </summary>
     /// <typeparam name="T">The type of item to list.</typeparam>
-    public class UITypeEditorDbListForm<T> : UITypeEditorListForm<T>
+    public abstract class UITypeEditorDbListForm<T> : UITypeEditorListForm<T>
     {
         /// <summary>
         /// Gets a <see cref="IDbController"/> to use to perform queries.

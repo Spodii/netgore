@@ -37,21 +37,15 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// When overridden in the derived class, draws the <paramref name="item"/>.
+        /// Gets the string to display for an item.
         /// </summary>
-        /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
-        /// <param name="item">The item being drawn.</param>
-        protected override void DrawListItem(DrawItemEventArgs e, IMusic item)
+        /// <param name="item">The item to get the display string for.</param>
+        /// <returns>
+        /// The string to display for the <paramref name="item"/>.
+        /// </returns>
+        protected override string GetItemDisplayString(IMusic item)
         {
-            e.DrawBackground();
-
-            if (item == null)
-                return;
-
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(item.Index + ". " + item.Name, e.Font, brush, e.Bounds);
-            }
+            return item.Index + ". " + item.Name;
         }
 
         /// <summary>

@@ -88,6 +88,9 @@
     <Compile Include="UITypeEditors\CharacterTemplateAndAmountListForm.Designer.cs">
       <DependentUpon>CharacterTemplateAndAmountListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UITypeEditors\GameMessageCollectionLanguageEditorUITypeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UITypeEditors\ItemTemplateAmountListBox.cs">
       <SubType>Component</SubType>
     </Compile>

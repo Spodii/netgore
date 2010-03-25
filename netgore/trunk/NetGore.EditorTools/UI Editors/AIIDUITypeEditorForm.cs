@@ -31,20 +31,13 @@ namespace NetGore.EditorTools
         public static IAIFactory AIFactory { get; set; }
 
         /// <summary>
-        /// When overridden in the derived class, draws the <paramref name="item"/>.
+        /// Gets the string to display for an item.
         /// </summary>
-        /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
-        /// <param name="item">The item being drawn.</param>
-        protected override void DrawListItem(DrawItemEventArgs e, AIID item)
+        /// <param name="item">The item to get the display string for.</param>
+        /// <returns>The string to display for the <paramref name="item"/>.</returns>
+        protected override string GetItemDisplayString(AIID item)
         {
-            e.DrawBackground();
-
-            var name = AIFactory.GetAIName(item);
-
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(item + ". " + name, e.Font, brush, e.Bounds);
-            }
+            return AIFactory.GetAIName(item);
         }
 
         /// <summary>
@@ -70,7 +63,7 @@ namespace NetGore.EditorTools
         protected override IEnumerable<AIID> GetListItems()
         {
             if (!EnsureAIFactorySet())
-                return base.GetListItems();
+                return null;
 
             return AIFactory.AIs.Select(x => x.Key).OrderBy(x => (int)x);
         }
