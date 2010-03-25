@@ -26,8 +26,11 @@ namespace DemoGame.MapEditor
         readonly MenuItem _mnu20;
         readonly MenuItem _mnu50;
         readonly MenuItem _mnu100;
+        readonly MenuItem _debugMode;
 
         int UpdateCellTo;
+        Vector2 _debugNodeEnd;
+        Vector2 _debugNodeStart;
 
         string _toolTip = string.Empty;
         object _toolTipObject = null;
@@ -48,11 +51,11 @@ namespace DemoGame.MapEditor
             items.Add(_mnu50 = new MenuItem("50", Menu_50_OnClick) { Checked = false});
             items.Add(_mnu100 = new MenuItem("100", Menu_100_OnClick) { Checked = false});
 
-
+            _debugMode = new MenuItem("Debug", Menu_AIDebug_OnClick) { Checked = false };
 
 
             _mnuWeight = new MenuItem("Weight", items.ToArray());
-            _contextMenu = new ContextMenu(new MenuItem[] {_mnuBlocked, _mnuFill, _mnuWeight});
+            _contextMenu = new ContextMenu(new MenuItem[] {_mnuBlocked, _mnuFill, _mnuWeight, _debugMode});
         }
 
 
@@ -147,18 +150,83 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseDown(MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left)
-                return;
+            if (e.Button != (MouseButtons.Left))
+            {
+                if (e.Button != MouseButtons.Right)
+                {
+                    return;
+                }
+                else { }
+            }
+            else { }
+
+
             int[] id = GetMemoryCellUnderCursor(Container);
             Container.SelectedObjs.SetSelected(Container.Map.MemoryMap.MemoryCells[id[0]][id[1]]);
 
-            if (!_mnuBlocked.Checked)
+            if (e.Button == MouseButtons.Left)
             {
-                Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = UpdateCellTo;
+                if (!_debugMode.Checked)
+                {
+                    if (!_mnuBlocked.Checked)
+                    {
+                        Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = UpdateCellTo;
+                    }
+                    else
+                    {
+                        Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
+                    }
+                }
+                else
+                {
+                    // Debug with this position as start node.
+                    for (int X = 0; X < Container.Map.MemoryMap.MemoryCells.Count; X++)
+                    {
+                        for (int Y = 0; Y < Container.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                        {
+                            if (Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 2)
+                                break;
+
+                            Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus = 0;
+                        }
+                    }
+                    _debugNodeStart = new Vector2(id[0],id[1]);
+                    Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].DebugStatus = 1;
+
+                    sbyte[,] grid = new sbyte[Container.Map.MemoryMap.CellsX, Container.Map.MemoryMap.CellsY];
+                    grid = Container.Map.MemoryMap.ToByteArray();
+                    AIGrid aiGrid = new AIGrid(grid);
+                    PathFinder pathFinder = new PathFinder(aiGrid);
+
+                    pathFinder.HeuristicFormula = Heuristics.Manhattan;
+                    pathFinder.SearchLimit = 3000;
+                    List<Node> nodes = new List<Node>();
+                    nodes = pathFinder.FindPath(_debugNodeStart, _debugNodeEnd);
+
+                    foreach (Node n in nodes)
+                    {
+                        Container.Map.MemoryMap.MemoryCells[n.X][n.Y].DebugStatus = 3;
+                    }
+                    nodes = null;
+                }
             }
-            else
+            else if (e.Button == MouseButtons.Right)
             {
-                Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
+                // Set end node.
+
+                for (int X = 0; X < Container.Map.MemoryMap.MemoryCells.Count; X++)
+                {
+                    for (int Y = 0; Y < Container.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                    {
+                        if (Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 1)
+                            break;
+
+                        Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus = 0;
+                    }
+                }
+
+                _debugNodeEnd = new Vector2(id[0], id[1]);
+                Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].DebugStatus = 2;
             }
 
         }
@@ -180,13 +248,23 @@ namespace DemoGame.MapEditor
 
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (!_mnuBlocked.Checked)
+                    if (!_debugMode.Checked)
                     {
-                        Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = UpdateCellTo;
+                        if (!_mnuBlocked.Checked)
+                        {
+                            Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = UpdateCellTo;
+                        }
+                        else
+                        {
+                            Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
+                        }
                     }
                     else
                     {
-                        Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
+                        
+
+
+
                     }
                 }
 
@@ -228,12 +306,28 @@ namespace DemoGame.MapEditor
             }
         }
 
+        void Menu_AIDebug_OnClick(object sender, EventArgs e) 
+        {
+            if (_debugMode.Checked)
+            {
+                _debugMode.Checked = !_debugMode.Checked;
 
-        void Menu_1_OnClick(object sender, EventArgs e) { UpdateCellTo = 1; }
-        void Menu_10_OnClick(object sender, EventArgs e) { UpdateCellTo = 10; }
-        void Menu_20_OnClick(object sender, EventArgs e) { UpdateCellTo = 20; }
-        void Menu_50_OnClick(object sender, EventArgs e) { UpdateCellTo = 50; }
-        void Menu_100_OnClick(object sender, EventArgs e) { UpdateCellTo = 100; }
+                for (int X = 0; X < Container.Map.MemoryMap.MemoryCells.Count; X++)
+                {
+                    for (int Y = 0; Y < Container.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                    {
+                        Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus = 0;
+                    }
+                }
+                return;
+            }
+            _debugMode.Checked = !_debugMode.Checked;
+        }
+        void Menu_1_OnClick(object sender, EventArgs e) { UpdateCellTo = 1; _mnu1.Checked = !_mnu1.Checked; }
+        void Menu_10_OnClick(object sender, EventArgs e) { UpdateCellTo = 10; _mnu10.Checked = !_mnu10.Checked; }
+        void Menu_20_OnClick(object sender, EventArgs e) { UpdateCellTo = 20; _mnu20.Checked = !_mnu20.Checked; }
+        void Menu_50_OnClick(object sender, EventArgs e) { UpdateCellTo = 50; _mnu50.Checked = !_mnu50.Checked; }
+        void Menu_100_OnClick(object sender, EventArgs e) { UpdateCellTo = 100; _mnu100.Checked = !_mnu100.Checked; }
 
 
     }

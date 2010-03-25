@@ -740,9 +740,31 @@ namespace DemoGame.MapEditor
                 {
                     if (visibleArea.Contains(Map.MemoryMap.MemoryCells[X][Y].Cell))
                     {
-                        Color C = new Color(255,255,255) ;
-                        C.A = (byte)MathHelper.Clamp(Map.MemoryMap.MemoryCells[X][Y].Weight*2, 0, 255);
-                        XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, C, B);
+                        if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 0)
+                        {
+                            Color C = new Color(255, 255, 255);
+                            C.A = (byte)MathHelper.Clamp(Map.MemoryMap.MemoryCells[X][Y].Weight * 2, 0, 255);
+                            XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, C, B);
+                        }
+
+                        if(Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 1)
+                        {
+                            // Start debug node.
+                            XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.Green, B);
+                        }
+
+                        if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 2)
+                        {
+                            // End debug node.
+                            XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.Red, B);
+                        }
+
+                        if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 3)
+                        {
+                            // Found path.
+                            XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.White, B);
+                        }
+
                     }
                 }
             }

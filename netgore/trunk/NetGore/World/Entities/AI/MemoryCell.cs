@@ -8,6 +8,7 @@ namespace NetGore.AI
         //The rectangle that holds the position of the MemoryCell
         Rectangle _cell;
         int _weight;
+        int _debugStatus = 0;
 
         /// <summary>
         /// MemoryCell constuctor
@@ -55,5 +56,13 @@ namespace NetGore.AI
         {
             ++_weight;
         }
+
+        public int DebugStatus
+        {
+            get { return _debugStatus; }
+            set { _debugStatus = value; }
+        }
+
+
     }
 }
