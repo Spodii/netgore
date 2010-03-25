@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.EditorTools;
-using DemoGame.Server;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -19,10 +18,7 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
-using Character=DemoGame.Client.Character;
 using CustomUITypeEditors=DemoGame.EditorTools.CustomUITypeEditors;
-using Map=DemoGame.Client.Map;
-using World=DemoGame.Client.World;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable UnusedParameter.Local
@@ -100,8 +96,6 @@ namespace DemoGame.MapEditor
         /// The switches used when creating this form.
         /// </summary>
         readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
-
-        readonly ToolTip _toolTip = new ToolTip();
 
         /// <summary>
         /// List of all the active transformation boxes
@@ -342,9 +336,12 @@ namespace DemoGame.MapEditor
             get { return _spriteFont; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="ToolTip"/> to use for the form's tooltips.
+        /// </summary>
         public ToolTip ToolTip
         {
-            get { return _toolTip; }
+            get { return tt; }
         }
 
         /// <summary>
@@ -722,53 +719,47 @@ namespace DemoGame.MapEditor
                     FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
             }
 
-            // I didn't want to mess around with the interfaces too much.
-            
             if (chkAIGrid.Checked)
             {
-            
-            var visibleArea = Map.Camera.GetViewArea();
-            visibleArea.X -= 50;
-            visibleArea.Y -= 50;
-            visibleArea.Width += 100;
-            visibleArea.Height += 100;
-            Color B = new Color(100, 100, 100);
-            B.A = 100;
-            for (int X = 0; X < Map.MemoryMap.MemoryCells.Count; X++)
-            {
-                for (int Y = 0; Y < Map.MemoryMap.MemoryCells[X].Count; Y++)
+                var visibleArea = Map.Camera.GetViewArea();
+                visibleArea.Inflate(50, 50);
+
+                Color B = new Color(100, 100, 100, 100);
+
+                for (int X = 0; X < Map.MemoryMap.MemoryCells.Count; X++)
                 {
-                    if (visibleArea.Contains(Map.MemoryMap.MemoryCells[X][Y].Cell))
+                    for (int Y = 0; Y < Map.MemoryMap.MemoryCells[X].Count; Y++)
                     {
-                        if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 0)
+                        if (visibleArea.Contains(Map.MemoryMap.MemoryCells[X][Y].Cell))
                         {
-                            Color C = new Color(255, 255, 255);
-                            C.A = (byte)MathHelper.Clamp(Map.MemoryMap.MemoryCells[X][Y].Weight * 2, 0, 255);
-                            XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, C, B);
-                        }
+                            if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 0)
+                            {
+                                var alpha = MathHelper.Clamp(Map.MemoryMap.MemoryCells[X][Y].Weight * 2, 0, 255);
+                                Color C = new Color(255, 255, 255, alpha);
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, C, B);
+                            }
 
-                        if(Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 1)
-                        {
-                            // Start debug node.
-                            XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.Green, B);
-                        }
+                            if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 1)
+                            {
+                                // Start debug node.
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.Green, B);
+                            }
 
-                        if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 2)
-                        {
-                            // End debug node.
-                            XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.Red, B);
-                        }
+                            if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 2)
+                            {
+                                // End debug node.
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.Red, B);
+                            }
 
-                        if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 3)
-                        {
-                            // Found path.
-                            XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.White, B);
+                            if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 3)
+                            {
+                                // Found path.
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.White, B);
+                            }
                         }
-
                     }
                 }
             }
-        }
 
             // End map rendering
             DrawingManager.EndDrawWorld();

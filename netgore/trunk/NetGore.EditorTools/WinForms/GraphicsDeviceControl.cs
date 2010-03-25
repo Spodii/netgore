@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -45,8 +46,54 @@ namespace NetGore.EditorTools
         ISpriteBatch _spriteBatch;
 
         /// <summary>
+        /// Gets or sets the foreground color of the control.
+        /// </summary>
+        /// <returns>The foreground <see cref="T:System.Drawing.Color"/> of the control.</returns>
+        [DefaultValue(typeof(Color), "White")]
+        public override Color ForeColor
+        {
+            get
+            {
+                return base.ForeColor;
+            }
+            set
+            {
+                base.ForeColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the background color for the control.
+        /// </summary>
+        /// <returns>A <see cref="T:System.Drawing.Color"/> that represents the background color of the control.</returns>
+        [DefaultValue(typeof(Color), "Black")]
+        public override Color BackColor
+        {
+            get
+            {
+                return base.BackColor;
+            }
+            set
+            {
+                base.BackColor = value;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphicsDeviceControl"/> class.
+        /// </summary>
+        public GraphicsDeviceControl()
+        {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            ForeColor = Color.White;
+            BackColor = Color.Black;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        /// <summary>
         /// Gets a GraphicsDevice this control can use.
         /// </summary>
+        [Browsable(false)]
         public GraphicsDevice GraphicsDevice
         {
             get { return _gds.GraphicsDevice; }
@@ -55,6 +102,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets an IServiceProvider container.
         /// </summary>
+        [Browsable(false)]
         public ServiceContainer Services
         {
             get { return _services; }
@@ -63,6 +111,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets the <see cref="ISpriteBatch"/> used to draw to this <see cref="GraphicsDeviceControl"/>.
         /// </summary>
+        [Browsable(false)]
         public ISpriteBatch SpriteBatch
         {
             get { return _spriteBatch; }
@@ -242,6 +291,13 @@ namespace NetGore.EditorTools
         /// <param name="e">Event args.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
+            // In design mode, use some custom, basic drawing
+            if (DesignMode)
+            {
+                PaintUsingSystemDrawing(e.Graphics, Name);
+                return;
+            }
+
             string beginDrawError = BeginDraw();
 
             // Check if BeginDraw() created an error before attempting to actually draw
@@ -273,6 +329,10 @@ namespace NetGore.EditorTools
         /// <param name="pevent">Event args.</param>
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
+            if (DesignMode)
+            {
+                base.OnPaintBackground(pevent);
+            }
         }
 
         /// <summary>
@@ -295,14 +355,17 @@ namespace NetGore.EditorTools
             _lastSystemPaintTime = currentTime;
 
             // Clear the screen
-            graphics.Clear(Color.Black);
+            graphics.Clear(BackColor);
 
             // Can only write a message if we have a valid string
             if (string.IsNullOrEmpty(text))
                 return;
 
             // Write the message
-            graphics.DrawString(text, Font, Brushes.Black, ClientRectangle, _errorMessageStringFormat);
+            using (var brush = new SolidBrush(ForeColor))
+            {
+                graphics.DrawString(text, Font, brush, ClientRectangle, _errorMessageStringFormat);
+            }
         }
     }
 }

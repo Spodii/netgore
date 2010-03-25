@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 using NetGore.EditorTools;
 using NetGore.Graphics;
@@ -9,6 +10,7 @@ namespace DemoGame.SkeletonEditor
         /// <summary>
         /// Gets or sets the <see cref="ScreenForm"/>.
         /// </summary>
+        [Browsable(false)]
         public ScreenForm ScreenForm { get; set; }
 
         /// <summary>

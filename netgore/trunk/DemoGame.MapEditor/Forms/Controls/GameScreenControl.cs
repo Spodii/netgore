@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
@@ -16,11 +17,13 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets or sets the camera used to view the map.
         /// </summary>
+        [Browsable(false)]
         public ICamera2D Camera { get; set; }
 
         /// <summary>
         /// Gets or sets the current position of the cursor in the world.
         /// </summary>
+        [Browsable(false)]
         public Vector2 CursorPos
         {
             get { return _cursorPos; }
@@ -35,6 +38,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets the <see cref="MouseButtons"/> current pressed.
         /// </summary>
+        [Browsable(false)]
         public MouseButtons MouseButton
         {
             get { return _mouseButton; }
