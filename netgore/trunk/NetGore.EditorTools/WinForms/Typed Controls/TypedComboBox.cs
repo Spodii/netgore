@@ -9,12 +9,21 @@ namespace NetGore.EditorTools
     /// A <see cref="ComboBox"/> with some strong typing support.
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
-    public class TypedComboBox<T> : ComboBox, ITypedControl<T>
+    public class TypedComboBox<T> : ComboBox
     {
         /// <summary>
         /// Notifies listeners when the selected item has changed.
         /// </summary>
         public event TypedComboBoxChangeEventHandler<T> TypedSelectedItemChanged;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypedComboBox&lt;T&gt;"/> class.
+        /// </summary>
+        public TypedComboBox()
+        {
+            DropDownStyle = ComboBoxStyle.DropDownList;
+            DrawMode = DrawMode.OwnerDrawFixed;
+        }
 
         /// <summary>
         /// Gets the selected item as type <typeparamref name="T"/>, or the default value for the given
@@ -24,11 +33,10 @@ namespace NetGore.EditorTools
         {
             get
             {
-                T output;
-                if (!TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out output))
+                if (SelectedItem == null || !(SelectedItem is T))
                     return default(T);
 
-                return output;
+                return (T)SelectedItem;
             }
         }
 
@@ -38,7 +46,7 @@ namespace NetGore.EditorTools
         /// <param name="item">The item to add.</param>
         public void AddItem(T item)
         {
-            Items.Add(new TypedListControlItem<T>(this, item));
+            Items.Add(item);
         }
 
         /// <summary>
@@ -47,7 +55,18 @@ namespace NetGore.EditorTools
         /// <param name="items">The items to add.</param>
         public void AddItems(IEnumerable<T> items)
         {
-            Items.AddRange(items.Select(x => new TypedListControlItem<T>(this, x)).ToArray());
+            if (items == null)
+                return;
+
+            Items.AddRange(items.Cast<object>().ToArray());
+        }
+
+        /// <summary>
+        /// Gets the strongly typed items in this <see cref="TypedComboBox{T}"/>.
+        /// </summary>
+        public IEnumerable<T> TypedItems
+        {
+            get { return Items.OfType<T>(); }
         }
 
         /// <summary>
@@ -80,17 +99,17 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.ListControl.SelectedValueChanged"/> event.
+        /// Raises the <see cref="E:System.Windows.Forms.DomainUpDown.SelectedItemChanged"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnSelectedValueChanged(EventArgs e)
+        protected override void OnSelectedItemChanged(EventArgs e)
         {
-            base.OnSelectedValueChanged(e);
+            base.OnSelectedItemChanged(e);
 
-            T item;
-            if (TypedControlHelper<T>.TryGetItemAsTyped(SelectedItem, out item))
+            if (SelectedItem != null && SelectedItem is T)
             {
-                OnTypedSelectedValueChanged(item);
+                var item = (T)SelectedItem;
+                OnTypedSelectedItemChanged(item);
                 if (TypedSelectedItemChanged != null)
                     TypedSelectedItemChanged(this, item);
             }
@@ -100,22 +119,8 @@ namespace NetGore.EditorTools
         /// Handles when the selected value changes.
         /// </summary>
         /// <param name="item">The new selected value.</param>
-        protected virtual void OnTypedSelectedValueChanged(T item)
+        protected virtual void OnTypedSelectedItemChanged(T item)
         {
         }
-
-        #region ITypedControl<T> Members
-
-        /// <summary>
-        /// Gets the string to display for an item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns>The string to display.</returns>
-        public virtual string ItemToString(T item)
-        {
-            return item.ToString();
-        }
-
-        #endregion
     }
 }

@@ -23,9 +23,6 @@ namespace DemoGame.SkeletonEditor
         const string _filterSet = "Skeleton set (*" + SkeletonSet.FileSuffix + ")|*" + SkeletonSet.FileSuffix;
         const string _skeletonSetFromStringDelimiter = "\r\n";
 
-        static readonly Color ColorError = Color.Red;
-        static readonly Color ColorNormal = SystemColors.Window;
-
         readonly List<XNALine> _centerLines = new List<XNALine>();
         readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
         readonly Stopwatch _watch = new Stopwatch();
@@ -44,12 +41,15 @@ namespace DemoGame.SkeletonEditor
         string _fileFrame = string.Empty;
         SkeletonBody _frameBody = null;
         bool _moveSelectedNode = false;
-        SkeletonNode _selectedNode = null;
         Skeleton _skeleton;
         SkeletonAnimation _skeletonAnim;
         SkeletonDrawer _skeletonDrawer;
         KeyEventArgs ks = new KeyEventArgs(Keys.None);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenForm"/> class.
+        /// </summary>
+        /// <param name="switches">The command-line switches.</param>
         public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
             _switches = switches;
@@ -107,7 +107,7 @@ namespace DemoGame.SkeletonEditor
             {
                 try
                 {
-                    return ((ListItem<SkeletonBodyItem>)lstBodies.SelectedItem).Item;
+                    return lstBodies.TypedSelectedItem;
                 }
                 catch
                 {
@@ -121,14 +121,10 @@ namespace DemoGame.SkeletonEditor
         /// </summary>
         public SkeletonNode SelectedNode
         {
-            get { return _selectedNode; }
+            get { return cmbSkeletonNodes.TypedSelectedItem; }
             set
             {
-                if (_selectedNode != value)
-                {
-                    _selectedNode = value;
-                    ChangeSelectedNode();
-                }
+                cmbSkeletonNodes.SelectedItem = value;
             }
         }
 
@@ -140,6 +136,11 @@ namespace DemoGame.SkeletonEditor
             get { return _skeletonAnim.SkeletonBody; }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnAdd control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAdd_Click(object sender, EventArgs e)
         {
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
@@ -152,6 +153,11 @@ namespace DemoGame.SkeletonEditor
             UpdateBodyList();
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnAnimLoad control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAnimLoad_Click(object sender, EventArgs e)
         {
             string result = GetLoadSkeletonDialogResult(_filterSet);
@@ -160,6 +166,11 @@ namespace DemoGame.SkeletonEditor
                 LoadAnim(result);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnAnimSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAnimSave_Click(object sender, EventArgs e)
         {
             if (FileAnim != null && FileAnim.Length > 1)
@@ -169,6 +180,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnAnimSaveAs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAnimSaveAs_Click(object sender, EventArgs e)
         {
             string result = GetSaveSkeletonDialogResult(_filterSet);
@@ -181,6 +197,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnBodyLoad control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnBodyLoad_Click(object sender, EventArgs e)
         {
             string result = GetLoadSkeletonDialogResult(_filterBody);
@@ -189,12 +210,22 @@ namespace DemoGame.SkeletonEditor
                 LoadBody(result);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnBodySave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnBodySave_Click(object sender, EventArgs e)
         {
             if (FileBody != null && FileBody.Length > 1)
                 SkeletonBody.BodyInfo.Save(FileBody);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnBodySaveAs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnBodySaveAs_Click(object sender, EventArgs e)
         {
             string result = GetSaveSkeletonDialogResult(_filterBody);
@@ -206,6 +237,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnCopyInherits control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnCopyInherits_Click(object sender, EventArgs e)
         {
             var results = GetLoadSkeletonDialogResults(_filterFrame);
@@ -224,6 +260,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnCopyLen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnCopyLen_Click(object sender, EventArgs e)
         {
             var results = GetLoadSkeletonDialogResults(_filterFrame);
@@ -242,6 +283,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnCopyRoot control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnCopyRoot_Click(object sender, EventArgs e)
         {
             DialogResult rX = MessageBox.Show("Copy the X axis?", "Skeleton frame root copy", MessageBoxButtons.YesNoCancel);
@@ -276,6 +322,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnDelete_Click(object sender, EventArgs e)
         {
             if (lstBodies.SelectedIndex == -1)
@@ -287,10 +338,16 @@ namespace DemoGame.SkeletonEditor
                 lstBodies.Items[i] = lstBodies.Items[i + 1];
                 SkeletonBody.BodyItems[i] = SkeletonBody.BodyItems[i + 1];
             }
+
             lstBodies.RemoveItemAtAndReselect(lstBodies.Items.Count - 1);
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length - 1);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnDown control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnDown_Click(object sender, EventArgs e)
         {
             int selIndex = lstBodies.SelectedIndex;
@@ -310,6 +367,11 @@ namespace DemoGame.SkeletonEditor
             lstBodies.SelectedIndex = selIndex + 1;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnFall control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnFall_Click(object sender, EventArgs e)
         {
             if (!radioAnimate.Checked)
@@ -319,6 +381,11 @@ namespace DemoGame.SkeletonEditor
             _skeletonAnim.ChangeSet(newSet);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnInterpolate control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnInterpolate_Click(object sender, EventArgs e)
         {
             string result = GetLoadSkeletonDialogResult(_filterFrame);
@@ -346,6 +413,11 @@ namespace DemoGame.SkeletonEditor
             LoadFrame(sa.Skeleton);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnJump control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnJump_Click(object sender, EventArgs e)
         {
             if (!radioAnimate.Checked)
@@ -355,6 +427,11 @@ namespace DemoGame.SkeletonEditor
             _skeletonAnim.ChangeSet(newSet);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnPause control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnPause_Click(object sender, EventArgs e)
         {
             if (_watch.IsRunning)
@@ -363,6 +440,11 @@ namespace DemoGame.SkeletonEditor
                 _watch.Start();
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnPlay control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnPlay_Click(object sender, EventArgs e)
         {
             if (!_watch.IsRunning)
@@ -371,11 +453,21 @@ namespace DemoGame.SkeletonEditor
             SetAnimByTxt();
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnShiftNodes control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnShiftNodes_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Make this button shift all nodes in all seleced files by a defined amount");
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnSkeletonLoad control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnSkeletonLoad_Click(object sender, EventArgs e)
         {
             string result = GetLoadSkeletonDialogResult(_filterFrame);
@@ -384,12 +476,22 @@ namespace DemoGame.SkeletonEditor
                 LoadFrame(result);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnSkeletonSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnSkeletonSave_Click(object sender, EventArgs e)
         {
             if (FileFrame != null && FileFrame.Length > 1)
                 _skeleton.Write(FileFrame);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnSkeletonSaveAs control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnSkeletonSaveAs_Click(object sender, EventArgs e)
         {
             string result = GetSaveSkeletonDialogResult(_filterFrame);
@@ -401,6 +503,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnStand control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnStand_Click(object sender, EventArgs e)
         {
             if (!radioAnimate.Checked)
@@ -410,6 +517,11 @@ namespace DemoGame.SkeletonEditor
             _skeletonAnim.ChangeSet(standingSet);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnUp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnUp_Click(object sender, EventArgs e)
         {
             int selIndex = lstBodies.SelectedIndex;
@@ -429,6 +541,11 @@ namespace DemoGame.SkeletonEditor
             lstBodies.SelectedIndex = selIndex - 1;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnWalk control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnWalk_Click(object sender, EventArgs e)
         {
             if (!radioAnimate.Checked)
@@ -438,62 +555,69 @@ namespace DemoGame.SkeletonEditor
             _skeletonAnim.ChangeSet(newSet);
         }
 
-        void ChangeSelectedNode()
-        {
-            foreach (object item in cmbSkeletonNodes.Items)
-            {
-                if (((ListItem<SkeletonNode>)item).Item == SelectedNode)
-                {
-                    cmbSkeletonNodes.SelectedItem = item;
-                    break;
-                }
-            }
-            UpdateNodeInfo();
-        }
-
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkIsMod control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void chkIsMod_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
                 SelectedNode.IsModifier = chkIsMod.Checked;
-                chkIsMod.BackColor = ColorNormal;
+                chkIsMod.BackColor = EditorColors.Normal;
             }
             catch
             {
-                chkIsMod.BackColor = ColorError;
+                chkIsMod.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the cmbSkeletonNodes control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmbSkeletonNodes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedNode = ((ListItem<SkeletonNode>)cmbSkeletonNodes.SelectedItem).Item;
+            UpdateNodeInfo();
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the cmbSource control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmbSource_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                SelectedDSI.Source = ((ListItem<SkeletonNode>)cmbSource.SelectedItem).Item;
-                cmbSource.BackColor = ColorNormal;
+                SelectedDSI.Source = cmbSource.TypedSelectedItem;
+                cmbSource.BackColor = EditorColors.Normal;
                 UpdateSelectedDSI();
             }
             catch
             {
-                cmbSource.BackColor = ColorError;
+                cmbSource.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the cmbTarget control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void cmbTarget_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                SelectedDSI.Dest = ((ListItem<SkeletonNode>)cmbTarget.SelectedItem).Item;
-                cmbTarget.BackColor = ColorNormal;
+                SelectedDSI.Dest = cmbTarget.TypedSelectedItem;
+                cmbTarget.BackColor = EditorColors.Normal;
                 UpdateSelectedDSI();
             }
             catch
             {
-                cmbTarget.BackColor = ColorError;
+                cmbTarget.BackColor = EditorColors.Error;
             }
         }
 
@@ -533,6 +657,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the MouseDown event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void GameScreen_MouseDown(object sender, MouseEventArgs e)
         {
             if (radioEdit.Checked)
@@ -569,6 +698,11 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the MouseMove event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
         {
             _cursorPos = _camera.ToWorld(e.X, e.Y);
@@ -612,25 +746,15 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the MouseUp event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void GameScreen_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
                 _moveSelectedNode = false;
-        }
-
-        static string GetDSIString(SkeletonBodyItem dsi)
-        {
-            string s = "_null_";
-            if (dsi.Dest != null)
-                s = dsi.Dest.Name;
-
-            string textureName;
-            if (dsi.Grh.GrhData == null)
-                textureName = "*";
-            else
-                textureName = ((StationaryGrhData)dsi.Grh.GrhData).TextureName.Value.Replace("Character/", string.Empty);
-
-            return textureName + ": " + dsi.Source.Name + " -> " + s;
         }
 
         static string GetLoadSkeletonDialogResult(string filter)
@@ -790,12 +914,20 @@ namespace DemoGame.SkeletonEditor
         void LoadFrame(Skeleton skel)
         {
             _skeleton = skel;
+
             if (_frameBody != null)
                 _frameBody.Attach(_skeleton);
+
             SelectedNode = _skeleton.RootNode;
+
             UpdateFrameNodeCBs();
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstBodies control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void lstBodies_SelectedIndexChanged(object sender, EventArgs e)
         {
             SkeletonBodyItem item = SelectedDSI;
@@ -806,27 +938,22 @@ namespace DemoGame.SkeletonEditor
             txtOffsetY.Text = item.ItemInfo.Offset.Y.ToString();
             txtOriginX.Text = item.ItemInfo.Origin.X.ToString();
             txtOriginY.Text = item.ItemInfo.Origin.Y.ToString();
+
             if (item.Grh.GrhData != null)
                 txtGrhIndex.Text = item.Grh.GrhData.GrhIndex.ToString();
 
-            foreach (ListItem<SkeletonNode> node in cmbSource.Items)
-            {
-                if (node.Item.Name == item.Source.Name)
-                    cmbSource.SelectedItem = node;
-            }
+            cmbSource.SelectedItem = cmbSource.TypedItems.FirstOrDefault(x => x.Name == item.Source.Name);
 
             if (item.Dest == null)
-                cmbTarget.SelectedIndex = 0;
+                cmbTarget.SelectedItem = null;
             else
-            {
-                foreach (ListItem<SkeletonNode> node in cmbTarget.Items)
-                {
-                    if (node.Item != null && node.Item.Name == item.Dest.Name)
-                        cmbTarget.SelectedItem = node;
-                }
-            }
+                cmbTarget.SelectedItem = cmbTarget.TypedItems.FirstOrDefault(x => x.Name == item.Dest.Name);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -866,6 +993,10 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyUp(KeyEventArgs e)
         {
             base.OnKeyUp(e);
@@ -910,6 +1041,11 @@ namespace DemoGame.SkeletonEditor
             _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the radioAnimate control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void radioAnimate_CheckedChanged(object sender, EventArgs e)
         {
             if (radioAnimate.Checked)
@@ -938,32 +1074,47 @@ namespace DemoGame.SkeletonEditor
                     throw new Exception();
 
                 _skeletonAnim.ChangeSet(newSet);
-                txtFrames.BackColor = ColorNormal;
+                txtFrames.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtFrames.BackColor = ColorError;
+                txtFrames.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtAngle control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtAngle_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 SelectedNode.SetAngle(Parser.Current.ParseFloat(txtAngle.Text));
-                txtAngle.BackColor = ColorNormal;
+                txtAngle.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtAngle.BackColor = ColorError;
+                txtAngle.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtFrames control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtFrames_TextChanged(object sender, EventArgs e)
         {
             SetAnimByTxt();
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtGrhIndex control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtGrhIndex_TextChanged(object sender, EventArgs e)
         {
             try
@@ -972,107 +1123,139 @@ namespace DemoGame.SkeletonEditor
                 var grhData = GrhInfo.GetData(grhIndex);
                 if (grhData == null)
                 {
-                    txtGrhIndex.BackColor = ColorError;
+                    txtGrhIndex.BackColor = EditorColors.Error;
                     return;
                 }
 
                 SelectedDSI.Grh.SetGrh(grhData, AnimType.Loop, (int)_watch.ElapsedMilliseconds);
                 SelectedDSI.ItemInfo.GrhIndex = grhIndex;
 
-                txtGrhIndex.BackColor = ColorNormal;
+                txtGrhIndex.BackColor = EditorColors.Normal;
                 UpdateSelectedDSI();
             }
             catch
             {
-                txtGrhIndex.BackColor = ColorError;
+                txtGrhIndex.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtLength control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtLength_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 SelectedNode.SetLength(Parser.Current.ParseFloat(txtLength.Text));
-                txtLength.BackColor = ColorNormal;
+                txtLength.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtLength.BackColor = ColorError;
+                txtLength.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtName control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtName_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 SelectedNode.Name = txtName.Text;
-                var item = (ListItem<SkeletonNode>)cmbSkeletonNodes.Items[cmbSkeletonNodes.SelectedIndex];
-                item.Name = SelectedNode.Name;
-                cmbSkeletonNodes.Items[cmbSkeletonNodes.SelectedIndex] = item;
-                txtName.BackColor = ColorNormal;
+                txtName.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtName.BackColor = ColorError;
+                txtName.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtOffsetX control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtOffsetX_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 float x = Parser.Current.ParseFloat(txtOffsetX.Text);
                 SelectedDSI.ItemInfo.Offset = new Vector2(x, SelectedDSI.ItemInfo.Offset.Y);
-                txtOffsetX.BackColor = ColorNormal;
+                txtOffsetX.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtOffsetX.BackColor = ColorError;
+                txtOffsetX.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtOffsetY control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtOffsetY_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 float y = Parser.Current.ParseFloat(txtOffsetY.Text);
                 SelectedDSI.ItemInfo.Offset = new Vector2(SelectedDSI.ItemInfo.Offset.X, y);
-                txtOffsetY.BackColor = ColorNormal;
+                txtOffsetY.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtOffsetY.BackColor = ColorError;
+                txtOffsetY.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtOriginX control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtOriginX_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 float x = Parser.Current.ParseFloat(txtOriginX.Text);
                 SelectedDSI.ItemInfo.Origin = new Vector2(x, SelectedDSI.ItemInfo.Origin.Y);
-                txtOriginX.BackColor = ColorNormal;
+                txtOriginX.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtOriginX.BackColor = ColorError;
+                txtOriginX.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtOriginY control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtOriginY_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 float y = Parser.Current.ParseFloat(txtOriginY.Text);
                 SelectedDSI.ItemInfo.Origin = new Vector2(SelectedDSI.ItemInfo.Origin.X, y);
-                txtOriginY.BackColor = ColorNormal;
+                txtOriginY.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtOriginY.BackColor = ColorError;
+                txtOriginY.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtX control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtX_TextChanged(object sender, EventArgs e)
         {
             try
@@ -1081,14 +1264,19 @@ namespace DemoGame.SkeletonEditor
                     SelectedNode.MoveTo(new Vector2(Parser.Current.ParseFloat(txtX.Text), SelectedNode.Y));
                 else
                     SelectedNode.X = Parser.Current.ParseFloat(txtX.Text);
-                txtX.BackColor = ColorNormal;
+                txtX.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtX.BackColor = ColorError;
+                txtX.BackColor = EditorColors.Error;
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged event of the txtY control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtY_TextChanged(object sender, EventArgs e)
         {
             try
@@ -1097,36 +1285,30 @@ namespace DemoGame.SkeletonEditor
                     SelectedNode.MoveTo(new Vector2(SelectedNode.X, Parser.Current.ParseFloat(txtY.Text)));
                 else
                     SelectedNode.Y = Parser.Current.ParseFloat(txtY.Text);
-                txtY.BackColor = ColorNormal;
+                txtY.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtY.BackColor = ColorError;
+                txtY.BackColor = EditorColors.Error;
             }
         }
 
         void UpdateAnimationNodeCBs()
         {
             var nodes = _skeletonAnim.Skeleton.RootNode.GetAllNodes();
+            
             cmbSource.Items.Clear();
+            cmbSource.AddItems(nodes);
+
             cmbTarget.Items.Clear();
-            cmbTarget.Items.Add(new ListItem<SkeletonNode>(null, "_null_"));
-            foreach (SkeletonNode node in nodes)
-            {
-                var listItem = new ListItem<SkeletonNode>(node, node.Name);
-                cmbSource.Items.Add(listItem);
-                cmbTarget.Items.Add(listItem);
-            }
+            cmbTarget.AddItems(nodes);
         }
 
         void UpdateBodyList()
         {
             lstBodies.Items.Clear();
-            for (int i = 0; i < SkeletonBody.BodyItems.Length; i++)
-            {
-                SkeletonBodyItem item = SkeletonBody.BodyItems[i];
-                lstBodies.AddItemAndReselect(new ListItem<SkeletonBodyItem>(item, GetDSIString(item)));
-            }
+            lstBodies.AddItems(SkeletonBody.BodyItems);
+
             UpdateAnimationNodeCBs();
         }
 
@@ -1134,12 +1316,12 @@ namespace DemoGame.SkeletonEditor
         {
             cmbSkeletonNodes.Items.Clear();
             var nodes = _skeleton.RootNode.GetAllNodes();
-            foreach (SkeletonNode node in nodes)
-            {
-                cmbSkeletonNodes.Items.Add(new ListItem<SkeletonNode>(node, node.Name));
-            }
+            cmbSkeletonNodes.AddItems(nodes);
         }
 
+        /// <summary>
+        /// Updates the game.
+        /// </summary>
         public void UpdateGame()
         {
             if (!_watch.IsRunning)
@@ -1149,6 +1331,9 @@ namespace DemoGame.SkeletonEditor
             _skeletonAnim.Update(_currentTime);
         }
 
+        /// <summary>
+        /// Updates the node info.
+        /// </summary>
         public void UpdateNodeInfo()
         {
             if (SelectedNode == null)
@@ -1164,9 +1349,17 @@ namespace DemoGame.SkeletonEditor
 
         void UpdateSelectedDSI()
         {
-            var dsi = (ListItem<SkeletonBodyItem>)lstBodies.Items[lstBodies.SelectedIndex];
-            dsi.Name = GetDSIString(dsi.Item);
-            lstBodies.Items[lstBodies.SelectedIndex] = dsi;
+            lstBodies.RefreshItemAt(lstBodies.SelectedIndex);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnClearTarget control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnClearTarget_Click(object sender, EventArgs e)
+        {
+            cmbTarget.SelectedItem = null;
         }
     }
 }

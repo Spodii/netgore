@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -30,49 +31,31 @@ namespace DemoGame.EditorTools
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            if (DesignMode)
-                return;
-
-            if (e.Index < 0 || e.Index >= Items.Count || Items[e.Index] == null)
+            if (DesignMode || !ControlHelper.DrawListItem<MutablePair<CharacterTemplateID, ushort>>(Items, e, x => GetDrawString(x)))
             {
                 base.OnDrawItem(e);
-                return;
             }
+        }
 
-            var item = (MutablePair<CharacterTemplateID, ushort>)Items[e.Index];
-
-            e.DrawBackground();
-
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-
-            // Draw the key
-            var keyStr = item.Key.ToString();
+        /// <summary>
+        /// Gets the string to draw for a list item.
+        /// </summary>
+        /// <param name="x">The list item.</param>
+        /// <returns>The string to draw for a list item.</returns>
+        static KeyValuePair<string, string> GetDrawString(MutablePair<CharacterTemplateID, ushort> x)
+        {
+            var keyStr = x.Key.ToString();
 
             var itm = CharacterTemplateManager.Instance;
             if (itm != null)
             {
-                var template = itm[item.Key];
+                var template = itm[x.Key];
                 if (template != null)
                     keyStr += " [" + template.TemplateTable.Name + "]";
             }
             keyStr += " - ";
 
-            using (var brush = new SolidBrush((e.State & DrawItemState.Selected) != 0 ? Color.LightGreen : Color.Green))
-            {
-                e.Graphics.DrawString(keyStr, e.Font, brush, e.Bounds);
-            }
-
-            var keyWidth = (int)e.Graphics.MeasureString(keyStr, e.Font).Width;
-            var valueBounds = new Rectangle(e.Bounds.X + keyWidth, e.Bounds.Y, e.Bounds.Width - keyWidth, e.Bounds.Height);
-
-            // Draw the value
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(item.Value.ToString(), e.Font, brush, valueBounds);
-            }
-
-            if ((e.State & DrawItemState.Selected) != 0)
-                e.DrawFocusRectangle();
+            return new KeyValuePair<string, string>(keyStr, x.Value.ToString());
         }
 
         /// <summary>

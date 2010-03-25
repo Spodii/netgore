@@ -23,10 +23,16 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns>The string to display.</returns>
-        public override string ItemToString(WallEntityBase item)
+        static string GetDrawString(WallEntityBase item)
         {
             return string.Format("({0},{1}) [{2}x{3}]{4}", item.Position.X, item.Position.Y, item.Size.X, item.Size.Y,
                                  item.IsPlatform ? " - Platform" : string.Empty);
+        }
+
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (DesignMode || !ControlHelper.DrawListItem<WallEntityBase>(Items, e, x => GetDrawString(x)))
+                base.OnDrawItem(e);
         }
     }
 }

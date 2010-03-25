@@ -30,37 +30,24 @@ namespace DemoGame.EditorTools
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            if (DesignMode)
-                return;
-
-            if (e.Index < 0 || e.Index >= Items.Count || Items[e.Index] == null)
+            if (DesignMode || !ControlHelper.DrawListItem<AllianceID>(Items, e, x => GetDrawString(x)))
             {
                 base.OnDrawItem(e);
-                return;
             }
-
-            var item = (AllianceID)Items[e.Index];
-
-            e.DrawBackground();
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-
-            string str;
-
-            var t = AllianceManager.Instance[item];
+        }
+        /// <summary>
+        /// Gets the string to draw for a list item.
+        /// </summary>
+        /// <param name="x">The list item.</param>
+        /// <returns>The string to draw for a list item.</returns>
+        static string GetDrawString(AllianceID x)
+        {
+            var t = AllianceManager.Instance[x];
 
             if (t == null)
-                str = item.ToString();
+                return "ID " + x;
             else
-                str = t.ID + ". " + t.Name;
-
-            // Draw the value
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(str, e.Font, brush, e.Bounds);
-            }
-
-            if ((e.State & DrawItemState.Selected) != 0)
-                e.DrawFocusRectangle();
+                return t.ID + ". " + t.Name;
         }
 
         /// <summary>

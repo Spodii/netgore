@@ -36,7 +36,6 @@ namespace DemoGame.SkeletonEditor
             this.tcMenu = new System.Windows.Forms.TabControl();
             this.tabSkeleton = new System.Windows.Forms.TabPage();
             this.gbNodes = new System.Windows.Forms.GroupBox();
-            this.cmbSkeletonNodes = new System.Windows.Forms.ComboBox();
             this.gbSkeletonActions = new System.Windows.Forms.GroupBox();
             this.btnCopyInherits = new System.Windows.Forms.Button();
             this.btnInterpolate = new System.Windows.Forms.Button();
@@ -80,9 +79,8 @@ namespace DemoGame.SkeletonEditor
             this.btnBodySave = new System.Windows.Forms.Button();
             this.btnBodyLoad = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmbTarget = new System.Windows.Forms.ComboBox();
+            this.btnClearTarget = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
-            this.cmbSource = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.txtGrhIndex = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -99,7 +97,7 @@ namespace DemoGame.SkeletonEditor
             this.gbBodies = new System.Windows.Forms.GroupBox();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
-            this.lstBodies = new System.Windows.Forms.ListBox();
+            this.lstBodies = new SkeletonBodyItemsListBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.tabSettings = new System.Windows.Forms.TabPage();
@@ -113,6 +111,9 @@ namespace DemoGame.SkeletonEditor
             this.radioAnimate = new System.Windows.Forms.RadioButton();
             this.radioEdit = new System.Windows.Forms.RadioButton();
             this.lblXY = new System.Windows.Forms.Label();
+            this.cmbSkeletonNodes = new DemoGame.SkeletonEditor.SkeletonNodesComboBox();
+            this.cmbTarget = new DemoGame.SkeletonEditor.SkeletonNodesComboBox();
+            this.cmbSource = new DemoGame.SkeletonEditor.SkeletonNodesComboBox();
             this.GameScreen = new DemoGame.SkeletonEditor.GameScreenControl();
             this.tcMenu.SuspendLayout();
             this.tabSkeleton.SuspendLayout();
@@ -168,16 +169,6 @@ namespace DemoGame.SkeletonEditor
             this.gbNodes.TabIndex = 47;
             this.gbNodes.TabStop = false;
             this.gbNodes.Text = "Skeleton Nodes";
-            // 
-            // cmbSkeletonNodes
-            // 
-            this.cmbSkeletonNodes.FormattingEnabled = true;
-            this.cmbSkeletonNodes.Location = new System.Drawing.Point(8, 19);
-            this.cmbSkeletonNodes.Name = "cmbSkeletonNodes";
-            this.cmbSkeletonNodes.Size = new System.Drawing.Size(175, 21);
-            this.cmbSkeletonNodes.Sorted = true;
-            this.cmbSkeletonNodes.TabIndex = 47;
-            this.cmbSkeletonNodes.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonNodes_SelectedIndexChanged);
             // 
             // gbSkeletonActions
             // 
@@ -615,6 +606,7 @@ namespace DemoGame.SkeletonEditor
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnClearTarget);
             this.groupBox1.Controls.Add(this.cmbTarget);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.cmbSource);
@@ -638,15 +630,15 @@ namespace DemoGame.SkeletonEditor
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selected Body";
             // 
-            // cmbTarget
+            // btnClearTarget
             // 
-            this.cmbTarget.FormattingEnabled = true;
-            this.cmbTarget.Location = new System.Drawing.Point(60, 122);
-            this.cmbTarget.Name = "cmbTarget";
-            this.cmbTarget.Size = new System.Drawing.Size(124, 21);
-            this.cmbTarget.Sorted = true;
-            this.cmbTarget.TabIndex = 47;
-            this.cmbTarget.SelectedIndexChanged += new System.EventHandler(this.cmbTarget_SelectedIndexChanged);
+            this.btnClearTarget.Location = new System.Drawing.Point(165, 122);
+            this.btnClearTarget.Name = "btnClearTarget";
+            this.btnClearTarget.Size = new System.Drawing.Size(20, 23);
+            this.btnClearTarget.TabIndex = 48;
+            this.btnClearTarget.Text = "X";
+            this.btnClearTarget.UseVisualStyleBackColor = true;
+            this.btnClearTarget.Click += new System.EventHandler(this.btnClearTarget_Click);
             // 
             // label15
             // 
@@ -656,16 +648,6 @@ namespace DemoGame.SkeletonEditor
             this.label15.Size = new System.Drawing.Size(41, 13);
             this.label15.TabIndex = 46;
             this.label15.Text = "Target:";
-            // 
-            // cmbSource
-            // 
-            this.cmbSource.FormattingEnabled = true;
-            this.cmbSource.Location = new System.Drawing.Point(60, 95);
-            this.cmbSource.Name = "cmbSource";
-            this.cmbSource.Size = new System.Drawing.Size(124, 21);
-            this.cmbSource.Sorted = true;
-            this.cmbSource.TabIndex = 45;
-            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
             // 
             // label14
             // 
@@ -962,6 +944,39 @@ namespace DemoGame.SkeletonEditor
             this.lblXY.Text = "X: 0, Y: 0";
             this.lblXY.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // cmbSkeletonNodes
+            // 
+            this.cmbSkeletonNodes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSkeletonNodes.FormattingEnabled = true;
+            this.cmbSkeletonNodes.Location = new System.Drawing.Point(8, 19);
+            this.cmbSkeletonNodes.Name = "cmbSkeletonNodes";
+            this.cmbSkeletonNodes.Size = new System.Drawing.Size(175, 21);
+            this.cmbSkeletonNodes.Sorted = true;
+            this.cmbSkeletonNodes.TabIndex = 47;
+            this.cmbSkeletonNodes.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonNodes_SelectedIndexChanged);
+            // 
+            // cmbTarget
+            // 
+            this.cmbTarget.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTarget.FormattingEnabled = true;
+            this.cmbTarget.Location = new System.Drawing.Point(60, 122);
+            this.cmbTarget.Name = "cmbTarget";
+            this.cmbTarget.Size = new System.Drawing.Size(99, 21);
+            this.cmbTarget.Sorted = true;
+            this.cmbTarget.TabIndex = 47;
+            this.cmbTarget.SelectedIndexChanged += new System.EventHandler(this.cmbTarget_SelectedIndexChanged);
+            // 
+            // cmbSource
+            // 
+            this.cmbSource.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSource.FormattingEnabled = true;
+            this.cmbSource.Location = new System.Drawing.Point(60, 95);
+            this.cmbSource.Name = "cmbSource";
+            this.cmbSource.Size = new System.Drawing.Size(124, 21);
+            this.cmbSource.Sorted = true;
+            this.cmbSource.TabIndex = 45;
+            this.cmbSource.SelectedIndexChanged += new System.EventHandler(this.cmbSource_SelectedIndexChanged);
+            // 
             // GameScreen
             // 
             this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
@@ -1037,7 +1052,7 @@ namespace DemoGame.SkeletonEditor
         private System.Windows.Forms.GroupBox gbBodies;
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Button btnUp;
-        private System.Windows.Forms.ListBox lstBodies;
+        private SkeletonBodyItemsListBox lstBodies;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.TabPage tabSettings;
@@ -1047,9 +1062,9 @@ namespace DemoGame.SkeletonEditor
         private System.Windows.Forms.RadioButton radioAnimate;
         private System.Windows.Forms.RadioButton radioEdit;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox cmbTarget;
+        private SkeletonNodesComboBox cmbTarget;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox cmbSource;
+        private SkeletonNodesComboBox cmbSource;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox txtGrhIndex;
         private System.Windows.Forms.Label label13;
@@ -1084,7 +1099,7 @@ namespace DemoGame.SkeletonEditor
         private System.Windows.Forms.Button btnCopyLen;
         private System.Windows.Forms.Button btnCopyRoot;
         private System.Windows.Forms.GroupBox gbNodes;
-        private System.Windows.Forms.ComboBox cmbSkeletonNodes;
+        private SkeletonNodesComboBox cmbSkeletonNodes;
         private System.Windows.Forms.Button btnShiftNodes;
         private System.Windows.Forms.CheckBox chkCanTransform;
         private System.Windows.Forms.CheckBox chkCanAlter;
@@ -1097,6 +1112,7 @@ namespace DemoGame.SkeletonEditor
         private System.Windows.Forms.Button btnWalk;
         private System.Windows.Forms.Button btnCopyInherits;
         private System.Windows.Forms.CheckBox chkIsMod;
+        private System.Windows.Forms.Button btnClearTarget;
     }
 }
 

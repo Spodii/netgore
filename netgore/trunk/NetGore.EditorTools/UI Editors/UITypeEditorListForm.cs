@@ -79,15 +79,7 @@ namespace NetGore.EditorTools
         /// <param name="item">The item being drawn.</param>
         protected virtual void DrawListItem(DrawItemEventArgs e, T item)
         {
-            e.DrawBackground();
-
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(GetItemDisplayString(item), e.Font, brush, e.Bounds);
-            }
-
-            if (e.State == DrawItemState.Selected)
-                e.DrawFocusRectangle();
+            ControlHelper.DrawItem(e, GetItemDisplayString(item));
         }
 
         /// <summary>
