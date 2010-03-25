@@ -160,7 +160,6 @@ namespace NetGore.Collections
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
-        /// <value></value>
         /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
         public int Count
         {
@@ -170,7 +169,6 @@ namespace NetGore.Collections
         /// <summary>
         /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
         /// </summary>
-        /// <value></value>
         /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only;
         /// otherwise, false.</returns>
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
@@ -182,7 +180,6 @@ namespace NetGore.Collections
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the
         /// <see cref="T:System.Collections.Generic.IDictionary`2"/>.
         /// </summary>
-        /// <value></value>
         /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the object that
         /// implements <see cref="T:System.Collections.Generic.IDictionary`2"/>.</returns>
         ICollection<TKey> IDictionary<TKey, TValue>.Keys
@@ -209,7 +206,6 @@ namespace NetGore.Collections
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1"/> containing the values in the
         /// <see cref="T:System.Collections.Generic.IDictionary`2"/>.
         /// </summary>
-        /// <value></value>
         /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1"/> containing the values in the
         /// object that implements <see cref="T:System.Collections.Generic.IDictionary`2"/>.</returns>
         public ICollection<TValue> Values

@@ -79,7 +79,6 @@ namespace NetGore.IO.PropertySync
         /// <summary>
         /// When overridden in the derived class, gets the property's Type.
         /// </summary>
-        /// <value></value>
         public override Type PropertyType
         {
             get { return typeof(T); }

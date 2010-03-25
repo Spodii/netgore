@@ -53,7 +53,6 @@ namespace NetGore.Graphics
         /// When overridden in the derived class, gets the frames in an animated <see cref="GrhData"/>, or an
         /// IEnumerable containing a reference to its self if stationary.
         /// </summary>
-        /// <value></value>
         public override IEnumerable<StationaryGrhData> Frames
         {
             get { return _frames; }
@@ -71,7 +70,6 @@ namespace NetGore.Graphics
         /// <summary>
         /// When overridden in the derived class, gets the size of the <see cref="GrhData"/>'s sprite in pixels.
         /// </summary>
-        /// <value></value>
         public override Vector2 Size
         {
             get { return _size; }

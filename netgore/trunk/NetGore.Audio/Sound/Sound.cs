@@ -86,7 +86,6 @@ namespace NetGore.Audio
         /// <summary>
         /// Gets the sound track index.
         /// </summary>
-        /// <value></value>
         public SoundID Index
         {
             get { return _index; }

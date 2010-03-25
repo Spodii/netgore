@@ -122,6 +122,12 @@ namespace NetGore.Graphics.GUI
         Control UnderCursor { get; }
 
         /// <summary>
+        /// Gets the <see cref="ITooltip"/> to use for displaying tooltips for <see cref="Control"/>s in
+        /// this <see cref="IGUIManager"/>.
+        /// </summary>
+        ITooltip Tooltip { get; }
+
+        /// <summary>
         /// Adds a <see cref="Control"/> to this <see cref="IGUIManager"/> at the root level. This should only be called
         /// by the <see cref="Control"/>'s constructor.
         /// </summary>

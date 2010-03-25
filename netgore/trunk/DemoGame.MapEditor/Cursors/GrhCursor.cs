@@ -51,7 +51,6 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets the priority of the cursor on the toolbar. Lower values appear first.
         /// </summary>
-        /// <value></value>
         public override int ToolbarPriority
         {
             get { return 15; }

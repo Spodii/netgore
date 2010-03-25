@@ -71,7 +71,6 @@ namespace NetGore
         /// <summary>
         /// Gets or sets the weight of the Entity (used in gravity calculations).
         /// </summary>
-        /// <value></value>
         [Browsable(false)]
         public override float Weight
         {

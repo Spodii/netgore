@@ -13,7 +13,6 @@ namespace DemoGame.Server
         /// When overridden in the derived class, gets the minimum amount of time in milliseconds that must elapsed
         /// between calls to Update. If this amount of time has not elapsed, calls to Update will just return 0.
         /// </summary>
-        /// <value></value>
         protected override int UpdateRate
         {
             get { return ServerSettings.MapItemExpirationUpdateRate; }

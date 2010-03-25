@@ -90,7 +90,6 @@ namespace NetGore.Audio
         /// <summary>
         /// Gets the position of the audio emitter.
         /// </summary>
-        /// <value></value>
         public Vector2 Position
         {
             get { return _position; }

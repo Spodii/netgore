@@ -14,7 +14,6 @@ namespace NetGore
         /// When overridden in the derived class, gets the unique name of this <see cref="TextFilter"/> implementation.
         /// This value must be costant for every instance of this filter, and must be unique for the <see cref="Type"/>.
         /// </summary>
-        /// <value></value>
         protected override string DisplayNameInternal
         {
             get { return "Text"; }

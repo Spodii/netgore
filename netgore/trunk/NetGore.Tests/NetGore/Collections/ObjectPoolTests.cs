@@ -149,7 +149,6 @@ namespace NetGore.Tests.Collections
             /// Gets or sets the index of the object in the pool. This value should never be used by anything
             /// other than the pool that owns this object.
             /// </summary>
-            /// <value></value>
             public int PoolIndex { get; set; }
 
             #endregion

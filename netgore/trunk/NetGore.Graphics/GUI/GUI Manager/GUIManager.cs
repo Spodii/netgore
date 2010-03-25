@@ -15,9 +15,11 @@ namespace NetGore.Graphics.GUI
     public class GUIManager : IGUIManager
     {
         static readonly IEnumerable<Keys> _emptyKeys = new Keys[0];
+
         readonly List<Control> _controls = new List<Control>(2);
         readonly ISkinManager _skinManager;
         readonly Tooltip _tooltip;
+
         Control _focusedControl = null;
         bool _isKeysDownSet = false;
         bool _isKeysUpSet = false;
@@ -59,14 +61,6 @@ namespace NetGore.Graphics.GUI
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _tooltip = CreateTooltip();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManager"/>.
-        /// </summary>
-        public Tooltip Tooltip
-        {
-            get { return _tooltip; }
         }
 
         /// <summary>
@@ -269,7 +263,6 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets the screen coordinates of the cursor.
         /// </summary>
-        /// <value></value>
         public Vector2 CursorPosition
         {
             get { return new Vector2(_mouseState.X, _mouseState.Y); }
@@ -434,7 +427,6 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the size of the screen.
         /// </summary>
-        /// <value></value>
         /// <exception cref="ArgumentOutOfRangeException">Either the x- or y-coordinate of the <paramref name="value"/>
         /// is less than or equal to zero.</exception>
         public Vector2 ScreenSize
@@ -456,6 +448,14 @@ namespace NetGore.Graphics.GUI
         public ISkinManager SkinManager
         {
             get { return _skinManager; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManager"/>.
+        /// </summary>
+        public ITooltip Tooltip
+        {
+            get { return _tooltip; }
         }
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace NetGore.Graphics.GUI
     /// Handles displaying pop-up text for <see cref="Control"/>s after they have been hovered over by the cursor
     /// for the appropriate amount of time.
     /// </summary>
-    public class Tooltip
+    public class Tooltip : ITooltip
     {
         readonly TooltipArgs _args = new TooltipArgs();
         readonly StyledTextsDrawer _drawer;
@@ -55,9 +55,41 @@ namespace NetGore.Graphics.GUI
             Debug.Assert(Font != null);
         }
 
+        void RefreshText(int currentTime)
+        {
+            // Request the tooltip text
+            var tooltipTexts = _lastUnderCursor.Tooltip.Invoke(_lastUnderCursor, _args);
+            _lastRefreshTime = currentTime;
+
+            // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
+            if (tooltipTexts == null)
+                _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
+            else
+            {
+                if (tooltipTexts.Count() > 0)
+                {
+                    var texts = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
+                    _drawer.SetStyledTexts(texts);
+                    UpdateBackground();
+                }
+            }
+        }
+
         /// <summary>
-        /// Gets or sets the <see cref="Color"/> to draw the background of this <see cref="Tooltip"/>. This value
-        /// is only valid for when the <see cref="Border"/> is null.
+        /// Handles updating the information needed for background of the <see cref="Tooltip"/>.
+        /// </summary>
+        protected virtual void UpdateBackground()
+        {
+            float maxWidth = _drawer.Texts.Max(x => x.Sum(y => y.GetWidth(Font)));
+            float height = _drawer.Texts.Count() * Font.LineSpacing;
+            _borderSize = new Vector2(maxWidth, height);
+        }
+
+        #region ITooltip Members
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to draw the background of this <see cref="ITooltip"/>. This value
+        /// is only valid for when the <see cref="ITooltip.Border"/> is null.
         /// </summary>
         public Color BackgroundColor
         {
@@ -66,7 +98,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ControlBorder"/> for this <see cref="Tooltip"/>. Can be null.
+        /// Gets or sets the <see cref="ControlBorder"/> for this <see cref="ITooltip"/>. Can be null.
         /// </summary>
         public ControlBorder Border
         {
@@ -96,7 +128,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the offset from the cursor position to draw the <see cref="Tooltip"/>.
+        /// Gets or sets the offset from the cursor position to draw the <see cref="ITooltip"/>.
         /// </summary>
         public Vector2 DrawOffset
         {
@@ -105,8 +137,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteFont"/> used by this <see cref="Tooltip"/>. By default, this value will
-        /// be equal to the <see cref="GUIManager"/>'s Font. Cannot be null.
+        /// Gets or sets the <see cref="SpriteFont"/> used by this <see cref="ITooltip"/>. By default, this value will
+        /// be equal to the <see cref="IGUIManager"/>'s Font. Cannot be null.
         /// </summary>
         public SpriteFont Font
         {
@@ -134,7 +166,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="IGUIManager"/> that this <see cref="Tooltip"/> is for.
+        /// Gets the <see cref="IGUIManager"/> that this <see cref="ITooltip"/> is for.
         /// </summary>
         public IGUIManager GUIManager
         {
@@ -142,7 +174,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets if the <see cref="Tooltip"/> is currently being displayed.
+        /// Gets if the <see cref="ITooltip"/> is currently being displayed.
         /// </summary>
         public bool IsDisplayed
         {
@@ -150,7 +182,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets if the <see cref="Tooltip"/> is currently visible. If false, the <see cref="Tooltip"/> will
+        /// Gets or sets if the <see cref="ITooltip"/> is currently visible. If false, the <see cref="ITooltip"/> will
         /// not make requests for the tooltip text from <see cref="Control"/>s and will not be drawn.
         /// </summary>
         public bool IsVisible
@@ -160,7 +192,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the maximum width of the Tooltip.
+        /// Gets or sets the maximum width of the <see cref="ITooltip"/>.
         /// </summary>
         public int MaxWidth
         {
@@ -190,9 +222,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draws the <see cref="Tooltip"/>.
+        /// Draws the <see cref="ITooltip"/>.
         /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw the <see cref="Tooltip"/> with.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw the <see cref="ITooltip"/> with.</param>
         public virtual void Draw(ISpriteBatch sb)
         {
             if (sb == null)
@@ -219,28 +251,8 @@ namespace NetGore.Graphics.GUI
             _drawer.Draw(sb, _args.FontColor, pos);
         }
 
-        void RefreshText(int currentTime)
-        {
-            // Request the tooltip text
-            var tooltipTexts = _lastUnderCursor.Tooltip.Invoke(_lastUnderCursor, _args);
-            _lastRefreshTime = currentTime;
-
-            // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
-            if (tooltipTexts == null)
-                _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
-            else
-            {
-                if (tooltipTexts.Count() > 0)
-                {
-                    var texts = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
-                    _drawer.SetStyledTexts(texts);
-                    UpdateBackground();
-                }
-            }
-        }
-
         /// <summary>
-        /// Updates the <see cref="Tooltip"/>.
+        /// Updates the <see cref="ITooltip"/>.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
         public virtual void Update(int currentTime)
@@ -289,14 +301,6 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        /// <summary>
-        /// Handles updating the information needed for background of the <see cref="Tooltip"/>.
-        /// </summary>
-        protected virtual void UpdateBackground()
-        {
-            float maxWidth = _drawer.Texts.Max(x => x.Sum(y => y.GetWidth(Font)));
-            float height = _drawer.Texts.Count() * Font.LineSpacing;
-            _borderSize = new Vector2(maxWidth, height);
-        }
+        #endregion
     }
 }

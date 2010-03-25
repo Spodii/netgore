@@ -147,7 +147,6 @@ namespace NetGore.Stats
         /// <summary>
         /// Gets or sets the <see cref="System.Int32"/> with the specified stat type.
         /// </summary>
-        /// <value></value>
         public int this[TStatType statType]
         {
             get { return _stats[_statTypeToInt(statType)].Value; }
@@ -157,7 +156,6 @@ namespace NetGore.Stats
         /// <summary>
         /// Gets the <see cref="StatCollectionType"/> that this collection is for.
         /// </summary>
-        /// <value></value>
         public StatCollectionType StatCollectionType
         {
             get { return _collectionType; }
