@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Client", "DemoGame.Client\DemoGame.Client.csproj", "{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Server", "DemoGame.Server\DemoGame.Server.csproj", "{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}"
@@ -50,6 +50,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.DbEditor", "DemoGame.DbEditor\DemoGame.DbEditor.csproj", "{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		DebugCS|x86 = DebugCS|x86
@@ -313,13 +317,6 @@ Global
 		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Debug|x86.ActiveCfg = Debug|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugCS|x86.ActiveCfg = DebugTopDown|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugDbClassGen|x86.ActiveCfg = DebugTopDown|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Release|x86.ActiveCfg = Release|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Debug|x86.ActiveCfg = Debug|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugCS|x86.ActiveCfg = DebugTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugDbClassGen|x86.ActiveCfg = DebugTopDown|x86
@@ -327,12 +324,15 @@ Global
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|x86.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Debug|x86.ActiveCfg = Debug|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugCS|x86.ActiveCfg = DebugTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugDbClassGen|x86.ActiveCfg = DebugTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Release|x86.ActiveCfg = Release|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.ReleaseClient|x86.ActiveCfg = ReleaseTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
