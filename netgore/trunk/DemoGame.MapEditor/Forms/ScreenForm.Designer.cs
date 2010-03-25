@@ -33,6 +33,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.SplitContainer splitContainer1;
             System.Windows.Forms.SplitContainer splitContainer2;
             System.Windows.Forms.SplitContainer splitContainer3;
@@ -85,6 +86,7 @@ namespace DemoGame.MapEditor
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
+            this.tt = new System.Windows.Forms.ToolTip(this.components);
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -293,6 +295,7 @@ namespace DemoGame.MapEditor
             this.tcMenu.Location = new System.Drawing.Point(0, 0);
             this.tcMenu.Name = "tcMenu";
             this.tcMenu.SelectedIndex = 0;
+            this.tcMenu.ShowToolTips = true;
             this.tcMenu.Size = new System.Drawing.Size(328, 328);
             this.tcMenu.TabIndex = 3;
             // 
@@ -305,7 +308,7 @@ namespace DemoGame.MapEditor
             this.tpGeneral.Size = new System.Drawing.Size(320, 302);
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
-            this.tpGeneral.ToolTipText = "General map information";
+            this.tpGeneral.ToolTipText = "General settings for the map";
             this.tpGeneral.UseVisualStyleBackColor = true;
             // 
             // pgMap
@@ -326,6 +329,7 @@ namespace DemoGame.MapEditor
             this.tpGrhs.Size = new System.Drawing.Size(320, 302);
             this.tpGrhs.TabIndex = 5;
             this.tpGrhs.Text = "Grhs";
+            this.tpGrhs.ToolTipText = "Add map-bound graphics";
             this.tpGrhs.UseVisualStyleBackColor = true;
             this.tpGrhs.Enter += new System.EventHandler(this.tabPageGrhs_Enter);
             // 
@@ -351,7 +355,8 @@ namespace DemoGame.MapEditor
             this.tpBackground.Name = "tpBackground";
             this.tpBackground.Size = new System.Drawing.Size(320, 302);
             this.tpBackground.TabIndex = 6;
-            this.tpBackground.Text = "Background";
+            this.tpBackground.Text = "BG";
+            this.tpBackground.ToolTipText = "Background images on the map";
             this.tpBackground.UseVisualStyleBackColor = true;
             // 
             // splitContainer5
@@ -415,6 +420,7 @@ namespace DemoGame.MapEditor
             this.tpEffects.Size = new System.Drawing.Size(320, 302);
             this.tpEffects.TabIndex = 8;
             this.tpEffects.Text = "Effects";
+            this.tpEffects.ToolTipText = "Particle effects on the map";
             this.tpEffects.UseVisualStyleBackColor = true;
             // 
             // splitContainer6
@@ -479,7 +485,7 @@ namespace DemoGame.MapEditor
             this.tpNPCs.Size = new System.Drawing.Size(320, 302);
             this.tpNPCs.TabIndex = 4;
             this.tpNPCs.Text = "NPCs";
-            this.tpNPCs.ToolTipText = "Mob and NPC spawning and settings";
+            this.tpNPCs.ToolTipText = "NPCs that will spawn on the map";
             this.tpNPCs.UseVisualStyleBackColor = true;
             // 
             // splitContainer7
@@ -544,7 +550,7 @@ namespace DemoGame.MapEditor
             this.tpSettings.Size = new System.Drawing.Size(320, 302);
             this.tpSettings.TabIndex = 3;
             this.tpSettings.Text = "Settings";
-            this.tpSettings.ToolTipText = "Map editor settings";
+            this.tpSettings.ToolTipText = "General program settings";
             this.tpSettings.UseVisualStyleBackColor = true;
             // 
             // groupBox3
@@ -757,6 +763,7 @@ namespace DemoGame.MapEditor
             this.btnSaveAs.Size = new System.Drawing.Size(65, 25);
             this.btnSaveAs.TabIndex = 9;
             this.btnSaveAs.Text = "Save As";
+            this.tt.SetToolTip(this.btnSaveAs, "Save the current map as a new map");
             this.btnSaveAs.UseVisualStyleBackColor = true;
             this.btnSaveAs.Click += new System.EventHandler(this.btnSaveAs_Click);
             // 
@@ -768,6 +775,7 @@ namespace DemoGame.MapEditor
             this.btnSave.Size = new System.Drawing.Size(65, 25);
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "Save";
+            this.tt.SetToolTip(this.btnSave, "Save the current map");
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
@@ -779,6 +787,7 @@ namespace DemoGame.MapEditor
             this.btnLoad.Size = new System.Drawing.Size(65, 25);
             this.btnLoad.TabIndex = 6;
             this.btnLoad.Text = "Load";
+            this.tt.SetToolTip(this.btnLoad, "Load an existing map from a file");
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.cmdLoad_Click);
             // 
@@ -790,6 +799,7 @@ namespace DemoGame.MapEditor
             this.btnNew.Size = new System.Drawing.Size(65, 25);
             this.btnNew.TabIndex = 5;
             this.btnNew.Text = "New";
+            this.tt.SetToolTip(this.btnNew, "Create a new map");
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.cmdNew_Click);
             // 
@@ -897,5 +907,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnDeleteSpawn;
         private System.Windows.Forms.Button btnAddSpawn;
         private PersistableCheckBox chkAIGrid;
+        private System.Windows.Forms.ToolTip tt;
     }
 }

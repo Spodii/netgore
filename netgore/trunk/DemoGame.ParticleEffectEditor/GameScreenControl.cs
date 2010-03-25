@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.EditorTools;
@@ -7,6 +8,7 @@ namespace DemoGame.ParticleEffectEditor
 {
     public class GameScreenControl : GraphicsDeviceControl
     {
+        [Browsable(false)]
         public ScreenForm ScreenForm { get; set; }
 
         /// <summary>
