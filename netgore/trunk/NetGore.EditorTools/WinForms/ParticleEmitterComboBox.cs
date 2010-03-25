@@ -20,6 +20,7 @@ namespace NetGore.EditorTools
         public ParticleEmitterComboBox()
         {
             DropDownStyle = ComboBoxStyle.DropDownList;
+            DrawMode = DrawMode.OwnerDrawFixed;
         }
 
         /// <summary>
@@ -42,22 +43,22 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the string to display for an item.
+        /// Raises the <see cref="E:System.Windows.Forms.ComboBox.DrawItem"/> event.
         /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns>The string to display.</returns>
-        public override string ItemToString(Type item)
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
+        protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            return item.Name;
+            if (DesignMode || !ControlHelper.DrawListItem<Type>(Items, e, x => x.Name))
+                base.OnDrawItem(e);
         }
 
         /// <summary>
         /// Handles when the selected value changes.
         /// </summary>
         /// <param name="item">The new selected value.</param>
-        protected override void OnTypedSelectedValueChanged(Type item)
+        protected override void OnTypedSelectedItemChanged(Type item)
         {
-            base.OnTypedSelectedValueChanged(item);
+            base.OnTypedSelectedItemChanged(item);
 
             if (SelectedEmitterChanged == null)
                 return;

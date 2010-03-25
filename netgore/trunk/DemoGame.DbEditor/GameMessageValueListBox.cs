@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.EditorTools;
 
 namespace DemoGame.DbEditor
 {
@@ -30,48 +29,12 @@ namespace DemoGame.DbEditor
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            if (DesignMode)
-                return;
-
-            // Ensure a valid index
-            if (e.Index < 0 || e.Index >= Items.Count)
-            {
+            if (DesignMode ||
+                !ControlHelper.DrawListItem<KeyValuePair<GameMessage, string>>(Items, e,
+                                                                               x =>
+                                                                               new KeyValuePair<string, string>(x.Key.ToString(),
+                                                                                                                x.Value)))
                 base.OnDrawItem(e);
-                return;
-            }
-
-            // Ensure a valid type
-            var itemObj = Items[e.Index];
-            if (!(itemObj is KeyValuePair<GameMessage, string>))
-            {
-                base.OnDrawItem(e);
-                return;
-            }
-
-            e.DrawBackground();
-
-            var item = (KeyValuePair<GameMessage, string>)itemObj;
-
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-
-            // Draw the message key
-            var keyStr = item.Key.ToString();
-            using (var brush = new SolidBrush((e.State & DrawItemState.Selected) != 0 ? Color.LightGreen : Color.Green))
-            {
-                e.Graphics.DrawString(keyStr, e.Font, brush, e.Bounds);
-            }
-
-            var keyWidth = (int)e.Graphics.MeasureString(keyStr, e.Font).Width;
-            var valueBounds = new Rectangle(e.Bounds.X + keyWidth, e.Bounds.Y, e.Bounds.Width - keyWidth, e.Bounds.Height);
-
-            // Draw the message text
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(item.Value, e.Font, brush, valueBounds);
-            }
-
-            if ((e.State & DrawItemState.Selected) != 0)
-                e.DrawFocusRectangle();
         }
     }
 }

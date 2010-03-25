@@ -1,5 +1,4 @@
-using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
@@ -25,54 +24,35 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
+        /// Gets the string to draw for a list item.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        static KeyValuePair<string, string> GetDrawString(MutablePair<ItemTemplateID, byte> x)
+        {
+            var keyStr = x.Key.ToString();
+
+            var itm = ItemTemplateManager.Instance;
+            if (itm != null)
+            {
+                var template = itm[x.Key];
+                if (template != null)
+                    keyStr += " [" + template.Name + "]";
+            }
+
+            keyStr += " - ";
+
+            return new KeyValuePair<string, string>(keyStr, x.Value.ToString());
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            if (DesignMode)
-                return;
-
-            if (e.Index < 0 || e.Index >= Items.Count || Items[e.Index] == null)
-            {
+            if (DesignMode || !ControlHelper.DrawListItem<MutablePair<ItemTemplateID, byte>>(Items, e, x => GetDrawString(x)))
                 base.OnDrawItem(e);
-                return;
-            }
-
-            var item = (MutablePair<ItemTemplateID, byte>)Items[e.Index];
-
-            e.DrawBackground();
-
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-
-            // Draw the key
-            var keyStr = item.Key.ToString();
-
-            var itm = ItemTemplateManager.Instance;
-            if (itm != null)
-            {
-                var template = itm[item.Key];
-                if (template != null)
-                    keyStr += " [" + template.Name + "]";
-            }
-            keyStr += " - ";
-
-            using (var brush = new SolidBrush((e.State & DrawItemState.Selected) != 0 ? Color.LightGreen : Color.Green))
-            {
-                e.Graphics.DrawString(keyStr, e.Font, brush, e.Bounds);
-            }
-
-            var keyWidth = (int)e.Graphics.MeasureString(keyStr, e.Font).Width;
-            var valueBounds = new Rectangle(e.Bounds.X + keyWidth, e.Bounds.Y, e.Bounds.Width - keyWidth, e.Bounds.Height);
-
-            // Draw the value
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(item.Value.ToString(), e.Font, brush, valueBounds);
-            }
-
-            if ((e.State & DrawItemState.Selected) != 0)
-                e.DrawFocusRectangle();
         }
 
         /// <summary>

@@ -6,6 +6,9 @@ namespace DemoGame.SkeletonEditor
 {
     class GameScreenControl : GraphicsDeviceControl
     {
+        /// <summary>
+        /// Gets or sets the <see cref="ScreenForm"/>.
+        /// </summary>
         public ScreenForm ScreenForm { get; set; }
 
         /// <summary>

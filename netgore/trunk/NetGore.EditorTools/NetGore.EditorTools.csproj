@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
+    <Compile Include="ControlHelper.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\PropertyGridExtensions.cs" />
     <Compile Include="MutablePair.cs" />
@@ -163,8 +164,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WinForms\PropertyGridHelper.cs" />
-    <Compile Include="WinForms\Typed Controls\ITypedControl.cs" />
-    <Compile Include="WinForms\Typed Controls\TypedControlHelper.cs" />
     <Compile Include="UI Editors\XnaColorEditor.cs" />
     <Compile Include="WinForms\AutoValidateTextBox.cs">
       <SubType>Component</SubType>
@@ -263,7 +262,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WinForms\Typed Controls\TypedListBoxChangeEventHandler.cs" />
-    <Compile Include="WinForms\Typed Controls\TypedListItem.cs" />
     <Compile Include="WinForms\WinFormExceptionHelper.cs" />
     <Compile Include="WinForms\GraphicsDeviceControl.cs">
       <SubType>Component</SubType>

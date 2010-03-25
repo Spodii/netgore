@@ -12,15 +12,22 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Adds an item to the ListBox, then selects the newly added item.
         /// </summary>
+        /// <typeparam name="T">The type of ListBox.</typeparam>
         /// <param name="listBox">The ListBox.</param>
         /// <param name="item">The item to add.</param>
-        public static void AddItemAndReselect(this ListBox listBox, object item)
+        public static void AddItemAndReselect<T>(this T listBox, object item) where T : ListBox
         {
             listBox.Items.Add(item);
             listBox.SelectedItem = item;
         }
 
-        public static void RefreshItemAt(this ListBox listBox, int index)
+        /// <summary>
+        /// Refreshes the cached text for an item at the specified index.
+        /// </summary>
+        /// <typeparam name="T">The type of ListBox.</typeparam>
+        /// <param name="listBox">The ListBox.</param>
+        /// <param name="index">The index of the item to refresh the text of.</param>
+        public static void RefreshItemAt<T>(this T listBox, int index) where T : ListBox
         {
             if (index < 0 || index >= listBox.Items.Count)
                 return;
@@ -37,9 +44,10 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Removes an item from the ListBox, then select a new item if item that was removed was selected.
         /// </summary>
+        /// <typeparam name="T">The type of ListBox.</typeparam>
         /// <param name="listBox">The ListBox.</param>
         /// <param name="item">The item to remove.</param>
-        public static void RemoveItemAndReselect(this ListBox listBox, object item)
+        public static void RemoveItemAndReselect<T>(this T listBox, object item) where T : ListBox
         {
             if (item == null)
                 return;
@@ -50,9 +58,10 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Removes an item from the ListBox, then select a new item if item that was removed was selected.
         /// </summary>
+        /// <typeparam name="T">The type of ListBox.</typeparam>
         /// <param name="listBox">The ListBox.</param>
         /// <param name="itemIndex">Index of the item to remove.</param>
-        public static void RemoveItemAtAndReselect(this ListBox listBox, int itemIndex)
+        public static void RemoveItemAtAndReselect<T>(this T listBox, int itemIndex) where T : ListBox
         {
             if (itemIndex < 0)
                 return;

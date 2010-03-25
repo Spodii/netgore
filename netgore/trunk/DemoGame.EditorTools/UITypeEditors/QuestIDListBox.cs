@@ -31,38 +31,26 @@ namespace DemoGame.EditorTools
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            if (DesignMode)
-                return;
-
-            if (e.Index < 0 || e.Index >= Items.Count || Items[e.Index] == null)
+            if (DesignMode || !ControlHelper.DrawListItem<QuestID>(Items, e, x => GetDrawString(x)))
             {
                 base.OnDrawItem(e);
-                return;
             }
+        }
 
-            var item = (QuestID)Items[e.Index];
-
-            e.DrawBackground();
-            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-
-            string str;
-
+        /// <summary>
+        /// Gets the string to draw for a list item.
+        /// </summary>
+        /// <param name="x">The item to draw.</param>
+        /// <returns>The string to draw for a list item.</returns>
+        static string GetDrawString(QuestID x)
+        {
             var qdc = QuestDescriptionCollection.Create(ContentPaths.Dev);
-            var t = qdc[item];
+            var t = qdc[x];
 
             if (t == null)
-                str = item.ToString();
+                return x.ToString();
             else
-                str = t.QuestID + ". " + t.Name + " - " + t.Description;
-
-            // Draw the value
-            using (var brush = new SolidBrush(e.ForeColor))
-            {
-                e.Graphics.DrawString(str, e.Font, brush, e.Bounds);
-            }
-
-            if ((e.State & DrawItemState.Selected) != 0)
-                e.DrawFocusRectangle();
+                return t.QuestID + ". " + t.Name + " - " + t.Description;
         }
 
         /// <summary>

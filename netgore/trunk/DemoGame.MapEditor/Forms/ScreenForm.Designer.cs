@@ -64,8 +64,8 @@ namespace DemoGame.MapEditor
             this.btnAddSpawn = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkAIGrid = new NetGore.EditorTools.PersistableCheckBox();
             this.chkLightSources = new NetGore.EditorTools.PersistableCheckBox();
-            this.chkDrawPersistentNPCs = new NetGore.EditorTools.PersistableCheckBox();
             this.chkDrawSpawnAreas = new NetGore.EditorTools.PersistableCheckBox();
             this.chkDrawBackground = new NetGore.EditorTools.PersistableCheckBox();
             this.chkDrawEntities = new NetGore.EditorTools.PersistableCheckBox();
@@ -85,7 +85,6 @@ namespace DemoGame.MapEditor
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
-            this.chkAIGrid = new NetGore.EditorTools.PersistableCheckBox();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -552,7 +551,6 @@ namespace DemoGame.MapEditor
             // 
             this.groupBox3.Controls.Add(this.chkAIGrid);
             this.groupBox3.Controls.Add(this.chkLightSources);
-            this.groupBox3.Controls.Add(this.chkDrawPersistentNPCs);
             this.groupBox3.Controls.Add(this.chkDrawSpawnAreas);
             this.groupBox3.Controls.Add(this.chkDrawBackground);
             this.groupBox3.Controls.Add(this.chkDrawEntities);
@@ -567,6 +565,16 @@ namespace DemoGame.MapEditor
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Display Options";
             // 
+            // chkAIGrid
+            // 
+            this.chkAIGrid.AutoSize = true;
+            this.chkAIGrid.Location = new System.Drawing.Point(120, 90);
+            this.chkAIGrid.Name = "chkAIGrid";
+            this.chkAIGrid.Size = new System.Drawing.Size(90, 17);
+            this.chkAIGrid.TabIndex = 18;
+            this.chkAIGrid.Text = "Show AI Map";
+            this.chkAIGrid.UseVisualStyleBackColor = true;
+            // 
             // chkLightSources
             // 
             this.chkLightSources.AutoSize = true;
@@ -578,16 +586,6 @@ namespace DemoGame.MapEditor
             this.chkLightSources.TabIndex = 17;
             this.chkLightSources.Text = "Light Sources";
             this.chkLightSources.UseVisualStyleBackColor = true;
-            // 
-            // chkDrawPersistentNPCs
-            // 
-            this.chkDrawPersistentNPCs.AutoSize = true;
-            this.chkDrawPersistentNPCs.Location = new System.Drawing.Point(120, 90);
-            this.chkDrawPersistentNPCs.Name = "chkDrawPersistentNPCs";
-            this.chkDrawPersistentNPCs.Size = new System.Drawing.Size(102, 17);
-            this.chkDrawPersistentNPCs.TabIndex = 16;
-            this.chkDrawPersistentNPCs.Text = "Persistent NPCs";
-            this.chkDrawPersistentNPCs.UseVisualStyleBackColor = true;
             // 
             // chkDrawSpawnAreas
             // 
@@ -795,16 +793,6 @@ namespace DemoGame.MapEditor
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.cmdNew_Click);
             // 
-            // chkAIGrid
-            // 
-            this.chkAIGrid.AutoSize = true;
-            this.chkAIGrid.Location = new System.Drawing.Point(120, 113);
-            this.chkAIGrid.Name = "chkAIGrid";
-            this.chkAIGrid.Size = new System.Drawing.Size(90, 17);
-            this.chkAIGrid.TabIndex = 18;
-            this.chkAIGrid.Text = "Show AI Map";
-            this.chkAIGrid.UseVisualStyleBackColor = true;
-            // 
             // ScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -873,7 +861,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.TabPage tpNPCs;
         private System.Windows.Forms.TabPage tpSettings;
         private System.Windows.Forms.GroupBox groupBox3;
-        private PersistableCheckBox chkDrawPersistentNPCs;
         private PersistableCheckBox chkDrawSpawnAreas;
         private PersistableCheckBox chkDrawBackground;
         private PersistableCheckBox chkDrawEntities;
