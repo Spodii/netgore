@@ -81,7 +81,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         public override int ToolbarPriority
         {
-            get { return 10; }
+            get { return 10000; }
         }
 
         /// <summary>
