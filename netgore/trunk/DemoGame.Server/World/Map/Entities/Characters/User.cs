@@ -148,6 +148,9 @@ namespace DemoGame.Server
             get { return _conn; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="User"/>'s quest information.
+        /// </summary>
         public QuestPerformerStatusHelper QuestInfo
         {
             get { return _questInfo; }
@@ -161,6 +164,9 @@ namespace DemoGame.Server
             get { return null; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="User"/>'s shopping state.
+        /// </summary>
         public UserShoppingState ShoppingState
         {
             get { return _shoppingState; }
@@ -1050,6 +1056,30 @@ namespace DemoGame.Server
         int IGuildMember.ID
         {
             get { return (int)ID; }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the character.
+        /// </summary>
+        public override string Name
+        {
+            get { return base.Name; }
+            set
+            {
+                if (base.Name == value)
+                    return;
+
+                if (!GameData.UserName.IsValid(value))
+                {
+                    const string errmsg = "Attempted to give User `{0}` an invalid name `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, value);
+                    Debug.Fail(string.Format(errmsg, this, value));
+                    return;
+                }
+
+                base.Name = value;
+            }
         }
 
         /// <summary>

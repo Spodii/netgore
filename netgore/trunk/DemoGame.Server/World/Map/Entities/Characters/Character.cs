@@ -1315,7 +1315,7 @@ namespace DemoGame.Server
         /// <returns>True if <paramref name="s"/> is a valid string for a character name; otherwise false.</returns>
         public static bool IsValidName(string s)
         {
-            return GameData.CharacterName.IsValid(s);
+            return GameData.UserName.IsValid(s);
         }
 
 #if !TOPDOWN
@@ -2187,17 +2187,14 @@ namespace DemoGame.Server
             set
             {
                 // Check that the name is valid
-                // TODO: Need to find a good way to handle validating the User and NPC names individually
-                /*
-                if (!GameData.IsValidCharName(value))
+                if (!GameData.CharacterName.IsValid(value))
                 {
                     const string errmsg = "Attempted to give Character `{0}` an invalid name `{1}`.";
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, _name, value);
-                    Debug.Fail(string.Format(errmsg, _name, value));
+                        log.ErrorFormat(errmsg, this, value);
+                    Debug.Fail(string.Format(errmsg, this, value));
                     return;
                 }
-                */
 
                 // Set the new name
                 _name = value;
