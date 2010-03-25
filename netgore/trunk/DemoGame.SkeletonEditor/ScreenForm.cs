@@ -45,6 +45,7 @@ namespace DemoGame.SkeletonEditor
         SkeletonAnimation _skeletonAnim;
         SkeletonDrawer _skeletonDrawer;
         KeyEventArgs ks = new KeyEventArgs(Keys.None);
+        DrawingManager _drawingManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -460,6 +461,7 @@ namespace DemoGame.SkeletonEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnShiftNodes_Click(object sender, EventArgs e)
         {
+            // TODO: ...
             MessageBox.Show("Make this button shift all nodes in all seleced files by a defined amount");
         }
 
@@ -621,12 +623,18 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
-        public void DrawGame(ISpriteBatch sb)
+        SpriteFont _spriteFont;
+
+        /// <summary>
+        /// Draws the screen.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
+        internal void DrawGame(ISpriteBatch sb)
         {
             GameScreen.GraphicsDevice.Clear(Microsoft.Xna.Framework.Graphics.Color.CornflowerBlue);
 
             // Screen
-            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            sb = _drawingManager.BeginDrawWorld(_camera, false, true);
 
             try
             {
@@ -653,7 +661,20 @@ namespace DemoGame.SkeletonEditor
             }
             finally
             {
-                sb.End();
+                _drawingManager.EndDrawWorld();
+            }
+
+            // On-screen GUI
+            sb = _drawingManager.BeginDrawGUI();
+            try
+            {
+                string cursorPosText = _cursorPos.ToString();
+                sb.DrawStringShaded(_spriteFont, cursorPosText, new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - _spriteFont.MeasureString(cursorPosText),
+                     Microsoft.Xna.Framework.Graphics.Color.White, Microsoft.Xna.Framework.Graphics.Color.Black);
+            }
+            finally
+            {
+                _drawingManager.EndDrawGUI();
             }
         }
 
@@ -706,7 +727,6 @@ namespace DemoGame.SkeletonEditor
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
         {
             _cursorPos = _camera.ToWorld(e.X, e.Y);
-            lblXY.Text = string.Format("({0},{1})", Math.Round(_cursorPos.X, 0), Math.Round(_cursorPos.Y, 0));
 
             if (_skeleton.RootNode == null || e.Button != MouseButtons.Left || !_moveSelectedNode)
                 return;
@@ -1012,8 +1032,10 @@ namespace DemoGame.SkeletonEditor
             base.OnLoad(e);
 
             // Create the engine objects
+            _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height)) { KeepInMap = false };
             _content = new ContentManager(GameScreen.Services, "Content");
+            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
             GrhInfo.Load(ContentPaths.Dev, _content);
 
             // Create the skeleton-related objects
