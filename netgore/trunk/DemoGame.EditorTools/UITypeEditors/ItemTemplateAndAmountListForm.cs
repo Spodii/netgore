@@ -106,6 +106,7 @@ namespace DemoGame.EditorTools
                     return;
 
                 var item = f.SelectedItem;
+                _selectedItem = item.ID;
                 txtItem.Text = item.ID + " [" + item.Name + "]";
             }
         }
