@@ -51,7 +51,7 @@ namespace DemoGame.Client
         {
             var name = _txtName.Text;
 
-            if (!GameData.CharacterName.IsValid(name))
+            if (!GameData.UserName.IsValid(name))
             {
                 SetError("Invalid character name.");
                 return;

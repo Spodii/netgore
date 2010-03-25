@@ -44,7 +44,7 @@ namespace DemoGame.Server.Queries
         public bool TryExecute(string accountName, CharacterID characterID, string userName, out string errorMsg)
         {
             // Ensure the character name is valid
-            if (!GameData.CharacterName.IsValid(userName))
+            if (!GameData.UserName.IsValid(userName))
             {
                 errorMsg = "Invalid character name.";
                 return false;
