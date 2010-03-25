@@ -42,6 +42,16 @@ namespace NetGore.AI
             get { return _totalCells; }
         }
 
+        public int CellsX
+        {
+            get { return _cellsX; }
+        }
+
+        public int CellsY
+        {
+            get { return _cellsY; }
+        }
+
         /// <summary>
         /// Initializes the MemoryMap by setting up the List of MemoryCells.
         /// </summary>
