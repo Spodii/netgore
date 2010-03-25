@@ -18,7 +18,7 @@ namespace DemoGame.SkeletonEditor
         protected override void Draw(ISpriteBatch spriteBatch)
         {
             ScreenForm.UpdateGame();
-            ScreenForm.DrawGame(spriteBatch);
+            ScreenForm.DrawGame();
         }
     }
 }
