@@ -1442,12 +1442,6 @@ namespace DemoGame.Server
             // Load the stats
             _baseStats.CopyValuesFrom(v.Stats, false);
 
-            // Set the Map and, if a User, add them to the World
-            Map m = World.GetMap(v.MapID);
-            // TODO: We can recover when a NPC's map is invalid at least... See bug: http://netgore.com/bugs/view.php?id=103
-            if (m == null)
-                throw new Exception(string.Format("Unable to get Map with index `{0}`.", v.MapID));
-
             // Load the Character's items
             Inventory.Load();
             Equipped.Load();
@@ -1459,7 +1453,11 @@ namespace DemoGame.Server
             HandleAdditionalLoading(v);
 
             // Set the map
-            ChangeMap(m);
+            Map m = World.GetMap(v.MapID);
+            if (m != null)
+                ChangeMap(m);
+            else
+                ((IRespawnable)this).Respawn();
 
             // Mark the Character as loaded
             SetAsLoaded();
@@ -2356,8 +2354,12 @@ namespace DemoGame.Server
                 Map respawnMap = World.GetMap(RespawnMapID.Value);
                 if (respawnMap == null)
                 {
-                    // TODO: Invalid respawn map? If a User, log them out. If a NPC... Dispose of it? In either case, a log.Fatal() is needed.
-                    Debug.Fail("...");
+                    const string errmsg = "Tried to respawn `{0}` but the map they tried to respawn on (ID `{1}`) returned null!";
+                    if (log.IsFatalEnabled)
+                        log.FatalFormat(errmsg, this, RespawnMapID.Value);
+                    Debug.Fail(string.Format(errmsg, this, RespawnMapID.Value));
+
+                    DelayedDispose();
                 }
                 else
                 {
