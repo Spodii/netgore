@@ -942,13 +942,10 @@ namespace DemoGame.Client
                 return;
             }
 
-            // NOTE: Temporary output
             if (target != null)
                 GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", user.Name, skillType, target.Name));
             else
                 GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", user.Name, skillType));
-
-            // TODO: Add skill effects
 
             // If the character that used the skill is our client's character, hide the skill cast progress bar
             if (user == User && skillType == GameplayScreen.SkillCastProgressBar.CurrentSkillType)
