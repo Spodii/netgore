@@ -58,7 +58,7 @@ namespace NetGore.AI
         public PathFinder(AIGrid Grid)
         {
             _grid = Grid;
-            _nodeGrid = new Node[_grid.TotalNumberofCells];
+            _nodeGrid = new Node[_grid.GridX * _grid.GridY];
 
             _open = new PriorityQueue<int>(new CompareNodes(_nodeGrid));
             _close = new List<Node>();

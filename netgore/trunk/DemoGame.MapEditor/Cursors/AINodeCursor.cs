@@ -28,7 +28,7 @@ namespace DemoGame.MapEditor
         readonly MenuItem _mnu100;
         readonly MenuItem _debugMode;
 
-        int UpdateCellTo;
+        byte UpdateCellTo;
         Vector2 _debugNodeEnd;
         Vector2 _debugNodeStart;
 
@@ -116,11 +116,11 @@ namespace DemoGame.MapEditor
             Vector2 CursorPos = screen.CursorPos;
 
 
-            for (int X = 0; X < screen.Map.MemoryMap.MemoryCells.Count; X++)
+            for (int X = 0; X < screen.Map.MemoryMap.CellsX; X++)
             {
-                for (int Y = 0; Y < screen.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                for (int Y = 0; Y < screen.Map.MemoryMap.CellsY; Y++)
                 {
-                    if (screen.Map.MemoryMap.MemoryCells[X][Y].Cell.Contains((int)CursorPos.X, (int)CursorPos.Y))
+                    if (screen.Map.MemoryMap.MemoryCells[X,Y].Cell.Contains((int)CursorPos.X, (int)CursorPos.Y))
                     {
                         return new int[] {X, Y};
                     }
@@ -162,7 +162,7 @@ namespace DemoGame.MapEditor
 
 
             int[] id = GetMemoryCellUnderCursor(Container);
-            Container.SelectedObjs.SetSelected(Container.Map.MemoryMap.MemoryCells[id[0]][id[1]]);
+            Container.SelectedObjs.SetSelected(Container.Map.MemoryMap.MemoryCells[id[0],id[1]]);
 
             if (e.Button == MouseButtons.Left)
             {
@@ -170,30 +170,30 @@ namespace DemoGame.MapEditor
                 {
                     if (!_mnuBlocked.Checked)
                     {
-                        Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = UpdateCellTo;
+                        Container.Map.MemoryMap.MemoryCells[id[0],id[1]].Weight = UpdateCellTo;
                     }
                     else
                     {
-                        Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
+                        Container.Map.MemoryMap.MemoryCells[id[0],id[1]].Weight = 0;
                     }
                 }
                 else
                 {
                     // Debug with this position as start node.
-                    for (int X = 0; X < Container.Map.MemoryMap.MemoryCells.Count; X++)
+                    for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
                     {
-                        for (int Y = 0; Y < Container.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                        for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                         {
-                            if (Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 2)
+                            if (Container.Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 2)
                                 break;
 
-                            Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus = 0;
+                            Container.Map.MemoryMap.MemoryCells[X,Y].DebugStatus = 0;
                         }
                     }
                     _debugNodeStart = new Vector2(id[0],id[1]);
-                    Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].DebugStatus = 1;
+                    Container.Map.MemoryMap.MemoryCells[id[0],id[1]].DebugStatus = 1;
 
-                    sbyte[,] grid = new sbyte[Container.Map.MemoryMap.CellsX, Container.Map.MemoryMap.CellsY];
+                    byte[,] grid = new byte[Container.Map.MemoryMap.CellsX, Container.Map.MemoryMap.CellsY];
                     grid = Container.Map.MemoryMap.ToByteArray();
                     AIGrid aiGrid = new AIGrid(grid);
                     PathFinder pathFinder = new PathFinder(aiGrid);
@@ -203,9 +203,12 @@ namespace DemoGame.MapEditor
                     List<Node> nodes = new List<Node>();
                     nodes = pathFinder.FindPath(_debugNodeStart, _debugNodeEnd);
 
-                    foreach (Node n in nodes)
+                    if(nodes != null)
                     {
-                        Container.Map.MemoryMap.MemoryCells[n.X][n.Y].DebugStatus = 3;
+                        foreach (Node n in nodes)
+                        {
+                            Container.Map.MemoryMap.MemoryCells[n.X,n.Y].DebugStatus = 3;
+                        }
                     }
                     nodes = null;
                 }
@@ -214,19 +217,19 @@ namespace DemoGame.MapEditor
             {
                 // Set end node.
 
-                for (int X = 0; X < Container.Map.MemoryMap.MemoryCells.Count; X++)
+                for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
                 {
-                    for (int Y = 0; Y < Container.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                    for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                     {
-                        if (Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 1)
+                        if (Container.Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 1)
                             break;
 
-                        Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus = 0;
+                        Container.Map.MemoryMap.MemoryCells[X,Y].DebugStatus = 0;
                     }
                 }
 
                 _debugNodeEnd = new Vector2(id[0], id[1]);
-                Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].DebugStatus = 2;
+                Container.Map.MemoryMap.MemoryCells[id[0],id[1]].DebugStatus = 2;
             }
 
         }
@@ -244,7 +247,7 @@ namespace DemoGame.MapEditor
 
                 // Set the tooltip to the entity under the cursor
                 int[] id = GetMemoryCellUnderCursor(Container);
-                MemoryCell hoverNode = Container.Map.MemoryMap.MemoryCells[id[0]][id[1]];
+                MemoryCell hoverNode = Container.Map.MemoryMap.MemoryCells[id[0],id[1]];
 
                 if (e.Button == MouseButtons.Left)
                 {
@@ -252,11 +255,11 @@ namespace DemoGame.MapEditor
                     {
                         if (!_mnuBlocked.Checked)
                         {
-                            Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = UpdateCellTo;
+                            Container.Map.MemoryMap.MemoryCells[id[0],id[1]].Weight = UpdateCellTo;
                         }
                         else
                         {
-                            Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
+                            Container.Map.MemoryMap.MemoryCells[id[0],id[1]].Weight = 0;
                         }
                     }
                     else
@@ -268,12 +271,12 @@ namespace DemoGame.MapEditor
                     }
                 }
 
-                if (hoverNode == null)
+                if (hoverNode.Equals(null))
                 {
                     _toolTip = string.Empty;
                     _toolTipObject = null;
                 }
-                else if (_toolTipObject != hoverNode)
+                else if (!hoverNode.Equals(_toolTipObject))
                 {
                     _toolTipObject = hoverNode;
                     _toolTip = string.Format("Weight({2})", hoverNode, hoverNode.Cell.Location, hoverNode.Weight);
@@ -287,7 +290,7 @@ namespace DemoGame.MapEditor
         public override void PressDelete()
         {
             int[] id = GetMemoryCellUnderCursor(Container);
-            Container.Map.MemoryMap.MemoryCells[id[0]][id[1]].Weight = 0;
+            Container.Map.MemoryMap.MemoryCells[id[0],id[1]].Weight = 0;
         }
 
         void Menu_Block_OnClick(object sender, EventArgs e)
@@ -297,11 +300,11 @@ namespace DemoGame.MapEditor
 
         void Menu_Fill_OnClick(object sender, EventArgs e)
         {
-            for (int X = 0; X < Container.Map.MemoryMap.MemoryCells.Count; X++)
+            for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
             {
-                for (int Y = 0; Y < Container.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                 {
-                    Container.Map.MemoryMap.MemoryCells[X][Y].Weight = 100;
+                    Container.Map.MemoryMap.MemoryCells[X, Y].Weight = 100;
                 }
             }
         }
@@ -312,11 +315,11 @@ namespace DemoGame.MapEditor
             {
                 _debugMode.Checked = !_debugMode.Checked;
 
-                for (int X = 0; X < Container.Map.MemoryMap.MemoryCells.Count; X++)
+                for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
                 {
-                    for (int Y = 0; Y < Container.Map.MemoryMap.MemoryCells[X].Count; Y++)
+                    for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                     {
-                        Container.Map.MemoryMap.MemoryCells[X][Y].DebugStatus = 0;
+                        Container.Map.MemoryMap.MemoryCells[X,Y].DebugStatus = 0;
                     }
                 }
                 return;
