@@ -64,6 +64,7 @@ namespace DemoGame.MapEditor
             this.btnDeleteSpawn = new System.Windows.Forms.Button();
             this.btnAddSpawn = new System.Windows.Forms.Button();
             this.tpSettings = new System.Windows.Forms.TabPage();
+            this.btnShowMinimap = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.chkAIGrid = new NetGore.EditorTools.PersistableCheckBox();
             this.chkLightSources = new NetGore.EditorTools.PersistableCheckBox();
@@ -543,6 +544,7 @@ namespace DemoGame.MapEditor
             // 
             // tpSettings
             // 
+            this.tpSettings.Controls.Add(this.btnShowMinimap);
             this.tpSettings.Controls.Add(this.groupBox3);
             this.tpSettings.Controls.Add(this.groupBox1);
             this.tpSettings.Location = new System.Drawing.Point(4, 22);
@@ -552,6 +554,16 @@ namespace DemoGame.MapEditor
             this.tpSettings.Text = "Settings";
             this.tpSettings.ToolTipText = "General program settings";
             this.tpSettings.UseVisualStyleBackColor = true;
+            // 
+            // btnShowMinimap
+            // 
+            this.btnShowMinimap.Location = new System.Drawing.Point(9, 195);
+            this.btnShowMinimap.Name = "btnShowMinimap";
+            this.btnShowMinimap.Size = new System.Drawing.Size(95, 26);
+            this.btnShowMinimap.TabIndex = 2;
+            this.btnShowMinimap.Text = "Show Minimap";
+            this.btnShowMinimap.UseVisualStyleBackColor = true;
+            this.btnShowMinimap.Click += new System.EventHandler(this.btnShowMinimap_Click);
             // 
             // groupBox3
             // 
@@ -908,5 +920,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnAddSpawn;
         private PersistableCheckBox chkAIGrid;
         private System.Windows.Forms.ToolTip tt;
+        private System.Windows.Forms.Button btnShowMinimap;
     }
 }
