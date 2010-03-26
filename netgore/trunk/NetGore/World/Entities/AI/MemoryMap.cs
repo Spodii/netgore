@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NetGore.IO;
-using System.IO;
 
 namespace NetGore.AI
 {
     public class MemoryMap
     {
-
         // Array holding data for each MemoryCell.
-        MemoryCell[,] _memoryCells;
 
         //Holds some information about the list.
+        ushort _cellSize;
         ushort _cellsX;
         ushort _cellsY;
-        
-        ushort _cellSize;
-        
+
         ushort _maxX;
+        MemoryCell[,] _memoryCells;
         ushort _minY;
 
         /// <summary>
@@ -48,6 +45,11 @@ namespace NetGore.AI
             get { return _cellsY; }
         }
 
+        public MemoryCell[,] MemoryCells
+        {
+            get { return _memoryCells; }
+        }
+
         /// <summary>
         /// Initializes the MemoryMap by setting up the List of MemoryCells.
         /// </summary>
@@ -59,7 +61,6 @@ namespace NetGore.AI
             _maxX = maxX;
             _minY = minY;
 
-
             _cellsX = (ushort)((_maxX / _cellSize) + 1);
             _cellsY = (ushort)((_minY / _cellSize) + 1);
 
@@ -69,13 +70,14 @@ namespace NetGore.AI
                 _cellsY = (ushort)BitOps.NextPowerOf2(_cellsY);
             }
 
-            _memoryCells = new MemoryCell[_cellsX, _cellsY];
+            _memoryCells = new MemoryCell[_cellsX,_cellsY];
 
             for (int X = 0; X < _cellsX; X++)
             {
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    _memoryCells[X,Y] = new MemoryCell((ushort)(X * _cellSize), (ushort)((X + 1) * _cellSize), (ushort)(Y * _cellSize), (ushort)((Y + 1) * _cellSize));
+                    _memoryCells[X, Y] = new MemoryCell((ushort)(X * _cellSize), (ushort)((X + 1) * _cellSize),
+                                                        (ushort)(Y * _cellSize), (ushort)((Y + 1) * _cellSize));
                 }
             }
         }
@@ -88,10 +90,10 @@ namespace NetGore.AI
                 Initialize(1024, 1024);
                 return;
             }
-           
-            XmlValueReader read = new XmlValueReader(path, "MemoryMap");
-            
-            Initialize(1024 , 1024);
+
+            var read = new BinaryValueReader(path);
+
+            Initialize(1024, 1024);
 
             _cellSize = read.ReadUShort("CellSize");
 
@@ -100,7 +102,7 @@ namespace NetGore.AI
                 var xReader = read.ReadNode("CellX" + X);
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    _memoryCells[X,Y].Weight = xReader.ReadByte("CellY" + Y);
+                    _memoryCells[X, Y].Weight = xReader.ReadByte("CellY" + Y);
                 }
             }
         }
@@ -117,7 +119,7 @@ namespace NetGore.AI
             {
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    if (_memoryCells[X,Y].Weight > 0)
+                    if (_memoryCells[X, Y].Weight > 0)
                         ++total;
                 }
             }
@@ -130,22 +132,20 @@ namespace NetGore.AI
 
             using (var writer = new BinaryValueWriter(path))
             {
-                
                 writer.Write("CellSize", _cellSize);
 
                 for (int X = 0; X < _cellsX; X++)
                 {
-                   writer.WriteStartNode("CellX" + X);
-                    
-                        for (int Y = 0; Y < _cellsY; Y++)
-                        {
-                            writer.Write("CellY" + Y, _memoryCells[X,Y].Weight);
-                        }
-                        
+                    writer.WriteStartNode("CellX" + X);
+
+                    for (int Y = 0; Y < _cellsY; Y++)
+                    {
+                        writer.Write("CellY" + Y, _memoryCells[X, Y].Weight);
+                    }
+
                     writer.WriteEndNode("CellX" + X);
                 }
             }
-
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace NetGore.AI
             ushort cellX = (ushort)(xPos / _cellSize);
             ushort cellY = (ushort)(yPos / _cellSize);
 
-            return _memoryCells[cellX,cellY].Weight;
+            return _memoryCells[cellX, cellY].Weight;
         }
 
         public byte[,] ToByteArray()
@@ -169,19 +169,11 @@ namespace NetGore.AI
             {
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    temp[X, Y] = _memoryCells[X,Y].Weight;
+                    temp[X, Y] = _memoryCells[X, Y].Weight;
                 }
             }
 
             return temp;
         }
-
-
-        public MemoryCell[,] MemoryCells
-        {
-            get { return _memoryCells; }
-        }
     }
 }
-
-
