@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore.AI
 {
-    public class MemoryCell
+    public struct MemoryCell
     {
         //The rectangle that holds the position of the MemoryCell
         Rectangle _cell;
-        int _weight;
-        int _debugStatus = 0;
+        byte _weight;
+        byte _debugStatus;
 
         /// <summary>
         /// MemoryCell constuctor
@@ -17,10 +17,11 @@ namespace NetGore.AI
         /// <param name="XMaximum">X position of the right side of MemoryCell</param>
         /// <param name="YMinimum">Y position of the top of MemoryCell</param>
         /// <param name="YMaximum">Y position of the bottom of MemoryCell</param>
-        public MemoryCell(int XMinimum, int XMaximum, int YMinimum, int YMaximum)
+        public MemoryCell(ushort XMinimum, ushort XMaximum, ushort YMinimum, ushort YMaximum)
         {
             _cell = new Rectangle(XMinimum, YMinimum, XMaximum - XMinimum, YMaximum - YMinimum);
             _weight = 0;
+            _debugStatus = 0;
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace NetGore.AI
         /// <summary>
         /// The weighting of this MemoryCell.
         /// </summary>
-        public int Weight
+        public byte Weight
         {
             get { return _weight; }
             set { _weight = value; }
@@ -49,15 +50,7 @@ namespace NetGore.AI
             _weight = 0;
         }
 
-        /// <summary>
-        /// Updates the MemoryCell
-        /// </summary>
-        public void Update()
-        {
-            ++_weight;
-        }
-
-        public int DebugStatus
+        public byte DebugStatus
         {
             get { return _debugStatus; }
             set { _debugStatus = value; }

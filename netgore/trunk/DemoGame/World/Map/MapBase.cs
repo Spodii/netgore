@@ -91,7 +91,7 @@ namespace DemoGame
 
         Vector2 _size = new Vector2(float.MinValue);
 
-        MemoryMap _memoryMap = new MemoryMap(16);
+        MemoryMap _memoryMap = new MemoryMap();
 
 
         /// <summary>
@@ -722,7 +722,7 @@ namespace DemoGame
 
             string path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
-            _memoryMap.Initialize((int)Width, (int)Height);
+            _memoryMap.Initialize((ushort)Width, (ushort)Height);
             _memoryMap.LoadMemoryMap(contentPath, (int)ID.GetRawValue());
         }
 

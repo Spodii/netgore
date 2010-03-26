@@ -8,46 +8,42 @@ namespace NetGore.AI
 {
     public class MemoryMap
     {
-        //2 dimensional List<T> holding data for each MemoryCell.
-        readonly double _cellSize;
-        readonly List<List<MemoryCell>> _memoryCells = new List<List<MemoryCell>>();
+
+        // Array holding data for each MemoryCell.
+        MemoryCell[,] _memoryCells;
 
         //Holds some information about the list.
-        int _cellsX;
-        int _cellsY;
-
-        int _maxX;
-        int _minY;
-        int _totalCells;
+        ushort _cellsX;
+        ushort _cellsY;
+        
+        ushort _cellSize;
+        
+        ushort _maxX;
+        ushort _minY;
 
         /// <summary>
-        /// Constructor for a MemoryMap, uses default value of 16 for MemoryCell dimensions.
+        /// Constructor for a MemoryMap, uses default value of 32 for MemoryCell dimensions.
         /// </summary>
         public MemoryMap()
         {
-            _cellSize = 16;
+            _cellSize = 32;
         }
 
         /// <summary>
         /// Constructor for a MemoryMap
         /// </summary>
         /// <param name="cellSize">Defines the dimensions of a MemoryCell.</param>
-        public MemoryMap(int cellSize)
+        public MemoryMap(ushort cellSize)
         {
             _cellSize = cellSize;
         }
 
-        public int NumCells
-        {
-            get { return _totalCells; }
-        }
-
-        public int CellsX
+        public ushort CellsX
         {
             get { return _cellsX; }
         }
 
-        public int CellsY
+        public ushort CellsY
         {
             get { return _cellsY; }
         }
@@ -57,41 +53,36 @@ namespace NetGore.AI
         /// </summary>
         /// <param name="maxX">X size of map</param>
         /// <param name="minY">Y size of map</param>
-        public void Initialize(int maxX, int minY)
+        public void Initialize(ushort maxX, ushort minY)
         {
-            _memoryCells.Clear();
             //Store map size values for use by MemoryMap
             _maxX = maxX;
             _minY = minY;
 
 
-            _cellsX = (int)(_maxX / _cellSize) + 1;
-            _cellsY = (int)(_minY / _cellSize) + 1;
+            _cellsX = (ushort)((_maxX / _cellSize) + 1);
+            _cellsY = (ushort)((_minY / _cellSize) + 1);
 
             if (Math.Log(_cellsX, 2) != (int)Math.Log(_cellsX, 2) || Math.Log(_cellsY, 2) != (int)Math.Log(_cellsY, 2))
             {
-                _cellsX = BitOps.NextPowerOf2(_cellsX);
-                _cellsY = BitOps.NextPowerOf2(_cellsY);
+                _cellsX = (ushort)BitOps.NextPowerOf2(_cellsX);
+                _cellsY = (ushort)BitOps.NextPowerOf2(_cellsY);
             }
+
+            _memoryCells = new MemoryCell[_cellsX, _cellsY];
 
             for (int X = 0; X < _cellsX; X++)
             {
-                List<MemoryCell> _temp = new List<MemoryCell>();
-
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    _temp.Add(new MemoryCell((int)(X * _cellSize), (int)((X + 1) * _cellSize), (int)(Y * _cellSize),
-                                             (int)((Y + 1) * _cellSize)));
+                    _memoryCells[X,Y] = new MemoryCell((ushort)(X * _cellSize), (ushort)((X + 1) * _cellSize), (ushort)(Y * _cellSize), (ushort)((Y + 1) * _cellSize));
                 }
-                _memoryCells.Add(_temp);
             }
-
-            _totalCells = _cellsX * _cellsY;
         }
 
         public void LoadMemoryMap(ContentPaths contentPath, int ID)
         {
-            var path = contentPath.Maps.Join("\\AIMap" + ID + ".xml");
+            var path = contentPath.Maps.Join("\\AIMap" + ID + ".bin");
             if (!File.Exists(path))
             {
                 Initialize(1024, 1024);
@@ -101,21 +92,15 @@ namespace NetGore.AI
             XmlValueReader read = new XmlValueReader(path, "MemoryMap");
             
             Initialize(1024 , 1024);
-      
-            int totalCells = read.ReadInt("TotalCells");
-            _cellsX = read.ReadInt("CellsX");
-            _cellsY = read.ReadInt("CellsY");
 
-            if ((_cellsX * _cellsY) != totalCells)
-            {
-                throw new Exception(_cellsX + "*" + _cellsY + " was not equal to the Total cells value from the file: " + read.ReadInt("TotalCells").ToString());
-            }
+            _cellSize = read.ReadUShort("CellSize");
 
             for (int X = 0; X < _cellsX; X++)
             {
+                var xReader = read.ReadNode("CellX" + X);
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    _memoryCells[X][Y].Weight = read.ReadNode("CELLX" + X).ReadInt("_cell" + Y);
+                    _memoryCells[X,Y].Weight = xReader.ReadByte("CellY" + Y);
                 }
             }
         }
@@ -132,7 +117,7 @@ namespace NetGore.AI
             {
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    if (_memoryCells[X][Y].Weight > 0)
+                    if (_memoryCells[X,Y].Weight > 0)
                         ++total;
                 }
             }
@@ -141,23 +126,26 @@ namespace NetGore.AI
 
         public void SaveMemoryMap(ContentPaths contentPath, int ID)
         {
-            var path = contentPath.Maps.Join("\\AIMap" + ID + ".xml");
-            using (var writer = new XmlValueWriter(path, "MemoryMap"))
+            var path = contentPath.Maps.Join("\\AIMap" + ID + ".bin");
+
+            using (var writer = new BinaryValueWriter(path))
             {
-                writer.Write("TotalCells", _totalCells);
-                writer.Write("CellsX", _cellsX);
-                writer.Write("CellsY", _cellsY);
+                
+                writer.Write("CellSize", _cellSize);
 
                 for (int X = 0; X < _cellsX; X++)
                 {
-                    writer.WriteStartNode("CELLX" + X);
-                    for (int Y = 0; Y < _cellsY; Y++)
-                    {
-                        writer.Write("_cell" + Y, _memoryCells[X][Y].Weight);
-                    }
-                    writer.WriteEndNode("CELLX" + X);
+                   writer.WriteStartNode("CellX" + X);
+                    
+                        for (int Y = 0; Y < _cellsY; Y++)
+                        {
+                            writer.Write("CellY" + Y, _memoryCells[X,Y].Weight);
+                        }
+                        
+                    writer.WriteEndNode("CellX" + X);
                 }
             }
+
         }
 
         /// <summary>
@@ -168,63 +156,30 @@ namespace NetGore.AI
         /// <returns>Integer indicating the amount of ticks spent at this particular cell.</returns>
         public int TicksLingered(double xPos, double yPos)
         {
-            int cellX = (int)(xPos / _cellSize);
-            int cellY = (int)(yPos / _cellSize);
+            ushort cellX = (ushort)(xPos / _cellSize);
+            ushort cellY = (ushort)(yPos / _cellSize);
 
-            return _memoryCells[cellX][cellY].Weight;
+            return _memoryCells[cellX,cellY].Weight;
         }
 
-        public sbyte[,] ToByteArray()
+        public byte[,] ToByteArray()
         {
-            sbyte[,] temp = new sbyte[_cellsX,_cellsY];
+            byte[,] temp = new byte[_cellsX,_cellsY];
             for (int X = 0; X < _cellsX; X++)
             {
                 for (int Y = 0; Y < _cellsY; Y++)
                 {
-                    temp[X, Y] = (sbyte)_memoryCells[X][Y].Weight;
+                    temp[X, Y] = _memoryCells[X,Y].Weight;
                 }
             }
 
             return temp;
         }
 
-        /// <summary>
-        /// Updates the MemoryMap.
-        /// </summary>
-        /// <param name="xPos">X position of the Entity</param>
-        /// <param name="yPos">Y position of the Entity</param>
-        public void Update(double xPos, double yPos)
+
+        public MemoryCell[,] MemoryCells
         {
-            if (((xPos < 0) || (xPos > _maxX)) || ((yPos < 0) || (yPos > _minY)))
-                return;
-
-            int cellX = (int)(xPos / _cellSize) + 1;
-            int cellY = (int)(yPos / _cellSize) + 1;
-
-            _memoryCells[cellX][cellY].Update();
-        }
-
-        /// <summary>
-        /// Gets whether a particular cell containing a given point has been visited yet.
-        /// </summary>
-        /// <param name="xPos">X position</param>
-        /// <param name="yPos">Y position</param>
-        /// <returns>True if it has been visited, false if it has not been visited.</returns>
-        public bool Visited(double xPos, double yPos)
-        {
-            int cellX = (int)(xPos / _cellSize);
-            int cellY = (int)(yPos / _cellSize);
-
-            if (_memoryCells[cellX][cellY].Weight > 0)
-                return true;
-            else
-                return false;
-        }
-
-        public List<List<MemoryCell>> MemoryCells
-        {
-            get
-            {return _memoryCells;}
+            get { return _memoryCells; }
         }
     }
 }

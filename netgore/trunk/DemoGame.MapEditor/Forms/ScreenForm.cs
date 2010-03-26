@@ -726,35 +726,43 @@ namespace DemoGame.MapEditor
 
                 Color B = new Color(100, 100, 100, 100);
 
-                for (int X = 0; X < Map.MemoryMap.MemoryCells.Count; X++)
+                for (int X = 0; X < Map.MemoryMap.CellsX; X++)
                 {
-                    for (int Y = 0; Y < Map.MemoryMap.MemoryCells[X].Count; Y++)
+                    for (int Y = 0; Y < Map.MemoryMap.CellsY; Y++)
                     {
-                        if (visibleArea.Contains(Map.MemoryMap.MemoryCells[X][Y].Cell))
+                        if (visibleArea.Contains(Map.MemoryMap.MemoryCells[X,Y].Cell))
                         {
-                            if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 0)
+                            if (Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 0)
                             {
-                                var alpha = MathHelper.Clamp(Map.MemoryMap.MemoryCells[X][Y].Weight * 2, 0, 255);
-                                Color C = new Color(255, 255, 255, alpha);
-                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, C, B);
+                                Color C;
+                                if (Map.MemoryMap.MemoryCells[X, Y].Weight == 0)
+                                {
+                                    C = new Color(0, 100, 255, 150);
+                                }
+                                else
+                                {
+                                    C = new Color(255, 255, 255);
+                                    C.A = (byte)MathHelper.Clamp(Map.MemoryMap.MemoryCells[X, Y].Weight * 1.5f, 0, 255);
+                                }
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X,Y].Cell, C, B);
                             }
 
-                            if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 1)
+                            if (Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 1)
                             {
                                 // Start debug node.
-                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.Green, B);
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X,Y].Cell, Color.Green, B);
                             }
 
-                            if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 2)
+                            if (Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 2)
                             {
                                 // End debug node.
-                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.Red, B);
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X,Y].Cell, Color.Red, B);
                             }
 
-                            if (Map.MemoryMap.MemoryCells[X][Y].DebugStatus == 3)
+                            if (Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 3)
                             {
                                 // Found path.
-                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X][Y].Cell, Color.White, B);
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X,Y].Cell, Color.LightBlue, B);
                             }
                         }
                     }
