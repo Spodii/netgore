@@ -103,11 +103,20 @@
     <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\Controls\MapPreviewControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\InputNewMapIDForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\InputNewMapIDForm.Designer.cs">
       <DependentUpon>InputNewMapIDForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MiniMapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MiniMapForm.Designer.cs">
+      <DependentUpon>MiniMapForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MapEditorCharacter.cs" />
     <Compile Include="MapEditorDynamicEntityFactory.cs" />
@@ -122,6 +131,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\InputNewMapIDForm.resx">
       <DependentUpon>InputNewMapIDForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MiniMapForm.resx">
+      <DependentUpon>MiniMapForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ScreenForm.resx">

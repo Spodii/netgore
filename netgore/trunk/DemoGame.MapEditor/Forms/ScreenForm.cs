@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.EditorTools;
+using DemoGame.MapEditor.Forms;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -1471,5 +1472,26 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        MiniMapForm _miniMapForm;
+
+        /// <summary>
+        /// Handles the Click event of the btnShowMinimap control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnShowMinimap_Click(object sender, EventArgs e)
+        {
+            if (_miniMapForm != null && _miniMapForm.Visible && !_miniMapForm.IsDisposed)
+                return;
+
+            if (_miniMapForm != null && !_miniMapForm.IsDisposed)
+            {
+                _miniMapForm.Dispose();
+            }
+
+            _miniMapForm = new MiniMapForm { Camera = Camera };
+            _miniMapForm.Show(this);
+        }
     }
 }
