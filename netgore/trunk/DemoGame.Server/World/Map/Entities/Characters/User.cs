@@ -759,7 +759,12 @@ namespace DemoGame.Server
             var remainderItem = Inventory.Add(itemEntity);
 
             // Find the number of remaining items (in case something went wrong and not all was added)
-            var remainderAmount = remainderItem == null ? 0 : (int)remainderItem.Amount;
+            int remainderAmount = 0;
+            if (remainderItem != null)
+            {
+                remainderAmount = remainderItem.Amount;
+                remainderItem.Dispose();
+            }
 
             // Find the difference in the requested amount and remaining amount to get the amount added, and
             // only charge the character for that (so they pay for what they got)
@@ -799,6 +804,9 @@ namespace DemoGame.Server
                     Send(pw);
                 }
             }
+
+            // Dispose of the item entity since when we gave it to the user, we gave them a deep copy
+            itemEntity.Dispose();
 
             return true;
         }
