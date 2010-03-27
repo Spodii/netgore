@@ -65,7 +65,7 @@ namespace NetGore.EditorTools
             if (!EnsureNPCChatManagerSet())
                 return null;
 
-            return NPCChatManager.OrderBy(x => (int)x.ID);
+            return NPCChatManager.OrderBy(x => x.ID);
         }
 
         /// <summary>

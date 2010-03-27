@@ -39,7 +39,7 @@ namespace DemoGame.EditorTools
         /// <returns>The items to add to the list.</returns>
         protected override IEnumerable<BodyInfo> GetListItems()
         {
-            return BodyInfoManager.Instance.Bodies;
+            return BodyInfoManager.Instance.Bodies.OrderBy(x => x.ID);
         }
 
         /// <summary>
