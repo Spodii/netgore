@@ -337,7 +337,6 @@ namespace NetGore.Scripting
             {
                 ret = Path.GetRandomFileName().Replace(".", string.Empty);
                 fullPath = GetCacheFilePath(ret);
-                
             }
             while (File.Exists(fullPath));
 

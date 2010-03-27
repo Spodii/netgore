@@ -20,16 +20,6 @@ namespace DemoGame.SkeletonEditor
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.ComboBox.DrawItem"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
-        protected override void OnDrawItem(DrawItemEventArgs e)
-        {
-            if (!ControlHelper.DrawListItem<SkeletonBodyItem>(Items, e, x => GetDSIString(x)))
-                base.OnDrawItem(e);
-        }
-
         static string GetDSIString(SkeletonBodyItem dsi)
         {
             string s = "_null_";
@@ -43,6 +33,16 @@ namespace DemoGame.SkeletonEditor
                 textureName = ((StationaryGrhData)dsi.Grh.GrhData).TextureName.Value.Replace("Character/", string.Empty);
 
             return textureName + ": " + dsi.Source.Name + " -> " + s;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ComboBox.DrawItem"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (!ControlHelper.DrawListItem<SkeletonBodyItem>(Items, e, x => GetDSIString(x)))
+                base.OnDrawItem(e);
         }
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.AI;
@@ -31,16 +30,6 @@ namespace NetGore.EditorTools
         public static IAIFactory AIFactory { get; set; }
 
         /// <summary>
-        /// Gets the string to display for an item.
-        /// </summary>
-        /// <param name="item">The item to get the display string for.</param>
-        /// <returns>The string to display for the <paramref name="item"/>.</returns>
-        protected override string GetItemDisplayString(AIID item)
-        {
-            return AIFactory.GetAIName(item);
-        }
-
-        /// <summary>
         /// Ensures the <see cref="AIIDUITypeEditorForm.AIFactory"/> is set.
         /// </summary>
         /// <returns>If false, the form will be unloaded.</returns>
@@ -54,6 +43,16 @@ namespace NetGore.EditorTools
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets the string to display for an item.
+        /// </summary>
+        /// <param name="item">The item to get the display string for.</param>
+        /// <returns>The string to display for the <paramref name="item"/>.</returns>
+        protected override string GetItemDisplayString(AIID item)
+        {
+            return AIFactory.GetAIName(item);
         }
 
         /// <summary>

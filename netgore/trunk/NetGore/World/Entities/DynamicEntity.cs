@@ -64,6 +64,8 @@ namespace NetGore
         /// </summary>
         readonly IPropertySync[] _propertySyncs;
 
+        bool _isFirstPVSync = true;
+
         /// <summary>
         /// If we know if one of the PropertySync's value have changed.
         /// </summary>
@@ -78,6 +80,8 @@ namespace NetGore
         /// Last sent Velocity.
         /// </summary>
         Vector2 _lastSentVelocity;
+
+        ushort _lastTimeStamp = 0;
 
         /// <summary>
         /// Index of the map this DynamicEntity is on.
@@ -279,9 +283,6 @@ namespace NetGore
             }
         }
 
-        bool _isFirstPVSync = true;
-        ushort _lastTimeStamp = 0;
-
         /// <summary>
         /// Reads the Position and Velocity from the specified IValueReader. Use in conjunction with
         /// SerializePositionAndVelocity();
@@ -312,7 +313,8 @@ namespace NetGore
         /// <param name="position">The read position value.</param>
         /// <param name="velocity">The read velocity value.</param>
         /// <param name="timeStamp">The time stamp of the read values.</param>
-        static void DeserializePositionAndVelocity(IValueReader reader, out Vector2 position, out Vector2 velocity, out ushort timeStamp)
+        static void DeserializePositionAndVelocity(IValueReader reader, out Vector2 position, out Vector2 velocity,
+                                                   out ushort timeStamp)
         {
             timeStamp = reader.ReadUShort("TimeStamp");
             position = reader.ReadVector2("Position");

@@ -122,10 +122,7 @@ namespace NetGore.EditorTools
         /// </summary>
         public static GrhImageList Instance
         {
-            get
-            {
-                return _instance;
-            }
+            get { return _instance; }
         }
 
         /// <summary>

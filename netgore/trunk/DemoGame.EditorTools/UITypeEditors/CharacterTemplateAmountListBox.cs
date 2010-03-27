@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
@@ -26,18 +24,6 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
-        protected override void OnDrawItem(DrawItemEventArgs e)
-        {
-            if (DesignMode || !ControlHelper.DrawListItem<MutablePair<CharacterTemplateID, ushort>>(Items, e, x => GetDrawString(x)))
-            {
-                base.OnDrawItem(e);
-            }
-        }
-
-        /// <summary>
         /// Gets the string to draw for a list item.
         /// </summary>
         /// <param name="x">The list item.</param>
@@ -56,6 +42,17 @@ namespace DemoGame.EditorTools
             keyStr += " - ";
 
             return new KeyValuePair<string, string>(keyStr, x.Value.ToString());
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (DesignMode ||
+                !ControlHelper.DrawListItem<MutablePair<CharacterTemplateID, ushort>>(Items, e, x => GetDrawString(x)))
+                base.OnDrawItem(e);
         }
 
         /// <summary>

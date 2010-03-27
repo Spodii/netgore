@@ -435,7 +435,7 @@ namespace NetGore.Graphics
                 // Create the list for successful items
                 List<AtlasTextureItem> successful = new List<AtlasTextureItem>();
                 successfulItems = successful;
-   
+
                 // Try to create the atlas texture. If any exceptions are thrown when trying to create the texture,
                 // do not use a texture atlas at all.
                 const string errmsg = "Failed to create TextureAtlas texture. Exception: {0}";
@@ -498,7 +498,7 @@ namespace NetGore.Graphics
             {
                 // Start the SpriteBatch
                 sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.SaveState);
-         
+
                 // Use a try/finally block to make sure that the SpriteBatch ends. If End() is not called, it could
                 // prevent other SpriteBatches from Begin()ing.
                 try

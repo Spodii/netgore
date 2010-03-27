@@ -21,11 +21,6 @@ namespace NetGore
         bool _passAll = true;
 
         /// <summary>
-        /// Gets the string currently being used as the filter.
-        /// </summary>
-        public string FilterString { get { return _filterString; } }
-
-        /// <summary>
         /// Initializes the <see cref="TextFilter"/> class.
         /// </summary>
         static TextFilter()
@@ -53,9 +48,14 @@ namespace NetGore
         /// When overridden in the derived class, gets the unique name of this <see cref="TextFilter"/> implementation.
         /// This value must be costant for every instance of this filter, and must be unique for the <see cref="Type"/>.
         /// </summary>
-        protected abstract string DisplayNameInternal
+        protected abstract string DisplayNameInternal { get; }
+
+        /// <summary>
+        /// Gets the string currently being used as the filter.
+        /// </summary>
+        public string FilterString
         {
-            get;
+            get { return _filterString; }
         }
 
         /// <summary>

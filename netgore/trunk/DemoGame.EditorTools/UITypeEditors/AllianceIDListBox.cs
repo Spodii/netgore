@@ -1,5 +1,3 @@
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
@@ -25,17 +23,6 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
-        protected override void OnDrawItem(DrawItemEventArgs e)
-        {
-            if (DesignMode || !ControlHelper.DrawListItem<AllianceID>(Items, e, x => GetDrawString(x)))
-            {
-                base.OnDrawItem(e);
-            }
-        }
-        /// <summary>
         /// Gets the string to draw for a list item.
         /// </summary>
         /// <param name="x">The list item.</param>
@@ -48,6 +35,16 @@ namespace DemoGame.EditorTools
                 return "ID " + x;
             else
                 return t.ID + ". " + t.Name;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (DesignMode || !ControlHelper.DrawListItem<AllianceID>(Items, e, x => GetDrawString(x)))
+                base.OnDrawItem(e);
         }
 
         /// <summary>

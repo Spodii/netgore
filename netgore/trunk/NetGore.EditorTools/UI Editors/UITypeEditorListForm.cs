@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
 using System.Windows.Forms;
@@ -28,6 +27,27 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets all of the available items to choose from.
+        /// </summary>
+        public IEnumerable<T> AvailableItems
+        {
+            get { return lstItems.Items.OfType<T>(); }
+        }
+
+        /// <summary>
+        /// Gets the selected item.
+        /// </summary>
+        public T SelectedItem
+        {
+            get { return (T)lstItems.SelectedItem; }
+        }
+
+        /// <summary>
+        /// Gets or sets a <see cref="Func{T,TResult}"/> used to determine what items in the list to skip adding.
+        /// </summary>
+        public Func<T, bool> SkipItems { get; set; }
+
+        /// <summary>
         /// Handles when the filter changes.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -52,25 +72,28 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets all of the available items to choose from.
+        /// Handles the Click event of the btnApplyFilter control.
         /// </summary>
-        public IEnumerable<T> AvailableItems
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnApplyFilter_Click(object sender, EventArgs e)
         {
-            get { return lstItems.Items.OfType<T>(); }
-        }
+            // Try to get the selected filter name
+            var s = cmbFilterType.SelectedItem == null ? null : cmbFilterType.SelectedItem.ToString();
 
-        /// <summary>
-        /// Gets the selected item.
-        /// </summary>
-        public T SelectedItem
-        {
-            get { return (T)lstItems.SelectedItem; }
-        }
+            // Try to change the filter
+            bool success;
+            if (string.IsNullOrEmpty(s))
+                success = _filter.TryChangeFilter(txtFilter.Text);
+            else
+                success = _filter.TryChangeFilter(txtFilter.Text, s);
 
-        /// <summary>
-        /// Gets or sets a <see cref="Func{T,TResult}"/> used to determine what items in the list to skip adding.
-        /// </summary>
-        public Func<T, bool> SkipItems { get; set; }
+            if (!success)
+            {
+                MessageBox.Show("Invalid filter string specified.");
+                return;
+            }
+        }
 
         /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.
@@ -81,6 +104,13 @@ namespace NetGore.EditorTools
         {
             ControlHelper.DrawItem(e, GetItemDisplayString(item));
         }
+
+        /// <summary>
+        /// Gets the string to display for an item.
+        /// </summary>
+        /// <param name="item">The item to get the display string for.</param>
+        /// <returns>The string to display for the <paramref name="item"/>.</returns>
+        protected abstract string GetItemDisplayString(T item);
 
         /// <summary>
         /// When overridden in the derived class, gets the items to add to the list.
@@ -164,9 +194,7 @@ namespace NetGore.EditorTools
                 lstItems.Items.AddRange(_items.Cast<object>().ToArray());
             }
             else
-            {
                 _items = null;
-            }
 
             // Set the default selected item
             lstItems.SelectedItem = SetDefaultSelectedItem(lstItems.Items.Cast<T>());
@@ -185,51 +213,14 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the string to display for an item.
-        /// </summary>
-        /// <param name="item">The item to get the display string for.</param>
-        /// <returns>The string to display for the <paramref name="item"/>.</returns>
-        protected abstract string GetItemDisplayString(T item);
-
-        /// <summary>
         /// Handles the KeyDown event of the UITypeEditorListForm control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
-        private void UITypeEditorListForm_KeyDown(object sender, KeyEventArgs e)
+        void UITypeEditorListForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F && e.Modifiers == Keys.Control)
-            {
                 splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnApplyFilter control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnApplyFilter_Click(object sender, EventArgs e)
-        {
-            // Try to get the selected filter name
-            var s = cmbFilterType.SelectedItem == null ? null : cmbFilterType.SelectedItem.ToString();
-
-            // Try to change the filter
-            bool success;
-            if (string.IsNullOrEmpty(s))
-            {
-                success = _filter.TryChangeFilter(txtFilter.Text);
-            }
-            else
-            {
-                success = _filter.TryChangeFilter(txtFilter.Text, s);
-            }
-
-            if (!success)
-            {
-                MessageBox.Show("Invalid filter string specified.");
-                return;
-            }
         }
     }
 }

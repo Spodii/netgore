@@ -46,20 +46,14 @@ namespace NetGore.EditorTools
         ISpriteBatch _spriteBatch;
 
         /// <summary>
-        /// Gets or sets the foreground color of the control.
+        /// Initializes a new instance of the <see cref="GraphicsDeviceControl"/> class.
         /// </summary>
-        /// <returns>The foreground <see cref="T:System.Drawing.Color"/> of the control.</returns>
-        [DefaultValue(typeof(Color), "White")]
-        public override Color ForeColor
+        public GraphicsDeviceControl()
         {
-            get
-            {
-                return base.ForeColor;
-            }
-            set
-            {
-                base.ForeColor = value;
-            }
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            ForeColor = Color.White;
+            BackColor = Color.Black;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -69,25 +63,19 @@ namespace NetGore.EditorTools
         [DefaultValue(typeof(Color), "Black")]
         public override Color BackColor
         {
-            get
-            {
-                return base.BackColor;
-            }
-            set
-            {
-                base.BackColor = value;
-            }
+            get { return base.BackColor; }
+            set { base.BackColor = value; }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GraphicsDeviceControl"/> class.
+        /// Gets or sets the foreground color of the control.
         /// </summary>
-        public GraphicsDeviceControl()
+        /// <returns>The foreground <see cref="T:System.Drawing.Color"/> of the control.</returns>
+        [DefaultValue(typeof(Color), "White")]
+        public override Color ForeColor
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            ForeColor = Color.White;
-            BackColor = Color.Black;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            get { return base.ForeColor; }
+            set { base.ForeColor = value; }
         }
 
         /// <summary>
@@ -330,9 +318,7 @@ namespace NetGore.EditorTools
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
             if (DesignMode)
-            {
                 base.OnPaintBackground(pevent);
-            }
         }
 
         /// <summary>

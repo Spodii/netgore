@@ -81,7 +81,6 @@ namespace NetGore.EditorTools
                 SelectedIndex = 0;
         }
 
-
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.DomainUpDown.SelectedItemChanged"/> event.
         /// </summary>

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
-using NetGore.EditorTools;
 using NetGore.Features.Quests;
 using NetGore.IO;
 

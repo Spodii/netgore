@@ -297,9 +297,7 @@ namespace NetGore.Network
                 throw new ArgumentOutOfRangeException("data", "Data is too large to send.");
 
             if (log.IsDebugEnabled)
-            {
                 log.DebugFormat("Send `{0}` bytes to `{1}`", data.Length, endPoint);
-            }
 
             try
             {

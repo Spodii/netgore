@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 
@@ -15,14 +10,6 @@ namespace DemoGame.SkeletonEditor
         Vector2 _value;
 
         /// <summary>
-        /// Gets the value entered into the form.
-        /// </summary>
-        public Vector2 Value
-        {
-            get { return _value; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ShiftNodesInputForm"/> class.
         /// </summary>
         public ShiftNodesInputForm()
@@ -31,11 +18,19 @@ namespace DemoGame.SkeletonEditor
         }
 
         /// <summary>
+        /// Gets the value entered into the form.
+        /// </summary>
+        public Vector2 Value
+        {
+            get { return _value; }
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnApply control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnApply_Click(object sender, EventArgs e)
+        void btnApply_Click(object sender, EventArgs e)
         {
             float x;
             if (!float.TryParse(txtX.Text, out x))
