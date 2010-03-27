@@ -13,12 +13,6 @@ namespace DemoGame.Server
     /// </summary>
     public class AllianceManager : DbTableDataManager<AllianceID, Alliance>
     {
-        /// <summary>
-        /// Dictionary of alliances stored by their name.
-        /// </summary>
-        static readonly Dictionary<string, Alliance> _allianceFromName =
-            new Dictionary<string, Alliance>(StringComparer.OrdinalIgnoreCase);
-
         static readonly AllianceManager _instance;
 
         SelectAllianceAttackableQuery _selectAllianceAttackableQuery;
@@ -39,23 +33,6 @@ namespace DemoGame.Server
         /// <param name="dbController">The IDbController.</param>
         AllianceManager(IDbController dbController) : base(dbController)
         {
-        }
-
-        /// <summary>
-        /// Gets the Alliance by the given name.
-        /// </summary>
-        /// <param name="name">Name of the Alliance to get.</param>
-        /// <returns>The Alliance by the given name, or null if none found.</returns>
-        public Alliance this[string name]
-        {
-            get
-            {
-                Alliance ret;
-                if (_allianceFromName.TryGetValue(name, out ret))
-                    return ret;
-
-                return null;
-            }
         }
 
         /// <summary>
@@ -127,9 +104,6 @@ namespace DemoGame.Server
             Debug.Assert(hostiles.All(x => x.AllianceID == id));
 
             Alliance ret = new Alliance(id, values.Name, attackables, hostiles);
-
-            _allianceFromName.Add(ret.Name, ret);
-
             return ret;
         }
     }

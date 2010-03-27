@@ -52,7 +52,7 @@ namespace DemoGame.Server
             if (parent == null)
                 throw new ArgumentNullException("parent");
 
-            Alliance = AllianceManager["monster"];
+            Alliance = AllianceManager[new AllianceID(1)];
 
             Load(characterID);
 
