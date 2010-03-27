@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore;
 using NetGore.EditorTools;
 
 namespace DemoGame.EditorTools
@@ -38,7 +39,7 @@ namespace DemoGame.EditorTools
         /// <returns>The items to add to the list.</returns>
         protected override IEnumerable<string> GetListItems()
         {
-            return GameMessageCollection.GetLanguages();
+            return GameMessageCollection.GetLanguages().OrderBy(x => x, NaturalStringComparer.Instance);
         }
 
         /// <summary>

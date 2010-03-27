@@ -65,7 +65,7 @@ namespace NetGore.EditorTools
             if (!EnsureAIFactorySet())
                 return null;
 
-            return AIFactory.AIs.Select(x => x.Key).OrderBy(x => (int)x);
+            return AIFactory.AIs.Select(x => x.Key).OrderBy(x => x);
         }
 
         /// <summary>

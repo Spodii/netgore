@@ -51,7 +51,7 @@ namespace DemoGame.EditorTools
                 ret.Add(template);
             }
 
-            return ret;
+            return ret.OrderBy(x => x.ID);
         }
 
         /// <summary>

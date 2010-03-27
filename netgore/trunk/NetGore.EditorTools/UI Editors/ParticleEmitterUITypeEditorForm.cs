@@ -73,7 +73,7 @@ namespace NetGore.EditorTools
         {
             var emitterNames = ParticleEmitterFactory.GetEffectsInPath(ContentPaths.Build);
             var validEffects = EmitterLoader(emitterNames);
-            return validEffects;
+            return validEffects.OrderBy(x => x.Name, NaturalStringComparer.Instance);
         }
 
         /// <summary>
