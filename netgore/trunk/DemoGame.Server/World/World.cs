@@ -443,10 +443,7 @@ namespace DemoGame.Server
             _disposed = true;
 
             // Process the dispose stack
-            while (_disposeStack.Count > 0)
-            {
-                ProcessDisposeStack();
-            }
+            ProcessDisposeStack();
 
             // Dispose the unarmed weapon item
             _unarmedWeapon.Dispose();
@@ -456,6 +453,9 @@ namespace DemoGame.Server
             {
                 map.Dispose();
             }
+
+            // Process the dispose stack again, just in case disposing other stuff added to it
+            ProcessDisposeStack();
         }
 
         #endregion
