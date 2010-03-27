@@ -100,7 +100,9 @@ namespace NetGore
         /// <returns>True if the two occupy any common space; otherwise false.</returns>
         public static bool Intersects(this ISpatial a, Rectangle b)
         {
-            return a.ToRectangle().Intersects(b);
+            bool ret;
+            a.ToRectangle().Intersects(ref b, out ret);
+            return ret;
         }
 
         /// <summary>
@@ -111,7 +113,10 @@ namespace NetGore
         /// <returns>True if the two occupy any common space; otherwise false.</returns>
         public static bool Intersects(this ISpatial a, ISpatial b)
         {
-            return a.ToRectangle().Intersects(b.ToRectangle());
+            var bRect = b.ToRectangle();
+            bool ret;
+            a.ToRectangle().Intersects(ref bRect, out ret);
+            return ret;
         }
 
         /// <summary>
