@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using NetGore.NPCChat;
@@ -22,16 +20,6 @@ namespace NetGore.EditorTools
         public ParticleEmitterUITypeEditorForm(object selected)
         {
             _selected = selected;
-        }
-
-        /// <summary>
-        /// Gets the string to display for an item.
-        /// </summary>
-        /// <param name="item">The item to get the display string for.</param>
-        /// <returns>The string to display for the <paramref name="item"/>.</returns>
-        protected override string GetItemDisplayString(ParticleEmitter item)
-        {
-            return item.Name;
         }
 
         /// <summary>
@@ -63,6 +51,16 @@ namespace NetGore.EditorTools
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets the string to display for an item.
+        /// </summary>
+        /// <param name="item">The item to get the display string for.</param>
+        /// <returns>The string to display for the <paramref name="item"/>.</returns>
+        protected override string GetItemDisplayString(ParticleEmitter item)
+        {
+            return item.Name;
         }
 
         /// <summary>

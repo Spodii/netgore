@@ -1,5 +1,3 @@
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
@@ -26,18 +24,6 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
-        protected override void OnDrawItem(DrawItemEventArgs e)
-        {
-            if (DesignMode || !ControlHelper.DrawListItem<QuestID>(Items, e, x => GetDrawString(x)))
-            {
-                base.OnDrawItem(e);
-            }
-        }
-
-        /// <summary>
         /// Gets the string to draw for a list item.
         /// </summary>
         /// <param name="x">The item to draw.</param>
@@ -51,6 +37,16 @@ namespace DemoGame.EditorTools
                 return x.ToString();
             else
                 return t.QuestID + ". " + t.Name + " - " + t.Description;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (DesignMode || !ControlHelper.DrawListItem<QuestID>(Items, e, x => GetDrawString(x)))
+                base.OnDrawItem(e);
         }
 
         /// <summary>

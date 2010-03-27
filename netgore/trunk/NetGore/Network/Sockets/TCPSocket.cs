@@ -168,9 +168,7 @@ namespace NetGore.Network
 #endif
 
             if (log.IsDebugEnabled)
-            {
                 log.DebugFormat("Send `{0}` bytes to `{1}`", dataToSend.Length, Address);
-            }
 
             if (_socket == null)
             {

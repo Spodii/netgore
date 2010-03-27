@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.NPCChat;
@@ -31,16 +30,6 @@ namespace NetGore.EditorTools
         public static NPCChatManagerBase NPCChatManager { get; set; }
 
         /// <summary>
-        /// Gets the string to display for an item.
-        /// </summary>
-        /// <param name="item">The item to get the display string for.</param>
-        /// <returns>The string to display for the <paramref name="item"/>.</returns>
-        protected override string GetItemDisplayString(NPCChatDialogBase item)
-        {
-            return item.ID + ". " + item.Title;
-        }
-
-        /// <summary>
         /// Ensures the <see cref="NPCChatDialogUITypeEditorForm.NPCChatManager"/> is set.
         /// </summary>
         /// <returns>If false, the form will be unloaded.</returns>
@@ -54,6 +43,16 @@ namespace NetGore.EditorTools
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets the string to display for an item.
+        /// </summary>
+        /// <param name="item">The item to get the display string for.</param>
+        /// <returns>The string to display for the <paramref name="item"/>.</returns>
+        protected override string GetItemDisplayString(NPCChatDialogBase item)
+        {
+            return item.ID + ". " + item.Title;
         }
 
         /// <summary>

@@ -113,7 +113,7 @@ namespace NetGore.AI
                         continue;
 
                     _locationX = (ushort)(_location & (_grid.GridX - 1));
-                    _locationY = (ushort)((int)_location >> (int)_grid.Log2GridY );
+                    _locationY = (ushort)(_location >> (int)_grid.Log2GridY);
 
                     if (_location == _endLocation)
                     {
@@ -132,7 +132,7 @@ namespace NetGore.AI
                     {
                         _newLocationX = (ushort)(_locationX + _direction[i, 0]);
                         _newLocationY = (ushort)(_locationY + _direction[i, 1]);
-                        _newLocation = ((int)_newLocationY<<(int)_grid.Log2GridY) + _newLocationX;
+                        _newLocation = (_newLocationY << (int)_grid.Log2GridY) + _newLocationX;
 
                         if (_newLocationX >= _grid.GridX || _newLocationY >= _grid.GridY)
                             continue;

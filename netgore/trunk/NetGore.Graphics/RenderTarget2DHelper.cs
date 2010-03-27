@@ -78,7 +78,7 @@ namespace NetGore.Graphics
                     sourceTexture.GetData(textureData);
 
                     ret = new Texture2D(device, sourceTexture.Width, sourceTexture.Height, sourceTexture.LevelCount,
-                        sourceTexture.TextureUsage, sourceTexture.Format);
+                                        sourceTexture.TextureUsage, sourceTexture.Format);
                     ret.SetData(textureData);
                 }
 

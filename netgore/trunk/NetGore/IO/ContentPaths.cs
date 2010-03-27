@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -176,7 +174,8 @@ namespace NetGore.IO
                     var devPath = GetDevContentPath();
                     if (devPath == null)
                     {
-                        throw new DirectoryNotFoundException(@"Could not find the directory to the development content path (ContentPaths.Dev)." +
+                        throw new DirectoryNotFoundException(
+                            @"Could not find the directory to the development content path (ContentPaths.Dev)." +
                             @" Please make sure that the path to this directory is defined in the \Content\Data\devpath.txt file in the build directory.");
                     }
 

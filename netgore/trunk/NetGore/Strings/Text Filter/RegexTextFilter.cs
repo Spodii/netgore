@@ -31,9 +31,7 @@ namespace NetGore
             var ret = new RegexTextFilter();
 
             if (_filter != null)
-            {
                 ret._filter = new Regex(_filter.ToString(), _regexOptions);
-            }
 
             return ret;
         }

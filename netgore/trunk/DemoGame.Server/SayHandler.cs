@@ -229,16 +229,6 @@ namespace DemoGame.Server
                 }
             }
 
-            [SayCommand("GuildSay")]
-            public void GuildSay(string message)
-            {
-                if (!RequireUserInGuild())
-                    return;
-
-                foreach (var guildMember in User.Guild.GetMembers().OfType<User>())
-                    guildMember.Send(GameMessage.GuildSay, User.Name, message);
-            }
-
             [SayCommand("GuildHelp")]
             public void GuildHelp()
             {
@@ -360,6 +350,18 @@ namespace DemoGame.Server
                     return;
 
                 User.Guild.TryViewOnlineMembers(User);
+            }
+
+            [SayCommand("GuildSay")]
+            public void GuildSay(string message)
+            {
+                if (!RequireUserInGuild())
+                    return;
+
+                foreach (var guildMember in User.Guild.GetMembers().OfType<User>())
+                {
+                    guildMember.Send(GameMessage.GuildSay, User.Name, message);
+                }
             }
 
             [SayCommand("JoinGroup")]

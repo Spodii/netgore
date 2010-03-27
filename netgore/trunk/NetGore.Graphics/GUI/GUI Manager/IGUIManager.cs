@@ -116,16 +116,16 @@ namespace NetGore.Graphics.GUI
         ISkinManager SkinManager { get; }
 
         /// <summary>
-        /// Gets the <see cref="Control"/> currently under the cursor, or null if no <see cref="Control"/> managed 
-        /// by this <see cref="IGUIManager"/> is currently under the cursor.
-        /// </summary>
-        Control UnderCursor { get; }
-
-        /// <summary>
         /// Gets the <see cref="ITooltip"/> to use for displaying tooltips for <see cref="Control"/>s in
         /// this <see cref="IGUIManager"/>.
         /// </summary>
         ITooltip Tooltip { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Control"/> currently under the cursor, or null if no <see cref="Control"/> managed 
+        /// by this <see cref="IGUIManager"/> is currently under the cursor.
+        /// </summary>
+        Control UnderCursor { get; }
 
         /// <summary>
         /// Adds a <see cref="Control"/> to this <see cref="IGUIManager"/> at the root level. This should only be called

@@ -12,17 +12,25 @@ namespace NetGore.EditorTools
     public class TypedComboBox<T> : ComboBox
     {
         /// <summary>
-        /// Notifies listeners when the selected item has changed.
-        /// </summary>
-        public event TypedComboBoxChangeEventHandler<T> TypedSelectedItemChanged;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TypedComboBox&lt;T&gt;"/> class.
         /// </summary>
         public TypedComboBox()
         {
             DropDownStyle = ComboBoxStyle.DropDownList;
             DrawMode = DrawMode.OwnerDrawFixed;
+        }
+
+        /// <summary>
+        /// Notifies listeners when the selected item has changed.
+        /// </summary>
+        public event TypedComboBoxChangeEventHandler<T> TypedSelectedItemChanged;
+
+        /// <summary>
+        /// Gets the strongly typed items in this <see cref="TypedComboBox{T}"/>.
+        /// </summary>
+        public IEnumerable<T> TypedItems
+        {
+            get { return Items.OfType<T>(); }
         }
 
         /// <summary>
@@ -59,14 +67,6 @@ namespace NetGore.EditorTools
                 return;
 
             Items.AddRange(items.Cast<object>().ToArray());
-        }
-
-        /// <summary>
-        /// Gets the strongly typed items in this <see cref="TypedComboBox{T}"/>.
-        /// </summary>
-        public IEnumerable<T> TypedItems
-        {
-            get { return Items.OfType<T>(); }
         }
 
         /// <summary>

@@ -7,8 +7,8 @@ namespace NetGore.AI
     {
         //The rectangle that holds the position of the MemoryCell
         Rectangle _cell;
-        byte _weight;
         byte _debugStatus;
+        byte _weight;
 
         /// <summary>
         /// MemoryCell constuctor
@@ -33,6 +33,12 @@ namespace NetGore.AI
             set { _cell = value; }
         }
 
+        public byte DebugStatus
+        {
+            get { return _debugStatus; }
+            set { _debugStatus = value; }
+        }
+
         /// <summary>
         /// The weighting of this MemoryCell.
         /// </summary>
@@ -49,13 +55,5 @@ namespace NetGore.AI
         {
             _weight = 0;
         }
-
-        public byte DebugStatus
-        {
-            get { return _debugStatus; }
-            set { _debugStatus = value; }
-        }
-
-
     }
 }

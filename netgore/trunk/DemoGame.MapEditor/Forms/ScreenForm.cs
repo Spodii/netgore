@@ -130,6 +130,7 @@ namespace DemoGame.MapEditor
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
         Map _map;
         IMapBoundControl[] _mapBoundControls;
+        MiniMapForm _miniMapForm;
 
         /// <summary>
         /// Modifier values for the camera moving
@@ -485,6 +486,23 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Handles the Click event of the btnShowMinimap control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnShowMinimap_Click(object sender, EventArgs e)
+        {
+            if (_miniMapForm != null && _miniMapForm.Visible && !_miniMapForm.IsDisposed)
+                return;
+
+            if (_miniMapForm != null && !_miniMapForm.IsDisposed)
+                _miniMapForm.Dispose();
+
+            _miniMapForm = new MiniMapForm { Camera = Camera };
+            _miniMapForm.Show(this);
+        }
+
+        /// <summary>
         /// Handles the CheckedChanged event of the chkDrawBackground control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -731,39 +749,37 @@ namespace DemoGame.MapEditor
                 {
                     for (int Y = 0; Y < Map.MemoryMap.CellsY; Y++)
                     {
-                        if (visibleArea.Contains(Map.MemoryMap.MemoryCells[X,Y].Cell))
+                        if (visibleArea.Contains(Map.MemoryMap.MemoryCells[X, Y].Cell))
                         {
-                            if (Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 0)
+                            if (Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 0)
                             {
                                 Color C;
                                 if (Map.MemoryMap.MemoryCells[X, Y].Weight == 0)
-                                {
                                     C = new Color(0, 100, 255, 150);
-                                }
                                 else
                                 {
                                     C = new Color(255, 255, 255);
                                     C.A = (byte)MathHelper.Clamp(Map.MemoryMap.MemoryCells[X, Y].Weight * 1.5f, 0, 255);
                                 }
-                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X,Y].Cell, C, B);
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X, Y].Cell, C, B);
                             }
 
-                            if (Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 1)
+                            if (Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 1)
                             {
                                 // Start debug node.
-                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X,Y].Cell, Color.Green, B);
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X, Y].Cell, Color.Green, B);
                             }
 
-                            if (Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 2)
+                            if (Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 2)
                             {
                                 // End debug node.
-                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X,Y].Cell, Color.Red, B);
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X, Y].Cell, Color.Red, B);
                             }
 
-                            if (Map.MemoryMap.MemoryCells[X,Y].DebugStatus == 3)
+                            if (Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 3)
                             {
                                 // Found path.
-                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X,Y].Cell, Color.LightBlue, B);
+                                XNARectangle.Draw(sb, Map.MemoryMap.MemoryCells[X, Y].Cell, Color.LightBlue, B);
                             }
                         }
                     }
@@ -1472,26 +1488,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        MiniMapForm _miniMapForm;
-
-        /// <summary>
-        /// Handles the Click event of the btnShowMinimap control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnShowMinimap_Click(object sender, EventArgs e)
-        {
-            if (_miniMapForm != null && _miniMapForm.Visible && !_miniMapForm.IsDisposed)
-                return;
-
-            if (_miniMapForm != null && !_miniMapForm.IsDisposed)
-            {
-                _miniMapForm.Dispose();
-            }
-
-            _miniMapForm = new MiniMapForm { Camera = Camera };
-            _miniMapForm.Show(this);
-        }
     }
 }

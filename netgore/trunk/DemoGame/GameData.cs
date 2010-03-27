@@ -95,14 +95,15 @@ namespace DemoGame
                                                                              CharType.Punctuation);
 
         /// <summary>
+        /// The rules for the character names.
+        /// </summary>
+        public static readonly StringRules CharacterName = new StringRules(1, 30,
+                                                                           CharType.Alpha | CharType.Numeric | CharType.Whitespace);
+
+        /// <summary>
         /// The rules for the user names.
         /// </summary>
         public static readonly StringRules UserName = new StringRules(3, 15, CharType.Alpha);
-
-        /// <summary>
-        /// The rules for the character names.
-        /// </summary>
-        public static readonly StringRules CharacterName = new StringRules(1, 30, CharType.Alpha | CharType.Numeric | CharType.Whitespace);
 
         /// <summary>
         /// Size of the screen display.

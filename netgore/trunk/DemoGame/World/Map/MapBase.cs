@@ -9,10 +9,10 @@ using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.AI;
 using NetGore.Audio;
 using NetGore.Collections;
 using NetGore.IO;
-using NetGore.AI;
 
 namespace DemoGame
 {
@@ -68,6 +68,8 @@ namespace DemoGame
         /// </summary>
         readonly IGetTime _getTime;
 
+        readonly MemoryMap _memoryMap = new MemoryMap();
+
         readonly ISpatialCollection _spatialCollection;
 
         readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
@@ -90,9 +92,6 @@ namespace DemoGame
         string _name = string.Empty;
 
         Vector2 _size = new Vector2(float.MinValue);
-
-        MemoryMap _memoryMap = new MemoryMap();
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapBase"/> class.
@@ -155,6 +154,12 @@ namespace DemoGame
                         _updateStopWatch.Stop();
                 }
             }
+        }
+
+        [Browsable(false)]
+        public MemoryMap MemoryMap
+        {
+            get { return _memoryMap; }
         }
 
         /// <summary>
@@ -716,14 +721,11 @@ namespace DemoGame
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to load the
         /// <see cref="DynamicEntity"/>s.</param>
         public void Load(ContentPaths contentPath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
-        {            
-            
-
-
+        {
             string path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
             _memoryMap.Initialize((ushort)Width, (ushort)Height);
-            _memoryMap.LoadMemoryMap(contentPath, (int)ID.GetRawValue());
+            _memoryMap.LoadMemoryMap(contentPath, ID.GetRawValue());
         }
 
         /// <summary>
@@ -936,7 +938,7 @@ namespace DemoGame
             var path = contentPath.Maps.Join(mapID + "." + MapFileSuffix);
             Save(path, dynamicEntityFactory);
 
-            _memoryMap.SaveMemoryMap(contentPath, (int)mapID.GetRawValue());
+            _memoryMap.SaveMemoryMap(contentPath, mapID.GetRawValue());
 
             if (Saved != null)
                 Saved(this);
@@ -1221,12 +1223,6 @@ namespace DemoGame
         public float Width
         {
             get { return Size.X; }
-        }
-
-        [Browsable(false)]
-        public MemoryMap MemoryMap
-        {
-            get { return _memoryMap; }
         }
 
         /// <summary>
