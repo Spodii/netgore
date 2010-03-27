@@ -35,11 +35,8 @@ namespace DemoGame.Server
             Debug.Assert(attackables.All(x => x.AllianceID == id));
             Debug.Assert(hostiles.All(x => x.AllianceID == id));
 
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-
             _id = id;
-            _name = name;
+            _name = name ?? string.Empty;
             _attackable = attackables.Select(x => x.AttackableID).Distinct().ToCompact();
             _hostile = hostiles.Select(x => x.HostileID).Distinct().ToCompact();
         }

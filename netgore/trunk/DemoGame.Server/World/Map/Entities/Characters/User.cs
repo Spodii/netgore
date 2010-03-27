@@ -91,7 +91,7 @@ namespace DemoGame.Server
             Load(characterID);
 
             // Ensure the correct Alliance is being used
-            Alliance = AllianceManager["user"];
+            Alliance = AllianceManager[new AllianceID(0)];
 
             // Activate the user
             _userInventory = (UserInventory)Inventory;

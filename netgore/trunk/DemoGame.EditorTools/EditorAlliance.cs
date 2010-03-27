@@ -23,6 +23,7 @@ namespace DemoGame.EditorTools
 
         List<AllianceID> _attackable;
         List<AllianceID> _hostile;
+        string _name = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorAlliance"/> class.
@@ -105,9 +106,13 @@ namespace DemoGame.EditorTools
         /// Gets the value of the database column `name`.
         /// </summary>
         [Browsable(true)]
-        [Description("The name of this alliance. Does not have to be unique, but it is recommended.")]
+        [Description("The name of this alliance. Does not have to be unique, but it is recommended to avoid confusion.")]
         [Category(_category)]
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value ?? string.Empty; }
+        }
 
         /// <summary>
         /// Creates a deep copy of this table. All the values will be the same
