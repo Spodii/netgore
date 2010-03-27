@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lstItems = new DemoGame.EditorTools.QuestIDListBox();
+            this.lstItems = new DemoGame.EditorTools.AllianceIDListBox();
             this.txtItem = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -77,10 +77,10 @@
             // 
             this.txtItem.BackColor = System.Drawing.SystemColors.Window;
             this.txtItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtItem.Location = new System.Drawing.Point(38, 0);
+            this.txtItem.Location = new System.Drawing.Point(47, 0);
             this.txtItem.Name = "txtItem";
             this.txtItem.ReadOnly = true;
-            this.txtItem.Size = new System.Drawing.Size(201, 20);
+            this.txtItem.Size = new System.Drawing.Size(192, 20);
             this.txtItem.TabIndex = 30;
             // 
             // btnBrowse
@@ -112,9 +112,9 @@
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.label1.Size = new System.Drawing.Size(38, 16);
+            this.label1.Size = new System.Drawing.Size(47, 16);
             this.label1.TabIndex = 27;
-            this.label1.Text = "Quest:";
+            this.label1.Text = "Alliance:";
             // 
             // AllianceIDListForm
             // 
@@ -123,6 +123,7 @@
             this.ClientSize = new System.Drawing.Size(300, 254);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "AllianceIDListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Alliance IDs";
@@ -137,7 +138,7 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private QuestIDListBox lstItems;
+        private AllianceIDListBox lstItems;
         private System.Windows.Forms.TextBox txtItem;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Button btnAdd;

@@ -112,6 +112,7 @@
     <Compile Include="UITypeEditors\QuestIDListForm.Designer.cs">
       <DependentUpon>QuestIDListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UITypeEditors\QuestRequirementCollectionEditor.cs" />
     <Compile Include="UITypeEditors\QuestUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>

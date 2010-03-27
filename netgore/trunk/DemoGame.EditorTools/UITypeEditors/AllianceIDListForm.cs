@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
+using NetGore.EditorTools;
 
 namespace DemoGame.EditorTools
 {

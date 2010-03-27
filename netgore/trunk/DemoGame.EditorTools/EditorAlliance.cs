@@ -80,7 +80,7 @@ namespace DemoGame.EditorTools
             get
             {
                 _hostile.RemoveDuplicates((x, y) => x == y);
-                return _attackable;
+                return _hostile;
             }
             set
             {
