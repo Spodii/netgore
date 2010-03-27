@@ -119,7 +119,7 @@ namespace NetGore.EditorTools
             get { return _selectedCursor; }
             set
             {
-                if (SelectedCursor == value || SelectedAltCursor == value)
+                if (SelectedCursor == value)
                     return;
 
                 _selectedCursor = value;
