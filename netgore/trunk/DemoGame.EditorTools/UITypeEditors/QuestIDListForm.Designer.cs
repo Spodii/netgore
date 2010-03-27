@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lstItems = new QuestIDListBox();
+            this.lstItems = new DemoGame.EditorTools.QuestIDListBox();
             this.txtItem = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -123,6 +123,7 @@
             this.ClientSize = new System.Drawing.Size(300, 254);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "QuestIDListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Quest IDs";

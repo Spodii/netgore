@@ -56,6 +56,24 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Deletes the selected item from the <see cref="ListBox"/> if possible, and selects a new item
+        /// after deleting it.
+        /// </summary>
+        /// <typeparam name="T">The type of ListBox.</typeparam>
+        /// <param name="listBox">The ListBox.</param>
+        /// <returns>True if an item was selected and it was removed; otherwise false.</returns>
+        public static bool DeleteSelectedItem<T>(this T listBox) where T : ListBox
+        {
+            var i = listBox.SelectedIndex;
+            if (i <= 0 || i > listBox.Items.Count)
+                return false;
+
+            listBox.RemoveItemAtAndReselect(i);
+
+            return true;
+        }
+
+        /// <summary>
         /// Removes an item from the ListBox, then select a new item if item that was removed was selected.
         /// </summary>
         /// <typeparam name="T">The type of ListBox.</typeparam>

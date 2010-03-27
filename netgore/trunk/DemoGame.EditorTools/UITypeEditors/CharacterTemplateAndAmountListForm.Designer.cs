@@ -171,6 +171,7 @@
             this.ClientSize = new System.Drawing.Size(300, 254);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "CharacterTemplateAndAmountListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Character templates and amounts";

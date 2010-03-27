@@ -6,15 +6,16 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using DemoGame.DbObjs;
+using DemoGame.Server;
 using log4net;
+using NetGore.Features.Quests;
 
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="AllianceID"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="QuestRequirementCollection{TCharacter}"/>.
     /// </summary>
-    public class AllianceIDEditor : UITypeEditor
+    public class QuestRequirementCollectionEditor : UITypeEditor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -42,12 +43,8 @@ namespace DemoGame.EditorTools
                     var pt = context.PropertyDescriptor.PropertyType;
                     if (svc.ShowDialog(editorForm) == DialogResult.OK)
                     {
-                        if (pt == typeof(AllianceID) || pt == typeof(AllianceID?))
+                        if (pt == typeof(QuestRequirementCollection<User>))
                             value = editorForm.SelectedItem.ID;
-                        else if (pt == typeof(IAllianceTable))
-                            value = editorForm.SelectedItem;
-                        else if (pt == typeof(string))
-                            value = editorForm.SelectedItem.ID.ToString();
                         else
                         {
                             const string errmsg =
@@ -56,11 +53,6 @@ namespace DemoGame.EditorTools
                                 log.ErrorFormat(errmsg, pt, value, editorForm.GetType());
                             Debug.Fail(string.Format(errmsg, pt, value, editorForm.GetType()));
                         }
-                    }
-                    else
-                    {
-                        if (pt == typeof(AllianceID?))
-                            value = null;
                     }
                 }
             }

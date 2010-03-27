@@ -65,10 +65,7 @@ namespace DemoGame.EditorTools
             base.OnKeyDown(e);
 
             if (e.KeyCode == Keys.Delete)
-            {
-                if (SelectedIndex >= 0 && SelectedIndex < Items.Count)
-                    this.RemoveItemAtAndReselect(SelectedIndex);
-            }
+                this.DeleteSelectedItem();
         }
 
         /// <summary>
