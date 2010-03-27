@@ -24,6 +24,7 @@ namespace NetGore.Db
         /// </summary>
         /// <typeparam name="T">The Type of query.</typeparam>
         /// <returns>The query instance of type <typeparamref name="T"/>.</returns>
+        /// <exception cref="ArgumentException">Type <typeparamref name="T"/> was not found in the query cache.</exception>
         T GetQuery<T>();
 
         /// <summary>

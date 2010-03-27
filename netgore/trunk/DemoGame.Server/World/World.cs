@@ -442,16 +442,19 @@ namespace DemoGame.Server
             // Set the World as disposed
             _disposed = true;
 
-            // Dispose of the maps
-            foreach (Map map in Maps)
-            {
-                map.Dispose();
-            }
-
             // Process the dispose stack
             while (_disposeStack.Count > 0)
             {
                 ProcessDisposeStack();
+            }
+
+            // Dispose the unarmed weapon item
+            _unarmedWeapon.Dispose();
+
+            // Dispose of the maps
+            foreach (Map map in Maps)
+            {
+                map.Dispose();
             }
         }
 
