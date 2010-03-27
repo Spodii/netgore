@@ -539,7 +539,7 @@ namespace DemoGame.Server
         public void Start()
         {
             if (log.IsInfoEnabled)
-                log.Info("Starting server...");
+                log.Info("Server done loading. Game loop has started...");
 
             // Start the main game loop
             GameLoop();

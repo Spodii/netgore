@@ -227,8 +227,7 @@ namespace NetGore.Network
             {
                 foreach (var r in ret)
                 {
-                    log.DebugFormat("Received `{0}` bytes from `{1}`{2}", r.Length, Address,
-                                    Environment.NewLine + LogHelper.GetBufferDump(r));
+                    log.DebugFormat("Received `{0}` bytes from `{1}`", r.Length, Address);
                 }
             }
 

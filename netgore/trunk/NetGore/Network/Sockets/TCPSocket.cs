@@ -169,8 +169,7 @@ namespace NetGore.Network
 
             if (log.IsDebugEnabled)
             {
-                log.DebugFormat("Send `{0}` bytes to `{1}`{2}", dataToSend.Length, Address,
-                                Environment.NewLine + LogHelper.GetBufferDump(dataToSend, 0, dataToSend.Length));
+                log.DebugFormat("Send `{0}` bytes to `{1}`", dataToSend.Length, Address);
             }
 
             if (_socket == null)
