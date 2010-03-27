@@ -9074,7 +9074,7 @@
     <Item20>
       <TableName>item_template</TableName>
       <Columns>
-        <Count>25</Count>
+        <Count>24</Count>
         <Item0>
           <Values>
             <Count>13</Count>
@@ -9206,7 +9206,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value />
+              <Value>0</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -9263,64 +9263,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value />
-            </Item3>
-            <Item4>
-              <Key>COLUMN_KEY</Key>
-              <Value />
-            </Item4>
-            <Item5>
-              <Key>COLUMN_NAME</Key>
-              <Value>ammo_type</Value>
-            </Item5>
-            <Item6>
-              <Key>COLUMN_TYPE</Key>
-              <Value>tinyint(3) unsigned</Value>
-            </Item6>
-            <Item7>
-              <Key>DATA_TYPE</Key>
-              <Value>tinyint</Value>
-            </Item7>
-            <Item8>
-              <Key>EXTRA</Key>
-              <Value />
-            </Item8>
-            <Item9>
-              <Key>IS_NULLABLE</Key>
-              <Value>NO</Value>
-            </Item9>
-            <Item10>
-              <Key>NUMERIC_PRECISION</Key>
-              <Value>3</Value>
-            </Item10>
-            <Item11>
-              <Key>NUMERIC_SCALE</Key>
-              <Value>0</Value>
-            </Item11>
-            <Item12>
-              <Key>TABLE_NAME</Key>
-              <Value>item_template</Value>
-            </Item12>
-          </Values>
-        </Item3>
-        <Item4>
-          <Values>
-            <Count>13</Count>
-            <Item0>
-              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
-              <Value />
-            </Item0>
-            <Item1>
-              <Key>CHARACTER_OCTET_LENGTH</Key>
-              <Value />
-            </Item1>
-            <Item2>
-              <Key>CHARACTER_SET_NAME</Key>
-              <Value />
-            </Item2>
-            <Item3>
-              <Key>COLUMN_DEFAULT</Key>
-              <Value />
+              <Value>10</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -9359,8 +9302,8 @@
               <Value>item_template</Value>
             </Item12>
           </Values>
-        </Item4>
-        <Item5>
+        </Item3>
+        <Item4>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -9416,8 +9359,8 @@
               <Value>item_template</Value>
             </Item12>
           </Values>
-        </Item5>
-        <Item6>
+        </Item4>
+        <Item5>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -9473,8 +9416,8 @@
               <Value>item_template</Value>
             </Item12>
           </Values>
-        </Item6>
-        <Item7>
+        </Item5>
+        <Item6>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -9491,7 +9434,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value />
+              <Value>New item template</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -9530,8 +9473,8 @@
               <Value>item_template</Value>
             </Item12>
           </Values>
-        </Item7>
-        <Item8>
+        </Item6>
+        <Item7>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -9548,7 +9491,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value />
+              <Value> </Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -9587,8 +9530,8 @@
               <Value>item_template</Value>
             </Item12>
           </Values>
-        </Item8>
-        <Item9>
+        </Item7>
+        <Item8>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -9644,8 +9587,8 @@
               <Value>item_template</Value>
             </Item12>
           </Values>
-        </Item9>
-        <Item10>
+        </Item8>
+        <Item9>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -9701,6 +9644,63 @@
               <Value>item_template</Value>
             </Item12>
           </Values>
+        </Item9>
+        <Item10>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>0</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>hp</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(6)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>item_template</Value>
+            </Item12>
+          </Values>
         </Item10>
         <Item11>
           <Values>
@@ -9727,7 +9727,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>hp</Value>
+              <Value>mp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -9784,7 +9784,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>mp</Value>
+              <Value>stat_agi</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -9841,7 +9841,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_agi</Value>
+              <Value>stat_int</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -9898,7 +9898,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_int</Value>
+              <Value>stat_str</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -9955,7 +9955,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_str</Value>
+              <Value>stat_minhit</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -10012,7 +10012,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_minhit</Value>
+              <Value>stat_maxhit</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -10069,7 +10069,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxhit</Value>
+              <Value>stat_maxhp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -10126,7 +10126,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxhp</Value>
+              <Value>stat_maxmp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -10183,7 +10183,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxmp</Value>
+              <Value>stat_defence</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -10240,7 +10240,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_defence</Value>
+              <Value>stat_req_agi</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -10297,7 +10297,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_req_agi</Value>
+              <Value>stat_req_int</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -10354,7 +10354,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_req_int</Value>
+              <Value>stat_req_str</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -10387,63 +10387,6 @@
           </Values>
         </Item22>
         <Item23>
-          <Values>
-            <Count>13</Count>
-            <Item0>
-              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
-              <Value />
-            </Item0>
-            <Item1>
-              <Key>CHARACTER_OCTET_LENGTH</Key>
-              <Value />
-            </Item1>
-            <Item2>
-              <Key>CHARACTER_SET_NAME</Key>
-              <Value />
-            </Item2>
-            <Item3>
-              <Key>COLUMN_DEFAULT</Key>
-              <Value>0</Value>
-            </Item3>
-            <Item4>
-              <Key>COLUMN_KEY</Key>
-              <Value />
-            </Item4>
-            <Item5>
-              <Key>COLUMN_NAME</Key>
-              <Value>stat_req_str</Value>
-            </Item5>
-            <Item6>
-              <Key>COLUMN_TYPE</Key>
-              <Value>smallint(6)</Value>
-            </Item6>
-            <Item7>
-              <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
-            </Item7>
-            <Item8>
-              <Key>EXTRA</Key>
-              <Value />
-            </Item8>
-            <Item9>
-              <Key>IS_NULLABLE</Key>
-              <Value>NO</Value>
-            </Item9>
-            <Item10>
-              <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
-            </Item10>
-            <Item11>
-              <Key>NUMERIC_SCALE</Key>
-              <Value>0</Value>
-            </Item11>
-            <Item12>
-              <Key>TABLE_NAME</Key>
-              <Value>item_template</Value>
-            </Item12>
-          </Values>
-        </Item23>
-        <Item24>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -10499,7 +10442,7 @@
               <Value>item_template</Value>
             </Item12>
           </Values>
-        </Item24>
+        </Item23>
       </Columns>
     </Item20>
     <Item21>
