@@ -71,8 +71,10 @@ namespace NetGore.IO
         /// </summary>
         const string _tempFileSuffix = ".ngtmp";
 
+        /// <summary>
+        /// The relative path to the Temp directory from the root directory.
+        /// </summary>
         const string _tempFolder = "Temp";
-        const string _texturesFolder = "Texture";
 
         /// <summary>
         /// The relative path to the Particle Effects directory from the Contents directory.
@@ -101,7 +103,6 @@ namespace NetGore.IO
         readonly PathString _root;
         readonly PathString _settings;
         readonly PathString _skeletons;
-        readonly PathString _textures;
 
         /// <summary>
         /// Initializes the <see cref="ContentPaths"/> class.
@@ -141,7 +142,6 @@ namespace NetGore.IO
             _grhs = GetChildPath(_root, GrhsFolder);
             _skeletons = GetChildPath(_root, SkeletonsFolder);
             _fx = GetChildPath(_root, FxFolder);
-            _textures = GetChildPath(_root, _texturesFolder);
             _settings = GetChildPath(_root.Back(), SettingsFolder);
             _languages = GetChildPath(_root, LanguagesFolder);
         }
@@ -273,14 +273,6 @@ namespace NetGore.IO
         public static PathString Temp
         {
             get { return _temp; }
-        }
-
-        /// <summary>
-        /// Gets the file path to the Textures directory.
-        /// </summary>
-        public PathString Textures
-        {
-            get { return _textures; }
         }
 
         /// <summary>
