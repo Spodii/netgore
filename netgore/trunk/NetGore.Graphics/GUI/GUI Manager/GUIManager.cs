@@ -263,6 +263,21 @@ namespace NetGore.Graphics.GUI
             get { return _draggedDragDropProvider; }
         }
 
+        IDragDropProvider _dropOntoControl;
+
+        /// <summary>
+        /// Gets the <see cref="Control"/> that implements <see cref="IDragDropProvider"/> that is under the cursor
+        /// and for which <see cref="IDragDropProvider.CanDrop"/> returns true for the
+        /// <see cref="IGUIManager.DraggedDragDropProvider"/>.
+        /// Only valid for when <see cref="IGUIManager.DraggedDragDropProvider"/> is not null. Will be null if there
+        /// is no <see cref="Control"/> under the cursor, or none of the <see cref="Control"/>s under the cursor
+        /// implement the <see cref="IDragDropProvider"/> interface.
+        /// </summary>
+        public IDragDropProvider DropOntoControl
+        {
+            get { return _dropOntoControl; }
+        }
+
         /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
         /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
@@ -621,12 +636,34 @@ namespace NetGore.Graphics.GUI
                 // Since the left mouse button is up, release the drag/drop provider if we have one
                 if (DraggedDragDropProvider != null)
                 {
-                    var ddp = _underCursor as IDragDropProvider;
-                    if (ddp != null && ddp != DraggedDragDropProvider && ddp.CanDrop(DraggedDragDropProvider))
-                        ddp.Drop(DraggedDragDropProvider);
+                    if (DropOntoControl != null && DropOntoControl.CanDrop(DraggedDragDropProvider))
+                        DropOntoControl.Drop(DraggedDragDropProvider);
 
                     _draggedDragDropProvider = null;
                 }
+            }
+
+            // Update the DropOntoContorl
+            if (DraggedDragDropProvider != null)
+            {
+                // Take the control we already found as being under the cursor. Then, create a loop that will check if
+                // the control implements IDragDropProvider. If not, grab the parent. This will either give us the first
+                // control to implement IDragDropProvider, or null.
+                var c = UnderCursor;
+                IDragDropProvider asDDP;
+                while (c != null && (asDDP = c as IDragDropProvider) != null && !asDDP.CanDrop(DraggedDragDropProvider))
+                {
+                    c = c.Parent;
+                }
+
+                _dropOntoControl = c as IDragDropProvider;
+                if (_dropOntoControl != null && !_dropOntoControl.CanDrop(DraggedDragDropProvider))
+                    _dropOntoControl = null;
+            }
+            else
+            {
+                // Nothing is being dragged, so don't take the time to calculate the control to drop onto
+                _dropOntoControl = null;
             }
 
             // Update the controls

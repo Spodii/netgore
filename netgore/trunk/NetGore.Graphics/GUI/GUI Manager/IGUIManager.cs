@@ -29,6 +29,16 @@ namespace NetGore.Graphics.GUI
         IDragDropProvider DraggedDragDropProvider { get; }
 
         /// <summary>
+        /// Gets the <see cref="Control"/> that implements <see cref="IDragDropProvider"/> that is under the cursor
+        /// and for which <see cref="IDragDropProvider.CanDrop"/> returns true for the
+        /// <see cref="IGUIManager.DraggedDragDropProvider"/>.
+        /// Only valid for when <see cref="IGUIManager.DraggedDragDropProvider"/> is not null. Will be null if there
+        /// is no <see cref="Control"/> under the cursor, or none of the <see cref="Control"/>s under the cursor
+        /// implement the <see cref="IDragDropProvider"/> interface.
+        /// </summary>
+        IDragDropProvider DropOntoControl { get; }
+
+        /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
         /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
         /// </summary>
