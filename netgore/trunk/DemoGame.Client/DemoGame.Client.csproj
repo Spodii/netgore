@@ -118,7 +118,10 @@
   <ItemGroup>
     <Compile Include="AccountCharacterInfos.cs" />
     <Compile Include="ChatBubbleManager.cs" />
+    <Compile Include="Controls\IQuickBarItemProvider.cs" />
     <Compile Include="Controls\NPCChatDialogForm.cs" />
+    <Compile Include="Controls\QuickBarForm.cs" />
+    <Compile Include="Controls\QuickBarItemType.cs" />
     <Compile Include="Controls\ShopForm.cs" />
     <Compile Include="Controls\SkillCastProgressBar.cs" />
     <Compile Include="Controls\SkillsForm.cs" />

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
 
 namespace DemoGame.Client
 {
@@ -111,6 +112,11 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Handles when the mouse button has been raised on a <see cref="InventoryItemPB"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
         void InventoryItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
         {
             InventoryItemPB itemPB = (InventoryItemPB)sender;
@@ -210,7 +216,7 @@ namespace DemoGame.Client
 
         #endregion
 
-        public class InventoryItemPB : PictureBox, IDragDropProvider
+        public class InventoryItemPB : PictureBox, IDragDropProvider, IQuickBarItemProvider
         {
             static readonly TooltipHandler _tooltipHandler = TooltipCallback;
 
@@ -408,6 +414,11 @@ namespace DemoGame.Client
             }
 
             #endregion
+
+            public bool TryAddToQuickBar(out QuickBarItemType type, out int value)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
