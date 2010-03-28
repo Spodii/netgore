@@ -1,7 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+
+// ReSharper disable UnusedMember.Local
 
 namespace DemoGame.Client
 {
@@ -12,6 +17,44 @@ namespace DemoGame.Client
     /// </summary>
     class DragDropHandler
     {
+        /// <summary>
+        /// A delegate the <see cref="IDragDropProvider.CanDrop"/> and <see cref="IDragDropProvider.Drop"/>
+        /// implementation methods.
+        /// </summary>
+        /// <param name="src">The <see cref="IDragDropProvider"/> that is being dragged.</param>
+        /// <param name="dest">The <see cref="IDragDropProvider"/> that the <paramref name="src"/> was dropped on.</param>
+        /// <returns>True if the <paramref name="src"/> and <paramref name="dest"/> can be or were successfully
+        /// handled by this delegate; otherwise false.</returns>
+        delegate bool DropCallback(IDragDropProvider src, IDragDropProvider dest);
+
+        /// <summary>
+        /// The <see cref="BindingFlags"/> used to find the methods to bind to.
+        /// </summary>
+        const BindingFlags _bindingFlags =
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod;
+
+        /// <summary>
+        /// The name prefix for the methods to be handled by CanDrop(). Only methods who's name start with this prefix
+        /// will be used in CanDrop().
+        /// </summary>
+        const string _canDropMethodPrefix = "CanDrop_";
+
+        /// <summary>
+        /// The name prefix for the methods to be handled by Drop(). Only methods who's name start with this prefix
+        /// will be used in Drop().
+        /// </summary>
+        const string _dropMethodPrefix = "Drop_";
+
+        /// <summary>
+        /// The <see cref="DropCallback"/>s for the CanDrop_ methods.
+        /// </summary>
+        readonly DropCallback[] _canDropCallbacks;
+
+        /// <summary>
+        /// The <see cref="DropCallback"/>s for the Drop_ methods.
+        /// </summary>
+        readonly DropCallback[] _dropCallbacks;
+
         readonly GameplayScreen _gps;
 
         /// <summary>
@@ -20,7 +63,53 @@ namespace DemoGame.Client
         /// <param name="gps">The <see cref="GameplayScreen"/>.</param>
         public DragDropHandler(GameplayScreen gps)
         {
+            // NOTE: Please read this before implementing new methods!
+            // All methods are hooked automatically using reflection. The methods that begin with CanDrop_
+            // implement the logic for the CanDrop() method for a specific source and destination. Methods that
+            // begin with Drop_ do the same for Drop(). It is highly recommended that you follow the pattern
+            // provided. That is, use the naming conventions used already. In the Drop_ method, be sure to
+            // call the corresponding CanDrop_ method before handling.
+
             _gps = gps;
+
+            // Find all the methods
+            var methods = typeof(DragDropHandler).GetMethods(_bindingFlags);
+
+            // Get the delegates for the methods
+            _canDropCallbacks = CreateDropCallbacks(methods, _canDropMethodPrefix);
+            _dropCallbacks = CreateDropCallbacks(methods, _dropMethodPrefix);
+        }
+
+        /// <summary>
+        /// Creates the <see cref="DropCallback"/>s for a set of <see cref="MethodInfo"/>s.
+        /// </summary>
+        /// <param name="methods">The <see cref="MethodInfo"/>s to create the <see cref="DropCallback"/>s for.</param>
+        /// <param name="namePrefix">The name prefix the <paramref name="methods"/> must have to be included
+        /// in the returned collection.</param>
+        /// <returns>The <see cref="DropCallback"/>s for the <paramref name="methods"/> that include the given
+        /// <paramref name="namePrefix"/>.</returns>
+        DropCallback[] CreateDropCallbacks(IEnumerable<MethodInfo> methods, string namePrefix)
+        {
+            List<DropCallback> ret = new List<DropCallback>(); 
+
+            foreach (var method in methods)
+            {
+                // Check for the needed method name prefix
+                if (!method.Name.StartsWith(namePrefix, StringComparison.Ordinal))
+                    continue;
+
+                // For instance methods, the instance of this class is the first argument. For static methods, the
+                // first argument will need to be null.
+                var firstArg = this;
+                if (method.IsStatic)
+                    firstArg = null;
+
+                // Create the delegate for the method
+                var del = Delegate.CreateDelegate(typeof(DropCallback), firstArg, method, true);
+                ret.Add((DropCallback)del);
+            }
+
+            return ret.ToArray();
         }
 
         /// <summary>
@@ -40,21 +129,40 @@ namespace DemoGame.Client
             }
 
             // Check if any of our implementations are supported
-
-            // TODO: Delegates + reflection
-            if (CanDrop_EquippedItemToInventory(src, dest))
-                return true;
-            if (CanDrop_InventoryItemToShop(src, dest))
-                return true;
-            if (CanDrop_InventorySlotToInventorySlot(src, dest))
-                return true;
-            if (CanDrop_InventoryItemToEquipped(src, dest))
-                return true;
+            for (int i = 0; i < _canDropCallbacks.Length; i++)
+            {
+                if (_canDropCallbacks[i](src, dest))
+                    return true;
+            }
 
             return false;
         }
 
-        bool CanDrop_EquippedItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        /// <summary>
+        /// Handles the drag-and-drop for the given <see cref="IDragDropProvider"/>s.
+        /// </summary>
+        /// <param name="src">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="dest">The <see cref="IDragDropProvider"/> that that <paramref name="src"/> was dropped onto.</param>
+        public void Drop(IDragDropProvider src, IDragDropProvider dest)
+        {
+            // Check for valid parameters
+            if (src == null || dest == null)
+            {
+                Debug.Fail("Shouldn't ever be passed a null argument.");
+                return;
+            }
+
+            // Use the first method that successfully handles the given source and destination
+            for (int i = 0; i < _dropCallbacks.Length; i++)
+            {
+                if (_dropCallbacks[i](src, dest))
+                    return;
+            }
+        }
+
+        #region Equipped Item -> Inventory
+
+        static bool CanDrop_EquippedItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as EquippedForm.EquippedItemPB;
             var dest = destDDP as InventoryForm;
@@ -68,6 +176,22 @@ namespace DemoGame.Client
 
             return true;
         }
+
+        bool Drop_EquippedItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        {
+            if (!CanDrop_EquippedItemToInventory(srcDDP, destDDP))
+                return false;
+
+            var src = (EquippedForm.EquippedItemPB)srcDDP;
+
+            _gps.EquippedForm_RequestUnequip((EquippedForm)src.Parent, src.Slot);
+
+            return true;
+        }
+
+        #endregion
+
+        #region Inventory Item -> Equipped
 
         bool CanDrop_InventoryItemToEquipped(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
@@ -90,6 +214,22 @@ namespace DemoGame.Client
             return true;
         }
 
+        bool Drop_InventoryItemToEquipped(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        {
+            if (!CanDrop_InventoryItemToEquipped(srcDDP, destDDP))
+                return false;
+
+            var src = (InventoryForm.InventoryItemPB)srcDDP;
+
+            ((InventoryForm)src.Parent).InvokeRequestUseItem(src.Slot);
+
+            return true;
+        }
+
+        #endregion
+
+        #region Inventory Item -> Shop
+
         bool CanDrop_InventoryItemToShop(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as InventoryForm.InventoryItemPB;
@@ -101,7 +241,20 @@ namespace DemoGame.Client
             return true;
         }
 
-        bool CanDrop_InventorySlotToInventorySlot(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        bool Drop_InventoryItemToShop(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        {
+            var src = srcDDP as InventoryForm.InventoryItemPB;
+            var dest = destDDP as ShopForm;
+
+            // TODO: Sell item
+            return true;
+        }
+
+        #endregion
+
+        #region Inventory Item -> Inventory Item
+
+        bool CanDrop_InventoryItemToInventoryItem(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as InventoryForm.InventoryItemPB;
             var dest = destDDP as InventoryForm.InventoryItemPB;
@@ -125,59 +278,9 @@ namespace DemoGame.Client
             return true;
         }
 
-        /// <summary>
-        /// Handles the drag-and-drop for the given <see cref="IDragDropProvider"/>s.
-        /// </summary>
-        /// <param name="src">The <see cref="IDragDropProvider"/> that was dragged.</param>
-        /// <param name="dest">The <see cref="IDragDropProvider"/> that that <paramref name="src"/> was dropped onto.</param>
-        public void Drop(IDragDropProvider src, IDragDropProvider dest)
+        bool Drop_InventoryItemToInventoryItem(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
-            if (Drop_EquippedItemToInventory(src, dest))
-                return;
-            if (Drop_InventoryItemToEquipped(src, dest))
-                return;
-            if (Drop_InventoryItemToShop(src, dest))
-                return;
-            if (Drop_InventorySlotToInventorySlot(src, dest))
-                return;
-        }
-
-        bool Drop_EquippedItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
-        {
-            if (!CanDrop_EquippedItemToInventory(srcDDP, destDDP))
-                return false;
-
-            var src = (EquippedForm.EquippedItemPB)srcDDP;
-
-            _gps.EquippedForm_RequestUnequip((EquippedForm)src.Parent, src.Slot);
-
-            return true;
-        }
-
-        bool Drop_InventoryItemToEquipped(IDragDropProvider srcDDP, IDragDropProvider destDDP)
-        {
-            if (!CanDrop_InventoryItemToEquipped(srcDDP, destDDP))
-                return false;
-
-            var src = (InventoryForm.InventoryItemPB)srcDDP;
-
-            ((InventoryForm)src.Parent).InvokeRequestUseItem(src.Slot);
-
-            return true;
-        }
-
-        bool Drop_InventoryItemToShop(IDragDropProvider srcDDP, IDragDropProvider destDDP)
-        {
-            var src = srcDDP as InventoryForm.InventoryItemPB;
-            var dest = destDDP as ShopForm;
-
-            // TODO: Sell item
-            return true;
-        }
-
-        bool Drop_InventorySlotToInventorySlot(IDragDropProvider srcDDP, IDragDropProvider destDDP)
-        {
-            if (!CanDrop_InventorySlotToInventorySlot(srcDDP, destDDP))
+            if (!CanDrop_InventoryItemToInventoryItem(srcDDP, destDDP))
                 return false;
 
             var src = (InventoryForm.InventoryItemPB)srcDDP;
@@ -190,5 +293,7 @@ namespace DemoGame.Client
 
             return true;
         }
+
+        #endregion
     }
 }
