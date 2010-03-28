@@ -7,6 +7,7 @@ using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.Reflection;
 using System.Globalization;
+using NetGore.Xna.Framework;
 
 namespace NetGore.Xna.Framework.Design
 {
