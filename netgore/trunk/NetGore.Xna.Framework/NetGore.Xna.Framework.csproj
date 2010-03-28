@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetGore.Xna.Framework</RootNamespace>
+    <AssemblyName>NetGore.Xna.Framework</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BoundingBox.cs" />
+    <Compile Include="BoundingFrustum.cs" />
+    <Compile Include="BoundingSphere.cs" />
+    <Compile Include="ContainmentType.cs" />
+    <Compile Include="Design\BoundingBoxConverter.cs" />
+    <Compile Include="Design\BoundingSphereConverter.cs" />
+    <Compile Include="Design\MatrixConverter.cs" />
+    <Compile Include="Design\PlaneConverter.cs" />
+    <Compile Include="Design\QuaternionConverter.cs" />
+    <Compile Include="Design\RayConverter.cs" />
+    <Compile Include="Design\Vector3Converter.cs" />
+    <Compile Include="Design\Vector4Converter.cs" />
+    <Compile Include="Gjk.cs" />
+    <Compile Include="MathHelper.cs" />
+    <Compile Include="Matrix.cs" />
+    <Compile Include="Plane.cs" />
+    <Compile Include="Quaternion.cs" />
+    <Compile Include="Ray.cs" />
+    <Compile Include="Vector2.cs" />
+    <Compile Include="Design\FieldPropertyDescriptor.cs" />
+    <Compile Include="Design\MathTypeConverter.cs" />
+    <Compile Include="Design\MemberPropertyDescriptor.cs" />
+    <Compile Include="Design\Vector2Converter.cs" />
+    <Compile Include="FrameworkResources.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vector3.cs" />
+    <Compile Include="Vector4.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
