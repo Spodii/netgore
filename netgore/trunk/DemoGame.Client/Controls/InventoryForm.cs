@@ -10,7 +10,7 @@ using NetGore.Graphics.GUI;
 
 namespace DemoGame.Client
 {
-    class InventoryForm : Form
+    class InventoryForm : Form, IDragDropProvider
     {
         /// <summary>
         /// Delegate for handling events related to items in the inventory.
@@ -55,8 +55,8 @@ namespace DemoGame.Client
         /// <param name="infoRequester">The item info tooltip.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public InventoryForm(Func<Inventory, bool> isUserInv, ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position, Control parent)
-            : base(parent, position, new Vector2(200, 200))
+        public InventoryForm(Func<Inventory, bool> isUserInv, ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position,
+                             Control parent) : base(parent, position, new Vector2(200, 200))
         {
             if (infoRequester == null)
                 throw new ArgumentNullException("infoRequester");
@@ -79,19 +79,37 @@ namespace DemoGame.Client
         public event InventoryItemHandler RequestDropItem;
 
         /// <summary>
-        /// Notifies listeners when an item was requested to be used.
-        /// </summary>
-        public event InventoryItemHandler RequestUseItem;
-
-        /// <summary>
         /// Notifies listeners when an item was requested to swap slots.
         /// </summary>
         public event InventorySwapItemHandler RequestSwapSlots;
+
+        /// <summary>
+        /// Notifies listeners when an item was requested to be used.
+        /// </summary>
+        public event InventoryItemHandler RequestUseItem;
 
         public Inventory Inventory
         {
             get { return _inventory; }
             set { _inventory = value; }
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="RequestUseItem"/> event.
+        /// </summary>
+        /// <param name="slot">The <see cref="InventorySlot"/> to use.</param>
+        public void InvokeRequestUseItem(InventorySlot slot )
+        {
+            if (RequestUseItem != null)
+                RequestUseItem(this, slot);
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="InventoryForm"/> is for the inventory for the user.
+        /// </summary>
+        public bool IsUserInventory
+        {
+            get { return _isUserInv(Inventory); }
         }
 
         void CreateItemSlots()
@@ -107,12 +125,6 @@ namespace DemoGame.Client
 
                 new InventoryItemPB(this, pos, new InventorySlot(i));
             }
-        }
-
-        void InvokeRequestSwapSlotsEvent(InventorySlot a, InventorySlot b)
-        {
-            if (RequestSwapSlots != null)
-                RequestSwapSlots(this, a, b);
         }
 
         void InventoryItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
@@ -136,6 +148,12 @@ namespace DemoGame.Client
             }
         }
 
+        void InvokeRequestSwapSlotsEvent(InventorySlot a, InventorySlot b)
+        {
+            if (RequestSwapSlots != null)
+                RequestSwapSlots(this, a, b);
+        }
+
         /// <summary>
         /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
         /// base class's method to ensure that changes to settings are hierchical.
@@ -147,13 +165,92 @@ namespace DemoGame.Client
             Text = "Inventory";
         }
 
-        class InventoryItemPB : PictureBox, IDragDropProvider
+        #region IDragDropProvider Members
+
+        /// <summary>
+        /// Gets if this <see cref="IDragDropProvider"/> can be dragged. In the case of something that only
+        /// supports having items dropped on it but not dragging, this will always return false. For items that can be
+        /// dragged, this will return false if there is currently nothing to drag (such as an empty inventory slot) or
+        /// there is some other reason that this item cannot currently be dragged.
+        /// </summary>
+        bool IDragDropProvider.CanDragContents
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
+        /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
+        /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
+        /// otherwise false.</returns>
+        bool IDragDropProvider.CanDrop(IDragDropProvider source)
+        {
+            // Equipped item -> Inventory: Remove equipment
+            var asEquipped = source as EquippedForm.EquippedItemPB;
+            if (asEquipped != null)
+            {
+                var inv = ((Control)source).Parent as EquippedForm;
+                if (inv != null)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Draws the item that this <see cref="IDragDropProvider"/> contains for when this item
+        /// is being dragged.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="position">The position to draw the sprite at.</param>
+        /// <param name="color">The color to use when drawing the item.</param>
+        void IDragDropProvider.DrawDraggedItem(ISpriteBatch spriteBatch, Vector2 position, Color color)
+        {
+        }
+
+        /// <summary>
+        /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
+        /// dragged onto it but not yet dropped.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the specified <see cref="IDragDropProvider"/> is dropped on this <see cref="IDragDropProvider"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="IDragDropProvider"/> that is being dropped on this
+        /// <see cref="IDragDropProvider"/>.</param>
+        void IDragDropProvider.Drop(IDragDropProvider source)
+        {
+            // Equipped item -> Inventory: Remove equipment
+            var asEquipped = source as EquippedForm.EquippedItemPB;
+            if (asEquipped != null)
+            {
+                var inv = asEquipped.Parent as EquippedForm;
+                if (inv != null)
+                    inv.InvokeRequestUnequip(asEquipped.Slot);
+            }
+        }
+
+        #endregion
+
+        internal class InventoryItemPB : PictureBox, IDragDropProvider
         {
             static readonly TooltipHandler _tooltipHandler = TooltipCallback;
 
             readonly InventoryForm _invForm;
             readonly InventorySlot _slot;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InventoryItemPB"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="pos">The relative position of the control.</param>
+            /// <param name="slot">The <see cref="InventorySlot"/>.</param>
             public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot) : base(parent, pos, _itemSize)
             {
                 if (parent == null)
@@ -164,15 +261,19 @@ namespace DemoGame.Client
                 Tooltip = _tooltipHandler;
             }
 
-            public InventorySlot Slot
+            /// <summary>
+            /// Gets if this <see cref="InventoryItemPB"/> is from the <see cref="InventoryForm"/>
+            /// for the user.
+            /// </summary>
+            public bool IsUserInventory
             {
-                get { return _slot; }
+                get { return _invForm.IsUserInventory; }
             }
 
             /// <summary>
             /// Gets the <see cref="ItemEntity"/> in this inventory slot.
             /// </summary>
-            ItemEntity Item
+            public ItemEntity Item
             {
                 get
                 {
@@ -189,6 +290,14 @@ namespace DemoGame.Client
 
                     return item;
                 }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="InventorySlot"/> for this inventory item slot.
+            /// </summary>
+            public InventorySlot Slot
+            {
+                get { return _slot; }
             }
 
             /// <summary>
@@ -253,35 +362,21 @@ namespace DemoGame.Client
                 return ItemInfoHelper.GetStyledText(itemInfo);
             }
 
+            #region IDragDropProvider Members
+
             /// <summary>
             /// Gets if this <see cref="IDragDropProvider"/> can be dragged. In the case of something that only
             /// supports having items dropped on it but not dragging, this will always return false. For items that can be
             /// dragged, this will return false if there is currently nothing to drag (such as an empty inventory slot) or
             /// there is some other reason that this item cannot currently be dragged.
             /// </summary>
-            public bool CanDragContents
+            bool IDragDropProvider.CanDragContents
             {
                 get
                 {
                     // Only allow dragging from slots on the User's inventory that have an item
-                    return Item != null && _invForm._isUserInv(_invForm.Inventory);
+                    return Item != null && IsUserInventory;
                 }
-            }
-
-            /// <summary>
-            /// Draws the item that this <see cref="IDragDropProvider"/> contains for when this item
-            /// is being dragged.
-            /// </summary>
-            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-            /// <param name="position">The position to draw the sprite at.</param>
-            /// <param name="color">The color to use when drawing the item.</param>
-            public void DrawDraggedItem(ISpriteBatch spriteBatch, Vector2 position, Color color)
-            {
-                var item = Item;
-                if (item == null)
-                    return;
-
-                item.Draw(spriteBatch, position, color);
             }
 
             /// <summary>
@@ -291,13 +386,13 @@ namespace DemoGame.Client
             /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
             /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
             /// otherwise false.</returns>
-            public bool CanDrop(IDragDropProvider source)
+            bool IDragDropProvider.CanDrop(IDragDropProvider source)
             {
+                // User inventory slot -> User inventory slot: Change slots
                 var sourceInvItem = source as InventoryItemPB;
                 if (sourceInvItem != null)
                 {
-                    // Drag from one of the user's inventory slots to another
-                    if (sourceInvItem._invForm == _invForm)
+                    if (sourceInvItem._invForm == _invForm && IsUserInventory)
                         return true;
                 }
 
@@ -305,21 +400,19 @@ namespace DemoGame.Client
             }
 
             /// <summary>
-            /// Handles when the specified <see cref="IDragDropProvider"/> is dropped on this <see cref="IDragDropProvider"/>.
+            /// Draws the item that this <see cref="IDragDropProvider"/> contains for when this item
+            /// is being dragged.
             /// </summary>
-            /// <param name="source">The <see cref="IDragDropProvider"/> that is being dropped on this
-            /// <see cref="IDragDropProvider"/>.</param>
-            public void Drop(IDragDropProvider source)
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+            /// <param name="position">The position to draw the sprite at.</param>
+            /// <param name="color">The color to use when drawing the item.</param>
+            void IDragDropProvider.DrawDraggedItem(ISpriteBatch spriteBatch, Vector2 position, Color color)
             {
-                var sourceInvItem = source as InventoryItemPB;
+                var item = Item;
+                if (item == null)
+                    return;
 
-                // Drag from one of the user's inventory slots to another
-                if (sourceInvItem != null && sourceInvItem._invForm == _invForm)
-                {
-                    var a = Slot;
-                    var b = sourceInvItem.Slot;
-                    _invForm.InvokeRequestSwapSlotsEvent(a, b);
-                }
+                item.Draw(spriteBatch, position, color);
             }
 
             /// <summary>
@@ -327,10 +420,29 @@ namespace DemoGame.Client
             /// dragged onto it but not yet dropped.
             /// </summary>
             /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-            public void DrawDropHighlight(ISpriteBatch spriteBatch)
+            void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
             {
                 DragDropProviderHelper.DrawDropHighlight(spriteBatch, GetScreenArea());
             }
+
+            /// <summary>
+            /// Handles when the specified <see cref="IDragDropProvider"/> is dropped on this <see cref="IDragDropProvider"/>.
+            /// </summary>
+            /// <param name="source">The <see cref="IDragDropProvider"/> that is being dropped on this
+            /// <see cref="IDragDropProvider"/>.</param>
+            void IDragDropProvider.Drop(IDragDropProvider source)
+            {
+                // User inventory slot -> User inventory slot: Change slots
+                var sourceInvItem = source as InventoryItemPB;
+                if (sourceInvItem != null && sourceInvItem._invForm == _invForm && IsUserInventory)
+                {
+                    var a = Slot;
+                    var b = sourceInvItem.Slot;
+                    _invForm.InvokeRequestSwapSlotsEvent(a, b);
+                }
+            }
+
+            #endregion
         }
     }
 }
