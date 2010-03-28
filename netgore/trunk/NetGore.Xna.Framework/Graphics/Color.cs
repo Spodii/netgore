@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.ComponentModel;
@@ -149,7 +149,6 @@ namespace NetGore.Xna.Framework.Graphics
                 this.packedValue = (this.packedValue & 0xffffff) | ((uint)(value << 0x18));
             }
         }
-        [CLSCompliant(false)]
         public uint PackedValue
         {
             get
