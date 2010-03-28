@@ -67,6 +67,8 @@
     <Compile Include="Graphics\Color.cs" />
     <Compile Include="Graphics\PackedVector\IPackedVector.cs" />
     <Compile Include="Graphics\PackedVector\PackUtils.cs" />
+    <Compile Include="Graphics\SpriteBlendMode.cs" />
+    <Compile Include="Input\Keys.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Plane.cs" />
