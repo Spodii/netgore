@@ -131,7 +131,7 @@ namespace DemoGame.Server
             if (_isPersistent)
             {
                 CharacterEquippedTable values = new CharacterEquippedTable(Character.ID, item.ID, slot);
-                DbController.GetQuery<InsertCharacterEquippedItemQuery>().Execute(values);
+                DbController.GetQuery<ReplaceCharacterEquippedItemQuery>().Execute(values);
             }
 
             SendSlotUpdate(slot, item.GraphicIndex);

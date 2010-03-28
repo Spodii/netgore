@@ -109,6 +109,7 @@ namespace NetGore.Graphics.GUI
         /// not even at the given <paramref name="point"/>.</returns>
         static Control GetControlAtPoint(Vector2 point, Control root)
         {
+            // Do not return invisible controls
             if (!root.IsVisible)
                 return null;
 
@@ -250,6 +251,17 @@ namespace NetGore.Graphics.GUI
         /// Notifies listeners when the focused root <see cref="Control"/> has changed.
         /// </summary>
         public event GUIEventHandler FocusedRootChanged;
+
+        IDragDropProvider _draggedDragDropProvider;
+
+        /// <summary>
+        /// Gets the <see cref="IDragDropProvider"/> that is currently being dragged for drag-and-drop. Not to
+        /// be confused with dragging a <see cref="Control"/> that supports being dragged.
+        /// </summary>
+        public IDragDropProvider DraggedDragDropProvider
+        {
+            get { return _draggedDragDropProvider; }
+        }
 
         /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
@@ -496,9 +508,20 @@ namespace NetGore.Graphics.GUI
                 control.Draw(spriteBatch);
             }
 
+            // Draw the item being dragged
+            if (DraggedDragDropProvider != null)
+                DraggedDragDropProvider.DrawDraggedItem(spriteBatch, CursorPosition, DraggedItemColor);
+
             // Draw the tooltip
             Tooltip.Draw(spriteBatch);
         }
+
+        static Color _draggedItemColor = new Color(255, 255, 255, 150);
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to draw the <see cref="IDragDropProvider"/> item currently being dragged.
+        /// </summary>
+        public static Color DraggedItemColor { get { return _draggedItemColor; } set { _draggedItemColor = value; } }
 
         /// <summary>
         /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManager"/>, including all
@@ -580,9 +603,33 @@ namespace NetGore.Graphics.GUI
 
             // Update which root is focused
             UpdateFocusedRoot();
+            _underCursor = GetControlAtPoint(CursorPosition);
+
+            if (MouseState.LeftButton == ButtonState.Pressed)
+            {
+                // Check if the left mouse button has been freshly pressed. If so, check if the control under the cursor
+                // supports drag/drop.
+                if (LastMouseState.LeftButton == ButtonState.Released)
+                {
+                    var ddp = _underCursor as IDragDropProvider;
+                    if (ddp != null && ddp.CanDragContents && !_underCursor.CanDrag)
+                        _draggedDragDropProvider = ddp;
+                }
+            }
+            else
+            {
+                // Since the left mouse button is up, release the drag/drop provider if we have one
+                if (DraggedDragDropProvider != null)
+                {
+                    var ddp = _underCursor as IDragDropProvider;
+                    if (ddp != null && ddp != DraggedDragDropProvider && ddp.CanDrop(DraggedDragDropProvider))
+                        ddp.Drop(DraggedDragDropProvider);
+
+                    _draggedDragDropProvider = null;
+                }
+            }
 
             // Update the controls
-            _underCursor = GetControlAtPoint(CursorPosition);
             foreach (Control control in Controls.Reverse())
             {
                 control.Update(currentTime);

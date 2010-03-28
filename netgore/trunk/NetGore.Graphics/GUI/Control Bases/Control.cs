@@ -823,11 +823,22 @@ namespace NetGore.Graphics.GUI
                 return;
             }
 
+            // If this control isn't visible, none of the child controls will be visible, either
             if (!IsVisible)
                 return;
 
+            // Draw the control
             DrawControl(spriteBatch);
 
+            // Draw the highlighting if there is an object being dragged and it can be dropped onto this
+            if (this is IDragDropProvider && GUIManager.DraggedDragDropProvider != null && this == GUIManager.UnderCursor && this != GUIManager.DraggedDragDropProvider)
+            {
+                var ddp = (IDragDropProvider)this;
+                if (ddp.CanDrop(GUIManager.DraggedDragDropProvider))
+                    ddp.DrawDropHighlight(spriteBatch);
+            }
+
+            // Draw all the child controls
             for (int i = 0; i < _controls.Count; i++)
             {
                 _controls[i].DrawControlStart(spriteBatch);

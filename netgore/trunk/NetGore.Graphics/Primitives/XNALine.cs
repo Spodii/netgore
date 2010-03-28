@@ -14,9 +14,10 @@ namespace NetGore.Graphics
         static Grh _blankGrh = null;
 
         /// <summary>
-        /// Static instance of the XNALine. Used when doing a static Draw() call.
+        /// Static instance of the XNALine. Used when doing a static Draw() call. Don't need to make thread-safe
+        /// since drawing is assumed to not be thread-safe anyways.
         /// </summary>
-        static XNALine _xnaLine = null;
+        static readonly XNALine _xnaLine = new XNALine();
 
         float _angle = 0.0f;
         Color _color = Color.White;
@@ -25,7 +26,7 @@ namespace NetGore.Graphics
         Vector2 _scale = new Vector2(0.5f, 0.5f);
 
         /// <summary>
-        /// XNALine constructor
+        /// Initializes a new instance of the <see cref="XNALine"/> class.
         /// </summary>
         public XNALine()
         {
@@ -35,10 +36,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// XNALine constructor
+        /// Initializes a new instance of the <see cref="XNALine"/> class.
         /// </summary>
-        /// <param name="p1">First point of the line</param>
-        /// <param name="p2">Second point of the line</param>
+        /// <param name="p1">First point of the line.</param>
+        /// <param name="p2">Second point of the line.</param>
         public XNALine(Vector2 p1, Vector2 p2)
         {
             _p1 = p1;
@@ -48,11 +49,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// XNALine constructor
+        /// Initializes a new instance of the <see cref="XNALine"/> class.
         /// </summary>
-        /// <param name="p1">First point of the line</param>
-        /// <param name="p2">Second point of the line</param>
-        /// <param name="color">Color of the line</param>
+        /// <param name="p1">First point of the line.</param>
+        /// <param name="p2">Second point of the line.</param>
+        /// <param name="color">Color of the line.</param>
         public XNALine(Vector2 p1, Vector2 p2, Color color)
         {
             _p1 = p1;
@@ -62,7 +63,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the color of the line
+        /// Gets or sets the <see cref="Color"/> of the line.
         /// </summary>
         public Color Color
         {
@@ -71,7 +72,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the first point of the line
+        /// Gets or sets the first point of the line.
         /// </summary>
         public Vector2 P1
         {
@@ -87,7 +88,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the second point of the line
+        /// Gets or sets the second point of the line.
         /// </summary>
         public Vector2 P2
         {
@@ -103,12 +104,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the thickness of the line.
+        /// Gets or sets the thickness of the line in pixels.
         /// </summary>
         public float Thickness
         {
             get { return _scale.Y; }
-            set { _scale.Y = value; }
+            set { _scale.Y = value / 2f; }
         }
 
         /// <summary>
@@ -120,12 +121,22 @@ namespace NetGore.Graphics
         /// <param name="color">Color of the line.</param>
         public static void Draw(ISpriteBatch sb, Vector2 p1, Vector2 p2, Color color)
         {
-            // Create the static XNALine instance if needed
-            if (_xnaLine == null)
-                _xnaLine = new XNALine();
+            Draw(sb, p1, p2, color, 1f);
+        }
 
+        /// <summary>
+        /// Draws a line.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="p1">First point of the line.</param>
+        /// <param name="p2">Second point of the line.</param>
+        /// <param name="color">Color of the line.</param>
+        /// <param name="thickness">The thickness of the line in pixels. Default is 1.</param>
+        public static void Draw(ISpriteBatch sb, Vector2 p1, Vector2 p2, Color color, float thickness)
+        {
             // Set the values and draw
             _xnaLine.SetPoints(p1, p2);
+            _xnaLine.Thickness = thickness;
             _xnaLine.Draw(sb, color);
         }
 

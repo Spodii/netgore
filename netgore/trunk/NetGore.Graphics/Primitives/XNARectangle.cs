@@ -25,6 +25,19 @@ namespace NetGore.Graphics
         /// <param name="borderColor">Color of the border to draw around the rectangle.</param>
         public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, Color borderColor)
         {
+            Draw(sb, dest, color, borderColor, 1f);
+        }
+
+        /// <summary>
+        /// Draws a rectangle.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="dest">Destination rectangle.</param>
+        /// <param name="color">Color of the box.</param>
+        /// <param name="borderColor">Color of the border to draw around the rectangle.</param>
+        /// <param name="borderThickness">The thickness of the border in pixels. Default is 1.</param>
+        public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, Color borderColor, float borderThickness)
+        {
             LoadGrh();
             _blankGrh.Draw(sb, dest, color);
 
@@ -39,10 +52,10 @@ namespace NetGore.Graphics
             Vector2 bl = new Vector2(tl.X, br.Y);
 
             // Draw the 4 lines
-            XNALine.Draw(sb, tl, tr, borderColor);
-            XNALine.Draw(sb, tl, bl, borderColor);
-            XNALine.Draw(sb, br, bl, borderColor);
-            XNALine.Draw(sb, br, tr, borderColor);
+            XNALine.Draw(sb, tl, tr, borderColor, borderThickness);
+            XNALine.Draw(sb, tl, bl, borderColor, borderThickness);
+            XNALine.Draw(sb, br, bl, borderColor, borderThickness);
+            XNALine.Draw(sb, br, tr, borderColor, borderThickness);
         }
 
         /// <summary>
@@ -50,7 +63,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="dest">Destination rectangle.</param>
-        /// <param name="color">Color of the box.</param>
+        /// <param name="color">Color of the rectangle.</param>
         public static void Draw(ISpriteBatch sb, Rectangle dest, Color color)
         {
             LoadGrh();

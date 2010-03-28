@@ -368,9 +368,10 @@ namespace DemoGame.Client
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
-            _inventoryForm = new InventoryForm(InventoryInfoRequester, new Vector2(250, 0), cScreen);
+            _inventoryForm = new InventoryForm(x => x == UserInfo.Inventory, InventoryInfoRequester, new Vector2(250, 0), cScreen);
             _inventoryForm.RequestDropItem += InventoryForm_RequestDropItem;
             _inventoryForm.RequestUseItem += InventoryForm_RequestUseItem;
+            _inventoryForm.RequestSwapSlots += InventoryForm_RequestSwapSlots;
 
             _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
             _shopForm.RequestPurchase += ShopForm_RequestPurchase;
@@ -420,6 +421,15 @@ namespace DemoGame.Client
             _guiSettings.Add("GuildForm", _guildForm);
             _guiSettings.Add("StatusEffectsForm", _statusEffectsForm);
             _guiSettings.Add("SkillsForm", _skillsForm);
+        }
+
+        void InventoryForm_RequestSwapSlots(InventoryForm inventoryForm, InventorySlot a, InventorySlot b)
+        {
+            if (inventoryForm.Inventory != UserInfo.Inventory)
+                return;
+
+            using (var pw = ClientPacket.SwapInventorySlots(a, b))
+                Socket.Send(pw);
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)

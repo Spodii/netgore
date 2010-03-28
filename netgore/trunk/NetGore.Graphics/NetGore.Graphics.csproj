@@ -134,6 +134,7 @@
     <Compile Include="GUI\GameControl\GameControlKeys.cs" />
     <Compile Include="GUI\GUIEventHandler.cs" />
     <Compile Include="GUI\GUI Manager\GUIManager.cs" />
+    <Compile Include="GUI\IDragDropProvider.cs" />
     <Compile Include="GUI\IEditableText.cs" />
     <Compile Include="GUI\GUI Manager\IGUIManager.cs" />
     <Compile Include="GUI\MoveCursorDirection.cs" />

@@ -9,16 +9,16 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class InsertCharacterInventoryItemQuery : DbQueryNonReader<ICharacterInventoryTable>
+    public class ReplaceCharacterInventoryItemQuery : DbQueryNonReader<ICharacterInventoryTable>
     {
-        static readonly string _queryString = string.Format("INSERT INTO `{0}` SET {1}", CharacterInventoryTable.TableName,
+        static readonly string _queryString = string.Format("REPLACE INTO `{0}` SET {1}", CharacterInventoryTable.TableName,
                                                             FormatParametersIntoString(CharacterInventoryTable.DbColumns));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertCharacterInventoryItemQuery"/> class.
+        /// Initializes a new instance of the <see cref="ReplaceCharacterInventoryItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public ReplaceCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
@@ -41,7 +41,7 @@ namespace DemoGame.Server.Queries
         /// When overridden in the derived class, sets the database parameters based on the specified characterID.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="characterID">Item used to execute the query.</param>
+        /// <param name="item">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
         {
             item.CopyValues(p);
