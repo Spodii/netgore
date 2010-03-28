@@ -60,6 +60,7 @@
     <Compile Include="Design\PropertyPropertyDescriptor.cs" />
     <Compile Include="Design\QuaternionConverter.cs" />
     <Compile Include="Design\RayConverter.cs" />
+    <Compile Include="Design\RectangleConverter.cs" />
     <Compile Include="Design\Vector3Converter.cs" />
     <Compile Include="Design\Vector4Converter.cs" />
     <Compile Include="Gjk.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Point.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Ray.cs" />
+    <Compile Include="Rectangle.cs" />
     <Compile Include="Vector2.cs" />
     <Compile Include="Design\FieldPropertyDescriptor.cs" />
     <Compile Include="Design\MathTypeConverter.cs" />

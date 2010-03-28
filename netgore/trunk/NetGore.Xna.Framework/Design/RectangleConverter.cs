@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
@@ -11,19 +10,15 @@ using NetGore.Xna.Framework;
 
 namespace NetGore.Xna.Framework.Design
 {
-    public class BoundingSphereConverter : MathTypeConverter
+    public class RectangleConverter : MathTypeConverter
     {
         // Methods
-        public BoundingSphereConverter()
+        public RectangleConverter()
         {
-            Type type = typeof(BoundingSphere);
-            base._propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("Center")), new FieldPropertyDescriptor(type.GetField("Radius")) }).Sort(new string[] { "Center", "Radius" });
+            Type type = typeof(Rectangle);
+            PropertyDescriptorCollection descriptors = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")), new FieldPropertyDescriptor(type.GetField("Width")), new FieldPropertyDescriptor(type.GetField("Height")) });
+            base._propertyDescriptions = descriptors;
             base._supportStringConvert = false;
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            return base.ConvertFrom(context, culture, value);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
@@ -32,13 +27,13 @@ namespace NetGore.Xna.Framework.Design
             {
                 throw new ArgumentNullException("destinationType");
             }
-            if ((destinationType == typeof(InstanceDescriptor)) && (value is BoundingSphere))
+            if ((destinationType == typeof(InstanceDescriptor)) && (value is Rectangle))
             {
-                BoundingSphere sphere = (BoundingSphere)value;
-                ConstructorInfo constructor = typeof(BoundingSphere).GetConstructor(new Type[] { typeof(Vector3), typeof(float) });
+                Rectangle rectangle = (Rectangle)value;
+                ConstructorInfo constructor = typeof(Rectangle).GetConstructor(new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) });
                 if (constructor != null)
                 {
-                    return new InstanceDescriptor(constructor, new object[] { sphere.Center, sphere.Radius });
+                    return new InstanceDescriptor(constructor, new object[] { rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height });
                 }
             }
             return base.ConvertTo(context, culture, value, destinationType);
@@ -50,9 +45,7 @@ namespace NetGore.Xna.Framework.Design
             {
                 throw new ArgumentNullException("propertyValues", FrameworkResources.NullNotAllowed);
             }
-            return new BoundingSphere((Vector3)propertyValues["Center"], (float)propertyValues["Radius"]);
+            return new Rectangle((int)propertyValues["X"], (int)propertyValues["Y"], (int)propertyValues["Width"], (int)propertyValues["Height"]);
         }
     }
-
-
 }
