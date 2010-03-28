@@ -15,20 +15,26 @@ namespace DemoGame.Client
         static readonly Vector2 _itemSize = new Vector2(32, 32);
 
         readonly ItemInfoRequesterBase<EquipmentSlot> _infoRequester;
+        readonly DragDropHandler _dragDropHandler;
+
         UserEquipped _userEquipped;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EquippedForm"/> class.
         /// </summary>
+        /// <param name="dragDropHandler">The drag-drop handler.</param>
         /// <param name="infoRequester">The info requester.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public EquippedForm(ItemInfoRequesterBase<EquipmentSlot> infoRequester, Vector2 position, Control parent)
+        public EquippedForm(DragDropHandler dragDropHandler, ItemInfoRequesterBase<EquipmentSlot> infoRequester, Vector2 position, Control parent)
             : base(parent, position, new Vector2(200, 200))
         {
             if (infoRequester == null)
                 throw new ArgumentNullException("infoRequester");
+            if (dragDropHandler == null)
+                throw new ArgumentNullException("dragDropHandler");
 
+            _dragDropHandler = dragDropHandler;
             _infoRequester = infoRequester;
 
             CreateItemSlots();
@@ -40,15 +46,8 @@ namespace DemoGame.Client
         public event RequestUnequipHandler RequestUnequip;
 
         /// <summary>
-        /// Invokes the <see cref="RequestUnequip"/> event.
+        /// Gets or sets the <see cref="UserEquipped"/> containing the equipped items to display on this form.
         /// </summary>
-        /// <param name="slot">The <see cref="EquipmentSlot"/> to unequip.</param>
-        public void InvokeRequestUnequip(EquipmentSlot slot)
-        {
-            if (RequestUnequip != null)
-                RequestUnequip(this, slot);
-        }
-
         public UserEquipped UserEquipped
         {
             get { return _userEquipped; }
@@ -90,6 +89,10 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
         protected override void SetDefaultValues()
         {
             base.SetDefaultValues();
@@ -268,17 +271,7 @@ namespace DemoGame.Client
         /// otherwise false.</returns>
         bool IDragDropProvider.CanDrop(IDragDropProvider source)
         {
-            // Inventory item -> equipped: Equip item
-            var asInvItem = source as InventoryForm.InventoryItemPB;
-            if (asInvItem != null)
-            {
-                var item = asInvItem.Item;
-                var inv = ((Control)source).Parent as InventoryForm;
-                if (inv != null && inv.IsUserInventory && item != null)
-                    return true;
-            }
-
-            return false;
+            return _dragDropHandler.CanDrop(source, this);
         }
 
         /// <summary>
@@ -288,15 +281,7 @@ namespace DemoGame.Client
         /// <see cref="IDragDropProvider"/>.</param>
         void IDragDropProvider.Drop(IDragDropProvider source)
         {
-            // Inventory item -> equipped: Equip item
-            var asInvItem = source as InventoryForm.InventoryItemPB;
-            if (asInvItem != null)
-            {
-                var item = asInvItem.Item;
-                var inv = ((Control)source).Parent as InventoryForm;
-                if (inv != null && inv.IsUserInventory && item != null)
-                    inv.InvokeRequestUseItem(asInvItem.Slot);
-            }
+            _dragDropHandler.Drop(source, this);
         }
 
         /// <summary>

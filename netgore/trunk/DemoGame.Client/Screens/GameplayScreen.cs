@@ -34,12 +34,12 @@ namespace DemoGame.Client
         static readonly EmoticonDisplayManager _emoticonDisplayManager = EmoticonDisplayManager.Instance;
 
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
-        readonly GameplayScreenControls _gameControls;
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
+
         AvailableQuestsForm _availableQuestsForm;
         CharacterTargeter _characterTargeter;
-
+        GameplayScreenControls _gameControls;
         ChatBubbleManager _chatBubbleManager;
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
@@ -69,7 +69,6 @@ namespace DemoGame.Client
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
         public GameplayScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
-            _gameControls = new GameplayScreenControls(this);
         }
 
         public AvailableQuestsForm AvailableQuestsForm
@@ -311,9 +310,9 @@ namespace DemoGame.Client
             sb.DrawString(_damageFont, string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
                           new Vector2(0, _damageFont.LineSpacing + 1), Color.White);
             DrawingManager.EndDrawGUI();
-        }
+        } 
 
-        void EquippedForm_RequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
+        public void EquippedForm_RequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
         {
             // Send unequip request
             using (PacketWriter pw = ClientPacket.UnequipItem(slot))
@@ -329,6 +328,9 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
+            _gameControls = new GameplayScreenControls(this);
+            _dragDropHandler = new DragDropHandler(this);
+
             ClientSockets.Initialize(this);
 
             _socket = ClientSockets.Instance;
@@ -354,6 +356,8 @@ namespace DemoGame.Client
             _chatBubbleManager = new ChatBubbleManager(GUIManager.SkinManager, _guiFont);
         }
 
+        DragDropHandler _dragDropHandler;
+
         /// <summary>
         /// Initializes the GUI components.
         /// </summary>
@@ -368,12 +372,11 @@ namespace DemoGame.Client
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
-            _inventoryForm = new InventoryForm(x => x == UserInfo.Inventory, InventoryInfoRequester, new Vector2(250, 0), cScreen);
+            _inventoryForm = new InventoryForm(_dragDropHandler, x => x == UserInfo.Inventory, InventoryInfoRequester, new Vector2(250, 0), cScreen);
             _inventoryForm.RequestDropItem += InventoryForm_RequestDropItem;
             _inventoryForm.RequestUseItem += InventoryForm_RequestUseItem;
-            _inventoryForm.RequestSwapSlots += InventoryForm_RequestSwapSlots;
 
-            _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
+            _shopForm = new ShopForm(_dragDropHandler, new Vector2(250, 0), cScreen);
             _shopForm.RequestPurchase += ShopForm_RequestPurchase;
 
             _skillsForm = new SkillsForm(SkillCooldownManager, new Vector2(100, 0), cScreen);
@@ -381,7 +384,7 @@ namespace DemoGame.Client
 
             _infoBox = new InfoBox(GameData.ScreenSize - new Vector2(5, 5), _guiFont);
 
-            _equippedForm = new EquippedForm(EquipmentInfoRequester, new Vector2(500, 0), cScreen);
+            _equippedForm = new EquippedForm(_dragDropHandler, EquipmentInfoRequester, new Vector2(500, 0), cScreen);
             _equippedForm.RequestUnequip += EquippedForm_RequestUnequip;
 
             _chatForm = new ChatForm(cScreen, new Vector2(0, cScreen.Size.Y));
@@ -421,15 +424,6 @@ namespace DemoGame.Client
             _guiSettings.Add("GuildForm", _guildForm);
             _guiSettings.Add("StatusEffectsForm", _statusEffectsForm);
             _guiSettings.Add("SkillsForm", _skillsForm);
-        }
-
-        void InventoryForm_RequestSwapSlots(InventoryForm inventoryForm, InventorySlot a, InventorySlot b)
-        {
-            if (inventoryForm.Inventory != UserInfo.Inventory)
-                return;
-
-            using (var pw = ClientPacket.SwapInventorySlots(a, b))
-                Socket.Send(pw);
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
