@@ -34,9 +34,10 @@ namespace DemoGame.Client
         /// </summary>
         static readonly Vector2 _padding = new Vector2(2, 2);
 
+        readonly DragDropHandler _dragDropHandler;
+
         readonly ItemInfoRequesterBase<InventorySlot> _infoRequester;
         readonly Func<Inventory, bool> _isUserInv;
-        readonly DragDropHandler _dragDropHandler;
 
         Inventory _inventory;
 
@@ -49,8 +50,9 @@ namespace DemoGame.Client
         /// <param name="infoRequester">The item info tooltip.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public InventoryForm(DragDropHandler dragDropHandler, Func<Inventory, bool> isUserInv, ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position,
-                             Control parent) : base(parent, position, new Vector2(200, 200))
+        public InventoryForm(DragDropHandler dragDropHandler, Func<Inventory, bool> isUserInv,
+                             ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position, Control parent)
+            : base(parent, position, new Vector2(200, 200))
         {
             if (infoRequester == null)
                 throw new ArgumentNullException("infoRequester");
@@ -84,16 +86,6 @@ namespace DemoGame.Client
         {
             get { return _inventory; }
             set { _inventory = value; }
-        }
-
-        /// <summary>
-        /// Invokes the <see cref="RequestUseItem"/> event.
-        /// </summary>
-        /// <param name="slot">The <see cref="InventorySlot"/> to use.</param>
-        public void InvokeRequestUseItem(InventorySlot slot )
-        {
-            if (RequestUseItem != null)
-                RequestUseItem(this, slot);
         }
 
         /// <summary>
@@ -138,6 +130,16 @@ namespace DemoGame.Client
                         RequestUseItem(this, itemPB.Slot);
                 }
             }
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="RequestUseItem"/> event.
+        /// </summary>
+        /// <param name="slot">The <see cref="InventorySlot"/> to use.</param>
+        public void InvokeRequestUseItem(InventorySlot slot)
+        {
+            if (RequestUseItem != null)
+                RequestUseItem(this, slot);
         }
 
         /// <summary>
@@ -208,11 +210,10 @@ namespace DemoGame.Client
 
         #endregion
 
-        internal class InventoryItemPB : PictureBox, IDragDropProvider
+        public class InventoryItemPB : PictureBox, IDragDropProvider
         {
             static readonly TooltipHandler _tooltipHandler = TooltipCallback;
 
-            readonly InventoryForm _invForm;
             readonly InventorySlot _slot;
 
             /// <summary>
@@ -221,14 +222,23 @@ namespace DemoGame.Client
             /// <param name="parent">The parent.</param>
             /// <param name="pos">The relative position of the control.</param>
             /// <param name="slot">The <see cref="InventorySlot"/>.</param>
+            // ReSharper disable SuggestBaseTypeForParameter
             public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot) : base(parent, pos, _itemSize)
+                // ReSharper restore SuggestBaseTypeForParameter
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");
 
-                _invForm = parent;
                 _slot = slot;
                 Tooltip = _tooltipHandler;
+            }
+
+            /// <summary>
+            /// Gets the <see cref="InventoryForm"/> that this <see cref="InventoryItemPB"/> is on.
+            /// </summary>
+            public InventoryForm InventoryForm
+            {
+                get { return (InventoryForm)Parent; }
             }
 
             /// <summary>
@@ -237,7 +247,7 @@ namespace DemoGame.Client
             /// </summary>
             public bool IsUserInventory
             {
-                get { return _invForm.IsUserInventory; }
+                get { return InventoryForm.IsUserInventory; }
             }
 
             /// <summary>
@@ -247,7 +257,7 @@ namespace DemoGame.Client
             {
                 get
                 {
-                    Inventory inv = _invForm.Inventory;
+                    Inventory inv = InventoryForm.Inventory;
                     if (inv == null)
                         return null;
 
@@ -313,7 +323,7 @@ namespace DemoGame.Client
             {
                 base.OnMouseUp(e);
 
-                _invForm.InventoryItemPB_OnMouseUp(this, e);
+                InventoryForm.InventoryItemPB_OnMouseUp(this, e);
             }
 
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
@@ -322,7 +332,7 @@ namespace DemoGame.Client
                 InventorySlot slot = src.Slot;
                 IItemTable itemInfo;
 
-                if (!src._invForm._infoRequester.TryGetInfo(slot, out itemInfo))
+                if (!src.InventoryForm._infoRequester.TryGetInfo(slot, out itemInfo))
                 {
                     // The data has not been received yet - returning null will make the tooltip retry later
                     return null;
@@ -358,7 +368,7 @@ namespace DemoGame.Client
             /// otherwise false.</returns>
             bool IDragDropProvider.CanDrop(IDragDropProvider source)
             {
-                return _invForm._dragDropHandler.CanDrop(source, this);
+                return InventoryForm._dragDropHandler.CanDrop(source, this);
             }
 
             /// <summary>
@@ -394,7 +404,7 @@ namespace DemoGame.Client
             /// <see cref="IDragDropProvider"/>.</param>
             void IDragDropProvider.Drop(IDragDropProvider source)
             {
-                _invForm._dragDropHandler.Drop(source, this);
+                InventoryForm._dragDropHandler.Drop(source, this);
             }
 
             #endregion

@@ -14,8 +14,8 @@ namespace DemoGame.Client
     {
         static readonly Vector2 _itemSize = new Vector2(32, 32);
 
-        readonly ItemInfoRequesterBase<EquipmentSlot> _infoRequester;
         readonly DragDropHandler _dragDropHandler;
+        readonly ItemInfoRequesterBase<EquipmentSlot> _infoRequester;
 
         UserEquipped _userEquipped;
 
@@ -26,8 +26,8 @@ namespace DemoGame.Client
         /// <param name="infoRequester">The info requester.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public EquippedForm(DragDropHandler dragDropHandler, ItemInfoRequesterBase<EquipmentSlot> infoRequester, Vector2 position, Control parent)
-            : base(parent, position, new Vector2(200, 200))
+        public EquippedForm(DragDropHandler dragDropHandler, ItemInfoRequesterBase<EquipmentSlot> infoRequester, Vector2 position,
+                            Control parent) : base(parent, position, new Vector2(200, 200))
         {
             if (infoRequester == null)
                 throw new ArgumentNullException("infoRequester");
@@ -71,6 +71,12 @@ namespace DemoGame.Client
             new EquippedItemPB(this, pos, slot);
         }
 
+        /// <summary>
+        /// Handles the <see cref="Control.MouseUp"/> event from the <see cref="EquippedItemPB"/>s
+        /// on this form.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
         void EquippedItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
         {
             if (UserEquipped == null)
@@ -100,11 +106,67 @@ namespace DemoGame.Client
             Text = "Equipment";
         }
 
+        #region IDragDropProvider Members
+
+        /// <summary>
+        /// Gets if this <see cref="IDragDropProvider"/> can be dragged. In the case of something that only
+        /// supports having items dropped on it but not dragging, this will always return false. For items that can be
+        /// dragged, this will return false if there is currently nothing to drag (such as an empty inventory slot) or
+        /// there is some other reason that this item cannot currently be dragged.
+        /// </summary>
+        bool IDragDropProvider.CanDragContents
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
+        /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
+        /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
+        /// otherwise false.</returns>
+        bool IDragDropProvider.CanDrop(IDragDropProvider source)
+        {
+            return _dragDropHandler.CanDrop(source, this);
+        }
+
+        /// <summary>
+        /// Draws the item that this <see cref="IDragDropProvider"/> contains for when this item
+        /// is being dragged.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="position">The position to draw the sprite at.</param>
+        /// <param name="color">The color to use when drawing the item.</param>
+        void IDragDropProvider.DrawDraggedItem(ISpriteBatch spriteBatch, Vector2 position, Color color)
+        {
+        }
+
+        /// <summary>
+        /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
+        /// dragged onto it but not yet dropped.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the specified <see cref="IDragDropProvider"/> is dropped on this <see cref="IDragDropProvider"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="IDragDropProvider"/> that is being dropped on this
+        /// <see cref="IDragDropProvider"/>.</param>
+        void IDragDropProvider.Drop(IDragDropProvider source)
+        {
+            _dragDropHandler.Drop(source, this);
+        }
+
+        #endregion
+
         public class EquippedItemPB : PictureBox, IDragDropProvider
         {
             static readonly TooltipHandler _tooltipHandler = TooltipCallback;
 
-            readonly EquippedForm _equippedForm;
             readonly EquipmentSlot _slot;
 
             /// <summary>
@@ -113,24 +175,23 @@ namespace DemoGame.Client
             /// <param name="parent">The parent.</param>
             /// <param name="pos">The relative position.</param>
             /// <param name="slot">The <see cref="EquipmentSlot"/>.</param>
+            // ReSharper disable SuggestBaseTypeForParameter
             public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot) : base(parent, pos, _itemSize)
+                // ReSharper restore SuggestBaseTypeForParameter
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");
 
-                _equippedForm = parent;
                 _slot = slot;
                 Tooltip = _tooltipHandler;
-
-                MouseUp += _equippedForm.EquippedItemPB_OnMouseUp;
             }
 
             /// <summary>
-            /// Gets the <see cref="EquipmentSlot"/> for this slot.
+            /// Gets the <see cref="EquippedForm"/> that this <see cref="EquippedItemPB"/> is on.
             /// </summary>
-            public EquipmentSlot Slot
+            public EquippedForm EquippedForm
             {
-                get { return _slot; }
+                get { return (EquippedForm)Parent; }
             }
 
             /// <summary>
@@ -140,12 +201,20 @@ namespace DemoGame.Client
             {
                 get
                 {
-                    UserEquipped equipped = _equippedForm.UserEquipped;
+                    UserEquipped equipped = EquippedForm.UserEquipped;
                     if (equipped == null)
                         return null;
 
                     return equipped[_slot];
                 }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="EquipmentSlot"/> for this slot.
+            /// </summary>
+            public EquipmentSlot Slot
+            {
+                get { return _slot; }
             }
 
             /// <summary>
@@ -165,13 +234,26 @@ namespace DemoGame.Client
                 item.Draw(spriteBatch, ScreenPosition + offset);
             }
 
+            /// <summary>
+            /// Handles when a mouse button has been raised on the <see cref="Control"/>.
+            /// This is called immediately before <see cref="Control.OnMouseUp"/>.
+            /// Override this method instead of using an event hook on <see cref="Control.MouseUp"/> when possible.
+            /// </summary>
+            /// <param name="e">The event args.</param>
+            protected override void OnMouseUp(MouseClickEventArgs e)
+            {
+                base.OnMouseUp(e);
+
+                EquippedForm.EquippedItemPB_OnMouseUp(this, e);
+            }
+
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
             {
                 EquippedItemPB src = (EquippedItemPB)sender;
                 EquipmentSlot slot = src.Slot;
                 IItemTable itemInfo;
 
-                if (!src._equippedForm._infoRequester.TryGetInfo(slot, out itemInfo))
+                if (!src.EquippedForm._infoRequester.TryGetInfo(slot, out itemInfo))
                 {
                     // The data has not been received yet - returning null will make the tooltip retry later
                     return null;
@@ -180,6 +262,8 @@ namespace DemoGame.Client
                 // Data was received, so format it and return it
                 return ItemInfoHelper.GetStyledText(itemInfo);
             }
+
+            #region IDragDropProvider Members
 
             /// <summary>
             /// Gets if this <see cref="IDragDropProvider"/> can be dragged. In the case of something that only
@@ -190,6 +274,18 @@ namespace DemoGame.Client
             bool IDragDropProvider.CanDragContents
             {
                 get { return Item != null; }
+            }
+
+            /// <summary>
+            /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
+            /// </summary>
+            /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
+            /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
+            /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
+            /// otherwise false.</returns>
+            bool IDragDropProvider.CanDrop(IDragDropProvider source)
+            {
+                return false;
             }
 
             /// <summary>
@@ -209,15 +305,13 @@ namespace DemoGame.Client
             }
 
             /// <summary>
-            /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
+            /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
+            /// dragged onto it but not yet dropped.
             /// </summary>
-            /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
-            /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
-            /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
-            /// otherwise false.</returns>
-            bool IDragDropProvider.CanDrop(IDragDropProvider source)
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+            void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
             {
-                return false;
+                DragDropProviderHelper.DrawDropHighlight(spriteBatch, GetScreenArea());
             }
 
             /// <summary>
@@ -229,68 +323,7 @@ namespace DemoGame.Client
             {
             }
 
-            /// <summary>
-            /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
-            /// dragged onto it but not yet dropped.
-            /// </summary>
-            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-            void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
-            {
-                DragDropProviderHelper.DrawDropHighlight(spriteBatch, GetScreenArea());
-            }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="IDragDropProvider"/> can be dragged. In the case of something that only
-        /// supports having items dropped on it but not dragging, this will always return false. For items that can be
-        /// dragged, this will return false if there is currently nothing to drag (such as an empty inventory slot) or
-        /// there is some other reason that this item cannot currently be dragged.
-        /// </summary>
-        bool IDragDropProvider.CanDragContents
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Draws the item that this <see cref="IDragDropProvider"/> contains for when this item
-        /// is being dragged.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        /// <param name="position">The position to draw the sprite at.</param>
-        /// <param name="color">The color to use when drawing the item.</param>
-        void IDragDropProvider.DrawDraggedItem(ISpriteBatch spriteBatch, Vector2 position, Color color)
-        {
-        }
-
-        /// <summary>
-        /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
-        /// </summary>
-        /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
-        /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
-        /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
-        /// otherwise false.</returns>
-        bool IDragDropProvider.CanDrop(IDragDropProvider source)
-        {
-            return _dragDropHandler.CanDrop(source, this);
-        }
-
-        /// <summary>
-        /// Handles when the specified <see cref="IDragDropProvider"/> is dropped on this <see cref="IDragDropProvider"/>.
-        /// </summary>
-        /// <param name="source">The <see cref="IDragDropProvider"/> that is being dropped on this
-        /// <see cref="IDragDropProvider"/>.</param>
-        void IDragDropProvider.Drop(IDragDropProvider source)
-        {
-            _dragDropHandler.Drop(source, this);
-        }
-
-        /// <summary>
-        /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
-        /// dragged onto it but not yet dropped.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
-        {
+            #endregion
         }
     }
 }
