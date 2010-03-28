@@ -23,6 +23,12 @@ namespace NetGore.Graphics.GUI
         event GUIEventHandler FocusedRootChanged;
 
         /// <summary>
+        /// Gets the <see cref="IDragDropProvider"/> that is currently being dragged for drag-and-drop. Not to
+        /// be confused with dragging a <see cref="Control"/> that supports being dragged.
+        /// </summary>
+        IDragDropProvider DraggedDragDropProvider { get; }
+
+        /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
         /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
         /// </summary>

@@ -310,6 +310,44 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Swaps the items in two inventory slots.
+        /// </summary>
+        /// <param name="a">The first <see cref="InventorySlot"/> to swap.</param>
+        /// <param name="b">The second <see cref="InventorySlot"/> to swap.</param>
+        /// <returns>True if the swapping was successful; false if either of the <see cref="InventorySlot"/>s contained
+        /// an invalid value or if the slots were the same slot.</returns>
+        public bool SwapSlots(InventorySlot a, InventorySlot b)
+        {
+            // Check for valid slots
+            if (!a.IsLegalValue() || !b.IsLegalValue())
+                return false;
+
+            // Don't swap to the same slot
+            if (a == b)
+                return false;
+
+            // We do a little hack here to swap much quicker than using the indexer
+
+            // Store the items in the slots
+            var tmpA = this[a];
+            var tmpB = this[b];
+
+            // Only swap if there is an item in either of or both of the slots
+            if (tmpA != null || tmpB != null)
+            {
+                // Swap the items in the slots in the buffer directly
+                _buffer[(int)a] = tmpB;
+                _buffer[(int)b] = tmpA;
+
+                // Raise the slot change notification for both the swaps
+                HandleSlotChanged(a, tmpB, tmpA);
+                HandleSlotChanged(b, tmpA, tmpB);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets the index of the first unused Inventory slot.
         /// </summary>
         /// <param name="emptySlot">If function returns true, contains the index of the first unused Inventory slot.</param>

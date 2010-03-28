@@ -162,7 +162,8 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="pos">Position to draw at.</param>
-        public void Draw(ISpriteBatch sb, Vector2 pos)
+        /// <param name="color">The color to draw the item.</param>
+        public void Draw(ISpriteBatch sb, Vector2 pos, Color color)
         {
             if (sb == null)
                 throw new ArgumentNullException("sb");
@@ -173,11 +174,21 @@ namespace DemoGame.Client
             if (IsVisible)
             {
                 if (_grh != null)
-                    _grh.Draw(sb, pos, Color);
+                    _grh.Draw(sb, pos, color);
             }
 
             if (AfterDraw != null)
                 AfterDraw(this, sb);
+        }
+
+        /// <summary>
+        /// Draws the ItemEntity.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="pos">Position to draw at.</param>
+        public void Draw(ISpriteBatch sb, Vector2 pos)
+        {
+            Draw(sb, pos, Color);
         }
 
         /// <summary>

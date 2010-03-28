@@ -84,7 +84,7 @@ namespace NetGore.Graphics
             if (_joint == null)
                 return;
 
-            _line.Thickness = 1f / camera.Scale;
+            _line.Thickness = (1f / camera.Scale) * 2f;
             RecursiveDraw(camera, sb, selectedNode, skeleton.RootNode, 0);
         }
 

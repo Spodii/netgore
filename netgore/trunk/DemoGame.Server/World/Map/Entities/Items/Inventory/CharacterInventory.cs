@@ -150,7 +150,7 @@ namespace DemoGame.Server
 
                 // Update the database
                 if (!_isLoading)
-                    DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
+                    DbController.GetQuery<ReplaceCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
 
                 // Listen to the item for changes
                 newItem.GraphicOrAmountChanged += ItemGraphicOrAmountChangeHandler;

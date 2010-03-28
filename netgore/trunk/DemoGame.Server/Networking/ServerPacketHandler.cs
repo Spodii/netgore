@@ -647,6 +647,19 @@ namespace DemoGame.Server
             user.ChatState.StartChat(npc);
         }
 
+        [MessageHandler((byte)ClientPacketID.SwapInventorySlots)]
+        void RecvSwapInventorySlots(IIPSocket conn, BitStream r)
+        {
+            var a = r.ReadInventorySlot();
+            var b = r.ReadInventorySlot();
+
+            User user = TryGetUser(conn);
+            if (user == null)
+                return;
+
+            user.Inventory.SwapSlots(a, b);
+        }
+
         [MessageHandler((byte)ClientPacketID.StartShopping)]
         void RecvStartShopping(IIPSocket conn, BitStream r)
         {

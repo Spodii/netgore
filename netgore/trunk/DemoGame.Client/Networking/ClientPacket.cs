@@ -237,6 +237,14 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter SwapInventorySlots(InventorySlot a, InventorySlot b)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.SwapInventorySlots);
+            pw.Write(a);
+            pw.Write(b);
+            return pw;
+        }
+
         public static PacketWriter UnequipItem(EquipmentSlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.UnequipItem);

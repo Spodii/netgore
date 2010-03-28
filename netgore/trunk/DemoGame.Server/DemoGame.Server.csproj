@@ -251,8 +251,8 @@
     <Compile Include="Queries\Alliance\SelectAllianceQuery.cs" />
     <Compile Include="Queries\Character\Items\DeleteCharacterEquippedItemQuery.cs" />
     <Compile Include="Queries\Character\Items\DeleteCharacterInventoryItemQuery.cs" />
-    <Compile Include="Queries\Character\Items\InsertCharacterEquippedItemQuery.cs" />
-    <Compile Include="Queries\Character\Items\InsertCharacterInventoryItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\ReplaceCharacterEquippedItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\ReplaceCharacterInventoryItemQuery.cs" />
     <Compile Include="Queries\Character\Items\SelectCharacterEquippedItemsQuery.cs" />
     <Compile Include="Queries\Character\Items\SelectCharacterInventoryItemsQuery.cs" />
     <Compile Include="Queries\Character\SelectAccountCharacterInfoQuery.cs" />

@@ -40,6 +40,7 @@ namespace DemoGame
         SetUDPPort,
         StartNPCChatDialog,
         StartShopping,
+        SwapInventorySlots,
         UnequipItem,
         UseInventoryItem,
         UseSkill,
