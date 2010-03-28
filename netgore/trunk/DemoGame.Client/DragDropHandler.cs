@@ -81,38 +81,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Creates the <see cref="DropCallback"/>s for a set of <see cref="MethodInfo"/>s.
-        /// </summary>
-        /// <param name="methods">The <see cref="MethodInfo"/>s to create the <see cref="DropCallback"/>s for.</param>
-        /// <param name="namePrefix">The name prefix the <paramref name="methods"/> must have to be included
-        /// in the returned collection.</param>
-        /// <returns>The <see cref="DropCallback"/>s for the <paramref name="methods"/> that include the given
-        /// <paramref name="namePrefix"/>.</returns>
-        DropCallback[] CreateDropCallbacks(IEnumerable<MethodInfo> methods, string namePrefix)
-        {
-            List<DropCallback> ret = new List<DropCallback>(); 
-
-            foreach (var method in methods)
-            {
-                // Check for the needed method name prefix
-                if (!method.Name.StartsWith(namePrefix, StringComparison.Ordinal))
-                    continue;
-
-                // For instance methods, the instance of this class is the first argument. For static methods, the
-                // first argument will need to be null.
-                var firstArg = this;
-                if (method.IsStatic)
-                    firstArg = null;
-
-                // Create the delegate for the method
-                var del = Delegate.CreateDelegate(typeof(DropCallback), firstArg, method, true);
-                ret.Add((DropCallback)del);
-            }
-
-            return ret.ToArray();
-        }
-
-        /// <summary>
         /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
         /// </summary>
         /// <param name="src">The <see cref="IDragDropProvider"/> that was dragged.</param>
@@ -136,6 +104,38 @@ namespace DemoGame.Client
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Creates the <see cref="DropCallback"/>s for a set of <see cref="MethodInfo"/>s.
+        /// </summary>
+        /// <param name="methods">The <see cref="MethodInfo"/>s to create the <see cref="DropCallback"/>s for.</param>
+        /// <param name="namePrefix">The name prefix the <paramref name="methods"/> must have to be included
+        /// in the returned collection.</param>
+        /// <returns>The <see cref="DropCallback"/>s for the <paramref name="methods"/> that include the given
+        /// <paramref name="namePrefix"/>.</returns>
+        DropCallback[] CreateDropCallbacks(IEnumerable<MethodInfo> methods, string namePrefix)
+        {
+            List<DropCallback> ret = new List<DropCallback>();
+
+            foreach (var method in methods)
+            {
+                // Check for the needed method name prefix
+                if (!method.Name.StartsWith(namePrefix, StringComparison.Ordinal))
+                    continue;
+
+                // For instance methods, the instance of this class is the first argument. For static methods, the
+                // first argument will need to be null.
+                var firstArg = this;
+                if (method.IsStatic)
+                    firstArg = null;
+
+                // Create the delegate for the method
+                var del = Delegate.CreateDelegate(typeof(DropCallback), firstArg, method, true);
+                ret.Add((DropCallback)del);
+            }
+
+            return ret.ToArray();
         }
 
         /// <summary>
@@ -228,9 +228,46 @@ namespace DemoGame.Client
 
         #endregion
 
+        #region Shop Item -> Inventory
+
+        static bool CanDrop_ShopItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        {
+            var src = srcDDP as ShopForm.ShopItemPB;
+            var dest = destDDP as InventoryForm;
+
+            if (src == null || dest == null)
+                return false;
+
+            var shopFrm = src.Parent as ShopForm;
+            if (shopFrm == null)
+                return false;
+
+            if (shopFrm.ShopInfo == null)
+                return false;
+
+            return true;
+        }
+
+        bool Drop_ShopItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        {
+            if (!CanDrop_ShopItemToInventory(srcDDP, destDDP))
+                return false;
+
+            var src = (ShopForm.ShopItemPB)srcDDP;
+
+            using (var pw = ClientPacket.BuyFromShop(src.Slot, 1))
+            {
+                _gps.Socket.Send(pw);
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region Inventory Item -> Shop
 
-        bool CanDrop_InventoryItemToShop(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        static bool CanDrop_InventoryItemToShop(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as InventoryForm.InventoryItemPB;
             var dest = destDDP as ShopForm;
@@ -238,15 +275,27 @@ namespace DemoGame.Client
             if (src == null || dest == null)
                 return false;
 
+            if (dest.ShopInfo == null)
+                return false;
+
+            if (!dest.ShopInfo.CanBuy)
+                return false;
+
             return true;
         }
 
         bool Drop_InventoryItemToShop(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
-            var src = srcDDP as InventoryForm.InventoryItemPB;
-            var dest = destDDP as ShopForm;
+            if (!CanDrop_InventoryItemToShop(srcDDP, destDDP))
+                return false;
 
-            // TODO: Sell item
+            var src = (InventoryForm.InventoryItemPB)srcDDP;
+
+            using (var pw = ClientPacket.SellInventoryToShop(src.Slot, 1))
+            {
+                _gps.Socket.Send(pw);
+            }
+
             return true;
         }
 

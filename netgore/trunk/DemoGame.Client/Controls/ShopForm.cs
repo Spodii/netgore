@@ -123,7 +123,7 @@ namespace DemoGame.Client
             if (src.ItemInfo != null)
             {
                 if (RequestPurchase != null)
-                    RequestPurchase(this, src.Index);
+                    RequestPurchase(this, src.Slot);
             }
         }
 
@@ -135,7 +135,7 @@ namespace DemoGame.Client
             static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
             static readonly TooltipHandler _tooltipHandler = TooltipCallback;
 
-            readonly ShopItemIndex _index;
+            readonly ShopItemIndex _slot;
             readonly ShopForm _shopForm;
 
             Grh _grh;
@@ -152,7 +152,7 @@ namespace DemoGame.Client
                     throw new ArgumentNullException("parent");
 
                 _shopForm = parent;
-                _index = index;
+                _slot = index;
                 Tooltip = _tooltipHandler;
                 MouseUp += _shopForm.ShopItemPB_OnMouseUp;
             }
@@ -160,9 +160,9 @@ namespace DemoGame.Client
             /// <summary>
             /// Gets the <see cref="ShopItemIndex"/> of this slot.
             /// </summary>
-            public ShopItemIndex Index
+            public ShopItemIndex Slot
             {
-                get { return _index; }
+                get { return _slot; }
             }
 
             /// <summary>
@@ -177,7 +177,7 @@ namespace DemoGame.Client
                     if (shopInfo == null)
                         return null;
 
-                    return ShopInfo.GetItemInfo(Index);
+                    return ShopInfo.GetItemInfo(Slot);
                 }
             }
 
