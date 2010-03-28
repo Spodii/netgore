@@ -160,6 +160,45 @@ namespace DemoGame.Client
             }
         }
 
+        #region IQuickBarItemProvider -> Quick Bar item
+
+        static bool CanDrop_IQuickBarItemProviderToQuickBar(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        {
+            var src = srcDDP as IQuickBarItemProvider;
+            var dest = destDDP as QuickBarForm.QuickBarItemPB;
+
+            if (src == null || dest == null)
+                return false;
+
+            QuickBarItemType type;
+            int value;
+            if (!src.TryAddToQuickBar(out type, out value))
+                return false;
+
+            return true;
+        }
+
+        static bool Drop_IQuickBarItemProviderToQuickBar(IDragDropProvider srcDDP, IDragDropProvider destDDP)
+        {
+            if (!CanDrop_IQuickBarItemProviderToQuickBar(srcDDP, destDDP))
+                return false;
+
+            var src = (IQuickBarItemProvider)srcDDP;
+            var dest = (QuickBarForm.QuickBarItemPB)destDDP;
+
+            QuickBarItemType type;
+            int value;
+            if (!src.TryAddToQuickBar(out type, out value))
+                return false;
+
+            dest.QuickBarItemType = type;
+            dest.QuickBarItemValue = value;
+
+            return true;
+        }
+
+        #endregion
+
         #region Equipped Item -> Inventory
 
         static bool CanDrop_EquippedItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
@@ -170,8 +209,7 @@ namespace DemoGame.Client
             if (src == null || dest == null)
                 return false;
 
-            var eqForm = src.Parent as EquippedForm;
-            if (eqForm == null)
+            if (src.EquippedForm == null)
                 return false;
 
             return true;
@@ -184,7 +222,7 @@ namespace DemoGame.Client
 
             var src = (EquippedForm.EquippedItemPB)srcDDP;
 
-            _gps.EquippedForm_RequestUnequip((EquippedForm)src.Parent, src.Slot);
+            _gps.EquippedForm_RequestUnequip(src.EquippedForm, src.Slot);
 
             return true;
         }
@@ -204,11 +242,7 @@ namespace DemoGame.Client
             if (src.Item == null)
                 return false;
 
-            var inv = src.Parent as InventoryForm;
-            if (inv == null)
-                return false;
-
-            if (inv.Inventory != _gps.UserInfo.Inventory)
+            if (src.InventoryForm.Inventory != _gps.UserInfo.Inventory)
                 return false;
 
             return true;
@@ -221,7 +255,7 @@ namespace DemoGame.Client
 
             var src = (InventoryForm.InventoryItemPB)srcDDP;
 
-            ((InventoryForm)src.Parent).InvokeRequestUseItem(src.Slot);
+            src.InventoryForm.InvokeRequestUseItem(src.Slot);
 
             return true;
         }
@@ -238,11 +272,7 @@ namespace DemoGame.Client
             if (src == null || dest == null)
                 return false;
 
-            var shopFrm = src.Parent as ShopForm;
-            if (shopFrm == null)
-                return false;
-
-            if (shopFrm.ShopInfo == null)
+            if (src.ShopForm.ShopInfo == null)
                 return false;
 
             return true;
@@ -317,11 +347,7 @@ namespace DemoGame.Client
             if (src.Parent != src.Parent)
                 return false;
 
-            var invForm = src.Parent as InventoryForm;
-            if (invForm == null)
-                return false;
-
-            if (invForm.Inventory != _gps.UserInfo.Inventory)
+            if (src.InventoryForm.Inventory != _gps.UserInfo.Inventory)
                 return false;
 
             return true;

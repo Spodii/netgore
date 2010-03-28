@@ -57,6 +57,7 @@ namespace DemoGame.Client
         ShopForm _shopForm;
         SkillCastProgressBar _skillCastProgressBar;
         SkillsForm _skillsForm;
+        QuickBarForm _quickBarForm;
         ClientSockets _socket;
         StatsForm _statsForm;
         StatusEffectsForm _statusEffectsForm;
@@ -396,6 +397,8 @@ namespace DemoGame.Client
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
+            _quickBarForm = new QuickBarForm(this, cScreen, cScreen.Position);
+
             _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo, IsVisible = false };
             new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
@@ -424,6 +427,7 @@ namespace DemoGame.Client
             _guiSettings.Add("GuildForm", _guildForm);
             _guiSettings.Add("StatusEffectsForm", _statusEffectsForm);
             _guiSettings.Add("SkillsForm", _skillsForm);
+            _guiSettings.Add("QuickBarForm", _quickBarForm);
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
