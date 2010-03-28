@@ -21,8 +21,8 @@ namespace NetGore.Xna.Framework.Design
             properties.Find("Translation", true), new FieldPropertyDescriptor(componentType.GetField("M11")), new FieldPropertyDescriptor(componentType.GetField("M12")), new FieldPropertyDescriptor(componentType.GetField("M13")), new FieldPropertyDescriptor(componentType.GetField("M14")), new FieldPropertyDescriptor(componentType.GetField("M21")), new FieldPropertyDescriptor(componentType.GetField("M22")), new FieldPropertyDescriptor(componentType.GetField("M23")), new FieldPropertyDescriptor(componentType.GetField("M24")), new FieldPropertyDescriptor(componentType.GetField("M31")), new FieldPropertyDescriptor(componentType.GetField("M32")), new FieldPropertyDescriptor(componentType.GetField("M33")), new FieldPropertyDescriptor(componentType.GetField("M34")), new FieldPropertyDescriptor(componentType.GetField("M41")), new FieldPropertyDescriptor(componentType.GetField("M42")), new FieldPropertyDescriptor(componentType.GetField("M43")), 
             new FieldPropertyDescriptor(componentType.GetField("M44"))
          });
-            base._propertyDescriptions = descriptors;
-            base._supportStringConvert = false;
+            base.propertyDescriptions = descriptors;
+            base.supportStringConvert = false;
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)

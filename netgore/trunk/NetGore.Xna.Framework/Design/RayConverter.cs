@@ -16,8 +16,8 @@ namespace NetGore.Xna.Framework.Design
         public RayConverter()
         {
             Type type = typeof(Ray);
-            base._propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("Position")), new FieldPropertyDescriptor(type.GetField("Direction")) }).Sort(new string[] { "Position", "Direction" });
-            base._supportStringConvert = false;
+            base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("Position")), new FieldPropertyDescriptor(type.GetField("Direction")) }).Sort(new string[] { "Position", "Direction" });
+            base.supportStringConvert = false;
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

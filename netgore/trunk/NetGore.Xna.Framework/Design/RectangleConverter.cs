@@ -18,8 +18,8 @@ namespace NetGore.Xna.Framework.Design
         {
             Type type = typeof(Rectangle);
             PropertyDescriptorCollection descriptors = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")), new FieldPropertyDescriptor(type.GetField("Width")), new FieldPropertyDescriptor(type.GetField("Height")) });
-            base._propertyDescriptions = descriptors;
-            base._supportStringConvert = false;
+            base.propertyDescriptions = descriptors;
+            base.supportStringConvert = false;
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)

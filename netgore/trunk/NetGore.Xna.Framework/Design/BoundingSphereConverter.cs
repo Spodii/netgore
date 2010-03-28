@@ -17,8 +17,8 @@ namespace NetGore.Xna.Framework.Design
         public BoundingSphereConverter()
         {
             Type type = typeof(BoundingSphere);
-            base._propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("Center")), new FieldPropertyDescriptor(type.GetField("Radius")) }).Sort(new string[] { "Center", "Radius" });
-            base._supportStringConvert = false;
+            base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("Center")), new FieldPropertyDescriptor(type.GetField("Radius")) }).Sort(new string[] { "Center", "Radius" });
+            base.supportStringConvert = false;
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
