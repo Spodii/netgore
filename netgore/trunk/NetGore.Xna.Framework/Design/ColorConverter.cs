@@ -17,7 +17,7 @@ namespace NetGore.Xna.Framework.Design
         public ColorConverter()
         {
             Type type = typeof(Color);
-            base._propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new PropertyPropertyDescriptor(type.GetProperty("R")), new PropertyPropertyDescriptor(type.GetProperty("G")), new PropertyPropertyDescriptor(type.GetProperty("B")), new PropertyPropertyDescriptor(type.GetProperty("A")) }).Sort(new string[] { "R", "G", "B", "A" });
+            base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new PropertyPropertyDescriptor(type.GetProperty("R")), new PropertyPropertyDescriptor(type.GetProperty("G")), new PropertyPropertyDescriptor(type.GetProperty("B")), new PropertyPropertyDescriptor(type.GetProperty("A")) }).Sort(new string[] { "R", "G", "B", "A" });
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

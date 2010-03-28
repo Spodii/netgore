@@ -16,8 +16,8 @@ namespace NetGore.Xna.Framework.Design
         public BoundingBoxConverter()
         {
             Type type = typeof(BoundingBox);
-            base._propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("Min")), new FieldPropertyDescriptor(type.GetField("Max")) }).Sort(new string[] { "Min", "Max" });
-            base._supportStringConvert = false;
+            base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("Min")), new FieldPropertyDescriptor(type.GetField("Max")) }).Sort(new string[] { "Min", "Max" });
+            base.supportStringConvert = false;
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

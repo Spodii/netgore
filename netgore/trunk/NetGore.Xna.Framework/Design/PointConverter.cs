@@ -15,7 +15,7 @@ namespace NetGore.Xna.Framework.Design
         public PointConverter()
         {
             Type type = typeof(Point);
-            base._propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")) }).Sort(new string[] { "X", "Y" });
+            base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")) }).Sort(new string[] { "X", "Y" });
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)

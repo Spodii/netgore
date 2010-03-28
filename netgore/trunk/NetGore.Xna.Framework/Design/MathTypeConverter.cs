@@ -10,15 +10,15 @@ namespace NetGore.Xna.Framework.Design
 {
     public class MathTypeConverter : ExpandableObjectConverter
     {
-        protected PropertyDescriptorCollection _propertyDescriptions;
-        protected bool _supportStringConvert;
+        protected PropertyDescriptorCollection propertyDescriptions;
+        protected bool supportStringConvert;
 
         /// <summary>
         /// Initializes a new instance of the MathTypeConverter class.
         /// </summary>
         public MathTypeConverter()
         {
-            this._supportStringConvert = true;
+            this.supportStringConvert = true;
         }
 
 
@@ -29,7 +29,7 @@ namespace NetGore.Xna.Framework.Design
         /// <param name="sourceType">The type you want to convert from.</param>
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return ((this._supportStringConvert && (sourceType == typeof(string))) || base.CanConvertFrom(context, sourceType));
+            return ((this.supportStringConvert && (sourceType == typeof(string))) || base.CanConvertFrom(context, sourceType));
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace NetGore.Xna.Framework.Design
 
         public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
         {
-            return this._propertyDescriptions;
+            return this.propertyDescriptions;
         }
 
         public override bool GetPropertiesSupported(ITypeDescriptorContext context)

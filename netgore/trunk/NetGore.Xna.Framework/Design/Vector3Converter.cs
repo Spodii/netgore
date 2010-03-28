@@ -12,11 +12,11 @@ namespace NetGore.Xna.Framework.Design
 {
     public class Vector3Converter : MathTypeConverter
     {
-        // Methods
+       
         public Vector3Converter()
         {
             Type type = typeof(Vector3);
-            base._propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")), new FieldPropertyDescriptor(type.GetField("Z")) }).Sort(new string[] { "X", "Y", "Z" });
+            base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")), new FieldPropertyDescriptor(type.GetField("Z")) }).Sort(new string[] { "X", "Y", "Z" });
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
