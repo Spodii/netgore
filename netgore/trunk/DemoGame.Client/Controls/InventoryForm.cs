@@ -20,14 +20,6 @@ namespace DemoGame.Client
         public delegate void InventoryItemHandler(InventoryForm inventoryForm, InventorySlot slot);
 
         /// <summary>
-        /// Delegate for handling events related to items in the inventory.
-        /// </summary>
-        /// <param name="inventoryForm">The <see cref="InventoryForm"/> the event came from.</param>
-        /// <param name="a">The first <see cref="InventorySlot"/> to swap.</param>
-        /// <param name="b">The second <see cref="InventorySlot"/> to swap.</param>
-        public delegate void InventorySwapItemHandler(InventoryForm inventoryForm, InventorySlot a, InventorySlot b);
-
-        /// <summary>
         /// The number of items in each inventory row.
         /// </summary>
         const int _columns = 6;
@@ -44,25 +36,30 @@ namespace DemoGame.Client
 
         readonly ItemInfoRequesterBase<InventorySlot> _infoRequester;
         readonly Func<Inventory, bool> _isUserInv;
+        readonly DragDropHandler _dragDropHandler;
 
         Inventory _inventory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
         /// </summary>
+        /// <param name="dragDropHandler">The drag-drop handler.</param>
         /// <param name="isUserInv">A <see cref="Func{T,U}"/> used to determine if an <see cref="Inventory"/> is the
         /// user's inventory.</param>
         /// <param name="infoRequester">The item info tooltip.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public InventoryForm(Func<Inventory, bool> isUserInv, ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position,
+        public InventoryForm(DragDropHandler dragDropHandler, Func<Inventory, bool> isUserInv, ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position,
                              Control parent) : base(parent, position, new Vector2(200, 200))
         {
             if (infoRequester == null)
                 throw new ArgumentNullException("infoRequester");
-            if (infoRequester == null)
+            if (isUserInv == null)
                 throw new ArgumentNullException("isUserInv");
+            if (dragDropHandler == null)
+                throw new ArgumentNullException("dragDropHandler");
 
+            _dragDropHandler = dragDropHandler;
             _isUserInv = isUserInv;
             _infoRequester = infoRequester;
 
@@ -77,11 +74,6 @@ namespace DemoGame.Client
         /// Notifies listeners when an item was requested to be dropped.
         /// </summary>
         public event InventoryItemHandler RequestDropItem;
-
-        /// <summary>
-        /// Notifies listeners when an item was requested to swap slots.
-        /// </summary>
-        public event InventorySwapItemHandler RequestSwapSlots;
 
         /// <summary>
         /// Notifies listeners when an item was requested to be used.
@@ -148,12 +140,6 @@ namespace DemoGame.Client
             }
         }
 
-        void InvokeRequestSwapSlotsEvent(InventorySlot a, InventorySlot b)
-        {
-            if (RequestSwapSlots != null)
-                RequestSwapSlots(this, a, b);
-        }
-
         /// <summary>
         /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
         /// base class's method to ensure that changes to settings are hierchical.
@@ -187,16 +173,7 @@ namespace DemoGame.Client
         /// otherwise false.</returns>
         bool IDragDropProvider.CanDrop(IDragDropProvider source)
         {
-            // Equipped item -> Inventory: Remove equipment
-            var asEquipped = source as EquippedForm.EquippedItemPB;
-            if (asEquipped != null)
-            {
-                var inv = ((Control)source).Parent as EquippedForm;
-                if (inv != null)
-                    return true;
-            }
-
-            return false;
+            return _dragDropHandler.CanDrop(source, this);
         }
 
         /// <summary>
@@ -226,14 +203,7 @@ namespace DemoGame.Client
         /// <see cref="IDragDropProvider"/>.</param>
         void IDragDropProvider.Drop(IDragDropProvider source)
         {
-            // Equipped item -> Inventory: Remove equipment
-            var asEquipped = source as EquippedForm.EquippedItemPB;
-            if (asEquipped != null)
-            {
-                var inv = asEquipped.Parent as EquippedForm;
-                if (inv != null)
-                    inv.InvokeRequestUnequip(asEquipped.Slot);
-            }
+            _dragDropHandler.Drop(source, this);
         }
 
         #endregion
@@ -388,15 +358,7 @@ namespace DemoGame.Client
             /// otherwise false.</returns>
             bool IDragDropProvider.CanDrop(IDragDropProvider source)
             {
-                // User inventory slot -> User inventory slot: Change slots
-                var sourceInvItem = source as InventoryItemPB;
-                if (sourceInvItem != null)
-                {
-                    if (sourceInvItem._invForm == _invForm && IsUserInventory)
-                        return true;
-                }
-
-                return false;
+                return _invForm._dragDropHandler.CanDrop(source, this);
             }
 
             /// <summary>
@@ -432,14 +394,7 @@ namespace DemoGame.Client
             /// <see cref="IDragDropProvider"/>.</param>
             void IDragDropProvider.Drop(IDragDropProvider source)
             {
-                // User inventory slot -> User inventory slot: Change slots
-                var sourceInvItem = source as InventoryItemPB;
-                if (sourceInvItem != null && sourceInvItem._invForm == _invForm && IsUserInventory)
-                {
-                    var a = Slot;
-                    var b = sourceInvItem.Slot;
-                    _invForm.InvokeRequestSwapSlotsEvent(a, b);
-                }
+                _invForm._dragDropHandler.Drop(source, this);
             }
 
             #endregion
