@@ -10,7 +10,7 @@ namespace NetGore
     /// Base class for a handler of Say commands.
     /// </summary>
     /// <typeparam name="T">The Type of User.</typeparam>
-    public abstract class SayHandlerBase<T> where T : DynamicEntity
+    public abstract class SayHandlerBase<T> 
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
