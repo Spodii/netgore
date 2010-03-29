@@ -82,8 +82,8 @@ namespace NetGore.Graphics.GUI
             // Update the FPS
             _fps.Update(gameTime.ElapsedRealTime);
 
-            // Clear the device
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            // Clear the screen
+            GraphicsDevice.Clear(DrawingManager.ClearColor);
 
             // Draw the active screen
             if (_activeScreen != null)

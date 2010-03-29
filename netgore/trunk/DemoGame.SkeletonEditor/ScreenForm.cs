@@ -647,8 +647,6 @@ namespace DemoGame.SkeletonEditor
         /// </summary>
         internal void DrawGame()
         {
-            GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // Screen
             var sb = _drawingManager.BeginDrawWorld(_camera, false, true);
 
