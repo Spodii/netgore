@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Globalization;
-using NetGore.Xna.Framework.Design;
+using Microsoft.Xna.Framework.Design;
 
-namespace NetGore.Xna.Framework
+namespace Microsoft.Xna.Framework
 {
     [Serializable, StructLayout(LayoutKind.Sequential), TypeConverter(typeof(PointConverter))]
     public struct Point : IEquatable<Point>

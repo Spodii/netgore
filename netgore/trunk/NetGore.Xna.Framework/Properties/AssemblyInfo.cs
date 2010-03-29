@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NetGore.Xna.Framework")]
+[assembly: AssemblyTitle("Microsoft.Xna.Framework")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DELL")]
-[assembly: AssemblyProduct("NetGore.Xna.Framework")]
+[assembly: AssemblyProduct("Microsoft.Xna.Framework")]
 [assembly: AssemblyCopyright("Copyright © DELL 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -7,9 +7,9 @@ using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.Reflection;
 using System.Globalization;
-using NetGore.Xna.Framework;
+using Microsoft.Xna.Framework;
 
-namespace NetGore.Xna.Framework.Design
+namespace Microsoft.Xna.Framework.Design
 {
     public class RectangleConverter : MathTypeConverter
     {

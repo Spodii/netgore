@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Linq;
 using System.Text;
 
-namespace NetGore.Xna.Framework.Design
+namespace Microsoft.Xna.Framework.Design
 {
     public class PointConverter : MathTypeConverter
     {

@@ -5,9 +5,9 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using NetGore.Xna.Framework.Design;
+using Microsoft.Xna.Framework.Design;
 
-namespace NetGore.Xna.Framework
+namespace Microsoft.Xna.Framework
 {
     [Serializable, TypeConverter(typeof(ExpandableObjectConverter))]
     public class BoundingFrustum : IEquatable<BoundingFrustum>

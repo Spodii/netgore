@@ -7,9 +7,9 @@ using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
 using System.Reflection;
 using System.Globalization;
-using NetGore.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace NetGore.Xna.Framework.Design
+namespace Microsoft.Xna.Framework.Design
 {
     public class ColorConverter : MathTypeConverter
     {

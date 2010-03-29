@@ -8,7 +8,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Reflection;
 using System.Globalization;
 
-namespace NetGore.Xna.Framework.Design
+namespace Microsoft.Xna.Framework.Design
 {
     public class QuaternionConverter : MathTypeConverter
     {
