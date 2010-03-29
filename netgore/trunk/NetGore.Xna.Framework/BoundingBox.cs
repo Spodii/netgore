@@ -5,9 +5,9 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using NetGore.Xna.Framework.Design;
+using Microsoft.Xna.Framework.Design;
 
-namespace NetGore.Xna.Framework
+namespace Microsoft.Xna.Framework
 {
     [Serializable, StructLayout(LayoutKind.Sequential), TypeConverter(typeof(BoundingBoxConverter))]
     public struct BoundingBox : IEquatable<BoundingBox>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NetGore.Xna.Framework
+namespace Microsoft.Xna.Framework
 {
     public enum ContainmentType
     {

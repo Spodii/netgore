@@ -5,10 +5,10 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Linq;
 using System.Text;
-using NetGore.Xna.Framework.Graphics.PackedVector;
-using NetGore.Xna.Framework.Design;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
+using Microsoft.Xna.Framework.Design;
 
-namespace NetGore.Xna.Framework.Graphics
+namespace Microsoft.Xna.Framework.Graphics
 {
     [Serializable, StructLayout(LayoutKind.Sequential), TypeConverter(typeof(ColorConverter))]
     public struct Color : IPackedVector<uint>, IPackedVector, IEquatable<Color>

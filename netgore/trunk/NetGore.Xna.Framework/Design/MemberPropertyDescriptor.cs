@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace NetGore.Xna.Framework.Design
+namespace Microsoft.Xna.Framework.Design
 {
     internal abstract class MemberPropertyDescriptor : PropertyDescriptor
     {

@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Globalization;
 using System.ComponentModel;
 
-namespace NetGore.Xna.Framework
+namespace Microsoft.Xna.Framework
 {
     [DebuggerNonUserCode, GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0"), CompilerGenerated]
     internal class FrameworkResources

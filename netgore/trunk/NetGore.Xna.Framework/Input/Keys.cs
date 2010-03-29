@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace NetGore.Xna.Framework.Input
+namespace Microsoft.Xna.Framework.Input
 {
     public enum Keys
     {

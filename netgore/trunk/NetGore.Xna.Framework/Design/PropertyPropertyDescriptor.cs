@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace NetGore.Xna.Framework.Design
+namespace Microsoft.Xna.Framework.Design
 {
     internal class PropertyPropertyDescriptor : MemberPropertyDescriptor
     {

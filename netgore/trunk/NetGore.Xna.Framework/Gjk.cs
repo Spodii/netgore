@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NetGore.Xna.Framework
+namespace Microsoft.Xna.Framework
 {
     [Serializable]
     internal class Gjk
