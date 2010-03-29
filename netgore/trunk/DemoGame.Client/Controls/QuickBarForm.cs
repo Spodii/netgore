@@ -6,6 +6,7 @@ using NetGore;
 using NetGore.Features.Skills;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
 
 namespace DemoGame.Client
 {
@@ -34,6 +35,11 @@ namespace DemoGame.Client
             RepositionSlots();
         }
 
+        /// <summary>
+        /// Creates a <see cref="QuickBarItemPB"/>.
+        /// </summary>
+        /// <param name="slot">The slot of the <see cref="QuickBarItemPB"/>.</param>
+        /// <returns>The <see cref="QuickBarItemPB"/>.</returns>
         QuickBarItemPB CreateQuickBarSlot(int slot)
         {
             QuickBarItemPB c = new QuickBarItemPB(this, Vector2.Zero, (byte)slot);
@@ -41,6 +47,9 @@ namespace DemoGame.Client
             return c;
         }
 
+        /// <summary>
+        /// Ensures the <see cref="QuickBarForm"/>'s <see cref="QuickBarItemPB"/>s are created.
+        /// </summary>
         void CreateSlots()
         {
             if (_slots != null)
@@ -66,6 +75,30 @@ namespace DemoGame.Client
             RepositionSlots();
         }
 
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public override void ReadState(IValueReader reader)
+        {
+            base.ReadState(reader);
+
+            CreateSlots();
+
+            var slotValues = reader.ReadManyNodes<QuickBarSlotValues>("QuickBarItems", QuickBarSlotValues.Read);
+
+            foreach (var sv in slotValues)
+            {
+                if (sv.Slot < _slots.Length)
+                    _slots[sv.Slot].SetQuickBar(sv.Type, sv.Value);
+            }
+        }
+
+        /// <summary>
+        /// Respositions all of the <see cref="QuickBarItemPB"/>s on the form, and shrinks down the form
+        /// to the appropriate size.
+        /// </summary>
         void RepositionSlots()
         {
             CreateSlots();
@@ -80,6 +113,22 @@ namespace DemoGame.Client
             ClientSize = new Vector2(offset.X, _slots.First().Size.Y + (_slotPadding * 2));
         }
 
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public override void WriteState(IValueWriter writer)
+        {
+            base.WriteState(writer);
+
+            CreateSlots();
+
+            writer.WriteManyNodes("QuickBarItems", _slots.Select(x => new QuickBarSlotValues(x)).ToArray(), (w, x) => x.Write(w));
+        }
+
+        /// <summary>
+        /// A <see cref="PictureBox"/> for a quick bar slot on a <see cref="QuickBarForm"/>.
+        /// </summary>
         public class QuickBarItemPB : PictureBox, IDragDropProvider, IQuickBarItemProvider
         {
             readonly Grh _grh = new Grh();
@@ -109,6 +158,9 @@ namespace DemoGame.Client
                 _slot = slot;
             }
 
+            /// <summary>
+            /// Gets the <see cref="ISkillCooldownManager"/>.
+            /// </summary>
             ISkillCooldownManager CooldownManager
             {
                 get { return QuickBarForm._gps.SkillCooldownManager; }
@@ -122,11 +174,17 @@ namespace DemoGame.Client
                 get { return (QuickBarForm)Parent; }
             }
 
+            /// <summary>
+            /// Gets the <see cref="QuickBarItemType"/> of the item in this quick bar slot.
+            /// </summary>
             public QuickBarItemType QuickBarItemType
             {
                 get { return _quickBarItemType; }
             }
 
+            /// <summary>
+            /// Gets the value of the item in this quick bar slot.
+            /// </summary>
             public int QuickBarItemValue
             {
                 get { return _quickBarItemValue; }
@@ -140,11 +198,21 @@ namespace DemoGame.Client
                 get { return _slot; }
             }
 
+            /// <summary>
+            /// Gets the screen position to use to place an item centered in this control.
+            /// </summary>
+            /// <param name="grh">The <see cref="Grh"/> being drawn.</param>
+            /// <returns>The screen position to use to place an item centered in this control.</returns>
             Vector2 CenterOnSlot(Grh grh)
             {
                 return CenterOnSlot(grh != null ? grh.Size : Vector2.Zero);
             }
 
+            /// <summary>
+            /// Gets the screen position to use to place an item centered in this control.
+            /// </summary>
+            /// <param name="itemSize">The size of the item.</param>
+            /// <returns>The screen position to use to place an item centered in this control.</returns>
             Vector2 CenterOnSlot(Vector2 itemSize)
             {
                 return ScreenPosition + ((new Vector2(_slotSize) - itemSize) / 2f);
@@ -392,6 +460,74 @@ namespace DemoGame.Client
             }
 
             #endregion
+        }
+
+        /// <summary>
+        /// A struct used to read and write the quick bar values, namely for a <see cref="QuickBarItemPB"/>.
+        /// </summary>
+        struct QuickBarSlotValues
+        {
+            /// <summary>
+            /// The quick bar slot.
+            /// </summary>
+            public readonly byte Slot;
+
+            /// <summary>
+            /// The <see cref="QuickBarItemType"/>.
+            /// </summary>
+            public readonly QuickBarItemType Type;
+
+            /// <summary>
+            /// The item value.
+            /// </summary>
+            public readonly int Value;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="QuickBarSlotValues"/> struct.
+            /// </summary>
+            /// <param name="itemPB">The <see cref="QuickBarItemPB"/> to get the values from..</param>
+            public QuickBarSlotValues(QuickBarItemPB itemPB)
+                : this(itemPB.Slot, itemPB.QuickBarItemType, itemPB.QuickBarItemValue)
+            {
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="QuickBarSlotValues"/> struct.
+            /// </summary>
+            /// <param name="slot">The slot.</param>
+            /// <param name="type">The type.</param>
+            /// <param name="value">The value.</param>
+            public QuickBarSlotValues(byte slot, QuickBarItemType type, int value)
+            {
+                Slot = slot;
+                Type = type;
+                Value = value;
+            }
+
+            /// <summary>
+            /// Reads a <see cref="QuickBarSlotValues"/> from an <see cref="IValueReader"/>.
+            /// </summary>
+            /// <param name="r">The <see cref="IValueReader"/> to read the values from.</param>
+            /// <returns>The <see cref="QuickBarSlotValues"/> read from the <paramref name="r"/>.</returns>
+            public static QuickBarSlotValues Read(IValueReader r)
+            {
+                var slot = r.ReadByte("Slot");
+                var type = r.ReadEnum<QuickBarItemType>("Type");
+                var value = r.ReadInt("Value");
+
+                return new QuickBarSlotValues(slot, type, value);
+            }
+
+            /// <summary>
+            /// Writes the <see cref="QuickBarSlotValues"/> to an <see cref="IValueWriter"/>.
+            /// </summary>
+            /// <param name="w">The <see cref="IValueWriter"/> to write the values to.</param>
+            public void Write(IValueWriter w)
+            {
+                w.Write("Slot", Slot);
+                w.WriteEnum("Type", Type);
+                w.Write("Value", Value);
+            }
         }
     }
 }
