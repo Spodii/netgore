@@ -11,6 +11,10 @@ namespace DemoGame.Client
     {
         readonly GameplayScreen _gameplayScreen;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameplayScreenControls"/> class.
+        /// </summary>
+        /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
         public GameplayScreenControls(GameplayScreen gameplayScreen)
         {
             if (gameplayScreen == null)
@@ -18,6 +22,7 @@ namespace DemoGame.Client
 
             _gameplayScreen = gameplayScreen;
 
+            // Set some delay values for input handling
             const int minAttackRate = 150;
             const int minMoveRate = 150;
             const int minNPCChatRate = 150;
@@ -25,7 +30,9 @@ namespace DemoGame.Client
             const int minShopRate = 250;
             const int minUseRate = 250;
             const int minEmoteRate = 1000;
+            const int minQuickBarRate = 200;
 
+            // Set the handlers for all the different controls
 #if !TOPDOWN
             CreateAndAdd(GameControlsKeys.Jump, minMoveRate, () => UserChar.CanJump && CanUserMove(), HandleGameControl_Jump);
 #endif
@@ -71,8 +78,23 @@ namespace DemoGame.Client
             CreateAndAdd(GameControlsKeys.EmoteMeat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Meat));
             CreateAndAdd(GameControlsKeys.EmoteQuestion, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Question));
             CreateAndAdd(GameControlsKeys.EmoteSweat, minEmoteRate, () => true, x => HandleGameControl_Emote(Emoticon.Sweat));
+
+            CreateAndAdd(GameControlsKeys.QuickBarItem0, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(0));
+            CreateAndAdd(GameControlsKeys.QuickBarItem1, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(1));
+            CreateAndAdd(GameControlsKeys.QuickBarItem2, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(2));
+            CreateAndAdd(GameControlsKeys.QuickBarItem3, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(3));
+            CreateAndAdd(GameControlsKeys.QuickBarItem4, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(4));
+            CreateAndAdd(GameControlsKeys.QuickBarItem5, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(5));
+            CreateAndAdd(GameControlsKeys.QuickBarItem6, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(6));
+            CreateAndAdd(GameControlsKeys.QuickBarItem7, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(7));
+            CreateAndAdd(GameControlsKeys.QuickBarItem8, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(8));
+            CreateAndAdd(GameControlsKeys.QuickBarItem9, minQuickBarRate, () => true, x => HandleGameControl_QuickBar(9));
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="MapEntityIndex"/> of the entity to use as the target for input controls
+        /// that can utilize a target. If null, no target will be used.
+        /// </summary>
         public MapEntityIndex? TargetIndex { get; set; }
 
         public GameplayScreen GameplayScreen
@@ -143,6 +165,11 @@ namespace DemoGame.Client
             {
                 Socket.Send(pw);
             }
+        }
+
+        void HandleGameControl_QuickBar(byte slot)
+        {
+            GameplayScreen.QuickBarForm.UseSlot(slot);
         }
 
 #if !TOPDOWN

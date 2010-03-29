@@ -77,6 +77,8 @@ namespace DemoGame.Client
             get { return _availableQuestsForm; }
         }
 
+        public QuickBarForm QuickBarForm { get { return _quickBarForm; } }
+
         /// <summary>
         /// Gets the <see cref="ChatBubbleManagerBase"/>.
         /// </summary>
