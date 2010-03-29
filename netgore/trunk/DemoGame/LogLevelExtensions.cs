@@ -7,7 +7,7 @@ namespace DemoGame
     /// <summary>
     /// Extension methods for the <see cref="Level"/> class.
     /// </summary>
-    public static class LevelExtensions
+    public static class LogLevelExtensions
     {
         /// <summary>
         /// Gets the color to use for a log message.
