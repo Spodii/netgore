@@ -6,7 +6,7 @@ namespace NetGore.Collections
     public class PriorityQueue<T>
     {
         readonly IComparer<T> _comparer;
-        readonly List<T> _list = new List<T>();
+        readonly SlimList<T> _list = new SlimList<T>();
 
         /// <summary>
         /// Sets up a default PriorityQueue.
