@@ -165,7 +165,6 @@
     <Compile Include="Body\BodyInfo.cs" />
     <Compile Include="World\Map\Entities\CharacterEntity.cs" />
     <Compile Include="World\Map\Entities\CharacterState.cs" />
-    <Compile Include="World\Map\Entities\DamageTrapEntityBase.cs" />
     <Compile Include="World\Map\Entities\IPickupableEntity.cs" />
     <Compile Include="World\Map\Entities\ItemEntityBase.cs" />
     <Compile Include="World\Map\Entities\TeleportEntityBase.cs" />
