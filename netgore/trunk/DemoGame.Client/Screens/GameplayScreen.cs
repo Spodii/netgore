@@ -98,6 +98,8 @@ namespace DemoGame.Client
             get { return _damageTextPool; }
         }
 
+        public DragDropHandler DragDropHandler { get { return _dragDropHandler; } }
+
         public EquipmentInfoRequester EquipmentInfoRequester
         {
             get { return _equipmentInfoRequester; }
@@ -489,7 +491,7 @@ namespace DemoGame.Client
             }
         }
 
-        void SkillsForm_RequestUseSkill(SkillType skillType)
+        public void SkillsForm_RequestUseSkill(SkillType skillType)
         {
             using (PacketWriter pw = ClientPacket.UseSkill(skillType, _characterTargeter.TargetCharacterIndex))
             {

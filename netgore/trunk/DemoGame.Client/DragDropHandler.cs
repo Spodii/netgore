@@ -162,6 +162,14 @@ namespace DemoGame.Client
 
         #region IQuickBarItemProvider -> Quick Bar item
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="IQuickBarItemProvider"/> onto an <see cref="QuickBarForm.QuickBarItemPB"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         static bool CanDrop_IQuickBarItemProviderToQuickBar(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as IQuickBarItemProvider;
@@ -170,6 +178,7 @@ namespace DemoGame.Client
             if (src == null || dest == null)
                 return false;
 
+            // Check if can be added to quick bar
             QuickBarItemType type;
             int value;
             if (!src.TryAddToQuickBar(out type, out value))
@@ -178,6 +187,14 @@ namespace DemoGame.Client
             return true;
         }
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="IQuickBarItemProvider"/> onto an <see cref="QuickBarForm.QuickBarItemPB"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         static bool Drop_IQuickBarItemProviderToQuickBar(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             if (!CanDrop_IQuickBarItemProviderToQuickBar(srcDDP, destDDP))
@@ -186,13 +203,23 @@ namespace DemoGame.Client
             var src = (IQuickBarItemProvider)srcDDP;
             var dest = (QuickBarForm.QuickBarItemPB)destDDP;
 
+            // Get the quick bar values
             QuickBarItemType type;
             int value;
             if (!src.TryAddToQuickBar(out type, out value))
                 return false;
 
-            dest.QuickBarItemType = type;
-            dest.QuickBarItemValue = value;
+            var oldType = dest.QuickBarItemType;
+            var oldValue = dest.QuickBarItemValue;
+
+            // Set the quick bar values
+            dest.SetQuickBar(type, value);
+
+            // If the source was a quick bar item, too, then set the source's item to the dest's item to give a "swap"
+            // instead of just "copying" the value.
+            var srcQBI = src as QuickBarForm.QuickBarItemPB;
+            if (srcQBI != null)
+                srcQBI.SetQuickBar(oldType, oldValue);
 
             return true;
         }
@@ -201,6 +228,14 @@ namespace DemoGame.Client
 
         #region Equipped Item -> Inventory
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="EquippedForm.EquippedItemPB"/> onto an <see cref="InventoryForm"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         static bool CanDrop_EquippedItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as EquippedForm.EquippedItemPB;
@@ -215,6 +250,14 @@ namespace DemoGame.Client
             return true;
         }
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="EquippedForm.EquippedItemPB"/> onto an <see cref="InventoryForm"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         bool Drop_EquippedItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             if (!CanDrop_EquippedItemToInventory(srcDDP, destDDP))
@@ -231,6 +274,14 @@ namespace DemoGame.Client
 
         #region Inventory Item -> Equipped
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="InventoryForm.InventoryItemPB"/> onto an <see cref="EquippedForm"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         bool CanDrop_InventoryItemToEquipped(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as InventoryForm.InventoryItemPB;
@@ -248,6 +299,14 @@ namespace DemoGame.Client
             return true;
         }
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="InventoryForm.InventoryItemPB"/> onto an <see cref="EquippedForm"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         bool Drop_InventoryItemToEquipped(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             if (!CanDrop_InventoryItemToEquipped(srcDDP, destDDP))
@@ -264,6 +323,14 @@ namespace DemoGame.Client
 
         #region Shop Item -> Inventory
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="ShopForm.ShopItemPB"/> onto an <see cref="InventoryForm"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         static bool CanDrop_ShopItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as ShopForm.ShopItemPB;
@@ -278,6 +345,14 @@ namespace DemoGame.Client
             return true;
         }
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="ShopForm.ShopItemPB"/> onto an <see cref="InventoryForm"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         bool Drop_ShopItemToInventory(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             if (!CanDrop_ShopItemToInventory(srcDDP, destDDP))
@@ -297,6 +372,14 @@ namespace DemoGame.Client
 
         #region Inventory Item -> Shop
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="InventoryForm.InventoryItemPB"/> onto an <see cref="ShopForm"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         static bool CanDrop_InventoryItemToShop(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as InventoryForm.InventoryItemPB;
@@ -314,6 +397,14 @@ namespace DemoGame.Client
             return true;
         }
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="InventoryForm.InventoryItemPB"/> onto an <see cref="ShopForm"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         bool Drop_InventoryItemToShop(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             if (!CanDrop_InventoryItemToShop(srcDDP, destDDP))
@@ -333,6 +424,14 @@ namespace DemoGame.Client
 
         #region Inventory Item -> Inventory Item
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="InventoryForm.InventoryItemPB"/> onto an <see cref="InventoryForm.InventoryItemPB"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         bool CanDrop_InventoryItemToInventoryItem(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             var src = srcDDP as InventoryForm.InventoryItemPB;
@@ -353,6 +452,14 @@ namespace DemoGame.Client
             return true;
         }
 
+        /// <summary>
+        /// Adds support for dragging a
+        /// <see cref="InventoryForm.InventoryItemPB"/> onto an <see cref="InventoryForm.InventoryItemPB"/>.
+        /// </summary>
+        /// <param name="srcDDP">The <see cref="IDragDropProvider"/> that was dragged.</param>
+        /// <param name="destDDP">The <see cref="IDragDropProvider"/> that that <paramref name="srcDDP"/>
+        /// was dropped onto.</param>
+        /// <returns>True if the drag-and-drop can be or was successful; otherwise false.</returns>
         bool Drop_InventoryItemToInventoryItem(IDragDropProvider srcDDP, IDragDropProvider destDDP)
         {
             if (!CanDrop_InventoryItemToInventoryItem(srcDDP, destDDP))

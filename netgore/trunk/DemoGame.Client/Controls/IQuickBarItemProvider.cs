@@ -5,7 +5,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Interface for an object that can add to the quick bar.
     /// </summary>
-    interface IQuickBarItemProvider
+    public interface IQuickBarItemProvider
     {
         /// <summary>
         /// Gets the <see cref="QuickBarItemType"/> and value to add to the quick bar.

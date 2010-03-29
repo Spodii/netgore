@@ -5,7 +5,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Contains the different type of items that can be in the quick bar.
     /// </summary>
-    enum QuickBarItemType
+    public enum QuickBarItemType
     {
         /// <summary>
         /// An empty slot.

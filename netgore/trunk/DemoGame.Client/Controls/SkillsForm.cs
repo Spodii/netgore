@@ -107,9 +107,10 @@ namespace DemoGame.Client
             public SkillInfoAttribute SkillInfo { get; private set; }
         }
 
-        sealed class SkillPictureBox : PictureBox
+        public sealed class SkillPictureBox : PictureBox, IDragDropProvider, IQuickBarItemProvider
         {
             readonly ISkillCooldownManager _cooldownManager;
+
             bool _isCoolingDown = false;
 
             public SkillPictureBox(SkillsForm parent, SkillInfoAttribute skillInfo, Vector2 position)
@@ -120,6 +121,9 @@ namespace DemoGame.Client
                 _cooldownManager = parent.CooldownManager;
             }
 
+            /// <summary>
+            /// Gets the <see cref="SkillInfoAttribute"/> for the skill represented by this control.
+            /// </summary>
             public SkillInfoAttribute SkillInfo { get; private set; }
 
             /// <summary>
@@ -131,11 +135,7 @@ namespace DemoGame.Client
                 base.DrawControl(spriteBatch);
 
                 if (_isCoolingDown)
-                {
-                    var pos = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
-                    Rectangle r = new Rectangle((int)pos.X, (int)pos.Y, (int)ClientSize.X, (int)ClientSize.Y);
-                    XNARectangle.Draw(spriteBatch, r, new Color(0, 0, 0, 150));
-                }
+                    XNARectangle.Draw(spriteBatch, GetScreenArea(), new Color(0, 0, 0, 150));
             }
 
             /// <summary>
@@ -150,11 +150,89 @@ namespace DemoGame.Client
                 Size = _iconSize;
             }
 
+            /// <summary>
+            /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+            /// </summary>
+            /// <param name="currentTime">The current time in milliseconds.</param>
             protected override void UpdateControl(int currentTime)
             {
                 _isCoolingDown = _cooldownManager.IsCoolingDown(SkillInfo.CooldownGroup, currentTime);
 
                 base.UpdateControl(currentTime);
+            }
+
+            /// <summary>
+            /// Gets if this <see cref="IDragDropProvider"/> can be dragged. In the case of something that only
+            /// supports having items dropped on it but not dragging, this will always return false. For items that can be
+            /// dragged, this will return false if there is currently nothing to drag (such as an empty inventory slot) or
+            /// there is some other reason that this item cannot currently be dragged.
+            /// </summary>
+            bool IDragDropProvider.CanDragContents
+            {
+                get { return SkillInfo != null; }
+            }
+
+            /// <summary>
+            /// Draws the item that this <see cref="IDragDropProvider"/> contains for when this item
+            /// is being dragged.
+            /// </summary>
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+            /// <param name="position">The position to draw the sprite at.</param>
+            /// <param name="color">The color to use when drawing the item.</param>
+            void IDragDropProvider.DrawDraggedItem(ISpriteBatch spriteBatch, Vector2 position, Color color)
+            {
+                if (Sprite != null)
+                    Sprite.Draw(spriteBatch, position, color);
+            }
+
+            /// <summary>
+            /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
+            /// </summary>
+            /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
+            /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
+            /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
+            /// otherwise false.</returns>
+            bool IDragDropProvider.CanDrop(IDragDropProvider source)
+            {
+                return false;
+            }
+
+            /// <summary>
+            /// Handles when the specified <see cref="IDragDropProvider"/> is dropped on this <see cref="IDragDropProvider"/>.
+            /// </summary>
+            /// <param name="source">The <see cref="IDragDropProvider"/> that is being dropped on this
+            /// <see cref="IDragDropProvider"/>.</param>
+            void IDragDropProvider.Drop(IDragDropProvider source)
+            {
+            }
+
+            /// <summary>
+            /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
+            /// dragged onto it but not yet dropped.
+            /// </summary>
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+            void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
+            {
+            }
+
+            /// <summary>
+            /// Gets the <see cref="QuickBarItemType"/> and value to add to the quick bar.
+            /// </summary>
+            /// <param name="type">When this method returns true, contains the <see cref="QuickBarItemType"/>
+            /// to add.</param>
+            /// <param name="value">When this method returns true, contains the value for for the quick bar item.</param>
+            /// <returns>True if the item can be added to the quick bar; otherwise false.</returns>
+            bool IQuickBarItemProvider.TryAddToQuickBar(out QuickBarItemType type, out int value)
+            {
+                type = QuickBarItemType.Skill;
+                value = 0;
+
+                if (SkillInfo == null)
+                    return false;
+
+                value = (int)SkillInfo.Value;
+
+                return true;
             }
         }
     }
