@@ -399,7 +399,6 @@
     <Compile Include="World\Map\Entities\Characters\StatusEffects\StatusEffectManager.cs" />
     <Compile Include="World\Map\Entities\Characters\StatusEffects\StatusEffectStrengthen.cs" />
     <Compile Include="Account\UserAccount.cs" />
-    <Compile Include="World\Map\Entities\DamageTrapEntity.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\UserInventory.cs" />
     <Compile Include="World\Map\Entities\Items\ItemEntity.cs" />
     <Compile Include="World\Map\Entities\Stats\NPCStats.cs" />

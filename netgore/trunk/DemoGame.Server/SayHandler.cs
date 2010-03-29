@@ -154,14 +154,6 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildCreationSuccessful, name, tag);
             }
 
-            [SayCommand("CreateTestDamageTrap")]
-            public void CreateTestDamageTrap()
-            {
-                // NOTE: This is just a temporary test command...
-                DamageTrapEntity trap = new DamageTrapEntity(User.Position, new Vector2(64, 64));
-                User.Map.AddEntity(trap);
-            }
-
             [SayCommand("Demote")]
             public void Demote(string userName)
             {
