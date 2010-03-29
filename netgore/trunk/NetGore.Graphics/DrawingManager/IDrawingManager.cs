@@ -1,8 +1,12 @@
 using System;
 using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics
 {
+    /// <summary>
+    /// Interface for a component that manages the preparation and tear-down for drawing.
+    /// </summary>
     public interface IDrawingManager
     {
         /// <summary>
@@ -14,6 +18,11 @@ namespace NetGore.Graphics
         /// Gets the <see cref="DrawingManagerState"/> describing the current drawing state.
         /// </summary>
         DrawingManagerState State { get; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use when clearing the screen.
+        /// </summary>
+        Color ClearColor { get; set; }
 
         /// <summary>
         /// Begins drawing the graphical user interface, which is not affected by the camera.

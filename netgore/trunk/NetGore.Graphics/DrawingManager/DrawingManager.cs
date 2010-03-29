@@ -24,6 +24,8 @@ namespace NetGore.Graphics
         /// <param name="graphicsDevice">The <see cref="GraphicsDevice"/>.</param>
         public DrawingManager(GraphicsDevice graphicsDevice)
         {
+            ClearColor = Color.CornflowerBlue;
+
             _gd = graphicsDevice;
             _sb = new RoundedXnaSpriteBatch(_gd);
 
@@ -59,6 +61,15 @@ namespace NetGore.Graphics
         public DrawingManagerState State
         {
             get { return _state; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use when clearing the screen.
+        /// </summary>
+        public Color ClearColor
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -158,7 +169,7 @@ namespace NetGore.Graphics
 
                 // Clear the buffer
                 if (!bypassClear)
-                    _gd.Clear(Color.CornflowerBlue);
+                    _gd.Clear(ClearColor);
 
                 // Start the SpriteBatch
                 try
