@@ -1,0 +1,62 @@
+<!-- 
+This custom project will manage assemblies for when using Mono (the MONO compiler constant is defined).
+If you are not a NetGore developer, you should not need to ever touch this file.
+-->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+	<!-- Reference our custom tasks -->
+	<UsingTask TaskName="CustomTasks.RegexMatchTask" AssemblyFile="$(MSBuildProjectDirectory)\..\CustomTasks.dll" />
+
+	<!-- Use the RegexMatchTask to look for the MONO constant, store it in IsMonoDefined -->
+	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
+		<RegexMatchTask Regex="Mono" Value="$(DefineConstants)">
+			<Output TaskParameter="Output" PropertyName="IsMonoDefined" />
+		</RegexMatchTask>
+	</Target>
+
+	<Choose>
+
+		<!-- Using Mono -->
+		<When Condition="'$(IsMonoDefined)'=='true'" >
+
+			<!-- Xna -->
+			<ItemGroup>
+				<ProjectReference Include="..\NetGore.Xna.Framework\NetGore.Xna.Framework.csproj">
+					<Project>{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}</Project>
+					<Name>NetGore.Xna.Framework</Name>
+				</ProjectReference>
+			</ItemGroup>
+
+			<!-- log4net -->
+			<ItemGroup>
+				<Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=x86">
+					<SpecificVersion>False</SpecificVersion>
+					<HintPath>..\_dependencies\mono\log4net.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+			</ItemGroup>
+
+		</When>
+
+		<!-- Not using mono. This must be in the Otherwise branch, otherwise some IDE tools may complain (like ReSharper). -->
+		<Otherwise>
+
+			<!-- Xna -->
+			<ItemGroup>
+				<Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86"/>
+			</ItemGroup>
+
+			<!-- log4net -->
+			<ItemGroup>
+				<Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+					<SpecificVersion>False</SpecificVersion>
+					<HintPath>..\_dependencies\log4net.dll</HintPath>
+					<Private>False</Private>
+				</Reference>
+			</ItemGroup>
+
+		</Otherwise>
+
+	</Choose>
+
+</Project>
