@@ -27,9 +27,9 @@ namespace NetGore.Features.GameTime
         /// <param name="nightStartHour">The night start hour.</param>
         /// <param name="nightEndHour">The night end hour.</param>
         /// <param name="minAmbientMultiplier">The min ambient multiplier.</param>
+        /// <param name="minAmbient">The minimum ambient darkness.</param>
         /// <param name="baseTime">The base time.</param>
         /// <param name="gameTimeMultiplier">The game time multiplier.</param>
-        /// <param name="minAmbient"></param>
         public GameTimeSettings(int nightStartHour, int nightEndHour, float minAmbientMultiplier, byte minAmbient,
                                 DateTime baseTime, float gameTimeMultiplier)
         {

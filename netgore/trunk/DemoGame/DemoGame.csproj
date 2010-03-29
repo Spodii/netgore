@@ -136,10 +136,12 @@
     <Compile Include="Items\ItemIDTypeConverter.cs" />
     <Compile Include="Items\ItemTemplateIDTypeConverter.cs" />
     <Compile Include="Items\WeaponType.cs" />
-    <Compile Include="LevelExtensions.cs" />
+    <Compile Include="LogLevelExtensions.cs" />
     <Compile Include="Stats\SPValueTypeConverter.cs" />
     <Compile Include="Stats\SPValueTypeReadWriteExtensions.cs" />
     <Compile Include="StatusEffect\ActiveStatusEffectID.cs" />
+    <Compile Include="UserPermissions.cs" />
+    <Compile Include="UserPermissionsExtensions.cs" />
     <Compile Include="World\Map\Entities\AllianceID.cs" />
     <Compile Include="World\Map\Entities\AllianceIDTypeConverter.cs" />
     <Compile Include="World\Map\Entities\CharacterID.cs" />
