@@ -43,8 +43,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
     <OutputPath>bin\x86\Mono\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MonoTopDown|x86' ">
+    <OutputPath>bin\x86\MonoTopDown\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>TOPDOWN</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" Condition=" '$(Configuration)|$(Platform)' != 'Mono|x86' " />
+    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" Condition="('$(Configuration)|$(Platform)' !=  (('Mono|x86'))) or ('$(Configuration)|$(Platform)' !=  ('MonoTopDown|x86'))" />
     <Reference Include="MySql.Data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -85,7 +91,7 @@
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.Xna.Framework\NetGore.Xna.Framework.csproj" Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
+    <ProjectReference Include="..\NetGore.Xna.Framework\NetGore.Xna.Framework.csproj" Condition="('$(Configuration)|$(Platform)' ==  (('Mono|x86'))) or ('$(Configuration)|$(Platform)' ==  ('MonoTopDown|x86'))">
       <Project>{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}</Project>
       <Name>NetGore.Xna.Framework</Name>
     </ProjectReference>
