@@ -17,7 +17,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Type of animation the Grh uses
         /// </summary>
-        AnimType _anim;
+        AnimType _anim = AnimType.Loop;
 
         /// <summary>
         /// Current frame (if animated)
