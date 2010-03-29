@@ -100,17 +100,6 @@ namespace DemoGame.Server
                 get { return Server.World; }
             }
 
-            bool CheckGuildPermissions(GuildRank requiredRank)
-            {
-                if (((IGuildMember)User).GuildRank < requiredRank)
-                {
-                    User.Send(GameMessage.GuildInsufficientPermissions, _guildSettings.GetRankName(requiredRank));
-                    return false;
-                }
-
-                return true;
-            }
-
             [SayCommand("CreateGroup")]
             public void CreateGroup()
             {
@@ -305,35 +294,6 @@ namespace DemoGame.Server
                 User.Guild.TryViewEventLog(User);
             }
 
-            void GuildMemberPerformer_GuildKick(IGuildMember target, string userName)
-            {
-                if (target == null)
-                {
-                    User.Send(GameMessage.GuildKickFailedInvalidUser, userName);
-                    return;
-                }
-
-                if (target.Guild != User.Guild)
-                {
-                    User.Send(GameMessage.GuildKickFailedNotInGuild, target.Name);
-                    return;
-                }
-
-                if (target.GuildRank > ((IGuildMember)User).GuildRank)
-                {
-                    User.Send(GameMessage.GuildKickFailedTooHighRank, target.Name);
-                    return;
-                }
-
-                if (!User.Guild.TryKickMember(User, target))
-                {
-                    User.Send(GameMessage.GuildKickFailedUnknownReason, target.Name);
-                    return;
-                }
-
-                User.Send(GameMessage.GuildKick, target.Name);
-            }
-
             [SayCommand("GuildMembers")]
             public void GuildMembers()
             {
@@ -438,66 +398,6 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildRenameFailedUnknownReason, newName);
             }
 
-            bool RequireInGroup()
-            {
-                if (((IGroupable)User).Group == null)
-                {
-                    User.Send(GameMessage.InvalidCommandMustBeInGroup);
-                    return false;
-                }
-
-                return true;
-            }
-
-            bool RequireNotInGroup()
-            {
-                if (((IGroupable)User).Group != null)
-                {
-                    User.Send(GameMessage.InvalidCommandMustNotBeInGroup);
-                    return false;
-                }
-
-                return true;
-            }
-
-            /// <summary>
-            /// Requires the user to be in a guild.
-            /// </summary>
-            /// <returns>If false, the command should be aborted.</returns>
-            bool RequireUserInGuild()
-            {
-                if (User.Guild == null)
-                {
-                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustBeInGuild))
-                    {
-                        User.Send(pw);
-                    }
-
-                    return false;
-                }
-
-                return true;
-            }
-
-            /// <summary>
-            /// Requires the user to not be in a guild.
-            /// </summary>
-            /// <returns>If false, the command should be aborted.</returns>
-            bool RequireUserNotInGuild()
-            {
-                if (User.Guild != null)
-                {
-                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustNotBeInGuild))
-                    {
-                        User.Send(pw);
-                    }
-
-                    return false;
-                }
-
-                return true;
-            }
-
             [SayCommand("RetagGuild")]
             public void RetagGuild(string newTag)
             {
@@ -587,6 +487,123 @@ namespace DemoGame.Server
                     }
                 }
             }
+
+            #region Helper methods
+
+            /// <summary>
+            /// Checks if the user meets the required guild rank.
+            /// </summary>
+            /// <param name="requiredRank">The required guild rank.</param>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool CheckGuildPermissions(GuildRank requiredRank)
+            {
+                if (((IGuildMember)User).GuildRank < requiredRank)
+                {
+                    User.Send(GameMessage.GuildInsufficientPermissions, _guildSettings.GetRankName(requiredRank));
+                    return false;
+                }
+
+                return true;
+            }
+
+            void GuildMemberPerformer_GuildKick(IGuildMember target, string userName)
+            {
+                if (target == null)
+                {
+                    User.Send(GameMessage.GuildKickFailedInvalidUser, userName);
+                    return;
+                }
+
+                if (target.Guild != User.Guild)
+                {
+                    User.Send(GameMessage.GuildKickFailedNotInGuild, target.Name);
+                    return;
+                }
+
+                if (target.GuildRank > ((IGuildMember)User).GuildRank)
+                {
+                    User.Send(GameMessage.GuildKickFailedTooHighRank, target.Name);
+                    return;
+                }
+
+                if (!User.Guild.TryKickMember(User, target))
+                {
+                    User.Send(GameMessage.GuildKickFailedUnknownReason, target.Name);
+                    return;
+                }
+
+                User.Send(GameMessage.GuildKick, target.Name);
+            }
+
+            /// <summary>
+            /// Requires the user to not be in a group.
+            /// </summary>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool RequireInGroup()
+            {
+                if (((IGroupable)User).Group == null)
+                {
+                    User.Send(GameMessage.InvalidCommandMustBeInGroup);
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// Requires the user to not be in a group.
+            /// </summary>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool RequireNotInGroup()
+            {
+                if (((IGroupable)User).Group != null)
+                {
+                    User.Send(GameMessage.InvalidCommandMustNotBeInGroup);
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// Requires the user to be in a guild.
+            /// </summary>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool RequireUserInGuild()
+            {
+                if (User.Guild == null)
+                {
+                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustBeInGuild))
+                    {
+                        User.Send(pw);
+                    }
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// Requires the user to not be in a guild.
+            /// </summary>
+            /// <returns>If false, the command should be aborted.</returns>
+            bool RequireUserNotInGuild()
+            {
+                if (User.Guild != null)
+                {
+                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustNotBeInGuild))
+                    {
+                        User.Send(pw);
+                    }
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            #endregion
 
             #region ISayCommands<User> Members
 
