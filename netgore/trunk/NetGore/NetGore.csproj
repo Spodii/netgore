@@ -64,19 +64,25 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
     <OutputPath>bin\x86\Mono\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MonoTopDown|x86' ">
+    <OutputPath>bin\x86\MonoTopDown\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>TOPDOWN</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" Condition=" '$(Configuration)|$(Platform)' != 'Mono|x86' ">
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" Condition="('$(Configuration)|$(Platform)' !=  (('Mono|x86'))) or ('$(Configuration)|$(Platform)' !=  ('MonoTopDown|x86'))">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=x86" Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=x86" Condition="('$(Configuration)|$(Platform)' ==  (('Mono|x86'))) or ('$(Configuration)|$(Platform)' ==  ('MonoTopDown|x86'))">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\mono\log4net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.JScript" />
-    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" Condition=" '$(Configuration)|$(Platform)' != 'Mono|x86' " />
+    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" Condition="('$(Configuration)|$(Platform)' !=  (('Mono|x86'))) or ('$(Configuration)|$(Platform)' !=  ('MonoTopDown|x86'))" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -376,11 +382,11 @@
     <Content Include="CustomValueTypeTemplate.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetGore.Xna.Framework\NetGore.Xna.Framework.csproj" Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
+    <ProjectReference Include="..\NetGore.Xna.Framework\NetGore.Xna.Framework.csproj" Condition="('$(Configuration)|$(Platform)' ==  (('Mono|x86'))) or ('$(Configuration)|$(Platform)' ==  ('MonoTopDown|x86'))">
       <Project>{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}</Project>
       <Name>NetGore.Xna.Framework</Name>
     </ProjectReference>
-</ItemGroup>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

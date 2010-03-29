@@ -29,6 +29,10 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
     <OutputPath>bin\x86\Mono\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MonoTopDown|x86' ">
+    <OutputPath>bin\x86\MonoTopDown\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=MSIL">
       <Private>False</Private>

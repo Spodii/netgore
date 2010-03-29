@@ -64,6 +64,10 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
     <OutputPath>bin\x86\Mono\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MonoTopDown|x86' ">
+    <OutputPath>bin\x86\MonoTopDown\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
