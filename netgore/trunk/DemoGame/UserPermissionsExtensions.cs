@@ -19,18 +19,5 @@ namespace DemoGame
         {
             return (p & level) != 0;
         }
-
-        /// <summary>
-        /// Gets if the given <see cref="UserPermissions"/> is not set.
-        /// </summary>
-        /// <param name="p">The <see cref="UserPermissions"/>.</param>
-        /// <param name="level">The <see cref="UserPermissions"/> to check if not set.</param>
-        /// <returns>
-        /// True if the <paramref name="level"/> is not set; otherwise false.
-        /// </returns>
-        public static bool IsNotSet(this UserPermissions p, UserPermissions level)
-        {
-            return !p.IsSet(level);
-        }
     }
 }

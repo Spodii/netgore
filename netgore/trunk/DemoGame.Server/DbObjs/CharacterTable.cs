@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 3/30/2010 12:04:12 AM
+This file was generated on (UTC): 3/30/2010 12:13:03 AM
 ********************************************************************/
 
 using System;
@@ -429,11 +429,11 @@ this._name = (System.String)value;
 /// The underlying database type is `tinyint(3) unsigned`.
 /// </summary>
 [NetGore.SyncValueAttribute()]
-public System.Byte Permissions
+public DemoGame.UserPermissions Permissions
 {
 get
 {
-return (System.Byte)_permissions;
+return (DemoGame.UserPermissions)_permissions;
 }
 set
 {
@@ -623,7 +623,7 @@ public CharacterTable()
 /// <param name="statStr">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public CharacterTable(System.Nullable<DemoGame.AccountID> @accountID, System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.BodyID @bodyID, System.Int32 @cash, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, DemoGame.SPValueType @hP, DemoGame.CharacterID @iD, System.Byte @level, NetGore.MapID @mapID, System.UInt16 @moveSpeed, DemoGame.SPValueType @mP, System.String @name, System.Byte @permissions, System.Nullable<NetGore.MapID> @respawnMap, System.Single @respawnX, System.Single @respawnY, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr, System.Single @x, System.Single @y)
+public CharacterTable(System.Nullable<DemoGame.AccountID> @accountID, System.Nullable<NetGore.AI.AIID> @aIID, DemoGame.BodyID @bodyID, System.Int32 @cash, System.Nullable<DemoGame.CharacterTemplateID> @characterTemplateID, System.Nullable<NetGore.NPCChat.NPCChatDialogID> @chatDialog, System.Int32 @exp, DemoGame.SPValueType @hP, DemoGame.CharacterID @iD, System.Byte @level, NetGore.MapID @mapID, System.UInt16 @moveSpeed, DemoGame.SPValueType @mP, System.String @name, DemoGame.UserPermissions @permissions, System.Nullable<NetGore.MapID> @respawnMap, System.Single @respawnX, System.Single @respawnY, System.Nullable<NetGore.Features.Shops.ShopID> @shopID, System.Int32 @statPoints, System.Int16 @statAgi, System.Int16 @statDefence, System.Int16 @statInt, System.Int16 @statMaxhit, System.Int16 @statMaxhp, System.Int16 @statMaxmp, System.Int16 @statMinhit, System.Int16 @statStr, System.Single @x, System.Single @y)
 {
 this.AccountID = (System.Nullable<DemoGame.AccountID>)@accountID;
 this.AIID = (System.Nullable<NetGore.AI.AIID>)@aIID;
@@ -639,7 +639,7 @@ this.MapID = (NetGore.MapID)@mapID;
 this.MoveSpeed = (System.UInt16)@moveSpeed;
 this.MP = (DemoGame.SPValueType)@mP;
 this.Name = (System.String)@name;
-this.Permissions = (System.Byte)@permissions;
+this.Permissions = (DemoGame.UserPermissions)@permissions;
 this.RespawnMap = (System.Nullable<NetGore.MapID>)@respawnMap;
 this.RespawnX = (System.Single)@respawnX;
 this.RespawnY = (System.Single)@respawnY;
@@ -697,7 +697,7 @@ dic["@map_id"] = (NetGore.MapID)source.MapID;
 dic["@move_speed"] = (System.UInt16)source.MoveSpeed;
 dic["@mp"] = (DemoGame.SPValueType)source.MP;
 dic["@name"] = (System.String)source.Name;
-dic["@permissions"] = (System.Byte)source.Permissions;
+dic["@permissions"] = (DemoGame.UserPermissions)source.Permissions;
 dic["@respawn_map"] = (System.Nullable<NetGore.MapID>)source.RespawnMap;
 dic["@respawn_x"] = (System.Single)source.RespawnX;
 dic["@respawn_y"] = (System.Single)source.RespawnY;
@@ -735,7 +735,7 @@ this.MapID = (NetGore.MapID)source.MapID;
 this.MoveSpeed = (System.UInt16)source.MoveSpeed;
 this.MP = (DemoGame.SPValueType)source.MP;
 this.Name = (System.String)source.Name;
-this.Permissions = (System.Byte)source.Permissions;
+this.Permissions = (DemoGame.UserPermissions)source.Permissions;
 this.RespawnMap = (System.Nullable<NetGore.MapID>)source.RespawnMap;
 this.RespawnX = (System.Single)source.RespawnX;
 this.RespawnY = (System.Single)source.RespawnY;
@@ -925,7 +925,7 @@ this.Name = (System.String)value;
 break;
 
 case "permissions":
-this.Permissions = (System.Byte)value;
+this.Permissions = (DemoGame.UserPermissions)value;
 break;
 
 case "respawn_map":

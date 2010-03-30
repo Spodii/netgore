@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 3/30/2010 12:04:12 AM
+This file was generated on (UTC): 3/30/2010 12:13:03 AM
 ********************************************************************/
 
 using System;
@@ -143,7 +143,7 @@ source.Name = (System.String)(System.String)dataReader.GetString(i);
 
 i = dataReader.GetOrdinal("permissions");
 
-source.Permissions = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Permissions = (DemoGame.UserPermissions)(DemoGame.UserPermissions)dataReader.GetByte(i);
 
 i = dataReader.GetOrdinal("respawn_map");
 
@@ -293,7 +293,7 @@ break;
 
 
 case "permissions":
-source.Permissions = (System.Byte)(System.Byte)dataReader.GetByte(i);
+source.Permissions = (DemoGame.UserPermissions)(DemoGame.UserPermissions)dataReader.GetByte(i);
 break;
 
 

@@ -32,7 +32,7 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 				<Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=x86">
 					<SpecificVersion>False</SpecificVersion>
 					<HintPath>..\_dependencies\mono\log4net.dll</HintPath>
-					<Private>False</Private>
+					<Private>True</Private>
 				</Reference>
 			</ItemGroup>
 
@@ -51,7 +51,7 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 				<Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
 					<SpecificVersion>False</SpecificVersion>
 					<HintPath>..\_dependencies\log4net.dll</HintPath>
-					<Private>False</Private>
+					<Private>True</Private>
 				</Reference>
 			</ItemGroup>
 

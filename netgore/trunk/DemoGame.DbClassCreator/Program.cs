@@ -106,6 +106,7 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
 
                 generator.AddCustomType(typeof(CharacterID), "character", "id");
                 generator.AddCustomType(typeof(CharacterTemplateID), "character", "template_id");
+                generator.AddCustomType(typeof(UserPermissions), "character", "permissions");
 
                 generator.AddCustomType(typeof(EquipmentSlot), "character_equipped", "slot");
 
