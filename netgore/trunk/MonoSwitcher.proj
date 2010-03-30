@@ -4,20 +4,10 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 -->
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
 
-	<!-- Reference our custom tasks -->
-	<UsingTask TaskName="CustomTasks.RegexMatchTask" AssemblyFile="$(MSBuildProjectDirectory)\..\CustomTasks.dll" />
-
-	<!-- Use the RegexMatchTask to look for the MONO constant, store it in IsMonoDefined -->
-	<Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
-		<RegexMatchTask Regex="Mono" Value="$(DefineConstants)">
-			<Output TaskParameter="Output" PropertyName="IsMonoDefined" />
-		</RegexMatchTask>
-	</Target>
-
 	<Choose>
 
 		<!-- Using Mono -->
-		<When Condition="'$(IsMonoDefined)'=='true'" >
+		<When Condition="('$(Configuration)'=='Mono') OR ('$(Configuration)'=='MonoTopDown')" >
 
 			<!-- Xna -->
 			<ItemGroup>
