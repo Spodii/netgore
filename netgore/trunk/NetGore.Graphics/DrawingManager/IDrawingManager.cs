@@ -10,6 +10,11 @@ namespace NetGore.Graphics
     public interface IDrawingManager
     {
         /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use when clearing the screen.
+        /// </summary>
+        Color ClearColor { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="ILightManager"/> used by this <see cref="IDrawingManager"/>.
         /// </summary>
         ILightManager LightManager { get; }
@@ -18,11 +23,6 @@ namespace NetGore.Graphics
         /// Gets the <see cref="DrawingManagerState"/> describing the current drawing state.
         /// </summary>
         DrawingManagerState State { get; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Color"/> to use when clearing the screen.
-        /// </summary>
-        Color ClearColor { get; set; }
 
         /// <summary>
         /// Begins drawing the graphical user interface, which is not affected by the camera.

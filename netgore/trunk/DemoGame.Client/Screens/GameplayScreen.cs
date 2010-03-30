@@ -39,14 +39,15 @@ namespace DemoGame.Client
 
         AvailableQuestsForm _availableQuestsForm;
         CharacterTargeter _characterTargeter;
-        GameplayScreenControls _gameControls;
         ChatBubbleManager _chatBubbleManager;
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
         int _currentTime = 0;
         SpriteFont _damageFont;
+        DragDropHandler _dragDropHandler;
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
+        GameplayScreenControls _gameControls;
         SpriteFont _guiFont;
         GuildForm _guildForm;
         GUISettings _guiSettings;
@@ -54,10 +55,10 @@ namespace DemoGame.Client
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
         Label _latencyLabel;
+        QuickBarForm _quickBarForm;
         ShopForm _shopForm;
         SkillCastProgressBar _skillCastProgressBar;
         SkillsForm _skillsForm;
-        QuickBarForm _quickBarForm;
         ClientSockets _socket;
         StatsForm _statsForm;
         StatusEffectsForm _statusEffectsForm;
@@ -76,8 +77,6 @@ namespace DemoGame.Client
         {
             get { return _availableQuestsForm; }
         }
-
-        public QuickBarForm QuickBarForm { get { return _quickBarForm; } }
 
         /// <summary>
         /// Gets the <see cref="ChatBubbleManagerBase"/>.
@@ -100,7 +99,10 @@ namespace DemoGame.Client
             get { return _damageTextPool; }
         }
 
-        public DragDropHandler DragDropHandler { get { return _dragDropHandler; } }
+        public DragDropHandler DragDropHandler
+        {
+            get { return _dragDropHandler; }
+        }
 
         public EquipmentInfoRequester EquipmentInfoRequester
         {
@@ -123,6 +125,11 @@ namespace DemoGame.Client
         public Map Map
         {
             get { return World.Map; }
+        }
+
+        public QuickBarForm QuickBarForm
+        {
+            get { return _quickBarForm; }
         }
 
         public ShopForm ShopForm
@@ -315,7 +322,7 @@ namespace DemoGame.Client
             sb.DrawString(_damageFont, string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
                           new Vector2(0, _damageFont.LineSpacing + 1), Color.White);
             DrawingManager.EndDrawGUI();
-        } 
+        }
 
         public void EquippedForm_RequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
         {
@@ -361,8 +368,6 @@ namespace DemoGame.Client
             _chatBubbleManager = new ChatBubbleManager(GUIManager.SkinManager, _guiFont);
         }
 
-        DragDropHandler _dragDropHandler;
-
         /// <summary>
         /// Initializes the GUI components.
         /// </summary>
@@ -377,7 +382,8 @@ namespace DemoGame.Client
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
-            _inventoryForm = new InventoryForm(_dragDropHandler, x => x == UserInfo.Inventory, InventoryInfoRequester, new Vector2(250, 0), cScreen);
+            _inventoryForm = new InventoryForm(_dragDropHandler, x => x == UserInfo.Inventory, InventoryInfoRequester,
+                                               new Vector2(250, 0), cScreen);
             _inventoryForm.RequestDropItem += InventoryForm_RequestDropItem;
             _inventoryForm.RequestUseItem += InventoryForm_RequestUseItem;
 

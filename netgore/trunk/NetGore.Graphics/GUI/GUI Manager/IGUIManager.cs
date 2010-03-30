@@ -23,6 +23,17 @@ namespace NetGore.Graphics.GUI
         event GUIEventHandler FocusedRootChanged;
 
         /// <summary>
+        /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
+        /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
+        /// </summary>
+        IEnumerable<Control> Controls { get; }
+
+        /// <summary>
+        /// Gets the screen coordinates of the cursor.
+        /// </summary>
+        Vector2 CursorPosition { get; }
+
+        /// <summary>
         /// Gets the <see cref="IDragDropProvider"/> that is currently being dragged for drag-and-drop. Not to
         /// be confused with dragging a <see cref="Control"/> that supports being dragged.
         /// </summary>
@@ -37,17 +48,6 @@ namespace NetGore.Graphics.GUI
         /// implement the <see cref="IDragDropProvider"/> interface.
         /// </summary>
         IDragDropProvider DropOntoControl { get; }
-
-        /// <summary>
-        /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
-        /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
-        /// </summary>
-        IEnumerable<Control> Controls { get; }
-
-        /// <summary>
-        /// Gets the screen coordinates of the cursor.
-        /// </summary>
-        Vector2 CursorPosition { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="Control"/> that currently has focus. If the <paramref name="value"/> is null

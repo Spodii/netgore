@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace Microsoft.Xna.Framework.Graphics.PackedVector
 {
@@ -11,10 +8,10 @@ namespace Microsoft.Xna.Framework.Graphics.PackedVector
         /// <summary>Sets the packed representation from a Vector4.</summary>
         /// <param name="vector">The vector to create the packed representation from.</param>
         void PackFromVector4(Vector4 vector);
+
         /// <summary>Expands the packed representation into a Vector4.</summary>
         Vector4 ToVector4();
     }
-
 
     /// <summary>Converts packed vector types to and from Vector4 values.</summary>
     public interface IPackedVector<TPacked> : IPackedVector
@@ -22,11 +19,4 @@ namespace Microsoft.Xna.Framework.Graphics.PackedVector
         /// <summary>Directly gets or sets the packed representation of the value.</summary>
         TPacked PackedValue { get; set; }
     }
-
- 
-
- 
-
- 
-
 }

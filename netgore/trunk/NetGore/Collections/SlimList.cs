@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Collections
 {
     public class SlimList<T>
     {
-        private T[] _items;
-        private short _size;
-        private static T[] _emptyArray = null;
+        static readonly T[] _emptyArray = null;
+        T[] _items;
+        short _size;
 
         /// <summary>
         /// Constructs a new list with null array.
@@ -20,15 +18,61 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Index of the array.
+        /// </summary>
+        public T this[int index]
+        {
+            get { return this[index]; }
+            set
+            {
+                if (!(value is T) && ((value != null) || typeof(T).IsValueType))
+                    return;
+
+                this[index] = value;
+            }
+        }
+
+        /// <summary>
+        /// The length of the array.
+        /// </summary>
+        public int Capacity
+        {
+            get { return _items.Length; }
+            set
+            {
+                if (value == _items.Length)
+                    return;
+
+                if (value < _size)
+                    return;
+
+                if (value > 0)
+                {
+                    T[] destArray = new T[value];
+                    Array.Copy(_items, 0, destArray, 0, _size);
+                    _items = destArray;
+                }
+                else
+                    _items = _emptyArray;
+            }
+        }
+
+        /// <summary>
+        /// Size of the array.
+        /// </summary>
+        public int Count
+        {
+            get { return _size; }
+        }
+
+        /// <summary>
         /// Appends an object T to the end of the array.
         /// </summary>
         /// <param name="item">The object to append to the array.</param>
         public void Add(T item)
         {
             if (_size == _items.Length)
-            {
-                EnsureCapacity((short)(_size+1));
-            }
+                EnsureCapacity((short)(_size + 1));
             _items[_size++] = item;
         }
 
@@ -37,7 +81,7 @@ namespace NetGore.Collections
         /// </summary>
         public void Clear()
         {
-            if (this._size > 0)
+            if (_size > 0)
             {
                 Array.Clear(_items, 0, _size);
                 _size = 0;
@@ -48,7 +92,7 @@ namespace NetGore.Collections
         /// Makes sure that the cpacity of the array is at least the set minimum.
         /// </summary>
         /// <param name="min">The minimum size.</param>
-        private void EnsureCapacity(short min)
+        void EnsureCapacity(short min)
         {
             if (_items.Length < min)
             {
@@ -67,84 +111,15 @@ namespace NetGore.Collections
         /// <param name="index">The position to remove at.</param>
         public void RemoveAt(int index)
         {
-            if (index >= this._size)
+            if (index >= _size)
                 return;
-            
+
             _size--;
 
             if (index < _size)
-            {
-                Array.Copy(this._items, index + 1, this._items, index, this._size - index);
-            }
+                Array.Copy(_items, index + 1, _items, index, _size - index);
 
             _items[_size] = default(T);
         }
-
-
-        /// <summary>
-        /// The length of the array.
-        /// </summary>
-        public int Capacity
-        {
-            get
-            {
-                return _items.Length;
-            }
-            set
-            {
-                if (value == _items.Length)
-                    return;
-
-                if (value < _size)
-                    return;
-
-                if (value > 0)
-                {
-                    T[] destArray = new T[value];
-                    Array.Copy(_items, 0, destArray, 0, _size);
-                    _items = destArray;
-                }
-                else
-                {
-                    _items = _emptyArray;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Index of the array.
-        /// </summary>
-        public T this[int index]
-        {
-            get
-            {
-                return this[index];
-            }
-            set
-            {
-                if (!(value is T) && ((value != null) || typeof(T).IsValueType))
-                    return;
-
-                this[index] = (T)value;
-            }
-        }
-
-        /// <summary>
-        /// Size of the array.
-        /// </summary>
-        public int Count
-        {
-            get
-            {
-                return _size;
-            }
-        }
-
-
-
-
-
-
-
     }
 }

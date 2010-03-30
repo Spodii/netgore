@@ -711,19 +711,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-
-            var n = GetNodeAt(e.X, e.Y) as GrhTreeViewFolderNode;
-            if (n != null)
-                n.UpdateToolTip();
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Control.DragDrop"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.Windows.Forms.DragEventArgs"/> that contains the event data.</param>
@@ -866,6 +853,19 @@ namespace NetGore.EditorTools
                 if (MessageBox.Show(txt, "Delete GrhData?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     DeleteNode(SelectedNode);
             }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            var n = GetNodeAt(e.X, e.Y) as GrhTreeViewFolderNode;
+            if (n != null)
+                n.UpdateToolTip();
         }
 
         /// <summary>

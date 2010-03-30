@@ -96,24 +96,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Uses a quick bar slot.
-        /// </summary>
-        /// <param name="slotIndex">The 0-based index of the slot to use.</param>
-        public void UseSlot(byte slotIndex)
-        {
-            // Ensure a valid slot value
-            if (slotIndex >= _slots.Length)
-                return;
-
-            // Make sure that the slot is loaded (would be very strange if it wasn't... but whatever)
-            var slot = _slots[slotIndex];
-            if (slot == null)
-                return;
-
-            slot.UseQuickBarItem();
-        }
-
-        /// <summary>
         /// Respositions all of the <see cref="QuickBarItemPB"/>s on the form, and shrinks down the form
         /// to the appropriate size.
         /// </summary>
@@ -129,6 +111,24 @@ namespace DemoGame.Client
             }
 
             ClientSize = new Vector2(offset.X, _slots.First().Size.Y + (_slotPadding * 2));
+        }
+
+        /// <summary>
+        /// Uses a quick bar slot.
+        /// </summary>
+        /// <param name="slotIndex">The 0-based index of the slot to use.</param>
+        public void UseSlot(byte slotIndex)
+        {
+            // Ensure a valid slot value
+            if (slotIndex >= _slots.Length)
+                return;
+
+            // Make sure that the slot is loaded (would be very strange if it wasn't... but whatever)
+            var slot = _slots[slotIndex];
+            if (slot == null)
+                return;
+
+            slot.UseQuickBarItem();
         }
 
         /// <summary>

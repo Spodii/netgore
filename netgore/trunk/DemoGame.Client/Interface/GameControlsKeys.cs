@@ -81,7 +81,7 @@ namespace DemoGame.Client
             _emoteQuestion = new GameControlKeys("Emote Question", Keys.D6);
             _emoteSweat = new GameControlKeys("Emote Sweat", Keys.D7);
 
-            _quickBarItem0 = new GameControlKeys("Quick bar item 0",null,null, Keys.F1);
+            _quickBarItem0 = new GameControlKeys("Quick bar item 0", null, null, Keys.F1);
             _quickBarItem1 = new GameControlKeys("Quick bar item 1", null, null, Keys.F2);
             _quickBarItem2 = new GameControlKeys("Quick bar item 2", null, null, Keys.F3);
             _quickBarItem3 = new GameControlKeys("Quick bar item 3", null, null, Keys.F4);

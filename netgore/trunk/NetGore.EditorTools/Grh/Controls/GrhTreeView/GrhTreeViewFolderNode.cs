@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using NetGore.Graphics;
 using NetGore.IO;
 
 namespace NetGore.EditorTools
@@ -15,7 +13,17 @@ namespace NetGore.EditorTools
     /// </summary>
     public class GrhTreeViewFolderNode : TreeNode
     {
+        /// <summary>
+        /// The minimum amount of time that must elapse between updates of the ToolTipText.
+        /// </summary>
+        const int _minUpdateToolTipRate = 5000;
+
         readonly string _subCategory;
+
+        /// <summary>
+        /// The ToolTipText will not be updated if the current time is less than this value.
+        /// </summary>
+        int _nextUpdateToolTipTime = int.MinValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhTreeViewFolderNode"/> class.
@@ -33,58 +41,6 @@ namespace NetGore.EditorTools
             ImageKey = GrhImageList.ClosedFolderKey;
             SelectedImageKey = GrhImageList.OpenFolderKey;
             StateImageKey = GrhImageList.ClosedFolderKey;
-        }
-
-        /// <summary>
-        /// Creates the tooltip text to use for a folder node.
-        /// </summary>
-        /// <returns>The tooltip text to use for a folder node.</returns>
-        string GetToolTipText()
-        {
-            // Count the immediate sub-categories and grhs
-            var subCategories = Nodes.OfType<GrhTreeViewFolderNode>().Count();
-            var grhs = Nodes.OfType<GrhTreeViewNode>().Count();
-
-            // Count the total number of sub-categories and grhs
-            int totalGrhs = 0;
-            int totalSubCategories = 0;
-            foreach (var child in GetAllChildren(this))
-            {
-                if (child is GrhTreeViewNode)
-                    totalGrhs++;
-                else if (child is GrhTreeViewFolderNode)
-                    totalSubCategories++;
-            }
-
-            // Create the string
-            StringBuilder sb = new StringBuilder();
-            sb.Append("Category: ");
-            sb.AppendLine(FullCategory);
-
-            sb.Append("Sub-categories: ");
-            sb.Append(subCategories);
-            sb.Append(" [");
-            sb.Append(totalSubCategories );
-            sb.AppendLine(" total]");
-
-            sb.Append("Grhs: ");
-            sb.Append(grhs );
-            sb.Append(" [");
-            sb.Append(totalGrhs );
-            sb.AppendLine(" total]");
-
-            return sb.ToString();
-        }
-
-        static IEnumerable<TreeNode> GetAllChildren(TreeNode root)
-        {
-            foreach (var child in root.Nodes.OfType<TreeNode>())
-            {
-                yield return child;
-
-                foreach (var child2 in GetAllChildren(child))
-                    yield return child2;
-            }
         }
 
         /// <summary>
@@ -150,29 +106,17 @@ namespace NetGore.EditorTools
             return current;
         }
 
-        /// <summary>
-        /// The minimum amount of time that must elapse between updates of the ToolTipText.
-        /// </summary>
-        const int _minUpdateToolTipRate = 5000;
-
-        /// <summary>
-        /// The ToolTipText will not be updated if the current time is less than this value.
-        /// </summary>
-        int _nextUpdateToolTipTime = int.MinValue;
-
-        /// <summary>
-        /// Updates the tooltip text for this node. The text will only update if a certain amount of time has elapsed
-        /// since the last attempt to update, so there is no harm in calling this method excessively.
-        /// </summary>
-        public void UpdateToolTip()
+        static IEnumerable<TreeNode> GetAllChildren(TreeNode root)
         {
-            int time = Environment.TickCount;
-            if (_nextUpdateToolTipTime > time)
-                return;
+            foreach (var child in root.Nodes.OfType<TreeNode>())
+            {
+                yield return child;
 
-            _nextUpdateToolTipTime = time + _minUpdateToolTipRate;
-
-            ToolTipText = GetToolTipText();
+                foreach (var child2 in GetAllChildren(child))
+                {
+                    yield return child2;
+                }
+            }
         }
 
         public IEnumerable<GrhTreeViewNode> GetChildGrhDataNodes(bool recursive)
@@ -195,6 +139,47 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Creates the tooltip text to use for a folder node.
+        /// </summary>
+        /// <returns>The tooltip text to use for a folder node.</returns>
+        string GetToolTipText()
+        {
+            // Count the immediate sub-categories and grhs
+            var subCategories = Nodes.OfType<GrhTreeViewFolderNode>().Count();
+            var grhs = Nodes.OfType<GrhTreeViewNode>().Count();
+
+            // Count the total number of sub-categories and grhs
+            int totalGrhs = 0;
+            int totalSubCategories = 0;
+            foreach (var child in GetAllChildren(this))
+            {
+                if (child is GrhTreeViewNode)
+                    totalGrhs++;
+                else if (child is GrhTreeViewFolderNode)
+                    totalSubCategories++;
+            }
+
+            // Create the string
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Category: ");
+            sb.AppendLine(FullCategory);
+
+            sb.Append("Sub-categories: ");
+            sb.Append(subCategories);
+            sb.Append(" [");
+            sb.Append(totalSubCategories);
+            sb.AppendLine(" total]");
+
+            sb.Append("Grhs: ");
+            sb.Append(grhs);
+            sb.Append(" [");
+            sb.Append(totalGrhs);
+            sb.AppendLine(" total]");
+
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Removes the <see cref="GrhTreeViewFolderNode"/> only if it is empty.
         /// </summary>
         public void RemoveIfEmpty()
@@ -206,6 +191,21 @@ namespace NetGore.EditorTools
             Remove();
             if (parent != null)
                 parent.RemoveIfEmpty();
+        }
+
+        /// <summary>
+        /// Updates the tooltip text for this node. The text will only update if a certain amount of time has elapsed
+        /// since the last attempt to update, so there is no harm in calling this method excessively.
+        /// </summary>
+        public void UpdateToolTip()
+        {
+            int time = Environment.TickCount;
+            if (_nextUpdateToolTipTime > time)
+                return;
+
+            _nextUpdateToolTipTime = time + _minUpdateToolTipRate;
+
+            ToolTipText = GetToolTipText();
         }
     }
 }

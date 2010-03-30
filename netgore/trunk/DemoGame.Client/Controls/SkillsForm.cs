@@ -161,6 +161,8 @@ namespace DemoGame.Client
                 base.UpdateControl(currentTime);
             }
 
+            #region IDragDropProvider Members
+
             /// <summary>
             /// Gets if this <see cref="IDragDropProvider"/> can be dragged. In the case of something that only
             /// supports having items dropped on it but not dragging, this will always return false. For items that can be
@@ -170,6 +172,18 @@ namespace DemoGame.Client
             bool IDragDropProvider.CanDragContents
             {
                 get { return SkillInfo != null; }
+            }
+
+            /// <summary>
+            /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
+            /// </summary>
+            /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
+            /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
+            /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
+            /// otherwise false.</returns>
+            bool IDragDropProvider.CanDrop(IDragDropProvider source)
+            {
+                return false;
             }
 
             /// <summary>
@@ -186,15 +200,12 @@ namespace DemoGame.Client
             }
 
             /// <summary>
-            /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
+            /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
+            /// dragged onto it but not yet dropped.
             /// </summary>
-            /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
-            /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
-            /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
-            /// otherwise false.</returns>
-            bool IDragDropProvider.CanDrop(IDragDropProvider source)
+            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+            void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
             {
-                return false;
             }
 
             /// <summary>
@@ -206,14 +217,9 @@ namespace DemoGame.Client
             {
             }
 
-            /// <summary>
-            /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
-            /// dragged onto it but not yet dropped.
-            /// </summary>
-            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
-            void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
-            {
-            }
+            #endregion
+
+            #region IQuickBarItemProvider Members
 
             /// <summary>
             /// Gets the <see cref="QuickBarItemType"/> and value to add to the quick bar.
@@ -234,6 +240,8 @@ namespace DemoGame.Client
 
                 return true;
             }
+
+            #endregion
         }
     }
 }

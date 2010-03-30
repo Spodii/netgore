@@ -1,68 +1,64 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.ComponentModel.Design.Serialization;
-using System.Reflection;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 
 namespace Microsoft.Xna.Framework.Design
-{/// <summary>Provides a unified way of converting Ray values to other types, as well as for accessing standard values and subproperties.</summary>
-public class RayConverter : MathTypeConverter
 {
-    /// <summary>Initializes a new instance of the RayConverter class.</summary>
-    public RayConverter()
+    /// <summary>Provides a unified way of converting Ray values to other types, as well as for accessing standard values and subproperties.</summary>
+    public class RayConverter : MathTypeConverter
     {
-        Type type = typeof(Ray);
-        base.propertyDescriptions = new PropertyDescriptorCollection(new PropertyDescriptor[] { new FieldPropertyDescriptor(type.GetField("Position")), new FieldPropertyDescriptor(type.GetField("Direction")) }).Sort(new string[] { "Position", "Direction" });
-        base.supportStringConvert = false;
-    }
-
-    /// <summary>Converts the given object to the type of this converter, using the specified context and culture information.</summary>
-    /// <param name="context">The format context.</param>
-    /// <param name="culture">The current culture.</param>
-    /// <param name="value">The object to convert.</param>
-    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-    {
-        return base.ConvertFrom(context, culture, value);
-    }
-
-    /// <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>
-    /// <param name="context">The format context.</param>
-    /// <param name="culture">The culture to use in the conversion.</param>
-    /// <param name="value">The object to convert.</param>
-    /// <param name="destinationType">The destination type.</param>
-    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-    {
-        if (destinationType == null)
+        /// <summary>Initializes a new instance of the RayConverter class.</summary>
+        public RayConverter()
         {
-            throw new ArgumentNullException("destinationType");
+            Type type = typeof(Ray);
+            base.propertyDescriptions =
+                new PropertyDescriptorCollection(new PropertyDescriptor[]
+                {
+                    new FieldPropertyDescriptor(type.GetField("Position")), new FieldPropertyDescriptor(type.GetField("Direction"))
+                }).Sort(new string[] { "Position", "Direction" });
+            base.supportStringConvert = false;
         }
-        if ((destinationType == typeof(InstanceDescriptor)) && (value is Ray))
+
+        /// <summary>Converts the given object to the type of this converter, using the specified context and culture information.</summary>
+        /// <param name="context">The format context.</param>
+        /// <param name="culture">The current culture.</param>
+        /// <param name="value">The object to convert.</param>
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            Ray ray = (Ray) value;
-            ConstructorInfo constructor = typeof(Ray).GetConstructor(new Type[] { typeof(Vector3), typeof(Vector3) });
-            if (constructor != null)
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        /// <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>
+        /// <param name="context">The format context.</param>
+        /// <param name="culture">The culture to use in the conversion.</param>
+        /// <param name="value">The object to convert.</param>
+        /// <param name="destinationType">The destination type.</param>
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            if (destinationType == null)
+                throw new ArgumentNullException("destinationType");
+            if ((destinationType == typeof(InstanceDescriptor)) && (value is Ray))
             {
-                return new InstanceDescriptor(constructor, new object[] { ray.Position, ray.Direction });
+                Ray ray = (Ray)value;
+                ConstructorInfo constructor = typeof(Ray).GetConstructor(new Type[] { typeof(Vector3), typeof(Vector3) });
+                if (constructor != null)
+                    return new InstanceDescriptor(constructor, new object[] { ray.Position, ray.Direction });
             }
+            return base.ConvertTo(context, culture, value, destinationType);
         }
-        return base.ConvertTo(context, culture, value, destinationType);
-    }
 
-    /// <summary>Creates an instance of the type that this RayConverter is associated with, using the specified context, given a set of property values for the object.</summary>
-    /// <param name="context">The format context.</param>
-    /// <param name="propertyValues">The new property values.</param>
-    public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
-    {
-        if (propertyValues == null)
+        /// <summary>Creates an instance of the type that this RayConverter is associated with, using the specified context, given a set of property values for the object.</summary>
+        /// <param name="context">The format context.</param>
+        /// <param name="propertyValues">The new property values.</param>
+        public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
         {
-            throw new ArgumentNullException("propertyValues", FrameworkResources.NullNotAllowed);
+            if (propertyValues == null)
+                throw new ArgumentNullException("propertyValues", FrameworkResources.NullNotAllowed);
+            return new Ray((Vector3)propertyValues["Position"], (Vector3)propertyValues["Direction"]);
         }
-        return new Ray((Vector3) propertyValues["Position"], (Vector3) propertyValues["Direction"]);
     }
-}
-
 }

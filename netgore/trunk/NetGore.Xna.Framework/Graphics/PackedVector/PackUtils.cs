@@ -1,32 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Microsoft.Xna.Framework.Graphics.PackedVector
 {
-    internal static class PackUtils
+    static class PackUtils
     {
         // Methods
-        private static double ClampAndRound(float value, float min, float max)
+        static double ClampAndRound(float value, float min, float max)
         {
             if (float.IsNaN(value))
-            {
                 return 0.0;
-            }
             if (float.IsInfinity(value))
-            {
-                return (float.IsNegativeInfinity(value) ? ((double)min) : ((double)max));
-            }
+                return (float.IsNegativeInfinity(value) ? (min) : (max));
             if (value < min)
-            {
-                return (double)min;
-            }
+                return min;
             if (value > max)
-            {
-                return (double)max;
-            }
-            return Math.Round((double)value);
+                return max;
+            return Math.Round(value);
         }
 
         public static uint PackSigned(uint bitmask, float value)
@@ -56,27 +46,23 @@ namespace Microsoft.Xna.Framework.Graphics.PackedVector
 
         public static float UnpackSNorm(uint bitmask, uint value)
         {
-            uint num = (uint)((bitmask + 1) >> 1);
+            uint num = ((bitmask + 1) >> 1);
             if ((value & num) != 0)
             {
                 if ((value & bitmask) == num)
-                {
                     return -1f;
-                }
                 value |= ~bitmask;
             }
             else
-            {
                 value &= bitmask;
-            }
             float num2 = bitmask >> 1;
-            return (((float)value) / num2);
+            return ((value) / num2);
         }
 
         public static float UnpackUNorm(uint bitmask, uint value)
         {
             value &= bitmask;
-            return (((float)value) / ((float)bitmask));
+            return ((value) / ((float)bitmask));
         }
     }
 }
