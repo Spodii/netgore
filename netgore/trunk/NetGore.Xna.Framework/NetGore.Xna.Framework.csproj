@@ -31,9 +31,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
@@ -58,10 +55,14 @@
     <Compile Include="Graphics\PackedVector\IPackedVector.cs" />
     <Compile Include="Graphics\PackedVector\PackUtils.cs" />
     <Compile Include="Graphics\SpriteBlendMode.cs" />
+    <Compile Include="Input\Buttons.cs" />
+    <Compile Include="Input\ButtonState.cs" />
     <Compile Include="Input\Keys.cs" />
+    <Compile Include="Input\KeyState.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Plane.cs" />
+    <Compile Include="PlaneIntersectionType.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Ray.cs" />
