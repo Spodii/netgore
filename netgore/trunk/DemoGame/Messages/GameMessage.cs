@@ -14,6 +14,11 @@ namespace DemoGame
         CannotAttackAllianceConflict,
 
         /// <summary>
+        /// Do not have the <see cref="UserPermissions"/> level needed to perform an action.
+        /// </summary>
+        InsufficientPermissions,
+
+        /// <summary>
         /// Invalid Say chat command.
         /// </summary>
         InvalidCommand,

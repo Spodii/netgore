@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 3/30/2010 12:04:12 AM
+This file was generated on (UTC): 3/30/2010 12:13:03 AM
 ********************************************************************/
 
 using System;
@@ -136,7 +136,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `permissions`.
 /// </summary>
-System.Byte Permissions
+DemoGame.UserPermissions Permissions
 {
 get;
 }
