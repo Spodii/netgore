@@ -46,14 +46,14 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
         /// Output directory for the generated code that is referenced by the whole project.
         /// Points to the ...\DemoGame\DbObjs\ folder.
         /// </summary>
-        static readonly string _outputGameDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame{1}DbObjs{1}",
+        static readonly string _outputGameDir = string.Format("{0}..{1}..{1}DemoGame{1}DbObjs{1}",
                                                               AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
         /// <summary>
         /// Output directory for the generated code that is referenced only by the server.
         /// Points to the ...\DemoGame.Server\DbObjs\ folder.
         /// </summary>
-        static readonly string _outputServerDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.Server{1}DbObjs{1}",
+        static readonly string _outputServerDir = string.Format("{0}..{1}..{1}DemoGame.Server{1}DbObjs{1}",
                                                                 AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
         static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(CodeFormatter formatter,
