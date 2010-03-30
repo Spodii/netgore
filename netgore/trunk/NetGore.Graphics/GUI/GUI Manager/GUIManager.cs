@@ -15,10 +15,13 @@ namespace NetGore.Graphics.GUI
     public class GUIManager : IGUIManager
     {
         static readonly IEnumerable<Keys> _emptyKeys = new Keys[0];
+        static Color _draggedItemColor = new Color(255, 255, 255, 150);
 
         readonly List<Control> _controls = new List<Control>(2);
         readonly ISkinManager _skinManager;
         readonly Tooltip _tooltip;
+        IDragDropProvider _draggedDragDropProvider;
+        IDragDropProvider _dropOntoControl;
 
         Control _focusedControl = null;
         bool _isKeysDownSet = false;
@@ -61,6 +64,15 @@ namespace NetGore.Graphics.GUI
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _tooltip = CreateTooltip();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to draw the <see cref="IDragDropProvider"/> item currently being dragged.
+        /// </summary>
+        public static Color DraggedItemColor
+        {
+            get { return _draggedItemColor; }
+            set { _draggedItemColor = value; }
         }
 
         /// <summary>
@@ -252,32 +264,6 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public event GUIEventHandler FocusedRootChanged;
 
-        IDragDropProvider _draggedDragDropProvider;
-
-        /// <summary>
-        /// Gets the <see cref="IDragDropProvider"/> that is currently being dragged for drag-and-drop. Not to
-        /// be confused with dragging a <see cref="Control"/> that supports being dragged.
-        /// </summary>
-        public IDragDropProvider DraggedDragDropProvider
-        {
-            get { return _draggedDragDropProvider; }
-        }
-
-        IDragDropProvider _dropOntoControl;
-
-        /// <summary>
-        /// Gets the <see cref="Control"/> that implements <see cref="IDragDropProvider"/> that is under the cursor
-        /// and for which <see cref="IDragDropProvider.CanDrop"/> returns true for the
-        /// <see cref="IGUIManager.DraggedDragDropProvider"/>.
-        /// Only valid for when <see cref="IGUIManager.DraggedDragDropProvider"/> is not null. Will be null if there
-        /// is no <see cref="Control"/> under the cursor, or none of the <see cref="Control"/>s under the cursor
-        /// implement the <see cref="IDragDropProvider"/> interface.
-        /// </summary>
-        public IDragDropProvider DropOntoControl
-        {
-            get { return _dropOntoControl; }
-        }
-
         /// <summary>
         /// Gets an IEnumerable of all the root <see cref="Control"/>s handled by this <see cref="IGUIManager"/>. This
         /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
@@ -293,6 +279,28 @@ namespace NetGore.Graphics.GUI
         public Vector2 CursorPosition
         {
             get { return new Vector2(_mouseState.X, _mouseState.Y); }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDragDropProvider"/> that is currently being dragged for drag-and-drop. Not to
+        /// be confused with dragging a <see cref="Control"/> that supports being dragged.
+        /// </summary>
+        public IDragDropProvider DraggedDragDropProvider
+        {
+            get { return _draggedDragDropProvider; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Control"/> that implements <see cref="IDragDropProvider"/> that is under the cursor
+        /// and for which <see cref="IDragDropProvider.CanDrop"/> returns true for the
+        /// <see cref="IGUIManager.DraggedDragDropProvider"/>.
+        /// Only valid for when <see cref="IGUIManager.DraggedDragDropProvider"/> is not null. Will be null if there
+        /// is no <see cref="Control"/> under the cursor, or none of the <see cref="Control"/>s under the cursor
+        /// implement the <see cref="IDragDropProvider"/> interface.
+        /// </summary>
+        public IDragDropProvider DropOntoControl
+        {
+            get { return _dropOntoControl; }
         }
 
         /// <summary>
@@ -530,13 +538,6 @@ namespace NetGore.Graphics.GUI
             // Draw the tooltip
             Tooltip.Draw(spriteBatch);
         }
-
-        static Color _draggedItemColor = new Color(255, 255, 255, 150);
-
-        /// <summary>
-        /// Gets or sets the <see cref="Color"/> to draw the <see cref="IDragDropProvider"/> item currently being dragged.
-        /// </summary>
-        public static Color DraggedItemColor { get { return _draggedItemColor; } set { _draggedItemColor = value; } }
 
         /// <summary>
         /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManager"/>, including all

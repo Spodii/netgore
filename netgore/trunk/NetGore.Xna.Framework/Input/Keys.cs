@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Text;
 
 namespace Microsoft.Xna.Framework.Input
 {
@@ -167,9 +166,4 @@ namespace Microsoft.Xna.Framework.Input
         Z = 90,
         Zoom = 0xfb
     }
-
- 
-
- 
-
 }

@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
-using NetGore.IO;
 
 namespace DemoGame.Client
 {
@@ -415,6 +414,8 @@ namespace DemoGame.Client
 
             #endregion
 
+            #region IQuickBarItemProvider Members
+
             /// <summary>
             /// Gets the <see cref="QuickBarItemType"/> and value to add to the quick bar.
             /// </summary>
@@ -435,6 +436,8 @@ namespace DemoGame.Client
 
                 return true;
             }
+
+            #endregion
         }
     }
 }

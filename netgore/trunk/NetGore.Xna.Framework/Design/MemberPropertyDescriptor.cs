@@ -1,19 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace Microsoft.Xna.Framework.Design
 {
-    internal abstract class MemberPropertyDescriptor : PropertyDescriptor
+    abstract class MemberPropertyDescriptor : PropertyDescriptor
     {
-        private MemberInfo _member;
+        readonly MemberInfo _member;
 
-        public MemberPropertyDescriptor(MemberInfo member): base(member.Name, (Attribute[])member.GetCustomAttributes(typeof(Attribute), true))
+        public MemberPropertyDescriptor(MemberInfo member)
+            : base(member.Name, (Attribute[])member.GetCustomAttributes(typeof(Attribute), true))
         {
-            this._member = member;
+            _member = member;
+        }
+
+        public override Type ComponentType
+        {
+            get { return _member.DeclaringType; }
+        }
+
+        public override bool IsReadOnly
+        {
+            get { return false; }
         }
 
         public override bool CanResetValue(object component)
@@ -24,12 +33,12 @@ namespace Microsoft.Xna.Framework.Design
         public override bool Equals(object obj)
         {
             MemberPropertyDescriptor descriptor = obj as MemberPropertyDescriptor;
-            return ((descriptor != null) && descriptor._member.Equals(this._member));
+            return ((descriptor != null) && descriptor._member.Equals(_member));
         }
 
         public override int GetHashCode()
         {
-            return this._member.GetHashCode();
+            return _member.GetHashCode();
         }
 
         public override void ResetValue(object component)
@@ -40,30 +49,5 @@ namespace Microsoft.Xna.Framework.Design
         {
             return true;
         }
-
-        public override Type ComponentType
-        {
-            get { return this._member.DeclaringType; }
-        }
-
-        public override bool IsReadOnly
-        {
-            get{ return false; }
-        }
-
-
- 
-
-
-
-
- 
-
-
-
-
- 
-
-
     }
 }

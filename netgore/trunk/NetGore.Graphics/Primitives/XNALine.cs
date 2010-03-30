@@ -11,13 +11,13 @@ namespace NetGore.Graphics
     /// </summary>
     public class XNALine
     {
-        static Grh _blankGrh = null;
-
         /// <summary>
         /// Static instance of the XNALine. Used when doing a static Draw() call. Don't need to make thread-safe
         /// since drawing is assumed to not be thread-safe anyways.
         /// </summary>
         static readonly XNALine _xnaLine = new XNALine();
+
+        static Grh _blankGrh = null;
 
         float _angle = 0.0f;
         Color _color = Color.White;

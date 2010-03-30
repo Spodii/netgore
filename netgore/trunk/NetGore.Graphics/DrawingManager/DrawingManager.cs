@@ -48,6 +48,11 @@ namespace NetGore.Graphics
         #region IDrawingManager Members
 
         /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use when clearing the screen.
+        /// </summary>
+        public Color ClearColor { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="ILightManager"/> used by this <see cref="IDrawingManager"/>.
         /// </summary>
         public ILightManager LightManager
@@ -61,15 +66,6 @@ namespace NetGore.Graphics
         public DrawingManagerState State
         {
             get { return _state; }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Color"/> to use when clearing the screen.
-        /// </summary>
-        public Color ClearColor
-        {
-            get;
-            set;
         }
 
         /// <summary>

@@ -832,9 +832,7 @@ namespace NetGore.Graphics.GUI
 
             // Draw the highlighting if there is an object being dragged and it can be dropped onto this
             if (this == GUIManager.DropOntoControl && this != GUIManager.DraggedDragDropProvider && this is IDragDropProvider)
-            {
                 ((IDragDropProvider)this).DrawDropHighlight(spriteBatch);
-            }
 
             // Draw all the child controls
             for (int i = 0; i < _controls.Count; i++)
