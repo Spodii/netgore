@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 
 namespace Microsoft.Xna.Framework.Input
 {
+    /// <summary>Identifies a particular key on a keyboard.</summary>
     public enum Keys
     {
         A = 0x41,
