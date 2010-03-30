@@ -2200,6 +2200,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the value of the database column `permissions`.
+        /// </summary>
+        public byte Permissions { get; set; }
+
+        /// <summary>
         /// Gets the value of the database column `respawn_map`.
         /// </summary>
         MapID? ICharacterTable.RespawnMap
