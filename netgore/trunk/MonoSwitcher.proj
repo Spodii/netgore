@@ -25,6 +25,15 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 					<Private>True</Private>
 				</Reference>
 			</ItemGroup>
+			
+			<!-- MyQL Net Connector -->
+			<ItemGroup>
+				<Reference Include="mysql.data, Version=6.2.2.0, Culture=neutral, processorAchitecture=x86">
+					<SpecificVersion>False</SpecificVersion>
+					<HintPath>..\_dependencies\mono\mysql.data.dll</HintPath>
+					<Private>True</Private>
+				</Reference>
+			</ItemGroup>
 
 		</When>
 
@@ -43,6 +52,11 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 					<HintPath>..\_dependencies\log4net.dll</HintPath>
 					<Private>True</Private>
 				</Reference>
+			</ItemGroup>
+
+			<!-- MyQL Net Connector -->
+			<ItemGroup>
+				<Reference Include="mysql.data, Version=6.2.2.0, Culture=neutral, processorAchitecture=x86"/>
 			</ItemGroup>
 
 		</Otherwise>
