@@ -133,7 +133,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ToFromMinutesTest()
         {
-            const int minutes = 123123123;
+            const int minutes = 123123;
             var gt = new GameDateTime(minutes);
             Assert.AreEqual(minutes, (int)gt.TotalRealMinutes);
             Assert.AreEqual(gt, new GameDateTime((int)gt.TotalRealMinutes));
