@@ -13,8 +13,25 @@ namespace NetGore.Collections
     /// <typeparam name="TValue">The type of value.</typeparam>
     public class ThreadSafeHashCache<TKey, TValue> : ICache<TKey, TValue> where TValue : class
     {
+        /// <summary>
+        /// The actual cache.
+        /// </summary>
         readonly IDictionary<TKey, TValue> _cache;
-        readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+
+        /// <summary>
+        /// Object used to synchronize reading from and writing to the <see cref="_cache"/>.
+        /// </summary>
+        readonly object _cacheSync = new object();
+
+        /// <summary>
+        /// Object used to synchronize calls to <see cref="_valueCreator"/> to ensure that each cache item
+        /// is only created once.
+        /// </summary>
+        readonly object _constructSync = new object();
+
+        /// <summary>
+        /// Func used to create the cache items.
+        /// </summary>
         readonly Func<TKey, TValue> _valueCreator;
 
         /// <summary>
@@ -54,40 +71,42 @@ namespace NetGore.Collections
                 // Try to grab the item from the cache
                 bool gotValue;
                 TValue value;
-                _lock.EnterReadLock();
-                try
+                
+                lock (_cacheSync)
                 {
                     gotValue = _cache.TryGetValue(key, out value);
                 }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
 
-                // If we didn't get the value, we will try again to grab it with a write lock to make sure nobody
-                // created it between our last attempt and now. This will make sure we don't create the value
-                // more than once for the same key.
-                if (!gotValue)
-                {
-                    _lock.EnterWriteLock();
+                // If we got the value, return it
+                if (gotValue)
+                    return value;
 
-                    try
+                lock (_constructSync)
+                {
+                    // Now that we have the object construction lock, we first test again to see if the value exists
+                    // in the cache since it may have been created since the last time we grabbed the cache sync. If
+                    // it doesn't exist in the cache, we can create it. The _constructSync allows us to ensure
+                    // only one cache item is constructed at a time. Note that the object construction lock does
+                    // not have any impact on the cache reading, so we don't stall reads while we create the item.
+                    // This is very important since cache items may have a large construction time. Only problem
+                    // with this approach is we can't create multiple cache items at once, but that is only ever
+                    // really a problem when you have a huge cache with items with a large construction time.
+                    lock (_cacheSync)
                     {
-                        if (!_cache.TryGetValue(key, out value))
+                        gotValue = _cache.TryGetValue(key, out value);
+                    }
+
+                    if (!gotValue)
+                    {
+                        // Create the cache item instance
+                        value = _valueCreator(key);
+
+                        // Grab the cache sync so we can update the cache again
+                        lock (_cacheSync)
                         {
-                            // Yet again, we didn't get the value. But since we have exclusive access to the cache, we
-                            // know that we can create it and add it without anyone else trying to touch the cache. This
-                            // is less than ideal performance for adding since we are preventing anyone else touching
-                            // the cache while we create and add the value, but this should not be an issue since creates
-                            // are a one-time thing.
-                            value = _valueCreator(key);
                             Debug.Assert(!_cache.ContainsKey(key));
                             _cache.Add(key, value);
                         }
-                    }
-                    finally
-                    {
-                        _lock.ExitWriteLock();
                     }
                 }
 
@@ -101,7 +120,7 @@ namespace NetGore.Collections
         /// </summary>
         public bool IsThreadSafe
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
@@ -122,14 +141,9 @@ namespace NetGore.Collections
         {
             bool ret;
 
-            _lock.EnterReadLock();
-            try
+            lock (_cacheSync)
             {
                 ret = _cache.ContainsKey(key);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
             }
 
             return ret;
@@ -144,14 +158,9 @@ namespace NetGore.Collections
         {
             TValue[] values;
 
-            _lock.EnterReadLock();
-            try
+            lock (_cacheSync)
             {
                 values = _cache.Values.ToArray();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
             }
 
             return values;
@@ -163,22 +172,33 @@ namespace NetGore.Collections
         /// <param name="keys">All of the keys to load into the cache.</param>
         public void PrepareKeys(IEnumerable<TKey> keys)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_constructSync)
             {
-                foreach (var key in keys)
+                TKey[] keysToCreate;
+
+                // Get the keys that need to be created so we can allow reading again asap
+                lock (_cacheSync)
                 {
-                    if (!_cache.ContainsKey(key))
+                    keysToCreate = keys.Where(x => !_cache.ContainsKey(x)).ToArray();
+                }
+
+                if (keysToCreate.Length == 0)
+                    return;
+
+                // Create the values for all the keys
+                TValue[] values = new TValue[keysToCreate.Length];
+                for (int i = 0; i < keysToCreate.Length; i++)
+                    values[i] = _valueCreator(keysToCreate[i]);
+
+                // Grab the cache lock again so we can add the new values
+                lock (_cacheSync)
+                {
+                    for (int i = 0; i < keysToCreate.Length; i++)
                     {
-                        var value = _valueCreator(key);
-                        Debug.Assert(!_cache.ContainsKey(key));
-                        _cache.Add(key, value);
+                        Debug.Assert(!_cache.ContainsKey(keysToCreate[i]));
+                        _cache.Add(keysToCreate[i], values[i]);
                     }
                 }
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
