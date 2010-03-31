@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace NetGore.Collections
 {
@@ -13,7 +12,7 @@ namespace NetGore.Collections
     public class TSDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         readonly Dictionary<TKey, TValue> _dict;
-        readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        readonly object _threadSync = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TSDictionary{TKey, TValue}"/> class.
@@ -81,19 +80,8 @@ namespace NetGore.Collections
         /// </returns>
         public bool Contains(KeyValuePair<TKey, TValue> value, IEqualityComparer<KeyValuePair<TKey, TValue>> comparer)
         {
-            bool ret;
-
-            _lock.EnterReadLock();
-            try
-            {
-                ret = _dict.Contains(value, comparer);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
+            lock (_threadSync)
+                return _dict.Contains(value, comparer);
         }
 
         /// <summary>
@@ -105,19 +93,10 @@ namespace NetGore.Collections
         /// otherwise, false.</returns>
         public bool ContainsValue(TValue value)
         {
-            bool ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _dict.ContainsValue(value);
+                return _dict.ContainsValue(value);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         #region IDictionary<TKey,TValue> Members
@@ -129,30 +108,16 @@ namespace NetGore.Collections
         {
             get
             {
-                TValue ret;
-
-                _lock.EnterReadLock();
-                try
+                lock (_threadSync)
                 {
-                    ret = _dict[key];
+                    return _dict[key];
                 }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-
-                return ret;
             }
             set
             {
-                _lock.EnterWriteLock();
-                try
+                lock (_threadSync)
                 {
                     _dict[key] = value;
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
                 }
             }
         }
@@ -163,7 +128,13 @@ namespace NetGore.Collections
         /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
         public int Count
         {
-            get { return _dict.Count; }
+            get
+            {
+                lock (_threadSync)
+                {
+                    return _dict.Count;
+                }
+            }
         }
 
         /// <summary>
@@ -182,23 +153,14 @@ namespace NetGore.Collections
         /// </summary>
         /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the object that
         /// implements <see cref="T:System.Collections.Generic.IDictionary`2"/>.</returns>
-        ICollection<TKey> IDictionary<TKey, TValue>.Keys
+        public ICollection<TKey> Keys
         {
             get
             {
-                ICollection<TKey> ret;
-
-                _lock.EnterReadLock();
-                try
+                lock (_threadSync)
                 {
-                    ret = new TSList<TKey>(_dict.Keys);
+                    return new List<TKey>(_dict.Keys);
                 }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-
-                return ret;
             }
         }
 
@@ -212,19 +174,10 @@ namespace NetGore.Collections
         {
             get
             {
-                ICollection<TValue> ret;
-
-                _lock.EnterReadLock();
-                try
+                lock (_threadSync)
                 {
-                    ret = new TSList<TValue>(_dict.Values);
+                    return new List<TValue>(_dict.Values);
                 }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-
-                return ret;
             }
         }
 
@@ -236,14 +189,9 @@ namespace NetGore.Collections
         /// is read-only.</exception>
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _dict.Add(item.Key, item.Value);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -260,14 +208,9 @@ namespace NetGore.Collections
         /// is read-only.</exception>
         public void Add(TKey key, TValue value)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _dict.Add(key, value);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -278,14 +221,9 @@ namespace NetGore.Collections
         /// is read-only. </exception>
         public void Clear()
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _dict.Clear();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -299,19 +237,10 @@ namespace NetGore.Collections
         /// </returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            bool ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _dict.Contains(item);
+                return _dict.Contains(item);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -326,19 +255,10 @@ namespace NetGore.Collections
         /// <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
         public bool ContainsKey(TKey key)
         {
-            bool ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _dict.ContainsKey(key);
+                return _dict.ContainsKey(key);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -362,14 +282,9 @@ namespace NetGore.Collections
         /// 	<paramref name="array"/>.</exception>
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 ((ICollection<KeyValuePair<TKey, TValue>>)_dict).CopyTo(array, arrayIndex);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -381,19 +296,10 @@ namespace NetGore.Collections
         /// </returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            IEnumerable<KeyValuePair<TKey, TValue>> ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = this.ToArray();
+                return this.ToImmutable().GetEnumerator();
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret.GetEnumerator();
         }
 
         /// <summary>
@@ -420,19 +326,10 @@ namespace NetGore.Collections
         /// is read-only.</exception>
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            bool ret;
-
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
-                ret = ((ICollection<KeyValuePair<TKey, TValue>>)_dict).Remove(item);
+                return ((ICollection<KeyValuePair<TKey, TValue>>)_dict).Remove(item);
             }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -449,19 +346,10 @@ namespace NetGore.Collections
         /// is read-only.</exception>
         public bool Remove(TKey key)
         {
-            bool ret;
-
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
-                ret = _dict.Remove(key);
+                return _dict.Remove(key);
             }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -479,19 +367,10 @@ namespace NetGore.Collections
         /// 	<paramref name="key"/> is null.</exception>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            bool ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _dict.TryGetValue(key, out value);
+                return _dict.TryGetValue(key, out value);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         #endregion

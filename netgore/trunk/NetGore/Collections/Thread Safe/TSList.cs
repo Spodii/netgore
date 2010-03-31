@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace NetGore.Collections
 {
@@ -13,7 +12,7 @@ namespace NetGore.Collections
     public class TSList<T> : IList<T>
     {
         readonly List<T> _list;
-        readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        readonly object _threadSync = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TSList{T}"/> class.
@@ -57,14 +56,9 @@ namespace NetGore.Collections
         /// if type <typeparamref name="T"/> is a reference type.</param>
         public void AddRange(IEnumerable<T> collection)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.AddRange(collection);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -78,19 +72,10 @@ namespace NetGore.Collections
         /// than item or, if there is no larger element, the bitwise complement of <see cref="TSList{T}.Count"/>.</returns>
         public int BinarySearch(T item)
         {
-            int ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.BinarySearch(item);
+                return _list.BinarySearch(item);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -107,19 +92,10 @@ namespace NetGore.Collections
         /// </returns>
         public int BinarySearch(T item, IComparer<T> comparer)
         {
-            int ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.BinarySearch(item, comparer);
+                return _list.BinarySearch(item, comparer);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -138,19 +114,10 @@ namespace NetGore.Collections
         /// </returns>
         public int BinarySearch(int index, int count, T item, IComparer<T> comparer)
         {
-            int ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.BinarySearch(index, count, item, comparer);
+                return _list.BinarySearch(index, count, item, comparer);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -164,19 +131,10 @@ namespace NetGore.Collections
         /// <see cref="TSList{T}"/>.</returns>
         public TSList<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter)
         {
-            TSList<TOutput> ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = new TSList<TOutput>(_list.ConvertAll(converter));
+                return new TSList<TOutput>(_list.ConvertAll(converter));
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -189,19 +147,10 @@ namespace NetGore.Collections
         /// by the specified predicate; otherwise, false.</returns>
         public bool Exists(Predicate<T> match)
         {
-            bool ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.Exists(match);
+                return _list.Exists(match);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -214,19 +163,10 @@ namespace NetGore.Collections
         /// otherwise, the default value for type <typeparamref name="T"/>.</returns>
         public T Find(Predicate<T> match)
         {
-            T ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.Find(match);
+                return _list.Find(match);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -238,19 +178,10 @@ namespace NetGore.Collections
         /// specified predicate, if found; otherwise, an empty <see cref="List{T}"/>.</returns>
         public List<T> FindAll(Predicate<T> match)
         {
-            List<T> ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.FindAll(match);
+                return _list.FindAll(match);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -263,19 +194,10 @@ namespace NetGore.Collections
         /// otherwise, the default value for type <typeparamref name="T"/>.</returns>
         public T FindLast(Predicate<T> match)
         {
-            T ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.FindLast(match);
+                return _list.FindLast(match);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -288,19 +210,10 @@ namespace NetGore.Collections
         /// if found; otherwise, –1.</returns>
         public int FindLastIndex(Predicate<T> match)
         {
-            int ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.FindLastIndex(match);
+                return _list.FindLastIndex(match);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -316,19 +229,10 @@ namespace NetGore.Collections
         /// </returns>
         public int FindLastIndex(int startIndex, Predicate<T> match)
         {
-            int ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.FindLastIndex(startIndex, match);
+                return _list.FindLastIndex(startIndex, match);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -345,19 +249,10 @@ namespace NetGore.Collections
         /// </returns>
         public int FindLastIndex(int startIndex, int count, Predicate<T> match)
         {
-            int ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.FindLastIndex(startIndex, count, match);
+                return _list.FindLastIndex(startIndex, count, match);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -369,14 +264,9 @@ namespace NetGore.Collections
         /// if type <typeparamref name="T"/> is a reference type.</param>
         public void InsertRange(int index, IEnumerable<T> collection)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.InsertRange(index, collection);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -387,14 +277,9 @@ namespace NetGore.Collections
         /// to remove.</param>
         public void RemoveAll(Predicate<T> match)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.RemoveAll(match);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -405,14 +290,9 @@ namespace NetGore.Collections
         /// <param name="count">The number of elements to remove.</param>
         public void RemoveRange(int index, int count)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.RemoveRange(index, count);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -421,14 +301,9 @@ namespace NetGore.Collections
         /// </summary>
         public void Reverse()
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.Reverse();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -437,14 +312,9 @@ namespace NetGore.Collections
         /// </summary>
         public void Sort()
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.Sort();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -454,14 +324,9 @@ namespace NetGore.Collections
         /// <param name="comparison">The <see cref="Comparison{T}"/> to use when comparing elements</param>
         public void Sort(Comparison<T> comparison)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.Sort(comparison);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -472,14 +337,9 @@ namespace NetGore.Collections
         /// or null to use the default comparer <see cref="Comparer{T}.Default"/>.</param>
         public void Sort(IComparer<T> comparer)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.Sort(comparer);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -492,14 +352,9 @@ namespace NetGore.Collections
         /// or null to use the default comparer <see cref="Comparer{T}.Default"/>.</param>
         public void Sort(int index, int count, IComparer<T> comparer)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.Sort(index, count, comparer);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -509,19 +364,10 @@ namespace NetGore.Collections
         /// <returns>An array containing copies of the elements of the <see cref="TSList{T}"/>.</returns>
         public T[] ToArray()
         {
-            T[] ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.ToArray();
+                return _list.ToArray();
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -530,14 +376,9 @@ namespace NetGore.Collections
         /// </summary>
         public void TrimExcess()
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.TrimExcess();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -551,19 +392,10 @@ namespace NetGore.Collections
         /// predicate; otherwise, false. If the list has no elements, the return value is true.</returns>
         public bool TrueForAll(Predicate<T> match)
         {
-            bool ret;
-
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.TrueForAll(match);
+                return _list.TrueForAll(match);
             }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-
-            return ret;
         }
 
         #region IList<T> Members
@@ -575,30 +407,16 @@ namespace NetGore.Collections
         {
             get
             {
-                T ret;
-
-                _lock.EnterReadLock();
-                try
+                lock (_threadSync)
                 {
-                    ret = _list[index];
+                    return _list[index];
                 }
-                finally
-                {
-                    _lock.ExitReadLock();
-                }
-
-                return ret;
             }
             set
             {
-                _lock.EnterWriteLock();
-                try
+                lock (_threadSync)
                 {
                     _list[index] = value;
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
                 }
             }
         }
@@ -609,7 +427,11 @@ namespace NetGore.Collections
         /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
         public int Count
         {
-            get { return _list.Count; }
+            get
+            {
+                lock (_threadSync)
+                    return _list.Count;
+            }
         }
 
         /// <summary>
@@ -619,7 +441,7 @@ namespace NetGore.Collections
         /// false.</returns>
         bool ICollection<T>.IsReadOnly
         {
-            get { return ((ICollection<T>)_list).IsReadOnly; }
+            get { return false; }
         }
 
         /// <summary>
@@ -630,14 +452,9 @@ namespace NetGore.Collections
         /// is read-only.</exception>
         public void Add(T item)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.Add(item);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -648,14 +465,9 @@ namespace NetGore.Collections
         /// is read-only.</exception>
         public void Clear()
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.Clear();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -669,19 +481,10 @@ namespace NetGore.Collections
         /// </returns>
         public bool Contains(T item)
         {
-            bool ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.Contains(item);
+                return _list.Contains(item);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -705,14 +508,9 @@ namespace NetGore.Collections
         /// 	</exception>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
                 _list.CopyTo(array, arrayIndex);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
             }
         }
 
@@ -724,19 +522,10 @@ namespace NetGore.Collections
         /// </returns>
         public IEnumerator<T> GetEnumerator()
         {
-            IEnumerable<T> ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.ToArray();
+                return _list.ToImmutable().GetEnumerator();
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret.GetEnumerator();
         }
 
         /// <summary>
@@ -759,19 +548,10 @@ namespace NetGore.Collections
         /// </returns>
         public int IndexOf(T item)
         {
-            int ret;
-
-            _lock.EnterReadLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.IndexOf(item);
+                return _list.IndexOf(item);
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -786,14 +566,9 @@ namespace NetGore.Collections
         /// is read-only.</exception>
         public void Insert(int index, T item)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.Insert(index, item);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
@@ -810,19 +585,10 @@ namespace NetGore.Collections
         /// read-only.</exception>
         public bool Remove(T item)
         {
-            bool ret;
-
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
-                ret = _list.Remove(item);
+                return _list.Remove(item);
             }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -836,14 +602,9 @@ namespace NetGore.Collections
         /// is read-only.</exception>
         public void RemoveAt(int index)
         {
-            _lock.EnterWriteLock();
-            try
+            lock (_threadSync)
             {
                 _list.RemoveAt(index);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
             }
         }
 
