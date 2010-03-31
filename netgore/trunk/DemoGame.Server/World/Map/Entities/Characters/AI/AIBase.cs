@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
@@ -13,10 +17,30 @@ namespace DemoGame.Server
     /// </summary>
     public abstract class AIBase : IAI, IGetTime
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// How frequently, in milliseconds, the <see cref="_explicitHostiles"/> collection will be checked for
+        /// expired values. A greater value will decrease overhead but result in less accurate expirations.
+        /// </summary>
+        const int _expireExplicitHostilesRate = 2000;
+
         static readonly Vector2 _halfScreenSize = GameData.ScreenSize / 2;
         static readonly Random _rand = new Random();
 
         readonly Character _actor;
+
+        /// <summary>
+        /// Collection of <see cref="Character"/>s that the <see cref="Actor"/> has explicitly set as being
+        /// hostile towards. The key is the <see cref="Character"/> the <see cref="Actor"/> is hostile towards,
+        /// and the value is the time at which this hostility will expire.
+        /// </summary>
+        readonly Dictionary<Character, int> _explicitHostiles = new Dictionary<Character, int>();
+
+        /// <summary>
+        /// The time that the <see cref="_explicitHostiles"/> collection will be checked to remove old values.
+        /// </summary>
+        int _expireExplicitHostilesTime = int.MinValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AIBase"/> class.
@@ -48,7 +72,7 @@ namespace DemoGame.Server
         /// the Actor's alliance). Only checks Characters in view of the Actor.
         /// </summary>
         /// <returns>Closest Character this Actor is hostile towards, or null if none in range.</returns>
-        protected virtual Character GetClosestHostile()
+        public virtual Character GetClosestHostile()
         {
             var visibleArea = GetVisibleMapArea();
             var center = Actor.Center;
@@ -64,7 +88,7 @@ namespace DemoGame.Server
         /// Gets a <see cref="Rectangle"/> describing the visible screen area.
         /// </summary>
         /// <returns>A <see cref="Rectangle"/> describing the visible screen area.</returns>
-        protected Rectangle GetVisibleMapArea()
+        public Rectangle GetVisibleMapArea()
         {
             var center = Actor.Center;
             var min = center - _halfScreenSize;
@@ -82,9 +106,16 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="character">The character to check if the actor is hostile towards.</param>
         /// <returns>True if the actor is hostile towards the <paramref name="character"/>; otherwise false.</returns>
-        protected virtual bool IsHostileTowards(Character character)
+        public virtual bool IsHostileTowards(Character character)
         {
-            return Actor.Alliance.IsHostile(character.Alliance);
+            bool ret = Actor.Alliance.IsHostile(character.Alliance);
+            if (!ret)
+            {
+                if (_explicitHostiles.ContainsKey(character))
+                    ret = true;
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -144,6 +175,102 @@ namespace DemoGame.Server
             return _rand.Next(min, max);
         }
 
+        /// <summary>
+        /// Removes the explicit hostility towards a specific <see cref="Character"/>. Only applies to
+        /// hostility set through <see cref="SetHostileTowards"/> and has no affect on hostility created through
+        /// the <see cref="Alliance"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="Character"/> to remove the explicit hostility on.</param>
+        /// <returns>True if the explicit hostility towards the <paramref name="target"/> was removed; false if the
+        /// hostility towards the <paramref name="target"/> is implicitly defined through the <see cref="Alliance"/>
+        /// settings or there was no explicit hostility set on the <paramref name="target"/>.</returns>
+        public bool RemoveHostileTowards(Character target)
+        {
+            if (target == null)
+            {
+                Debug.Fail("target parameter should not be null.");
+                return false;
+            }
+
+            return _explicitHostiles.Remove(target);
+        }
+
+        /// <summary>
+        /// Explicitly sets the AI to be hostile towards a specific <see cref="Character"/> for a set amount
+        /// of time. Has no affect if the target <see cref="Character"/>'s <see cref="Alliance"/> already makes
+        /// the <see cref="AIBase.Actor"/> hostile towards them, or if they cannot be attacked by the
+        /// <see cref="AIBase.Actor"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="Character"/> to set as hostile towards.</param>
+        /// <param name="timeout">How long, in milliseconds, this hostility will last. It is recommended that
+        /// this value remains relatively low (5-10 minutes max). Must be greater than 0.</param>
+        /// <param name="increaseTimeOnly">If true, the given <paramref name="timeout"/> will not be
+        /// used if the <paramref name="target"/> is already marked as being hostile towards, and the
+        /// existing timeout is greater than the given <paramref name="timeout"/>. That is, the longer
+        /// of the two timeouts will be used.</param>
+        public void SetHostileTowards(Character target, int timeout, bool increaseTimeOnly)
+        {
+            if (target == null)
+            {
+                Debug.Fail("target parameter should not be null.");
+                return;
+            }
+
+            if (timeout < 0)
+            {
+                Debug.Fail("timeout parameter should be greater than 0.");
+                return;
+            }
+
+            // Ignore characters that are already marked as hostile by the alliance, along with those
+            // who cannot be attacked
+            if (Actor.Alliance.IsHostile(target.Alliance) || !Actor.Alliance.CanAttack(target.Alliance))
+                return;
+
+            // Get the absolute timeout time
+            int timeoutTime = GetTime() + timeout;
+
+            if (_explicitHostiles.ContainsKey(target))
+            {
+                // Target already exists in the list, so update the time
+                try
+                {
+                    if (!increaseTimeOnly)
+                        _explicitHostiles[target] = timeoutTime;
+                    else
+                        _explicitHostiles[target] = Math.Max(timeoutTime, _explicitHostiles[target]);
+                }
+                catch (KeyNotFoundException ex)
+                {
+                    const string errmsg = "Possible thread-safety issue in AI's ExplicitHostile. Exception: {0}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+                    Debug.Fail(string.Format(errmsg, ex));
+
+                    // Retry
+                    SetHostileTowards(target, timeoutTime, increaseTimeOnly);
+                }
+            }
+            else
+            {
+                // Target not in the list yet, so add them
+                try
+                {
+                    _explicitHostiles.Add(target, timeoutTime);
+                }
+                catch (ArgumentException ex)
+                {
+                    const string errmsg = "Possible thread-safety issue in AI's ExplicitHostile. Exception: {0}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+                    Debug.Fail(string.Format(errmsg, ex));
+
+                    // Retry
+                    SetHostileTowards(target, timeoutTime, increaseTimeOnly);
+                }
+            }
+        }
+
         #region IAI Members
 
         /// <summary>
@@ -165,9 +292,22 @@ namespace DemoGame.Server
         /// </summary>
         public void Update()
         {
+            // Ensure a valid actor
             if (!Actor.IsAlive || Actor.Map == null)
                 return;
 
+            // Check to update the explicit hostiles
+            if (_explicitHostiles.Count > 0)
+            {
+                int time = GetTime();
+                if (_expireExplicitHostilesTime < time)
+                {
+                    _expireExplicitHostilesTime = time + _expireExplicitHostilesRate;
+                    _explicitHostiles.RemoveMany(x => x.Value < time || x.Key.IsDisposed);
+                }
+            }
+
+            // Custom update
             DoUpdate();
         }
 
