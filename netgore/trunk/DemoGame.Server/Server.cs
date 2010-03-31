@@ -71,6 +71,9 @@ namespace DemoGame.Server
         /// </summary>
         public Server()
         {
+            // Initialize the engine settings
+            EngineSettingsInitializer.Initialize();
+
             // Create the DbController
             DbConnectionSettings settings = new DbConnectionSettings();
             _dbController =

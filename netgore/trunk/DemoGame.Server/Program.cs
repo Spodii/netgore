@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using DemoGame.Server.UI;
 
@@ -9,11 +11,24 @@ namespace DemoGame.Server
         /// <summary>
         /// Server program entry point.
         /// </summary>
-        static void Main()
+        static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+            Console.Title = "NetGore Server";
+
+            // Check to run in compact mode
+            if (args != null && args.Any(x => StringComparer.OrdinalIgnoreCase.Equals(x, "compact")))
+            {
+                using (new CompactUI())
+                {
+                }
+            }
+            else
+            {
+                // Run in WinForms mode by default
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new frmMain());
+            }
         }
     }
 }
