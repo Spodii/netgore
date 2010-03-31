@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore.AI;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using NetGore.Extensions;
 using Color=Microsoft.Xna.Framework.Graphics.Color;
 
 namespace DemoGame.MapEditor
@@ -104,11 +105,13 @@ namespace DemoGame.MapEditor
         {
             Vector2 CursorPos = screen.CursorPos;
 
-            for (int X = 0; X < screen.Map.MemoryMap.CellsX; X++)
+            var mmap = screen.Map.MemoryMap;
+            for (int X = 0; X < mmap.CellsX; X++)
             {
-                for (int Y = 0; Y < screen.Map.MemoryMap.CellsY; Y++)
+                for (int Y = 0; Y < mmap.CellsY; Y++)
                 {
-                    if (screen.Map.MemoryMap.MemoryCells[X, Y].Cell.Contains((int)CursorPos.X, (int)CursorPos.Y))
+                    var area = mmap.MemoryCells[X, Y].GetArea(mmap.CellSize);
+                    if (area.Contains(CursorPos))
                         return new int[] { X, Y };
                 }
             }
@@ -123,9 +126,9 @@ namespace DemoGame.MapEditor
         /// <param name="text">The tooltip text.</param>
         /// <param name="entity">The MemoryCell the tooltip is for.</param>
         /// <returns>The position to display the tooltip text.</returns>
-        public static Vector2 GetToolTipPos(SpriteFont font, string text, MemoryCell memoryCell)
+        static Vector2 GetToolTipPos(SpriteFont font, string text, int cellSize, MemoryCell memoryCell)
         {
-            var pos = new Vector2(memoryCell.Cell.Right, memoryCell.Cell.Y);
+            var pos = new Vector2(memoryCell.MinX + cellSize, memoryCell.MinY);
             pos -= new Vector2(5, (font.LineSpacing * text.Split('\n').Length) + 5);
             return pos;
         }
@@ -263,7 +266,6 @@ namespace DemoGame.MapEditor
             else if (e.Button == MouseButtons.Right)
             {
                 // Set end node.
-
                 for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
                 {
                     for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
@@ -293,16 +295,17 @@ namespace DemoGame.MapEditor
 
             // Set the tooltip to the entity under the cursor
             int[] id = GetMemoryCellUnderCursor(Container);
-            MemoryCell hoverNode = Container.Map.MemoryMap.MemoryCells[id[0], id[1]];
+            var mm = Container.Map.MemoryMap;
+            MemoryCell hoverNode = mm.MemoryCells[id[0], id[1]];
 
             if (e.Button == MouseButtons.Left)
             {
                 if (!_debugMode.Checked)
                 {
                     if (!_mnuBlocked.Checked)
-                        Container.Map.MemoryMap.MemoryCells[id[0], id[1]].Weight = UpdateCellTo;
+                        mm.MemoryCells[id[0], id[1]].Weight = UpdateCellTo;
                     else
-                        Container.Map.MemoryMap.MemoryCells[id[0], id[1]].Weight = 0;
+                        mm.MemoryCells[id[0], id[1]].Weight = 0;
                 }
                 else
                 {
@@ -317,8 +320,8 @@ namespace DemoGame.MapEditor
             else if (!hoverNode.Equals(_toolTipObject))
             {
                 _toolTipObject = hoverNode;
-                _toolTip = string.Format("Weight({2})", hoverNode, hoverNode.Cell.Location, hoverNode.Weight);
-                _toolTipPos = GetToolTipPos(Container.SpriteFont, _toolTip, hoverNode);
+                _toolTip = string.Format("Weight({2})", hoverNode, hoverNode.Location, hoverNode.Weight);
+                _toolTipPos = GetToolTipPos(Container.SpriteFont, _toolTip, mm.CellSize, hoverNode);
             }
         }
 
