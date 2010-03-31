@@ -9,6 +9,17 @@ namespace NetGore.Extensions
     public static class RectangleExtensions
     {
         /// <summary>
+        /// Determines whether this <see cref="Rectangle"/> contains a specified point.
+        /// </summary>
+        /// <param name="r">The <see cref="Rectangle"/>.</param>
+        /// <param name="point">The point.</param>
+        /// <returns>True if the <see cref="Rectangle"/> contains the <paramref name="point"/>; otherwise false.</returns>
+        public static bool Contains(this Rectangle r, Vector2 point)
+        {
+            return r.Contains((int)point.X, (int)point.Y);
+        }
+
+        /// <summary>
         /// Gets the distance between two <see cref="Rectangle"/>s.
         /// </summary>
         /// <param name="a">The first <see cref="Rectangle"/>.</param>

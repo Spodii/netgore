@@ -5,32 +5,33 @@ namespace NetGore.AI
 {
     public struct MemoryCell
     {
-        //The rectangle that holds the position of the MemoryCell
-        Rectangle _cell;
+        ushort _minX;
+        ushort _minY;
         byte _debugStatus;
         byte _weight;
 
         /// <summary>
-        /// MemoryCell constuctor
+        /// Initializes a new instance of the <see cref="MemoryCell"/> struct.
         /// </summary>
-        /// <param name="XMinimum">X position of the left side of MemoryCell</param>
-        /// <param name="XMaximum">X position of the right side of MemoryCell</param>
-        /// <param name="YMinimum">Y position of the top of MemoryCell</param>
-        /// <param name="YMaximum">Y position of the bottom of MemoryCell</param>
-        public MemoryCell(ushort XMinimum, ushort XMaximum, ushort YMinimum, ushort YMaximum)
+        /// <param name="minX">X position of the left side of cell's area.</param>
+        /// <param name="minY">Y position of the top side of cell's area.</param>
+        internal MemoryCell(ushort minX, ushort minY)
         {
-            _cell = new Rectangle(XMinimum, YMinimum, XMaximum - XMinimum, YMaximum - YMinimum);
+            _minX = minX;
+            _minY = minY;
             _weight = 0;
             _debugStatus = 0;
         }
 
-        /// <summary>
-        /// A rectangle that holds positional data for this MemoryCell.
-        /// </summary>
-        public Rectangle Cell
+        public Point Location { get { return new Point(MinX, MinY); } }
+
+        public ushort MinX { get { return _minX; } set { _minX = value; } }
+
+        public ushort MinY { get { return _minY; } set { _minY = value; } }
+
+        public Rectangle GetArea(int cellSize)
         {
-            get { return _cell; }
-            set { _cell = value; }
+            return new Rectangle(MinX, MinY, cellSize, cellSize);
         }
 
         public byte DebugStatus
