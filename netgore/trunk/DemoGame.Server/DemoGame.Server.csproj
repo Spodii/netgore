@@ -5,7 +5,7 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DemoGame.Server</RootNamespace>
     <AssemblyName>DemoGame.Server</AssemblyName>
@@ -225,10 +225,11 @@
     <Compile Include="Quests\ItemTemplateAndAmount.cs" />
     <Compile Include="Quests\Rewards\MoneyQuestReward.cs" />
     <Compile Include="ServerSettings.cs" />
-    <Compile Include="UI\frmMain.cs">
+    <Compile Include="UI\Compact\CompactUI.cs" />
+    <Compile Include="UI\WinForms\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmMain.Designer.cs">
+    <Compile Include="UI\WinForms\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Guilds\Guild.cs" />
@@ -236,8 +237,8 @@
     <Compile Include="Guilds\GuildManager.cs" />
     <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\GuildMemberPerformer.cs" />
-    <Compile Include="UI\LevelExtensions.cs" />
-    <Compile Include="UI\LogListBox.cs">
+    <Compile Include="UI\WinForms\LevelExtensions.cs" />
+    <Compile Include="UI\WinForms\LogListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
@@ -484,7 +485,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\frmMain.resx">
+    <EmbeddedResource Include="UI\WinForms\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

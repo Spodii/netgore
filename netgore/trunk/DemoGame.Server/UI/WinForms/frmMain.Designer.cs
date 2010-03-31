@@ -649,9 +649,7 @@
             this.ClientSize = new System.Drawing.Size(552, 521);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmMain";
-            this.Text = "frmMain";
-            this.Load += new System.EventHandler(this.frmMain_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
+            this.Text = "NetGore Server";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);

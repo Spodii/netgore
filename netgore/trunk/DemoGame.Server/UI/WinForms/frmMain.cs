@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -17,11 +18,6 @@ namespace DemoGame.Server.UI
 {
     public partial class frmMain : Form
     {
-        /// <summary>
-        /// The URL of the web site to get the external IP address from.
-        /// </summary>
-        const string _externalIPSite = "http://www.whatismyip.org/";
-
         /// <summary>
         /// How many extra items are removed from the log buffer when removing. Allows for less removals to be made.
         /// </summary>
@@ -41,6 +37,7 @@ namespace DemoGame.Server.UI
         readonly List<LoggingEvent> _logBuffer = new List<LoggingEvent>(_logBufferSize);
         readonly MemoryAppender _logger;
         readonly Thread _serverThread;
+
         Regex _filterRegex;
         bool _formClosing = false;
 
@@ -51,11 +48,25 @@ namespace DemoGame.Server.UI
 
         Server _server;
 
+#if !MONO
+        [DllImport("user32.dll")]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+#endif
+
         /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
         /// </summary>
         public frmMain()
         {
+#if !MONO
+            // Hide the console window
+            var ptr = FindWindow(null, Console.Title);
+            ShowWindow(ptr, 0);
+#endif
+
             _logger = new MemoryAppender();
             BasicConfigurator.Configure(_logger);
 
@@ -167,11 +178,10 @@ namespace DemoGame.Server.UI
         }
 
         /// <summary>
-        /// Handles the FormClosing event of the frmMain control.
+        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
-        void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
             _formClosing = true;
 
@@ -179,21 +189,22 @@ namespace DemoGame.Server.UI
             txtConsoleOut.Refresh();
 
             _server.Shutdown();
+
+            base.OnFormClosing(e);
         }
 
         /// <summary>
-        /// Handles the Load event of the frmMain control.
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void frmMain_Load(object sender, EventArgs e)
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             Show();
             Update();
 
             UpdateExternalIP();
-
-            EngineSettingsInitializer.Initialize();
 
             _serverThread.Start();
 
