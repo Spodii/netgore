@@ -17,7 +17,7 @@ namespace DemoGame
     {
         #region Non-Templated Code
 
-        static readonly Random _random = new Random();
+        static readonly SafeRandom _random = new SafeRandom();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemChance"/> struct.

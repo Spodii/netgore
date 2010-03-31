@@ -10,7 +10,7 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class SettingsManagerTests
     {
-        static readonly Random r = new Random();
+        static readonly SafeRandom r = new SafeRandom();
 
         static string CreateRandomString()
         {

@@ -28,7 +28,7 @@ namespace DemoGame.Server
         readonly Character _character;
 
 #if DEBUG
-        static readonly Random _random = new Random();
+        static readonly SafeRandom _random = new SafeRandom();
 #endif
 
         /// <summary>

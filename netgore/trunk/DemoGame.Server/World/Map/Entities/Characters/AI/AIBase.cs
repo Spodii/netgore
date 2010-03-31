@@ -26,7 +26,7 @@ namespace DemoGame.Server
         const int _expireExplicitHostilesRate = 2000;
 
         static readonly Vector2 _halfScreenSize = GameData.ScreenSize / 2;
-        static readonly Random _rand = new Random();
+        static readonly SafeRandom _rand = new SafeRandom();
 
         readonly Character _actor;
 

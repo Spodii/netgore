@@ -4,11 +4,14 @@ using System.Linq;
 namespace NetGore
 {
     /// <summary>
-    /// Provides helper methods for acquiring random values.
+    /// Provides helper methods for working with randomization and accessing random values without creating
+    /// a random number generator instance. It is only recommended you access random numbers through this
+    /// when you only want a few numbers infrequently. If you are generating random numbers more frequently,
+    /// you should create a local <see cref="Random"/> or <see cref="SafeRandom"/> instance instead.
     /// </summary>
     public static class RandomHelper
     {
-        static readonly Random _rand = new Random();
+        static readonly SafeRandom _rand = new SafeRandom();
 
         /// <summary>
         /// Chooses a random element in the given collection <paramref name="items"/>.
@@ -235,7 +238,7 @@ namespace NetGore
         /// <returns>A random boolean value.</returns>
         public static bool NextBool()
         {
-            return NextInt(2) == 1;
+            return _rand.NextBool();
         }
 
         /// <summary>
@@ -254,7 +257,7 @@ namespace NetGore
         /// <returns>A random float betwen 0.0 and the specified <paramref name="maximum"/>.</returns>
         public static float NextFloat(float maximum)
         {
-            return maximum * NextFloat();
+            return (float)(_rand.NextDouble() * maximum);
         }
 
         /// <summary>
@@ -275,6 +278,15 @@ namespace NetGore
         public static int NextInt()
         {
             return _rand.Next();
+        }
+
+        /// <summary>
+        /// Gets a non-negative whole number.
+        /// </summary>
+        /// <returns>A non-negative whole number.</returns>
+        public static uint NextUInt()
+        {
+            return _rand.NextUInt();
         }
 
         /// <summary>

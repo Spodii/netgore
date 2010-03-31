@@ -127,7 +127,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Random number generator for Characters
         /// </summary>
-        static readonly Random _rand = new Random();
+        static readonly SafeRandom _rand = new SafeRandom();
 
         static readonly ShopManager _shopManager = ShopManager.Instance;
 

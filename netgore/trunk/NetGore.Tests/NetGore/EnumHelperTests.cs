@@ -10,7 +10,7 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class EnumHelperTests
     {
-        static readonly Random r = new Random();
+        static readonly SafeRandom r = new SafeRandom();
 
         static string CreateRandomString()
         {

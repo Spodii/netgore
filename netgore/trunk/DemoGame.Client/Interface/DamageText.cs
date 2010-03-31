@@ -22,7 +22,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Random number generator.
         /// </summary>
-        static readonly Random _random = new Random();
+        static readonly SafeRandom _random = new SafeRandom();
 
         /// <summary>
         /// Current alpha of the text.

@@ -111,7 +111,7 @@ namespace NetGore.IO
             _appRoot = Path.GetFullPath(baseDir);
 
             // Set the _freeFileIndex to a random initial value
-            _freeFileIndex = (uint)new Random().Next();
+            _freeFileIndex = RandomHelper.NextUInt();
 
             // Set the temp files path
             _temp = _appRoot.Join(_tempFolder);
