@@ -63,6 +63,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets if the actor can attack the given <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> to check if the actor can attack.</param>
+        /// <returns>True if the actor can attack the <paramref name="character"/>; otherwise false.</returns>
+        public virtual bool CanAttack(Character character)
+        {
+            return Actor.Alliance.CanAttack(character.Alliance);
+        }
+
+        /// <summary>
         /// Handles the real updating of the AI.
         /// </summary>
         protected abstract void DoUpdate();
