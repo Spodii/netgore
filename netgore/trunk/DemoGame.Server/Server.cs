@@ -544,6 +544,8 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Server done loading. Game loop has started...");
 
+            GC.Collect();
+
             // Start the main game loop
             GameLoop();
         }
