@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore;
 
 namespace DemoGame.Server
 {
     public static class CharacterTemplateInventoryItemExtensions
     {
-        static readonly Random _random = new Random();
+        static readonly SafeRandom _random = new SafeRandom();
 
         /// <summary>
         /// Creates an instance of the <see cref="ItemEntity"/> from the template.

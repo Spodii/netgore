@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -13,7 +14,7 @@ namespace DemoGame.Server
     public class ItemTemplateManager : DbTableDataManager<ItemTemplateID, IItemTemplateTable>
     {
         static readonly ItemTemplateManager _instance;
-        static readonly Random _rnd = new Random();
+        static readonly SafeRandom _rnd = new SafeRandom();
 
         SelectItemTemplateQuery _selectItemTemplateQuery;
 

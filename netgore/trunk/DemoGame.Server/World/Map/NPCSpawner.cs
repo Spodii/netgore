@@ -17,7 +17,7 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
-        static readonly Random _rnd = new Random();
+        static readonly SafeRandom _rnd = new SafeRandom();
 
         readonly byte _amount;
         readonly Rectangle _area;

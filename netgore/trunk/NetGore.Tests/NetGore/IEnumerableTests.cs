@@ -8,7 +8,7 @@ namespace NetGore.Tests.NetGore
     [TestFixture]
     public class IEnumerableTests
     {
-        static readonly Random rnd = new Random();
+        static readonly SafeRandom rnd = new SafeRandom();
 
         #region Unit tests
 

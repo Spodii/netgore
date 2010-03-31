@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -13,7 +14,7 @@ namespace DemoGame.GUITester
 {
     public class Game1 : Game
     {
-        static readonly Random rnd = new Random();
+        static readonly SafeRandom rnd = new SafeRandom();
 
         readonly GraphicsDeviceManager _graphics;
         SpriteFont _font;
