@@ -3,9 +3,10 @@ using System.Linq;
 
 namespace NetGore.Collections
 {
-    public class SlimList<T>
+    internal class SlimList<T>
     {
-        static readonly T[] _emptyArray = null;
+        static readonly T[] _emptyArray = new T[0];
+
         T[] _items;
         short _size;
 
@@ -22,14 +23,11 @@ namespace NetGore.Collections
         /// </summary>
         public T this[int index]
         {
-            get { return this[index]; }
-            set
-            {
-                if (!(value is T) && ((value != null) || typeof(T).IsValueType))
-                    return;
+            get { return _items[index]; }
+            set {
+                EnsureCapacity(index + 1);
 
-                this[index] = value;
-            }
+                _items[index] = value; }
         }
 
         /// <summary>
@@ -53,7 +51,9 @@ namespace NetGore.Collections
                     _items = destArray;
                 }
                 else
+                {
                     _items = _emptyArray;
+                }
             }
         }
 
@@ -73,6 +73,7 @@ namespace NetGore.Collections
         {
             if (_size == _items.Length)
                 EnsureCapacity((short)(_size + 1));
+
             _items[_size++] = item;
         }
 
@@ -92,7 +93,7 @@ namespace NetGore.Collections
         /// Makes sure that the cpacity of the array is at least the set minimum.
         /// </summary>
         /// <param name="min">The minimum size.</param>
-        void EnsureCapacity(short min)
+        void EnsureCapacity(int min)
         {
             if (_items.Length < min)
             {
