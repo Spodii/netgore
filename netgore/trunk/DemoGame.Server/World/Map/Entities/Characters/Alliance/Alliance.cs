@@ -22,7 +22,7 @@ namespace DemoGame.Server
         readonly string _name;
 
         /// <summary>
-        /// Alliance constructor
+        /// Initializes a new instance of the <see cref="Alliance"/> class.
         /// </summary>
         /// <param name="id">The ID of this Alliance.</param>
         /// <param name="name">Name of the Alliance.</param>
@@ -36,8 +36,11 @@ namespace DemoGame.Server
 
             _id = id;
             _name = name ?? string.Empty;
-            _attackable = attackables.Select(x => x.AttackableID).Distinct().ToCompact();
             _hostile = hostiles.Select(x => x.HostileID).Distinct().ToCompact();
+
+            // If we have something in Hostile, we need it to also be in Attackable (doesn't make sense to be hostile
+            // towards something you can't attack)
+            _attackable = attackables.Select(x => x.AttackableID).Concat(_hostile).Distinct().ToCompact();
         }
 
         /// <summary>
