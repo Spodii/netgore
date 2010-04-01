@@ -118,7 +118,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="reader"><see cref="IDataReader"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
         /// <returns>The <see cref="CustomValueTypeName"/> read from the <see cref="IDataReader"/>.</returns>
-        public static CustomValueTypeName Read(IDataReader reader, int i)
+        public static CustomValueTypeName Read(IDataRecord reader, int i)
         {
             object value = reader.GetValue(i);
             if (value is UnderlyingValueType)
@@ -841,12 +841,12 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         /// <summary>
-        /// Reads the <see cref="CustomValueTypeName"/> from an <see cref="IDataReader"/>.
+        /// Reads the <see cref="CustomValueTypeName"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="CustomValueTypeName"/> from.</param>
+        /// <param name="dataReader"><see cref="IDataRecord"/> to read the <see cref="CustomValueTypeName"/> from.</param>
         /// <param name="i">The field index to read.</param>
         /// <returns>The <see cref="CustomValueTypeName"/> read from the <see cref="IDataReader"/>.</returns>
-        public static CustomValueTypeName GetCustomValueTypeName(this IDataReader dataReader, int i)
+        public static CustomValueTypeName GetCustomValueTypeName(this IDataRecord dataReader, int i)
         {
             return CustomValueTypeName.Read(dataReader, i);
         }

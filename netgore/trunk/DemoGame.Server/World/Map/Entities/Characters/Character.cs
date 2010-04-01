@@ -516,13 +516,13 @@ namespace DemoGame.Server
             ModStats.GetStat(StatType.MaxHP).Changed += delegate(IStat<StatType> stat)
             {
                 if (HP > stat.Value)
-                    HP = stat.Value;
+                    HP = (int)stat.Value;
             };
 
             ModStats.GetStat(StatType.MaxMP).Changed += delegate(IStat<StatType> stat)
             {
                 if (MP > stat.Value)
-                    MP = stat.Value;
+                    MP = (int)stat.Value;
             };
         }
 

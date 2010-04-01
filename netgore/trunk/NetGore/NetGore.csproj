@@ -138,7 +138,6 @@
     <Compile Include="Network\Sockets\UDPSocketEventHandler.cs" />
     <Compile Include="Stats\ChangedStatsTracker.cs" />
     <Compile Include="Stats\Collections\DynamicStatCollection.cs" />
-    <Compile Include="Stats\Collections\DynamicStatCollectionStatEventHandler.cs" />
     <Compile Include="Stats\Collections\FullStatCollection.cs" />
     <Compile Include="Stats\Collections\IStatCollection.cs" />
     <Compile Include="Stats\Collections\IStatCollectionExtensions.cs" />
@@ -149,7 +148,6 @@
     <Compile Include="Stats\IStatEventHandler.cs" />
     <Compile Include="Stats\ModStatHelper.cs" />
     <Compile Include="Stats\Stat.cs" />
-    <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Strings\CharType.cs" />
     <Compile Include="Collections\DArray\DArray.cs" />
     <Compile Include="Collections\DArray\DArrayModifyEventHandler.cs" />
@@ -295,6 +293,7 @@
     <Compile Include="Audio\IAudioEmitter.cs" />
     <Compile Include="World\Entities\NPCChat\NPCChatDialogID.cs" />
     <Compile Include="World\Entities\NPCChat\NPCChatDialogItemID.cs" />
+    <Compile Include="Stats\StatValueType.cs" />
     <Compile Include="World\Map\MapEntityIndexTypeConverter.cs" />
     <Compile Include="World\Map\MapIDTypeConverter.cs" />
     <Compile Include="World\Map\Spatial\DynamicGridSpatialCollection.cs" />
@@ -355,12 +354,6 @@
     <Compile Include="Strings\Say Commands\SayCommandAttribute.cs" />
     <Compile Include="Strings\Say Commands\SayHandlerBase.cs" />
     <Compile Include="Audio\SoundID.cs" />
-    <Compile Include="World\Entities\Stats\StatValueTypes\IStatValueType.cs" />
-    <Compile Include="World\Entities\Stats\StatValueTypes\StatValueByte.cs" />
-    <Compile Include="World\Entities\Stats\StatValueTypes\StatValueInt.cs" />
-    <Compile Include="World\Entities\Stats\StatValueTypes\StatValueSByte.cs" />
-    <Compile Include="World\Entities\Stats\StatValueTypes\StatValueShort.cs" />
-    <Compile Include="World\Entities\Stats\StatValueTypes\StatValueUShort.cs" />
     <Compile Include="Strings\String Parser\StringCommandBaseAttribute.cs" />
     <Compile Include="Strings\String Parser\StringCommandParser.cs" />
     <Compile Include="Strings\String Parser\StringParser.cs" />

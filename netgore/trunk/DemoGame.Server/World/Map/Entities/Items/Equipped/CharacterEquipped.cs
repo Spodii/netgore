@@ -15,11 +15,11 @@ namespace DemoGame.Server
     public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable, IModStatContainer<StatType>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly Character _character;
-
         readonly bool _isPersistent;
-
         readonly EquippedPaperDoll _paperDoll;
+
         bool _disposed = false;
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace DemoGame.Server
         public int GetStatModBonus(StatType statType)
         {
             // TODO: [STATS] This totally sucks. Add some kind of cache.
-            return this.SelectMany(x => x.Value.BaseStats).Where(x => x.StatType == statType).Select(x => x.Value).Sum();
+            return this.SelectMany(x => x.Value.BaseStats).Where(x => x.StatType == statType).Select(x => (int)x.Value).Sum();
         }
 
         #endregion

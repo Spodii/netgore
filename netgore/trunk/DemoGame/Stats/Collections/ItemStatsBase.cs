@@ -16,8 +16,11 @@ namespace DemoGame
         {
             foreach (var statInfo in src)
             {
-                var stat = StatFactory<StatType>.CreateStat(statInfo.Key, statCollectionType, statInfo.Value);
-                Add(stat);
+                if (statInfo.Value != 0)
+                {
+                    var stat = new Stat<StatType>(statInfo.Key, statInfo.Value);
+                    Add(stat);
+                }
             }
         }
 

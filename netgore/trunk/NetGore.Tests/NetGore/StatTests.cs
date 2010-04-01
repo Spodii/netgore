@@ -10,12 +10,7 @@ namespace NetGore.Tests.NetGore
     {
         static IStat<TestStatType> CreateStat(TestStatType statType, int value)
         {
-            return CreateStat<StatValueShort>(statType, value);
-        }
-
-        static IStat<TestStatType> CreateStat<T>(TestStatType statType, int value) where T : IStatValueType, new()
-        {
-            return new Stat<TestStatType, T>(statType, value);
+            return new Stat<TestStatType>(statType, value);
         }
 
         #region Unit tests
@@ -68,27 +63,6 @@ namespace NetGore.Tests.NetGore
             var copy = stat.DeepCopy();
             Assert.AreEqual(stat.Value, copy.Value);
             Assert.AreEqual(stat.StatType, copy.StatType);
-        }
-
-        [Test]
-        public void DeepCopyValueTypeIsNewReferenceTest()
-        {
-            var stat = CreateStat(TestStatType.C, 5);
-            var copy = stat.DeepCopyValueType();
-            Assert.AreEqual(stat.Value, copy.GetValue());
-
-            stat.Value = 123;
-
-            Assert.AreEqual(123, stat.Value);
-            Assert.AreEqual(5, copy.GetValue());
-        }
-
-        [Test]
-        public void DeepCopyValueTypeTest()
-        {
-            var stat = CreateStat(TestStatType.C, 5);
-            var copy = stat.DeepCopyValueType();
-            Assert.AreEqual(stat.Value, copy.GetValue());
         }
 
         [Test]
@@ -156,6 +130,7 @@ namespace NetGore.Tests.NetGore
 
         #endregion
 
+        // ReSharper disable UnusedMember.Local
         enum TestStatType
         {
             A,
@@ -166,5 +141,6 @@ namespace NetGore.Tests.NetGore
             F,
             G
         }
+        // ReSharper restore UnusedMember.Local
     }
 }

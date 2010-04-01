@@ -16,7 +16,7 @@ namespace DemoGame.Server
             Console.Title = "NetGore Server";
 
             // Check to run in compact mode
-            if (true || args != null && args.Any(x => StringComparer.OrdinalIgnoreCase.Equals(x, "compact")))
+            if (args != null && args.Any(x => StringComparer.OrdinalIgnoreCase.Equals(x, "compact")))
             {
                 using (new CompactUI())
                 {

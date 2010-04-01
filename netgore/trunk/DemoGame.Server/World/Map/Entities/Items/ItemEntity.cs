@@ -29,6 +29,7 @@ namespace DemoGame.Server
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly IDbController _dbController = DbControllerBase.GetInstance();
+
         readonly ItemStats _baseStats;
         readonly ItemID _id;
         readonly ItemStats _reqStats;
@@ -241,8 +242,8 @@ namespace DemoGame.Server
                 return false;
 
             // Check for non-equal stats
-            ItemEntity itemEntity = (ItemEntity)source;
-            if (!BaseStats.HasEqualValues(itemEntity.BaseStats) || !ReqStats.HasEqualValues(itemEntity.ReqStats))
+            ItemEntity sourceItem = (ItemEntity)source;
+            if (!BaseStats.HasEqualValues(sourceItem.BaseStats) || !ReqStats.HasEqualValues(sourceItem.ReqStats))
                 return false;
 
             // Everything important is equal, so they can be stacked
@@ -318,6 +319,7 @@ namespace DemoGame.Server
                 case StatCollectionType.Base:
                 case StatCollectionType.Requirement:
                     ret.StatChanged += _statChangedHandler;
+                    ret.StatAdded += _statChangedHandler;
                     break;
 
                 case StatCollectionType.Modified:

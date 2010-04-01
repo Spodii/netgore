@@ -1,6 +1,9 @@
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.IO;
 
 namespace NetGore.Stats
@@ -12,6 +15,8 @@ namespace NetGore.Stats
     /// <typeparam name="TStatType">The type of stat.</typeparam>
     public class Stat<TStatType> : IStat<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The type of Stat.
         /// </summary>
@@ -20,52 +25,46 @@ namespace NetGore.Stats
         /// <summary>
         /// The Stat's value.
         /// </summary>
-        IStatValueType _value;
+        StatValueType _value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
         /// </summary>
-        /// <param name="istatToCopy">The <see cref="IStat{StatType}"/> to copy the values from.</param>
+        /// <param name="istatToCopy">The <see cref="IStat{TStatType}"/> to copy the values from.</param>
         public Stat(IStat<TStatType> istatToCopy)
         {
             _statType = istatToCopy.StatType;
-            _value = istatToCopy.DeepCopyValueType();
+            _value = (StatValueType)istatToCopy.Value;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
         /// </summary>
-        /// <param name="istatToCopy">The <see cref="IStat{StatType}"/> to copy the values from.</param>
-        /// <param name="initialValue">The initial value to assign to this <see cref="Stat{StatType}"/>.
-        /// If not specified, the initial value
-        /// will end up being equal to the Value of <paramref name="istatToCopy"/>.</param>
-        public Stat(IStat<TStatType> istatToCopy, int initialValue) : this(istatToCopy)
+        /// <param name="istatToCopy">The <see cref="Stat{TStatType}"/> to copy the values from.</param>
+        public Stat(Stat<TStatType> istatToCopy)
         {
-            Value = initialValue;
+            _statType = istatToCopy._statType;
+            _value = istatToCopy._value;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
         /// </summary>
-        /// <param name="statType">The <see cref="StatType"/> of this <see cref="Stat{StatType}"/>.</param>
-        /// <param name="statValueType">The <see cref="IStatValueType"/> to store the stat value in.</param>
-        public Stat(TStatType statType, IStatValueType statValueType)
+        /// <param name="statType">The type of the stat.</param>
+        /// <param name="initialValue">The initial stat value.</param>
+        public Stat(TStatType statType, int initialValue) : this(statType, (StatValueType)initialValue)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
+        /// </summary>
+        /// <param name="statType">The type of the stat.</param>
+        /// <param name="initialValue">The initial stat value.</param>
+        public Stat(TStatType statType, StatValueType initialValue)
         {
             _statType = statType;
-            _value = statValueType;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
-        /// </summary>
-        /// <param name="statType">The <typeparamref name="TStatType"/> of this <see cref="Stat{StatType}"/>.</param>
-        /// <param name="statValueType">The <see cref="IStatValueType"/> to store the stat value in.</param>
-        /// <param name="initialValue">The initial value to assign to this <see cref="Stat{StatType}"/>.
-        /// If not specified, the initial value will end up being the current value of the
-        /// <paramref name="statValueType"/>.</param>
-        public Stat(TStatType statType, IStatValueType statValueType, int initialValue) : this(statType, statValueType)
-        {
-            Value = initialValue;
+            _value = initialValue;
         }
 
         /// <summary>
@@ -95,19 +94,19 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Gets or sets the value of this <see cref="IStat{TStatType}"/> as an integer.
+        /// Gets or sets the value of this <see cref="IStat{TStatType}"/>.
         /// </summary>
-        public int Value
+        public StatValueType Value
         {
-            get { return _value.GetValue(); }
+            get { return _value; }
             set
             {
                 // Check that the value has changed
-                if (_value.GetValue() == value)
+                if (_value == value)
                     return;
 
-                // Set the new value, and invoke the OnChange event
-                _value = _value.SetValue(value);
+                // Set the new value, and invoke the Changed event
+                _value = value;
 
                 if (Changed != null)
                     Changed(this);
@@ -116,28 +115,14 @@ namespace NetGore.Stats
 
         /// <summary>
         /// Creates a deep copy of the <see cref="IStat{TStatType}"/>, resulting in a new <see cref="IStat{TStatType}"/>
-        /// object of the same type as this <see cref="IStat{TStatType}"/>, and containing the same <see cref="IStatValueType"/>
-        /// with the same value, and same <typeparamref name="TStatType"/>.
+        /// object of the same type and stat value as this <see cref="IStat{TStatType}"/>.
         /// </summary>
         /// <returns>
         /// The deep copy of the <see cref="IStat{TStatType}"/>.
         /// </returns>
         public virtual IStat<TStatType> DeepCopy()
         {
-            return new Stat<TStatType>(StatType, _value, Value);
-        }
-
-        /// <summary>
-        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>, resulting in a new
-        /// <see cref="IStatValueType"/> object of the same type as this <see cref="IStat{TStatType}"/>'s
-        /// <see cref="IStatValueType"/>, and containing the same value.
-        /// </summary>
-        /// <returns>
-        /// The deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>.
-        /// </returns>
-        public IStatValueType DeepCopyValueType()
-        {
-            return _value.DeepCopy();
+            return new Stat<TStatType>(StatType, _value);
         }
 
         /// <summary>
@@ -148,7 +133,7 @@ namespace NetGore.Stats
         /// <param name="bitStream"><see cref="BitStream"/> to acquire the value from.</param>
         public void Read(BitStream bitStream)
         {
-            _value = _value.Read(bitStream);
+            _value = bitStream.ReadStatValueType();
         }
 
         /// <summary>
@@ -159,7 +144,7 @@ namespace NetGore.Stats
         /// <param name="ordinal">Ordinal of the field to read the value from.</param>
         public void Read(IDataRecord dataReader, int ordinal)
         {
-            _value = _value.Read(dataReader, ordinal);
+            _value = dataReader.GetStatValueType(ordinal);
         }
 
         /// <summary>
@@ -170,7 +155,7 @@ namespace NetGore.Stats
         /// <param name="name">Name of the field to read the value from.</param>
         public void Read(IDataReader dataReader, string name)
         {
-            _value = _value.Read(dataReader, dataReader.GetOrdinal(name));
+            _value = StatValueType.Read(dataReader, dataReader.GetOrdinal(name));
         }
 
         /// <summary>
@@ -185,33 +170,5 @@ namespace NetGore.Stats
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// Describes a single <see cref="IStat{StatType}"/>, containing the <typeparamref name="TStatType"/> and value
-    /// of the stat.
-    /// </summary>
-    /// <typeparam name="TStatType">The type of stat.</typeparam>
-    /// <typeparam name="TStatValueType">The type of <see cref="IStatValueType"/>.</typeparam>
-    public class Stat<TStatType, TStatValueType> : Stat<TStatType>
-        where TStatType : struct, IComparable, IConvertible, IFormattable where TStatValueType : IStatValueType, new()
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Stat{TStatType,TStatValueType}"/> class.
-        /// </summary>
-        /// <param name="statType">The type of stat.</param>
-        /// <param name="initialValue">The initial value to assign to this
-        /// <see cref="Stat{TStatType,TStatValueType}"/>.</param>
-        public Stat(TStatType statType, int initialValue) : base(statType, new TStatValueType(), initialValue)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Stat{TStatType, TStatValueType}"/> class.
-        /// </summary>
-        /// <param name="statType">The type of stat.</param>
-        public Stat(TStatType statType) : base(statType, new TStatValueType())
-        {
-        }
     }
 }
