@@ -12,7 +12,6 @@ namespace DemoGame
     {
         Vector2 _destination;
         MapID _destinationMap;
-        TeleportEntityBase _destinationTeleport;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
@@ -46,25 +45,6 @@ namespace DemoGame
         {
             get { return _destination; }
             set { _destination = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the teleport that the Entity will be teleported to upon use.
-        /// </summary>
-        [SyncValue(SkipNetworkSync = true)]
-        [Category("Teleport")]
-        [DisplayName("Destination Teleport")]
-        [Description("Teleport to teleport the Entity that uses this Teleport to.")]
-        [Browsable(true)]
-        public TeleportEntityBase DestinationTeleport
-        {
-            get {return _destinationTeleport;}
-            set 
-            {
-                Destination = value.Destination;
-                DestinationMap = value.DestinationMap;
-                _destinationTeleport = value; 
-            }
         }
 
         /// <summary>
