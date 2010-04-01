@@ -23,9 +23,9 @@ namespace NetGore.AI
         readonly List<Node> _close;
 
 #if TOPDOWN
-        bool topDown = true;
+        const bool topDown = true;
 #else
-        bool topDown = false;
+        const bool topDown = false;
 #endif
 
         readonly sbyte[,] _direction = new sbyte[8,2]
@@ -161,13 +161,6 @@ namespace NetGore.AI
                                 _h = (_heuristicEstimate * 2) * _hDiag + _heuristicEstimate * (_hStra - 2 * _hDiag);
                                 break;
 
-                            default:
-                            case Heuristics.Manhattan:
-                                _h =
-                                    (int)
-                                    (_heuristicEstimate * (Math.Abs(_newLocationX - End.X) + Math.Abs(_newLocationY - End.Y)));
-                                break;
-
                             case Heuristics.Euclidean:
                                 _h =
                                     (int)
@@ -180,6 +173,12 @@ namespace NetGore.AI
                                     (int)
                                     (_heuristicEstimate *
                                      (Math.Max(Math.Abs(_newLocationX - End.X), Math.Abs(_newLocationY - End.Y))));
+                                break;
+
+                            default:
+                                _h =
+                                    (int)
+                                    (_heuristicEstimate * (Math.Abs(_newLocationX - End.X) + Math.Abs(_newLocationY - End.Y)));
                                 break;
                         }
 

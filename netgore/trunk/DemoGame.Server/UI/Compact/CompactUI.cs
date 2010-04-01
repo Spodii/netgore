@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using NetGore;
 
 namespace DemoGame.Server.UI
 {
@@ -38,18 +35,6 @@ namespace DemoGame.Server.UI
         }
 
         /// <summary>
-        /// Handles when the server creates replies from console commands.
-        /// </summary>
-        /// <param name="server">The server.</param>
-        /// <param name="command">The command.</param>
-        /// <param name="returnString">The return string.</param>
-        static void Server_ConsoleCommandExecuted(Server server, string command, string returnString)
-        {
-            Console.WriteLine(returnString);
-            Console.WriteLine();
-        }
-
-        /// <summary>
         /// Method for the main server loop thread.
         /// </summary>
         void ConsoleInputHandler()
@@ -71,11 +56,27 @@ namespace DemoGame.Server.UI
         }
 
         /// <summary>
+        /// Handles when the server creates replies from console commands.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="returnString">The return string.</param>
+        static void Server_ConsoleCommandExecuted(Server server, string command, string returnString)
+        {
+            Console.WriteLine(returnString);
+            Console.WriteLine();
+        }
+
+        #region IDisposable Members
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
             _server.Dispose();
         }
+
+        #endregion
     }
 }

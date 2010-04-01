@@ -281,15 +281,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets a non-negative whole number.
-        /// </summary>
-        /// <returns>A non-negative whole number.</returns>
-        public static uint NextUInt()
-        {
-            return _rand.NextUInt();
-        }
-
-        /// <summary>
         /// Gets a non-negetive random whole number less than the specified <paramref cref="maximum"/>.
         /// </summary>
         /// <param name="maximum">The exclusive upper bound the random number to be generated.</param>
@@ -308,6 +299,15 @@ namespace NetGore
         public static int NextInt(int min, int max)
         {
             return _rand.Next(min, max);
+        }
+
+        /// <summary>
+        /// Gets a non-negative whole number.
+        /// </summary>
+        /// <returns>A non-negative whole number.</returns>
+        public static uint NextUInt()
+        {
+            return _rand.NextUInt();
         }
     }
 }
