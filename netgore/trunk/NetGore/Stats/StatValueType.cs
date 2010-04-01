@@ -1,55 +1,69 @@
-﻿/*
-Template for a custom value type that is handled externally as an Int32, but handled internally as whatever value type
-you want. This is provided as a template for creating custom Structs for game values. The reason they are exposed externally
-as an Int32 is to prevent having to ever change any external code when the internal value type changes.
-
-Copy all of this text into a new code file, follow the TODOs, and it should be fully functional and ready when done.
-
-Won't work with a non-integral value types, UInt, or 64+ bit value types as the internal value type.
-*/
-
-using System;
+﻿using System;
 using System.Data;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
+using log4net;
 using NetGore;
 using NetGore.IO;
 
-// TODO: Replace string "UnderlyingValueType" with the name of the underlying value type.
-// TODO: Replace string "CustomValueTypeName" with the name of this value type.
-
-namespace NetGore // TODO: Ensure this is the namespace you want
+namespace NetGore.Stats
 {
-    // TODO: Add comments for the struct.
+    /// <summary>
+    /// Represents the integer value of a single stat.
+    /// </summary>
     [Serializable]
-    public struct CustomValueTypeName : IComparable<CustomValueTypeName>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct StatValueType : IComparable<StatValueType>, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
-        /// <summary>
-        /// Represents the largest possible value of <see cref="CustomValueTypeName"/>. This field is constant.
-        /// </summary>
-        public const int MaxValue = UnderlyingValueType.MaxValue;
+        // NOTE: This struct uses a highly modified version of the CustomValueTypeTemplate. Copy with care.
 
         /// <summary>
-        /// Represents the smallest possible value of <see cref="CustomValueTypeName"/>. This field is constant.
+        /// Represents the largest possible value of <see cref="StatValueType"/>. This field is constant.
         /// </summary>
-        public const int MinValue = UnderlyingValueType.MinValue;
+        public const int MaxValue = short.MaxValue;
+
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="StatValueType"/>. This field is constant.
+        /// </summary>
+        public const int MinValue = short.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly UnderlyingValueType _value;
+        readonly short _value;
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomValueTypeName"/> struct.
+        /// Initializes a new instance of the <see cref="StatValueType"/> struct.
         /// </summary>
-        /// <param name="value">Value to assign to the new <see cref="CustomValueTypeName"/>.</param>
-        public CustomValueTypeName(int value)
+        /// <param name="value">Value to assign to the new <see cref="StatValueType"/>.</param>
+        public StatValueType(int value)
         {
-            if (value < MinValue || value > MaxValue)
-                throw new ArgumentOutOfRangeException("value");
+            const string errmsg =
+                "Attempted to set StatValueType to `{0}`, but the {2}est StatValueType value supported is `{1}`. Consider using a {2}er value type (e.g. Int32) for the StatValueType. The value has been altered to avoid under/overflow.";
 
-            _value = (UnderlyingValueType)value;
+            // Check for a valid range
+            if (value < MinValue)
+            {
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, value, MinValue, "small");
+                Debug.Fail(string.Format(errmsg, value, MinValue, "small"));
+
+                value = MinValue;
+            }
+            else if (value > MaxValue)
+            {
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, value, MaxValue, "larg");
+                Debug.Fail(string.Format(errmsg, value, MaxValue, "larg"));
+
+                value = MaxValue;
+            }
+
+            _value = (short)value;
         }
 
         /// <summary>
@@ -59,7 +73,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <returns>
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public bool Equals(CustomValueTypeName other)
+        public bool Equals(StatValueType other)
         {
             return other._value == _value;
         }
@@ -75,9 +89,9 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(CustomValueTypeName))
+            if (obj.GetType() != typeof(StatValueType))
                 return false;
-            return Equals((CustomValueTypeName)obj);
+            return Equals((StatValueType)obj);
         }
 
         /// <summary>
@@ -92,62 +106,62 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         /// <summary>
-        /// Gets the raw internal value of this <see cref="CustomValueTypeName"/>.
+        /// Gets the raw internal value of this <see cref="StatValueType"/>.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public UnderlyingValueType GetRawValue()
+        public short GetRawValue()
         {
             return _value;
         }
 
         /// <summary>
-        /// Reads a <see cref="CustomValueTypeName"/> from an IValueReader.
+        /// Reads a <see cref="StatValueType"/> from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> read from the IValueReader.</returns>
-        public static CustomValueTypeName Read(IValueReader reader, string name)
+        /// <returns>The <see cref="StatValueType"/> read from the IValueReader.</returns>
+        public static StatValueType Read(IValueReader reader, string name)
         {
-            UnderlyingValueType value = reader.ReadUnderlyingValueType(name);
-            return new CustomValueTypeName(value);
+            short value = reader.ReadShort(name);
+            return new StatValueType(value);
         }
 
         /// <summary>
-        /// Reads a <see cref="CustomValueTypeName"/> from an <see cref="IDataReader"/>.
+        /// Reads a <see cref="StatValueType"/> from an <see cref="IDataReader"/>.
         /// </summary>
-        /// <param name="reader"><see cref="IDataReader"/> to get the value from.</param>
+        /// <param name="reader"><see cref="IDataRecord"/> to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> read from the <see cref="IDataReader"/>.</returns>
-        public static CustomValueTypeName Read(IDataRecord reader, int i)
+        /// <returns>The <see cref="StatValueType"/> read from the <see cref="IDataReader"/>.</returns>
+        public static StatValueType Read(IDataRecord reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is UnderlyingValueType)
-                return new CustomValueTypeName((UnderlyingValueType)value);
+            if (value is short)
+                return new StatValueType((short)value);
 
-            UnderlyingValueType convertedValue = Convert.ToUnderlyingValueType(value);
-            return new CustomValueTypeName(convertedValue);
+            short convertedValue = Convert.ToInt16(value);
+            return new StatValueType(convertedValue);
         }
 
         /// <summary>
-        /// Reads a <see cref="CustomValueTypeName"/> from an <see cref="IDataReader"/>.
+        /// Reads a <see cref="StatValueType"/> from an <see cref="IDataReader"/>.
         /// </summary>
         /// <param name="reader"><see cref="IDataReader"/> to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> read from the <see cref="IDataReader"/>.</returns>
-        public static CustomValueTypeName Read(IDataReader reader, string name)
+        /// <returns>The <see cref="StatValueType"/> read from the <see cref="IDataReader"/>.</returns>
+        public static StatValueType Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads a <see cref="CustomValueTypeName"/> from an IValueReader.
+        /// Reads a <see cref="StatValueType"/> from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> read from the <see cref="BitStream"/>.</returns>
-        public static CustomValueTypeName Read(BitStream bitStream)
+        /// <returns>The <see cref="StatValueType"/> read from the <see cref="BitStream"/>.</returns>
+        public static StatValueType Read(BitStream bitStream)
         {
-            UnderlyingValueType value = bitStream.ReadUnderlyingValueType();
-            return new CustomValueTypeName(value);
+            short value = bitStream.ReadShort();
+            return new StatValueType(value);
         }
 
         /// <summary>
@@ -161,10 +175,10 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         /// <summary>
-        /// Writes the <see cref="CustomValueTypeName"/> to an <see cref="IValueWriter"/>.
+        /// Writes the <see cref="StatValueType"/> to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the <see cref="CustomValueTypeName"/> that will be used to distinguish it
+        /// <param name="name">Unique name of the <see cref="StatValueType"/> that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -172,7 +186,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         /// <summary>
-        /// Writes the <see cref="CustomValueTypeName"/> to a <see cref="BitStream"/>.
+        /// Writes the <see cref="StatValueType"/> to a <see cref="BitStream"/>.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -180,7 +194,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
             bitStream.Write(_value);
         }
 
-        #region IComparable<CustomValueTypeName> Members
+        #region IComparable<StatValueType> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -198,7 +212,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         ///                     Greater than zero 
         ///                     This object is greater than <paramref name="other"/>. 
         /// </returns>
-        public int CompareTo(CustomValueTypeName other)
+        public int CompareTo(StatValueType other)
         {
             return _value.CompareTo(other._value);
         }
@@ -491,298 +505,52 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         #endregion
-        
+
         /// <summary>
-        /// Implements operator ++.
+        /// Casts a <see cref="StatValueType"/> to an <see cref="int"/>.
         /// </summary>
-        /// <param name="l">The <see cref="CustomValueTypeName"/> to increment.</param>
-        /// <returns>The incremented <see cref="CustomValueTypeName"/>.</returns>
-        public static CustomValueTypeName operator ++(CustomValueTypeName l)
+        /// <param name="StatValueType"><see cref="StatValueType"/> to cast.</param>
+        /// <returns>The <see cref="int"/> value of the <see cref="StatValueType"/>.</returns>
+        public static implicit operator int(StatValueType StatValueType)
         {
-            return new CustomValueTypeName(l._value + 1);
-        }
-        
-        /// <summary>
-        /// Implements operator --.
-        /// </summary>
-        /// <param name="l">The <see cref="CustomValueTypeName"/> to decrement.</param>
-        /// <returns>The decremented <see cref="CustomValueTypeName"/>.</returns>
-        public static CustomValueTypeName operator --(CustomValueTypeName l)
-        {
-            return new CustomValueTypeName(l._value - 1);
+            return StatValueType._value;
         }
 
         /// <summary>
-        /// Implements operator +.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>Result of the left side plus the right side.</returns>
-        public static CustomValueTypeName operator +(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return new CustomValueTypeName(left._value + right._value);
-        }
-
-        /// <summary>
-        /// Implements operator -.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>Result of the left side minus the right side.</returns>
-        public static CustomValueTypeName operator -(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return new CustomValueTypeName(left._value - right._value);
-        }
-
-        /// <summary>
-        /// Implements operator ==.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(CustomValueTypeName left, int right)
-        {
-            return left._value == right;
-        }
-
-        /// <summary>
-        /// Implements operator !=.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(CustomValueTypeName left, int right)
-        {
-            return left._value != right;
-        }
-
-        /// <summary>
-        /// Implements operator ==.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, CustomValueTypeName right)
-        {
-            return left == right._value;
-        }
-
-        /// <summary>
-        /// Implements operator !=.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, CustomValueTypeName right)
-        {
-            return left != right._value;
-        }
-
-        /// <summary>
-        /// Casts a <see cref="CustomValueTypeName"/> to an <see cref="int"/>.
-        /// </summary>
-        /// <param name="CustomValueTypeName"><see cref="CustomValueTypeName"/> to cast.</param>
-        /// <returns>The <see cref="int"/> value of the <see cref="CustomValueTypeName"/>.</returns>
-        public static explicit operator int(CustomValueTypeName CustomValueTypeName)
-        {
-            return CustomValueTypeName._value;
-        }
-
-        /// <summary>
-        /// Casts an <see cref="int"/> to a <see cref="CustomValueTypeName"/>.
+        /// Casts an <see cref="int"/> to a <see cref="StatValueType"/>.
         /// </summary>
         /// <param name="value">The <see cref="int"/> to cast.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> casted from the <see cref="int"/>.</returns>
-        public static explicit operator CustomValueTypeName(int value)
+        /// <returns>The <see cref="StatValueType"/> casted from the <see cref="int"/>.</returns>
+        public static implicit operator StatValueType(int value)
         {
-            return new CustomValueTypeName(value);
-        }
-
-        /// <summary>
-        /// Implements operator > for comparing an <see cref="int"/> to a <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, CustomValueTypeName right)
-        {
-            return left > right._value;
-        }
-
-        /// <summary>
-        /// Implements operator < for comparing an <see cref="int"/> to a <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, CustomValueTypeName right)
-        {
-            return left < right._value;
-        }
-
-        /// <summary>
-        /// Implements operator > for comparing a <see cref="CustomValueTypeName"/> to another
-        /// <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return left._value > right._value;
-        }
-
-        /// <summary>
-        /// Implements operator < for comparing a <see cref="CustomValueTypeName"/> to another
-        /// <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return left._value < right._value;
-        }
-
-        /// <summary>
-        /// Implements operator > for comparing a <see cref="CustomValueTypeName"/> to an <see cref="int"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(CustomValueTypeName left, int right)
-        {
-            return left._value > right;
-        }
-
-        /// <summary>
-        /// Implements operator < for comparing a <see cref="CustomValueTypeName"/> to an <see cref="int"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(CustomValueTypeName left, int right)
-        {
-            return left._value < right;
-        }
-
-        /// <summary>
-        /// Implements operator >= for comparing an <see cref="int"/> to a <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, CustomValueTypeName right)
-        {
-            return left >= right._value;
-        }
-
-        /// <summary>
-        /// Implements operator <= for comparing an <see cref="int"/> to a <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, CustomValueTypeName right)
-        {
-            return left <= right._value;
-        }
-
-        /// <summary>
-        /// Implements operator >= for comparing a <see cref="CustomValueTypeName"/> to an <see cref="int"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(CustomValueTypeName left, int right)
-        {
-            return left._value >= right;
-        }
-
-        /// <summary>
-        /// Implements operator <= for comparing a <see cref="CustomValueTypeName"/> to an <see cref="int"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(CustomValueTypeName left, int right)
-        {
-            return left._value <= right;
-        }
-
-        /// <summary>
-        /// Implements operator >= for comparing a <see cref="CustomValueTypeName"/> to another
-        /// <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return left._value >= right._value;
-        }
-
-        /// <summary>
-        /// Implements operator <= for comparing a <see cref="CustomValueTypeName"/> to another
-        /// <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return left._value <= right._value;
-        }
-
-        /// <summary>
-        /// Implements operator != for comparing a <see cref="CustomValueTypeName"/> to another
-        /// <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return left._value != right._value;
-        }
-
-        /// <summary>
-        /// Implements operator == for comparing a <see cref="CustomValueTypeName"/> to another
-        /// <see cref="CustomValueTypeName"/>.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return left._value == right._value;
+            return new StatValueType(value);
         }
     }
 
     /// <summary>
     /// Adds extensions to some data I/O objects for performing read and write operations for the
-    /// <see cref="CustomValueTypeName"/>. All of the operations are implemented in the <see cref="CustomValueTypeName"/>
+    /// <see cref="StatValueType"/>. All of the operations are implemented in the <see cref="StatValueType"/>
     /// struct. These extensions are provided purely for the convenience of accessing all the I/O operations from the
     /// same place.
     /// </summary>
-    public static class CustomValueTypeNameReadWriteExtensions
+    public static class StatValueTypeReadWriteExtensions
     {
-		/// <summary>
+        /// <summary>
         /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as a
-        /// <see cref="CustomValueTypeName"/>.
+        /// <see cref="StatValueType"/>.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The <see cref="IDictionary{TKey, TValue}"/>.</param>
         /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a <see cref="CustomValueTypeName"/>.</returns>
-        public static CustomValueTypeName AsCustomValueTypeName<T>(this IDictionary<T, string> dict, T key)
+        /// <returns>The value at the given <paramref name="key"/> parsed as a <see cref="StatValueType"/>.</returns>
+        public static StatValueType AsStatValueType<T>(this IDictionary<T, string> dict, T key)
         {
-            return Parser.Invariant.ParseCustomValueTypeName(dict[key]);
+            return Parser.Invariant.ParseStatValueType(dict[key]);
         }
 
         /// <summary>
         /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as a
-        /// <see cref="CustomValueTypeName"/>.
+        /// <see cref="StatValueType"/>.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
         /// <param name="dict">The <see cref="IDictionary{TKey, TValue}"/>.</param>
@@ -791,106 +559,106 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static CustomValueTypeName AsCustomValueTypeName<T>(this IDictionary<T, string> dict, T key, CustomValueTypeName defaultValue)
+        public static StatValueType AsStatValueType<T>(this IDictionary<T, string> dict, T key, StatValueType defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
                 return defaultValue;
 
-            CustomValueTypeName parsed;
+            StatValueType parsed;
             if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
         }
-        
+
         /// <summary>
-        /// Parses the <see cref="CustomValueTypeName"/> from a string.
+        /// Parses the <see cref="StatValueType"/> from a string.
         /// </summary>
         /// <param name="parser">The <see cref="Parser"/> to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> parsed from the string.</returns>
-        public static CustomValueTypeName ParseCustomValueTypeName(this Parser parser, string value)
+        /// <returns>The <see cref="StatValueType"/> parsed from the string.</returns>
+        public static StatValueType ParseStatValueType(this Parser parser, string value)
         {
-            return new CustomValueTypeName(parser.ParseUnderlyingValueType(value));
+            return new StatValueType(parser.ParseShort(value));
         }
-        
-		/// <summary>
-        /// Tries to parse the <see cref="CustomValueTypeName"/> from a string.
+
+        /// <summary>
+        /// Tries to parse the <see cref="StatValueType"/> from a string.
         /// </summary>
         /// <param name="parser">The <see cref="Parser"/> to use.</param>
         /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed <see cref="CustomValueTypeName"/>.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed <see cref="StatValueType"/>.</param>
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out CustomValueTypeName outValue)
+        public static bool TryParse(this Parser parser, string value, out StatValueType outValue)
         {
-            UnderlyingValueType tmp;
+            short tmp;
             bool ret = parser.TryParse(value, out tmp);
-            outValue = new CustomValueTypeName(tmp);
+            outValue = new StatValueType(tmp);
             return ret;
         }
-        
+
         /// <summary>
-        /// Reads the <see cref="CustomValueTypeName"/> from a <see cref="BitStream"/>.
+        /// Reads the <see cref="StatValueType"/> from a <see cref="BitStream"/>.
         /// </summary>
-        /// <param name="bitStream"><see cref="BitStream"/> to read the <see cref="CustomValueTypeName"/> from.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> read from the <see cref="BitStream"/>.</returns>
-        public static CustomValueTypeName ReadCustomValueTypeName(this BitStream bitStream)
+        /// <param name="bitStream"><see cref="BitStream"/> to read the <see cref="StatValueType"/> from.</param>
+        /// <returns>The <see cref="StatValueType"/> read from the <see cref="BitStream"/>.</returns>
+        public static StatValueType ReadStatValueType(this BitStream bitStream)
         {
-            return CustomValueTypeName.Read(bitStream);
+            return StatValueType.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the <see cref="CustomValueTypeName"/> from an <see cref="IDataRecord"/>.
+        /// Reads the <see cref="StatValueType"/> from an <see cref="IDataRecord"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataRecord"/> to read the <see cref="CustomValueTypeName"/> from.</param>
+        /// <param name="dataReader"><see cref="IDataRecord"/> to read the <see cref="StatValueType"/> from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> read from the <see cref="IDataReader"/>.</returns>
-        public static CustomValueTypeName GetCustomValueTypeName(this IDataRecord dataReader, int i)
+        /// <returns>The <see cref="StatValueType"/> read from the <see cref="IDataReader"/>.</returns>
+        public static StatValueType GetStatValueType(this IDataRecord dataReader, int i)
         {
-            return CustomValueTypeName.Read(dataReader, i);
+            return StatValueType.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the <see cref="CustomValueTypeName"/> from an <see cref="IDataReader"/>.
+        /// Reads the <see cref="StatValueType"/> from an <see cref="IDataReader"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="CustomValueTypeName"/> from.</param>
+        /// <param name="dataReader"><see cref="IDataReader"/> to read the <see cref="StatValueType"/> from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> read from the <see cref="IDataReader"/>.</returns>
-        public static CustomValueTypeName GetCustomValueTypeName(this IDataReader dataReader, string name)
+        /// <returns>The <see cref="StatValueType"/> read from the <see cref="IDataReader"/>.</returns>
+        public static StatValueType GetStatValueType(this IDataReader dataReader, string name)
         {
-            return CustomValueTypeName.Read(dataReader, name);
+            return StatValueType.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Reads the <see cref="CustomValueTypeName"/> from an IValueReader.
+        /// Reads the <see cref="StatValueType"/> from an IValueReader.
         /// </summary>
-        /// <param name="valueReader"><see cref="IValueReader"/> to read the <see cref="CustomValueTypeName"/> from.</param>
+        /// <param name="valueReader"><see cref="IValueReader"/> to read the <see cref="StatValueType"/> from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The <see cref="CustomValueTypeName"/> read from the IValueReader.</returns>
-        public static CustomValueTypeName ReadCustomValueTypeName(this IValueReader valueReader, string name)
+        /// <returns>The <see cref="StatValueType"/> read from the IValueReader.</returns>
+        public static StatValueType ReadStatValueType(this IValueReader valueReader, string name)
         {
-            return CustomValueTypeName.Read(valueReader, name);
+            return StatValueType.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Writes a <see cref="CustomValueTypeName"/> to a <see cref="BitStream"/>.
+        /// Writes a <see cref="StatValueType"/> to a <see cref="BitStream"/>.
         /// </summary>
         /// <param name="bitStream"><see cref="BitStream"/> to write to.</param>
-        /// <param name="value"><see cref="CustomValueTypeName"/> to write.</param>
-        public static void Write(this BitStream bitStream, CustomValueTypeName value)
+        /// <param name="value"><see cref="StatValueType"/> to write.</param>
+        public static void Write(this BitStream bitStream, StatValueType value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a <see cref="CustomValueTypeName"/> to a <see cref="IValueWriter"/>.
+        /// Writes a <see cref="StatValueType"/> to a <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="valueWriter"><see cref="IValueWriter"/> to write to.</param>
-        /// <param name="name">Unique name of the <see cref="CustomValueTypeName"/> that will be used to distinguish it
+        /// <param name="name">Unique name of the <see cref="StatValueType"/> that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value"><see cref="CustomValueTypeName"/> to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, CustomValueTypeName value)
+        /// <param name="value"><see cref="StatValueType"/> to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, StatValueType value)
         {
             value.Write(valueWriter, name);
         }

@@ -23,25 +23,16 @@ namespace NetGore.Stats
         TStatType StatType { get; }
 
         /// <summary>
-        /// Gets or sets the value of this <see cref="IStat{TStatType}"/> as an integer.
+        /// Gets or sets the value of this <see cref="IStat{TStatType}"/>.
         /// </summary>
-        int Value { get; set; }
+        StatValueType Value { get; set; }
 
         /// <summary>
         /// Creates a deep copy of the <see cref="IStat{TStatType}"/>, resulting in a new <see cref="IStat{TStatType}"/>
-        /// object of the same type as this <see cref="IStat{TStatType}"/>, and containing the same <see cref="IStatValueType"/>
-        /// with the same value, and same <typeparamref name="TStatType"/>.
+        /// object of the same type and stat value as this <see cref="IStat{TStatType}"/>.
         /// </summary>
         /// <returns>The deep copy of the <see cref="IStat{TStatType}"/>.</returns>
         IStat<TStatType> DeepCopy();
-
-        /// <summary>
-        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>, resulting in a new
-        /// <see cref="IStatValueType"/> object of the same type as this <see cref="IStat{TStatType}"/>'s
-        /// <see cref="IStatValueType"/>, and containing the same value.
-        /// </summary>
-        /// <returns>The deep copy of the <see cref="IStat{TStatType}"/>'s <see cref="IStatValueType"/>.</returns>
-        IStatValueType DeepCopyValueType();
 
         /// <summary>
         /// Reads the value for the <see cref="IStat{TStatType}"/> into the <see cref="IStat{StatType}.Value"/> property using

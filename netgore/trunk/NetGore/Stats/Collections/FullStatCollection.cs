@@ -54,7 +54,7 @@ namespace NetGore.Stats
 
             foreach (var statType in EnumHelper<TStatType>.Values)
             {
-                var stat = StatFactory<TStatType>.CreateStat(statType, collectionType);
+                var stat = new Stat<TStatType>(statType, 0);
                 stat.Changed += statChangedHandler;
 
                 _stats[_statTypeToInt(statType)] = stat;

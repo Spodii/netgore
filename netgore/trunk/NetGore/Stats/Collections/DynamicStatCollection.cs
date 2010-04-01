@@ -38,7 +38,7 @@ namespace NetGore.Stats
         /// <summary>
         /// Notifies listeners when a stat has been added to this collection.
         /// </summary>
-        public event DynamicStatCollectionStatEventHandler<TStatType> StatAdded;
+        public event IStatCollectionStatEventHandler<TStatType> StatAdded;
 
         /// <summary>
         /// Adds an <see cref="IStat{StatType}"/> to the collection.
@@ -92,7 +92,7 @@ namespace NetGore.Stats
             IStat<TStatType> stat;
             if (!_stats.TryGetValue(statType, out stat))
             {
-                stat = StatFactory<TStatType>.CreateStat(statType, StatCollectionType);
+                stat = new Stat<TStatType>(statType, 0);
                 Add(stat);
             }
 
