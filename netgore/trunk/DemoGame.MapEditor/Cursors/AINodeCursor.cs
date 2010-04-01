@@ -9,8 +9,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.AI;
 using NetGore.EditorTools;
-using NetGore.Graphics;
 using NetGore.Extensions;
+using NetGore.Graphics;
 using Color=Microsoft.Xna.Framework.Graphics.Color;
 
 namespace DemoGame.MapEditor
@@ -101,7 +101,7 @@ namespace DemoGame.MapEditor
             return _contextMenu;
         }
 
-        int[] GetMemoryCellUnderCursor(ScreenForm screen)
+        static int[] GetMemoryCellUnderCursor(ScreenForm screen)
         {
             Vector2 CursorPos = screen.CursorPos;
 
@@ -243,15 +243,11 @@ namespace DemoGame.MapEditor
                     _debugNodeStart = new Vector2(id[0], id[1]);
                     Container.Map.MemoryMap.MemoryCells[id[0], id[1]].DebugStatus = 1;
 
-                    byte[,] grid = new byte[Container.Map.MemoryMap.CellsX,Container.Map.MemoryMap.CellsY];
-                    grid = Container.Map.MemoryMap.ToByteArray();
+                    byte[,] grid = Container.Map.MemoryMap.ToByteArray();
                     AIGrid aiGrid = new AIGrid(grid);
-                    PathFinder pathFinder = new PathFinder(aiGrid);
+                    PathFinder pathFinder = new PathFinder(aiGrid) { HeuristicFormula = Heuristics.Manhattan, SearchLimit = 3000 };
 
-                    pathFinder.HeuristicFormula = Heuristics.Manhattan;
-                    pathFinder.SearchLimit = 3000;
-                    List<Node> nodes = new List<Node>();
-                    nodes = pathFinder.FindPath(_debugNodeStart, _debugNodeEnd);
+                    List<Node> nodes = pathFinder.FindPath(_debugNodeStart, _debugNodeEnd);
 
                     if (nodes != null)
                     {
@@ -260,7 +256,6 @@ namespace DemoGame.MapEditor
                             Container.Map.MemoryMap.MemoryCells[n.X, n.Y].DebugStatus = 3;
                         }
                     }
-                    nodes = null;
                 }
             }
             else if (e.Button == MouseButtons.Right)

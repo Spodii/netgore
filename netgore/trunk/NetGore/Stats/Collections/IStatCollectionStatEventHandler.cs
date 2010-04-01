@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace NetGore.Stats
 {
-
     /// <summary>
     /// Delegate for handling when a stat in a <see cref="IStatCollection{TStatType}"/> changes.
     /// </summary>

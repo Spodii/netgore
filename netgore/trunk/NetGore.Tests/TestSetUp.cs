@@ -27,7 +27,7 @@ namespace NetGore.Tests
 
             ShopSettings.Initialize(new ShopSettings(6 * 6));
             StatusEffectsSettings.Initialize(new StatusEffectsSettings(500));
-            GroupSettings.Initialize(new GroupSettings(10, 1000 * 60, (x,y) => true));
+            GroupSettings.Initialize(new GroupSettings(10, 1000 * 60, (x, y) => true));
             QuestSettings.Initialize(new QuestSettings(20));
             GameTimeSettings.Initialize(new GameTimeSettings(19, 6, -0.5f, 50, new DateTime(2010, 1, 1), 1000f));
 

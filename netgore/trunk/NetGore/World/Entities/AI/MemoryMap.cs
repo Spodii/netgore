@@ -18,8 +18,6 @@ namespace NetGore.AI
         MemoryCell[,] _memoryCells;
         ushort _minY;
 
-        public ushort CellSize { get { return _cellSize; } }
-
         /// <summary>
         /// Constructor for a MemoryMap, uses default value of 32 for MemoryCell dimensions.
         /// </summary>
@@ -35,6 +33,11 @@ namespace NetGore.AI
         public MemoryMap(ushort cellSize)
         {
             _cellSize = cellSize;
+        }
+
+        public ushort CellSize
+        {
+            get { return _cellSize; }
         }
 
         public ushort CellsX

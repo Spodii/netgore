@@ -566,7 +566,8 @@ namespace DemoGame.Server
         /// <param name="statType">The type of the stat that changed.</param>
         /// <param name="oldValue">The old value of the stat.</param>
         /// <param name="newValue">The new value of the stat.</param>
-        void BaseStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue, StatValueType newValue)
+        void BaseStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue,
+                                    StatValueType newValue)
         {
             _updateModStats = true;
 
@@ -602,7 +603,8 @@ namespace DemoGame.Server
         /// <param name="statType">The type of the stat that changed.</param>
         /// <param name="oldValue">The old value of the stat.</param>
         /// <param name="newValue">The new value of the stat.</param>
-        void ModStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue, StatValueType newValue)
+        void ModStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue,
+                                   StatValueType newValue)
         {
             _updateModStats = true;
 
@@ -1831,7 +1833,7 @@ namespace DemoGame.Server
                 var statType = (StatType)i;
                 ModStats[statType] = ModStatHelper<StatType>.Calculate(BaseStats, statType, Equipped, StatusEffects);
             }
- 
+
             if (log.IsDebugEnabled)
                 log.DebugFormat("Updated mod stats for character `{0}`.", this);
         }

@@ -64,7 +64,8 @@ namespace DemoGame.Server
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
                 pos, new Vector2(t.Width, t.Height), t.ID, t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic,
-                t.Value, amount, t.HP, t.MP, t.EquippedBody, t.Stats.Select(x => (Stat<StatType>)x), t.ReqStats.Select(x => (Stat<StatType>)x))
+                t.Value, amount, t.HP, t.MP, t.EquippedBody, t.Stats.Select(x => (Stat<StatType>)x),
+                t.ReqStats.Select(x => (Stat<StatType>)x))
         {
         }
 
@@ -96,8 +97,8 @@ namespace DemoGame.Server
 
         ItemEntity(Vector2 pos, Vector2 size, ItemTemplateID? templateID, string name, string desc, ItemType type,
                    WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount, SPValueType hp, SPValueType mp,
-                   string equippedBody, IEnumerable<Stat<StatType>> baseStats,
-                   IEnumerable<Stat<StatType>> reqStats) : base(pos, size)
+                   string equippedBody, IEnumerable<Stat<StatType>> baseStats, IEnumerable<Stat<StatType>> reqStats)
+            : base(pos, size)
         {
             _id = IDCreator.GetNext();
 
@@ -407,7 +408,8 @@ namespace DemoGame.Server
         /// <param name="statType">Type of the stat that changed.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        void StatCollection_StatChanged(IStatCollection<StatType> statCollection, StatType statType, StatValueType oldValue, StatValueType newValue)
+        void StatCollection_StatChanged(IStatCollection<StatType> statCollection, StatType statType, StatValueType oldValue,
+                                        StatValueType newValue)
         {
             Debug.Assert(statCollection.StatCollectionType != StatCollectionType.Modified,
                          "ItemEntity does not use StatCollectionType.Modified.");
@@ -632,7 +634,7 @@ namespace DemoGame.Server
         /// </summary>
         IEnumerable<KeyValuePair<StatType, int>> IItemTable.ReqStats
         {
-            get { return ReqStats.Cast < KeyValuePair<StatType, int>>(); }
+            get { return ReqStats.Cast<KeyValuePair<StatType, int>>(); }
         }
 
         /// <summary>

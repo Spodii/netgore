@@ -15,7 +15,8 @@ namespace NetGore.Stats
         /// <typeparam name="TStatType">The type of the stat.</typeparam>
         /// <param name="bitStream"><see cref="BitStream"/> to read from.</param>
         /// <returns>The <see cref="Stat{TStatType}"/> read from the <paramref name="bitStream"/>.</returns>
-        public static Stat<TStatType> ReadStat<TStatType>(this BitStream bitStream) where TStatType : struct, IComparable, IConvertible, IFormattable
+        public static Stat<TStatType> ReadStat<TStatType>(this BitStream bitStream)
+            where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             TStatType statType = bitStream.ReadEnum<TStatType>();
             var value = bitStream.ReadStatValueType();
@@ -29,7 +30,8 @@ namespace NetGore.Stats
         /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
         /// <param name="name">The unique name of the value to read.</param>
         /// <returns>The <see cref="Stat{TStatType}"/> read from the <paramref name="reader"/>.</returns>
-        public static Stat<TStatType> ReadStat<TStatType>(this IValueReader reader, string name) where TStatType : struct, IComparable, IConvertible, IFormattable
+        public static Stat<TStatType> ReadStat<TStatType>(this IValueReader reader, string name)
+            where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             if (reader.SupportsNodes)
             {
@@ -53,7 +55,8 @@ namespace NetGore.Stats
         /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
         /// <param name="name">The unique name of the value to write.</param>
         /// <param name="stat">The <see cref="Stat{TStatType}"/> to write.</param>
-        public static void Write<TStatType>(this IValueWriter writer, string name, Stat<TStatType> stat) where TStatType : struct, IComparable, IConvertible, IFormattable
+        public static void Write<TStatType>(this IValueWriter writer, string name, Stat<TStatType> stat)
+            where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             if (writer.SupportsNodes)
             {
@@ -75,7 +78,8 @@ namespace NetGore.Stats
         /// <typeparam name="TStatType">The type of the stat.</typeparam>
         /// <param name="bitStream"><see cref="BitStream"/> to write to.</param>
         /// <param name="stat">The <see cref="Stat{TStatType}"/> to write.</param>
-        public static void Write<TStatType>(this BitStream bitStream, Stat<TStatType> stat) where TStatType : struct, IComparable, IConvertible, IFormattable
+        public static void Write<TStatType>(this BitStream bitStream, Stat<TStatType> stat)
+            where TStatType : struct, IComparable, IConvertible, IFormattable
         {
             bitStream.WriteEnum(stat.StatType);
             bitStream.Write(stat.Value);

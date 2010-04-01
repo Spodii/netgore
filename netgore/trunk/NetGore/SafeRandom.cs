@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -41,8 +39,7 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="SafeRandom"/> class.
         /// </summary>
-        public SafeRandom()
-            : this(Environment.TickCount)
+        public SafeRandom() : this(Environment.TickCount)
         {
         }
 
@@ -168,7 +165,7 @@ namespace NetGore
             uint t;
 
             // Generate 4 values at a time
-            for (int bound = buffer.Length - 3; i < bound; )
+            for (int bound = buffer.Length - 3; i < bound;)
             {
                 t = (x ^ (x << 11));
                 x = y;

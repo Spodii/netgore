@@ -5,9 +5,9 @@ namespace NetGore.AI
 {
     public struct MemoryCell
     {
+        byte _debugStatus;
         ushort _minX;
         ushort _minY;
-        byte _debugStatus;
         byte _weight;
 
         /// <summary>
@@ -23,21 +23,27 @@ namespace NetGore.AI
             _debugStatus = 0;
         }
 
-        public Point Location { get { return new Point(MinX, MinY); } }
-
-        public ushort MinX { get { return _minX; } set { _minX = value; } }
-
-        public ushort MinY { get { return _minY; } set { _minY = value; } }
-
-        public Rectangle GetArea(int cellSize)
-        {
-            return new Rectangle(MinX, MinY, cellSize, cellSize);
-        }
-
         public byte DebugStatus
         {
             get { return _debugStatus; }
             set { _debugStatus = value; }
+        }
+
+        public Point Location
+        {
+            get { return new Point(MinX, MinY); }
+        }
+
+        public ushort MinX
+        {
+            get { return _minX; }
+            set { _minX = value; }
+        }
+
+        public ushort MinY
+        {
+            get { return _minY; }
+            set { _minY = value; }
         }
 
         /// <summary>
@@ -47,6 +53,11 @@ namespace NetGore.AI
         {
             get { return _weight; }
             set { _weight = value; }
+        }
+
+        public Rectangle GetArea(int cellSize)
+        {
+            return new Rectangle(MinX, MinY, cellSize, cellSize);
         }
 
         /// <summary>

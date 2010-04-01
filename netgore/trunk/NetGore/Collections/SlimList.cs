@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace NetGore.Collections
 {
-    internal class SlimList<T>
+    class SlimList<T>
     {
         static readonly T[] _emptyArray = new T[0];
 
@@ -24,10 +24,12 @@ namespace NetGore.Collections
         public T this[int index]
         {
             get { return _items[index]; }
-            set {
+            set
+            {
                 EnsureCapacity(index + 1);
 
-                _items[index] = value; }
+                _items[index] = value;
+            }
         }
 
         /// <summary>
@@ -51,9 +53,7 @@ namespace NetGore.Collections
                     _items = destArray;
                 }
                 else
-                {
                     _items = _emptyArray;
-                }
             }
         }
 

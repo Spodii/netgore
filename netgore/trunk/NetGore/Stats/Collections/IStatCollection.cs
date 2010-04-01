@@ -38,13 +38,13 @@ namespace NetGore.Stats
         IStatCollection<TStatType> DeepCopy();
 
         /// <summary>
-        /// Checks if this <see cref="IStatCollection{TStatType}"/> contains the same stat values as another
-        /// <see cref="IStatCollection{TStatType}"/> for the respective stat type.
+        /// Checks if this <see cref="IStatCollection{TStatType}"/>'s values are greater than or equal to the values
+        /// in another collection of stats for the respective stat type for all stats.
         /// </summary>
-        /// <param name="other">The <see cref="IStatCollection{TSstatType}"/> to compare against.</param>
-        /// <returns>True if this <see cref="IStatCollection{TStatType}"/> contains the same values as the
-        /// <paramref name="other"/> for the respective stat type; otherwise false.</returns>
-        bool HasSameValues(IStatCollection<TStatType> other);
+        /// <param name="other">The stat collection to compare to.</param>
+        /// <returns>True if every stat in this <see cref="IStatCollection{TStatType}"/> is greater than
+        /// or equal to the stats in the <paramref name="other"/>; otherwise false.</returns>
+        bool HasAllGreaterOrEqualValues(IEnumerable<Stat<TStatType>> other);
 
         /// <summary>
         /// Checks if this <see cref="IStatCollection{TStatType}"/>'s values are greater than the values
@@ -56,15 +56,6 @@ namespace NetGore.Stats
         bool HasAllGreaterValues(IEnumerable<Stat<TStatType>> other);
 
         /// <summary>
-        /// Checks if this <see cref="IStatCollection{TStatType}"/>'s values are greater than the values
-        /// in another collection of stats for the respective stat type for any stats.
-        /// </summary>
-        /// <param name="other">The stat collection to compare to.</param>
-        /// <returns>True if any stat in this <see cref="IStatCollection{TStatType}"/> is greater than
-        /// the stats in the <paramref name="other"/>; otherwise false.</returns>
-        bool HasAnyGreaterValues(IEnumerable<Stat<TStatType>> other);
-
-        /// <summary>
         /// Checks if this <see cref="IStatCollection{TStatType}"/>'s values are greater than or equal to the values
         /// in another collection of stats for the respective stat type for any stats.
         /// </summary>
@@ -74,13 +65,22 @@ namespace NetGore.Stats
         bool HasAnyGreaterOrEqualValues(IEnumerable<Stat<TStatType>> other);
 
         /// <summary>
-        /// Checks if this <see cref="IStatCollection{TStatType}"/>'s values are greater than or equal to the values
-        /// in another collection of stats for the respective stat type for all stats.
+        /// Checks if this <see cref="IStatCollection{TStatType}"/>'s values are greater than the values
+        /// in another collection of stats for the respective stat type for any stats.
         /// </summary>
         /// <param name="other">The stat collection to compare to.</param>
-        /// <returns>True if every stat in this <see cref="IStatCollection{TStatType}"/> is greater than
-        /// or equal to the stats in the <paramref name="other"/>; otherwise false.</returns>
-        bool HasAllGreaterOrEqualValues(IEnumerable<Stat<TStatType>> other);
+        /// <returns>True if any stat in this <see cref="IStatCollection{TStatType}"/> is greater than
+        /// the stats in the <paramref name="other"/>; otherwise false.</returns>
+        bool HasAnyGreaterValues(IEnumerable<Stat<TStatType>> other);
+
+        /// <summary>
+        /// Checks if this <see cref="IStatCollection{TStatType}"/> contains the same stat values as another
+        /// <see cref="IStatCollection{TStatType}"/> for the respective stat type.
+        /// </summary>
+        /// <param name="other">The <see cref="IStatCollection{TSstatType}"/> to compare against.</param>
+        /// <returns>True if this <see cref="IStatCollection{TStatType}"/> contains the same values as the
+        /// <paramref name="other"/> for the respective stat type; otherwise false.</returns>
+        bool HasSameValues(IStatCollection<TStatType> other);
 
         /// <summary>
         /// Sets the value of all stats in this collection to the specified value.

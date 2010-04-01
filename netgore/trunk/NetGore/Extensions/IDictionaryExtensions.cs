@@ -11,51 +11,6 @@ namespace NetGore
     public static class IDictionaryExtensions
     {
         /// <summary>
-        /// Removes multiple items from a <see cref="IDictionary{T,U}"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of key.</typeparam>
-        /// <typeparam name="U">The type of value.</typeparam>
-        /// <param name="dict">The <see cref="IDictionary{T,U}"/> to remove the items from.</param>
-        /// <param name="removePred">The <see cref="Predicate{T}"/> used to determine if an item should be
-        /// removed from the <paramref name="dict"/>.</param>
-        /// <returns>The items that were removed.</returns>
-        public static IEnumerable<T> RemoveMany<T, U>(this IDictionary<T, U> dict, Predicate<KeyValuePair<T, U>> removePred)
-        {
-            // Skip an empty dictionary
-            if (dict.Count == 0)
-                return Enumerable.Empty<T>();
-
-            // Gather the items to remove, creating the list only if something is found
-            List<T> toRemove = null;
-            foreach (var kvp in dict)
-            {
-                if (!removePred(kvp))
-                    continue;
-
-                if (toRemove == null)
-                    toRemove = new List<T>();
-
-                toRemove.Add(kvp.Key);
-            }
-            
-            if (toRemove != null)
-            {
-                // Remove the items
-                foreach (var key in toRemove)
-                {
-                    bool b = dict.Remove(key);
-                    Debug.Assert(b, "How did we fail to remove an item? Hmm... not good.");
-                }
-
-                return toRemove;
-            }
-            else
-            {
-                return Enumerable.Empty<T>();
-            }
-        }
-
-        /// <summary>
         /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type bool.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
@@ -690,6 +645,49 @@ namespace NetGore
                 return defaultValue;
 
             return parsed;
+        }
+
+        /// <summary>
+        /// Removes multiple items from a <see cref="IDictionary{TKey,TValue}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of key.</typeparam>
+        /// <typeparam name="U">The type of value.</typeparam>
+        /// <param name="dict">The <see cref="IDictionary{T,U}"/> to remove the items from.</param>
+        /// <param name="removePred">The <see cref="Predicate{T}"/> used to determine if an item should be
+        /// removed from the <paramref name="dict"/>.</param>
+        /// <returns>The items that were removed.</returns>
+        public static IEnumerable<T> RemoveMany<T, U>(this IDictionary<T, U> dict, Predicate<KeyValuePair<T, U>> removePred)
+        {
+            // Skip an empty dictionary
+            if (dict.Count == 0)
+                return Enumerable.Empty<T>();
+
+            // Gather the items to remove, creating the list only if something is found
+            List<T> toRemove = null;
+            foreach (var kvp in dict)
+            {
+                if (!removePred(kvp))
+                    continue;
+
+                if (toRemove == null)
+                    toRemove = new List<T>();
+
+                toRemove.Add(kvp.Key);
+            }
+
+            if (toRemove != null)
+            {
+                // Remove the items
+                foreach (var key in toRemove)
+                {
+                    bool b = dict.Remove(key);
+                    Debug.Assert(b, "How did we fail to remove an item? Hmm... not good.");
+                }
+
+                return toRemove;
+            }
+            else
+                return Enumerable.Empty<T>();
         }
     }
 }
