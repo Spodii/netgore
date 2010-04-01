@@ -6,7 +6,7 @@ namespace DemoGame.Server
 {
     public class ItemStats : ItemStatsBase
     {
-        public ItemStats(IEnumerable<KeyValuePair<StatType, int>> src, StatCollectionType statCollectionType)
+        public ItemStats(IEnumerable<Stat<StatType>> src, StatCollectionType statCollectionType)
             : base(src, statCollectionType)
         {
         }

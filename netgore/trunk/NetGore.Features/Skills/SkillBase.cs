@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.Stats;
 
 namespace NetGore.Features.Skills
 {
@@ -95,11 +96,11 @@ namespace NetGore.Features.Skills
         }
 
         /// <summary>
-        /// Gets an IEnumerable of stats required by this SkillBase. Cannot be null.
+        /// Gets an IEnumerable of stats required by this ISkill. Can be null.
         /// </summary>
-        public virtual IEnumerable<KeyValuePair<TStatType, int>> RequiredStats
+        public virtual IEnumerable<Stat<TStatType>> RequiredStats
         {
-            get { return Enumerable.Empty<KeyValuePair<TStatType, int>>(); }
+            get { return null; }
         }
 
         /// <summary>

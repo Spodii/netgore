@@ -186,17 +186,7 @@ namespace DemoGame.Server
             if (reqStats == null)
                 return true;
 
-            foreach (var kvp in reqStats)
-            {
-                int characterStatValue;
-                if (!character.ModStats.TryGetStatValue(kvp.Key, out characterStatValue))
-                    return false;
-
-                if (characterStatValue < kvp.Value)
-                    return false;
-            }
-
-            return true;
+            return character.ModStats.HasAllGreaterOrEqualValues(reqStats);
         }
     }
 }

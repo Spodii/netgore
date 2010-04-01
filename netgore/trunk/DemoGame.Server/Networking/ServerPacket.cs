@@ -626,17 +626,16 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static void UpdateStat(PacketWriter pw, IStat<StatType> stat, StatCollectionType statCollectionType)
+        public static void UpdateStat(PacketWriter pw, Stat<StatType> stat, StatCollectionType statCollectionType)
         {
             bool isBaseStat = (statCollectionType == StatCollectionType.Base);
 
             pw.Write(ServerPacketID.UpdateStat);
             pw.Write(isBaseStat);
-            pw.WriteEnum(stat.StatType);
-            stat.Write(pw);
+            pw.Write(stat);
         }
 
-        public static PacketWriter UpdateStat(IStat<StatType> stat, StatCollectionType statCollectionType)
+        public static PacketWriter UpdateStat(Stat<StatType> stat, StatCollectionType statCollectionType)
         {
             PacketWriter pw = GetWriter();
             UpdateStat(pw, stat, statCollectionType);

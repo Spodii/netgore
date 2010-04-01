@@ -3,13 +3,16 @@ using System.Linq;
 
 namespace NetGore.Stats
 {
+
     /// <summary>
-    /// Handles basic <see cref="IStat{StatType}"/> events.
+    /// Delegate for handling when a stat in a <see cref="IStatCollection{TStatType}"/> changes.
     /// </summary>
-    /// <param name="statCollection">The <see cref="IStatCollection{StatType}"/> the event took place on.</param>
-    /// <param name="stat">The <see cref="IStat{StatType}"/> related to the event.</param>
     /// <typeparam name="TStatType">The type of stat.</typeparam>
-    public delegate void IStatCollectionStatEventHandler<TStatType>(
-        IStatCollection<TStatType> statCollection, IStat<TStatType> stat)
+    /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
+    /// <param name="statType">The type of the stat that changed.</param>
+    /// <param name="oldValue">The old value of the stat.</param>
+    /// <param name="newValue">The new value of the stat.</param>
+    public delegate void StatCollectionStatChangedEventHandler<TStatType>(
+        IStatCollection<TStatType> sender, TStatType statType, StatValueType oldValue, StatValueType newValue)
         where TStatType : struct, IComparable, IConvertible, IFormattable;
 }
