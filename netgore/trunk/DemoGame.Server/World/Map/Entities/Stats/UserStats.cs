@@ -30,13 +30,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when an <see cref="IStat{StatType}"/> in this
-        /// <see cref="DynamicStatCollection{StatType}"/> has changed their value.
+        /// When overridden in the derived class, allows for handling when a stat's value has changed.
         /// </summary>
-        /// <param name="stat">The <see cref="IStat{StatType}"/> whos value has changed.</param>
-        protected override void OnStatChanged(IStat<StatType> stat)
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        protected override void OnStatChanged(StatType statType, StatValueType oldValue, StatValueType newValue)
         {
-            base.OnStatChanged(stat);
+            base.OnStatChanged(statType, oldValue, newValue);
 
             _anyStatsChanged = true;
         }

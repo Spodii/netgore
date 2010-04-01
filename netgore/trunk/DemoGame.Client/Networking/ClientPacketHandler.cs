@@ -20,6 +20,7 @@ using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
+using NetGore.Stats;
 
 #pragma warning disable 168
 // ReSharper disable UnusedMember.Local
@@ -841,8 +842,10 @@ namespace DemoGame.Client
         void RecvUpdateStat(IIPSocket conn, BitStream r)
         {
             bool isBaseStat = r.ReadBool();
-            CharacterStats statCollectionToUpdate = isBaseStat ? UserInfo.BaseStats : UserInfo.ModStats;
-            r.ReadStat(statCollectionToUpdate);
+            var stat = r.ReadStat<StatType>();
+
+            CharacterStats coll = isBaseStat ? UserInfo.BaseStats : UserInfo.ModStats;
+            coll[stat.StatType] = stat.Value;
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateVelocityAndPosition)]

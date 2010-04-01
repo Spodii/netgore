@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.Stats;
 
 namespace NetGore.Features.Skills
 {
@@ -33,10 +34,9 @@ namespace NetGore.Features.Skills
         ushort CooldownTime { get; }
 
         /// <summary>
-        /// Gets an IEnumerable of stats required by this ISkill. Can be empty, but cannot
-        /// be null.
+        /// Gets an IEnumerable of stats required by this ISkill. Can be null.
         /// </summary>
-        IEnumerable<KeyValuePair<TStatType, int>> RequiredStats { get; }
+        IEnumerable<Stat<TStatType>> RequiredStats { get; }
 
         /// <summary>
         /// Gets if this skill requires a target to be specified for the skill to be used. If this is true,

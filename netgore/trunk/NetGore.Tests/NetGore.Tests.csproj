@@ -96,7 +96,6 @@
     <Compile Include="NetGore\KeysExtensionsTests.cs" />
     <Compile Include="NetGore\NaturalStringComparerTests.cs" />
     <Compile Include="NetGore\RandomTests.cs" />
-    <Compile Include="NetGore\StatTests.cs" />
     <Compile Include="NetGore\TypeHelperTests.cs" />
     <Compile Include="NetGore\Vector3Tests.cs" />
     <Compile Include="NetGore\Vector4Tests.cs" />

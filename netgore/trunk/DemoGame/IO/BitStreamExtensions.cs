@@ -94,44 +94,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Reads an <see cref="IStat{TStatType}"/> from the <see cref="BitStream"/>.
-        /// </summary>
-        /// <param name="bitStream"><see cref="BitStream"/> to read from.</param>
-        /// <param name="statCollection"><see cref="IStatCollection{StatType}"/> that the stat value will be loaded
-        /// into. This <see cref="IStatCollection{StatType}"/> must contain the <see cref="StatType"/> being read.</param>
-        public static void ReadStat(this BitStream bitStream, IStatCollection<StatType> statCollection)
-        {
-            StatType statType = bitStream.ReadEnum<StatType>();
-            var stat = statCollection.GetStat(statType);
-            stat.Read(bitStream);
-        }
-
-        /// <summary>
-        /// Reads a collection of stats. It is important to know all stats will be set to zero first, then be read.
-        /// This is because only non-zero stats are sent.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read from</param>
-        /// <param name="statCollection"><see cref="IStatCollection{StatType}"/> to read the stat values into. This
-        /// <see cref="IStatCollection{StatType}"/> must contain all of the <see cref="StatType"/>s being read.</param>
-        public static void ReadStatCollection(this BitStream bitStream, IStatCollection<StatType> statCollection)
-        {
-            // Set all current stats to zero
-            foreach (var stat in statCollection)
-            {
-                stat.Value = 0;
-            }
-
-            // Get the number of stats
-            byte numStats = bitStream.ReadByte();
-
-            // Read all of the stats
-            for (int i = 0; i < numStats; i++)
-            {
-                ReadStat(bitStream, statCollection);
-            }
-        }
-
-        /// <summary>
         /// Reads a Vector2 from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
@@ -264,17 +226,6 @@ namespace DemoGame
         public static void Write(this BitStream bitStream, MapID mapID)
         {
             bitStream.Write(null, mapID);
-        }
-
-        /// <summary>
-        /// Writes an <see cref="IStat{StatType}"/> to the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="stat">IStat to write.</param>
-        public static void Write(this BitStream bitStream, IStat<StatType> stat)
-        {
-            bitStream.WriteEnum(stat.StatType);
-            stat.Write(bitStream);
         }
 
         /// <summary>

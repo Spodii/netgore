@@ -234,13 +234,8 @@ namespace DemoGame.Client
                 _lastUpdateTextTime = currentTime;
 
                 // Get the stat values
-                int baseValue;
-                if (!_statsForm.UserInfo.BaseStats.TryGetStatValue(_statType, out baseValue))
-                    baseValue = 0;
-
-                int modValue;
-                if (!_statsForm.UserInfo.ModStats.TryGetStatValue(_statType, out modValue))
-                    modValue = 0;
+                int baseValue = _statsForm.UserInfo.BaseStats[_statType];
+                int modValue = _statsForm.UserInfo.ModStats[_statType];
 
                 // Check that they have changed before creating the new text
                 if (_lastBaseValue == baseValue && _lastModValue == modValue)

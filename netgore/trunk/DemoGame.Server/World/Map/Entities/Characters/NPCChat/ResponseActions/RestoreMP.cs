@@ -20,7 +20,7 @@ namespace DemoGame.Server.NPCChat.ResponseActions
         /// <param name="npc">The npc.</param>
         protected override void DoExecute(User user, NPC npc)
         {
-            user.MP = user.ModStats[StatType.MaxMP];
+            user.MP = (int)user.ModStats[StatType.MaxMP];
         }
     }
 }

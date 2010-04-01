@@ -9,16 +9,19 @@ namespace DemoGame.Server
     /// <summary>
     /// Keeps track of which stats have changed.
     /// </summary>
+    /// <typeparam name="T">The type of stat.</typeparam>
     public class ChangedStatsTracker<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
-        /// Empty enumerable of <see cref="IStat{TStatType}"/>s.
+        /// Empty enumerable of <see cref="Stat{T}"/>s.
         /// </summary>
-        static readonly IEnumerable<IStat<T>> _emptyStats = Enumerable.Empty<IStat<T>>();
+        static readonly IEnumerable<Stat<T>> _emptyStats = Enumerable.Empty<Stat<T>>();
 
         static readonly Func<T, int> _enumToInt;
 
-        readonly int[] _lastValues;
+        static readonly int _valuesArraySize;
+
+        readonly StatValueType[] _lastValues;
         readonly IStatCollection<T> _statCollection;
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace DemoGame.Server
         static ChangedStatsTracker()
         {
             _enumToInt = EnumHelper<T>.GetToIntFunc();
+            _valuesArraySize = EnumHelper<T>.MaxValue + 1;
         }
 
         /// <summary>
@@ -36,13 +40,12 @@ namespace DemoGame.Server
         public ChangedStatsTracker(IStatCollection<T> statCollection)
         {
             _statCollection = statCollection;
-            int size = _statCollection.Select(x => ToArrayIndex(x.StatType)).Max() + 1;
-            _lastValues = new int[size];
+            _lastValues = new StatValueType[_valuesArraySize];
 
             // Populate the last values array with the current values
-            foreach (var istat in statCollection)
+            foreach (var stat in statCollection)
             {
-                this[istat] = istat.Value;
+                this[stat.StatType] = stat.Value;
             }
         }
 
@@ -60,19 +63,19 @@ namespace DemoGame.Server
         /// Gets or sets the last value for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key.</param>
-        protected int this[IStat<T> key]
+        protected int this[Stat<T> key]
         {
             get { return this[key.StatType]; }
             set { this[key.StatType] = value; }
         }
 
         /// <summary>
-        /// Gets the <see cref="IStat{T}"/>s that have changed since the last call to this method.
+        /// Gets the <see cref="Stat{T}"/>s that have changed since the last call to this method.
         /// </summary>
-        /// <returns>The <see cref="IStat{T}"/>s that have changed since the last call to this method.</returns>
-        public IEnumerable<IStat<T>> GetChangedStats()
+        /// <returns>The <see cref="Stat{T}"/>s that have changed since the last call to this method.</returns>
+        public IEnumerable<Stat<T>> GetChangedStats()
         {
-            List<IStat<T>> ret = null;
+            List<Stat<T>> ret = null;
 
             foreach (var stat in _statCollection)
             {
@@ -82,7 +85,7 @@ namespace DemoGame.Server
                 if (_lastValues[index] != currentValue)
                 {
                     if (ret == null)
-                        ret = new List<IStat<T>>();
+                        ret = new List<Stat<T>>();
 
                     _lastValues[index] = currentValue;
                     ret.Add(stat);

@@ -10,16 +10,48 @@ namespace NetGore.Stats
     public static class IStatCollectionExtensions
     {
         /// <summary>
-        /// Gets the <typeparamref name="TStatType"/> and stat value as a <see cref="KeyValuePair{TKey,TValue}"/>.
+        /// Copies a collection of values into a <see cref="IStatCollection{TStatType}"/>.
         /// </summary>
         /// <typeparam name="TStatType">The type of stat.</typeparam>
-        /// <param name="stats">The <see cref="IStat{StatType}"/>s to create the <see cref="KeyValuePair{T,U}"/>
-        /// from.</param>
-        /// <returns>The <see cref="KeyValuePair{T,U}"/>s for the <paramref name="stats"/>.</returns>
-        public static IEnumerable<KeyValuePair<TStatType, int>> ToKeyValuePairs<TStatType>(
-            this IEnumerable<IStat<TStatType>> stats) where TStatType : struct, IComparable, IConvertible, IFormattable
+        /// <param name="statColl">The collection to copy the values into.</param>
+        /// <param name="values">The values to copy into the <paramref name="statColl"/>.</param>
+        public static void CopyValuesFrom<TStatType>(this IStatCollection<TStatType> statColl, IEnumerable<KeyValuePair<TStatType, StatValueType>> values) where TStatType : struct, IComparable, IConvertible, IFormattable
         {
-            return stats.Select(x => new KeyValuePair<TStatType, int>(x.StatType, x.Value)).ToImmutable();
+            if (values != null)
+            {
+                foreach (var value in values)
+                    statColl[value.Key] = value.Value;
+            }
+        }
+
+        /// <summary>
+        /// Copies a collection of values into a <see cref="IStatCollection{TStatType}"/>.
+        /// </summary>
+        /// <typeparam name="TStatType">The type of stat.</typeparam>
+        /// <param name="statColl">The collection to copy the values into.</param>
+        /// <param name="values">The values to copy into the <paramref name="statColl"/>.</param>
+        public static void CopyValuesFrom<TStatType>(this IStatCollection<TStatType> statColl, IEnumerable<KeyValuePair<TStatType, int>> values) where TStatType : struct, IComparable, IConvertible, IFormattable
+        {
+            if (values != null)
+            {
+                foreach (var value in values)
+                    statColl[value.Key] = value.Value;
+            }
+        }
+
+        /// <summary>
+        /// Copies a collection of values into a <see cref="IStatCollection{TStatType}"/>.
+        /// </summary>
+        /// <typeparam name="TStatType">The type of stat.</typeparam>
+        /// <param name="statColl">The collection to copy the values into.</param>
+        /// <param name="values">The values to copy into the <paramref name="statColl"/>.</param>
+        public static void CopyValuesFrom<TStatType>(this IStatCollection<TStatType> statColl,IEnumerable<Stat<TStatType>> values) where TStatType : struct, IComparable, IConvertible, IFormattable
+        {
+            if (values != null)
+            {
+                foreach (var value in values)
+                    statColl[value.StatType] = value.Value;
+            }
         }
     }
 }

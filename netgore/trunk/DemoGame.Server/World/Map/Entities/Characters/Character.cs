@@ -503,27 +503,124 @@ namespace DemoGame.Server
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Set up the listeners for when the stat collections change
-            IStatCollectionStatEventHandler<StatType> statChangedHandler = delegate { _updateModStats = true; };
-            BaseStats.StatChanged += statChangedHandler;
-            ModStats.StatChanged += statChangedHandler;
+            BaseStats.StatChanged += BaseStatChangedHandler;
+            ModStats.StatChanged += ModStatChangedHandler;
 
             // Set up the listeners for when the equipped items change
-            EquippedEventHandler<ItemEntity> equippedChangeHandler = delegate { _updateModStats = true; };
-            _equipped.Equipped += equippedChangeHandler;
-            _equipped.Unequipped += equippedChangeHandler;
+            _equipped.Equipped += EquippedHandler;
+            _equipped.Unequipped += UnequippedHandler;
+        }
 
-            // Listen to when the max HP and MP change to make sure the current HP and MP stay in a valid range
-            ModStats.GetStat(StatType.MaxHP).Changed += delegate(IStat<StatType> stat)
-            {
-                if (HP > stat.Value)
-                    HP = (int)stat.Value;
-            };
+        /// <summary>
+        /// Handles when the <see cref="Character"/> equips an item.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="item">The <see cref="ItemEntity"/> that was equipped.</param>
+        /// <param name="slot">The slot the <paramref name="item"/> was equipped in.</param>
+        void EquippedHandler(EquippedBase<ItemEntity> sender, ItemEntity item, EquipmentSlot slot)
+        {
+            _updateModStats = true;
 
-            ModStats.GetStat(StatType.MaxMP).Changed += delegate(IStat<StatType> stat)
+            OnEquipped(item, slot);
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Character"/> unequips an item.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="item">The <see cref="ItemEntity"/> that was unequipped.</param>
+        /// <param name="slot">The slot the <paramref name="item"/> was unequipped in.</param>
+        void UnequippedHandler(EquippedBase<ItemEntity> sender, ItemEntity item, EquipmentSlot slot)
+        {
+            _updateModStats = true;
+
+            OnUnequipped(item, slot);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of
+        /// when the <see cref="Character"/> equips an item.
+        /// Use this overload instead of adding an event listener to the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The <see cref="ItemEntity"/> that was equipped.</param>
+        /// <param name="slot">The slot the <paramref name="item"/> was equipped in.</param>
+        protected virtual void OnEquipped(ItemEntity item, EquipmentSlot slot)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of
+        /// when the <see cref="Character"/> unequips an item.
+        /// Use this overload instead of adding an event listener to the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The <see cref="ItemEntity"/> that was unequipped.</param>
+        /// <param name="slot">The slot the <paramref name="item"/> was unequipped in.</param>
+        protected virtual void OnUnequipped(ItemEntity item, EquipmentSlot slot)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Character"/>'s base stats change.
+        /// </summary>
+        /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        void BaseStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue, StatValueType newValue)
+        {
+            _updateModStats = true;
+
+            OnBaseStatChanged(statType, oldValue, newValue);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling for when a base stat
+        /// changes. Use this overload instead of adding an event listener to the base stat collection when possible.
+        /// </summary>
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        protected virtual void OnBaseStatChanged(StatType statType, StatValueType oldValue, StatValueType newValue)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling for when a mod stat
+        /// changes. Use this overload instead of adding an event listener to the mod stat collection when possible.
+        /// </summary>
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        protected virtual void OnModStatChanged(StatType statType, StatValueType oldValue, StatValueType newValue)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Character"/>'s mod stats change.
+        /// </summary>
+        /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        void ModStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue, StatValueType newValue)
+        {
+            _updateModStats = true;
+
+            // Ensure the HP and MP are valid
+            switch (statType)
             {
-                if (MP > stat.Value)
-                    MP = (int)stat.Value;
-            };
+                case StatType.MaxMP:
+                    if (MP > newValue)
+                        MP = (int)newValue;
+                    break;
+
+                case StatType.MaxHP:
+                    if (HP > newValue)
+                        HP = (int)newValue;
+                    break;
+            }
+
+            OnModStatChanged(statType, oldValue, newValue);
         }
 
         bool _updateModStats = true;
@@ -1165,9 +1262,7 @@ namespace DemoGame.Server
             int damage = Rand.Next(minHit, maxHit);
 
             // Apply the defence, and ensure the damage is in a valid range
-            int defence;
-            if (!target.ModStats.TryGetStatValue(StatType.Defence, out defence))
-                defence = 0;
+            int defence = target.ModStats[StatType.Defence];
 
             damage -= defence / 2;
 
@@ -1398,7 +1493,7 @@ namespace DemoGame.Server
             }
 
             // Set the base stats
-            BaseStats.CopyValuesFrom(v.Stats, false);
+            BaseStats.CopyValuesFrom(v.Stats);
         }
 
         void LoadFromQueryValues(ICharacterTable v)
@@ -1440,7 +1535,7 @@ namespace DemoGame.Server
             }
 
             // Load the stats
-            _baseStats.CopyValuesFrom(v.Stats, false);
+            BaseStats.CopyValuesFrom(v.Stats);
 
             // Load the Character's items
             Inventory.Load();
@@ -1731,11 +1826,12 @@ namespace DemoGame.Server
             _updateModStats = false;
 
             // Update all the mod stats
-            foreach (var modStat in ModStats)
+            for (int i = 0; i <= EnumHelper<StatType>.MaxValue; i++)
             {
-                modStat.Value = ModStatHelper<StatType>.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
+                var statType = (StatType)i;
+                ModStats[statType] = ModStatHelper<StatType>.Calculate(BaseStats, statType, Equipped, StatusEffects);
             }
-
+ 
             if (log.IsDebugEnabled)
                 log.DebugFormat("Updated mod stats for character `{0}`.", this);
         }
@@ -1989,7 +2085,7 @@ namespace DemoGame.Server
         /// </summary>
         IEnumerable<KeyValuePair<StatType, int>> ICharacterTable.Stats
         {
-            get { return BaseStats.ToKeyValuePairs(); }
+            get { return BaseStats.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)); }
         }
 
         /// <summary>
@@ -2335,8 +2431,8 @@ namespace DemoGame.Server
             UpdateModStats();
 
             // Restore the Character's stats
-            HP = ModStats[StatType.MaxHP];
-            MP = ModStats[StatType.MaxMP];
+            HP = (int)ModStats[StatType.MaxHP];
+            MP = (int)ModStats[StatType.MaxMP];
 
             // Set the Character's new location
             Teleport(RespawnPosition);

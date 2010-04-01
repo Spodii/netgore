@@ -1,92 +1,30 @@
-using System;
-using System.Data;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using log4net;
-using NetGore.IO;
 
 namespace NetGore.Stats
 {
     /// <summary>
-    /// Describes a single <see cref="IStat{TStatType}"/>, containing the <typeparamref name="TStatType"/>
-    /// and value current stat value.
+    /// Contains a stat type and the corresponding value for the stat.
     /// </summary>
     /// <typeparam name="TStatType">The type of stat.</typeparam>
-    public class Stat<TStatType> : IStat<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
+    public struct Stat<TStatType>
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// The type of Stat.
-        /// </summary>
         readonly TStatType _statType;
+        readonly StatValueType _value;
 
         /// <summary>
-        /// The Stat's value.
+        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> struct.
         /// </summary>
-        StatValueType _value;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
-        /// </summary>
-        /// <param name="istatToCopy">The <see cref="IStat{TStatType}"/> to copy the values from.</param>
-        public Stat(IStat<TStatType> istatToCopy)
-        {
-            _statType = istatToCopy.StatType;
-            _value = (StatValueType)istatToCopy.Value;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
-        /// </summary>
-        /// <param name="istatToCopy">The <see cref="Stat{TStatType}"/> to copy the values from.</param>
-        public Stat(Stat<TStatType> istatToCopy)
-        {
-            _statType = istatToCopy._statType;
-            _value = istatToCopy._value;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
-        /// </summary>
-        /// <param name="statType">The type of the stat.</param>
-        /// <param name="initialValue">The initial stat value.</param>
-        public Stat(TStatType statType, int initialValue) : this(statType, (StatValueType)initialValue)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Stat{TStatType}"/> class.
-        /// </summary>
-        /// <param name="statType">The type of the stat.</param>
-        /// <param name="initialValue">The initial stat value.</param>
-        public Stat(TStatType statType, StatValueType initialValue)
+        /// <param name="statType">Type of the stat.</param>
+        /// <param name="value">The value.</param>
+        public Stat(TStatType statType, StatValueType value)
         {
             _statType = statType;
-            _value = initialValue;
+            _value = value;
         }
 
         /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </returns>
-        public override string ToString()
-        {
-            return _statType + ": " + Value;
-        }
-
-        #region IStat<TStatType> Members
-
-        /// <summary>
-        /// Notifies listeners that the value of this <see cref="IStat{TStatType}"/> has changed.
-        /// </summary>
-        public event IStatEventHandler<TStatType> Changed;
-
-        /// <summary>
-        /// Gets the <typeparamref name="TStatType"/> of this <see cref="IStat{TStatType}"/>.
+        /// Gets the type of the stat.
         /// </summary>
         public TStatType StatType
         {
@@ -94,81 +32,51 @@ namespace NetGore.Stats
         }
 
         /// <summary>
-        /// Gets or sets the value of this <see cref="IStat{TStatType}"/>.
+        /// Gets the value of the stat.
         /// </summary>
         public StatValueType Value
         {
             get { return _value; }
-            set
-            {
-                // Check that the value has changed
-                if (_value == value)
-                    return;
-
-                // Set the new value, and invoke the Changed event
-                _value = value;
-
-                if (Changed != null)
-                    Changed(this);
-            }
         }
 
         /// <summary>
-        /// Creates a deep copy of the <see cref="IStat{TStatType}"/>, resulting in a new <see cref="IStat{TStatType}"/>
-        /// object of the same type and stat value as this <see cref="IStat{TStatType}"/>.
+        /// Performs an implicit conversion from <see cref="NetGore.Stats.Stat{TStatType}"/> to <see cref="System.Collections.Generic.KeyValuePair{TStatType,StatValueType}"/>.
         /// </summary>
-        /// <returns>
-        /// The deep copy of the <see cref="IStat{TStatType}"/>.
-        /// </returns>
-        public virtual IStat<TStatType> DeepCopy()
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator KeyValuePair<TStatType, StatValueType>(Stat<TStatType> value)
         {
-            return new Stat<TStatType>(StatType, _value);
+            return new KeyValuePair<TStatType, StatValueType>(value.StatType, value.Value);
         }
 
         /// <summary>
-        /// Reads the value for the <see cref="IStat{TStatType}"/> into the <see cref="IStat{StatType}.Value"/> property using
-        /// the specified <see cref="BitStream"/>. The <see cref="BitStream"/> must not be null, be in
-        /// <see cref="BitStreamMode.Read"/> mode, and must already be positioned at the start of the value to be read.
+        /// Performs an implicit conversion from <see cref="NetGore.Stats.Stat{TStatType}"/> to <see cref="System.Collections.Generic.KeyValuePair{TStatType,Int32}"/>.
         /// </summary>
-        /// <param name="bitStream"><see cref="BitStream"/> to acquire the value from.</param>
-        public void Read(BitStream bitStream)
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator KeyValuePair<TStatType, int>(Stat<TStatType> value)
         {
-            _value = bitStream.ReadStatValueType();
+            return new KeyValuePair<TStatType, int>(value.StatType, value.Value);
         }
 
         /// <summary>
-        /// Reads the value for the <see cref="IStat{TStatType}"/> into the Value property using the specified
-        /// <see cref="IDataRecord"/>. The <see cref="IDataRecord"/> must not be null and currently have a row being read.
+        /// Performs an implicit conversion from <see cref="System.Collections.Generic.KeyValuePair{TStatType,StatValueType}"/> to <see cref="NetGore.Stats.Stat{TStatType}"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataRecord"/> to acquire the value from.</param>
-        /// <param name="ordinal">Ordinal of the field to read the value from.</param>
-        public void Read(IDataRecord dataReader, int ordinal)
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator Stat<TStatType>(KeyValuePair<TStatType, StatValueType> value)
         {
-            _value = dataReader.GetStatValueType(ordinal);
+            return new Stat<TStatType>(value.Key, value.Value);
         }
 
         /// <summary>
-        /// Reads the value for the <see cref="IStat{TStatType}"/> into the Value property using the specified
-        /// <see cref="IDataReader"/>. The <see cref="IDataReader"/> must not be null and currently have a row being read.
+        /// Performs an implicit conversion from <see cref="System.Collections.Generic.KeyValuePair{TStatType,Int32}"/> to <see cref="NetGore.Stats.Stat{TStatType}"/>.
         /// </summary>
-        /// <param name="dataReader"><see cref="IDataReader"/> to acquire the value from.</param>
-        /// <param name="name">Name of the field to read the value from.</param>
-        public void Read(IDataReader dataReader, string name)
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator Stat<TStatType>(KeyValuePair<TStatType, int> value)
         {
-            _value = StatValueType.Read(dataReader, dataReader.GetOrdinal(name));
+            return new Stat<TStatType>(value.Key, value.Value);
         }
-
-        /// <summary>
-        /// Writes the <see cref="IStat{StatType}.Value"/> property of the <see cref="IStat{TStatType}"/> directly into the
-        /// specified <see cref="BitStream"/>. The <see cref="BitStream"/> must not be null, be in
-        /// <see cref="BitStreamMode.Write"/> mode, and be positioned at the location where the value is to be written.
-        /// </summary>
-        /// <param name="bitStream"><see cref="BitStream"/> to write the value of the <see cref="IStat{TStatType}"/> to.</param>
-        public void Write(BitStream bitStream)
-        {
-            _value.Write(bitStream);
-        }
-
-        #endregion
     }
 }

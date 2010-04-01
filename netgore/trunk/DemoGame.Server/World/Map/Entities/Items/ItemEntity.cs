@@ -34,12 +34,6 @@ namespace DemoGame.Server
         readonly ItemID _id;
         readonly ItemStats _reqStats;
 
-        /// <summary>
-        /// The delegate used to hook to the <see cref="IStat{TStatType}.Changed"/> event for the
-        /// <see cref="IStatCollection{T}"/>s in this class.
-        /// </summary>
-        readonly IStatCollectionStatEventHandler<StatType> _statChangedHandler;
-
         byte _amount = 1;
         string _description;
         string _equippedBody;
@@ -70,21 +64,17 @@ namespace DemoGame.Server
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
                 pos, new Vector2(t.Width, t.Height), t.ID, t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic,
-                t.Value, amount, t.HP, t.MP, t.EquippedBody, t.Stats, t.ReqStats)
+                t.Value, amount, t.HP, t.MP, t.EquippedBody, t.Stats.Select(x => (Stat<StatType>)x), t.ReqStats.Select(x => (Stat<StatType>)x))
         {
         }
 
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
-            _statChangedHandler = StatCollection_StatChanged;
-
             _id = IDCreator.GetNext();
         }
 
         public ItemEntity(IItemTable iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
-            _statChangedHandler = StatCollection_StatChanged;
-
             _id = iv.ID;
             _templateID = iv.ItemTemplateID;
 
@@ -98,19 +88,17 @@ namespace DemoGame.Server
             _range = iv.Range;
             _equippedBody = iv.EquippedBody;
 
-            _baseStats = NewItemStats(iv.Stats, StatCollectionType.Base);
-            _reqStats = NewItemStats(iv.ReqStats, StatCollectionType.Requirement);
+            _baseStats = NewItemStats(iv.Stats.Select(x => (Stat<StatType>)x), StatCollectionType.Base);
+            _reqStats = NewItemStats(iv.ReqStats.Select(x => (Stat<StatType>)x), StatCollectionType.Requirement);
 
             Resized += ItemEntity_Resized;
         }
 
         ItemEntity(Vector2 pos, Vector2 size, ItemTemplateID? templateID, string name, string desc, ItemType type,
                    WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount, SPValueType hp, SPValueType mp,
-                   string equippedBody, IEnumerable<KeyValuePair<StatType, int>> baseStats,
-                   IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
+                   string equippedBody, IEnumerable<Stat<StatType>> baseStats,
+                   IEnumerable<Stat<StatType>> reqStats) : base(pos, size)
         {
-            _statChangedHandler = StatCollection_StatChanged;
-
             _id = IDCreator.GetNext();
 
             _templateID = templateID;
@@ -138,7 +126,7 @@ namespace DemoGame.Server
         ItemEntity(ItemEntity s)
             : this(
                 s.Position, s.Size, s.ItemTemplateID, s.Name, s.Description, s.Type, s.WeaponType, s.Range, s.GraphicIndex,
-                s.Value, s.Amount, s.HP, s.MP, s.EquippedBody, s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
+                s.Value, s.Amount, s.HP, s.MP, s.EquippedBody, s.BaseStats, s.ReqStats)
         {
         }
 
@@ -243,7 +231,7 @@ namespace DemoGame.Server
 
             // Check for non-equal stats
             ItemEntity sourceItem = (ItemEntity)source;
-            if (!BaseStats.HasEqualValues(sourceItem.BaseStats) || !ReqStats.HasEqualValues(sourceItem.ReqStats))
+            if (!BaseStats.HasSameValues(sourceItem.BaseStats) || !ReqStats.HasSameValues(sourceItem.ReqStats))
                 return false;
 
             // Everything important is equal, so they can be stacked
@@ -308,9 +296,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Creates an <see cref="ItemStats"/> from the given collection of <see cref="IStat{StatType}"/>s.
+        /// Creates an <see cref="ItemStats"/> from the given collection of stats.
         /// </summary>
-        ItemStats NewItemStats(IEnumerable<KeyValuePair<StatType, int>> statValues, StatCollectionType statCollectionType)
+        ItemStats NewItemStats(IEnumerable<Stat<StatType>> statValues, StatCollectionType statCollectionType)
         {
             ItemStats ret = new ItemStats(statValues, statCollectionType);
 
@@ -318,8 +306,7 @@ namespace DemoGame.Server
             {
                 case StatCollectionType.Base:
                 case StatCollectionType.Requirement:
-                    ret.StatChanged += _statChangedHandler;
-                    ret.StatAdded += _statChangedHandler;
+                    ret.StatChanged += StatCollection_StatChanged;
                     break;
 
                 case StatCollectionType.Modified:
@@ -417,14 +404,16 @@ namespace DemoGame.Server
         /// Handles the <see cref="IStatCollection{T}.StatChanged"/> event for the stat collections in this class.
         /// </summary>
         /// <param name="statCollection">The sender.</param>
-        /// <param name="stat">The stat who's value changed.</param>
-        void StatCollection_StatChanged(IStatCollection<StatType> statCollection, IStat<StatType> stat)
+        /// <param name="statType">Type of the stat that changed.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        void StatCollection_StatChanged(IStatCollection<StatType> statCollection, StatType statType, StatValueType oldValue, StatValueType newValue)
         {
             Debug.Assert(statCollection.StatCollectionType != StatCollectionType.Modified,
                          "ItemEntity does not use StatCollectionType.Modified.");
 
-            string field = stat.StatType.GetDatabaseField(statCollection.StatCollectionType);
-            SynchronizeField(field, stat.Value);
+            string field = statType.GetDatabaseField(statCollection.StatCollectionType);
+            SynchronizeField(field, newValue);
         }
 
         /// <summary>
@@ -465,7 +454,7 @@ namespace DemoGame.Server
                     return closestLegalPosition;
                 else
                 {
-                    // TODO: Could not find a valid position for the Character
+                    // TODO: Could not find a valid position for the ItemEntity
                 }
             }
 
@@ -643,7 +632,7 @@ namespace DemoGame.Server
         /// </summary>
         IEnumerable<KeyValuePair<StatType, int>> IItemTable.ReqStats
         {
-            get { return ReqStats.ToKeyValuePairs(); }
+            get { return ReqStats.Cast < KeyValuePair<StatType, int>>(); }
         }
 
         /// <summary>
@@ -652,7 +641,7 @@ namespace DemoGame.Server
         /// </summary>
         IEnumerable<KeyValuePair<StatType, int>> IItemTable.Stats
         {
-            get { return BaseStats.ToKeyValuePairs(); }
+            get { return BaseStats.Cast<KeyValuePair<StatType, int>>(); }
         }
 
         /// <summary>
