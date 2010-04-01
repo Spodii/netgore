@@ -71,6 +71,14 @@ namespace DemoGame.Server
         /// </summary>
         public Server()
         {
+            // Check for some system settings
+            if (!BitConverter.IsLittleEndian)
+            {
+                const string errmsg = "NetGore does not support systems that are not in Little Endian mode!";
+                log.Fatal(errmsg);
+                throw new SystemException(errmsg);
+            }
+
             // Initialize the engine settings
             EngineSettingsInitializer.Initialize();
 
