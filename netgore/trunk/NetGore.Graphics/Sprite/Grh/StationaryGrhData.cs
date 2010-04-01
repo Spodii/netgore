@@ -384,13 +384,11 @@ namespace NetGore.Graphics
             }
             catch (ContentLoadException ex)
             {
-                Debug.WriteLine("Failed to load texture: " + _failedLoadAttempts);
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, _textureName, this, ex);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Failed to load texture: " + _failedLoadAttempts);
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, _textureName, this, ex);
                 Debug.Fail(string.Format(errmsg, _textureName, this, ex));
