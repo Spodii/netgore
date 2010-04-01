@@ -156,7 +156,7 @@ namespace NetGore.Graphics
             // Invalid texture
             if (Texture == null)
             {
-                const string errmsg = "Failed to render Grh `{0}` - GrhData returning null texture for `{3}`!";
+                const string errmsg = "Failed to render Grh `{0}` - GrhData returning null texture for `{1}`!";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, this, ((StationaryGrhData)GrhData).TextureName);
                 return false;

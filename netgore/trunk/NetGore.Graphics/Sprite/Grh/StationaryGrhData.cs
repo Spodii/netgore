@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -23,7 +24,39 @@ namespace NetGore.Graphics
         const string _textureNodeName = "Texture";
         const string _textureSourceValueKey = "Source";
 
+        /// <summary>
+        /// Gets the timeout in milliseconds to wait before trying to load a texture again.
+        /// </summary>
+        /// <param name="failedLoadAttempts">The number of times the texture has failed to load.</param>
+        /// <returns>The timeout in milliseconds to wait before trying to load a texture again.</returns>
+        static int GetLoadTextureTimeout(int failedLoadAttempts)
+        {
+            // If 8 or more failed attempts, it is almost definite this texture isn't loading. However,
+            // we will allow it to retry after 30 seconds... just in case it magically starts working again.
+            if (failedLoadAttempts >= 8)
+                return 1000 * 30;
+
+            // Set the base delay to half a second, so we always wait at least half a second to try again
+            int delay = 500;
+
+            // If 3 or more failed load attempts, each failure results in another second being added
+            if (failedLoadAttempts >= 3)
+                delay += failedLoadAttempts * 1000;
+
+            return delay;
+        }
+
         readonly ContentManager _cm;
+
+        /// <summary>
+        /// How many times the texture has failed to load in a row.
+        /// </summary>
+        byte _failedLoadAttempts = 0;
+
+        /// <summary>
+        /// The current time must be greater than or equal to this value for the texture to allow retrying to reload.
+        /// </summary>
+        int _nextLoadAttemptTime = int.MinValue;
 
         Rectangle _atlasSourceRect;
         bool _automaticSize = false;
@@ -339,16 +372,41 @@ namespace NetGore.Graphics
             if (_texture != null && !_texture.IsDisposed)
                 return;
 
+            // Check that enough time has elapsed to try and load the texture
+            if (_failedLoadAttempts > 0 && _nextLoadAttemptTime > Environment.TickCount)
+                return;
+
             // Try to load the texture
+            const string errmsg = "Failed to load texture `{0}` for GrhData `{1}`: {2}";
             try
             {
                 _texture = _cm.Load<Texture2D>(_textureName);
             }
             catch (ContentLoadException ex)
             {
-                const string errmsg = "Failed to load texture `{0}` for GrhData `{1}`: {2}";
+                Debug.WriteLine("Failed to load texture: " + _failedLoadAttempts);
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, _textureName, this, ex);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Failed to load texture: " + _failedLoadAttempts);
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, _textureName, this, ex);
+                Debug.Fail(string.Format(errmsg, _textureName, this, ex));
+            }
+
+            // Update the failed loading information if the texture failed to load, or clear it if the texture
+            // is valid
+            if (_texture != null)
+            {
+                _failedLoadAttempts = 0;
+                _nextLoadAttemptTime = int.MinValue;
+            }
+            else
+            {
+                _failedLoadAttempts++;
+                _nextLoadAttemptTime = Environment.TickCount + GetLoadTextureTimeout(_failedLoadAttempts);
             }
 
             // If we were using an atlas, we'll have to remove it because the texture was reloaded
@@ -421,6 +479,10 @@ namespace NetGore.Graphics
             _atlasSourceRect = atlasSourceRect;
             _texture = texture;
             _isUsingAtlas = true;
+
+            // Clear texture loading fail count
+            _failedLoadAttempts = 0;
+            _nextLoadAttemptTime = int.MinValue;
         }
 
         #endregion
