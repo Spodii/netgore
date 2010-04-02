@@ -31,25 +31,6 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// The minimum number of milliseconds a connection should be inactive to be considered dead.
-        /// </summary>
-        const int _inactiveConnectionTimeOut = 20000;
-
-        /// <summary>
-        /// The number of milliseconds to wait before checking for inactive connections to remove.
-        /// </summary>
-        const int _removeInactiveConnectionsRate = 60000;
-
-        /// <summary>
-        /// Millisecond rate at which the server updates. The server update rate does not affect the rate
-        /// at which physics is update, so modifying the update rate will not affect the game
-        /// speed. Server update rate is used to determine how frequently the server checks
-        /// for performing updates and how long it is able to "sleep". It is recommended
-        /// a high update rate is used to allow for more precise updating.
-        /// </summary>
-        const long _serverUpdateRate = 5; // 200 FPS
-
         readonly Queue<string> _consoleCommandQueue = new Queue<string>();
         readonly ConsoleCommands _consoleCommands;
         readonly object _consoleCommandSync = new object();
@@ -317,10 +298,10 @@ namespace DemoGame.Server
                 long loopStartTime = _gameTimer.ElapsedMilliseconds;
 
                 // Check to remove inactive connections
-                if (_gameTimer.ElapsedMilliseconds - lastRemoveConnsTime > _removeInactiveConnectionsRate)
+                if (_gameTimer.ElapsedMilliseconds - lastRemoveConnsTime > ServerSettings.RemoveInactiveConnectionsRate)
                 {
                     lastRemoveConnsTime = _gameTimer.ElapsedMilliseconds;
-                    ServerSockets.RemoveInactiveConnections(_inactiveConnectionTimeOut);
+                    ServerSockets.RemoveInactiveConnections(ServerSettings.InactiveConnectionTimeOut);
                 }
 
                 // Update the networking
@@ -361,7 +342,7 @@ namespace DemoGame.Server
                 }
 
                 // Check if we can afford sleeping the thread
-                long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
+                long sleepTime = ServerSettings.ServerUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
                 if (sleepTime > 0)
                     Thread.Sleep((int)sleepTime);
 
