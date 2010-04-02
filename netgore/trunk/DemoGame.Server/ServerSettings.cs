@@ -20,6 +20,25 @@ namespace DemoGame.Server
         public const bool AllowRemoteConnections = false;
 
         /// <summary>
+        /// Millisecond rate at which the server updates. The server update rate does not affect the rate
+        /// at which physics is update, so modifying the update rate will not affect the game
+        /// speed. Server update rate is used to determine how frequently the server checks
+        /// for performing updates and how long it is able to "sleep". It is recommended
+        /// a high update rate is used to allow for more precise updating.
+        /// </summary>
+        public const long ServerUpdateRate = 10; // 100 FPS
+
+        /// <summary>
+        /// The minimum number of milliseconds a connection should be inactive to be considered dead.
+        /// </summary>
+        public const int InactiveConnectionTimeOut = 20000;
+
+        /// <summary>
+        /// The number of milliseconds to wait before checking for inactive connections to remove.
+        /// </summary>
+        public const int RemoveInactiveConnectionsRate = 60000;
+
+        /// <summary>
         /// The amount of time an item may remain on the map before it is removed automatically.
         /// </summary>
         public const int DefaultMapItemLife = 1000 * 60 * 3;
