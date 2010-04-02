@@ -131,11 +131,11 @@ namespace DemoGame.Server
 
         static readonly ShopManager _shopManager = ShopManager.Instance;
 
-        readonly CharacterStatsBase _baseStats;
+        readonly StatCollection<StatType> _baseStats;
         readonly CharacterEquipped _equipped;
         readonly CharacterInventory _inventory;
         readonly bool _isPersistent;
-        readonly CharacterStatsBase _modStats;
+        readonly StatCollection<StatType> _modStats;
         readonly CharacterSPSynchronizer _spSync;
         readonly CharacterStatusEffects _statusEffects;
         readonly World _world;
@@ -649,7 +649,10 @@ namespace DemoGame.Server
             get { return _allianceManager; }
         }
 
-        public CharacterStatsBase BaseStats
+        /// <summary>
+        /// Gets the <see cref="Character"/>'s base stats collection.
+        /// </summary>
+        public StatCollection<StatType> BaseStats
         {
             get { return _baseStats; }
         }
@@ -745,7 +748,10 @@ namespace DemoGame.Server
             get { return _map; }
         }
 
-        public CharacterStatsBase ModStats
+        /// <summary>
+        /// Gets the <see cref="Character"/>'s mod stats collection.
+        /// </summary>
+        public StatCollection<StatType> ModStats
         {
             get { return _modStats; }
         }
@@ -1094,7 +1100,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="statCollectionType">The type of <see cref="StatCollectionType"/> to create.</param>
         /// <returns>The CharacterStatsBase for this Character.</returns>
-        protected abstract CharacterStatsBase CreateStats(StatCollectionType statCollectionType);
+        protected abstract StatCollection<StatType> CreateStats(StatCollectionType statCollectionType);
 
         /// <summary>
         /// Applies damage to the Character.

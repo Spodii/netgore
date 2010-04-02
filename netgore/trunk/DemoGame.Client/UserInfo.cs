@@ -14,14 +14,14 @@ namespace DemoGame.Client
     /// </summary>
     public class UserInfo
     {
-        readonly CharacterStats _baseStats = new CharacterStats(StatCollectionType.Base);
+        readonly StatCollection<StatType> _baseStats = new StatCollection<StatType>(StatCollectionType.Base);
         readonly UserEquipped _equipped = new UserEquipped();
         readonly UserGroupInformation _groupInfo = new UserGroupInformation();
         readonly UserGuildInformation _guildInfo = new UserGuildInformation();
         readonly HasQuestRequirementsTracker _hasFinishQuestRequirements;
         readonly HasQuestRequirementsTracker _hasStartQuestRequirements;
         readonly Inventory _inventory;
-        readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
+        readonly StatCollection<StatType> _modStats = new StatCollection<StatType>(StatCollectionType.Modified);
         readonly UserQuestInformation _questInfo;
         readonly ISocketSender _socket;
 
@@ -45,7 +45,7 @@ namespace DemoGame.Client
             _questInfo = new UserQuestInformationExtended(this);
         }
 
-        public CharacterStats BaseStats
+        public StatCollection<StatType> BaseStats
         {
             get { return _baseStats; }
         }
@@ -100,7 +100,7 @@ namespace DemoGame.Client
 
         public byte Level { get; set; }
 
-        public CharacterStats ModStats
+        public StatCollection<StatType> ModStats
         {
             get { return _modStats; }
         }
