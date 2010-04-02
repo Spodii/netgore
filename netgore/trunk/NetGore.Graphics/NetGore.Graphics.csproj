@@ -86,6 +86,7 @@
     <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Camera\Camera2D.cs" />
     <Compile Include="Camera\ICamera2D.cs" />
+    <Compile Include="Camera\ICamera2DExtensions.cs" />
     <Compile Include="Camera\ICamera2DProvider.cs" />
     <Compile Include="Character Sprite\GrhCharacterSprite.cs" />
     <Compile Include="Character Sprite\ICharacterSprite.cs" />

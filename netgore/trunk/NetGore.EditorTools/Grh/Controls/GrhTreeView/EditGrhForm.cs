@@ -15,11 +15,6 @@ namespace NetGore.EditorTools
 {
     public partial class EditGrhForm : Form
     {
-        /// <summary>
-        /// The default amount the camera is zoomed in on the preview of the <see cref="GrhData"/> being edited.
-        /// </summary>
-        const float _defaultZoomLevel = 4f;
-
         static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
 
         /// <summary>
@@ -56,10 +51,15 @@ namespace NetGore.EditorTools
 
             WasCanceled = false;
 
+            _stopwatch = new Stopwatch();
+            _stopwatch.Start();
+
             // Set the local members
             _createWall = createWall;
             _gd = gd;
             _mapGrhWalls = mapGrhWalls;
+
+            _grh = new Grh(gd, AnimType.Loop, (int)_stopwatch.ElapsedMilliseconds);
 
             // Set up the camera
             Vector2 pos;
@@ -69,23 +69,27 @@ namespace NetGore.EditorTools
             }
             catch (ContentLoadException)
             {
-                pos = new Vector2(32f) / 2f;
+                Close();
+                return;
             }
 
             _camera = new Camera2D(screenSize);
-            _camera.Zoom(pos, screenSize, _defaultZoomLevel);
+            Camera.Zoom(pos, screenSize, Camera.GetFillScreenZoomLevel(_grh.Size));
 
-            // Set up the rest of the stuff
-            _stopwatch = new Stopwatch();
-            _stopwatch.Start();
-
-            _grh = new Grh(gd, AnimType.Loop, (int)_stopwatch.ElapsedMilliseconds);
+            // Add a padding around the screen around each side of the item
+            Camera.Scale -= Camera.Scale * _defaultViewPaddingPercent;
+            Camera.Translate(_grh.Size * (1f / Camera.Scale) * -(_defaultViewPaddingPercent / 2f));
 
             Location = new Point(0, 0);
-
             InitializeComponent();
             ShowGrhInfo();
         }
+
+        /// <summary>
+        /// The percent of the screen to use as padding around the item veing viewed. This way the item doesn't
+        /// actually stretch all the way out to the sides.
+        /// </summary>
+        const float _defaultViewPaddingPercent = 0.05f;
 
         public ICamera2D Camera
         {
@@ -290,7 +294,7 @@ namespace NetGore.EditorTools
             _grh.Update((int)_stopwatch.ElapsedMilliseconds);
 
             // Begin rendering
-            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, Camera.Matrix);
 
             try
             {
