@@ -28,11 +28,10 @@ namespace DemoGame.Server
         public delegate void ItemEntityEventHandler(ItemEntity itemEntity);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly IDbController _dbController = DbControllerBase.GetInstance();
-
-        readonly ItemStats _baseStats;
+ 
+        readonly StatCollection<StatType> _baseStats;
         readonly ItemID _id;
-        readonly ItemStats _reqStats;
+        readonly StatCollection<StatType> _reqStats;
 
         byte _amount = 1;
         string _description;
@@ -47,10 +46,54 @@ namespace DemoGame.Server
         int _value;
         WeaponType _weaponType;
 
+        /// <summary>
+        /// The <see cref="UpdateItemFieldQuery"/> instance to use.
+        /// </summary>
+        static readonly UpdateItemFieldQuery _queryUpdateItemField;
+
+        /// <summary>
+        /// The <see cref="ReplaceItemQuery"/> instance to use.
+        /// </summary>
+        static readonly ReplaceItemQuery _queryReplaceItem;
+
+        /// <summary>
+        /// The <see cref="ItemIDCreator"/> instance to use.
+        /// </summary>
+        static readonly ItemIDCreator _queryIDCreator;
+
+        /// <summary>
+        /// The <see cref="DeleteItemQuery"/> instance to use.
+        /// </summary>
+        static readonly DeleteItemQuery _queryDeleteItem;
+
+        /// <summary>
+        /// Initializes the <see cref="ItemEntity"/> class.
+        /// </summary>
+        static ItemEntity()
+        {
+            var dbController = DbControllerBase.GetInstance();
+            _queryUpdateItemField = dbController.GetQuery<UpdateItemFieldQuery>();
+            _queryReplaceItem = dbController.GetQuery<ReplaceItemQuery>();
+            _queryIDCreator = dbController.GetQuery<ItemIDCreator>();
+            _queryDeleteItem = dbController.GetQuery<DeleteItemQuery>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="t">The item template to copy the initial values from.</param>
+        /// <param name="amount">The amount of the item.</param>
         public ItemEntity(IItemTemplateTable t, byte amount) : this(t, Vector2.Zero, amount)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="t">The item template to copy the initial values from.</param>
+        /// <param name="pos">The world position of the item.</param>
+        /// <param name="amount">The amount of the item.</param>
+        /// <param name="map">The map the item is to spawn on.</param>
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map) : this(t, pos, amount)
         {
             // Since the item is spawning on a map, ensure that the position is valid for the map
@@ -61,6 +104,12 @@ namespace DemoGame.Server
             map.AddEntity(this);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="t">The item template to copy the initial values from.</param>
+        /// <param name="pos">The world position of the item.</param>
+        /// <param name="amount">The amount of the item.</param>
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
                 pos, new Vector2(t.Width, t.Height), t.ID, t.Name, t.Description, t.Type, t.WeaponType, t.Range, t.Graphic,
@@ -69,11 +118,18 @@ namespace DemoGame.Server
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
-            _id = IDCreator.GetNext();
+            _id = _queryIDCreator.GetNext();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="iv">The item values.</param>
         public ItemEntity(IItemTable iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
             _id = iv.ID;
@@ -95,12 +151,31 @@ namespace DemoGame.Server
             Resized += ItemEntity_Resized;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="pos">The pos.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="templateID">The template ID.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="desc">The desc.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="weaponType">Type of the weapon.</param>
+        /// <param name="range">The range.</param>
+        /// <param name="graphic">The graphic.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="hp">The hp.</param>
+        /// <param name="mp">The mp.</param>
+        /// <param name="equippedBody">The equipped body.</param>
+        /// <param name="baseStats">The base stats.</param>
+        /// <param name="reqStats">The req stats.</param>
         ItemEntity(Vector2 pos, Vector2 size, ItemTemplateID? templateID, string name, string desc, ItemType type,
                    WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount, SPValueType hp, SPValueType mp,
                    string equippedBody, IEnumerable<Stat<StatType>> baseStats, IEnumerable<Stat<StatType>> reqStats)
             : base(pos, size)
         {
-            _id = IDCreator.GetNext();
+            _id = _queryIDCreator.GetNext();
 
             _templateID = templateID;
             _name = name;
@@ -119,11 +194,15 @@ namespace DemoGame.Server
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
             IItemTable itemValues = DeepCopyValues();
-            ReplaceItem.Execute(itemValues);
+            _queryReplaceItem.Execute(itemValues);
 
             Resized += ItemEntity_Resized;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="s">The <see cref="ItemEntity"/> to copy the values from.</param>
         ItemEntity(ItemEntity s)
             : this(
                 s.Position, s.Size, s.ItemTemplateID, s.Name, s.Description, s.Type, s.WeaponType, s.Range, s.GraphicIndex,
@@ -141,14 +220,12 @@ namespace DemoGame.Server
         /// </summary>
         public override event EntityEventHandler<CharacterEntity> PickedUp;
 
-        public ItemStats BaseStats
+        /// <summary>
+        /// Gets the <see cref="ItemEntity"/>'s base stats.
+        /// </summary>
+        public StatCollection<StatType> BaseStats
         {
             get { return _baseStats; }
-        }
-
-        static DeleteItemQuery DeleteItem
-        {
-            get { return _dbController.GetQuery<DeleteItemQuery>(); }
         }
 
         /// <summary>
@@ -171,24 +248,12 @@ namespace DemoGame.Server
             }
         }
 
-        static ItemIDCreator IDCreator
-        {
-            get { return _dbController.GetQuery<ItemIDCreator>(); }
-        }
-
-        static ReplaceItemQuery ReplaceItem
-        {
-            get { return _dbController.GetQuery<ReplaceItemQuery>(); }
-        }
-
-        public ItemStats ReqStats
+        /// <summary>
+        /// Gets the <see cref="ItemEntity"/>'s required stats.
+        /// </summary>
+        public StatCollection<StatType> ReqStats
         {
             get { return _reqStats; }
-        }
-
-        static UpdateItemFieldQuery UpdateItemField
-        {
-            get { return _dbController.GetQuery<UpdateItemFieldQuery>(); }
         }
 
         /// <summary>
@@ -265,10 +330,10 @@ namespace DemoGame.Server
         protected override void HandleDispose()
         {
             // Delete the ItemEntity from the database
-            DeleteItem.Execute(ID);
+            _queryDeleteItem.Execute(ID);
 
             // Free the ItemEntity's ID
-            IDCreator.FreeID(ID);
+            _queryIDCreator.FreeID(ID);
 
             base.HandleDispose();
         }
@@ -297,11 +362,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Creates an <see cref="ItemStats"/> from the given collection of stats.
+        /// Creates a <see cref="StatCollection{StatType}"/> from the given collection of stats.
         /// </summary>
-        ItemStats NewItemStats(IEnumerable<Stat<StatType>> statValues, StatCollectionType statCollectionType)
+        StatCollection<StatType> NewItemStats(IEnumerable<Stat<StatType>> statValues, StatCollectionType statCollectionType)
         {
-            ItemStats ret = new ItemStats(statValues, statCollectionType);
+            StatCollection<StatType> ret = new StatCollection<StatType>(statCollectionType, statValues);
 
             switch (statCollectionType)
             {
@@ -425,7 +490,7 @@ namespace DemoGame.Server
         /// <param name="value">New value for the field.</param>
         void SynchronizeField(string field, object value)
         {
-            UpdateItemField.Execute(_id, field, value);
+            _queryUpdateItemField.Execute(_id, field, value);
         }
 
         public override string ToString()

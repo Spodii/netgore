@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.Stats;
 
 namespace DemoGame.Client
 {
@@ -174,7 +175,7 @@ namespace DemoGame.Client
                 get { return Stats[_statType]; }
             }
 
-            CharacterStats Stats
+            StatCollection<StatType> Stats
             {
                 get { return _statsForm.UserInfo.BaseStats; }
             }

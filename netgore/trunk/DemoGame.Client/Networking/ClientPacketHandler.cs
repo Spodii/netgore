@@ -844,7 +844,7 @@ namespace DemoGame.Client
             bool isBaseStat = r.ReadBool();
             var stat = r.ReadStat<StatType>();
 
-            CharacterStats coll = isBaseStat ? UserInfo.BaseStats : UserInfo.ModStats;
+            var coll = isBaseStat ? UserInfo.BaseStats : UserInfo.ModStats;
             coll[stat.StatType] = stat.Value;
         }
 

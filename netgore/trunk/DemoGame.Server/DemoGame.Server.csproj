@@ -332,7 +332,6 @@
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterStatusEffects.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterSPSynchronizer.cs" />
-    <Compile Include="World\Map\Entities\Characters\CharacterStats.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplate.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateEquipmentItem.cs" />
     <Compile Include="World\Map\Entities\Characters\Template\CharacterTemplateIDConverter.cs" />
@@ -356,7 +355,6 @@
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeInfo.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeTracker.cs" />
     <Compile Include="World\Map\Entities\Items\ItemIDCreator.cs" />
-    <Compile Include="World\Map\Entities\Items\ItemStats.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateComparer.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateManager.cs" />
     <Compile Include="World\Map\Entities\Items\ItemValueTracker.cs" />
@@ -402,8 +400,7 @@
     <Compile Include="Account\UserAccount.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\UserInventory.cs" />
     <Compile Include="World\Map\Entities\Items\ItemEntity.cs" />
-    <Compile Include="World\Map\Entities\Stats\NPCStats.cs" />
-    <Compile Include="World\Map\Entities\Stats\UserStats.cs" />
+    <Compile Include="World\Map\Entities\Characters\UserStats.cs" />
     <Compile Include="World\Map\Map.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

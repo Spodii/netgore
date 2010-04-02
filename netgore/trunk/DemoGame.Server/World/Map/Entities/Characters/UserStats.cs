@@ -9,7 +9,7 @@ namespace DemoGame.Server
     /// <summary>
     /// A collection of stats for a <see cref="User"/>.
     /// </summary>
-    public class UserStats : CharacterStats
+    public class UserStats : StatCollection<StatType>
     {
         readonly ChangedStatsTracker<StatType> _changedStats;
 
@@ -23,7 +23,6 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="UserStats"/> class.
         /// </summary>
         /// <param name="statCollectionType">Type of the stat collection.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="user"/> is null.</exception>
         public UserStats(StatCollectionType statCollectionType) : base(statCollectionType)
         {
             _changedStats = new ChangedStatsTracker<StatType>(this);

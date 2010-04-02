@@ -140,7 +140,6 @@
     <Compile Include="Networking\ClientPacketHandlerEventHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CharacterStats.cs" />
     <Compile Include="Interface\GUISettings.cs" />
     <Compile Include="Networking\ClientPacket.cs" />
     <Compile Include="Networking\ClientSockets.cs" />
@@ -168,7 +167,6 @@
     <Compile Include="World\Map\Entities\Character.cs" />
     <Compile Include="World\Map\Entities\EntityDrawer.cs" />
     <Compile Include="World\Map\Entities\ItemEntity.cs" />
-    <Compile Include="World\Map\Entities\ItemStats.cs" />
     <Compile Include="World\Map\Entities\NPC.cs" />
     <Compile Include="World\Map\Entities\NPCChat\NPCChatDialog.cs" />
     <Compile Include="World\Map\Entities\NPCChat\NPCChatDialogItem.cs" />

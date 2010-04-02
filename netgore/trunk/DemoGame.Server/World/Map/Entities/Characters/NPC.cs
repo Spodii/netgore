@@ -219,9 +219,9 @@ namespace DemoGame.Server
         /// <returns>
         /// The CharacterStatsBase for this Character.
         /// </returns>
-        protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
+        protected override StatCollection<StatType> CreateStats(StatCollectionType statCollectionType)
         {
-            return new NPCStats(statCollectionType);
+            return new StatCollection<StatType>(statCollectionType);
         }
 
         /// <summary>
