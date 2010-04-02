@@ -23,12 +23,11 @@ namespace NetGore.EditorTools
         static readonly char DirSep = Path.DirectorySeparatorChar;
 
         readonly ICamera2D _camera;
-
         readonly CreateWallEntityHandler _createWall;
-
         readonly Grh _grh;
         readonly MapGrhWalls _mapGrhWalls;
         readonly Stopwatch _stopwatch;
+
         GrhData _gd;
 
         /// <summary>
