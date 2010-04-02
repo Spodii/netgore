@@ -26,7 +26,14 @@ namespace DemoGame.Server
         /// for performing updates and how long it is able to "sleep". It is recommended
         /// a high update rate is used to allow for more precise updating.
         /// </summary>
-        public const long ServerUpdateRate = 10; // 100 FPS
+        public const int ServerUpdateRate = 10; // 100 FPS
+
+        /// <summary>
+        /// How frequently, in milliseconds, that the server will save the world state. The lower this value, the less
+        /// the server will "roll-back" when it crashes. World saves can be expensive since it is done all at once,
+        /// so it is recommended to keep this value relatively high unless you are experiencing frequently crashes.
+        /// </summary>
+        public const int RoutineServerSaveRate = 1000 * 60 * 60 * 10; // 10 minutes
 
         /// <summary>
         /// The minimum number of milliseconds a connection should be inactive to be considered dead.

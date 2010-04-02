@@ -23,7 +23,7 @@ namespace DemoGame.Server
     /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
-    public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference
+    public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference, IServerSaveable
     {
         /// <summary>
         /// Delegate for handling an event from a <see cref="Character"/>.
@@ -1824,6 +1824,14 @@ namespace DemoGame.Server
         public override string ToString()
         {
             return string.Format("{0} [{1}; {2}]", Name, ID, GetType().Name);
+        }
+
+        /// <summary>
+        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
+        /// </summary>
+        void IServerSaveable.ServerSave()
+        {
+            Save();
         }
 
         /// <summary>

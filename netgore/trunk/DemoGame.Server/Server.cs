@@ -27,7 +27,7 @@ namespace DemoGame.Server
     /// <summary>
     /// The core component of the game server.
     /// </summary>
-    public class Server : IDisposable, IGetTime
+    public class Server : IDisposable, IGetTime, IServerSaveable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -46,6 +46,7 @@ namespace DemoGame.Server
         bool _isRunning = true;
         IServerSettingTable _serverSettings;
         int _tick;
+        int _nextServerSaveTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
@@ -292,6 +293,8 @@ namespace DemoGame.Server
             _gameTimer.Reset();
             _gameTimer.Start();
 
+            _nextServerSaveTime = GetTime() + ServerSettings.RoutineServerSaveRate;
+
             while (_isRunning)
             {
                 // Store the loop start time so we can calculate how long the loop took
@@ -339,6 +342,23 @@ namespace DemoGame.Server
                                 ConsoleCommandExecuted.Invoke(this, cmd, ret);
                         }
                     }
+                }
+                
+                // Check if it is time to save the world
+                if (_nextServerSaveTime < loopStartTime)
+                {
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Starting save of world state...");
+
+                    int saveStartTime = GetTime();
+
+                    ServerSave();
+                    _nextServerSaveTime = (int)loopStartTime + ServerSettings.RoutineServerSaveRate;
+
+                    int saveEndTime = GetTime();
+
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("World state saved. Save took a total of `{0}` milliseconds.", saveEndTime - saveStartTime);
                 }
 
                 // Check if we can afford sleeping the thread
@@ -583,6 +603,18 @@ namespace DemoGame.Server
         public int GetTime()
         {
             return (int)_gameTimer.ElapsedMilliseconds;
+        }
+
+        #endregion
+
+        #region IServerSaveable Members
+
+        /// <summary>
+        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
+        /// </summary>
+        public void ServerSave()
+        {
+            _world.ServerSave();
         }
 
         #endregion
