@@ -18,7 +18,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Contains the information about a single map instance and all of the Entities it contains.
     /// </summary>
-    public class Map : MapBase, IDisposable
+    public class Map : MapBase, IDisposable, IServerSaveable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -383,6 +383,16 @@ namespace DemoGame.Server
         public void Send(BitStream data)
         {
             Send(data, null, true);
+        }
+
+        /// <summary>
+        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
+        /// </summary>
+        public void ServerSave()
+        {
+            // Save all the entities that implement IServerSaveable
+            foreach (var saveable in Entities.OfType < IServerSaveable>())
+                saveable.ServerSave();
         }
 
         /// <summary>

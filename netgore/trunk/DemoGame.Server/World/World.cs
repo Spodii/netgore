@@ -18,7 +18,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Handles the game's world, keeping track of all maps and characters
     /// </summary>
-    public class World : WorldBase, IDisposable
+    public class World : WorldBase, IDisposable, IServerSaveable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
@@ -32,6 +32,15 @@ namespace DemoGame.Server
         readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
 
         bool _disposed;
+
+        /// <summary>
+        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
+        /// </summary>
+        public void ServerSave()
+        {
+            foreach (var map in Maps)
+                map.ServerSave();
+        }
 
         /// <summary>
         /// The time that <see cref="User.SynchronizeExtraUserInformation"/> will be called next.
