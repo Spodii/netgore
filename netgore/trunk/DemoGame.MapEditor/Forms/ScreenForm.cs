@@ -867,7 +867,25 @@ namespace DemoGame.MapEditor
         /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void GameScreen_MouseWheel(object sender, MouseEventArgs e)
         {
-            CursorManager.MoveMouseWheel(e.Delta > 0 ? 1 : -1);
+            if (e.Delta == 0)
+                return;
+
+            int delta = e.Delta > 0 ? 1 : -1;
+
+            if (!treeGrhs.NeedsToDraw)
+            {
+                if (e.Delta != 0)
+                    CursorManager.MoveMouseWheel(delta);
+            }
+            else
+            {
+                var v = (delta * 0.1f);
+                if (e.Button == MouseButtons.Middle)
+                    v *= 10;
+
+                var newScale = treeGrhs.EditGrhForm.Camera.Scale + v;
+                treeGrhs.EditGrhForm.Camera.Scale = Math.Max(_minCameraScale, Math.Min(_maxCameraScale, newScale));
+            }
         }
 
         /// <summary>
@@ -1018,13 +1036,16 @@ namespace DemoGame.MapEditor
             DbController.GetQuery<UpdateMapQuery>().Execute(map);
         }
 
+        const float _minCameraScale = 0.01f;
+        const float _maxCameraScale = 100.0f;
+
         void numZoom_ValueChanged(object sender, EventArgs e)
         {
             float value = Convert.ToSingle(numZoom.Value);
 
             value *= 0.01f;
 
-            if (value <= float.Epsilon || value > 100000)
+            if (value <= _minCameraScale || value > _maxCameraScale)
                 return;
 
             Camera.Scale = value;
@@ -1164,6 +1185,9 @@ namespace DemoGame.MapEditor
             Show();
             Refresh();
 
+            numZoom.Minimum = (decimal)_minCameraScale * 100;
+            numZoom.Maximum = (decimal)_maxCameraScale * 100;
+
             // Make sure we skip doing all of this loading when in design mode
             if (DesignMode)
                 return;
@@ -1195,7 +1219,6 @@ namespace DemoGame.MapEditor
             GameScreen.UpdateHandler = UpdateGame;
             GameScreen.DrawHandler = DrawGame;
             GameScreen.MouseWheel += GameScreen_MouseWheel;
-            GameScreen.Resize += GameScreen_Resize;
 
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
@@ -1446,6 +1469,137 @@ namespace DemoGame.MapEditor
             CursorManager.Update();
         }
 
+        WallEntityBase _editGrhSelectedWall = null;
+        Direction _editGrhSelectedWallDir;
+
+        /// <summary>
+        /// Handles updating when the <see cref="EditGrhForm"/> is visible and has taken over the main screen (so it
+        /// can draw the preview of the GrhData).
+        /// </summary>
+        void UpdateEditGrhView()
+        {
+            var frm = treeGrhs.EditGrhForm;
+            if (frm == null)
+                return;
+
+            // Check that there are even any walls
+            if (frm.BoundWalls.IsEmpty())
+            {
+                _editGrhSelectedWall = null;
+                _editGrhSelectedWallDir = Direction.North;
+                Cursor = Cursors.Default;
+                return;
+            }
+
+            // If the left mouse button is no longer down, unset the _editGrhSelectedWall
+            if (MouseButtons != MouseButtons.Left)
+            {
+                _editGrhSelectedWall = null;
+            }
+
+            // Get the world position for the cursor
+            var worldPos = frm.Camera.ToWorld(CursorPos).Round();
+
+            // Select a new wall if null, or if not null, check to move the wall
+            if (_editGrhSelectedWall == null)
+            {
+                // Check if the cursor is on the corner of any of the bound walls, with a 1 pixel resolution
+                Direction dir = Direction.North;
+                WallEntityBase selWall = null;
+                foreach (var wall in frm.BoundWalls)
+                {
+                    dir = Direction.North;
+
+                    var wallPos = wall.Position.Round();
+                    var wallMax = wall.Max.Round();
+
+                    if (wallPos.X == worldPos.X)
+                    {
+                        if (wallPos.Y == worldPos.Y)
+                            dir = Direction.NorthWest;
+                        else if (wallMax.Y == worldPos.Y)
+                            dir = Direction.SouthWest;
+                    }
+                    else if (wallMax.X == worldPos.X)
+                    {
+                        if (wallPos.Y == worldPos.Y)
+                            dir = Direction.NorthEast;
+                        else if (wallMax.Y == worldPos.Y)
+                            dir = Direction.SouthEast;
+                    }
+
+                    if (dir != Direction.North)
+                    {
+                        selWall = wall;
+                        break;
+                    }
+                }
+
+                // Set the selected wall if there is one
+                if (selWall != null)
+                {
+                    _editGrhSelectedWall = selWall;
+                    _editGrhSelectedWallDir = dir;
+                }
+                else
+                {
+                    _editGrhSelectedWall = null;
+                    _editGrhSelectedWallDir = Direction.North;
+                }
+            }
+            else
+            {
+                // Move/resize the bound wall
+                var wall = _editGrhSelectedWall;
+                Vector2 newPos = wall.Position;
+                Vector2 newSize = wall.Size;
+                switch (_editGrhSelectedWallDir)
+                {
+                    case Direction.NorthWest:
+                        newPos = worldPos;
+                        break;
+
+                    case Direction.NorthEast:
+                        newPos = new Vector2(wall.Position.X, worldPos.Y);
+                        newSize = new Vector2(worldPos.X - wall.Position.X, wall.Size.Y);
+                        break;
+
+                    case Direction.SouthEast:
+                        newSize = worldPos - wall.Position;
+                        break;
+
+                    case Direction.SouthWest:
+                        newPos = new Vector2(worldPos.X, wall.Position.Y);
+                        newSize = new Vector2(wall.Size.X, worldPos.Y - wall.Position.Y);
+                        break;
+                }
+
+                newSize += wall.Position - newPos;
+                newSize = newSize.Max(Vector2.One);
+
+                wall.Position = newPos;
+                wall.Size = newSize;
+            }
+
+            // If we do have a wall corner under the cursor, show it by changing the cursor
+            switch (_editGrhSelectedWallDir)
+            {
+                case Direction.NorthWest:
+                case Direction.SouthEast:
+                    Cursor = Cursors.SizeNWSE;
+                    break;
+
+                case Direction.NorthEast:
+                case Direction.SouthWest:
+                    Cursor = Cursors.SizeNESW;
+                    break;
+
+                default:
+                    Cursor = Cursors.Default;
+                    break;
+            }
+        }
+
         /// <summary>
         /// Updates the game.
         /// </summary>
@@ -1469,6 +1623,12 @@ namespace DemoGame.MapEditor
             // Check for a map
             if (Map == null)
                 return;
+
+            if (treeGrhs.NeedsToDraw)
+            {
+                UpdateEditGrhView();
+                return;
+            }
 
             // Move the camera
             _camera.Min += _moveCamera;

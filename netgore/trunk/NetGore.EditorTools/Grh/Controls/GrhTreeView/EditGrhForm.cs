@@ -113,6 +113,11 @@ namespace NetGore.EditorTools
         /// </summary>
         public bool WasCanceled { get; private set; }
 
+        /// <summary>
+        /// Gets the <see cref="WallEntityBase"/>s that are bound to the <see cref="GrhData"/> being edited.
+        /// </summary>
+        public IEnumerable<WallEntityBase> BoundWalls { get { return lstWalls.Items.OfType<WallEntityBase>(); } }
+
         void btnAccept_Click(object sender, EventArgs e)
         {
             // TODO: Clean this up a lot by adding more specialized textboxes, and using .IsValid()
@@ -228,14 +233,7 @@ namespace NetGore.EditorTools
             }
 
             // Set the MapGrhWalls
-            var walls = new List<WallEntityBase>();
-            foreach (object o in lstWalls.Items)
-            {
-                WallEntityBase wall = o as WallEntityBase;
-                if (wall != null)
-                    walls.Add(wall);
-            }
-            _mapGrhWalls[_gd] = walls;
+            _mapGrhWalls[_gd] = BoundWalls.ToList();
 
             // Write
             Enabled = false;
@@ -252,6 +250,9 @@ namespace NetGore.EditorTools
             var wall = _createWall(Vector2.Zero, new Vector2(16));
             lstWalls.AddItemAndReselect(wall);
             lstWalls.SelectedItem = wall;
+
+            wall.Moved += BoundWallChanged;
+            wall.Resized += BoundWallChanged;
         }
 
         void btnCancel_Click(object sender, EventArgs e)
@@ -265,7 +266,10 @@ namespace NetGore.EditorTools
             WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
+
             lstWalls.RemoveItemAndReselect(wall);
+            wall.Moved -= BoundWallChanged;
+            wall.Resized -= BoundWallChanged;
         }
 
         void chkAutoSize_CheckedChanged(object sender, EventArgs e)
@@ -300,7 +304,7 @@ namespace NetGore.EditorTools
                 _grh.Draw(sb, Vector2.Zero);
 
                 // Draw the walls
-                foreach (var wall in lstWalls.Items.OfType<WallEntityBase>())
+                foreach (var wall in BoundWalls)
                 {
                     var rect = wall.ToRectangle();
                     XNARectangle.Draw(sb, rect, _autoWallColor);
@@ -412,8 +416,24 @@ namespace NetGore.EditorTools
                 foreach (WallEntityBase wall in walls)
                 {
                     lstWalls.AddItemAndReselect(wall);
+                    wall.Moved += BoundWallChanged;
+                    wall.Resized += BoundWallChanged;
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles when one of the bound walls have changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        void BoundWallChanged(ISpatial sender, Vector2 e)
+        {
+            var index = lstWalls.Items.IndexOf(sender);
+            if (index < 0)
+                return;
+
+            lstWalls.RefreshItemAt(index);
         }
 
         void ShowGrhInfoForAnimated(GrhData grhData)

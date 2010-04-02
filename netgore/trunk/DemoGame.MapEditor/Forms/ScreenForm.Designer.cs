@@ -242,6 +242,7 @@ namespace DemoGame.MapEditor
             this.GameScreen.TabIndex = 8;
             this.GameScreen.Text = "Game Screen";
             this.GameScreen.UpdateHandler = null;
+            this.GameScreen.Resize += new System.EventHandler(this.GameScreen_Resize);
             // 
             // splitContainer3
             // 
