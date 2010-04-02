@@ -354,14 +354,6 @@ Global
 		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.Release|x86.ActiveCfg = Release|x86
 		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.ReleaseTopDown|x86.ActiveCfg = Release|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Debug|x86.ActiveCfg = Debug|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugDbClassGen|x86.ActiveCfg = DebugTopDown|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Mono|x86.ActiveCfg = Mono|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.MonoTopDown|x86.ActiveCfg = MonoTopDown|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Release|x86.ActiveCfg = Release|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.ReleaseClient|x86.ActiveCfg = ReleaseTopDown|x86
-		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Debug|x86.ActiveCfg = Debug|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugDbClassGen|x86.ActiveCfg = DebugTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
@@ -370,6 +362,14 @@ Global
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|x86.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.ReleaseClient|x86.ActiveCfg = ReleaseTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Debug|x86.ActiveCfg = Debug|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugDbClassGen|x86.ActiveCfg = DebugTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Mono|x86.ActiveCfg = Mono|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.MonoTopDown|x86.ActiveCfg = MonoTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Release|x86.ActiveCfg = Release|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.ReleaseClient|x86.ActiveCfg = ReleaseTopDown|x86
+		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
