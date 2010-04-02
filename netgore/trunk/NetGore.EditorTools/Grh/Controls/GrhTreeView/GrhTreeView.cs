@@ -93,6 +93,15 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the <see cref="EditGrhForm"/> when applicable. Will be null if the form is not visible.
+        /// </summary>
+        public EditGrhForm EditGrhForm { get {
+            if (_editGrhDataForm != null && _editGrhDataForm.Visible && !_editGrhDataForm.IsDisposed)
+                return _editGrhDataForm;
+
+            return null; } }
+
+        /// <summary>
         /// Adds a <see cref="GrhData"/> to the tree or updates it if it already exists.
         /// </summary>
         /// <param name="gd"><see cref="GrhData"/> to add or update.</param>
