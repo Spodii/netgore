@@ -112,6 +112,8 @@ namespace DemoGame.Client
                 IsMultiLine = true,
                 IsEnabled = false
             };
+            _txtOutput.Resized += delegate { UpdateConsoleBufferSize(); };
+            _txtOutput.FontChanged += delegate { UpdateConsoleBufferSize(); };
 
             // Create the panel that holds the settings options
             var settingsButtonSize = _consoleFont.MeasureString("Show Settings") + new Vector2(10, 4);
@@ -192,8 +194,6 @@ namespace DemoGame.Client
 
             // Move to the last line in the log textbox
             _txtOutput.LineBufferOffset = Math.Max(0, _txtOutput.LineCount - _txtOutput.MaxVisibleLines);
-            _txtOutput.Resized += delegate { UpdateConsoleBufferSize(); };
-            _txtOutput.FontChanged += delegate { UpdateConsoleBufferSize(); };
         }
 
         /// <summary>
