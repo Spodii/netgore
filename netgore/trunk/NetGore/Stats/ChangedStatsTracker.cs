@@ -4,10 +4,10 @@ using System.Linq;
 using NetGore;
 using NetGore.Stats;
 
-namespace DemoGame.Server
+namespace NetGore.Stats
 {
     /// <summary>
-    /// Keeps track of which stats have changed.
+    /// Keeps track of which stats have changed in an <see cref="IStatCollection{T}"/>.
     /// </summary>
     /// <typeparam name="T">The type of stat.</typeparam>
     public class ChangedStatsTracker<T> where T : struct, IComparable, IConvertible, IFormattable
@@ -17,11 +17,24 @@ namespace DemoGame.Server
         /// </summary>
         static readonly IEnumerable<Stat<T>> _emptyStats = Enumerable.Empty<Stat<T>>();
 
+        /// <summary>
+        /// The <see cref="Func{T,U}"/> used to cast from <typeparamref name="T"/> to <see cref="Int32"/>.
+        /// </summary>
         static readonly Func<T, int> _enumToInt;
 
+        /// <summary>
+        /// The size we will need to make the <see cref="_lastValues"/> array.
+        /// </summary>
         static readonly int _valuesArraySize;
 
+        /// <summary>
+        /// Stores the last stat values so we can compare them to the current values.
+        /// </summary>
         readonly StatValueType[] _lastValues;
+
+        /// <summary>
+        /// The <see cref="IStatCollection{T}"/> we are comparing against.
+        /// </summary>
         readonly IStatCollection<T> _statCollection;
 
         /// <summary>
