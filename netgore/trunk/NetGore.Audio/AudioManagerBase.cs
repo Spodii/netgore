@@ -15,17 +15,17 @@ namespace NetGore.Audio
     public abstract class AudioManagerBase : IDisposable
     {
         readonly string _assetPrefix;
-        readonly ContentManager _contentManager;
+        readonly IContentManager _contentManager;
         bool _isDisposed = false;
         float _volume = 1.0f;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioManagerBase"/> class.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
+        /// <param name="cm">The <see cref="IContentManager"/> used to load the audio tracks.</param>
         /// <param name="assetPrefix">The prefix to give to assets used by this <see cref="AudioManagerBase"/>
         /// when loading them.</param>
-        protected AudioManagerBase(ContentManager cm, string assetPrefix)
+        protected AudioManagerBase(IContentManager cm, string assetPrefix)
         {
             _contentManager = cm;
             _assetPrefix = assetPrefix;
@@ -40,9 +40,9 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this <see cref="AudioManagerBase"/>.
+        /// Gets the <see cref="IContentManager"/> used to load the audio tracks in this <see cref="AudioManagerBase"/>.
         /// </summary>
-        public ContentManager ContentManager
+        public IContentManager ContentManager
         {
             get { return _contentManager; }
         }
@@ -144,12 +144,12 @@ namespace NetGore.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioManagerBase{T, TIndex}"/> class.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
+        /// <param name="cm">The <see cref="IContentManager"/> used to load the audio tracks.</param>
         /// <param name="dataFilePath">The file path to the audio data to load.</param>
         /// <param name="rootNodeName">The name of the root node in the data file being loaded.</param>
         /// <param name="assetPrefix">The prefix to give to assets used by this <see cref="AudioManagerBase"/>
         /// when loading them.</param>
-        protected AudioManagerBase(ContentManager cm, string dataFilePath, string rootNodeName, string assetPrefix)
+        protected AudioManagerBase(IContentManager cm, string dataFilePath, string rootNodeName, string assetPrefix)
             : base(cm, assetPrefix)
         {
             IValueReader r = new XmlValueReader(dataFilePath, rootNodeName);

@@ -832,7 +832,7 @@ namespace DemoGame.DbEditor
                 var gdService = GraphicsDeviceService.AddRef(Handle, 640, 480);
                 var serviceContainer = new ServiceContainer();
                 serviceContainer.AddService<IGraphicsDeviceService>(gdService);
-                ContentManager cm = new ContentManager(serviceContainer, ContentPaths.Build.Root);
+                var cm = new XnaContentManager(serviceContainer, ContentPaths.Build.Root);
                 GrhInfo.Load(ContentPaths.Dev, cm);
             }
 

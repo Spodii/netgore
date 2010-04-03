@@ -46,7 +46,7 @@ namespace NetGore.Graphics
             return delay;
         }
 
-        readonly ContentManager _cm;
+        readonly IContentManager _cm;
 
         /// <summary>
         /// How many times the texture has failed to load in a row.
@@ -68,12 +68,13 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="StationaryGrhData"/> class.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
+        /// <param name="cm">The <see cref="IContentManager"/>.</param>
         /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
         /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
-        public StationaryGrhData(ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
+        public StationaryGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
+            : base(grhIndex, cat)
         {
             _cm = cm;
             AutomaticSize = true;
@@ -96,12 +97,13 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="StationaryGrhData"/> class.
         /// </summary>
         /// <param name="r">The <see cref="IValueReader"/>.</param>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
+        /// <param name="cm">The <see cref="IContentManager"/>.</param>
         /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
         /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
-        StationaryGrhData(IValueReader r, ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
+        StationaryGrhData(IValueReader r, IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
+            : base(grhIndex, cat)
         {
             _cm = cm;
 
@@ -153,9 +155,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the <see cref="ContentManager"/> used to load the content for this <see cref="GrhData"/>.
+        /// Gets the <see cref="IContentManager"/> used to load the content for this <see cref="GrhData"/>.
         /// </summary>
-        public ContentManager ContentManager
+        public IContentManager ContentManager
         {
             get { return _cm; }
         }
@@ -350,11 +352,11 @@ namespace NetGore.Graphics
         /// Reads a <see cref="GrhData"/> from an <see cref="IValueReader"/>.
         /// </summary>
         /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
-        /// <param name="cm">The <see cref="ContentManager"/> used to load content.</param>
+        /// <param name="cm">The <see cref="IContentManager"/> used to load content.</param>
         /// <returns>
         /// The <see cref="GrhData"/> read from the <see cref="IValueReader"/>.
         /// </returns>
-        public static StationaryGrhData Read(IValueReader r, ContentManager cm)
+        public static StationaryGrhData Read(IValueReader r, IContentManager cm)
         {
             GrhIndex grhIndex;
             SpriteCategorization categorization;

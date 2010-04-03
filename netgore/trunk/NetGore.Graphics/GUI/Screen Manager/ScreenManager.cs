@@ -15,9 +15,8 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class ScreenManager : DrawableGameComponent, IScreenManager
     {
-        readonly ContentManager _content;
+        readonly IContentManager _content;
         readonly FrameCounter _fps = new FrameCounter();
-        readonly ContentManager _mapContent;
         readonly MusicManager _musicManager;
         readonly Dictionary<string, IGameScreen> _screens = new Dictionary<string, IGameScreen>(StringComparer.OrdinalIgnoreCase);
         readonly ISkinManager _skinManager;
@@ -48,8 +47,7 @@ namespace NetGore.Graphics.GUI
 
             _skinManager = skinManager;
 
-            _content = new ContentManager(game.Services, rootContentDirectory);
-            _mapContent = new ContentManager(game.Services, rootContentDirectory);
+            _content = new XnaContentManager(game.Services, rootContentDirectory);
 
             _soundManager = SoundManager.GetInstance(_content);
             _musicManager = MusicManager.GetInstance(_content);
@@ -133,9 +131,8 @@ namespace NetGore.Graphics.GUI
                 screen.UnloadContent();
             }
 
-            // Unload the content managers
+            // Unload the content manager
             _content.Unload();
-            _mapContent.Unload();
         }
 
         /// <summary>
@@ -202,9 +199,9 @@ namespace NetGore.Graphics.GUI
         public IGameScreen ConsoleScreen { get; set; }
 
         /// <summary>
-        /// Gets the global <see cref="ContentManager"/> shared between all screens.
+        /// Gets the global <see cref="IContentManager"/> shared between all screens.
         /// </summary>
-        public ContentManager Content
+        public IContentManager Content
         {
             get { return _content; }
         }
@@ -223,14 +220,6 @@ namespace NetGore.Graphics.GUI
         public int FPS
         {
             get { return _fps.FrameRate; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ContentManager"/> intended for loading content for the current map only.
-        /// </summary>
-        public ContentManager MapContent
-        {
-            get { return _mapContent; }
         }
 
         /// <summary>

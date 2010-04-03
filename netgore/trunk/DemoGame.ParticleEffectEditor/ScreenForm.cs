@@ -21,7 +21,7 @@ namespace DemoGame.ParticleEffectEditor
         readonly string _defaultTitle;
         readonly Stopwatch _watch = new Stopwatch();
 
-        ContentManager _content;
+        IContentManager _content;
         ParticleEmitter _emitter;
         string _lastEmitterName = string.Empty;
         IParticleRenderer _renderer;
@@ -170,7 +170,7 @@ namespace DemoGame.ParticleEffectEditor
             GameScreen.ScreenForm = this;
 
             // Load the content
-            _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
+            _content = new XnaContentManager(GameScreen.Services, ContentPaths.Build.Root);
             GrhInfo.Load(ContentPaths.Build, _content);
 
             // Load the additional UI editors for the property grid

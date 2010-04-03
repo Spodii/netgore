@@ -162,10 +162,10 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Updates all of the automaticly added GrhDatas.
         /// </summary>
-        /// <param name="cm">ContentManager to use for new GrhDatas.</param>
+        /// <param name="cm"><see cref="IContentManager"/> to use for new GrhDatas.</param>
         /// <param name="rootGrhDir">Root Grh texture directory.</param>
         /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
-        public static IEnumerable<GrhData> UpdateAll(ContentManager cm, string rootGrhDir)
+        public static IEnumerable<GrhData> UpdateAll(IContentManager cm, string rootGrhDir)
         {
             var created = UpdateStationary(cm, rootGrhDir).Concat(UpdateAnimated(cm, rootGrhDir));
 
@@ -187,10 +187,10 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Updates the animated automaticly added GrhDatas.
         /// </summary>
-        /// <param name="cm">ContentManager to use for new GrhDatas.</param>
+        /// <param name="cm"><see cref="IContentManager"/> to use for new GrhDatas.</param>
         /// <param name="rootGrhDir">Root Grh texture directory.</param>
         /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
-        public static IEnumerable<GrhData> UpdateAnimated(ContentManager cm, string rootGrhDir)
+        public static IEnumerable<GrhData> UpdateAnimated(IContentManager cm, string rootGrhDir)
         {
             if (log.IsInfoEnabled)
                 log.InfoFormat("Searching for automatic animated GrhDatas from root `{0}`.");
@@ -241,10 +241,10 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Updates the stationary automaticly added GrhDatas.
         /// </summary>
-        /// <param name="cm">ContentManager to use for new GrhDatas.</param>
+        /// <param name="cm"><see cref="IContentManager"/> to use for new GrhDatas.</param>
         /// <param name="rootGrhDir">Root Grh texture directory.</param>
         /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
-        public static IEnumerable<GrhData> UpdateStationary(ContentManager cm, string rootGrhDir)
+        public static IEnumerable<GrhData> UpdateStationary(IContentManager cm, string rootGrhDir)
         {
             char[] dirSepChars = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
 

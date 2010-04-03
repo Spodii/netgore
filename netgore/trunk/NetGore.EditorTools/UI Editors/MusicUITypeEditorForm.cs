@@ -7,7 +7,7 @@ namespace NetGore.EditorTools
 {
     public class MusicUITypeEditorForm : UITypeEditorListForm<IMusic>
     {
-        readonly ContentManager _cm;
+        readonly IContentManager _cm;
         readonly IMusic _current;
 
         /// <summary>
@@ -15,7 +15,7 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="cm">The cm.</param>
         /// <param name="current">The currently selected <see cref="IMusic"/>. Can be null.</param>
-        public MusicUITypeEditorForm(ContentManager cm, object current)
+        public MusicUITypeEditorForm(IContentManager cm, object current)
         {
             _cm = cm;
 

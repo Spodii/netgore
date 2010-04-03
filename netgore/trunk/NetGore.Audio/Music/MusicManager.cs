@@ -20,8 +20,8 @@ namespace NetGore.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="MusicManager"/> class.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        MusicManager(ContentManager cm)
+        /// <param name="cm">The <see cref="IContentManager"/>.</param>
+        MusicManager(IContentManager cm)
             : base(cm, ContentPaths.Build.Data.Join("music.xml"), "Music", "Music" + Path.DirectorySeparatorChar)
         {
         }
@@ -56,10 +56,10 @@ namespace NetGore.Audio
         /// This method is thread-safe, but it is recommended that you store the returned object in a local
         /// member if you want to access it frequently to avoid the overhead of thread synchronization.
         /// </summary>
-        /// <param name="contentManager">The <see cref="ContentManager"/>.</param>
+        /// <param name="contentManager">The <see cref="IContentManager"/>.</param>
         /// <returns>An instance of the <see cref="MusicManager"/> for the given
         /// <paramref name="contentManager"/>.</returns>
-        public static MusicManager GetInstance(ContentManager contentManager)
+        public static MusicManager GetInstance(IContentManager contentManager)
         {
             lock (_instanceLock)
             {

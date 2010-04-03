@@ -95,6 +95,9 @@
     <Compile Include="Collections\SlimList.cs" />
     <Compile Include="Collections\TaskList.cs" />
     <Compile Include="Collections\TimeExpirationQueue.cs" />
+    <Compile Include="Content\ContentLevel.cs" />
+    <Compile Include="Content\IContentManagerExtensions.cs" />
+    <Compile Include="Content\IContentManager.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="DirectionHelper.cs" />
     <Compile Include="EngineSettings.cs" />

@@ -108,7 +108,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// All content used by the map editor
         /// </summary>
-        ContentManager _content;
+        IContentManager _content;
 
         /// <summary>
         /// Current total time in milliseconds - used as the root of all timing
@@ -1221,7 +1221,7 @@ namespace DemoGame.MapEditor
             GameScreen.MouseWheel += GameScreen_MouseWheel;
 
             // Create the engine objects 
-            _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
+            _content = new XnaContentManager(GameScreen.Services, ContentPaths.Build.Root);
 
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
@@ -1252,7 +1252,7 @@ namespace DemoGame.MapEditor
             }
 
             // Create the font
-            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
+            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"), ContentLevel.Global);
             Character.NameFont = SpriteFont;
 
             // Hook all controls to forward camera movement keys Form

@@ -17,8 +17,8 @@ namespace NetGore.Audio
         /// <summary>
         /// Initializes a new instance of the <see cref="SoundManager"/> class.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        SoundManager(ContentManager cm)
+        /// <param name="cm">The <see cref="IContentManager"/>.</param>
+        SoundManager(IContentManager cm)
             : base(cm, ContentPaths.Build.Data.Join("sounds.xml"), "Sound", "Sounds" + Path.DirectorySeparatorChar)
         {
         }
@@ -52,10 +52,10 @@ namespace NetGore.Audio
         /// This method is thread-safe, but it is recommended that you store the returned object in a local
         /// member if you want to access it frequently to avoid the overhead of thread synchronization.
         /// </summary>
-        /// <param name="contentManager">The <see cref="ContentManager"/>.</param>
+        /// <param name="contentManager">The <see cref="IContentManager"/>.</param>
         /// <returns>An instance of the <see cref="SoundManager"/> for the given
         /// <paramref name="contentManager"/>.</returns>
-        public static SoundManager GetInstance(ContentManager contentManager)
+        public static SoundManager GetInstance(IContentManager contentManager)
         {
             if (_instance == null)
                 _instance = new SoundManager(contentManager);

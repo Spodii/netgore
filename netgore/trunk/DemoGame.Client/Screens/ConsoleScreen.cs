@@ -95,7 +95,7 @@ namespace DemoGame.Client
             BasicConfigurator.Configure(_logger);
             ScreenManager.Updated += ScreenManager_Updated;
 
-            _consoleFont = ScreenManager.Content.Load<SpriteFont>("Font/Console");
+            _consoleFont = ScreenManager.Content.Load<SpriteFont>("Font/Console", NetGore.ContentLevel.GameScreen);
 
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 

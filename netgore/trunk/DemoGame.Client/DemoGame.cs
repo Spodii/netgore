@@ -91,7 +91,6 @@ namespace DemoGame.Client
         /// </summary>
         protected override void Initialize()
         {
-            Content.RootDirectory = ContentPaths.Build.Root;
             IsMouseVisible = true;
 
             // Try to go for 75 FPS for the update rate
@@ -127,12 +126,11 @@ namespace DemoGame.Client
             // Read the Grh info, using the MapContent for the ContentManager since all
             // but the map GrhDatas should end up in an atlas. For anything that does not
             // end up in an atlas, this will provide them a way to load still.
-            GrhInfo.Load(ContentPaths.Build, _screenManager.MapContent);
+            GrhInfo.Load(ContentPaths.Build, _screenManager.Content);
 
             // Organize the GrhDatas for the atlases
             var gdChars = new List<ITextureAtlasable>();
             var gdGUI = new List<ITextureAtlasable>();
-            var gdNonMap = new List<ITextureAtlasable>();
             foreach (var gd in GrhInfo.GrhDatas.SelectMany(x => x.Frames).Distinct())
             {
                 var categoryStr = gd.Categorization.Category.ToString();
@@ -141,19 +139,22 @@ namespace DemoGame.Client
                     gdChars.Add(gd);
                 else if (categoryStr.StartsWith("gui", StringComparison.OrdinalIgnoreCase))
                     gdGUI.Add(gd);
-                else if (!categoryStr.StartsWith("map", StringComparison.OrdinalIgnoreCase))
-                    gdNonMap.Add(gd);
             }
 
             // Build the atlases, leaving everything but map GrhDatas in an atlas
-            var atlasChars = new TextureAtlas(GraphicsDevice, gdChars);
-            var atlasGUI = new TextureAtlas(GraphicsDevice, gdGUI);
-            var atlasMisc = new TextureAtlas(GraphicsDevice, gdNonMap);
-            _globalAtlases = new TextureAtlas[] { atlasChars, atlasGUI, atlasMisc };
+            var globalAtlasesList = new List<TextureAtlas>();
+
+            if (gdChars.Count > 0)
+                globalAtlasesList.Add(new TextureAtlas(GraphicsDevice, gdChars));
+
+            if (gdGUI.Count > 0)
+                globalAtlasesList.Add(new TextureAtlas(GraphicsDevice, gdGUI));
+
+            _globalAtlases = globalAtlasesList.ToArray();
 
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
-            _screenManager.MapContent.Unload();
+            // TODO: !! _screenManager.Content.Unload();
         }
 
         /// <summary>

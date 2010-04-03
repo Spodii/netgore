@@ -28,7 +28,7 @@ namespace NetGore.EditorTools
 
         readonly ContextMenu _contextMenu = new ContextMenu();
         bool _compactMode = true;
-        ContentManager _contentManager;
+        IContentManager _contentManager;
         CreateWallEntityHandler _createWall;
         EditGrhForm _editGrhDataForm;
         Vector2 _gameScreenSize;
@@ -478,12 +478,12 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Initializes the <see cref="GrhTreeView"/> with all features.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/> used for loading content needed by the
+        /// <param name="cm">The <see cref="IContentManager"/> used for loading content needed by the
         /// <see cref="GrhTreeView"/>.</param>
         /// <param name="gameScreenSize">The size of the game screen.</param>
         /// <param name="createWall">Delegate used to create a <see cref="WallEntityBase"/>.</param>
         /// <param name="mapGrhWalls">The <see cref="MapGrhWalls"/> instance to use.</param>
-        public void Initialize(ContentManager cm, Vector2 gameScreenSize, CreateWallEntityHandler createWall,
+        public void Initialize(IContentManager cm, Vector2 gameScreenSize, CreateWallEntityHandler createWall,
                                MapGrhWalls mapGrhWalls)
         {
             if (DesignMode)
@@ -565,7 +565,7 @@ namespace NetGore.EditorTools
 
         void MenuClickAutomaticUpdate(object sender, EventArgs e)
         {
-            ContentManager cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
+            var cm = GrhInfo.GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
             if (cm == null)
                 throw new Exception("Failed to find a ContentManager to use.");
 

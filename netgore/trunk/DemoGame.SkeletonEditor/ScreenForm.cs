@@ -26,7 +26,7 @@ namespace DemoGame.SkeletonEditor
         readonly Stopwatch _watch = new Stopwatch();
 
         ICamera2D _camera;
-        ContentManager _content;
+        IContentManager _content;
         int _currentTime = 0;
 
         /// <summary>
@@ -1051,8 +1051,8 @@ namespace DemoGame.SkeletonEditor
             // Create the engine objects
             _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height)) { KeepInMap = false };
-            _content = new ContentManager(GameScreen.Services, "Content");
-            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
+            _content = new XnaContentManager(GameScreen.Services, "Content");
+            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"), ContentLevel.GameScreen);
             GrhInfo.Load(ContentPaths.Dev, _content);
 
             // Create the skeleton-related objects

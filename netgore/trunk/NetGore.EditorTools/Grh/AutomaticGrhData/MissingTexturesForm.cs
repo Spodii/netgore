@@ -8,16 +8,17 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.IO;
+using NetGore;
 
 namespace NetGore.EditorTools
 {
     public partial class MissingTexturesForm : Form
     {
-        readonly ContentManager _cm;
+        readonly IContentManager _cm;
         readonly TextureHashCollection _hashCollection;
         readonly Dictionary<string, List<GrhData>> _missingTextures;
 
-        public MissingTexturesForm(TextureHashCollection hashCollection, IEnumerable<GrhData> missingTextures, ContentManager cm)
+        public MissingTexturesForm(TextureHashCollection hashCollection, IEnumerable<GrhData> missingTextures, IContentManager cm)
         {
             if (hashCollection == null)
                 throw new ArgumentNullException("hashCollection");
