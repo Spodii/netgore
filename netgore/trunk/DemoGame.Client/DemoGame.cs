@@ -29,6 +29,26 @@ namespace DemoGame.Client
         {
             // Create the graphics manager and device
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreparingDeviceSettings += graphics_PreparingDeviceSettings;
+        }
+
+        /// <summary>
+        /// Adds support for using NVidia's PerfHUD.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="Microsoft.Xna.Framework.PreparingDeviceSettingsEventArgs"/> instance containing
+        /// the event data.</param>
+        static void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
+        {
+            foreach (GraphicsAdapter curAdapter in GraphicsAdapter.Adapters)
+            {
+                if (curAdapter.Description.Contains("NVIDIA PerfHUD"))
+                {
+                    e.GraphicsDeviceInformation.Adapter = curAdapter;
+                    e.GraphicsDeviceInformation.DeviceType = DeviceType.Reference;
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -154,7 +174,7 @@ namespace DemoGame.Client
 
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
-            // TODO: !! _screenManager.Content.Unload();
+            _screenManager.Content.Unload();
         }
 
         /// <summary>
