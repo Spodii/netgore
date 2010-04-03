@@ -9,12 +9,6 @@ namespace NetGore
     /// </summary>
     public static class IContentManagerExtensions
     {
-        public static T Load<T>(this IContentManager contentManager, ContentAssetName contentAssetName)
-        {
-            // TODO: This is only temporary until I decide how to deal with the ContentLevels
-            return contentManager.Load<T>(contentAssetName, ContentLevel.Global);
-        }
-
         /// <summary>
         /// Loads an asset that has been created through the Content Pipeline.
         /// </summary>

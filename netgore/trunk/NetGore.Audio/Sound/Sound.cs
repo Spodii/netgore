@@ -35,7 +35,7 @@ namespace NetGore.Audio
             _name = r.ReadString(IAudioHelper.FileValueKey);
             _index = new SoundID(r.ReadUShort(IAudioHelper.IndexValueKey));
 
-            _soundEffect = _audioManager.ContentManager.Load<SoundEffect>(AssetName);
+            _soundEffect = _audioManager.ContentManager.Load<SoundEffect>(AssetName, ContentLevel.GameScreen);
         }
 
         /// <summary>

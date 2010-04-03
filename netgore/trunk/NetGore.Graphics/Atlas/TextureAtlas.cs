@@ -26,7 +26,7 @@ namespace NetGore.Graphics
         /// If the found texture size is less than this value, it will be assumed that the found value is wrong and
         /// this value will instead be used.
         /// </summary>
-        const int _minAllowedTextureSize = 512;
+        const int _minAllowedTextureSize = 64;
 
         /// <summary>
         /// Background color of the atlas (not like it matters much as we should never see it unless there is

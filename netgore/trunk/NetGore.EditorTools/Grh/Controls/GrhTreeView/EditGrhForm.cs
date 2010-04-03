@@ -207,7 +207,7 @@ namespace NetGore.EditorTools
                 // Validate the texture
                 try
                 {
-                    cm.Load<Texture2D>("Grh" + DirSep + textureName);
+                    cm.Load<Texture2D>("Grh" + DirSep + textureName, ContentLevel.Map);
                 }
                 catch (Exception ex)
                 {

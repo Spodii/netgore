@@ -34,7 +34,7 @@ namespace NetGore.Audio
             _audioManager = audioManager;
             _name = r.ReadString(IAudioHelper.FileValueKey);
             _index = new MusicID(r.ReadUShort(IAudioHelper.IndexValueKey));
-            _instance = _audioManager.ContentManager.Load<Song>(AssetName);
+            _instance = _audioManager.ContentManager.Load<Song>(AssetName, ContentLevel.GameScreen);
         }
 
         #region IMusic Members

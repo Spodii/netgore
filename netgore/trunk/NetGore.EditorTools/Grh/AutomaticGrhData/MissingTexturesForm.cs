@@ -152,7 +152,7 @@ namespace NetGore.EditorTools
             {
                 NewTxt.BackColor = EditorColors.Normal;
 
-                Texture2D texture = _cm.Load<Texture2D>(assetName);
+                Texture2D texture = _cm.Load<Texture2D>(assetName, ContentLevel.Temporary);
                 int w = texture.Width;
                 int h = texture.Height;
 
