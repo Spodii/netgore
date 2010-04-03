@@ -113,8 +113,8 @@ namespace DemoGame.Client
         {
             IsMouseVisible = true;
 
-            // Try to go for 75 FPS for the update rate
-            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 75);
+            // Try to go for 60 FPS for the update rate
+            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 60);
             IsFixedTimeStep = true;
 
             // Set the graphics settings
