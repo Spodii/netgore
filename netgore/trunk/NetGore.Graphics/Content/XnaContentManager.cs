@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -9,16 +8,28 @@ using Microsoft.Xna.Framework.Content;
 
 namespace NetGore
 {
+    /// <summary>
+    /// <see cref="IContentManager"/> for Xna.
+    /// </summary>
     public class XnaContentManager : IContentManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly StringComparer _stringComp = StringComparer.OrdinalIgnoreCase;
 
         readonly object _assetSync = new object();
+
+        /// <summary>
+        /// The <see cref="ContentManager"/> instance used to load the assets from file. Unfortunately, XNA
+        /// makes it very difficult to do this without a <see cref="ContentManager"/>.
+        /// </summary>
+        readonly ContentManager _cm;
+
         readonly Dictionary<string, object>[] _loadedAssets;
         readonly IServiceProvider _serviceProvider;
+        readonly Dictionary<string, object> _trackedLoads = new Dictionary<string, object>(_stringComp);
 
         bool _isDisposed = false;
+        bool _isTrackingLoads;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XnaContentManager"/> class.
@@ -60,12 +71,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// The <see cref="ContentManager"/> instance used to load the assets from file. Unfortunately, XNA
-        /// makes it very difficult to do this without a <see cref="ContentManager"/>.
-        /// </summary>
-        readonly ContentManager _cm;
-
-        /// <summary>
         /// Changes the <see cref="ContentLevel"/> of an asset. This should only be called from a block
         /// locked by <see cref="_assetSync"/>.
         /// </summary>
@@ -97,21 +102,21 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="XnaContentManager"/> is reclaimed by garbage collection.
-        /// </summary>
-        ~XnaContentManager()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
         /// Disposes of the content manager.
         /// </summary>
         /// <param name="disposeManaged">If false, this was called from the destructor.</param>
         protected virtual void Dispose(bool disposeManaged)
         {
             Unload();
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="XnaContentManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~XnaContentManager()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -151,9 +156,7 @@ namespace NetGore
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
-          
             return _cm.Load<T>(assetName);
-
         }
 
         #region IContentManager Members
@@ -165,6 +168,15 @@ namespace NetGore
         public bool IsDisposed
         {
             get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Gets if <see cref="IContentManager.BeginTrackingLoads"/> has been called and loaded items are being tracked.
+        /// This will be set false when <see cref="IContentManager.EndTrackingLoads"/> is called.
+        /// </summary>
+        public bool IsTrackingLoads
+        {
+            get { return _isTrackingLoads; }
         }
 
         /// <summary>
@@ -183,6 +195,18 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Starts tracking items that are loaded by this <see cref="IContentManager"/>.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"><see cref="IContentManager.IsTrackingLoads"/> is true.</exception>
+        public void BeginTrackingLoads()
+        {
+            if (IsTrackingLoads)
+                throw new InvalidOperationException("IsTrackingLoads must be false.");
+
+            _isTrackingLoads = true;
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
@@ -196,6 +220,35 @@ namespace NetGore
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Gets all of the assets that were loaded since <see cref="IContentManager.BeginTrackingLoads"/> was called.
+        /// Content that was unloaded will still be included in the returned collection.
+        /// </summary>
+        /// <returns>
+        /// All of the assets that were loaded since <see cref="IContentManager.BeginTrackingLoads"/>
+        /// was called.
+        /// </returns>
+        /// <exception cref="InvalidOperationException"><see cref="IContentManager.IsTrackingLoads"/> is false.</exception>
+        public IEnumerable<KeyValuePair<string, object>> EndTrackingLoads()
+        {
+            if (!IsTrackingLoads)
+                throw new InvalidOperationException("IsTrackingLoads must be true.");
+
+            _isTrackingLoads = false;
+
+            var ret = _trackedLoads.ToArray();
+            _trackedLoads.Clear();
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Loads an asset.
+        /// </summary>
+        /// <typeparam name="T">The type of the asset to load.</typeparam>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
+        /// <returns>The loaded asset.</returns>
         public T Load<T>(string assetName, ContentLevel level)
         {
             if (IsDisposed)
@@ -239,7 +292,89 @@ namespace NetGore
                 var asset = ReadAsset<T>(assetName);
                 _loadedAssets[levelInt].Add(assetName, asset);
 
+                if (IsTrackingLoads && !_trackedLoads.ContainsKey(assetName))
+                    _trackedLoads.Add(assetName, asset);
+
                 return asset;
+            }
+        }
+
+        /// <summary>
+        /// Sets the level of an asset.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="level">The new <see cref="ContentLevel"/>.</param>
+        public void SetLevel(string assetName, ContentLevel level)
+        {
+            lock (_assetSync)
+            {
+                object asset;
+                ContentLevel currLevel;
+                if (!IsAssetLoaded(assetName, out asset, out currLevel))
+                    return;
+
+                if (currLevel == level)
+                    return;
+
+                ChangeAssetLevelNoLock(assetName, currLevel, level);
+            }
+        }
+
+        /// <summary>
+        /// Sets the level of an asset only if the specified level is greater than the current level.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="level">The new <see cref="ContentLevel"/>.</param>
+        public void SetLevelMax(string assetName, ContentLevel level)
+        {
+            lock (_assetSync)
+            {
+                object asset;
+                ContentLevel currLevel;
+                if (!IsAssetLoaded(assetName, out asset, out currLevel))
+                    return;
+
+                if (currLevel <= level)
+                    return;
+
+                ChangeAssetLevelNoLock(assetName, currLevel, level);
+            }
+        }
+
+        /// <summary>
+        /// Sets the level of an asset only if the specified level is lower than the current level.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="level">The new <see cref="ContentLevel"/>.</param>
+        public void SetLevelMin(string assetName, ContentLevel level)
+        {
+            lock (_assetSync)
+            {
+                object asset;
+                ContentLevel currLevel;
+                if (!IsAssetLoaded(assetName, out asset, out currLevel))
+                    return;
+
+                if (currLevel >= level)
+                    return;
+
+                ChangeAssetLevelNoLock(assetName, currLevel, level);
+            }
+        }
+
+        /// <summary>
+        /// Gets the content level of an asset.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="level">When this method returns true, contains the <see cref="ContentLevel"/>
+        /// of the asset.</param>
+        /// <returns>True if the asset was found; otherwise false.</returns>
+        public bool TryGetContentLevel(string assetName, out ContentLevel level)
+        {
+            lock (_assetSync)
+            {
+                object o;
+                return IsAssetLoaded(assetName, out o, out level);
             }
         }
 
