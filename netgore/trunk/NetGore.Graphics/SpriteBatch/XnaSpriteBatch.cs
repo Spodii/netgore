@@ -22,6 +22,22 @@ namespace NetGore.Graphics
             _sb = new SpriteBatch(graphicsDevice);
         }
 
+        protected static bool IsAssetValid(GraphicsResource texture)
+        {
+            if (texture == null || texture.IsDisposed)
+                return false;
+
+            return true;
+        }
+
+        protected static bool IsAssetValid(SpriteFont sf)
+        {
+            if (sf == null)
+                return false;
+
+            return true;
+        }
+
         #region ISpriteBatch Members
 
         /// <summary>
@@ -79,6 +95,8 @@ namespace NetGore.Graphics
                                   Matrix transformMatrix)
         {
             _sb.Begin(blendMode, sortMode, stateMode, transformMatrix);
+
+            XnaContentManager.DoNotUnload = true;
         }
 
         /// <summary>
@@ -91,6 +109,8 @@ namespace NetGore.Graphics
         public virtual void Begin(SpriteBlendMode blendMode, SpriteSortMode sortMode, SaveStateMode stateMode)
         {
             _sb.Begin(blendMode, sortMode, stateMode);
+
+            XnaContentManager.DoNotUnload = true;
         }
 
         /// <summary>
@@ -101,6 +121,8 @@ namespace NetGore.Graphics
         public virtual void Begin(SpriteBlendMode blendMode)
         {
             _sb.Begin(blendMode);
+
+            XnaContentManager.DoNotUnload = true;
         }
 
         /// <summary>
@@ -110,6 +132,8 @@ namespace NetGore.Graphics
         public virtual void Begin()
         {
             _sb.Begin();
+
+            XnaContentManager.DoNotUnload = true;
         }
 
         /// <summary>
@@ -140,6 +164,9 @@ namespace NetGore.Graphics
         public virtual void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color,
                                  float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
         {
+            if (!IsAssetValid(texture))
+                return;
+
             _sb.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
         }
 
@@ -156,6 +183,9 @@ namespace NetGore.Graphics
         /// no tinting.</param>
         public virtual void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color)
         {
+            if (!IsAssetValid(texture))
+                return;
+
             _sb.Draw(texture, destinationRectangle, sourceRectangle, color);
         }
 
@@ -170,6 +200,9 @@ namespace NetGore.Graphics
         /// no tinting.</param>
         public virtual void Draw(Texture2D texture, Rectangle destinationRectangle, Color color)
         {
+            if (!IsAssetValid(texture))
+                return;
+
             _sb.Draw(texture, destinationRectangle, color);
         }
 
@@ -193,6 +226,9 @@ namespace NetGore.Graphics
         public virtual void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
                                  Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
         {
+            if (!IsAssetValid(texture))
+                return;
+
             _sb.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
         }
 
@@ -216,6 +252,9 @@ namespace NetGore.Graphics
         public virtual void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
                                  Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
         {
+            if (!IsAssetValid(texture))
+                return;
+
             _sb.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
         }
 
@@ -231,6 +270,9 @@ namespace NetGore.Graphics
         /// no tinting.</param>
         public virtual void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color)
         {
+            if (!IsAssetValid(texture))
+                return;
+
             _sb.Draw(texture, position, sourceRectangle, color);
         }
 
@@ -244,6 +286,9 @@ namespace NetGore.Graphics
         /// no tinting.</param>
         public virtual void Draw(Texture2D texture, Vector2 position, Color color)
         {
+            if (!IsAssetValid(texture))
+                return;
+
             _sb.Draw(texture, position, color);
         }
 
@@ -263,6 +308,9 @@ namespace NetGore.Graphics
         public virtual void DrawString(SpriteFont spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
                                        Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
         {
+            if (!IsAssetValid(spriteFont))
+                return;
+
             _sb.DrawString(spriteFont, text, position, color, rotation, origin, scale, effects, layerDepth);
         }
 
@@ -282,6 +330,9 @@ namespace NetGore.Graphics
         public virtual void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation,
                                        Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
         {
+            if (!IsAssetValid(spriteFont))
+                return;
+
             _sb.DrawString(spriteFont, text, position, color, rotation, origin, scale, effects, layerDepth);
         }
 
@@ -301,6 +352,9 @@ namespace NetGore.Graphics
         public virtual void DrawString(SpriteFont spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
                                        Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
         {
+            if (!IsAssetValid(spriteFont))
+                return;
+
             _sb.DrawString(spriteFont, text, position, color, rotation, origin, scale, effects, layerDepth);
         }
 
@@ -320,6 +374,9 @@ namespace NetGore.Graphics
         public virtual void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation,
                                        Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
         {
+            if (!IsAssetValid(spriteFont))
+                return;
+
             _sb.DrawString(spriteFont, text, position, color, rotation, origin, scale, effects, layerDepth);
         }
 
@@ -333,6 +390,9 @@ namespace NetGore.Graphics
         /// <param name="color">The desired color of the text.</param>
         public virtual void DrawString(SpriteFont spriteFont, StringBuilder text, Vector2 position, Color color)
         {
+            if (!IsAssetValid(spriteFont))
+                return;
+
             _sb.DrawString(spriteFont, text, position, color);
         }
 
@@ -346,6 +406,9 @@ namespace NetGore.Graphics
         /// <param name="color">The desired color of the text.</param>
         public virtual void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color)
         {
+            if (!IsAssetValid(spriteFont))
+                return;
+
             _sb.DrawString(spriteFont, text, position, color);
         }
 
@@ -355,6 +418,8 @@ namespace NetGore.Graphics
         public virtual void End()
         {
             _sb.End();
+
+            XnaContentManager.DoNotUnload = false;
         }
 
         #endregion

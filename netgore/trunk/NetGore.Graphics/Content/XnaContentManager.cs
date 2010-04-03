@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,6 +24,20 @@ namespace NetGore
         /// makes it very difficult to do this without a <see cref="ContentManager"/>.
         /// </summary>
         readonly ContentManager _cm;
+
+        /// <summary>
+        /// Contains the internal <see cref="IDictionary"/> in the <see cref="_cm"/>.
+        /// This is cleared every time the <see cref="_cm"/> loads an asset to remove record that the asset was
+        /// loaded since we only use the <see cref="ContentManager"/> for loading (not management).
+        /// </summary>
+        readonly IDictionary _cmLoadedAssetsDict;
+
+        /// <summary>
+        /// Contains the internal <see cref="IList"/> in the <see cref="_cm"/>.
+        /// This is cleared every time the <see cref="_cm"/> loads an asset to remove record that the asset was
+        /// loaded since we only use the <see cref="ContentManager"/> for loading (not management).
+        /// </summary>
+        readonly IList _cmDisposableAssets;
 
         readonly Dictionary<string, object>[] _loadedAssets;
         readonly IServiceProvider _serviceProvider;
@@ -57,6 +72,10 @@ namespace NetGore
 
             _cm = new ContentManager(serviceProvider, rootDir);
 
+            const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField;
+            _cmLoadedAssetsDict = (IDictionary)typeof(ContentManager).GetField("loadedAssets", flags).GetValue(_cm);
+            _cmDisposableAssets = (IList)typeof(ContentManager).GetField("disposableAssets", flags).GetValue(_cm);
+
             _serviceProvider = serviceProvider;
             RootDirectory = rootDir;
 
@@ -68,6 +87,19 @@ namespace NetGore
             {
                 _loadedAssets[i] = new Dictionary<string, object>(_stringComp);
             }
+
+            DoNotUploadSetFalse += XnaContentManager_DoNotUploadSetFalse;
+        }
+
+        /// <summary>
+        /// Handles the DoNotUploadSetFalse event of the XnaContentManager control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void XnaContentManager_DoNotUploadSetFalse(object sender, EventArgs e)
+        {
+            if (_queuedUnloadLevel != null)
+                DoUnload(_queuedUnloadLevel.Value);
         }
 
         /// <summary>
@@ -107,6 +139,7 @@ namespace NetGore
         /// <param name="disposeManaged">If false, this was called from the destructor.</param>
         protected virtual void Dispose(bool disposeManaged)
         {
+            DoNotUploadSetFalse -= XnaContentManager_DoNotUploadSetFalse;
             Unload();
         }
 
@@ -156,7 +189,14 @@ namespace NetGore
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
-            return _cm.Load<T>(assetName);
+            // Load through the ContentManager
+            var ret = _cm.Load<T>(assetName);
+
+            // Clear the ContentManager's internal collections
+            _cmLoadedAssetsDict.Clear();
+            _cmDisposableAssets.Clear();
+
+            return ret;
         }
 
         #region IContentManager Members
@@ -385,14 +425,13 @@ namespace NetGore
         {
             if (IsDisposed)
                 return;
+
+            Unload(ContentLevel.Global);
         }
 
-        /// <summary>
-        /// Unloads all content from the specified <see cref="ContentLevel"/>, and all levels
-        /// below that level.
-        /// </summary>
-        /// <param name="level">The level of the content to unload.</param>
-        public void Unload(ContentLevel level)
+        ContentLevel? _queuedUnloadLevel = null;
+
+        void DoUnload(ContentLevel level)
         {
             lock (_assetSync)
             {
@@ -415,7 +454,53 @@ namespace NetGore
                         dic.Clear();
                     }
                 }
+
+                _queuedUnloadLevel = null;
             }
+        }
+
+        static bool _doNotUnload;
+
+        /// <summary>
+        /// Notifies listeners when <see cref="DoNotUnload"/> is set from true to false.
+        /// </summary>
+        static private event EventHandler DoNotUploadSetFalse;
+
+        /// <summary>
+        /// Gets or sets if <see cref="XnaContentManager.Unload()"/> must queue unload calls.
+        /// </summary>
+        static internal bool DoNotUnload
+        {
+            get
+            {
+                return _doNotUnload;
+            }
+            set
+            {
+                if (_doNotUnload == value)
+                    return;
+
+                _doNotUnload = value;
+
+                if (!_doNotUnload)
+                {
+                    if (DoNotUploadSetFalse != null)
+                        DoNotUploadSetFalse(null, EventArgs.Empty);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unloads all content from the specified <see cref="ContentLevel"/>, and all levels
+        /// below that level.
+        /// </summary>
+        /// <param name="level">The level of the content to unload.</param>
+        public void Unload(ContentLevel level)
+        {
+            if (DoNotUnload)
+                _queuedUnloadLevel = level;
+            else
+                DoUnload(level);
         }
 
         #endregion

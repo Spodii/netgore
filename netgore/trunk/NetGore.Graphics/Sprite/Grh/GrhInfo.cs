@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -29,6 +28,8 @@ namespace NetGore.Graphics
         /// <see cref="SpriteCategory"/>.
         /// </summary>
         static readonly Dictionary<SpriteCategory, Dictionary<SpriteTitle, GrhData>> _catDic;
+
+        static Func<GrhData, ContentLevel> _contentLevelDecider = DefaultContentLevelDecider;
 
         /// <summary>
         /// List of all the <see cref="GrhData"/> where the array index is the <see cref="GrhIndex"/>.
@@ -69,6 +70,19 @@ namespace NetGore.Graphics
         /// Notifies listeners when a <see cref="GrhData"/> has been removed.
         /// </summary>
         public static event GrhDataEventHandler Removed;
+
+        /// <summary>
+        /// Gets or sets a <see cref="Func{T,U}"/> used to determine the <see cref="ContentLevel"/>
+        /// for a <see cref="GrhData"/>. This value should be set before calling <see cref="GrhInfo.Load"/>
+        /// for best results.
+        /// </summary>
+        public static Func<GrhData, ContentLevel> ContentLevelDecider
+        {
+            get { return _contentLevelDecider; }
+            set {
+                _contentLevelDecider = value ?? DefaultContentLevelDecider;
+            }
+        }
 
         /// <summary>
         /// Gets an IEnumerable of all of the <see cref="GrhData"/>s.
@@ -241,6 +255,16 @@ namespace NetGore.Graphics
 
             AddGrhData(gd);
             return gd;
+        }
+
+        /// <summary>
+        /// Decides the <see cref="ContentLevel"/> to use for <see cref="GrhData"/>s.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/> to get the <see cref="ContentLevel"/> for.</param>
+        /// <returns>The <see cref="ContentLevel"/> for the <paramref name="grhData"/>.</returns>
+        static ContentLevel DefaultContentLevelDecider(GrhData grhData)
+        {
+            return ContentLevel.Map;
         }
 
         /// <summary>

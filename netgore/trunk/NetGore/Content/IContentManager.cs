@@ -54,6 +54,7 @@ namespace NetGore
 
         /// <summary>
         /// Sets the level of an asset only if the specified level is lower than the current level.
+        /// A lower <see cref="ContentLevel"/> unloads less frequently.
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>
@@ -61,6 +62,7 @@ namespace NetGore
 
         /// <summary>
         /// Sets the level of an asset only if the specified level is greater than the current level.
+        /// A lower <see cref="ContentLevel"/> unloads less frequently.
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>

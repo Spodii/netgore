@@ -110,7 +110,7 @@ namespace NetGore.Graphics.GUI
         protected override void LoadContent()
         {
             // Read the global content used between screens
-            _menuFont = _content.Load<SpriteFont>("Font/Menu");
+            _menuFont = _content.Load<SpriteFont>("Font/Menu", ContentLevel.Global);
 
             // Tell the other screens to load their content, too
             foreach (var screen in _screens.Values)
@@ -182,8 +182,13 @@ namespace NetGore.Graphics.GUI
                     throw new ArgumentException(string.Format(errmsg, value), "value");
                 }
 
+                if (value == ActiveScreen)
+                    return;
+
                 var lastScreen = _activeScreen;
                 _activeScreen = value;
+
+                Content.Unload(ContentLevel.Global);
 
                 if (_activeScreen != null)
                     _activeScreen.Activate();
@@ -297,7 +302,7 @@ namespace NetGore.Graphics.GUI
         /// </returns>
         public IGUIManager CreateGUIManager(string fontAssetName)
         {
-            var font = Content.Load<SpriteFont>(fontAssetName);
+            var font = Content.Load<SpriteFont>(fontAssetName, ContentLevel.Global);
             return CreateGUIManager(font);
         }
 

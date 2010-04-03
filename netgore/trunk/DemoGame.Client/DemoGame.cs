@@ -5,6 +5,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -139,16 +140,42 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Decides the <see cref="ContentLevel"/> to use for <see cref="GrhData"/>s.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/> to get the <see cref="ContentLevel"/> for.</param>
+        /// <returns>The <see cref="ContentLevel"/> for the <paramref name="grhData"/>.</returns>
+        static ContentLevel ContentLevelDecider(GrhData grhData)
+        {
+            const StringComparison comp = StringComparison.OrdinalIgnoreCase;
+
+            string cat = grhData.Categorization.Category.ToString();
+
+            // For stuff that will be put into a global atlas, use the temporary level
+            if (cat.StartsWith("gui", comp))
+                return ContentLevel.Temporary;
+
+            // For stuff in the map category, use Map
+            if (cat.StartsWith("map", comp))
+                return ContentLevel.Map;
+
+            // Everything else, return global
+            return ContentLevel.Global;
+        }
+
+        /// <summary>
         /// Loads the GrhInfo and places them in atlases based on their category
         /// </summary>
         void LoadGrhInfo()
         {
+            GrhInfo.ContentLevelDecider = ContentLevelDecider;
+
             // Read the Grh info, using the MapContent for the ContentManager since all
             // but the map GrhDatas should end up in an atlas. For anything that does not
             // end up in an atlas, this will provide them a way to load still.
             GrhInfo.Load(ContentPaths.Build, _screenManager.Content);
 
             // Organize the GrhDatas for the atlases
+            /*
             var gdChars = new List<ITextureAtlasable>();
             var gdGUI = new List<ITextureAtlasable>();
             foreach (var gd in GrhInfo.GrhDatas.SelectMany(x => x.Frames).Distinct())
@@ -169,8 +196,11 @@ namespace DemoGame.Client
 
             if (gdGUI.Count > 0)
                 globalAtlasesList.Add(new TextureAtlas(GraphicsDevice, gdGUI));
-
+            
             _globalAtlases = globalAtlasesList.ToArray();
+            */
+            // NOTE: !! TEMP
+            _globalAtlases = new TextureAtlas[0];
 
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process

@@ -24,43 +24,23 @@ namespace NetGore.Graphics
         const string _textureNodeName = "Texture";
         const string _textureSourceValueKey = "Source";
 
-        /// <summary>
-        /// Gets the timeout in milliseconds to wait before trying to load a texture again.
-        /// </summary>
-        /// <param name="failedLoadAttempts">The number of times the texture has failed to load.</param>
-        /// <returns>The timeout in milliseconds to wait before trying to load a texture again.</returns>
-        static int GetLoadTextureTimeout(int failedLoadAttempts)
-        {
-            // If 8 or more failed attempts, it is almost definite this texture isn't loading. However,
-            // we will allow it to retry after 30 seconds... just in case it magically starts working again.
-            if (failedLoadAttempts >= 8)
-                return 1000 * 30;
-
-            // Set the base delay to half a second, so we always wait at least half a second to try again
-            int delay = 500;
-
-            // If 3 or more failed load attempts, each failure results in another second being added
-            if (failedLoadAttempts >= 3)
-                delay += failedLoadAttempts * 1000;
-
-            return delay;
-        }
-
         readonly IContentManager _cm;
+
+        Rectangle _atlasSourceRect;
+        bool _automaticSize = false;
 
         /// <summary>
         /// How many times the texture has failed to load in a row.
         /// </summary>
         byte _failedLoadAttempts = 0;
 
+        bool _isUsingAtlas = false;
+
         /// <summary>
         /// The current time must be greater than or equal to this value for the texture to allow retrying to reload.
         /// </summary>
         int _nextLoadAttemptTime = int.MinValue;
 
-        Rectangle _atlasSourceRect;
-        bool _automaticSize = false;
-        bool _isUsingAtlas = false;
         Rectangle _sourceRect;
         Texture2D _texture;
         TextureAssetName _textureName;
@@ -73,8 +53,7 @@ namespace NetGore.Graphics
         /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
-        public StationaryGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
-            : base(grhIndex, cat)
+        public StationaryGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             _cm = cm;
             AutomaticSize = true;
@@ -102,8 +81,7 @@ namespace NetGore.Graphics
         /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
-        StationaryGrhData(IValueReader r, IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
-            : base(grhIndex, cat)
+        StationaryGrhData(IValueReader r, IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             _cm = cm;
 
@@ -210,6 +188,9 @@ namespace NetGore.Graphics
             }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets the size of the <see cref="GrhData"/>'s sprite in pixels.
+        /// </summary>
         public override Vector2 Size
         {
             get { return new Vector2(_sourceRect.Width, _sourceRect.Height); }
@@ -341,6 +322,28 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the timeout in milliseconds to wait before trying to load a texture again.
+        /// </summary>
+        /// <param name="failedLoadAttempts">The number of times the texture has failed to load.</param>
+        /// <returns>The timeout in milliseconds to wait before trying to load a texture again.</returns>
+        static int GetLoadTextureTimeout(int failedLoadAttempts)
+        {
+            // If 8 or more failed attempts, it is almost definite this texture isn't loading. However,
+            // we will allow it to retry after 30 seconds... just in case it magically starts working again.
+            if (failedLoadAttempts >= 8)
+                return 1000 * 30;
+
+            // Set the base delay to half a second, so we always wait at least half a second to try again
+            int delay = 500;
+
+            // If 3 or more failed load attempts, each failure results in another second being added
+            if (failedLoadAttempts >= 3)
+                delay += failedLoadAttempts * 1000;
+
+            return delay;
+        }
+
+        /// <summary>
         /// Gets the original source rectangle, bypassing any applied atlas
         /// </summary>
         public Rectangle GetOriginalSource()
@@ -382,7 +385,7 @@ namespace NetGore.Graphics
             const string errmsg = "Failed to load texture `{0}` for GrhData `{1}`: {2}";
             try
             {
-                _texture = _cm.Load<Texture2D>(_textureName);
+                _texture = _cm.Load<Texture2D>(_textureName, GrhInfo.ContentLevelDecider(this));
             }
             catch (ContentLoadException ex)
             {
@@ -398,7 +401,7 @@ namespace NetGore.Graphics
 
             // Update the failed loading information if the texture failed to load, or clear it if the texture
             // is valid
-            if (_texture != null)
+            if (_texture != null && !_texture.IsDisposed)
             {
                 _failedLoadAttempts = 0;
                 _nextLoadAttemptTime = int.MinValue;

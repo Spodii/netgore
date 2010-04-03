@@ -373,7 +373,7 @@ namespace DemoGame.Client
         /// </summary>
         void InitializeGUI()
         {
-            _guiFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
+            _guiFont = ScreenManager.Content.Load<SpriteFont>("Font/Game", ContentLevel.Global);
             GUIManager.Font = _guiFont;
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
@@ -474,7 +474,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void LoadContent()
         {
-            _damageFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
+            _damageFont = ScreenManager.Content.Load<SpriteFont>("Font/Game", ContentLevel.Global);
         }
 
         void OnDisconnect(SocketManager sender, IIPSocket conn)
