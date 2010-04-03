@@ -4,11 +4,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.IO;
-using NetGore;
 
 namespace NetGore.EditorTools
 {

@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using log4net;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -58,8 +57,7 @@ namespace NetGore.Graphics
         /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
-        internal AutomaticAnimatedGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
-            : base(grhIndex, cat)
+        internal AutomaticAnimatedGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
         {
             var framesDir = GetFramesDirectory();
             if (framesDir == null)

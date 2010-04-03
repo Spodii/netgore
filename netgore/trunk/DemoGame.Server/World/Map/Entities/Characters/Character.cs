@@ -23,7 +23,8 @@ namespace DemoGame.Server
     /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
-    public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference, IServerSaveable
+    public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable, IUpdateableMapReference,
+                                      IServerSaveable
     {
         /// <summary>
         /// Delegate for handling an event from a <see cref="Character"/>.

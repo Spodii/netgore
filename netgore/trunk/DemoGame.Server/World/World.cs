@@ -34,15 +34,6 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
-        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
-        /// </summary>
-        public void ServerSave()
-        {
-            foreach (var map in Maps)
-                map.ServerSave();
-        }
-
-        /// <summary>
         /// The time that <see cref="User.SynchronizeExtraUserInformation"/> will be called next.
         /// </summary>
         int _syncExtraUserInfoTime = int.MinValue;
@@ -465,6 +456,21 @@ namespace DemoGame.Server
 
             // Process the dispose stack again, just in case disposing other stuff added to it
             ProcessDisposeStack();
+        }
+
+        #endregion
+
+        #region IServerSaveable Members
+
+        /// <summary>
+        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
+        /// </summary>
+        public void ServerSave()
+        {
+            foreach (var map in Maps)
+            {
+                map.ServerSave();
+            }
         }
 
         #endregion

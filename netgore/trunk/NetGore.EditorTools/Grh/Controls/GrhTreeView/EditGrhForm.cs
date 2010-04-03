@@ -15,6 +15,12 @@ namespace NetGore.EditorTools
 {
     public partial class EditGrhForm : Form
     {
+        /// <summary>
+        /// The percent of the screen to use as padding around the item veing viewed. This way the item doesn't
+        /// actually stretch all the way out to the sides.
+        /// </summary>
+        const float _defaultViewPaddingPercent = 0.05f;
+
         static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
 
         /// <summary>
@@ -85,10 +91,12 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// The percent of the screen to use as padding around the item veing viewed. This way the item doesn't
-        /// actually stretch all the way out to the sides.
+        /// Gets the <see cref="WallEntityBase"/>s that are bound to the <see cref="GrhData"/> being edited.
         /// </summary>
-        const float _defaultViewPaddingPercent = 0.05f;
+        public IEnumerable<WallEntityBase> BoundWalls
+        {
+            get { return lstWalls.Items.OfType<WallEntityBase>(); }
+        }
 
         public ICamera2D Camera
         {
@@ -114,9 +122,18 @@ namespace NetGore.EditorTools
         public bool WasCanceled { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="WallEntityBase"/>s that are bound to the <see cref="GrhData"/> being edited.
+        /// Handles when one of the bound walls have changed.
         /// </summary>
-        public IEnumerable<WallEntityBase> BoundWalls { get { return lstWalls.Items.OfType<WallEntityBase>(); } }
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The event args.</param>
+        void BoundWallChanged(ISpatial sender, Vector2 e)
+        {
+            var index = lstWalls.Items.IndexOf(sender);
+            if (index < 0)
+                return;
+
+            lstWalls.RefreshItemAt(index);
+        }
 
         void btnAccept_Click(object sender, EventArgs e)
         {
@@ -420,20 +437,6 @@ namespace NetGore.EditorTools
                     wall.Resized += BoundWallChanged;
                 }
             }
-        }
-
-        /// <summary>
-        /// Handles when one of the bound walls have changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event args.</param>
-        void BoundWallChanged(ISpatial sender, Vector2 e)
-        {
-            var index = lstWalls.Items.IndexOf(sender);
-            if (index < 0)
-                return;
-
-            lstWalls.RefreshItemAt(index);
         }
 
         void ShowGrhInfoForAnimated(GrhData grhData)

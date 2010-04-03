@@ -28,7 +28,27 @@ namespace DemoGame.Server
         public delegate void ItemEntityEventHandler(ItemEntity itemEntity);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
- 
+
+        /// <summary>
+        /// The <see cref="DeleteItemQuery"/> instance to use.
+        /// </summary>
+        static readonly DeleteItemQuery _queryDeleteItem;
+
+        /// <summary>
+        /// The <see cref="ItemIDCreator"/> instance to use.
+        /// </summary>
+        static readonly ItemIDCreator _queryIDCreator;
+
+        /// <summary>
+        /// The <see cref="ReplaceItemQuery"/> instance to use.
+        /// </summary>
+        static readonly ReplaceItemQuery _queryReplaceItem;
+
+        /// <summary>
+        /// The <see cref="UpdateItemFieldQuery"/> instance to use.
+        /// </summary>
+        static readonly UpdateItemFieldQuery _queryUpdateItemField;
+
         readonly StatCollection<StatType> _baseStats;
         readonly ItemID _id;
         readonly StatCollection<StatType> _reqStats;
@@ -45,26 +65,6 @@ namespace DemoGame.Server
         ItemType _type;
         int _value;
         WeaponType _weaponType;
-
-        /// <summary>
-        /// The <see cref="UpdateItemFieldQuery"/> instance to use.
-        /// </summary>
-        static readonly UpdateItemFieldQuery _queryUpdateItemField;
-
-        /// <summary>
-        /// The <see cref="ReplaceItemQuery"/> instance to use.
-        /// </summary>
-        static readonly ReplaceItemQuery _queryReplaceItem;
-
-        /// <summary>
-        /// The <see cref="ItemIDCreator"/> instance to use.
-        /// </summary>
-        static readonly ItemIDCreator _queryIDCreator;
-
-        /// <summary>
-        /// The <see cref="DeleteItemQuery"/> instance to use.
-        /// </summary>
-        static readonly DeleteItemQuery _queryDeleteItem;
 
         /// <summary>
         /// Initializes the <see cref="ItemEntity"/> class.

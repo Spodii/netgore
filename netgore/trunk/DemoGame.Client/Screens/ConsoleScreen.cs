@@ -7,6 +7,7 @@ using log4net.Core;
 using log4net.Filter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
@@ -95,7 +96,7 @@ namespace DemoGame.Client
             BasicConfigurator.Configure(_logger);
             ScreenManager.Updated += ScreenManager_Updated;
 
-            _consoleFont = ScreenManager.Content.Load<SpriteFont>("Font/Console", NetGore.ContentLevel.GameScreen);
+            _consoleFont = ScreenManager.Content.Load<SpriteFont>("Font/Console", ContentLevel.GameScreen);
 
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 

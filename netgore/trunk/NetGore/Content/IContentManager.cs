@@ -15,6 +15,12 @@ namespace NetGore
         bool IsDisposed { get; }
 
         /// <summary>
+        /// Gets if <see cref="IContentManager.BeginTrackingLoads"/> has been called and loaded items are being tracked.
+        /// This will be set false when <see cref="IContentManager.EndTrackingLoads"/> is called.
+        /// </summary>
+        bool IsTrackingLoads { get; }
+
+        /// <summary>
         /// Gets or sets the root directory.
         /// </summary>
         string RootDirectory { get; set; }
@@ -31,12 +37,6 @@ namespace NetGore
         void BeginTrackingLoads();
 
         /// <summary>
-        /// Gets if <see cref="IContentManager.BeginTrackingLoads"/> has been called and loaded items are being tracked.
-        /// This will be set false when <see cref="IContentManager.EndTrackingLoads"/> is called.
-        /// </summary>
-        bool IsTrackingLoads { get; }
-
-        /// <summary>
         /// Gets all of the assets that were loaded since <see cref="IContentManager.BeginTrackingLoads"/> was called.
         /// Content that was unloaded will still be included in the returned collection.
         /// </summary>
@@ -46,19 +46,20 @@ namespace NetGore
         IEnumerable<KeyValuePair<string, object>> EndTrackingLoads();
 
         /// <summary>
+        /// Loads an asset.
+        /// </summary>
+        /// <typeparam name="T">The type of the asset to load.</typeparam>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
+        /// <returns>The loaded asset.</returns>
+        T Load<T>(string assetName, ContentLevel level);
+
+        /// <summary>
         /// Sets the level of an asset.
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>
         void SetLevel(string assetName, ContentLevel level);
-
-        /// <summary>
-        /// Sets the level of an asset only if the specified level is lower than the current level.
-        /// A lower <see cref="ContentLevel"/> unloads less frequently.
-        /// </summary>
-        /// <param name="assetName">The name of the asset.</param>
-        /// <param name="level">The new <see cref="ContentLevel"/>.</param>
-        void SetLevelMin(string assetName, ContentLevel level);
 
         /// <summary>
         /// Sets the level of an asset only if the specified level is greater than the current level.
@@ -69,6 +70,14 @@ namespace NetGore
         void SetLevelMax(string assetName, ContentLevel level);
 
         /// <summary>
+        /// Sets the level of an asset only if the specified level is lower than the current level.
+        /// A lower <see cref="ContentLevel"/> unloads less frequently.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="level">The new <see cref="ContentLevel"/>.</param>
+        void SetLevelMin(string assetName, ContentLevel level);
+
+        /// <summary>
         /// Gets the content level of an asset.
         /// </summary>
         /// <param name="assetName">The name of the asset.</param>
@@ -76,15 +85,6 @@ namespace NetGore
         /// of the asset.</param>
         /// <returns>True if the asset was found; otherwise false.</returns>
         bool TryGetContentLevel(string assetName, out ContentLevel level);
-
-        /// <summary>
-        /// Loads an asset.
-        /// </summary>
-        /// <typeparam name="T">The type of the asset to load.</typeparam>
-        /// <param name="assetName">The name of the asset.</param>
-        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
-        /// <returns>The loaded asset.</returns>
-        T Load<T>(string assetName, ContentLevel level);
 
         /// <summary>
         /// Unloads all content from all levels.

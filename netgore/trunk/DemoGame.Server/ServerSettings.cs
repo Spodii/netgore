@@ -20,35 +20,14 @@ namespace DemoGame.Server
         public const bool AllowRemoteConnections = false;
 
         /// <summary>
-        /// Millisecond rate at which the server updates. The server update rate does not affect the rate
-        /// at which physics is update, so modifying the update rate will not affect the game
-        /// speed. Server update rate is used to determine how frequently the server checks
-        /// for performing updates and how long it is able to "sleep". It is recommended
-        /// a high update rate is used to allow for more precise updating.
+        /// The amount of time an item may remain on the map before it is removed automatically.
         /// </summary>
-        public const int ServerUpdateRate = 10; // 100 FPS
-
-        /// <summary>
-        /// How frequently, in milliseconds, that the server will save the world state. The lower this value, the less
-        /// the server will "roll-back" when it crashes. World saves can be expensive since it is done all at once,
-        /// so it is recommended to keep this value relatively high unless you are experiencing frequently crashes.
-        /// </summary>
-        public const int RoutineServerSaveRate = 1000 * 60 * 60 * 10; // 10 minutes
+        public const int DefaultMapItemLife = 1000 * 60 * 3;
 
         /// <summary>
         /// The minimum number of milliseconds a connection should be inactive to be considered dead.
         /// </summary>
         public const int InactiveConnectionTimeOut = 20000;
-
-        /// <summary>
-        /// The number of milliseconds to wait before checking for inactive connections to remove.
-        /// </summary>
-        public const int RemoveInactiveConnectionsRate = 60000;
-
-        /// <summary>
-        /// The amount of time an item may remain on the map before it is removed automatically.
-        /// </summary>
-        public const int DefaultMapItemLife = 1000 * 60 * 3;
 
         /// <summary>
         /// The minimum amount of time in milliseconds that may elapse between checks for expired items.
@@ -65,11 +44,32 @@ namespace DemoGame.Server
         public const float MaxGroupShareDistance = 1000;
 
         /// <summary>
+        /// The number of milliseconds to wait before checking for inactive connections to remove.
+        /// </summary>
+        public const int RemoveInactiveConnectionsRate = 60000;
+
+        /// <summary>
         /// How often, in milliseconds, to wait between check to respawn <see cref="IRespawnable"/> entities.
         /// Lower values will result in <see cref="IRespawnable"/>s respawning closer to their desired time, but
         /// will require more overhead.
         /// </summary>
         public const int RespawnablesUpdateRate = 800;
+
+        /// <summary>
+        /// How frequently, in milliseconds, that the server will save the world state. The lower this value, the less
+        /// the server will "roll-back" when it crashes. World saves can be expensive since it is done all at once,
+        /// so it is recommended to keep this value relatively high unless you are experiencing frequently crashes.
+        /// </summary>
+        public const int RoutineServerSaveRate = 1000 * 60 * 60 * 10; // 10 minutes
+
+        /// <summary>
+        /// Millisecond rate at which the server updates. The server update rate does not affect the rate
+        /// at which physics is update, so modifying the update rate will not affect the game
+        /// speed. Server update rate is used to determine how frequently the server checks
+        /// for performing updates and how long it is able to "sleep". It is recommended
+        /// a high update rate is used to allow for more precise updating.
+        /// </summary>
+        public const int ServerUpdateRate = 10; // 100 FPS
 
         /// <summary>
         /// How often, in milliseconds, to wait between calls to <see cref="User.SynchronizeExtraUserInformation"/>.

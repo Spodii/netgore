@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Content;
 using NetGore.Audio;
 
 namespace NetGore.EditorTools

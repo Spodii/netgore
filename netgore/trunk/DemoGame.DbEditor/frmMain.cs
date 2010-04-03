@@ -8,7 +8,6 @@ using DemoGame.DbObjs;
 using DemoGame.EditorTools;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Db;
