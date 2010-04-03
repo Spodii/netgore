@@ -20,9 +20,9 @@ namespace NetGore.Graphics.GUI
         readonly List<Control> _controls = new List<Control>(2);
         readonly ISkinManager _skinManager;
         readonly Tooltip _tooltip;
+
         IDragDropProvider _draggedDragDropProvider;
         IDragDropProvider _dropOntoControl;
-
         Control _focusedControl = null;
         bool _isKeysDownSet = false;
         bool _isKeysUpSet = false;

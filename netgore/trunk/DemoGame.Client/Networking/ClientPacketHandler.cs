@@ -679,7 +679,7 @@ namespace DemoGame.Client
             World.Map = newMap;
 
             // Unload all map content from the previous map and from the new map loading
-            GameplayScreen.ScreenManager.MapContent.Unload();
+            GameplayScreen.ScreenManager.Content.Unload(ContentLevel.Map);
 
             // Change the screens, if needed
             GameplayScreen.ScreenManager.SetScreen(GameplayScreen.ScreenName);

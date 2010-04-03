@@ -196,7 +196,7 @@ namespace NetGore.EditorTools
                 }
 
                 // Stationary
-                ContentManager cm = gdStationary.ContentManager;
+                var cm = gdStationary.ContentManager;
                 int x = Parser.Current.ParseInt(txtX.Text);
                 int y = Parser.Current.ParseInt(txtY.Text);
                 int w = Parser.Current.ParseInt(txtW.Text);

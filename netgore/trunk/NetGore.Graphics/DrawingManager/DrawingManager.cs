@@ -98,6 +98,7 @@ namespace NetGore.Graphics
                     log.ErrorFormat(errmsg, ex);
 
                 _state = DrawingManagerState.Idle;
+
                 return null;
             }
 

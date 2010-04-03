@@ -101,7 +101,6 @@
     <Compile Include="Exceptions\ParticleEmitterLoadParticleModifierException.cs" />
     <Compile Include="Exceptions\ParticleEmitterNotFoundException.cs" />
     <Compile Include="Exceptions\UnsupportedGrhDataTypeException.cs" />
-    <Compile Include="Extensions\ContentManagerExtensions.cs" />
     <Compile Include="Exceptions\GrhDataException.cs" />
     <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
     <Compile Include="Drawing Tools\FocusedSpatialDrawer.cs" />
@@ -240,6 +239,7 @@
     <Compile Include="Sprite\Sprite.cs" />
     <Compile Include="Primitives\XNALine.cs" />
     <Compile Include="Primitives\XNATriangle.cs" />
+    <Compile Include="Content\XnaContentManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">

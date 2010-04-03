@@ -192,7 +192,7 @@ namespace NetGore.Graphics
         /// <param name="contentManager">The content manager.</param>
         /// <param name="categorization">The categorization for the <see cref="AutomaticAnimatedGrhData"/>.</param>
         /// <returns>The new <see cref="AutomaticAnimatedGrhData"/>, or null if none created.</returns>
-        public static AutomaticAnimatedGrhData CreateAutomaticAnimatedGrhData(ContentManager contentManager,
+        public static AutomaticAnimatedGrhData CreateAutomaticAnimatedGrhData(IContentManager contentManager,
                                                                               SpriteCategorization categorization)
         {
             // Check if the GrhData already exists
@@ -215,13 +215,13 @@ namespace NetGore.Graphics
             return gd;
         }
 
-        public static StationaryGrhData CreateGrhData(ContentManager contentManager, SpriteCategorization categorization,
+        public static StationaryGrhData CreateGrhData(IContentManager contentManager, SpriteCategorization categorization,
                                                       string texture, Vector2 pos, Vector2 size)
         {
             return CreateGrhData(NextFreeIndex(), contentManager, categorization, texture, pos, size);
         }
 
-        public static StationaryGrhData CreateGrhData(ContentManager contentManager, SpriteCategory category)
+        public static StationaryGrhData CreateGrhData(IContentManager contentManager, SpriteCategory category)
         {
             var index = NextFreeIndex();
             var title = GetUniqueTitle(category, "tmp" + index);
@@ -229,7 +229,7 @@ namespace NetGore.Graphics
             return CreateGrhData(index, contentManager, categorization, string.Empty, Vector2.Zero, Vector2.Zero);
         }
 
-        static StationaryGrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager,
+        static StationaryGrhData CreateGrhData(GrhIndex grhIndex, IContentManager contentManager,
                                                SpriteCategorization categorization, string texture, Vector2 pos, Vector2 size)
         {
             Debug.Assert(!grhIndex.IsInvalid);
@@ -305,10 +305,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets a <see cref="ContentManager"/>.
+        /// Gets a <see cref="IContentManager"/>.
         /// </summary>
-        /// <returns>A <see cref="ContentManager"/>.</returns>
-        static ContentManager GetContentManager()
+        /// <returns>A <see cref="IContentManager"/>.</returns>
+        static IContentManager GetContentManager()
         {
             return GrhDatas.OfType<StationaryGrhData>().First(x => x.ContentManager != null).ContentManager;
         }
@@ -468,8 +468,8 @@ namespace NetGore.Graphics
         /// <see cref="GrhData"/>s.
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to load the <see cref="GrhData"/>s from.</param>
-        /// <param name="cm">The <see cref="ContentManager"/> to use for loaded <see cref="GrhData"/>s.</param>
-        public static void Load(ContentPaths contentPath, ContentManager cm)
+        /// <param name="cm">The <see cref="IContentManager"/> to use for loaded <see cref="GrhData"/>s.</param>
+        public static void Load(ContentPaths contentPath, IContentManager cm)
         {
             if (IsLoaded)
                 return;

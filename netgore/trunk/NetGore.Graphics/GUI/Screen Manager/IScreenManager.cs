@@ -32,9 +32,9 @@ namespace NetGore.Graphics.GUI
         IGameScreen ConsoleScreen { get; set; }
 
         /// <summary>
-        /// Gets the global <see cref="ContentManager"/> shared between all screens.
+        /// Gets the global <see cref="IContentManager"/> shared between all screens.
         /// </summary>
-        ContentManager Content { get; }
+        IContentManager Content { get; }
 
         /// <summary>
         /// Gets the <see cref="IDrawingManager"/> to use.
@@ -55,11 +55,6 @@ namespace NetGore.Graphics.GUI
         /// Gets the <see cref="GraphicsDevice"/>.
         /// </summary>
         GraphicsDevice GraphicsDevice { get; }
-
-        /// <summary>
-        /// Gets the <see cref="ContentManager"/> intended for loading content for the current map only.
-        /// </summary>
-        ContentManager MapContent { get; }
 
         /// <summary>
         /// Gets the <see cref="SpriteFont"/> to use for the menus.

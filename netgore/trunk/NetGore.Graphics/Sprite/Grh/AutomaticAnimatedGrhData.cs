@@ -30,7 +30,7 @@ namespace NetGore.Graphics
         /// </summary>
         static readonly Regex _aaFolderRegex;
 
-        readonly ContentManager _cm;
+        readonly IContentManager _cm;
         readonly StationaryGrhData[] _frames;
         readonly Vector2 _size;
         readonly float _speed;
@@ -53,12 +53,13 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="AutomaticAnimatedGrhData"/> class.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/> used for creating the frames.</param>
+        /// <param name="cm">The <see cref="IContentManager"/> used for creating the frames.</param>
         /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
         /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
-        internal AutomaticAnimatedGrhData(ContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
+        internal AutomaticAnimatedGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat)
+            : base(grhIndex, cat)
         {
             var framesDir = GetFramesDirectory();
             if (framesDir == null)
@@ -75,9 +76,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the <see cref="ContentManager"/> used by the <see cref="AutomaticAnimatedGrhData"/>.
+        /// Gets the <see cref="IContentManager"/> used by the <see cref="AutomaticAnimatedGrhData"/>.
         /// </summary>
-        public ContentManager ContentManager
+        public IContentManager ContentManager
         {
             get { return _cm; }
         }
@@ -254,11 +255,11 @@ namespace NetGore.Graphics
         /// Reads a <see cref="GrhData"/> from an <see cref="IValueReader"/>.
         /// </summary>
         /// <param name="r">The <see cref="IValueReader"/> to read from.</param>
-        /// <param name="cm">The <see cref="ContentManager"/> that will contain the frames.</param>
+        /// <param name="cm">The <see cref="IContentManager"/> that will contain the frames.</param>
         /// <returns>
         /// The <see cref="GrhData"/> read from the <see cref="IValueReader"/>.
         /// </returns>
-        public static AutomaticAnimatedGrhData Read(IValueReader r, ContentManager cm)
+        public static AutomaticAnimatedGrhData Read(IValueReader r, IContentManager cm)
         {
             GrhIndex grhIndex;
             SpriteCategorization categorization;

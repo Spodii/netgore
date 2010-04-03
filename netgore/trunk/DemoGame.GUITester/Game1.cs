@@ -29,7 +29,6 @@ namespace DemoGame.GUITester
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
             IsMouseVisible = true;
             IsFixedTimeStep = false;
         }
@@ -62,11 +61,15 @@ namespace DemoGame.GUITester
             base.Draw(gameTime);
         }
 
+        IContentManager _content;
+
         protected override void LoadContent()
         {
+            _content = new XnaContentManager(Services, "Content");
+
             _sb = new RoundedXnaSpriteBatch(GraphicsDevice);
-            _font = Content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
-            GrhInfo.Load(ContentPaths.Build, Content);
+            _font = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"), ContentLevel.Global);
+            GrhInfo.Load(ContentPaths.Build, _content);
 
             SkinManager skinManager = new SkinManager("Default");
             _gui = new GUIManager(_font, skinManager, new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height));
