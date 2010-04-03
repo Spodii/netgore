@@ -44,9 +44,9 @@ namespace DemoGame.Server
 
         bool _disposed;
         bool _isRunning = true;
+        int _nextServerSaveTime;
         IServerSettingTable _serverSettings;
         int _tick;
-        int _nextServerSaveTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Server"/> class.
@@ -343,7 +343,7 @@ namespace DemoGame.Server
                         }
                     }
                 }
-                
+
                 // Check if it is time to save the world
                 if (_nextServerSaveTime < loopStartTime)
                 {

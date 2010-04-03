@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using NetGore.Graphics;
 using NetGore.IO;
 using Point=System.Drawing.Point;
@@ -55,6 +54,20 @@ namespace NetGore.EditorTools
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
 
         /// <summary>
+        /// Gets the <see cref="EditGrhForm"/> when applicable. Will be null if the form is not visible.
+        /// </summary>
+        public EditGrhForm EditGrhForm
+        {
+            get
+            {
+                if (_editGrhDataForm != null && _editGrhDataForm.Visible && !_editGrhDataForm.IsDisposed)
+                    return _editGrhDataForm;
+
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the size of the <see cref="GrhData"/> preview images.
         /// </summary>
         [Description("Size of the Grh images in pixels")]
@@ -91,15 +104,6 @@ namespace NetGore.EditorTools
         {
             get { return _editGrhDataForm != null; }
         }
-
-        /// <summary>
-        /// Gets the <see cref="EditGrhForm"/> when applicable. Will be null if the form is not visible.
-        /// </summary>
-        public EditGrhForm EditGrhForm { get {
-            if (_editGrhDataForm != null && _editGrhDataForm.Visible && !_editGrhDataForm.IsDisposed)
-                return _editGrhDataForm;
-
-            return null; } }
 
         /// <summary>
         /// Adds a <see cref="GrhData"/> to the tree or updates it if it already exists.

@@ -79,9 +79,7 @@ namespace NetGore.Graphics
         public static Func<GrhData, ContentLevel> ContentLevelDecider
         {
             get { return _contentLevelDecider; }
-            set {
-                _contentLevelDecider = value ?? DefaultContentLevelDecider;
-            }
+            set { _contentLevelDecider = value ?? DefaultContentLevelDecider; }
         }
 
         /// <summary>

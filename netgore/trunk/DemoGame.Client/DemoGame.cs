@@ -34,25 +34,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Adds support for using NVidia's PerfHUD.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="Microsoft.Xna.Framework.PreparingDeviceSettingsEventArgs"/> instance containing
-        /// the event data.</param>
-        static void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
-        {
-            foreach (GraphicsAdapter curAdapter in GraphicsAdapter.Adapters)
-            {
-                if (curAdapter.Description.Contains("NVIDIA PerfHUD"))
-                {
-                    e.GraphicsDeviceInformation.Adapter = curAdapter;
-                    e.GraphicsDeviceInformation.DeviceType = DeviceType.Reference;
-                    break;
-                }
-            }
-        }
-
-        /// <summary>
         /// Called after all components are initialized but before the first update in the game loop.
         /// </summary>
         protected override void BeginRun()
@@ -91,6 +72,29 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Decides the <see cref="ContentLevel"/> to use for <see cref="GrhData"/>s.
+        /// </summary>
+        /// <param name="grhData">The <see cref="GrhData"/> to get the <see cref="ContentLevel"/> for.</param>
+        /// <returns>The <see cref="ContentLevel"/> for the <paramref name="grhData"/>.</returns>
+        static ContentLevel ContentLevelDecider(GrhData grhData)
+        {
+            const StringComparison comp = StringComparison.OrdinalIgnoreCase;
+
+            string cat = grhData.Categorization.Category.ToString();
+
+            // For stuff that will be put into a global atlas, use the temporary level
+            if (cat.StartsWith("gui", comp))
+                return ContentLevel.Temporary;
+
+            // For stuff in the map category, use Map
+            if (cat.StartsWith("map", comp))
+                return ContentLevel.Map;
+
+            // Everything else, return global
+            return ContentLevel.Global;
+        }
+
+        /// <summary>
         /// Releases all resources used by the Game class.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
@@ -105,6 +109,25 @@ namespace DemoGame.Client
             }
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Adds support for using NVidia's PerfHUD.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="Microsoft.Xna.Framework.PreparingDeviceSettingsEventArgs"/> instance containing
+        /// the event data.</param>
+        static void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
+        {
+            foreach (GraphicsAdapter curAdapter in GraphicsAdapter.Adapters)
+            {
+                if (curAdapter.Description.Contains("NVIDIA PerfHUD"))
+                {
+                    e.GraphicsDeviceInformation.Adapter = curAdapter;
+                    e.GraphicsDeviceInformation.DeviceType = DeviceType.Reference;
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -137,29 +160,6 @@ namespace DemoGame.Client
             graphics.ApplyChanges();
 
             base.Initialize();
-        }
-
-        /// <summary>
-        /// Decides the <see cref="ContentLevel"/> to use for <see cref="GrhData"/>s.
-        /// </summary>
-        /// <param name="grhData">The <see cref="GrhData"/> to get the <see cref="ContentLevel"/> for.</param>
-        /// <returns>The <see cref="ContentLevel"/> for the <paramref name="grhData"/>.</returns>
-        static ContentLevel ContentLevelDecider(GrhData grhData)
-        {
-            const StringComparison comp = StringComparison.OrdinalIgnoreCase;
-
-            string cat = grhData.Categorization.Category.ToString();
-
-            // For stuff that will be put into a global atlas, use the temporary level
-            if (cat.StartsWith("gui", comp))
-                return ContentLevel.Temporary;
-
-            // For stuff in the map category, use Map
-            if (cat.StartsWith("map", comp))
-                return ContentLevel.Map;
-
-            // Everything else, return global
-            return ContentLevel.Global;
         }
 
         /// <summary>

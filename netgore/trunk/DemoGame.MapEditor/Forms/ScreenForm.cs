@@ -8,7 +8,6 @@ using DemoGame.EditorTools;
 using DemoGame.MapEditor.Forms;
 using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
@@ -59,6 +58,9 @@ namespace DemoGame.MapEditor
         /// Key to move the camera up.
         /// </summary>
         const Keys _cameraUp = Keys.W;
+
+        const float _maxCameraScale = 100.0f;
+        const float _minCameraScale = 0.01f;
 
         /// <summary>
         /// The <see cref="Type"/> of the <see cref="Control"/>s that, when they have focus, the key strokes
@@ -120,6 +122,8 @@ namespace DemoGame.MapEditor
 
         IDbController _dbController;
         DrawingManager _drawingManager;
+        WallEntityBase _editGrhSelectedWall = null;
+        Direction _editGrhSelectedWallDir;
 
         /// <summary>
         /// If set to a value other than null, the selected <see cref="ParticleEmitter"/> on this form
@@ -1036,9 +1040,6 @@ namespace DemoGame.MapEditor
             DbController.GetQuery<UpdateMapQuery>().Execute(map);
         }
 
-        const float _minCameraScale = 0.01f;
-        const float _maxCameraScale = 100.0f;
-
         void numZoom_ValueChanged(object sender, EventArgs e)
         {
             float value = Convert.ToSingle(numZoom.Value);
@@ -1469,9 +1470,6 @@ namespace DemoGame.MapEditor
             CursorManager.Update();
         }
 
-        WallEntityBase _editGrhSelectedWall = null;
-        Direction _editGrhSelectedWallDir;
-
         /// <summary>
         /// Handles updating when the <see cref="EditGrhForm"/> is visible and has taken over the main screen (so it
         /// can draw the preview of the GrhData).
@@ -1493,9 +1491,7 @@ namespace DemoGame.MapEditor
 
             // If the left mouse button is no longer down, unset the _editGrhSelectedWall
             if (MouseButtons != MouseButtons.Left)
-            {
                 _editGrhSelectedWall = null;
-            }
 
             // Get the world position for the cursor
             var worldPos = frm.Camera.ToWorld(CursorPos).Round();

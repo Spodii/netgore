@@ -16,6 +16,7 @@ namespace DemoGame.GUITester
         static readonly SafeRandom rnd = new SafeRandom();
 
         readonly GraphicsDeviceManager _graphics;
+        IContentManager _content;
         SpriteFont _font;
         IGUIManager _gui;
         ISpriteBatch _sb;
@@ -60,8 +61,6 @@ namespace DemoGame.GUITester
 
             base.Draw(gameTime);
         }
-
-        IContentManager _content;
 
         protected override void LoadContent()
         {

@@ -28,6 +28,17 @@ namespace DemoGame.Server
         /// </summary>
         const int _emptyMapNoUpdateDelay = 60000;
 
+        /// <summary>
+        /// If true, only the <see cref="DynamicEntity"/> objects should be checked when looking for objects
+        /// that implement <see cref="IServerSaveable"/>. If false, we will have to check every <see cref="Entity"/>
+        /// on the map. This value is determined at runtime through reflection, and will be false if there
+        /// is at least one <see cref="Entity"/> that is not a <see cref="DynamicEntity"/> but implements
+        /// <see cref="IServerSaveable"/>. This is much faster when true since there will always be much less
+        /// <see cref="DynamicEntity"/> types than all <see cref="Entity"/> types, namely due to all
+        /// <see cref="WallEntityBase"/>s that usually reside on a map.
+        /// </summary>
+        static readonly bool _checkDynamicEntitiesForIServerSaveableOnly;
+
         readonly MapItemsCleaner _mapItemsCleaner = new MapItemsCleaner();
 
         readonly List<NPC> _npcs = new List<NPC>();
@@ -48,17 +59,6 @@ namespace DemoGame.Server
         /// IEnumerable of the NPCSpawners on this Map.
         /// </summary>
         IEnumerable<NPCSpawner> _npcSpawners;
-
-        /// <summary>
-        /// If true, only the <see cref="DynamicEntity"/> objects should be checked when looking for objects
-        /// that implement <see cref="IServerSaveable"/>. If false, we will have to check every <see cref="Entity"/>
-        /// on the map. This value is determined at runtime through reflection, and will be false if there
-        /// is at least one <see cref="Entity"/> that is not a <see cref="DynamicEntity"/> but implements
-        /// <see cref="IServerSaveable"/>. This is much faster when true since there will always be much less
-        /// <see cref="DynamicEntity"/> types than all <see cref="Entity"/> types, namely due to all
-        /// <see cref="WallEntityBase"/>s that usually reside on a map.
-        /// </summary>
-        static readonly bool _checkDynamicEntitiesForIServerSaveableOnly;
 
         /// <summary>
         /// Initializes the <see cref="Map"/> class.
@@ -416,27 +416,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
-        /// </summary>
-        public void ServerSave()
-        {
-            // If possible, check only DynamicEntities. See the notes on _checkDynamicEntitiesForIServerSaveableOnly
-            // for more details.
-            if (_checkDynamicEntitiesForIServerSaveableOnly)
-            {
-                // Check only the DynamicEntities (fast)
-                foreach (var saveable in DynamicEntities.OfType<IServerSaveable>())
-                    saveable.ServerSave();
-            }
-            else
-            {
-                // Check all Entities (slow)
-                foreach (var saveable in Entities.OfType<IServerSaveable>())
-                    saveable.ServerSave();
-            }
-        }
-
-        /// <summary>
         /// Send a message to every user in the map. This method is thread-safe.
         /// </summary>
         /// <param name="data">BitStream containing the data to send.</param>
@@ -672,6 +651,35 @@ namespace DemoGame.Server
             foreach (var entity in disposableEntities)
             {
                 _world.DisposeStack.Push(entity);
+            }
+        }
+
+        #endregion
+
+        #region IServerSaveable Members
+
+        /// <summary>
+        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
+        /// </summary>
+        public void ServerSave()
+        {
+            // If possible, check only DynamicEntities. See the notes on _checkDynamicEntitiesForIServerSaveableOnly
+            // for more details.
+            if (_checkDynamicEntitiesForIServerSaveableOnly)
+            {
+                // Check only the DynamicEntities (fast)
+                foreach (var saveable in DynamicEntities.OfType<IServerSaveable>())
+                {
+                    saveable.ServerSave();
+                }
+            }
+            else
+            {
+                // Check all Entities (slow)
+                foreach (var saveable in Entities.OfType<IServerSaveable>())
+                {
+                    saveable.ServerSave();
+                }
             }
         }
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.IO;
