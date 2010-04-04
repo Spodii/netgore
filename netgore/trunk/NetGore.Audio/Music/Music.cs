@@ -21,8 +21,9 @@ namespace NetGore.Audio
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly AudioManagerBase _audioManager;
         readonly MusicID _index;
-        readonly Song _instance;
         readonly string _name;
+
+        Song _instance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Music"/> class.
@@ -34,7 +35,6 @@ namespace NetGore.Audio
             _audioManager = audioManager;
             _name = r.ReadString(IAudioHelper.FileValueKey);
             _index = new MusicID(r.ReadUShort(IAudioHelper.IndexValueKey));
-            _instance = _audioManager.ContentManager.Load<Song>(AssetName, ContentLevel.GameScreen);
         }
 
         #region IMusic Members
@@ -139,6 +139,10 @@ namespace NetGore.Audio
             ThreadPool.QueueUserWorkItem(delegate
             {
                 ((IAudio)this).UpdateVolume();
+
+                // Ensure the instance is valid
+                if (_instance == null)
+                    _instance = _audioManager.ContentManager.Load<Song>(AssetName, ContentLevel.GameScreen);
 
                 try
                 {
