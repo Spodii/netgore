@@ -21,7 +21,8 @@ namespace NetGore.Audio
         readonly List<SoundEffectInstance> _instances = new List<SoundEffectInstance>(1);
         readonly AudioListener _listener = new AudioListener { Forward = Vector3.Forward, Up = Vector3.Up };
         readonly string _name;
-        readonly SoundEffect _soundEffect;
+
+        SoundEffect _soundEffect;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sound"/> class.
@@ -34,8 +35,6 @@ namespace NetGore.Audio
 
             _name = r.ReadString(IAudioHelper.FileValueKey);
             _index = new SoundID(r.ReadUShort(IAudioHelper.IndexValueKey));
-
-            _soundEffect = _audioManager.ContentManager.Load<SoundEffect>(AssetName, ContentLevel.GameScreen);
         }
 
         /// <summary>
@@ -48,11 +47,17 @@ namespace NetGore.Audio
 
             lock (_instances)
             {
+                // Return the first instance that is not playing
                 for (int i = 0; i < _instances.Count; i++)
                 {
                     if (_instances[i].State != SoundState.Playing)
                         return _instances[i];
                 }
+
+                // No existing non-playing instance was found, so make sure we have a valid SoundEffect
+                // instance and create and return a new SoundEffectInstance
+                if (_soundEffect == null || _soundEffect.IsDisposed)
+                    _soundEffect = _audioManager.ContentManager.Load<SoundEffect>(AssetName, ContentLevel.GameScreen);
 
                 instance = _soundEffect.CreateInstance();
                 _instances.Add(instance);
