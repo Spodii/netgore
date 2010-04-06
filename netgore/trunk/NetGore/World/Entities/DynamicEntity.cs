@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
+
 using NetGore.IO;
 using NetGore.IO.PropertySync;
 using NetGore.Network;
+using SFML.Graphics;
 
 /* NOTE ON THE POSITION AND VELOCITY SYNCING:
  * --------------------------------------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 using System.Linq;
-using Microsoft.Xna.Framework.Audio;
+using SFML.Audio;
 
 namespace NetGore.Audio
 {
@@ -16,7 +16,7 @@ namespace NetGore.Audio
         /// <summary>
         /// Gets the current state of the music track.
         /// </summary>
-        SoundState State { get; }
+        SoundStatus State { get; }
 
         /// <summary>
         /// Pauses the music track if it is playing.

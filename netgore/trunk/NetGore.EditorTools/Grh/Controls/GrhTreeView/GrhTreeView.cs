@@ -6,9 +6,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
 using NetGore.Graphics;
 using NetGore.IO;
+using SFML.Graphics;
 using Point=System.Drawing.Point;
 
 namespace NetGore.EditorTools

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -11,9 +10,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public sealed class SpriteBatchParticleRenderer : ParticleRendererBase
     {
-        const SpriteSortMode _spriteBatchSortMode = SpriteSortMode.Deferred;
-        const SaveStateMode _spriteBatchStateMode = SaveStateMode.None;
-        SpriteBlendMode _startingBlendMode = SpriteBlendMode.AlphaBlend;
+        BlendMode _startingBlendMode = BlendMode.Alpha;
 
         /// <summary>
         /// Gets or sets the <see cref="ISpriteBatch"/> used to draw.
@@ -21,16 +18,16 @@ namespace NetGore.Graphics.ParticleEngine
         public ISpriteBatch SpriteBatch { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteBlendMode"/> the <see cref="SpriteBatch"/> is using
+        /// Gets or sets the <see cref="BlendMode"/> the <see cref="SpriteBatch"/> is using
         /// when the <see cref="SpriteBatchParticleRenderer"/> is called to render.
         /// </summary>
-        public SpriteBlendMode StartingBlendMode
+        public BlendMode StartingBlendMode
         {
             get { return _startingBlendMode; }
             set
             {
-                if (value == SpriteBlendMode.None)
-                    throw new ArgumentException("value cannot be SpriteBlendMode.None.");
+                if (value == BlendMode.None)
+                    throw new ArgumentException("value cannot be BlendMode.None.");
 
                 _startingBlendMode = value;
             }
@@ -38,10 +35,9 @@ namespace NetGore.Graphics.ParticleEngine
 
         void BeginSpriteBatch(ICamera2D camera)
         {
-            var blendMode = StartingBlendMode == SpriteBlendMode.Additive ? SpriteBlendMode.AlphaBlend : SpriteBlendMode.Additive;
-            var matrix = camera.Matrix;
+            var blendMode = StartingBlendMode == BlendMode.Add ? BlendMode.Alpha : BlendMode.Add;
 
-            SpriteBatch.Begin(blendMode, _spriteBatchSortMode, _spriteBatchStateMode, matrix);
+            SpriteBatch.Begin(blendMode, camera);
         }
 
         /// <summary>
@@ -56,9 +52,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="camera">The <see cref="ICamera2D"/> describing the world view.</param>
         /// <param name="additiveEmitters">The valid <see cref="ParticleEmitter"/>s where
-        /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.Additive"/>.</param>
+        /// <see cref="BlendMode"/> is set to <see cref="BlendMode.Add"/>.</param>
         /// <param name="alphaEmitters">The valid <see cref="ParticleEmitter"/>s where
-        /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.AlphaBlend"/>.</param>
+        /// <see cref="BlendMode"/> is set to <see cref="BlendMode.Alpha"/>.</param>
         protected override void InternalRenderEmitter(ICamera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
                                                       IEnumerable<ParticleEmitter> alphaEmitters)
         {
@@ -66,7 +62,7 @@ namespace NetGore.Graphics.ParticleEngine
             IEnumerable<ParticleEmitter> second;
 
             // Figure out which collection to render first
-            if (StartingBlendMode == SpriteBlendMode.AlphaBlend)
+            if (StartingBlendMode == BlendMode.Alpha)
             {
                 first = alphaEmitters;
                 second = additiveEmitters;
@@ -88,7 +84,7 @@ namespace NetGore.Graphics.ParticleEngine
                 SpriteBatch.End();
 
                 // Start the SpriteBatch again back as normal
-                SpriteBatch.Begin(StartingBlendMode, _spriteBatchSortMode, _spriteBatchStateMode, camera.Matrix);
+                SpriteBatch.Begin(StartingBlendMode, camera);
             }
         }
 

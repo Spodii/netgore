@@ -2,8 +2,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+using SFML.Graphics;
+
 
 namespace NetGore.Graphics
 {
@@ -156,9 +157,20 @@ namespace NetGore.Graphics
             // Invalid texture
             if (Texture == null)
             {
-                const string errmsg = "Failed to render Grh `{0}` - GrhData returning null texture for `{1}`!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this, ((StationaryGrhData)GrhData).TextureName);
+                {
+                    var sgd = GrhData as StationaryGrhData;
+                    if (sgd == null)
+                    {
+                        const string errmsg = "Failed to render Grh `{0}` - GrhData `{1}` is of type `{2}` instead of the expected type `{3}`!";
+                        log.ErrorFormat(errmsg, this, GrhData, GrhData.GetType(), typeof(StationaryGrhData));
+                    }
+                    else
+                    {
+                        const string errmsg = "Failed to render Grh `{0}` - GrhData returning null texture for `{1}`!";
+                        log.WarnFormat(errmsg, this, sgd.TextureName);
+                    }
+                }
                 return false;
             }
 
@@ -208,7 +220,7 @@ namespace NetGore.Graphics
             if (!CanDrawGrh(sb))
                 return;
 
-            sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect, 0);
+            sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect);
         }
 
         /// <summary>
@@ -227,7 +239,7 @@ namespace NetGore.Graphics
             if (!CanDrawGrh(sb))
                 return;
 
-            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
+            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect);
         }
 
         /// <summary>
@@ -246,7 +258,7 @@ namespace NetGore.Graphics
             if (!CanDrawGrh(sb))
                 return;
 
-            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
+            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect);
         }
 
         /// <summary>
@@ -263,7 +275,7 @@ namespace NetGore.Graphics
             if (!CanDrawGrh(sb))
                 return;
 
-            sb.Draw(Texture, dest, Source, color, rotation, origin, effect, 0);
+            sb.Draw(Texture, dest, Source, color, rotation, origin, effect);
         }
 
         /// <summary>
@@ -397,7 +409,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture for the current frame.
         /// </summary>
-        public Texture2D Texture
+        public Image Texture
         {
             get
             {

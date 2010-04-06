@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -21,7 +22,7 @@ namespace NetGore.Graphics
         readonly Dictionary<Entity, ChatBubble> _chatBubbles = new Dictionary<Entity, ChatBubble>();
 
         ControlBorder _border;
-        SpriteFont _font;
+        Font _font;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChatBubbleManagerBase"/> class.
@@ -29,7 +30,7 @@ namespace NetGore.Graphics
         /// <param name="border">The <see cref="ControlBorder"/> to use for the <see cref="ChatBubble"/>s when
         /// drawing.</param>
         /// <param name="font">The <see cref="SpriteFont"/> to use to write the bubble's text.</param>
-        protected ChatBubbleManagerBase(ControlBorder border, SpriteFont font)
+        protected ChatBubbleManagerBase(ControlBorder border, Font font)
         {
             Lifespan = 50000;
             FontColor = Color.Black;
@@ -66,7 +67,7 @@ namespace NetGore.Graphics
         /// Cannot be null.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        public SpriteFont Font
+        public Font Font
         {
             get { return _font; }
             set

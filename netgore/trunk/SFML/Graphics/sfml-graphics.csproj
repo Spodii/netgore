@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{46786269-57B9-48E7-AA4F-8F4D84609FE6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SFML.Graphics</RootNamespace>
+    <AssemblyName>sfmlnet-graphics</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\_dependencies\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETGORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\_dependencies\</OutputPath>
+    <DefineConstants>TRACE;NETGORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\_dependencies\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETGORE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\..\_dependencies\</OutputPath>
+    <DefineConstants>TRACE;NETGORE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="Color.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="Drawable.cs" />
+    <Compile Include="Font.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="NetGore\BoundingBox.cs" />
+    <Compile Include="NetGore\BoundingFrustum.cs" />
+    <Compile Include="NetGore\BoundingSphere.cs" />
+    <Compile Include="NetGore\ContainmentType.cs" />
+    <Compile Include="NetGore\Design\BoundingBoxConverter.cs" />
+    <Compile Include="NetGore\Design\BoundingSphereConverter.cs" />
+    <Compile Include="NetGore\Color.cs" />
+    <Compile Include="NetGore\Design\ColorConverter.cs" />
+    <Compile Include="NetGore\Design\FieldPropertyDescriptor.cs" />
+    <Compile Include="NetGore\Design\MathTypeConverter.cs" />
+    <Compile Include="NetGore\Design\MatrixConverter.cs" />
+    <Compile Include="NetGore\Design\MemberPropertyDescriptor.cs" />
+    <Compile Include="NetGore\Design\PlaneConverter.cs" />
+    <Compile Include="NetGore\Design\PointConverter.cs" />
+    <Compile Include="NetGore\Design\PropertyPropertyDescriptor.cs" />
+    <Compile Include="NetGore\Design\QuaternionConverter.cs" />
+    <Compile Include="NetGore\Design\RayConverter.cs" />
+    <Compile Include="NetGore\Design\RectangleConverter.cs" />
+    <Compile Include="NetGore\Design\Vector2Converter.cs" />
+    <Compile Include="NetGore\Design\Vector3Converter.cs" />
+    <Compile Include="NetGore\Design\Vector4Converter.cs" />
+    <Compile Include="NetGore\FrameworkResources.cs" />
+    <Compile Include="NetGore\Gjk.cs" />
+    <Compile Include="NetGore\MathHelper.cs" />
+    <Compile Include="NetGore\Matrix.cs" />
+    <Compile Include="NetGore\Plane.cs" />
+    <Compile Include="NetGore\PlaneIntersectionType.cs" />
+    <Compile Include="NetGore\Point.cs" />
+    <Compile Include="NetGore\Quaternion.cs" />
+    <Compile Include="NetGore\Ray.cs" />
+    <Compile Include="NetGore\Rectangle.cs" />
+    <Compile Include="NetGore\Vector2.cs" />
+    <Compile Include="NetGore\Vector3.cs" />
+    <Compile Include="NetGore\Vector4.cs" />
+    <Compile Include="PostFx.cs" />
+    <Compile Include="Rect.cs" />
+    <Compile Include="RenderWindow.cs" />
+    <Compile Include="Shape.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="String2D.cs" />
+    <Compile Include="Vector2.cs" />
+    <Compile Include="View.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Window\sfml-window.csproj">
+      <Project>{D17DE83D-A592-461F-8AF2-53F9E22E1D0F}</Project>
+      <Name>sfml-window</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

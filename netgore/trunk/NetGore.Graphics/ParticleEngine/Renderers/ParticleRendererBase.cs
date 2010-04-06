@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -21,9 +21,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="camera">The <see cref="ICamera2D"/> describing the world view.</param>
         /// <param name="additiveEmitters">The valid <see cref="ParticleEmitter"/>s where
-        /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.Additive"/>.</param>
+        /// <see cref="BlendMode"/> is set to <see cref="BlendMode.Add"/>.</param>
         /// <param name="alphaEmitters">The valid <see cref="ParticleEmitter"/>s where
-        /// <see cref="SpriteBlendMode"/> is set to <see cref="SpriteBlendMode.AlphaBlend"/>.</param>
+        /// <see cref="BlendMode"/> is set to <see cref="BlendMode.Alpha"/>.</param>
         protected abstract void InternalRenderEmitter(ICamera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
                                                       IEnumerable<ParticleEmitter> alphaEmitters);
 
@@ -74,8 +74,8 @@ namespace NetGore.Graphics.ParticleEngine
                 return;
 
             var validEmitters = emitters.Where(x => x.Sprite != null && x.ActiveParticles > 0);
-            var additiveEmitters = validEmitters.Where(x => x.BlendMode == SpriteBlendMode.Additive);
-            var alphaEmitters = validEmitters.Where(x => x.BlendMode == SpriteBlendMode.AlphaBlend);
+            var additiveEmitters = validEmitters.Where(x => x.BlendMode == BlendMode.Add);
+            var alphaEmitters = validEmitters.Where(x => x.BlendMode == BlendMode.Alpha);
 
             InternalRenderEmitter(camera, additiveEmitters, alphaEmitters);
         }

@@ -2,9 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore
 {
@@ -13,9 +12,9 @@ namespace NetGore
     /// </summary>
     public static class IValueWriterExtensions
     {
-        public static void Write(this IValueWriter writer, string name, SpriteBlendMode spriteBlendMode)
+        public static void Write(this IValueWriter writer, string name, BlendMode value)
         {
-            writer.WriteEnum(name, spriteBlendMode);
+            writer.WriteEnum(name, value);
         }
 
         /// <summary>

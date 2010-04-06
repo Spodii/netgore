@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Features.Skills;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -306,11 +306,11 @@ namespace DemoGame.Client
             /// Override this method instead of using an event hook on <see cref="Control.OnClick"/> when possible.
             /// </summary>
             /// <param name="e">The event args.</param>
-            protected override void OnClick(MouseClickEventArgs e)
+            protected override void OnClick(MouseButtonEventArgs e)
             {
                 base.OnClick(e);
 
-                if (e.Button == MouseButtons.Right)
+                if (e.Button == MouseButton.Right)
                     UseQuickBarItem();
             }
 

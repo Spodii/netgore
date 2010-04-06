@@ -6,7 +6,6 @@ using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.NPCChat;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
 using NetGore.Features.Quests;
@@ -15,6 +14,7 @@ using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {

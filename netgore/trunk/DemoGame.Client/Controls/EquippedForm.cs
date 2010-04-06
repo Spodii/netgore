@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using DemoGame.DbObjs;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -76,8 +76,8 @@ namespace DemoGame.Client
         /// on this form.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
-        void EquippedItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void EquippedItemPB_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (UserEquipped == null)
                 return;
@@ -88,7 +88,7 @@ namespace DemoGame.Client
 
             switch (e.Button)
             {
-                case MouseButtons.Right:
+                case MouseButton.Right:
                     if (RequestUnequip != null)
                         RequestUnequip(this, slot);
                     break;
@@ -240,7 +240,7 @@ namespace DemoGame.Client
             /// Override this method instead of using an event hook on <see cref="Control.MouseUp"/> when possible.
             /// </summary>
             /// <param name="e">The event args.</param>
-            protected override void OnMouseUp(MouseClickEventArgs e)
+            protected override void OnMouseUp(MouseButtonEventArgs e)
             {
                 base.OnMouseUp(e);
 

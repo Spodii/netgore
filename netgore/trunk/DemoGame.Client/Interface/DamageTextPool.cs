@@ -1,8 +1,8 @@
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {
@@ -30,7 +30,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="sf">SpriteFont to draw the damage text with.</param>
-        public void Draw(ISpriteBatch sb, SpriteFont sf)
+        public void Draw(ISpriteBatch sb, Font sf)
         {
             _pool.Perform(x => x.Draw(sb, sf));
         }

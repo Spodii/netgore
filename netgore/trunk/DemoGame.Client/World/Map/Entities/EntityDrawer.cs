@@ -1,8 +1,7 @@
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {

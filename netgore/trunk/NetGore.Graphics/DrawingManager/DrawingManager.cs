@@ -3,37 +3,41 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
     public class DrawingManager : IDrawingManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly GraphicsDevice _gd;
         readonly ILightManager _lightManager;
+        readonly SFML.Graphics.Sprite _lightMapSprite;
+        readonly RenderWindow _rw;
         readonly ISpriteBatch _sb;
 
-        Texture2D _lightMap;
+        Image _lightMap;
         DrawingManagerState _state = DrawingManagerState.Idle;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingManager"/> class.
         /// </summary>
-        /// <param name="graphicsDevice">The <see cref="GraphicsDevice"/>.</param>
-        public DrawingManager(GraphicsDevice graphicsDevice)
+        /// <param name="rw">The <see cref="RenderWindow"/>.</param>
+        public DrawingManager(RenderWindow rw)
         {
-            ClearColor = Color.CornflowerBlue;
+            ClearColor = new Color(100, 149, 237);
 
-            _gd = graphicsDevice;
-            _sb = new RoundedXnaSpriteBatch(_gd);
+            _rw = rw;
+            _sb = new RoundedSpriteBatch(_rw);
+
+            // Set up the sprite used to draw the light map
+            _lightMapSprite = new SFML.Graphics.Sprite
+            { BlendMode = BlendMode.Multiply, Color = Color.White, Rotation = 0, Scale = Vector2.One, Center = Vector2.Zero };
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _lightManager = CreateLightManager();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            _lightManager.Initialize(_gd);
+            _lightManager.Initialize(_rw);
         }
 
         /// <summary>
@@ -88,7 +92,7 @@ namespace NetGore.Graphics
 
             try
             {
-                _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+                _sb.Begin(BlendMode.Alpha);
             }
             catch (InvalidOperationException ex)
             {
@@ -166,12 +170,12 @@ namespace NetGore.Graphics
 
                 // Clear the buffer
                 if (!bypassClear)
-                    _gd.Clear(ClearColor);
+                    _rw.Clear(ClearColor);
 
                 // Start the SpriteBatch
                 try
                 {
-                    _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, camera.Matrix);
+                    _sb.Begin(BlendMode.Alpha, camera);
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -210,17 +214,7 @@ namespace NetGore.Graphics
 
             _state = DrawingManagerState.Idle;
 
-            try
-            {
-                _sb.End();
-            }
-            catch (InvalidOperationException ex)
-            {
-                const string errmsg = "SpriteBatch.End() failed. Exception: {0}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
-                return;
-            }
+            _sb.End();
         }
 
         /// <summary>
@@ -237,60 +231,16 @@ namespace NetGore.Graphics
 
             try
             {
-                try
-                {
-                    _sb.End();
-                }
-                catch (InvalidOperationException ex)
-                {
-                    const string errmsg = "SpriteBatch.End() failed. Exception: {0}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, ex);
-                    return;
-                }
-
                 // We only have to go through all these extra steps if we are using a light map.
                 if (_lightMap != null)
                 {
-                    var rs = _gd.RenderState;
+                    // Draw the light map onto the screen
+                    _lightMapSprite.Image = _lightMap;
+                    _lightMapSprite.Width = _lightMap.Width;
+                    _lightMapSprite.Height = _lightMap.Height;
+                    _lightMapSprite.Position = _rw.ConvertCoords(0, 0);
 
-                    // Store the old state values
-                    var oldSourceBlend = rs.SourceBlend;
-                    var oldDestinationBlend = rs.DestinationBlend;
-                    var oldBlendFunction = rs.BlendFunction;
-
-                    // Start drawing
-                    try
-                    {
-                        _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        const string errmsg = "SpriteBatch.Begin() failed. Exception: {0}";
-                        if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, ex);
-                        return;
-                    }
-
-                    // Set the blending mode
-                    rs.SourceBlend = Blend.Zero;
-                    rs.DestinationBlend = Blend.SourceColor;
-                    rs.BlendFunction = BlendFunction.Add;
-
-                    try
-                    {
-                        // Draw the light map
-                        _sb.Draw(_lightMap, Vector2.Zero, Color.White);
-                    }
-                    finally
-                    {
-                        _sb.End();
-
-                        // Restore the old blend mode
-                        rs.SourceBlend = oldSourceBlend;
-                        rs.DestinationBlend = oldDestinationBlend;
-                        rs.BlendFunction = oldBlendFunction;
-                    }
+                    _sb.Draw(_lightMapSprite);
                 }
             }
             catch (Exception ex)
@@ -299,6 +249,10 @@ namespace NetGore.Graphics
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, ex);
                 Debug.Fail(string.Format(errmsg, ex));
+            }
+            finally
+            {
+                _sb.End();
             }
         }
 

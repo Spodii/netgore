@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Microsoft.Xna.Framework;
+
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
 {

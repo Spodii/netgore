@@ -1,10 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Stats;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -73,7 +74,7 @@ namespace DemoGame.Client
 
         void AddLine()
         {
-            _yOffset += Font.LineSpacing;
+            _yOffset += Font.CharacterSize;
         }
 
         void NewStatLabel(StatType statType)
@@ -110,7 +111,7 @@ namespace DemoGame.Client
             Text = "Stats";
         }
 
-        void StatPB_Clicked(object sender, MouseClickEventArgs e)
+        void StatPB_Clicked(object sender, MouseButtonEventArgs e)
         {
             RaiseStatPB statPB = (RaiseStatPB)sender;
 

@@ -2,12 +2,12 @@
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.AI;
 using NetGore.Audio;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.NPCChat;
+using SFML.Graphics;
 
 namespace NetGore.EditorTools
 {

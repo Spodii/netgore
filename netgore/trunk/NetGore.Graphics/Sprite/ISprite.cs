@@ -1,6 +1,5 @@
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -17,7 +16,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture containing the sprite.
         /// </summary>
-        Texture2D Texture { get; }
+        Image Texture { get; }
 
         /// <summary>
         /// Draws the <see cref="ISprite"/>.

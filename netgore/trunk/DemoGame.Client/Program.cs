@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using log4net;
 using NetGore;
 
@@ -16,13 +18,11 @@ namespace DemoGame.Client
         {
             log.Info("Starting client...");
 
-            EngineSettingsInitializer.Initialize();
             ThreadAsserts.IsMainThread();
 
-            using (var game = new DemoGame())
-            {
-                game.Run();
-            }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new GameForm());
         }
     }
 }

@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.Audio;
+using SFML.Graphics;
 
 namespace NetGore
 {

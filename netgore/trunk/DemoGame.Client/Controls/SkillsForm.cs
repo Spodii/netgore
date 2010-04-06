@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Features.Skills;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -31,7 +31,7 @@ namespace DemoGame.Client
             _cooldownManager = cooldownManager;
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            var fontLineSpacing = Font.LineSpacing;
+            var fontLineSpacing = Font.CharacterSize;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Find the spacing to use between lines
@@ -78,7 +78,7 @@ namespace DemoGame.Client
             Text = "Skills";
         }
 
-        void SkillLabel_Clicked(object sender, MouseClickEventArgs e)
+        void SkillLabel_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (RequestUseSkill != null)
             {
@@ -87,7 +87,7 @@ namespace DemoGame.Client
             }
         }
 
-        void SkillPicture_Clicked(object sender, MouseClickEventArgs e)
+        void SkillPicture_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (RequestUseSkill != null)
             {

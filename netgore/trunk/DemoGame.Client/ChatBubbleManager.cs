@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {
@@ -24,7 +23,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="skinManager">The skin manager.</param>
         /// <param name="font">The <see cref="SpriteFont"/> to use to write the bubble's text.</param>
-        public ChatBubbleManager(ISkinManager skinManager, SpriteFont font) : base(skinManager.GetBorder(_controlSkinName), font)
+        public ChatBubbleManager(ISkinManager skinManager, Font font) : base(skinManager.GetBorder(_controlSkinName), font)
         {
             _skinManager = skinManager;
             _skinManager.SkinChanged += skinManager_SkinChanged;

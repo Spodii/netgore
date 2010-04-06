@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace NetGore.Features.Guilds
 {
@@ -42,12 +43,12 @@ namespace NetGore.Features.Guilds
             CreateControls();
         }
 
-        void btnMembers_Clicked(object sender, MouseClickEventArgs e)
+        void btnMembers_Clicked(object sender, MouseButtonEventArgs e)
         {
             _frmMembers.IsVisible = !_frmMembers.IsVisible;
         }
 
-        void btnOnline_Clicked(object sender, MouseClickEventArgs e)
+        void btnOnline_Clicked(object sender, MouseButtonEventArgs e)
         {
             _frmOnline.IsVisible = !_frmOnline.IsVisible;
         }

@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
@@ -20,6 +18,7 @@ using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {
@@ -43,12 +42,12 @@ namespace DemoGame.Client
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
         int _currentTime = 0;
-        SpriteFont _damageFont;
+        Font _damageFont;
         DragDropHandler _dragDropHandler;
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
         GameplayScreenControls _gameControls;
-        SpriteFont _guiFont;
+        Font _guiFont;
         GuildForm _guildForm;
         GUISettings _guiSettings;
         InfoBox _infoBox;
@@ -320,7 +319,7 @@ namespace DemoGame.Client
             GUIManager.Draw(sb);
             sb.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
             sb.DrawString(_damageFont, string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
-                          new Vector2(0, _damageFont.LineSpacing + 1), Color.White);
+                          new Vector2(0, _damageFont.CharacterSize + 1), Color.White);
             DrawingManager.EndDrawGUI();
         }
 
@@ -373,7 +372,7 @@ namespace DemoGame.Client
         /// </summary>
         void InitializeGUI()
         {
-            _guiFont = ScreenManager.Content.Load<SpriteFont>("Font/Game", ContentLevel.Global);
+            _guiFont = ScreenManager.Content.LoadFont("Font/Game", 14, ContentLevel.Global);
             GUIManager.Font = _guiFont;
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
@@ -474,7 +473,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void LoadContent()
         {
-            _damageFont = ScreenManager.Content.Load<SpriteFont>("Font/Game", ContentLevel.Global);
+            _damageFont = ScreenManager.Content.LoadFont("Font/Game", 14, ContentLevel.Global);
         }
 
         void OnDisconnect(SocketManager sender, IIPSocket conn)
@@ -589,7 +588,7 @@ namespace DemoGame.Client
             _emoticonDisplayManager.Update(_currentTime);
 
             // Update targeting
-            _characterTargeter.Update(GUIManager.MouseState);
+            _characterTargeter.Update(GUIManager);
             _gameControls.TargetIndex = _characterTargeter.TargetCharacterIndex;
 
             // Update controls

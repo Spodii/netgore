@@ -1,6 +1,6 @@
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {
@@ -34,7 +34,7 @@ namespace DemoGame.Client
             {
                 /* Not implemented */
             };
-            menuButtons["Quit"].Clicked += delegate { ScreenManager.Game.Exit(); };
+            menuButtons["Quit"].Clicked += delegate { ScreenManager.Game.Close(); };
         }
     }
 }

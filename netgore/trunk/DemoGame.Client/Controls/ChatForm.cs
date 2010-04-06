@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -28,7 +27,7 @@ namespace DemoGame.Client
             // Create the input and output TextBoxes
             _input = new TextBox(this, Vector2.Zero, new Vector2(32, 32))
             { IsMultiLine = false, IsEnabled = true, Font = Font, MaxInputTextLength = GameData.MaxClientSayLength };
-            _input.KeyDown += Input_KeyDown;
+            _input.KeyPressed += Input_KeyPressed;
 
             _output = new TextBox(this, Vector2.Zero, new Vector2(32, 32)) { IsMultiLine = true, IsEnabled = false, Font = Font };
 
@@ -71,31 +70,28 @@ namespace DemoGame.Client
             _output.AppendLine(text);
         }
 
-        void Input_KeyDown(object sender, KeyboardEventArgs e)
+        void Input_KeyPressed(object sender, KeyEventArgs e)
         {
             const int bufferScrollRate = 3;
 
-            foreach (Keys key in e.Keys)
+            switch (e.Code)
             {
-                switch (key)
-                {
-                    case Keys.Enter:
-                        if (Say != null && !string.IsNullOrEmpty(_input.Text))
-                        {
-                            string text = _input.Text;
-                            _input.Text = string.Empty;
-                            Say(this, text);
-                        }
-                        break;
+                case KeyCode.Return:
+                    if (Say != null && !string.IsNullOrEmpty(_input.Text))
+                    {
+                        string text = _input.Text;
+                        _input.Text = string.Empty;
+                        Say(this, text);
+                    }
+                    break;
 
-                    case Keys.PageUp:
-                        _bufferOffset += bufferScrollRate;
-                        break;
+                case KeyCode.PageUp:
+                    _bufferOffset += bufferScrollRate;
+                    break;
 
-                    case Keys.PageDown:
-                        _bufferOffset -= bufferScrollRate;
-                        break;
-                }
+                case KeyCode.PageDown:
+                    _bufferOffset -= bufferScrollRate;
+                    break;
             }
         }
 
@@ -149,7 +145,7 @@ namespace DemoGame.Client
             if (_input == null || _output == null)
                 return;
 
-            Vector2 inputSize = new Vector2(ClientSize.X, Font.LineSpacing + _input.Border.Height);
+            Vector2 inputSize = new Vector2(ClientSize.X, Font.CharacterSize + _input.Border.Height);
             Vector2 outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
 
             Vector2 inputPos = new Vector2(0, outputSize.Y);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SFML.Graphics;
 
 namespace NetGore
 {
@@ -26,11 +27,6 @@ namespace NetGore
         string RootDirectory { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="IServiceProvider"/>.
-        /// </summary>
-        IServiceProvider ServiceProvider { get; }
-
-        /// <summary>
         /// Starts tracking items that are loaded by this <see cref="IContentManager"/>.
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IContentManager.IsTrackingLoads"/> is true.</exception>
@@ -46,13 +42,21 @@ namespace NetGore
         IEnumerable<KeyValuePair<string, object>> EndTrackingLoads();
 
         /// <summary>
-        /// Loads an asset.
+        /// Loads an <see cref="Image"/> asset.
         /// </summary>
-        /// <typeparam name="T">The type of the asset to load.</typeparam>
-        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="assetName">The name of the asset to load.</param>
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <returns>The loaded asset.</returns>
-        T Load<T>(string assetName, ContentLevel level);
+        Image LoadImage(string assetName, ContentLevel level);
+
+        /// <summary>
+        /// Loads a <see cref="Font"/> asset.
+        /// </summary>
+        /// <param name="assetName">The name of the asset to load.</param>
+        /// <param name="fontSize">The size of the font.</param>
+        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
+        /// <returns>The loaded asset.</returns>
+        Font LoadFont(string assetName, int fontSize, ContentLevel level);
 
         /// <summary>
         /// Sets the level of an asset.

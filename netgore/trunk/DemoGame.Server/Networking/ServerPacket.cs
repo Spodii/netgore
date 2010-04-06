@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.DbObjs;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
@@ -12,6 +11,7 @@ using NetGore.Features.Shops;
 using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {

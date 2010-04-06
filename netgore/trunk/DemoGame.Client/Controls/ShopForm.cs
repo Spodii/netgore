@@ -3,11 +3,11 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -120,8 +120,8 @@ namespace DemoGame.Client
         /// Handles the <see cref="Control.MouseUp"/> event from the <see cref="ShopItemPB"/>s on this form.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
-        void ShopItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void ShopItemPB_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             ShopItemPB src = (ShopItemPB)sender;
             if (src.ItemInfo != null)
@@ -312,7 +312,7 @@ namespace DemoGame.Client
             /// Override this method instead of using an event hook on <see cref="Control.MouseUp"/> when possible.
             /// </summary>
             /// <param name="e">The event args.</param>
-            protected override void OnMouseUp(MouseClickEventArgs e)
+            protected override void OnMouseUp(MouseButtonEventArgs e)
             {
                 base.OnMouseUp(e);
 

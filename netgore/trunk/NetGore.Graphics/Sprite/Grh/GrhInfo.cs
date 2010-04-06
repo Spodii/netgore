@@ -5,9 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
+
 using NetGore.Collections;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {

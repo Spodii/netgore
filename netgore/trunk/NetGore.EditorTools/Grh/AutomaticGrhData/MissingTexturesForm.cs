@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.IO;
 
@@ -150,7 +149,7 @@ namespace NetGore.EditorTools
             {
                 NewTxt.BackColor = EditorColors.Normal;
 
-                Texture2D texture = _cm.Load<Texture2D>(assetName, ContentLevel.Temporary);
+                Image texture = _cm.Load<Image>(assetName, ContentLevel.Temporary);
                 int w = texture.Width;
                 int h = texture.Height;
 

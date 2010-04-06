@@ -6,10 +6,10 @@ using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Db;
 using NetGore.Stats;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {

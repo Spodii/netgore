@@ -1,9 +1,7 @@
 using System.IO;
 using System.Linq;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Media;
 using NetGore.IO;
+using SFML.Audio;
 
 namespace NetGore.Audio
 {
@@ -38,12 +36,12 @@ namespace NetGore.Audio
         /// <summary>
         /// Gets the state of the music.
         /// </summary>
-        public SoundState MusicState
+        public SoundStatus MusicState
         {
             get
             {
                 if (_currentlyPlaying == null)
-                    return SoundState.Stopped;
+                    return SoundStatus.Stopped;
 
                 return _currentlyPlaying.State;
             }
@@ -51,8 +49,8 @@ namespace NetGore.Audio
 
         /// <summary>
         /// Gets an instance of the <see cref="MusicManager"/> for the given <paramref name="contentManager"/>.
-        /// Only the first <see cref="ContentManager"/> passed to this method will be used. Successive calls
-        /// can pass a null <see cref="ContentManager"/>, but doing so is not recommended if it can be avoided.
+        /// Only the first <see cref="IContentManager"/> passed to this method will be used. Successive calls
+        /// can pass a null <see cref="IContentManager"/>, but doing so is not recommended if it can be avoided.
         /// This method is thread-safe, but it is recommended that you store the returned object in a local
         /// member if you want to access it frequently to avoid the overhead of thread synchronization.
         /// </summary>
@@ -109,7 +107,7 @@ namespace NetGore.Audio
         /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
         protected override IMusic ReadHandler(IValueReader reader)
         {
-            return new Music(this, reader);
+            return new MusicTrack(this, reader);
         }
 
         /// <summary>
@@ -118,7 +116,7 @@ namespace NetGore.Audio
         /// </summary>
         protected internal override void ReapplyVolume()
         {
-            MediaPlayer.Volume = MasterVolume;
+            // TODO: ## MediaPlayer.Volume = MasterVolume;
         }
 
         /// <summary>

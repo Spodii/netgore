@@ -1,8 +1,9 @@
 using System.ComponentModel;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -81,7 +82,7 @@ namespace NetGore.Graphics
         public Color Color
         {
             get { return _color; }
-            set { _color = new Color(value, 255); }
+            set { _color = new Color(value.R, value.G, value.B, 255); }
         }
 
         /// <summary>

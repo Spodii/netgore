@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics;
+using NetGore.Graphics.GUI;
+using SFML.Graphics;
 using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
@@ -167,14 +166,14 @@ namespace DemoGame.Client
         /// <summary>
         /// Updates the targeting.
         /// </summary>
-        /// <param name="mouseState">The current mouse state.</param>
-        public void Update(MouseState mouseState)
+        /// <param name="gui">The <see cref="IGUIManager"/>.</param>
+        public void Update(IGUIManager gui)
         {
-            var cursorPos = new Vector2(mouseState.X, mouseState.Y);
+            var cursorPos = gui.CursorPosition;
 
             MouseOverCharacter = World.Map.Spatial.Get<Character>(World.Camera.Min + cursorPos, x => x != World.UserChar);
 
-            if (MouseOverCharacter != null && mouseState.LeftButton == ButtonState.Pressed)
+            if (MouseOverCharacter != null && gui.IsMouseButtonDown(SFML.Window.MouseButton.Left))
                 TargetCharacter = MouseOverCharacter;
 
             if (MouseOverCharacter != null && MouseOverCharacter.IsDisposed)

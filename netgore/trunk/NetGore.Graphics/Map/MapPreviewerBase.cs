@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
+    // TODO: ## MapPreviewerBase
+    /*
     /// <summary>
     /// Draws all of a <see cref="IDrawableMap"/> to a texture, then saves it to a file.
     /// </summary>
@@ -116,7 +117,7 @@ namespace NetGore.Graphics
         /// <param name="map">The <see cref="IDrawableMap"/> to draw.</param>
         protected virtual void DrawMap(ISpriteBatch sb, IDrawableMap map)
         {
-            sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState, map.Camera.Matrix);
+            sb.Begin(BlendMode.Alpha, SpriteSortMode.Texture, SaveStateMode.SaveState, map.Camera.Matrix);
             map.Draw(sb);
             sb.End();
         }
@@ -141,4 +142,5 @@ namespace NetGore.Graphics
         /// <param name="drawParticles">The draw particles value to use.</param>
         protected abstract void SetMapValues(T map, ICamera2D camera, Func<IDrawable, bool> drawFilter, bool drawParticles);
     }
+    */
 }

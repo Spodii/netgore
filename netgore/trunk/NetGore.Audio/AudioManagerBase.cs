@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework.Audio;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -53,7 +52,11 @@ namespace NetGore.Audio
         /// </summary>
         public static float MasterVolume
         {
-            get { return SoundEffect.MasterVolume; }
+            get 
+            { 
+                // TODO: ## return SoundEffect.MasterVolume; 
+                return 1;
+            }
             set
             {
                 float v = value;
@@ -63,7 +66,7 @@ namespace NetGore.Audio
                 else if (v < 0.0f)
                     v = 0.0f;
 
-                SoundEffect.MasterVolume = v;
+                // TODO: ## SoundEffect.MasterVolume = v;
             }
         }
 

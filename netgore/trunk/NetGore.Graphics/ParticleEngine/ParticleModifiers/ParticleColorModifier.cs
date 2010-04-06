@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
 {

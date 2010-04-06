@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -48,7 +48,7 @@ namespace DemoGame.Client
             base.Activate();
         }
 
-        void ClickButton_CreateAccount(object sender, MouseClickEventArgs e)
+        void ClickButton_CreateAccount(object sender, MouseButtonEventArgs e)
         {
             if (!GameData.AccountName.IsValid(_cNameText.Text))
             {

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -12,7 +11,7 @@ namespace NetGore.Graphics
     public class Sprite : ISprite
     {
         Rectangle _source;
-        Texture2D _texture;
+        Image _texture;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sprite"/> class.
@@ -27,7 +26,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="texture">The texture used by the Sprite.</param>
         /// <param name="source">Source rectangle in the texture for the Sprite.</param>
-        public Sprite(Texture2D texture, Rectangle source)
+        public Sprite(Image texture, Rectangle source)
         {
             if (texture == null)
                 throw new ArgumentNullException("texture");
@@ -51,7 +50,7 @@ namespace NetGore.Graphics
         /// <param name="spriteBatch">SpriteBatch to draw to.</param>
         /// <param name="dest">A rectangle specifying, in screen coordinates, where the sprite will be drawn. 
         /// If this rectangle is not the same size as sourcerectangle the sprite will be scaled to fit.</param>
-        public void Draw(SpriteBatch spriteBatch, Rectangle dest)
+        public void Draw(ISpriteBatch spriteBatch, Rectangle dest)
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
@@ -64,7 +63,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw to.</param>
         /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(ISpriteBatch spriteBatch, Vector2 position)
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
@@ -82,15 +81,13 @@ namespace NetGore.Graphics
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin.</param>
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="effects">Rotations to apply before rendering</param>
-        /// <param name="layerDepth">The sorting depth of the sprite, between 0 (front) and 1 (back). You must specify either 
-        /// SpriteSortMode.FrontToBack or SpriteSortMode.BackToFront for this parameter to affect sprite drawing.</param>
-        public void Draw(SpriteBatch spriteBatch, Rectangle dest, Color color, float rotation, Vector2 origin,
-                         SpriteEffects effects, float layerDepth)
+        public void Draw(ISpriteBatch spriteBatch, Rectangle dest, Color color, float rotation, Vector2 origin,
+                         SpriteEffects effects)
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
 
-            spriteBatch.Draw(_texture, dest, _source, color, rotation, origin, effects, layerDepth);
+            spriteBatch.Draw(_texture, dest, _source, color, rotation, origin, effects);
         }
 
         /// <summary>
@@ -103,15 +100,13 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Float containing separate scalar multiples for both the x and y axis.</param>
         /// <param name="effects">Rotations to apply before rendering.</param>
-        /// <param name="layerDepth">The sorting depth of the sprite, between 0 (front) and 1 (back). You must specify either 
-        /// SpriteSortMode.FrontToBack or SpriteSortMode.BackToFront for this parameter to affect sprite drawing.</param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, float scale,
-                         SpriteEffects effects, float layerDepth)
+        public void Draw(ISpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, float scale,
+                         SpriteEffects effects)
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
 
-            spriteBatch.Draw(_texture, position, _source, color, rotation, origin, scale, effects, layerDepth);
+            spriteBatch.Draw(_texture, position, _source, color, rotation, origin, scale, effects);
         }
 
         /// <summary>
@@ -124,15 +119,13 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="effects">Rotations to apply before rendering.</param>
-        /// <param name="layerDepth">The sorting depth of the sprite, between 0 (front) and 1 (back). You must specify either 
-        /// SpriteSortMode.FrontToBack or SpriteSortMode.BackToFront for this parameter to affect sprite drawing.</param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale,
-                         SpriteEffects effects, float layerDepth)
+        public void Draw(ISpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale,
+                         SpriteEffects effects)
         {
             if (spriteBatch == null)
                 throw new ArgumentNullException("spriteBatch");
 
-            spriteBatch.Draw(_texture, position, _source, color, rotation, origin, scale, effects, layerDepth);
+            spriteBatch.Draw(_texture, position, _source, color, rotation, origin, scale, effects);
         }
 
         #region ISprite Members
@@ -157,7 +150,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture containing the sprite.
         /// </summary>
-        public Texture2D Texture
+        public Image Texture
         {
             get { return _texture; }
             set

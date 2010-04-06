@@ -1,5 +1,5 @@
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.IO.PropertySync
 {

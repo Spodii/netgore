@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading;
-using Microsoft.Xna.Framework.Graphics;
 
 // The IGraphicsDeviceService interface requires a DeviceCreated event, but we
 // always just create the device inside our constructor, so we have no place to

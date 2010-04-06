@@ -1,10 +1,9 @@
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {
@@ -85,7 +84,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="sf">SpriteFont to draw with.</param>
-        public void Draw(ISpriteBatch sb, SpriteFont sf)
+        public void Draw(ISpriteBatch sb, Font sf)
         {
             sb.DrawString(sf, _text, _pos, new Color(255, 255, 255, (byte)_alpha));
         }

@@ -6,12 +6,12 @@ using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.Guilds;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
 using NetGore.Network;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {

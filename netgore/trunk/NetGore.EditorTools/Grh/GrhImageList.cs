@@ -13,7 +13,7 @@ using log4net;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
 using NetGore.IO;
-using Rectangle=Microsoft.Xna.Framework.Rectangle;
+using Rectangle=SFML.Graphics.Rectangle;
 
 namespace NetGore.EditorTools
 {

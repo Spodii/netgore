@@ -1,5 +1,6 @@
 using System.Linq;
-using Microsoft.Xna.Framework;
+
+using SFML.Graphics;
 
 namespace NetGore.Audio
 {
@@ -12,12 +13,6 @@ namespace NetGore.Audio
         /// Gets the sound track index.
         /// </summary>
         SoundID Index { get; }
-
-        /// <summary>
-        /// Gets or sets the object that is listening to the sounds. If null, last known position of the
-        /// listener will be used for the 3D sounds.
-        /// </summary>
-        IAudioEmitter Listener { get; set; }
 
         /// <summary>
         /// Plays a new instance of the sound.

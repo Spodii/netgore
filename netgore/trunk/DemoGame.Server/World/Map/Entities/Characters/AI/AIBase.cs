@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {

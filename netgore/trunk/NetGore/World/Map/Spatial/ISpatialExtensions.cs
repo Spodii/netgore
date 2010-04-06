@@ -1,6 +1,7 @@
 using System.Linq;
-using Microsoft.Xna.Framework;
+
 using NetGore.Extensions;
+using SFML.Graphics;
 
 namespace NetGore
 {

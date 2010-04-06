@@ -4,6 +4,8 @@ using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
+    // TODO: ## MapPreviewer
+    /*
     public class MapPreviewer : MapPreviewerBase<Map>
     {
         /// <summary>
@@ -20,4 +22,5 @@ namespace DemoGame.Client
             map.DrawParticles = drawParticles;
         }
     }
+    */
 }

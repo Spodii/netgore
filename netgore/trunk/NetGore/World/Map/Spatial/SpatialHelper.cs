@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Microsoft.Xna.Framework;
+using SFML.Graphics;
 
 namespace NetGore
 {

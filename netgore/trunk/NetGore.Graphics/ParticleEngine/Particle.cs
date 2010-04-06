@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 // Thanks goes out to the open source particle engine ProjectMercury, which a lot of the particle engine concepts
 // and design is derived from.
