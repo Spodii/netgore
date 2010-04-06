@@ -89,7 +89,7 @@ namespace NetGore.Network
         /// <param name="result">Async result.</param>
         void ReceiveFromCallback(IAsyncResult result)
         {
-            byte[] received = null;
+            byte[] received;
             EndPoint remoteEndPoint = new IPEndPoint(0, 0);
 
             try
@@ -108,7 +108,8 @@ namespace NetGore.Network
             {
                 if (log.IsErrorEnabled)
                     log.Error(e);
-                Debug.Fail(e.ToString());
+                received = null;
+                Dispose();
             }
             finally
             {

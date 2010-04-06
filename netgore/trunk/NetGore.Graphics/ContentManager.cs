@@ -10,7 +10,6 @@ using SFML.Graphics;
 
 namespace NetGore
 {
-    // TODO: ## Make all assets use the same file suffix, like Xna did
     /// <summary>
     /// An implementation of <see cref="IContentManager"/> for managing content in various levels of persistence.
     /// This way you can easily clear groups of content instead of clearing and having to re-load all content.
@@ -160,9 +159,18 @@ namespace NetGore
             Dispose(false);
         }
 
-        static string GetAssetPath(string assetName)
+        /// <summary>
+        /// Gets the absolute file path for an asset.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <returns>The absolute file path for the <paramref name="assetName"/>.</returns>
+        public static string GetAssetPath(string assetName)
         {
-            return ContentPaths.Build.Root.Join(assetName);
+            var pipeIndex = assetName.LastIndexOf('|');
+            if (pipeIndex > 0)
+                assetName = assetName.Substring(0, pipeIndex);
+
+            return ContentPaths.Build.Root.Join(assetName) + ".xnb";
         }
 
         protected static LoadingFailedException InvalidTypeException(object obj, Type expected)
@@ -252,7 +260,7 @@ namespace NetGore
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
-            var ret = new Font(GetAssetPath(assetName) + ".ttf", (uint)fontSize);
+            var ret = new Font(GetAssetPath(assetName), (uint)fontSize);
             return ret;
         }
 
@@ -269,7 +277,7 @@ namespace NetGore
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
-            var ret = new Image(GetAssetPath(assetName) + ".png") { Smooth = false };
+            var ret = new Image(GetAssetPath(assetName)) { Smooth = false };
             ret.CreateMaskFromColor(Color.Magenta);
 
             return ret;
@@ -370,6 +378,8 @@ namespace NetGore
         /// <returns>The loaded asset.</returns>
         public Font LoadFont(string assetName, int fontSize, ContentLevel level)
         {
+            assetName += "|" + fontSize;
+
             var ret = Load(assetName, level, x => ReadAssetFont(x, fontSize));
             if (!(ret is Font))
                 throw InvalidTypeException(ret, typeof(Font));

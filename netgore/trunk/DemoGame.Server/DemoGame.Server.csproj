@@ -509,8 +509,9 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)\..\DemoGame.Client\Content\Maps" "$(TargetDir)Content\Maps" /E /C /R /K /I /Y /D
-xcopy "$(ProjectDir)\..\DemoGame.Client\Content\Data" "$(TargetDir)Content\Data" /E /C /R /K /I /Y /D
-xcopy "$(ProjectDir)\ServerScripts" "$(TargetDir)Content\Data\ServerScripts" /E /C /R /K /I /Y /D</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)CopyContent.exe" "$(SolutionDir)DemoGame.Client\Content" "$(TargetDir)Content" Engine Font Fx Grh Languages Music Skeletons Sounds
+xcopy "$(ProjectDir)\ServerScripts" "$(TargetDir)Content\Data\ServerScripts" /E /C /R /K /I /Y /D</PreBuildEvent>
   </PropertyGroup>
 </Project>

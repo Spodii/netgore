@@ -261,8 +261,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>xcopy "$(ProjectDir)\Content" "$(TargetDir)Content" /E /C /R /K /I /Y /D
-build_rename_content.bat</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)CopyContent.exe" "$(ProjectDir)Content" "$(TargetDir)Content"</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

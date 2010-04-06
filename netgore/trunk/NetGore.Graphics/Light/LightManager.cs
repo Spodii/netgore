@@ -51,8 +51,8 @@ namespace NetGore.Graphics
             // Clear the buffer with the ambient light color
             _rw.Clear(Ambient);
 
-            // Draw the items
-            _sb.Begin( BlendMode.Alpha, camera);
+            // Draw the lights
+            _sb.Begin(BlendMode.Add, camera);
 
             foreach (var light in this)
             {
@@ -159,7 +159,7 @@ namespace NetGore.Graphics
                 _sb.Dispose();
 
             _rw = renderWindow;
-            _sb = new SpriteBatch(renderWindow);
+            _sb = new RoundedSpriteBatch(renderWindow);
         }
 
         /// <summary>
