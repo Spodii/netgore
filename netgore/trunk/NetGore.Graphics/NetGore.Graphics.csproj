@@ -61,14 +61,32 @@
     <ErrorReport>prompt</ErrorReport>
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;MONO</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
-    <Reference Include="Microsoft.Xna.Framework.Game, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
+    <Reference Include="sfmlnet-audio, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-audio.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-window, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-window.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -104,12 +122,8 @@
     <Compile Include="Exceptions\GrhDataException.cs" />
     <Compile Include="Exceptions\GrhDataNotFoundException.cs" />
     <Compile Include="Drawing Tools\FocusedSpatialDrawer.cs" />
-    <Compile Include="Extensions\GameTimeExtensions.cs" />
+    <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="GUI\Control Bases\Control.cs" />
-    <Compile Include="GUI\Controls\ListBox.cs" />
-    <Compile Include="GUI\Controls\MessageBox.cs" />
-    <Compile Include="GUI\Controls\MessageBoxButton.cs" />
-    <Compile Include="GUI\EventArgs\ControlEventHandler.cs" />
     <Compile Include="GUI\Control Bases\SpriteControl.cs" />
     <Compile Include="GUI\Control Bases\TextControl.cs" />
     <Compile Include="GUI\ControlBorder.cs" />
@@ -117,35 +131,37 @@
     <Compile Include="GUI\Controls\CheckBox.cs" />
     <Compile Include="GUI\Controls\Form.cs" />
     <Compile Include="GUI\Controls\Label.cs" />
+    <Compile Include="GUI\Controls\ListBox.cs" />
+    <Compile Include="GUI\Controls\MessageBox.cs" />
+    <Compile Include="GUI\Controls\MessageBoxButton.cs" />
     <Compile Include="GUI\Controls\Panel.cs" />
     <Compile Include="GUI\Controls\PictureBox.cs" />
     <Compile Include="GUI\Controls\TextBox.cs" />
+    <Compile Include="GUI\DragDropProviderHelper.cs" />
     <Compile Include="GUI\EditableTextHandler.cs" />
-    <Compile Include="GUI\EventArgs\KeyboardEventArgs.cs" />
+    <Compile Include="GUI\EventArgs\ControlEventHandler.cs" />
     <Compile Include="GUI\EventArgs\KeyboardEventHandler.cs" />
-    <Compile Include="GUI\EventArgs\MouseButtons.cs" />
-    <Compile Include="GUI\EventArgs\MouseClickEventArgs.cs" />
     <Compile Include="GUI\EventArgs\MouseClickEventHandler.cs" />
-    <Compile Include="GUI\EventArgs\MouseEventArgs.cs" />
     <Compile Include="GUI\EventArgs\MouseEventHandler.cs" />
+    <Compile Include="GUI\EventArgs\TextEnteredEventHandler.cs" />
     <Compile Include="GUI\GameControl\GameControl.cs" />
     <Compile Include="GUI\GameControl\GameControlCollection.cs" />
     <Compile Include="GUI\GameControl\GameControlEventHandler.cs" />
     <Compile Include="GUI\GameControl\GameControlKeys.cs" />
-    <Compile Include="GUI\GUIEventHandler.cs" />
     <Compile Include="GUI\GUI Manager\GUIManager.cs" />
+    <Compile Include="GUI\GUI Manager\IGUIManager.cs" />
+    <Compile Include="GUI\GUIEventHandler.cs" />
     <Compile Include="GUI\IDragDropProvider.cs" />
     <Compile Include="GUI\IEditableText.cs" />
-    <Compile Include="GUI\GUI Manager\IGUIManager.cs" />
     <Compile Include="GUI\MoveCursorDirection.cs" />
     <Compile Include="GUI\Screen Manager\GameScreen.cs" />
     <Compile Include="GUI\Screen Manager\IGameScreen.cs" />
     <Compile Include="GUI\Screen Manager\IScreenManager.cs" />
     <Compile Include="GUI\Screen Manager\IScreenManagerEventHandler.cs" />
     <Compile Include="GUI\Screen Manager\ScreenManager.cs" />
-    <Compile Include="GUI\Skin\SkinManager.cs" />
     <Compile Include="GUI\Skin\ISkinManager.cs" />
     <Compile Include="GUI\Skin\SkinChangeEventHandler.cs" />
+    <Compile Include="GUI\Skin\SkinManager.cs" />
     <Compile Include="GUI\StyledText.cs" />
     <Compile Include="GUI\StyledTextsDrawer.cs" />
     <Compile Include="GUI\TextBoxLine.cs" />
@@ -199,10 +215,10 @@
     <Compile Include="ParticleEngine\Emitters\ParticleEmitter.cs" />
     <Compile Include="ParticleEngine\Renderers\ParticleRendererBase.cs" />
     <Compile Include="ParticleEngine\Renderers\SpriteBatchParticleRenderer.cs" />
-    <Compile Include="RenderTarget2DHelper.cs" />
     <Compile Include="SpriteBatch\ISpriteBatch.cs" />
-    <Compile Include="SpriteBatch\RoundedXnaSpriteBatch.cs" />
-    <Compile Include="SpriteBatch\XnaSpriteBatch.cs" />
+    <Compile Include="SpriteBatch\RoundedSpriteBatch.cs" />
+    <Compile Include="SpriteBatch\SpriteBatch.cs" />
+    <Compile Include="SpriteBatch\SpriteEffects.cs" />
     <Compile Include="Sprite\Grh\AnimatedGrhData.cs" />
     <Compile Include="Sprite\Grh\AutomaticAnimatedGrhData.cs" />
     <Compile Include="Sprite\Grh\AutomaticAnimationInfo.cs" />
@@ -239,7 +255,7 @@
     <Compile Include="Sprite\Sprite.cs" />
     <Compile Include="Primitives\XNALine.cs" />
     <Compile Include="Primitives\XNATriangle.cs" />
-    <Compile Include="Content\XnaContentManager.cs" />
+    <Compile Include="ContentManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">

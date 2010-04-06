@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
 
 namespace NetGore.Features.Guilds
 {
     public class GuildMemberListControl : ListBox<GuildMemberNameRank>
     {
         int _cachedSpacing = 5;
-        SpriteFont _cachedSpacingFont = null;
+        Font _cachedSpacingFont = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildMemberListControl"/> class.

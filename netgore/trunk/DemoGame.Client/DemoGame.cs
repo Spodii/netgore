@@ -2,47 +2,52 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
     /// <summary>
     /// Root object for the Client
     /// </summary>
-    public class DemoGame : Game
+    public class DemoGame : RenderWindow
     {
-        readonly GraphicsDeviceManager graphics;
+        readonly ScreenManager _screenManager;
+        readonly ClientSockets _sockets;
 
         IEnumerable<TextureAtlas> _globalAtlases;
-        ScreenManager _screenManager;
-        ClientSockets _sockets;
+
+        public void HandleFrame()
+        {
+            // Process events
+            DispatchEvents();
+
+            // Draw everything
+            Draw();
+
+            // Update the sockets
+            _sockets.Heartbeat();
+
+            // Update everything else
+            Update();
+
+            // Display the window
+            Display();
+        }
 
         /// <summary>
         /// Sets up all the primary components of the game
         /// </summary>
-        public DemoGame()
+        public DemoGame(IntPtr p) : base(p)
         {
-            // Create the graphics manager and device
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreparingDeviceSettings += graphics_PreparingDeviceSettings;
-        }
-
-        /// <summary>
-        /// Called after all components are initialized but before the first update in the game loop.
-        /// </summary>
-        protected override void BeginRun()
-        {
-            base.BeginRun();
-
+            EngineSettingsInitializer.Initialize();
+ 
             // Create the screen manager
             _screenManager = new ScreenManager(this, new SkinManager("Default"), "Content");
-            Components.Add(_screenManager);
 
             // Read the GrhInfo
             LoadGrhInfo();
@@ -68,7 +73,19 @@ namespace DemoGame.Client
 
             _sockets = ClientSockets.Instance;
 
-            _screenManager.Updated += screenManager_Updated;
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            ShowMouseCursor(true);
+            UseVerticalSync(true);
+            SetFramerateLimit(60);
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
+            KeyPressed += DemoGame_KeyPressed;
+        }
+
+        void DemoGame_KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Code == KeyCode.Tilde)
+                _screenManager.ShowConsole = !_screenManager.ShowConsole;
         }
 
         /// <summary>
@@ -94,11 +111,7 @@ namespace DemoGame.Client
             return ContentLevel.Global;
         }
 
-        /// <summary>
-        /// Releases all resources used by the Game class.
-        /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
+        protected override void Destroy(bool disposing)
         {
             if (_globalAtlases != null)
             {
@@ -108,58 +121,9 @@ namespace DemoGame.Client
                 }
             }
 
-            base.Dispose(disposing);
-        }
+            _screenManager.Dispose();
 
-        /// <summary>
-        /// Adds support for using NVidia's PerfHUD.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="Microsoft.Xna.Framework.PreparingDeviceSettingsEventArgs"/> instance containing
-        /// the event data.</param>
-        static void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
-        {
-            foreach (GraphicsAdapter curAdapter in GraphicsAdapter.Adapters)
-            {
-                if (curAdapter.Description.Contains("NVIDIA PerfHUD"))
-                {
-                    e.GraphicsDeviceInformation.Adapter = curAdapter;
-                    e.GraphicsDeviceInformation.DeviceType = DeviceType.Reference;
-                    break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Called after the Game and GraphicsDevice are created, but before LoadContent.  Reference page contains code sample.
-        /// </summary>
-        protected override void Initialize()
-        {
-            IsMouseVisible = true;
-
-            // Try to go for 60 FPS for the update rate
-            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 60);
-            IsFixedTimeStep = true;
-
-            // Set the graphics settings
-            graphics.SynchronizeWithVerticalRetrace = true; // vsync
-            graphics.PreferMultiSampling = false;
-
-            // Disable filtering, which makes our 2d art look like crap
-            var samplerStates = graphics.GraphicsDevice.SamplerStates;
-            samplerStates[0].MinFilter = TextureFilter.None;
-            samplerStates[0].MipFilter = TextureFilter.None;
-            samplerStates[0].MagFilter = TextureFilter.None;
-            samplerStates[0].MaxMipLevel = 0;
-
-            // Screen size
-            graphics.PreferredBackBufferWidth = (int)GameData.ScreenSize.X;
-            graphics.PreferredBackBufferHeight = (int)GameData.ScreenSize.Y;
-
-            // Apply the changes
-            graphics.ApplyChanges();
-
-            base.Initialize();
+            base.Destroy(disposing);
         }
 
         /// <summary>
@@ -175,7 +139,6 @@ namespace DemoGame.Client
             GrhInfo.Load(ContentPaths.Build, _screenManager.Content);
 
             // Organize the GrhDatas for the atlases
-            /*
             var gdChars = new List<ITextureAtlasable>();
             var gdGUI = new List<ITextureAtlasable>();
             foreach (var gd in GrhInfo.GrhDatas.SelectMany(x => x.Frames).Distinct())
@@ -192,37 +155,26 @@ namespace DemoGame.Client
             var globalAtlasesList = new List<TextureAtlas>();
 
             if (gdChars.Count > 0)
-                globalAtlasesList.Add(new TextureAtlas(GraphicsDevice, gdChars));
+                globalAtlasesList.Add(new TextureAtlas(gdChars));
 
             if (gdGUI.Count > 0)
-                globalAtlasesList.Add(new TextureAtlas(GraphicsDevice, gdGUI));
+                globalAtlasesList.Add(new TextureAtlas(gdGUI));
             
             _globalAtlases = globalAtlasesList.ToArray();
-            */
-            // NOTE: !! TEMP
-            _globalAtlases = new TextureAtlas[0];
 
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
             _screenManager.Content.Unload();
         }
 
-        /// <summary>
-        /// Handles when the <see cref="IScreenManager"/> is updated.
-        /// </summary>
-        /// <param name="screenManager">The <see cref="IScreenManager"/> that was updated.</param>
-        void screenManager_Updated(IScreenManager screenManager)
+        public virtual void Update()
         {
-            // Update the sockets
-            _sockets.Heartbeat();
+            _screenManager.Update(Environment.TickCount);
+        }
 
-            // No matter the screen, if tilde is pressed, show the console
-            var screen = screenManager.ActiveScreen;
-            if (screen != null)
-            {
-                if (screen.GUIManager.NewKeysDown.Contains(Keys.OemTilde))
-                    screenManager.ShowConsole = !screenManager.ShowConsole;
-            }
+        public virtual void Draw()
+        {
+            _screenManager.Draw(Environment.TickCount);
         }
     }
 }

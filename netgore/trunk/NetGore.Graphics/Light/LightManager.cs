@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework.Graphics;
+
 using NetGore.Collections;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -12,13 +13,11 @@ namespace NetGore.Graphics
     /// </summary>
     public class LightManager : VirtualList<ILight>, ILightManager
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        ISpriteBatch _sb;
         Color _ambient;
         Grh _defaultSprite;
-        GraphicsDevice _gd;
-        ResolveTexture2D _lightMap;
-        ISpriteBatch _sb;
+        Image _lightMap;
+        RenderWindow _rw;
 
         /// <summary>
         /// Draws all of the lights in this <see cref="ILightManager"/>.
@@ -27,11 +26,11 @@ namespace NetGore.Graphics
         /// <param name="recursionCount">The recursion count. When this number reaches its limit, any recursion
         /// this method may normally do will not be attempted. Should be initially set to 0.</param>
         /// <returns>
-        /// The <see cref="Texture2D"/> containing the light map. If the light map failed to be generated
+        /// The <see cref="Image"/> containing the light map. If the light map failed to be generated
         /// for whatever reason, a null value will be returned instead.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
-        Texture2D DrawInternal(ICamera2D camera, int recursionCount)
+        Image DrawInternal(ICamera2D camera, int recursionCount)
         {
             // Check for too much recursion
             if (++recursionCount > 8)
@@ -40,71 +39,31 @@ namespace NetGore.Graphics
             if (!IsInitialized)
                 throw new InvalidOperationException("You must initialize the ILightManager before drawing.");
 
+            // Ensure the light map is created and of the needed size
+            if (_lightMap == null || _lightMap.IsDisposed() || _lightMap.Width != _rw.Width || _lightMap.Height != _rw.Height)
+            {
+                if (_lightMap != null && !_lightMap.IsDisposed())
+                    _lightMap.Dispose();
+
+                _lightMap = new Image(_rw.Width, _rw.Height);
+            }
+
             // Clear the buffer with the ambient light color
-            _gd.Clear(Ambient);
+            _rw.Clear(Ambient);
 
-            // Don't waste time starting and stopping the SpriteBatch if there is nothing to draw
-            if (Count > 0)
+            // Draw the items
+            _sb.Begin( BlendMode.Alpha, camera);
+
+            foreach (var light in this)
             {
-                var rs = _gd.RenderState;
-
-                // Store the previous render state values in interest
-                var oldDestinationBlend = rs.DestinationBlend;
-                var oldSourceBlend = rs.SourceBlend;
-                var oldBlendFunction = rs.BlendFunction;
-                var oldSABE = rs.SeparateAlphaBlendEnabled;
-
-                // Start the SpriteBatch
-                _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, camera.Matrix);
-
-                try
-                {
-                    // Set the render state
-                    rs.DestinationBlend = Blend.One;
-                    rs.SourceBlend = Blend.DestinationAlpha;
-                    rs.BlendFunction = BlendFunction.Add;
-                    rs.SeparateAlphaBlendEnabled = true;
-
-                    // Draw the lights
-                    foreach (var light in this)
-                    {
-                        light.Draw(_sb);
-                    }
-                }
-                finally
-                {
-                    _sb.End();
-                }
-
-                // Restore the render states
-                rs.DestinationBlend = oldDestinationBlend;
-                rs.SourceBlend = oldSourceBlend;
-                rs.BlendFunction = oldBlendFunction;
-                rs.SeparateAlphaBlendEnabled = oldSABE;
+                // TODO: Optimize by only drawing lights actually in view
+                light.Draw(_sb);
             }
 
-            // Get and return the light map
-            try
-            {
-                _gd.ResolveBackBuffer(_lightMap);
-            }
-            catch (ArgumentException)
-            {
-                // If there was an ArgumentException, it was probably due to the backbuffer being resized. So reinitailize and
-                // redraw. This could go into an infinite recursion and overflow the stack, so we count
-                // the number of recursions to avoid this.
-                Initialize(_gd);
-                return DrawInternal(camera, recursionCount);
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Quite a few things can cause this, none of which we can really fix (as far as I know).
-                const string errmsg =
-                    "InvalidOperationException occured when trying to create the light map - returning NULL instead. Exception: {0}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
-                return null;
-            }
+            _sb.End();
+
+            // Copy the screen buffer onto the light map image
+            _lightMap.CopyScreen(_rw);
 
             return _lightMap;
         }
@@ -117,7 +76,7 @@ namespace NetGore.Graphics
         public Color Ambient
         {
             get { return _ambient; }
-            set { _ambient = new Color(value, 255); }
+            set { _ambient = new Color(value.R, value.G, value.B, 255); }
         }
 
         /// <summary>
@@ -149,7 +108,7 @@ namespace NetGore.Graphics
         /// </summary>
         public bool IsInitialized
         {
-            get { return _lightMap != null; }
+            get { return _rw != null; }
         }
 
         /// <summary>
@@ -172,11 +131,11 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
         /// <returns>
-        /// The <see cref="Texture2D"/> containing the light map. If the light map failed to be generated
+        /// The <see cref="Image"/> containing the light map. If the light map failed to be generated
         /// for whatever reason, a null value will be returned instead.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
-        public Texture2D Draw(ICamera2D camera)
+        public Image Draw(ICamera2D camera)
         {
             return DrawInternal(camera, 0);
         }
@@ -186,23 +145,21 @@ namespace NetGore.Graphics
         /// can take place, but does not need to be drawn before <see cref="ILight"/> are added to or removed
         /// from the collection.
         /// </summary>
-        /// <param name="graphicsDevice">The <see cref="GraphicsDevice"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="graphicsDevice"/> is null.</exception>
-        public void Initialize(GraphicsDevice graphicsDevice)
+        /// <param name="renderWindow">The <see cref="RenderWindow"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="renderWindow"/> is null.</exception>
+        public void Initialize(RenderWindow renderWindow)
         {
-            if (graphicsDevice == null)
-                throw new ArgumentNullException("graphicsDevice");
+            if (renderWindow == null)
+                throw new ArgumentNullException("renderWindow");
 
-            if (_lightMap != null && !_lightMap.IsDisposed)
+            if (_lightMap != null && !_lightMap.IsDisposed())
                 _lightMap.Dispose();
 
-            _gd = graphicsDevice;
+            if (_sb != null && !_sb.IsDisposed)
+                _sb.Dispose();
 
-            var pp = _gd.PresentationParameters;
-            _lightMap = new ResolveTexture2D(_gd, pp.BackBufferWidth, pp.BackBufferHeight, 1, pp.BackBufferFormat);
-
-            if (_sb == null)
-                _sb = new RoundedXnaSpriteBatch(_gd);
+            _rw = renderWindow;
+            _sb = new SpriteBatch(renderWindow);
         }
 
         /// <summary>

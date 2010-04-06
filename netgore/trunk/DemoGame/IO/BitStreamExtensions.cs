@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Stats;
+using SFML.Graphics;
 
 namespace DemoGame
 {

@@ -7,12 +7,12 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.AI;
 using NetGore.Audio;
 using NetGore.Collections;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace DemoGame
 {

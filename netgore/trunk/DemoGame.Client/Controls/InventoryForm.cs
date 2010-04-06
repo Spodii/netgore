@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using DemoGame.DbObjs;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -115,14 +114,14 @@ namespace DemoGame.Client
         /// Handles when the mouse button has been raised on a <see cref="InventoryItemPB"/>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
-        void InventoryItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void InventoryItemPB_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             InventoryItemPB itemPB = (InventoryItemPB)sender;
 
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButton.Right)
             {
-                if (GUIManager.KeysPressed.Contains(Keys.LeftShift) || GUIManager.KeysPressed.Contains(Keys.RightShift))
+                if (GUIManager.IsKeyDown(KeyCode.LShift) || GUIManager.IsKeyDown(KeyCode.RShift))
                 {
                     // Drop
                     if (RequestDropItem != null)
@@ -324,7 +323,7 @@ namespace DemoGame.Client
             /// Override this method instead of using an event hook on <see cref="Control.MouseUp"/> when possible.
             /// </summary>
             /// <param name="e">The event args.</param>
-            protected override void OnMouseUp(MouseClickEventArgs e)
+            protected override void OnMouseUp(MouseButtonEventArgs e)
             {
                 base.OnMouseUp(e);
 

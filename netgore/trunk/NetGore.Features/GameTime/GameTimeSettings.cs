@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Features.GameTime
 {

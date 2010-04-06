@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework.Graphics;
 using Color=System.Drawing.Color;
 
 namespace NetGore.EditorTools
@@ -30,7 +29,7 @@ namespace NetGore.EditorTools
         /// <param name="destWidth">Destination width.</param>
         /// <param name="destHeight">Destination height.</param>
         /// <returns>The Image created from the Texture2D.</returns>
-        public static Image CreateFromTexture(Texture texture, int x, int y, int width, int height, int destWidth, int destHeight)
+        public static Image CreateFromTexture(SFML.Graphics.Image texture, int x, int y, int width, int height, int destWidth, int destHeight)
         {
             if (texture == null)
                 return null;

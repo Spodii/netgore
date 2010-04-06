@@ -4,8 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
+
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {

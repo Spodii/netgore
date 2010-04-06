@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
+    // TODO: ## http://www.sfml-dev.org/tutorials/1.5/graphics-shape.php
+
     /// <summary>
     /// Assists in drawing untextured rectangles. More accurately, it draws textures using
     /// a purely white texture (System.Blank).

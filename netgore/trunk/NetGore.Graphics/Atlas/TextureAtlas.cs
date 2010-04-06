@@ -4,9 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -26,7 +25,7 @@ namespace NetGore.Graphics
         /// If the found texture size is less than this value, it will be assumed that the found value is wrong and
         /// this value will instead be used.
         /// </summary>
-        const int _minAllowedTextureSize = 64;
+        const int _minAllowedTextureSize = 512;
 
         /// <summary>
         /// Background color of the atlas (not like it matters much as we should never see it unless there is
@@ -38,29 +37,18 @@ namespace NetGore.Graphics
         /// Contains a cache of the maximum allowed texture size. If this value is equal to int.MinValue, it has yet
         /// to be found.
         /// </summary>
-        static int _maxTextureSize = int.MinValue;
+        static int _maxTextureSize = 1024;
 
         readonly List<AtlasTextureInfo> _atlasTextureInfos;
-
-        readonly GraphicsDevice _device;
 
         bool _isDisposed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureAtlas"/> class.
         /// </summary>
-        /// <param name="device">The <see cref="GraphicsDevice"/>.</param>
         /// <param name="atlasItems">The collection of items to place into the atlas.</param>
-        public TextureAtlas(GraphicsDevice device, IEnumerable<ITextureAtlasable> atlasItems)
+        public TextureAtlas(IEnumerable<ITextureAtlasable> atlasItems)
         {
-            if (device == null || device.IsDisposed)
-            {
-                const string errmsg = "device is null or invalid.";
-                if (log.IsFatalEnabled)
-                    log.Fatal(errmsg);
-                throw new ArgumentException(errmsg, "device");
-            }
-
             if (atlasItems == null || atlasItems.IsEmpty())
             {
                 const string errmsg = "atlasItems is null or empty.";
@@ -69,8 +57,7 @@ namespace NetGore.Graphics
                 throw new ArgumentException(errmsg, "atlasItems");
             }
 
-            _device = device;
-            UpdateMaxTextureSize(_device);
+            UpdateMaxTextureSize();
 
             // Build the layout for all the items that will be in the atlas
             _atlasTextureInfos = Combine(atlasItems);
@@ -78,7 +65,7 @@ namespace NetGore.Graphics
             // Build and apply each atlas texture
             foreach (var atlasTextureInfo in _atlasTextureInfos)
             {
-                atlasTextureInfo.BuildTexture(_device, Padding);
+                atlasTextureInfo.BuildTexture(Padding);
             }
         }
 
@@ -88,15 +75,6 @@ namespace NetGore.Graphics
         public IEnumerable<ITextureAtlasable> AtlasItems
         {
             get { return _atlasTextureInfos.SelectMany(x => x.Nodes).Select(x => x.ITextureAtlasable); }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Microsoft.Xna.Framework.Graphics.GraphicsDevice"/> used by this
-        /// <see cref="TextureAtlas"/>.
-        /// </summary>
-        public GraphicsDevice GraphicsDevice
-        {
-            get { return _device; }
         }
 
         /// <summary>
@@ -313,15 +291,15 @@ namespace NetGore.Graphics
         /// <summary>
         /// Ensures that we have found the maximum allowed texture size.
         /// </summary>
-        /// <param name="device">The <see cref="GraphicsDevice"/>.</param>
-        static void UpdateMaxTextureSize(GraphicsDevice device)
+        static void UpdateMaxTextureSize()
         {
             if (_maxTextureSize != int.MinValue)
                 return;
 
-            var gdCaps = device.GraphicsDeviceCapabilities;
-            _maxTextureSize = Math.Min(gdCaps.MaxTextureWidth, gdCaps.MaxTextureHeight);
+            // FUTURE: Query the hardware for the actual _maxTextureSize value allowed by the system
+            _maxTextureSize = 1024;
 
+            // Ensure the size found is logical
             if (_maxTextureSize < _minAllowedTextureSize)
             {
                 const string errmsg = "Found maximum texture size was `{0}`, which seems way too low. Forcing to 512.";
@@ -369,7 +347,8 @@ namespace NetGore.Graphics
             readonly int _height;
             readonly IEnumerable<AtlasTextureItem> _nodes;
             readonly int _width;
-            Texture2D _atlasTexture;
+
+            Image _atlasTexture;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="AtlasTextureInfo"/> class.
@@ -397,21 +376,15 @@ namespace NetGore.Graphics
             /// <summary>
             /// Builds the texture for this atlas item, or rebuilds the texture if one already existed.
             /// </summary>
-            internal void BuildTexture(GraphicsDevice device, int padding)
+            internal void BuildTexture(int padding)
             {
                 // Dispose of the old texture if there is one
                 if (_atlasTexture != null)
                     _atlasTexture.Dispose();
 
-                // Store the old depth stencil buffer
-                DepthStencilBuffer oldDSB = device.DepthStencilBuffer;
-
                 // Draw the atlas (rebuilding the texture)
                 IEnumerable<AtlasTextureItem> successful;
-                _atlasTexture = DrawAtlas(device, padding, out successful);
-
-                // Restore the old DSB
-                device.DepthStencilBuffer = oldDSB;
+                _atlasTexture = DrawAtlas(padding, out successful);
 
                 // Tell all the items that were successfully added to use the new atlas texture
                 foreach (AtlasTextureItem node in successful)
@@ -423,14 +396,13 @@ namespace NetGore.Graphics
             }
 
             /// <summary>
-            /// Draws the <see cref="Texture2D"/> for this atlas.
+            /// Draws the <see cref="Image"/> for this atlas.
             /// </summary>
-            /// <param name="device">Device to use to create the atlas.</param>
             /// <param name="padding">The amount to pad each item.</param>
             /// <param name="successfulItems">An IEnumerable of the <see cref="AtlasTextureItem"/>s that were
             /// successfully draw to the atlas.</param>
-            /// <returns>A <see cref="Texture2D"/> of the atlas.</returns>
-            Texture2D DrawAtlas(GraphicsDevice device, int padding, out IEnumerable<AtlasTextureItem> successfulItems)
+            /// <returns>A <see cref="Image"/> of the atlas.</returns>
+            Image DrawAtlas(int padding, out IEnumerable<AtlasTextureItem> successfulItems)
             {
                 // Create the list for successful items
                 List<AtlasTextureItem> successful = new List<AtlasTextureItem>();
@@ -439,11 +411,12 @@ namespace NetGore.Graphics
                 // Try to create the atlas texture. If any exceptions are thrown when trying to create the texture,
                 // do not use a texture atlas at all.
                 const string errmsg = "Failed to create TextureAtlas texture. Exception: {0}";
-                Texture2D ret = null;
+                Image ret = null;
                 try
                 {
-                    ret = RenderTarget2DHelper.CreateTexture2D(device, _width, _height, _backColor,
-                                                               x => DrawAtlasDrawingHandler(x, padding, successful));
+                    ret = new Image((uint)_width, (uint)_height, _backColor) { Smooth = false };
+                    ret.CreateMaskFromColor(_backColor);
+                    DrawAtlasDrawingHandler(ret, padding, successful);
                 }
                 catch (ObjectDisposedException ex)
                 {
@@ -479,120 +452,106 @@ namespace NetGore.Graphics
                 // ReSharper restore ConditionIsAlwaysTrueOrFalse
 #pragma warning restore 162
 
-                ret.Name = "Atlas Texture";
                 return ret;
             }
 
             /// <summary>
-            /// Handles the actual drawing of the atlas items onto a single <see cref="RenderTarget2D"/> through an
-            /// <see cref="ISpriteBatch"/>.
+            /// Handles the actual drawing of the atlas items onto a single <see cref="Image"/>.
             /// </summary>
-            /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
+            /// <param name="destImg">The <see cref="Image"/> to copy to.</param>
             /// <param name="padding">The amount of padding, in pixels, to place around each sprite in the atlas. If this
             /// values is greater than 0, all 4 sides of the atlas item will be copied one pixel outwards. This
             /// is to help prevent issues when using filtering with sprites.</param>
             /// <param name="successful">The <see cref="ICollection{T}"/> to populate with the 
             /// <see cref="AtlasTextureItem"/>s that were successfully drawn. Usually, an item will fail to draw
             /// when the item's texture cannot be loaded.</param>
-            void DrawAtlasDrawingHandler(ISpriteBatch sb, int padding, ICollection<AtlasTextureItem> successful)
+            void DrawAtlasDrawingHandler(Image destImg, int padding, ICollection<AtlasTextureItem> successful)
             {
-                // Start the SpriteBatch
-                sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.SaveState);
-
-                // Use a try/finally block to make sure that the SpriteBatch ends. If End() is not called, it could
-                // prevent other SpriteBatches from Begin()ing.
-                try
+                // Draw every atlas item to the texture
+                foreach (AtlasTextureItem item in Nodes)
                 {
-                    // Draw every atlas item to the texture
-                    foreach (AtlasTextureItem item in Nodes)
+                    // Make sure this item is not already part of an atlas. While it is handy to have an atlas
+                    // draw to another atlas, the benefits of that are likely minimal, and it is far more important
+                    // to avoid having an invalid atlas (such as when the device is lost) drawing to another atlas
+                    item.ITextureAtlasable.RemoveAtlas();
+
+                    // Grab the texture and make sure it is valid
+                    var tex = item.ITextureAtlasable.Texture;
+                    if (tex == null)
                     {
-                        // Make sure this item is not already part of an atlas. While it is handy to have an atlas
-                        // draw to another atlas, the benefits of that are likely minimal, and it is far more important
-                        // to avoid having an invalid atlas (such as when the device is lost) drawing to another atlas
-                        item.ITextureAtlasable.RemoveAtlas();
-
-                        // Grab the texture and make sure it is valid
-                        Texture2D tex = item.ITextureAtlasable.Texture;
-                        if (tex == null || tex.IsDisposed)
-                        {
-                            const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, item);
-                            continue;
-                        }
-
-                        // Draw the actual image (raw, no borders)
-                        Rectangle srcRect = item.ITextureAtlasable.SourceRect;
-                        Vector2 dest = new Vector2(item.Rect.X + padding, item.Y + padding);
-                        Rectangle src = srcRect;
-                        DrawToAtlas(sb, tex, dest, src);
-
-                        // Successfully drawn
-                        successful.Add(item);
-
-                        // Create the 1px borders only if padded
-                        if (padding == 0)
-                            continue;
-
-                        // Left border
-                        src.Width = 1;
-                        dest.X -= 1;
-                        DrawToAtlas(sb, tex, dest, src);
-
-                        // Right border
-                        src.X += srcRect.Width - 1;
-                        dest.X += srcRect.Width + 1;
-                        DrawToAtlas(sb, tex, dest, src);
-
-                        // Top border
-                        src = new Rectangle(srcRect.X, srcRect.Y, srcRect.Width, 1);
-                        dest.X = item.X + padding;
-                        dest.Y = item.Y + padding - 1;
-                        DrawToAtlas(sb, tex, dest, src);
-
-                        // Bottom border
-                        src.Y += srcRect.Height - 1;
-                        dest.Y += srcRect.Height + 1;
-                        DrawToAtlas(sb, tex, dest, src);
-
-                        // Top-left corner
-                        src = new Rectangle(srcRect.X, srcRect.Y, 1, 1);
-                        dest.X = item.X + padding - 1;
-                        dest.Y = item.Y + padding - 1;
-                        DrawToAtlas(sb, tex, dest, src);
-
-                        // Top-right corner
-                        src.X += srcRect.Width - 1;
-                        dest.X += srcRect.Width + 1;
-                        DrawToAtlas(sb, tex, dest, src);
-
-                        // Bottom-right corner
-                        src.Y += srcRect.Height - 1;
-                        dest.Y += srcRect.Height + 1;
-                        DrawToAtlas(sb, tex, dest, src);
-
-                        // Bottom-left corner
-                        src.X -= srcRect.Width - 1;
-                        dest.X -= srcRect.Width + 1;
-                        DrawToAtlas(sb, tex, dest, src);
+                        const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, item);
+                        continue;
                     }
-                }
-                finally
-                {
-                    sb.End();
+
+                    // Draw the actual image (raw, no borders)
+                    Rectangle srcRect = item.ITextureAtlasable.SourceRect;
+                    Vector2 dest = new Vector2(item.Rect.X + padding, item.Y + padding);
+                    Rectangle src = srcRect;
+                    DrawToAtlas(destImg, tex, dest, src);
+
+                    // Successfully drawn
+                    successful.Add(item);
+
+                    // Create the 1px borders only if padded
+                    if (padding == 0)
+                        continue;
+
+                    // Left border
+                    src.Width = 1;
+                    dest.X -= 1;
+                    DrawToAtlas(destImg, tex, dest, src);
+
+                    // Right border
+                    src.X += srcRect.Width - 1;
+                    dest.X += srcRect.Width + 1;
+                    DrawToAtlas(destImg, tex, dest, src);
+
+                    // Top border
+                    src = new Rectangle(srcRect.X, srcRect.Y, srcRect.Width, 1);
+                    dest.X = item.X + padding;
+                    dest.Y = item.Y + padding - 1;
+                    DrawToAtlas(destImg, tex, dest, src);
+
+                    // Bottom border
+                    src.Y += srcRect.Height - 1;
+                    dest.Y += srcRect.Height + 1;
+                    DrawToAtlas(destImg, tex, dest, src);
+
+                    // Top-left corner
+                    src = new Rectangle(srcRect.X, srcRect.Y, 1, 1);
+                    dest.X = item.X + padding - 1;
+                    dest.Y = item.Y + padding - 1;
+                    DrawToAtlas(destImg, tex, dest, src);
+
+                    // Top-right corner
+                    src.X += srcRect.Width - 1;
+                    dest.X += srcRect.Width + 1;
+                    DrawToAtlas(destImg, tex, dest, src);
+
+                    // Bottom-right corner
+                    src.Y += srcRect.Height - 1;
+                    dest.Y += srcRect.Height + 1;
+                    DrawToAtlas(destImg, tex, dest, src);
+
+                    // Bottom-left corner
+                    src.X -= srcRect.Width - 1;
+                    dest.X -= srcRect.Width + 1;
+                    DrawToAtlas(destImg, tex, dest, src);
                 }
             }
 
             /// <summary>
             /// Draws a single item the atlas through a <see cref="ISpriteBatch"/>.
             /// </summary>
-            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-            /// <param name="texture">The source texture.</param>
+            /// <param name="destImg">The <see cref="Image"/> to copy to.</param>
+            /// <param name="srcImg">The source <see cref="Image"/>.</param>
             /// <param name="dest">The drawing destination on the atlas.</param>
-            /// <param name="src">The source rectangle to draw from the <paramref name="texture"/>.</param>
-            static void DrawToAtlas(ISpriteBatch spriteBatch, Texture2D texture, Vector2 dest, Rectangle src)
+            /// <param name="src">The source rectangle to draw from the <paramref name="srcImg"/>.</param>
+            static void DrawToAtlas(Image destImg, Image srcImg, Vector2 dest, Rectangle src)
             {
-                spriteBatch.Draw(texture, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                destImg.Copy(srcImg, (uint)dest.X, (uint)dest.Y, (IntRect)src);
             }
 
             /// <summary>
@@ -600,10 +559,10 @@ namespace NetGore.Graphics
             /// debug mode.
             /// </summary>
             [Conditional("DEBUG")]
-            static void SaveTextureToTempFile(Texture texture)
+            static void SaveTextureToTempFile(Image texture)
             {
                 TempFile f = new TempFile();
-                texture.Save(f.FilePath, ImageFileFormat.Bmp);
+                texture.SaveToFile(f.FilePath);
             }
 
             #region IDisposable Members
@@ -613,7 +572,10 @@ namespace NetGore.Graphics
             /// </summary>
             public void Dispose()
             {
-                if (_atlasTexture != null && !_atlasTexture.IsDisposed)
+                foreach (var node in Nodes)
+                    node.ITextureAtlasable.RemoveAtlas();
+
+                if (_atlasTexture != null && !_atlasTexture.IsDisposed())
                     _atlasTexture.Dispose();
             }
 

@@ -1,8 +1,8 @@
 using System.IO;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Audio
 {
@@ -91,7 +91,7 @@ namespace NetGore.Audio
         /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
         protected override ISound ReadHandler(IValueReader reader)
         {
-            return new Sound(this, reader);
+            return new SoundTrack(this, reader);
         }
 
         /// <summary>

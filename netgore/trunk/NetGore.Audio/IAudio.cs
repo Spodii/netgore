@@ -1,5 +1,4 @@
 using System.Linq;
-using Microsoft.Xna.Framework.Content;
 
 namespace NetGore.Audio
 {
@@ -10,7 +9,7 @@ namespace NetGore.Audio
     {
         /// <summary>
         /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
-        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
+        /// when loading from the <see cref="IContentManager"/>. It cannot be used to reference this
         /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
         /// </summary>
         string AssetName { get; }

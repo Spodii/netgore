@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
-using XnaColor = Microsoft.Xna.Framework.Graphics.Color;
+using XnaColor = SFML.Graphics.Color;
 
 namespace NetGore.EditorTools
 {

@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
+    // TODO: ## http://www.sfml-dev.org/tutorials/1.5/graphics-shape.php
+
     public static class XNAArrow
     {
         public static void Draw(ISpriteBatch sb, Vector2 source, Vector2 dest, Color color)

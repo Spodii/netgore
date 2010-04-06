@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Features.GameTime;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using SFML.Graphics;
 using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
@@ -35,12 +34,6 @@ namespace DemoGame.Client
         readonly List<BackgroundImage> _backgroundImages = new List<BackgroundImage>();
 
         readonly DrawableSorter _drawableSorter = new DrawableSorter();
-
-        /// <summary>
-        /// Graphics device used when building the atlas
-        /// </summary>
-        readonly GraphicsDevice _graphics;
-
         readonly List<ILight> _lights = new List<ILight>();
 
         /// <summary>
@@ -57,7 +50,7 @@ namespace DemoGame.Client
         /// <summary>
         /// List of atlas textures used for the graphics for the map
         /// </summary>
-        List<Texture2D> _mapAtlases = new List<Texture2D>();
+        List<Image> _mapAtlases = new List<Image>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Map"/> class.
@@ -65,11 +58,9 @@ namespace DemoGame.Client
         /// <param name="mapID">The ID of the map.</param>
         /// <param name="camera">The camera used to view the map.</param>
         /// <param name="getTime">The object used to get the current time.</param>
-        /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map.</param>
-        public Map(MapID mapID, ICamera2D camera, IGetTime getTime, GraphicsDevice graphics) : base(mapID, getTime)
+        public Map(MapID mapID, ICamera2D camera, IGetTime getTime) : base(mapID, getTime)
         {
             _camera = camera;
-            _graphics = graphics;
 
             DrawParticles = true;
         }
@@ -184,7 +175,7 @@ namespace DemoGame.Client
         {
             if (grhIndexes == null || grhIndexes.Count() == 0)
             {
-                _mapAtlases = new List<Texture2D>(0);
+                _mapAtlases = new List<Image>(0);
                 return;
             }
 
@@ -201,7 +192,7 @@ namespace DemoGame.Client
                 _atlas.Dispose();
 
             // Generate the atlas out of all the items
-            _atlas = new TextureAtlas(_graphics, atlasItems.Cast<ITextureAtlasable>());
+            _atlas = new TextureAtlas(atlasItems.Cast<ITextureAtlasable>());
         }
 
         /// <summary>
@@ -484,9 +475,9 @@ namespace DemoGame.Client
             if (_atlas != null && !_atlas.IsDisposed)
                 _atlas.Dispose();
 
-            foreach (Texture2D atlas in _mapAtlases)
+            foreach (var atlas in _mapAtlases)
             {
-                if (atlas != null && !atlas.IsDisposed)
+                if (atlas != null && !atlas.IsDisposed())
                     atlas.Dispose();
             }
 

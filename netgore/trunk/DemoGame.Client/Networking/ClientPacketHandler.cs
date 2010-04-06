@@ -6,8 +6,6 @@ using System.Reflection;
 using DemoGame.Client.NPCChat;
 using DemoGame.DbObjs;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Features.Emoticons;
@@ -21,6 +19,7 @@ using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
+using SFML.Graphics;
 
 #pragma warning disable 168
 // ReSharper disable UnusedMember.Local
@@ -669,7 +668,7 @@ namespace DemoGame.Client
             MapID mapID = r.ReadMapID();
 
             // Create the new map
-            Map newMap = new Map(mapID, World.Camera, World, GameplayScreen.ScreenManager.GraphicsDevice);
+            Map newMap = new Map(mapID, World.Camera, World);
             newMap.Load(ContentPaths.Build, false, _dynamicEntityFactory);
 
             // Clear quest requirements caches

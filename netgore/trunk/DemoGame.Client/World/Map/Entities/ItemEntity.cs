@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
+using SFML.Graphics;
 using IDrawable=NetGore.Graphics.IDrawable;
 
 // LATER: When editing Grhs and changing texture, change the preview

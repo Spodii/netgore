@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Graphics.ParticleEngine
 {
@@ -24,7 +25,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _blendModeKeyName = "BlendMode";
         const string _budgetKeyName = "Budget";
         const string _customValuesNodeName = "CustomValues";
-        const SpriteBlendMode _defaultBlendMode = SpriteBlendMode.Additive;
+        const BlendMode _defaultBlendMode = BlendMode.Add;
         const int _defaultBudget = 5000;
         const string _defaultName = "Unnamed";
         const string _emitterCategoryName = "Emitter";
@@ -111,14 +112,14 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteBlendMode"/> to use when rendering the <see cref="Particle"/>s
+        /// Gets or sets the <see cref="BlendMode"/> to use when rendering the <see cref="Particle"/>s
         /// emitted by this <see cref="ParticleEmitter"/>.
         /// </summary>
         [Category(_emitterCategoryName)]
         [Description("The blending mode to use when rendering Particles from this emitter.")]
         [DisplayName("Blend Mode")]
         [DefaultValue(_defaultBlendMode)]
-        public SpriteBlendMode BlendMode { get; set; }
+        public BlendMode BlendMode { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum number of live particles this <see cref="ParticleEmitter"/> may create at
@@ -441,7 +442,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             // Read the primary values
             Name = reader.ReadString(_nameKeyName);
-            BlendMode = reader.ReadEnum<SpriteBlendMode>(_blendModeKeyName);
+            BlendMode = reader.ReadEnum<BlendMode>(_blendModeKeyName);
             Budget = reader.ReadInt(_budgetKeyName);
             Life = reader.ReadVariableInt(_lifeKeyName);
             Origin = reader.ReadVector2(_originKeyName);

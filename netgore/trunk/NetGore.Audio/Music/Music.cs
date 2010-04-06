@@ -4,10 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using log4net;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Media;
 using NetGore.IO;
+using SFML.Audio;
 
 // FUTURE: Make the MusicManager work together with this better to unload all but the current playing music track
 
@@ -16,21 +14,21 @@ namespace NetGore.Audio
     /// <summary>
     /// A unique music track.
     /// </summary>
-    public class Music : IMusic
+    public class MusicTrack : IMusic
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly AudioManagerBase _audioManager;
         readonly MusicID _index;
         readonly string _name;
 
-        Song _instance;
+        SFML.Audio.Music _instance;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Music"/> class.
+        /// Initializes a new instance of the <see cref="MusicTrack"/> class.
         /// </summary>
         /// <param name="audioManager">The <see cref="AudioManagerBase"/>.</param>
         /// <param name="r">The <see cref="IValueReader"/> to read the values from.</param>
-        internal Music(AudioManagerBase audioManager, IValueReader r)
+        internal MusicTrack(AudioManagerBase audioManager, IValueReader r)
         {
             _audioManager = audioManager;
             _name = r.ReadString(IAudioHelper.FileValueKey);
@@ -41,7 +39,7 @@ namespace NetGore.Audio
 
         /// <summary>
         /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
-        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
+        /// when loading from the <see cref="IContentManager"/>. It cannot be used to reference this
         /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
         /// </summary>
         public string AssetName
@@ -84,29 +82,14 @@ namespace NetGore.Audio
         /// <summary>
         /// Gets the current state of the music track.
         /// </summary>
-        public SoundState State
+        public SoundStatus State
         {
             get
             {
                 if (_instance == null)
-                    return SoundState.Stopped;
+                    return  SoundStatus.Stopped;
 
-                switch (MediaPlayer.State)
-                {
-                    case MediaState.Paused:
-                        return SoundState.Paused;
-                    case MediaState.Playing:
-                        return SoundState.Playing;
-                    case MediaState.Stopped:
-                        return SoundState.Stopped;
-
-                    default:
-                        const string errmsg = "Unknown MediaPlayer state `{0}`. How the hell did this happen!?";
-                        if (log.IsFatalEnabled)
-                            log.FatalFormat(errmsg, MediaPlayer.State);
-                        Debug.Fail(string.Format(errmsg, MediaPlayer.State));
-                        return SoundState.Stopped;
-                }
+                return _instance.Status;
             }
         }
 
@@ -124,7 +107,8 @@ namespace NetGore.Audio
         /// </summary>
         public void Pause()
         {
-            MediaPlayer.Pause();
+            if (_instance != null)
+            _instance.Pause();
         }
 
         /// <summary>
@@ -133,28 +117,17 @@ namespace NetGore.Audio
         /// </summary>
         public void Play()
         {
-            // HACK: This is really fucking lame. MediaPlayer gives us MP3 support, but it requires us to have Windows
-            // Media Player installed, and it is slow as hell on the first playback (thus the thread call). So it is either
-            // use wavs (and whore up the memory usage), use MP3s and deal with this crap, or switch music libraries...
-            ThreadPool.QueueUserWorkItem(delegate
-            {
-                ((IAudio)this).UpdateVolume();
+            // TODO: ## Music
+            /*
+            ((IAudio)this).UpdateVolume();
 
-                // Ensure the instance is valid
-                if (_instance == null)
-                    _instance = _audioManager.ContentManager.Load<Song>(AssetName, ContentLevel.GameScreen);
+            // Ensure the instance is valid
+            if (_instance == null)
+                _instance = _audioManager.ContentManager.LoadMusic(AssetName, ContentLevel.GameScreen);
 
-                try
-                {
-                    MediaPlayer.Play(_instance);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    const string errmsg = "Failed to play music. Exception: {0}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, ex);
-                }
-            });
+            if (_instance != null)
+            _instance.Play();
+            */
         }
 
         /// <summary>
@@ -162,7 +135,8 @@ namespace NetGore.Audio
         /// </summary>
         public void Resume()
         {
-            MediaPlayer.Resume();
+            if (_instance != null)
+            _instance.Play();
         }
 
         /// <summary>
@@ -171,7 +145,8 @@ namespace NetGore.Audio
         /// </summary>
         public void Stop()
         {
-            MediaPlayer.Stop();
+            if (_instance != null)
+            _instance.Stop();
         }
 
         /// <summary>
@@ -186,7 +161,8 @@ namespace NetGore.Audio
         /// </summary>
         void IAudio.UpdateVolume()
         {
-            MediaPlayer.Volume = _audioManager.Volume;
+            if (_instance != null)
+            _instance.Volume = _audioManager.Volume;
         }
 
         #endregion

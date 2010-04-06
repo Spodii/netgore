@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.DbObjs;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {
@@ -12,7 +12,11 @@ namespace DemoGame.Client
     /// </summary>
     public static class ItemInfoHelper
     {
+        static readonly Color _bonusColor = new Color(144, 238, 144);
+        static readonly Color _generalColor = new Color(173, 216, 230);
         static readonly string _lineBreak = Environment.NewLine;
+        static readonly Color _nameColor = new Color(32, 178, 170);
+        static readonly Color _reqColor = new Color(200, 21, 133);
 
         static void CreateValueLine(ICollection<StyledText> dest, object key, object value, Color keyColor)
         {
@@ -39,36 +43,31 @@ namespace DemoGame.Client
 
         public static StyledText[] GetStyledText(IItemTemplateTable itemInfo)
         {
-            Color nameColor = Color.LightSeaGreen;
-            Color generalColor = Color.LightBlue;
-            Color bonusColor = Color.LightGreen;
-            Color reqColor = Color.MediumVioletRed;
-
             if (itemInfo == null)
                 return StyledText.EmptyArray;
 
             // Create and add name and description
             var ret = new List<StyledText>
-            { new StyledText(itemInfo.Name, nameColor), new StyledText(_lineBreak + itemInfo.Description) };
+            { new StyledText(itemInfo.Name, _nameColor), new StyledText(_lineBreak + itemInfo.Description) };
 
             // Value, HP, MP
-            CreateValueLine(ret, "Value", itemInfo.Value, generalColor);
+            CreateValueLine(ret, "Value", itemInfo.Value, _generalColor);
 
             if (itemInfo.HP != 0)
-                CreateValueLine(ret, "HP", itemInfo.HP, bonusColor);
+                CreateValueLine(ret, "HP", itemInfo.HP, _bonusColor);
             if (itemInfo.MP != 0)
-                CreateValueLine(ret, "MP", itemInfo.MP, bonusColor);
+                CreateValueLine(ret, "MP", itemInfo.MP, _bonusColor);
 
             // Stat bonuses
             foreach (var stat in itemInfo.ReqStats.Where(x => x.Value != 0))
             {
-                CreateValueLine(ret, stat.Key, stat.Value, bonusColor);
+                CreateValueLine(ret, stat.Key, stat.Value, _bonusColor);
             }
 
             // Stat requirements
             foreach (var stat in itemInfo.ReqStats.Where(x => x.Value != 0))
             {
-                CreateValueLine(ret, stat.Key, stat.Value, reqColor);
+                CreateValueLine(ret, stat.Key, stat.Value, _reqColor);
             }
 
             return ret.ToArray();
@@ -76,36 +75,31 @@ namespace DemoGame.Client
 
         public static StyledText[] GetStyledText(IItemTable itemInfo)
         {
-            Color nameColor = Color.LightSeaGreen;
-            Color generalColor = Color.LightBlue;
-            Color bonusColor = Color.LightGreen;
-            Color reqColor = Color.MediumVioletRed;
-
             if (itemInfo == null)
                 return StyledText.EmptyArray;
 
             // Create and add name and description
             var ret = new List<StyledText>
-            { new StyledText(itemInfo.Name, nameColor), new StyledText(_lineBreak + itemInfo.Description) };
+            { new StyledText(itemInfo.Name, _nameColor), new StyledText(_lineBreak + itemInfo.Description) };
 
             // Value, HP, MP
-            CreateValueLine(ret, "Value", itemInfo.Value, generalColor);
+            CreateValueLine(ret, "Value", itemInfo.Value, _generalColor);
 
             if (itemInfo.HP != 0)
-                CreateValueLine(ret, "HP", itemInfo.HP, bonusColor);
+                CreateValueLine(ret, "HP", itemInfo.HP, _bonusColor);
             if (itemInfo.MP != 0)
-                CreateValueLine(ret, "MP", itemInfo.MP, bonusColor);
+                CreateValueLine(ret, "MP", itemInfo.MP, _bonusColor);
 
             // Stat bonuses
             foreach (var stat in itemInfo.ReqStats.Where(x => x.Value != 0))
             {
-                CreateValueLine(ret, stat.Key, stat.Value, bonusColor);
+                CreateValueLine(ret, stat.Key, stat.Value, _bonusColor);
             }
 
             // Stat requirements
             foreach (var stat in itemInfo.ReqStats.Where(x => x.Value != 0))
             {
-                CreateValueLine(ret, stat.Key, stat.Value, reqColor);
+                CreateValueLine(ret, stat.Key, stat.Value, _reqColor);
             }
 
             return ret.ToArray();

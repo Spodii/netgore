@@ -11,22 +11,22 @@ namespace NetGore.Graphics
         /// <summary>
         /// Target elapsed time.
         /// </summary>
-        readonly TimeSpan _targetElapseTime = TimeSpan.FromSeconds(1);
+        const int _targetElapseTime = 1000;
 
         /// <summary>
-        /// Combination of the elapsed times (resets after hitting one second).
+        /// Target time (will reset FPS count after hitting this value).
         /// </summary>
-        TimeSpan _elapsedCounter = TimeSpan.Zero;
+        int _targetTime = int.MinValue;
 
         /// <summary>
         /// Counts the FPS.
         /// </summary>
-        int _frameCounter = 0;
+        int _frameCounter = 60;
 
         /// <summary>
         /// Last completed FPS value.
         /// </summary>
-        int _frameRate = 0;
+        int _frameRate = 60;
 
         /// <summary>
         /// Gets the last FPS. This value is updated once per second.
@@ -39,20 +39,20 @@ namespace NetGore.Graphics
         /// <summary>
         /// Updates the frame counter and the tick count.
         /// </summary>
-        /// <param name="elapsedTime">The elapsed real time between the frames.</param>
-        public void Update(TimeSpan elapsedTime)
+        /// <param name="gameTime">The current time in milliseconds.</param>
+        public void Update(int gameTime)
         {
             // Increases the frame count
             _frameCounter++;
 
-            // Increase the elapsed amount of time
-            _elapsedCounter += elapsedTime;
-
             // Check if the target time has elapsed
-            if (_elapsedCounter > _targetElapseTime)
+            if (_targetTime <= gameTime)
             {
                 // Reduce the elapsed time, store the frame rate and reset the counter
-                _elapsedCounter -= _targetElapseTime;
+                _targetTime += _targetElapseTime;
+                if (_targetTime <= gameTime)
+                    _targetTime = gameTime + _targetElapseTime;
+
                 _frameRate = _frameCounter;
                 _frameCounter = 0;
             }

@@ -1,6 +1,6 @@
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -17,7 +17,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the original texture.
         /// </summary>
-        Texture2D Texture { get; }
+        Image Texture { get; }
 
         /// <summary>
         /// Removes the atlas from the object and forces it to draw normally.
@@ -25,10 +25,18 @@ namespace NetGore.Graphics
         void RemoveAtlas();
 
         /// <summary>
+        /// Removes the atlas from the object and forces it to draw normally only if the given atlas
+        /// is the atlas being used. If a different atlas is used, then it will not be removed.
+        /// </summary>
+        /// <param name="atlas">If the <see cref="ITextureAtlasable"/> is using this atlas, then the atlas
+        /// should be removed.</param>
+        void RemoveAtlas(Image atlas);
+
+        /// <summary>
         /// Sets the atlas information.
         /// </summary>
         /// <param name="texture">The atlas texture.</param>
         /// <param name="atlasSourceRect">The source <see cref="Rectangle"/> for the image in the atlas texture.</param>
-        void SetAtlas(Texture2D texture, Rectangle atlasSourceRect);
+        void SetAtlas(Image texture, Rectangle atlasSourceRect);
     }
 }

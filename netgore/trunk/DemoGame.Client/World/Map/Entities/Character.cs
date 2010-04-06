@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Features.Quests;
 using NetGore.Graphics;
+using SFML.Graphics;
 using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
@@ -84,9 +83,9 @@ namespace DemoGame.Client
         public byte MPPercent { get; set; }
 
         /// <summary>
-        /// Gets or sets the SpriteFont used to write the Character's name. If null, the names will not be drawn.
+        /// Gets or sets the Font used to write the Character's name. If null, the names will not be drawn.
         /// </summary>
-        public static SpriteFont NameFont { get; set; }
+        public static Font NameFont { get; set; }
 
         /// <summary>
         /// Gets the map the character belongs to.
@@ -110,7 +109,7 @@ namespace DemoGame.Client
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         void DrawName(ISpriteBatch sb)
         {
-            SpriteFont font = NameFont;
+            var font = NameFont;
             if (font != null && !string.IsNullOrEmpty(Name))
             {
                 Vector2 nameSize = GetNameSize();

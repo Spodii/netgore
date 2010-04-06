@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
 
 namespace NetGore.Features.Guilds
 {

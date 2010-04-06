@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {
@@ -14,7 +13,7 @@ namespace DemoGame.Client
     public class InfoBox
     {
         readonly List<InfoBoxItem> _items;
-        readonly SpriteFont _sf;
+        readonly Font _sf;
 
         Color _defaultColor = Color.Green;
         int _maxItems = 20;
@@ -26,7 +25,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="position">Position of the bottom-right corner of the InfoBox</param>
         /// <param name="sf">SpriteFont used to draw the InfoBox text</param>
-        public InfoBox(Vector2 position, SpriteFont sf)
+        public InfoBox(Vector2 position, Font sf)
         {
             _items = new List<InfoBoxItem>(_maxItems);
             _position = position;
@@ -119,7 +118,7 @@ namespace DemoGame.Client
             {
                 // Set the position
                 Vector2 pos = _position;
-                pos.Y -= _sf.LineSpacing * (i++ + 1);
+                pos.Y -= _sf.CharacterSize * (i++ + 1);
                 pos.X -= item.Width;
 
                 // Set the color
@@ -164,7 +163,7 @@ namespace DemoGame.Client
             /// <param name="msg">Message to display.</param>
             /// <param name="color">Color of the text.</param>
             /// <param name="sf">SpriteFont that will be used to calculate the Width.</param>
-            public InfoBoxItem(int time, string msg, Color color, SpriteFont sf)
+            public InfoBoxItem(int time, string msg, Color color, Font sf)
             {
                 CreatedTime = time;
                 Message = msg;

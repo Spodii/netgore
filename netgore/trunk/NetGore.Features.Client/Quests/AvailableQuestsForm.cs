@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace NetGore.Features.Quests
 {
@@ -98,8 +99,8 @@ namespace NetGore.Features.Quests
         /// Handles the Clicked event of the <see cref="_btnAccept"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
-        void btnAccept_Clicked(object sender, MouseClickEventArgs e)
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void btnAccept_Clicked(object sender, MouseButtonEventArgs e)
         {
             var selItem = _lstQuests.SelectedItem;
             if (selItem == null)
@@ -112,8 +113,8 @@ namespace NetGore.Features.Quests
         /// Handles the Clicked event of the <see cref="_btnClose"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
-        void btnClose_Clicked(object sender, MouseClickEventArgs e)
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void btnClose_Clicked(object sender, MouseButtonEventArgs e)
         {
             IsVisible = false;
         }

@@ -3,7 +3,7 @@
   <EmitterType>ConeEmitter</EmitterType>
   <Emitter>
     <Name>fountain</Name>
-    <BlendMode>Additive</BlendMode>
+    <BlendMode>Add</BlendMode>
     <Budget>1000</Budget>
     <Life>
       <Min>4000</Min>

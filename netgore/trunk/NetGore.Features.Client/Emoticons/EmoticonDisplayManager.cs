@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.Collections;
 using NetGore.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Features.Emoticons
 {

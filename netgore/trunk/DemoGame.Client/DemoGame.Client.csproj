@@ -65,7 +65,6 @@
     <PlatformTarget>x86</PlatformTarget>
     <DocumentationFile>
     </DocumentationFile>
-    <XnaCompressContent>True</XnaCompressContent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -97,15 +96,43 @@
     <ErrorReport>prompt</ErrorReport>
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;MONO</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MonoTopDown|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;TOPDOWN;MONO</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
-    <Reference Include="Microsoft.Xna.Framework.Game, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="mscorlib" />
+    <Reference Include="sfmlnet-audio, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-audio.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="sfmlnet-window, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-window.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -113,6 +140,8 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +158,9 @@
     <Compile Include="Controls\ToolbarItemType.cs" />
     <Compile Include="DragDropHandler.cs" />
     <Compile Include="DynamicEntityFactory.cs" />
+    <Compile Include="GameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GameplayScreenControls.cs" />
     <Compile Include="Interface\DamageText.cs" />
     <Compile Include="Interface\DamageTextPool.cs" />
@@ -183,16 +215,6 @@
     <Compile Include="World\WorldEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NestedContentProject Include="Content\Content.contentproj">
-      <Project>5a09c6c9-0007-4f42-8ea0-3cd41968d6ee</Project>
-      <Visible>False</Visible>
-    </NestedContentProject>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Game.ico">
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
       <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
       <Name>NetGore.Audio</Name>
@@ -239,10 +261,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>xcopy "$(ProjectDir)\Content\Data" "$(TargetDir)Content\Data" /E /C /R /K /I /Y
-xcopy "$(ProjectDir)\Content\Skeletons" "$(TargetDir)Content\Skeletons"  /E /C /R /K /I /Y
-xcopy "$(ProjectDir)\Content\Maps" "$(TargetDir)Content\Maps"  /E /C /R /K /I /Y
-xcopy "$(ProjectDir)\Content\Languages" "$(TargetDir)Content\Languages"  /E /C /R /K /I /Y</PreBuildEvent>
+    <PreBuildEvent>xcopy "$(ProjectDir)\Content" "$(TargetDir)Content" /E /C /R /K /I /Y /D
+build_rename_content.bat</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

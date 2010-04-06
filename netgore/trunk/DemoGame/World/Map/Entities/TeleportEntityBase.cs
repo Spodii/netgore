@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore;
+using SFML.Graphics;
 
 namespace DemoGame
 {

@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore
 {
@@ -11,6 +10,11 @@ namespace NetGore
     /// </summary>
     public static class IValueReaderExtensions
     {
+        public static BlendMode ReadBlendMode(IValueReader reader, string name)
+        {
+            return reader.ReadEnum<BlendMode>(name);
+        }
+
         /// <summary>
         /// Reads a Color.
         /// </summary>
@@ -99,11 +103,6 @@ namespace NetGore
             }
 
             return new Rectangle(x, y, w, h);
-        }
-
-        public static SpriteBlendMode ReadSpriteBlendMode(this IValueReader reader, string name)
-        {
-            return reader.ReadEnum<SpriteBlendMode>(name);
         }
 
         public static SpriteCategorization ReadSpriteCategorization(this IValueReader reader, string name)
@@ -296,7 +295,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads a <see cref="Vector2"/>.
+        /// Reads a <see cref="Microsoft.Xna.Framework.Vector2"/>.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>

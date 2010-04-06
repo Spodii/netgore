@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {

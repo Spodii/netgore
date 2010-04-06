@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using NetGore.Graphics;
 using NetGore.IO;
+using SFML;
+using SFML.Graphics;
 
 namespace NetGore.EditorTools
 {
@@ -113,7 +113,7 @@ namespace NetGore.EditorTools
                 else
                     ret = GetToolTipTextAnimated(GrhData);
             }
-            catch (ContentLoadException)
+            catch (LoadingFailedException)
             {
             }
 

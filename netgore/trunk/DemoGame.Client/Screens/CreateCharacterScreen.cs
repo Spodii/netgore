@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -42,12 +42,12 @@ namespace DemoGame.Client
             base.Activate();
         }
 
-        void ClickButton_Back(object sender, MouseClickEventArgs e)
+        void ClickButton_Back(object sender, MouseButtonEventArgs e)
         {
             ScreenManager.SetScreen(CharacterSelectionScreen.ScreenName);
         }
 
-        void ClickButton_CreateCharacter(object sender, MouseClickEventArgs e)
+        void ClickButton_CreateCharacter(object sender, MouseButtonEventArgs e)
         {
             var name = _txtName.Text;
 

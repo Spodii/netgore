@@ -9,14 +9,6 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 		<!-- Using Mono -->
 		<When Condition="('$(Configuration)'=='Mono') OR ('$(Configuration)'=='MonoTopDown')" >
 
-			<!-- Xna -->
-			<ItemGroup>
-				<ProjectReference Include="..\NetGore.Xna.Framework\NetGore.Xna.Framework.csproj">
-					<Project>{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}</Project>
-					<Name>NetGore.Xna.Framework</Name>
-				</ProjectReference>
-			</ItemGroup>
-
 			<!-- log4net -->
 			<ItemGroup>
 				<Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=x86">
@@ -39,11 +31,6 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 
 		<!-- Not using mono. This must be in the Otherwise branch, otherwise some IDE tools may complain (like ReSharper). -->
 		<Otherwise>
-
-			<!-- Xna -->
-			<ItemGroup>
-				<Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86"/>
-			</ItemGroup>
 
 			<!-- log4net -->
 			<ItemGroup>

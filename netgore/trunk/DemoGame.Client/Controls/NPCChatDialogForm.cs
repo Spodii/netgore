@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.NPCChat;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -40,7 +40,7 @@ namespace DemoGame.Client
             // NOTE: We want to use a scrollable textbox here... when we finally make one
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            float spacing = Font.LineSpacing;
+            float spacing = Font.CharacterSize;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             float responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
@@ -87,34 +87,34 @@ namespace DemoGame.Client
         /// Override this method instead of using an event hook on <see cref="Control.KeyPressed"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void OnKeyPressed(KeyboardEventArgs e)
+        protected override void OnKeyPressed(KeyEventArgs e)
         {
             base.OnKeyPressed(e);
 
-            if (e.Keys.Contains(Keys.Escape))
+            if (e.Code == KeyCode.Escape)
             {
                 if (RequestEndDialog != null)
                     RequestEndDialog(this);
             }
             else
             {
-                var asNumeric = e.Keys.Select(x => x.GetNumericKeyAsValue()).FirstOrDefault(x => x.HasValue);
-                if (asNumeric.HasValue)
-                {
-                    var value = asNumeric.Value - 1;
-                    if (value < 0)
-                        value = 10;
+                var asNumeric = e.Code.GetNumericKeyAsValue();
+                if (!asNumeric.HasValue)
+                    return;
 
-                    if (value < _responses.Length)
-                    {
-                        if (SelectResponse != null)
-                            SelectResponse(this, _responses[value]);
-                    }
+                var value = asNumeric.Value - 1;
+                if (value < 0)
+                    value = 10;
+
+                if (value < _responses.Length)
+                {
+                    if (SelectResponse != null)
+                        SelectResponse(this, _responses[value]);
                 }
             }
         }
 
-        void ResponseText_Clicked(object sender, MouseClickEventArgs e)
+        void ResponseText_Clicked(object sender, MouseButtonEventArgs e)
         {
             ResponseText src = (ResponseText)sender;
             NPCChatResponseBase response = src.Response;

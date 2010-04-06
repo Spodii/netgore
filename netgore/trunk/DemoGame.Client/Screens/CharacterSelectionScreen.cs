@@ -3,9 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -41,7 +42,7 @@ namespace DemoGame.Client
             base.Activate();
         }
 
-        void ClickButton_CharacterSelection(object sender, MouseClickEventArgs e)
+        void ClickButton_CharacterSelection(object sender, MouseButtonEventArgs e)
         {
             Button src = (Button)sender;
             byte index = (byte)src.Tag;
@@ -58,7 +59,7 @@ namespace DemoGame.Client
             }
         }
 
-        void ClickButton_LogOut(object sender, MouseClickEventArgs e)
+        void ClickButton_LogOut(object sender, MouseButtonEventArgs e)
         {
             // Change screens
             ScreenManager.SetScreen(LoginScreen.ScreenName);

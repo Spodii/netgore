@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -32,20 +32,20 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
         /// <returns>
-        /// The <see cref="Texture2D"/> containing the light map. If the light map failed to be generated
+        /// The <see cref="Image"/> containing the light map. If the light map failed to be generated
         /// for whatever reason, a null value will be returned instead.
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
-        Texture2D Draw(ICamera2D camera);
+        Image Draw(ICamera2D camera);
 
         /// <summary>
         /// Initializes the <see cref="ILightManager"/> so it can be drawn. This must be called before any drawing
         /// can take place, but does not need to be drawn before <see cref="ILight"/> are added to or removed
         /// from the collection.
         /// </summary>
-        /// <param name="graphicsDevice">The <see cref="GraphicsDevice"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="graphicsDevice"/> is null.</exception>
-        void Initialize(GraphicsDevice graphicsDevice);
+        /// <param name="renderWindow">The <see cref="RenderWindow"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="renderWindow"/> is null.</exception>
+        void Initialize(RenderWindow renderWindow);
 
         /// <summary>
         /// Updates all of the lights in this <see cref="ILightManager"/>, along with the <see cref="ILightManager"/> itself.

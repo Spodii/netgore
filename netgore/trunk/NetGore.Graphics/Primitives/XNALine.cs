@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
+    // TODO: ## http://www.sfml-dev.org/tutorials/1.5/graphics-shape.php
     /// <summary>
     /// Draws a line
     /// </summary>
@@ -145,7 +145,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="tex">Texture to use for drawing.</param>
-        public void Draw(ISpriteBatch sb, Texture2D tex)
+        public void Draw(ISpriteBatch sb, Image tex)
         {
             Draw(sb, tex, Color);
         }
@@ -165,7 +165,7 @@ namespace NetGore.Graphics
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="tex">Texture to use for drawing.</param>
         /// <param name="color">Color to use instead of the local set color.</param>
-        public void Draw(ISpriteBatch sb, Texture2D tex, Color color)
+        public void Draw(ISpriteBatch sb, Image tex, Color color)
         {
             if (sb == null)
             {
@@ -182,13 +182,8 @@ namespace NetGore.Graphics
                 Debug.Fail("tex is null.");
                 return;
             }
-            if (tex.IsDisposed)
-            {
-                Debug.Fail("tex is disposed.");
-                return;
-            }
 
-            sb.Draw(tex, _p1, null, color, _angle, Vector2.Zero, _scale, SpriteEffects.None, 0f);
+            sb.Draw(tex, _p1, null, color, _angle, Vector2.Zero, _scale, SpriteEffects.None);
         }
 
         /// <summary>

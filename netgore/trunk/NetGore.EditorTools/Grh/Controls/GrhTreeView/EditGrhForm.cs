@@ -4,11 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.IO;
+using SFML;
+using SFML.Graphics;
 using Point=System.Drawing.Point;
 
 namespace NetGore.EditorTools
@@ -72,7 +71,7 @@ namespace NetGore.EditorTools
             {
                 pos = gd.Size / 2f;
             }
-            catch (ContentLoadException)
+            catch (LoadingFailedException)
             {
                 Close();
                 return;
@@ -224,7 +223,7 @@ namespace NetGore.EditorTools
                 // Validate the texture
                 try
                 {
-                    cm.Load<Texture2D>("Grh" + DirSep + textureName, ContentLevel.Map);
+                    cm.Load<Image>("Grh" + DirSep + textureName, ContentLevel.Map);
                 }
                 catch (Exception ex)
                 {
@@ -314,7 +313,7 @@ namespace NetGore.EditorTools
             _grh.Update((int)_stopwatch.ElapsedMilliseconds);
 
             // Begin rendering
-            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, Camera.Matrix);
+            sb.BeginUnfiltered(BlendMode.Alpha,Camera.Matrix);
 
             try
             {

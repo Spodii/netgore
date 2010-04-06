@@ -1,8 +1,9 @@
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -130,7 +131,7 @@ namespace DemoGame.Client
             Text = "Menu";
         }
 
-        void ToolbarItem_Clicked(object sender, MouseClickEventArgs e)
+        void ToolbarItem_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (ItemClicked == null)
                 return;

@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
+using SFML;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -42,7 +41,7 @@ namespace NetGore.Graphics
         int _nextLoadAttemptTime = int.MinValue;
 
         Rectangle _sourceRect;
-        Texture2D _texture;
+        Image _texture;
         TextureAssetName _textureName;
 
         /// <summary>
@@ -119,7 +118,7 @@ namespace NetGore.Graphics
                     _texture = null;
                     ValidateTexture();
 
-                    if (Texture == null || Texture.IsDisposed)
+                    if (Texture == null)
                     {
                         const string errmsg = "GrhData `{0}` cannot be automatically sized since the texture is null or disposed!";
                         if (log.IsErrorEnabled)
@@ -127,7 +126,7 @@ namespace NetGore.Graphics
                         _sourceRect = new Rectangle(0, 0, 1, 1);
                     }
                     else
-                        _sourceRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
+                        _sourceRect = new Rectangle(0, 0, (int)Texture.Width, (int)Texture.Height);
                 }
             }
         }
@@ -374,7 +373,7 @@ namespace NetGore.Graphics
         void ValidateTexture()
         {
             // If the texture is not set or is disposed, request a new one
-            if (_texture != null && !_texture.IsDisposed)
+            if (_texture != null)
                 return;
 
             // Check that enough time has elapsed to try and load the texture
@@ -385,9 +384,9 @@ namespace NetGore.Graphics
             const string errmsg = "Failed to load texture `{0}` for GrhData `{1}`: {2}";
             try
             {
-                _texture = _cm.Load<Texture2D>(_textureName, GrhInfo.ContentLevelDecider(this));
+                _texture = _cm.LoadImage(_textureName, GrhInfo.ContentLevelDecider(this));
             }
-            catch (ContentLoadException ex)
+            catch (LoadingFailedException ex)
             {
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, _textureName, this, ex);
@@ -401,7 +400,7 @@ namespace NetGore.Graphics
 
             // Update the failed loading information if the texture failed to load, or clear it if the texture
             // is valid
-            if (_texture != null && !_texture.IsDisposed)
+            if (_texture != null)
             {
                 _failedLoadAttempts = 0;
                 _nextLoadAttemptTime = int.MinValue;
@@ -447,7 +446,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the texture for a single frame Grh.
         /// </summary>
-        public Texture2D Texture
+        public Image Texture
         {
             get
             {
@@ -469,11 +468,23 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Removes the atlas from the object and forces it to draw normally only if the given atlas
+        /// is the atlas being used. If a different atlas is used, then it will not be removed.
+        /// </summary>
+        /// <param name="atlas">If the <see cref="ITextureAtlasable"/> is using this atlas, then the atlas
+        /// should be removed.</param>
+        void ITextureAtlasable.RemoveAtlas(Image atlas)
+        {
+            if (_isUsingAtlas && _texture == atlas)
+                RemoveAtlas();
+        }
+
+        /// <summary>
         /// Sets the atlas information.
         /// </summary>
         /// <param name="texture">Texture atlas.</param>
         /// <param name="atlasSourceRect">Source rectangle in the atlas.</param>
-        void ITextureAtlasable.SetAtlas(Texture2D texture, Rectangle atlasSourceRect)
+        void ITextureAtlasable.SetAtlas(Image texture, Rectangle atlasSourceRect)
         {
             if (texture == null)
                 throw new ArgumentNullException("texture");

@@ -5,7 +5,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework.Design;
+using SFML.Graphics.Design;
 
 namespace DemoGame.Server
 {

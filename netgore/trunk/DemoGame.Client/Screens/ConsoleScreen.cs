@@ -5,11 +5,11 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Filter;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -23,7 +23,7 @@ namespace DemoGame.Client
         readonly List<CheckBox> _logLevelCheckBoxes = new List<CheckBox>();
 
         Button _btnShowSettings;
-        SpriteFont _consoleFont;
+        Font _consoleFont;
         Panel _cScreen;
         Panel _cSettingsPanel;
         TextBox _txtOutput;
@@ -41,8 +41,8 @@ namespace DemoGame.Client
         /// Handles the Clicked event of the btnShowSettings control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.MouseClickEventArgs"/> instance containing the event data.</param>
-        void btnShowSettings_Clicked(object sender, MouseClickEventArgs e)
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void btnShowSettings_Clicked(object sender, MouseButtonEventArgs e)
         {
             _cSettingsPanel.IsVisible = !_cSettingsPanel.IsVisible;
             _btnShowSettings.Text = (_cSettingsPanel.IsVisible ? "Hide" : "Show") + " settings";
@@ -96,7 +96,7 @@ namespace DemoGame.Client
             BasicConfigurator.Configure(_logger);
             ScreenManager.Updated += ScreenManager_Updated;
 
-            _consoleFont = ScreenManager.Content.Load<SpriteFont>("Font/Console", ContentLevel.GameScreen);
+            _consoleFont = ScreenManager.Content.LoadFont("Font/Console", 14, ContentLevel.GameScreen);
 
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 

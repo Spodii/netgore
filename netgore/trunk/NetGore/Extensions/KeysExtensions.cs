@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using Microsoft.Xna.Framework.Input;
+using SFML.Window;
+using Keys = SFML.Window.KeyCode;
 
 namespace NetGore
 {
@@ -48,24 +49,6 @@ namespace NetGore
                     return 14;
                 case Keys.F15:
                     return 15;
-                case Keys.F16:
-                    return 16;
-                case Keys.F17:
-                    return 17;
-                case Keys.F18:
-                    return 18;
-                case Keys.F19:
-                    return 19;
-                case Keys.F20:
-                    return 20;
-                case Keys.F21:
-                    return 21;
-                case Keys.F22:
-                    return 22;
-                case Keys.F23:
-                    return 23;
-                case Keys.F24:
-                    return 24;
 
                 default:
                     return null;
@@ -83,44 +66,44 @@ namespace NetGore
         {
             switch (key)
             {
-                case Keys.D0:
-                case Keys.NumPad0:
+                case Keys.Num0:
+                case Keys.Numpad0:
                     return 0;
 
-                case Keys.D1:
-                case Keys.NumPad1:
+                case Keys.Num1:
+                case Keys.Numpad1:
                     return 1;
 
-                case Keys.D2:
-                case Keys.NumPad2:
+                case Keys.Num2:
+                case Keys.Numpad2:
                     return 2;
 
-                case Keys.D3:
-                case Keys.NumPad3:
+                case Keys.Num3:
+                case Keys.Numpad3:
                     return 3;
 
-                case Keys.D4:
-                case Keys.NumPad4:
+                case Keys.Num4:
+                case Keys.Numpad4:
                     return 4;
 
-                case Keys.D5:
-                case Keys.NumPad5:
+                case Keys.Num5:
+                case Keys.Numpad5:
                     return 5;
 
-                case Keys.D6:
-                case Keys.NumPad6:
+                case Keys.Num6:
+                case Keys.Numpad6:
                     return 6;
 
-                case Keys.D7:
-                case Keys.NumPad7:
+                case Keys.Num7:
+                case Keys.Numpad7:
                     return 7;
 
-                case Keys.D8:
-                case Keys.NumPad8:
+                case Keys.Num8:
+                case Keys.Numpad8:
                     return 8;
 
-                case Keys.D9:
-                case Keys.NumPad9:
+                case Keys.Num9:
+                case Keys.Numpad9:
                     return 9;
 
                 default:

@@ -74,6 +74,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.JScript" />
+    <Reference Include="sfmlnet-audio, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-audio.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="sfmlnet-graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-graphics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="sfmlnet-window, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\sfmlnet-window.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -86,6 +101,15 @@
     <Compile Include="Audio\MusicIDTypeConverter.cs" />
     <Compile Include="Audio\SoundIDTypeConverter.cs" />
     <Compile Include="BitOps.cs" />
+    <Compile Include="Converters\SimpleExpandableTypeConverter.cs" />
+    <Compile Include="Converters\SimpleTypeConverter.cs" />
+    <Compile Include="Converters\Variable Values\IVariableValueConverter.cs" />
+    <Compile Include="Converters\Variable Values\VariableByteConverter.cs" />
+    <Compile Include="Converters\Variable Values\VariableFloatConverter.cs" />
+    <Compile Include="Converters\Variable Values\VariableIntConverter.cs" />
+    <Compile Include="Converters\Variable Values\VariableSByteConverter.cs" />
+    <Compile Include="Converters\Variable Values\VariableShortConverter.cs" />
+    <Compile Include="Converters\Variable Values\VariableUShortConverter.cs" />
     <Compile Include="Collections\Cache\HashCache.cs" />
     <Compile Include="Collections\Cache\ICache.cs" />
     <Compile Include="Collections\Cache\ThreadSafeHashCache.cs" />
@@ -106,6 +130,8 @@
     <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\ITypeDescriptorContextExtensions.cs" />
     <Compile Include="Extensions\KeysExtensions.cs" />
+    <Compile Include="Extensions\MouseButtonEventArgsExtensions.cs" />
+    <Compile Include="Extensions\ObjectBaseExtensions.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
@@ -161,15 +187,6 @@
     <Compile Include="Collections\Type\TypeFactory.cs" />
     <Compile Include="Collections\Type\TypeFactoryLoadedHandler.cs" />
     <Compile Include="Collections\VirtualList.cs" />
-    <Compile Include="Converters\SimpleExpandableTypeConverter.cs" />
-    <Compile Include="Converters\SimpleTypeConverter.cs" />
-    <Compile Include="Converters\Variable Values\IVariableValueConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableByteConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableFloatConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableIntConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableSByteConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableShortConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableUShortConverter.cs" />
     <Compile Include="Enum\EnumComparer.cs" />
     <Compile Include="Enum\EnumHelper.cs" />
     <Compile Include="Exceptions\InstantiateTypeException.cs" />
@@ -366,7 +383,22 @@
     <Compile Include="World\Map\Spatial\StaticGridSpatialCollection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="csfml-audio.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="csfml-graphics.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="csfml-window.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="CustomValueTypeTemplate.txt" />
+    <None Include="libsndfile-1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="openal32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\MonoSwitcher.proj" />

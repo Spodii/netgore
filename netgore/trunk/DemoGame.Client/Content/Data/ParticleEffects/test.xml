@@ -3,7 +3,7 @@
   <EmitterType>PointEmitter</EmitterType>
   <Emitter>
     <Name>test</Name>
-    <BlendMode>Additive</BlendMode>
+    <BlendMode>Add</BlendMode>
     <Budget>5000</Budget>
     <Life>
       <Min>2000</Min>

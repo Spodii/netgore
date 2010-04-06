@@ -5,10 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
-using Rectangle=Microsoft.Xna.Framework.Rectangle;
+using Rectangle=SFML.Graphics.Rectangle;
 
 namespace NetGore.EditorTools
 {

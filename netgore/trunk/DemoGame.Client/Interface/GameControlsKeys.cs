@@ -1,6 +1,6 @@
 using System.Linq;
-using Microsoft.Xna.Framework.Input;
 using NetGore.Graphics.GUI;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -52,8 +52,8 @@ namespace DemoGame.Client
         static GameControlsKeys()
         {
             // Create the GameControlKeys with the default keys
-            _moveLeft = new GameControlKeys("Move Left", Keys.Left, Keys.Right);
-            _moveRight = new GameControlKeys("Move Right", Keys.Right, Keys.Left);
+            _moveLeft = new GameControlKeys("Move Left", KeyCode.Left, KeyCode.Right);
+            _moveRight = new GameControlKeys("Move Right", KeyCode.Right, KeyCode.Left);
 
 #if TOPDOWN
             _moveUp = new GameControlKeys("Move Up", Keys.Up, Keys.Down);
@@ -63,34 +63,34 @@ namespace DemoGame.Client
             _moveStop = new GameControlKeys("Move Stop", null,
                 _moveLeft.KeysDown.Concat(_moveRight.KeysDown).Concat(_moveUp.KeysDown).Concat(_moveDown.KeysDown));
 #else
-            _jump = new GameControlKeys("Jump", Keys.Up);
+            _jump = new GameControlKeys("Jump", KeyCode.Up);
             _moveStop = new GameControlKeys("Move Stop", null, _moveLeft.KeysDown.Concat(_moveRight.KeysDown));
 #endif
 
-            _attack = new GameControlKeys("Attack", Keys.LeftControl);
-            _useWorld = new GameControlKeys("Use World", Keys.LeftAlt);
-            _useShop = new GameControlKeys("Use Shop", Keys.LeftAlt);
-            _talkToNPC = new GameControlKeys("Talk To NPC", Keys.LeftAlt);
-            _pickUp = new GameControlKeys("Pick Up", Keys.Space);
+            _attack = new GameControlKeys("Attack", KeyCode.LControl);
+            _useWorld = new GameControlKeys("Use World", KeyCode.LAlt);
+            _useShop = new GameControlKeys("Use Shop", KeyCode.LAlt);
+            _talkToNPC = new GameControlKeys("Talk To NPC", KeyCode.LAlt);
+            _pickUp = new GameControlKeys("Pick Up", KeyCode.Space);
 
-            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", Keys.D1);
-            _emoteExclamation = new GameControlKeys("Emote Exclamation", Keys.D2);
-            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", Keys.D3);
-            _emoteHearts = new GameControlKeys("Emote Hearts", Keys.D4);
-            _emoteMeat = new GameControlKeys("Emote Meat", Keys.D5);
-            _emoteQuestion = new GameControlKeys("Emote Question", Keys.D6);
-            _emoteSweat = new GameControlKeys("Emote Sweat", Keys.D7);
+            _emoteEllipsis = new GameControlKeys("Emote Ellipsis", KeyCode.Num1);
+            _emoteExclamation = new GameControlKeys("Emote Exclamation", KeyCode.Num2);
+            _emoteHeartbroken = new GameControlKeys("Emote Heartbroken", KeyCode.Num3);
+            _emoteHearts = new GameControlKeys("Emote Hearts", KeyCode.Num4);
+            _emoteMeat = new GameControlKeys("Emote Meat", KeyCode.Num5);
+            _emoteQuestion = new GameControlKeys("Emote Question", KeyCode.Num6);
+            _emoteSweat = new GameControlKeys("Emote Sweat", KeyCode.Num7);
 
-            _quickBarItem0 = new GameControlKeys("Quick bar item 0", null, null, Keys.F1);
-            _quickBarItem1 = new GameControlKeys("Quick bar item 1", null, null, Keys.F2);
-            _quickBarItem2 = new GameControlKeys("Quick bar item 2", null, null, Keys.F3);
-            _quickBarItem3 = new GameControlKeys("Quick bar item 3", null, null, Keys.F4);
-            _quickBarItem4 = new GameControlKeys("Quick bar item 4", null, null, Keys.F5);
-            _quickBarItem5 = new GameControlKeys("Quick bar item 5", null, null, Keys.F6);
-            _quickBarItem6 = new GameControlKeys("Quick bar item 6", null, null, Keys.F7);
-            _quickBarItem7 = new GameControlKeys("Quick bar item 7", null, null, Keys.F8);
-            _quickBarItem8 = new GameControlKeys("Quick bar item 8", null, null, Keys.F9);
-            _quickBarItem9 = new GameControlKeys("Quick bar item 9", null, null, Keys.F10);
+            _quickBarItem0 = new GameControlKeys("Quick bar item 0", null, null, KeyCode.F1);
+            _quickBarItem1 = new GameControlKeys("Quick bar item 1", null, null, KeyCode.F2);
+            _quickBarItem2 = new GameControlKeys("Quick bar item 2", null, null, KeyCode.F3);
+            _quickBarItem3 = new GameControlKeys("Quick bar item 3", null, null, KeyCode.F4);
+            _quickBarItem4 = new GameControlKeys("Quick bar item 4", null, null, KeyCode.F5);
+            _quickBarItem5 = new GameControlKeys("Quick bar item 5", null, null, KeyCode.F6);
+            _quickBarItem6 = new GameControlKeys("Quick bar item 6", null, null, KeyCode.F7);
+            _quickBarItem7 = new GameControlKeys("Quick bar item 7", null, null, KeyCode.F8);
+            _quickBarItem8 = new GameControlKeys("Quick bar item 8", null, null, KeyCode.F9);
+            _quickBarItem9 = new GameControlKeys("Quick bar item 9", null, null, KeyCode.F10);
         }
 
         public static GameControlKeys EmoteEllipsis
