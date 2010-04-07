@@ -1,218 +1,52 @@
-using System.Collections.Generic;
-using System.Diagnostics;
+using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
+using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.GUITester
 {
-    public class Game1 : Game
+    sealed class Game1 : RenderWindow
     {
-        static readonly SafeRandom rnd = new SafeRandom();
-
-        readonly GraphicsDeviceManager _graphics;
-        IContentManager _content;
-        SpriteFont _font;
-        IGUIManager _gui;
-        ISpriteBatch _sb;
-        TextBox _textBox;
-        ControlBorder _topBorder;
-        Form topForm;
+        readonly ScreenManager _screenManager;
+        readonly ISkinManager _skinManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
         /// </summary>
-        public Game1()
+        public Game1() : base(new VideoMode(800, 600), "GUI test bench", Styles.Titlebar | Styles.Close)
         {
-            _graphics = new GraphicsDeviceManager(this);
-            IsMouseVisible = true;
-            IsFixedTimeStep = false;
+            UseVerticalSync(true);
+            ShowMouseCursor(true);
+            SetFramerateLimit(60);
+
+            _skinManager = new SkinManager("Default");
+            _screenManager = new ScreenManager(this, _skinManager, "Content", "Font/Arial", 14);
+            GrhInfo.Load(ContentPaths.Build, _screenManager.Content);
+
+            var ts = new TestScreen(_screenManager);
+            _screenManager.ActiveScreen = ts;
+
+            GameLoop();
         }
 
-        void b_Clicked(object sender, MouseClickEventArgs e)
+        void GameLoop()
         {
-            Window.Title = rnd.NextDouble().ToString();
-
-            if (topForm.Border == ControlBorder.Empty)
-                topForm.Border = _topBorder;
-            else
-                topForm.Border = ControlBorder.Empty;
-        }
-
-        void DragControl(Control sender)
-        {
-            TextControl s = (TextControl)sender;
-            s.Text = s.Position.ToString();
-            Window.Title = "Screen Position: " + s.ScreenPosition;
-        }
-
-        protected override void Draw(GameTime gameTime)
-        {
-            _graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            _sb.BeginUnfiltered();
-            _gui.Draw(_sb);
-            _sb.End();
-
-            base.Draw(gameTime);
-        }
-
-        protected override void LoadContent()
-        {
-            _content = new XnaContentManager(Services, "Content");
-
-            _sb = new RoundedXnaSpriteBatch(GraphicsDevice);
-            _font = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"), ContentLevel.Global);
-            GrhInfo.Load(ContentPaths.Build, _content);
-
-            SkinManager skinManager = new SkinManager("Default");
-            _gui = new GUIManager(_font, skinManager, new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height));
-
-            topForm = new Form(_gui, new Vector2(5, 5), new Vector2(700, 550)) { Text = "Primary form" };
-            topForm.MouseMoved += topForm_MouseMoved;
-
-            TextBox tb = new TextBox(topForm, new Vector2(10, 10), new Vector2(150, 300));
-
-            _textBox = new TextBox(topForm, new Vector2(350, 10), new Vector2(200, 200))
-            { Font = _font, Text = "abcdef\nghi\r\njklj\n" };
-
-            for (int i = 0; i < 150; i++)
+            while (IsOpened())
             {
-                Color c = new Color((byte)rnd.Next(0, 256), (byte)rnd.Next(256), (byte)rnd.Next(256), 255);
-                _textBox.Append(new StyledText(i + " ", c));
+                // Update
+                DispatchEvents();
+
+                _screenManager.Update(Environment.TickCount);
+
+                // Draw
+                _screenManager.Draw(Environment.TickCount);
+
+                // Present
+                Display();
             }
-
-            _textBox.KeyUp += delegate(object sender, KeyboardEventArgs e)
-            {
-                if (e.Keys.Contains(Keys.F1))
-                    Debug.Fail(_textBox.Text);
-                else if (e.Keys.Contains(Keys.F2))
-                    _textBox.Size += new Vector2(25, 0);
-                else if (e.Keys.Contains(Keys.F3))
-                    _textBox.Size += new Vector2(-25, 0);
-                else if (e.Keys.Contains(Keys.F4))
-                    _textBox.IsMultiLine = !_textBox.IsMultiLine;
-            };
-
-            var styledTexts = new List<StyledText>
-            {
-                new StyledText("Black ", Color.Black),
-                new StyledText("Red ", Color.Red),
-                new StyledText("Green ", Color.Green),
-                new StyledText("Yellow ", Color.Yellow),
-                new StyledText("Voilet ", Color.Violet),
-                new StyledText("Orange ", Color.Orange),
-                new StyledText("Tomato ", Color.Tomato),
-                new StyledText("DarkRed ", Color.DarkRed),
-            };
-            tb.Append(styledTexts);
-
-            _topBorder = topForm.Border;
-
-            Form form = new Form(topForm, new Vector2(50, 50), new Vector2(200, 200)) { Text = "My form" };
-
-            Button b = new Button(form, new Vector2(20, 20), new Vector2(80, 30)) { Text = "Press me" };
-            b.Clicked += b_Clicked;
-
-            new CheckBox(form, new Vector2(20, 200)) { Text = "Checkbox" };
-
-            Form f2 = new Form(topForm, new Vector2(200, 250), new Vector2(275, 270)) { Text = "My form 2" };
-            Form f3 = new Form(f2, Vector2.Zero, new Vector2(200, 200)) { Text = "form 3" };
-            Form f4 = new Form(f3, Vector2.Zero, new Vector2(100, 100)) { Text = "form 4" };
-
-            Label testLabelF4 = new Label(f4, Vector2.Zero) { Text = "Click me" };
-            testLabelF4.Clicked += testLabelF4_Clicked;
-
-            topForm.BeginDrag += DragControl;
-            topForm.EndDrag += DragControl;
-            form.BeginDrag += DragControl;
-            form.EndDrag += DragControl;
-            f2.BeginDrag += DragControl;
-            f2.EndDrag += DragControl;
-            f3.BeginDrag += DragControl;
-            f3.EndDrag += DragControl;
-            f4.BeginDrag += DragControl;
-            f4.EndDrag += DragControl;
-
-            // Set up the tooltips
-            foreach (Control c in _gui.GetAllControls())
-            {
-                if (c.GetType() == typeof(Button))
-                    c.Tooltip = Tooltip_Button;
-                else if (c.GetType() == typeof(Label))
-                    c.Tooltip += Tooltip_Label;
-            }
-
-            // Paged list
-            var items = new List<string>();
-            for (int i = 0; i < 100; i++)
-            {
-                items.Add(i.ToString());
-            }
-
-            new ListBox<string>(topForm, new Vector2(500, 250), new Vector2(100, 100)) { Items = items, ShowPaging = true };
-        }
-
-        void testLabelF4_Clicked(object sender, MouseClickEventArgs e)
-        {
-            Label source = (Label)sender;
-            if (source.Text == "I was clicked!")
-                source.Text = "Click me!";
-            else
-                source.Text = "I was clicked!";
-
-            var msgBox = new MessageBox(_gui, "My message box",
-                                        "asdlkf aslfdkj sadflkj asdflkj was fadjlkjfsalkaj sfdlksadjf asfdjlalksdfj asdfsdfa eklrj afek jasdlfkj asdflkj asdflkj woieur klasdf\nasdflkj\nasdf\nadsf",
-                                        MessageBoxButton.YesNoCancel);
-            msgBox.OptionSelected += (x, y) => new MessageBox(_gui, "Hello", "You selected: " + y, MessageBoxButton.Ok);
-        }
-
-        static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)
-        {
-            return new StyledText[]
-            {
-                new StyledText(
-                    "hello-hello-hello-hello-hello-hello-hello-hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello")
-                , new StyledText("button", Color.LightBlue)
-            };
-        }
-
-        static StyledText[] Tooltip_Label(Control sender, TooltipArgs args)
-        {
-            args.FontColor = Color.LightGreen;
-            args.RefreshRate = 100;
-
-            byte r = (byte)rnd.Next(100, 255);
-            byte g = (byte)rnd.Next(100, 255);
-            byte b = (byte)rnd.Next(100, 255);
-
-            Color c = new Color(r, g, b, 255);
-            return new StyledText[] { new StyledText("Text for a "), new StyledText("label", c) };
-        }
-
-        void topForm_MouseMoved(object sender, MouseEventArgs e)
-        {
-            Control c = _gui.GetControlAtPoint(e.Location + topForm.Position);
-
-            if (c == null)
-            {
-                Window.Title = "null";
-                return;
-            }
-
-            Window.Title = c.ToString();
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            int currentTime = gameTime.ToTotalMS();
-            _gui.Update(currentTime);
-            base.Update(gameTime);
         }
     }
 }

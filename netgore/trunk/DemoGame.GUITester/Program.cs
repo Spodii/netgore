@@ -9,9 +9,8 @@ namespace DemoGame.GUITester
         /// </summary>
         static void Main()
         {
-            using (var game = new Game1())
+            using (new Game1())
             {
-                game.Run();
             }
         }
     }

@@ -47,7 +47,7 @@ namespace DemoGame.Client
             EngineSettingsInitializer.Initialize();
  
             // Create the screen manager
-            _screenManager = new ScreenManager(this, new SkinManager("Default"), "Content");
+            _screenManager = new ScreenManager(this, new SkinManager("Default"), "Content", "Font/Arial", 24);
 
             // Read the GrhInfo
             LoadGrhInfo();
@@ -167,11 +167,17 @@ namespace DemoGame.Client
             _screenManager.Content.Unload();
         }
 
+        /// <summary>
+        /// Updates the game.
+        /// </summary>
         public virtual void Update()
         {
             _screenManager.Update(Environment.TickCount);
         }
 
+        /// <summary>
+        /// Draws the game.
+        /// </summary>
         public virtual void Draw()
         {
             _screenManager.Draw(Environment.TickCount);

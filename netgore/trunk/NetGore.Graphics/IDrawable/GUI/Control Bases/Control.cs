@@ -1498,6 +1498,22 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected virtual void OnMouseDown(MouseButtonEventArgs e)
         {
+            // Give the control the focus
+            if ((CanFocus || CanDrag) && GetChild(e.Location(), true) == null)
+            {
+                GUIManager.FocusedControl = this;
+
+                // Drag the control if possible
+                if (CanDrag)
+                {
+                    _dragOffset = Position + ParentBorderOffset();
+                    if (!_isDragging)
+                    {
+                        _isDragging = true;
+                        InvokeBeginDrag();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -1538,8 +1554,16 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected virtual void OnMouseUp(MouseButtonEventArgs e)
         {
-            if (GUIManager.LastPressedControl == this && GUIManager.UnderCursor == this)
-                InvokeClicked(e);
+            if (_isDragging)
+            {
+                _isDragging = false;
+                InvokeEndDrag();
+            }
+            else
+            {
+                if (GUIManager.LastPressedControl == this && GUIManager.UnderCursor == this)
+                    InvokeClicked(e);
+            }
         }
 
         /// <summary>
@@ -1699,63 +1723,6 @@ namespace NetGore.Graphics.GUI
             AddToTopMostQueue(control);
         }
 
-        // TODO: ## TestMouseStateChange
-        /*
-        /// <summary>
-        /// Tests for if the MouseState has changed for a given button
-        /// </summary>
-        /// <param name="button">Button to check</param>
-        /// <param name="state">Current MouseState</param>
-        /// <param name="lastState">Previous MouseState</param>
-        /// <param name="relativePos">Relative position of the Control</param>
-        void TestMouseStateChange(MouseButtons button, MouseState state, MouseState lastState, Vector2 relativePos)
-        {
-            // Store the ButtonStates for the given button
-            ButtonState buttonState;
-            ButtonState lastButtonState;
-            GetButtonStates(button, state, lastState, out buttonState, out lastButtonState);
-
-            // Check that the state has changed
-            if (lastButtonState == buttonState)
-                return;
-
-            // Check if it was a press or release
-            if (buttonState == ButtonState.Pressed)
-            {
-                // Mouse was clicked down
-                InvokeMouseDown(new MouseClickEventArgs(button, relativePos));
-                _willRaiseClick = true;
-
-                // Drag the control if possible
-                if ((CanFocus || CanDrag) && GetChild(new Vector2(state.X, state.Y), true) == null)
-                {
-                    GUIManager.FocusedControl = this;
-                    if (CanDrag)
-                    {
-                        _dragOffset = relativePos + ParentBorderOffset();
-                        if (!_isDragging)
-                        {
-                            _isDragging = true;
-                            InvokeBeginDrag();
-                        }
-                    }
-                }
-            }
-            else
-            {
-                // Mouse was raised
-                InvokeMouseUp(new MouseClickEventArgs(button, relativePos));
-
-                // Check if to raise a click event, too
-                if (_willRaiseClick)
-                {
-                    InvokeClicked(new MouseClickEventArgs(button, relativePos));
-                    _willRaiseClick = false;
-                }
-            }
-        }
-        */
-
         /// <summary>
         /// Updates the Control and all the controls under it.
         /// </summary>
@@ -1765,10 +1732,15 @@ namespace NetGore.Graphics.GUI
             if (IsDisposed)
                 return;
 
-            // Do not update the mouse or keyboard for the Control unless it is the focused root
-            if (GUIManager.FocusedRoot == this)
+            // Update the control's position if it is being dragged
+            if (_isDragging)
             {
-                UpdateMouse();
+                Position = GUIManager.CursorPosition - _dragOffset;
+                if (Parent != null)
+                {
+                    Position -= Parent.ScreenPosition;
+                    KeepInParent();
+                }
             }
 
             // Perform misc updating
@@ -1838,6 +1810,14 @@ namespace NetGore.Graphics.GUI
             InvokeFocused();
         }
 
+        internal void SendMouseMoveEvent(MouseMoveEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeMouseMoved(e);
+        }
+
         internal void SendMouseEnterEvent(MouseMoveEventArgs e)
         {
             if (IsDisposed || !IsEnabled || !IsVisible)
@@ -1868,85 +1848,6 @@ namespace NetGore.Graphics.GUI
                 return;
 
             InvokeKeyPressed(e);
-        }
-
-        /// <summary>
-        /// Updates the Control with mouse related events.
-        /// </summary>
-        protected virtual void UpdateMouse()
-        {
-            // TODO: ## Mouse support
-            /*
-            if (IsDisposed)
-                return;
-
-            // Skip disabled or invisible controls
-            if (!IsEnabled || !IsVisible)
-                return;
-
-            MouseState mouseState = GUIManager.MouseState;
-            MouseState lastMouseState = GUIManager.LastMouseState;
-
-            // Check if the mouse state has even changed before updating
-            if (mouseState == lastMouseState)
-                return;
-
-            // Update the child controls
-            for (int i = 0; i < _controls.Count; i++)
-            {
-                _controls[i].UpdateMouse();
-            }
-
-            // Update the control's position if it is being dragged
-            if (_isDragging)
-            {
-                Position = new Vector2(mouseState.X, mouseState.Y) - _dragOffset;
-                if (Parent != null)
-                {
-                    Position -= Parent.ScreenPosition;
-                    KeepInParent();
-                }
-
-                // Check for if the dragging has stopped
-                if (mouseState.LeftButton == ButtonState.Released)
-                {
-                    _isDragging = false;
-                    InvokeEndDrag();
-                }
-            }
-
-            Vector2 currCursorPos = new Vector2(mouseState.X, mouseState.Y);
-            Vector2 sp = ScreenPosition;
-
-            // Check if this is the Control being pointed at
-            if (GUIManager.UnderCursor == this)
-            {
-                // Raise the OnMouseMove event
-                InvokeMouseMoved(new MouseEventArgs(currCursorPos - sp));
-
-                // Check if the mouse has just entered the control
-                if (!_isMouseEntered)
-                {
-                    _isMouseEntered = true;
-                    InvokeMouseEnter(new MouseEventArgs(currCursorPos - sp));
-                }
-
-                // Perform updates based on the buttons
-                TestMouseStateChange(MouseButtons.Left, mouseState, lastMouseState, currCursorPos - sp);
-                TestMouseStateChange(MouseButtons.Right, mouseState, lastMouseState, currCursorPos - sp);
-                TestMouseStateChange(MouseButtons.Middle, mouseState, lastMouseState, currCursorPos - sp);
-            }
-            else
-            {
-                // Mouse is not over the control anymore
-                if (_isMouseEntered)
-                {
-                    _isMouseEntered = false;
-                    _willRaiseClick = false;
-                    InvokeMouseLeave(new MouseEventArgs(currCursorPos - sp));
-                }
-            }
-            */
         }
 
         /// <summary>
