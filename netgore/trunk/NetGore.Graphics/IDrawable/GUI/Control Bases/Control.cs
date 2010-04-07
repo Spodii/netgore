@@ -1506,7 +1506,7 @@ namespace NetGore.Graphics.GUI
                 // Drag the control if possible
                 if (CanDrag)
                 {
-                    _dragOffset = Position + ParentBorderOffset();
+                    _dragOffset = e.Location() - Position;
                     if (!_isDragging)
                     {
                         _isDragging = true;
@@ -1732,14 +1732,25 @@ namespace NetGore.Graphics.GUI
             if (IsDisposed)
                 return;
 
+            // Update the children 
+            foreach (var child in Controls)
+                child.Update(currentTime);
+
             // Update the control's position if it is being dragged
             if (_isDragging)
             {
-                Position = GUIManager.CursorPosition - _dragOffset;
-                if (Parent != null)
+                // Just as a safety net, make sure we NEVER drag when the mouse button is up
+                // even though it shouldn't be up if our code is correct
+                if (!GUIManager.IsMouseButtonDown(MouseButton.Left))
                 {
-                    Position -= Parent.ScreenPosition;
-                    KeepInParent();
+                    // Button not down - stop dragging
+                    _isDragging = false;
+                    InvokeEndDrag();
+                }
+                else
+                {
+                    // Button down - continue dragging
+                    Position = GUIManager.CursorPosition - _dragOffset;
                 }
             }
 
