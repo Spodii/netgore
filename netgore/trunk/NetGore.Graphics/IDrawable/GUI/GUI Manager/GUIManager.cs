@@ -80,6 +80,7 @@ namespace NetGore.Graphics.GUI
             var lastUnderCursor = UnderCursor;
             _underCursor = GetControlAtPoint(CursorPosition);
 
+            // When the control under the cursor changes, handle the mouse enter/leave events
             var c = UnderCursor;
             if (lastUnderCursor != c)
             {
@@ -89,6 +90,10 @@ namespace NetGore.Graphics.GUI
                 if (c != null)
                     c.SendMouseEnterEvent(e);
             }
+
+            // Send the mouse moved event
+            if (c != null)
+                c.SendMouseMoveEvent(e);
         }
 
         public void SendEventMouseButtonPressed(MouseButtonEventArgs e)

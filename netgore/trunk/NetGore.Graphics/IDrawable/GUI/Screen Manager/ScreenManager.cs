@@ -18,7 +18,7 @@ namespace NetGore.Graphics.GUI
         readonly IDrawingManager _drawingManager;
         readonly FrameCounter _fps = new FrameCounter();
         readonly RenderWindow _game;
-        readonly Font _menuFont;
+        readonly Font _defaultFont;
         readonly MusicManager _musicManager;
         readonly Dictionary<string, IGameScreen> _screens = new Dictionary<string, IGameScreen>(StringComparer.OrdinalIgnoreCase);
         readonly ISkinManager _skinManager;
@@ -34,9 +34,11 @@ namespace NetGore.Graphics.GUI
         /// <param name="skinManager">The <see cref="ISkinManager"/> used to manage all the general skinning
         /// between all screens.</param>
         /// <param name="rootContentDirectory">The default root content directory.</param>
+        /// <param name="defaultFontName">The asset name of the default font.</param>
+        /// <param name="defaultFontSize">The size of the default font.</param>
         /// <exception cref="ArgumentNullException"><paramref name="game"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
-        public ScreenManager(RenderWindow game, ISkinManager skinManager, string rootContentDirectory)
+        public ScreenManager(RenderWindow game, ISkinManager skinManager, string rootContentDirectory, string defaultFontName, int defaultFontSize)
         {
             if (game == null)
                 throw new ArgumentNullException("game");
@@ -64,7 +66,7 @@ namespace NetGore.Graphics.GUI
             _game.MouseMoved += _game_MouseMoved;
 
             // Load the global content used between screens
-            _menuFont = _content.LoadFont("Font/Menu", 28, ContentLevel.Global);
+            _defaultFont = _content.LoadFont(defaultFontName, defaultFontSize, ContentLevel.Global);
 
             // Tell the other screens to load their content, too
             foreach (var screen in _screens.Values)
@@ -262,19 +264,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the default <see cref="Font"/> to use.
+        /// </summary>
+        public Font DefaultFont
+        { get { return _defaultFont; } }
+
+        /// <summary>
         /// Gets the <see cref="IScreenManager.Game"/>.
         /// </summary>
         public RenderWindow Game
         {
             get { return _game; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Font"/> to use for the menus.
-        /// </summary>
-        public Font MenuFont
-        {
-            get { return _menuFont; }
         }
 
         /// <summary>

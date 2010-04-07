@@ -34,7 +34,7 @@ namespace NetGore.Graphics.GUI
 
             _screenManager = screenManager;
             _name = name;
-            _guiManager = ScreenManager.CreateGUIManager(ScreenManager.MenuFont);
+            _guiManager = ScreenManager.CreateGUIManager(ScreenManager.DefaultFont);
 
             screenManager.Add(this);
         }

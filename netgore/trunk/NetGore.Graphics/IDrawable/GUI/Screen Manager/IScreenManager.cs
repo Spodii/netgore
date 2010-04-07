@@ -45,16 +45,16 @@ namespace NetGore.Graphics.GUI
         /// Gets the current FPS.
         /// </summary>
         int FPS { get; }
+        
+        /// <summary>
+        /// Gets the default <see cref="Font"/> to use.
+        /// </summary>
+        Font DefaultFont { get; }
 
         /// <summary>
         /// Gets the <see cref="Game"/>.
         /// </summary>
         RenderWindow Game { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Font"/> to use for the menus.
-        /// </summary>
-        Font MenuFont { get; }
 
         /// <summary>
         /// Gets the <see cref="MusicManager"/> managed by this <see cref="ScreenManager"/>.
