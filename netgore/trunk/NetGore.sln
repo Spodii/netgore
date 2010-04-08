@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Client", "DemoGame
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Server", "DemoGame.Server\DemoGame.Server.csproj", "{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Graphics", "NetGore.Graphics\NetGore.Graphics.csproj", "{76C45E48-16F2-478F-B06C-5AD993F6B1F1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore", "NetGore\NetGore.csproj", "{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame", "DemoGame\DemoGame.csproj", "{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}"
@@ -31,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Db.ClassCreator", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.NPCChatEditor", "DemoGame.NPCChatEditor\DemoGame.NPCChatEditor.csproj", "{A6708B42-B900-47C1-AFBA-241DA188D38A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Audio", "NetGore.Audio\NetGore.Audio.csproj", "{DB59800A-5924-4DE7-A349-46B60AF0348F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.ParticleEffectEditor", "DemoGame.ParticleEffectEditor\DemoGame.ParticleEffectEditor.csproj", "{B754CB42-CD27-4602-809C-930677A8AD08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.MapEditor", "DemoGame.MapEditor\DemoGame.MapEditor.csproj", "{E45C879C-61AC-45F0-8E25-453EE46EB086}"
@@ -48,8 +44,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.EditorTools", "DemoGame.EditorTools\DemoGame.EditorTools.csproj", "{05F14B4B-74B6-41D4-9D39-8BC1544D39AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.DbEditor", "DemoGame.DbEditor\DemoGame.DbEditor.csproj", "{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Xna.Framework", "NetGore.Xna.Framework\NetGore.Xna.Framework.csproj", "{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -96,20 +90,6 @@ Global
 		{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.Debug|x86.ActiveCfg = Debug|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.Debug|x86.Build.0 = Debug|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.DebugTopDown|x86.Build.0 = DebugTopDown|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.Mono|x86.ActiveCfg = Mono|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.Mono|x86.Build.0 = Mono|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.MonoTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.Release|x86.ActiveCfg = Release|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.Release|x86.Build.0 = Release|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.ReleaseClient|x86.Build.0 = Release|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
-		{76C45E48-16F2-478F-B06C-5AD993F6B1F1}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
 		{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}.Debug|x86.ActiveCfg = Debug|x86
 		{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}.Debug|x86.Build.0 = Debug|x86
 		{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
@@ -231,20 +211,6 @@ Global
 		{A6708B42-B900-47C1-AFBA-241DA188D38A}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{A6708B42-B900-47C1-AFBA-241DA188D38A}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{A6708B42-B900-47C1-AFBA-241DA188D38A}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.Debug|x86.ActiveCfg = Debug|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.Debug|x86.Build.0 = Debug|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.DebugTopDown|x86.Build.0 = DebugTopDown|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.Mono|x86.ActiveCfg = Mono|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.Mono|x86.Build.0 = Mono|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.MonoTopDown|x86.ActiveCfg = DebugTopDown|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.Release|x86.ActiveCfg = Release|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.Release|x86.Build.0 = Release|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.ReleaseClient|x86.Build.0 = Release|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
-		{DB59800A-5924-4DE7-A349-46B60AF0348F}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
 		{B754CB42-CD27-4602-809C-930677A8AD08}.Debug|x86.ActiveCfg = Debug|x86
 		{B754CB42-CD27-4602-809C-930677A8AD08}.Debug|x86.Build.0 = Debug|x86
 		{B754CB42-CD27-4602-809C-930677A8AD08}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
@@ -349,16 +315,6 @@ Global
 		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{E3CC48B6-BE37-48DD-BB1F-C2BA5F11497A}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.Debug|x86.ActiveCfg = Debug|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.DebugTopDown|x86.ActiveCfg = Debug|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.Mono|x86.ActiveCfg = Debug|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.Mono|x86.Build.0 = Debug|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.MonoTopDown|x86.ActiveCfg = Debug|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.MonoTopDown|x86.Build.0 = Debug|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.Release|x86.ActiveCfg = Release|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{D28264C0-E65A-4E8C-8F87-5E71790E3B9F}.ReleaseTopDown|x86.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Debug|x86.ActiveCfg = Debug|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugDbClassGen|x86.ActiveCfg = DebugTopDown|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.DebugTopDown|x86.ActiveCfg = DebugTopDown|x86
