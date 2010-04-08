@@ -4866,637 +4866,6 @@
             Current view active in the window
             </summary>
         </member>
-        <member name="T:SFML.Graphics.BlendMode">
-            <summary>
-            Enumerate the blending modes available for drawable objects
-            </summary>
-        </member>
-        <member name="F:SFML.Graphics.BlendMode.Alpha">
-            <summary>Pixel = Src * a + Dest * (1 - a)</summary>
-        </member>
-        <member name="F:SFML.Graphics.BlendMode.Add">
-            <summary>Pixel = Src + Dest</summary>
-        </member>
-        <member name="F:SFML.Graphics.BlendMode.Multiply">
-            <summary>Pixel = Src * Dest</summary>
-        </member>
-        <member name="F:SFML.Graphics.BlendMode.None">
-            <summary>No blending</summary>
-        </member>
-        <member name="T:SFML.Graphics.LazyImage">
-            <summary>
-            An implementation of <see cref="T:SFML.Graphics.Image"/> that will load on-demand.
-            </summary>
-        </member>
-        <member name="M:SFML.Graphics.LazyImage.OnReload">
-            <summary>
-            When overridden in the derived class, handles when the <see cref="T:SFML.Graphics.LazyImage"/> is reloaded.
-            </summary>
-        </member>
-        <member name="M:SFML.Graphics.LazyImage.Dispose">
-            <summary>
-            Explicitely dispose the object
-            </summary>
-        </member>
-        <member name="M:SFML.Graphics.LazyImage.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:SFML.Graphics.LazyImage"/> class.
-            </summary>
-            <param name="filename">The file name.</param>
-        </member>
-        <member name="P:SFML.Graphics.LazyImage.FileName">
-            <summary>
-            Gets the file name that this image uses to load.
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.LazyImage.This">
-            <summary>
-            Access to the internal pointer of the object.
-            For internal use only
-            </summary>
-        </member>
-        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.#ctor(System.Reflection.PropertyInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:SFML.Graphics.Design.PropertyPropertyDescriptor"/> class.
-            </summary>
-            <param name="property">The property.</param>
-        </member>
-        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.GetValue(System.Object)">
-            <summary>
-            When overridden in a derived class, gets the current value of the property on a component.
-            </summary>
-            <param name="component">The component with the property for which to retrieve the value.</param>
-            <returns>
-            The value of a property for a given component.
-            </returns>
-        </member>
-        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.SetValue(System.Object,System.Object)">
-            <summary>
-            When overridden in a derived class, sets the value of the component to a different value.
-            </summary>
-            <param name="component">The component with the property value that is to be set.</param>
-            <param name="value">The new value.</param>
-        </member>
-        <member name="P:SFML.Graphics.Design.PropertyPropertyDescriptor.PropertyType">
-            <summary>
-            When overridden in a derived class, gets the type of the property.
-            </summary>
-            <value></value>
-            <returns>A <see cref="T:System.Type"/> that represents the type of the property.</returns>
-        </member>
-        <member name="T:SFML.Graphics.BoundingFrustum">
-            <summary>Defines a frustum and helps determine whether forms intersect with it.</summary>
-        </member>
-        <member name="F:SFML.Graphics.BoundingFrustum.CornerCount">
-            <summary>Specifies the total number of corners (8) in the BoundingFrustum.</summary>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.#ctor(SFML.Graphics.Matrix)">
-            <summary>Creates a new instance of BoundingFrustum. Reference page contains links to related conceptual articles.</summary>
-            <param name="value">Combined matrix that usually takes view × projection matrix.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingBox)">
-            <summary>Checks whether the current BoundingFrustum contains the specified BoundingBox.</summary>
-            <param name="box">The BoundingBox to check against the current BoundingFrustum.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingFrustum)">
-            <summary>Checks whether the current BoundingFrustum contains the specified BoundingFrustum.</summary>
-            <param name="frustum">The BoundingFrustum to check against the current BoundingFrustum.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingSphere)">
-            <summary>Checks whether the current BoundingFrustum contains the specified BoundingSphere.</summary>
-            <param name="sphere">The BoundingSphere to check against the current BoundingFrustum.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.Vector3)">
-            <summary>Checks whether the current BoundingFrustum contains the specified point.</summary>
-            <param name="point">The point to check against the current BoundingFrustum.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingBox@,SFML.Graphics.ContainmentType@)">
-            <summary>Checks whether the current BoundingFrustum contains the specified BoundingBox.</summary>
-            <param name="box">The BoundingBox to test for overlap.</param>
-            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingSphere@,SFML.Graphics.ContainmentType@)">
-            <summary>Checks whether the current BoundingFrustum contains the specified BoundingSphere.</summary>
-            <param name="sphere">The BoundingSphere to test for overlap.</param>
-            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.Vector3@,SFML.Graphics.ContainmentType@)">
-            <summary>Checks whether the current BoundingFrustum contains the specified point.</summary>
-            <param name="point">The point to test for overlap.</param>
-            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Equals(System.Object)">
-            <summary>Determines whether the specified Object is equal to the BoundingFrustum.</summary>
-            <param name="obj">The Object to compare with the current BoundingFrustum.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.GetCorners">
-            <summary>Gets an array of points that make up the corners of the BoundingFrustum.</summary>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.GetCorners(SFML.Graphics.Vector3[])">
-            <summary>Gets an array of points that make up the corners of the BoundingFrustum.</summary>
-            <param name="corners">An existing array of at least 8 Vector3 points where the corners of the BoundingFrustum are written.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.GetHashCode">
-            <summary>Gets the hash code for this instance.</summary>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingBox)">
-            <summary>Checks whether the current BoundingFrustum intersects the specified BoundingBox.</summary>
-            <param name="box">The BoundingBox to check for intersection.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingFrustum)">
-            <summary>Checks whether the current BoundingFrustum intersects the specified BoundingFrustum.</summary>
-            <param name="frustum">The BoundingFrustum to check for intersection.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingSphere)">
-            <summary>Checks whether the current BoundingFrustum intersects the specified BoundingSphere.</summary>
-            <param name="sphere">The BoundingSphere to check for intersection.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.Plane)">
-            <summary>Checks whether the current BoundingFrustum intersects the specified Plane.</summary>
-            <param name="plane">The Plane to check for intersection.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.Ray)">
-            <summary>Checks whether the current BoundingFrustum intersects the specified Ray.</summary>
-            <param name="ray">The Ray to check for intersection.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingBox@,System.Boolean@)">
-            <summary>Checks whether the current BoundingFrustum intersects a BoundingBox.</summary>
-            <param name="box">The BoundingBox to check for intersection with.</param>
-            <param name="result">[OutAttribute] true if the BoundingFrustum and BoundingBox intersect; false otherwise.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingSphere@,System.Boolean@)">
-            <summary>Checks whether the current BoundingFrustum intersects a BoundingSphere.</summary>
-            <param name="sphere">The BoundingSphere to check for intersection with.</param>
-            <param name="result">[OutAttribute] true if the BoundingFrustum and BoundingSphere intersect; false otherwise.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.Plane@,SFML.Graphics.PlaneIntersectionType@)">
-            <summary>Checks whether the current BoundingFrustum intersects a Plane.</summary>
-            <param name="plane">The Plane to check for intersection with.</param>
-            <param name="result">[OutAttribute] An enumeration indicating whether the BoundingFrustum intersects the Plane.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.Ray@,System.Nullable{System.Single}@)">
-            <summary>Checks whether the current BoundingFrustum intersects a Ray.</summary>
-            <param name="ray">The Ray to check for intersection with.</param>
-            <param name="result">[OutAttribute] Distance at which the ray intersects the BoundingFrustum or null if there is no intersection.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.ToString">
-            <summary>Returns a String that represents the current BoundingFrustum.</summary>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.Equals(SFML.Graphics.BoundingFrustum)">
-            <summary>Determines whether the specified BoundingFrustum is equal to the current BoundingFrustum.</summary>
-            <param name="other">The BoundingFrustum to compare with the current BoundingFrustum.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.op_Equality(SFML.Graphics.BoundingFrustum,SFML.Graphics.BoundingFrustum)">
-            <summary>Determines whether two instances of BoundingFrustum are equal.</summary>
-            <param name="a">The BoundingFrustum to the left of the equality operator.</param>
-            <param name="b">The BoundingFrustum to the right of the equality operator.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingFrustum.op_Inequality(SFML.Graphics.BoundingFrustum,SFML.Graphics.BoundingFrustum)">
-            <summary>Determines whether two instances of BoundingFrustum are not equal.</summary>
-            <param name="a">The BoundingFrustum to the left of the inequality operator.</param>
-            <param name="b">The BoundingFrustum to the right of the inequality operator.</param>
-        </member>
-        <member name="P:SFML.Graphics.BoundingFrustum.Bottom">
-            <summary>Gets the bottom plane of the BoundingFrustum.</summary>
-        </member>
-        <member name="P:SFML.Graphics.BoundingFrustum.Far">
-            <summary>Gets the far plane of the BoundingFrustum.</summary>
-        </member>
-        <member name="P:SFML.Graphics.BoundingFrustum.Left">
-            <summary>Gets the left plane of the BoundingFrustum.</summary>
-        </member>
-        <member name="P:SFML.Graphics.BoundingFrustum.Matrix">
-            <summary>Gets or sets the Matrix that describes this bounding frustum.</summary>
-        </member>
-        <member name="P:SFML.Graphics.BoundingFrustum.Near">
-            <summary>Gets the near plane of the BoundingFrustum.</summary>
-        </member>
-        <member name="P:SFML.Graphics.BoundingFrustum.Right">
-            <summary>Gets the right plane of the BoundingFrustum.</summary>
-        </member>
-        <member name="P:SFML.Graphics.BoundingFrustum.Top">
-            <summary>Gets the top plane of the BoundingFrustum.</summary>
-        </member>
-        <member name="T:SFML.Graphics.View">
-            <summary>
-            This class defines a view (position, size, etc.) ;
-            you can consider it as a 2D camera
-            </summary>
-        </member>
-        <member name="M:SFML.Graphics.View.#ctor">
-            <summary>
-            Create a default view (1000x1000, centered on origin)
-            </summary>
-        </member>
-        <member name="M:SFML.Graphics.View.#ctor(SFML.Graphics.FloatRect)">
-            <summary>
-            Construct the view from a rectangle
-            </summary>
-            <param name="viewRect">Rectangle defining the position and size of the view</param>
-        </member>
-        <member name="M:SFML.Graphics.View.#ctor(SFML.Graphics.Vector2,SFML.Graphics.Vector2)">
-            <summary>
-            Construct the view from its center and half-size
-            </summary>
-            <param name="center">Center of the view</param>
-            <param name="halfSize">Half-size of the view (from center to corner)</param>
-        </member>
-        <member name="M:SFML.Graphics.View.SetFromRect(SFML.Graphics.FloatRect)">
-            <summary>
-            Rebuild the view from a rectangle
-            </summary>
-            <param name="viewRect">Rectangle defining the position and size of the view</param>
-        </member>
-        <member name="M:SFML.Graphics.View.GetRect">
-            <summary>
-            Get the rectangle defining the view
-            </summary>
-            <returns>Rectangle of the view</returns>
-        </member>
-        <member name="M:SFML.Graphics.View.Move(SFML.Graphics.Vector2)">
-            <summary>
-            Move the view
-            </summary>
-            <param name="offset">Offset to move the view</param>
-        </member>
-        <member name="M:SFML.Graphics.View.Zoom(System.Single)">
-            <summary>
-            Resize the view rectangle to simulate a zoom / unzoom effect
-            </summary>
-            <param name="factor">Zoom factor to apply, relative to the current zoom</param>
-        </member>
-        <member name="M:SFML.Graphics.View.#ctor(System.IntPtr)">
-            <summary>
-            Internal constructor for other classes which need to manipulate raw views
-            </summary>
-            <param name="thisPtr">Direct pointer to the view object in the C library</param>
-        </member>
-        <member name="M:SFML.Graphics.View.Destroy(System.Boolean)">
-            <summary>
-            Handle the destruction of the object
-            </summary>
-            <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-        </member>
-        <member name="P:SFML.Graphics.View.Center">
-            <summary>
-            Center of the view
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.View.HalfSize">
-            <summary>
-            Half-size of the view
-            </summary>
-        </member>
-        <member name="T:SFML.Graphics.String2D">
-            <summary>
-            This class defines a graphical 2D text, that can be drawn on screen
-            </summary>
-        </member>
-        <member name="M:SFML.Graphics.String2D.#ctor">
-            <summary>
-            Default constructor
-            </summary>
-        </member>
-        <member name="M:SFML.Graphics.String2D.#ctor(System.String)">
-            <summary>
-            Construct the string from a text
-            </summary>
-            <param name="text">Text to display</param>
-        </member>
-        <member name="M:SFML.Graphics.String2D.#ctor(System.String,SFML.Graphics.Font)">
-            <summary>
-            Construct the string from a text and a font
-            </summary>
-            <param name="text">Text to display</param>
-            <param name="font">Font to use</param>
-        </member>
-        <member name="M:SFML.Graphics.String2D.#ctor(System.String,SFML.Graphics.Font,System.UInt32)">
-            <summary>
-            Construct the string from a text, font and size
-            </summary>
-            <param name="text">Text to display</param>
-            <param name="font">Font to use</param>
-            <param name="size">Base characters size</param>
-        </member>
-        <member name="M:SFML.Graphics.String2D.TransformToLocal(SFML.Graphics.Vector2)">
-            <summary>
-            Transform a point from global coordinates into local coordinates
-            (ie it applies the inverse of object's center, translation, rotation and scale to the point)
-            </summary>
-            <param name="point">Point to transform</param>
-            <returns>Transformed point</returns>
-        </member>
-        <member name="M:SFML.Graphics.String2D.TransformToGlobal(SFML.Graphics.Vector2)">
-            <summary>
-            Transform a point from local coordinates into global coordinates
-            (ie it applies the object's center, translation, rotation and scale to the point)
-            </summary>
-            <param name="point">Point to transform</param>
-            <returns>Transformed point</returns>
-        </member>
-        <member name="M:SFML.Graphics.String2D.GetRect">
-            <summary>
-            Get the string rectangle on screen
-            </summary>
-            <returns>String rectangle in global coordinates (doesn't include rotation)</returns>
-        </member>
-        <member name="M:SFML.Graphics.String2D.GetCharacterPos(System.UInt32)">
-            <summary>
-            Return the visual position of the Index-th character of the string,
-            in coordinates relative to the string
-            (note : translation, center, rotation and scale are not applied)
-            </summary>
-            <param name="index">Index of the character</param>
-            <returns>Position of the Index-th character (end of string if Index is out of range)</returns>
-        </member>
-        <member name="M:SFML.Graphics.String2D.Render(SFML.Graphics.RenderWindow)">
-            <summary>
-            Render the object into the given render window
-            </summary>
-            <param name="window">Target window</param>
-        </member>
-        <member name="M:SFML.Graphics.String2D.Destroy(System.Boolean)">
-            <summary>
-            Handle the destruction of the object
-            </summary>
-            <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Position">
-            <summary>
-            Position of the object on screen
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Rotation">
-            <summary>
-            Rotation of the object, defined in degrees
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Scale">
-            <summary>
-            Vertical and horizontal scale of the object
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Center">
-            <summary>
-            Center of the transformation of the object
-            (center of translation, rotation and scale)
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Color">
-            <summary>
-            Global color of the object
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.BlendMode">
-            <summary>
-            Blending mode of the object
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Text">
-            <summary>
-            Text displayed
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Font">
-            <summary>
-            Font used to display the text
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Size">
-            <summary>
-            Base size of characters
-            </summary>
-        </member>
-        <member name="P:SFML.Graphics.String2D.Style">
-            <summary>
-            Style of the text (see Styles enum)
-            </summary>
-        </member>
-        <member name="T:SFML.Graphics.String2D.Styles">
-            <summary>
-            Enumerate the string drawing styles
-            </summary>
-        </member>
-        <member name="F:SFML.Graphics.String2D.Styles.Regular">
-            <summary>Regular characters, no style</summary>
-        </member>
-        <member name="F:SFML.Graphics.String2D.Styles.Bold">
-            <summary> Characters are bold</summary>
-        </member>
-        <member name="F:SFML.Graphics.String2D.Styles.Italic">
-            <summary>Characters are in italic</summary>
-        </member>
-        <member name="F:SFML.Graphics.String2D.Styles.Underlined">
-            <summary>Characters are underlined</summary>
-        </member>
-        <member name="T:SFML.Graphics.BoundingBox">
-            <summary>Defines an axis-aligned box-shaped 3D volume. Reference page contains links to related code samples.</summary>
-        </member>
-        <member name="F:SFML.Graphics.BoundingBox.CornerCount">
-            <summary>Specifies the total number of corners (8) in the BoundingBox.</summary>
-        </member>
-        <member name="F:SFML.Graphics.BoundingBox.Min">
-            <summary>The minimum point the BoundingBox contains.</summary>
-        </member>
-        <member name="F:SFML.Graphics.BoundingBox.Max">
-            <summary>The maximum point the BoundingBox contains.</summary>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.GetCorners">
-            <summary>Gets an array of points that make up the corners of the BoundingBox.</summary>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.GetCorners(SFML.Graphics.Vector3[])">
-            <summary>Gets the array of points that make up the corners of the BoundingBox.</summary>
-            <param name="corners">An existing array of at least 8 Vector3 points where the corners of the BoundingBox are written.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.#ctor(SFML.Graphics.Vector3,SFML.Graphics.Vector3)">
-            <summary>Creates an instance of BoundingBox. Reference page contains links to related code samples.</summary>
-            <param name="min">The minimum point the BoundingBox includes.</param>
-            <param name="max">The maximum point the BoundingBox includes.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Equals(SFML.Graphics.BoundingBox)">
-            <summary>Determines whether two instances of BoundingBox are equal.</summary>
-            <param name="other">The BoundingBox to compare with the current BoundingBox.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Equals(System.Object)">
-            <summary>Determines whether two instances of BoundingBox are equal.</summary>
-            <param name="obj">The Object to compare with the current BoundingBox.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.GetHashCode">
-            <summary>Gets the hash code for this instance.</summary>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.ToString">
-            <summary>Returns a String that represents the current BoundingBox.</summary>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.CreateMerged(SFML.Graphics.BoundingBox,SFML.Graphics.BoundingBox)">
-            <summary>Creates the smallest BoundingBox that contains the two specified BoundingBox instances.</summary>
-            <param name="original">One of the BoundingBoxs to contain.</param>
-            <param name="additional">One of the BoundingBoxs to contain.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.CreateMerged(SFML.Graphics.BoundingBox@,SFML.Graphics.BoundingBox@,SFML.Graphics.BoundingBox@)">
-            <summary>Creates the smallest BoundingBox that contains the two specified BoundingBox instances.</summary>
-            <param name="original">One of the BoundingBox instances to contain.</param>
-            <param name="additional">One of the BoundingBox instances to contain.</param>
-            <param name="result">[OutAttribute] The created BoundingBox.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.CreateFromSphere(SFML.Graphics.BoundingSphere)">
-            <summary>Creates the smallest BoundingBox that will contain the specified BoundingSphere.</summary>
-            <param name="sphere">The BoundingSphere to contain.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.CreateFromSphere(SFML.Graphics.BoundingSphere@,SFML.Graphics.BoundingBox@)">
-            <summary>Creates the smallest BoundingBox that will contain the specified BoundingSphere.</summary>
-            <param name="sphere">The BoundingSphere to contain.</param>
-            <param name="result">[OutAttribute] The created BoundingBox.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.CreateFromPoints(System.Collections.Generic.IEnumerable{SFML.Graphics.Vector3})">
-            <summary>Creates the smallest BoundingBox that will contain a group of points.</summary>
-            <param name="points">A list of points the BoundingBox should contain.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingBox)">
-            <summary>Checks whether the current BoundingBox intersects another BoundingBox. Reference page contains links to related code samples.</summary>
-            <param name="box">The BoundingBox to check for intersection with.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingBox@,System.Boolean@)">
-            <summary>Checks whether the current BoundingBox intersects another BoundingBox. Reference page contains links to related code samples.</summary>
-            <param name="box">The BoundingBox to check for intersection with.</param>
-            <param name="result">[OutAttribute] true if the BoundingBox instances intersect; false otherwise.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingFrustum)">
-            <summary>Checks whether the current BoundingBox intersects a BoundingFrustum. Reference page contains links to related code samples.</summary>
-            <param name="frustum">The BoundingFrustum to check for intersection with.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.Plane)">
-            <summary>Checks whether the current BoundingBox intersects a Plane. Reference page contains links to related code samples.</summary>
-            <param name="plane">The Plane to check for intersection with.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.Plane@,SFML.Graphics.PlaneIntersectionType@)">
-            <summary>Checks whether the current BoundingBox intersects a Plane. Reference page contains links to related code samples.</summary>
-            <param name="plane">The Plane to check for intersection with.</param>
-            <param name="result">[OutAttribute] An enumeration indicating whether the BoundingBox intersects the Plane.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.Ray)">
-            <summary>Checks whether the current BoundingBox intersects a Ray. Reference page contains links to related code samples.</summary>
-            <param name="ray">The Ray to check for intersection with.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.Ray@,System.Nullable{System.Single}@)">
-            <summary>Checks whether the current BoundingBox intersects a Ray. Reference page contains links to related code samples.</summary>
-            <param name="ray">The Ray to check for intersection with.</param>
-            <param name="result">[OutAttribute] Distance at which the ray intersects the BoundingBox, or null if there is no intersection.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingSphere)">
-            <summary>Checks whether the current BoundingBox intersects a BoundingSphere. Reference page contains links to related code samples.</summary>
-            <param name="sphere">The BoundingSphere to check for intersection with.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingSphere@,System.Boolean@)">
-            <summary>Checks whether the current BoundingBox intersects a BoundingSphere. Reference page contains links to related code samples.</summary>
-            <param name="sphere">The BoundingSphere to check for intersection with.</param>
-            <param name="result">[OutAttribute] true if the BoundingBox and BoundingSphere intersect; false otherwise.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingBox)">
-            <summary>Tests whether the BoundingBox contains another BoundingBox.</summary>
-            <param name="box">The BoundingBox to test for overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingBox@,SFML.Graphics.ContainmentType@)">
-            <summary>Tests whether the BoundingBox contains a BoundingBox.</summary>
-            <param name="box">The BoundingBox to test for overlap.</param>
-            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingFrustum)">
-            <summary>Tests whether the BoundingBox contains a BoundingFrustum.</summary>
-            <param name="frustum">The BoundingFrustum to test for overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.Vector3)">
-            <summary>Tests whether the BoundingBox contains a point.</summary>
-            <param name="point">The point to test for overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.Vector3@,SFML.Graphics.ContainmentType@)">
-            <summary>Tests whether the BoundingBox contains a point.</summary>
-            <param name="point">The point to test for overlap.</param>
-            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingSphere)">
-            <summary>Tests whether the BoundingBox contains a BoundingSphere.</summary>
-            <param name="sphere">The BoundingSphere to test for overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingSphere@,SFML.Graphics.ContainmentType@)">
-            <summary>Tests whether the BoundingBox contains a BoundingSphere.</summary>
-            <param name="sphere">The BoundingSphere to test for overlap.</param>
-            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.op_Equality(SFML.Graphics.BoundingBox,SFML.Graphics.BoundingBox)">
-            <summary>Determines whether two instances of BoundingBox are equal.</summary>
-            <param name="a">BoundingBox to compare.</param>
-            <param name="b">BoundingBox to compare.</param>
-        </member>
-        <member name="M:SFML.Graphics.BoundingBox.op_Inequality(SFML.Graphics.BoundingBox,SFML.Graphics.BoundingBox)">
-            <summary>Determines whether two instances of BoundingBox are not equal.</summary>
-            <param name="a">The object to the left of the inequality operator.</param>
-            <param name="b">The object to the right of the inequality operator.</param>
-        </member>
-        <member name="T:SFML.Graphics.Point">
-            <summary>Defines a point in 2D space.</summary>
-        </member>
-        <member name="F:SFML.Graphics.Point.X">
-            <summary>Specifies the x-coordinate of the Point.</summary>
-        </member>
-        <member name="F:SFML.Graphics.Point.Y">
-            <summary>Specifies the y-coordinate of the Point.</summary>
-        </member>
-        <member name="M:SFML.Graphics.Point.#ctor(System.Int32,System.Int32)">
-            <summary>Initializes a new instance of Point.</summary>
-            <param name="x">The x-coordinate of the Point.</param>
-            <param name="y">The y-coordinate of the Point.</param>
-        </member>
-        <member name="M:SFML.Graphics.Point.Equals(SFML.Graphics.Point)">
-            <summary>Determines whether two Point instances are equal.</summary>
-            <param name="other">The Point to compare this instance to.</param>
-        </member>
-        <member name="M:SFML.Graphics.Point.Equals(System.Object)">
-            <summary>Determines whether two Point instances are equal.</summary>
-            <param name="obj">The object to compare this instance to.</param>
-        </member>
-        <member name="M:SFML.Graphics.Point.GetHashCode">
-            <summary>Gets the hash code for this object.</summary>
-        </member>
-        <member name="M:SFML.Graphics.Point.ToString">
-            <summary>Returns a String that represents the current Point.</summary>
-        </member>
-        <member name="M:SFML.Graphics.Point.op_Equality(SFML.Graphics.Point,SFML.Graphics.Point)">
-            <summary>Determines whether two Point instances are equal.</summary>
-            <param name="a">Point on the left side of the equal sign.</param>
-            <param name="b">Point on the right side of the equal sign.</param>
-        </member>
-        <member name="M:SFML.Graphics.Point.op_Inequality(SFML.Graphics.Point,SFML.Graphics.Point)">
-            <summary>Determines whether two Point instances are not equal.</summary>
-            <param name="a">The Point on the left side of the equal sign.</param>
-            <param name="b">The Point on the right side of the equal sign.</param>
-        </member>
-        <member name="P:SFML.Graphics.Point.Zero">
-            <summary>Returns the point (0,0).</summary>
-        </member>
-        <member name="T:SFML.Graphics.Design.BoundingSphereConverter">
-            <summary>Provides a unified way of converting BoundingSphere values to other types, as well as for accessing standard values and subproperties.</summary>
-        </member>
-        <member name="M:SFML.Graphics.Design.BoundingSphereConverter.#ctor">
-            <summary>Initializes a new instance of the BoundingSphereConverter class.</summary>
-        </member>
-        <member name="M:SFML.Graphics.Design.BoundingSphereConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
-            <summary>Converts the given object to the type of this converter, using the specified context and culture information.</summary>
-            <param name="context">The format context.</param>
-            <param name="culture">The current culture.</param>
-            <param name="value">The object to convert.</param>
-        </member>
-        <member name="M:SFML.Graphics.Design.BoundingSphereConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
-            <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>
-            <param name="context">The format context.</param>
-            <param name="culture">The culture to use in the conversion.</param>
-            <param name="value">The object to convert.</param>
-            <param name="destinationType">The destination type.</param>
-        </member>
-        <member name="M:SFML.Graphics.Design.BoundingSphereConverter.CreateInstance(System.ComponentModel.ITypeDescriptorContext,System.Collections.IDictionary)">
-            <summary>Creates an instance of the type that this BoundingSphereConverter is associated with, using the specified context, given a set of property values for the object.</summary>
-            <param name="context">The format context.</param>
-            <param name="propertyValues">The new property values.</param>
-        </member>
         <member name="T:SFML.Graphics.FrameworkResources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -6932,6 +6301,637 @@
             <summary>
               Looks up a localized string similar to Unknown {0} &apos;{1}&apos;. This was not defined in the XLAST configuration..
             </summary>
+        </member>
+        <member name="T:SFML.Graphics.BlendMode">
+            <summary>
+            Enumerate the blending modes available for drawable objects
+            </summary>
+        </member>
+        <member name="F:SFML.Graphics.BlendMode.Alpha">
+            <summary>Pixel = Src * a + Dest * (1 - a)</summary>
+        </member>
+        <member name="F:SFML.Graphics.BlendMode.Add">
+            <summary>Pixel = Src + Dest</summary>
+        </member>
+        <member name="F:SFML.Graphics.BlendMode.Multiply">
+            <summary>Pixel = Src * Dest</summary>
+        </member>
+        <member name="F:SFML.Graphics.BlendMode.None">
+            <summary>No blending</summary>
+        </member>
+        <member name="T:SFML.Graphics.LazyImage">
+            <summary>
+            An implementation of <see cref="T:SFML.Graphics.Image"/> that will load on-demand.
+            </summary>
+        </member>
+        <member name="M:SFML.Graphics.LazyImage.OnReload">
+            <summary>
+            When overridden in the derived class, handles when the <see cref="T:SFML.Graphics.LazyImage"/> is reloaded.
+            </summary>
+        </member>
+        <member name="M:SFML.Graphics.LazyImage.Dispose">
+            <summary>
+            Explicitely dispose the object
+            </summary>
+        </member>
+        <member name="M:SFML.Graphics.LazyImage.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SFML.Graphics.LazyImage"/> class.
+            </summary>
+            <param name="filename">The file name.</param>
+        </member>
+        <member name="P:SFML.Graphics.LazyImage.FileName">
+            <summary>
+            Gets the file name that this image uses to load.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.LazyImage.This">
+            <summary>
+            Access to the internal pointer of the object.
+            For internal use only
+            </summary>
+        </member>
+        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.#ctor(System.Reflection.PropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SFML.Graphics.Design.PropertyPropertyDescriptor"/> class.
+            </summary>
+            <param name="property">The property.</param>
+        </member>
+        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.GetValue(System.Object)">
+            <summary>
+            When overridden in a derived class, gets the current value of the property on a component.
+            </summary>
+            <param name="component">The component with the property for which to retrieve the value.</param>
+            <returns>
+            The value of a property for a given component.
+            </returns>
+        </member>
+        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.SetValue(System.Object,System.Object)">
+            <summary>
+            When overridden in a derived class, sets the value of the component to a different value.
+            </summary>
+            <param name="component">The component with the property value that is to be set.</param>
+            <param name="value">The new value.</param>
+        </member>
+        <member name="P:SFML.Graphics.Design.PropertyPropertyDescriptor.PropertyType">
+            <summary>
+            When overridden in a derived class, gets the type of the property.
+            </summary>
+            <value></value>
+            <returns>A <see cref="T:System.Type"/> that represents the type of the property.</returns>
+        </member>
+        <member name="T:SFML.Graphics.BoundingFrustum">
+            <summary>Defines a frustum and helps determine whether forms intersect with it.</summary>
+        </member>
+        <member name="F:SFML.Graphics.BoundingFrustum.CornerCount">
+            <summary>Specifies the total number of corners (8) in the BoundingFrustum.</summary>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.#ctor(SFML.Graphics.Matrix)">
+            <summary>Creates a new instance of BoundingFrustum. Reference page contains links to related conceptual articles.</summary>
+            <param name="value">Combined matrix that usually takes view × projection matrix.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingBox)">
+            <summary>Checks whether the current BoundingFrustum contains the specified BoundingBox.</summary>
+            <param name="box">The BoundingBox to check against the current BoundingFrustum.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingFrustum)">
+            <summary>Checks whether the current BoundingFrustum contains the specified BoundingFrustum.</summary>
+            <param name="frustum">The BoundingFrustum to check against the current BoundingFrustum.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingSphere)">
+            <summary>Checks whether the current BoundingFrustum contains the specified BoundingSphere.</summary>
+            <param name="sphere">The BoundingSphere to check against the current BoundingFrustum.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.Vector3)">
+            <summary>Checks whether the current BoundingFrustum contains the specified point.</summary>
+            <param name="point">The point to check against the current BoundingFrustum.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingBox@,SFML.Graphics.ContainmentType@)">
+            <summary>Checks whether the current BoundingFrustum contains the specified BoundingBox.</summary>
+            <param name="box">The BoundingBox to test for overlap.</param>
+            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.BoundingSphere@,SFML.Graphics.ContainmentType@)">
+            <summary>Checks whether the current BoundingFrustum contains the specified BoundingSphere.</summary>
+            <param name="sphere">The BoundingSphere to test for overlap.</param>
+            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Contains(SFML.Graphics.Vector3@,SFML.Graphics.ContainmentType@)">
+            <summary>Checks whether the current BoundingFrustum contains the specified point.</summary>
+            <param name="point">The point to test for overlap.</param>
+            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Equals(System.Object)">
+            <summary>Determines whether the specified Object is equal to the BoundingFrustum.</summary>
+            <param name="obj">The Object to compare with the current BoundingFrustum.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.GetCorners">
+            <summary>Gets an array of points that make up the corners of the BoundingFrustum.</summary>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.GetCorners(SFML.Graphics.Vector3[])">
+            <summary>Gets an array of points that make up the corners of the BoundingFrustum.</summary>
+            <param name="corners">An existing array of at least 8 Vector3 points where the corners of the BoundingFrustum are written.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.GetHashCode">
+            <summary>Gets the hash code for this instance.</summary>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingBox)">
+            <summary>Checks whether the current BoundingFrustum intersects the specified BoundingBox.</summary>
+            <param name="box">The BoundingBox to check for intersection.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingFrustum)">
+            <summary>Checks whether the current BoundingFrustum intersects the specified BoundingFrustum.</summary>
+            <param name="frustum">The BoundingFrustum to check for intersection.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingSphere)">
+            <summary>Checks whether the current BoundingFrustum intersects the specified BoundingSphere.</summary>
+            <param name="sphere">The BoundingSphere to check for intersection.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.Plane)">
+            <summary>Checks whether the current BoundingFrustum intersects the specified Plane.</summary>
+            <param name="plane">The Plane to check for intersection.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.Ray)">
+            <summary>Checks whether the current BoundingFrustum intersects the specified Ray.</summary>
+            <param name="ray">The Ray to check for intersection.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingBox@,System.Boolean@)">
+            <summary>Checks whether the current BoundingFrustum intersects a BoundingBox.</summary>
+            <param name="box">The BoundingBox to check for intersection with.</param>
+            <param name="result">[OutAttribute] true if the BoundingFrustum and BoundingBox intersect; false otherwise.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.BoundingSphere@,System.Boolean@)">
+            <summary>Checks whether the current BoundingFrustum intersects a BoundingSphere.</summary>
+            <param name="sphere">The BoundingSphere to check for intersection with.</param>
+            <param name="result">[OutAttribute] true if the BoundingFrustum and BoundingSphere intersect; false otherwise.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.Plane@,SFML.Graphics.PlaneIntersectionType@)">
+            <summary>Checks whether the current BoundingFrustum intersects a Plane.</summary>
+            <param name="plane">The Plane to check for intersection with.</param>
+            <param name="result">[OutAttribute] An enumeration indicating whether the BoundingFrustum intersects the Plane.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Intersects(SFML.Graphics.Ray@,System.Nullable{System.Single}@)">
+            <summary>Checks whether the current BoundingFrustum intersects a Ray.</summary>
+            <param name="ray">The Ray to check for intersection with.</param>
+            <param name="result">[OutAttribute] Distance at which the ray intersects the BoundingFrustum or null if there is no intersection.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.ToString">
+            <summary>Returns a String that represents the current BoundingFrustum.</summary>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.Equals(SFML.Graphics.BoundingFrustum)">
+            <summary>Determines whether the specified BoundingFrustum is equal to the current BoundingFrustum.</summary>
+            <param name="other">The BoundingFrustum to compare with the current BoundingFrustum.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.op_Equality(SFML.Graphics.BoundingFrustum,SFML.Graphics.BoundingFrustum)">
+            <summary>Determines whether two instances of BoundingFrustum are equal.</summary>
+            <param name="a">The BoundingFrustum to the left of the equality operator.</param>
+            <param name="b">The BoundingFrustum to the right of the equality operator.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingFrustum.op_Inequality(SFML.Graphics.BoundingFrustum,SFML.Graphics.BoundingFrustum)">
+            <summary>Determines whether two instances of BoundingFrustum are not equal.</summary>
+            <param name="a">The BoundingFrustum to the left of the inequality operator.</param>
+            <param name="b">The BoundingFrustum to the right of the inequality operator.</param>
+        </member>
+        <member name="P:SFML.Graphics.BoundingFrustum.Bottom">
+            <summary>Gets the bottom plane of the BoundingFrustum.</summary>
+        </member>
+        <member name="P:SFML.Graphics.BoundingFrustum.Far">
+            <summary>Gets the far plane of the BoundingFrustum.</summary>
+        </member>
+        <member name="P:SFML.Graphics.BoundingFrustum.Left">
+            <summary>Gets the left plane of the BoundingFrustum.</summary>
+        </member>
+        <member name="P:SFML.Graphics.BoundingFrustum.Matrix">
+            <summary>Gets or sets the Matrix that describes this bounding frustum.</summary>
+        </member>
+        <member name="P:SFML.Graphics.BoundingFrustum.Near">
+            <summary>Gets the near plane of the BoundingFrustum.</summary>
+        </member>
+        <member name="P:SFML.Graphics.BoundingFrustum.Right">
+            <summary>Gets the right plane of the BoundingFrustum.</summary>
+        </member>
+        <member name="P:SFML.Graphics.BoundingFrustum.Top">
+            <summary>Gets the top plane of the BoundingFrustum.</summary>
+        </member>
+        <member name="T:SFML.Graphics.View">
+            <summary>
+            This class defines a view (position, size, etc.) ;
+            you can consider it as a 2D camera
+            </summary>
+        </member>
+        <member name="M:SFML.Graphics.View.#ctor">
+            <summary>
+            Create a default view (1000x1000, centered on origin)
+            </summary>
+        </member>
+        <member name="M:SFML.Graphics.View.#ctor(SFML.Graphics.FloatRect)">
+            <summary>
+            Construct the view from a rectangle
+            </summary>
+            <param name="viewRect">Rectangle defining the position and size of the view</param>
+        </member>
+        <member name="M:SFML.Graphics.View.#ctor(SFML.Graphics.Vector2,SFML.Graphics.Vector2)">
+            <summary>
+            Construct the view from its center and half-size
+            </summary>
+            <param name="center">Center of the view</param>
+            <param name="halfSize">Half-size of the view (from center to corner)</param>
+        </member>
+        <member name="M:SFML.Graphics.View.SetFromRect(SFML.Graphics.FloatRect)">
+            <summary>
+            Rebuild the view from a rectangle
+            </summary>
+            <param name="viewRect">Rectangle defining the position and size of the view</param>
+        </member>
+        <member name="M:SFML.Graphics.View.GetRect">
+            <summary>
+            Get the rectangle defining the view
+            </summary>
+            <returns>Rectangle of the view</returns>
+        </member>
+        <member name="M:SFML.Graphics.View.Move(SFML.Graphics.Vector2)">
+            <summary>
+            Move the view
+            </summary>
+            <param name="offset">Offset to move the view</param>
+        </member>
+        <member name="M:SFML.Graphics.View.Zoom(System.Single)">
+            <summary>
+            Resize the view rectangle to simulate a zoom / unzoom effect
+            </summary>
+            <param name="factor">Zoom factor to apply, relative to the current zoom</param>
+        </member>
+        <member name="M:SFML.Graphics.View.#ctor(System.IntPtr)">
+            <summary>
+            Internal constructor for other classes which need to manipulate raw views
+            </summary>
+            <param name="thisPtr">Direct pointer to the view object in the C library</param>
+        </member>
+        <member name="M:SFML.Graphics.View.Destroy(System.Boolean)">
+            <summary>
+            Handle the destruction of the object
+            </summary>
+            <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+        </member>
+        <member name="P:SFML.Graphics.View.Center">
+            <summary>
+            Center of the view
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.View.HalfSize">
+            <summary>
+            Half-size of the view
+            </summary>
+        </member>
+        <member name="T:SFML.Graphics.String2D">
+            <summary>
+            This class defines a graphical 2D text, that can be drawn on screen
+            </summary>
+        </member>
+        <member name="M:SFML.Graphics.String2D.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:SFML.Graphics.String2D.#ctor(System.String)">
+            <summary>
+            Construct the string from a text
+            </summary>
+            <param name="text">Text to display</param>
+        </member>
+        <member name="M:SFML.Graphics.String2D.#ctor(System.String,SFML.Graphics.Font)">
+            <summary>
+            Construct the string from a text and a font
+            </summary>
+            <param name="text">Text to display</param>
+            <param name="font">Font to use</param>
+        </member>
+        <member name="M:SFML.Graphics.String2D.#ctor(System.String,SFML.Graphics.Font,System.UInt32)">
+            <summary>
+            Construct the string from a text, font and size
+            </summary>
+            <param name="text">Text to display</param>
+            <param name="font">Font to use</param>
+            <param name="size">Base characters size</param>
+        </member>
+        <member name="M:SFML.Graphics.String2D.TransformToLocal(SFML.Graphics.Vector2)">
+            <summary>
+            Transform a point from global coordinates into local coordinates
+            (ie it applies the inverse of object's center, translation, rotation and scale to the point)
+            </summary>
+            <param name="point">Point to transform</param>
+            <returns>Transformed point</returns>
+        </member>
+        <member name="M:SFML.Graphics.String2D.TransformToGlobal(SFML.Graphics.Vector2)">
+            <summary>
+            Transform a point from local coordinates into global coordinates
+            (ie it applies the object's center, translation, rotation and scale to the point)
+            </summary>
+            <param name="point">Point to transform</param>
+            <returns>Transformed point</returns>
+        </member>
+        <member name="M:SFML.Graphics.String2D.GetRect">
+            <summary>
+            Get the string rectangle on screen
+            </summary>
+            <returns>String rectangle in global coordinates (doesn't include rotation)</returns>
+        </member>
+        <member name="M:SFML.Graphics.String2D.GetCharacterPos(System.UInt32)">
+            <summary>
+            Return the visual position of the Index-th character of the string,
+            in coordinates relative to the string
+            (note : translation, center, rotation and scale are not applied)
+            </summary>
+            <param name="index">Index of the character</param>
+            <returns>Position of the Index-th character (end of string if Index is out of range)</returns>
+        </member>
+        <member name="M:SFML.Graphics.String2D.Render(SFML.Graphics.RenderWindow)">
+            <summary>
+            Render the object into the given render window
+            </summary>
+            <param name="window">Target window</param>
+        </member>
+        <member name="M:SFML.Graphics.String2D.Destroy(System.Boolean)">
+            <summary>
+            Handle the destruction of the object
+            </summary>
+            <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Position">
+            <summary>
+            Position of the object on screen
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Rotation">
+            <summary>
+            Rotation of the object, defined in degrees
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Scale">
+            <summary>
+            Vertical and horizontal scale of the object
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Center">
+            <summary>
+            Center of the transformation of the object
+            (center of translation, rotation and scale)
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Color">
+            <summary>
+            Global color of the object
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.BlendMode">
+            <summary>
+            Blending mode of the object
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Text">
+            <summary>
+            Text displayed
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Font">
+            <summary>
+            Font used to display the text
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Size">
+            <summary>
+            Base size of characters
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.String2D.Style">
+            <summary>
+            Style of the text (see Styles enum)
+            </summary>
+        </member>
+        <member name="T:SFML.Graphics.String2D.Styles">
+            <summary>
+            Enumerate the string drawing styles
+            </summary>
+        </member>
+        <member name="F:SFML.Graphics.String2D.Styles.Regular">
+            <summary>Regular characters, no style</summary>
+        </member>
+        <member name="F:SFML.Graphics.String2D.Styles.Bold">
+            <summary> Characters are bold</summary>
+        </member>
+        <member name="F:SFML.Graphics.String2D.Styles.Italic">
+            <summary>Characters are in italic</summary>
+        </member>
+        <member name="F:SFML.Graphics.String2D.Styles.Underlined">
+            <summary>Characters are underlined</summary>
+        </member>
+        <member name="T:SFML.Graphics.BoundingBox">
+            <summary>Defines an axis-aligned box-shaped 3D volume. Reference page contains links to related code samples.</summary>
+        </member>
+        <member name="F:SFML.Graphics.BoundingBox.CornerCount">
+            <summary>Specifies the total number of corners (8) in the BoundingBox.</summary>
+        </member>
+        <member name="F:SFML.Graphics.BoundingBox.Min">
+            <summary>The minimum point the BoundingBox contains.</summary>
+        </member>
+        <member name="F:SFML.Graphics.BoundingBox.Max">
+            <summary>The maximum point the BoundingBox contains.</summary>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.GetCorners">
+            <summary>Gets an array of points that make up the corners of the BoundingBox.</summary>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.GetCorners(SFML.Graphics.Vector3[])">
+            <summary>Gets the array of points that make up the corners of the BoundingBox.</summary>
+            <param name="corners">An existing array of at least 8 Vector3 points where the corners of the BoundingBox are written.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.#ctor(SFML.Graphics.Vector3,SFML.Graphics.Vector3)">
+            <summary>Creates an instance of BoundingBox. Reference page contains links to related code samples.</summary>
+            <param name="min">The minimum point the BoundingBox includes.</param>
+            <param name="max">The maximum point the BoundingBox includes.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Equals(SFML.Graphics.BoundingBox)">
+            <summary>Determines whether two instances of BoundingBox are equal.</summary>
+            <param name="other">The BoundingBox to compare with the current BoundingBox.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Equals(System.Object)">
+            <summary>Determines whether two instances of BoundingBox are equal.</summary>
+            <param name="obj">The Object to compare with the current BoundingBox.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.GetHashCode">
+            <summary>Gets the hash code for this instance.</summary>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.ToString">
+            <summary>Returns a String that represents the current BoundingBox.</summary>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.CreateMerged(SFML.Graphics.BoundingBox,SFML.Graphics.BoundingBox)">
+            <summary>Creates the smallest BoundingBox that contains the two specified BoundingBox instances.</summary>
+            <param name="original">One of the BoundingBoxs to contain.</param>
+            <param name="additional">One of the BoundingBoxs to contain.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.CreateMerged(SFML.Graphics.BoundingBox@,SFML.Graphics.BoundingBox@,SFML.Graphics.BoundingBox@)">
+            <summary>Creates the smallest BoundingBox that contains the two specified BoundingBox instances.</summary>
+            <param name="original">One of the BoundingBox instances to contain.</param>
+            <param name="additional">One of the BoundingBox instances to contain.</param>
+            <param name="result">[OutAttribute] The created BoundingBox.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.CreateFromSphere(SFML.Graphics.BoundingSphere)">
+            <summary>Creates the smallest BoundingBox that will contain the specified BoundingSphere.</summary>
+            <param name="sphere">The BoundingSphere to contain.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.CreateFromSphere(SFML.Graphics.BoundingSphere@,SFML.Graphics.BoundingBox@)">
+            <summary>Creates the smallest BoundingBox that will contain the specified BoundingSphere.</summary>
+            <param name="sphere">The BoundingSphere to contain.</param>
+            <param name="result">[OutAttribute] The created BoundingBox.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.CreateFromPoints(System.Collections.Generic.IEnumerable{SFML.Graphics.Vector3})">
+            <summary>Creates the smallest BoundingBox that will contain a group of points.</summary>
+            <param name="points">A list of points the BoundingBox should contain.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingBox)">
+            <summary>Checks whether the current BoundingBox intersects another BoundingBox. Reference page contains links to related code samples.</summary>
+            <param name="box">The BoundingBox to check for intersection with.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingBox@,System.Boolean@)">
+            <summary>Checks whether the current BoundingBox intersects another BoundingBox. Reference page contains links to related code samples.</summary>
+            <param name="box">The BoundingBox to check for intersection with.</param>
+            <param name="result">[OutAttribute] true if the BoundingBox instances intersect; false otherwise.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingFrustum)">
+            <summary>Checks whether the current BoundingBox intersects a BoundingFrustum. Reference page contains links to related code samples.</summary>
+            <param name="frustum">The BoundingFrustum to check for intersection with.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.Plane)">
+            <summary>Checks whether the current BoundingBox intersects a Plane. Reference page contains links to related code samples.</summary>
+            <param name="plane">The Plane to check for intersection with.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.Plane@,SFML.Graphics.PlaneIntersectionType@)">
+            <summary>Checks whether the current BoundingBox intersects a Plane. Reference page contains links to related code samples.</summary>
+            <param name="plane">The Plane to check for intersection with.</param>
+            <param name="result">[OutAttribute] An enumeration indicating whether the BoundingBox intersects the Plane.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.Ray)">
+            <summary>Checks whether the current BoundingBox intersects a Ray. Reference page contains links to related code samples.</summary>
+            <param name="ray">The Ray to check for intersection with.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.Ray@,System.Nullable{System.Single}@)">
+            <summary>Checks whether the current BoundingBox intersects a Ray. Reference page contains links to related code samples.</summary>
+            <param name="ray">The Ray to check for intersection with.</param>
+            <param name="result">[OutAttribute] Distance at which the ray intersects the BoundingBox, or null if there is no intersection.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingSphere)">
+            <summary>Checks whether the current BoundingBox intersects a BoundingSphere. Reference page contains links to related code samples.</summary>
+            <param name="sphere">The BoundingSphere to check for intersection with.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Intersects(SFML.Graphics.BoundingSphere@,System.Boolean@)">
+            <summary>Checks whether the current BoundingBox intersects a BoundingSphere. Reference page contains links to related code samples.</summary>
+            <param name="sphere">The BoundingSphere to check for intersection with.</param>
+            <param name="result">[OutAttribute] true if the BoundingBox and BoundingSphere intersect; false otherwise.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingBox)">
+            <summary>Tests whether the BoundingBox contains another BoundingBox.</summary>
+            <param name="box">The BoundingBox to test for overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingBox@,SFML.Graphics.ContainmentType@)">
+            <summary>Tests whether the BoundingBox contains a BoundingBox.</summary>
+            <param name="box">The BoundingBox to test for overlap.</param>
+            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingFrustum)">
+            <summary>Tests whether the BoundingBox contains a BoundingFrustum.</summary>
+            <param name="frustum">The BoundingFrustum to test for overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.Vector3)">
+            <summary>Tests whether the BoundingBox contains a point.</summary>
+            <param name="point">The point to test for overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.Vector3@,SFML.Graphics.ContainmentType@)">
+            <summary>Tests whether the BoundingBox contains a point.</summary>
+            <param name="point">The point to test for overlap.</param>
+            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingSphere)">
+            <summary>Tests whether the BoundingBox contains a BoundingSphere.</summary>
+            <param name="sphere">The BoundingSphere to test for overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.Contains(SFML.Graphics.BoundingSphere@,SFML.Graphics.ContainmentType@)">
+            <summary>Tests whether the BoundingBox contains a BoundingSphere.</summary>
+            <param name="sphere">The BoundingSphere to test for overlap.</param>
+            <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.op_Equality(SFML.Graphics.BoundingBox,SFML.Graphics.BoundingBox)">
+            <summary>Determines whether two instances of BoundingBox are equal.</summary>
+            <param name="a">BoundingBox to compare.</param>
+            <param name="b">BoundingBox to compare.</param>
+        </member>
+        <member name="M:SFML.Graphics.BoundingBox.op_Inequality(SFML.Graphics.BoundingBox,SFML.Graphics.BoundingBox)">
+            <summary>Determines whether two instances of BoundingBox are not equal.</summary>
+            <param name="a">The object to the left of the inequality operator.</param>
+            <param name="b">The object to the right of the inequality operator.</param>
+        </member>
+        <member name="T:SFML.Graphics.Point">
+            <summary>Defines a point in 2D space.</summary>
+        </member>
+        <member name="F:SFML.Graphics.Point.X">
+            <summary>Specifies the x-coordinate of the Point.</summary>
+        </member>
+        <member name="F:SFML.Graphics.Point.Y">
+            <summary>Specifies the y-coordinate of the Point.</summary>
+        </member>
+        <member name="M:SFML.Graphics.Point.#ctor(System.Int32,System.Int32)">
+            <summary>Initializes a new instance of Point.</summary>
+            <param name="x">The x-coordinate of the Point.</param>
+            <param name="y">The y-coordinate of the Point.</param>
+        </member>
+        <member name="M:SFML.Graphics.Point.Equals(SFML.Graphics.Point)">
+            <summary>Determines whether two Point instances are equal.</summary>
+            <param name="other">The Point to compare this instance to.</param>
+        </member>
+        <member name="M:SFML.Graphics.Point.Equals(System.Object)">
+            <summary>Determines whether two Point instances are equal.</summary>
+            <param name="obj">The object to compare this instance to.</param>
+        </member>
+        <member name="M:SFML.Graphics.Point.GetHashCode">
+            <summary>Gets the hash code for this object.</summary>
+        </member>
+        <member name="M:SFML.Graphics.Point.ToString">
+            <summary>Returns a String that represents the current Point.</summary>
+        </member>
+        <member name="M:SFML.Graphics.Point.op_Equality(SFML.Graphics.Point,SFML.Graphics.Point)">
+            <summary>Determines whether two Point instances are equal.</summary>
+            <param name="a">Point on the left side of the equal sign.</param>
+            <param name="b">Point on the right side of the equal sign.</param>
+        </member>
+        <member name="M:SFML.Graphics.Point.op_Inequality(SFML.Graphics.Point,SFML.Graphics.Point)">
+            <summary>Determines whether two Point instances are not equal.</summary>
+            <param name="a">The Point on the left side of the equal sign.</param>
+            <param name="b">The Point on the right side of the equal sign.</param>
+        </member>
+        <member name="P:SFML.Graphics.Point.Zero">
+            <summary>Returns the point (0,0).</summary>
+        </member>
+        <member name="T:SFML.Graphics.Design.BoundingSphereConverter">
+            <summary>Provides a unified way of converting BoundingSphere values to other types, as well as for accessing standard values and subproperties.</summary>
+        </member>
+        <member name="M:SFML.Graphics.Design.BoundingSphereConverter.#ctor">
+            <summary>Initializes a new instance of the BoundingSphereConverter class.</summary>
+        </member>
+        <member name="M:SFML.Graphics.Design.BoundingSphereConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>Converts the given object to the type of this converter, using the specified context and culture information.</summary>
+            <param name="context">The format context.</param>
+            <param name="culture">The current culture.</param>
+            <param name="value">The object to convert.</param>
+        </member>
+        <member name="M:SFML.Graphics.Design.BoundingSphereConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>
+            <param name="context">The format context.</param>
+            <param name="culture">The culture to use in the conversion.</param>
+            <param name="value">The object to convert.</param>
+            <param name="destinationType">The destination type.</param>
+        </member>
+        <member name="M:SFML.Graphics.Design.BoundingSphereConverter.CreateInstance(System.ComponentModel.ITypeDescriptorContext,System.Collections.IDictionary)">
+            <summary>Creates an instance of the type that this BoundingSphereConverter is associated with, using the specified context, given a set of property values for the object.</summary>
+            <param name="context">The format context.</param>
+            <param name="propertyValues">The new property values.</param>
         </member>
     </members>
 </doc>
