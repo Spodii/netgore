@@ -4,12 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace DemoGame.SkeletonEditor
 {
@@ -43,7 +42,7 @@ namespace DemoGame.SkeletonEditor
         Skeleton _skeleton;
         SkeletonAnimation _skeletonAnim;
         SkeletonDrawer _skeletonDrawer;
-        SpriteFont _spriteFont;
+        Font _font;
         KeyEventArgs ks = new KeyEventArgs(Keys.None);
 
         /// <summary>
@@ -683,10 +682,10 @@ namespace DemoGame.SkeletonEditor
             {
                 string cursorPosText = _cursorPos.Round().ToString();
                 var screenSize = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
-                var strSize = _spriteFont.MeasureString(cursorPosText);
+                var strSize = _font.MeasureString(cursorPosText);
                 var fontColor = Color.White;
                 var borderColor = Color.Black;
-                sb.DrawStringShaded(_spriteFont, cursorPosText, screenSize - strSize - new Vector2(3), fontColor, borderColor);
+                sb.DrawStringShaded(_font, cursorPosText, screenSize - strSize - new Vector2(3), fontColor, borderColor);
             }
             finally
             {
@@ -1048,10 +1047,10 @@ namespace DemoGame.SkeletonEditor
             base.OnLoad(e);
 
             // Create the engine objects
-            _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
+            _drawingManager = new DrawingManager(GameScreen.RenderWindow);
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height)) { KeepInMap = false };
-            _content = new XnaContentManager(GameScreen.Services, "Content");
-            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"), ContentLevel.GameScreen);
+            _content = new ContentManager();
+            _font = _content.LoadFont("Font/Arial", 14, ContentLevel.GameScreen);
             GrhInfo.Load(ContentPaths.Dev, _content);
 
             // Create the skeleton-related objects
