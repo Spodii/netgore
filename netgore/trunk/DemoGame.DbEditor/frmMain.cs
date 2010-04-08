@@ -8,7 +8,6 @@ using DemoGame.DbObjs;
 using DemoGame.EditorTools;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Db;
 using NetGore.Db.MySql;
@@ -828,10 +827,7 @@ namespace DemoGame.DbEditor
             // pretty little pictures. :(
             if (!GrhInfo.IsLoaded)
             {
-                var gdService = GraphicsDeviceService.AddRef(Handle, 640, 480);
-                var serviceContainer = new ServiceContainer();
-                serviceContainer.AddService<IGraphicsDeviceService>(gdService);
-                var cm = new XnaContentManager(serviceContainer, ContentPaths.Build.Root);
+                var cm = new ContentManager();
                 GrhInfo.Load(ContentPaths.Dev, cm);
             }
 
