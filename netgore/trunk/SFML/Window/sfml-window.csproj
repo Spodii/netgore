@@ -89,7 +89,7 @@
     <Compile Include="EventArgs.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="LoadingFailedException.cs" />
-    <Compile Include="ObjectBase.cs" />
+    <Compile Include="NetGore\ObjectBase.cs" />
     <Compile Include="VideoMode.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="WindowSettings.cs" />
