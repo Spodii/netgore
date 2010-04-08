@@ -88,6 +88,10 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
