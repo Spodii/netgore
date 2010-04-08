@@ -9,15 +9,6 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 		<!-- Using Mono -->
 		<When Condition="('$(Configuration)'=='Mono') OR ('$(Configuration)'=='MonoTopDown')" >
 
-			<!-- log4net -->
-			<ItemGroup>
-				<Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=x86">
-					<SpecificVersion>False</SpecificVersion>
-					<HintPath>..\_dependencies\mono\log4net.dll</HintPath>
-					<Private>True</Private>
-				</Reference>
-			</ItemGroup>
-			
 			<!-- MyQL Net Connector -->
 			<ItemGroup>
 				<Reference Include="mysql.data, Version=6.2.2.0, Culture=neutral, processorAchitecture=x86">
@@ -31,15 +22,6 @@ If you are not a NetGore developer, you should not need to ever touch this file.
 
 		<!-- Not using mono. This must be in the Otherwise branch, otherwise some IDE tools may complain (like ReSharper). -->
 		<Otherwise>
-
-			<!-- log4net -->
-			<ItemGroup>
-				<Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-					<SpecificVersion>False</SpecificVersion>
-					<HintPath>..\_dependencies\log4net.dll</HintPath>
-					<Private>True</Private>
-				</Reference>
-			</ItemGroup>
 
 			<!-- MyQL Net Connector -->
 			<ItemGroup>
