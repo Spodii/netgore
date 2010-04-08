@@ -611,8 +611,6 @@ namespace NetGore.Graphics.GUI
         {
             _currentTime = currentTime;
 
-            // TODO: ## _editableTextHandler.Update(currentTime, GUIManager.KeyboardState);
-
             if (_cursorBlinkTimer + (EditableTextHandler.CursorBlinkRate * 2) < currentTime)
                 ResetCursorBlink();
 

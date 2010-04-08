@@ -92,27 +92,27 @@ namespace NetGore.Graphics.GUI
         {
             switch (e.Code)
             {
-                case SFML.Window.KeyCode.Left:
+                case KeyCode.Left:
                     Source.MoveCursor(MoveCursorDirection.Left);
                     break;
 
-                case SFML.Window.KeyCode.Right:
+                case KeyCode.Right:
                     Source.MoveCursor(MoveCursorDirection.Right);
                     break;
 
-                case SFML.Window.KeyCode.Up:
+                case KeyCode.Up:
                     Source.MoveCursor(MoveCursorDirection.Up);
                     break;
 
-                case SFML.Window.KeyCode.Down:
+                case KeyCode.Down:
                     Source.MoveCursor(MoveCursorDirection.Down);
                     break;
 
-                case SFML.Window.KeyCode.Back:
+                case KeyCode.Back:
                     Source.DeleteChar();
                     break;
 
-                case SFML.Window.KeyCode.Return:
+                case KeyCode.Return:
                     Source.BreakLine();
                     break;
             }
@@ -126,39 +126,6 @@ namespace NetGore.Graphics.GUI
 
             Debug.Assert(s.Length == 1);
             Source.InsertChar(s);
-        }
-
-        /// <summary>
-        /// Updates the <see cref="EditableTextHandler"/>.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        /// <param name="ks">The latest keyboard state.</param>
-        public void Update(int currentTime, object ks)
-        {
-            // TODO: ## Input
-            /*
-            _currentTime = currentTime;
-            _ks = ks;
-
-            // Check if our current key was raised
-            if (_currentKey != null)
-            {
-                if (ks.IsKeyUp(_currentKey.Value))
-                {
-                    // Key was raised - set to null
-                    ChangeCurrentKey(null);
-                }
-                else
-                {
-                    // Check to repeat the key
-                    if (_currentTime >= _repeatTime)
-                    {
-                        _repeatTime = _currentTime + KeyboardRepeatRate;
-                        HandleKey(_currentKey.Value, IsShiftDown);
-                    }
-                }
-            }
-            */
         }
     }
 }

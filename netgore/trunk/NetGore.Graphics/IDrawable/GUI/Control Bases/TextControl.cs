@@ -510,52 +510,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Processes the key input on the Control's Text
-        /// </summary>
-        /// <param name="cursorIndex">Cursor index in the Text</param>
-        /// <param name="key">Key to process</param>
-        /// <returns>Amount the cursor needs to be shifted from its original index</returns>
-        [Obsolete]
-        protected int ProcessKeyInput(int cursorIndex, KeyCode key)
-        {
-            // TODO: ##2 Remove
-            if (key == KeyCode.Delete || key == KeyCode.Back)
-            {
-                // Process a deletion or backspace press
-                if (cursorIndex > 0)
-                {
-                    // Delete the previous character
-                    Text = Text.Remove(cursorIndex - 1, 1);
-                    return -1;
-                }
-                else
-                {
-                    // We are at the start of the text - nothing to delete
-                    return 0;
-                }
-            }
-            else
-            {
-                string value = GetKeyString(key, false);
-                if (value != null)
-                {
-                    // A character was found for the given key, so add it into the text
-                    Text = Text.Insert(cursorIndex, value);
-
-                    // Don't handle Enter internally - for any other character, just send the length
-                    // of the character added to the text (which is likely 1)
-                    if (key == KeyCode.Return)
-                        return 0;
-                    else
-                        return value.Length;
-                }
-            }
-
-            // Character couldn't be added
-            return 0;
-        }
-
-        /// <summary>
         /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
         /// base class's method to ensure that changes to settings are hierchical.
         /// </summary>
