@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;

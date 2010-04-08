@@ -63,18 +63,6 @@
     <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="sfmlnet-audio, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-audio.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-graphics.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-window, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-window.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -169,10 +157,6 @@
     <Compile Include="TestDb.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
-      <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
-      <Name>NetGore.Audio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Db.ClassCreator\NetGore.Db.ClassCreator.csproj">
       <Project>{927E889E-AC38-4549-A717-A4FFCA22ADB6}</Project>
       <Name>NetGore.Db.ClassCreator</Name>
@@ -196,10 +180,6 @@
     <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
       <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
       <Name>NetGore.Features</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
-      <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
-      <Name>NetGore.Graphics</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
