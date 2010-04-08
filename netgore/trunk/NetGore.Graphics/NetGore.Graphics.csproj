@@ -255,7 +255,7 @@
     <Compile Include="Sprite\Sprite.cs" />
     <Compile Include="Primitives\XNALine.cs" />
     <Compile Include="Primitives\XNATriangle.cs" />
-    <Compile Include="ContentManager.cs" />
+    <Compile Include="Content\ContentManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">

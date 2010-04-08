@@ -21,8 +21,8 @@ namespace NetGore
         static bool _doNotUnload;
 
         readonly object _assetSync = new object();
-        readonly Dictionary<string, object>[] _loadedAssets;
-        readonly Dictionary<string, object> _trackedLoads = new Dictionary<string, object>(_stringComp);
+        readonly Dictionary<string, IMyLazyAsset>[] _loadedAssets;
+        readonly Dictionary<string, IMyLazyAsset> _trackedLoads = new Dictionary<string, IMyLazyAsset>(_stringComp);
 
         bool _isDisposed = false;
         bool _isTrackingLoads = false;
@@ -37,15 +37,20 @@ namespace NetGore
 
             // Create the dictionaries for each level
             int maxLevel = EnumHelper<ContentLevel>.MaxValue;
-            _loadedAssets = new Dictionary<string, object>[maxLevel + 1];
+            _loadedAssets = new Dictionary<string, IMyLazyAsset>[maxLevel + 1];
 
             for (int i = 0; i < _loadedAssets.Length; i++)
             {
-                _loadedAssets[i] = new Dictionary<string, object>(_stringComp);
+                _loadedAssets[i] = new Dictionary<string, IMyLazyAsset>(_stringComp);
             }
 
             DoNotUploadSetFalse += XnaContentManager_DoNotUploadSetFalse;
         }
+
+        /// <summary>
+        /// Gets the minimum amount of time that an asset must go unused before being unloaded.
+        /// </summary>
+        const int _minElapsedTimeToUnload = 1000 * 60; // 1 minute
 
         /// <summary>
         /// Notifies listeners when <see cref="DoNotUnload"/> is set from true to false.
@@ -89,7 +94,7 @@ namespace NetGore
 
             // Grab from the old dictionary
             var oldDict = _loadedAssets[(int)oldLevel];
-            object asset;
+            IMyLazyAsset asset;
             if (!oldDict.TryGetValue(assetName, out asset))
                 return false;
 
@@ -116,16 +121,15 @@ namespace NetGore
 
         void DoUnload(ContentLevel level)
         {
-            // TODO: ## Content unloading
-            return;
+            int currTime = Environment.TickCount;
 
             lock (_assetSync)
             {
                 // If the queued level is set, and it is a lower level, then use that as the level instead
                 if (_queuedUnloadLevel.HasValue && _queuedUnloadLevel.Value < level)
                     level = _queuedUnloadLevel.Value;
-                
-                 _queuedUnloadLevel = null;
+
+                _queuedUnloadLevel = null;
 
                 // Loop through the given level and all levels below it
                 for (int i = (int)level; i < _loadedAssets.Length; i++)
@@ -133,40 +137,23 @@ namespace NetGore
                     // Get the dictionary for the level
                     var dic = _loadedAssets[i];
 
-                    // Dispose all items, then clear the level
-                    try
+                    // Dispose all items that haven't been used for the needed amount of time
+                    foreach (var asset in dic.Values)
                     {
-                        foreach (var disposable in dic.Values.OfType<IDisposable>())
+                        try
                         {
-                            try
-                            {
-                                // Skip disposed objects
-                                var asObjectBase = disposable as ObjectBase;
-                                if (asObjectBase.IsDisposed())
-                                    continue;
+                            if (currTime - asset.LastUsedTime < _minElapsedTimeToUnload)
+                                continue;
 
-                                disposable.Dispose();
-                            }
-                            catch (ObjectDisposedException)
-                            {
-                                // Ignore errors about disposed objects
-                            }
-                            catch (InvalidOperationException)
-                            {
-                                // InvalidOperationException is common with a disposed object trying to dispose
-                            }
-                            catch (Exception ex)
-                            {
-                                const string errmsg = "Failed to dispose object `{0}`: {1}";
-                                if (log.IsWarnEnabled)
-                                    log.WarnFormat(errmsg, disposable, ex);
-                                Debug.Fail(string.Format(errmsg, disposable, ex));
-                            }
+                            asset.Dispose();
                         }
-                    }
-                    finally
-                    {
-                        dic.Clear();
+                        catch (Exception ex)
+                        {
+                            const string errmsg = "Failed to dispose asset `{0}`: {1}";
+                            if (log.IsWarnEnabled)
+                                log.WarnFormat(errmsg, asset, ex);
+                            Debug.Fail(string.Format(errmsg, asset, ex));
+                        }
                     }
                 }
             }
@@ -211,7 +198,7 @@ namespace NetGore
         /// <param name="asset">When this method returns true, contains the asset instance.</param>
         /// <param name="level">When this method returns true, contains the asset's <see cref="ContentLevel"/>.</param>
         /// <returns>True if the asset is loaded; otherwise false.</returns>
-        protected bool IsAssetLoaded(string assetName, out object asset, out ContentLevel level)
+        bool IsAssetLoaded(string assetName, out IMyLazyAsset asset, out ContentLevel level)
         {
             for (int i = 0; i < _loadedAssets.Length; i++)
             {
@@ -234,7 +221,7 @@ namespace NetGore
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <param name="loader">The loader.</param>
         /// <returns>The loaded asset.</returns>
-        protected object Load(string assetName, ContentLevel level, Func<string, object> loader)
+        IMyLazyAsset Load(string assetName, ContentLevel level, Func<string, IMyLazyAsset> loader)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(ToString());
@@ -249,7 +236,7 @@ namespace NetGore
             lock (_assetSync)
             {
                 // Check if the asset is already loaded
-                object existingAsset;
+                IMyLazyAsset existingAsset;
                 ContentLevel existingLevel;
                 if (IsAssetLoaded(assetName, out existingAsset, out existingLevel))
                 {
@@ -282,7 +269,8 @@ namespace NetGore
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
-            var ret = new Font(GetAssetPath(assetName), (uint)fontSize);
+            var ret = new MyLazyFont(GetAssetPath(assetName), (uint)fontSize);
+
             return ret;
         }
 
@@ -299,8 +287,8 @@ namespace NetGore
             if (string.IsNullOrEmpty(assetName))
                 throw new ArgumentNullException("assetName");
 
-            var ret = new Image(GetAssetPath(assetName)) { Smooth = false };
-            ret.CreateMaskFromColor(Color.Magenta);
+            var path = GetAssetPath(assetName);
+            var ret = new MyLazyImage(path);
 
             return ret;
         }
@@ -384,7 +372,7 @@ namespace NetGore
 
             _isTrackingLoads = false;
 
-            var ret = _trackedLoads.ToArray();
+            var ret = _trackedLoads.Select(x => new KeyValuePair<string, object>(x.Key, x.Value)).ToArray();
             _trackedLoads.Clear();
 
             return ret;
@@ -401,7 +389,7 @@ namespace NetGore
         {
             assetName += "|" + fontSize;
 
-            var ret = Load(assetName, level, x => ReadAssetFont(x, fontSize));
+            var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetFont(x, fontSize));
             if (!(ret is Font))
                 throw InvalidTypeException(ret, typeof(Font));
 
@@ -416,7 +404,7 @@ namespace NetGore
         /// <returns>The loaded asset.</returns>
         public Image LoadImage(string assetName, ContentLevel level)
         {
-            var ret = Load(assetName, level, ReadAssetImage);
+            var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetImage(x));
             if (!(ret is Image))
                 throw InvalidTypeException(ret, typeof(Image));
 
@@ -432,7 +420,7 @@ namespace NetGore
         {
             lock (_assetSync)
             {
-                object asset;
+                IMyLazyAsset asset;
                 ContentLevel currLevel;
                 if (!IsAssetLoaded(assetName, out asset, out currLevel))
                     return;
@@ -453,7 +441,7 @@ namespace NetGore
         {
             lock (_assetSync)
             {
-                object asset;
+                IMyLazyAsset asset;
                 ContentLevel currLevel;
                 if (!IsAssetLoaded(assetName, out asset, out currLevel))
                     return;
@@ -474,7 +462,7 @@ namespace NetGore
         {
             lock (_assetSync)
             {
-                object asset;
+                IMyLazyAsset asset;
                 ContentLevel currLevel;
                 if (!IsAssetLoaded(assetName, out asset, out currLevel))
                     return;
@@ -497,7 +485,7 @@ namespace NetGore
         {
             lock (_assetSync)
             {
-                object o;
+                IMyLazyAsset o;
                 return IsAssetLoaded(assetName, out o, out level);
             }
         }
@@ -527,5 +515,101 @@ namespace NetGore
         }
 
         #endregion
+
+        /// <summary>
+        /// Interface for the lazy assets of the <see cref="ContentManager"/>.
+        /// </summary>
+        interface IMyLazyAsset : IDisposable
+        {
+            /// <summary>
+            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// </summary>
+            int LastUsedTime {get;}
+        }
+
+        /// <summary>
+        /// <see cref="LazyFont"/> implementation specifically for the <see cref="ContentManager"/>.
+        /// </summary>
+        sealed class MyLazyFont : LazyFont, IMyLazyAsset
+        {
+            int _lastUsed;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="T:SFML.Graphics.LazyFont"/> class.
+            /// </summary>
+            /// <param name="filename">Font file to load</param><param name="charSize">Character size</param><exception cref="T:SFML.LoadingFailedException"/>
+            public MyLazyFont(string filename, uint charSize) : base(filename, charSize)
+            {
+                _lastUsed = Environment.TickCount;
+            }
+
+            /// <summary>
+            /// Access to the internal pointer of the object.
+            /// For internal use only
+            /// </summary>
+            public override IntPtr This
+            {
+                get
+                {
+                    _lastUsed = Environment.TickCount;
+                    return base.This;
+                }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// </summary>
+            public int LastUsedTime
+            {
+                get { return _lastUsed; }
+            }
+        }
+
+        /// <summary>
+        /// <see cref="LazyImage"/> implementation specifically for the <see cref="ContentManager"/>.
+        /// </summary>
+        sealed class MyLazyImage : LazyImage, IMyLazyAsset
+        {
+            int _lastUsed;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="T:SFML.Graphics.LazyImage"/> class.
+            /// </summary>
+            /// <param name="filename">The file name.</param>
+            public MyLazyImage(string filename) : base(filename)
+            {
+                _lastUsed = Environment.TickCount;
+            }
+
+            /// <summary>
+            /// Access to the internal pointer of the object.
+            /// For internal use only
+            /// </summary>
+            public override IntPtr This
+            {
+                get
+                {
+                    _lastUsed = Environment.TickCount;
+                    return base.This;
+                }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, handles when the <see cref="T:SFML.Graphics.LazyImage"/> is reloaded.
+            /// </summary>
+            protected override void OnReload()
+            {
+                Smooth = false;
+                CreateMaskFromColor(Color.Magenta);
+            }
+
+            /// <summary>
+            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// </summary>
+            public int LastUsedTime
+            {
+                get { return _lastUsed; }
+            }
+        }
     }
 }
