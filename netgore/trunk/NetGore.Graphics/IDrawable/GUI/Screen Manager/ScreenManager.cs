@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.Audio;
+using NetGore.Content;
 using SFML.Graphics;
 using SFML.Window;
 
