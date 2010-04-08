@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Content
 {
     /// <summary>
     /// Represents the level of a content object. Lower content levels are unloaded less frequently.

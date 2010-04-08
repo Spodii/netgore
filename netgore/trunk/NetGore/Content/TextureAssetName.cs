@@ -1,8 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using NetGore.IO;
 
-namespace NetGore.IO
+namespace NetGore.Content
 {
     /// <summary>
     /// An immutable string that represents the name, or virtual path, to a texture content asset.

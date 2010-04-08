@@ -3,8 +3,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NetGore.IO;
 
-namespace NetGore.IO
+namespace NetGore.Content
 {
     /// <summary>
     /// An immutable string that represents the name, or virtual path, to a content asset.
