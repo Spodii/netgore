@@ -5,7 +5,6 @@ using SFML.Window;
 
 namespace NetGore.Graphics.GUI
 {
-    // TODO: ##2 Improve the way the border is chosen
     /// <summary>
     /// A standard static button control.
     /// </summary>
@@ -16,9 +15,6 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const string _controlSkinName = "Button";
 
-        ControlBorder _borderOver = null;
-        ControlBorder _borderPressed = null;
-        ControlBorder _currentBorder;
         Vector2 _textPos = Vector2.Zero;
         Vector2 _textSize = Vector2.Zero;
 
@@ -45,22 +41,19 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets the ControlBorder used for when the button is in a normal state.
+        /// </summary>
+        public ControlBorder BorderNormal { get; set; }
+
+        /// <summary>
         /// Gets or sets the ControlBorder used for when the mouse is over the control.
         /// </summary>
-        public ControlBorder BorderOver
-        {
-            get { return _borderOver; }
-            set { _borderOver = value; }
-        }
+        public ControlBorder BorderOver { get; set; }
 
         /// <summary>
         /// Gets or sets the ControlBorder used for when the control is pressed.
         /// </summary>
-        public ControlBorder BorderPressed
-        {
-            get { return _borderPressed; }
-            set { _borderPressed = value; }
-        }
+        public ControlBorder BorderPressed { get; set; }
 
         /// <summary>
         /// Draw the Button.
@@ -68,13 +61,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
         protected override void DrawControl(ISpriteBatch spriteBatch)
         {
-            // Find the border, and try using the default if null in case one of the
-            // mouse over or pressed borders were not set
-            ControlBorder border = _currentBorder ?? Border;
-
-            // Draw the border
-            if (border != null)
-                border.Draw(spriteBatch, this);
+            base.DrawControl(spriteBatch);
 
             // Draw the text
             DrawText(spriteBatch, _textPos);
@@ -87,21 +74,11 @@ namespace NetGore.Graphics.GUI
         /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
         public override void LoadSkin(ISkinManager skinManager)
         {
-            Border = skinManager.GetBorder(_controlSkinName);
+            BorderNormal = skinManager.GetBorder(_controlSkinName);
             BorderOver = skinManager.GetBorder(_controlSkinName, "MouseOver");
             BorderPressed = skinManager.GetBorder(_controlSkinName, "Pressed");
-        }
 
-        /// <summary>
-        /// Handles when the <see cref="Control.Border"/> has changed.
-        /// This is called immediately before <see cref="Control.BorderChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
-        /// </summary>
-        protected override void OnBorderChanged()
-        {
-            base.OnBorderChanged();
-
-            UpdateTextPosition();
+            Border = BorderNormal;
         }
 
         /// <summary>
@@ -117,18 +94,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when the <see cref="Control"/> has lost focus.
-        /// This is called immediately before <see cref="Control.OnLostFocus"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.LostFocus"/> when possible.
-        /// </summary>
-        protected override void OnLostFocus()
-        {
-            base.OnLostFocus();
-
-            _currentBorder = Border;
-        }
-
-        /// <summary>
         /// Handles when a mouse button has been pressed down on this <see cref="Control"/>.
         /// This is called immediately before <see cref="Control.OnMouseDown"/>.
         /// Override this method instead of using an event hook on <see cref="Control.MouseDown"/> when possible.
@@ -138,8 +103,31 @@ namespace NetGore.Graphics.GUI
         {
             base.OnMouseDown(e);
 
-            if (e.Button == MouseButton.Left)
-                _currentBorder = _borderPressed;
+            if (GUIManager.UnderCursor != this)
+                Border = BorderNormal;
+            else
+            {
+                if (e.Button == MouseButton.Left)
+                    Border = BorderPressed;
+                else
+                    Border = BorderOver;
+            }
+        }
+
+        /// <summary>
+        /// Handles when the mouse has entered the area of the <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.MouseEnter"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnMouseEnter(MouseMoveEventArgs e)
+        {
+            base.OnMouseEnter(e);
+
+            if (GUIManager.UnderCursor == this)
+                Border = BorderOver;
+            else
+                Border = BorderNormal;
         }
 
         /// <summary>
@@ -152,7 +140,7 @@ namespace NetGore.Graphics.GUI
         {
             base.OnMouseLeave(e);
 
-            _currentBorder = Border;
+            Border = BorderNormal;
         }
 
         /// <summary>
@@ -165,8 +153,15 @@ namespace NetGore.Graphics.GUI
         {
             base.OnMouseMoved(e);
 
-            if (GUIManager.IsMouseButtonDown(MouseButton.Left) && _currentBorder == _borderOver)
-                _currentBorder = _borderPressed;
+            if (GUIManager.UnderCursor != this)
+                Border = BorderNormal;
+            else
+            {
+                if (GUIManager.IsMouseButtonDown(MouseButton.Left))
+                    Border = BorderPressed;
+                else
+                    Border = BorderOver;
+            }
         }
 
         /// <summary>
@@ -179,8 +174,10 @@ namespace NetGore.Graphics.GUI
         {
             base.OnMouseUp(e);
 
-            if (e.Button == MouseButton.Left)
-                _currentBorder = _borderOver;
+            if (GUIManager.UnderCursor == this)
+                Border = BorderOver;
+            else
+                Border = BorderNormal;
         }
 
         /// <summary>
@@ -217,7 +214,7 @@ namespace NetGore.Graphics.GUI
 
             CanDrag = false;
             CanFocus = false;
-            _currentBorder = Border;
+            Border = BorderNormal;
         }
 
         /// <summary>
@@ -226,11 +223,7 @@ namespace NetGore.Graphics.GUI
         void UpdateTextPosition()
         {
             // Center the text on the control
-            _textPos = Size / 2 - _textSize / 2;
-
-            // Make sure we have rounded values or else things get icky
-            _textPos.X = (float)Math.Round(_textPos.X);
-            _textPos.Y = (float)Math.Round(_textPos.Y);
+            _textPos = ((Size / 2f) - (_textSize / 2f)).Round();
         }
 
         /// <summary>
