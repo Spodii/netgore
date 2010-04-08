@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
+using SFML.Graphics;
 
 namespace DemoGame.SkeletonEditor
 {
