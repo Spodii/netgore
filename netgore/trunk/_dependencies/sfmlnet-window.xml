@@ -33,32 +33,6 @@
         <member name="F:SFML.Window.WindowSettings.AntialiasingLevel">
             <summary>Antialiasing level (0 is disabled)</summary>
         </member>
-        <member name="T:SFML.Window.Styles">
-            <summary>
-            Enumeration of window creation styles
-            </summary>
-        </member>
-        <member name="F:SFML.Window.Styles.None">
-            <summary>No border / title bar (this flag and all others are mutually exclusive)</summary>
-        </member>
-        <member name="F:SFML.Window.Styles.Titlebar">
-            <summary>Title bar + fixed border</summary>
-        </member>
-        <member name="F:SFML.Window.Styles.Resize">
-            <summary>Titlebar + resizable border + maximize button</summary>
-        </member>
-        <member name="F:SFML.Window.Styles.Close">
-            <summary>Titlebar + close button</summary>
-        </member>
-        <member name="F:SFML.Window.Styles.Fullscreen">
-            <summary>Fullscreen mode (this flag and all others are mutually exclusive))</summary>
-        </member>
-        <member name="T:SFML.Window.Window">
-            <summary>
-            Window is a rendering window ; it can create a new window
-            or connect to an existing one
-            </summary>
-        </member>
         <member name="T:SFML.ObjectBase">
             <summary>
             The ObjectBase class is an abstract base for every
@@ -103,6 +77,38 @@
             <summary>
             Access to the internal pointer of the object.
             For internal use only
+            </summary>
+        </member>
+        <member name="P:SFML.ObjectBase.ThisRaw">
+            <summary>
+            Access to the internal pointer of the object. Returns the pointer, never anything more. Cannot override.
+            For internal use only
+            </summary>
+        </member>
+        <member name="T:SFML.Window.Styles">
+            <summary>
+            Enumeration of window creation styles
+            </summary>
+        </member>
+        <member name="F:SFML.Window.Styles.None">
+            <summary>No border / title bar (this flag and all others are mutually exclusive)</summary>
+        </member>
+        <member name="F:SFML.Window.Styles.Titlebar">
+            <summary>Title bar + fixed border</summary>
+        </member>
+        <member name="F:SFML.Window.Styles.Resize">
+            <summary>Titlebar + resizable border + maximize button</summary>
+        </member>
+        <member name="F:SFML.Window.Styles.Close">
+            <summary>Titlebar + close button</summary>
+        </member>
+        <member name="F:SFML.Window.Styles.Fullscreen">
+            <summary>Fullscreen mode (this flag and all others are mutually exclusive))</summary>
+        </member>
+        <member name="T:SFML.Window.Window">
+            <summary>
+            Window is a rendering window ; it can create a new window
+            or connect to an existing one
             </summary>
         </member>
         <member name="M:SFML.Window.Window.#ctor(SFML.Window.VideoMode,System.String)">

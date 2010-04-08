@@ -38,9 +38,18 @@ namespace SFML
         /// For internal use only
         /// </summary>
         ////////////////////////////////////////////////////////////
-        public IntPtr This
+        public virtual IntPtr This
         {
             get {return myThis;}
+        }
+
+        /// <summary>
+        /// Access to the internal pointer of the object. Returns the pointer, never anything more. Cannot override.
+        /// For internal use only
+        /// </summary>
+        protected IntPtr ThisRaw
+        {
+            get { return myThis; }
         }
 
         ////////////////////////////////////////////////////////////
@@ -48,7 +57,7 @@ namespace SFML
         /// Explicitely dispose the object
         /// </summary>
         ////////////////////////////////////////////////////////////
-        public void Dispose()
+        public virtual void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -60,7 +69,7 @@ namespace SFML
         /// </summary>
         /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
         ////////////////////////////////////////////////////////////
-        private void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (myThis != IntPtr.Zero)
             {

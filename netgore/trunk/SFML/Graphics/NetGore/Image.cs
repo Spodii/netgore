@@ -72,6 +72,24 @@ namespace SFML
                     throw new LoadingFailedException("image", filename);
            }
 
+            /// <summary>
+            /// Reloads the asset from file if it is not loaded.
+            /// </summary>
+            /// <param name="filename">Path of the image file to load</param>
+            /// <returns>True if already loaded; false if it had to load.</returns>
+            protected internal bool EnsureLoaded(string filename)
+            {
+                if (ThisRaw != IntPtr.Zero)
+                    return true;
+
+                SetThis(sfImage_CreateFromFile(filename));
+
+                if (ThisRaw == IntPtr.Zero)
+                    throw new LoadingFailedException("image", filename);
+
+                return false;
+            }
+
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Construct the image from a file in a stream

@@ -16,6 +16,13 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public class Font : ObjectBase
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Image"/> class.
+            /// </summary>
+            protected internal Font() : base(IntPtr.Zero)
+            {
+            }
+
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Construct the font from a file
@@ -37,7 +44,7 @@ namespace SFML
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
             public Font(string filename, uint charSize) :
-                this(filename, charSize, "")
+                this(filename, charSize, string.Empty)
             {
             }
 
@@ -53,6 +60,22 @@ namespace SFML
             public Font(string filename, uint charSize, string charset) :
                 base(IntPtr.Zero)
             {
+                EnsureLoaded(filename, charSize, charset);
+            }
+
+            /// <summary>
+            /// Reloads the asset from file if it is not loaded.
+            /// </summary>
+            /// <param name="filename">Font file to load</param>
+            /// <param name="charSize">Character size</param>
+            /// <param name="charset">Set of characters to generate</param>
+            /// <returns>True if already loaded; false if it had to reload.</returns>
+            /// <exception cref="LoadingFailedException"/>
+            protected internal bool EnsureLoaded(string filename, uint charSize, string charset)
+            {
+                if (ThisRaw != IntPtr.Zero)
+                    return true;
+
                 unsafe
                 {
                     IntPtr ptr;
@@ -65,8 +88,10 @@ namespace SFML
                     SetThis(sfFont_CreateFromFile(filename, charSize, ptr));
                 }
 
-                if (This == IntPtr.Zero)
+                if (ThisRaw == IntPtr.Zero)
                     throw new LoadingFailedException("font", filename);
+
+                return false;
             }
 
             ////////////////////////////////////////////////////////////
