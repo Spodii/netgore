@@ -1,12 +1,13 @@
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
-using Microsoft.Xna.Framework;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using Color=Microsoft.Xna.Framework.Graphics.Color;
+using SFML;
+using SFML.Graphics;
+using Color=SFML.Graphics.Color;
+using Image=System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -92,7 +93,12 @@ namespace DemoGame.MapEditor
             {
                 grh.Draw(spriteBatch, drawPos, _drawPreviewColor);
             }
-            catch (Exception)
+            catch (ObjectDisposedException)
+            {
+            }
+            catch (InvalidOperationException)
+            { }
+            catch (LoadingFailedException)
             {
             }
         }

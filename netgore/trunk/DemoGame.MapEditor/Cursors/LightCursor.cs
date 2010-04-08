@@ -1,12 +1,12 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using Color=Microsoft.Xna.Framework.Graphics.Color;
+using SFML.Graphics;
+using Color=SFML.Graphics.Color;
+using Image=System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -19,7 +19,7 @@ namespace DemoGame.MapEditor
         Vector2 _toolTipPos;
 
         /// <summary>
-        /// Gets the cursor's <see cref="Image"/>.
+        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
         /// </summary>
         public override Image CursorImage
         {
@@ -55,7 +55,7 @@ namespace DemoGame.MapEditor
 
             // Draw the tooltip
             if (_toolTipObj != null && !string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(Container.RenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace DemoGame.MapEditor
                 return;
 
             _toolTip = string.Format("{0}\n{1} ({2}x{3})", light, light.Position, light.Size.X, light.Size.Y);
-            _toolTipPos = EntityCursor.GetToolTipPos(Container.SpriteFont, _toolTip, light);
+            _toolTipPos = EntityCursor.GetToolTipPos(Container.RenderFont, _toolTip, light);
             _toolTipPos.X = light.Position.X + 5;
         }
     }

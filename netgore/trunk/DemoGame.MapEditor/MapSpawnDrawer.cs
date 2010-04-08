@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Server;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
+using SFML.Graphics;
 
 namespace DemoGame.MapEditor
 {

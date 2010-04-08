@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text;
 using SFML.Graphics;
@@ -83,16 +84,28 @@ namespace NetGore.Graphics
         /// and a global transform matrix.
         /// </summary>
         /// <param name="blendMode">Blending options to use when rendering.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the world.</param>
-        public virtual void Begin(BlendMode blendMode, ICamera2D camera)
+        /// <param name="halfSize">The half-size of the view area.</param>
+        /// <param name="center">The position of the center of the view.</param>
+        public void Begin(BlendMode blendMode, Vector2 halfSize, Vector2 center)
         {
-            var v = camera.Size / 2f;
-            _rw.CurrentView.HalfSize = v;
-            _rw.CurrentView.Center = v + camera.Min;
+            _rw.CurrentView.HalfSize = halfSize;
+            _rw.CurrentView.Center = center;
 
             _sprite.BlendMode = blendMode;
 
             ContentManager.DoNotUnload = true;
+        }
+
+        /// <summary>
+        /// Prepares the graphics device for drawing sprites with specified blending, sorting, and render state options,
+        /// and a global transform matrix.
+        /// </summary>
+        /// <param name="blendMode">Blending options to use when rendering.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the world.</param>
+        public virtual void Begin(BlendMode blendMode, ICamera2D camera)
+        {
+            var v = camera.Size / 2f;
+            Begin(blendMode, v, v + camera.Min);
         }
 
         /// <summary>

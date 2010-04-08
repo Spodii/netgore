@@ -30,6 +30,15 @@ namespace NetGore.Graphics
         /// and a global transform matrix.
         /// </summary>
         /// <param name="blendMode">Blending options to use when rendering.</param>
+        /// <param name="halfSize">The half-size of the view area.</param>
+        /// <param name="center">The position of the center of the view.</param>
+        void Begin(BlendMode blendMode, Vector2 halfSize, Vector2 center);
+
+        /// <summary>
+        /// Prepares the graphics device for drawing sprites with specified blending, sorting, and render state options,
+        /// and a global transform matrix.
+        /// </summary>
+        /// <param name="blendMode">Blending options to use when rendering.</param>
         /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the world.</param>
         void Begin(BlendMode blendMode, ICamera2D camera);
 
