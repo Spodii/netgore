@@ -2,13 +2,12 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace DemoGame.ParticleEffectEditor
 {
@@ -58,9 +57,9 @@ namespace DemoGame.ParticleEffectEditor
             }
         }
 
-        GraphicsDevice GraphicsDevice
+        RenderWindow RenderWindow
         {
-            get { return GameScreen.GraphicsDevice; }
+            get { return GameScreen.RenderWindow; }
         }
 
         /// <summary>
@@ -131,8 +130,8 @@ namespace DemoGame.ParticleEffectEditor
                 _renderer = new SpriteBatchParticleRenderer { SpriteBatch = spriteBatch };
 
             // Clear the background
-            GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, Matrix.Identity);
+            RenderWindow.Clear(Color.Black);
+            spriteBatch.Begin();
             _renderer.Draw(_camera, new ParticleEmitter[] { Emitter });
             spriteBatch.End();
         }
@@ -169,7 +168,7 @@ namespace DemoGame.ParticleEffectEditor
             GameScreen.ScreenForm = this;
 
             // Load the content
-            _content = new XnaContentManager(GameScreen.Services, ContentPaths.Build.Root);
+            _content = new ContentManager();
             GrhInfo.Load(ContentPaths.Build, _content);
 
             // Load the additional UI editors for the property grid

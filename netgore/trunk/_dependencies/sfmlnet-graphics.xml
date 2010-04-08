@@ -566,6 +566,100 @@
             <param name="lhs">The object to the left of the inequality operator.</param>
             <param name="rhs">The object to the right of the inequality operator.</param>
         </member>
+        <member name="M:SFML.Graphics.Design.MemberPropertyDescriptor.#ctor(System.Reflection.MemberInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SFML.Graphics.Design.MemberPropertyDescriptor"/> class.
+            </summary>
+            <param name="member">The member.</param>
+        </member>
+        <member name="M:SFML.Graphics.Design.MemberPropertyDescriptor.CanResetValue(System.Object)">
+            <summary>
+            When overridden in a derived class, returns whether resetting an object changes its value.
+            </summary>
+            <param name="component">The component to test for reset capability.</param>
+            <returns>
+            true if resetting the component changes its value; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:SFML.Graphics.Design.MemberPropertyDescriptor.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+            	<c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:SFML.Graphics.Design.MemberPropertyDescriptor.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="M:SFML.Graphics.Design.MemberPropertyDescriptor.ResetValue(System.Object)">
+            <summary>
+            When overridden in a derived class, resets the value for this property of the component to the default value.
+            </summary>
+            <param name="component">The component with the property value that is to be reset to the default value.</param>
+        </member>
+        <member name="M:SFML.Graphics.Design.MemberPropertyDescriptor.ShouldSerializeValue(System.Object)">
+            <summary>
+            When overridden in a derived class, determines a value indicating whether the value of this property needs
+            to be persisted.
+            </summary>
+            <param name="component">The component with the property to be examined for persistence.</param>
+            <returns>
+            true if the property should be persisted; otherwise, false.
+            </returns>
+        </member>
+        <member name="P:SFML.Graphics.Design.MemberPropertyDescriptor.ComponentType">
+            <summary>
+            When overridden in a derived class, gets the type of the component this property is bound to.
+            </summary>
+            <value></value>
+            <returns>A <see cref="T:System.Type"/> that represents the type of component this property is bound to.
+            When the <see cref="M:System.ComponentModel.PropertyDescriptor.GetValue(System.Object)"/>
+            or <see cref="M:System.ComponentModel.PropertyDescriptor.SetValue(System.Object,System.Object)"/>
+            methods are invoked, the object specified might be an instance of this type.</returns>
+        </member>
+        <member name="P:SFML.Graphics.Design.MemberPropertyDescriptor.IsReadOnly">
+            <summary>
+            When overridden in a derived class, gets a value indicating whether this property is read-only.
+            </summary>
+            <value></value>
+            <returns>true if the property is read-only; otherwise, false.</returns>
+        </member>
+        <member name="M:SFML.Graphics.Design.FieldPropertyDescriptor.#ctor(System.Reflection.FieldInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SFML.Graphics.Design.FieldPropertyDescriptor"/> class.
+            </summary>
+            <param name="field">The field.</param>
+        </member>
+        <member name="M:SFML.Graphics.Design.FieldPropertyDescriptor.GetValue(System.Object)">
+            <summary>
+            When overridden in a derived class, gets the current value of the property on a component.
+            </summary>
+            <param name="component">The component with the property for which to retrieve the value.</param>
+            <returns>
+            The value of a property for a given component.
+            </returns>
+        </member>
+        <member name="M:SFML.Graphics.Design.FieldPropertyDescriptor.SetValue(System.Object,System.Object)">
+            <summary>
+            When overridden in a derived class, sets the value of the component to a different value.
+            </summary>
+            <param name="component">The component with the property value that is to be set.</param>
+            <param name="value">The new value.</param>
+        </member>
+        <member name="P:SFML.Graphics.Design.FieldPropertyDescriptor.PropertyType">
+            <summary>
+            When overridden in a derived class, gets the type of the property.
+            </summary>
+            <value></value>
+            <returns>A <see cref="T:System.Type"/> that represents the type of the property.</returns>
+        </member>
         <member name="T:SFML.Graphics.Context">
             <summary>
             This class defines
@@ -1423,38 +1517,9 @@
             <param name="rgb">A Color specifying the red, green, and blue components of a color.</param>
             <param name="a">The alpha component of a color, between 0 and 255.</param>
         </member>
-        <member name="F:SFML.Graphics.Color.R">
-            <summary>Red component of the color</summary>
-        </member>
-        <member name="F:SFML.Graphics.Color.G">
-            <summary>Green component of the color</summary>
-        </member>
-        <member name="F:SFML.Graphics.Color.B">
-            <summary>Blue component of the color</summary>
-        </member>
-        <member name="F:SFML.Graphics.Color.A">
-            <summary>Alpha (transparent) component of the color</summary>
-        </member>
-        <member name="M:SFML.Graphics.Color.ToString">
-            <summary>Gets a string representation of this object.</summary>
-        </member>
         <member name="M:SFML.Graphics.Color.Equals(System.Object)">
             <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
             <param name="obj">The Object to compare with the current Color.</param>
-        </member>
-        <member name="M:SFML.Graphics.Color.Equals(SFML.Graphics.Color)">
-            <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
-            <param name="other">The Color to compare with the current Color.</param>
-        </member>
-        <member name="M:SFML.Graphics.Color.op_Equality(SFML.Graphics.Color,SFML.Graphics.Color)">
-            <summary>Compares two objects to determine whether they are the same.</summary>
-            <param name="a">The object to the left of the equality operator.</param>
-            <param name="b">The object to the right of the equality operator.</param>
-        </member>
-        <member name="M:SFML.Graphics.Color.op_Inequality(SFML.Graphics.Color,SFML.Graphics.Color)">
-            <summary>Compares two objects to determine whether they are different.</summary>
-            <param name="a">The object to the left of the equality operator.</param>
-            <param name="b">The object to the right of the equality operator.</param>
         </member>
         <member name="M:SFML.Graphics.Color.GetHashCode">
             <summary>
@@ -1470,11 +1535,34 @@
             <param name="value2">Source Color.</param>
             <param name="amount">A value between 0 and 1.0 indicating the weight of value2.</param>
         </member>
-        <member name="P:SFML.Graphics.Color.TransparentBlack">
-            <summary>Gets a system-defined color with the value R:0 G:0 B:0 A:0.</summary>
+        <member name="M:SFML.Graphics.Color.ToString">
+            <summary>Gets a string representation of this object.</summary>
         </member>
-        <member name="P:SFML.Graphics.Color.TransparentWhite">
-            <summary>Gets a system-defined color with the value R:255 G:255 B:255 A:0.</summary>
+        <member name="M:SFML.Graphics.Color.Equals(SFML.Graphics.Color)">
+            <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
+            <param name="other">The Color to compare with the current Color.</param>
+        </member>
+        <member name="M:SFML.Graphics.Color.op_Equality(SFML.Graphics.Color,SFML.Graphics.Color)">
+            <summary>Compares two objects to determine whether they are the same.</summary>
+            <param name="a">The object to the left of the equality operator.</param>
+            <param name="b">The object to the right of the equality operator.</param>
+        </member>
+        <member name="M:SFML.Graphics.Color.op_Inequality(SFML.Graphics.Color,SFML.Graphics.Color)">
+            <summary>Compares two objects to determine whether they are different.</summary>
+            <param name="a">The object to the left of the equality operator.</param>
+            <param name="b">The object to the right of the equality operator.</param>
+        </member>
+        <member name="P:SFML.Graphics.Color.R">
+            <summary>Red component of the color</summary>
+        </member>
+        <member name="P:SFML.Graphics.Color.G">
+            <summary>Green component of the color</summary>
+        </member>
+        <member name="P:SFML.Graphics.Color.B">
+            <summary>Blue component of the color</summary>
+        </member>
+        <member name="P:SFML.Graphics.Color.A">
+            <summary>Alpha (transparent) component of the color</summary>
         </member>
         <member name="P:SFML.Graphics.Color.AliceBlue">
             <summary>Gets a system-defined color with the value R:240 G:248 B:255 A:255.</summary>
@@ -1677,11 +1765,11 @@
         <member name="P:SFML.Graphics.Color.LightGoldenrodYellow">
             <summary>Gets a system-defined color with the value R:250 G:250 B:210 A:255.</summary>
         </member>
-        <member name="P:SFML.Graphics.Color.LightGreen">
-            <summary>Gets a system-defined color with the value R:144 G:238 B:144 A:255.</summary>
-        </member>
         <member name="P:SFML.Graphics.Color.LightGray">
             <summary>Gets a system-defined color with the value R:211 G:211 B:211 A:255.</summary>
+        </member>
+        <member name="P:SFML.Graphics.Color.LightGreen">
+            <summary>Gets a system-defined color with the value R:144 G:238 B:144 A:255.</summary>
         </member>
         <member name="P:SFML.Graphics.Color.LightPink">
             <summary>Gets a system-defined color with the value R:255 G:182 B:193 A:255.</summary>
@@ -1874,6 +1962,12 @@
         </member>
         <member name="P:SFML.Graphics.Color.Tomato">
             <summary>Gets a system-defined color with the value R:255 G:99 B:71 A:255.</summary>
+        </member>
+        <member name="P:SFML.Graphics.Color.TransparentBlack">
+            <summary>Gets a system-defined color with the value R:0 G:0 B:0 A:0.</summary>
+        </member>
+        <member name="P:SFML.Graphics.Color.TransparentWhite">
+            <summary>Gets a system-defined color with the value R:255 G:255 B:255 A:0.</summary>
         </member>
         <member name="P:SFML.Graphics.Color.Turquoise">
             <summary>Gets a system-defined color with the value R:64 G:224 B:208 A:255.</summary>
@@ -4820,6 +4914,35 @@
             Access to the internal pointer of the object.
             For internal use only
             </summary>
+        </member>
+        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.#ctor(System.Reflection.PropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SFML.Graphics.Design.PropertyPropertyDescriptor"/> class.
+            </summary>
+            <param name="property">The property.</param>
+        </member>
+        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.GetValue(System.Object)">
+            <summary>
+            When overridden in a derived class, gets the current value of the property on a component.
+            </summary>
+            <param name="component">The component with the property for which to retrieve the value.</param>
+            <returns>
+            The value of a property for a given component.
+            </returns>
+        </member>
+        <member name="M:SFML.Graphics.Design.PropertyPropertyDescriptor.SetValue(System.Object,System.Object)">
+            <summary>
+            When overridden in a derived class, sets the value of the component to a different value.
+            </summary>
+            <param name="component">The component with the property value that is to be set.</param>
+            <param name="value">The new value.</param>
+        </member>
+        <member name="P:SFML.Graphics.Design.PropertyPropertyDescriptor.PropertyType">
+            <summary>
+            When overridden in a derived class, gets the type of the property.
+            </summary>
+            <value></value>
+            <returns>A <see cref="T:System.Type"/> that represents the type of the property.</returns>
         </member>
         <member name="T:SFML.Graphics.BoundingFrustum">
             <summary>Defines a frustum and helps determine whether forms intersect with it.</summary>
