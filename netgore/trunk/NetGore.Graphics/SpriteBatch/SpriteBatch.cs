@@ -86,7 +86,7 @@ namespace NetGore.Graphics
         /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the world.</param>
         public virtual void Begin(BlendMode blendMode, ICamera2D camera)
         {
-            var v = new Vector2(_rw.Width, _rw.Height) / 2f;
+            var v = camera.Size / 2f;
             _rw.CurrentView.HalfSize = v;
             _rw.CurrentView.Center = v + camera.Min;
 
