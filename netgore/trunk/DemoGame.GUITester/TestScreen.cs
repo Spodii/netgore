@@ -52,7 +52,6 @@ namespace DemoGame.GUITester
             base.Initialize();
 
             topForm = new Form(GUIManager, new Vector2(5, 5), new Vector2(700, 550)) { Text = "Primary form" };
-            topForm.MouseMoved += topForm_MouseMoved;
 
             TextBox tb = new TextBox(topForm, new Vector2(10, 10), new Vector2(150, 300));
 
@@ -162,16 +161,6 @@ namespace DemoGame.GUITester
 
             Color c = new Color(r, g, b, 255);
             return new StyledText[] { new StyledText("Text for a "), new StyledText("label", c) };
-        }
-
-        void topForm_MouseMoved(object sender, MouseMoveEventArgs e)
-        {
-            Control c = GUIManager.GetControlAtPoint(new Vector2(e.X, e.Y) + topForm.Position);
-
-            if (c == null)
-                return;
-
-            // TODO: ## Window.Title = c.ToString();
         }
     }
 }

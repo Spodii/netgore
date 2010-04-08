@@ -47,7 +47,7 @@ namespace DemoGame.Client
             EngineSettingsInitializer.Initialize();
  
             // Create the screen manager
-            _screenManager = new ScreenManager(this, new SkinManager("Default"), "Content", "Font/Arial", 24);
+            _screenManager = new ScreenManager(this, new SkinManager("Default"), "Font/Arial", 24);
 
             // Read the GrhInfo
             LoadGrhInfo();

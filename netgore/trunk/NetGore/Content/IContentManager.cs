@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.IO;
 using SFML.Graphics;
 
 namespace NetGore
@@ -22,9 +23,10 @@ namespace NetGore
         bool IsTrackingLoads { get; }
 
         /// <summary>
-        /// Gets or sets the root directory.
+        /// Gets or sets absolute path to the root content directory. The default value, which is
+        /// <see cref="ContentPaths.Build"/>'s root, should be fine for most all cases.
         /// </summary>
-        string RootDirectory { get; set; }
+        PathString RootDirectory { get; set; }
 
         /// <summary>
         /// Starts tracking items that are loaded by this <see cref="IContentManager"/>.

@@ -1,12 +1,12 @@
-﻿using System;
+﻿// TODO: [SFML2] Render targets are supported in SFML 2.0. Until then, this will not be able to work properly.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    // TODO: ## MapPreviewerBase
-    /*
     /// <summary>
     /// Draws all of a <see cref="IDrawableMap"/> to a texture, then saves it to a file.
     /// </summary>
@@ -17,7 +17,6 @@ namespace NetGore.Graphics
         /// </summary>
         protected MapPreviewerBase()
         {
-            ImageFormat = ImageFileFormat.Png;
             TextureSize = new Vector2(2048);
             BackgroundColor = new Color(255, 0, 255, 255);
         }
@@ -26,11 +25,6 @@ namespace NetGore.Graphics
         /// Gets or sets the background color for the generated preview map.
         /// </summary>
         public Color BackgroundColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the image format to use when creating previews.
-        /// </summary>
-        public ImageFileFormat ImageFormat { get; set; }
 
         /// <summary>
         /// Gets or sets the texture size to use for the generated previews.
@@ -44,12 +38,12 @@ namespace NetGore.Graphics
         /// <param name="map">The map to create the preview of.</param>
         /// <param name="drawExtensions">The collection of <see cref="IMapDrawingExtension"/>s applied to the map.</param>
         /// <param name="filePath">The file path to save the created preview to.</param>
-        public void CreatePreview(GraphicsDevice graphicsDevice, T map, ICollection<IMapDrawingExtension> drawExtensions,
+        public void CreatePreview(RenderWindow rw, T map, ICollection<IMapDrawingExtension> drawExtensions,
                                   string filePath)
         {
-            using (var tex = CreatePreview(graphicsDevice, map, drawExtensions))
+            using (var tex = CreatePreview(rw, map, drawExtensions))
             {
-                SaveTexture(tex, filePath, ImageFormat);
+                SaveTexture(tex, filePath);
             }
         }
 
@@ -59,7 +53,7 @@ namespace NetGore.Graphics
         /// <param name="graphicsDevice">The graphics device.</param>
         /// <param name="map">The map to create the preview of.</param>
         /// <param name="drawExtensions">The collection of <see cref="IMapDrawingExtension"/>s applied to the map.</param>
-        public Texture2D CreatePreview(GraphicsDevice graphicsDevice, T map, ICollection<IMapDrawingExtension> drawExtensions)
+        public Image CreatePreview(RenderWindow rw, T map, ICollection<IMapDrawingExtension> drawExtensions)
         {
             // Set up the new camera
             var cam = new Camera2D(TextureSize);
@@ -79,8 +73,12 @@ namespace NetGore.Graphics
             drawExtensions.Clear();
 
             // Create the SpriteBatch
-            Texture2D ret = RenderTarget2DHelper.CreateTexture2D(graphicsDevice, (int)TextureSize.X, (int)TextureSize.Y,
-                                                                 BackgroundColor, x => DrawMap(x, map));
+            // NOTE: Render the map to the render target here. Below is the old code used for XNA.
+            //var ret = RenderTarget2DHelper.CreateTexture2D(graphicsDevice, (int)TextureSize.X, (int)TextureSize.Y,
+            //                                                     BackgroundColor, x => DrawMap(x, map));
+            
+            // NOTE: Create a temp image until we have this working again
+            Image ret = new Image(128,128, Color.Black);
 
             // Restore the map values
             SetMapValues(map, oldCamera, oldDrawFilter, oldDrawParticles);
@@ -117,20 +115,19 @@ namespace NetGore.Graphics
         /// <param name="map">The <see cref="IDrawableMap"/> to draw.</param>
         protected virtual void DrawMap(ISpriteBatch sb, IDrawableMap map)
         {
-            sb.Begin(BlendMode.Alpha, SpriteSortMode.Texture, SaveStateMode.SaveState, map.Camera.Matrix);
+            sb.Begin(BlendMode.Alpha, map.Camera);
             map.Draw(sb);
             sb.End();
         }
 
         /// <summary>
-        /// Saves a <see cref="Texture2D"/> to file.
+        /// Saves an <see cref="Image"/> to file.
         /// </summary>
-        /// <param name="texture">The <see cref="Texture2D"/> to save.</param>
+        /// <param name="texture">The <see cref="Image"/> to save.</param>
         /// <param name="filePath">The file path to save the file to.</param>
-        /// <param name="imageFormat">The image format to use for saving.</param>
-        protected virtual void SaveTexture(Texture2D texture, string filePath, ImageFileFormat imageFormat)
+        protected virtual void SaveTexture(Image texture, string filePath)
         {
-            texture.Save(filePath, imageFormat);
+            texture.SaveToFile(filePath);
         }
 
         /// <summary>
@@ -142,5 +139,4 @@ namespace NetGore.Graphics
         /// <param name="drawParticles">The draw particles value to use.</param>
         protected abstract void SetMapValues(T map, ICamera2D camera, Func<IDrawable, bool> drawFilter, bool drawParticles);
     }
-    */
 }

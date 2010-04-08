@@ -31,14 +31,9 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentManager"/> class.
         /// </summary>
-        /// <param name="rootDir">The root content directory.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="rootDir"/> is null.</exception>
-        public ContentManager(string rootDir)
+        public ContentManager()
         {
-            if (rootDir == null)
-                throw new ArgumentNullException("rootDir");
-
-            RootDirectory = rootDir;
+            RootDirectory = ContentPaths.Build.Root;
 
             // Create the dictionaries for each level
             int maxLevel = EnumHelper<ContentLevel>.MaxValue;
@@ -121,11 +116,17 @@ namespace NetGore
 
         void DoUnload(ContentLevel level)
         {
-            // TODO: ## Asset unloading
+            // TODO: ## Content unloading
             return;
 
             lock (_assetSync)
             {
+                // If the queued level is set, and it is a lower level, then use that as the level instead
+                if (_queuedUnloadLevel.HasValue && _queuedUnloadLevel.Value < level)
+                    level = _queuedUnloadLevel.Value;
+                
+                 _queuedUnloadLevel = null;
+
                 // Loop through the given level and all levels below it
                 for (int i = (int)level; i < _loadedAssets.Length; i++)
                 {
@@ -137,7 +138,30 @@ namespace NetGore
                     {
                         foreach (var disposable in dic.Values.OfType<IDisposable>())
                         {
-                            disposable.Dispose();
+                            try
+                            {
+                                // Skip disposed objects
+                                var asObjectBase = disposable as ObjectBase;
+                                if (asObjectBase.IsDisposed())
+                                    continue;
+
+                                disposable.Dispose();
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                // Ignore errors about disposed objects
+                            }
+                            catch (InvalidOperationException)
+                            {
+                                // InvalidOperationException is common with a disposed object trying to dispose
+                            }
+                            catch (Exception ex)
+                            {
+                                const string errmsg = "Failed to dispose object `{0}`: {1}";
+                                if (log.IsWarnEnabled)
+                                    log.WarnFormat(errmsg, disposable, ex);
+                                Debug.Fail(string.Format(errmsg, disposable, ex));
+                            }
                         }
                     }
                     finally
@@ -145,8 +169,6 @@ namespace NetGore
                         dic.Clear();
                     }
                 }
-
-                _queuedUnloadLevel = null;
             }
         }
 
@@ -314,12 +336,11 @@ namespace NetGore
             get { return _isTrackingLoads; }
         }
 
-        // TODO: ## Use RootDirectory
         /// <summary>
-        /// Gets or sets the root directory.
+        /// Gets or sets absolute path to the root content directory. The default value, which is
+        /// <see cref="ContentPaths.Build"/>'s root, should be fine for most all cases.
         /// </summary>
-        /// <value></value>
-        public string RootDirectory { get; set; }
+        public PathString RootDirectory { get; set; }
 
         /// <summary>
         /// Starts tracking items that are loaded by this <see cref="IContentManager"/>.

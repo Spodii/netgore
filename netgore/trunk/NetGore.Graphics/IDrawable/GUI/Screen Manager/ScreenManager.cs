@@ -33,25 +33,21 @@ namespace NetGore.Graphics.GUI
         /// <param name="game">The Game that the game component should be attached to.</param>
         /// <param name="skinManager">The <see cref="ISkinManager"/> used to manage all the general skinning
         /// between all screens.</param>
-        /// <param name="rootContentDirectory">The default root content directory.</param>
         /// <param name="defaultFontName">The asset name of the default font.</param>
         /// <param name="defaultFontSize">The size of the default font.</param>
         /// <exception cref="ArgumentNullException"><paramref name="game"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
-        public ScreenManager(RenderWindow game, ISkinManager skinManager, string rootContentDirectory, string defaultFontName, int defaultFontSize)
+        public ScreenManager(RenderWindow game, ISkinManager skinManager, string defaultFontName, int defaultFontSize)
         {
             if (game == null)
                 throw new ArgumentNullException("game");
             if (skinManager == null)
                 throw new ArgumentNullException("skinManager");
 
-            if (rootContentDirectory == null)
-                rootContentDirectory = string.Empty;
-
             _game = game;
             _skinManager = skinManager;
 
-            _content = new ContentManager(rootContentDirectory);
+            _content = new ContentManager();
             _drawingManager = new DrawingManager(_game);
 
             _soundManager = SoundManager.GetInstance(_content);

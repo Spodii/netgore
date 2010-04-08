@@ -23,7 +23,7 @@ namespace DemoGame.GUITester
             SetFramerateLimit(60);
 
             _skinManager = new SkinManager("Default");
-            _screenManager = new ScreenManager(this, _skinManager, "Content", "Font/Arial", 14);
+            _screenManager = new ScreenManager(this, _skinManager, "Font/Arial", 14);
             GrhInfo.Load(ContentPaths.Build, _screenManager.Content);
 
             var ts = new TestScreen(_screenManager);
