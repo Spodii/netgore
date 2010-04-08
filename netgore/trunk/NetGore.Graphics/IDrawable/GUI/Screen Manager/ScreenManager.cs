@@ -220,7 +220,7 @@ namespace NetGore.Graphics.GUI
                 var lastScreen = _activeScreen;
                 _activeScreen = value;
 
-                Content.Unload(ContentLevel.Global);
+                Content.Unload(ContentLevel.GameScreen);
 
                 if (_activeScreen != null)
                     _activeScreen.Activate();
