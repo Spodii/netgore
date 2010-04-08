@@ -3,14 +3,14 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
-using XnaColor = SFML.Graphics.Color;
+using SFMLColor = SFML.Graphics.Color;
 
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// <see cref="ColorEditor"/> for the Xna <see cref="Microsoft.Xna.Framework.Graphics.Color"/>.
+    /// <see cref="ColorEditor"/> for the <see cref="SFML.Graphics.Color"/>
     /// </summary>
-    public class XnaColorEditor : ColorEditor
+    public class SFMLColorEditor : ColorEditor
     {
         /// <summary>
         /// Edits the given object value using the editor style provided by the
@@ -31,13 +31,13 @@ namespace NetGore.EditorTools
             if (value is Color)
             {
                 Color c = (Color)value;
-                return new XnaColor(c.R, c.G, c.B, c.A);
+                return new SFMLColor(c.R, c.G, c.B, c.A);
             }
 
-            if (value is XnaColor)
+            if (value is SFMLColor)
             {
-                XnaColor c = (XnaColor)value;
-                return new XnaColor(c.R, c.G, c.B, c.A);
+                SFMLColor c = (SFMLColor)value;
+                return new SFMLColor(c.R, c.G, c.B, c.A);
             }
 
             if (value is Color?)
@@ -45,32 +45,32 @@ namespace NetGore.EditorTools
                 Color? nc = (Color?)value;
                 if (!nc.HasValue)
                 {
-                    if (context.PropertyDescriptor.PropertyType == typeof(XnaColor))
-                        return new XnaColor();
+                    if (context.PropertyDescriptor.PropertyType == typeof(SFMLColor))
+                        return new SFMLColor();
                     else
                         return null;
                 }
                 else
                 {
                     var c = nc.Value;
-                    return new XnaColor(c.R, c.G, c.B, c.A);
+                    return new SFMLColor(c.R, c.G, c.B, c.A);
                 }
             }
 
-            if (value is XnaColor?)
+            if (value is SFMLColor?)
             {
-                XnaColor? nc = (XnaColor?)value;
+                SFMLColor? nc = (SFMLColor?)value;
                 if (!nc.HasValue)
                 {
-                    if (context.PropertyDescriptor.PropertyType == typeof(XnaColor))
-                        return new XnaColor();
+                    if (context.PropertyDescriptor.PropertyType == typeof(SFMLColor))
+                        return new SFMLColor();
                     else
                         return null;
                 }
                 else
                 {
                     var c = nc.Value;
-                    return new XnaColor(c.R, c.G, c.B, c.A);
+                    return new SFMLColor(c.R, c.G, c.B, c.A);
                 }
             }
 
@@ -97,10 +97,10 @@ namespace NetGore.EditorTools
         /// <param name="e">What to paint and where to paint it.</param>
         public override void PaintValue(PaintValueEventArgs e)
         {
-            if (!(e.Value is XnaColor))
+            if (!(e.Value is SFMLColor))
                 return;
 
-            var c = (XnaColor)e.Value;
+            var c = (SFMLColor)e.Value;
             var displayColor = Color.FromArgb(c.R, c.G, c.B);
 
             using (var brush = new SolidBrush(displayColor))

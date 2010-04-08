@@ -213,9 +213,10 @@ namespace NetGore.EditorTools
             // Check if BeginDraw() created an error before attempting to actually draw
             if (string.IsNullOrEmpty(beginDrawError))
             {
-                // Draw the control using the GraphicsDevice
+                // Draw the control using the RenderWindow
                 try
                 {
+                    RenderWindow.Clear(SFML.Graphics.Color.CornflowerBlue);
                     Draw(SpriteBatch);
                     EndDraw();
                 }

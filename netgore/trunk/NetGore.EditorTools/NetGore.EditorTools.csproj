@@ -183,7 +183,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WinForms\PropertyGridHelper.cs" />
-    <Compile Include="UI Editors\XnaColorEditor.cs" />
+    <Compile Include="UI Editors\SFMLColorEditor.cs" />
     <Compile Include="WinForms\AutoValidateTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -285,7 +285,6 @@
     <Compile Include="WinForms\GraphicsDeviceControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WinForms\ServiceContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
