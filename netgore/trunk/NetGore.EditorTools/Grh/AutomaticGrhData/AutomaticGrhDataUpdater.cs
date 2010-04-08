@@ -133,8 +133,10 @@ namespace NetGore.EditorTools
         /// <returns>Size of the texture.</returns>
         static Vector2 GetTextureSize(string filePath)
         {
-            TextureInformation info = Texture.GetTextureInformation(filePath);
-            return new Vector2(info.Width, info.Height);
+            using (var img = new Image(filePath))
+            {
+                return new Vector2(img.Width, img.Height);
+            }
         }
 
         /// <summary>

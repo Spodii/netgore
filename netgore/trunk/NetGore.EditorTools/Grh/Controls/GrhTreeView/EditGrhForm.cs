@@ -223,7 +223,7 @@ namespace NetGore.EditorTools
                 // Validate the texture
                 try
                 {
-                    cm.Load<Image>("Grh" + DirSep + textureName, ContentLevel.Map);
+                    cm.LoadImage("Grh" + DirSep + textureName, ContentLevel.Map);
                 }
                 catch (Exception ex)
                 {
@@ -313,7 +313,7 @@ namespace NetGore.EditorTools
             _grh.Update((int)_stopwatch.ElapsedMilliseconds);
 
             // Begin rendering
-            sb.BeginUnfiltered(BlendMode.Alpha,Camera.Matrix);
+            sb.Begin(BlendMode.Alpha,Camera);
 
             try
             {
