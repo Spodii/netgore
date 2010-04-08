@@ -639,5 +639,4 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildProjectDirectory)\..\MonoSwitcher.proj" />
 </Project>
