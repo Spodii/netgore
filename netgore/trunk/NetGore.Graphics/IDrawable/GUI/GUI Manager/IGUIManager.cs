@@ -11,16 +11,40 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public interface IGUIManager
     {
+        /// <summary>
+        /// Sends an event for a mouse button being released to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         void SendEventMouseButtonReleased(MouseButtonEventArgs e);
 
+        /// <summary>
+        /// Sends an event for the mouse moving to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         void SendEventMouseMoved(MouseMoveEventArgs e);
 
+        /// <summary>
+        /// Sends an event for a mouse button being pressed to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         void SendEventMouseButtonPressed(MouseButtonEventArgs e);
 
+        /// <summary>
+        /// Sends an event for text being entered to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         void SendEventTextEntered(TextEventArgs e);
 
+        /// <summary>
+        /// Sends an event for a key being released to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         void SendEventKeyReleased(KeyEventArgs e);
 
+        /// <summary>
+        /// Sends an event for a key being pressed to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         void SendEventKeyPressed(KeyEventArgs e);
 
         /// <summary>
@@ -89,26 +113,10 @@ namespace NetGore.Graphics.GUI
         bool IsMouseButtonDown(MouseButton button);
 
         /// <summary>
-        /// Gets an IEnumerable of all the <see cref="KeyCode"/> that were up during the previous call to
-        /// <see cref="IGUIManager.Update"/> but are down on the latest call to <see cref="IGUIManager.Update"/>.
-        /// This value is updated on each call to <see cref="IGUIManager.Update"/>.
-        /// </summary>
-        [Obsolete]
-        IEnumerable<KeyCode> NewKeysDown { get; }
-
-        /// <summary>
         /// Gets the cursor position.
         /// </summary>
         /// <value>The cursor position.</value>
         Vector2 CursorPosition { get; }
-
-        /// <summary>
-        /// Gets an IEnumerable of all the <see cref="KeyCode"/> that were down during the previous call to
-        /// <see cref="IGUIManager.Update"/> but are up on the latest call to <see cref="IGUIManager.Update"/>.
-        /// This value is updated on each call to <see cref="IGUIManager.Update"/>.
-        /// </summary>
-        [Obsolete]
-        IEnumerable<KeyCode> NewKeysUp { get; }
 
         /// <summary>
         /// Gets the <see cref="Control"/> that the left mouse button was pressed down on. Will be null if the cursor

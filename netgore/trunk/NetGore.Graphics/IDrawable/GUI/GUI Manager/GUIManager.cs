@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,48 +15,39 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class GUIManager : IGUIManager
     {
-        static readonly IEnumerable<KeyCode> _emptyKeys = new KeyCode[0];
         static Color _draggedItemColor = new Color(255, 255, 255, 150);
 
         readonly List<Control> _controls = new List<Control>(2);
         readonly ISkinManager _skinManager;
         readonly Tooltip _tooltip;
+        readonly Window _window;
 
         IDragDropProvider _draggedDragDropProvider;
         IDragDropProvider _dropOntoControl;
         Control _focusedControl = null;
-        bool _isKeysDownSet = false;
-        bool _isKeysUpSet = false;
-        // TODO: ## KeyboardState _keyboardState;
-        List<KeyCode> _keysDown = null;
-        KeyCode[] _keysPressed = null;
-        List<KeyCode> _keysUp = null;
-        // TODO: ## KeyboardState _lastKeyboardState;
-        // TODO: ## MouseState _lastMouseState;
-        KeyCode[] _lastPressedKeys = null;
-        // TODO: ## MouseState _mouseState;
+        Control _lastPressedControl;
         Vector2 _screenSize;
         Control _underCursor;
-        RenderWindow _rw;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GUIManager"/> class.
         /// </summary>
+        /// <param name="window">The <see cref="Window"/> that provides the input.</param>
         /// <param name="font">Default SpriteFont to use for controls added to this <see cref="GUIManager"/>.</param>
         /// <param name="skinManager">The <see cref="ISkinManager"/> that handles the skinning for this
         /// <see cref="GUIManager"/>.</param>
         /// <param name="screenSize">The initial screen size value.</param>
         /// <exception cref="ArgumentNullException"><paramref name="skinManager"/> is null.</exception>
-        public GUIManager(RenderWindow rw, Font font, ISkinManager skinManager, Vector2 screenSize)
+        public GUIManager(Window window, Font font, ISkinManager skinManager, Vector2 screenSize)
         {
-            if (rw == null)
-                throw new ArgumentNullException("rw");
+            if (window == null)
+                throw new ArgumentNullException("window");
             if (skinManager == null)
                 throw new ArgumentNullException("skinManager");
 
             ScreenSize = screenSize;
 
-            _rw = rw;
+            _window = window;
             _skinManager = skinManager;
 
             Font = font;
@@ -68,81 +58,6 @@ namespace NetGore.Graphics.GUI
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
-        public void SendEventMouseButtonReleased(MouseButtonEventArgs e)
-        {
-            var c = UnderCursor;
-            if (c != null)
-                c.SendMouseButtonReleasedEvent(e);
-        }
-
-        public void SendEventMouseMoved(MouseMoveEventArgs e)
-        {
-            var lastUnderCursor = UnderCursor;
-            _underCursor = GetControlAtPoint(CursorPosition);
-
-            // When the control under the cursor changes, handle the mouse enter/leave events
-            var c = UnderCursor;
-            if (lastUnderCursor != c)
-            {
-                if (lastUnderCursor != null)
-                    lastUnderCursor.SendMouseLeaveEvent(e);
-
-                if (c != null)
-                    c.SendMouseEnterEvent(e);
-            }
-
-            // Send the mouse moved event
-            if (c != null)
-                c.SendMouseMoveEvent(e);
-        }
-
-        public void SendEventMouseButtonPressed(MouseButtonEventArgs e)
-        {
-            var c = UnderCursor;
-
-            if (e.Button == MouseButton.Left)
-            {
-                var lastFocused = FocusedControl;
-                FocusedControl = c;
-
-                if (c != null)
-                    _lastPressedControl = c;
-
-                if (lastFocused != FocusedControl)
-                {
-                    if (lastFocused != null)
-                        lastFocused.SendLostFocusEvent(e);
-
-                    if (FocusedControl != null)
-                        FocusedControl.SendFocusedEvent(e);
-                }
-            }
-
-            if (c != null)
-                c.SendMouseButtonPressedEvent(e);
-        }
-
-        public void SendEventTextEntered(TextEventArgs e)
-        {
-            var f = FocusedControl;
-            if (f != null)
-                f.SendTextEnteredEvent(e);
-        }
-
-        public void SendEventKeyReleased(KeyEventArgs e)
-        {
-            var f = FocusedControl;
-            if (f != null)
-                f.SendKeyReleasedEvent(e);
-        }
-
-        public void SendEventKeyPressed(KeyEventArgs e)
-        {
-            var f = FocusedControl;
-            if (f != null)
-                f.SendKeyPressedEvent(e);
-        }
-
         /// <summary>
         /// Gets or sets the <see cref="Color"/> to draw the <see cref="IDragDropProvider"/> item currently being dragged.
         /// </summary>
@@ -150,31 +65,6 @@ namespace NetGore.Graphics.GUI
         {
             get { return _draggedItemColor; }
             set { _draggedItemColor = value; }
-        }
-
-        /// <summary>
-        /// Checks if a collection of keys contains a given key
-        /// </summary>
-        /// <param name="array">Collection of keys to check</param>
-        /// <param name="key">Key to check for</param>
-        /// <returns>True if the array contains the requested key, else false</returns>
-        static bool CollectionContainsKey(IEnumerable<KeyCode> array, KeyCode key)
-        {
-            if (array == null)
-            {
-                Debug.Fail("array is null.");
-                return false;
-            }
-
-            // Iterate through every array element and check for a match
-            foreach (KeyCode i in array)
-            {
-                if (i == key)
-                    return true;
-            }
-
-            // No matches found
-            return false;
         }
 
         /// <summary>
@@ -216,53 +106,6 @@ namespace NetGore.Graphics.GUI
 
             // No child controls contained the point, so we found the deepest control containing the point
             return root;
-        }
-
-        /// <summary>
-        /// Gets the newly pressed keys (keys that are down this frame, but were not down last frame)
-        /// </summary>
-        /// <param name="pressed">Collection of currently pressed keys</param>
-        /// <param name="lastPressed">Collection of previously pressed keys</param>
-        /// <returns>List of all the newly pressed keys, or null if there are none</returns>
-        static List<KeyCode> GetNewKeysDown(ICollection<KeyCode> pressed, IEnumerable<KeyCode> lastPressed)
-        {
-            if (pressed == null || pressed.Count == 0)
-                return null;
-
-            if (lastPressed == null)
-                return new List<KeyCode>(pressed);
-
-            var ret = new List<KeyCode>(pressed.Count);
-
-            foreach (KeyCode key in pressed)
-            {
-                if (!CollectionContainsKey(lastPressed, key))
-                    ret.Add(key);
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets the newly pressed released (keys that are up this frame, but were not up last frame)
-        /// </summary>
-        /// <param name="pressed">Collection of currently pressed keys</param>
-        /// <param name="lastPressed">Collection of previously pressed keys</param>
-        /// <returns>List of all the newly released keys, or null if there are none</returns>
-        static List<KeyCode> GetNewKeysUp(IEnumerable<KeyCode> pressed, ICollection<KeyCode> lastPressed)
-        {
-            if (pressed == null || lastPressed == null || lastPressed.Count == 0)
-                return null;
-
-            var ret = new List<KeyCode>(lastPressed.Count);
-
-            foreach (KeyCode lastKey in lastPressed)
-            {
-                if (!CollectionContainsKey(pressed, lastKey))
-                    ret.Add(lastKey);
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -332,6 +175,15 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Control> Controls
         {
             get { return _controls; }
+        }
+
+        /// <summary>
+        /// Gets the cursor position.
+        /// </summary>
+        /// <value>The cursor position.</value>
+        public Vector2 CursorPosition
+        {
+            get { return new Vector2(_window.Input.GetMouseX(), _window.Input.GetMouseY()); }
         }
 
         /// <summary>
@@ -412,77 +264,13 @@ namespace NetGore.Graphics.GUI
         public Font Font { get; set; }
 
         /// <summary>
-        /// Gets if a given <see cref="KeyCode"/> is currently being pressed.
+        /// Gets the <see cref="Control"/> that was last the <see cref="IGUIManager.PressedControl"/>. Unlike
+        /// <see cref="IGUIManager.PressedControl"/>, this value will not be set to null when the mouse button is raised.
         /// </summary>
-        /// <param name="key">The <see cref="KeyCode"/> to check if pressed.</param>
-        /// <returns>True if the <paramref name="key"/> is currently being pressed; otherwise false.</returns>
-        public bool IsKeyDown(KeyCode key)
+        public Control LastPressedControl
         {
-            return _rw.Input.IsKeyDown(key);
+            get { return _lastPressedControl; }
         }
-
-        /// <summary>
-        /// Gets if a given <see cref="MouseButton"/> is currently being pressed.
-        /// </summary>
-        /// <param name="button">The <see cref="MouseButton"/> to check if pressed.</param>
-        /// <returns>True if the <paramref name="button"/> is currently being pressed; otherwise false.</returns>
-        public bool IsMouseButtonDown(MouseButton button)
-        {
-            return _rw.Input.IsMouseButtonDown(button);
-        }
-
-        /// <summary>
-        /// Gets the cursor position.
-        /// </summary>
-        /// <value>The cursor position.</value>
-        public Vector2 CursorPosition
-        {
-            get { return new Vector2(_rw.Input.GetMouseX(), _rw.Input.GetMouseY()); }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of all the <see cref="KeyCode"/> that were up during the previous call to
-        /// <see cref="IGUIManager.Update"/> but are down on the latest call to <see cref="IGUIManager.Update"/>.
-        /// This value is updated on each call to <see cref="IGUIManager.Update"/>.
-        /// </summary>
-        public IEnumerable<KeyCode> NewKeysDown
-        {
-            get
-            {
-                // If we have not found the pressed keys yet, then find them
-                if (!_isKeysDownSet)
-                {
-                    _keysDown = GetNewKeysDown(_keysPressed, _lastPressedKeys);
-                    _isKeysDownSet = true;
-                }
-
-                // Return the cached pressed keys list
-                return _keysDown ?? _emptyKeys;
-            }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of all the <see cref="KeyCode"/> that were down during the previous call to
-        /// <see cref="IGUIManager.Update"/> but are up on the latest call to <see cref="IGUIManager.Update"/>.
-        /// This value is updated on each call to <see cref="IGUIManager.Update"/>.
-        /// </summary>
-        public IEnumerable<KeyCode> NewKeysUp
-        {
-            get
-            {
-                // If we have not found the released keys yet, then find them
-                if (!_isKeysUpSet)
-                {
-                    _keysUp = GetNewKeysUp(_keysPressed, _lastPressedKeys);
-                    _isKeysUpSet = true;
-                }
-
-                // Return the cached released keys list
-                return _keysUp ?? _emptyKeys;
-            }
-        }
-
-        Control _lastPressedControl;
 
         /// <summary>
         /// Gets the <see cref="Control"/> that the left mouse button was pressed down on. Will be null if the cursor
@@ -491,20 +279,13 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public Control PressedControl
         {
-            get {
+            get
+            {
                 if (!IsMouseButtonDown(MouseButton.Left))
                     return null;
 
-                return _lastPressedControl; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Control"/> that was last the <see cref="IGUIManager.PressedControl"/>. Unlike
-        /// <see cref="IGUIManager.PressedControl"/>, this value will not be set to null when the mouse button is raised.
-        /// </summary>
-        public Control LastPressedControl
-        {
-            get { return _lastPressedControl; }
+                return _lastPressedControl;
+            }
         }
 
         /// <summary>
@@ -630,6 +411,26 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets if a given <see cref="KeyCode"/> is currently being pressed.
+        /// </summary>
+        /// <param name="key">The <see cref="KeyCode"/> to check if pressed.</param>
+        /// <returns>True if the <paramref name="key"/> is currently being pressed; otherwise false.</returns>
+        public bool IsKeyDown(KeyCode key)
+        {
+            return _window.Input.IsKeyDown(key);
+        }
+
+        /// <summary>
+        /// Gets if a given <see cref="MouseButton"/> is currently being pressed.
+        /// </summary>
+        /// <param name="button">The <see cref="MouseButton"/> to check if pressed.</param>
+        /// <returns>True if the <paramref name="button"/> is currently being pressed; otherwise false.</returns>
+        public bool IsMouseButtonDown(MouseButton button)
+        {
+            return _window.Input.IsMouseButtonDown(button);
+        }
+
+        /// <summary>
         /// Remove a <see cref="Control"/> from this <see cref="IGUIManager"/> from the root level. This should only be called
         /// by the <see cref="Control"/>'s constructor.
         /// </summary>
@@ -646,54 +447,111 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Updates the <see cref="IGUIManager"/> and all of the <see cref="Control"/>s in it.
+        /// Sends an event for a key being pressed to this <see cref="IGUIManager"/>.
         /// </summary>
-        /// <param name="currentTime">The current game time.</param>
-        public void Update(int currentTime)
+        /// <param name="e">The event arguments.</param>
+        public void SendEventKeyPressed(KeyEventArgs e)
         {
-            // TODO: ## Input
-            /*
-            // Set the last state
-            _lastMouseState = _mouseState;
-            _lastKeyboardState = _keyboardState;
-            _lastPressedKeys = _keysPressed;
+            var f = FocusedControl;
+            if (f != null)
+                f.SendKeyPressedEvent(e);
+        }
 
-            // Get the new current state
-            _mouseState = Mouse.GetState();
-            _keyboardState = Keyboard.GetState();
-            _keysPressed = _keyboardState.GetPressedKeys();
+        /// <summary>
+        /// Sends an event for a key being released to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        public void SendEventKeyReleased(KeyEventArgs e)
+        {
+            var f = FocusedControl;
+            if (f != null)
+                f.SendKeyReleasedEvent(e);
+        }
 
-            // Since the state has changed, we will have to recalculate the KeysDown/KeysUp if requested
-            _isKeysDownSet = false;
-            _isKeysUpSet = false;
+        /// <summary>
+        /// Sends an event for a mouse button being pressed to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        public void SendEventMouseButtonPressed(MouseButtonEventArgs e)
+        {
+            var c = UnderCursor;
 
-            // Update which root is focused
-            UpdateFocusedRoot();
+            // Handle a left mouse button press
+            if (e.Button == MouseButton.Left)
+            {
+                // Update the focus control
+                var lastFocused = FocusedControl;
+                FocusedControl = c;
+
+                if (c != null)
+                    _lastPressedControl = c;
+
+                // If the focused control changed, send the corresponding events
+                if (lastFocused != FocusedControl)
+                {
+                    // Tell the old control it lost focus
+                    if (lastFocused != null)
+                        lastFocused.SendLostFocusEvent(e);
+
+                    // Tell the new control is acquired focus
+                    if (FocusedControl != null)
+                    {
+                        FocusedControl.SendFocusedEvent(e);
+
+                        // Check if the new focused control supports drag-and-drop
+                        var ddp = _underCursor as IDragDropProvider;
+                        if (ddp != null && ddp.CanDragContents && !_underCursor.CanDrag)
+                            _draggedDragDropProvider = ddp;
+                    }
+                }
+            }
+
+            // Forward the event to the focused control, if any
+            if (c != null)
+                c.SendMouseButtonPressedEvent(e);
+        }
+
+        /// <summary>
+        /// Sends an event for a mouse button being released to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        public void SendEventMouseButtonReleased(MouseButtonEventArgs e)
+        {
+            // If it was the left mouse button that was released, then stop dragging the drag-and-drop provider
+            // control (if we have one)
+            if (e.Button == MouseButton.Left && DraggedDragDropProvider != null)
+            {
+                if (DropOntoControl != null && DropOntoControl.CanDrop(DraggedDragDropProvider))
+                    DropOntoControl.Drop(DraggedDragDropProvider);
+
+                _draggedDragDropProvider = null;
+            }
+
+            // Forward the event to the control under the cursor
+            var c = UnderCursor;
+            if (c != null)
+                c.SendMouseButtonReleasedEvent(e);
+        }
+
+        /// <summary>
+        /// Sends an event for the mouse moving to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        public void SendEventMouseMoved(MouseMoveEventArgs e)
+        {
+            var lastUnderCursor = UnderCursor;
             _underCursor = GetControlAtPoint(CursorPosition);
 
-            if (MouseState.LeftButton == ButtonState.Pressed)
+            // When the control under the cursor changes, handle the mouse enter/leave events
+            var c = UnderCursor;
+            if (lastUnderCursor != c)
             {
-                // Check if the left mouse button has been freshly pressed. If so, check if the control under the cursor
-                // supports drag/drop.
-                if (LastMouseState.LeftButton == ButtonState.Released)
-                {
-                    var ddp = _underCursor as IDragDropProvider;
-                    if (ddp != null && ddp.CanDragContents && !_underCursor.CanDrag)
-                        _draggedDragDropProvider = ddp;
-                }
-            }
-            else
-            {
-                // Since the left mouse button is up, release the drag/drop provider if we have one
-                if (DraggedDragDropProvider != null)
-                {
-                    if (DropOntoControl != null && DropOntoControl.CanDrop(DraggedDragDropProvider))
-                        DropOntoControl.Drop(DraggedDragDropProvider);
+                if (lastUnderCursor != null)
+                    lastUnderCursor.SendMouseLeaveEvent(e);
 
-                    _draggedDragDropProvider = null;
-                }
+                if (c != null)
+                    c.SendMouseEnterEvent(e);
             }
-            */
 
             // Update the DropOntoContorl
             if (DraggedDragDropProvider != null)
@@ -701,7 +559,6 @@ namespace NetGore.Graphics.GUI
                 // Take the control we already found as being under the cursor. Then, create a loop that will check if
                 // the control implements IDragDropProvider. If not, grab the parent. This will either give us the first
                 // control to implement IDragDropProvider, or null.
-                var c = UnderCursor;
                 IDragDropProvider asDDP;
                 while (c != null && (asDDP = c as IDragDropProvider) != null && !asDDP.CanDrop(DraggedDragDropProvider))
                 {
@@ -718,6 +575,28 @@ namespace NetGore.Graphics.GUI
                 _dropOntoControl = null;
             }
 
+            // Send the mouse moved event
+            if (c != null)
+                c.SendMouseMoveEvent(e);
+        }
+
+        /// <summary>
+        /// Sends an event for text being entered to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        public void SendEventTextEntered(TextEventArgs e)
+        {
+            var f = FocusedControl;
+            if (f != null)
+                f.SendTextEnteredEvent(e);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="IGUIManager"/> and all of the <see cref="Control"/>s in it.
+        /// </summary>
+        /// <param name="currentTime">The current game time.</param>
+        public void Update(int currentTime)
+        {
             // Update the controls
             foreach (Control control in Controls.Reverse())
             {

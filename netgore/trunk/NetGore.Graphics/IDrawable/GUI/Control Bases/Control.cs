@@ -882,42 +882,6 @@ namespace NetGore.Graphics.GUI
             return new Vector2(Border.LeftWidth, Border.TopHeight);
         }
 
-        // TODO: ## GetButtonStates
-        /*
-        /// <summary>
-        /// Gets the <see cref="ButtonState"/> for the current and last state for a given mouse button.
-        /// </summary>
-        /// <param name="button">The mouse button to get the states for.</param>
-        /// <param name="state">The current mouse state.</param>
-        /// <param name="lastState">The last mouse state.</param>
-        /// <param name="buttonState">The output current ButtonState for the given <paramref name="button"/>.</param>
-        /// <param name="lastButtonState">The output last ButtonState for the given <paramref name="button"/>.</param>
-        static void GetButtonStates(MouseButtons button, MouseState state, MouseState lastState, out ButtonState buttonState,
-                                    out ButtonState lastButtonState)
-        {
-            switch (button)
-            {
-                case MouseButtons.Left:
-                    buttonState = state.LeftButton;
-                    lastButtonState = lastState.LeftButton;
-                    break;
-
-                case MouseButtons.Right:
-                    buttonState = state.RightButton;
-                    lastButtonState = lastState.RightButton;
-                    break;
-
-                case MouseButtons.Middle:
-                    buttonState = state.MiddleButton;
-                    lastButtonState = lastState.MiddleButton;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException("button", "Invalid button value!");
-            }
-        }
-        */
-
         /// <summary>
         /// Finds the child Control in this Control at a given screen location.
         /// </summary>
@@ -1621,23 +1585,6 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected virtual void OnVisibleChanged()
         {
-        }
-
-        /// <summary>
-        /// Gets a Vector2 for the offset created by the Parent's Border.
-        /// </summary>
-        /// <returns>A Vector2 for the offset created by the Parent's Border.</returns>
-        Vector2 ParentBorderOffset()
-        {
-            Control p = Parent;
-            if (p == null)
-                return Vector2.Zero;
-
-            ControlBorder b = p.Border;
-            if (b == null)
-                return Vector2.Zero;
-
-            return new Vector2(b.LeftWidth, b.TopHeight);
         }
 
         /// <summary>
