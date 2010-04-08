@@ -3,6 +3,7 @@ using System.Linq;
 
 
 using NetGore.Audio;
+using NetGore.Content;
 using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
