@@ -41,10 +41,7 @@ namespace DemoGame.MapEditor
                 return;
 
             // Adjust the camera
-            var size = new Vector2(Size.Width, Size.Height);
-            var scale = size / map.Size;
-
-            _camera.Scale = Math.Max(scale.X, scale.Y);
+            _camera.Scale = 1;
             _camera.Size = map.Size;
             _camera.Min = Vector2.Zero;
 
