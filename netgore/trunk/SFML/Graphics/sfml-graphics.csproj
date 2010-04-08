@@ -111,7 +111,6 @@
     <Compile Include="NetGore\ValueTypes\Design\Vector2Converter.cs" />
     <Compile Include="NetGore\ValueTypes\Design\Vector3Converter.cs" />
     <Compile Include="NetGore\ValueTypes\Design\Vector4Converter.cs" />
-    <Compile Include="NetGore\ValueTypes\FrameworkResources.cs" />
     <Compile Include="NetGore\ValueTypes\Gjk.cs" />
     <Compile Include="NetGore\LazyImage.cs" />
     <Compile Include="NetGore\ValueTypes\MathHelper.cs" />
@@ -126,6 +125,11 @@
     <Compile Include="NetGore\ValueTypes\Vector3.cs" />
     <Compile Include="NetGore\ValueTypes\Vector4.cs" />
     <Compile Include="PostFx.cs" />
+    <Compile Include="Properties\FrameworkResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FrameworkResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Rect.cs" />
     <Compile Include="RenderWindow.cs" />
     <Compile Include="Shape.cs" />
@@ -162,6 +166,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <EmbeddedResource Include="Properties\FrameworkResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FrameworkResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

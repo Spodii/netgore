@@ -5497,5 +5497,1441 @@
             <param name="context">The format context.</param>
             <param name="propertyValues">The new property values.</param>
         </member>
+        <member name="T:SFML.Graphics.FrameworkResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.AllPlayersFolder">
+            <summary>
+              Looks up a localized string similar to AllPlayers.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.AloneInTheParty">
+            <summary>
+              Looks up a localized string similar to You must have at least two party members in the Party..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.Apply3DBeforePlaying">
+            <summary>
+              Looks up a localized string similar to You must call Apply3D on a Cue before calling Play to be able to call Apply3D after calling Play..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ArrayMultipleFour">
+            <summary>
+              Looks up a localized string similar to The array {0} must have a length that is a multiple of four..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.AudioGetMasterVolumeFailed">
+            <summary>
+              Looks up a localized string similar to Failed to obtain the master volume for sound effects..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.AudioSetMasterVolumeFailed">
+            <summary>
+              Looks up a localized string similar to Failed to set the master volume for sound effects..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.AutoGenerateMipMapInvalidLevels">
+            <summary>
+              Looks up a localized string similar to Textures created using TextureUsage.AutoGenerateMipMap must set numberLevels to zero or one..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BackBufferTooLarge">
+            <summary>
+              Looks up a localized string similar to The back buffer size requested is too large..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BadXnb">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BadXnbMagic">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. This is not a compiled content file..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BadXnbPlatform">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. This file was compiled for the wrong target platform..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BadXnbSize">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. File has been truncated..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BadXnbTypeVersion">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. File contains the wrong version of type {1}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BadXnbVersion">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. This file was compiled using the wrong version of the XNA Framework..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BadXnbWrongType">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. File contains {1} but trying to load as {2}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BasicEffectCanOnlyUseTexture2D">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;.  BasicEffect only supports 2D textures..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BeginMustBeCalledBeforeDraw">
+            <summary>
+              Looks up a localized string similar to Begin must be called successfully before a Draw can be called..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BeginMustBeCalledBeforeEnd">
+            <summary>
+              Looks up a localized string similar to Begin must be called successfully before End can be called..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BindPoseNotAvailable">
+            <summary>
+              Looks up a localized string similar to BindPose is not available until AvatarRenderer.IsLoaded returns true..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BoundingBoxZeroPoints">
+            <summary>
+              Looks up a localized string similar to You should have at least one point in points.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.BoundingSphereZeroPoints">
+            <summary>
+              Looks up a localized string similar to You should have at least one point in points..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotCallSpriteBeginTwice">
+            <summary>
+              Looks up a localized string similar to Begin cannot be called again before a successful call to End..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotClearNullDepth">
+            <summary>
+              Looks up a localized string similar to An error has occurred during the Clear operation while trying to clear the depth or stencil buffer, no DepthStencilBuffer surface exists..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotCreateDepthBufferOfFormat">
+            <summary>
+              Looks up a localized string similar to The device does not support creating a depth buffer of the given format..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotCreateRenderTargetOfFormat">
+            <summary>
+              Looks up a localized string similar to The device does not support creating a render target of the given format..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotCreateTextureOfFormat">
+            <summary>
+              Looks up a localized string similar to The device does not support creating a texture of the given format with the given TextureUsage..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotDrawNoData">
+            <summary>
+              Looks up a localized string similar to A valid vertex buffer (and a valid index buffer if you are using indexed primitives) must be set on the device before any draw operations may be performed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotDrawNoDecl">
+            <summary>
+              Looks up a localized string similar to A valid vertex declaration must be set on the device before any draw operations can be performed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotDrawNoEffect">
+            <summary>
+              Looks up a localized string similar to The effects currently being used to render do not have a vertex shader and pixel shader defined. Both are required before drawing..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotDrawNoShader">
+            <summary>
+              Looks up a localized string similar to Both a valid vertex shader and pixel shader (or valid effect) must be set on the device before any draw operations may be performed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotEndTwice">
+            <summary>
+              Looks up a localized string similar to An &quot;End&quot; function can only be called once for each call to &quot;Begin.&quot;.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotLockCompressedVolume">
+            <summary>
+              Looks up a localized string similar to Using GetData or SetData on a Texture3D with a compressed format is not supported..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotNextSpriteBeginImmediate">
+            <summary>
+              Looks up a localized string similar to Nesting more than one SpriteBatch.Begin when using a SpriteBatch with SpriteSortMode.Immediate is not allowed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotResolveBackBufferWithActiveRenderTargets">
+            <summary>
+              Looks up a localized string similar to Cannot resolve the backbuffer when a render target is active..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotSetAlreadyUsedRenderTarget">
+            <summary>
+              Looks up a localized string similar to The render target has already been set on another index.  Each render target may only be set on a single index at a time..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotUseFormatTypeAsManualWhenLocking">
+            <summary>
+              Looks up a localized string similar to GetData and SetData may not be called for textures of this format..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CannotUseUnknownFormat">
+            <summary>
+              Looks up a localized string similar to Textures cannot be created using SurfaceFormat.Unknown..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CantRemoveLocalMachine">
+            <summary>
+              Looks up a localized string similar to The local NetworkMachine cannot be removed from the session..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CantSerializeMember">
+            <summary>
+              Looks up a localized string similar to Unable to serialize member {0} of {1}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CantSerializeReadOnlyNull">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize {1}.{0} because it is both null and read-only..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CardDoesNotSupport32BitIndices">
+            <summary>
+              Looks up a localized string similar to This device does not support 32-bit indices.  Use IndexElementSize.SixteenBits or a type that has a size of two bytes..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CardNoCubeMap">
+            <summary>
+              Looks up a localized string similar to Device does not support TextureCube..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CardNoMipMap">
+            <summary>
+              Looks up a localized string similar to The graphics card does not support mipmap textures. Specify 1 for the number of levels..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CardNoVolume">
+            <summary>
+              Looks up a localized string similar to Device does not support Texture3D..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ChangeTechniqueBetweenBeginEnd">
+            <summary>
+              Looks up a localized string similar to Cannot change between textured and untextured drawing within a Begin/End pair..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CharacterNotInFont">
+            <summary>
+              Looks up a localized string similar to The character &apos;{0}&apos; (0x{1:x4}) is not available in this SpriteFont. If applicable, adjust the font&apos;s start and end CharacterRegions to include this character..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ConflictingRenderState">
+            <summary>
+              Looks up a localized string similar to The render states that are currently set cannot be used together..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ConflictingTextureFilter">
+            <summary>
+              Looks up a localized string similar to The current texture filters cannot be used together..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ConflictingTexturePalette">
+            <summary>
+              Looks up a localized string similar to The current textures cannot be used simultaneously..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ContentManagerCannotChangeRootDirectory">
+            <summary>
+              Looks up a localized string similar to This property cannot be changed after content has been loaded into the ContentManager..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CouldNotCreateResource">
+            <summary>
+              Looks up a localized string similar to This resource could not be created..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CouldNotDeleteContainerAlreadyInUse">
+            <summary>
+              Looks up a localized string similar to The Container could not be deleted because it is still in use..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CouldNotReadKeyboard">
+            <summary>
+              Looks up a localized string similar to An invalid operation occurred when trying to query the keyboard state. The result code was {0}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.CueNotFound">
+            <summary>
+              Looks up a localized string similar to An error occurred trying to play the cue named &quot;{0}&quot;.  Is the cue name correct?.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.DataNotAvailable">
+            <summary>
+              Looks up a localized string similar to The query data is not yet available. Use the IsComplete property to determine if the data is available before attempting to retrieve it..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.DecompressionError">
+            <summary>
+              Looks up a localized string similar to Error decompressing content data..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.DeviceCannotBeNullOnResourceCreate">
+            <summary>
+              Looks up a localized string similar to The GraphicsDevice must not be null when creating new resources..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.DidNotReadEnoughData">
+            <summary>
+              Looks up a localized string similar to Not enough data was read from this object..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.DriverError">
+            <summary>
+              Looks up a localized string similar to The driver has encountered an unexpected error..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.EmptySongCollectionsCannotBePlayed">
+            <summary>
+              Looks up a localized string similar to Play cannot be called on empty SongCollection objects..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.EndMustBeCalledBeforeBegin">
+            <summary>
+              Looks up a localized string similar to Begin cannot be called again until End has been successfully called..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.Expired">
+            <summary>
+              Looks up a localized string similar to The XACT engine is a pre-release version and has expired..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.FileNotNull">
+            <summary>
+              Looks up a localized string similar to The file name passed in must not be null..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.GamerAlreadyInSession">
+            <summary>
+              Looks up a localized string similar to The specified gamer is already in the session..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.GamerInvalid">
+            <summary>
+              Looks up a localized string similar to This Gamer is no longer valid. The profile may have been signed out..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.GamerNull">
+            <summary>
+              Looks up a localized string similar to The {0} argument contained a null reference. All of the {0} must be valid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.GamerServicesAlreadyInitialized">
+            <summary>
+              Looks up a localized string similar to The Gamer Services functionality is already initialized..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.GamerServicesGuideAlreadyVisible">
+            <summary>
+              Looks up a localized string similar to The function cannot be completed at this time: the Guide UI is already active. Wait until Guide.IsVisible is false before issuing this call..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.GamerServicesNotInitialized">
+            <summary>
+              Looks up a localized string similar to The Gamer Services functionality must be initialized before you call this method. The easiest way to do that is to add a GamerServicesComponent to the Game.Components collection in the constructor of your Game class..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.GammaRampMustBeCorrectValue">
+            <summary>
+              Looks up a localized string similar to The arrays used in gamma ramps must have a length of 256..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.GuideIsShowing">
+            <summary>
+              Looks up a localized string similar to The storage selection user interface could not be shown.  This can usually occur when the user interface is already being shown..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.IAsyncNotFromBegin">
+            <summary>
+              Looks up a localized string similar to The IAsyncResult parameter to this &quot;End&quot; function must be obtained by calling the matching &quot;Begin.&quot;.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InCallback">
+            <summary>
+              Looks up a localized string similar to An invalid method was called during an XACT callback..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.IncorrectBufferSize">
+            <summary>
+              Looks up a localized string similar to The buffer being created is the wrong size..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.IndexBufferSizeMustBeMutlipleOfIndexSize">
+            <summary>
+              Looks up a localized string similar to The total size of the index buffer must be an even multiple of the index element size (either 16 or 32 bits)..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.IndexBuffersMustBeSizedCorrectly">
+            <summary>
+              Looks up a localized string similar to IndexBuffers may be created only with types that are 16 bit or 32 bit in size..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstallingTitleUpdate">
+            <summary>
+              Looks up a localized string similar to Gamer Services functionality is not available because a title update is being installed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceApply3DFailed">
+            <summary>
+              Looks up a localized string similar to Failed to apply 3D positioning values for sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceGetPanFailed">
+            <summary>
+              Looks up a localized string similar to Failed to obtain the pan value for sound effect instance.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceGetPitchFailed">
+            <summary>
+              Looks up a localized string similar to Failed to obtain the pitch for sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceGetStateFailed">
+            <summary>
+              Looks up a localized string similar to Failed to obtain the state for sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceGetVolumeFailed">
+            <summary>
+              Looks up a localized string similar to Failed to obtain the volume for sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstancePauseFailed">
+            <summary>
+              Looks up a localized string similar to Failed to pause the sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstancePlaybackFailed">
+            <summary>
+              Looks up a localized string similar to Failed to start sound effect instance playback..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstancePlayFailedDueToLimit">
+            <summary>
+              Looks up a localized string similar to Failed to start sound effect instance due to instance limit..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceResumeFailed">
+            <summary>
+              Looks up a localized string similar to Failed to resume the sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceSetPanFailed">
+            <summary>
+              Looks up a localized string similar to Failed to set the pan value for sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceSetPitchFailed">
+            <summary>
+              Looks up a localized string similar to Failed to set the pitch for sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceSetVolumeFailed">
+            <summary>
+              Looks up a localized string similar to Failed to set instance volume..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InstanceStopFailed">
+            <summary>
+              Looks up a localized string similar to Failed to stop the sound effect instance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidAccelerometer">
+            <summary>
+              Looks up a localized string similar to An invalid operation was performed. Accelerometer is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidApply3DCall">
+            <summary>
+              Looks up a localized string similar to The sound is not a 3D sound. Call Apply3D before the first Play call to configure it to be a 3D sound..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidCall">
+            <summary>
+              Looks up a localized string similar to The method call is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidCategory">
+            <summary>
+              Looks up a localized string similar to The specified category is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidContentVersion">
+            <summary>
+              Looks up a localized string similar to XACT could not load the data provided. Make sure you are using the correct version of the XACT tool..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidController">
+            <summary>
+              Looks up a localized string similar to An invalid operation was performed. Is your PlayerIndex correct?.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidCue">
+            <summary>
+              Looks up a localized string similar to The specified cue index is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidDataSize">
+            <summary>
+              Looks up a localized string similar to The type you are using for T in this method is an invalid size for this resource..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidDevice">
+            <summary>
+              Looks up a localized string similar to Resources can only be used on the GraphicsDevice that they were created on. This resource was not created on this GraphicsDevice..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidDeviceType">
+            <summary>
+              Looks up a localized string similar to The requested device type is not valid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidEmitterDopplerScale">
+            <summary>
+              Looks up a localized string similar to The doppler scale of an audio emitter must be greater than or equal to zero..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidEntryCount">
+            <summary>
+              Looks up a localized string similar to Invalid entry count..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidMultisampleType">
+            <summary>
+              Looks up a localized string similar to The only valid MultisampleType values on the Xbox 360 are None, TwoSamples and FourSamples..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidNativeHandle">
+            <summary>
+              Looks up a localized string similar to A serious error has occurred..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidPlatform">
+            <summary>
+              Looks up a localized string similar to Shaders and Effects can only be compiled for Windows or the XBox 360..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidRectangle">
+            <summary>
+              Looks up a localized string similar to The rectangle is too large or too small for this resource..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidRenderTargetIndex">
+            <summary>
+              Looks up a localized string similar to The render target index must be within the valid range for this device..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidResourceManagementMode">
+            <summary>
+              Looks up a localized string similar to ResourceManagementMode must be either Manual or Automatic..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidServiceProvider">
+            <summary>
+              Looks up a localized string similar to Invalid service provider passed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidSessionState">
+            <summary>
+              Looks up a localized string similar to This operation is only valid when the session state is NetworkSessionState.{0}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidSoundOffsetOrIndex">
+            <summary>
+              Looks up a localized string similar to The specified sound offset or index is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidSpeakers">
+            <summary>
+              Looks up a localized string similar to AudioSpeakers.Stereo and AudioSpeakers.Surround5Dot1 are the only valid options for this argument..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidStreamIndex">
+            <summary>
+              Looks up a localized string similar to The index for this vertex stream is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidStringFormat">
+            <summary>
+              Looks up a localized string similar to Invalid string format. Expected a string in the format &quot;{0}&quot;..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidTextureFormat">
+            <summary>
+              Looks up a localized string similar to Invalid format specified for this texture..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidTotalSize">
+            <summary>
+              Looks up a localized string similar to The size of the data passed in is too large or too small for this resource..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidTouchPanel">
+            <summary>
+              Looks up a localized string similar to An invalid operation was performed. TouchPanel is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidTrackIndex">
+            <summary>
+              Looks up a localized string similar to The specified track index is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidUsage">
+            <summary>
+              Looks up a localized string similar to The method or function that was called cannot be used in the manner requested..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidUsageFlagsForTexture">
+            <summary>
+              Looks up a localized string similar to Texture resources can only be created with the following TextureUsage options: AutoGenerateMipMap, Tiled, or Linear..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidVariableIndex">
+            <summary>
+              Looks up a localized string similar to The specified variable index is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidWaveIndex">
+            <summary>
+              Looks up a localized string similar to The specified wave index is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InvalidXactVolume">
+            <summary>
+              Looks up a localized string similar to Volume must be a positive float value..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.InviteeNotSignedIn">
+            <summary>
+              Looks up a localized string similar to The gamer profile that accepted this invite is no longer signed in..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.IsCompleteMustBeCalled">
+            <summary>
+              Looks up a localized string similar to Begin may not be called on this query object again before IsComplete has been checked..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.LeaderboardColumnNotFound">
+            <summary>
+              Looks up a localized string similar to Column &apos;{0}&apos; is not present in this leaderboard..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.LeaderboardColumnOverflow">
+            <summary>
+              Looks up a localized string similar to Too many leaderboard column writes. You can only write to {0} leaderboard columns per game session..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.LeaderboardIsArbitrated">
+            <summary>
+              Looks up a localized string similar to Leaderboard &apos;{0}&apos; is arbitrated, so can only be written from ranked network sessions..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.LeaderboardNotLocal">
+            <summary>
+              Looks up a localized string similar to Leaderboard &apos;{0}&apos; is not arbitrated, so can only be written by local gamers..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.LeaderboardReaderCannotPage">
+            <summary>
+              Looks up a localized string similar to This LeaderboardReader cannot page in the specified direction..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.LeaderboardWriteOverflow">
+            <summary>
+              Looks up a localized string similar to Too many leaderboard writes. You can only write to {0} leaderboards per game session..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.LocalDeviceLibrary">
+            <summary>
+              Looks up a localized string similar to Local device library.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.METCannotBeMipMapped">
+            <summary>
+              Looks up a localized string similar to Multi-element textures cannot be mipmapped, set numberLevels to one..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MissingNativeDependency">
+            <summary>
+              Looks up a localized string similar to Failed to load {0}. Please verify that you have the XNA Framework installed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ModelHasNoEffect">
+            <summary>
+              Looks up a localized string similar to ModelMeshPart has a null Effect..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MoreData">
+            <summary>
+              Looks up a localized string similar to There is more data available than the specified buffer size can hold..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustBeMultipleOfFour">
+            <summary>
+              Looks up a localized string similar to When setting float shader constant data, the array must have a length that is a multiple of four..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustBeSixteenOrThirtyTwoBitIndices">
+            <summary>
+              Looks up a localized string similar to Index buffers can only be created for indices which are sixteen or thirty-two bits in length. This parameter is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustBeValidIndex">
+            <summary>
+              Looks up a localized string similar to This parameter must be a valid index within the array..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustBeZero">
+            <summary>
+              Looks up a localized string similar to This parameter must be zero. Any value other than zero is invalid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustCallBeginSprite">
+            <summary>
+              Looks up a localized string similar to Begin must be called on SpriteBatch before you can call this method..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustDrawSomething">
+            <summary>
+              Looks up a localized string similar to When drawing, at least one primitive must be drawn..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustResolveRenderTarget">
+            <summary>
+              Looks up a localized string similar to The render target must not be set on the device when calling GetTexture..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustRetrieveAtLeastOne">
+            <summary>
+              Looks up a localized string similar to When attempting to call GetValue which returns an array, you must request that at least one member be returned..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustUserShaderCode">
+            <summary>
+              Looks up a localized string similar to You can only construct Effect with data that was already compiled. This data is not a compiled effect..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.MustUseSquareTextures">
+            <summary>
+              Looks up a localized string similar to Device requires square textures..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NegativePlaneDistance">
+            <summary>
+              Looks up a localized string similar to You should specify positive value for {0}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NegativeRadius">
+            <summary>
+              Looks up a localized string similar to Radius must be greater than 0..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NetworkError">
+            <summary>
+              Looks up a localized string similar to An error occurred while accessing the network..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NetworkGamerDisposed">
+            <summary>
+              Looks up a localized string similar to This NetworkGamer is no longer valid. The gamer may have left the session..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NetworkGamerNotLocal">
+            <summary>
+              Looks up a localized string similar to This method cannot be called on remote gamer instances. It is only valid when NetworkGamer.IsLocal is true. If you are looping over the contents of the NetworkSession.AllGamers collection, consider using NetworkSession.LocalGamers instead..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NetworkGamerWrongSession">
+            <summary>
+              Looks up a localized string similar to This NetworkGamer belongs to the wrong session..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NetworkNotAvailable">
+            <summary>
+              Looks up a localized string similar to Network not available. Networking is turned off or not connected..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NetworkSessionPropertiesReadOnly">
+            <summary>
+              Looks up a localized string similar to This NetworkSessionProperties collection is read-only..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoAudioPlaybackDevicesFound">
+            <summary>
+              Looks up a localized string similar to Unable to find any valid audio playback devices..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoCreatorsClub">
+            <summary>
+              Looks up a localized string similar to The current profile does not have an XNA Creators Club membership, which is required to sign in to the Live service. To continue, purchase a membership from Xbox Live Marketplace, or switch to a local gamer profile..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoDefaultConstructor">
+            <summary>
+              Looks up a localized string similar to Cannot deserialize type {0} because it does not have a parameterless constructor..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoDeviceConnected">
+            <summary>
+              Looks up a localized string similar to The device is no longer connected..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoDirectXRedist">
+            <summary>
+              Looks up a localized string similar to Could not find a dependency required for this functionality.\r\n{0}\r\nPlease ensure you have installed the appropriate redist package..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoFullPathExceptionText">
+            <summary>
+              Looks up a localized string similar to You must not pass in a full path to this method..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoGraphicsDevice">
+            <summary>
+              Looks up a localized string similar to GraphicsDevice not found..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoGraphicsDeviceContent">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. GraphicsDevice component not found..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoJoinInProgress">
+            <summary>
+              Looks up a localized string similar to This operation is not valid because join-in-progress is disabled..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoPower2Width">
+            <summary>
+              Looks up a localized string similar to Device does not support texture width and height values that are not powers of 2..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoPower2WidthMulti">
+            <summary>
+              Looks up a localized string similar to Device does not support multi-level texture width and height values that are not powers of 2..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoProjectGuid">
+            <summary>
+              Looks up a localized string similar to Could not find a valid project identifier. In order to use Gamer Services functionality, you must have a GuidAttribute on your main game assembly..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoPublicSlots">
+            <summary>
+              Looks up a localized string similar to Session full. The session does not have any open public slots..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoQuery">
+            <summary>
+              Looks up a localized string similar to Occlusion queries are not supported by this graphics device..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NotAvailableOnThisPlatform">
+            <summary>
+              Looks up a localized string similar to This functionality is not available on this platform..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NotEnoughCorners">
+            <summary>
+              Looks up a localized string similar to You have to have at least 8 elements to copy corners..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NotEnoughPacketSpace">
+            <summary>
+              Looks up a localized string similar to The graphics buffer is not large enough for this data..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NotEnoughSourceSize">
+            <summary>
+              Looks up a localized string similar to Source array must be equal or bigger than requested length..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NotEnoughTargetSize">
+            <summary>
+              Looks up a localized string similar to Target array size must be equal or bigger than source array size..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NotFound">
+            <summary>
+              Looks up a localized string similar to The requested item was not found..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NotInvited">
+            <summary>
+              Looks up a localized string similar to NetworkSession.JoinInvited can only be called in response to the InviteAccepted notification event..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NoWaveBank">
+            <summary>
+              Looks up a localized string similar to No wavebank exists for the requested operation..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NullGraphicsDeviceService">
+            <summary>
+              Looks up a localized string similar to Could not obtain graphics device service from the service provider..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NullNotAllowed">
+            <summary>
+              Looks up a localized string similar to This method does not accept null for this parameter..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NullRenderTarget">
+            <summary>
+              Looks up a localized string similar to ResolveRenderTarget may not be called when the current render target is null. Use ResolveBackBuffer instead..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.NumberVerticesMustBeGreaterZero">
+            <summary>
+              Looks up a localized string similar to When drawing indexed primitives, the number of vertices passed in must be greater than zero..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ObjectDisposedException">
+            <summary>
+              Looks up a localized string similar to This object has already been disposed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OffsetNotValid">
+            <summary>
+              Looks up a localized string similar to The offset must be within the valid range for this resource..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OneSimRenderTarget">
+            <summary>
+              Looks up a localized string similar to The device does not support more than one simultaneous render target..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OpenResourceNotBinary">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. Not a binary resource..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OpenResourceNotFound">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. Resource not found..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OpenStreamError">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. Cannot open file..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OpenStreamNotFound">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. File not found..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OppositePlanes">
+            <summary>
+              Looks up a localized string similar to Near plane distance is larger than Far plane distance. Near plane distance must be smaller than Far plane distance..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OutOfMemoryDrawUserPrimitives">
+            <summary>
+              Looks up a localized string similar to The amount of data being used to draw is too large for this drawing operation..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.OutRangeFieldOfView">
+            <summary>
+              Looks up a localized string similar to {0} takes a value between 0 and Pi (180 degrees) in radians..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.PacketArrayTooSmall">
+            <summary>
+              Looks up a localized string similar to The specified array is too small to receive the incoming {0} byte network packet..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.PacketQueueFull">
+            <summary>
+              Looks up a localized string similar to Network data could not be sent because the output packet queue is full. You should send data less frequently, or use an unreliable SendDataOptions mode..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.PacketSubmissionFailed">
+            <summary>
+              Looks up a localized string similar to Failed to submit audio for playback..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.PlayerDeviceAlreadyOpened">
+            <summary>
+              Looks up a localized string similar to A new container cannot be opened until all previouses containers used by this PlayerIndex have been disposed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.PlayerFourFolder">
+            <summary>
+              Looks up a localized string similar to Player4.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.PlayerOneFolder">
+            <summary>
+              Looks up a localized string similar to Player1.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.PlayerThreeFolder">
+            <summary>
+              Looks up a localized string similar to Player3.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.PlayerTwoFolder">
+            <summary>
+              Looks up a localized string similar to Player2.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ProFeatureNotSupported">
+            <summary>
+              Looks up a localized string similar to This feature is only available to professional developers..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ProfileNotPrivileged">
+            <summary>
+              Looks up a localized string similar to The current gamer profile does not have suitable privileges to perform this operation. You may require a Live Gold account, or need to change your parental control settings..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ProfileNotSignedIn">
+            <summary>
+              Looks up a localized string similar to A signed in gamer profile is required to perform this operation. A Live profile may also be required. There are no profiles currently signed in, or the profile is not signed in to Live..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ProxyAlreadyRunning">
+            <summary>
+              Looks up a localized string similar to Error initializing Games for Windows - LIVE. Another program is already using this functionality..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ProxyCreateFailed">
+            <summary>
+              Looks up a localized string similar to Error running &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ProxyInitializeFailed">
+            <summary>
+              Looks up a localized string similar to Error initializing Games for Windows - LIVE..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ProxyMissingDependency">
+            <summary>
+              Looks up a localized string similar to Error running &apos;{0}. A required dependency such as the Games For Windows - LIVE or DirectX runtime may not be correctly installed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ProxyUpdateFailed">
+            <summary>
+              Looks up a localized string similar to Games for Windows - LIVE proxy process terminated unexpectedly..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.RankedNoJoinInProgress">
+            <summary>
+              Looks up a localized string similar to Ranked sessions do not support join-in-progress..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ReaderConstructedNewInstance">
+            <summary>
+              Looks up a localized string similar to ContentTypeReader {0} returned a new object instance from its Read method. This should have loaded data into the existingInstance parameter..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ReadFileIncorrectBytes">
+            <summary>
+              Looks up a localized string similar to An error occurred while trying to read this file. An invalid number of bytes were read..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ReadOnly">
+            <summary>
+              Looks up a localized string similar to This {0} is read-only..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ReadOnlySharedResource">
+            <summary>
+              Looks up a localized string similar to Members marked with ContentSerializerAttribute.SharedResource cannot be read-only..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ReflectiveReaderTypeNotFound">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. Cannot find type {1}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.RenderTargetAndDepthMustMatch">
+            <summary>
+              Looks up a localized string similar to The active render target and depth stencil surface must have the same pixel size and multisampling type..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.RenderTargetsMustMatch">
+            <summary>
+              Looks up a localized string similar to All active render targets must be the same size with the same multisample type..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.RequireNonNullAudioEngine">
+            <summary>
+              Looks up a localized string similar to You must pass in a valid audio engine..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ResourceDataMustBeCorrectSize">
+            <summary>
+              Looks up a localized string similar to The array is not the correct size for the amount of data requested..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ResourceInUse">
+            <summary>
+              Looks up a localized string similar to The operation was aborted. You may not modify a resource that has been set on a device, or after it has been used within a tiling bracket..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ResourcesMustBeGreaterThanZeroSize">
+            <summary>
+              Looks up a localized string similar to Resource size must be greater than zero..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ResourceTooLarge">
+            <summary>
+              Looks up a localized string similar to The resource that is being created is too large..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SavedGameFolder">
+            <summary>
+              Looks up a localized string similar to SavedGames.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SelectVariation">
+            <summary>
+              Looks up a localized string similar to A variation could not be selected..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SessionAlreadyExists">
+            <summary>
+              Looks up a localized string similar to Could not create object because a different session already exists. There can only be one NetworkSession or AvailableNetworkSessionCollection in use at a time. You must Dispose any previous session before creating a new one..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SessionEnded">
+            <summary>
+              Looks up a localized string similar to This operation is not valid because the session has ended..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SessionFindLocal">
+            <summary>
+              Looks up a localized string similar to NetworkSession.Find cannot be used with local session types..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SessionFull">
+            <summary>
+              Looks up a localized string similar to Session full. The specified session does not have enough open slots for all the local gamers signed in to this machine..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SessionNotFound">
+            <summary>
+              Looks up a localized string similar to Session not found. It may have ended, or there may be no network connectivity between the local machine and session host..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SessionNotHost">
+            <summary>
+              Looks up a localized string similar to This method can only be called by the session host..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SessionNotJoinable">
+            <summary>
+              Looks up a localized string similar to Session not joinable. You must wait for the host to return to the lobby before joining..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ShaderCodeSizeMustBeDword">
+            <summary>
+              Looks up a localized string similar to Effect and shader code must have a size that is a multiple of four bytes..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ShadersMustBeCompiled">
+            <summary>
+              Looks up a localized string similar to Creating an effect requires that the shader code has been compiled..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ShowSignInPaneCountInvalid">
+            <summary>
+              Looks up a localized string similar to The paneCount argument is invalid. The valid options for this parameter are 1, 2, and 4..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.SongPlaybackFailed">
+            <summary>
+              Looks up a localized string similar to Song playback failed. Please verify that the song is not DRM protected. DRM protected songs are not supported for creator games..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.StaleSearchResult">
+            <summary>
+              Looks up a localized string similar to This session search result is no longer valid. NetworkSession.Find return data is only valid up until you create a NetworkSession or perform some other search..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.StreamMustBeReadable">
+            <summary>
+              Looks up a localized string similar to The stream passed into this method must be readable..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.StreamNotNull">
+            <summary>
+              Looks up a localized string similar to The stream passed into this method cannot be null..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.StreamsMustBeReadable">
+            <summary>
+              Looks up a localized string similar to Streams passed into this method must be readable..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.StringCollectionInvalid">
+            <summary>
+              Looks up a localized string similar to The argument is invalid. It must contain between 1 and {0} strings. The strings cannot be null or empty, and must be less than {1} characters long..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.StringNullEmptyOrTooLong">
+            <summary>
+              Looks up a localized string similar to This string cannot be null or empty, and must be less than {0} characters long..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.StringTooLong">
+            <summary>
+              Looks up a localized string similar to This string must be less than {0} characters long..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TitleNameNotNull">
+            <summary>
+              Looks up a localized string similar to You must pass in a non-null title name..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TooManyLevels">
+            <summary>
+              Looks up a localized string similar to Textures can only have a maximum of 32 levels..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TooManyLevelsCube">
+            <summary>
+              Looks up a localized string similar to Too many levels for a TextureCube of this size..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TooManyLevelsVolume">
+            <summary>
+              Looks up a localized string similar to Too many levels for a Texture3D of this size..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TooManyOperations">
+            <summary>
+              Looks up a localized string similar to The application is requesting more texture filtering operations than the device supports..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TooManyPendingAsyncOperations">
+            <summary>
+              Looks up a localized string similar to The asynchronous operation (IAsyncResult) could not be performed. There are too many pending operations..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TooManyRegions">
+            <summary>
+              Looks up a localized string similar to A maximum of 255 regions are allowed for this method..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TrialMode">
+            <summary>
+              Looks up a localized string similar to This functionality is not available when the game is running in trial mode..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TrueSkillNotHost">
+            <summary>
+              Looks up a localized string similar to TrueSkill score and team for non-ranked sessions can only be written by the host..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TypeReaderDuplicate">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. ContentTypeReader {1} conflicts with existing handler {2} for type {3}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TypeReaderInvalid">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. Cannot instantiate ContentTypeReader {1}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TypeReaderNotFound">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. Cannot find ContentTypeReader {1}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.TypeReaderNotRegistered">
+            <summary>
+              Looks up a localized string similar to Error loading &quot;{0}&quot;. Cannot find ContentTypeReader for {1}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.UnexpectedError">
+            <summary>
+              Looks up a localized string similar to An unexpected error has occurred..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.UnknownError">
+            <summary>
+              Looks up a localized string similar to An unknown error occcured..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.UnsupportedAlphaOperation">
+            <summary>
+              Looks up a localized string similar to The device does not support a specified texture blending operation for the alpha channel..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.UnsupportedColorArg">
+            <summary>
+              Looks up a localized string similar to The device does not support a specified texture blending argument for color values..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.UnsupportedColorOperation">
+            <summary>
+              Looks up a localized string similar to The device does not support a specified texture blending operation for color values..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.UnsupportedFactorValue">
+            <summary>
+              Looks up a localized string similar to The device does not support the specified texture factor value..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.UnsupportedTextureFilter">
+            <summary>
+              Looks up a localized string similar to The device does not support the specified texture filter..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ValidFormatRequiredForDepthStencil">
+            <summary>
+              Looks up a localized string similar to A valid SurfaceFormat must be specified for the AutoDepthStencil member if EnableAutoDepthStencil is true..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.ValidIndex">
+            <summary>
+              Looks up a localized string similar to This parameter must be a valid index within the array..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.VertexElementIncorrectSize">
+            <summary>
+              Looks up a localized string similar to The VertexElement array is either too large or too small..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.VertexStrideTooBig">
+            <summary>
+              Looks up a localized string similar to The vertex stride is larger than the vertex buffer. This is not allowed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.VertexStrideTooSmall">
+            <summary>
+              Looks up a localized string similar to The vertex stride is too small for the type of data requested. This is not allowed..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.VisualizationArrayTooSmall">
+            <summary>
+              Looks up a localized string similar to Length of visualization data buffers must be at least {0}..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.VoiceCreationFailed">
+            <summary>
+              Looks up a localized string similar to Failed to create a low-level voice..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.VoiceDestructionFailed">
+            <summary>
+              Looks up a localized string similar to Failed to destroy the low-level voice..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.WaveBankNotPrepared">
+            <summary>
+              Looks up a localized string similar to The wave bank is not prepared..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.WidthHeightTooLarge">
+            <summary>
+              Looks up a localized string similar to Texture width or height is larger than the device supports..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.WmpMediaSource">
+            <summary>
+              Looks up a localized string similar to Local Windows Media Player library.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.WriteLeaderboardException">
+            <summary>
+              Looks up a localized string similar to WriteLeaderboard event handler failed. See InnerException for details..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.WriteOnlyGetNotSupported">
+            <summary>
+              Looks up a localized string similar to Calling GetData on a resource that was created with BufferUsage.WriteOnly is not supported..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.WrongNumberOfGamers">
+            <summary>
+              Looks up a localized string similar to There are an invalid number of gamers listed in the {0} argument. This method supports between {1} and {2} gamers..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.WrongResolveTargetSize">
+            <summary>
+              Looks up a localized string similar to ResolveBackBuffer target texture is not the same size as the backbuffer..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.WrongTextureFormat">
+            <summary>
+              Looks up a localized string similar to The pixel format of the texture surface is not valid..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XactReadFile">
+            <summary>
+              Looks up a localized string similar to An error occurred while attempting to read a file..
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XlastAchievement">
+            <summary>
+              Looks up a localized string similar to achievement.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XlastContextValue">
+            <summary>
+              Looks up a localized string similar to context value.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XlastGameMode">
+            <summary>
+              Looks up a localized string similar to game mode.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XlastGamerPicture">
+            <summary>
+              Looks up a localized string similar to gamer picture.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XlastLeaderboard">
+            <summary>
+              Looks up a localized string similar to leaderboard.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XlastPresenceMode">
+            <summary>
+              Looks up a localized string similar to presence mode.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XlastProperty">
+            <summary>
+              Looks up a localized string similar to property or context.
+            </summary>
+        </member>
+        <member name="P:SFML.Graphics.FrameworkResources.XlastUnknown">
+            <summary>
+              Looks up a localized string similar to Unknown {0} &apos;{1}&apos;. This was not defined in the XLAST configuration..
+            </summary>
+        </member>
     </members>
 </doc>

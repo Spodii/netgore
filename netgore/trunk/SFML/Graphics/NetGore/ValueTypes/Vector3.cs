@@ -713,6 +713,7 @@ namespace SFML.Graphics
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
                 throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
+
             for (int i = 0; i < sourceArray.Length; i++)
             {
                 float x = sourceArray[i].X;
