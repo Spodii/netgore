@@ -199,7 +199,7 @@ namespace NetGore.EditorTools
             _dirty = true;
             Rectangle src = grhData.SourceRect;
             var dest = ImageList.ImageSize;
-            return ImageHelper.CreateFromTexture(grhData.Texture, src.X, src.Y, src.Width, src.Height, dest.Width, dest.Height);
+            return grhData.Texture.ToBitmap(src, dest.Width, dest.Height);
         }
 
         /// <summary>

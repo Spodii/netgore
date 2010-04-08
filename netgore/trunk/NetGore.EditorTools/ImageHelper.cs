@@ -17,9 +17,9 @@ namespace NetGore.EditorTools
     public static class ImageHelper
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        /*
         /// <summary>
-        /// Creates an Image from a Texture2D.
+        /// Creates an <see cref="Image"/> from an <see cref="SFML.Graphics.Image"/>.
         /// </summary>
         /// <param name="texture">Texture to get the Image from.</param>
         /// <param name="x">Source X.</param>
@@ -36,9 +36,15 @@ namespace NetGore.EditorTools
 
             if (log.IsDebugEnabled)
             {
-                log.DebugFormat("Creating image from texture `{0}` at ({1},{2})-({3}x{4}) with size ({5}x{6})", texture.Name, x, y,
+                log.DebugFormat("Creating image from texture `{0}` at ({1},{2})-({3}x{4}) with size ({5}x{6})", texture, x, y,
                                 width, height, destWidth, destHeight);
             }
+
+            // Get the byte array representing the image's contents
+            var pixels = texture.Pixels;
+
+            // Create a System.Drawing.Image from the pixel information array
+
 
             // Write the texture to a file
             string filePath = Path.GetTempFileName();
@@ -101,6 +107,7 @@ namespace NetGore.EditorTools
 
             return ret;
         }
+        */
 
         /// <summary>
         /// Creates an Image with a solid color.

@@ -563,6 +563,20 @@ namespace NetGore
             {
                 get { return _lastUsed; }
             }
+
+            /// <summary>
+            /// Returns a <see cref="System.String"/> that represents this instance.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="System.String"/> that represents this instance.
+            /// </returns>
+            public override string ToString()
+            {
+                if (FileName.Length > 15)
+                    return "Image [" + FileName.Substring(10) + "]";
+                else
+                    return "Image [" + FileName + "]";
+            }
         }
 
         /// <summary>
@@ -609,6 +623,20 @@ namespace NetGore
             public int LastUsedTime
             {
                 get { return _lastUsed; }
+            }
+
+            /// <summary>
+            /// Returns a <see cref="System.String"/> that represents this instance.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="System.String"/> that represents this instance.
+            /// </returns>
+            public override string ToString()
+            {
+                if (FileName.Length > 15)
+                    return "Image [" + FileName.Substring(10) + "]";
+                else
+                    return "Image [" + FileName + "]";
             }
         }
     }

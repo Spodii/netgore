@@ -149,11 +149,11 @@ namespace NetGore.EditorTools
             {
                 NewTxt.BackColor = EditorColors.Normal;
 
-                Image texture = _cm.Load<Image>(assetName, ContentLevel.Temporary);
-                int w = texture.Width;
-                int h = texture.Height;
+                var texture = _cm.LoadImage(assetName, ContentLevel.Temporary);
+                int w = (int)texture.Width;
+                int h = (int)texture.Height;
 
-                Image previewImage = ImageHelper.CreateFromTexture(texture, 0, 0, w, h, PreviewPic.Width, PreviewPic.Height);
+                Image previewImage = texture.ToBitmap(new Rectangle(0,0,w,h), PreviewPic.Width, PreviewPic.Height);
                 PreviewPic.Image = previewImage;
             }
             else
