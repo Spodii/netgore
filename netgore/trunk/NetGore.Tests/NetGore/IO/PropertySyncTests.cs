@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
 using NUnit.Framework;
+using SFML.Graphics;
 
 // ReSharper disable UnusedMember.Local
 

@@ -1,6 +1,6 @@
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NUnit.Framework;
+using SFML.Graphics;
 
 namespace NetGore.Tests.NetGore
 {

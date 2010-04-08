@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
 using NUnit.Framework;
+using SFML.Graphics;
 
 namespace NetGore.Tests.Graphics.GUI
 {

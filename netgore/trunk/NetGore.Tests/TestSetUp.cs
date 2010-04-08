@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
@@ -8,6 +7,7 @@ using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Features.StatusEffects;
 using NUnit.Framework;
+using SFML.Graphics;
 
 namespace NetGore.Tests
 {
