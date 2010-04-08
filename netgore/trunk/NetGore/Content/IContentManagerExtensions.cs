@@ -2,7 +2,7 @@ using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.Content
 {
     /// <summary>
     /// Extension methods for the <see cref="IContentManager"/>.

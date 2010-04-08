@@ -4,7 +4,7 @@ using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.Content
 {
     /// <summary>
     /// Interface for a content manager.

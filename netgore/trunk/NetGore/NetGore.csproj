@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\bin\</OutputPath>
@@ -43,6 +44,7 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugTopDown|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +53,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseTopDown|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,35 +63,23 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <Optimize>true</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mono|x86' ">
     <OutputPath>..\bin\</OutputPath>
     <DefineConstants>TRACE;DEBUG;MONO</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MonoTopDown|x86' ">
     <OutputPath>..\bin\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
     <DefineConstants>TRACE;DEBUG;MONO;TOPDOWN</DefineConstants>
     <Optimize>false</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.JScript" />
-    <Reference Include="sfmlnet-audio, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-audio.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="sfmlnet-graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-graphics.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="sfmlnet-window, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-window.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -97,19 +88,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Asserts\ThreadAsserts.cs" />
+    <Compile Include="Audio\AudioManagerBase.cs" />
+    <Compile Include="Audio\IAudio.cs" />
+    <Compile Include="Audio\IAudioHelper.cs" />
+    <Compile Include="Audio\Music\IMusic.cs" />
+    <Compile Include="Audio\Music\Music.cs" />
+    <Compile Include="Audio\Music\MusicManager.cs" />
+    <Compile Include="Audio\Sound\ISound.cs" />
+    <Compile Include="Audio\Sound\Sound.cs" />
+    <Compile Include="Audio\Sound\SoundEffectInstance3D.cs" />
+    <Compile Include="Audio\Sound\SoundManager.cs" />
+    <Compile Include="Audio\StaticAudioEmitter.cs" />
+    <Compile Include="Core\Asserts\ThreadAsserts.cs" />
+    <Compile Include="Content\ContentAssetName.cs" />
+    <Compile Include="Content\ContentAssetNameConverter.cs" />
+    <Compile Include="Content\TextureAssetName.cs" />
+    <Compile Include="Content\TextureAssetNameConverter.cs" />
     <Compile Include="Audio\MusicIDTypeConverter.cs" />
     <Compile Include="Audio\SoundIDTypeConverter.cs" />
-    <Compile Include="BitOps.cs" />
-    <Compile Include="Converters\SimpleExpandableTypeConverter.cs" />
-    <Compile Include="Converters\SimpleTypeConverter.cs" />
-    <Compile Include="Converters\Variable Values\IVariableValueConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableByteConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableFloatConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableIntConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableSByteConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableShortConverter.cs" />
-    <Compile Include="Converters\Variable Values\VariableUShortConverter.cs" />
+    <Compile Include="Core\BitOps.cs" />
+    <Compile Include="Content\ContentLevel.cs" />
+    <Compile Include="Content\IContentManager.cs" />
+    <Compile Include="Content\IContentManagerExtensions.cs" />
+    <Compile Include="Core\Converters\SimpleExpandableTypeConverter.cs" />
+    <Compile Include="Core\Converters\SimpleTypeConverter.cs" />
+    <Compile Include="Core\Converters\Variable Values\IVariableValueConverter.cs" />
+    <Compile Include="Core\Converters\Variable Values\VariableByteConverter.cs" />
+    <Compile Include="Core\Converters\Variable Values\VariableFloatConverter.cs" />
+    <Compile Include="Core\Converters\Variable Values\VariableIntConverter.cs" />
+    <Compile Include="Core\Converters\Variable Values\VariableSByteConverter.cs" />
+    <Compile Include="Core\Converters\Variable Values\VariableShortConverter.cs" />
+    <Compile Include="Core\Converters\Variable Values\VariableUShortConverter.cs" />
     <Compile Include="Collections\Cache\HashCache.cs" />
     <Compile Include="Collections\Cache\ICache.cs" />
     <Compile Include="Collections\Cache\ThreadSafeHashCache.cs" />
@@ -119,34 +128,189 @@
     <Compile Include="Collections\SlimList.cs" />
     <Compile Include="Collections\TaskList.cs" />
     <Compile Include="Collections\TimeExpirationQueue.cs" />
-    <Compile Include="Content\ContentLevel.cs" />
-    <Compile Include="Content\IContentManagerExtensions.cs" />
-    <Compile Include="Content\IContentManager.cs" />
-    <Compile Include="Direction.cs" />
-    <Compile Include="DirectionHelper.cs" />
-    <Compile Include="EngineSettings.cs" />
-    <Compile Include="Enum\EnumFieldAttributeManager.cs" />
-    <Compile Include="Exceptions\DuplicateKeyException.cs" />
-    <Compile Include="Extensions\IListExtensions.cs" />
-    <Compile Include="Extensions\ITypeDescriptorContextExtensions.cs" />
-    <Compile Include="Extensions\KeysExtensions.cs" />
-    <Compile Include="Extensions\MouseButtonEventArgsExtensions.cs" />
-    <Compile Include="Extensions\ObjectBaseExtensions.cs" />
-    <Compile Include="Extensions\RandomExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\Vector3Extensions.cs" />
-    <Compile Include="Extensions\Vector4Extensions.cs" />
+    <Compile Include="Core\Direction.cs" />
+    <Compile Include="Core\DirectionHelper.cs" />
+    <Compile Include="Core\EngineSettings.cs" />
+    <Compile Include="Core\Enum\EnumFieldAttributeManager.cs" />
+    <Compile Include="Core\Exceptions\DuplicateKeyException.cs" />
+    <Compile Include="Core\Extensions\IListExtensions.cs" />
+    <Compile Include="Core\Extensions\ITypeDescriptorContextExtensions.cs" />
+    <Compile Include="Core\Extensions\KeysExtensions.cs" />
+    <Compile Include="Core\Extensions\MouseButtonEventArgsExtensions.cs" />
+    <Compile Include="Core\Extensions\ObjectBaseExtensions.cs" />
+    <Compile Include="Core\Extensions\RandomExtensions.cs" />
+    <Compile Include="Core\Extensions\StringExtensions.cs" />
+    <Compile Include="Core\Extensions\Vector3Extensions.cs" />
+    <Compile Include="Core\Extensions\Vector4Extensions.cs" />
+    <Compile Include="Graphics\Atlas\AtlasNode.cs" />
+    <Compile Include="Graphics\Atlas\AtlasTreeNode.cs" />
+    <Compile Include="Graphics\Atlas\ITextureAtlas.cs" />
+    <Compile Include="Graphics\Atlas\TextureAtlas.cs" />
+    <Compile Include="Graphics\Background\BackgroundImage.cs" />
+    <Compile Include="Graphics\Background\BackgroundLayer.cs" />
+    <Compile Include="Graphics\Background\BackgroundLayerLayout.cs" />
+    <Compile Include="Graphics\Camera\Camera2D.cs" />
+    <Compile Include="Graphics\Camera\ICamera2D.cs" />
+    <Compile Include="Graphics\Camera\ICamera2DExtensions.cs" />
+    <Compile Include="Graphics\Camera\ICamera2DProvider.cs" />
+    <Compile Include="Graphics\Character Sprite\GrhCharacterSprite.cs" />
+    <Compile Include="Graphics\Character Sprite\ICharacterSprite.cs" />
+    <Compile Include="Graphics\Character Sprite\SkeletonCharacterSprite.cs" />
+    <Compile Include="Graphics\Chat Bubble\ChatBubble.cs" />
+    <Compile Include="Graphics\Chat Bubble\ChatBubbleManagerBase.cs" />
+    <Compile Include="Graphics\Content\ContentManager.cs" />
+    <Compile Include="Graphics\Drawing Tools\EntityInterpolator.cs" />
+    <Compile Include="Graphics\Drawing Tools\FocusedSpatialDrawer.cs" />
+    <Compile Include="Graphics\Drawing Tools\MapBorderDrawer.cs" />
+    <Compile Include="Graphics\Drawing Tools\ScreenGrid.cs" />
+    <Compile Include="Graphics\DrawingManager\DrawingManager.cs" />
+    <Compile Include="Graphics\DrawingManager\DrawingManagerState.cs" />
+    <Compile Include="Graphics\DrawingManager\IDrawingManager.cs" />
+    <Compile Include="Graphics\Exceptions\GrhDataException.cs" />
+    <Compile Include="Graphics\Exceptions\GrhDataNotFoundException.cs" />
+    <Compile Include="Graphics\Exceptions\ParticleEmitterException.cs" />
+    <Compile Include="Graphics\Exceptions\ParticleEmitterLoadEmitterException.cs" />
+    <Compile Include="Graphics\Exceptions\ParticleEmitterLoadEmitterModifierException.cs" />
+    <Compile Include="Graphics\Exceptions\ParticleEmitterLoadParticleModifierException.cs" />
+    <Compile Include="Graphics\Exceptions\ParticleEmitterNotFoundException.cs" />
+    <Compile Include="Graphics\Exceptions\UnsupportedGrhDataTypeException.cs" />
+    <Compile Include="Graphics\Extensions\FontExtensions.cs" />
+    <Compile Include="Graphics\Extensions\ISpriteBatchExtensions.cs" />
+    <Compile Include="Graphics\FrameCounter.cs" />
+    <Compile Include="Graphics\GUI\Control Bases\Control.cs" />
+    <Compile Include="Graphics\GUI\Control Bases\SpriteControl.cs" />
+    <Compile Include="Graphics\GUI\Control Bases\TextControl.cs" />
+    <Compile Include="Graphics\GUI\ControlBorder.cs" />
+    <Compile Include="Graphics\GUI\Controls\Button.cs" />
+    <Compile Include="Graphics\GUI\Controls\CheckBox.cs" />
+    <Compile Include="Graphics\GUI\Controls\Form.cs" />
+    <Compile Include="Graphics\GUI\Controls\Label.cs" />
+    <Compile Include="Graphics\GUI\Controls\ListBox.cs" />
+    <Compile Include="Graphics\GUI\Controls\MessageBox.cs" />
+    <Compile Include="Graphics\GUI\Controls\MessageBoxButton.cs" />
+    <Compile Include="Graphics\GUI\Controls\Panel.cs" />
+    <Compile Include="Graphics\GUI\Controls\PictureBox.cs" />
+    <Compile Include="Graphics\GUI\Controls\TextBox.cs" />
+    <Compile Include="Graphics\GUI\DragDropProviderHelper.cs" />
+    <Compile Include="Graphics\GUI\EditableTextHandler.cs" />
+    <Compile Include="Graphics\GUI\EventArgs\ControlEventHandler.cs" />
+    <Compile Include="Graphics\GUI\EventArgs\KeyboardEventHandler.cs" />
+    <Compile Include="Graphics\GUI\EventArgs\MouseClickEventHandler.cs" />
+    <Compile Include="Graphics\GUI\EventArgs\MouseEventHandler.cs" />
+    <Compile Include="Graphics\GUI\EventArgs\TextEnteredEventHandler.cs" />
+    <Compile Include="Graphics\GUI\GameControl\GameControl.cs" />
+    <Compile Include="Graphics\GUI\GameControl\GameControlCollection.cs" />
+    <Compile Include="Graphics\GUI\GameControl\GameControlEventHandler.cs" />
+    <Compile Include="Graphics\GUI\GameControl\GameControlKeys.cs" />
+    <Compile Include="Graphics\GUI\GUI Manager\GUIManager.cs" />
+    <Compile Include="Graphics\GUI\GUI Manager\IGUIManager.cs" />
+    <Compile Include="Graphics\GUI\GUIEventHandler.cs" />
+    <Compile Include="Graphics\GUI\IDragDropProvider.cs" />
+    <Compile Include="Graphics\GUI\IEditableText.cs" />
+    <Compile Include="Graphics\GUI\MoveCursorDirection.cs" />
+    <Compile Include="Graphics\GUI\Screen Manager\GameScreen.cs" />
+    <Compile Include="Graphics\GUI\Screen Manager\IGameScreen.cs" />
+    <Compile Include="Graphics\GUI\Screen Manager\IScreenManager.cs" />
+    <Compile Include="Graphics\GUI\Screen Manager\IScreenManagerEventHandler.cs" />
+    <Compile Include="Graphics\GUI\Screen Manager\ScreenManager.cs" />
+    <Compile Include="Graphics\GUI\Skin\ISkinManager.cs" />
+    <Compile Include="Graphics\GUI\Skin\SkinChangeEventHandler.cs" />
+    <Compile Include="Graphics\GUI\Skin\SkinManager.cs" />
+    <Compile Include="Graphics\GUI\StyledText.cs" />
+    <Compile Include="Graphics\GUI\StyledTextsDrawer.cs" />
+    <Compile Include="Graphics\GUI\TextBoxLine.cs" />
+    <Compile Include="Graphics\GUI\TextBoxLineChangeEventHandler.cs" />
+    <Compile Include="Graphics\GUI\TextBoxLines.cs" />
+    <Compile Include="Graphics\GUI\Tooltip\ITooltip.cs" />
+    <Compile Include="Graphics\GUI\Tooltip\Tooltip.cs" />
+    <Compile Include="Graphics\GUI\Tooltip\TooltipArgs.cs" />
+    <Compile Include="Graphics\GUI\Tooltip\TooltipHandler.cs" />
+    <Compile Include="Graphics\IDrawable\IDrawable.cs" />
+    <Compile Include="Graphics\IDrawable\IDrawableDrawEventHandler.cs" />
+    <Compile Include="Graphics\IDrawable\MapRenderLayerChange.cs" />
+    <Compile Include="Graphics\Light\ILight.cs" />
+    <Compile Include="Graphics\Light\ILightManager.cs" />
+    <Compile Include="Graphics\Light\Light.cs" />
+    <Compile Include="Graphics\Light\LightManager.cs" />
+    <Compile Include="Graphics\Map\DrawableSorter.cs" />
+    <Compile Include="Graphics\Map\IDrawableMap.cs" />
+    <Compile Include="Graphics\Map\MapDrawEventHandler.cs" />
+    <Compile Include="Graphics\Map\MapDrawingExtension\IMapDrawingExtension.cs" />
+    <Compile Include="Graphics\Map\MapDrawingExtension\MapDrawingExtension.cs" />
+    <Compile Include="Graphics\Map\MapDrawingExtension\MapDrawingExtensionCollection.cs" />
+    <Compile Include="Graphics\Map\MapGrh.cs" />
+    <Compile Include="Graphics\Map\MapPreviewerBase.cs" />
+    <Compile Include="Graphics\Map\MapRenderLayer.cs" />
+    <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifier.cs" />
+    <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifierCollection.cs" />
+    <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifierFactory.cs" />
+    <Compile Include="Graphics\ParticleEngine\EmitterModifiers\EmitterBurstEmitModifier.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\CircleEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\ConeEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\LineEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\ParticleEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\PointEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\PolygonEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\PolygonOrigin.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\PolygonPointCollection.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\RectEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngine\MapParticleEffectCollection.cs" />
+    <Compile Include="Graphics\ParticleEngine\Particle.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleEmitterFactory.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifiers\Core\ParticleModifier.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifiers\Core\ParticleModifierCollection.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifiers\Core\ParticleModifierFactory.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifiers\ParticleColorModifier.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifiers\ParticleLinearGravityModifier.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifiers\ParticleLinearScaleModifier.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifiers\ParticleRadialGravityModifier.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleModifiers\ParticleRotationModifier.cs" />
+    <Compile Include="Graphics\ParticleEngine\Renderers\IParticleRenderer.cs" />
+    <Compile Include="Graphics\ParticleEngine\Renderers\ParticleRendererBase.cs" />
+    <Compile Include="Graphics\ParticleEngine\Renderers\SpriteBatchParticleRenderer.cs" />
+    <Compile Include="Graphics\Primitives\XNAArrow.cs" />
+    <Compile Include="Graphics\Primitives\XNALine.cs" />
+    <Compile Include="Graphics\Primitives\XNARectangle.cs" />
+    <Compile Include="Graphics\Primitives\XNATriangle.cs" />
+    <Compile Include="Graphics\Skeleton\Body\SkeletonBody.cs" />
+    <Compile Include="Graphics\Skeleton\Body\SkeletonBodyInfo.cs" />
+    <Compile Include="Graphics\Skeleton\Body\SkeletonBodyItem.cs" />
+    <Compile Include="Graphics\Skeleton\Body\SkeletonBodyItemInfo.cs" />
+    <Compile Include="Graphics\Skeleton\Skeleton.cs" />
+    <Compile Include="Graphics\Skeleton\SkeletonAnimation.cs" />
+    <Compile Include="Graphics\Skeleton\SkeletonDrawer.cs" />
+    <Compile Include="Graphics\Skeleton\SkeletonFrame.cs" />
+    <Compile Include="Graphics\Skeleton\SkeletonManager.cs" />
+    <Compile Include="Graphics\Skeleton\SkeletonNode.cs" />
+    <Compile Include="Graphics\Skeleton\SkeletonSet.cs" />
+    <Compile Include="Graphics\SpriteBatch\ISpriteBatch.cs" />
+    <Compile Include="Graphics\SpriteBatch\RoundedSpriteBatch.cs" />
+    <Compile Include="Graphics\SpriteBatch\SpriteBatch.cs" />
+    <Compile Include="Graphics\SpriteBatch\SpriteEffects.cs" />
+    <Compile Include="Graphics\Sprite\AnimType.cs" />
+    <Compile Include="Graphics\Sprite\Grh\AnimatedGrhData.cs" />
+    <Compile Include="Graphics\Sprite\Grh\AutomaticAnimatedGrhData.cs" />
+    <Compile Include="Graphics\Sprite\Grh\AutomaticAnimationInfo.cs" />
+    <Compile Include="Graphics\Sprite\Grh\Grh.cs" />
+    <Compile Include="Graphics\Sprite\Grh\GrhConverter.cs" />
+    <Compile Include="Graphics\Sprite\Grh\GrhData.cs" />
+    <Compile Include="Graphics\Sprite\Grh\GrhDataChangeCategorizationHandler.cs" />
+    <Compile Include="Graphics\Sprite\Grh\GrhDataEventHandler.cs" />
+    <Compile Include="Graphics\Sprite\Grh\GrhInfo.cs" />
+    <Compile Include="Graphics\Sprite\Grh\StationaryGrhData.cs" />
+    <Compile Include="Graphics\Sprite\ISprite.cs" />
+    <Compile Include="Graphics\Sprite\Sprite.cs" />
     <Compile Include="IO\FileHelper.cs" />
-    <Compile Include="InventorySlot.cs" />
-    <Compile Include="InventorySlotTypeConverter.cs" />
-    <Compile Include="Mono.cs" />
+    <Compile Include="Core\InventorySlot.cs" />
+    <Compile Include="Core\InventorySlotTypeConverter.cs" />
+    <Compile Include="Core\Mono.cs" />
     <Compile Include="Network\ExternalIPParsingRule.cs" />
     <Compile Include="Network\PacketTimeStampHelper.cs" />
-    <Compile Include="SafeRandom.cs" />
+    <Compile Include="Core\SafeRandom.cs" />
     <Compile Include="Scripting\AssemblyClassInvoker.cs" />
     <Compile Include="IO\Bits\BitStreamExtensions.cs" />
     <Compile Include="IO\IMessageCollection.cs" />
-    <Compile Include="ByteArrayEqualityComparer.cs" />
+    <Compile Include="Core\ByteArrayEqualityComparer.cs" />
     <Compile Include="Scripting\JScriptAssemblyCreator.cs" />
     <Compile Include="IO\PropertyInterface\IPropertyInterface.cs" />
     <Compile Include="IO\PropertyInterface\PropertyInterfaceManager.cs" />
@@ -160,11 +324,77 @@
     <Compile Include="IO\PropertySync\SyncValueAttributeInfo.cs" />
     <Compile Include="IO\Persistable\IPersistable.cs" />
     <Compile Include="IO\Persistable\PersistableHelper.cs" />
-    <Compile Include="LogHelper.cs" />
+    <Compile Include="Core\LogHelper.cs" />
     <Compile Include="Scripting\ScriptAssemblyCache.cs" />
+    <Compile Include="SFML\Audio\Listener.cs" />
+    <Compile Include="SFML\Audio\Music.cs" />
+    <Compile Include="SFML\Audio\Sound.cs" />
+    <Compile Include="SFML\Audio\SoundBuffer.cs" />
+    <Compile Include="SFML\Audio\SoundBufferRecorder.cs" />
+    <Compile Include="SFML\Audio\SoundRecorder.cs" />
+    <Compile Include="SFML\Audio\SoundStream.cs" />
+    <Compile Include="SFML\FrameworkResources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FrameworkResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SFML\Graphics\Context.cs" />
+    <Compile Include="SFML\Graphics\Drawable.cs" />
+    <Compile Include="SFML\Graphics\NetGore\Font.cs" />
+    <Compile Include="SFML\Graphics\NetGore\Image.cs" />
+    <Compile Include="SFML\Graphics\NetGore\LazyFont.cs" />
+    <Compile Include="SFML\Graphics\NetGore\LazyImage.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\BoundingBox.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\BoundingFrustum.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\BoundingSphere.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Color.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\ContainmentType.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\BoundingBoxConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\BoundingSphereConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\ColorConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\FieldPropertyDescriptor.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\MathTypeConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\MatrixConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\MemberPropertyDescriptor.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\PlaneConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\PointConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\PropertyPropertyDescriptor.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\QuaternionConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\RayConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\RectangleConverter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\Vector2Converter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\Vector3Converter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Design\Vector4Converter.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Gjk.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\MathHelper.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Matrix.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Plane.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\PlaneIntersectionType.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Point.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Quaternion.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Ray.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Rectangle.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector2.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector3.cs" />
+    <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector4.cs" />
+    <Compile Include="SFML\Graphics\PostFx.cs" />
+    <Compile Include="SFML\Graphics\Rect.cs" />
+    <Compile Include="SFML\Graphics\RenderWindow.cs" />
+    <Compile Include="SFML\Graphics\Shape.cs" />
+    <Compile Include="SFML\Graphics\Sprite.cs" />
+    <Compile Include="SFML\Graphics\String2D.cs" />
+    <Compile Include="SFML\Graphics\View.cs" />
+    <Compile Include="SFML\Window\Event.cs" />
+    <Compile Include="SFML\Window\EventArgs.cs" />
+    <Compile Include="SFML\Window\Input.cs" />
+    <Compile Include="SFML\Window\LoadingFailedException.cs" />
+    <Compile Include="SFML\Window\NetGore\ObjectBase.cs" />
+    <Compile Include="SFML\Window\VideoMode.cs" />
+    <Compile Include="SFML\Window\Window.cs" />
+    <Compile Include="SFML\Window\WindowSettings.cs" />
     <Compile Include="Stats\Stat.cs" />
     <Compile Include="Stats\StatIOExtensions.cs" />
-    <Compile Include="Strings\NaturalStringComparer.cs" />
+    <Compile Include="Core\Strings\NaturalStringComparer.cs" />
     <Compile Include="Network\Sockets\IUDPSocket.cs" />
     <Compile Include="Network\Sockets\UDPSocketEventHandler.cs" />
     <Compile Include="Stats\ChangedStatsTracker.cs" />
@@ -175,7 +405,7 @@
     <Compile Include="Stats\Collections\StatCollectionType.cs" />
     <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\ModStatHelper.cs" />
-    <Compile Include="Strings\CharType.cs" />
+    <Compile Include="Core\Strings\CharType.cs" />
     <Compile Include="Collections\DArray\DArray.cs" />
     <Compile Include="Collections\DArray\DArrayModifyEventHandler.cs" />
     <Compile Include="Collections\ImmutableArray.cs" />
@@ -187,20 +417,16 @@
     <Compile Include="Collections\Type\TypeFactory.cs" />
     <Compile Include="Collections\Type\TypeFactoryLoadedHandler.cs" />
     <Compile Include="Collections\VirtualList.cs" />
-    <Compile Include="Enum\EnumComparer.cs" />
-    <Compile Include="Enum\EnumHelper.cs" />
-    <Compile Include="Exceptions\InstantiateTypeException.cs" />
-    <Compile Include="Exceptions\TypeException.cs" />
-    <Compile Include="Extensions\ClampExtensions.cs" />
-    <Compile Include="Extensions\ColorExtensions.cs" />
-    <Compile Include="Extensions\IDictionaryExtensions.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Extensions\IsBetweenExtensions.cs" />
-    <Compile Include="Extensions\StackExtensions.cs" />
-    <Compile Include="Assets\ContentAssetName.cs" />
-    <Compile Include="Assets\ContentAssetNameConverter.cs" />
-    <Compile Include="Assets\TextureAssetName.cs" />
-    <Compile Include="Assets\TextureAssetNameConverter.cs" />
+    <Compile Include="Core\Enum\EnumComparer.cs" />
+    <Compile Include="Core\Enum\EnumHelper.cs" />
+    <Compile Include="Core\Exceptions\InstantiateTypeException.cs" />
+    <Compile Include="Core\Exceptions\TypeException.cs" />
+    <Compile Include="Core\Extensions\ClampExtensions.cs" />
+    <Compile Include="Core\Extensions\ColorExtensions.cs" />
+    <Compile Include="Core\Extensions\IDictionaryExtensions.cs" />
+    <Compile Include="Core\Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Core\Extensions\IsBetweenExtensions.cs" />
+    <Compile Include="Core\Extensions\StackExtensions.cs" />
     <Compile Include="IO\Bits\BitStream.cs" />
     <Compile Include="IO\Bits\BitStreamBufferMode.cs" />
     <Compile Include="IO\Bits\BitStreamMode.cs" />
@@ -227,7 +453,7 @@
     <Compile Include="IO\ValueReaderWriter\Xml\XmlValueHelper.cs" />
     <Compile Include="IO\ValueReaderWriter\Xml\XmlValueReader.cs" />
     <Compile Include="IO\ValueReaderWriter\Xml\XmlValueWriter.cs" />
-    <Compile Include="MethodInfoHelper.cs" />
+    <Compile Include="Core\MethodInfoHelper.cs" />
     <Compile Include="Network\IPAddressHelper.cs" />
     <Compile Include="Network\LatencyTracker\LatencyTrackerClient.cs" />
     <Compile Include="Network\LatencyTracker\LatencyTrackerHelper.cs" />
@@ -254,93 +480,93 @@
     <Compile Include="Network\Sockets\TCPSocket.cs" />
     <Compile Include="Network\Sockets\TCPSocketEventHandler.cs" />
     <Compile Include="Network\Sockets\UDPSocket.cs" />
-    <Compile Include="Parser.cs" />
-    <Compile Include="RandomHelper.cs" />
-    <Compile Include="RandomHelperXna.cs" />
+    <Compile Include="Core\Parser.cs" />
+    <Compile Include="Core\RandomHelper.cs" />
+    <Compile Include="Core\RandomHelperXna.cs" />
     <Compile Include="Scripting\ScriptLanguage.cs" />
     <Compile Include="Scripting\ScriptTypeCollection.cs" />
     <Compile Include="Scripting\ScriptTypeHelper.cs" />
-    <Compile Include="Strings\Text Filter\BasicTextFilter.cs" />
-    <Compile Include="Strings\Text Filter\RegexTextFilter.cs" />
-    <Compile Include="Strings\Text Filter\TextFilter.cs" />
-    <Compile Include="Strings\Text Filter\TextFilterContainerEventHandler.cs" />
-    <Compile Include="SystemPerformance.cs" />
-    <Compile Include="Strings\Text Filter\TextFilterContainer.cs" />
-    <Compile Include="Type\TypeFilterCreator.cs" />
-    <Compile Include="Type\TypeFilterException.cs" />
-    <Compile Include="Type\TypeHelper.cs" />
-    <Compile Include="Type\ClassTypeTree.cs" />
-    <Compile Include="Variable Values\IVariableValue.cs" />
-    <Compile Include="Variable Values\VariableByte.cs" />
-    <Compile Include="Variable Values\VariableColorConverter.cs" />
-    <Compile Include="Variable Values\VariableColor.cs" />
-    <Compile Include="Variable Values\VariableFloat.cs" />
-    <Compile Include="Variable Values\VariableInt.cs" />
-    <Compile Include="Variable Values\VariableSByte.cs" />
-    <Compile Include="Variable Values\VariableShort.cs" />
-    <Compile Include="Variable Values\VariableUShort.cs" />
-    <Compile Include="World\AlignmentHelper.cs" />
-    <Compile Include="World\Entities\AI\AIAttribute.cs" />
-    <Compile Include="World\Entities\AI\AIFactoryBase.cs" />
-    <Compile Include="World\Entities\AI\AIGrid.cs" />
-    <Compile Include="World\Entities\AI\AIID.cs" />
-    <Compile Include="World\Entities\AI\AIIDTypeConverter.cs" />
-    <Compile Include="World\Entities\AI\Heuristics.cs" />
-    <Compile Include="World\Entities\AI\IAI.cs" />
-    <Compile Include="World\Alignment.cs" />
-    <Compile Include="CommandLineSwitchHelper.cs" />
-    <Compile Include="ConsoleInputBuffer.cs" />
-    <Compile Include="World\Entities\AI\IAIFactory.cs" />
-    <Compile Include="World\Entities\AI\IPathFinder.cs" />
-    <Compile Include="World\Entities\AI\MemoryCell.cs" />
-    <Compile Include="World\Entities\AI\MemoryMap.cs" />
-    <Compile Include="World\Entities\AI\PathFinder.cs" />
-    <Compile Include="World\Entities\IDynamicEntityFactory.cs" />
-    <Compile Include="World\Entities\IUpdateableEntity.cs" />
-    <Compile Include="World\Entities\IUsableEntity.cs" />
-    <Compile Include="World\Entities\BoxSide.cs" />
-    <Compile Include="World\Entities\DynamicEntity.cs" />
-    <Compile Include="World\Entities\DynamicEntityFactoryBase.cs" />
-    <Compile Include="World\Entities\Entity.cs" />
-    <Compile Include="World\Entities\EntityEventHandler.cs" />
-    <Compile Include="Extensions\RectangleExtensions.cs" />
-    <Compile Include="GrhIndex.cs" />
-    <Compile Include="Extensions\IDataRecordExtensions.cs" />
-    <Compile Include="Extensions\IValueReaderExtensions.cs" />
-    <Compile Include="Extensions\IValueWriterExtensions.cs" />
+    <Compile Include="Core\Strings\Text Filter\BasicTextFilter.cs" />
+    <Compile Include="Core\Strings\Text Filter\RegexTextFilter.cs" />
+    <Compile Include="Core\Strings\Text Filter\TextFilter.cs" />
+    <Compile Include="Core\Strings\Text Filter\TextFilterContainerEventHandler.cs" />
+    <Compile Include="Core\SystemPerformance.cs" />
+    <Compile Include="Core\Strings\Text Filter\TextFilterContainer.cs" />
+    <Compile Include="Core\Type\TypeFilterCreator.cs" />
+    <Compile Include="Core\Type\TypeFilterException.cs" />
+    <Compile Include="Core\Type\TypeHelper.cs" />
+    <Compile Include="Core\Type\ClassTypeTree.cs" />
+    <Compile Include="Core\Variable Values\IVariableValue.cs" />
+    <Compile Include="Core\Variable Values\VariableByte.cs" />
+    <Compile Include="Core\Variable Values\VariableColorConverter.cs" />
+    <Compile Include="Core\Variable Values\VariableColor.cs" />
+    <Compile Include="Core\Variable Values\VariableFloat.cs" />
+    <Compile Include="Core\Variable Values\VariableInt.cs" />
+    <Compile Include="Core\Variable Values\VariableSByte.cs" />
+    <Compile Include="Core\Variable Values\VariableShort.cs" />
+    <Compile Include="Core\Variable Values\VariableUShort.cs" />
+    <Compile Include="Core\World\AlignmentHelper.cs" />
+    <Compile Include="Core\World\Entities\AI\AIAttribute.cs" />
+    <Compile Include="Core\World\Entities\AI\AIFactoryBase.cs" />
+    <Compile Include="Core\World\Entities\AI\AIGrid.cs" />
+    <Compile Include="Core\World\Entities\AI\AIID.cs" />
+    <Compile Include="Core\World\Entities\AI\AIIDTypeConverter.cs" />
+    <Compile Include="Core\World\Entities\AI\Heuristics.cs" />
+    <Compile Include="Core\World\Entities\AI\IAI.cs" />
+    <Compile Include="Core\World\Alignment.cs" />
+    <Compile Include="Core\CommandLineSwitchHelper.cs" />
+    <Compile Include="Core\ConsoleInputBuffer.cs" />
+    <Compile Include="Core\World\Entities\AI\IAIFactory.cs" />
+    <Compile Include="Core\World\Entities\AI\IPathFinder.cs" />
+    <Compile Include="Core\World\Entities\AI\MemoryCell.cs" />
+    <Compile Include="Core\World\Entities\AI\MemoryMap.cs" />
+    <Compile Include="Core\World\Entities\AI\PathFinder.cs" />
+    <Compile Include="Core\World\Entities\IDynamicEntityFactory.cs" />
+    <Compile Include="Core\World\Entities\IUpdateableEntity.cs" />
+    <Compile Include="Core\World\Entities\IUsableEntity.cs" />
+    <Compile Include="Core\World\Entities\BoxSide.cs" />
+    <Compile Include="Core\World\Entities\DynamicEntity.cs" />
+    <Compile Include="Core\World\Entities\DynamicEntityFactoryBase.cs" />
+    <Compile Include="Core\World\Entities\Entity.cs" />
+    <Compile Include="Core\World\Entities\EntityEventHandler.cs" />
+    <Compile Include="Core\Extensions\RectangleExtensions.cs" />
+    <Compile Include="Core\GrhIndex.cs" />
+    <Compile Include="Core\Extensions\IDataRecordExtensions.cs" />
+    <Compile Include="Core\Extensions\IValueReaderExtensions.cs" />
+    <Compile Include="Core\Extensions\IValueWriterExtensions.cs" />
     <Compile Include="Audio\IAudioEmitter.cs" />
-    <Compile Include="World\Entities\NPCChat\NPCChatDialogID.cs" />
-    <Compile Include="World\Entities\NPCChat\NPCChatDialogItemID.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\NPCChatDialogID.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\NPCChatDialogItemID.cs" />
     <Compile Include="Stats\StatValueType.cs" />
-    <Compile Include="World\Map\MapEntityIndexTypeConverter.cs" />
-    <Compile Include="World\Map\MapIDTypeConverter.cs" />
-    <Compile Include="World\Map\Spatial\DynamicGridSpatialCollection.cs" />
-    <Compile Include="World\Map\Spatial\GridSpatialCollectionBase.cs" />
-    <Compile Include="World\Map\Spatial\IGridSpatialCollectionSegment.cs" />
-    <Compile Include="World\Map\Spatial\ISpatial.cs" />
-    <Compile Include="World\Map\Spatial\ISpatialCollection.cs" />
-    <Compile Include="World\Map\Spatial\ISpatialCollectionExtensions.cs" />
-    <Compile Include="World\Map\Spatial\ISpatialExtensions.cs" />
-    <Compile Include="World\Map\Spatial\LinearSpatialCollection.cs" />
-    <Compile Include="World\Map\Spatial\SpatialAggregate.cs" />
-    <Compile Include="World\Map\Spatial\SpatialHelper.cs" />
-    <Compile Include="World\Map\Spatial\SpatialManager.cs" />
-    <Compile Include="World\Map\MapEntityAttribute.cs" />
+    <Compile Include="Core\World\Map\MapEntityIndexTypeConverter.cs" />
+    <Compile Include="Core\World\Map\MapIDTypeConverter.cs" />
+    <Compile Include="Core\World\Map\Spatial\DynamicGridSpatialCollection.cs" />
+    <Compile Include="Core\World\Map\Spatial\GridSpatialCollectionBase.cs" />
+    <Compile Include="Core\World\Map\Spatial\IGridSpatialCollectionSegment.cs" />
+    <Compile Include="Core\World\Map\Spatial\ISpatial.cs" />
+    <Compile Include="Core\World\Map\Spatial\ISpatialCollection.cs" />
+    <Compile Include="Core\World\Map\Spatial\ISpatialCollectionExtensions.cs" />
+    <Compile Include="Core\World\Map\Spatial\ISpatialExtensions.cs" />
+    <Compile Include="Core\World\Map\Spatial\LinearSpatialCollection.cs" />
+    <Compile Include="Core\World\Map\Spatial\SpatialAggregate.cs" />
+    <Compile Include="Core\World\Map\Spatial\SpatialHelper.cs" />
+    <Compile Include="Core\World\Map\Spatial\SpatialManager.cs" />
+    <Compile Include="Core\World\Map\MapEntityAttribute.cs" />
     <Compile Include="Audio\MusicID.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalEvaluationType.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\NPCChatConditionalBase.cs" />
-    <Compile Include="World\Entities\NPCChat\NPCChatResponseActionBase.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameter.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameterFloat.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameterInteger.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameterString.cs" />
-    <Compile Include="World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameterType.cs" />
-    <Compile Include="World\Entities\NPCChat\NPCChatDialogBase.cs" />
-    <Compile Include="World\Entities\NPCChat\NPCChatDialogItemBase.cs" />
-    <Compile Include="World\Entities\NPCChat\NPCChatManagerBase.cs" />
-    <Compile Include="World\Entities\NPCChat\NPCChatResponseBase.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\NPCChatConditionalEvaluationType.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\NPCChatConditionalBase.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\NPCChatResponseActionBase.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameter.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameterFloat.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameterInteger.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameterString.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\Conditionals\Parameters\NPCChatConditionalParameterType.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\NPCChatDialogBase.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\NPCChatDialogItemBase.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\NPCChatManagerBase.cs" />
+    <Compile Include="Core\World\Entities\NPCChat\NPCChatResponseBase.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncAlignment.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncBool.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncColor.cs" />
@@ -355,11 +581,11 @@
     <Compile Include="IO\PropertySync\Syncs\PropertySyncULong.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncUShort.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncVector2.cs" />
-    <Compile Include="World\Entities\WallEntityBase.cs" />
-    <Compile Include="IGetTime.cs" />
-    <Compile Include="World\Map\IMap.cs" />
-    <Compile Include="Strings\MathString.cs" />
-    <Compile Include="MeanStackExtras.cs" />
+    <Compile Include="Core\World\Entities\WallEntityBase.cs" />
+    <Compile Include="Core\IGetTime.cs" />
+    <Compile Include="Core\World\Map\IMap.cs" />
+    <Compile Include="Core\Strings\MathString.cs" />
+    <Compile Include="Core\MeanStackExtras.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\PropertySync\PropertySyncBase.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncByte.cs" />
@@ -368,19 +594,19 @@
     <Compile Include="IO\PropertySync\Syncs\PropertySyncInt.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncString.cs" />
     <Compile Include="IO\PropertySync\SyncValueAttribute.cs" />
-    <Compile Include="Strings\Say Commands\ISayCommands.cs" />
-    <Compile Include="Strings\Say Commands\SayCommandAttribute.cs" />
-    <Compile Include="Strings\Say Commands\SayHandlerBase.cs" />
+    <Compile Include="Core\Strings\Say Commands\ISayCommands.cs" />
+    <Compile Include="Core\Strings\Say Commands\SayCommandAttribute.cs" />
+    <Compile Include="Core\Strings\Say Commands\SayHandlerBase.cs" />
     <Compile Include="Audio\SoundID.cs" />
-    <Compile Include="Strings\String Parser\StringCommandBaseAttribute.cs" />
-    <Compile Include="Strings\String Parser\StringCommandParser.cs" />
-    <Compile Include="Strings\String Parser\StringParser.cs" />
-    <Compile Include="Strings\StringRules.cs" />
-    <Compile Include="Extensions\Vector2Extensions.cs" />
-    <Compile Include="World\Map\MapEntityIndex.cs" />
-    <Compile Include="World\Map\MapID.cs" />
-    <Compile Include="World\Map\Spatial\SpatialMovedEventHandler.cs" />
-    <Compile Include="World\Map\Spatial\StaticGridSpatialCollection.cs" />
+    <Compile Include="Core\Strings\String Parser\StringCommandBaseAttribute.cs" />
+    <Compile Include="Core\Strings\String Parser\StringCommandParser.cs" />
+    <Compile Include="Core\Strings\String Parser\StringParser.cs" />
+    <Compile Include="Core\Strings\StringRules.cs" />
+    <Compile Include="Core\Extensions\Vector2Extensions.cs" />
+    <Compile Include="Core\World\Map\MapEntityIndex.cs" />
+    <Compile Include="Core\World\Map\MapID.cs" />
+    <Compile Include="Core\World\Map\Spatial\SpatialMovedEventHandler.cs" />
+    <Compile Include="Core\World\Map\Spatial\StaticGridSpatialCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="csfml-audio.dll">
@@ -392,7 +618,7 @@
     <None Include="csfml-window.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="CustomValueTypeTemplate.txt" />
+    <None Include="CustomValueTypeTemplate.txt" />
     <None Include="libsndfile-1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -400,13 +626,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SFML\FrameworkResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FrameworkResources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\MonoSwitcher.proj" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

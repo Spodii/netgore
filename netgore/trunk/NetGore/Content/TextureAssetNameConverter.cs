@@ -1,8 +1,8 @@
 using System.Linq;
 
-namespace NetGore.IO
+namespace NetGore.Content
 {
-    public sealed class ContentAssetNameConverter : SimpleTypeConverter<ContentAssetName>
+    public sealed class TextureAssetNameConverter : SimpleTypeConverter<TextureAssetName>
     {
         /// <summary>
         /// When overridden in the derived class, converts the <paramref name="value"/> to the output
@@ -12,10 +12,10 @@ namespace NetGore.IO
         /// <param name="wasConverted">Contains true if the parsing was successful, or false if the
         /// parsing failed.</param>
         /// <returns>The object parsed from the <paramref name="value"/>.</returns>
-        protected override ContentAssetName ConvertFromString(string value, out bool wasConverted)
+        protected override TextureAssetName ConvertFromString(string value, out bool wasConverted)
         {
             wasConverted = true;
-            return new ContentAssetName(value);
+            return new TextureAssetName(value);
         }
     }
 }
