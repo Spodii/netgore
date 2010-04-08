@@ -1,6 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
-using System.Runtime.InteropServices;
+using SFML.Graphics.Design;
 
 namespace SFML
 {
@@ -11,9 +12,15 @@ namespace SFML
         /// Utility class for manipulating 32-bits RGBA colors
         /// </summary>
         ////////////////////////////////////////////////////////////
-        [StructLayout(LayoutKind.Sequential)]
+        [Serializable]
+        [TypeConverter(typeof(ColorConverter))]
         public struct Color : IEquatable<Color>
         {
+            byte _r;
+            byte _g;
+            byte _b;
+            byte _a;
+
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Construct the color from its red, green and blue components
@@ -37,10 +44,10 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Color(byte red, byte green, byte blue, byte alpha)
             {
-                R = red;
-                G = green;
-                B = blue;
-                A = alpha;
+                _r = red;
+                _g = green;
+                _b = blue;
+                _a = alpha;
             }
 
             ////////////////////////////////////////////////////////////
@@ -61,93 +68,31 @@ namespace SFML
             }
 
             /// <summary>Red component of the color</summary>
-            public byte R;
+            public byte R
+            {
+                get { return _r; }
+                set { _r = value; }
+            }
 
             /// <summary>Green component of the color</summary>
-            public byte G;
+            public byte G
+            {
+                get { return _g; }
+                set { _g = value; }
+            }
 
             /// <summary>Blue component of the color</summary>
-            public byte B;
+            public byte B
+            {
+                get { return _b; }
+                set { _b = value; }
+            }
 
             /// <summary>Alpha (transparent) component of the color</summary>
-            public byte A;
-
-            /// <summary>Gets a string representation of this object.</summary>
-            public override string ToString()
+            public byte A
             {
-                return string.Format(CultureInfo.CurrentCulture, "{{R:{0} G:{1} B:{2} A:{3}}}", new object[] { R, G, B, A });
-            }
-
-            /// <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
-            /// <param name="obj">The Object to compare with the current Color.</param>
-            public override bool Equals(object obj)
-            {
-                return ((obj is Color) && Equals((Color)obj));
-            }
-
-            /// <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
-            /// <param name="other">The Color to compare with the current Color.</param>
-            public bool Equals(Color other)
-            {
-                return (R == other.R) && (G == other.G) && (B == other.B) && (A == other.A);
-            }
-
-            /// <summary>Compares two objects to determine whether they are the same.</summary>
-            /// <param name="a">The object to the left of the equality operator.</param>
-            /// <param name="b">The object to the right of the equality operator.</param>
-            public static bool operator ==(Color a, Color b)
-            {
-                return a.Equals(b);
-            }
-
-            /// <summary>Compares two objects to determine whether they are different.</summary>
-            /// <param name="a">The object to the left of the equality operator.</param>
-            /// <param name="b">The object to the right of the equality operator.</param>
-            public static bool operator !=(Color a, Color b)
-            {
-                return !a.Equals(b);
-            }
-
-            /// <summary>
-            /// Returns a hash code for this instance.
-            /// </summary>
-            /// <returns>
-            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-            /// </returns>
-            public override int GetHashCode()
-            {
-                return ((R << 24) | (G << 16) | (B << 8) | A).GetHashCode();
-            }
-
-            /// <summary>Gets a system-defined color with the value R:0 G:0 B:0 A:0.</summary>
-            public static Color TransparentBlack
-            {
-                get { return new Color(0, 0, 0, 0); }
-            }
-
-            /// <summary>Gets a system-defined color with the value R:255 G:255 B:255 A:0.</summary>
-            public static Color TransparentWhite
-            {
-                get { return new Color(255, 255, 255, 0); }
-            }
-
-            /// <summary>Linearly interpolates between two colors.</summary>
-            /// <param name="value1">Source Color.</param>
-            /// <param name="value2">Source Color.</param>
-            /// <param name="amount">A value between 0 and 1.0 indicating the weight of value2.</param>
-            public static Color Lerp(Color value1, Color value2, float amount)
-            {
-                var r = MathHelper.Lerp(value1.R, value2.R, amount);
-                var g = MathHelper.Lerp(value1.G, value2.G, amount);
-                var b = MathHelper.Lerp(value1.B, value2.B, amount);
-                var a = MathHelper.Lerp(value1.A, value2.A, amount);
-
-                r = Math.Min(byte.MaxValue, Math.Max(r, byte.MinValue));
-                g = Math.Min(byte.MaxValue, Math.Max(g, byte.MinValue));
-                b = Math.Min(byte.MaxValue, Math.Max(b, byte.MinValue));
-                a = Math.Min(byte.MaxValue, Math.Max(a, byte.MinValue));
-
-                return new Color((byte)r, (byte)g, (byte)b, (byte)a);
+                get { return _a; }
+                set { _a = value; }
             }
 
             /// <summary>Gets a system-defined color with the value R:240 G:248 B:255 A:255.</summary>
@@ -552,16 +497,16 @@ namespace SFML
                 get { return new Color(250, 250, 210); }
             }
 
-            /// <summary>Gets a system-defined color with the value R:144 G:238 B:144 A:255.</summary>
-            public static Color LightGreen
-            {
-                get { return new Color(144, 238, 144); }
-            }
-
             /// <summary>Gets a system-defined color with the value R:211 G:211 B:211 A:255.</summary>
             public static Color LightGray
             {
                 get { return new Color(211, 211, 211); }
+            }
+
+            /// <summary>Gets a system-defined color with the value R:144 G:238 B:144 A:255.</summary>
+            public static Color LightGreen
+            {
+                get { return new Color(144, 238, 144); }
             }
 
             /// <summary>Gets a system-defined color with the value R:255 G:182 B:193 A:255.</summary>
@@ -948,6 +893,18 @@ namespace SFML
                 get { return new Color(255, 99, 71); }
             }
 
+            /// <summary>Gets a system-defined color with the value R:0 G:0 B:0 A:0.</summary>
+            public static Color TransparentBlack
+            {
+                get { return new Color(0, 0, 0, 0); }
+            }
+
+            /// <summary>Gets a system-defined color with the value R:255 G:255 B:255 A:0.</summary>
+            public static Color TransparentWhite
+            {
+                get { return new Color(255, 255, 255, 0); }
+            }
+
             /// <summary>Gets a system-defined color with the value R:64 G:224 B:208 A:255.</summary>
             public static Color Turquoise
             {
@@ -988,6 +945,76 @@ namespace SFML
             public static Color YellowGreen
             {
                 get { return new Color(154, 205, 50); }
+            }
+
+            /// <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
+            /// <param name="obj">The Object to compare with the current Color.</param>
+            public override bool Equals(object obj)
+            {
+                return ((obj is Color) && Equals((Color)obj));
+            }
+
+            /// <summary>
+            /// Returns a hash code for this instance.
+            /// </summary>
+            /// <returns>
+            /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            /// </returns>
+            public override int GetHashCode()
+            {
+                return ((R << 24) | (G << 16) | (B << 8) | A).GetHashCode();
+            }
+
+            /// <summary>Linearly interpolates between two colors.</summary>
+            /// <param name="value1">Source Color.</param>
+            /// <param name="value2">Source Color.</param>
+            /// <param name="amount">A value between 0 and 1.0 indicating the weight of value2.</param>
+            public static Color Lerp(Color value1, Color value2, float amount)
+            {
+                var r = MathHelper.Lerp(value1.R, value2.R, amount);
+                var g = MathHelper.Lerp(value1.G, value2.G, amount);
+                var b = MathHelper.Lerp(value1.B, value2.B, amount);
+                var a = MathHelper.Lerp(value1.A, value2.A, amount);
+
+                r = Math.Min(byte.MaxValue, Math.Max(r, byte.MinValue));
+                g = Math.Min(byte.MaxValue, Math.Max(g, byte.MinValue));
+                b = Math.Min(byte.MaxValue, Math.Max(b, byte.MinValue));
+                a = Math.Min(byte.MaxValue, Math.Max(a, byte.MinValue));
+
+                return new Color((byte)r, (byte)g, (byte)b, (byte)a);
+            }
+
+            /// <summary>Gets a string representation of this object.</summary>
+            public override string ToString()
+            {
+                return string.Format(CultureInfo.CurrentCulture, "{{R:{0} G:{1} B:{2} A:{3}}}", new object[] { R, G, B, A });
+            }
+
+            #region IEquatable<Color> Members
+
+            /// <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
+            /// <param name="other">The Color to compare with the current Color.</param>
+            public bool Equals(Color other)
+            {
+                return (R == other.R) && (G == other.G) && (B == other.B) && (A == other.A);
+            }
+
+            #endregion
+
+            /// <summary>Compares two objects to determine whether they are the same.</summary>
+            /// <param name="a">The object to the left of the equality operator.</param>
+            /// <param name="b">The object to the right of the equality operator.</param>
+            public static bool operator ==(Color a, Color b)
+            {
+                return a.Equals(b);
+            }
+
+            /// <summary>Compares two objects to determine whether they are different.</summary>
+            /// <param name="a">The object to the left of the equality operator.</param>
+            /// <param name="b">The object to the right of the equality operator.</param>
+            public static bool operator !=(Color a, Color b)
+            {
+                return !a.Equals(b);
             }
         }
     }

@@ -3,7 +3,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
 using System.Reflection;
 
 namespace SFML.Graphics.Design
@@ -15,7 +14,7 @@ namespace SFML.Graphics.Design
         public Vector2Converter()
         {
             Type type = typeof(Vector2);
-            base.propertyDescriptions =
+            propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")) }).Sort(
                     new string[] { "X", "Y" });
