@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.Content;
 using NetGore.IO;
 
 namespace NetGore.Graphics
