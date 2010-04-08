@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using Color=Microsoft.Xna.Framework.Graphics.Color;
+using SFML.Graphics;
+using Color=SFML.Graphics.Color;
+using Image=System.Drawing.Image;
 using Point=System.Drawing.Point;
-using Rectangle=Microsoft.Xna.Framework.Rectangle;
+using Rectangle = SFML.Graphics.Rectangle;
 
 namespace DemoGame.MapEditor
 {

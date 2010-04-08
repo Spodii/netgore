@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.AI;
 using NetGore.EditorTools;
 using NetGore.Extensions;
 using NetGore.Graphics;
-using Color=Microsoft.Xna.Framework.Graphics.Color;
+using SFML.Graphics;
+using Color=SFML.Graphics.Color;
+using Image=System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -27,9 +26,9 @@ namespace DemoGame.MapEditor
         readonly MenuItem _mnuBlocked;
         readonly MenuItem _mnuFill;
         readonly MenuItem _mnuWeight;
+
         Vector2 _debugNodeEnd;
         Vector2 _debugNodeStart;
-
         string _toolTip = string.Empty;
         object _toolTipObject = null;
         Vector2 _toolTipPos;
@@ -85,7 +84,7 @@ namespace DemoGame.MapEditor
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             if (!string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(Container.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(Container.RenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -126,10 +125,10 @@ namespace DemoGame.MapEditor
         /// <param name="text">The tooltip text.</param>
         /// <param name="entity">The MemoryCell the tooltip is for.</param>
         /// <returns>The position to display the tooltip text.</returns>
-        static Vector2 GetToolTipPos(SpriteFont font, string text, int cellSize, MemoryCell memoryCell)
+        static Vector2 GetToolTipPos(Font font, string text, int cellSize, MemoryCell memoryCell)
         {
             var pos = new Vector2(memoryCell.MinX + cellSize, memoryCell.MinY);
-            pos -= new Vector2(5, (font.LineSpacing * text.Split('\n').Length) + 5);
+            pos -= new Vector2(5, (font.CharacterSize * text.Split('\n').Length) + 5);
             return pos;
         }
 
@@ -316,7 +315,7 @@ namespace DemoGame.MapEditor
             {
                 _toolTipObject = hoverNode;
                 _toolTip = string.Format("Weight({2})", hoverNode, hoverNode.Location, hoverNode.Weight);
-                _toolTipPos = GetToolTipPos(Container.SpriteFont, _toolTip, mm.CellSize, hoverNode);
+                _toolTipPos = GetToolTipPos(Container.RenderFont, _toolTip, mm.CellSize, hoverNode);
             }
         }
 

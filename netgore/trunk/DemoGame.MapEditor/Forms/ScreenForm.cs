@@ -7,8 +7,6 @@ using DemoGame.Client;
 using DemoGame.EditorTools;
 using DemoGame.MapEditor.Forms;
 using DemoGame.Server.Queries;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Collections;
@@ -18,6 +16,7 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using SFML.Graphics;
 using CustomUITypeEditors=DemoGame.EditorTools.CustomUITypeEditors;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
@@ -154,9 +153,9 @@ namespace DemoGame.MapEditor
         TransBox _selTransBox = null;
 
         /// <summary>
-        /// The Default SpriteFont.
+        /// The default font.
         /// </summary>
-        SpriteFont _spriteFont;
+        Font _font;
 
         /// <summary>
         /// Current world - used for reference by the map being edited only.
@@ -335,11 +334,12 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the SpriteFont used to draw text to the screen.
+        /// Gets the <see cref="Font"/> used to draw text to the screen.
         /// </summary>
-        public SpriteFont SpriteFont
+        public Font RenderFont
         {
-            get { return _spriteFont; }
+            get { 
+                return _font; }
         }
 
         /// <summary>
@@ -553,7 +553,7 @@ namespace DemoGame.MapEditor
 
             MapID index = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
-            var newMap = new Map(index, Camera, _world, GameScreen.GraphicsDevice);
+            var newMap = new Map(index, Camera, _world);
             DbController.GetQuery<ReplaceMapQuery>().Execute(newMap);
             newMap.SetDimensions(new Vector2(30, 20) * 32);
             newMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
@@ -608,7 +608,7 @@ namespace DemoGame.MapEditor
                 return null;
             }
 
-            return new Map(index, Camera, _world, GameScreen.GraphicsDevice);
+            return new Map(index, Camera, _world);
         }
 
         /// <summary>
@@ -648,9 +648,6 @@ namespace DemoGame.MapEditor
         /// <param name="sb">The sprite batch.</param>
         void DrawGame(ISpriteBatch sb)
         {
-            // Clear the background
-            GameScreen.GraphicsDevice.Clear(Color.Black);
-
             // Draw the GrhTreeView if needed
             if (treeGrhs.NeedsToDraw)
             {
@@ -804,7 +801,7 @@ namespace DemoGame.MapEditor
 
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - new Vector2(100, 30);
-            sb.DrawStringShaded(SpriteFont, CursorPos.ToString(), cursorPosText, Color.White, Color.Black);
+            sb.DrawStringShaded(RenderFont, CursorPos.ToString(), cursorPosText, Color.White, Color.Black);
 
             // End GUI rendering
             DrawingManager.EndDrawGUI();
@@ -824,7 +821,7 @@ namespace DemoGame.MapEditor
             _particleEmitterRenderer.SpriteBatch = sb;
 
             // Start drawing
-            sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, Camera.Matrix);
+            sb.Begin(BlendMode.Alpha, Camera);
 
             try
             {
@@ -913,7 +910,7 @@ namespace DemoGame.MapEditor
                 if (!MapBase.TryGetIndexFromPath(file, out index))
                     continue;
 
-                using (Map tempMap = new Map(index, Camera, _world, GameScreen.GraphicsDevice))
+                using (Map tempMap = new Map(index, Camera, _world))
                 {
                     tempMap.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
                     tempMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
@@ -1157,7 +1154,7 @@ namespace DemoGame.MapEditor
             {
                 var previewer = new MapPreviewer();
                 var tmpFile = new TempFile();
-                previewer.CreatePreview(GameScreen.GraphicsDevice, Map, _mapDrawingExtensions, tmpFile.FilePath);
+                previewer.CreatePreview(GameScreen.RenderWindow, Map, _mapDrawingExtensions, tmpFile.FilePath);
             }
 
             base.OnKeyUp(e);
@@ -1222,14 +1219,14 @@ namespace DemoGame.MapEditor
             GameScreen.MouseWheel += GameScreen_MouseWheel;
 
             // Create the engine objects 
-            _content = new XnaContentManager(GameScreen.Services, ContentPaths.Build.Root);
+            _content = new ContentManager();
 
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
             treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
 
-            _drawingManager = new DrawingManager(GameScreen.GraphicsDevice);
+            _drawingManager = new DrawingManager(GameScreen.RenderWindow);
             DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
             // Prepare the GrhImageList to avoid stalling the loading later
@@ -1253,8 +1250,8 @@ namespace DemoGame.MapEditor
             }
 
             // Create the font
-            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"), ContentLevel.Global);
-            Character.NameFont = SpriteFont;
+            _font = _content.LoadFont("Font/Arial", 16, ContentLevel.Global);
+            Character.NameFont = RenderFont;
 
             // Hook all controls to forward camera movement keys Form
             KeyEventHandler kehDown = OnKeyDownForward;
@@ -1280,7 +1277,7 @@ namespace DemoGame.MapEditor
             // ReSharper disable EmptyGeneralCatchClause
             try
             {
-                Map = new Map(new MapID(1), Camera, _world, GameScreen.GraphicsDevice);
+                Map = new Map(new MapID(1), Camera, _world);
             }
             catch (Exception)
             {

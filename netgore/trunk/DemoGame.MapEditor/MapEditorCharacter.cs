@@ -3,10 +3,10 @@ using System.Linq;
 using DemoGame.Client;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
-using Microsoft.Xna.Framework;
 using NetGore.Db;
 using NetGore.Graphics;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace DemoGame.MapEditor
 {
@@ -22,6 +22,8 @@ namespace DemoGame.MapEditor
             if (map == null)
                 throw new ArgumentNullException("map");
 
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+
             _table = table;
             _characterID = table.ID;
 
@@ -34,6 +36,8 @@ namespace DemoGame.MapEditor
             Name = charInfo.Name;
 
             Initialize(map, SkeletonManager.Create(ContentPaths.Build));
+
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         public CharacterID CharacterID

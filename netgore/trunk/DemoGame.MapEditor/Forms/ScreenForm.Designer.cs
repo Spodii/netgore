@@ -4,6 +4,7 @@
 // ReSharper disable RedundantCast
 
 using NetGore.EditorTools;
+using SFML.Graphics;
 
 namespace DemoGame.MapEditor
 {
@@ -232,7 +233,7 @@ namespace DemoGame.MapEditor
             // 
             this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.GameScreen.Camera = null;
-            this.GameScreen.CursorPos = new Microsoft.Xna.Framework.Vector2(0F, 0F);
+            this.GameScreen.CursorPos = new Vector2(0F, 0F);
             this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GameScreen.DrawHandler = null;
             this.GameScreen.Location = new System.Drawing.Point(0, 0);

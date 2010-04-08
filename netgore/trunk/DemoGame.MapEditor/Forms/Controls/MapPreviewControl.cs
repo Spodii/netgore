@@ -3,10 +3,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using SFML.Graphics;
 
 namespace DemoGame.MapEditor
 {
@@ -30,7 +29,7 @@ namespace DemoGame.MapEditor
         protected override void Draw(ISpriteBatch spriteBatch)
         {
             // Clear the background
-            GraphicsDevice.Clear(Color.Black);
+            RenderWindow.Clear(Color.Black);
 
             // Check for a valid map
             if (Camera == null || Camera.Map == null)
@@ -40,16 +39,16 @@ namespace DemoGame.MapEditor
             if (map == null)
                 return;
 
-            // Begin drawing
+            // Adjust the camera
             var size = new Vector2(Size.Width, Size.Height);
             var scale = size / map.Size;
-            var m = Matrix.Identity * Matrix.CreateScale(scale.X, scale.Y, 1f);
-            spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, m);
 
-            // Adjust the camera
             _camera.Scale = Math.Max(scale.X, scale.Y);
             _camera.Size = map.Size;
             _camera.Min = Vector2.Zero;
+
+            // Begin drawing
+            spriteBatch.Begin(BlendMode.Alpha, _camera);
 
             // Store the current map values
             var oldDrawParticles = map.DrawParticles;

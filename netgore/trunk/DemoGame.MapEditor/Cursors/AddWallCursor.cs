@@ -1,10 +1,10 @@
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
-using Microsoft.Xna.Framework;
 using NetGore.EditorTools;
+using SFML.Graphics;
+using Image=System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -23,7 +23,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the cursor's <see cref="Image"/>.
+        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
         /// </summary>
         public override Image CursorImage
         {
