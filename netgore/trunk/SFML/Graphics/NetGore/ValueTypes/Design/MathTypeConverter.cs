@@ -50,9 +50,16 @@ namespace SFML.Graphics.Design
             string str = value as string;
             if (str == null)
                 return null;
+
             str = str.Trim();
+            if (str.StartsWith("{"))
+                str = str.Substring(1);
+            if (str.EndsWith("}"))
+                str = str.Substring(0, str.Length - 1);
+
             if (culture == null)
                 culture = CultureInfo.CurrentCulture;
+
             string[] strArray = str.Split(new string[] { culture.TextInfo.ListSeparator }, StringSplitOptions.None);
             T[] localArray = new T[strArray.Length];
             TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
