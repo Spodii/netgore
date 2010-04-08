@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using log4net;
-
+using NetGore.Content;
 using NetGore.IO;
 using SFML.Graphics;
 

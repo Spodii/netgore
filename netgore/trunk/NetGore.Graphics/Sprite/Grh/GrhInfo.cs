@@ -7,6 +7,7 @@ using System.Reflection;
 using log4net;
 
 using NetGore.Collections;
+using NetGore.Content;
 using NetGore.IO;
 using SFML.Graphics;
 
