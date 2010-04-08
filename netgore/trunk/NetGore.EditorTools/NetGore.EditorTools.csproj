@@ -282,7 +282,6 @@
     <Compile Include="WinForms\GraphicsDeviceControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WinForms\GraphicsDeviceService.cs" />
     <Compile Include="WinForms\ServiceContainer.cs" />
   </ItemGroup>
   <ItemGroup>

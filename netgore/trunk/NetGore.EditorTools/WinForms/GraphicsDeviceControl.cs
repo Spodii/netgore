@@ -1,13 +1,14 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
 using NetGore.Graphics;
+using SFML.Graphics;
 using Color=System.Drawing.Color;
-using Rectangle=SFML.Graphics.Rectangle;
 
 namespace NetGore.EditorTools
 {
@@ -33,15 +34,12 @@ namespace NetGore.EditorTools
         static readonly StringFormat _errorMessageStringFormat = new StringFormat
         { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
-        readonly ServiceContainer _services = new ServiceContainer();
-
-        GraphicsDeviceService _gds;
-
         /// <summary>
         /// The last time a message was painted using PaintUsingSystemDrawing().
         /// </summary>
         int _lastSystemPaintTime;
 
+        RenderWindow _rw;
         ISpriteBatch _spriteBatch;
 
         /// <summary>
@@ -78,21 +76,12 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets a GraphicsDevice this control can use.
+        /// Gets a RenderWindow this control can use.
         /// </summary>
         [Browsable(false)]
-        public GraphicsDevice GraphicsDevice
+        public RenderWindow RenderWindow
         {
-            get { return _gds.GraphicsDevice; }
-        }
-
-        /// <summary>
-        /// Gets an IServiceProvider container.
-        /// </summary>
-        [Browsable(false)]
-        public ServiceContainer Services
-        {
-            get { return _services; }
+            get { return _rw; }
         }
 
         /// <summary>
@@ -101,7 +90,11 @@ namespace NetGore.EditorTools
         [Browsable(false)]
         public ISpriteBatch SpriteBatch
         {
-            get { return _spriteBatch; }
+            get
+            {
+                // TODO: ## Remove?
+                return _spriteBatch;
+            }
         }
 
         /// <summary>
@@ -112,22 +105,8 @@ namespace NetGore.EditorTools
         string BeginDraw()
         {
             // If we have no graphics device we must be running in the designer
-            if (DesignMode || _gds == null)
+            if (DesignMode || _rw == null)
                 return Text + Environment.NewLine + Environment.NewLine + GetType();
-
-            // Make sure the graphics device is big enough and has not been lost
-            string deviceResetError = HandleDeviceReset();
-
-            if (!string.IsNullOrEmpty(deviceResetError))
-                return deviceResetError;
-
-            // Many GraphicsDeviceControl instances can be sharing the same
-            // GraphicsDevice. The device backbuffer will be resized to fit the
-            // largest of these controls. But what if we are currently drawing
-            // a smaller control? To avoid unwanted stretching, we set the
-            // viewport to only use the top left portion of the full backbuffer.
-            GraphicsDevice.Viewport = new Viewport
-            { X = 0, Y = 0, Width = ClientSize.Width, Height = ClientSize.Height, MinDepth = 0, MaxDepth = 1 };
 
             return null;
         }
@@ -138,10 +117,21 @@ namespace NetGore.EditorTools
         /// <param name="disposing">If true, disposes of managed resources</param>
         protected override void Dispose(bool disposing)
         {
-            if (_gds != null)
+            if (_rw != null)
             {
-                _gds.Release(disposing);
-                _gds = null;
+                try
+                {
+                    _rw.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to dispose RenderWindow: {0}";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+                    Debug.Fail(string.Format(errmsg, ex));
+                }
+
+                _rw = null;
             }
 
             base.Dispose(disposing);
@@ -156,75 +146,11 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Ends drawing the control. This is called after derived classes
-        /// have finished their Draw method, and is responsible for presenting
-        /// the finished image onto the screen, using the appropriate WinForms
-        /// control handle to make sure it shows up in the right place.
+        /// Ends drawing the control.
         /// </summary>
         protected virtual void EndDraw()
         {
-            try
-            {
-                Rectangle sourceRectangle = new Rectangle(0, 0, ClientSize.Width, ClientSize.Height);
-                GraphicsDevice.Present(sourceRectangle, null, Handle);
-            }
-            catch (DeviceLostException ex)
-            {
-                // Present might throw if the device became lost while we were
-                // drawing. The lost device will be handled by the next BeginDraw,
-                // so we just swallow the exception.
-                const string errmsg =
-                    "Caught DeviceLostException when drawing device to a WinForms control." +
-                    " Usually, this is not a problem, and often indicates something such as minimizing, Ctrl+Alt+Del, etc." +
-                    " Only treat this as an error if the application crashes shortly after this log entry. Exception: {0}";
-
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, ex);
-            }
-        }
-
-        /// <summary>
-        /// Helper used by BeginDraw. This checks the graphics device status,
-        /// making sure it is big enough for drawing the current control, and
-        /// that the device is not lost. Returns an error string if the device
-        /// could not be reset.
-        /// </summary>
-        string HandleDeviceReset()
-        {
-            bool deviceNeedsReset;
-
-            switch (GraphicsDevice.GraphicsDeviceStatus)
-            {
-                case GraphicsDeviceStatus.Lost:
-                    // If the graphics device is lost, we cannot use it at all.
-                    return "Graphics device lost";
-
-                case GraphicsDeviceStatus.NotReset:
-                    // If device is in the not-reset state, we should try to reset it.
-                    deviceNeedsReset = true;
-                    break;
-
-                default:
-                    // If the device state is ok, check whether it is big enough.
-                    PresentationParameters pp = GraphicsDevice.PresentationParameters;
-                    deviceNeedsReset = (ClientSize.Width > pp.BackBufferWidth) || (ClientSize.Height > pp.BackBufferHeight);
-                    break;
-            }
-
-            // Do we need to reset the device?
-            if (deviceNeedsReset)
-            {
-                try
-                {
-                    _gds.ResetDevice(ClientSize.Width, ClientSize.Height);
-                }
-                catch (Exception e)
-                {
-                    return "Graphics device reset failed" + Environment.NewLine + Environment.NewLine + e;
-                }
-            }
-
-            return null;
+            _rw.Display();
         }
 
         /// <summary>
@@ -239,16 +165,13 @@ namespace NetGore.EditorTools
         /// </summary>
         protected override void OnCreateControl()
         {
-            // Don't initialize the graphics device if we are running in the designer
+            // Don't create the RenderWindow in the designer
             if (!DesignMode)
             {
-                _gds = GraphicsDeviceService.AddRef(Handle, ClientSize.Width, ClientSize.Height);
-
-                // Register the service, so components like ContentManager can find it
-                _services.AddService<IGraphicsDeviceService>(_gds);
+                _rw = new RenderWindow(Handle);
 
                 // Create our SpriteBatch
-                _spriteBatch = new RoundedXnaSpriteBatch(GraphicsDevice);
+                _spriteBatch = new RoundedSpriteBatch(_rw);
 
                 // Give derived classes a chance to initialize themselves
                 Initialize();
