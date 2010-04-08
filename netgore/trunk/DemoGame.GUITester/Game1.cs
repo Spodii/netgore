@@ -29,7 +29,14 @@ namespace DemoGame.GUITester
             var ts = new TestScreen(_screenManager);
             _screenManager.ActiveScreen = ts;
 
+            Closed += Game1_Closed;
+
             GameLoop();
+        }
+
+        void Game1_Closed(object sender, EventArgs e)
+        {
+            Close();
         }
 
         void GameLoop()
