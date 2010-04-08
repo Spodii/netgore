@@ -91,18 +91,6 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
-    <Reference Include="sfmlnet-audio, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-audio.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-graphics.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-window, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-window.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -128,11 +116,6 @@
     <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">
       <Project>{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}</Project>
       <Name>DemoGame.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
-      <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
-      <Name>NetGore.Graphics</Name>
-      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>

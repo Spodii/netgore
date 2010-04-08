@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore;
+using NetGore.Content;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;

@@ -8,6 +8,7 @@ using DemoGame.DbObjs;
 using log4net;
 using NetGore;
 using NetGore.Audio;
+using NetGore.Content;
 using NetGore.Features.Emoticons;
 using NetGore.Features.GameTime;
 using NetGore.Features.Groups;

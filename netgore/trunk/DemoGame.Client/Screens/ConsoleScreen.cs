@@ -6,6 +6,7 @@ using log4net.Config;
 using log4net.Core;
 using log4net.Filter;
 using NetGore;
+using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
