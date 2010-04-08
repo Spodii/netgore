@@ -109,8 +109,8 @@ namespace DemoGame.Client
 
         /// <summary>
         /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.OnChangeFont"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.OnChangeFont"/> when possible.
+        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
         /// </summary>
         protected override void OnFontChanged()
         {

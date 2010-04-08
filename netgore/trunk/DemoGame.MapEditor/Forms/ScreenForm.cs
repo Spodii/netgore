@@ -10,6 +10,7 @@ using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Collections;
+using NetGore.Content;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.EditorTools;

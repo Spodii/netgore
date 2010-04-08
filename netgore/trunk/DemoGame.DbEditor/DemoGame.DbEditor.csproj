@@ -46,18 +46,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="sfmlnet-audio, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-audio.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-graphics, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-graphics.dll</HintPath>
-    </Reference>
-    <Reference Include="sfmlnet-window, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_dependencies\sfmlnet-window.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -152,10 +140,6 @@
     <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
       <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
       <Name>NetGore.Features</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
-      <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
-      <Name>NetGore.Graphics</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
