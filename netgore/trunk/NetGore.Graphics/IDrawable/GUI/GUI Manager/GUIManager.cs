@@ -7,8 +7,6 @@ using SFML.Window;
 
 namespace NetGore.Graphics.GUI
 {
-    // TODO: ##2 Drag & Drop
-
     /// <summary>
     /// A generic implementation of <see cref="IGUIManager"/> to manage GUI components that should be suitable for most
     /// all GUI manager needs.
@@ -134,25 +132,6 @@ namespace NetGore.Graphics.GUI
 
                 if (FocusedRootChanged != null)
                     FocusedRootChanged(this);
-            }
-        }
-
-        /// <summary>
-        /// Finds the new focused root control (if any)
-        /// </summary>
-        void UpdateFocusedRoot()
-        {
-            // First root control to contain the mouse position is set as the focused root
-            // Controls are iterated in reverse to respect the order they were drawn
-            Vector2 pos = CursorPosition;
-
-            foreach (Control control in Controls.Reverse())
-            {
-                if (!control.ContainsPoint(pos))
-                    continue;
-
-                SetFocusedRoot(control.Root);
-                return;
             }
         }
 
