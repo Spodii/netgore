@@ -17,7 +17,8 @@ namespace DemoGame.MapEditor
         readonly ICamera2D _camera = new Camera2D(Vector2.Zero);
 
         /// <summary>
-        /// Gets or sets the camera used to view the map.
+        /// Gets or sets the camera used to view the map. The <see cref="ICamera2D.Map"/> property must be
+        /// set for the map to be drawn.
         /// </summary>
         [Browsable(false)]
         public ICamera2D Camera { get; set; }
