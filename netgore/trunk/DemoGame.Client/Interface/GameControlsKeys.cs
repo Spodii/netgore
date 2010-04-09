@@ -56,8 +56,8 @@ namespace DemoGame.Client
             _moveRight = new GameControlKeys("Move Right", KeyCode.Right, KeyCode.Left);
 
 #if TOPDOWN
-            _moveUp = new GameControlKeys("Move Up", Keys.Up, Keys.Down);
-            _moveDown = new GameControlKeys("Move Down", Keys.Down, Keys.Up);
+            _moveUp = new GameControlKeys("Move Up", KeyCode.Up, KeyCode.Down);
+            _moveDown = new GameControlKeys("Move Down", KeyCode.Down, KeyCode.Up);
             _moveStopHorizontal = new GameControlKeys("Move Stop Horizontal", null, _moveLeft.KeysDown.Concat(_moveRight.KeysDown));
             _moveStopVertical = new GameControlKeys("Move Stop Vertical", null, _moveUp.KeysDown.Concat(_moveDown.KeysDown));
             _moveStop = new GameControlKeys("Move Stop", null,
