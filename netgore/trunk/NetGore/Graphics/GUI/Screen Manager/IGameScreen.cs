@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NetGore.Audio;
+using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
 {
@@ -20,9 +21,9 @@ namespace NetGore.Graphics.GUI
         IGUIManager GUIManager { get; }
 
         /// <summary>
-        /// Gets the <see cref="MusicManager"/> to use for the music to play on this <see cref="IGameScreen"/>.
+        /// Gets the <see cref="IMusicManager"/> to use for the music to play on this <see cref="IGameScreen"/>.
         /// </summary>
-        MusicManager MusicManager { get; }
+        IMusicManager MusicManager { get; }
 
         /// <summary>
         /// Gets the unique name of this screen.
@@ -30,7 +31,7 @@ namespace NetGore.Graphics.GUI
         string Name { get; }
 
         /// <summary>
-        /// Gets or sets if music is to be played during this screen. If true, the <see cref="IMusic"/> specified
+        /// Gets or sets if music is to be played during this screen. If true, the <see cref="IMusicInfo"/> specified
         /// in <see cref="IGameScreen.ScreenMusic"/> will be played. If false, any music will be turned off while this
         /// screen is active.
         /// </summary>
@@ -42,16 +43,16 @@ namespace NetGore.Graphics.GUI
         IScreenManager ScreenManager { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="IMusic"/> to play while this screen is active. Only valid if
+        /// Gets or sets the <see cref="IMusicInfo"/> of the music to play while this screen is active. Only valid if
         /// <see cref="IGameScreen.PlayMusic"/> is set. If null, the track will not be changed, preserving the music
         /// currently playing.
         /// </summary>
-        IMusic ScreenMusic { get; set; }
+        IMusicInfo ScreenMusic { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="SoundManager"/> to use for the sound to play on this <see cref="IGameScreen"/>.
+        /// Gets the <see cref="ISoundManager"/> to use for the sound to play on this <see cref="IGameScreen"/>.
         /// </summary>
-        SoundManager SoundManager { get; }
+        ISoundManager SoundManager { get; }
 
         /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current

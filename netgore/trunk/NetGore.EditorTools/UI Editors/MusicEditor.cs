@@ -45,10 +45,10 @@ namespace NetGore.EditorTools
                     {
                         if (pt == typeof(string))
                             value = editorForm.SelectedItem.Name;
-                        else if (pt == typeof(IMusic))
+                        else if (pt == typeof(IMusicInfo))
                             value = editorForm.SelectedItem;
                         else if (pt == typeof(MusicID) || pt == typeof(MusicID?))
-                            value = editorForm.SelectedItem.Index;
+                            value = editorForm.SelectedItem.ID;
                         else
                         {
                             const string errmsg =

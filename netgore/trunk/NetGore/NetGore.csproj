@@ -94,16 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audio\AudioManagerBase.cs" />
-    <Compile Include="Audio\IAudio.cs" />
-    <Compile Include="Audio\IAudioHelper.cs" />
-    <Compile Include="Audio\Music\IMusic.cs" />
-    <Compile Include="Audio\Music\Music.cs" />
-    <Compile Include="Audio\Music\MusicManager.cs" />
-    <Compile Include="Audio\Sound\ISound.cs" />
-    <Compile Include="Audio\Sound\Sound.cs" />
-    <Compile Include="Audio\Sound\SoundEffectInstance3D.cs" />
-    <Compile Include="Audio\Sound\SoundManager.cs" />
-    <Compile Include="Audio\StaticAudioEmitter.cs" />
     <Compile Include="Core\Asserts\ThreadAsserts.cs" />
     <Compile Include="Content\ContentAssetName.cs" />
     <Compile Include="Content\ContentAssetNameConverter.cs" />
@@ -334,7 +324,7 @@
     <Compile Include="SFML\Audio\Listener.cs" />
     <Compile Include="SFML\Audio\Music.cs" />
     <Compile Include="SFML\Audio\Sound.cs" />
-    <Compile Include="SFML\Audio\SoundBuffer.cs" />
+    <Compile Include="SFML\Audio\NetGore\SoundBuffer.cs" />
     <Compile Include="SFML\Audio\SoundBufferRecorder.cs" />
     <Compile Include="SFML\Audio\SoundRecorder.cs" />
     <Compile Include="SFML\Audio\SoundStream.cs" />
@@ -349,6 +339,7 @@
     <Compile Include="SFML\Graphics\NetGore\Image.cs" />
     <Compile Include="SFML\Graphics\NetGore\LazyFont.cs" />
     <Compile Include="SFML\Graphics\NetGore\LazyImage.cs" />
+    <Compile Include="SFML\Audio\NetGore\LazySoundBuffer.cs" />
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\BoundingBox.cs" />
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\BoundingFrustum.cs" />
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\BoundingSphere.cs" />
@@ -637,6 +628,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>FrameworkResources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Audio\Music\" />
+    <Folder Include="Audio\Sound\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

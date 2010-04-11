@@ -65,12 +65,8 @@ namespace DemoGame.Client
             _screenManager.SetScreen(MainMenuScreen.ScreenName);
 
             // NOTE: Temporary volume reduction
-            // We use the thread pool due to the potentially long time it can take to load the audio engine
-            ThreadPool.QueueUserWorkItem(delegate
-            {
-                _screenManager.SoundManager.Volume = 0.7f;
-                _screenManager.MusicManager.Volume = 0.2f;
-            });
+            //_screenManager.AudioManager.SoundManager.Volume = 0.7f;
+            _screenManager.AudioManager.MusicManager.Volume = 20f;
 
             _sockets = ClientSockets.Instance;
 

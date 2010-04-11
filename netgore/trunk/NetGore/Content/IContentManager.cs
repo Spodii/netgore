@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
+using SFML.Audio;
 using SFML.Graphics;
 
 namespace NetGore.Content
@@ -50,6 +51,14 @@ namespace NetGore.Content
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <returns>The loaded asset.</returns>
         Image LoadImage(string assetName, ContentLevel level);
+
+        /// <summary>
+        /// Loads a <see cref="SoundBuffer"/> asset.
+        /// </summary>
+        /// <param name="assetName">The name of the asset to load.</param>
+        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
+        /// <returns>The loaded asset.</returns>
+        SoundBuffer LoadSoundBuffer(string assetName, ContentLevel level);
 
         /// <summary>
         /// Loads a <see cref="Font"/> asset.

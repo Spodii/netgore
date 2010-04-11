@@ -15,15 +15,14 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class ScreenManager : IScreenManager
     {
+        readonly IAudioManager _audioManager;
         readonly IContentManager _content;
+        readonly Font _defaultFont;
         readonly IDrawingManager _drawingManager;
         readonly FrameCounter _fps = new FrameCounter();
         readonly RenderWindow _game;
-        readonly Font _defaultFont;
-        readonly MusicManager _musicManager;
         readonly Dictionary<string, IGameScreen> _screens = new Dictionary<string, IGameScreen>(StringComparer.OrdinalIgnoreCase);
         readonly ISkinManager _skinManager;
-        readonly SoundManager _soundManager;
 
         IGameScreen _activeScreen;
         bool _isDisposed;
@@ -51,8 +50,7 @@ namespace NetGore.Graphics.GUI
             _content = new ContentManager();
             _drawingManager = new DrawingManager(_game);
 
-            _soundManager = SoundManager.GetInstance(_content);
-            _musicManager = MusicManager.GetInstance(_content);
+            _audioManager = Audio.AudioManager.GetInstance(_content);
 
             // Add event listeners to the input-related events
             _game.KeyPressed += _game_KeyPressed;
@@ -70,11 +68,6 @@ namespace NetGore.Graphics.GUI
             {
                 screen.LoadContent();
             }
-        }
-
-        public bool IsDisposed
-        {
-            get { return _isDisposed; }
         }
 
         void _game_KeyPressed(object sender, KeyEventArgs e)
@@ -176,6 +169,9 @@ namespace NetGore.Graphics.GUI
         {
             int currentTime = gameTime;
 
+            // Update the audio
+            AudioManager.Update();
+
             // Update the drawing manager
             DrawingManager.Update(currentTime);
 
@@ -232,6 +228,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="IAudioManager"/> to be used by all of the <see cref="IGameScreen"/>s in this
+        /// <see cref="IScreenManager"/>.
+        /// </summary>
+        public IAudioManager AudioManager
+        {
+            get { return _audioManager; }
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="IGameScreen"/> to use to show the console.
         /// </summary>
         public IGameScreen ConsoleScreen { get; set; }
@@ -242,6 +247,14 @@ namespace NetGore.Graphics.GUI
         public IContentManager Content
         {
             get { return _content; }
+        }
+
+        /// <summary>
+        /// Gets the default <see cref="Font"/> to use.
+        /// </summary>
+        public Font DefaultFont
+        {
+            get { return _defaultFont; }
         }
 
         /// <summary>
@@ -261,12 +274,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the default <see cref="Font"/> to use.
-        /// </summary>
-        public Font DefaultFont
-        { get { return _defaultFont; } }
-
-        /// <summary>
         /// Gets the <see cref="IScreenManager.Game"/>.
         /// </summary>
         public RenderWindow Game
@@ -275,11 +282,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="MusicManager"/> managed by this <see cref="ScreenManager"/>.
+        /// Gets if this <see cref="IScreenManager"/> has been disposed.
         /// </summary>
-        public MusicManager MusicManager
+        public bool IsDisposed
         {
-            get { return _musicManager; }
+            get { return _isDisposed; }
         }
 
         /// <summary>
@@ -302,14 +309,6 @@ namespace NetGore.Graphics.GUI
         public ISkinManager SkinManager
         {
             get { return _skinManager; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="SoundManager"/> managed by this <see cref="ScreenManager"/>.
-        /// </summary>
-        public SoundManager SoundManager
-        {
-            get { return _soundManager; }
         }
 
         /// <summary>

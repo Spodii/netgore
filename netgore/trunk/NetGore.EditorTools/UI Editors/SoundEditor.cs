@@ -45,10 +45,10 @@ namespace NetGore.EditorTools
                     {
                         if (pt == typeof(string))
                             value = editorForm.SelectedItem.Name;
-                        else if (pt == typeof(ISound))
+                        else if (pt == typeof(ISoundInfo))
                             value = editorForm.SelectedItem;
                         else if (pt == typeof(SoundID) || pt == typeof(SoundID?))
-                            value = editorForm.SelectedItem.Index;
+                            value = editorForm.SelectedItem.ID;
                         else
                         {
                             const string errmsg =

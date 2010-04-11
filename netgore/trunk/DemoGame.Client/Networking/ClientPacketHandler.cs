@@ -129,7 +129,7 @@ namespace DemoGame.Client
             get { return GameplayScreen.UserInfo.QuestInfo; }
         }
 
-        SoundManager SoundManager
+        ISoundManager SoundManager
         {
             get { return GameplayScreen.SoundManager; }
         }
@@ -222,7 +222,7 @@ namespace DemoGame.Client
             if (chr == null)
                 return;
 
-            SoundManager.TryPlay("punch");
+            SoundManager.Play("punch", chr);
             chr.Attack();
         }
 
@@ -427,7 +427,7 @@ namespace DemoGame.Client
         {
             SoundID soundID = r.ReadSoundID();
 
-            if (!SoundManager.TryPlay(soundID))
+            if (!SoundManager.Play(soundID))
                 LogFailPlaySound(soundID);
         }
 
@@ -437,7 +437,7 @@ namespace DemoGame.Client
             SoundID soundID = r.ReadSoundID();
             Vector2 position = r.ReadVector2();
 
-            if (!SoundManager.TryPlay(soundID, position))
+            if (!SoundManager.Play(soundID, position))
                 LogFailPlaySound(soundID);
         }
 
@@ -457,7 +457,7 @@ namespace DemoGame.Client
                 return;
             }
 
-            if (!SoundManager.TryPlay(soundID, entity))
+            if (!SoundManager.Play(soundID, entity))
                 LogFailPlaySound(soundID);
         }
 

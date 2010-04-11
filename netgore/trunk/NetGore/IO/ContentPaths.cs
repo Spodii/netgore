@@ -55,6 +55,16 @@ namespace NetGore.IO
         public const string MapsFolder = "Maps";
 
         /// <summary>
+        /// The relative path to the Music directory from the Contents directory.
+        /// </summary>
+        public const string MusicFolder = "Music";
+
+        /// <summary>
+        /// The relative path to the Sounds directory from the Contents directory.
+        /// </summary>
+        public const string SoundsFolder = "Sounds";
+
+        /// <summary>
         /// The relative path to the Settings directory from the Contents directory.
         /// </summary>
         public const string SettingsFolder = "Settings";
@@ -97,6 +107,8 @@ namespace NetGore.IO
         readonly PathString _grhs;
         readonly PathString _languages;
         readonly PathString _maps;
+        readonly PathString _music;
+        readonly PathString _sounds;
         readonly PathString _particleEffects;
         readonly PathString _root;
         readonly PathString _settings;
@@ -135,6 +147,8 @@ namespace NetGore.IO
             _data = GetChildPath(_root, DataFolder);
             _particleEffects = GetChildPath(_root, ParticleEffectsFolder);
             _maps = GetChildPath(_root, MapsFolder);
+            _music = GetChildPath(_root, MusicFolder);
+            _sounds = GetChildPath(_root, SoundsFolder);
             _engine = GetChildPath(_root, EngineFolder);
             _fonts = GetChildPath(_root, FontsFolder);
             _grhs = GetChildPath(_root, GrhsFolder);
@@ -232,6 +246,22 @@ namespace NetGore.IO
         public PathString Maps
         {
             get { return _maps; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the Music directory.
+        /// </summary>
+        public PathString Music
+        {
+            get { return _music; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the Sounds directory.
+        /// </summary>
+        public PathString Sounds
+        {
+            get { return _sounds; }
         }
 
         /// <summary>
