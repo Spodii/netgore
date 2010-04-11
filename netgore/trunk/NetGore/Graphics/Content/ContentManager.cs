@@ -170,6 +170,11 @@ namespace NetGore
             Dispose(false);
         }
 
+        static string SanitizeAssetName(string assetName)
+        {
+            return assetName.Replace('\\', '/');
+        }
+
         /// <summary>
         /// Gets the absolute file path for an asset.
         /// </summary>
@@ -413,6 +418,11 @@ namespace NetGore
         /// <returns>The loaded asset.</returns>
         public Font LoadFont(string assetName, int fontSize, ContentLevel level)
         {
+            if (assetName == null)
+                throw new ArgumentNullException("assetName");
+
+            assetName = SanitizeAssetName(assetName);
+
             assetName += "|" + fontSize;
             var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetFont(x, fontSize));
             return (Font)ret;
@@ -426,6 +436,11 @@ namespace NetGore
         /// <returns>The loaded asset.</returns>
         public SoundBuffer LoadSoundBuffer(string assetName, ContentLevel level)
         {
+            if (assetName == null)
+                throw new ArgumentNullException("assetName");
+
+            assetName = SanitizeAssetName(assetName);
+
             var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetSoundBuffer(x));
             return (SoundBuffer)ret;
         }
@@ -438,6 +453,11 @@ namespace NetGore
         /// <returns>The loaded asset.</returns>
         public Image LoadImage(string assetName, ContentLevel level)
         {
+            if (assetName == null)
+                throw new ArgumentNullException("assetName");
+
+            assetName = SanitizeAssetName(assetName);
+
             var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetImage(x));
             return (Image)ret;
         }
