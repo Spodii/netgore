@@ -1,36 +1,49 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Audio;
 using NetGore.Content;
 
 namespace NetGore.EditorTools
 {
-    public class SoundUITypeEditorForm : UITypeEditorListForm<ISound>
+    public class SoundUITypeEditorForm : UITypeEditorListForm<ISoundInfo>
     {
-        readonly IContentManager _cm;
-        readonly ISound _current;
+        readonly ISoundInfo _current;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SoundUITypeEditorForm"/> class.
         /// </summary>
         /// <param name="cm">The cm.</param>
-        /// <param name="current">The currently selected <see cref="ISound"/>. Can be null.</param>
+        /// <param name="current">The currently selected <see cref="ISoundInfo"/>. Can be null.</param>
         public SoundUITypeEditorForm(IContentManager cm, object current)
         {
-            _cm = cm;
-
-            var sm = SoundManager.GetInstance(cm);
+            ISoundManager sm;
+            try
+            {
+                sm = AudioManager.GetInstance(cm).SoundManager;
+            }
+            catch (ArgumentNullException ex)
+            {
+                const string errmsg = "Failed to get AudioManager instance when passing a null ContentManager: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                DialogResult = System.Windows.Forms.DialogResult.Abort;
+                Close();
+                return;
+            }
 
             if (current != null)
             {
                 if (current is SoundID)
-                    _current = sm.GetItem((SoundID)current);
+                    _current = sm.GetSoundInfo((SoundID)current);
                 else if (current is SoundID? && ((SoundID?)current).HasValue)
-                    _current = sm.GetItem(((SoundID?)current).Value);
-                else if (current is ISound)
-                    _current = (ISound)current;
+                    _current = sm.GetSoundInfo(((SoundID?)current).Value);
+                else if (current is ISoundInfo)
+                    _current = (ISoundInfo)current;
                 else
-                    _current = sm.GetItem(current.ToString());
+                    _current = sm.GetSoundInfo(current.ToString());
             }
         }
 
@@ -39,19 +52,35 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="item">The item to get the display string for.</param>
         /// <returns>The string to display for the <paramref name="item"/>.</returns>
-        protected override string GetItemDisplayString(ISound item)
+        protected override string GetItemDisplayString(ISoundInfo item)
         {
-            return item.Index + ". " + item.Name;
+            return item.ID + ". " + item.Name;
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// When overridden in the derived class, gets the items to add to the list.
         /// </summary>
         /// <returns>The items to add to the list.</returns>
-        protected override IEnumerable<ISound> GetListItems()
+        protected override IEnumerable<ISoundInfo> GetListItems()
         {
-            var mm = SoundManager.GetInstance(_cm);
-            return mm.Items.OrderBy(x => x.Index);
+            ISoundManager sm;
+            try
+            {
+                sm = AudioManager.GetInstance(null).SoundManager;
+            }
+            catch (ArgumentNullException ex)
+            {
+                const string errmsg = "Failed to get AudioManager instance when passing a null ContentManager: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                DialogResult = System.Windows.Forms.DialogResult.Abort;
+                Close();
+                return null;
+            }
+
+            return sm.SoundInfos.OrderBy(x => x.ID);
         }
 
         /// <summary>
@@ -62,7 +91,7 @@ namespace NetGore.EditorTools
         /// <returns>
         /// If the given <paramref name="item"/> is valid to be used as the returned item.
         /// </returns>
-        protected override bool IsItemValid(ISound item)
+        protected override bool IsItemValid(ISoundInfo item)
         {
             return item != null;
         }
@@ -74,7 +103,7 @@ namespace NetGore.EditorTools
         /// <returns>
         /// The item that will be selected by default.
         /// </returns>
-        protected override ISound SetDefaultSelectedItem(IEnumerable<ISound> items)
+        protected override ISoundInfo SetDefaultSelectedItem(IEnumerable<ISoundInfo> items)
         {
             return _current;
         }

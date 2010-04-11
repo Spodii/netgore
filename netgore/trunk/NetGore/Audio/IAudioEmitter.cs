@@ -1,5 +1,4 @@
 using System.Linq;
-
 using SFML.Graphics;
 
 namespace NetGore.Audio

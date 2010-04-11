@@ -30,6 +30,32 @@ namespace SFML
                     throw new LoadingFailedException("sound buffer", filename);
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SoundBuffer"/> class.
+            /// </summary>
+            protected SoundBuffer()
+                : base(IntPtr.Zero)
+            {
+            }
+
+            /// <summary>
+            /// Reloads the asset from file if it is not loaded.
+            /// </summary>
+            /// <param name="filename">Path of the sound file to load</param>
+            /// <returns>True if already loaded; false if it had to load.</returns>
+            protected internal bool EnsureLoaded(string filename)
+            {
+                if (ThisRaw != IntPtr.Zero)
+                    return true;
+
+                SetThis(sfSoundBuffer_CreateFromFile(filename));
+
+                if (ThisRaw == IntPtr.Zero)
+                    throw new LoadingFailedException("sound buffer", filename);
+
+                return false;
+            }
+
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Construct the sound buffer from a file in a stream

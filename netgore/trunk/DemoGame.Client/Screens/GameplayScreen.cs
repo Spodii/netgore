@@ -244,6 +244,28 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Handles screen activation, which occurs every time the screen becomes the current
+        /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            SoundManager.Stop3D();
+        }
+
+        /// <summary>
+        /// Handles screen deactivation, which occurs every time the screen changes from being
+        /// the current active screen. Good place to clean up any objects created in <see cref="GameScreen.Activate"/>().
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            SoundManager.Stop3D();
+        }
+
         void ChatForm_Say(ChatForm sender, string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -569,6 +591,8 @@ namespace DemoGame.Client
                 return;
             }
 
+            ScreenManager.AudioManager.ListenerPosition = UserChar.Position;
+
             _userLight.IsEnabled = true;
             _userLight.Teleport(UserChar.Position);
 
@@ -610,9 +634,9 @@ namespace DemoGame.Client
             // Set the new music
             if (!newMap.MusicID.HasValue)
                 ScreenMusic = null;
-            else if (!MusicManager.TryPlay(newMap.MusicID.Value))
+            else if (!MusicManager.Play(newMap.MusicID.Value))
             {
-                IMusic musicTrack = MusicManager.GetItem(newMap.MusicID.Value);
+                var musicTrack = MusicManager.GetMusicInfo(newMap.MusicID.Value);
                 if (musicTrack == null)
                 {
                     const string errmsg = "Failed to play map music with ID `{0}`. No music with that ID could be found.";

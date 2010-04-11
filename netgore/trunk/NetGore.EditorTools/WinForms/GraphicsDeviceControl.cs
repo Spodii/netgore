@@ -92,7 +92,6 @@ namespace NetGore.EditorTools
         {
             get
             {
-                // TODO: ## Remove?
                 return _spriteBatch;
             }
         }

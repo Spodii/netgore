@@ -1235,8 +1235,7 @@ namespace DemoGame.MapEditor
 
             // Grab the audio manager instances, which will ensure that they are property initialized
             // before something that can't pass it an ContentManager (such as the UITypeEditor) tries to get an instance.
-            SoundManager.GetInstance(_content);
-            MusicManager.GetInstance(_content);
+            AudioManager.GetInstance(_content);
 
             // Create the database connection
             DbConnectionSettings settings = new DbConnectionSettings();

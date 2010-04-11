@@ -7,6 +7,7 @@ using log4net;
 using NetGore.Content;
 using NetGore.IO;
 using SFML;
+using SFML.Audio;
 using SFML.Graphics;
 
 namespace NetGore
@@ -262,6 +263,30 @@ namespace NetGore
             }
         }
 
+        /// <summary>
+        /// Reads an asset from file.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <returns>The loaded asset.</returns>
+        protected SoundBuffer ReadAssetSoundBuffer(string assetName)
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(ToString());
+
+            if (string.IsNullOrEmpty(assetName))
+                throw new ArgumentNullException("assetName");
+
+            var ret = new MyLazySoundBuffer(GetAssetPath(assetName));
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Reads an asset from file.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <param name="fontSize">The font size.</param>
+        /// <returns>The loaded asset.</returns>
         protected Font ReadAssetFont(string assetName, int fontSize)
         {
             if (IsDisposed)
@@ -389,12 +414,20 @@ namespace NetGore
         public Font LoadFont(string assetName, int fontSize, ContentLevel level)
         {
             assetName += "|" + fontSize;
-
             var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetFont(x, fontSize));
-            if (!(ret is Font))
-                throw InvalidTypeException(ret, typeof(Font));
-
             return (Font)ret;
+        }
+
+        /// <summary>
+        /// Loads a <see cref="SoundBuffer"/> asset.
+        /// </summary>
+        /// <param name="assetName">The name of the asset to load.</param>
+        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
+        /// <returns>The loaded asset.</returns>
+        public SoundBuffer LoadSoundBuffer(string assetName, ContentLevel level)
+        {
+            var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetSoundBuffer(x));
+            return (SoundBuffer)ret;
         }
 
         /// <summary>
@@ -406,9 +439,6 @@ namespace NetGore
         public Image LoadImage(string assetName, ContentLevel level)
         {
             var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetImage(x));
-            if (!(ret is Image))
-                throw InvalidTypeException(ret, typeof(Image));
-
             return (Image)ret;
         }
 
@@ -574,9 +604,61 @@ namespace NetGore
             public override string ToString()
             {
                 if (FileName.Length > 15)
-                    return "Image [" + FileName.Substring(10) + "]";
+                    return "Image [..." + FileName.Substring(10) + "]";
                 else
                     return "Image [" + FileName + "]";
+            }
+        }
+
+        /// <summary>
+        /// <see cref="LazySoundBuffer"/> implementation specifically for the <see cref="ContentManager"/>.
+        /// </summary>
+        sealed class MyLazySoundBuffer : LazySoundBuffer, IMyLazyAsset
+        {
+            int _lastUsed;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MyLazySoundBuffer"/> class.
+            /// </summary>
+            /// <param name="filename">The file name.</param>
+            public MyLazySoundBuffer(string filename) : base(filename)
+            {
+                _lastUsed = Environment.TickCount;
+            }
+
+            /// <summary>
+            /// Access to the internal pointer of the object.
+            /// For internal use only
+            /// </summary>
+            public override IntPtr This
+            {
+                get
+                {
+                    _lastUsed = Environment.TickCount;
+                    return base.This;
+                }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// </summary>
+            public int LastUsedTime
+            {
+                get { return _lastUsed; }
+            }
+
+            /// <summary>
+            /// Returns a <see cref="System.String"/> that represents this instance.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="System.String"/> that represents this instance.
+            /// </returns>
+            public override string ToString()
+            {
+                if (FileName.Length > 15)
+                    return "SoundBuffer [..." + FileName.Substring(10) + "]";
+                else
+                    return "SoundBuffer [" + FileName + "]";
             }
         }
 
@@ -635,7 +717,7 @@ namespace NetGore
             public override string ToString()
             {
                 if (FileName.Length > 15)
-                    return "Image [" + FileName.Substring(10) + "]";
+                    return "Image [..." + FileName.Substring(10) + "]";
                 else
                     return "Image [" + FileName + "]";
             }

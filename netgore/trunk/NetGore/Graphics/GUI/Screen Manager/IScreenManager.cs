@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-
-
 using NetGore.Audio;
 using NetGore.Content;
 using SFML.Graphics;
@@ -28,6 +26,12 @@ namespace NetGore.Graphics.GUI
         IGameScreen ActiveScreen { get; set; }
 
         /// <summary>
+        /// Gets the <see cref="IAudioManager"/> to be used by all of the <see cref="IGameScreen"/>s in this
+        /// <see cref="IScreenManager"/>.
+        /// </summary>
+        IAudioManager AudioManager { get; }
+
+        /// <summary>
         /// Gets or sets the <see cref="IGameScreen"/> to use to show the console.
         /// </summary>
         IGameScreen ConsoleScreen { get; set; }
@@ -38,6 +42,11 @@ namespace NetGore.Graphics.GUI
         IContentManager Content { get; }
 
         /// <summary>
+        /// Gets the default <see cref="Font"/> to use.
+        /// </summary>
+        Font DefaultFont { get; }
+
+        /// <summary>
         /// Gets the <see cref="IDrawingManager"/> to use.
         /// </summary>
         IDrawingManager DrawingManager { get; }
@@ -46,11 +55,6 @@ namespace NetGore.Graphics.GUI
         /// Gets the current FPS.
         /// </summary>
         int FPS { get; }
-        
-        /// <summary>
-        /// Gets the default <see cref="Font"/> to use.
-        /// </summary>
-        Font DefaultFont { get; }
 
         /// <summary>
         /// Gets the <see cref="Game"/>.
@@ -58,9 +62,9 @@ namespace NetGore.Graphics.GUI
         RenderWindow Game { get; }
 
         /// <summary>
-        /// Gets the <see cref="MusicManager"/> managed by this <see cref="ScreenManager"/>.
+        /// Gets if this <see cref="IScreenManager"/> has been disposed.
         /// </summary>
-        MusicManager MusicManager { get; }
+        bool IsDisposed { get; }
 
         /// <summary>
         /// Gets the size of the screen in pixels.
@@ -77,11 +81,6 @@ namespace NetGore.Graphics.GUI
         /// Gets the <see cref="ISkinManager"/> used to manage all the general skinning between all screens.
         /// </summary>
         ISkinManager SkinManager { get; }
-
-        /// <summary>
-        /// Gets the <see cref="SoundManager"/> managed by this <see cref="ScreenManager"/>.
-        /// </summary>
-        SoundManager SoundManager { get; }
 
         /// <summary>
         /// Adds a <see cref="IGameScreen"/> to this manager.
