@@ -107,14 +107,6 @@ namespace NetGore.Graphics.GUI
                 case KeyCode.Down:
                     Source.MoveCursor(MoveCursorDirection.Down);
                     break;
-
-                case KeyCode.Back:
-                    Source.DeleteChar();
-                    break;
-
-                case KeyCode.Return:
-                    Source.BreakLine();
-                    break;
             }
         }
 
@@ -124,8 +116,20 @@ namespace NetGore.Graphics.GUI
             if (string.IsNullOrEmpty(s))
                 return;
 
-            Debug.Assert(s.Length == 1);
-            Source.InsertChar(s);
+            switch (s)
+            {
+                case "\b":
+                    Source.DeleteChar();
+                    break;
+
+                case "\r":
+                    Source.BreakLine();
+                    break;
+
+                default:
+                    Source.InsertChar(s);
+                    break;
+            }
         }
     }
 }

@@ -543,19 +543,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when text has been entered into this <see cref="Control"/>.
-        /// This is called immediately before <see cref="Control.TextEntered"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.TextEntered"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected override void OnTextEntered(SFML.Window.TextEventArgs e)
-        {
-            _editableTextHandler.HandleText(e);
-
-            base.OnTextEntered(e);
-        }
-
-        /// <summary>
         /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
         /// This is called immediately before <see cref="Control.Resized"/>.
         /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
@@ -571,6 +558,32 @@ namespace NetGore.Graphics.GUI
             }
             else
                 _numCharsToDraw.Invalidate();
+        }
+
+        /// <summary>
+        /// Handles when text has been entered into this <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.TextEntered"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.TextEntered"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnTextEntered(TextEventArgs e)
+        {
+            _editableTextHandler.HandleText(e);
+
+            base.OnTextEntered(e);
+        }
+
+        /// <summary>
+        /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.KeyPressed"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.KeyPressed"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnKeyPressed(KeyEventArgs e)
+        {
+            _editableTextHandler.HandleKey(e);
+
+            base.OnKeyPressed(e);
         }
 
         void ResetCursorBlink()

@@ -576,7 +576,19 @@ namespace NetGore.Graphics
                     node.ITextureAtlasable.RemoveAtlas();
 
                 if (_atlasTexture != null && !_atlasTexture.IsDisposed())
-                    _atlasTexture.Dispose();
+                {
+                    try
+                    {
+                        _atlasTexture.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose atlas item: {0}";
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg, ex);
+                        Debug.Fail(string.Format(errmsg, ex));
+                    }
+                }
             }
 
             #endregion
