@@ -93,14 +93,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\AudioManagerBase.cs" />
+    <Compile Include="Audio\AudioManager.cs" />
+    <Compile Include="Audio\IAudioManager.cs" />
+    <Compile Include="Audio\Music\IMusicInfo.cs" />
+    <Compile Include="Audio\Music\IMusicManager.cs" />
+    <Compile Include="Audio\Music\IMusicManagerExtensions.cs" />
+    <Compile Include="Audio\Sound\ISoundInfo.cs" />
+    <Compile Include="Audio\Sound\ISoundManager.cs" />
+    <Compile Include="Audio\Sound\ISoundManagerExtensions.cs" />
+    <Compile Include="Audio\Music\MusicInfo.cs" />
+    <Compile Include="Audio\Music\MusicManager.cs" />
+    <Compile Include="Audio\Sound\SoundInfo.cs" />
+    <Compile Include="Audio\Sound\SoundManager.cs" />
     <Compile Include="Core\Asserts\ThreadAsserts.cs" />
     <Compile Include="Content\ContentAssetName.cs" />
     <Compile Include="Content\ContentAssetNameConverter.cs" />
     <Compile Include="Content\TextureAssetName.cs" />
     <Compile Include="Content\TextureAssetNameConverter.cs" />
-    <Compile Include="Audio\MusicIDTypeConverter.cs" />
-    <Compile Include="Audio\SoundIDTypeConverter.cs" />
+    <Compile Include="Audio\Music\MusicIDTypeConverter.cs" />
+    <Compile Include="Audio\Sound\SoundIDTypeConverter.cs" />
     <Compile Include="Core\BitOps.cs" />
     <Compile Include="Content\ContentLevel.cs" />
     <Compile Include="Content\IContentManager.cs" />
@@ -548,7 +559,7 @@
     <Compile Include="Core\World\Map\Spatial\SpatialHelper.cs" />
     <Compile Include="Core\World\Map\Spatial\SpatialManager.cs" />
     <Compile Include="Core\World\Map\MapEntityAttribute.cs" />
-    <Compile Include="Audio\MusicID.cs" />
+    <Compile Include="Audio\Music\MusicID.cs" />
     <Compile Include="Core\World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
     <Compile Include="Core\World\Entities\NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
     <Compile Include="Core\World\Entities\NPCChat\Conditionals\NPCChatConditionalEvaluationType.cs" />
@@ -593,7 +604,7 @@
     <Compile Include="Core\Strings\Say Commands\ISayCommands.cs" />
     <Compile Include="Core\Strings\Say Commands\SayCommandAttribute.cs" />
     <Compile Include="Core\Strings\Say Commands\SayHandlerBase.cs" />
-    <Compile Include="Audio\SoundID.cs" />
+    <Compile Include="Audio\Sound\SoundID.cs" />
     <Compile Include="Core\Strings\String Parser\StringCommandBaseAttribute.cs" />
     <Compile Include="Core\Strings\String Parser\StringCommandParser.cs" />
     <Compile Include="Core\Strings\String Parser\StringParser.cs" />
@@ -628,10 +639,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>FrameworkResources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Audio\Music\" />
-    <Folder Include="Audio\Sound\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
