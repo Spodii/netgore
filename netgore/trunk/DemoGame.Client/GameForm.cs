@@ -42,6 +42,29 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Processes a command key.
+        /// </summary>
+        /// <param name="msg">A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the
+        /// Win32 message to process.</param>
+        /// <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values that represents
+        /// the key to process.</param>
+        /// <returns>
+        /// true if the keystroke was processed and consumed by the control; otherwise, false to allow further processing.
+        /// </returns>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Prevents the form menu from showing when pressing alt
+            if (keyData == (Keys.RButton | Keys.ShiftKey | Keys.Alt))
+                return true;
+
+            // Prevents closing the form via alt+F4
+            if (keyData == (Keys.Alt | Keys.F4))
+                return true;
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
@@ -80,50 +103,6 @@ namespace DemoGame.Client
             {
                 base.OnClosing(e);
             }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            // This makes sure that certain key strokes do not active Windows events, such as pressing alt to bring up
-            // the form's menu. It is recommended you leave this here so it doesn't disturb players.
-            // Try to avoid actually handling key events in the form. Do it through the game instead.
-            e.SuppressKeyPress = true;
-            e.Handled = true;
-
-            base.OnKeyDown(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyPress"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyPressEventArgs"/> that contains the event data.</param>
-        protected override void OnKeyPress(KeyPressEventArgs e)
-        {
-            // This makes sure that certain key strokes do not active Windows events, such as pressing alt to bring up
-            // the form's menu. It is recommended you leave this here so it doesn't disturb players.
-            // Try to avoid actually handling key events in the form. Do it through the game instead.
-            e.Handled = true;
-
-            base.OnKeyPress(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            // This makes sure that certain key strokes do not active Windows events, such as pressing alt to bring up
-            // the form's menu. It is recommended you leave this here so it doesn't disturb players.
-            // Try to avoid actually handling key events in the form. Do it through the game instead.
-            e.SuppressKeyPress = true;
-            e.Handled = true;
-
-            base.OnKeyUp(e);
         }
 
         /// <summary>
