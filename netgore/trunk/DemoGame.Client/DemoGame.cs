@@ -65,7 +65,7 @@ namespace DemoGame.Client
             _screenManager.SetScreen(MainMenuScreen.ScreenName);
 
             // NOTE: Temporary volume reduction
-            //_screenManager.AudioManager.SoundManager.Volume = 0.7f;
+            _screenManager.AudioManager.SoundManager.Volume = 70f;
             _screenManager.AudioManager.MusicManager.Volume = 20f;
 
             _sockets = ClientSockets.Instance;
