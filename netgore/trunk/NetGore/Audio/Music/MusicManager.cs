@@ -12,7 +12,7 @@ namespace NetGore.Audio
     public sealed class MusicManager : AudioManagerBase<IMusic, MusicID>
     {
         static readonly object _instanceLock = new object();
-        static volatile MusicManager _instance;
+        static MusicManager _instance;
 
         IMusic _currentlyPlaying;
 
