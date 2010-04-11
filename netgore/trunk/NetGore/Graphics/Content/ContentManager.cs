@@ -469,6 +469,11 @@ namespace NetGore
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>
         public void SetLevel(string assetName, ContentLevel level)
         {
+            if (assetName == null)
+                throw new ArgumentNullException("assetName");
+
+            assetName = SanitizeAssetName(assetName);
+
             lock (_assetSync)
             {
                 IMyLazyAsset asset;
@@ -490,6 +495,11 @@ namespace NetGore
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>
         public void SetLevelMax(string assetName, ContentLevel level)
         {
+            if (assetName == null)
+                throw new ArgumentNullException("assetName");
+
+            assetName = SanitizeAssetName(assetName);
+
             lock (_assetSync)
             {
                 IMyLazyAsset asset;
@@ -511,6 +521,11 @@ namespace NetGore
         /// <param name="level">The new <see cref="ContentLevel"/>.</param>
         public void SetLevelMin(string assetName, ContentLevel level)
         {
+            if (assetName == null)
+                throw new ArgumentNullException("assetName");
+
+            assetName = SanitizeAssetName(assetName);
+
             lock (_assetSync)
             {
                 IMyLazyAsset asset;
@@ -534,6 +549,11 @@ namespace NetGore
         /// <returns>True if the asset was found; otherwise false.</returns>
         public bool TryGetContentLevel(string assetName, out ContentLevel level)
         {
+            if (assetName == null)
+                throw new ArgumentNullException("assetName");
+
+            assetName = SanitizeAssetName(assetName);
+
             lock (_assetSync)
             {
                 IMyLazyAsset o;
