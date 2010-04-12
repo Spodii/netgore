@@ -192,6 +192,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Draws a raw <see cref="Drawable"/> object.
+        /// </summary>
+        /// <param name="drawable">The object to draw.</param>
+        public void Draw(Drawable drawable)
+        {
+            if (drawable == null)
+                return;
+
+            _rw.Draw(drawable);
+        }
+
+        /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
         /// color tint, rotation, origin, effects, and sort depth.
         /// </summary>

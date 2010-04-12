@@ -45,7 +45,7 @@ namespace DemoGame.Client
             var startDrawPos = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
             var drawWidth = ClientSize.X * Math.Min(percent, 1);
             Rectangle r = new Rectangle((int)startDrawPos.X, (int)startDrawPos.Y, (int)drawWidth, (int)ClientSize.Y);
-            XNARectangle.Draw(spriteBatch, r, new Color(255, 0, 0, 200));
+            RenderRectangle.Draw(spriteBatch, r, new Color(255, 0, 0, 200));
 
             // Draw the name
             spriteBatch.DrawStringShaded(Font, Text, Position + _textOffset, ForeColor, Color.Black);

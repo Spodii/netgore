@@ -4,8 +4,6 @@ using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    // TODO: ## Get rid of this (most likely don't need it)
-
     /// <summary>
     /// An implementation of the <see cref="SpriteBatch"/> that rounds all the drawing positions to prevent
     /// sprites and text from drawing blurred.

@@ -4,19 +4,11 @@ using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    // TODO: ## http://www.sfml-dev.org/tutorials/1.5/graphics-shape.php
-
     /// <summary>
-    /// Assists in drawing untextured rectangles. More accurately, it draws textures using
-    /// a purely white texture (System.Blank).
+    /// Assists in drawing a rectangle.
     /// </summary>
-    public static class XNARectangle
+    public static class RenderRectangle
     {
-        /// <summary>
-        /// Grh for the System.Blank GrhData that is used to draw the rectangle.
-        /// </summary>
-        static Grh _blankGrh = null;
-
         /// <summary>
         /// Draws a rectangle.
         /// </summary>
@@ -39,24 +31,10 @@ namespace NetGore.Graphics
         /// <param name="borderThickness">The thickness of the border in pixels. Default is 1.</param>
         public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, Color borderColor, float borderThickness)
         {
-            LoadGrh();
-            _blankGrh.Draw(sb, dest, color);
-
-            // Check for a valid border color alpha
-            if (borderColor.A == 0)
-                return;
-
-            // Get the points for the 4 corners
-            Vector2 tl = new Vector2(dest.Left, dest.Top);
-            Vector2 br = new Vector2(dest.Right, dest.Bottom);
-            Vector2 tr = new Vector2(br.X, tl.Y);
-            Vector2 bl = new Vector2(tl.X, br.Y);
-
-            // Draw the 4 lines
-            XNALine.Draw(sb, tl, tr, borderColor, borderThickness);
-            XNALine.Draw(sb, tl, bl, borderColor, borderThickness);
-            XNALine.Draw(sb, br, bl, borderColor, borderThickness);
-            XNALine.Draw(sb, br, tr, borderColor, borderThickness);
+            using (var s = Shape.Rectangle(new Vector2(dest.X, dest.Y), new Vector2(dest.Right, dest.Bottom), color, borderThickness, borderColor))
+            {
+                sb.Draw(s);
+            }
         }
 
         /// <summary>
@@ -67,21 +45,9 @@ namespace NetGore.Graphics
         /// <param name="color">Color of the rectangle.</param>
         public static void Draw(ISpriteBatch sb, Rectangle dest, Color color)
         {
-            LoadGrh();
-            _blankGrh.Draw(sb, dest, color);
-        }
-
-        /// <summary>
-        /// Loads the _blankGrh, if needed, for drawing the rectangle.
-        /// </summary>
-        static void LoadGrh()
-        {
-            if (_blankGrh == null)
+            using (var s = Shape.Rectangle(new Vector2(dest.X, dest.Y), new Vector2(dest.Right, dest.Bottom), color))
             {
-                GrhData gd = GrhInfo.GetData("System", "Blank");
-                if (gd == null)
-                    throw new Exception("Failed to load GrhData System.Blank.");
-                _blankGrh = new Grh(gd);
+                sb.Draw(s);
             }
         }
     }

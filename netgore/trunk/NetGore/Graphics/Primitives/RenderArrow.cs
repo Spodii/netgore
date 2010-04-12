@@ -4,9 +4,7 @@ using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    // TODO: ## http://www.sfml-dev.org/tutorials/1.5/graphics-shape.php
-
-    public static class XNAArrow
+    public static class RenderArrow
     {
         public static void Draw(ISpriteBatch sb, Vector2 source, Vector2 dest, Color color)
         {
@@ -23,20 +21,20 @@ namespace NetGore.Graphics
             // Primary line
             float tailLen = dist - (segLen / 2);
             Vector2 pDest = source + (new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * tailLen);
-            XNALine.Draw(sb, source, pDest, color);
+            RenderLine.Draw(sb, source, pDest, color);
 
             // Arrow segment 1
             float ang1 = angle - MathHelper.PiOver4;
             Vector2 seg1 = dest - (new Vector2((float)Math.Cos(ang1), (float)Math.Sin(ang1)) * segLen);
-            XNALine.Draw(sb, dest, seg1, color);
+            RenderLine.Draw(sb, dest, seg1, color);
 
             // Arrow segment 2
             float ang2 = angle + MathHelper.PiOver4;
             Vector2 seg2 = dest - (new Vector2((float)Math.Cos(ang2), (float)Math.Sin(ang2)) * segLen);
-            XNALine.Draw(sb, dest, seg2, color);
+            RenderLine.Draw(sb, dest, seg2, color);
 
             // Arrow segment 3
-            XNALine.Draw(sb, seg1, seg2, color);
+            RenderLine.Draw(sb, seg1, seg2, color);
         }
 
         /// <summary>

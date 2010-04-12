@@ -767,25 +767,25 @@ namespace DemoGame.MapEditor
                                     C = new Color(255, 255, 255);
                                     C.A = (byte)MathHelper.Clamp(mm.MemoryCells[X, Y].Weight * 1.5f, 0, 255);
                                 }
-                                XNARectangle.Draw(sb, cellArea, C, B);
+                                RenderRectangle.Draw(sb, cellArea, C, B);
                             }
 
                             if (mm.MemoryCells[X, Y].DebugStatus == 1)
                             {
                                 // Start debug node.
-                                XNARectangle.Draw(sb, cellArea, Color.Green, B);
+                                RenderRectangle.Draw(sb, cellArea, Color.Green, B);
                             }
 
                             if (mm.MemoryCells[X, Y].DebugStatus == 2)
                             {
                                 // End debug node.
-                                XNARectangle.Draw(sb, cellArea, Color.Red, B);
+                                RenderRectangle.Draw(sb, cellArea, Color.Red, B);
                             }
 
                             if (mm.MemoryCells[X, Y].DebugStatus == 3)
                             {
                                 // Found path.
-                                XNARectangle.Draw(sb, cellArea, Color.LightBlue, B);
+                                RenderRectangle.Draw(sb, cellArea, Color.LightBlue, B);
                             }
                         }
                     }

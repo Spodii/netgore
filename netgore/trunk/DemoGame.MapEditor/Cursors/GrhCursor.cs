@@ -86,7 +86,7 @@ namespace DemoGame.MapEditor
             Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
 
             Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
-            XNARectangle.Draw(spriteBatch, dest, drawColor);
+            RenderRectangle.Draw(spriteBatch, dest, drawColor);
         }
 
         /// <summary>

@@ -39,7 +39,7 @@ namespace DemoGame.MapEditor
             {
                 Rectangle rect = item.SpawnArea.ToRectangle(map);
                 if (map.Camera.InView(rect))
-                    XNARectangle.Draw(spriteBatch, rect, _drawColor);
+                    RenderRectangle.Draw(spriteBatch, rect, _drawColor);
             }
         }
     }

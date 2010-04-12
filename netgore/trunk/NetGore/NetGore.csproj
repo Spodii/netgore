@@ -274,10 +274,9 @@
     <Compile Include="Graphics\ParticleEngine\Renderers\IParticleRenderer.cs" />
     <Compile Include="Graphics\ParticleEngine\Renderers\ParticleRendererBase.cs" />
     <Compile Include="Graphics\ParticleEngine\Renderers\SpriteBatchParticleRenderer.cs" />
-    <Compile Include="Graphics\Primitives\XNAArrow.cs" />
-    <Compile Include="Graphics\Primitives\XNALine.cs" />
-    <Compile Include="Graphics\Primitives\XNARectangle.cs" />
-    <Compile Include="Graphics\Primitives\XNATriangle.cs" />
+    <Compile Include="Graphics\Primitives\RenderArrow.cs" />
+    <Compile Include="Graphics\Primitives\RenderLine.cs" />
+    <Compile Include="Graphics\Primitives\RenderRectangle.cs" />
     <Compile Include="Graphics\Skeleton\Body\SkeletonBody.cs" />
     <Compile Include="Graphics\Skeleton\Body\SkeletonBodyInfo.cs" />
     <Compile Include="Graphics\Skeleton\Body\SkeletonBodyItem.cs" />
