@@ -507,7 +507,7 @@
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
-    <PreBuildEvent>"$(SolutionDir)CopyContent.exe" "$(SolutionDir)DemoGame.Client\Content" "$(TargetDir)Content" Engine Font Fx Grh Languages Music Skeletons Sounds
+    <PreBuildEvent>"$(SolutionDir)CopyContent.exe" "$(SolutionDir)DevContent" "$(TargetDir)Content" Engine Font Fx Grh Languages Music Skeletons Sounds
 xcopy "$(ProjectDir)\ServerScripts" "$(TargetDir)Content\Data\ServerScripts" /E /C /R /K /I /Y /D</PreBuildEvent>
   </PropertyGroup>
 </Project>
