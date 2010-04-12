@@ -366,7 +366,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="area">The area to draw the selection.</param>
         protected virtual void DrawSelectionRegion(ISpriteBatch sb, Rectangle area)
         {
-            XNARectangle.Draw(sb, area, new Color(100, 100, 255, 150));
+            RenderRectangle.Draw(sb, area, new Color(100, 100, 255, 150));
         }
 
         /// <summary>

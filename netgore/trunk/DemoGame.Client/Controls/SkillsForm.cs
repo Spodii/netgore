@@ -135,7 +135,7 @@ namespace DemoGame.Client
                 base.DrawControl(spriteBatch);
 
                 if (_isCoolingDown)
-                    XNARectangle.Draw(spriteBatch, GetScreenArea(), new Color(0, 0, 0, 150));
+                    RenderRectangle.Draw(spriteBatch, GetScreenArea(), new Color(0, 0, 0, 150));
             }
 
             /// <summary>

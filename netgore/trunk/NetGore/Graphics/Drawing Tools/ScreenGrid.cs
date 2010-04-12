@@ -138,22 +138,22 @@ namespace NetGore.Graphics
 
             // Vertical lines
             p1.Y = min.Y;
-            p2.Y = p1.Y + size.Y;
+            p2.Y = p1.Y + size.Y + 32;
             for (float x = min.X; x < max.X; x += Size.X)
             {
                 p1.X = x;
                 p2.X = x;
-                XNALine.Draw(sb, p1, p2, Color);
+                RenderLine.Draw(sb, p1, p2, Color);
             }
 
             // Horizontal lines
             p1.X = camera.Min.X;
-            p2.X = p1.X + size.X;
+            p2.X = p1.X + size.X + 32;
             for (float y = min.Y; y < max.Y; y += Size.Y)
             {
                 p1.Y = y;
                 p2.Y = y;
-                XNALine.Draw(sb, p1, p2, Color);
+                RenderLine.Draw(sb, p1, p2, Color);
             }
         }
 

@@ -78,7 +78,7 @@ namespace NetGore.Graphics
         protected virtual void DrawBorder(ISpriteBatch sb, Vector2 min, Vector2 max)
         {
             Color drawColor = new Color(255, 0, 0, 175);
-            XNARectangle.Draw(sb, CreateRect(min, max), drawColor);
+            RenderRectangle.Draw(sb, CreateRect(min, max), drawColor);
         }
     }
 }

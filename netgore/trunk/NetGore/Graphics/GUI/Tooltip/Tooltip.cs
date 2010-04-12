@@ -244,7 +244,7 @@ namespace NetGore.Graphics.GUI
             if (b != null)
                 b.Draw(sb, borderRect);
             else
-                XNARectangle.Draw(sb, borderRect, _args.BackgroundColor);
+                RenderRectangle.Draw(sb, borderRect, _args.BackgroundColor);
 
             // Draw the text
             _drawer.Draw(sb, _args.FontColor, pos);

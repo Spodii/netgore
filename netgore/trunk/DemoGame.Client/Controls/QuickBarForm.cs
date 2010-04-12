@@ -282,7 +282,7 @@ namespace DemoGame.Client
                         _grh.Draw(spriteBatch, position.Value);
 
                         if (isOnBar && CooldownManager.IsCoolingDown(_skillInfo.CooldownGroup, _currentTime))
-                            XNARectangle.Draw(spriteBatch, GetScreenArea(), new Color(0, 0, 0, 150));
+                            RenderRectangle.Draw(spriteBatch, GetScreenArea(), new Color(0, 0, 0, 150));
 
                         break;
                 }

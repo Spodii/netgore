@@ -141,7 +141,7 @@ namespace DemoGame.Client
             if (IsVisible)
             {
                 Rectangle rect = ToRectangle();
-                XNARectangle.Draw(sb, rect, Color, Color.Black);
+                RenderRectangle.Draw(sb, rect, Color, Color.Black);
             }
 
             if (AfterDraw != null)

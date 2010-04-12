@@ -427,7 +427,7 @@ namespace NetGore.Graphics.GUI
             var p1 = textPos + new Vector2(offset, visibleLineOffset);
             var p2 = p1 + new Vector2(0, (int)Font.CharacterSize);
 
-            XNALine.Draw(sb, p1, p2, Color.Black);
+            RenderLine.Draw(sb, p1, p2, Color.Black);
         }
 
         void EnsureCursorPositionValid()

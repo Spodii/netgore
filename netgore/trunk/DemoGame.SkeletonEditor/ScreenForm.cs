@@ -20,7 +20,6 @@ namespace DemoGame.SkeletonEditor
         const string _filterSet = "Skeleton set (*" + SkeletonSet.FileSuffix + ")|*" + SkeletonSet.FileSuffix;
         const string _skeletonSetFromStringDelimiter = "\r\n";
 
-        readonly List<XNALine> _centerLines = new List<XNALine>();
         readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
         readonly Stopwatch _watch = new Stopwatch();
 
@@ -42,7 +41,6 @@ namespace DemoGame.SkeletonEditor
         bool _moveSelectedNode = false;
         Skeleton _skeleton;
         SkeletonAnimation _skeletonAnim;
-        SkeletonDrawer _skeletonDrawer;
         Font _font;
         KeyEventArgs ks = new KeyEventArgs(Keys.None);
 
@@ -651,15 +649,14 @@ namespace DemoGame.SkeletonEditor
 
             try
             {
-                foreach (XNALine l in _centerLines)
-                {
-                    l.Draw(sb);
-                }
+                // Draw the center lines
+                RenderLine.Draw(sb, new Vector2(-100, 0), new Vector2(100, 0), Color.Lime);
+                RenderLine.Draw(sb, new Vector2(0, -5), new Vector2(0, 5), Color.Red);
 
                 if (radioEdit.Checked)
                 {
                     // Edit skeleton
-                    _skeletonDrawer.Draw(_skeleton, _camera, sb, SelectedNode);
+                    SkeletonDrawer.Draw(_skeleton, _camera, sb, SelectedNode);
                     if (_frameBody != null && chkDrawBody.Checked)
                         _frameBody.Draw(sb, Vector2.Zero);
                 }
@@ -669,7 +666,7 @@ namespace DemoGame.SkeletonEditor
                     if (chkDrawBody.Checked)
                         _skeletonAnim.Draw(sb);
                     if (chkDrawSkel.Checked)
-                        _skeletonDrawer.Draw(_skeletonAnim.Skeleton, _camera, sb);
+                        SkeletonDrawer.Draw(_skeletonAnim.Skeleton, _camera, sb);
                 }
             }
             finally
@@ -1059,15 +1056,10 @@ namespace DemoGame.SkeletonEditor
             Skeleton frameSkeleton = new Skeleton(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev);
             SkeletonFrame frame = new SkeletonFrame(SkeletonLoader.StandingSkeletonName, frameSkeleton);
             _skeletonAnim = new SkeletonAnimation(GetTime(), frame);
-            _skeletonDrawer = new SkeletonDrawer();
 
             LoadFrame(Skeleton.GetFilePath(SkeletonLoader.StandingSkeletonName, ContentPaths.Dev));
             LoadAnim(SkeletonSet.GetFilePath(SkeletonLoader.WalkingSkeletonSetName, ContentPaths.Dev));
             LoadBody(SkeletonBodyInfo.GetFilePath(SkeletonLoader.BasicSkeletonBodyName, ContentPaths.Dev));
-
-            // Center lines
-            _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0), Color.Lime));
-            _centerLines.Add(new XNALine(new Vector2(0, -5), new Vector2(0, 5), Color.Red));
 
             _watch.Start();
 

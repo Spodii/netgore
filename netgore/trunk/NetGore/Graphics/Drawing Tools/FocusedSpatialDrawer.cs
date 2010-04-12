@@ -67,16 +67,16 @@ namespace NetGore.Graphics
                 return;
 
             var r = Focused.ToRectangle();
-            XNARectangle.Draw(sb, r, _focusedColor, _focusedBorderColorInner);
+            RenderRectangle.Draw(sb, r, _focusedColor, _focusedBorderColorInner);
 
             var r2 = new Rectangle(r.X - 1, r.Y - 1, r.Width + 2, r.Height + 2);
-            XNARectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _focusedBorderColorOuter);
+            RenderRectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _focusedBorderColorOuter);
 
             if (_steps > 0)
             {
-                XNARectangle.Draw(sb, ApplyStepping(r, _steps), _trackColor, _trackInnerBorderColor);
-                XNARectangle.Draw(sb, ApplyStepping(r, _steps - 1), _trackColor, _trackOuterBorderColor);
-                XNARectangle.Draw(sb, ApplyStepping(r, _steps + 1), _trackColor, _trackOuterBorderColor);
+                RenderRectangle.Draw(sb, ApplyStepping(r, _steps), _trackColor, _trackInnerBorderColor);
+                RenderRectangle.Draw(sb, ApplyStepping(r, _steps - 1), _trackColor, _trackOuterBorderColor);
+                RenderRectangle.Draw(sb, ApplyStepping(r, _steps + 1), _trackColor, _trackOuterBorderColor);
                 _steps -= 4 + (_steps / 10);
             }
         }
@@ -105,10 +105,10 @@ namespace NetGore.Graphics
                 return;
 
             var r = spatial.ToRectangle();
-            XNARectangle.Draw(sb, r, _nonfocusedColor, _nonfocusedBorderColorInner);
+            RenderRectangle.Draw(sb, r, _nonfocusedColor, _nonfocusedBorderColorInner);
 
             var r2 = new Rectangle(r.X - 1, r.Y - 1, r.Width + 2, r.Height + 2);
-            XNARectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _nonfocusedBorderColorOuter);
+            RenderRectangle.Draw(sb, r2, new Color(0, 0, 0, 0), _nonfocusedBorderColorOuter);
         }
 
         /// <summary>

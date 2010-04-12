@@ -8,7 +8,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Assists in drawing the raw structure (joints and bones) of a single skeleton
     /// </summary>
-    public class SkeletonDrawer
+    public static class SkeletonDrawer
     {
         /// <summary>
         /// List of colors to draw with
@@ -18,12 +18,6 @@ namespace NetGore.Graphics
             new Color(0, 255, 255), new Color(255, 64, 160), new Color(255, 128, 64), new Color(0, 255, 0), new Color(255, 255, 0),
             new Color(35, 25, 255)
         };
-
-        /// <summary>
-        /// XNALine for drawing lines. Because the points and color are always set before
-        /// using this line, it can be static.
-        /// </summary>
-        static readonly XNALine _line = new XNALine();
 
         static readonly Color _nodeColorRoot = new Color(0, 0, 0, 255);
         static readonly Color _nodeColorSelected = new Color(255, 255, 255, 255);
@@ -39,7 +33,7 @@ namespace NetGore.Graphics
         /// <param name="skeleton">The <see cref="Skeleton"/> to draw.</param>
         /// <param name="camera">Camera to use.</param>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
-        public void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb)
+        public static void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb)
         {
             Draw(skeleton, camera, sb, null);
         }
@@ -51,7 +45,7 @@ namespace NetGore.Graphics
         /// <param name="camera">Camera to use.</param>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
         /// <param name="selectedNode">The <see cref="SkeletonNode"/> to draw as selected.</param>
-        public void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb, SkeletonNode selectedNode)
+        public static void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb, SkeletonNode selectedNode)
         {
             if (skeleton == null)
             {
@@ -83,7 +77,6 @@ namespace NetGore.Graphics
             if (_joint == null)
                 return;
 
-            _line.Thickness = (1f / camera.Scale) * 2f;
             RecursiveDraw(camera, sb, selectedNode, skeleton.RootNode, 0);
         }
 
@@ -131,8 +124,7 @@ namespace NetGore.Graphics
                     colorIndex = 0;
 
                 // Draw the bone to the child
-                _line.SetPoints(node.Position, child.Position);
-                _line.Draw(sb, _colorList[colorIndex]);
+                RenderLine.Draw(sb, node.Position, child.Position, _colorList[colorIndex], (1f / camera.Scale) * 2f);
 
                 // Draw the child
                 RecursiveDraw(camera, sb, selectedNode, child, colorIndex);

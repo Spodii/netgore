@@ -79,7 +79,7 @@ namespace DemoGame.Client
 
             // Arrow
             Vector2 centerOffset = tele.Size / 2;
-            XNAArrow.Draw(sb, tele.Position + centerOffset, tele.Destination + centerOffset, _arrowColor);
+            RenderArrow.Draw(sb, tele.Position + centerOffset, tele.Destination + centerOffset, _arrowColor);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace DemoGame.Client
             Rectangle dest = new Rectangle((int)p.X, (int)p.Y, (int)wall.Size.X, (int)wall.Size.Y);
 
             // Draw the collision area
-            XNARectangle.Draw(sb, dest, _wallColor);
+            RenderRectangle.Draw(sb, dest, _wallColor);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace DemoGame.Client
         /// <param name="color">Color to draw the CollisionBox.</param>
         static void Draw(ISpriteBatch sb, Rectangle rect, Color color)
         {
-            XNARectangle.Draw(sb, rect, color, _borderColor);
+            RenderRectangle.Draw(sb, rect, color, _borderColor);
         }
     }
 }

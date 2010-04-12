@@ -324,7 +324,7 @@ namespace NetGore.EditorTools
                 foreach (var wall in BoundWalls)
                 {
                     var rect = wall.ToRectangle();
-                    XNARectangle.Draw(sb, rect, _autoWallColor);
+                    RenderRectangle.Draw(sb, rect, _autoWallColor);
                 }
             }
             finally

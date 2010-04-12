@@ -79,7 +79,7 @@ namespace DemoGame.Client
                 return;
 
             // Draw an overlay on top of the old screen
-            XNARectangle.Draw(spriteBatch, _cScreen.GetScreenArea(), _overlayColor);
+            RenderRectangle.Draw(spriteBatch, _cScreen.GetScreenArea(), _overlayColor);
 
             // Draw the GUI
             GUIManager.Draw(spriteBatch);
