@@ -125,7 +125,7 @@ namespace NetGore.Graphics
         StationaryGrhData[] CreateFrames(string directory)
         {
             // Find all the valid content files
-            var allFiles = Directory.GetFiles(directory, "*." + ContentPaths.CompiledContentSuffix, SearchOption.TopDirectoryOnly);
+            var allFiles = Directory.GetFiles(directory, "*" + ContentPaths.ContentFileSuffix, SearchOption.TopDirectoryOnly);
 
             // Filter out the files with invalid naming conventions, and sort them so we animate in the correct order
             var files = SortAndFilterFrameFiles(allFiles);
