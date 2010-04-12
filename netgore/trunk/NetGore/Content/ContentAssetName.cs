@@ -77,8 +77,8 @@ namespace NetGore.Content
                 ++start;
 
             int len = filePath.Length - start;
-            if (filePath.EndsWith("." + ContentPaths.CompiledContentSuffix, StringComparison.OrdinalIgnoreCase))
-                len -= 1 + ContentPaths.CompiledContentSuffix.Length;
+            if (ContentPaths.ContentFileSuffix.Length > 0 && filePath.EndsWith(ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase))
+                len -= ContentPaths.ContentFileSuffix.Length;
 
             var substr = filePath.Substring(start, len);
             return new ContentAssetName(substr);
@@ -110,7 +110,7 @@ namespace NetGore.Content
         /// <returns>The relative file path and name for the content asset..</returns>
         public string GetFileName()
         {
-            return _assetName + "." + ContentPaths.CompiledContentSuffix;
+            return _assetName + ContentPaths.ContentFileSuffix;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace NetGore.Content
         /// <returns>The sanitized asset name.</returns>
         public static string Sanitize(string assetName)
         {
-            int suffixLen = 1 + ContentPaths.CompiledContentSuffix.Length;
+            int suffixLen = ContentPaths.ContentFileSuffix.Length;
 
             // Replace \\ with the proper character
             assetName = assetName.Replace("\\", PathSeparator);
@@ -144,7 +144,7 @@ namespace NetGore.Content
                 assetName = assetName.Substring(0, assetName.Length - 1);
 
             if (assetName.Length > suffixLen &&
-                assetName.EndsWith("." + ContentPaths.CompiledContentSuffix, StringComparison.OrdinalIgnoreCase))
+                (ContentPaths.ContentFileSuffix.Length == 0 || assetName.EndsWith(ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase)))
                 assetName = assetName.Substring(0, assetName.Length - suffixLen);
 
             return assetName;
@@ -217,7 +217,7 @@ namespace NetGore.Content
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.ContentAssetName"/>.
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="ContentAssetName"/>.
         /// </summary>
         /// <param name="assetName">The asset name.</param>
         /// <returns>The result of the conversion.</returns>

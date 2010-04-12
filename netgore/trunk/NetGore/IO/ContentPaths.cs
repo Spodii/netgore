@@ -15,9 +15,14 @@ namespace NetGore.IO
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// The suffix given to compiled content files. Does not include the prefixed period.
+        /// Gets the file suffix (including the period, if one exists) for compiled content files.
         /// </summary>
-        public const string CompiledContentSuffix = "xnb";
+        public const string ContentFileSuffix = "";
+
+        /// <summary>
+        /// Gets the file suffix (not including the period) for compiled content files.
+        /// </summary>
+        public const string ContentFileSuffixNoPeriod = "";
 
         /// <summary>
         /// The relative path to the Data directory from the Contents directory.
@@ -130,7 +135,7 @@ namespace NetGore.IO
             if (!Directory.Exists(_temp))
                 Directory.CreateDirectory(_temp);
 
-            _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot));
+            _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot), false);
 
             // Delete temp files
             DeleteTempFiles();
@@ -140,7 +145,8 @@ namespace NetGore.IO
         /// Initializes a new instance of the <see cref="ContentPaths"/> class.
         /// </summary>
         /// <param name="rootPath">The root path.</param>
-        ContentPaths(string rootPath)
+        /// <param name="isDev">Whether or not this is the <see cref="ContentPaths"/> for the development content.</param>
+        ContentPaths(string rootPath, bool isDev)
         {
             _root = Path.GetFullPath(rootPath);
 
@@ -154,7 +160,7 @@ namespace NetGore.IO
             _grhs = GetChildPath(_root, GrhsFolder);
             _skeletons = GetChildPath(_root, SkeletonsFolder);
             _fx = GetChildPath(_root, FxFolder);
-            _settings = GetChildPath(_root.Back(), SettingsFolder);
+            _settings = GetChildPath(_root.Back(), SettingsFolder, !isDev);
             _languages = GetChildPath(_root, LanguagesFolder);
         }
 
@@ -193,7 +199,7 @@ namespace NetGore.IO
                             @" Please make sure that the path to this directory is defined in the \Content\Data\devpath.txt file in the build directory.");
                     }
 
-                    _devPaths = new ContentPaths(devPath);
+                    _devPaths = new ContentPaths(devPath, true);
                 }
 
                 return _devPaths;
@@ -373,11 +379,26 @@ namespace NetGore.IO
         /// directory concatenated.</returns>
         static PathString GetChildPath(string root, string child)
         {
+            return GetChildPath(root, child, true);
+        }
+
+        /// <summary>
+        /// Combines the <paramref name="root"/> and <paramref name="child"/> directory.
+        /// </summary>
+        /// <param name="root">The root (base) directory.</param>
+        /// <param name="child">The child directory.</param>
+        /// <param name="createIfNotExists">If true, the directory will be created if it does not exist.</param>
+        /// <returns>
+        /// The <see cref="PathString"/> for the <paramref name="root"/> and <paramref name="child"/>
+        /// directory concatenated.
+        /// </returns>
+        static PathString GetChildPath(string root, string child, bool createIfNotExists)
+        {
             // Create the desired path
             string path = Path.Combine(root, child);
 
             // Ensure the directory exists
-            if (!Directory.Exists(path))
+            if (!createIfNotExists && !Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
             return path;

@@ -11,7 +11,7 @@ namespace CopyContent
         /// <summary>
         /// The suffix to give asset files in the destionation.
         /// </summary>
-        const string _newAssetSuffix = ".xnb";
+        const string _newAssetSuffix = "";
 
         /// <summary>
         /// The file suffixes to be considered asset files.
@@ -154,8 +154,6 @@ namespace CopyContent
         /// <param name="args">The args.</param>
         static void Main(string[] args)
         {
-            //args = new string[] { @"E:\NetGore\DemoGame.Client\Content", @"E:\NetGore\DemoGame.Client\bin\Content" };
-
             // Check for all the args
             if (args == null || args.Length < 2)
             {

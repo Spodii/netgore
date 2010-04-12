@@ -98,12 +98,12 @@ namespace NetGore.EditorTools
         static void PrepareTextures()
         {
             // Get all the content files
-            var files = Directory.GetFiles(ContentPaths.Build.Grhs, "*." + ContentPaths.CompiledContentSuffix,
+            var files = Directory.GetFiles(ContentPaths.Build.Grhs, "*" + ContentPaths.ContentFileSuffix,
                                            SearchOption.AllDirectories);
 
             // Cache the amount we need to remove from the start and end of each string
             int start = ContentPaths.Build.Grhs.ToString().Length + 1;
-            int trimEnd = ContentPaths.CompiledContentSuffix.Length + 1;
+            int trimEnd = ContentPaths.ContentFileSuffix.Length;
 
             // Remove from the start so we only have the relative path, and remove the suffix from the end
             files =

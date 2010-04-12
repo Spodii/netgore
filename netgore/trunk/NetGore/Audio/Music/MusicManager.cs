@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore.Content;
 using NetGore.IO;
 using SFML;
 using SFML.Audio;
@@ -60,7 +61,7 @@ namespace NetGore.Audio
         /// <returns>The file path for the <paramref name="musicInfo"/>.</returns>
         protected static string GetFilePath(IMusicInfo musicInfo)
         {
-            return ContentPaths.Build.Music.Join(musicInfo.Name) + ".xnb";
+            return ContentPaths.Build.Music.Join(musicInfo.Name + ContentPaths.ContentFileSuffix);
         }
 
         #region IMusicManager Members

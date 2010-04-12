@@ -171,7 +171,7 @@ namespace NetGore.EditorTools
         /// </summary>
         void UpdateHashes()
         {
-            var files = Directory.GetFiles(_rootTextureDir, "*." + ContentPaths.CompiledContentSuffix, SearchOption.AllDirectories);
+            var files = Directory.GetFiles(_rootTextureDir, "*" + ContentPaths.ContentFileSuffix, SearchOption.AllDirectories);
             foreach (string file in files)
             {
                 // Get the current info

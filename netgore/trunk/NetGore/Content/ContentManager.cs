@@ -186,7 +186,7 @@ namespace NetGore.Content
             if (pipeIndex > 0)
                 assetName = assetName.Substring(0, pipeIndex);
 
-            return ContentPaths.Build.Root.Join(assetName) + ".xnb";
+            return ContentPaths.Build.Root.Join(assetName + ContentPaths.ContentFileSuffix);
         }
 
         protected static LoadingFailedException InvalidTypeException(object obj, Type expected)

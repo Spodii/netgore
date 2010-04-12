@@ -57,17 +57,17 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         [Test]
-        public void FromAbsoluteFilePathWithXNBSuffixCapsTest()
+        public void FromAbsoluteFilePathWithSuffixCapsTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent.xnb".ToUpper(),
+            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath((@"C:\whatever\path\to\mycontent" + ContentPaths.ContentFileSuffix).ToUpper(),
                                                                        @"C:\whatever\path\to");
             Assert.AreEqual("mycontent", n.Value.ToLower());
         }
 
         [Test]
-        public void FromAbsoluteFilePathWithXNBSuffixTest()
+        public void FromAbsoluteFilePathWithSuffixTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent.xnb",
+            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent" + ContentPaths.ContentFileSuffix,
                                                                        @"C:\whatever\path\to");
             Assert.AreEqual("mycontent", n.Value);
         }
@@ -76,21 +76,21 @@ namespace NetGore.Tests.NetGore.IO
         public void GetAbsoluteFilePathAlternateSeparatorPrefixTest()
         {
             string s = new ContentAssetName("/myasset").GetAbsoluteFilePath(ContentPaths.Build);
-            Assert.IsTrue(s.EndsWith("Content\\myasset.xnb", StringComparison.OrdinalIgnoreCase));
+            Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
         }
 
         [Test]
         public void GetAbsoluteFilePathSeparatorPrefixTest()
         {
             string s = new ContentAssetName("\\myasset").GetAbsoluteFilePath(ContentPaths.Build);
-            Assert.IsTrue(s.EndsWith("Content\\myasset.xnb", StringComparison.OrdinalIgnoreCase));
+            Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
         }
 
         [Test]
         public void GetAbsoluteFilePathTest()
         {
             string s = new ContentAssetName("myasset").GetAbsoluteFilePath(ContentPaths.Build);
-            Assert.IsTrue(s.EndsWith("Content\\myasset.xnb", StringComparison.OrdinalIgnoreCase));
+            Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
         }
 
         [Test]
