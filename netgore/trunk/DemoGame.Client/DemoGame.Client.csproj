@@ -1,26 +1,20 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectGuid>{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}</ProjectGuid>
-    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DemoGame.Client</RootNamespace>
     <AssemblyName>DemoGame.Client</AssemblyName>
-    <XnaFrameworkVersion>v3.1</XnaFrameworkVersion>
-    <XnaPlatform>Windows</XnaPlatform>
-    <XnaCrossPlatformGroupID>e870fa65-e61c-4c8e-a301-d6e46962c19c</XnaCrossPlatformGroupID>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>
     </Thumbnail>
     <StartupObject>
     </StartupObject>
     <ManifestCertificateThumbprint>20EBD39808AC39619F9DC5C13F1F24C8D93C45FC</ManifestCertificateThumbprint>
-    <ManifestKeyFile>Client_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>false</SignManifests>
-    <PublishUrl>C:\Documents and Settings\Spodi\Desktop\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -51,6 +45,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -232,16 +227,8 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)CopyContent.exe" "$(ProjectDir)Content" "$(TargetDir)Content"</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)CopyContent.exe" "$(SolutionDir)DevContent" "$(TargetDir)Content"</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

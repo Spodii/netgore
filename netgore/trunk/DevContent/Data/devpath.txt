@@ -16,15 +16,17 @@
 # only when you try to use ContentPaths.Dev in the code.
 
 # NetGore default path
-..\..\Content
+..\..\..\DevContent
 
 # "Just in case" paths for when the path depth of the build folder changes
-..\Content
-..\..\..\Content
-..\..\..\..\Content
+..\DevContent
+..\..\DevContent
+..\..\..\DevContent
+..\..\..\..\DevContent
 
 # "Just in case" paths for when the program looking for the dev path is not in the client build folder
-..\DemoGame.Client\Content
-..\..\DemoGame.Client\Content
-..\..\..\DemoGame.Client\Content
-..\..\..\..\DemoGame.Client\Content
+\DemoGame.Client\DevContent
+..\DemoGame.Client\DevContent
+..\..\DemoGame.Client\DevContent
+..\..\..\DemoGame.Client\DevContent
+..\..\..\..\DemoGame.Client\DevContent
