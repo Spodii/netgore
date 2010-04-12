@@ -7,7 +7,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DemoGame.Client</RootNamespace>
     <AssemblyName>DemoGame.Client</AssemblyName>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <Thumbnail>
     </Thumbnail>
     <StartupObject>
