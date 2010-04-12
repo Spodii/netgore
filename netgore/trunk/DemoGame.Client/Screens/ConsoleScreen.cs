@@ -97,7 +97,7 @@ namespace DemoGame.Client
             BasicConfigurator.Configure(_logger);
             ScreenManager.Updated += ScreenManager_Updated;
 
-            _consoleFont = ScreenManager.Content.LoadFont("Font/Console", 14, ContentLevel.GameScreen);
+            _consoleFont = ScreenManager.Content.LoadFont("Font/Courier New", 14, ContentLevel.GameScreen);
 
             _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 

@@ -395,7 +395,7 @@ namespace DemoGame.Client
         /// </summary>
         void InitializeGUI()
         {
-            _guiFont = ScreenManager.Content.LoadFont("Font/Game", 14, ContentLevel.Global);
+            _guiFont = ScreenManager.Content.LoadFont("Font/Arial", 14, ContentLevel.Global);
             GUIManager.Font = _guiFont;
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
@@ -496,7 +496,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void LoadContent()
         {
-            _damageFont = ScreenManager.Content.LoadFont("Font/Game", 14, ContentLevel.Global);
+            _damageFont = ScreenManager.Content.LoadFont("Font/Arial", 14, ContentLevel.Global);
         }
 
         void OnDisconnect(SocketManager sender, IIPSocket conn)
