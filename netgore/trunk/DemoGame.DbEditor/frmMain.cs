@@ -9,6 +9,7 @@ using DemoGame.EditorTools;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore;
+using NetGore.Content;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.EditorTools;

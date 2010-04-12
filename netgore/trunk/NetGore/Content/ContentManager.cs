@@ -10,7 +10,7 @@ using SFML;
 using SFML.Audio;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.Content
 {
     /// <summary>
     /// An implementation of <see cref="IContentManager"/> for managing content in various levels of persistence.
