@@ -37,7 +37,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="mysql.data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\mysql.data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -71,7 +75,6 @@
     </Compile>
     <Compile Include="TestStatus.cs" />
     <Compile Include="Tests\CheckForMySqlConnector.cs" />
-    <Compile Include="Tests\CheckForXNA.cs" />
     <Compile Include="Tests\ConnectToDatabase.cs" />
     <Compile Include="Tests\DatabaseExists.cs" />
     <Compile Include="Tests\DatabaseFileExists.cs" />
@@ -80,7 +83,6 @@
     <Compile Include="Tests\LoadDbConnectionSettings.cs" />
     <Compile Include="Tests\LoadMySqlData.cs" />
     <Compile Include="Tests\LoadSchemaFile.cs" />
-    <Compile Include="Tests\LoadXNA.cs" />
     <Compile Include="Tests\LocateMySqlExe.cs" />
   </ItemGroup>
   <ItemGroup>
