@@ -1220,7 +1220,7 @@ namespace DemoGame.MapEditor
             GameScreen.MouseWheel += GameScreen_MouseWheel;
 
             // Create the engine objects 
-            _content = new ContentManager();
+            _content = ContentManager.Create();
 
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);

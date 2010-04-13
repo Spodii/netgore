@@ -47,7 +47,7 @@ namespace NetGore.Graphics.GUI
             _game = game;
             _skinManager = skinManager;
 
-            _content = new ContentManager();
+            _content = ContentManager.Create();
             _drawingManager = new DrawingManager(_game);
 
             _audioManager = Audio.AudioManager.GetInstance(_content);

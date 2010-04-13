@@ -828,7 +828,7 @@ namespace DemoGame.DbEditor
             // pretty little pictures. :(
             if (!GrhInfo.IsLoaded)
             {
-                var cm = new ContentManager();
+                var cm = ContentManager.Create();
                 GrhInfo.Load(ContentPaths.Dev, cm);
             }
 

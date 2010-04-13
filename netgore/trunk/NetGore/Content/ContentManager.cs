@@ -20,6 +20,7 @@ namespace NetGore.Content
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly StringComparer _stringComp = StringComparer.OrdinalIgnoreCase;
+        static readonly object _instanceSync = new object();
         static bool _doNotUnload;
 
         readonly object _assetSync = new object();
@@ -30,10 +31,27 @@ namespace NetGore.Content
         bool _isTrackingLoads = false;
         ContentLevel? _queuedUnloadLevel = null;
 
+        static IContentManager _instance;
+
+        /// <summary>
+        /// Creates a <see cref="IContentManager"/>.
+        /// </summary>
+        /// <returns>The <see cref="IContentManager"/> instance.</returns>
+        public static IContentManager Create()
+        {
+            lock (_instanceSync)
+            {
+                if (_instance == null)
+                    _instance = new ContentManager();
+
+                return _instance;
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentManager"/> class.
         /// </summary>
-        public ContentManager()
+        ContentManager()
         {
             RootDirectory = ContentPaths.Build.Root;
 

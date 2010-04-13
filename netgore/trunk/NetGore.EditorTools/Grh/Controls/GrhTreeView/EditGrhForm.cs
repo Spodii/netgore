@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -314,7 +315,7 @@ namespace NetGore.EditorTools
             _grh.Update((int)_stopwatch.ElapsedMilliseconds);
 
             // Begin rendering
-            sb.Begin(BlendMode.Alpha,Camera);
+            sb.Begin(BlendMode.Alpha, Camera);
 
             try
             {
@@ -354,6 +355,28 @@ namespace NetGore.EditorTools
                 txtWallH.Text = wall.Size.Y.ToString();
                 chkPlatform.Checked = wall.IsPlatform;
             }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (!e.Cancel)
+            {
+                var walls = _mapGrhWalls[_gd];
+                if (walls != null)
+                {
+                    foreach (var wall in walls)
+                    {
+                        wall.Moved -= BoundWallChanged;
+                        wall.Resized -= BoundWallChanged;
+                    }
+                }
+            }
+
+            base.OnClosing(e);
         }
 
         void radioAnimated_CheckedChanged(object sender, EventArgs e)

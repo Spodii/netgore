@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,7 @@ using log4net;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
+using SFML;
 using SFML.Graphics;
 
 namespace NetGore.EditorTools
@@ -17,6 +19,7 @@ namespace NetGore.EditorTools
     public static class AutomaticGrhDataUpdater
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly string[] _graphicFileSuffixes = { ".bmp", ".jpg", ".jpeg", ".dds", ".psd", ".png", ".gif", ".tga", ".hdr" };
 
         /// <summary>
         /// Finds all of the texture files from the root directory.
@@ -32,10 +35,11 @@ namespace NetGore.EditorTools
             {
                 foreach (var file in Directory.GetFiles(dir))
                 {
-                    if (!file.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                    var f = file;
+                    if (!_graphicFileSuffixes.Any(x => f.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
                         continue;
 
-                    ret.Add(file.Replace('\\', '/'));
+                    ret.Add(f.Replace('\\', '/'));
                 }
             }
 
@@ -130,14 +134,13 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets the size of a texture.
         /// </summary>
+        /// <param name="cm">The <see cref="IContentManager"/> to use to load the asset.</param>
         /// <param name="filePath">Absolute file path to the texture.</param>
         /// <returns>Size of the texture.</returns>
-        static Vector2 GetTextureSize(string filePath)
+        static Vector2 GetTextureSize(IContentManager cm, string filePath)
         {
-            using (var img = new Image(filePath))
-            {
-                return new Vector2(img.Width, img.Height);
-            }
+            var img = cm.LoadImage(filePath, ContentLevel.Temporary);
+            return new Vector2(img.Width, img.Height);
         }
 
         /// <summary>
@@ -287,7 +290,19 @@ namespace NetGore.EditorTools
                     continue;
 
                 // Read the texture size from the file
-                Vector2 size = GetTextureSize(texture);
+                Vector2 size;
+                try
+                {
+                    size = GetTextureSize(cm, texture);
+                }
+                catch (LoadingFailedException ex)
+                {
+                    const string errmsg = "Failed to load asset from file `{0}` when trying to acquire the size: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, texture, ex);
+                    Debug.Fail(string.Format(errmsg, texture, ex));
+                    continue;
+                }
 
                 // Create the GrhData
                 var gd = GrhInfo.CreateGrhData(cm, categorization, relative, Vector2.Zero, size);
@@ -297,6 +312,9 @@ namespace NetGore.EditorTools
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Automatic creation of stationary GrhData `{0}`.", gd);
             }
+
+            // Clear the temporary content
+            cm.Unload(ContentLevel.Temporary);
 
             return ret;
         }
