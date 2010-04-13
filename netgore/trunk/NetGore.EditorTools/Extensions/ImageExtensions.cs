@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
-using Image=SFML.Graphics.Image;
 
 namespace NetGore.EditorTools
 {
@@ -12,30 +12,6 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class ImageExtensions
     {
-        /// <summary>
-        /// Creates an <see cref="SFML.Graphics.Image"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
-        /// </summary>
-        /// <param name="image">The image.</param>
-        /// <param name="source">The <see cref="Rectangle"/> to copy on the source image.</param>
-        /// <param name="destWidth">The width of the generated image.</param>
-        /// <param name="destHeight">The height of the generated image.</param>
-        /// <returns>
-        /// The <see cref="Bitmap"/> containing the <paramref name="image"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
-        /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, Rectangle source, int destWidth, int destHeight)
-        {
-            if (image == null)
-                throw new ArgumentNullException("image");
-
-            using (var original = ToBitmap(image, source))
-            {
-                return original.CreateScaled(destWidth, destHeight, true, null, null);
-            }
-        }
-
         /// <summary>
         /// Creates a scaled version of a <see cref="System.Drawing.Image"/>.
         /// </summary>
@@ -48,7 +24,8 @@ namespace NetGore.EditorTools
         /// <returns>
         /// A <see cref="Bitmap"/> resized to the given values.
         /// </returns>
-        public static Bitmap CreateScaled(this System.Drawing.Image original, int destWidth, int destHeight, bool keepAspectRatio, Color? bgColor, Color? transparentColor)
+        public static Bitmap CreateScaled(this Image original, int destWidth, int destHeight, bool keepAspectRatio, Color? bgColor,
+                                          Color? transparentColor)
         {
             int w;
             int h;
@@ -92,9 +69,10 @@ namespace NetGore.EditorTools
             var ret = new Bitmap(destWidth, destHeight);
             using (var g = System.Drawing.Graphics.FromImage(ret))
             {
-                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.HighQuality;
 
                 if (bgColor.HasValue)
                     g.Clear(bgColor.Value);
@@ -124,7 +102,32 @@ namespace NetGore.EditorTools
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, SFML.Graphics.Rectangle source, int destWidth, int destHeight)
+        public static Bitmap ToBitmap(this SFML.Graphics.Image image, Rectangle source, int destWidth, int destHeight)
+        {
+            if (image == null)
+                throw new ArgumentNullException("image");
+
+            using (var original = ToBitmap(image, source))
+            {
+                return original.CreateScaled(destWidth, destHeight, true, null, null);
+            }
+        }
+
+        /// <summary>
+        /// Creates an <see cref="SFML.Graphics.Image"/> from an array of bytes. The color is assumed to be in R8G8B8A8 format.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="source">The <see cref="Rectangle"/> to copy on the source image.</param>
+        /// <param name="destWidth">The width of the generated image.</param>
+        /// <param name="destHeight">The height of the generated image.</param>
+        /// <returns>
+        /// The <see cref="Bitmap"/> containing the <paramref name="image"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
+        /// outside of the <paramref name="image"/>.</exception>
+        public static Bitmap ToBitmap(this SFML.Graphics.Image image, SFML.Graphics.Rectangle source, int destWidth,
+                                      int destHeight)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -143,7 +146,7 @@ namespace NetGore.EditorTools
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, SFML.Graphics.Rectangle source)
+        public static Bitmap ToBitmap(this SFML.Graphics.Image image, SFML.Graphics.Rectangle source)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -162,7 +165,7 @@ namespace NetGore.EditorTools
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static unsafe Bitmap ToBitmap(this Image image, Rectangle source)
+        public static unsafe Bitmap ToBitmap(this SFML.Graphics.Image image, Rectangle source)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -174,7 +177,7 @@ namespace NetGore.EditorTools
 
             // Create the target bitmap
             Bitmap b = new Bitmap(source.Width, source.Height, PixelFormat.Format32bppArgb);
-            
+
             // Lock the whole bitmap for write only
             var rect = new Rectangle(0, 0, source.Width, source.Height);
             var data = b.LockBits(rect, ImageLockMode.WriteOnly, b.PixelFormat);
