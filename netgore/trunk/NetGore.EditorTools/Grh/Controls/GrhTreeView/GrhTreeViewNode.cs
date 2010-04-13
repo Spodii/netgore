@@ -230,7 +230,7 @@ namespace NetGore.EditorTools
         /// <param name="imageKey">The image key to use.</param>
         void SetImageKeys(string imageKey)
         {
-            if (ImageKey == imageKey)
+            if (StringComparer.Ordinal.Equals(ImageKey, imageKey))
                 return;
 
             ImageKey = imageKey;
@@ -277,9 +277,18 @@ namespace NetGore.EditorTools
             }
 
             // Update everything
-            Name = GrhData.GrhIndex.ToString();
-            Text = GrhData.Categorization.Title.ToString();
-            ToolTipText = GetToolTipText();
+            var v = GrhData.GrhIndex.ToString();
+            if (!StringComparer.Ordinal.Equals(v, Name))
+                Name = v;
+
+            v = GrhData.Categorization.Title.ToString();
+            if (!StringComparer.Ordinal.Equals(v, Text))
+                Text = v;
+
+            v = GetToolTipText();
+            if (!StringComparer.Ordinal.Equals(v, ToolTipText))
+                ToolTipText = v;
+
             InsertIntoTree(treeView);
             SetIconImage();
         }
