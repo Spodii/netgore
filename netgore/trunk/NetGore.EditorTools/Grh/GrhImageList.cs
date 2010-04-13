@@ -68,10 +68,10 @@ namespace NetGore.EditorTools
         /// </summary>
         GrhImageList()
         {
-            ImageList.TransparentColor = Color.Magenta;
+            ImageList.TransparentColor = EngineSettings.TransparencyColor.ToSystemColor();
 
             // Add the default image
-            Image defaultImg = ImageHelper.CreateSolid(32, 32, Color.Magenta);
+            Image defaultImg = ImageHelper.CreateSolid(32, 32, EngineSettings.TransparencyColor.ToSystemColor());
             ImageList.Images.Add(defaultImg);
 
             // Add the special images

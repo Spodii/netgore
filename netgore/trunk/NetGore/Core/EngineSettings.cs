@@ -63,6 +63,11 @@ namespace NetGore
         }
 
         /// <summary>
+        /// The <see cref="Color"/> used for transparency.
+        /// </summary>
+        public static readonly Color TransparencyColor = Color.Magenta;
+
+        /// <summary>
         /// Gets the <see cref="EngineSettings"/> instance. This value will be null until it is set through
         /// <see cref="EngineSettings.Initialize"/>. After being set, this value is guaranteed to contain
         /// the same <see cref="EngineSettings"/> reference.

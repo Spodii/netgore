@@ -32,7 +32,7 @@ namespace NetGore.EditorTools
 
             using (var original = ToBitmap(image, source))
             {
-                return original.CreateScaled(destWidth, destHeight, true);
+                return original.CreateScaled(destWidth, destHeight, true, null, null);
             }
         }
 
@@ -43,57 +43,70 @@ namespace NetGore.EditorTools
         /// <param name="destWidth">The target width.</param>
         /// <param name="destHeight">The target height.</param>
         /// <param name="keepAspectRatio">If true, the image will maintain the aspect ratio.</param>
-        /// <returns>A <see cref="Bitmap"/> resized to the given values.</returns>
-        public static Bitmap CreateScaled(this System.Drawing.Image original, int destWidth, int destHeight, bool keepAspectRatio)
+        /// <param name="bgColor">The background color of the new image.</param>
+        /// <param name="transparentColor">The color to make transparent in the new image.</param>
+        /// <returns>
+        /// A <see cref="Bitmap"/> resized to the given values.
+        /// </returns>
+        public static Bitmap CreateScaled(this System.Drawing.Image original, int destWidth, int destHeight, bool keepAspectRatio, Color? bgColor, Color? transparentColor)
         {
-            var ret = new Bitmap(destWidth, destHeight);
+            int w;
+            int h;
 
+            if (keepAspectRatio)
+            {
+                // Get the destination size, maintaining aspect ratio
+                float aspectRatio = (float)original.Width / original.Height;
+                if (aspectRatio > 1)
+                {
+                    w = destWidth;
+                    h = (int)(destHeight * (1f / aspectRatio));
+
+                    if (h <= 4 && destHeight >= 4)
+                        h = 4;
+                }
+                else
+                {
+                    w = (int)(destWidth * aspectRatio);
+                    h = destHeight;
+
+                    if (w <= 4 && destWidth >= 4)
+                        w = 4;
+                }
+            }
+            else
+            {
+                // Don't maintain aspect ratio
+                w = destWidth;
+                h = destHeight;
+            }
+
+            Debug.Assert(w <= destWidth);
+            Debug.Assert(h <= destHeight);
+
+            // Center
+            int x = (int)((destWidth - w) / 2f);
+            int y = (int)((destHeight - h) / 2f);
+
+            // Create the new bitmap to return
+            var ret = new Bitmap(destWidth, destHeight);
             using (var g = System.Drawing.Graphics.FromImage(ret))
             {
                 g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                 g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-                int w;
-                int h;
-
-                if (keepAspectRatio)
-                {
-                    // Get the destination size, maintaining aspect ratio
-                    float aspectRatio = (float)original.Width / original.Height;
-                    if (aspectRatio > 1)
-                    {
-                        w = destWidth;
-                        h = (int)(destHeight * (1f / aspectRatio));
-
-                        if (h <= 4 && destHeight >= 4)
-                            h = 4;
-                    }
-                    else
-                    {
-                        w = (int)(destWidth * aspectRatio);
-                        h = destHeight;
-
-                        if (w <= 4 && destWidth >= 4)
-                            w = 4;
-                    }
-                }
-                else
-                {
-                    // Don't maintain aspect ratio
-                    w = destWidth;
-                    h = destHeight;
-                }
-
-                Debug.Assert(w <= destWidth);
-                Debug.Assert(h <= destHeight);
-
-                // Center
-                int x = (int)((destWidth - w) / 2f);
-                int y = (int)((destHeight - h) / 2f);
+                if (bgColor.HasValue)
+                    g.Clear(bgColor.Value);
 
                 g.DrawImage(original, x, y, w, h);
             }
+
+            if (transparentColor.HasValue)
+                ret.MakeTransparent(transparentColor.Value);
+
+            Debug.Assert(ret.Width == destWidth);
+            Debug.Assert(ret.Height == destHeight);
 
             return ret;
         }
