@@ -1047,7 +1047,7 @@ namespace DemoGame.SkeletonEditor
             // Create the engine objects
             _drawingManager = new DrawingManager(GameScreen.RenderWindow);
             _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height)) { KeepInMap = false };
-            _content = new ContentManager();
+            _content = ContentManager.Create();
             _font = _content.LoadFont("Font/Arial", 14, ContentLevel.GameScreen);
             GrhInfo.Load(ContentPaths.Dev, _content);
 

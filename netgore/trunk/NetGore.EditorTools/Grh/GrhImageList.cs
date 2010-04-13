@@ -39,10 +39,27 @@ namespace NetGore.EditorTools
         bool _dirty = false;
 
         /// <summary>
+        /// An <see cref="Image"/> used for when an <see cref="Image"/> failed to be created properly. This way, we
+        /// at least have something to display.
+        /// </summary>
+        static readonly Image _errorImage;
+
+        /// <summary>
         /// Initializes the <see cref="GrhImageList"/> class.
         /// </summary>
         static GrhImageList()
         {
+            // Create the error image
+            Bitmap bmp = new Bitmap(16, 16, PixelFormat.Format32bppArgb);
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.White);
+                g.DrawLine(Pens.Red, new Point(0, 0), new Point(bmp.Width, bmp.Height));
+                g.DrawLine(Pens.Red, new Point(bmp.Width, 0), new Point(0, bmp.Height));
+            }
+            _errorImage = bmp;
+
+            // Create the list instance
             _instance = new GrhImageList();
         }
 
@@ -199,7 +216,18 @@ namespace NetGore.EditorTools
             _dirty = true;
             Rectangle src = grhData.SourceRect;
             var dest = ImageList.ImageSize;
-            return grhData.Texture.ToBitmap(src, dest.Width, dest.Height);
+
+            var tex = grhData.Texture;
+            if (tex == null)
+            {
+                const string errmsg = "Failed to acquire the texture for StationaryGrhData `{0}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, grhData);
+                Debug.Fail(string.Format(errmsg, grhData));
+                return _errorImage;
+            }
+
+            return tex.ToBitmap(src, dest.Width, dest.Height);
         }
 
         /// <summary>

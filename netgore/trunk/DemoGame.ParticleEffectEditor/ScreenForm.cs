@@ -169,7 +169,7 @@ namespace DemoGame.ParticleEffectEditor
             GameScreen.ScreenForm = this;
 
             // Load the content
-            _content = new ContentManager();
+            _content = ContentManager.Create();
             GrhInfo.Load(ContentPaths.Build, _content);
 
             // Load the additional UI editors for the property grid
