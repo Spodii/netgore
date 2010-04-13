@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
     <Compile Include="ControlHelper.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Extensions\PropertyGridExtensions.cs" />

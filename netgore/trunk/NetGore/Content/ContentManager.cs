@@ -755,7 +755,7 @@ namespace NetGore.Content
             protected override void OnReload()
             {
                 Smooth = false;
-                CreateMaskFromColor(Color.Magenta);
+                CreateMaskFromColor(EngineSettings.TransparencyColor);
             }
 
             /// <summary>
