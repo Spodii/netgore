@@ -44,6 +44,11 @@ namespace NetGore.Tests
             get { return "root"; }
         }
 
+        public static uint Port
+        {
+            get { return 3306; }
+        }
+
         /// <summary>
         /// Closes a connection to the test database.
         /// </summary>
@@ -60,7 +65,7 @@ namespace NetGore.Tests
         /// <returns>A <see cref="MySqlClassGenerator"/> for the test database.</returns>
         public static MySqlClassGenerator CreateMySqlClassGenerator()
         {
-            return new MySqlClassGenerator(Host, User, Password, Database);
+            return new MySqlClassGenerator(Host, User, Password, Database, Port);
         }
 
         /// <summary>
