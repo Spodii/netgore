@@ -18,10 +18,10 @@ namespace NetGore.Db.ClassCreator
         /// <param name="userID">The user ID.</param>
         /// <param name="password">The password.</param>
         /// <param name="database">The database.</param>
-        public MySqlClassGenerator(string server, string userID, string password, string database)
+        public MySqlClassGenerator(string server, string userID, string password, string database, uint port)
         {
             var sb = new MySqlConnectionStringBuilder
-            { Server = server, UserID = userID, Password = password, Database = database };
+            { Server = server, UserID = userID, Password = password, Database = database, Port = port };
 
             _conn = new MySqlConnection(sb.ToString());
 
