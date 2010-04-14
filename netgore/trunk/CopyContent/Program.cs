@@ -158,6 +158,10 @@ namespace CopyContent
             if (args == null || args.Length < 2)
             {
                 PrintUsage();
+
+                if (args == null || args.Length == 0)
+                    Console.ReadLine();
+
                 return;
             }
 
@@ -207,6 +211,8 @@ namespace CopyContent
             Console.WriteLine("copycontent <source_folder> <dest_folder> [root_folders[]]");
             Console.WriteLine(@"ex: copycontent C:\Content C:\bin\Content Data Engine Maps Skeletons");
             Console.WriteLine("If no root folders are specified, all root folders will be used.");
+            Console.WriteLine();
+            Console.WriteLine("NOTE: This program is intended to only be used by the build process. You shouldn't need to manually run this program.");
         }
     }
 }
