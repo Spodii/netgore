@@ -386,30 +386,44 @@ namespace NetGore.EditorTools
             var grhDatas = GrhInfo.GrhDatas.OfType<StationaryGrhData>().ToArray();
             var validItems = new Stack<GrhImageListCacheItem>(grhDatas.Length);
 
-            // Only save the unique GrhDatas that we have an image for
+            // Only save the unique GrhDatas that we have an image for, and where the image isn't the error image
             foreach (var gd in GrhInfo.GrhDatas.SelectMany(x => x.Frames).Distinct())
             {
                 string key = GetImageKey(gd);
                 Image image = ImageList.Images[key];
 
-                if (image == null)
+                if (image == null || image == _errorImage)
                     continue;
 
                 GrhImageListCacheItem item = new GrhImageListCacheItem(key, image, gd.OriginalSourceRect);
                 validItems.Push(item);
             }
 
-            using (FileStream stream = new FileStream(CacheFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192))
+            using (var tmpFile = new TempFile())
             {
-                using (BinaryWriter w = new BinaryWriter(stream))
+                // Write to the temp file
+                using (FileStream stream = new FileStream(tmpFile.FilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192))
                 {
-                    int count = validItems.Count;
-                    w.Write(count);
-
-                    foreach (GrhImageListCacheItem item in validItems)
+                    using (BinaryWriter w = new BinaryWriter(stream))
                     {
-                        item.Write(w);
+                        int count = validItems.Count;
+                        w.Write(count);
+
+                        foreach (GrhImageListCacheItem item in validItems)
+                        {
+                            item.Write(w);
+                        }
                     }
+                }
+
+                // Copy the temp file to the destination
+                if (File.Exists(tmpFile.FilePath))
+                {
+                    File.Copy(tmpFile.FilePath, CacheFilePath, true);
+                }
+                else
+                {
+                    Debug.Fail("Failed to create the TempFile... for some reason...");
                 }
             }
         }
@@ -488,20 +502,24 @@ namespace NetGore.EditorTools
         /// </summary>
         class GrhImageListCacheItem
         {
-            /// <summary>
-            /// The <see cref="Image"/> for the <see cref="GrhData"/>.
-            /// </summary>
-            public readonly Image Image;
+            readonly Image _image;
+            readonly string _key;
+            readonly Rectangle _src;
 
             /// <summary>
-            /// The key of the cached item.
+            /// Gets the <see cref="Image"/> for the <see cref="GrhData"/>.
             /// </summary>
-            public readonly string Key;
+            public Image Image { get { return _image; } }
 
             /// <summary>
-            /// The <see cref="Microsoft.Xna.Framework.Rectangle"/> describing the source that the <see cref="Image"/> came from.
+            /// Gets the key of the cached item.
             /// </summary>
-            public readonly Rectangle SourceRect;
+            public string Key { get { return _key; } }
+
+            /// <summary>
+            /// Gets the <see cref="Rectangle"/> describing the source that the <see cref="Image"/> came from.
+            /// </summary>
+            public Rectangle SourceRect { get { return _src; } }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="GrhImageListCacheItem"/> struct.
@@ -511,11 +529,16 @@ namespace NetGore.EditorTools
             /// <param name="sourceRect">The source rect.</param>
             public GrhImageListCacheItem(string key, Image image, Rectangle sourceRect)
             {
-                Key = key;
-                Image = image;
-                SourceRect = sourceRect;
+                _key = key;
+                _image = image;
+                _src = sourceRect;
             }
 
+            /// <summary>
+            /// Reads a <see cref="GrhImageListCacheItem"/> from a <see cref="BinaryReader"/>.
+            /// </summary>
+            /// <param name="r">The <see cref="BinaryReader"/>.</param>
+            /// <returns>The read <see cref="GrhImageListCacheItem"/>.</returns>
             public static GrhImageListCacheItem Read(BinaryReader r)
             {
                 int x = r.ReadInt32();
@@ -534,6 +557,10 @@ namespace NetGore.EditorTools
                 return new GrhImageListCacheItem(key, img, new Rectangle(x, y, w, h));
             }
 
+            /// <summary>
+            /// Writes a <see cref="GrhImageListCacheItem"/> to a <see cref="BinaryWriter"/>.
+            /// </summary>
+            /// <param name="w">The <see cref="BinaryWriter"/> to write to.</param>
             public void Write(BinaryWriter w)
             {
                 w.Write(SourceRect.X);
