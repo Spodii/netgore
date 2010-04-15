@@ -23,9 +23,17 @@ namespace NetGore.Graphics
         static readonly Color _nodeColorSelected = new Color(255, 255, 255, 255);
 
         /// <summary>
-        /// Grh used for drawing the joints
+        /// Sprite used for drawing the joints.
         /// </summary>
-        static Grh _joint = null;
+        readonly static ISprite _joint = null;
+
+        /// <summary>
+        /// Initializes the <see cref="SkeletonDrawer"/> class.
+        /// </summary>
+        static SkeletonDrawer()
+        {
+            _joint = SystemSprites.Joint;
+        }
 
         /// <summary>
         /// Draws a <see cref="Skeleton"/>.
@@ -73,25 +81,7 @@ namespace NetGore.Graphics
                 return;
             }
 
-            LoadStaticGrhs();
-            if (_joint == null)
-                return;
-
             RecursiveDraw(camera, sb, selectedNode, skeleton.RootNode, 0);
-        }
-
-        /// <summary>
-        /// Loads the static Grhs if needed.
-        /// </summary>
-        static void LoadStaticGrhs()
-        {
-            if (_joint == null)
-            {
-                GrhData gd = GrhInfo.GetData("System", "Joint");
-                if (gd == null)
-                    throw new Exception("Failed to load GrhData System.Joint.");
-                _joint = new Grh(gd);
-            }
         }
 
         /// <summary>

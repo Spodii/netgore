@@ -3,15 +3,31 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 
-namespace NetGore.EditorTools
+namespace NetGore.Graphics
 {
     /// <summary>
     /// Extension methods for the <see cref="SFML.Graphics.Image"/> and <see cref="System.Drawing.Image"/> class.
     /// </summary>
     public static class ImageExtensions
     {
+        /// <summary>
+        /// Creates a <see cref="SFML.Graphics.Image"/> from a <see cref="System.Drawing.Image"/>.
+        /// </summary>
+        /// <param name="img">The <see cref="System.Drawing.Image"/>.</param>
+        /// <returns>The <see cref="SFML.Graphics.Image"/>.</returns>
+        public static SFML.Graphics.Image ToSFMLImage(this Image img)
+        {
+            using (var ms = new MemoryStream((img.Width * img.Height * 4) + 64))
+            {
+                img.Save(ms, ImageFormat.Bmp);
+
+                return new SFML.Graphics.Image(ms);
+            }
+        }
+
         /// <summary>
         /// Creates a scaled version of a <see cref="System.Drawing.Image"/>.
         /// </summary>

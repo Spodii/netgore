@@ -10,7 +10,7 @@ namespace DemoGame.MapEditor
 {
     sealed class AddLightCursor : EditorCursor<ScreenForm>
     {
-        static Grh _lightSprite;
+        static readonly ISprite _lightSprite = SystemSprites.Lightblub;
 
         /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
@@ -21,17 +21,11 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the sprite to use for drawing lightbulbs.
+        /// Gets the <see cref="ISprite"/> for the lightbulbs used by this cursor to represent lights.
         /// </summary>
-        public static Grh LightSprite
+        public static ISprite LightSprite
         {
-            get
-            {
-                if (_lightSprite == null)
-                    _lightSprite = new Grh(GrhInfo.GetData("System", "Lightbulb"));
-
-                return _lightSprite;
-            }
+            get { return _lightSprite; }
         }
 
         /// <summary>
@@ -58,7 +52,7 @@ namespace DemoGame.MapEditor
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             Vector2 cursorPos = Container.CursorPos;
-            LightSprite.Draw(spriteBatch, cursorPos);
+            _lightSprite.Draw(spriteBatch, cursorPos);
         }
 
         /// <summary>

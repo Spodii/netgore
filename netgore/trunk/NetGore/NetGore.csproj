@@ -90,6 +90,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <Compile Include="Graphics\Exceptions\ParticleEmitterNotFoundException.cs" />
     <Compile Include="Graphics\Exceptions\UnsupportedGrhDataTypeException.cs" />
     <Compile Include="Graphics\Extensions\FontExtensions.cs" />
+    <Compile Include="Graphics\Extensions\ImageExtensions.cs" />
     <Compile Include="Graphics\Extensions\ISpriteBatchExtensions.cs" />
     <Compile Include="Graphics\FrameCounter.cs" />
     <Compile Include="Graphics\GUI\Control Bases\Control.cs" />
@@ -303,6 +305,7 @@
     <Compile Include="Graphics\Sprite\Grh\GrhDataEventHandler.cs" />
     <Compile Include="Graphics\Sprite\Grh\GrhInfo.cs" />
     <Compile Include="Graphics\Sprite\Grh\StationaryGrhData.cs" />
+    <Compile Include="Graphics\Sprite\Grh\SystemGrhData.cs" />
     <Compile Include="Graphics\Sprite\ISprite.cs" />
     <Compile Include="Graphics\Sprite\Sprite.cs" />
     <Compile Include="IO\FileHelper.cs" />
@@ -311,6 +314,11 @@
     <Compile Include="Network\ExternalIPParsingRule.cs" />
     <Compile Include="Network\PacketTimeStampHelper.cs" />
     <Compile Include="Core\SafeRandom.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Scripting\AssemblyClassInvoker.cs" />
     <Compile Include="IO\Bits\BitStreamExtensions.cs" />
     <Compile Include="IO\IMessageCollection.cs" />
@@ -632,11 +640,33 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="SFML\FrameworkResources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>FrameworkResources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Blank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Joint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lightbulb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Move.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Resize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Triangle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

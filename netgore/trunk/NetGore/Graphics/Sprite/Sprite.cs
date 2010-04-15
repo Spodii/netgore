@@ -1,15 +1,19 @@
 using System;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Defines an image that is either part of or all of a <see cref="Texture2D"/>. This is intended as a very
-    /// basic, primitive alternative to a <see cref="Grh"/>.
+    /// Defines an image that is either part of or all of an image. This is intended as a very basic, primitive alternative
+    /// to a <see cref="Grh"/> and does not support animations or more advanced operations.
     /// </summary>
     public class Sprite : ISprite
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         Rectangle _source;
         Image _texture;
 
@@ -25,11 +29,25 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
         /// <param name="texture">The texture used by the Sprite.</param>
+        public Sprite(Image texture)
+        {
+            if (texture == null)
+                throw new ArgumentNullException("texture");
+
+            _texture = texture;
+            _source = new Rectangle(0, 0, (int)_texture.Width, (int)_texture.Height);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Sprite"/> class.
+        /// </summary>
+        /// <param name="texture">The texture used by the Sprite.</param>
         /// <param name="source">Source rectangle in the texture for the Sprite.</param>
         public Sprite(Image texture, Rectangle source)
         {
             if (texture == null)
                 throw new ArgumentNullException("texture");
+
             _texture = texture;
             _source = source;
         }
@@ -45,90 +63,97 @@ namespace NetGore.Graphics
         public event EventHandler TextureChanged;
 
         /// <summary>
-        /// Draws the Sprite.
+        /// Checks if this <see cref="Sprite"/> can be drawn with the given <see cref="ISpriteBatch"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
-        /// <param name="dest">A rectangle specifying, in screen coordinates, where the sprite will be drawn. 
-        /// If this rectangle is not the same size as sourcerectangle the sprite will be scaled to fit.</param>
-        public void Draw(ISpriteBatch spriteBatch, Rectangle dest)
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <returns>True if this <see cref="Sprite"/> can be drawn; otherwise false.</returns>
+        bool CanDraw(ISpriteBatch sb)
         {
-            if (spriteBatch == null)
-                throw new ArgumentNullException("spriteBatch");
+            // Invalid SpriteBatch
+            if (sb == null)
+            {
+                const string errmsg = "Failed to render Sprite `{0}` - SpriteBatch is null!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                return false;
+            }
 
-            spriteBatch.Draw(_texture, dest, _source, Color.White);
+            if (sb.IsDisposed)
+            {
+                const string errmsg = "Failed to render Sprite `{0}` - SpriteBatch is disposed!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
         /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
-        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
-        public void Draw(ISpriteBatch spriteBatch, Vector2 position)
-        {
-            if (spriteBatch == null)
-                throw new ArgumentNullException("spriteBatch");
-
-            spriteBatch.Draw(_texture, position, _source, Color.White);
-        }
-
-        /// <summary>
-        /// Draws the Sprite.
-        /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="sb">SpriteBatch to draw to.</param>
         /// <param name="dest">A rectangle specifying, in screen coordinates, where the sprite will be drawn. 
         /// If this rectangle is not the same size as sourcerectangle the sprite will be scaled to fit.</param>
         /// <param name="color">The color channel modulation to use. Use Color.White for full color with no tinting.</param>
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin.</param>
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="effects">Rotations to apply before rendering</param>
-        public void Draw(ISpriteBatch spriteBatch, Rectangle dest, Color color, float rotation, Vector2 origin,
-                         SpriteEffects effects)
+        public void Draw(ISpriteBatch sb, Rectangle dest, Color color, float rotation, Vector2 origin, SpriteEffects effects)
         {
-            if (spriteBatch == null)
-                throw new ArgumentNullException("spriteBatch");
+            if (!CanDraw(sb))
+                return;
 
-            spriteBatch.Draw(_texture, dest, _source, color, rotation, origin, effects);
+            sb.Draw(_texture, dest, _source, color, rotation, origin, effects);
         }
 
         /// <summary>
         /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="sb">SpriteBatch to draw to.</param>
         /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
         /// <param name="color">The color channel modulation to use. Use Color.White for full color with no tinting.</param>
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin.</param>
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Float containing separate scalar multiples for both the x and y axis.</param>
         /// <param name="effects">Rotations to apply before rendering.</param>
-        public void Draw(ISpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, float scale,
+        public void Draw(ISpriteBatch sb, Vector2 position, Color color, float rotation, Vector2 origin, float scale,
                          SpriteEffects effects)
         {
-            if (spriteBatch == null)
-                throw new ArgumentNullException("spriteBatch");
+            if (!CanDraw(sb))
+                return;
 
-            spriteBatch.Draw(_texture, position, _source, color, rotation, origin, scale, effects);
+            sb.Draw(_texture, position, _source, color, rotation, origin, scale, effects);
         }
 
         /// <summary>
         /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="sb">SpriteBatch to draw to.</param>
         /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
         /// <param name="color">The color channel modulation to use. Use Color.White for full color with no tinting.</param>
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin.</param>
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="effects">Rotations to apply before rendering.</param>
-        public void Draw(ISpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale,
+        public void Draw(ISpriteBatch sb, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale,
                          SpriteEffects effects)
         {
-            if (spriteBatch == null)
-                throw new ArgumentNullException("spriteBatch");
+            if (!CanDraw(sb))
+                return;
 
-            spriteBatch.Draw(_texture, position, _source, color, rotation, origin, scale, effects);
+            sb.Draw(_texture, position, _source, color, rotation, origin, scale, effects);
         }
 
         #region ISprite Members
+
+        /// <summary>
+        /// Gets the size of the <see cref="ISprite"/> in pixels.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return new Vector2(Source.Width, Source.Height); }
+        }
 
         /// <summary>
         /// Gets the source rectangle of the sprite on the texture.
@@ -165,31 +190,127 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the <see cref="ISprite"/>.
+        /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="position">Position to draw to.</param>
-        /// <param name="color"><see cref="Color"/> to draw with.</param>
-        public void Draw(ISpriteBatch spriteBatch, Vector2 position, Color color)
+        /// <param name="sb"><see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="dest">Destination to draw the sprite.</param>
+        public void Draw(ISpriteBatch sb, Rectangle dest)
         {
-            if (spriteBatch == null)
-                throw new ArgumentNullException("spriteBatch");
+            if (!CanDraw(sb))
+                return;
 
-            spriteBatch.Draw(_texture, position, _source, color);
+            sb.Draw(_texture, dest, _source, Color.White);
+        }
+
+        /// <summary>
+        /// Draws the Sprite.
+        /// </summary>
+        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
+        public void Draw(ISpriteBatch sb, Vector2 position)
+        {
+            if (!CanDraw(sb))
+                return;
+
+            sb.Draw(_texture, position, _source, Color.White);
         }
 
         /// <summary>
         /// Draws the <see cref="ISprite"/>.
         /// </summary>
-        /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
+        /// <param name="dest">Top-left corner pixel of the destination.</param>
+        /// <param name="color">Color of the sprite (default Color.White).</param>
+        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
+        public void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect)
+        {
+            if (!CanDraw(sb))
+                return;
+
+            sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ISprite"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
+        /// <param name="dest">Top-left corner pixel of the destination.</param>
+        /// <param name="color">Color of the sprite (default Color.White).</param>
+        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
+        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
+        /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
+        /// <param name="scale">Uniform multiply by which to scale the width and height.</param>
+        public void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
+                         float scale)
+        {
+            if (!CanDraw(sb))
+                return;
+
+            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ISprite"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
+        /// <param name="dest">Top-left corner pixel of the destination.</param>
+        /// <param name="color">Color of the sprite (default Color.White).</param>
+        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
+        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
+        /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
+        /// <param name="scale">Vector2 defining the scale.</param>
+        public void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
+                         Vector2 scale)
+        {
+            if (!CanDraw(sb))
+                return;
+
+            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ISprite"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to add the draw to.</param>
+        /// <param name="dest">Destination rectangle.</param>
+        /// <param name="color">Color of the sprite (default Color.White).</param>
+        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
+        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
+        /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
+        public void Draw(ISpriteBatch sb, Rectangle dest, Color color, SpriteEffects effect, float rotation, Vector2 origin)
+        {
+            if (!CanDraw(sb))
+                return;
+
+            sb.Draw(Texture, dest, Source, color, rotation, origin, effect);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ISprite"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="position">Position to draw to.</param>
+        /// <param name="color"><see cref="Color"/> to draw with.</param>
+        public void Draw(ISpriteBatch sb, Vector2 position, Color color)
+        {
+            if (!CanDraw(sb))
+                return;
+
+            sb.Draw(_texture, position, _source, color);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ISprite"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="dest"><see cref="Rectangle"/> to draw to.</param>
         /// <param name="color"><see cref="Color"/> to draw with.</param>
-        public void Draw(ISpriteBatch spriteBatch, Rectangle dest, Color color)
+        public void Draw(ISpriteBatch sb, Rectangle dest, Color color)
         {
-            if (spriteBatch == null)
-                throw new ArgumentNullException("spriteBatch");
+            if (!CanDraw(sb))
+                return;
 
-            spriteBatch.Draw(_texture, dest, _source, color);
+            sb.Draw(_texture, dest, _source, color);
         }
 
         /// <summary>
