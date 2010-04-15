@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>196</Count>
+    <Count>190</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -1712,60 +1712,6 @@
         <Source>0,0,32,32</Source>
       </Texture>
     </Item189>
-    <Item190>
-      <Index>61</Index>
-      <Categorization>System.Blank</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/System/Blank</Name>
-        <Source>0,0,2,2</Source>
-      </Texture>
-    </Item190>
-    <Item191>
-      <Index>62</Index>
-      <Categorization>System.Joint</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/System/Joint</Name>
-        <Source>0,0,6,6</Source>
-      </Texture>
-    </Item191>
-    <Item192>
-      <Index>187</Index>
-      <Categorization>System.Lightbulb</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/System/Lightbulb</Name>
-        <Source>0,0,8,16</Source>
-      </Texture>
-    </Item192>
-    <Item193>
-      <Index>64</Index>
-      <Categorization>System.Move</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/System/Move</Name>
-        <Source>0,0,17,17</Source>
-      </Texture>
-    </Item193>
-    <Item194>
-      <Index>65</Index>
-      <Categorization>System.Resize</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/System/Resize</Name>
-        <Source>0,0,6,6</Source>
-      </Texture>
-    </Item194>
-    <Item195>
-      <Index>63</Index>
-      <Categorization>System.Triangle</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/System/Triangle</Name>
-        <Source>0,0,30,30</Source>
-      </Texture>
-    </Item195>
   </Stationary>
   <Animated>
     <Count>0</Count>
