@@ -22,6 +22,7 @@ namespace NetGore.Graphics
         readonly ICamera2DProvider _cameraProvider;
         readonly IMap _map;
         readonly Grh _sprite;
+
         Color _color = Color.White;
         float _depth;
         bool _isVisible = true;
