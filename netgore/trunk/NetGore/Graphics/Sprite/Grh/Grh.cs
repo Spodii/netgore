@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -179,7 +180,7 @@ namespace NetGore.Graphics
             {
                 const string errmsg = "Failed to render Grh `{0}` - SpriteBatch is null!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this, GrhData.GrhIndex);
+                    log.WarnFormat(errmsg, this);
                 return false;
             }
 
@@ -187,7 +188,7 @@ namespace NetGore.Graphics
             {
                 const string errmsg = "Failed to render Grh `{0}` - SpriteBatch is disposed!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this, GrhData.GrhIndex);
+                    log.WarnFormat(errmsg, this);
                 return false;
             }
 
@@ -201,6 +202,19 @@ namespace NetGore.Graphics
         /// <param name="sb"><see cref="ISpriteBatch"/> to use to draw.</param>
         /// <param name="dest">Top-left corner pixel of the destination.</param>
         public void Draw(ISpriteBatch sb, Vector2 dest)
+        {
+            if (!CanDrawGrh(sb))
+                return;
+
+            sb.Draw(Texture, dest, Source, Color.White);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ISprite"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="dest">Destination to draw the sprite.</param>
+        public void Draw(ISpriteBatch sb, Rectangle dest)
         {
             if (!CanDrawGrh(sb))
                 return;

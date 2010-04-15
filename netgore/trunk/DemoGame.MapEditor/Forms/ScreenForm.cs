@@ -1225,8 +1225,7 @@ namespace DemoGame.MapEditor
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
             treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
-            TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
-
+ 
             _drawingManager = new DrawingManager(GameScreen.RenderWindow);
             DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 

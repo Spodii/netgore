@@ -22,10 +22,10 @@ namespace DemoGame.MapEditor
         /// </summary>
         static readonly Color _colorNormal = new Color(255, 255, 255, 175);
 
-        static GrhData _move;
-        static Vector2 _moveSize;
-        static GrhData _scale;
-        static Vector2 _scaleSize;
+        readonly static ISprite _move;
+        readonly static Vector2 _moveSize;
+        readonly static ISprite _scale;
+        readonly static Vector2 _scaleSize;
 
         /// <summary>
         /// Area the box occupies.
@@ -50,7 +50,19 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Grh used to draw the TransBox.
         /// </summary>
-        readonly Grh _grh;
+        readonly ISprite _sprite;
+
+        /// <summary>
+        /// Initializes the <see cref="TransBox"/> class.
+        /// </summary>
+        static TransBox()
+        {
+            _move = SystemSprites.Move;
+            _scale = SystemSprites.Resize;
+
+            _moveSize = _move.Size;
+            _scaleSize = _scale.Size;
+        }
 
         /// <summary>
         /// Creates a transformation box.
@@ -61,21 +73,22 @@ namespace DemoGame.MapEditor
         public TransBox(TransBoxType transType, Entity entity, Vector2 position)
         {
             // Get the sprite to use
-            GrhData sourceGrhData;
+            ISprite sourceSprite;
 
             if (transType == TransBoxType.Move)
-                sourceGrhData = Move;
+                sourceSprite = Move;
             else
-                sourceGrhData = Scale;
+                sourceSprite = Scale;
 
             // Get the size based on the sprite
-            Vector2 size = sourceGrhData.Size;
+            Vector2 size = sourceSprite.Size;
 
             // For move boxes, ensure it is in view
             if (transType == TransBoxType.Move)
             {
                 if (position.X < 0)
                     position.X = 0;
+
                 if (position.Y < 0)
                     position.Y = 0;
             }
@@ -86,13 +99,13 @@ namespace DemoGame.MapEditor
             Entity = entity;
 
             Area = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
-            _grh = new Grh(sourceGrhData);
+            _sprite = sourceSprite;
         }
 
         /// <summary>
-        /// Gets the GrhData for the moving icon.
+        /// Gets the <see cref="ISprite"/> for the moving icon.
         /// </summary>
-        public static GrhData Move
+        public static ISprite Move
         {
             get { return _move; }
         }
@@ -106,9 +119,9 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the GrhData for the scaling icon.
+        /// Gets the <see cref="ISprite"/> for the scaling icon.
         /// </summary>
-        public static GrhData Scale
+        public static ISprite Scale
         {
             get { return _scale; }
         }
@@ -144,27 +157,13 @@ namespace DemoGame.MapEditor
                 else
                     drawColor = _colorNormal;
 
-                _grh.Draw(sb, Position, drawColor);
+                _sprite.Draw(sb, Position, drawColor);
             }
             else
             {
                 // Selection box
-                _grh.Draw(sb, Position, _colorNormal);
+                _sprite.Draw(sb, Position, _colorNormal);
             }
-        }
-
-        /// <summary>
-        /// Initializes the TransBoxes.
-        /// </summary>
-        /// <param name="moveIconData">GrhData for the move icon.</param>
-        /// <param name="sizeIconData">GrhData for the resize icon.</param>
-        public static void Initialize(GrhData moveIconData, GrhData sizeIconData)
-        {
-            _move = moveIconData;
-            _scale = sizeIconData;
-
-            _moveSize = moveIconData.Size;
-            _scaleSize = _scale.Size;
         }
 
         /// <summary>
