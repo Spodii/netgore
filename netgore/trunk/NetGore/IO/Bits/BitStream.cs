@@ -3240,6 +3240,26 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads multiple nodes that were written with WriteMany.
+        /// </summary>
+        /// <typeparam name="T">The Type of nodes to read.</typeparam>
+        /// <param name="nodeName">The name of the root node containing the values.</param>
+        /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
+        /// <param name="handleMissingKey">Allows for handling when a key is missing or invalid instead of throwing
+        /// an <see cref="Exception"/>. This allows nodes to be read even if one or more of the expected
+        /// items are missing. The returned array will contain null for these indicies. The int contained in the
+        /// <see cref="Action{T}"/> contains the 0-based index of the index that failed. This parameter is only
+        /// valid when <see cref="IValueReader.SupportsNameLookup"/> and <see cref="IValueReader.SupportsNodes"/> are true.
+        /// Default is null.</param>
+        /// <returns>
+        /// Array of the values read the IValueReader.
+        /// </returns>
+        T[] IValueReader.ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler, Action<int, Exception> handleMissingKey)
+        {
+            return ((IValueReader)this).ReadManyNodes(nodeName, readHandler);
+        }
+
+        /// <summary>
         /// Unsupported by the BitStream.
         /// </summary>
         /// <param name="key">Unused by the BitStream.</param>

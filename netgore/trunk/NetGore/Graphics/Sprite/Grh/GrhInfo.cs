@@ -488,6 +488,58 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Handles loading a group of <see cref="GrhData"/>s from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="GrhData"/> being loaded.</typeparam>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        /// <param name="nodeName">The name of the node to read.</param>
+        /// <param name="loader">The <see cref="ReadManyNodesHandler{T}"/> used to load each <see cref="GrhData"/>
+        /// of type <typeparamref name="T"/>.</param>
+        static void LoadGrhDatas<T>(IValueReader reader, string nodeName, ReadManyNodesHandler<T> loader) where T : GrhData
+        {
+            const string errmsgFailedLoads = "Failed to load the following indices from the GrhData file (grhdata.xml) for GrhData type `{2}`:{0}{1}{0}" +
+                "Note that these indices are NOT the GrhIndex, but the index of the Xml node." +
+                " Often times, this error means that you manually deleted one or more GrhDatas from this file," +
+                "in which case you can ignore it.";
+
+            // Create our "read key failed" handler for when a node for a GrhData is invalid
+            List<int> failedLoads = new List<int>();
+            Action<int, Exception> grhLoadFailHandler = (i, ex) => failedLoads.Add(i);
+
+            // Load the GrhDatas
+            var loadedGrhDatas = reader.ReadManyNodes(nodeName, loader, grhLoadFailHandler);
+
+            // Add the GrhDatas to the global collection
+            foreach (var grhData in loadedGrhDatas)
+            {
+                if (grhData == null)
+                    continue;
+
+                int index = (int)grhData.GrhIndex;
+                Debug.Assert(!_grhDatas.CanGet(index) || _grhDatas[index] == null, "Index already occupied!");
+
+                if (!grhData.GrhIndex.IsInvalid)
+                    _grhDatas[index] = grhData;
+                else
+                {
+                    const string errmsg = "Tried to add GrhData `{0}` which has an invalid GrhIndex.";
+                    string err = string.Format(errmsg, grhData);
+                    log.Fatal(err);
+                    Debug.Fail(err);
+                }
+            }
+
+            // Notify when any of the nodes failed to load
+            if (failedLoads.Count > 0)
+            {
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsgFailedLoads, Environment.NewLine, failedLoads.Implode(), typeof(T).Name);
+                Debug.Fail(string.Format(errmsgFailedLoads, Environment.NewLine, failedLoads.Implode(), typeof(T).Name));
+                failedLoads.Clear();
+            }
+        }
+
+        /// <summary>
         /// Loads the <see cref="GrhData"/>s. This must be called before trying to access or use any
         /// <see cref="GrhData"/>s.
         /// </summary>
@@ -508,35 +560,16 @@ namespace NetGore.Graphics
             if (!File.Exists(path))
                 throw new FileNotFoundException("GrhData file not found.", path);
 
-            // Create a little delegate to add the GrhDatas by index to reduce code bloat without exposing this to other methods
-            Action<IEnumerable<GrhData>> grhDataAdder = delegate(IEnumerable<GrhData> grhDatas)
-            {
-                foreach (var grhData in grhDatas)
-                {
-                    int index = (int)grhData.GrhIndex;
-                    Debug.Assert(!_grhDatas.CanGet(index) || _grhDatas[index] == null, "Index already occupied!");
-
-                    if (!grhData.GrhIndex.IsInvalid)
-                        _grhDatas[index] = grhData;
-                    else
-                    {
-                        const string errmsg = "Tried to add GrhData `{0}` which has an invalid GrhIndex.";
-                        string err = string.Format(errmsg, grhData);
-                        log.Fatal(err);
-                        Debug.Fail(err);
-                    }
-                }
-            };
+            _isLoading = true;
 
             try
             {
-                _isLoading = true;
-
                 // Create the GrhData DArray
                 if (_grhDatas == null)
                     _grhDatas = new DArray<GrhData>(256, false);
                 else
                     _grhDatas.Clear();
+
                 _catDic.Clear();
                 _grhDatas.ItemAdded += AddHandler;
                 _grhDatas.ItemRemoved += RemoveHandler;
@@ -544,9 +577,9 @@ namespace NetGore.Graphics
                 // Read and add the GrhDatas in order by their type
                 XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
 
-                grhDataAdder(reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => StationaryGrhData.Read(x, cm)));
-                grhDataAdder(reader.ReadManyNodes(_animatedGrhDatasNodeName, x => AnimatedGrhData.Read(x)));
-                grhDataAdder(reader.ReadManyNodes(_autoAnimatedGrhDatasNodeName, x => AutomaticAnimatedGrhData.Read(x, cm)));
+                LoadGrhDatas(reader, _nonAnimatedGrhDatasNodeName, x => StationaryGrhData.Read(x, cm));
+                LoadGrhDatas(reader, _animatedGrhDatasNodeName, x => AnimatedGrhData.Read(x));
+                LoadGrhDatas(reader, _autoAnimatedGrhDatasNodeName, x => AutomaticAnimatedGrhData.Read(x, cm));
 
                 // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
                 // while in the Client, and the Client is what counts, baby!
