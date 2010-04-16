@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml;
+using log4net;
 
 namespace NetGore.IO
 {
@@ -461,6 +463,55 @@ namespace NetGore.IO
 
             return ret;
         }
+
+        /// <summary>
+        /// Reads multiple nodes that were written with WriteMany.
+        /// </summary>
+        /// <typeparam name="T">The Type of nodes to read.</typeparam>
+        /// <param name="nodeName">The name of the root node containing the values.</param>
+        /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
+        /// <param name="handleMissingKey">Allows for handling when a key is missing or invalid instead of throwing
+        /// an <see cref="Exception"/>. This allows nodes to be read even if one or more of the expected
+        /// items are missing. The returned array will contain null for these indicies. The int contained in the
+        /// <see cref="Action{T}"/> contains the 0-based index of the index that failed. This parameter is only
+        /// valid when <see cref="IValueReader.SupportsNameLookup"/> and <see cref="IValueReader.SupportsNodes"/> are true.
+        /// Default is null.</param>
+        /// <returns>
+        /// Array of the values read from the IValueReader.
+        /// </returns>
+        public T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler, Action<int, Exception> handleMissingKey)
+        {
+            if (handleMissingKey == null)
+                return ReadManyNodes(nodeName, readHandler);
+
+            IValueReader nodeReader = ReadNode(nodeName);
+            int count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
+
+            var ret = new T[count];
+            for (int i = 0; i < count; i++)
+            {
+                string key = XmlValueHelper.GetItemKey(i);
+
+                try
+                {
+                    IValueReader childNodeReader = nodeReader.ReadNode(key);
+                    ret[i] = readHandler(childNodeReader);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to read key `{0}` (index: {1}) from `{2}` when using ReadManyNodes on nodeName `{3}`. handleMissingKey argument was specified, so loading will resume...";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, key, i, this, nodeName);
+
+                    handleMissingKey(i, ex);
+                    ret[i] = default(T);
+                }
+            }
+
+            return ret;
+        }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Reads a single child node, while enforcing the idea that there should only be one node
