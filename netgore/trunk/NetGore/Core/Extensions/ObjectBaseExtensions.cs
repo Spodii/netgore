@@ -15,7 +15,14 @@ namespace NetGore
         /// <returns>True if the <paramref name="obj"/> has been disposed; otherwise false.</returns>
         public static bool IsDisposed(this ObjectBase obj)
         {
-            return obj.This == IntPtr.Zero;
+            try
+            {
+                return obj.This == IntPtr.Zero;
+            }
+            catch (LoadingFailedException)
+            {
+                return true;
+            }
         }
     }
 }

@@ -218,12 +218,11 @@ namespace NetGore.EditorTools
             var dest = ImageList.ImageSize;
 
             var tex = grhData.Texture;
-            if (tex == null)
+            if (tex == null || tex.IsDisposed())
             {
-                const string errmsg = "Failed to acquire the texture for StationaryGrhData `{0}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, grhData);
-                Debug.Fail(string.Format(errmsg, grhData));
+                const string errmsg = "Failed to acquire the texture for StationaryGrhData `{0}`, probably since the texture file no longer exists.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, grhData);
                 return _errorImage;
             }
 

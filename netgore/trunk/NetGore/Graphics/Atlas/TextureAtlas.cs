@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.IO;
+using SFML;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -476,7 +477,18 @@ namespace NetGore.Graphics
                     item.ITextureAtlasable.RemoveAtlas();
 
                     // Grab the texture and make sure it is valid
-                    var tex = item.ITextureAtlasable.Texture;
+                    Image tex;
+                    try
+                    {
+                        tex = item.ITextureAtlasable.Texture;
+                        if (tex.IsDisposed())
+                            tex = null;
+                    }
+                    catch (LoadingFailedException)
+                    {
+                        tex = null;
+                    }
+
                     if (tex == null)
                     {
                         const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
