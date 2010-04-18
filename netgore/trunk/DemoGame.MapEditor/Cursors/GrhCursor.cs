@@ -7,9 +7,7 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML.Graphics;
-using Color=SFML.Graphics.Color;
-using Image=System.Drawing.Image;
-using Rectangle = SFML.Graphics.Rectangle;
+using Image = System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -24,7 +22,7 @@ namespace DemoGame.MapEditor
         Vector2 _selectedEntityOffset = Vector2.Zero;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GrhCursor"/> class.
+        ///   Initializes a new instance of the <see cref = "GrhCursor" /> class.
         /// </summary>
         public GrhCursor()
         {
@@ -33,7 +31,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the cursor's <see cref="System.Drawing.Image"/>.
+        ///   Gets the cursor's <see cref = "System.Drawing.Image" />.
         /// </summary>
         public override Image CursorImage
         {
@@ -41,7 +39,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the name of the cursor.
+        ///   When overridden in the derived class, gets the name of the cursor.
         /// </summary>
         public override string Name
         {
@@ -49,7 +47,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the priority of the cursor on the toolbar. Lower values appear first.
+        ///   Gets the priority of the cursor on the toolbar. Lower values appear first.
         /// </summary>
         public override int ToolbarPriority
         {
@@ -57,10 +55,10 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles drawing the interface for the cursor, which is
-        /// displayed over everything else. This can include the name of entities, selection boxes, etc.
+        ///   When overridden in the derived class, handles drawing the interface for the cursor, which is
+        ///   displayed over everything else. This can include the name of entities, selection boxes, etc.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name = "spriteBatch">The <see cref = "ISpriteBatch" /> to use to draw.</param>
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             // Selected Grh move box
@@ -69,33 +67,33 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles drawing the cursor's selection layer,
-        /// which displays a selection box for when selecting multiple objects.
+        ///   When overridden in the derived class, handles drawing the cursor's selection layer,
+        ///   which displays a selection box for when selecting multiple objects.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name = "spriteBatch">The <see cref = "ISpriteBatch" /> to use to draw.</param>
         public override void DrawSelection(ISpriteBatch spriteBatch)
         {
-            Vector2 cursorPos = Container.CursorPos;
+            var cursorPos = Container.CursorPos;
 
             if (_mouseDragStart == Vector2.Zero || Container.SelectedTransBox != null)
                 return;
 
             var drawColor = new Color(0, 255, 0, 150);
 
-            Vector2 min = new Vector2(Math.Min(cursorPos.X, _mouseDragStart.X), Math.Min(cursorPos.Y, _mouseDragStart.Y));
-            Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
+            var min = new Vector2(Math.Min(cursorPos.X, _mouseDragStart.X), Math.Min(cursorPos.Y, _mouseDragStart.Y));
+            var max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
 
-            Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
+            var dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
             RenderRectangle.Draw(spriteBatch, dest, drawColor);
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the <see cref="ContextMenu"/> used by this cursor
-        /// to display additional functions and settings.
+        ///   When overridden in the derived class, gets the <see cref = "ContextMenu" /> used by this cursor
+        ///   to display additional functions and settings.
         /// </summary>
         /// <returns>
-        /// The <see cref="ContextMenu"/> used by this cursor to display additional functions and settings,
-        /// or null for no <see cref="ContextMenu"/>.
+        ///   The <see cref = "ContextMenu" /> used by this cursor to display additional functions and settings,
+        ///   or null for no <see cref = "ContextMenu" />.
         /// </returns>
         public override ContextMenu GetContextMenu()
         {
@@ -108,9 +106,9 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when a mouse button has been pressed.
+        ///   When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
-        /// <param name="e">Mouse events.</param>
+        /// <param name = "e">Mouse events.</param>
         public override void MouseDown(MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
@@ -119,8 +117,8 @@ namespace DemoGame.MapEditor
                 return;
             }
 
-            Vector2 cursorPos = Container.CursorPos;
-            MapGrh cursorGrh = Container.Map.Spatial.Get<MapGrh>(cursorPos);
+            var cursorPos = Container.CursorPos;
+            var cursorGrh = Container.Map.Spatial.Get<MapGrh>(cursorPos);
 
             if (cursorGrh != null)
             {
@@ -135,8 +133,8 @@ namespace DemoGame.MapEditor
                 // Batch selection
                 if (_mapGrhMoveBox != null)
                 {
-                    Vector2 v = _mapGrhMoveBox.Position;
-                    Vector2 cp = cursorPos;
+                    var v = _mapGrhMoveBox.Position;
+                    var cp = cursorPos;
                     float w = _mapGrhMoveBox.Area.Width;
                     float h = _mapGrhMoveBox.Area.Height;
 
@@ -154,17 +152,17 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the cursor has moved.
+        ///   When overridden in the derived class, handles when the cursor has moved.
         /// </summary>
-        /// <param name="e">Mouse events.</param>
+        /// <param name = "e">Mouse events.</param>
         public override void MouseMove(MouseEventArgs e)
         {
-            Vector2 cursorPos = Container.CursorPos;
+            var cursorPos = Container.CursorPos;
 
             if (_selectedMapGrhs.Count == 1)
             {
                 // Move the selected single MapGrh
-                foreach (MapGrh mg in _selectedMapGrhs)
+                foreach (var mg in _selectedMapGrhs)
                 {
                     var pos = cursorPos - _selectedEntityOffset;
                     if (_mnuSnapToGrid.Checked)
@@ -176,11 +174,11 @@ namespace DemoGame.MapEditor
             {
                 if (Container.SelectedTransBox == _mapGrhMoveBox)
                 {
-                    Vector2 offset = _mapGrhMoveBox.Position - cursorPos;
+                    var offset = _mapGrhMoveBox.Position - cursorPos;
                     offset.X = (float)Math.Round(offset.X);
                     offset.Y = (float)Math.Round(offset.Y);
 
-                    foreach (MapGrh mg in _selectedMapGrhs)
+                    foreach (var mg in _selectedMapGrhs)
                     {
                         mg.Position -= offset;
                     }
@@ -192,57 +190,59 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when a mouse button has been released.
+        ///   When overridden in the derived class, handles when a mouse button has been released.
         /// </summary>
-        /// <param name="e">Mouse events.</param>
+        /// <param name = "e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            Vector2 cursorPos = Container.CursorPos;
+            var cursorPos = Container.CursorPos;
 
-            if (e.Button == MouseButtons.Right)
+            switch (e.Button)
             {
-                if (_mapGrhMoveBox != null)
-                    _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
-            }
-            else if (e.Button == MouseButtons.Left)
-            {
-                if (_selectedMapGrhs.Count == 1)
+                case MouseButtons.Right:
+                    if (_mapGrhMoveBox != null)
+                        _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
+                    break;
+
+                case MouseButtons.Left:
+                    if (_selectedMapGrhs.Count == 1)
+                        _selectedMapGrhs.Clear();
+
+                    if (_selectedMapGrhs.Count > 0 || _mouseDragStart == Vector2.Zero)
+                        return;
+
                     _selectedMapGrhs.Clear();
 
-                if (_selectedMapGrhs.Count > 0 || _mouseDragStart == Vector2.Zero)
-                    return;
+                    var mouseDragEnd = Container.Camera.ToWorld(e.X, e.Y);
+                    var min = _mouseDragStart.Min(mouseDragEnd);
+                    var max = _mouseDragStart.Max(mouseDragEnd);
+                    var size = max - min;
 
-                _selectedMapGrhs.Clear();
+                    var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
+                    var selectAreaObjs = Container.Map.Spatial.GetMany<MapGrh>(rect);
+                    _selectedMapGrhs.AddRange(selectAreaObjs);
 
-                Vector2 mouseDragEnd = Container.Camera.ToWorld(e.X, e.Y);
-                Vector2 min = _mouseDragStart.Min(mouseDragEnd);
-                Vector2 max = _mouseDragStart.Max(mouseDragEnd);
-                Vector2 size = max - min;
+                    Container.SelectedObjs.SetManySelected(_selectedMapGrhs.OfType<object>());
 
-                var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                var selectAreaObjs = Container.Map.Spatial.GetMany<MapGrh>(rect);
-                _selectedMapGrhs.AddRange(selectAreaObjs);
+                    // Move transbox
+                    if (_selectedMapGrhs.Count > 1)
+                        _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
+                    else
+                    {
+                        _mapGrhMoveBox = null;
+                        Container.SelectedTransBox = null;
+                        _selectedMapGrhs.Clear();
+                    }
 
-                Container.SelectedObjs.SetManySelected(_selectedMapGrhs.OfType<object>());
-
-                // Move transbox
-                if (_selectedMapGrhs.Count > 1)
-                    _mapGrhMoveBox = new TransBox(TransBoxType.Move, null, cursorPos);
-                else
-                {
-                    _mapGrhMoveBox = null;
-                    Container.SelectedTransBox = null;
-                    _selectedMapGrhs.Clear();
-                }
-
-                _mouseDragStart = Vector2.Zero;
+                    _mouseDragStart = Vector2.Zero;
+                    break;
             }
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the mouse wheel has moved.
+        ///   When overridden in the derived class, handles when the mouse wheel has moved.
         /// </summary>
-        /// <param name="amount">How much the mouse wheel has scrolled, and which direction.</param>
+        /// <param name = "amount">How much the mouse wheel has scrolled, and which direction.</param>
         public override void MoveMouseWheel(int amount)
         {
             // Change the layer for the focused MapGrh
@@ -254,7 +254,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the delete button has been pressed.
+        ///   When overridden in the derived class, handles when the delete button has been pressed.
         /// </summary>
         public override void PressDelete()
         {
@@ -274,12 +274,12 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles generic updating of the cursor. This is
-        /// called every frame.
+        ///   When overridden in the derived class, handles generic updating of the cursor. This is
+        ///   called every frame.
         /// </summary>
         public override void UpdateCursor()
         {
-            bool isOverBox = false;
+            var isOverBox = false;
             if (_mapGrhMoveBox != null)
             {
                 var cursorRect = new Rectangle((int)Container.CursorPos.X, (int)Container.CursorPos.Y, 1, 1);

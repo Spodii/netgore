@@ -96,10 +96,7 @@ namespace DemoGame.MapEditor
 
         public IEnumerable<MapSpawnValues> GetMapSpawnValues()
         {
-            foreach (NPCSpawnsListBoxItem item in Items.OfType<NPCSpawnsListBoxItem>())
-            {
-                yield return item.Value;
-            }
+            return Items.OfType<NPCSpawnsListBoxItem>().Select(item => item.Value);
         }
 
         void ReloadSpawns()

@@ -148,7 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Emoticons\" />
-    <Folder Include="Friends\" />
     <Folder Include="GameTime\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />

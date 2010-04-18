@@ -114,8 +114,7 @@ namespace DemoGame.MapEditor
             else
                 newColor = EditorColors.Normal;
 
-            if (txtID.BackColor != newColor)
-                txtID.BackColor = newColor;
+            txtID.BackColor = newColor;
         }
     }
 }
