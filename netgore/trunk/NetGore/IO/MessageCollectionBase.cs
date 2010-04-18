@@ -95,7 +95,7 @@ namespace NetGore.IO
 
                 dest.Add(sourceMsg.Key, sourceMsg.Value);
                 if (log.IsDebugEnabled)
-                    log.DebugFormat("Added message `{0}` from default messages.", sourceMsg.Key.ToString());
+                    log.DebugFormat("Added message `{0}` from default messages.", sourceMsg.Key);
             }
         }
 
