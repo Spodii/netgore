@@ -826,7 +826,7 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string CreateMethodHasSameValues(DbClassData cd)
         {
-            const string otherName = "other";
+            const string otherName = "otherItem";
 
             var parameters = new MethodParameter[] { new MethodParameter(otherName, cd.InterfaceName) };
 

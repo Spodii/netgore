@@ -196,7 +196,7 @@ namespace NetGore.Db.ClassCreator
             public const string OtherParameter = "The <see cref=\"{0}\"/> to compare the values to.";
 
             public const string Returns =
-                "True if this <see cref=\"{0}\"/> contains the same values as the <paramref name=\"other\"/>; otherwise false.";
+                "True if this <see cref=\"{0}\"/> contains the same values as the otherItem; otherwise false.";
 
             public const string Summary =
                 "Checks if this <see cref=\"{0}\"/> contains the same values as another <see cref=\"{0}\"/>.";
