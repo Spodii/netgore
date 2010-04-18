@@ -407,7 +407,7 @@ namespace NetGore.Scripting
             {
                 var fileNames =
                     Directory.GetFiles(CacheDirectory, "*." + _cacheFileSuffix, SearchOption.TopDirectoryOnly).Select(
-                        x => Path.GetFileNameWithoutExtension(x)).ToArray();
+                        Path.GetFileNameWithoutExtension).ToArray();
                 var usedNames = _cache.Select(x => x.Value.FileName).ToArray();
                 toRemove = fileNames.Except(usedNames).ToImmutable();
             }

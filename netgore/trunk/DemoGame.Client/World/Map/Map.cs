@@ -183,7 +183,7 @@ namespace DemoGame.Client
             // grab all the frames and add them. Stationary GrhDatas will end up adding their self, while
             // animated ones will add all their frames, so this will end up adding them all no matter the type.
             // Finally, use Distinct to ensure we have no duplicates.
-            var validGrhDatas = grhIndexes.Select(x => GrhInfo.GetData(x)).Where(x => x != null);
+            var validGrhDatas = grhIndexes.Select(GrhInfo.GetData).Where(x => x != null);
             var atlasItems = validGrhDatas.SelectMany(x => x.Frames);
             atlasItems = atlasItems.Distinct();
 

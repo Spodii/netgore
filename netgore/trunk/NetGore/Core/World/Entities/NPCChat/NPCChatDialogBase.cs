@@ -132,7 +132,7 @@ namespace NetGore.NPCChat
         {
             var id = reader.ReadNPCChatDialogID("ID");
             var title = reader.ReadString("Title");
-            var items = reader.ReadManyNodes("Items", x => CreateDialogItem(x));
+            var items = reader.ReadManyNodes("Items", CreateDialogItem);
 
             SetReadValues(id, title, items);
         }

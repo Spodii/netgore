@@ -56,7 +56,7 @@ namespace DemoGame.EditorTools
             // Also automatically add all the instantiable types that derive from some of our base classes
             Type[] baseTypes = new Type[] { typeof(Entity), typeof(MapBase) };
             filterCreator = new TypeFilterCreator
-            { IsClass = true, IsAbstract = false, CustomFilter = (x => baseTypes.Any(bt => x.IsSubclassOf(bt))) };
+            { IsClass = true, IsAbstract = false, CustomFilter = (x => baseTypes.Any(x.IsSubclassOf)) };
             filter = filterCreator.GetFilter();
 
             typesToAdd = TypeHelper.FindTypes(filter, null);

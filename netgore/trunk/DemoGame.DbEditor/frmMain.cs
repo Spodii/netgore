@@ -927,7 +927,7 @@ namespace DemoGame.DbEditor
             var insertByIDQuery = dbController.GetQuery<InsertAllianceQuery>();
 
             return GetFreeID(dbController, true, t => new AllianceID(t), x => (int)x, getUsedQuery.Execute,
-                             x => selectQuery.Execute(x),
+                             selectQuery.Execute,
                              x => insertByIDQuery.Execute(new AllianceTable { ID = x, Name = string.Empty }));
         }
 
@@ -943,7 +943,7 @@ namespace DemoGame.DbEditor
             var insertByIDQuery = dbController.GetQuery<InsertCharacterTemplateIDOnlyQuery>();
 
             return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                             x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
+                             selectQuery.Execute, x => insertByIDQuery.Execute(x));
         }
 
         /// <summary>
@@ -958,7 +958,7 @@ namespace DemoGame.DbEditor
             var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
 
             return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                             x => selectQuery.Execute(x), x => insertByIDQuery.Execute(x));
+                             selectQuery.Execute, x => insertByIDQuery.Execute(x));
         }
 
         /// <summary>
@@ -973,7 +973,7 @@ namespace DemoGame.DbEditor
             var insertByIDQuery = dbController.GetQuery<InsertQuestQuery>();
 
             return GetFreeID(dbController, true, t => new QuestID(t), x => (int)x, getUsedQuery.Execute,
-                             x => selectQuery.Execute(x), x => insertByIDQuery.Execute(new QuestTable { ID = x }));
+                             selectQuery.Execute, x => insertByIDQuery.Execute(new QuestTable { ID = x }));
         }
 
         /// <summary>

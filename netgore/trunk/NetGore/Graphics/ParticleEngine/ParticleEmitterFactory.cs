@@ -97,7 +97,7 @@ namespace NetGore.Graphics.ParticleEngine
         public static IEnumerable<string> GetEffectsInPath(ContentPaths contentPath)
         {
             var files = Directory.GetFiles(contentPath.ParticleEffects, "*." + EmitterFileSuffix, SearchOption.TopDirectoryOnly);
-            var names = files.Select(x => GetEffectNameFromPath(x));
+            var names = files.Select(GetEffectNameFromPath);
             return names.ToImmutable();
         }
 

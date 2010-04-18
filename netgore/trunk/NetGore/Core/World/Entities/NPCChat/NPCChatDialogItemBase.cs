@@ -196,7 +196,7 @@ namespace NetGore.NPCChat
             var text = reader.ReadString("Text");
             var isBranch = reader.ReadBool("IsBranch");
 
-            var responses = reader.ReadManyNodes("Responses", x => CreateResponse(x));
+            var responses = reader.ReadManyNodes("Responses", CreateResponse);
 
             NPCChatConditionalCollectionBase conditionals = null;
             if (isBranch)

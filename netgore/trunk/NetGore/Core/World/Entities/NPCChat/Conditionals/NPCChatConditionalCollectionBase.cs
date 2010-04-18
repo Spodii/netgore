@@ -64,7 +64,7 @@ namespace NetGore.NPCChat.Conditionals
         public void Read(IValueReader reader)
         {
             var evaluationTypeValue = reader.ReadByte("EvaluationType");
-            var items = reader.ReadManyNodes("Items", x => CreateItem(x));
+            var items = reader.ReadManyNodes("Items", CreateItem);
 
             var evaluationType = (NPCChatConditionalEvaluationType)evaluationTypeValue;
             if (!EnumHelper<NPCChatConditionalEvaluationType>.IsDefined(evaluationType))

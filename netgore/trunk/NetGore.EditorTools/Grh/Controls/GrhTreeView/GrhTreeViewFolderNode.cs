@@ -59,6 +59,7 @@ namespace NetGore.EditorTools
 
         /// <summary>
         /// Gets the subcategory name of the category this <see cref="GrhTreeViewFolderNode"/> represents.
+        /// </summary>
         public string SubCategory
         {
             get { return _subCategory; }

@@ -428,10 +428,10 @@ namespace DemoGame.Server
                 default:
                     // If the value is undefined, just say its an invalid name
                     const string errmsg = "Invalid AccountLoginResult value `{0}`.";
-                    Debug.Fail(string.Format(errmsg, loginResult));
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, loginResult);
                     loginFailureGameMessage = GameMessage.LoginInvalidName;
+                    Debug.Fail(string.Format(errmsg, loginResult));
                     break;
             }
 

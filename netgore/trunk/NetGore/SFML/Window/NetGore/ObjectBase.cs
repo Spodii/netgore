@@ -17,7 +17,7 @@ namespace SFML
         /// </summary>
         /// <param name="thisPtr">Internal pointer to the object in the C libraries</param>
         ////////////////////////////////////////////////////////////
-        public ObjectBase(IntPtr thisPtr)
+        protected ObjectBase(IntPtr thisPtr)
         {
             myThis = thisPtr;
         }

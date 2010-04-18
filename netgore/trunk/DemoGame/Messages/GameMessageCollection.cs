@@ -210,7 +210,7 @@ namespace DemoGame
             var dir = ContentPaths.Build.Languages;
             var filePaths = Directory.GetFiles(dir, "*.txt", SearchOption.TopDirectoryOnly);
 
-            var files = filePaths.Select(x => Path.GetFileNameWithoutExtension(x));
+            var files = filePaths.Select(Path.GetFileNameWithoutExtension);
             files = files.Distinct(comp);
             files = files.OrderBy(x => x, comp);
 
