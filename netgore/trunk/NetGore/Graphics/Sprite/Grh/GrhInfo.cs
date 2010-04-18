@@ -578,7 +578,7 @@ namespace NetGore.Graphics
                 XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
 
                 LoadGrhDatas(reader, _nonAnimatedGrhDatasNodeName, x => StationaryGrhData.Read(x, cm));
-                LoadGrhDatas(reader, _animatedGrhDatasNodeName, x => AnimatedGrhData.Read(x));
+                LoadGrhDatas(reader, _animatedGrhDatasNodeName, AnimatedGrhData.Read);
                 LoadGrhDatas(reader, _autoAnimatedGrhDatasNodeName, x => AutomaticAnimatedGrhData.Read(x, cm));
 
                 // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas

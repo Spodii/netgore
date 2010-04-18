@@ -68,7 +68,7 @@ namespace NetGore.Graphics
         {
             return
                 Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(
-                    x => Path.GetFileNameWithoutExtension(x));
+                    Path.GetFileNameWithoutExtension);
         }
 
         /// <summary>

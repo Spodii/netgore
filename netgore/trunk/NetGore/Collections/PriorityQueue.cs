@@ -17,7 +17,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Sets up a PriorityQueue with a specified <see cref="IComparer"/>
+        /// Sets up a PriorityQueue with a specified <see cref="IComparer{T}"/>
         /// </summary>
         public PriorityQueue(IComparer<T> comparer)
         {
@@ -25,8 +25,9 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Sets up a PriorityQueue with a specified <see cref="IComparer"/> and an initial capacity.
+        /// Sets up a PriorityQueue with a specified <see cref="IComparer{T}"/> and an initial capacity.
         /// </summary>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> used to compare elements.</param>
         /// <param name="capacity">Inital capacity of queue.</param>
         public PriorityQueue(IComparer<T> comparer, int capacity)
         {
@@ -87,28 +88,28 @@ namespace NetGore.Collections
         public T Pop()
         {
             T Result = _list[0];
-            int A, B, C, D;
-            A = 0;
+
+            int a = 0;
 
             _list[0] = _list[_list.Count - 1];
             _list.RemoveAt(_list.Count - 1);
 
             do
             {
-                D = A;
-                B = 2 * A + 1;
-                C = 2 * A + 2;
+                int d = a;
+                int b = 2 * a + 1;
+                int c = 2 * a + 2;
 
-                if (_list.Count > B && OnCompare(A, B) > 0)
-                    A = B;
+                if (_list.Count > b && OnCompare(a, b) > 0)
+                    a = b;
 
-                if (_list.Count > C && OnCompare(A, C) > 0)
-                    A = C;
+                if (_list.Count > c && OnCompare(a, c) > 0)
+                    a = c;
 
-                if (A == D)
+                if (a == d)
                     break;
 
-                Switch(A, D);
+                Switch(a, d);
             }
             while (true);
 
@@ -122,29 +123,26 @@ namespace NetGore.Collections
         /// <returns>The position of the Object when it is pushed onto the queue.</returns>
         public int Push(T Object)
         {
-            int A = _list.Count;
-            int B;
+            int a = _list.Count;
 
             _list.Add(Object);
 
             do
             {
-                if (A == 0)
+                if (a == 0)
                     break;
 
-                B = (int)((A - 1) * 0.5f);
+                int b = (int)((a - 1) * 0.5f);
 
-                if (OnCompare(A, B) < 0)
-                {
-                    Switch(A, B);
-                    A = B;
-                }
-                else
+                if (OnCompare(a, b) >= 0)
                     break;
+
+                Switch(a, b);
+                a = b;
             }
             while (true);
 
-            return A;
+            return a;
         }
 
         /// <summary>
@@ -178,53 +176,51 @@ namespace NetGore.Collections
         /// <param name="i">Index that has changed.</param>
         public void Update(int i)
         {
-            int A, B, C, D;
-            A = i;
+            int d;
+            int a = i;
 
             do
             {
                 // Index at top of queue.
-                if (A == 0)
+                if (a == 0)
                     break;
 
                 // Half of (index -1)
-                D = ((A - 1) / 2);
+                d = ((a - 1) / 2);
 
                 // If A is less than D then we switch the positions
-                if (OnCompare(A, D) < 0)
-                {
-                    Switch(A, D);
-                    A = D;
-                }
-                else
+                if (OnCompare(a, d) >= 0)
                     break;
+
+                Switch(a, d);
+                a = d;
             }
             while (true);
 
-            if (A < i)
+            if (a < i)
                 return;
 
             do
             {
-                B = A;
+                int b = a;
 
-                C = 2 * A + 1;
-                D = 2 * A + 2;
+                int c = 2 * a + 1;
+                d = 2 * a + 2;
 
                 // If C is less than _list.Count and if A is greater than C then A = C.
-                if (_list.Count > C && OnCompare(A, C) > 0)
-                    A = C;
+                if (_list.Count > c && OnCompare(a, c) > 0)
+                    a = c;
 
                 // If D is less than _list.Count and if A is greater than D then A = D.
-                if (_list.Count > D && OnCompare(A, D) > 0)
-                    A = D;
+                if (_list.Count > d && OnCompare(a, d) > 0)
+                    a = d;
 
                 // If A is equal to B then we've finished moving the elements.
-                if (A == B)
+                if (a == b)
                     break;
 
                 // Switch the element A to position B and vice versa.
-                Switch(A, B);
+                Switch(a, b);
             }
             while (true);
         }

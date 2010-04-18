@@ -256,7 +256,7 @@ namespace DemoGame.Server
         public string ShowUsers()
         {
             var users = Server.World.GetUsers();
-            string userInfo = BuildString(users.Select(x => GetCharacterInfoShort(x)), Environment.NewLine);
+            string userInfo = BuildString(users.Select(GetCharacterInfoShort), Environment.NewLine);
 
             return GetCommandHeader("Total Users: {0}", users.Count()) + userInfo;
         }

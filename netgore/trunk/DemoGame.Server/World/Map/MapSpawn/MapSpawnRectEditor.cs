@@ -31,8 +31,7 @@ namespace DemoGame.Server
         /// <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If null is passed, the
         /// current culture is assumed.</param>
         /// <param name="value">The <see cref="T:System.Object"/> to convert.</param>
-        /// <param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/
-        /// parameter to.</param>
+        /// <param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/> parameter to.</param>
         /// <returns>
         /// An <see cref="T:System.Object"/> that represents the converted value.
         /// </returns>

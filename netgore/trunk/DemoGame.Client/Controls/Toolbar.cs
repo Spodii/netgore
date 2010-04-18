@@ -56,7 +56,7 @@ namespace DemoGame.Client
         ToolbarItem[] CreateToolbarItems()
         {
             // Get the values
-            var values = EnumHelper<ToolbarItemType>.Values.Select(x => EnumHelper<ToolbarItemType>.ToInt(x));
+            var values = EnumHelper<ToolbarItemType>.Values.Select(EnumHelper<ToolbarItemType>.ToInt);
 
             // Find the largest value, and create the array
             int max = values.Max();

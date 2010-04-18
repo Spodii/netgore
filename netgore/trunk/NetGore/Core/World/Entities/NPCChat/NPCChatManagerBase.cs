@@ -113,7 +113,7 @@ namespace NetGore.NPCChat
             }
 
             var reader = new XmlValueReader(filePath, "ChatDialogs");
-            var items = reader.ReadManyNodes("ChatDialogs", x => CreateDialog(x));
+            var items = reader.ReadManyNodes("ChatDialogs", CreateDialog);
 
             for (var i = 0; i < items.Length; i++)
             {

@@ -314,7 +314,7 @@ namespace NetGore.Db
                 Debug.Assert(cmd.Parameters.Count == 0);
 
                 // Clone all of the parameters and add them to the new command
-                var clonedParameters = _parameters.Select(x => CloneDbParameter(x)).ToArray();
+                var clonedParameters = _parameters.Select(CloneDbParameter).ToArray();
                 cmd.Parameters.AddRange(clonedParameters);
 
                 Debug.Assert(cmd.Parameters.Count == _parameters.Count());

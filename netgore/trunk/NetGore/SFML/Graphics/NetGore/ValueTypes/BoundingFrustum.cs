@@ -13,15 +13,7 @@ namespace SFML.Graphics
         /// <summary>Specifies the total number of corners (8) in the BoundingFrustum.</summary>
         public const int CornerCount = 8;
 
-        const int BottomPlaneIndex = 5;
-
-        const int FarPlaneIndex = 1;
-        const int LeftPlaneIndex = 2;
-        const int NearPlaneIndex = 0;
-        const int NumPlanes = 6;
-        const int RightPlaneIndex = 3;
-        const int TopPlaneIndex = 4;
-        internal Vector3[] cornerArray;
+        internal readonly Vector3[] cornerArray;
         readonly Plane[] planes;
         Gjk gjk;
         Matrix matrix;
@@ -292,7 +284,7 @@ namespace SFML.Graphics
             if (closestPoint.LengthSquared() < 1E-05f)
                 Vector3.Subtract(ref cornerArray[0], ref frustum.cornerArray[1], out closestPoint);
             float maxValue = float.MaxValue;
-            float num3 = 0f;
+            float num3;
             do
             {
                 Vector3 vector2;
@@ -376,7 +368,6 @@ namespace SFML.Graphics
             if (closestPoint.LengthSquared() < 1E-05f)
                 Vector3.Subtract(ref cornerArray[0], ref box.Max, out closestPoint);
             float maxValue = float.MaxValue;
-            float num3 = 0f;
             result = false;
             Label_006D:
             vector5.X = -closestPoint.X;
@@ -394,7 +385,7 @@ namespace SFML.Graphics
                 maxValue = closestPoint.LengthSquared();
                 if ((num2 - maxValue) > (1E-05f * num2))
                 {
-                    num3 = 4E-05f * gjk.MaxLengthSquared;
+                    float num3 = 4E-05f * gjk.MaxLengthSquared;
                     if (!gjk.FullSimplex && (maxValue >= num3))
                         goto Label_006D;
                     result = true;
@@ -419,7 +410,6 @@ namespace SFML.Graphics
             if (unitX.LengthSquared() < 1E-05f)
                 unitX = Vector3.UnitX;
             float maxValue = float.MaxValue;
-            float num3 = 0f;
             result = false;
             Label_005A:
             vector5.X = -unitX.X;
@@ -437,7 +427,7 @@ namespace SFML.Graphics
                 maxValue = unitX.LengthSquared();
                 if ((num2 - maxValue) > (1E-05f * num2))
                 {
-                    num3 = 4E-05f * gjk.MaxLengthSquared;
+                    float num3 = 4E-05f * gjk.MaxLengthSquared;
                     if (!gjk.FullSimplex && (maxValue >= num3))
                         goto Label_005A;
                     result = true;

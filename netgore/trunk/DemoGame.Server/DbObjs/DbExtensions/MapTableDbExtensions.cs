@@ -46,11 +46,13 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Checks if this <see cref="IMapTable"/> contains the same values as an<paramref name="other"/> <see cref="IMapTable"/>.
+        /// Checks if this <see cref="IMapTable"/> contains the same values as an<paramref name="other"/>
+        /// 	<see cref="IMapTable"/>.
         /// </summary>
+        /// <param name="source">The source.</param>
         /// <param name="other">The <see cref="IMapTable"/> to compare the values to.</param>
         /// <returns>
-        /// True if this <see cref="IMapTable"/> contains the same values as the <paramref name="<paramref name="other"/>"/>; <paramref name="other"/>wise false.
+        /// True if this <see cref="IMapTable"/> contains the same values as the <paramref name="other"/>; otherwise false.
         /// </returns>
         public static Boolean HasSameValues(this IMapTable source, IMapTable other)
         {
