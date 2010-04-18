@@ -14,121 +14,133 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 3/30/2010 12:13:03 AM
+This file was generated on (UTC): 4/18/2010 5:38:40 PM
 ********************************************************************/
 
 using System;
-using System.Data;
 using System.Linq;
-using DemoGame.DbObjs;
+using NetGore;
+using NetGore.IO;
+using System.Collections.Generic;
+using System.Collections;
 using NetGore.Db;
-using NetGore.Features.Quests;
-
+using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
-    /// <summary>
-    /// Contains extension methods for class QuestRequireFinishQuestTable that assist in performing
-    /// reads and writes to and from a database.
-    /// </summary>
-    public static class QuestRequireFinishQuestTableDbExtensions
-    {
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-        ///  this method will not create them if they are missing.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this IQuestRequireFinishQuestTable source, DbParameterValues paramValues)
-        {
-            paramValues["@quest_id"] = (UInt16)source.QuestID;
-            paramValues["@req_quest_id"] = (UInt16)source.ReqQuestID;
-        }
+/// <summary>
+/// Contains extension methods for class QuestRequireFinishQuestTable that assist in performing
+/// reads and writes to and from a database.
+/// </summary>
+public static  class QuestRequireFinishQuestTableDbExtensions
+{
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+///  this method will not create them if they are missing.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public static void CopyValues(this IQuestRequireFinishQuestTable source, NetGore.Db.DbParameterValues paramValues)
+{
+paramValues["@quest_id"] = (System.UInt16)source.QuestID;
+paramValues["@req_quest_id"] = (System.UInt16)source.ReqQuestID;
+}
 
-        /// <summary>
-        /// Checks if this <see cref="IQuestRequireFinishQuestTable"/> contains the same values as an<paramref name="other"/> <see cref="IQuestRequireFinishQuestTable"/>.
-        /// </summary>
-        /// <param name="other">The <see cref="IQuestRequireFinishQuestTable"/> to compare the values to.</param>
-        /// <returns>
-        /// True if this <see cref="IQuestRequireFinishQuestTable"/> contains the same values as the <paramref name="<paramref name="other"/>"/>; <paramref name="other"/>wise false.
-        /// </returns>
-        public static Boolean HasSameValues(this IQuestRequireFinishQuestTable source, IQuestRequireFinishQuestTable other)
-        {
-            return Equals(source.QuestID, other.QuestID) && Equals(source.ReqQuestID, other.ReqQuestID);
-        }
+/// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. The database column's name is used to as the key, so the value
+/// will not be found if any aliases are used or not all columns were selected.
+/// </summary>
+/// <param name="source">The object to add the extension method to.</param>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this QuestRequireFinishQuestTable source, System.Data.IDataReader dataReader)
+{
+System.Int32 i;
 
-        /// <summary>
-        /// Reads the values from an IDataReader and assigns the read values to this
-        /// object's properties. The database column's name is used to as the key, so the value
-        /// will not be found if any aliases are used or not all columns were selected.
-        /// </summary>
-        /// <param name="source">The object to add the extension method to.</param>
-        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this QuestRequireFinishQuestTable source, IDataReader dataReader)
-        {
-            Int32 i;
+i = dataReader.GetOrdinal("quest_id");
 
-            i = dataReader.GetOrdinal("quest_id");
+source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
 
-            source.QuestID = (QuestID)dataReader.GetUInt16(i);
+i = dataReader.GetOrdinal("req_quest_id");
 
-            i = dataReader.GetOrdinal("req_quest_id");
+source.ReqQuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+}
 
-            source.ReqQuestID = (QuestID)dataReader.GetUInt16(i);
-        }
+/// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. Unlike ReadValues(), this method not only doesn't require
+/// all values to be in the IDataReader, but also does not require the values in
+/// the IDataReader to be a defined field for the table this class represents.
+/// Because of this, you need to be careful when using this method because values
+/// can easily be skipped without any indication.
+/// </summary>
+/// <param name="source">The object to add the extension method to.</param>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this QuestRequireFinishQuestTable source, System.Data.IDataReader dataReader)
+{
+for (int i = 0; i < dataReader.FieldCount; i++)
+{
+switch (dataReader.GetName(i))
+{
+case "quest_id":
+source.QuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+break;
 
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
-        /// match one of the column names, or if there is no field for a key, then it will be
-        /// ignored. Because of this, it is important to be careful when using this method
-        /// since columns or keys can be skipped without any indication.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this IQuestRequireFinishQuestTable source, DbParameterValues paramValues)
-        {
-            for (int i = 0; i < paramValues.Count; i++)
-            {
-                switch (paramValues.GetParameterName(i))
-                {
-                    case "@quest_id":
-                        paramValues[i] = (UInt16)source.QuestID;
-                        break;
 
-                    case "@req_quest_id":
-                        paramValues[i] = (UInt16)source.ReqQuestID;
-                        break;
-                }
-            }
-        }
+case "req_quest_id":
+source.ReqQuestID = (NetGore.Features.Quests.QuestID)(NetGore.Features.Quests.QuestID)dataReader.GetUInt16(i);
+break;
 
-        /// <summary>
-        /// Reads the values from an IDataReader and assigns the read values to this
-        /// object's properties. Unlike ReadValues(), this method not only doesn't require
-        /// all values to be in the IDataReader, but also does not require the values in
-        /// the IDataReader to be a defined field for the table this class represents.
-        /// Because of this, you need to be careful when using this method because values
-        /// can easily be skipped without any indication.
-        /// </summary>
-        /// <param name="source">The object to add the extension method to.</param>
-        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this QuestRequireFinishQuestTable source, IDataReader dataReader)
-        {
-            for (int i = 0; i < dataReader.FieldCount; i++)
-            {
-                switch (dataReader.GetName(i))
-                {
-                    case "quest_id":
-                        source.QuestID = (QuestID)dataReader.GetUInt16(i);
-                        break;
 
-                    case "req_quest_id":
-                        source.ReqQuestID = (QuestID)dataReader.GetUInt16(i);
-                        break;
-                }
-            }
-        }
-    }
+}
+
+}
+}
+
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+/// for the value to be copied over. If any of the keys in the DbParameterValues do not
+/// match one of the column names, or if there is no field for a key, then it will be
+/// ignored. Because of this, it is important to be careful when using this method
+/// since columns or keys can be skipped without any indication.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public static void TryCopyValues(this IQuestRequireFinishQuestTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@quest_id":
+paramValues[i] = (System.UInt16)source.QuestID;
+break;
+
+
+case "@req_quest_id":
+paramValues[i] = (System.UInt16)source.ReqQuestID;
+break;
+
+
+}
+
+}
+}
+
+/// <summary>
+/// Checks if this <see cref="IQuestRequireFinishQuestTable"/> contains the same values as another <see cref="IQuestRequireFinishQuestTable"/>.
+/// </summary>
+/// <param name="otherItem">The <see cref="IQuestRequireFinishQuestTable"/> to compare the values to.</param>
+/// <returns>
+/// True if this <see cref="IQuestRequireFinishQuestTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
+/// </returns>
+public static System.Boolean HasSameValues(this IQuestRequireFinishQuestTable source, IQuestRequireFinishQuestTable otherItem)
+{
+return Equals(source.QuestID, otherItem.QuestID) && 
+Equals(source.ReqQuestID, otherItem.ReqQuestID);
+}
+
+}
+
 }
