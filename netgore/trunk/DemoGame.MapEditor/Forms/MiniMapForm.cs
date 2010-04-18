@@ -33,11 +33,11 @@ namespace DemoGame.MapEditor.Forms
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void miResizeToAspect_Click(object sender, EventArgs e)
         {
-            if (Camera != null && Camera.Map != null)
-            {
-                float targetRatio = Camera.Map.Size.X / Camera.Map.Size.Y;
-                this.ResizeToAspectRatio(targetRatio, true);
-            }
+            if (Camera == null || Camera.Map == null)
+                return;
+
+            float targetRatio = Camera.Map.Size.X / Camera.Map.Size.Y;
+            this.ResizeToAspectRatio(targetRatio, true);
         }
     }
 }

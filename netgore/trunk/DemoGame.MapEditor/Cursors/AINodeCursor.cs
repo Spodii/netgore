@@ -123,8 +123,11 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="font">The font to use.</param>
         /// <param name="text">The tooltip text.</param>
-        /// <param name="entity">The MemoryCell the tooltip is for.</param>
-        /// <returns>The position to display the tooltip text.</returns>
+        /// <param name="cellSize">Size of the cell.</param>
+        /// <param name="memoryCell">The MemoryCell the tooltip is for.</param>
+        /// <returns>
+        /// The position to display the tooltip text.
+        /// </returns>
         static Vector2 GetToolTipPos(Font font, string text, int cellSize, MemoryCell memoryCell)
         {
             var pos = new Vector2(memoryCell.MinX + cellSize, memoryCell.MinY);
@@ -217,62 +220,64 @@ namespace DemoGame.MapEditor
             int[] id = GetMemoryCellUnderCursor(Container);
             Container.SelectedObjs.SetSelected(Container.Map.MemoryMap.MemoryCells[id[0], id[1]]);
 
-            if (e.Button == MouseButtons.Left)
+            switch (e.Button)
             {
-                if (!_debugMode.Checked)
-                {
-                    if (!_mnuBlocked.Checked)
-                        Container.Map.MemoryMap.MemoryCells[id[0], id[1]].Weight = UpdateCellTo;
+                case MouseButtons.Left:
+                    if (!_debugMode.Checked)
+                    {
+                        if (!_mnuBlocked.Checked)
+                            Container.Map.MemoryMap.MemoryCells[id[0], id[1]].Weight = UpdateCellTo;
+                        else
+                            Container.Map.MemoryMap.MemoryCells[id[0], id[1]].Weight = 0;
+                    }
                     else
-                        Container.Map.MemoryMap.MemoryCells[id[0], id[1]].Weight = 0;
-                }
-                else
-                {
-                    // Debug with this position as start node.
+                    {
+                        // Debug with this position as start node.
+                        for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
+                        {
+                            for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
+                            {
+                                if (Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 2)
+                                    break;
+
+                                Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus = 0;
+                            }
+                        }
+                        _debugNodeStart = new Vector2(id[0], id[1]);
+                        Container.Map.MemoryMap.MemoryCells[id[0], id[1]].DebugStatus = 1;
+
+                        byte[,] grid = Container.Map.MemoryMap.ToByteArray();
+                        AIGrid aiGrid = new AIGrid(grid);
+                        PathFinder pathFinder = new PathFinder(aiGrid) { HeuristicFormula = Heuristics.Manhattan, SearchLimit = 3000 };
+
+                        List<Node> nodes = pathFinder.FindPath(_debugNodeStart, _debugNodeEnd);
+
+                        if (nodes != null)
+                        {
+                            foreach (Node n in nodes)
+                            {
+                                Container.Map.MemoryMap.MemoryCells[n.X, n.Y].DebugStatus = 3;
+                            }
+                        }
+                    }
+                    break;
+
+                case MouseButtons.Right:
                     for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
                     {
                         for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                         {
-                            if (Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 2)
+                            if (Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 1)
                                 break;
 
                             Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus = 0;
                         }
                     }
-                    _debugNodeStart = new Vector2(id[0], id[1]);
-                    Container.Map.MemoryMap.MemoryCells[id[0], id[1]].DebugStatus = 1;
 
-                    byte[,] grid = Container.Map.MemoryMap.ToByteArray();
-                    AIGrid aiGrid = new AIGrid(grid);
-                    PathFinder pathFinder = new PathFinder(aiGrid) { HeuristicFormula = Heuristics.Manhattan, SearchLimit = 3000 };
+                    _debugNodeEnd = new Vector2(id[0], id[1]);
+                    Container.Map.MemoryMap.MemoryCells[id[0], id[1]].DebugStatus = 2;
 
-                    List<Node> nodes = pathFinder.FindPath(_debugNodeStart, _debugNodeEnd);
-
-                    if (nodes != null)
-                    {
-                        foreach (Node n in nodes)
-                        {
-                            Container.Map.MemoryMap.MemoryCells[n.X, n.Y].DebugStatus = 3;
-                        }
-                    }
-                }
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                // Set end node.
-                for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
-                {
-                    for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
-                    {
-                        if (Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 1)
-                            break;
-
-                        Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus = 0;
-                    }
-                }
-
-                _debugNodeEnd = new Vector2(id[0], id[1]);
-                Container.Map.MemoryMap.MemoryCells[id[0], id[1]].DebugStatus = 2;
+                    break;
             }
         }
 
@@ -314,7 +319,7 @@ namespace DemoGame.MapEditor
             else if (!hoverNode.Equals(_toolTipObject))
             {
                 _toolTipObject = hoverNode;
-                _toolTip = string.Format("Weight({2})", hoverNode, hoverNode.Location, hoverNode.Weight);
+                _toolTip = string.Format("Weight({0})", hoverNode.Weight);
                 _toolTipPos = GetToolTipPos(Container.RenderFont, _toolTip, mm.CellSize, hoverNode);
             }
         }

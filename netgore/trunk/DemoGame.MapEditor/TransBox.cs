@@ -184,7 +184,7 @@ namespace DemoGame.MapEditor
         /// Creates a series of transformation boxes around an entity.
         /// </summary>
         /// <param name="entity">Entity to create the transformation boxes for.</param>
-        public static List<TransBox> SurroundEntity(Entity entity)
+        public static IEnumerable<TransBox> SurroundEntity(Entity entity)
         {
             var ret = new List<TransBox>(9);
 
