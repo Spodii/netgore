@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeReleasePreparer", "CodeReleasePreparer.csproj", "{A836D5C5-2957-49F9-A091-6E371355FD3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallationValidator", "..\InstallationValidator\InstallationValidator.csproj", "{F3B486E3-E405-47C8-8AB0-E5F3FDEA7BAF}"
