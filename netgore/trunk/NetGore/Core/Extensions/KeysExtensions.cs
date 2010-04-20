@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using SFML.Window;
 using Keys = SFML.Window.KeyCode;
 
 namespace NetGore

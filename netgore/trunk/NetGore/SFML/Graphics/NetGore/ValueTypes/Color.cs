@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using SFML.Graphics.Design;
 
 namespace SFML
@@ -16,10 +17,10 @@ namespace SFML
         [TypeConverter(typeof(ColorConverter))]
         public struct Color : IEquatable<Color>
         {
-            byte _r;
-            byte _g;
-            byte _b;
             byte _a;
+            byte _b;
+            byte _g;
+            byte _r;
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -67,27 +68,6 @@ namespace SFML
             {
             }
 
-            /// <summary>Red component of the color</summary>
-            public byte R
-            {
-                get { return _r; }
-                set { _r = value; }
-            }
-
-            /// <summary>Green component of the color</summary>
-            public byte G
-            {
-                get { return _g; }
-                set { _g = value; }
-            }
-
-            /// <summary>Blue component of the color</summary>
-            public byte B
-            {
-                get { return _b; }
-                set { _b = value; }
-            }
-
             /// <summary>Alpha (transparent) component of the color</summary>
             public byte A
             {
@@ -123,6 +103,13 @@ namespace SFML
             public static Color Azure
             {
                 get { return new Color(240, 255, 255); }
+            }
+
+            /// <summary>Blue component of the color</summary>
+            public byte B
+            {
+                get { return _b; }
+                set { _b = value; }
             }
 
             /// <summary>Gets a system-defined color with the value R:245 G:245 B:220 A:255.</summary>
@@ -369,6 +356,13 @@ namespace SFML
             public static Color Fuchsia
             {
                 get { return new Color(255, 0, 255); }
+            }
+
+            /// <summary>Green component of the color</summary>
+            public byte G
+            {
+                get { return _g; }
+                set { _g = value; }
             }
 
             /// <summary>Gets a system-defined color with the value R:220 G:220 B:220 A:255.</summary>
@@ -771,6 +765,13 @@ namespace SFML
             public static Color Purple
             {
                 get { return new Color(128, 0, 128); }
+            }
+
+            /// <summary>Red component of the color</summary>
+            public byte R
+            {
+                get { return _r; }
+                set { _r = value; }
             }
 
             /// <summary>Gets a system-defined color with the value R:255 G:0 B:0 A:255.</summary>

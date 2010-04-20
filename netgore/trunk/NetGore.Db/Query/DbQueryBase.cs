@@ -27,9 +27,10 @@ namespace NetGore.Db
         /// </summary>
         static readonly IEnumerable<DbParameter> _emptyDbParameters = Enumerable.Empty<DbParameter>().ToCompact();
 
+        readonly string _commandText;
+
         readonly Stack<DbCommand> _commands = new Stack<DbCommand>(_initialStackSize);
         readonly object _commandsLock = new object();
-        readonly string _commandText;
         readonly DbConnectionPool _connectionPool;
         readonly IEnumerable<DbParameter> _parameters;
 

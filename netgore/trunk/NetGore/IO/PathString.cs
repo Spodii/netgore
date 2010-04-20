@@ -101,7 +101,7 @@ namespace NetGore.IO
                 subPath = subPath.Substring(0, subPath.Length - 1);
 
             // Create the new path
-            string newPath = Path.Combine(this, subPath);
+            var newPath = Path.Combine(this, subPath);
 
             // Check if the path is equal to this path. If it is, we can just return this object.
             if (_pathComparer.Equals(_path, newPath))

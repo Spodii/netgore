@@ -98,7 +98,7 @@ namespace DemoGame
         /// <returns>The ItemID read from the IValueReader.</returns>
         public static ItemID Read(IValueReader reader, string name)
         {
-            int value = reader.ReadInt(name);
+            var value = reader.ReadInt(name);
             return new ItemID(value);
         }
 
@@ -110,11 +110,11 @@ namespace DemoGame
         /// <returns>The ItemID read from the IDataReader.</returns>
         public static ItemID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is int)
                 return new ItemID((int)value);
 
-            int convertedValue = Convert.ToInt32(value);
+            var convertedValue = Convert.ToInt32(value);
             return new ItemID(convertedValue);
         }
 
@@ -136,7 +136,7 @@ namespace DemoGame
         /// <returns>The ItemID read from the BitStream.</returns>
         public static ItemID Read(BitStream bitStream)
         {
-            int value = bitStream.ReadInt();
+            var value = bitStream.ReadInt();
             return new ItemID(value);
         }
 
@@ -849,7 +849,7 @@ namespace DemoGame
         public static bool TryParse(this Parser parser, string value, out ItemID outValue)
         {
             int tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new ItemID(tmp);
             return ret;
         }

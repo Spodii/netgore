@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using SFML.Graphics;
@@ -19,13 +18,13 @@ namespace NetGore.Graphics
             new Color(35, 25, 255)
         };
 
-        static readonly Color _nodeColorRoot = new Color(0, 0, 0, 255);
-        static readonly Color _nodeColorSelected = new Color(255, 255, 255, 255);
-
         /// <summary>
         /// Sprite used for drawing the joints.
         /// </summary>
-        readonly static ISprite _joint = null;
+        static readonly ISprite _joint = null;
+
+        static readonly Color _nodeColorRoot = new Color(0, 0, 0, 255);
+        static readonly Color _nodeColorSelected = new Color(255, 255, 255, 255);
 
         /// <summary>
         /// Initializes the <see cref="SkeletonDrawer"/> class.
@@ -95,19 +94,19 @@ namespace NetGore.Graphics
         static void RecursiveDraw(ICamera2D camera, ISpriteBatch sb, SkeletonNode selectedNode, SkeletonNode node, int colorIndex)
         {
             // Find the color of the joint
-            Color color = _colorList[colorIndex];
+            var color = _colorList[colorIndex];
             if (node == selectedNode)
                 color = _nodeColorSelected;
             else if (node.Parent == null)
                 color = _nodeColorRoot;
 
             // Draw the joint
-            float scale = 1f / camera.Scale;
-            Vector2 origin = SkeletonNode.HalfJointVector;
+            var scale = 1f / camera.Scale;
+            var origin = SkeletonNode.HalfJointVector;
             _joint.Draw(sb, node.Position, color, SpriteEffects.None, 0f, origin, scale);
 
             // Iterate through the children
-            foreach (SkeletonNode child in node.Nodes)
+            foreach (var child in node.Nodes)
             {
                 colorIndex++;
                 if (colorIndex == _colorList.Length)

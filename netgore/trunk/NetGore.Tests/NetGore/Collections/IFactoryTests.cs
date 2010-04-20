@@ -29,7 +29,7 @@ namespace NetGore.Tests.NetGore.Collections
         [Test]
         public void CacheIsBeingUsedTest()
         {
-            int createCount = 0;
+            var createCount = 0;
 
             Func<int, string> creator = delegate(int key)
             {
@@ -68,7 +68,7 @@ namespace NetGore.Tests.NetGore.Collections
         [Test]
         public void ClearTest()
         {
-            int createCount = 0;
+            var createCount = 0;
 
             Func<int, string> creator = delegate(int key)
             {
@@ -241,7 +241,7 @@ namespace NetGore.Tests.NetGore.Collections
             const int numKeysAccessed = 100;
 
             // ReSharper disable AccessToModifiedClosure
-            int createCount = 0;
+            var createCount = 0;
 
             Func<int, string> creator = delegate(int key)
             {
@@ -260,7 +260,7 @@ namespace NetGore.Tests.NetGore.Collections
                 // Some threads increment and some decrement so there will definitely be overlap
                 ThreadStart threadWorkloadA = delegate
                 {
-                    for (int j = 0; j < numKeysAccessed; j++)
+                    for (var j = 0; j < numKeysAccessed; j++)
                     {
                         Assert.AreEqual(j.ToString(), f[j]);
                     }
@@ -268,25 +268,25 @@ namespace NetGore.Tests.NetGore.Collections
 
                 ThreadStart threadWorkloadB = delegate
                 {
-                    for (int j = numKeysAccessed - 1; j >= 0; j--)
+                    for (var j = numKeysAccessed - 1; j >= 0; j--)
                     {
                         Assert.AreEqual(j.ToString(), f[j]);
                     }
                 };
 
-                List<Thread> threads = new List<Thread>();
+                var threads = new List<Thread>();
 
                 // Create the threads to perform the work
-                for (int i = 0; i < 5; i++)
+                for (var i = 0; i < 5; i++)
                 {
-                    Thread t = new Thread(threadWorkloadA);
+                    var t = new Thread(threadWorkloadA);
                     threads.Add(t);
                     t.Start();
                 }
 
-                for (int i = 0; i < 5; i++)
+                for (var i = 0; i < 5; i++)
                 {
-                    Thread t = new Thread(threadWorkloadB);
+                    var t = new Thread(threadWorkloadB);
                     threads.Add(t);
                     t.Start();
                 }

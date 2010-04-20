@@ -18,7 +18,7 @@ namespace NetGore.EditorTools
         /// no parent nodes.</returns>
         public static int GetDepth(this TreeNode node)
         {
-            int depth = 0;
+            var depth = 0;
             while (node.Parent != null)
             {
                 depth++;
@@ -35,7 +35,7 @@ namespace NetGore.EditorTools
         /// <returns>An IEnumerable of all the parent TreeNodes for the given <paramref name="node"/>.</returns>
         public static IEnumerable<TreeNode> GetParents(this TreeNode node)
         {
-            TreeNode current = node;
+            var current = node;
             while (current.Parent != null)
             {
                 yield return current.Parent;
@@ -73,11 +73,11 @@ namespace NetGore.EditorTools
         /// <param name="swapChildren">If true, the child nodes are also swapped.</param>
         public static void SwapNode(this TreeNode node, TreeNode other, bool swapChildren)
         {
-            TreeNode a = node;
-            TreeNode b = other;
+            var a = node;
+            var b = other;
 
-            TreeNodeCollection aParentNodes = a.Parent != null ? a.Parent.Nodes : a.TreeView.Nodes;
-            TreeNodeCollection bParentNodes = b.Parent != null ? b.Parent.Nodes : b.TreeView.Nodes;
+            var aParentNodes = a.Parent != null ? a.Parent.Nodes : a.TreeView.Nodes;
+            var bParentNodes = b.Parent != null ? b.Parent.Nodes : b.TreeView.Nodes;
 
             var aChildNodes = a.Nodes.ToArray<TreeNode>();
             var bChildNodes = b.Nodes.ToArray<TreeNode>();

@@ -42,11 +42,11 @@ namespace DemoGame.Client
 
         protected override void DrawControl(ISpriteBatch spriteBatch)
         {
-            int currentTime = GetTime();
+            var currentTime = GetTime();
 
-            Vector2 offset = new Vector2(-_iconSize.X, 0);
+            var offset = new Vector2(-_iconSize.X, 0);
 
-            foreach (StatusEffectCollectionItem dase in _statusEffects.ActiveStatusEffects)
+            foreach (var dase in _statusEffects.ActiveStatusEffects)
             {
                 dase.Draw(spriteBatch, Position + offset, currentTime);
                 offset += new Vector2(0, _iconSize.Y);
@@ -108,10 +108,10 @@ namespace DemoGame.Client
             {
                 Remove(statusEffectType);
 
-                int msLeft = secsLeft * 1000;
-                int life = msLeft + currentTime;
+                var msLeft = secsLeft * 1000;
+                var life = msLeft + currentTime;
 
-                StatusEffectCollectionItem ase = new StatusEffectCollectionItem(statusEffectType, power, life);
+                var ase = new StatusEffectCollectionItem(statusEffectType, power, life);
                 _statusEffects.Add(ase);
             }
 
@@ -181,8 +181,8 @@ namespace DemoGame.Client
 
             public int GetSecsLeft(int currentTime)
             {
-                int msRemaining = _disableTime - currentTime;
-                int secsRemaining = (int)Math.Round(msRemaining / 1000f);
+                var msRemaining = _disableTime - currentTime;
+                var secsRemaining = (int)Math.Round(msRemaining / 1000f);
                 return Math.Max(secsRemaining, 0);
             }
         }

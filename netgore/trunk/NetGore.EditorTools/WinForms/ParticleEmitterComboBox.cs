@@ -63,7 +63,7 @@ namespace NetGore.EditorTools
             if (SelectedEmitterChanged == null)
                 return;
 
-            ParticleEmitter emitter = (ParticleEmitter)TypeFactory.GetTypeInstance(item);
+            var emitter = (ParticleEmitter)TypeFactory.GetTypeInstance(item);
 
             if (emitter != null)
                 SelectedEmitterChanged(this, emitter);

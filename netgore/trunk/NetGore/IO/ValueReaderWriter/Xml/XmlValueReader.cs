@@ -14,6 +14,8 @@ namespace NetGore.IO
     /// </summary>
     public class XmlValueReader : IValueReader
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// XmlReaderSettings used for ReadNodes().
         /// </summary>
@@ -67,9 +69,9 @@ namespace NetGore.IO
             if (!File.Exists(filePath))
                 throw new FileNotFoundException(filePath);
 
-            using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                using (XmlReader r = XmlReader.Create(stream))
+                using (var r = XmlReader.Create(stream))
                 {
                     while (r.Read())
                     {
@@ -129,13 +131,13 @@ namespace NetGore.IO
         /// <returns>A new XmlValueReader from a string of a child Xml node.</returns>
         XmlValueReader GetXmlValueReaderFromNodeString(string name, string s)
         {
-            string trimmed = s.Trim();
+            var trimmed = s.Trim();
             var bytes = Encoding.UTF8.GetBytes(trimmed);
 
             XmlValueReader ret;
-            using (MemoryStream ms = new MemoryStream(bytes))
+            using (var ms = new MemoryStream(bytes))
             {
-                using (XmlReader r = XmlReader.Create(ms, _readNodesReaderSettings))
+                using (var r = XmlReader.Create(ms, _readNodesReaderSettings))
                 {
                     ret = new XmlValueReader(r, name, true, UseEnumNames);
                 }
@@ -156,8 +158,8 @@ namespace NetGore.IO
         static Dictionary<string, List<string>> ReadNodesIntoDictionary(XmlReader reader, string rootNodeName, bool readAllContent)
         {
             var ret = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
-            int expectedEndDepth = reader.Depth + 1;
-            bool skipRead = false;
+            var expectedEndDepth = reader.Depth + 1;
+            var skipRead = false;
 
             if (reader.NodeType == XmlNodeType.Element)
             {
@@ -180,8 +182,8 @@ namespace NetGore.IO
                 {
                     case XmlNodeType.Element:
                         // Read the name and value of the element
-                        string key = reader.Name;
-                        string value = reader.ReadInnerXml();
+                        var key = reader.Name;
+                        var value = reader.ReadInnerXml();
 
                         List<string> l;
                         if (!ret.TryGetValue(key, out l))
@@ -428,13 +430,13 @@ namespace NetGore.IO
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
         {
-            IValueReader nodeReader = ReadNode(nodeName);
-            int count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
+            var nodeReader = ReadNode(nodeName);
+            var count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
 
             var ret = new T[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                string key = XmlValueHelper.GetItemKey(i);
+                var key = XmlValueHelper.GetItemKey(i);
                 ret[i] = readHandler(nodeReader, key);
             }
 
@@ -450,14 +452,14 @@ namespace NetGore.IO
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
         {
-            IValueReader nodeReader = ReadNode(nodeName);
-            int count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
+            var nodeReader = ReadNode(nodeName);
+            var count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
 
             var ret = new T[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                string key = XmlValueHelper.GetItemKey(i);
-                IValueReader childNodeReader = nodeReader.ReadNode(key);
+                var key = XmlValueHelper.GetItemKey(i);
+                var childNodeReader = nodeReader.ReadNode(key);
                 ret[i] = readHandler(childNodeReader);
             }
 
@@ -484,22 +486,23 @@ namespace NetGore.IO
             if (handleMissingKey == null)
                 return ReadManyNodes(nodeName, readHandler);
 
-            IValueReader nodeReader = ReadNode(nodeName);
-            int count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
+            var nodeReader = ReadNode(nodeName);
+            var count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
 
             var ret = new T[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                string key = XmlValueHelper.GetItemKey(i);
+                var key = XmlValueHelper.GetItemKey(i);
 
                 try
                 {
-                    IValueReader childNodeReader = nodeReader.ReadNode(key);
+                    var childNodeReader = nodeReader.ReadNode(key);
                     ret[i] = readHandler(childNodeReader);
                 }
                 catch (Exception ex)
                 {
-                    const string errmsg = "Failed to read key `{0}` (index: {1}) from `{2}` when using ReadManyNodes on nodeName `{3}`. handleMissingKey argument was specified, so loading will resume...";
+                    const string errmsg =
+                        "Failed to read key `{0}` (index: {1}) from `{2}` when using ReadManyNodes on nodeName `{3}`. handleMissingKey argument was specified, so loading will resume...";
                     if (log.IsWarnEnabled)
                         log.WarnFormat(errmsg, key, i, this, nodeName);
 
@@ -510,8 +513,6 @@ namespace NetGore.IO
 
             return ret;
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Reads a single child node, while enforcing the idea that there should only be one node
@@ -530,7 +531,7 @@ namespace NetGore.IO
                 throw new ArgumentException(errmsg, "key");
             }
 
-            string nodeContents = _values[key][0];
+            var nodeContents = _values[key][0];
             return GetXmlValueReaderFromNodeString(key, nodeContents);
         }
 
@@ -563,9 +564,9 @@ namespace NetGore.IO
 
             var ret = new List<IValueReader>(count);
 
-            foreach (string value in values.Take(count))
+            foreach (var value in values.Take(count))
             {
-                XmlValueReader reader = GetXmlValueReaderFromNodeString(name, value);
+                var reader = GetXmlValueReaderFromNodeString(name, value);
                 ret.Add(reader);
             }
 
@@ -623,7 +624,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            string ret = values[0];
+            var ret = values[0];
             ret = UnescapeString(ret);
             return ret;
         }

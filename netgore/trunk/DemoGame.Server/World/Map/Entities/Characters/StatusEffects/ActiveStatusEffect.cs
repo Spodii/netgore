@@ -55,7 +55,7 @@ namespace DemoGame.Server
 
         public void AddBonusesTo(IStatCollection<StatType> statCollection)
         {
-            foreach (StatType statType in StatusEffect.ModifiedStats)
+            foreach (var statType in StatusEffect.ModifiedStats)
             {
                 statCollection[statType] += GetStatModBonus(statType);
             }
@@ -65,8 +65,8 @@ namespace DemoGame.Server
         {
             var ret = new KeyValuePair<StatType, int>[StatusEffect.ModifiedStats.Count()];
 
-            int i = 0;
-            foreach (StatType statType in StatusEffect.ModifiedStats)
+            var i = 0;
+            foreach (var statType in StatusEffect.ModifiedStats)
             {
                 ret[i] = new KeyValuePair<StatType, int>(statType, GetStatModBonus(statType));
                 i++;
@@ -101,7 +101,7 @@ namespace DemoGame.Server
         public bool MergeWith(int currentTime, ushort power, int disableTime)
         {
             int oldPower = _power;
-            int oldDisableTime = _disableTime;
+            var oldDisableTime = _disableTime;
 
             switch (StatusEffect.MergeType)
             {
@@ -193,7 +193,7 @@ namespace DemoGame.Server
 
         public void SubtractBonusesFrom(IStatCollection<StatType> statCollection)
         {
-            foreach (StatType statType in StatusEffect.ModifiedStats)
+            foreach (var statType in StatusEffect.ModifiedStats)
             {
                 statCollection[statType] -= GetStatModBonus(statType);
             }

@@ -37,7 +37,7 @@ namespace NetGore.Features.Skills
             if (!_cooldownGroups.ContainsKey(group))
                 return false;
 
-            int groupTime = _cooldownGroups[group];
+            var groupTime = _cooldownGroups[group];
             if (groupTime > currentTime)
                 return true;
             else
@@ -61,7 +61,7 @@ namespace NetGore.Features.Skills
                 return;
             }
 
-            int endTime = time + currentTime;
+            var endTime = time + currentTime;
 
             if (_cooldownGroups.ContainsKey(group))
                 _cooldownGroups[group] = endTime;

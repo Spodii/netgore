@@ -97,7 +97,7 @@ namespace NetGore.Features.Quests
         /// <returns>The <see cref="QuestID"/> read from the IValueReader.</returns>
         public static QuestID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new QuestID(value);
         }
 
@@ -109,11 +109,11 @@ namespace NetGore.Features.Quests
         /// <returns>The <see cref="QuestID"/> read from the <see cref="IDataReader"/>.</returns>
         public static QuestID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new QuestID((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new QuestID(convertedValue);
         }
 
@@ -135,7 +135,7 @@ namespace NetGore.Features.Quests
         /// <returns>The <see cref="QuestID"/> read from the <see cref="BitStream"/>.</returns>
         public static QuestID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new QuestID(value);
         }
 
@@ -857,7 +857,7 @@ namespace NetGore.Features.Quests
         public static bool TryParse(this Parser parser, string value, out QuestID outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new QuestID(tmp);
             return ret;
         }

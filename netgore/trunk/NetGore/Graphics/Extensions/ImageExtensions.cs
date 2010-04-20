@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using Image = SFML.Graphics.Image;
 
 namespace NetGore.Graphics
 {
@@ -13,21 +14,6 @@ namespace NetGore.Graphics
     /// </summary>
     public static class ImageExtensions
     {
-        /// <summary>
-        /// Creates a <see cref="SFML.Graphics.Image"/> from a <see cref="System.Drawing.Image"/>.
-        /// </summary>
-        /// <param name="img">The <see cref="System.Drawing.Image"/>.</param>
-        /// <returns>The <see cref="SFML.Graphics.Image"/>.</returns>
-        public static SFML.Graphics.Image ToSFMLImage(this Image img)
-        {
-            using (var ms = new MemoryStream((img.Width * img.Height * 4) + 64))
-            {
-                img.Save(ms, ImageFormat.Bmp);
-
-                return new SFML.Graphics.Image(ms);
-            }
-        }
-
         /// <summary>
         /// Creates a scaled version of a <see cref="System.Drawing.Image"/>.
         /// </summary>
@@ -40,8 +26,8 @@ namespace NetGore.Graphics
         /// <returns>
         /// A <see cref="Bitmap"/> resized to the given values.
         /// </returns>
-        public static Bitmap CreateScaled(this Image original, int destWidth, int destHeight, bool keepAspectRatio, Color? bgColor,
-                                          Color? transparentColor)
+        public static Bitmap CreateScaled(this System.Drawing.Image original, int destWidth, int destHeight, bool keepAspectRatio,
+                                          Color? bgColor, Color? transparentColor)
         {
             int w;
             int h;
@@ -49,7 +35,7 @@ namespace NetGore.Graphics
             if (keepAspectRatio)
             {
                 // Get the destination size, maintaining aspect ratio
-                float aspectRatio = (float)original.Width / original.Height;
+                var aspectRatio = (float)original.Width / original.Height;
                 if (aspectRatio > 1)
                 {
                     w = destWidth;
@@ -78,8 +64,8 @@ namespace NetGore.Graphics
             Debug.Assert(h <= destHeight);
 
             // Center
-            int x = (int)((destWidth - w) / 2f);
-            int y = (int)((destHeight - h) / 2f);
+            var x = (int)((destWidth - w) / 2f);
+            var y = (int)((destHeight - h) / 2f);
 
             // Create the new bitmap to return
             var ret = new Bitmap(destWidth, destHeight);
@@ -118,7 +104,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this SFML.Graphics.Image image, Rectangle source, int destWidth, int destHeight)
+        public static Bitmap ToBitmap(this Image image, Rectangle source, int destWidth, int destHeight)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -142,8 +128,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this SFML.Graphics.Image image, SFML.Graphics.Rectangle source, int destWidth,
-                                      int destHeight)
+        public static Bitmap ToBitmap(this Image image, SFML.Graphics.Rectangle source, int destWidth, int destHeight)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -162,7 +147,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this SFML.Graphics.Image image, SFML.Graphics.Rectangle source)
+        public static Bitmap ToBitmap(this Image image, SFML.Graphics.Rectangle source)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -181,7 +166,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static unsafe Bitmap ToBitmap(this SFML.Graphics.Image image, Rectangle source)
+        public static unsafe Bitmap ToBitmap(this Image image, Rectangle source)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -192,7 +177,7 @@ namespace NetGore.Graphics
             var pixels = image.Pixels;
 
             // Create the target bitmap
-            Bitmap b = new Bitmap(source.Width, source.Height, PixelFormat.Format32bppArgb);
+            var b = new Bitmap(source.Width, source.Height, PixelFormat.Format32bppArgb);
 
             // Lock the whole bitmap for write only
             var rect = new Rectangle(0, 0, source.Width, source.Height);
@@ -200,17 +185,17 @@ namespace NetGore.Graphics
 
             const int bytesPerColor = 4;
 
-            int srcStride = rect.Width;
+            var srcStride = rect.Width;
 
             try
             {
                 // Copy the pixel values byte-by-byte, making sure to copy the RGBA source to the ARGB destination
-                for (int y = 0; y < data.Height; y++)
+                for (var y = 0; y < data.Height; y++)
                 {
                     var srcOffRow = (y + source.Y) * srcStride * bytesPerColor;
-                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                    var row = (byte*)data.Scan0 + (y * data.Stride);
 
-                    for (int x = 0; x < data.Width; x++)
+                    for (var x = 0; x < data.Width; x++)
                     {
                         var srcOff = srcOffRow + ((x + source.X) * bytesPerColor);
                         var dstOff = x * bytesPerColor;
@@ -235,6 +220,21 @@ namespace NetGore.Graphics
             }
 
             return b;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SFML.Graphics.Image"/> from a <see cref="System.Drawing.Image"/>.
+        /// </summary>
+        /// <param name="img">The <see cref="System.Drawing.Image"/>.</param>
+        /// <returns>The <see cref="SFML.Graphics.Image"/>.</returns>
+        public static Image ToSFMLImage(this System.Drawing.Image img)
+        {
+            using (var ms = new MemoryStream((img.Width * img.Height * 4) + 64))
+            {
+                img.Save(ms, ImageFormat.Bmp);
+
+                return new Image(ms);
+            }
         }
     }
 }

@@ -165,7 +165,7 @@ namespace NetGore.EditorTools
 
             if (SelectedListBox.SelectedItems.Count > 1)
             {
-                List<T> objs = new List<T>(SelectedListBox.SelectedItems.Count);
+                var objs = new List<T>(SelectedListBox.SelectedItems.Count);
                 foreach (var item in 
                     SelectedListBox.SelectedItems)
                 {

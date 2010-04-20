@@ -38,8 +38,7 @@ namespace NetGore.Graphics
         /// <param name="map">The map to create the preview of.</param>
         /// <param name="drawExtensions">The collection of <see cref="IMapDrawingExtension"/>s applied to the map.</param>
         /// <param name="filePath">The file path to save the created preview to.</param>
-        public void CreatePreview(RenderWindow rw, T map, ICollection<IMapDrawingExtension> drawExtensions,
-                                  string filePath)
+        public void CreatePreview(RenderWindow rw, T map, ICollection<IMapDrawingExtension> drawExtensions, string filePath)
         {
             using (var tex = CreatePreview(rw, map, drawExtensions))
             {
@@ -76,9 +75,9 @@ namespace NetGore.Graphics
             // NOTE: Render the map to the render target here. Below is the old code used for XNA.
             //var ret = RenderTarget2DHelper.CreateTexture2D(graphicsDevice, (int)TextureSize.X, (int)TextureSize.Y,
             //                                                     BackgroundColor, x => DrawMap(x, map));
-            
+
             // NOTE: Create a temp image until we have this working again
-            Image ret = new Image(128,128, Color.Black);
+            var ret = new Image(128, 128, Color.Black);
 
             // Restore the map values
             SetMapValues(map, oldCamera, oldDrawFilter, oldDrawParticles);

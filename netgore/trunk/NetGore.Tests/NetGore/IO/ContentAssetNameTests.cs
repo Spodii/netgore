@@ -14,82 +14,82 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void FromAbsoluteFilePathAlternateSeparatorDeepTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:/whatever/path/to/mycontent/is/super/awesome",
-                                                                       @"C:/whatever/path/to");
+            var n = ContentAssetName.FromAbsoluteFilePath(@"C:/whatever/path/to/mycontent/is/super/awesome",
+                                                          @"C:/whatever/path/to");
             Assert.AreEqual(@"mycontent/is/super/awesome".Replace("/", ContentAssetName.PathSeparator), n.Value);
         }
 
         [Test]
         public void FromAbsoluteFilePathAlternateSeparatorTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:/whatever/path/to/mycontent", @"C:/whatever/path/to");
+            var n = ContentAssetName.FromAbsoluteFilePath(@"C:/whatever/path/to/mycontent", @"C:/whatever/path/to");
             Assert.AreEqual("mycontent", n.Value);
         }
 
         [Test]
         public void FromAbsoluteFilePathCapsTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent".ToUpper(),
-                                                                       @"C:\whatever\path\to");
+            var n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent".ToUpper(), @"C:\whatever\path\to");
             Assert.AreEqual("mycontent", n.Value.ToLower());
         }
 
         [Test]
         public void FromAbsoluteFilePathDeepTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent\is\super\awesome",
-                                                                       @"C:\whatever\path\to");
+            var n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent\is\super\awesome",
+                                                          @"C:\whatever\path\to");
             Assert.AreEqual(@"mycontent\is\super\awesome".Replace("\\", ContentAssetName.PathSeparator), n.Value);
         }
 
         [Test]
         public void FromAbsoluteFilePathTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent", @"C:\whatever\path\to");
+            var n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent", @"C:\whatever\path\to");
             Assert.AreEqual("mycontent", n.Value);
         }
 
         [Test]
         public void FromAbsoluteFilePathTrailingSlashTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent", @"C:\whatever\path\to\");
+            var n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent", @"C:\whatever\path\to\");
             Assert.AreEqual("mycontent", n.Value);
         }
 
         [Test]
         public void FromAbsoluteFilePathWithSuffixCapsTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath((@"C:\whatever\path\to\mycontent" + ContentPaths.ContentFileSuffix).ToUpper(),
-                                                                       @"C:\whatever\path\to");
+            var n =
+                ContentAssetName.FromAbsoluteFilePath(
+                    (@"C:\whatever\path\to\mycontent" + ContentPaths.ContentFileSuffix).ToUpper(), @"C:\whatever\path\to");
             Assert.AreEqual("mycontent", n.Value.ToLower());
         }
 
         [Test]
         public void FromAbsoluteFilePathWithSuffixTest()
         {
-            ContentAssetName n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent" + ContentPaths.ContentFileSuffix,
-                                                                       @"C:\whatever\path\to");
+            var n = ContentAssetName.FromAbsoluteFilePath(@"C:\whatever\path\to\mycontent" + ContentPaths.ContentFileSuffix,
+                                                          @"C:\whatever\path\to");
             Assert.AreEqual("mycontent", n.Value);
         }
 
         [Test]
         public void GetAbsoluteFilePathAlternateSeparatorPrefixTest()
         {
-            string s = new ContentAssetName("/myasset").GetAbsoluteFilePath(ContentPaths.Build);
+            var s = new ContentAssetName("/myasset").GetAbsoluteFilePath(ContentPaths.Build);
             Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
         }
 
         [Test]
         public void GetAbsoluteFilePathSeparatorPrefixTest()
         {
-            string s = new ContentAssetName("\\myasset").GetAbsoluteFilePath(ContentPaths.Build);
+            var s = new ContentAssetName("\\myasset").GetAbsoluteFilePath(ContentPaths.Build);
             Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
         }
 
         [Test]
         public void GetAbsoluteFilePathTest()
         {
-            string s = new ContentAssetName("myasset").GetAbsoluteFilePath(ContentPaths.Build);
+            var s = new ContentAssetName("myasset").GetAbsoluteFilePath(ContentPaths.Build);
             Assert.IsTrue(s.EndsWith("Content\\myasset" + ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase));
         }
 

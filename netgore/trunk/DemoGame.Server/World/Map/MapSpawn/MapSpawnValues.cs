@@ -149,7 +149,7 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.InfoFormat("Deleting MapSpawnValues `{0}`.", this);
 
-            MapSpawnValuesID id = ID;
+            var id = ID;
             DbController.GetQuery<DeleteMapSpawnQuery>().Execute(id);
             DbController.GetQuery<MapSpawnValuesIDCreator>().FreeID(id);
 
@@ -169,7 +169,7 @@ namespace DemoGame.Server
         /// <returns>The MapSpawnValues with ID <paramref name="id"/>.</returns>
         public static MapSpawnValues Load(IDbController dbController, MapSpawnValuesID id)
         {
-            IMapSpawnTable values = dbController.GetQuery<SelectMapSpawnQuery>().Execute(id);
+            var values = dbController.GetQuery<SelectMapSpawnQuery>().Execute(id);
             Debug.Assert(id == values.ID);
             return new MapSpawnValues(dbController, values);
         }
@@ -185,7 +185,7 @@ namespace DemoGame.Server
             var ret = new List<MapSpawnValues>();
             var queryValues = dbController.GetQuery<SelectMapSpawnsOnMapQuery>().Execute(mapID);
 
-            foreach (IMapSpawnTable v in queryValues)
+            foreach (var v in queryValues)
             {
                 Debug.Assert(v.MapID == mapID);
                 ret.Add(new MapSpawnValues(dbController, v));
@@ -217,8 +217,8 @@ namespace DemoGame.Server
             if (newSpawnArea == SpawnArea)
                 return;
 
-            ushort x = newSpawnArea.X.HasValue ? newSpawnArea.X.Value : (ushort)0;
-            ushort y = newSpawnArea.Y.HasValue ? newSpawnArea.Y.Value : (ushort)0;
+            var x = newSpawnArea.X.HasValue ? newSpawnArea.X.Value : (ushort)0;
+            var y = newSpawnArea.Y.HasValue ? newSpawnArea.Y.Value : (ushort)0;
 
             const string errmsg = "One or more of the `newSpawnArea` parameter values are out of range of the map!";
 

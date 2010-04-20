@@ -42,7 +42,7 @@ namespace NetGore.Graphics
             BodyItems = new SkeletonBodyItem[bodyInfo.Items.Length];
 
             // Create the individual BodyItems
-            for (int i = 0; i < BodyItems.Length; i++)
+            for (var i = 0; i < BodyItems.Length; i++)
             {
                 BodyItems[i] = new SkeletonBodyItem(bodyInfo.Items[i]);
             }

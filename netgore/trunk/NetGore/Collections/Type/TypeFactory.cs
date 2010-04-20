@@ -67,7 +67,7 @@ namespace NetGore.Collections
             AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
 
             // Load the already loaded assemblies
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 LoadAssemblyTypes(assembly);
             }
@@ -149,7 +149,7 @@ namespace NetGore.Collections
         /// <returns>An instance of the Type.</returns>
         public static object GetTypeInstance(Type type)
         {
-            object instance = Activator.CreateInstance(type, true);
+            var instance = Activator.CreateInstance(type, true);
             return instance;
         }
 
@@ -161,7 +161,7 @@ namespace NetGore.Collections
         /// <returns>An instance of the Type.</returns>
         public static object GetTypeInstance(Type type, params object[] arguments)
         {
-            object instance = Activator.CreateInstance(type, arguments);
+            var instance = Activator.CreateInstance(type, arguments);
             return instance;
         }
 
@@ -174,7 +174,7 @@ namespace NetGore.Collections
         /// in this <see cref="TypeFactory"/>.</exception>
         public object GetTypeInstance(string typeName)
         {
-            Type type = this[typeName];
+            var type = this[typeName];
             if (type == null)
                 throw new KeyNotFoundException(string.Format("No Type with the name `{0}` exists in this TypeFactory.", typeName));
 
@@ -191,7 +191,7 @@ namespace NetGore.Collections
         /// in this <see cref="TypeFactory"/>.</exception>
         public object GetTypeInstance(string typeName, params object[] arguments)
         {
-            Type type = this[typeName];
+            var type = this[typeName];
             if (type == null)
                 throw new KeyNotFoundException(string.Format("No Type with the name `{0}` exists in this TypeFactory.", typeName));
 
@@ -229,15 +229,15 @@ namespace NetGore.Collections
 
             // Load all the Types from the Assembly
             var newTypes = assembly.GetTypes().Where(_typeFilter);
-            foreach (Type type in newTypes)
+            foreach (var type in newTypes)
             {
-                string typeName = GetTypeName(type);
+                var typeName = GetTypeName(type);
 
                 // Ensure the name isn't already in use
                 if (_nameToType.ContainsKey(typeName))
                 {
                     const string errmsg = "Type name `{0}` is alredy used by Type `{1}` - cannot add new Type `{2}`.";
-                    string err = string.Format(errmsg, typeName, _nameToType[typeName], type);
+                    var err = string.Format(errmsg, typeName, _nameToType[typeName], type);
                     log.Fatal(err);
                     throw new TypeException(err);
                 }
@@ -275,7 +275,7 @@ namespace NetGore.Collections
         /// </returns>
         public IEnumerator<Type> GetEnumerator()
         {
-            foreach (Type key in _typeToName.Keys)
+            foreach (var key in _typeToName.Keys)
             {
                 yield return key;
             }

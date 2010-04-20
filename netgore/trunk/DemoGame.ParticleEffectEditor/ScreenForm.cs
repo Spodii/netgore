@@ -64,48 +64,6 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnLoad control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnLoad_Click(object sender, EventArgs e)
-        {
-            string filePath;
-            ParticleEmitter emitter;
-            var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out emitter);
-
-            if (wasSuccessful)
-                Emitter = emitter;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnSave control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnSave_Click(object sender, EventArgs e)
-        {
-            ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter);
-
-            MessageBox.Show("Saved!", "Saved", MessageBoxButtons.OK);
-        }
-
-        void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
-        {
-            // Ensure the selected emitter is valid
-            if (_emitter == null || emitter == null)
-                return;
-
-            // Ensure the type is actually different (no need to recreate if its the same kind of emitter)
-            if (_emitter.GetType() == emitter.GetType())
-                return;
-
-            // Copy over the values of this emitter to the new emitter, and use the new emitter
-            _emitter.CopyValuesTo(emitter);
-            Emitter = emitter;
-        }
-
-        /// <summary>
         /// Creates the initial <see cref="ParticleEmitter"/> to display.
         /// </summary>
         /// <returns>The initial <see cref="ParticleEmitter"/> to display.</returns>
@@ -194,6 +152,48 @@ namespace DemoGame.ParticleEffectEditor
                 _lastEmitterName = Emitter.Name;
                 Text = _defaultTitle + " - " + _lastEmitterName;
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnLoad control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnLoad_Click(object sender, EventArgs e)
+        {
+            string filePath;
+            ParticleEmitter emitter;
+            var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out emitter);
+
+            if (wasSuccessful)
+                Emitter = emitter;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnSave_Click(object sender, EventArgs e)
+        {
+            ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter);
+
+            MessageBox.Show("Saved!", "Saved", MessageBoxButtons.OK);
+        }
+
+        void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
+        {
+            // Ensure the selected emitter is valid
+            if (_emitter == null || emitter == null)
+                return;
+
+            // Ensure the type is actually different (no need to recreate if its the same kind of emitter)
+            if (_emitter.GetType() == emitter.GetType())
+                return;
+
+            // Copy over the values of this emitter to the new emitter, and use the new emitter
+            _emitter.CopyValuesTo(emitter);
+            Emitter = emitter;
         }
 
         #region IGetTime Members

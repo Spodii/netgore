@@ -41,6 +41,18 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in
+        /// a valid state to draw.
+        /// </summary>
+        /// <returns>
+        /// True if in a valid state to draw; otherwise false.
+        /// </returns>
+        protected override bool InValidRenderState()
+        {
+            return SpriteBatch != null;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles the actual disposing.
         /// </summary>
         protected override void InternalDispose()
@@ -88,24 +100,12 @@ namespace NetGore.Graphics.ParticleEngine
             }
         }
 
-        /// <summary>
-        /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in
-        /// a valid state to draw.
-        /// </summary>
-        /// <returns>
-        /// True if in a valid state to draw; otherwise false.
-        /// </returns>
-        protected override bool InValidRenderState()
-        {
-            return SpriteBatch != null;
-        }
-
         void RenderEmitter(ParticleEmitter emitter)
         {
-            Vector2 origin = emitter.Sprite.Size / 2f;
+            var origin = emitter.Sprite.Size / 2f;
 
             var particles = emitter.GetParticlesArray();
-            for (int i = 0; i < emitter.ActiveParticles; i++)
+            for (var i = 0; i < emitter.ActiveParticles; i++)
             {
                 var p = particles[i];
                 emitter.Sprite.Draw(SpriteBatch, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);

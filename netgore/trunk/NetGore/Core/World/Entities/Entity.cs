@@ -305,7 +305,7 @@ namespace NetGore
             if (adjustment == Vector2.Zero)
                 return;
 
-            Vector2 oldPos = Position;
+            var oldPos = Position;
 
             _position += adjustment;
 
@@ -323,7 +323,7 @@ namespace NetGore
             if (newSize == Size)
                 return;
 
-            Vector2 oldSize = Size;
+            var oldSize = Size;
 
             _size = newSize;
 
@@ -394,7 +394,7 @@ namespace NetGore
             StandingOn = null;
 
             // Move the entity
-            Vector2 oldPos = Position;
+            var oldPos = Position;
             _position = newPosition;
             _lastPosition = newPosition;
 
@@ -424,7 +424,7 @@ namespace NetGore
             if (StandingOn == null)
             {
                 // Increase the velocity by the gravity
-                Vector2 displacement = _gravity * (Weight * deltaTime);
+                var displacement = _gravity * (Weight * deltaTime);
                 Vector2.Add(ref _velocity, ref displacement, out _velocity);
             }
 #endif

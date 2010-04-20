@@ -14,11 +14,11 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void AbsTest()
         {
-            for (int x = -10; x < 10; x++)
+            for (var x = -10; x < 10; x++)
             {
-                for (int y = -10; y < 10; y++)
+                for (var y = -10; y < 10; y++)
                 {
-                    Vector2 v = new Vector2(x, y);
+                    var v = new Vector2(x, y);
                     v = v.Abs();
                     Assert.LessOrEqual(0, v.X);
                     Assert.LessOrEqual(0, v.Y);
@@ -31,9 +31,9 @@ namespace NetGore.Tests.NetGore
         {
             const int max = 1000;
 
-            Random r = new Random(987);
+            var r = new Random(987);
 
-            for (int i = 0; i < 30; i++)
+            for (var i = 0; i < 30; i++)
             {
                 var v = new Vector2(r.NextFloat() * max, r.NextFloat() * max);
                 var c = v.Ceiling();
@@ -47,9 +47,9 @@ namespace NetGore.Tests.NetGore
         {
             const int max = 1000;
 
-            Random r = new Random(102);
+            var r = new Random(102);
 
-            for (int i = 0; i < 30; i++)
+            for (var i = 0; i < 30; i++)
             {
                 var v = new Vector2(r.NextFloat() * max, r.NextFloat() * max);
                 var c = v.Floor();
@@ -61,21 +61,21 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsGreaterOrEqualTest()
         {
-            for (int x1 = -10; x1 < 10; x1++)
+            for (var x1 = -10; x1 < 10; x1++)
             {
-                for (int y1 = -10; y1 < 10; y1++)
+                for (var y1 = -10; y1 < 10; y1++)
                 {
-                    for (int x2 = -10; x2 < 10; x2++)
+                    for (var x2 = -10; x2 < 10; x2++)
                     {
-                        for (int y2 = -10; y2 < 10; y2++)
+                        for (var y2 = -10; y2 < 10; y2++)
                         {
-                            Vector2 v1 = new Vector2(x1, y1);
-                            Vector2 v2 = new Vector2(x2, y2);
+                            var v1 = new Vector2(x1, y1);
+                            var v2 = new Vector2(x2, y2);
 
-                            bool b1 = (v1.X >= v2.X && v1.Y >= v2.Y);
+                            var b1 = (v1.X >= v2.X && v1.Y >= v2.Y);
                             Assert.AreEqual(b1, v1.IsGreaterOrEqual(v2));
 
-                            bool b2 = (v2.X >= v1.X && v2.Y >= v1.Y);
+                            var b2 = (v2.X >= v1.X && v2.Y >= v1.Y);
                             Assert.AreEqual(b2, v2.IsGreaterOrEqual(v1));
                         }
                     }
@@ -86,21 +86,21 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsGreaterThanTest()
         {
-            for (int x1 = -10; x1 < 10; x1++)
+            for (var x1 = -10; x1 < 10; x1++)
             {
-                for (int y1 = -10; y1 < 10; y1++)
+                for (var y1 = -10; y1 < 10; y1++)
                 {
-                    for (int x2 = -10; x2 < 10; x2++)
+                    for (var x2 = -10; x2 < 10; x2++)
                     {
-                        for (int y2 = -10; y2 < 10; y2++)
+                        for (var y2 = -10; y2 < 10; y2++)
                         {
-                            Vector2 v1 = new Vector2(x1, y1);
-                            Vector2 v2 = new Vector2(x2, y2);
+                            var v1 = new Vector2(x1, y1);
+                            var v2 = new Vector2(x2, y2);
 
-                            bool b1 = (v1.X > v2.X && v1.Y > v2.Y);
+                            var b1 = (v1.X > v2.X && v1.Y > v2.Y);
                             Assert.AreEqual(b1, v1.IsGreaterThan(v2));
 
-                            bool b2 = (v2.X > v1.X && v2.Y > v1.Y);
+                            var b2 = (v2.X > v1.X && v2.Y > v1.Y);
                             Assert.AreEqual(b2, v2.IsGreaterThan(v1));
                         }
                     }
@@ -111,21 +111,21 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsLessOrEqualTest()
         {
-            for (int x1 = -10; x1 < 10; x1++)
+            for (var x1 = -10; x1 < 10; x1++)
             {
-                for (int y1 = -10; y1 < 10; y1++)
+                for (var y1 = -10; y1 < 10; y1++)
                 {
-                    for (int x2 = -10; x2 < 10; x2++)
+                    for (var x2 = -10; x2 < 10; x2++)
                     {
-                        for (int y2 = -10; y2 < 10; y2++)
+                        for (var y2 = -10; y2 < 10; y2++)
                         {
-                            Vector2 v1 = new Vector2(x1, y1);
-                            Vector2 v2 = new Vector2(x2, y2);
+                            var v1 = new Vector2(x1, y1);
+                            var v2 = new Vector2(x2, y2);
 
-                            bool b1 = (v1.X <= v2.X && v1.Y <= v2.Y);
+                            var b1 = (v1.X <= v2.X && v1.Y <= v2.Y);
                             Assert.AreEqual(b1, v1.IsLessOrEqual(v2));
 
-                            bool b2 = (v2.X <= v1.X && v2.Y <= v1.Y);
+                            var b2 = (v2.X <= v1.X && v2.Y <= v1.Y);
                             Assert.AreEqual(b2, v2.IsLessOrEqual(v1));
                         }
                     }
@@ -136,21 +136,21 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsLessThanTest()
         {
-            for (int x1 = -10; x1 < 10; x1++)
+            for (var x1 = -10; x1 < 10; x1++)
             {
-                for (int y1 = -10; y1 < 10; y1++)
+                for (var y1 = -10; y1 < 10; y1++)
                 {
-                    for (int x2 = -10; x2 < 10; x2++)
+                    for (var x2 = -10; x2 < 10; x2++)
                     {
-                        for (int y2 = -10; y2 < 10; y2++)
+                        for (var y2 = -10; y2 < 10; y2++)
                         {
-                            Vector2 v1 = new Vector2(x1, y1);
-                            Vector2 v2 = new Vector2(x2, y2);
+                            var v1 = new Vector2(x1, y1);
+                            var v2 = new Vector2(x2, y2);
 
-                            bool b1 = (v1.X < v2.X && v1.Y < v2.Y);
+                            var b1 = (v1.X < v2.X && v1.Y < v2.Y);
                             Assert.AreEqual(b1, v1.IsLessThan(v2));
 
-                            bool b2 = (v2.X < v1.X && v2.Y < v1.Y);
+                            var b2 = (v2.X < v1.X && v2.Y < v1.Y);
                             Assert.AreEqual(b2, v2.IsLessThan(v1));
                         }
                     }
@@ -163,9 +163,9 @@ namespace NetGore.Tests.NetGore
         {
             const int max = 1000;
 
-            Random r = new Random(578);
+            var r = new Random(578);
 
-            for (int i = 0; i < 30; i++)
+            for (var i = 0; i < 30; i++)
             {
                 var v = new Vector2(r.NextFloat() * max, r.NextFloat() * max);
                 var c = v.Round();
@@ -177,11 +177,11 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void SumTest()
         {
-            for (int x = -10; x < 10; x++)
+            for (var x = -10; x < 10; x++)
             {
-                for (int y = -10; y < 10; y++)
+                for (var y = -10; y < 10; y++)
                 {
-                    Vector2 v = new Vector2(x, y);
+                    var v = new Vector2(x, y);
                     Assert.AreEqual(x + y, v.Sum());
                 }
             }

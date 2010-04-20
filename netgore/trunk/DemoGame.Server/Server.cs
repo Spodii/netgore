@@ -1,5 +1,4 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,8 +31,8 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Queue<string> _consoleCommandQueue = new Queue<string>();
-        readonly ConsoleCommands _consoleCommands;
         readonly object _consoleCommandSync = new object();
+        readonly ConsoleCommands _consoleCommands;
         readonly IDbController _dbController;
         readonly Stopwatch _gameTimer = new Stopwatch();
         readonly GroupManager _groupManager;
@@ -65,7 +64,7 @@ namespace DemoGame.Server
             EngineSettingsInitializer.Initialize();
 
             // Create the DbController
-            DbConnectionSettings settings = new DbConnectionSettings();
+            var settings = new DbConnectionSettings();
             _dbController =
                 settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
                                                                  x => PromptEditDbSettingsFile(settings, x));
@@ -81,7 +80,7 @@ namespace DemoGame.Server
             InitializeScripts();
 
             // Update the GameData table
-            IGameConstantTable gameDataValues = GetGameConstantTableValues();
+            var gameDataValues = GetGameConstantTableValues();
             DbController.GetQuery<UpdateGameConstantTableQuery>().Execute(gameDataValues);
             if (log.IsInfoEnabled)
                 log.Info("Updated the GameData table with the current values.");
@@ -193,7 +192,7 @@ namespace DemoGame.Server
             // Create the account
             AccountID id;
             string errorMessage;
-            bool success = UserAccount.TryCreateAccount(DbController, conn, name, password, email, out id, out errorMessage);
+            var success = UserAccount.TryCreateAccount(DbController, conn, name, password, email, out id, out errorMessage);
 
             // Send the appropriate success message
             using (var pw = ServerPacket.CreateAccount(success, errorMessage))
@@ -216,7 +215,7 @@ namespace DemoGame.Server
                 return;
 
             string errorMessage;
-            bool success = UserAccount.TryAddCharacter(DbController, account.Name, name, out errorMessage);
+            var success = UserAccount.TryAddCharacter(DbController, account.Name, name, out errorMessage);
 
             using (var pw = ServerPacket.CreateAccountCharacter(success, errorMessage))
             {
@@ -240,12 +239,12 @@ namespace DemoGame.Server
                 log.InfoFormat("Loading scripts `{0}`.", name);
 
             string path = ContentPaths.Build.Data.Join("ServerScripts").Join(name);
-            ScriptTypeCollection scriptTypes = new ScriptTypeCollection(name, path);
+            var scriptTypes = new ScriptTypeCollection(name, path);
 
             // Display warnings
             if (log.IsWarnEnabled)
             {
-                foreach (CompilerError warning in scriptTypes.CompilerErrors.Where(x => x.IsWarning))
+                foreach (var warning in scriptTypes.CompilerErrors.Where(x => x.IsWarning))
                 {
                     log.Warn(warning);
                 }
@@ -254,7 +253,7 @@ namespace DemoGame.Server
             // Display errors
             if (log.IsErrorEnabled)
             {
-                foreach (CompilerError error in scriptTypes.CompilerErrors.Where(x => !x.IsWarning))
+                foreach (var error in scriptTypes.CompilerErrors.Where(x => !x.IsWarning))
                 {
                     log.Error(error);
                 }
@@ -285,8 +284,8 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            UpdateServerTimeQuery updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
-            ServerTimeUpdater serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
+            var updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
+            var serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
 
             long lastRemoveConnsTime = 0;
 
@@ -298,7 +297,7 @@ namespace DemoGame.Server
             while (_isRunning)
             {
                 // Store the loop start time so we can calculate how long the loop took
-                long loopStartTime = _gameTimer.ElapsedMilliseconds;
+                var loopStartTime = _gameTimer.ElapsedMilliseconds;
 
                 // Check to remove inactive connections
                 if (_gameTimer.ElapsedMilliseconds - lastRemoveConnsTime > ServerSettings.RemoveInactiveConnectionsRate)
@@ -350,19 +349,19 @@ namespace DemoGame.Server
                     if (log.IsInfoEnabled)
                         log.InfoFormat("Starting save of world state...");
 
-                    int saveStartTime = GetTime();
+                    var saveStartTime = GetTime();
 
                     ServerSave();
                     _nextServerSaveTime = (int)loopStartTime + ServerSettings.RoutineServerSaveRate;
 
-                    int saveEndTime = GetTime();
+                    var saveEndTime = GetTime();
 
                     if (log.IsInfoEnabled)
                         log.InfoFormat("World state saved. Save took a total of `{0}` milliseconds.", saveEndTime - saveStartTime);
                 }
 
                 // Check if we can afford sleeping the thread
-                long sleepTime = ServerSettings.ServerUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
+                var sleepTime = ServerSettings.ServerUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
                 if (sleepTime > 0)
                     Thread.Sleep((int)sleepTime);
 
@@ -378,7 +377,7 @@ namespace DemoGame.Server
         /// <returns>An <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.</returns>
         static IGameConstantTable GetGameConstantTableValues()
         {
-            GameConstantTable gdt = new GameConstantTable
+            var gdt = new GameConstantTable
             {
                 MaxAccountNameLength = (byte)GameData.AccountName.MaxLength,
                 MaxAccountPasswordLength = (byte)GameData.AccountPassword.MaxLength,
@@ -435,7 +434,7 @@ namespace DemoGame.Server
                     break;
             }
 
-            using (PacketWriter pw = ServerPacket.LoginUnsuccessful(loginFailureGameMessage))
+            using (var pw = ServerPacket.LoginUnsuccessful(loginFailureGameMessage))
             {
                 conn.Send(pw);
             }
@@ -485,7 +484,7 @@ namespace DemoGame.Server
 
             // Try to log in the account
             UserAccount userAccount;
-            AccountLoginResult loginResult = UserAccount.Login(DbController, conn, name, password, out userAccount);
+            var loginResult = UserAccount.Login(DbController, conn, name, password, out userAccount);
 
             // Check that the login was successful
             if (loginResult != AccountLoginResult.Successful)
@@ -498,7 +497,7 @@ namespace DemoGame.Server
             conn.Tag = userAccount;
 
             // Send the "Login Successful" message
-            using (PacketWriter pw = ServerPacket.LoginSuccessful())
+            using (var pw = ServerPacket.LoginSuccessful())
             {
                 conn.Send(pw);
             }

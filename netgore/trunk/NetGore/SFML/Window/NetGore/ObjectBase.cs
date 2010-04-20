@@ -1,5 +1,5 @@
 using System;
-using System.Runtime.InteropServices;
+using System.Linq;
 
 namespace SFML
 {
@@ -12,6 +12,8 @@ namespace SFML
     public abstract class ObjectBase : IDisposable
     {
         ////////////////////////////////////////////////////////////
+        IntPtr myThis = IntPtr.Zero;
+
         /// <summary>
         /// Construct the object from a pointer to the C library object
         /// </summary>
@@ -23,14 +25,6 @@ namespace SFML
         }
 
         ////////////////////////////////////////////////////////////
-        /// <summary>
-        /// Dispose the object
-        /// </summary>
-        ////////////////////////////////////////////////////////////
-        ~ObjectBase()
-        {
-            Dispose(false);
-        }
 
         ////////////////////////////////////////////////////////////
         /// <summary>
@@ -40,7 +34,7 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public virtual IntPtr This
         {
-            get {return myThis;}
+            get { return myThis; }
         }
 
         /// <summary>
@@ -53,17 +47,15 @@ namespace SFML
         }
 
         ////////////////////////////////////////////////////////////
-        /// <summary>
-        /// Explicitely dispose the object
-        /// </summary>
-        ////////////////////////////////////////////////////////////
-        public virtual void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         ////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Destroy the object (implementation is left to each derived class)
+        /// </summary>
+        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+        ////////////////////////////////////////////////////////////
+        protected abstract void Destroy(bool disposing);
+
         /// <summary>
         /// Destroy the object
         /// </summary>
@@ -78,13 +70,14 @@ namespace SFML
             }
         }
 
-        ////////////////////////////////////////////////////////////
         /// <summary>
-        /// Destroy the object (implementation is left to each derived class)
+        /// Dispose the object
         /// </summary>
-        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
         ////////////////////////////////////////////////////////////
-        protected abstract void Destroy(bool disposing);
+        ~ObjectBase()
+        {
+            Dispose(false);
+        }
 
         ////////////////////////////////////////////////////////////
         /// <summary>
@@ -97,6 +90,18 @@ namespace SFML
             myThis = thisPtr;
         }
 
-        private IntPtr myThis = IntPtr.Zero;
+        #region IDisposable Members
+
+        /// <summary>
+        /// Explicitely dispose the object
+        /// </summary>
+        ////////////////////////////////////////////////////////////
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }

@@ -42,7 +42,7 @@ namespace DemoGame.Server
         public string AddUser(string userName, string accountName)
         {
             string errorMsg;
-            bool success = UserAccount.TryAddCharacter(DbController, accountName, userName, out errorMsg);
+            var success = UserAccount.TryAddCharacter(DbController, accountName, userName, out errorMsg);
 
             if (!success)
                 return "User creation failed: " + errorMsg;
@@ -52,8 +52,8 @@ namespace DemoGame.Server
 
         static string BuildString(IEnumerable<string> strings, string delimiter)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (string s in strings)
+            var sb = new StringBuilder();
+            foreach (var s in strings)
             {
                 sb.Append(s);
                 sb.Append(delimiter);
@@ -67,7 +67,7 @@ namespace DemoGame.Server
             if (!GameData.AccountName.IsValid(accountName))
                 return "Invalid account name";
 
-            int result = DbController.GetQuery<CountAccountCharactersByNameQuery>().Execute(accountName);
+            var result = DbController.GetQuery<CountAccountCharactersByNameQuery>().Execute(accountName);
 
             return string.Format("There are {0} characters in account {1}.", result, accountName);
         }
@@ -75,9 +75,9 @@ namespace DemoGame.Server
         [ConsoleCommand("CountAccountCharacters")]
         public string CountAccountCharacters(int id)
         {
-            AccountID accountID = new AccountID(id);
+            var accountID = new AccountID(id);
 
-            int result = DbController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
+            var result = DbController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
 
             return string.Format("There are {0} characters in account ID {1}.", result, accountID);
         }
@@ -87,8 +87,8 @@ namespace DemoGame.Server
         {
             AccountID accountID;
             string errorMessage;
-            bool success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID,
-                                                        out errorMessage);
+            var success = UserAccount.TryCreateAccount(DbController, null, accountName, accountPassword, email, out accountID,
+                                                       out errorMessage);
 
             if (success)
                 return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);
@@ -124,7 +124,7 @@ namespace DemoGame.Server
                 return string.Format("Invalid ItemID `{0}`.", id);
 
             object source;
-            ItemEntity item = FindItem(id, out source);
+            var item = FindItem(id, out source);
 
             if (item == null)
                 return "Item not found.";
@@ -142,9 +142,9 @@ namespace DemoGame.Server
 
         public ItemEntity FindItem(ItemID id, out object source)
         {
-            foreach (Map map in Server.World.Maps)
+            foreach (var map in Server.World.Maps)
             {
-                foreach (ItemEntity item in map.DynamicEntities.OfType<ItemEntity>())
+                foreach (var item in map.DynamicEntities.OfType<ItemEntity>())
                 {
                     if (item.ID == id)
                     {
@@ -153,9 +153,9 @@ namespace DemoGame.Server
                     }
                 }
 
-                foreach (Character character in map.DynamicEntities.OfType<Character>())
+                foreach (var character in map.DynamicEntities.OfType<Character>())
                 {
-                    foreach (ItemEntity item in character.Equipped.Select(x => x.Value))
+                    foreach (var item in character.Equipped.Select(x => x.Value))
                     {
                         if (item.ID == id)
                         {
@@ -164,7 +164,7 @@ namespace DemoGame.Server
                         }
                     }
 
-                    foreach (ItemEntity item in character.Inventory.Select(x => x.Value))
+                    foreach (var item in character.Inventory.Select(x => x.Value))
                     {
                         if (item.ID == id)
                         {
@@ -194,7 +194,7 @@ namespace DemoGame.Server
 
         static string GetCharacterInfoShort(Character c)
         {
-            string s = c.ToString();
+            var s = c.ToString();
             s += "\t Map: ";
             if (c.Map != null)
                 s += c.Map.ID;
@@ -214,7 +214,7 @@ namespace DemoGame.Server
         [ConsoleCommand("Help")]
         public string Help()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             var cmdsSorted = _parser.GetCommands().OrderBy(x => x.Key);
 
             sb.AppendLine("Server console commands:");
@@ -231,7 +231,7 @@ namespace DemoGame.Server
 
                 sb.Append(")");
 
-                int count = cmd.Value.Count();
+                var count = cmd.Value.Count();
                 if (count > 1)
                 {
                     sb.Append(" [+");
@@ -256,7 +256,7 @@ namespace DemoGame.Server
         public string ShowUsers()
         {
             var users = Server.World.GetUsers();
-            string userInfo = BuildString(users.Select(GetCharacterInfoShort), Environment.NewLine);
+            var userInfo = BuildString(users.Select(GetCharacterInfoShort), Environment.NewLine);
 
             return GetCommandHeader("Total Users: {0}", users.Count()) + userInfo;
         }

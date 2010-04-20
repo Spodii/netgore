@@ -52,7 +52,7 @@ namespace NetGore.NPCChat.Conditionals
         {
             var not = reader.ReadBool("Not");
             var conditionalName = reader.ReadString("ConditionalName");
-            var parameters = reader.ReadManyNodes<NPCChatConditionalParameter>("Parameters", NPCChatConditionalParameter.Read);
+            var parameters = reader.ReadManyNodes("Parameters", NPCChatConditionalParameter.Read);
 
             var conditional = NPCChatConditionalBase.GetConditional(conditionalName);
             if (conditional == null)

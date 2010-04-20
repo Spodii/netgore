@@ -19,16 +19,16 @@ namespace NetGore.EditorTools
         {
             if (reader.SupportsNameLookup)
             {
-                string value = reader.ReadString(name);
+                var value = reader.ReadString(name);
                 var split = value.Split(',');
-                int x = Parser.Invariant.ParseInt(split[0]);
-                int y = Parser.Invariant.ParseInt(split[1]);
+                var x = Parser.Invariant.ParseInt(split[0]);
+                var y = Parser.Invariant.ParseInt(split[1]);
                 return new Size(x, y);
             }
             else
             {
-                int x = reader.ReadInt(null);
-                int y = reader.ReadInt(null);
+                var x = reader.ReadInt(null);
+                var y = reader.ReadInt(null);
                 return new Size(x, y);
             }
         }
@@ -43,16 +43,16 @@ namespace NetGore.EditorTools
         {
             if (reader.SupportsNameLookup)
             {
-                string value = reader.ReadString(name);
+                var value = reader.ReadString(name);
                 var split = value.Split(',');
-                int x = Parser.Invariant.ParseInt(split[0]);
-                int y = Parser.Invariant.ParseInt(split[1]);
+                var x = Parser.Invariant.ParseInt(split[0]);
+                var y = Parser.Invariant.ParseInt(split[1]);
                 return new Point(x, y);
             }
             else
             {
-                int x = reader.ReadInt(null);
-                int y = reader.ReadInt(null);
+                var x = reader.ReadInt(null);
+                var y = reader.ReadInt(null);
                 return new Point(x, y);
             }
         }

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace SFML.Graphics
 {
@@ -11,16 +10,6 @@ namespace SFML.Graphics
     {
         readonly ushort _charSize;
         readonly string _filename;
-
-        /// <summary>
-        /// Gets the char size to use when loading.
-        /// </summary>
-        public uint CharSize { get { return _charSize; } }
-
-        /// <summary>
-        /// Gets the file name that this image uses to load.
-        /// </summary>
-        public string FileName { get { return _filename; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LazyFont"/> class.
@@ -47,18 +36,19 @@ namespace SFML.Graphics
         }
 
         /// <summary>
-        /// Explicitely dispose the object
+        /// Gets the char size to use when loading.
         /// </summary>
-        public override void Dispose()
+        public uint CharSize
         {
-            Dispose(true);
+            get { return _charSize; }
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the <see cref="LazyFont"/> is reloaded.
+        /// Gets the file name that this image uses to load.
         /// </summary>
-        protected virtual void OnReload()
+        public string FileName
         {
+            get { return _filename; }
         }
 
         /// <summary>
@@ -74,6 +64,21 @@ namespace SFML.Graphics
 
                 return base.This;
             }
+        }
+
+        /// <summary>
+        /// Explicitely dispose the object
+        /// </summary>
+        public override void Dispose()
+        {
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the <see cref="LazyFont"/> is reloaded.
+        /// </summary>
+        protected virtual void OnReload()
+        {
         }
     }
 }

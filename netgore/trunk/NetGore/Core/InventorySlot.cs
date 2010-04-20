@@ -97,7 +97,7 @@ namespace NetGore
         /// <returns>The InventorySlot read from the IValueReader.</returns>
         public static InventorySlot Read(IValueReader reader, string name)
         {
-            byte value = reader.ReadByte(name);
+            var value = reader.ReadByte(name);
             return new InventorySlot(value);
         }
 
@@ -109,11 +109,11 @@ namespace NetGore
         /// <returns>The InventorySlot read from the IDataReader.</returns>
         public static InventorySlot Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is byte)
                 return new InventorySlot((byte)value);
 
-            byte convertedValue = Convert.ToByte(value);
+            var convertedValue = Convert.ToByte(value);
             return new InventorySlot(convertedValue);
         }
 
@@ -135,7 +135,7 @@ namespace NetGore
         /// <returns>The InventorySlot read from the BitStream.</returns>
         public static InventorySlot Read(BitStream bitStream)
         {
-            byte value = bitStream.ReadByte();
+            var value = bitStream.ReadByte();
             return new InventorySlot(value);
         }
 
@@ -848,7 +848,7 @@ namespace NetGore
         public static bool TryParse(this Parser parser, string value, out InventorySlot outValue)
         {
             byte tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new InventorySlot(tmp);
             return ret;
         }

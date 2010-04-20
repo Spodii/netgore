@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore.Db;
 
@@ -94,7 +93,7 @@ namespace DemoGame.Server
         /// <returns>The item loaded from the database.</returns>
         protected override Alliance LoadItem(AllianceID id)
         {
-            AllianceTable values = _selectAllianceQuery.Execute(id);
+            var values = _selectAllianceQuery.Execute(id);
             var attackables = _selectAllianceAttackableQuery.Execute(id);
             var hostiles = _selectAllianceHostileQuery.Execute(id);
 
@@ -102,7 +101,7 @@ namespace DemoGame.Server
             Debug.Assert(attackables.All(x => x.AllianceID == id));
             Debug.Assert(hostiles.All(x => x.AllianceID == id));
 
-            Alliance ret = new Alliance(id, values.Name, attackables, hostiles);
+            var ret = new Alliance(id, values.Name, attackables, hostiles);
             return ret;
         }
     }

@@ -40,7 +40,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// </returns>
         public override IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator()
         {
-            foreach (NPCChatConditionalCollectionItemBase item in _items)
+            foreach (var item in _items)
             {
                 yield return item;
             }

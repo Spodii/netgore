@@ -33,7 +33,7 @@ namespace NetGore.Features.Guilds
                 }
                 else
                 {
-                    string s = reader.ReadString(name);
+                    var s = reader.ReadString(name);
                     var lastDelimiter = s.LastIndexOf(_concatDelimiter);
                     memberName = s.Substring(0, lastDelimiter);
                     var sRank = s.Substring(lastDelimiter + 1);
@@ -71,7 +71,7 @@ namespace NetGore.Features.Guilds
                 else
                 {
                     // Concat the values together so name lookup still works
-                    string s = value.Name + _concatDelimiter + value.Rank;
+                    var s = value.Name + _concatDelimiter + value.Rank;
                     writer.Write(name, s);
                 }
             }

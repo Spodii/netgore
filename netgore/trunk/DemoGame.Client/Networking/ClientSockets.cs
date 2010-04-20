@@ -161,24 +161,6 @@ namespace DemoGame.Client
         /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
         /// the corresponding event when possible.
         /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnConnected(IIPSocket conn)
-        {
-            base.OnConnected(conn);
-
-            _conn = conn;
-            _conn.Disposed += Conn_Disposed;
-            _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
-            Ping();
-
-            _isConnecting = false;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
         protected override void OnConnectFailed()
         {
             base.OnConnectFailed();
@@ -190,6 +172,24 @@ namespace DemoGame.Client
                 _conn.Dispose();
                 _conn = null;
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
+        /// <param name="conn">Connection on which the event occured.</param>
+        protected override void OnConnected(IIPSocket conn)
+        {
+            base.OnConnected(conn);
+
+            _conn = conn;
+            _conn.Disposed += Conn_Disposed;
+            _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
+            Ping();
+
+            _isConnecting = false;
         }
 
         /// <summary>

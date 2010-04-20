@@ -18,7 +18,7 @@ namespace NetGore
         [Conditional("DEBUG")]
         public static void IsMainThread()
         {
-            Thread t = Thread.CurrentThread;
+            var t = Thread.CurrentThread;
 
             if (_mainThread == null)
                 _mainThread = t;

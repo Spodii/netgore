@@ -2,16 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML.Graphics;
-using Color=SFML.Graphics.Color;
-using Image=System.Drawing.Image;
-using Point=System.Drawing.Point;
-using Rectangle = SFML.Graphics.Rectangle;
+using Image = System.Drawing.Image;
+using Point = System.Drawing.Point;
 
 namespace DemoGame.MapEditor
 {
@@ -82,7 +79,7 @@ namespace DemoGame.MapEditor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public override void DrawSelection(ISpriteBatch spriteBatch)
         {
-            Vector2 cursorPos = Container.CursorPos;
+            var cursorPos = Container.CursorPos;
 
             if (_mouseDragStart == Vector2.Zero || _mouseDragButton == MouseButtons.None || Container.SelectedTransBox != null)
                 return;
@@ -93,10 +90,10 @@ namespace DemoGame.MapEditor
             else
                 drawColor = new Color(255, 0, 0, 150);
 
-            Vector2 min = new Vector2(Math.Min(cursorPos.X, _mouseDragStart.X), Math.Min(cursorPos.Y, _mouseDragStart.Y));
-            Vector2 max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
+            var min = new Vector2(Math.Min(cursorPos.X, _mouseDragStart.X), Math.Min(cursorPos.Y, _mouseDragStart.Y));
+            var max = new Vector2(Math.Max(cursorPos.X, _mouseDragStart.X), Math.Max(cursorPos.Y, _mouseDragStart.Y));
 
-            Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
+            var dest = new Rectangle((int)min.X, (int)min.Y, (int)(max.X - min.X), (int)(max.Y - min.Y));
             RenderRectangle.Draw(spriteBatch, dest, drawColor);
         }
 
@@ -129,7 +126,7 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseDown(MouseEventArgs e)
         {
-            Vector2 cursorPos = Container.CursorPos;
+            var cursorPos = Container.CursorPos;
 
             // Set the dragging values
             _mouseDragStart = Container.Camera.ToWorld(e.X, e.Y);
@@ -141,9 +138,9 @@ namespace DemoGame.MapEditor
             if (Container.TransBoxes.Count > 0)
             {
                 // Check for resize box collision
-                Rectangle r = new Rectangle((int)_mouseDragStart.X, (int)_mouseDragStart.Y, 1, 1);
+                var r = new Rectangle((int)_mouseDragStart.X, (int)_mouseDragStart.Y, 1, 1);
                 Container.SelectedTransBox = null;
-                foreach (TransBox box in Container.TransBoxes)
+                foreach (var box in Container.TransBoxes)
                 {
                     if (!r.Intersects(box.Area))
                         continue;
@@ -155,7 +152,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Check for wall collision for quick dragging
-                WallEntityBase w = Container.Map.Spatial.Get<WallEntityBase>(cursorPos);
+                var w = Container.Map.Spatial.Get<WallEntityBase>(cursorPos);
                 if (w == null)
                     return;
 
@@ -174,8 +171,8 @@ namespace DemoGame.MapEditor
                 Container.CursorPos = cursorPos;
 
                 // Get the system cursor to the center of the box, too
-                Point pts = Container.GameScreen.PointToScreen(Container.GameScreen.Location);
-                Vector2 screenPos = Container.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
+                var pts = Container.GameScreen.PointToScreen(Container.GameScreen.Location);
+                var screenPos = Container.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
                 Cursor.Position = new Point((int)screenPos.X, (int)screenPos.Y);
 
                 // Set the move box as selected
@@ -192,27 +189,27 @@ namespace DemoGame.MapEditor
             if (Container.SelectedTransBox == null)
                 return;
 
-            Vector2 cursorPos = Container.CursorPos;
-            Map map = Container.Map;
-            Entity selEntity = Container.SelectedTransBox.Entity;
+            var cursorPos = Container.CursorPos;
+            var map = Container.Map;
+            var selEntity = Container.SelectedTransBox.Entity;
 
             if (Container.SelectedTransBox.TransType == TransBoxType.Move)
             {
                 if (selEntity == null)
                 {
                     // Move multiple
-                    Vector2 offset = cursorPos - _mouseDragStart;
+                    var offset = cursorPos - _mouseDragStart;
                     offset.X = (float)Math.Round(offset.X);
                     offset.Y = (float)Math.Round(offset.Y);
 
                     // Keep the walls in the map area
-                    foreach (WallEntityBase selWall in _selectedWalls)
+                    foreach (var selWall in _selectedWalls)
                     {
                         map.KeepInMap(selWall, ref offset);
                     }
 
                     // Move the walls
-                    foreach (WallEntityBase selWall in _selectedWalls)
+                    foreach (var selWall in _selectedWalls)
                     {
                         selWall.Move(offset);
                     }
@@ -220,7 +217,7 @@ namespace DemoGame.MapEditor
                 else
                 {
                     // Move one
-                    Vector2 offset = selEntity.Position - Container.SelectedTransBox.Position - (TransBox.MoveSize / 2);
+                    var offset = selEntity.Position - Container.SelectedTransBox.Position - (TransBox.MoveSize / 2);
                     offset.X = (float)Math.Round(offset.X);
                     offset.Y = (float)Math.Round(offset.Y);
 
@@ -241,7 +238,7 @@ namespace DemoGame.MapEditor
                 // Handle scaling
                 if (((Container.SelectedTransBox.TransType & TransBoxType.Top) > 0) && selEntity.Max.Y > cursorPos.Y)
                 {
-                    float oldMaxY = selEntity.Max.Y;
+                    var oldMaxY = selEntity.Max.Y;
                     map.SafeTeleportEntity(selEntity, new Vector2(selEntity.Position.X, cursorPos.Y));
                     if (_mnuSnapToGrid.Checked)
                         Container.Grid.SnapToGridPosition(selEntity);
@@ -251,7 +248,7 @@ namespace DemoGame.MapEditor
 
                 if (((Container.SelectedTransBox.TransType & TransBoxType.Left) > 0) && selEntity.Max.X > cursorPos.X)
                 {
-                    float oldMaxX = selEntity.Max.X;
+                    var oldMaxX = selEntity.Max.X;
                     map.SafeTeleportEntity(selEntity, new Vector2(cursorPos.X, selEntity.Position.Y));
                     if (_mnuSnapToGrid.Checked)
                         Container.Grid.SnapToGridPosition(selEntity);
@@ -277,7 +274,7 @@ namespace DemoGame.MapEditor
             Container.TransBoxes.Clear();
             if (selEntity == null)
             {
-                TransBox newTransBox = new TransBox(TransBoxType.Move, null, cursorPos);
+                var newTransBox = new TransBox(TransBoxType.Move, null, cursorPos);
                 Container.SelectedTransBox = newTransBox;
                 Container.TransBoxes.Add(newTransBox);
             }
@@ -286,7 +283,7 @@ namespace DemoGame.MapEditor
                 TransBox.SurroundEntity(selEntity, Container.TransBoxes);
 
                 // Find the new selected transformation box
-                foreach (TransBox box in Container.TransBoxes)
+                foreach (var box in Container.TransBoxes)
                 {
                     if (box.TransType == Container.SelectedTransBox.TransType)
                     {
@@ -306,13 +303,13 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            Vector2 mouseDragEnd = Container.Camera.ToWorld(e.X, e.Y);
+            var mouseDragEnd = Container.Camera.ToWorld(e.X, e.Y);
 
             if (_mouseDragStart != Vector2.Zero && Container.SelectedTransBox == null)
             {
-                Vector2 min = _mouseDragStart.Min(mouseDragEnd);
-                Vector2 max = _mouseDragStart.Max(mouseDragEnd);
-                Vector2 size = max - min;
+                var min = _mouseDragStart.Min(mouseDragEnd);
+                var max = _mouseDragStart.Max(mouseDragEnd);
+                var size = max - min;
 
                 var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
                 var selectAreaObjs = Container.Map.Spatial.GetMany<WallEntityBase>(rect);
@@ -343,7 +340,7 @@ namespace DemoGame.MapEditor
                 Container.TransBoxes.Add(new TransBox(TransBoxType.Move, null, mouseDragEnd));
 
             // Create the transformation boxes
-            foreach (WallEntityBase wall in _selectedWalls)
+            foreach (var wall in _selectedWalls)
             {
                 TransBox.SurroundEntity(wall, Container.TransBoxes);
             }
@@ -359,7 +356,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         public override void PressDelete()
         {
-            foreach (WallEntityBase selectedWall in _selectedWalls)
+            foreach (var selectedWall in _selectedWalls)
             {
                 Container.Map.RemoveEntity(selectedWall);
             }
@@ -382,7 +379,7 @@ namespace DemoGame.MapEditor
             {
                 // Find the TransBox being hovered over (if any)
                 var cursorRect = new Rectangle((int)Container.CursorPos.X, (int)Container.CursorPos.Y, 1, 1);
-                foreach (TransBox box in Container.TransBoxes)
+                foreach (var box in Container.TransBoxes)
                 {
                     var boxRect = new Rectangle((int)box.Position.X, (int)box.Position.Y, box.Area.Width, box.Area.Height);
                     if (cursorRect.Intersects(boxRect))

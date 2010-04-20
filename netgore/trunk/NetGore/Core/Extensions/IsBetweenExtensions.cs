@@ -221,7 +221,7 @@ namespace NetGore
         /// <param name="b">Second object to swap.</param>
         static void Swap<T>(ref T a, ref T b)
         {
-            T temp = a;
+            var temp = a;
             a = b;
             b = temp;
         }

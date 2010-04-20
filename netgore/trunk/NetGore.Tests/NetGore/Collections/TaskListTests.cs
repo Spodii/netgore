@@ -29,7 +29,7 @@ namespace NetGore.Tests.NetGore.Collections
             var t = new TestTaskList<int>();
             var expected = new List<int>();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 t.Add(i);
                 expected.Add(i);
@@ -44,7 +44,7 @@ namespace NetGore.Tests.NetGore.Collections
             var t = new TestTaskList<int>();
             var expected = new List<int>();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 t.Add(i);
                 expected.Add(i);
@@ -64,7 +64,7 @@ namespace NetGore.Tests.NetGore.Collections
             var t = new TestTaskList<int>();
             var expected = new List<int>();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 t.Add(i);
                 expected.Add(i);
@@ -84,7 +84,7 @@ namespace NetGore.Tests.NetGore.Collections
             var t = new TestTaskList<int>();
             var expected = new List<int>();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 t.Add(i);
                 expected.Add(i);
@@ -104,7 +104,7 @@ namespace NetGore.Tests.NetGore.Collections
             var t = new TestTaskList<int>();
             var expected = new List<int>();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 t.Add(i);
                 expected.Add(i);

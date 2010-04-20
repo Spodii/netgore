@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -87,14 +86,14 @@ namespace NetGore.Graphics
         StationaryGrhData[] CreateFrames(GrhIndex[] frameIndices)
         {
             var frames = new StationaryGrhData[frameIndices.Length];
-            for (int i = 0; i < frameIndices.Length; i++)
+            for (var i = 0; i < frameIndices.Length; i++)
             {
                 frames[i] = GrhInfo.GetData(frameIndices[i]) as StationaryGrhData;
                 if (frames[i] == null)
                 {
                     const string errmsg =
                         "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
-                    string err = string.Format(errmsg, frames[i], this, i, frameIndices.Length);
+                    var err = string.Format(errmsg, frames[i], this, i, frameIndices.Length);
                     throw new Exception(err);
                 }
             }

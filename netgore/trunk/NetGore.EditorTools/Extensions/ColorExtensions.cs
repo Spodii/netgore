@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.EditorTools
 {
@@ -12,9 +10,9 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="color">The <see cref="SFML.Graphics.Color"/>.</param>
         /// <returns>The <see cref="System.Drawing.Color"/>.</returns>
-        public static System.Drawing.Color ToSystemColor(this SFML.Graphics.Color color)
+        public static SFML.Graphics.Color ToColor(this Color color)
         {
-            return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+            return new SFML.Graphics.Color(color.R, color.G, color.B, color.A);
         }
 
         /// <summary>
@@ -22,9 +20,9 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="color">The <see cref="SFML.Graphics.Color"/>.</param>
         /// <returns>The <see cref="System.Drawing.Color"/>.</returns>
-        public static SFML.Graphics.Color ToColor(this System.Drawing.Color color)
+        public static Color ToSystemColor(this SFML.Graphics.Color color)
         {
-            return new SFML.Graphics.Color(color.R, color.G, color.B, color.A);
+            return Color.FromArgb(color.A, color.R, color.G, color.B);
         }
     }
 }

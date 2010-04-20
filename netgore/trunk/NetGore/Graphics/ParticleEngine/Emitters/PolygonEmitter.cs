@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -109,7 +108,7 @@ namespace NetGore.Graphics.ParticleEngine
                 offset = Vector2.Lerp(Points[0], Points[1], RandomHelper.NextFloat());
             else
             {
-                int i = Closed ? RandomHelper.NextInt(0, Points.Count) : RandomHelper.NextInt(0, Points.Count - 1);
+                var i = Closed ? RandomHelper.NextInt(0, Points.Count) : RandomHelper.NextInt(0, Points.Count - 1);
 
                 offset = Vector2.Lerp(Points[i], Points[(i + 1) % Points.Count], RandomHelper.NextFloat());
             }

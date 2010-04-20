@@ -43,6 +43,11 @@ namespace NetGore.Graphics
             get { return _atlasNode; }
         }
 
+        ITextureAtlasable ITextureAtlasable
+        {
+            get { return AtlasNode.ITextureAtlasable; }
+        }
+
         /// <summary>
         /// Gets if this <see cref="AtlasTreeNode"/> has no children (is a leaf).
         /// </summary>
@@ -54,11 +59,6 @@ namespace NetGore.Graphics
                 // When we detatch a set leaf, we always detatch just the left one
                 return Right == null;
             }
-        }
-
-        ITextureAtlasable ITextureAtlasable
-        {
-            get { return AtlasNode.ITextureAtlasable; }
         }
 
         /// <summary>
@@ -120,8 +120,8 @@ namespace NetGore.Graphics
                     return this;
 
                 // Not a perfect fit, split the node up into new nodes
-                int diffW = Rect.Width - w;
-                int diffH = Rect.Height - h;
+                var diffW = Rect.Width - w;
+                var diffH = Rect.Height - h;
 
                 // Decide which way to split
                 if (diffW > diffH)

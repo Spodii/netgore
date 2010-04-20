@@ -224,7 +224,7 @@ namespace DemoGame.Server.UI
         /// <returns>The enabled log events.</returns>
         LoggingEvent[] GetFilteredEvents(IEnumerable<LoggingEvent> events)
         {
-            List<LoggingEvent> ret = new List<LoggingEvent>();
+            var ret = new List<LoggingEvent>();
 
             foreach (var e in events)
             {
@@ -424,7 +424,7 @@ namespace DemoGame.Server.UI
                             lstLog.ClearSelected();
 
                             // Auto-scroll
-                            int numItems = lstLog.ClientSize.Height / lstLog.ItemHeight;
+                            var numItems = lstLog.ClientSize.Height / lstLog.ItemHeight;
                             lstLog.TopIndex = Math.Max(0, lstLog.Items.Count - numItems + 1);
                         }
                         else
@@ -454,7 +454,7 @@ namespace DemoGame.Server.UI
         /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         void txtConsoleIn_KeyDown(object sender, KeyEventArgs e)
         {
-            string txt = txtConsoleIn.Text;
+            var txt = txtConsoleIn.Text;
 
             if (e.KeyCode != Keys.Return || string.IsNullOrEmpty(txt))
                 return;
@@ -489,8 +489,8 @@ namespace DemoGame.Server.UI
         /// </summary>
         void UpdateExternalIP()
         {
-            string externalIP = string.Empty;
-            string hostName = string.Empty;
+            var externalIP = string.Empty;
+            var hostName = string.Empty;
 
             var w = new BackgroundWorker();
 

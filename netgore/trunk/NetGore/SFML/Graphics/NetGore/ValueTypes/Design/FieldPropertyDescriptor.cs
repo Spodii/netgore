@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 using System.Reflection;
 
 namespace SFML.Graphics.Design

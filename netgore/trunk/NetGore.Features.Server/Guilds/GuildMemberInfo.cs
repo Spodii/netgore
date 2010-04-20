@@ -199,7 +199,7 @@ namespace NetGore.Features.Guilds
             UpdateInvites(currentTime);
 
             // If an invite for this guild already exists, update the invite time on that invite instead
-            for (int i = 0; i < _invites.Count; i++)
+            for (var i = 0; i < _invites.Count; i++)
             {
                 if (_invites[i].Guild == guild)
                 {
@@ -220,7 +220,7 @@ namespace NetGore.Features.Guilds
         /// <param name="currentTime">The current time.</param>
         void UpdateInvites(int currentTime)
         {
-            for (int i = 0; i < _invites.Count; i++)
+            for (var i = 0; i < _invites.Count; i++)
             {
                 var current = _invites[i];
                 if (current.InviteTime + _inviteResponseTime < currentTime)

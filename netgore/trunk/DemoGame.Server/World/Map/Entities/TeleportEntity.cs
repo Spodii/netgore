@@ -58,10 +58,10 @@ namespace DemoGame.Server
             // Teleport to a new map
             if (DestinationMap > 0)
             {
-                Character c = (Character)charEntity;
+                var c = (Character)charEntity;
                 if (c.Map.ID != DestinationMap)
                 {
-                    Map newMap = c.World.GetMap(DestinationMap);
+                    var newMap = c.World.GetMap(DestinationMap);
                     if (newMap == null)
                     {
                         const string errmsg = "Failed to teleport Character `{0}` - Invalid DestMap `{1}`.";

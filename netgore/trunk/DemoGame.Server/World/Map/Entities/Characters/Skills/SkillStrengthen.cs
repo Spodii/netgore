@@ -33,7 +33,7 @@ namespace DemoGame.Server
                 target = user;
 
             int power = user.ModStats[StatType.Int];
-            bool successful = target.StatusEffects.TryAdd(StatusEffectType.Strengthen, (ushort)power);
+            var successful = target.StatusEffects.TryAdd(StatusEffectType.Strengthen, (ushort)power);
 
             return successful;
         }

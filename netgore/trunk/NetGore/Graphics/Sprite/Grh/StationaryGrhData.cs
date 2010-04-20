@@ -300,7 +300,7 @@ namespace NetGore.Graphics
         /// </returns>
         protected override GrhData DeepCopy(SpriteCategorization newCategorization, GrhIndex newGrhIndex)
         {
-            StationaryGrhData copy = new StationaryGrhData(ContentManager, newGrhIndex, newCategorization)
+            var copy = new StationaryGrhData(ContentManager, newGrhIndex, newCategorization)
             { _textureName = TextureName, _sourceRect = _sourceRect, _automaticSize = _automaticSize };
 
             return copy;
@@ -334,7 +334,7 @@ namespace NetGore.Graphics
                 return 1000 * 30;
 
             // Set the base delay to half a second, so we always wait at least half a second to try again
-            int delay = 500;
+            var delay = 500;
 
             // If 3 or more failed load attempts, each failure results in another second being added
             if (failedLoadAttempts >= 3)

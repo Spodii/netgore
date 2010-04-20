@@ -17,19 +17,19 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void AttributeFailTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator
+            var f1 = new TypeFilterCreator
             {
                 RequireAttributes = true,
                 MatchAllAttributes = true,
                 Attributes = new Type[] { typeof(DescriptionAttribute), typeof(AttribA) }
             };
-            TypeFilterCreator f2 = new TypeFilterCreator
+            var f2 = new TypeFilterCreator
             {
                 RequireAttributes = true,
                 MatchAllAttributes = true,
                 Attributes = new Type[] { typeof(DescriptionAttribute), typeof(AttribB) }
             };
-            TypeFilterCreator f3 = new TypeFilterCreator
+            var f3 = new TypeFilterCreator
             { RequireAttributes = true, MatchAllAttributes = true, Attributes = new Type[] { typeof(DescriptionAttribute) } };
 
             Assert.Throws<TypeFilterException>(() => f1.GetFilter()(typeof(A)));
@@ -40,13 +40,13 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void AttributePassTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator
+            var f1 = new TypeFilterCreator
             { RequireAttributes = true, MatchAllAttributes = true, Attributes = new Type[] { typeof(AttribA) } };
-            TypeFilterCreator f2 = new TypeFilterCreator
+            var f2 = new TypeFilterCreator
             { RequireAttributes = true, MatchAllAttributes = true, Attributes = new Type[] { typeof(AttribB) } };
-            TypeFilterCreator f3 = new TypeFilterCreator
+            var f3 = new TypeFilterCreator
             { RequireAttributes = true, MatchAllAttributes = true, Attributes = new Type[] { typeof(AttribA), typeof(AttribB) } };
-            TypeFilterCreator f4 = new TypeFilterCreator
+            var f4 = new TypeFilterCreator
             { RequireAttributes = true, MatchAllAttributes = true, Attributes = new Type[] { typeof(AttribA), typeof(AttribB) } };
 
             Assert.IsTrue(f1.GetFilter()(typeof(A)));
@@ -58,9 +58,8 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ConstructorFailTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator
-            { RequireConstructor = true, ConstructorParameters = new Type[] { typeof(object) } };
-            TypeFilterCreator f2 = new TypeFilterCreator
+            var f1 = new TypeFilterCreator { RequireConstructor = true, ConstructorParameters = new Type[] { typeof(object) } };
+            var f2 = new TypeFilterCreator
             { RequireConstructor = true, ConstructorParameters = new Type[] { typeof(object), typeof(int) } };
 
             Assert.Throws<TypeFilterException>(() => f1.GetFilter()(typeof(A)));
@@ -70,9 +69,9 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ConstructorPassTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator
+            var f1 = new TypeFilterCreator
             { RequireConstructor = true, ConstructorParameters = new Type[] { typeof(object), typeof(string) } };
-            TypeFilterCreator f2 = new TypeFilterCreator { RequireConstructor = true, ConstructorParameters = Type.EmptyTypes };
+            var f2 = new TypeFilterCreator { RequireConstructor = true, ConstructorParameters = Type.EmptyTypes };
 
             Assert.IsTrue(f1.GetFilter()(typeof(A)));
             Assert.IsTrue(f2.GetFilter()(typeof(A)));
@@ -81,8 +80,8 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void CustomFilterTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { CustomFilter = (x => !x.IsPublic) };
-            TypeFilterCreator f2 = new TypeFilterCreator { CustomFilter = (x => x == typeof(object)) };
+            var f1 = new TypeFilterCreator { CustomFilter = (x => !x.IsPublic) };
+            var f2 = new TypeFilterCreator { CustomFilter = (x => x == typeof(object)) };
 
             Assert.IsTrue(f1.GetFilter()(typeof(A)));
             Assert.IsFalse(f1.GetFilter()(typeof(object)));
@@ -93,23 +92,23 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void InterfaceFailTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator
+            var f1 = new TypeFilterCreator
             { RequireInterfaces = true, MatchAllInterfaces = true, Interfaces = new Type[] { typeof(IEnumerable), typeof(Ia) } };
-            TypeFilterCreator f2 = new TypeFilterCreator
+            var f2 = new TypeFilterCreator
             { RequireInterfaces = true, MatchAllInterfaces = true, Interfaces = new Type[] { typeof(IEnumerable), typeof(Ib) } };
-            TypeFilterCreator f3 = new TypeFilterCreator
+            var f3 = new TypeFilterCreator
             {
                 RequireInterfaces = true,
                 MatchAllInterfaces = true,
                 Interfaces = new Type[] { typeof(IEnumerable), typeof(Ia), typeof(Ib) }
             };
-            TypeFilterCreator f4 = new TypeFilterCreator
+            var f4 = new TypeFilterCreator
             {
                 RequireInterfaces = true,
                 MatchAllInterfaces = true,
                 Interfaces = new Type[] { typeof(IEnumerable), typeof(Ia), typeof(Ib) }
             };
-            TypeFilterCreator f5 = new TypeFilterCreator
+            var f5 = new TypeFilterCreator
             { RequireInterfaces = true, MatchAllInterfaces = false, Interfaces = new Type[] { typeof(IEnumerable) } };
 
             Assert.Throws<TypeFilterException>(() => f1.GetFilter()(typeof(A)));
@@ -122,13 +121,13 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void InterfacePassTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator
+            var f1 = new TypeFilterCreator
             { RequireInterfaces = true, MatchAllInterfaces = true, Interfaces = new Type[] { typeof(Ia) } };
-            TypeFilterCreator f2 = new TypeFilterCreator
+            var f2 = new TypeFilterCreator
             { RequireInterfaces = true, MatchAllInterfaces = true, Interfaces = new Type[] { typeof(Ib) } };
-            TypeFilterCreator f3 = new TypeFilterCreator
+            var f3 = new TypeFilterCreator
             { RequireInterfaces = true, MatchAllInterfaces = true, Interfaces = new Type[] { typeof(Ia), typeof(Ib) } };
-            TypeFilterCreator f4 = new TypeFilterCreator
+            var f4 = new TypeFilterCreator
             { RequireInterfaces = true, MatchAllInterfaces = true, Interfaces = new Type[] { typeof(Ia), typeof(Ib) } };
 
             Assert.IsTrue(f1.GetFilter()(typeof(A)));
@@ -140,71 +139,71 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsAbstractFailTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsAbstract = false };
+            var f1 = new TypeFilterCreator { IsAbstract = false };
             Assert.IsFalse(f1.GetFilter()(typeof(baseClass)));
         }
 
         [Test]
         public void IsAbstractNullTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsAbstract = null };
+            var f1 = new TypeFilterCreator { IsAbstract = null };
             Assert.IsTrue(f1.GetFilter()(typeof(int)));
         }
 
         [Test]
         public void IsAbstractPassTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsAbstract = true };
+            var f1 = new TypeFilterCreator { IsAbstract = true };
             Assert.IsTrue(f1.GetFilter()(typeof(baseClass)));
         }
 
         [Test]
         public void IsClassFailTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsClass = false };
+            var f1 = new TypeFilterCreator { IsClass = false };
             Assert.IsFalse(f1.GetFilter()(typeof(A)));
         }
 
         [Test]
         public void IsClassNullTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsClass = null };
+            var f1 = new TypeFilterCreator { IsClass = null };
             Assert.IsTrue(f1.GetFilter()(typeof(int)));
         }
 
         [Test]
         public void IsClassPassTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsClass = true };
+            var f1 = new TypeFilterCreator { IsClass = true };
             Assert.IsTrue(f1.GetFilter()(typeof(A)));
         }
 
         [Test]
         public void IsInterfaceFailTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsInterface = false };
+            var f1 = new TypeFilterCreator { IsInterface = false };
             Assert.IsFalse(f1.GetFilter()(typeof(Ia)));
         }
 
         [Test]
         public void IsInterfaceNullTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsInterface = null };
+            var f1 = new TypeFilterCreator { IsInterface = null };
             Assert.IsTrue(f1.GetFilter()(typeof(int)));
         }
 
         [Test]
         public void IsInterfacePassTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { IsInterface = true };
+            var f1 = new TypeFilterCreator { IsInterface = true };
             Assert.IsTrue(f1.GetFilter()(typeof(Ia)));
         }
 
         [Test]
         public void SubclassFailTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { Subclass = typeof(StringBuilder) };
-            TypeFilterCreator f2 = new TypeFilterCreator { Subclass = typeof(Ia) };
+            var f1 = new TypeFilterCreator { Subclass = typeof(StringBuilder) };
+            var f2 = new TypeFilterCreator { Subclass = typeof(Ia) };
 
             Assert.IsFalse(f1.GetFilter()(typeof(A)));
             Assert.IsFalse(f2.GetFilter()(typeof(A)));
@@ -213,8 +212,8 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void SubclassPassTest()
         {
-            TypeFilterCreator f1 = new TypeFilterCreator { Subclass = typeof(baseClass) };
-            TypeFilterCreator f2 = new TypeFilterCreator { Subclass = typeof(object) };
+            var f1 = new TypeFilterCreator { Subclass = typeof(baseClass) };
+            var f2 = new TypeFilterCreator { Subclass = typeof(object) };
 
             Assert.IsTrue(f1.GetFilter()(typeof(A)));
             Assert.IsTrue(f2.GetFilter()(typeof(A)));
@@ -243,15 +242,15 @@ namespace NetGore.Tests.NetGore
         {
         }
 
-        abstract class baseClass
-        {
-        }
-
         interface Ia
         {
         }
 
         interface Ib
+        {
+        }
+
+        abstract class baseClass
         {
         }
     }

@@ -150,7 +150,7 @@ namespace NetGore.IO
             var lines = File.ReadAllLines(filePath);
 
             // Parse the lines
-            foreach (string fileLine in lines)
+            foreach (var fileLine in lines)
             {
                 T id;
                 string msg;
@@ -225,11 +225,11 @@ namespace NetGore.IO
                 // Check for a still-valid line
                 if (!string.IsNullOrEmpty(fileLine))
                 {
-                    int colonIndex = fileLine.IndexOf(':');
+                    var colonIndex = fileLine.IndexOf(':');
                     if (colonIndex > 0)
                     {
                         // Split the message identifier and text
-                        string idStr = fileLine.Substring(0, colonIndex).Trim();
+                        var idStr = fileLine.Substring(0, colonIndex).Trim();
                         msg = fileLine.Substring(colonIndex + 1).Trim();
 
                         // Find the corresponding ServerMessage for the id

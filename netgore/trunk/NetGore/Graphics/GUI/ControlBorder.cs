@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Reflection;
-using log4net;
 using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
@@ -10,7 +8,6 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class ControlBorder
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ControlBorder _empty;
 
         /// <summary>
@@ -343,20 +340,20 @@ namespace NetGore.Graphics.GUI
             if (!_canDraw)
                 return;
 
-            Rectangle tSrc = _t.Source;
-            Rectangle tlSrc = _tl.Source;
-            Rectangle trSrc = _tr.Source;
-            Rectangle lSrc = _l.Source;
-            Rectangle rSrc = _r.Source;
-            Rectangle bSrc = _b.Source;
-            Rectangle blSrc = _bl.Source;
-            Rectangle brSrc = _br.Source;
+            var tSrc = _t.Source;
+            var tlSrc = _tl.Source;
+            var trSrc = _tr.Source;
+            var lSrc = _l.Source;
+            var rSrc = _r.Source;
+            var bSrc = _b.Source;
+            var blSrc = _bl.Source;
+            var brSrc = _br.Source;
 
             // Set some values we will be using extensively
-            int cX = region.X;
-            int cY = region.Y;
-            int cW = region.Width;
-            int cH = region.Height;
+            var cX = region.X;
+            var cY = region.Y;
+            var cW = region.Width;
+            var cH = region.Height;
 
             Rectangle r;
 
@@ -410,8 +407,8 @@ namespace NetGore.Graphics.GUI
             if (!_canDraw)
                 return;
 
-            Vector2 sp = c.ScreenPosition;
-            Rectangle region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
+            var sp = c.ScreenPosition;
+            var region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
             Draw(sb, region);
         }
 

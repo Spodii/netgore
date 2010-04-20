@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace SFML
@@ -20,8 +20,7 @@ namespace SFML
             /// <param name="depthBits">Depth buffer bits</param>
             /// <param name="stencilBits">Stencil buffer bits</param>
             ////////////////////////////////////////////////////////////
-            public WindowSettings(uint depthBits, uint stencilBits) :
-                this(depthBits, stencilBits, 0)
+            public WindowSettings(uint depthBits, uint stencilBits) : this(depthBits, stencilBits, 0)
             {
             }
 
@@ -35,8 +34,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public WindowSettings(uint depthBits, uint stencilBits, uint antialiasingLevel)
             {
-                DepthBits         = depthBits;
-                StencilBits       = stencilBits;
+                DepthBits = depthBits;
+                StencilBits = stencilBits;
                 AntialiasingLevel = antialiasingLevel;
             }
 

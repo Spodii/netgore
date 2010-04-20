@@ -69,7 +69,7 @@ namespace DemoGame
             if (missingKeys.Count() > 0)
             {
                 const string errmsg = "GameMessages `{0}` for language `{1}` did not contain all GameMessages. Missing keys: {2}";
-                string err = string.Format(errmsg, this, _language, missingKeys.Implode());
+                var err = string.Format(errmsg, this, _language, missingKeys.Implode());
                 if (log.IsErrorEnabled)
                     log.Error(err);
             }
@@ -256,7 +256,7 @@ namespace DemoGame
         /// <param name="messages">The messages.</param>
         public static void SaveRawMessages(string language, IEnumerable<KeyValuePair<GameMessage, string>> messages)
         {
-            StringBuilder sb = new StringBuilder(2048);
+            var sb = new StringBuilder(2048);
             foreach (var msg in messages)
             {
                 sb.AppendLine(msg.Key + ": " + msg.Value);
@@ -301,7 +301,7 @@ namespace DemoGame
 
             if (!ret)
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine("The following errors have caused the compilation to fail:");
                 foreach (var e in cerrors)
                 {

@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the Vector3Converter class.</summary>
         public Vector3Converter()
         {
-            Type type = typeof(Vector3);
+            var type = typeof(Vector3);
             base.propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
@@ -29,7 +28,7 @@ namespace SFML.Graphics.Design
         /// <param name="value">The object to convert.</param>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            float[] numArray = ConvertToValues<float>(context, culture, value, 3, new string[] { "X", "Y", "Z" });
+            var numArray = ConvertToValues<float>(context, culture, value, 3, new string[] { "X", "Y", "Z" });
             if (numArray != null)
                 return new Vector3(numArray[0], numArray[1], numArray[2]);
             return base.ConvertFrom(context, culture, value);
@@ -46,14 +45,13 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(string)) && (value is Vector3))
             {
-                Vector3 vector2 = (Vector3)value;
+                var vector2 = (Vector3)value;
                 return ConvertFromValues(context, culture, new float[] { vector2.X, vector2.Y, vector2.Z });
             }
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Vector3))
             {
-                Vector3 vector = (Vector3)value;
-                ConstructorInfo constructor =
-                    typeof(Vector3).GetConstructor(new Type[] { typeof(float), typeof(float), typeof(float) });
+                var vector = (Vector3)value;
+                var constructor = typeof(Vector3).GetConstructor(new Type[] { typeof(float), typeof(float), typeof(float) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor, new object[] { vector.X, vector.Y, vector.Z });
             }

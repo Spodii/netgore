@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,9 +13,9 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the MatrixConverter class.</summary>
         public MatrixConverter()
         {
-            Type componentType = typeof(Matrix);
-            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(componentType);
-            PropertyDescriptorCollection descriptors =
+            var componentType = typeof(Matrix);
+            var properties = TypeDescriptor.GetProperties(componentType);
+            var descriptors =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
                     properties.Find("Translation", true), new FieldPropertyDescriptor(componentType.GetField("M11")),
@@ -51,8 +50,8 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Matrix))
             {
-                Matrix matrix = (Matrix)value;
-                ConstructorInfo constructor =
+                var matrix = (Matrix)value;
+                var constructor =
                     typeof(Matrix).GetConstructor(new Type[]
                     {
                         typeof(float), typeof(float), typeof(float), typeof(float), typeof(float), typeof(float), typeof(float),

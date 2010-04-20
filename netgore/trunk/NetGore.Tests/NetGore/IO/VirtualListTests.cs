@@ -25,7 +25,7 @@ namespace NetGore.Tests.IO
 
             if (l.Count > 0)
             {
-                for (int i = 0; i < l.Count; i++)
+                for (var i = 0; i < l.Count; i++)
                 {
                     Assert.AreSame(l[i], v[i]);
                     Assert.AreSame(((IList)l)[i], ((IList)v)[i]);
@@ -48,8 +48,8 @@ namespace NetGore.Tests.IO
         /// <param name="action">The action to perform.</param>
         static void CollectionTOperation(Action<ICollection<object>> action)
         {
-            List<object> a = new List<object> { _testValues };
-            VirtualList<object> b = new VirtualList<object> { _testValues };
+            var a = new List<object> { _testValues };
+            var b = new VirtualList<object> { _testValues };
 
             action(a);
             action(b);
@@ -63,8 +63,8 @@ namespace NetGore.Tests.IO
         /// <param name="action">The action to perform.</param>
         static void ListOperation(Action<IList> action)
         {
-            List<object> a = new List<object> { _testValues };
-            VirtualList<object> b = new VirtualList<object> { _testValues };
+            var a = new List<object> { _testValues };
+            var b = new VirtualList<object> { _testValues };
 
             action(a);
             action(b);
@@ -78,8 +78,8 @@ namespace NetGore.Tests.IO
         /// <param name="action">The action to perform.</param>
         static void ListTOperation(Action<IList<object>> action)
         {
-            List<object> a = new List<object> { _testValues };
-            VirtualList<object> b = new VirtualList<object> { _testValues };
+            var a = new List<object> { _testValues };
+            var b = new VirtualList<object> { _testValues };
 
             action(a);
             action(b);

@@ -32,7 +32,7 @@ namespace DemoGame.Server
 
         protected override void HandleExpired(ActiveStatusEffect activeStatusEffect)
         {
-            bool wasRemoved = _statusEffects.Remove(activeStatusEffect);
+            var wasRemoved = _statusEffects.Remove(activeStatusEffect);
 
             Debug.Assert(wasRemoved, "Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
         }
@@ -43,19 +43,19 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("statusEffect");
 
             ActiveStatusEffect existingStatusEffect;
-            bool alreadyExists = TryGetStatusEffect(statusEffect.StatusEffectType, out existingStatusEffect);
+            var alreadyExists = TryGetStatusEffect(statusEffect.StatusEffectType, out existingStatusEffect);
 
-            int time = GetTime();
-            int disableTime = time + statusEffect.GetEffectTime(power);
+            var time = GetTime();
+            var disableTime = time + statusEffect.GetEffectTime(power);
 
             if (alreadyExists)
             {
-                bool changed = existingStatusEffect.MergeWith(time, power, disableTime);
+                var changed = existingStatusEffect.MergeWith(time, power, disableTime);
                 return changed;
             }
             else
             {
-                ActiveStatusEffect ase = new ActiveStatusEffect(statusEffect, power, disableTime);
+                var ase = new ActiveStatusEffect(statusEffect, power, disableTime);
                 _statusEffects.Add(ase);
                 NotifyAdded(ase);
                 return true;

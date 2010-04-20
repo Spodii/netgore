@@ -19,14 +19,14 @@ namespace NetGore.Stats
         static readonly Func<int, TStatType> _intToStatType;
 
         /// <summary>
-        /// The size to make the <see cref="_stats"/> array for each instance.
-        /// </summary>
-        static readonly int _statsArraySize;
-
-        /// <summary>
         /// Cache of the func to convert a <typeparamref name="TStatType"/> to int.
         /// </summary>
         static readonly Func<TStatType, int> _statTypeToInt;
+
+        /// <summary>
+        /// The size to make the <see cref="_stats"/> array for each instance.
+        /// </summary>
+        static readonly int _statsArraySize;
 
         readonly StatCollectionType _collectionType;
         readonly StatValueType[] _stats;
@@ -104,7 +104,7 @@ namespace NetGore.Stats
         public bool HasAllGreaterOrEqualValues(StatCollection<TStatType> other)
         {
             // Compare
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 var a = _stats[i];
                 var b = other._stats[i];
@@ -124,7 +124,7 @@ namespace NetGore.Stats
         /// the stats in the <paramref name="other"/>; otherwise false.</returns>
         public bool HasAllGreaterValues(StatCollection<TStatType> other)
         {
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 var a = _stats[i];
                 var b = other._stats[i];
@@ -144,7 +144,7 @@ namespace NetGore.Stats
         /// or equal to the stats in the <paramref name="other"/>; otherwise false.</returns>
         public bool HasAnyGreaterOrEqualValues(StatCollection<TStatType> other)
         {
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 var a = _stats[i];
                 var b = other._stats[i];
@@ -164,7 +164,7 @@ namespace NetGore.Stats
         /// the stats in the <paramref name="other"/>; otherwise false.</returns>
         public bool HasAnyGreaterValues(StatCollection<TStatType> other)
         {
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 var a = _stats[i];
                 var b = other._stats[i];
@@ -185,7 +185,7 @@ namespace NetGore.Stats
         public bool HasSameValues(StatCollection<TStatType> other)
         {
             // Compare each stat value directly from the arrays, avoiding converting to/from the TStatType
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 if (_stats[i] != other._stats[i])
                     return false;
@@ -270,7 +270,7 @@ namespace NetGore.Stats
         /// </returns>
         public IEnumerator<Stat<TStatType>> GetEnumerator()
         {
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 yield return new Stat<TStatType>(_intToStatType(i), _stats[i]);
             }
@@ -382,7 +382,7 @@ namespace NetGore.Stats
                 return HasSameValues(asThis);
 
             // Compare each stat one by one
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 if (_stats[i] != other[_intToStatType(i)])
                     return false;
@@ -397,7 +397,7 @@ namespace NetGore.Stats
         /// <param name="value">The value to set all stats to.</param>
         public void SetAll(StatValueType value)
         {
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 _stats[i] = value;
             }

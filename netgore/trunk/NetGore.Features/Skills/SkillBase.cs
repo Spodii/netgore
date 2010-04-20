@@ -183,7 +183,7 @@ namespace NetGore.Features.Skills
                 return false;
 
             // Use the skill
-            bool useSuccessful = HandleUse(user, target);
+            var useSuccessful = HandleUse(user, target);
             if (!useSuccessful)
                 return false;
 

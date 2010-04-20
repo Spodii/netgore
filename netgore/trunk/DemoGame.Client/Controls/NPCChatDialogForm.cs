@@ -43,15 +43,15 @@ namespace DemoGame.Client
             float spacing = Font.CharacterSize;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            float responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
-            Vector2 textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
+            var responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
+            var textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
             _dialogTextControl = new TextBox(this, Vector2.Zero, textboxSize)
             { IsEnabled = false, CanFocus = false, IsMultiLine = true };
             _dialogTextControl.ClientSize -= _dialogTextControl.Border.Size;
 
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
-                ResponseText r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i))) { IsVisible = true };
+                var r = new ResponseText(this, new Vector2(5, responseStartY + (spacing * i))) { IsVisible = true };
                 r.Clicked += ResponseText_Clicked;
                 _responseTextControls[i] = r;
             }
@@ -116,8 +116,8 @@ namespace DemoGame.Client
 
         void ResponseText_Clicked(object sender, MouseButtonEventArgs e)
         {
-            ResponseText src = (ResponseText)sender;
-            NPCChatResponseBase response = src.Response;
+            var src = (ResponseText)sender;
+            var response = src.Response;
             if (response != null)
             {
                 if (SelectResponse != null)
@@ -168,9 +168,9 @@ namespace DemoGame.Client
 
             _responseOffset = (byte)newOffset;
 
-            for (int i = 0; i < _numDisplayedResponses; i++)
+            for (var i = 0; i < _numDisplayedResponses; i++)
             {
-                int responseIndex = _responseOffset + i;
+                var responseIndex = _responseOffset + i;
 
                 if (responseIndex >= 0 && responseIndex < _responses.Length)
                     _responseTextControls[i].SetResponse(_responses[responseIndex], responseIndex);

@@ -35,7 +35,7 @@ namespace DemoGame.Server
             // Close down connections
             foreach (var conn in _packetHandler.GetDisconnectedSockets())
             {
-                UserAccount account = World.GetUserAccount(conn);
+                var account = World.GetUserAccount(conn);
                 if (account != null)
                     account.Dispose();
             }
@@ -79,7 +79,7 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            int currTime = Environment.TickCount;
+            var currTime = Environment.TickCount;
             Remove(conn => (conn.Tag == null) && (currTime - conn.TimeCreated > timeOut));
 
             // FUTURE: Will also have to add in a check to remove any UserAccounts with no active user and have had no active user for a while

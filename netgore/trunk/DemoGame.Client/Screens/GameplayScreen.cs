@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
-using NetGore.Audio;
 using NetGore.Content;
 using NetGore.Features.Emoticons;
 using NetGore.Features.GameTime;
@@ -49,8 +48,8 @@ namespace DemoGame.Client
         EquippedForm _equippedForm;
         GameplayScreenControls _gameControls;
         Font _guiFont;
-        GuildForm _guildForm;
         GUISettings _guiSettings;
+        GuildForm _guildForm;
         InfoBox _infoBox;
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
@@ -193,6 +192,17 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Handles screen activation, which occurs every time the screen becomes the current
+        /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            SoundManager.Stop3D();
+        }
+
+        /// <summary>
         /// Appends a set of styled text to the chat's output TextBox.
         /// </summary>
         /// <param name="text">Text to append to the chat's output TextBox.</param>
@@ -220,17 +230,9 @@ namespace DemoGame.Client
             _chatForm.AppendToOutput(text);
         }
 
-        void availableQuestsForm_QuestAccepted(Control sender, IQuestDescription args)
-        {
-            using (var pw = ClientPacket.AcceptOrTurnInQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
-            {
-                Socket.Send(pw);
-            }
-        }
-
         void ChatDialogForm_RequestEndDialog(NPCChatDialogForm sender)
         {
-            using (PacketWriter pw = ClientPacket.EndNPCChatDialog())
+            using (var pw = ClientPacket.EndNPCChatDialog())
             {
                 Socket.Send(pw);
             }
@@ -238,21 +240,24 @@ namespace DemoGame.Client
 
         void ChatDialogForm_SelectResponse(NPCChatDialogForm sender, NPCChatResponseBase response)
         {
-            using (PacketWriter pw = ClientPacket.SelectNPCChatDialogResponse(response.Value))
+            using (var pw = ClientPacket.SelectNPCChatDialogResponse(response.Value))
             {
                 Socket.Send(pw);
             }
         }
 
-        /// <summary>
-        /// Handles screen activation, which occurs every time the screen becomes the current
-        /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
-        /// </summary>
-        public override void Activate()
+        void ChatForm_Say(ChatForm sender, string text)
         {
-            base.Activate();
+            if (string.IsNullOrEmpty(text))
+                return;
 
-            SoundManager.Stop3D();
+            if (text.Length > GameData.MaxClientSayLength)
+                text = text.Substring(0, GameData.MaxClientSayLength);
+
+            using (var pw = ClientPacket.Say(text))
+            {
+                Socket.Send(pw);
+            }
         }
 
         /// <summary>
@@ -264,20 +269,6 @@ namespace DemoGame.Client
             base.Deactivate();
 
             SoundManager.Stop3D();
-        }
-
-        void ChatForm_Say(ChatForm sender, string text)
-        {
-            if (string.IsNullOrEmpty(text))
-                return;
-
-            if (text.Length > GameData.MaxClientSayLength)
-                text = text.Substring(0, GameData.MaxClientSayLength);
-
-            using (PacketWriter pw = ClientPacket.Say(text))
-            {
-                Socket.Send(pw);
-            }
         }
 
         /// <summary>
@@ -349,7 +340,7 @@ namespace DemoGame.Client
         public void EquippedForm_RequestUnequip(EquippedForm equippedForm, EquipmentSlot slot)
         {
             // Send unequip request
-            using (PacketWriter pw = ClientPacket.UnequipItem(slot))
+            using (var pw = ClientPacket.UnequipItem(slot))
             {
                 Socket.Send(pw);
             }
@@ -400,7 +391,7 @@ namespace DemoGame.Client
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
 
-            Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
+            var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
@@ -446,7 +437,7 @@ namespace DemoGame.Client
 
             _skillCastProgressBar = new SkillCastProgressBar(cScreen);
 
-            Toolbar toolbar = new Toolbar(cScreen, new Vector2(200, 200));
+            var toolbar = new Toolbar(cScreen, new Vector2(200, 200));
             toolbar.ItemClicked += Toolbar_ItemClicked;
 
             // Apply the settings
@@ -471,7 +462,7 @@ namespace DemoGame.Client
             {
                 if (ShopForm.ShopInfo.CanBuy)
                 {
-                    using (PacketWriter pw = ClientPacket.SellInventoryToShop(slot, 1))
+                    using (var pw = ClientPacket.SellInventoryToShop(slot, 1))
                     {
                         Socket.Send(pw);
                     }
@@ -505,7 +496,7 @@ namespace DemoGame.Client
             if (ScreenManager.ActiveScreen != this)
                 return;
 
-            LoginScreen login = (LoginScreen)ScreenManager.GetScreen(LoginScreen.ScreenName);
+            var login = (LoginScreen)ScreenManager.GetScreen(LoginScreen.ScreenName);
             if (ScreenManager.ActiveScreen != login)
             {
                 login.SetError("Connection to server lost.");
@@ -515,7 +506,7 @@ namespace DemoGame.Client
 
         void ShopForm_RequestPurchase(ShopForm shopForm, ShopItemIndex slot)
         {
-            using (PacketWriter pw = ClientPacket.BuyFromShop(slot, 1))
+            using (var pw = ClientPacket.BuyFromShop(slot, 1))
             {
                 Socket.Send(pw);
             }
@@ -523,7 +514,7 @@ namespace DemoGame.Client
 
         public void SkillsForm_RequestUseSkill(SkillType skillType)
         {
-            using (PacketWriter pw = ClientPacket.UseSkill(skillType, _characterTargeter.TargetCharacterIndex))
+            using (var pw = ClientPacket.UseSkill(skillType, _characterTargeter.TargetCharacterIndex))
             {
                 Socket.Send(pw);
             }
@@ -536,7 +527,7 @@ namespace DemoGame.Client
         /// <param name="statType">StatType requested to be raised.</param>
         void StatsForm_RequestRaiseStat(StatsForm statsForm, StatType statType)
         {
-            using (PacketWriter pw = ClientPacket.RaiseStat(statType))
+            using (var pw = ClientPacket.RaiseStat(statType))
             {
                 Socket.Send(pw);
             }
@@ -661,6 +652,14 @@ namespace DemoGame.Client
             foreach (var light in newMap.Lights)
             {
                 DrawingManager.LightManager.Add(light);
+            }
+        }
+
+        void availableQuestsForm_QuestAccepted(Control sender, IQuestDescription args)
+        {
+            using (var pw = ClientPacket.AcceptOrTurnInQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
+            {
+                Socket.Send(pw);
             }
         }
 

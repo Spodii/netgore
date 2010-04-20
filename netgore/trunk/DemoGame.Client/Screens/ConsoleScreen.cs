@@ -5,7 +5,6 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Filter;
-using NetGore;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -20,13 +19,13 @@ namespace DemoGame.Client
         static readonly Color _overlayColor = new Color(255, 255, 255, 200);
 
         readonly List<Level> _disabledLogLevels = new List<Level>();
-        readonly MemoryAppender _logger = new MemoryAppender();
         readonly List<CheckBox> _logLevelCheckBoxes = new List<CheckBox>();
+        readonly MemoryAppender _logger = new MemoryAppender();
 
         Button _btnShowSettings;
-        Font _consoleFont;
         Panel _cScreen;
         Panel _cSettingsPanel;
+        Font _consoleFont;
         TextBox _txtOutput;
 
         /// <summary>
@@ -36,17 +35,6 @@ namespace DemoGame.Client
         /// <exception cref="ArgumentNullException"><paramref name="screenManager"/> is null.</exception>
         public ConsoleScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
-        }
-
-        /// <summary>
-        /// Handles the Clicked event of the btnShowSettings control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        void btnShowSettings_Clicked(object sender, MouseButtonEventArgs e)
-        {
-            _cSettingsPanel.IsVisible = !_cSettingsPanel.IsVisible;
-            _btnShowSettings.Text = (_cSettingsPanel.IsVisible ? "Hide" : "Show") + " settings";
         }
 
         /// <summary>
@@ -208,6 +196,17 @@ namespace DemoGame.Client
 
             // Truncate only when we hit 2x the buffer size (its cheaper to truncate a lot at once)
             _txtOutput.MaxBufferSize = _txtOutput.BufferTruncateSize * 2;
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the btnShowSettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void btnShowSettings_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            _cSettingsPanel.IsVisible = !_cSettingsPanel.IsVisible;
+            _btnShowSettings.Text = (_cSettingsPanel.IsVisible ? "Hide" : "Show") + " settings";
         }
     }
 }

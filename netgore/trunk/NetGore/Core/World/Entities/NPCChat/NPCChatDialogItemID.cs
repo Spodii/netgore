@@ -93,7 +93,7 @@ namespace NetGore.NPCChat
         /// <returns>The <see cref="NPCChatDialogItemID"/> read from the IValueReader.</returns>
         public static NPCChatDialogItemID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new NPCChatDialogItemID(value);
         }
 
@@ -105,11 +105,11 @@ namespace NetGore.NPCChat
         /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="IDataReader"/>.</returns>
         public static NPCChatDialogItemID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new NPCChatDialogItemID((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new NPCChatDialogItemID(convertedValue);
         }
 
@@ -131,7 +131,7 @@ namespace NetGore.NPCChat
         /// <returns>The <see cref="NPCChatDialogItemID"/> read from the <see cref="BitStream"/>.</returns>
         public static NPCChatDialogItemID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new NPCChatDialogItemID(value);
         }
 
@@ -854,7 +854,7 @@ namespace NetGore.NPCChat
         public static bool TryParse(this Parser parser, string value, out NPCChatDialogItemID outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new NPCChatDialogItemID(tmp);
             return ret;
         }

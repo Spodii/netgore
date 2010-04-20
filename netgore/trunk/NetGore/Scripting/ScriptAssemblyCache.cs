@@ -78,7 +78,7 @@ namespace NetGore.Scripting
             _saveAndCleanTimer.Start();
 
             // Spawn a new background timer to clean up the junk files a few seconds from now
-            Timer cleanTimer = new Timer { Interval = 5 * 1000, AutoReset = false };
+            var cleanTimer = new Timer { Interval = 5 * 1000, AutoReset = false };
             cleanTimer.Elapsed += delegate
             {
                 cleanTimer.Dispose();
@@ -112,27 +112,13 @@ namespace NetGore.Scripting
         }
 
         /// <summary>
-        /// Handles the Elapsed event of the _saveTimer control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Timers.ElapsedEventArgs"/> instance containing the event data.</param>
-        void _saveTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            if (_isOverflowing)
-                TrimCache();
-
-            if (_isDirty)
-                Save();
-        }
-
-        /// <summary>
         /// Calculates the hash from the source code.
         /// </summary>
         /// <param name="code">The source code.</param>
         /// <returns>The byte array representation of the hash.</returns>
         protected static byte[] CalculateHash(string code)
         {
-            MD5 hasher = MD5.Create();
+            var hasher = MD5.Create();
             return hasher.ComputeHash(Encoding.ASCII.GetBytes(code));
         }
 
@@ -143,7 +129,7 @@ namespace NetGore.Scripting
         /// <returns>The byte array representation of the hash.</returns>
         protected static byte[] CalculateHash(IEnumerable<string> files)
         {
-            MD5 hasher = MD5.Create();
+            var hasher = MD5.Create();
             byte[] hash = null;
 
             // Loop through each file
@@ -166,7 +152,7 @@ namespace NetGore.Scripting
                     // For each successive file, XOR the hashes together to create a single hash. We use XOR
                     // since the file order shouldn't matter, and XOR will give the same output no matter
                     // what order we hash the files.
-                    for (int i = 0; i < hash.Length; i++)
+                    for (var i = 0; i < hash.Length; i++)
                     {
                         hash[i] ^= fileHash[i];
                     }
@@ -216,7 +202,7 @@ namespace NetGore.Scripting
         {
             CacheItem item;
 
-            bool createdNew = false;
+            var createdNew = false;
 
             // Get the cache item, or adding it if it does not already exist
             lock (_cacheSync)
@@ -234,7 +220,7 @@ namespace NetGore.Scripting
             }
 
             // Get the file path for the cache item
-            string filePath = GetCacheFilePath(item.FileName);
+            var filePath = GetCacheFilePath(item.FileName);
 
             // Get the assembly
             Assembly asm = null;
@@ -271,7 +257,7 @@ namespace NetGore.Scripting
             // If the assembly failed to load, we need to remove it from the cache
             if (asm == null)
             {
-                bool wasRemoved = false;
+                var wasRemoved = false;
 
                 lock (_cacheSync)
                 {
@@ -358,7 +344,7 @@ namespace NetGore.Scripting
                 if (!File.Exists(CacheDataFilePath))
                     return;
 
-                XmlValueReader r = new XmlValueReader(CacheDataFilePath, _rootNodeName);
+                var r = new XmlValueReader(CacheDataFilePath, _rootNodeName);
                 var items = r.ReadManyNodes(_cacheItemNodeName, x => new CacheItem(x));
 
                 foreach (var item in items)
@@ -510,6 +496,20 @@ namespace NetGore.Scripting
         }
 
         /// <summary>
+        /// Handles the Elapsed event of the _saveTimer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Timers.ElapsedEventArgs"/> instance containing the event data.</param>
+        void _saveTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (_isOverflowing)
+                TrimCache();
+
+            if (_isDirty)
+                Save();
+        }
+
+        /// <summary>
         /// An item in the <see cref="ScriptAssemblyCache"/>.
         /// </summary>
         class CacheItem
@@ -577,8 +577,8 @@ namespace NetGore.Scripting
             /// <returns>The string for the hash.</returns>
             static string HashToString(byte[] bytes)
             {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
+                var sb = new StringBuilder();
+                for (var i = 0; i < bytes.Length; i++)
                 {
                     sb.Append(bytes[i].ToString());
                     sb.Append("-");
@@ -615,7 +615,7 @@ namespace NetGore.Scripting
                 var byteStrs = s.Split('-');
                 var bytes = new byte[byteStrs.Length];
 
-                for (int i = 0; i < byteStrs.Length; i++)
+                for (var i = 0; i < byteStrs.Length; i++)
                 {
                     bytes[i] = byte.Parse(byteStrs[i]);
                 }

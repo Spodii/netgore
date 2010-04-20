@@ -72,7 +72,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="offset">The offset to start drawing the text at.</param>
         public void Draw(ISpriteBatch sb, Color defaultColor, Vector2 offset)
         {
-            foreach (StyledTextWithPosition item in _textsWithPos)
+            foreach (var item in _textsWithPos)
             {
                 item.StyledText.Draw(sb, Font, offset + item.Position, defaultColor);
             }
@@ -138,7 +138,7 @@ namespace NetGore.Graphics.GUI
             if (_texts == null)
                 return;
 
-            Vector2 pos = Vector2.Zero;
+            var pos = Vector2.Zero;
 
             foreach (var line in _texts)
             {
@@ -146,8 +146,8 @@ namespace NetGore.Graphics.GUI
 
                 if (line.Count() > 0)
                 {
-                    StyledText last = line.Last();
-                    foreach (StyledText item in line)
+                    var last = line.Last();
+                    foreach (var item in line)
                     {
                         _textsWithPos.Add(new StyledTextWithPosition(item, pos));
                         if (item != last)

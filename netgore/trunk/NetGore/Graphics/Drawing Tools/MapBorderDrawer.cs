@@ -17,7 +17,7 @@ namespace NetGore.Graphics
         /// <returns>Rectangle for the two points.</returns>
         static Rectangle CreateRect(Vector2 min, Vector2 max)
         {
-            Vector2 size = max - min;
+            var size = max - min;
             return new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
         }
 
@@ -39,32 +39,32 @@ namespace NetGore.Graphics
             // Left border and corners
             if (camera.Min.X < 0)
             {
-                Vector2 min = camera.Min;
-                Vector2 max = new Vector2(Math.Min(0, camera.Max.X), camera.Max.Y);
+                var min = camera.Min;
+                var max = new Vector2(Math.Min(0, camera.Max.X), camera.Max.Y);
                 DrawBorder(sb, min, max);
             }
 
             // Right border and corners
             if (camera.Max.X > map.Width)
             {
-                Vector2 min = new Vector2(Math.Max(camera.Min.X, map.Width), camera.Min.Y);
-                Vector2 max = camera.Max;
+                var min = new Vector2(Math.Max(camera.Min.X, map.Width), camera.Min.Y);
+                var max = camera.Max;
                 DrawBorder(sb, min, max);
             }
 
             // Top border
             if (camera.Min.Y < 0)
             {
-                Vector2 min = new Vector2(Math.Max(camera.Min.X, 0), camera.Min.Y);
-                Vector2 max = new Vector2(Math.Min(camera.Max.X, map.Width), Math.Min(camera.Max.Y, 0));
+                var min = new Vector2(Math.Max(camera.Min.X, 0), camera.Min.Y);
+                var max = new Vector2(Math.Min(camera.Max.X, map.Width), Math.Min(camera.Max.Y, 0));
                 DrawBorder(sb, min, max);
             }
 
             // Bottom border
             if (camera.Max.Y > map.Height)
             {
-                Vector2 min = new Vector2(Math.Max(camera.Min.X, 0), Math.Max(camera.Min.Y, map.Height));
-                Vector2 max = new Vector2(Math.Min(camera.Max.X, map.Width), camera.Max.Y);
+                var min = new Vector2(Math.Max(camera.Min.X, 0), Math.Max(camera.Min.Y, map.Height));
+                var max = new Vector2(Math.Min(camera.Max.X, map.Width), camera.Max.Y);
                 DrawBorder(sb, min, max);
             }
         }
@@ -77,7 +77,7 @@ namespace NetGore.Graphics
         /// <param name="max">Maximum point to draw.</param>
         protected virtual void DrawBorder(ISpriteBatch sb, Vector2 min, Vector2 max)
         {
-            Color drawColor = new Color(255, 0, 0, 175);
+            var drawColor = new Color(255, 0, 0, 175);
             RenderRectangle.Draw(sb, CreateRect(min, max), drawColor);
         }
     }

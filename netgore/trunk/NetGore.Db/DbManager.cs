@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Linq;
 
 namespace NetGore.Db
@@ -11,10 +10,10 @@ namespace NetGore.Db
     /// </summary>
     public class DbManager
     {
-        readonly DbConnectionPool _connectionPool;
-
         readonly IList<KeyValuePair<IDbConnection, IPoolableDbConnection>> _connToPoolableConn =
             new List<KeyValuePair<IDbConnection, IPoolableDbConnection>>();
+
+        readonly DbConnectionPool _connectionPool;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbManager"/> class.
@@ -44,7 +43,7 @@ namespace NetGore.Db
         public int ExecuteNonQuery(string commandText)
         {
             int ret;
-            using (IDbCommand cmd = GetCommand(commandText))
+            using (var cmd = GetCommand(commandText))
             {
                 ret = cmd.ExecuteNonQuery();
             }
@@ -59,8 +58,8 @@ namespace NetGore.Db
         /// <returns>DataReader used to read the results of the query.</returns>
         public DataReaderContainer ExecuteReader(string commandText, CommandBehavior behavior)
         {
-            IDbCommand cmd = GetCommand(commandText);
-            IDataReader reader = cmd.ExecuteReader(behavior);
+            var cmd = GetCommand(commandText);
+            var reader = cmd.ExecuteReader(behavior);
             return new DataReaderContainer(cmd, reader);
         }
 
@@ -71,8 +70,8 @@ namespace NetGore.Db
         /// <returns>DataReader used to read the results of the query.</returns>
         public DataReaderContainer ExecuteReader(string commandText)
         {
-            IDbCommand cmd = GetCommand(commandText);
-            IDataReader reader = cmd.ExecuteReader();
+            var cmd = GetCommand(commandText);
+            var reader = cmd.ExecuteReader();
             return new DataReaderContainer(cmd, reader);
         }
 
@@ -93,11 +92,11 @@ namespace NetGore.Db
         public IDbCommand GetCommand(string commandText)
         {
             // Get the connection to use
-            IPoolableDbConnection poolConn = GetConnection();
-            DbConnection conn = poolConn.Connection;
+            var poolConn = GetConnection();
+            var conn = poolConn.Connection;
 
             // Create the command and add it to the internal list so we can find it later
-            DbCommand cmd = conn.CreateCommand();
+            var cmd = conn.CreateCommand();
             PushPoolableConnection(poolConn);
 
             // Set up the command
@@ -115,7 +114,7 @@ namespace NetGore.Db
         /// <returns>Next available connection.</returns>
         public IPoolableDbConnection GetConnection()
         {
-            PooledDbConnection poolableConn = _connectionPool.Acquire();
+            var poolableConn = _connectionPool.Acquire();
             return poolableConn;
         }
 
@@ -128,11 +127,11 @@ namespace NetGore.Db
         void HandleIDbCommandDisposed(object sender, EventArgs e)
         {
             // Get the connection for the IDbCommand
-            IDbCommand cmd = (IDbCommand)sender;
-            IDbConnection conn = cmd.Connection;
+            var cmd = (IDbCommand)sender;
+            var conn = cmd.Connection;
 
             // Get the IPoolableDbConnection for the connection
-            IPoolableDbConnection poolableConn = PopPoolableConnection(conn);
+            var poolableConn = PopPoolableConnection(conn);
 
             // Dispose of the IPoolableDbConnection, sending it back to the pool
             poolableConn.Dispose();
@@ -150,7 +149,7 @@ namespace NetGore.Db
             IPoolableDbConnection poolableConn = null;
             lock (_connToPoolableConn)
             {
-                for (int i = _connToPoolableConn.Count - 1; i >= 0; i--)
+                for (var i = _connToPoolableConn.Count - 1; i >= 0; i--)
                 {
                     var item = _connToPoolableConn[i];
                     if (item.Key == conn)

@@ -14,9 +14,9 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void ConcastTestA()
         {
-            StyledText s1 = new StyledText("abcd", Color.Black);
-            StyledText s2 = new StyledText("123", Color.Black);
-            StyledText s3 = new StyledText("xyz", Color.Black);
+            var s1 = new StyledText("abcd", Color.Black);
+            var s2 = new StyledText("123", Color.Black);
+            var s3 = new StyledText("xyz", Color.Black);
             var concat = StyledText.Concat(new StyledText[] { s1, s2, s3 });
 
             Assert.AreEqual(1, concat.Count());
@@ -27,9 +27,9 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void ConcastTestB()
         {
-            StyledText s1 = new StyledText("abcd", Color.Black);
-            StyledText s2 = new StyledText("123", Color.Black);
-            StyledText s3 = new StyledText("xyz", Color.White);
+            var s1 = new StyledText("abcd", Color.Black);
+            var s2 = new StyledText("123", Color.Black);
+            var s3 = new StyledText("xyz", Color.White);
             var concat = StyledText.Concat(new StyledText[] { s1, s2, s3 }).ToArray();
 
             Assert.AreEqual(2, concat.Count());
@@ -42,9 +42,9 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void ConcastTestC()
         {
-            StyledText s1 = new StyledText("abcd", Color.Black);
-            StyledText s2 = new StyledText("123", Color.White);
-            StyledText s3 = new StyledText("xyz", Color.Black);
+            var s1 = new StyledText("abcd", Color.Black);
+            var s2 = new StyledText("123", Color.White);
+            var s3 = new StyledText("xyz", Color.Black);
             var concat = StyledText.Concat(new StyledText[] { s1, s2, s3 }).ToArray();
 
             Assert.AreEqual(3, concat.Count());
@@ -60,8 +60,8 @@ namespace NetGore.Tests.Graphics.GUI
         public void ConstructorCopyStyleTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
-            StyledText s2 = new StyledText("ffjfjfj", s);
+            var s = new StyledText(originalString, Color.Black);
+            var s2 = new StyledText("ffjfjfj", s);
 
             Assert.AreEqual(originalString, s.Text);
             Assert.AreEqual("ffjfjfj", s2.Text);
@@ -74,7 +74,7 @@ namespace NetGore.Tests.Graphics.GUI
         public void ConstructorTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
+            var s = new StyledText(originalString, Color.Black);
             Assert.AreEqual(originalString, s.Text);
             Assert.AreEqual(Color.Black, s.Color);
         }
@@ -94,8 +94,8 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void HasSameStyleFalseTest()
         {
-            StyledText a = new StyledText("abc", Color.Red);
-            StyledText b = new StyledText("123", Color.Green);
+            var a = new StyledText("abc", Color.Red);
+            var b = new StyledText("123", Color.Green);
 
             Assert.IsFalse(a.HasSameStyle(b));
             Assert.IsFalse(b.HasSameStyle(a));
@@ -104,8 +104,8 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void HasSameStyleTrueTest()
         {
-            StyledText a = new StyledText("abc", Color.Red);
-            StyledText b = new StyledText("123", a);
+            var a = new StyledText("abc", Color.Red);
+            var b = new StyledText("123", a);
 
             Assert.IsTrue(a.HasSameStyle(b));
             Assert.IsTrue(b.HasSameStyle(a));
@@ -114,9 +114,9 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void IEnumerableToStringTest()
         {
-            StyledText a = new StyledText("abc");
-            StyledText b = new StyledText("123");
-            StyledText c = new StyledText("xyz");
+            var a = new StyledText("abc");
+            var b = new StyledText("123");
+            var c = new StyledText("xyz");
             var v = new StyledText[] { a, b, c };
 
             Assert.AreEqual("abc123xyz", StyledText.ToString(v));
@@ -125,9 +125,9 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void IEnumerableToStringWithDelimiterTest()
         {
-            StyledText a = new StyledText("abc");
-            StyledText b = new StyledText("123");
-            StyledText c = new StyledText("xyz");
+            var a = new StyledText("abc");
+            var b = new StyledText("123");
+            var c = new StyledText("xyz");
             var v = new StyledText[] { a, b, c };
 
             Assert.AreEqual("abcWWW123WWWxyz", StyledText.ToString(v, "WWW"));
@@ -148,7 +148,7 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void OperatorAddTest()
         {
-            StyledText s = new StyledText("asdf", Color.Black);
+            var s = new StyledText("asdf", Color.Black);
             s += "ff";
 
             Assert.AreEqual("asdfff", s.Text);
@@ -158,8 +158,8 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void OperatorAddTest2()
         {
-            StyledText s = new StyledText("asdf", Color.Black);
-            StyledText s2 = s + "ff";
+            var s = new StyledText("asdf", Color.Black);
+            var s2 = s + "ff";
 
             Assert.AreEqual("asdf", s.Text);
             Assert.AreEqual(Color.Black, s.Color);
@@ -171,7 +171,7 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void SplitAtTest()
         {
-            StyledText s = new StyledText("abcd", Color.Black);
+            var s = new StyledText("abcd", Color.Black);
             StyledText l;
             StyledText r;
 
@@ -213,11 +213,11 @@ namespace NetGore.Tests.Graphics.GUI
         public void SplitCharsTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
+            var s = new StyledText(originalString, Color.Black);
             var split = s.Split(' ');
             var expected = originalString.Split(' ');
 
-            for (int i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Length; i++)
             {
                 Assert.AreEqual(s.Color, split[i].Color);
                 Assert.AreEqual(expected[i], split[i].Text);
@@ -228,11 +228,11 @@ namespace NetGore.Tests.Graphics.GUI
         public void SplitCharsWithCountTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
+            var s = new StyledText(originalString, Color.Black);
             var split = s.Split(new char[] { ' ' }, 2);
             var expected = originalString.Split(new char[] { ' ' }, 2);
 
-            for (int i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Length; i++)
             {
                 Assert.AreEqual(s.Color, split[i].Color);
                 Assert.AreEqual(expected[i], split[i].Text);
@@ -243,11 +243,11 @@ namespace NetGore.Tests.Graphics.GUI
         public void SplitCharsWithOptionsAndCountTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
+            var s = new StyledText(originalString, Color.Black);
             var split = s.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
             var expected = originalString.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
 
-            for (int i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Length; i++)
             {
                 Assert.AreEqual(s.Color, split[i].Color);
                 Assert.AreEqual(expected[i], split[i].Text);
@@ -258,11 +258,11 @@ namespace NetGore.Tests.Graphics.GUI
         public void SplitCharsWithOptionsTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
+            var s = new StyledText(originalString, Color.Black);
             var split = s.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             var expected = originalString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            for (int i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Length; i++)
             {
                 Assert.AreEqual(s.Color, split[i].Color);
                 Assert.AreEqual(expected[i], split[i].Text);
@@ -273,11 +273,11 @@ namespace NetGore.Tests.Graphics.GUI
         public void SplitStringsWithOptionsAndCountTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
+            var s = new StyledText(originalString, Color.Black);
             var split = s.Split(new string[] { " " }, 4, StringSplitOptions.RemoveEmptyEntries);
             var expected = originalString.Split(new string[] { " " }, 4, StringSplitOptions.RemoveEmptyEntries);
 
-            for (int i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Length; i++)
             {
                 Assert.AreEqual(s.Color, split[i].Color);
                 Assert.AreEqual(expected[i], split[i].Text);
@@ -288,11 +288,11 @@ namespace NetGore.Tests.Graphics.GUI
         public void SplitStringsWithOptionsTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
+            var s = new StyledText(originalString, Color.Black);
             var split = s.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             var expected = originalString.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
-            for (int i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Length; i++)
             {
                 Assert.AreEqual(s.Color, split[i].Color);
                 Assert.AreEqual(expected[i], split[i].Text);
@@ -303,8 +303,8 @@ namespace NetGore.Tests.Graphics.GUI
         public void SubstringTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
-            StyledText s2 = s.Substring(5);
+            var s = new StyledText(originalString, Color.Black);
+            var s2 = s.Substring(5);
 
             Assert.AreEqual(s.Text, originalString);
             Assert.AreEqual(Color.Black, s.Color);
@@ -317,8 +317,8 @@ namespace NetGore.Tests.Graphics.GUI
         public void SubstringWithLengthTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
-            StyledText s = new StyledText(originalString, Color.Black);
-            StyledText s2 = s.Substring(5, 4);
+            var s = new StyledText(originalString, Color.Black);
+            var s2 = s.Substring(5, 4);
 
             Assert.AreEqual(s.Text, originalString);
             Assert.AreEqual(Color.Black, s.Color);
@@ -333,9 +333,9 @@ namespace NetGore.Tests.Graphics.GUI
             const string originalString1 = "one \ntwo";
             const string originalString2 = "three fou\nr";
             const string originalString3 = "fi\r\nve";
-            StyledText s1 = new StyledText(originalString1, Color.Black);
-            StyledText s2 = new StyledText(originalString2, Color.Black);
-            StyledText s3 = new StyledText(originalString3, Color.Black);
+            var s1 = new StyledText(originalString1, Color.Black);
+            var s2 = new StyledText(originalString2, Color.Black);
+            var s3 = new StyledText(originalString3, Color.Black);
             var lines = StyledText.ToMultiline(new StyledText[] { s1, s2, s3 }, true);
 
             Assert.AreEqual(6, lines.Count);
@@ -358,8 +358,8 @@ namespace NetGore.Tests.Graphics.GUI
         {
             const string originalString1 = "one \ntwo";
             const string originalString2 = " three fou\nr";
-            StyledText s1 = new StyledText(originalString1, Color.Black);
-            StyledText s2 = new StyledText(originalString2, Color.Black);
+            var s1 = new StyledText(originalString1, Color.Black);
+            var s2 = new StyledText(originalString2, Color.Black);
             var lines = StyledText.ToMultiline(new StyledText[] { s1, s2 }, false);
 
             Assert.AreEqual(3, lines.Count);
@@ -379,7 +379,7 @@ namespace NetGore.Tests.Graphics.GUI
         public void ToMultilineOneInputTest()
         {
             const string originalString = "one two\n three fou\nr";
-            StyledText s = new StyledText(originalString, Color.Black);
+            var s = new StyledText(originalString, Color.Black);
             var lines = StyledText.ToMultiline(s);
 
             Assert.AreEqual(3, lines.Count);
@@ -387,7 +387,7 @@ namespace NetGore.Tests.Graphics.GUI
             Assert.AreEqual(" three fou", lines[1].Text);
             Assert.AreEqual("r", lines[2].Text);
 
-            foreach (StyledText l in lines)
+            foreach (var l in lines)
             {
                 Assert.AreEqual(s.Color, l.Color);
             }
@@ -396,22 +396,22 @@ namespace NetGore.Tests.Graphics.GUI
         [Test]
         public void ToSingleLineTest()
         {
-            StyledText a = new StyledText("abc\rdefg\r\nhij\r\nklm\nn");
+            var a = new StyledText("abc\rdefg\r\nhij\r\nklm\nn");
             Assert.AreEqual("abcdefghijklmn", a.ToSingleline().Text);
         }
 
         [Test]
         public void ToSingleLineWithReplacementTest()
         {
-            StyledText a = new StyledText("abc\rdefg\r\nhij\r\nklm\nn");
+            var a = new StyledText("abc\rdefg\r\nhij\r\nklm\nn");
             Assert.AreEqual("abcXdefgXhijXklmXn", a.ToSingleline("X").Text);
         }
 
         [Test]
         public void ToStringTest()
         {
-            StyledText a = new StyledText("abc", Color.Red);
-            StyledText b = new StyledText("123", a);
+            var a = new StyledText("abc", Color.Red);
+            var b = new StyledText("123", a);
 
             Assert.AreEqual("abc", a.ToString());
             Assert.AreEqual("123", b.ToString());

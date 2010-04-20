@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using SFML.Graphics.Design;
 
 namespace DemoGame.Server
@@ -44,8 +43,8 @@ namespace DemoGame.Server
 
             if ((destinationType == typeof(InstanceDescriptor)) && (value is MapSpawnRect))
             {
-                MapSpawnRect rectangle = (MapSpawnRect)value;
-                ConstructorInfo constructor =
+                var rectangle = (MapSpawnRect)value;
+                var constructor =
                     typeof(MapSpawnRect).GetConstructor(new Type[]
                     { typeof(ushort?), typeof(ushort?), typeof(ushort?), typeof(ushort?) });
                 if (constructor != null)

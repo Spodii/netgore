@@ -97,7 +97,7 @@ namespace DemoGame.Client
             }
 
             // Check if any of our implementations are supported
-            for (int i = 0; i < _canDropCallbacks.Length; i++)
+            for (var i = 0; i < _canDropCallbacks.Length; i++)
             {
                 if (_canDropCallbacks[i](src, dest))
                     return true;
@@ -116,7 +116,7 @@ namespace DemoGame.Client
         /// <paramref name="namePrefix"/>.</returns>
         DropCallback[] CreateDropCallbacks(IEnumerable<MethodInfo> methods, string namePrefix)
         {
-            List<DropCallback> ret = new List<DropCallback>();
+            var ret = new List<DropCallback>();
 
             foreach (var method in methods)
             {
@@ -153,7 +153,7 @@ namespace DemoGame.Client
             }
 
             // Use the first method that successfully handles the given source and destination
-            for (int i = 0; i < _dropCallbacks.Length; i++)
+            for (var i = 0; i < _dropCallbacks.Length; i++)
             {
                 if (_dropCallbacks[i](src, dest))
                     return;

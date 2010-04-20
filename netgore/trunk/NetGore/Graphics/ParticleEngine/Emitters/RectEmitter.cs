@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -88,8 +87,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="force">The normalized force vector.</param>
         protected override void GenerateParticleOffsetAndForce(Particle particle, out Vector2 offset, out Vector2 force)
         {
-            float hw = Width * 0.5f;
-            float hh = Height * 0.5f;
+            var hw = Width * 0.5f;
+            var hh = Height * 0.5f;
 
             // Get the offset
             if (Perimeter)
@@ -103,7 +102,7 @@ namespace NetGore.Graphics.ParticleEngine
                 offset = new Vector2(RandomHelper.NextFloat(-hw, hw), RandomHelper.NextFloat(-hh, hh));
 
             // Get the force
-            float radians = RandomHelper.NextFloat(MathHelper.TwoPi);
+            var radians = RandomHelper.NextFloat(MathHelper.TwoPi);
             force = new Vector2((float)Math.Sin(radians), (float)Math.Cos(radians));
         }
 

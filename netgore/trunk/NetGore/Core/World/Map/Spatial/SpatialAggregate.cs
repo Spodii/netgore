@@ -20,7 +20,7 @@ namespace NetGore
         public SpatialAggregate(IEnumerable<ISpatialCollection> spatials)
         {
             // Expand any ISpatialCollections that are a SpatialAggregate to prevent the need for recursion
-            List<ISpatialCollection> expanded = new List<ISpatialCollection>();
+            var expanded = new List<ISpatialCollection>();
             expanded.AddRange(spatials.OfType<SpatialAggregate>().SelectMany(x => x._spatialCollections));
             expanded.AddRange(spatials.Where(x => !(x is SpatialAggregate)));
 

@@ -58,7 +58,7 @@ namespace NetGore.Graphics
 
         static string GetStr(GrhData grhData, string msg)
         {
-            string s = string.Format("Exception caused by GrhData `{0}`.", grhData != null ? grhData.ToString() : "[NULL]");
+            var s = string.Format("Exception caused by GrhData `{0}`.", grhData != null ? grhData.ToString() : "[NULL]");
             if (!string.IsNullOrEmpty(s))
                 s += " " + msg;
             return s;

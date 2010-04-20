@@ -56,11 +56,11 @@ namespace DemoGame.Server
         public override bool CanUse(Character user, Character target)
         {
             // Check for the required HP and MP
-            int mpCost = GetMPCost(user, target);
+            var mpCost = GetMPCost(user, target);
             if (mpCost >= user.MP)
                 return false;
 
-            int hpCost = GetHPCost(user, target);
+            var hpCost = GetHPCost(user, target);
             if (hpCost >= user.HP)
                 return false;
 

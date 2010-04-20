@@ -37,7 +37,7 @@ namespace NetGore.Tests.NetGore
              *        B2
              */
 
-            ClassTypeTree root = BuildTree();
+            var root = BuildTree();
             Assert.AreEqual(root.Type, null);
             Assert.AreEqual(root.Parent, null);
             Assert.AreEqual(3, root.Children.Count());

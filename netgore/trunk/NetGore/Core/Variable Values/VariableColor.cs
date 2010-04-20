@@ -62,10 +62,10 @@ namespace NetGore
         /// <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</param>
         public void GetNext(ref Color value)
         {
-            byte a = (byte)RandomHelper.NextInt(_min.A, _max.A);
-            byte r = (byte)RandomHelper.NextInt(_min.R, _max.R);
-            byte g = (byte)RandomHelper.NextInt(_min.G, _max.G);
-            byte b = (byte)RandomHelper.NextInt(_min.B, _max.B);
+            var a = (byte)RandomHelper.NextInt(_min.A, _max.A);
+            var r = (byte)RandomHelper.NextInt(_min.R, _max.R);
+            var g = (byte)RandomHelper.NextInt(_min.G, _max.G);
+            var b = (byte)RandomHelper.NextInt(_min.B, _max.B);
             value = new Color(r, g, b, a);
         }
 
@@ -146,10 +146,10 @@ namespace NetGore
         /// <returns>The next value, based off of the <see cref="IVariableValue{T}.Min"/> and <see cref="IVariableValue{T}.Max"/>.</returns>
         public Color GetNext()
         {
-            byte a = (byte)RandomHelper.NextInt(_min.A, _max.A);
-            byte r = (byte)RandomHelper.NextInt(_min.R, _max.R);
-            byte g = (byte)RandomHelper.NextInt(_min.G, _max.G);
-            byte b = (byte)RandomHelper.NextInt(_min.B, _max.B);
+            var a = (byte)RandomHelper.NextInt(_min.A, _max.A);
+            var r = (byte)RandomHelper.NextInt(_min.R, _max.R);
+            var g = (byte)RandomHelper.NextInt(_min.G, _max.G);
+            var b = (byte)RandomHelper.NextInt(_min.B, _max.B);
             return new Color(r, g, b, a);
         }
 

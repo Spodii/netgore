@@ -32,7 +32,7 @@ namespace DemoGame.Server.Queries
         /// <returns>The returned values from the query.</returns>
         public virtual IEnumerable<T> Execute(QuestID id)
         {
-            List<T> ret = new List<T>();
+            var ret = new List<T>();
 
             using (var r = ExecuteReader(id))
             {

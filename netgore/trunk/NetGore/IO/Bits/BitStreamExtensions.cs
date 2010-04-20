@@ -13,7 +13,7 @@ namespace NetGore.IO
         public static double[] ReadDoubles(this BitStream bs, int count)
         {
             var ret = new double[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadDouble();
             }
@@ -29,7 +29,7 @@ namespace NetGore.IO
         public static float[] ReadFloats(this BitStream bs, int count)
         {
             var ret = new float[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadFloat();
             }
@@ -45,7 +45,7 @@ namespace NetGore.IO
         public static int[] ReadInts(this BitStream bs, int count)
         {
             var ret = new int[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadInt();
             }
@@ -61,7 +61,7 @@ namespace NetGore.IO
         public static long[] ReadLongs(this BitStream bs, int count)
         {
             var ret = new long[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadLong();
             }
@@ -77,7 +77,7 @@ namespace NetGore.IO
         public static sbyte[] ReadSBytes(this BitStream bs, int count)
         {
             var ret = new sbyte[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadSByte();
             }
@@ -93,7 +93,7 @@ namespace NetGore.IO
         public static short[] ReadShorts(this BitStream bs, int count)
         {
             var ret = new short[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadShort();
             }
@@ -109,7 +109,7 @@ namespace NetGore.IO
         public static string[] ReadStrings(this BitStream bs, int count)
         {
             var ret = new string[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadString();
             }
@@ -125,7 +125,7 @@ namespace NetGore.IO
         public static uint[] ReadUInts(this BitStream bs, int count)
         {
             var ret = new uint[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadUInt();
             }
@@ -141,7 +141,7 @@ namespace NetGore.IO
         public static ushort[] ReadUShorts(this BitStream bs, int count)
         {
             var ret = new ushort[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = bs.ReadUShort();
             }
@@ -155,7 +155,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, byte[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -168,7 +168,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, sbyte[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -181,7 +181,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, short[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -194,7 +194,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, ushort[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -207,7 +207,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, int[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -220,7 +220,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, uint[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -233,7 +233,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, string[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -246,7 +246,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, float[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -259,7 +259,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, long[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }
@@ -272,7 +272,7 @@ namespace NetGore.IO
         /// <param name="values">The array of values to write.</param>
         public static void Write(this BitStream bs, double[] values)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 bs.Write(values[i]);
             }

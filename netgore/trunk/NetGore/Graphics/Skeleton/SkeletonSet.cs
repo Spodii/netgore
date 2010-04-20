@@ -68,8 +68,8 @@ namespace NetGore.Graphics
         /// <returns>String representing the SkeletonSet.</returns>
         public string GetFramesString()
         {
-            StringBuilder sb = new StringBuilder(512);
-            foreach (SkeletonFrame frame in _keyFrames)
+            var sb = new StringBuilder(512);
+            foreach (var frame in _keyFrames)
             {
                 sb.Append(frame.FileName);
                 sb.Append("/");

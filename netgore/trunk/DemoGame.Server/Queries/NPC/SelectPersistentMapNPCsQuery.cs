@@ -24,7 +24,7 @@ namespace DemoGame.Server.Queries
 
         public IEnumerable<CharacterID> Execute(MapID map)
         {
-            List<CharacterID> ret = new List<CharacterID>();
+            var ret = new List<CharacterID>();
 
             using (var r = ExecuteReader(map))
             {
@@ -77,7 +77,7 @@ namespace DemoGame.Server.Queries
 
         public IEnumerable<CharacterID> Execute(MapID map)
         {
-            List<CharacterID> ret = new List<CharacterID>();
+            var ret = new List<CharacterID>();
 
             using (var r = ExecuteReader(map))
             {

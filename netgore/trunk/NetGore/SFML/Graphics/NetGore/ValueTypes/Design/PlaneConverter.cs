@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the PlaneConverter class.</summary>
         public PlaneConverter()
         {
-            Type type = typeof(Plane);
+            var type = typeof(Plane);
             base.propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("Normal")), new FieldPropertyDescriptor(type.GetField("D")) }).Sort(
@@ -33,8 +32,8 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Plane))
             {
-                Plane plane = (Plane)value;
-                ConstructorInfo constructor = typeof(Plane).GetConstructor(new Type[] { typeof(Vector3), typeof(float) });
+                var plane = (Plane)value;
+                var constructor = typeof(Plane).GetConstructor(new Type[] { typeof(Vector3), typeof(float) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor, new object[] { plane.Normal, plane.D });
             }

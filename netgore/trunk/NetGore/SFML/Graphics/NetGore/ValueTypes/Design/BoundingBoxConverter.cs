@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the BoundingBoxConverter class.</summary>
         public BoundingBoxConverter()
         {
-            Type type = typeof(BoundingBox);
+            var type = typeof(BoundingBox);
             base.propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("Min")), new FieldPropertyDescriptor(type.GetField("Max")) }).Sort(
@@ -42,8 +41,8 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(InstanceDescriptor)) && (value is BoundingBox))
             {
-                BoundingBox box = (BoundingBox)value;
-                ConstructorInfo constructor = typeof(BoundingBox).GetConstructor(new Type[] { typeof(Vector3), typeof(Vector3) });
+                var box = (BoundingBox)value;
+                var constructor = typeof(BoundingBox).GetConstructor(new Type[] { typeof(Vector3), typeof(Vector3) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor, new object[] { box.Min, box.Max });
             }

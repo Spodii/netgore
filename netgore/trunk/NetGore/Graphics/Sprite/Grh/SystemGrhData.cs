@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
 using NetGore.Properties;
-using Image=SFML.Graphics.Image;
 
 namespace NetGore.Graphics
 {
@@ -85,11 +84,11 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="sysImg">The <see cref="System.Drawing.Image"/>.</param>
         /// <returns>The <see cref="Sprite"/> created from the <paramref name="sysImg"/>.</returns>
-        static Sprite CreateSprite(System.Drawing.Image sysImg)
+        static Sprite CreateSprite(Image sysImg)
         {
             var img = sysImg.ToSFMLImage();
             img.CreateMaskFromColor(EngineSettings.TransparencyColor);
-       
+
             var sprite = new Sprite(img);
             return sprite;
         }

@@ -16,7 +16,7 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to use for drawing.</param>
         protected override void Draw(ISpriteBatch spriteBatch)
         {
-            ScreenForm screenToUse = ScreenForm;
+            var screenToUse = ScreenForm;
             if (screenToUse == null)
                 return;
 

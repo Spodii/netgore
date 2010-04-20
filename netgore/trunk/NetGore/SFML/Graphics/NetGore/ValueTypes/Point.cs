@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
@@ -46,7 +47,7 @@ namespace SFML.Graphics
         /// <param name="obj">The object to compare this instance to.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
+            var flag = false;
             if (obj is Point)
                 flag = Equals((Point)obj);
             return flag;
@@ -61,7 +62,7 @@ namespace SFML.Graphics
         /// <summary>Returns a String that represents the current Point.</summary>
         public override string ToString()
         {
-            CultureInfo currentCulture = CultureInfo.CurrentCulture;
+            var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{X:{0} Y:{1}}}",
                                  new object[] { X.ToString(currentCulture), Y.ToString(currentCulture) });
         }

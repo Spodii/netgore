@@ -45,6 +45,15 @@ namespace NetGore.Content
         IEnumerable<KeyValuePair<string, object>> EndTrackingLoads();
 
         /// <summary>
+        /// Loads a <see cref="Font"/> asset.
+        /// </summary>
+        /// <param name="assetName">The name of the asset to load.</param>
+        /// <param name="fontSize">The size of the font.</param>
+        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
+        /// <returns>The loaded asset.</returns>
+        Font LoadFont(string assetName, int fontSize, ContentLevel level);
+
+        /// <summary>
         /// Loads an <see cref="Image"/> asset.
         /// </summary>
         /// <param name="assetName">The name of the asset to load.</param>
@@ -59,15 +68,6 @@ namespace NetGore.Content
         /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
         /// <returns>The loaded asset.</returns>
         SoundBuffer LoadSoundBuffer(string assetName, ContentLevel level);
-
-        /// <summary>
-        /// Loads a <see cref="Font"/> asset.
-        /// </summary>
-        /// <param name="assetName">The name of the asset to load.</param>
-        /// <param name="fontSize">The size of the font.</param>
-        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
-        /// <returns>The loaded asset.</returns>
-        Font LoadFont(string assetName, int fontSize, ContentLevel level);
 
         /// <summary>
         /// Sets the level of an asset.

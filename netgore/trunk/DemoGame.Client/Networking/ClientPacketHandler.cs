@@ -178,7 +178,7 @@ namespace DemoGame.Client
 
             _pingWatch.Reset();
 
-            using (PacketWriter pw = ClientPacket.Ping())
+            using (var pw = ClientPacket.Ping())
             {
                 _socketSender.Send(pw);
             }
@@ -189,9 +189,9 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.AcceptOrTurnInQuestReply)]
         void RecvAcceptOrTurnInQuestReply(IIPSocket conn, BitStream r)
         {
-            QuestID questID = r.ReadQuestID();
-            bool successful = r.ReadBool();
-            bool accepted = r.ReadBool();
+            var questID = r.ReadQuestID();
+            var successful = r.ReadBool();
+            var accepted = r.ReadBool();
 
             if (successful)
             {
@@ -205,9 +205,9 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
         void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
-            StatusEffectType statusEffectType = r.ReadEnum<StatusEffectType>();
-            ushort power = r.ReadUShort();
-            ushort secsLeft = r.ReadUShort();
+            var statusEffectType = r.ReadEnum<StatusEffectType>();
+            var power = r.ReadUShort();
+            var secsLeft = r.ReadUShort();
 
             GameplayScreen.StatusEffectsForm.AddStatusEffect(statusEffectType, power, secsLeft);
             GameplayScreen.AppendToChatOutput(string.Format("Added status effect {0} with power {1}.", statusEffectType, power));
@@ -216,9 +216,9 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CharAttack)]
         void RecvCharAttack(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
+            var mapCharIndex = r.ReadMapEntityIndex();
 
-            Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
+            var chr = Map.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
                 return;
 
@@ -229,10 +229,10 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CharDamage)]
         void RecvCharDamage(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
-            int damage = r.ReadInt();
+            var mapCharIndex = r.ReadMapEntityIndex();
+            var damage = r.ReadInt();
 
-            Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
+            var chr = Map.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
                 return;
 
@@ -242,16 +242,16 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.Chat)]
         void RecvChat(IIPSocket conn, BitStream r)
         {
-            string text = r.ReadString(GameData.MaxServerSayLength);
+            var text = r.ReadString(GameData.MaxServerSayLength);
             GameplayScreen.AppendToChatOutput(text);
         }
 
         [MessageHandler((byte)ServerPacketID.ChatSay)]
         void RecvChatSay(IIPSocket conn, BitStream r)
         {
-            string name = r.ReadString(GameData.MaxServerSayNameLength);
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            string text = r.ReadString(GameData.MaxServerSayLength);
+            var name = r.ReadString(GameData.MaxServerSayNameLength);
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            var text = r.ReadString(GameData.MaxServerSayLength);
 
             var chatText = CreateChatText(name, text);
             GameplayScreen.AppendToChatOutput(chatText);
@@ -270,8 +270,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CreateAccount)]
         void RecvCreateAccount(IIPSocket conn, BitStream r)
         {
-            bool successful = r.ReadBool();
-            string errorMessage = successful ? string.Empty : r.ReadString();
+            var successful = r.ReadBool();
+            var errorMessage = successful ? string.Empty : r.ReadString();
 
             if (ReceivedCreateAccount != null)
                 ReceivedCreateAccount(conn, successful, errorMessage);
@@ -280,8 +280,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CreateAccountCharacter)]
         void RecvCreateAccountCharacter(IIPSocket conn, BitStream r)
         {
-            bool successful = r.ReadBool();
-            string errorMessage = successful ? string.Empty : r.ReadString();
+            var successful = r.ReadBool();
+            var errorMessage = successful ? string.Empty : r.ReadString();
 
             if (ReceivedCreateAccountCharacter != null)
                 ReceivedCreateAccountCharacter(conn, successful, errorMessage);
@@ -290,11 +290,11 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
         void RecvCreateDynamicEntity(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            DynamicEntity dynamicEntity = _dynamicEntityFactory.Read(r);
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            var dynamicEntity = _dynamicEntityFactory.Read(r);
             Map.AddDynamicEntity(dynamicEntity, mapEntityIndex);
 
-            Character character = dynamicEntity as Character;
+            var character = dynamicEntity as Character;
             if (character != null)
             {
                 // HACK: Having to call this .Initialize() and pass these parameters seems hacky
@@ -340,8 +340,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.HasQuestFinishRequirementsReply)]
         void RecvHasQuestFinishRequirementsReply(IIPSocket conn, BitStream r)
         {
-            QuestID questID = r.ReadQuestID();
-            bool hasRequirements = r.ReadBool();
+            var questID = r.ReadQuestID();
+            var hasRequirements = r.ReadBool();
 
             UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
         }
@@ -349,8 +349,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.HasQuestStartRequirementsReply)]
         void RecvHasQuestStartRequirementsReply(IIPSocket conn, BitStream r)
         {
-            QuestID questID = r.ReadQuestID();
-            bool hasRequirements = r.ReadBool();
+            var questID = r.ReadQuestID();
+            var hasRequirements = r.ReadBool();
 
             UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
         }
@@ -365,7 +365,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.LoginUnsuccessful)]
         void RecvLoginUnsuccessful(IIPSocket conn, BitStream r)
         {
-            string message = r.ReadGameMessage(_gameMessages);
+            var message = r.ReadGameMessage(_gameMessages);
 
             if (ReceivedLoginUnsuccessful != null)
                 ReceivedLoginUnsuccessful(this, conn, message);
@@ -374,25 +374,25 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
         void RecvNotifyExpCash(IIPSocket conn, BitStream r)
         {
-            int exp = r.ReadInt();
-            int cash = r.ReadInt();
+            var exp = r.ReadInt();
+            var cash = r.ReadInt();
 
-            Character userChar = World.UserChar;
+            var userChar = World.UserChar;
             if (userChar == null)
             {
                 Debug.Fail("UserChar is null.");
                 return;
             }
 
-            string msg = string.Format("Got {0} exp and {1} cash", exp, cash);
+            var msg = string.Format("Got {0} exp and {1} cash", exp, cash);
             _gameplayScreen.InfoBox.Add(msg);
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyGetItem)]
         void RecvNotifyGetItem(IIPSocket conn, BitStream r)
         {
-            string name = r.ReadString();
-            byte amount = r.ReadByte();
+            var name = r.ReadString();
+            var amount = r.ReadByte();
 
             string msg;
             if (amount > 1)
@@ -406,9 +406,9 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.NotifyLevel)]
         void RecvNotifyLevel(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
+            var mapCharIndex = r.ReadMapEntityIndex();
 
-            Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
+            var chr = Map.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
                 return;
 
@@ -425,7 +425,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.PlaySound)]
         void RecvPlaySound(IIPSocket conn, BitStream r)
         {
-            SoundID soundID = r.ReadSoundID();
+            var soundID = r.ReadSoundID();
 
             if (!SoundManager.Play(soundID))
                 LogFailPlaySound(soundID);
@@ -434,8 +434,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.PlaySoundAt)]
         void RecvPlaySoundAt(IIPSocket conn, BitStream r)
         {
-            SoundID soundID = r.ReadSoundID();
-            Vector2 position = r.ReadVector2();
+            var soundID = r.ReadSoundID();
+            var position = r.ReadVector2();
 
             if (!SoundManager.Play(soundID, position))
                 LogFailPlaySound(soundID);
@@ -444,8 +444,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.PlaySoundAtEntity)]
         void RecvPlaySoundAtEntity(IIPSocket conn, BitStream r)
         {
-            SoundID soundID = r.ReadSoundID();
-            MapEntityIndex index = r.ReadMapEntityIndex();
+            var soundID = r.ReadSoundID();
+            var index = r.ReadMapEntityIndex();
 
             var entity = Map.GetDynamicEntity(index);
             if (entity == null)
@@ -470,8 +470,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
         void RecvRemoveDynamicEntity(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            DynamicEntity dynamicEntity = Map.GetDynamicEntity(mapEntityIndex);
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            var dynamicEntity = Map.GetDynamicEntity(mapEntityIndex);
 
             if (dynamicEntity != null)
             {
@@ -492,7 +492,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
-            StatusEffectType statusEffectType = r.ReadEnum<StatusEffectType>();
+            var statusEffectType = r.ReadEnum<StatusEffectType>();
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
             GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
@@ -501,7 +501,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.RequestUDPConnection)]
         void RecvRequestUDPConnection(IIPSocket conn, BitStream r)
         {
-            int challenge = r.ReadInt();
+            var challenge = r.ReadInt();
 
             ClientSockets.Instance.ConnectUDP(GameData.ServerIP, GameData.ServerUDPPort, challenge);
         }
@@ -509,11 +509,11 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SendAccountCharacters)]
         void RecvSendAccountCharacters(IIPSocket conn, BitStream r)
         {
-            byte count = r.ReadByte();
+            var count = r.ReadByte();
             var charInfos = new AccountCharacterInfo[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                AccountCharacterInfo charInfo = r.ReadAccountCharacterInfo();
+                var charInfo = r.ReadAccountCharacterInfo();
                 charInfos[charInfo.Index] = charInfo;
             }
 
@@ -523,21 +523,21 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SendEquipmentItemInfo)]
         void RecvSendEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEnum<EquipmentSlot>();
+            var slot = r.ReadEnum<EquipmentSlot>();
             GameplayScreen.EquipmentInfoRequester.ReceiveInfo(slot, r);
         }
 
         [MessageHandler((byte)ServerPacketID.SendInventoryItemInfo)]
         void RecvSendInventoryItemInfo(IIPSocket conn, BitStream r)
         {
-            InventorySlot slot = r.ReadInventorySlot();
+            var slot = r.ReadInventorySlot();
             GameplayScreen.InventoryInfoRequester.ReceiveInfo(slot, r);
         }
 
         [MessageHandler((byte)ServerPacketID.SendMessage)]
         void RecvSendMessage(IIPSocket conn, BitStream r)
         {
-            string message = r.ReadGameMessage(_gameMessages);
+            var message = r.ReadGameMessage(_gameMessages);
 
             if (string.IsNullOrEmpty(message))
             {
@@ -553,17 +553,17 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetCash)]
         void RecvSetCash(IIPSocket conn, BitStream r)
         {
-            int cash = r.ReadInt();
+            var cash = r.ReadInt();
             UserInfo.Cash = cash;
         }
 
         [MessageHandler((byte)ServerPacketID.SetCharacterHPPercent)]
         void RecvSetCharacterHPPercent(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            byte percent = r.ReadByte();
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            var percent = r.ReadByte();
 
-            Character character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
             if (character == null)
                 return;
 
@@ -573,10 +573,10 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetCharacterMPPercent)]
         void RecvSetCharacterMPPercent(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            byte percent = r.ReadByte();
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            var percent = r.ReadByte();
 
-            Character character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
             if (character == null)
                 return;
 
@@ -586,16 +586,16 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetCharacterPaperDoll)]
         void RecvSetCharacterPaperDoll(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            byte count = r.ReadByte();
+            var mapEntityIndex = r.ReadMapEntityIndex();
+            var count = r.ReadByte();
 
-            string[] layers = new string[count];
-            for (int i = 0; i < layers.Length; i++)
+            var layers = new string[count];
+            for (var i = 0; i < layers.Length; i++)
             {
                 layers[i] = r.ReadString();
             }
 
-            Character character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
             if (character == null)
                 return;
 
@@ -606,10 +606,10 @@ namespace DemoGame.Client
         void RecvSetChatDialogPage(IIPSocket conn, BitStream r)
         {
             var pageID = r.ReadNPCChatDialogItemID();
-            byte skipCount = r.ReadByte();
+            var skipCount = r.ReadByte();
 
             var responsesToSkip = new byte[skipCount];
-            for (int i = 0; i < skipCount; i++)
+            for (var i = 0; i < skipCount; i++)
             {
                 responsesToSkip[i] = r.ReadByte();
             }
@@ -620,14 +620,14 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetExp)]
         void RecvSetExp(IIPSocket conn, BitStream r)
         {
-            int exp = r.ReadInt();
+            var exp = r.ReadInt();
             UserInfo.Exp = exp;
         }
 
         [MessageHandler((byte)ServerPacketID.SetGameTime)]
         void RecvSetGameTime(IIPSocket conn, BitStream r)
         {
-            long serverTimeBinary = r.ReadLong();
+            var serverTimeBinary = r.ReadLong();
             var serverTime = DateTime.FromBinary(serverTimeBinary);
 
             GameDateTime.SetServerTimeOffset(serverTime);
@@ -636,7 +636,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetHP)]
         void RecvSetHP(IIPSocket conn, BitStream r)
         {
-            SPValueType value = r.ReadSPValueType();
+            var value = r.ReadSPValueType();
             UserInfo.HP = value;
 
             if (User == null)
@@ -648,10 +648,10 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetInventorySlot)]
         void RecvSetInventorySlot(IIPSocket conn, BitStream r)
         {
-            InventorySlot slot = r.ReadInventorySlot();
-            bool hasGraphic = r.ReadBool();
-            GrhIndex graphic = hasGraphic ? r.ReadGrhIndex() : GrhIndex.Invalid;
-            byte amount = r.ReadByte();
+            var slot = r.ReadInventorySlot();
+            var hasGraphic = r.ReadBool();
+            var graphic = hasGraphic ? r.ReadGrhIndex() : GrhIndex.Invalid;
+            var amount = r.ReadByte();
 
             UserInfo.Inventory.Update(slot, graphic, amount, GetTime());
         }
@@ -659,17 +659,29 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetLevel)]
         void RecvSetLevel(IIPSocket conn, BitStream r)
         {
-            byte level = r.ReadByte();
+            var level = r.ReadByte();
             UserInfo.Level = level;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetMP)]
+        void RecvSetMP(IIPSocket conn, BitStream r)
+        {
+            var value = r.ReadSPValueType();
+            UserInfo.MP = value;
+
+            if (User == null)
+                return;
+
+            User.MPPercent = UserInfo.MPPercent;
         }
 
         [MessageHandler((byte)ServerPacketID.SetMap)]
         void RecvSetMap(IIPSocket conn, BitStream r)
         {
-            MapID mapID = r.ReadMapID();
+            var mapID = r.ReadMapID();
 
             // Create the new map
-            Map newMap = new Map(mapID, World.Camera, World);
+            var newMap = new Map(mapID, World.Camera, World);
             newMap.Load(ContentPaths.Build, false, _dynamicEntityFactory);
 
             // Clear quest requirements caches
@@ -685,25 +697,13 @@ namespace DemoGame.Client
             GameplayScreen.ScreenManager.SetScreen(GameplayScreen.ScreenName);
         }
 
-        [MessageHandler((byte)ServerPacketID.SetMP)]
-        void RecvSetMP(IIPSocket conn, BitStream r)
-        {
-            SPValueType value = r.ReadSPValueType();
-            UserInfo.MP = value;
-
-            if (User == null)
-                return;
-
-            User.MPPercent = UserInfo.MPPercent;
-        }
-
         [MessageHandler((byte)ServerPacketID.SetProvidedQuests)]
         void RecvSetProvidedQuests(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
-            byte count = r.ReadByte();
-            QuestID[] questIDs = new QuestID[count];
-            for (int i = 0; i < count; i++)
+            var count = r.ReadByte();
+            var questIDs = new QuestID[count];
+            for (var i = 0; i < count; i++)
             {
                 questIDs[i] = r.ReadQuestID();
             }
@@ -716,8 +716,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetSkillGroupCooldown)]
         void RecvSetSkillGroupCooldown(IIPSocket conn, BitStream r)
         {
-            byte skillGroup = r.ReadByte();
-            ushort cooldownTime = r.ReadUShort();
+            var skillGroup = r.ReadByte();
+            var cooldownTime = r.ReadUShort();
 
             GameplayScreen.SkillCooldownManager.SetCooldown(skillGroup, cooldownTime, GetTime());
         }
@@ -725,14 +725,14 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetStatPoints)]
         void RecvSetStatPoints(IIPSocket conn, BitStream r)
         {
-            int statPoints = r.ReadInt();
+            var statPoints = r.ReadInt();
             UserInfo.StatPoints = statPoints;
         }
 
         [MessageHandler((byte)ServerPacketID.SetUserChar)]
         void RecvSetUserChar(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
+            var mapCharIndex = r.ReadMapEntityIndex();
             World.UserCharIndex = mapCharIndex;
         }
 
@@ -740,7 +740,7 @@ namespace DemoGame.Client
         void RecvStartCastingSkill(IIPSocket conn, BitStream r)
         {
             var skillType = r.ReadEnum<SkillType>();
-            ushort castTime = r.ReadUShort();
+            var castTime = r.ReadUShort();
 
             GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
         }
@@ -748,30 +748,30 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.StartChatDialog)]
         void RecvStartChatDialog(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
-            NPCChatDialogID dialogIndex = r.ReadNPCChatDialogID();
+            var npcIndex = r.ReadMapEntityIndex();
+            var dialogIndex = r.ReadNPCChatDialogID();
 
-            NPCChatDialogBase dialog = NPCChatManager.Instance[dialogIndex];
+            var dialog = NPCChatManager.Instance[dialogIndex];
             GameplayScreen.ChatDialogForm.StartDialog(dialog);
         }
 
         [MessageHandler((byte)ServerPacketID.StartQuestChatDialog)]
         void RecvStartQuestChatDialog(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
+            var npcIndex = r.ReadMapEntityIndex();
 
             // Available quests
-            byte numAvailableQuests = r.ReadByte();
-            QuestID[] availableQuests = new QuestID[numAvailableQuests];
-            for (int i = 0; i < availableQuests.Length; i++)
+            var numAvailableQuests = r.ReadByte();
+            var availableQuests = new QuestID[numAvailableQuests];
+            for (var i = 0; i < availableQuests.Length; i++)
             {
                 availableQuests[i] = r.ReadQuestID();
             }
 
             // Quests that can be turned in
-            byte numTurnInQuests = r.ReadByte();
-            QuestID[] turnInQuests = new QuestID[numTurnInQuests];
-            for (int i = 0; i < turnInQuests.Length; i++)
+            var numTurnInQuests = r.ReadByte();
+            var turnInQuests = new QuestID[numTurnInQuests];
+            for (var i = 0; i < turnInQuests.Length; i++)
             {
                 turnInQuests[i] = r.ReadQuestID();
             }
@@ -798,20 +798,20 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.StartShopping)]
         void RecvStartShopping(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex shopOwnerIndex = r.ReadMapEntityIndex();
-            bool canBuy = r.ReadBool();
-            string name = r.ReadString();
-            byte itemCount = r.ReadByte();
+            var shopOwnerIndex = r.ReadMapEntityIndex();
+            var canBuy = r.ReadBool();
+            var name = r.ReadString();
+            var itemCount = r.ReadByte();
 
             var items = new IItemTemplateTable[itemCount];
-            for (int i = 0; i < itemCount; i++)
+            for (var i = 0; i < itemCount; i++)
             {
                 var value = new ItemTemplateTable();
                 value.ReadState(r);
                 items[i] = value;
             }
 
-            DynamicEntity shopOwner = Map.GetDynamicEntity(shopOwnerIndex);
+            var shopOwner = Map.GetDynamicEntity(shopOwnerIndex);
             var shopInfo = new ShopInfo<IItemTemplateTable>(shopOwner, name, canBuy, items);
 
             GameplayScreen.ShopForm.DisplayShop(shopInfo);
@@ -826,12 +826,12 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]
         void RecvUpdateEquipmentSlot(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEnum<EquipmentSlot>();
-            bool hasValue = r.ReadBool();
+            var slot = r.ReadEnum<EquipmentSlot>();
+            var hasValue = r.ReadBool();
 
             if (hasValue)
             {
-                GrhIndex graphic = r.ReadGrhIndex();
+                var graphic = r.ReadGrhIndex();
                 UserInfo.Equipped.SetSlot(slot, graphic);
             }
             else
@@ -841,7 +841,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UpdateStat)]
         void RecvUpdateStat(IIPSocket conn, BitStream r)
         {
-            bool isBaseStat = r.ReadBool();
+            var isBaseStat = r.ReadBool();
             var stat = r.ReadStat<StatType>();
 
             var coll = isBaseStat ? UserInfo.BaseStats : UserInfo.ModStats;
@@ -851,7 +851,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UpdateVelocityAndPosition)]
         void RecvUpdateVelocityAndPosition(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
+            var mapEntityIndex = r.ReadMapEntityIndex();
             DynamicEntity dynamicEntity;
 
             // Grab the DynamicEntity
@@ -881,11 +881,11 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UseEntity)]
         void RecvUseEntity(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex usedEntityIndex = r.ReadMapEntityIndex();
-            MapEntityIndex usedByIndex = r.ReadMapEntityIndex();
+            var usedEntityIndex = r.ReadMapEntityIndex();
+            var usedByIndex = r.ReadMapEntityIndex();
 
             // Grab the used DynamicEntity
-            DynamicEntity usedEntity = Map.GetDynamicEntity(usedEntityIndex);
+            var usedEntity = Map.GetDynamicEntity(usedEntityIndex);
             if (usedEntity == null)
             {
                 const string errmsg = "UseEntity received but usedEntityIndex `{0}` is not a valid DynamicEntity.";
@@ -896,7 +896,7 @@ namespace DemoGame.Client
             }
 
             // Grab the one who used this DynamicEntity (we can still use it, we'll just pass null)
-            DynamicEntity usedBy = Map.GetDynamicEntity(usedEntityIndex);
+            var usedBy = Map.GetDynamicEntity(usedEntityIndex);
             if (usedBy == null)
             {
                 const string errmsg = "UseEntity received but usedByIndex `{0}` is not a valid DynamicEntity.";
@@ -906,7 +906,7 @@ namespace DemoGame.Client
             }
 
             // Ensure the used DynamicEntity is even usable
-            IUsableEntity asUsable = usedEntity as IUsableEntity;
+            var asUsable = usedEntity as IUsableEntity;
             if (asUsable == null)
             {
                 const string errmsg =
@@ -925,14 +925,14 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UseSkill)]
         void RecvUseSkill(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex userID = r.ReadMapEntityIndex();
-            bool hasTarget = r.ReadBool();
+            var userID = r.ReadMapEntityIndex();
+            var hasTarget = r.ReadBool();
             MapEntityIndex? targetID = null;
             if (hasTarget)
                 targetID = r.ReadMapEntityIndex();
-            SkillType skillType = r.ReadEnum<SkillType>();
+            var skillType = r.ReadEnum<SkillType>();
 
-            CharacterEntity user = Map.GetDynamicEntity<CharacterEntity>(userID);
+            var user = Map.GetDynamicEntity<CharacterEntity>(userID);
             CharacterEntity target = null;
             if (targetID.HasValue)
                 target = Map.GetDynamicEntity<CharacterEntity>(targetID.Value);

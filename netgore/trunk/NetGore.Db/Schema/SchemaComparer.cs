@@ -17,8 +17,8 @@ namespace NetGore.Db.Schema
         /// <returns>Text describing the difference between the two <see cref="SchemaReader"/>s.</returns>
         public static IEnumerable<string> Compare(SchemaReader main, SchemaReader sub)
         {
-            List<ColumnSchema> missingColumns = new List<ColumnSchema>();
-            List<ColumnSchema> mismatchColumns = new List<ColumnSchema>();
+            var missingColumns = new List<ColumnSchema>();
+            var mismatchColumns = new List<ColumnSchema>();
 
             foreach (var table in main.TableSchemas)
             {
@@ -70,7 +70,7 @@ namespace NetGore.Db.Schema
 
             columns = columns.OrderBy(x => x.Name);
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var c in columns)
             {
                 sb.Append(c.Name);

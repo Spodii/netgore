@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore.Content;
 using NetGore.IO;
 using SFML;
 using SFML.Audio;
@@ -19,9 +18,16 @@ namespace NetGore.Content
     public class ContentManager : IContentManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly StringComparer _stringComp = StringComparer.OrdinalIgnoreCase;
+
+        /// <summary>
+        /// Gets the minimum amount of time that an asset must go unused before being unloaded.
+        /// </summary>
+        const int _minElapsedTimeToUnload = 1000 * 60; // 1 minute
+
         static readonly object _instanceSync = new object();
+        static readonly StringComparer _stringComp = StringComparer.OrdinalIgnoreCase;
         static bool _doNotUnload;
+        static IContentManager _instance;
 
         readonly object _assetSync = new object();
         readonly Dictionary<string, IMyLazyAsset>[] _loadedAssets;
@@ -31,23 +37,6 @@ namespace NetGore.Content
         bool _isTrackingLoads = false;
         ContentLevel? _queuedUnloadLevel = null;
 
-        static IContentManager _instance;
-
-        /// <summary>
-        /// Creates a <see cref="IContentManager"/>.
-        /// </summary>
-        /// <returns>The <see cref="IContentManager"/> instance.</returns>
-        public static IContentManager Create()
-        {
-            lock (_instanceSync)
-            {
-                if (_instance == null)
-                    _instance = new ContentManager();
-
-                return _instance;
-            }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentManager"/> class.
         /// </summary>
@@ -56,21 +45,16 @@ namespace NetGore.Content
             RootDirectory = ContentPaths.Build.Root;
 
             // Create the dictionaries for each level
-            int maxLevel = EnumHelper<ContentLevel>.MaxValue;
+            var maxLevel = EnumHelper<ContentLevel>.MaxValue;
             _loadedAssets = new Dictionary<string, IMyLazyAsset>[maxLevel + 1];
 
-            for (int i = 0; i < _loadedAssets.Length; i++)
+            for (var i = 0; i < _loadedAssets.Length; i++)
             {
                 _loadedAssets[i] = new Dictionary<string, IMyLazyAsset>(_stringComp);
             }
 
             DoNotUploadSetFalse += XnaContentManager_DoNotUploadSetFalse;
         }
-
-        /// <summary>
-        /// Gets the minimum amount of time that an asset must go unused before being unloaded.
-        /// </summary>
-        const int _minElapsedTimeToUnload = 1000 * 60; // 1 minute
 
         /// <summary>
         /// Notifies listeners when <see cref="DoNotUnload"/> is set from true to false.
@@ -130,6 +114,21 @@ namespace NetGore.Content
         }
 
         /// <summary>
+        /// Creates a <see cref="IContentManager"/>.
+        /// </summary>
+        /// <returns>The <see cref="IContentManager"/> instance.</returns>
+        public static IContentManager Create()
+        {
+            lock (_instanceSync)
+            {
+                if (_instance == null)
+                    _instance = new ContentManager();
+
+                return _instance;
+            }
+        }
+
+        /// <summary>
         /// Disposes of the content manager.
         /// </summary>
         /// <param name="disposeManaged">If false, this was called from the destructor.</param>
@@ -141,7 +140,7 @@ namespace NetGore.Content
 
         void DoUnload(ContentLevel level)
         {
-            int currTime = Environment.TickCount;
+            var currTime = Environment.TickCount;
 
             lock (_assetSync)
             {
@@ -152,7 +151,7 @@ namespace NetGore.Content
                 _queuedUnloadLevel = null;
 
                 // Loop through the given level and all levels below it
-                for (int i = (int)level; i < _loadedAssets.Length; i++)
+                for (var i = (int)level; i < _loadedAssets.Length; i++)
                 {
                     // Get the dictionary for the level
                     var dic = _loadedAssets[i];
@@ -188,11 +187,6 @@ namespace NetGore.Content
             Dispose(false);
         }
 
-        static string SanitizeAssetName(string assetName)
-        {
-            return assetName.Replace('\\', '/');
-        }
-
         /// <summary>
         /// Gets the absolute file path for an asset.
         /// </summary>
@@ -210,7 +204,7 @@ namespace NetGore.Content
         protected static LoadingFailedException InvalidTypeException(object obj, Type expected)
         {
             const string errmsg = "Invalid type `{0}` specified for asset `{1}`, which is of type `{2}`.";
-            string err = string.Format(errmsg, expected, obj, obj.GetType());
+            var err = string.Format(errmsg, expected, obj, obj.GetType());
             if (log.IsErrorEnabled)
                 log.Error(err);
             return new LoadingFailedException(err);
@@ -225,7 +219,7 @@ namespace NetGore.Content
         /// <returns>True if the asset is loaded; otherwise false.</returns>
         bool IsAssetLoaded(string assetName, out IMyLazyAsset asset, out ContentLevel level)
         {
-            for (int i = 0; i < _loadedAssets.Length; i++)
+            for (var i = 0; i < _loadedAssets.Length; i++)
             {
                 if (_loadedAssets[i].TryGetValue(assetName, out asset))
                 {
@@ -268,7 +262,7 @@ namespace NetGore.Content
                     // If the specified level parameter is greater than the asset's current level, promote it
                     if (level < existingLevel)
                     {
-                        bool success = ChangeAssetLevelNoLock(assetName, existingLevel, level);
+                        var success = ChangeAssetLevelNoLock(assetName, existingLevel, level);
                         Debug.Assert(success);
                     }
 
@@ -284,24 +278,6 @@ namespace NetGore.Content
 
                 return asset;
             }
-        }
-
-        /// <summary>
-        /// Reads an asset from file.
-        /// </summary>
-        /// <param name="assetName">The name of the asset.</param>
-        /// <returns>The loaded asset.</returns>
-        protected SoundBuffer ReadAssetSoundBuffer(string assetName)
-        {
-            if (IsDisposed)
-                throw new ObjectDisposedException(ToString());
-
-            if (string.IsNullOrEmpty(assetName))
-                throw new ArgumentNullException("assetName");
-
-            var ret = new MyLazySoundBuffer(GetAssetPath(assetName));
-
-            return ret;
         }
 
         /// <summary>
@@ -340,6 +316,29 @@ namespace NetGore.Content
             var ret = new MyLazyImage(path);
 
             return ret;
+        }
+
+        /// <summary>
+        /// Reads an asset from file.
+        /// </summary>
+        /// <param name="assetName">The name of the asset.</param>
+        /// <returns>The loaded asset.</returns>
+        protected SoundBuffer ReadAssetSoundBuffer(string assetName)
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(ToString());
+
+            if (string.IsNullOrEmpty(assetName))
+                throw new ArgumentNullException("assetName");
+
+            var ret = new MyLazySoundBuffer(GetAssetPath(assetName));
+
+            return ret;
+        }
+
+        static string SanitizeAssetName(string assetName)
+        {
+            return assetName.Replace('\\', '/');
         }
 
         /// <summary>
@@ -447,23 +446,6 @@ namespace NetGore.Content
         }
 
         /// <summary>
-        /// Loads a <see cref="SoundBuffer"/> asset.
-        /// </summary>
-        /// <param name="assetName">The name of the asset to load.</param>
-        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
-        /// <returns>The loaded asset.</returns>
-        public SoundBuffer LoadSoundBuffer(string assetName, ContentLevel level)
-        {
-            if (assetName == null)
-                throw new ArgumentNullException("assetName");
-
-            assetName = SanitizeAssetName(assetName);
-
-            var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetSoundBuffer(x));
-            return (SoundBuffer)ret;
-        }
-
-        /// <summary>
         /// Loads an <see cref="Image"/> asset.
         /// </summary>
         /// <param name="assetName">The name of the asset to load.</param>
@@ -478,6 +460,23 @@ namespace NetGore.Content
 
             var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetImage(x));
             return (Image)ret;
+        }
+
+        /// <summary>
+        /// Loads a <see cref="SoundBuffer"/> asset.
+        /// </summary>
+        /// <param name="assetName">The name of the asset to load.</param>
+        /// <param name="level">The <see cref="ContentLevel"/> to load the asset into.</param>
+        /// <returns>The loaded asset.</returns>
+        public SoundBuffer LoadSoundBuffer(string assetName, ContentLevel level)
+        {
+            if (assetName == null)
+                throw new ArgumentNullException("assetName");
+
+            assetName = SanitizeAssetName(assetName);
+
+            var ret = Load(assetName, level, x => (IMyLazyAsset)ReadAssetSoundBuffer(x));
+            return (SoundBuffer)ret;
         }
 
         /// <summary>
@@ -613,7 +612,7 @@ namespace NetGore.Content
             /// <summary>
             /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
             /// </summary>
-            int LastUsedTime {get;}
+            int LastUsedTime { get; }
         }
 
         /// <summary>
@@ -646,14 +645,6 @@ namespace NetGore.Content
             }
 
             /// <summary>
-            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
-            /// </summary>
-            public int LastUsedTime
-            {
-                get { return _lastUsed; }
-            }
-
-            /// <summary>
             /// Returns a <see cref="System.String"/> that represents this instance.
             /// </summary>
             /// <returns>
@@ -666,36 +657,8 @@ namespace NetGore.Content
                 else
                     return "Image [" + FileName + "]";
             }
-        }
 
-        /// <summary>
-        /// <see cref="LazySoundBuffer"/> implementation specifically for the <see cref="ContentManager"/>.
-        /// </summary>
-        sealed class MyLazySoundBuffer : LazySoundBuffer, IMyLazyAsset
-        {
-            int _lastUsed;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="MyLazySoundBuffer"/> class.
-            /// </summary>
-            /// <param name="filename">The file name.</param>
-            public MyLazySoundBuffer(string filename) : base(filename)
-            {
-                _lastUsed = Environment.TickCount;
-            }
-
-            /// <summary>
-            /// Access to the internal pointer of the object.
-            /// For internal use only
-            /// </summary>
-            public override IntPtr This
-            {
-                get
-                {
-                    _lastUsed = Environment.TickCount;
-                    return base.This;
-                }
-            }
+            #region IMyLazyAsset Members
 
             /// <summary>
             /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
@@ -705,19 +668,7 @@ namespace NetGore.Content
                 get { return _lastUsed; }
             }
 
-            /// <summary>
-            /// Returns a <see cref="System.String"/> that represents this instance.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="System.String"/> that represents this instance.
-            /// </returns>
-            public override string ToString()
-            {
-                if (FileName.Length > 15)
-                    return "SoundBuffer [..." + FileName.Substring(10) + "]";
-                else
-                    return "SoundBuffer [" + FileName + "]";
-            }
+            #endregion
         }
 
         /// <summary>
@@ -759,14 +710,6 @@ namespace NetGore.Content
             }
 
             /// <summary>
-            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
-            /// </summary>
-            public int LastUsedTime
-            {
-                get { return _lastUsed; }
-            }
-
-            /// <summary>
             /// Returns a <see cref="System.String"/> that represents this instance.
             /// </summary>
             /// <returns>
@@ -779,6 +722,74 @@ namespace NetGore.Content
                 else
                     return "Image [" + FileName + "]";
             }
+
+            #region IMyLazyAsset Members
+
+            /// <summary>
+            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// </summary>
+            public int LastUsedTime
+            {
+                get { return _lastUsed; }
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// <see cref="LazySoundBuffer"/> implementation specifically for the <see cref="ContentManager"/>.
+        /// </summary>
+        sealed class MyLazySoundBuffer : LazySoundBuffer, IMyLazyAsset
+        {
+            int _lastUsed;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MyLazySoundBuffer"/> class.
+            /// </summary>
+            /// <param name="filename">The file name.</param>
+            public MyLazySoundBuffer(string filename) : base(filename)
+            {
+                _lastUsed = Environment.TickCount;
+            }
+
+            /// <summary>
+            /// Access to the internal pointer of the object.
+            /// For internal use only
+            /// </summary>
+            public override IntPtr This
+            {
+                get
+                {
+                    _lastUsed = Environment.TickCount;
+                    return base.This;
+                }
+            }
+
+            /// <summary>
+            /// Returns a <see cref="System.String"/> that represents this instance.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="System.String"/> that represents this instance.
+            /// </returns>
+            public override string ToString()
+            {
+                if (FileName.Length > 15)
+                    return "SoundBuffer [..." + FileName.Substring(10) + "]";
+                else
+                    return "SoundBuffer [" + FileName + "]";
+            }
+
+            #region IMyLazyAsset Members
+
+            /// <summary>
+            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// </summary>
+            public int LastUsedTime
+            {
+                get { return _lastUsed; }
+            }
+
+            #endregion
         }
     }
 }

@@ -23,7 +23,7 @@ namespace NetGore.Network
         {
             Debug.Assert(buffer.Length >= SignatureSize);
 
-            int signature = buffer[offset] << 24;
+            var signature = buffer[offset] << 24;
             signature |= buffer[offset + 1] << 16;
             signature |= buffer[offset + 2] << 8;
             signature |= buffer[offset + 3];

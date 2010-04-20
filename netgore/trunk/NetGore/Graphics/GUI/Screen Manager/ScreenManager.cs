@@ -70,48 +70,6 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        void _game_KeyPressed(object sender, KeyEventArgs e)
-        {
-            var a = ActiveScreen;
-            if (a != null)
-                a.GUIManager.SendEventKeyPressed(e);
-        }
-
-        void _game_KeyReleased(object sender, KeyEventArgs e)
-        {
-            var a = ActiveScreen;
-            if (a != null)
-                a.GUIManager.SendEventKeyReleased(e);
-        }
-
-        void _game_MouseButtonPressed(object sender, MouseButtonEventArgs e)
-        {
-            var a = ActiveScreen;
-            if (a != null)
-                a.GUIManager.SendEventMouseButtonPressed(e);
-        }
-
-        void _game_MouseButtonReleased(object sender, MouseButtonEventArgs e)
-        {
-            var a = ActiveScreen;
-            if (a != null)
-                a.GUIManager.SendEventMouseButtonReleased(e);
-        }
-
-        void _game_MouseMoved(object sender, MouseMoveEventArgs e)
-        {
-            var a = ActiveScreen;
-            if (a != null)
-                a.GUIManager.SendEventMouseMoved(e);
-        }
-
-        void _game_TextEntered(object sender, TextEventArgs e)
-        {
-            var a = ActiveScreen;
-            if (a != null)
-                a.GUIManager.SendEventTextEntered(e);
-        }
-
         /// <summary>
         /// Releases the unmanaged resources used by the DrawableGameComponent and optionally
         /// releases the managed resources.
@@ -167,7 +125,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="gameTime">Time elapsed since the last call to Update.</param>
         public virtual void Update(int gameTime)
         {
-            int currentTime = gameTime;
+            var currentTime = gameTime;
 
             // Update the audio
             AudioManager.Update();
@@ -186,6 +144,48 @@ namespace NetGore.Graphics.GUI
             // Raise update event
             if (Updated != null)
                 Updated(this);
+        }
+
+        void _game_KeyPressed(object sender, KeyEventArgs e)
+        {
+            var a = ActiveScreen;
+            if (a != null)
+                a.GUIManager.SendEventKeyPressed(e);
+        }
+
+        void _game_KeyReleased(object sender, KeyEventArgs e)
+        {
+            var a = ActiveScreen;
+            if (a != null)
+                a.GUIManager.SendEventKeyReleased(e);
+        }
+
+        void _game_MouseButtonPressed(object sender, MouseButtonEventArgs e)
+        {
+            var a = ActiveScreen;
+            if (a != null)
+                a.GUIManager.SendEventMouseButtonPressed(e);
+        }
+
+        void _game_MouseButtonReleased(object sender, MouseButtonEventArgs e)
+        {
+            var a = ActiveScreen;
+            if (a != null)
+                a.GUIManager.SendEventMouseButtonReleased(e);
+        }
+
+        void _game_MouseMoved(object sender, MouseMoveEventArgs e)
+        {
+            var a = ActiveScreen;
+            if (a != null)
+                a.GUIManager.SendEventMouseMoved(e);
+        }
+
+        void _game_TextEntered(object sender, TextEventArgs e)
+        {
+            var a = ActiveScreen;
+            if (a != null)
+                a.GUIManager.SendEventTextEntered(e);
         }
 
         #region IScreenManager Members

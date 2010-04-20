@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 using System.Reflection;
 
 namespace SFML.Graphics.Design
@@ -49,6 +49,5 @@ namespace SFML.Graphics.Design
             _property.SetValue(component, value, null);
             OnValueChanged(component, EventArgs.Empty);
         }
-
     }
 }

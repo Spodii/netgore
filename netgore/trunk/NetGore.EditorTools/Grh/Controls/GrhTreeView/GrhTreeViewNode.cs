@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML;
-using SFML.Graphics;
 
 namespace NetGore.EditorTools
 {
@@ -56,12 +55,12 @@ namespace NetGore.EditorTools
             const string framePadding = "  ";
             const string frameSeperator = ",";
 
-            int count = frames.Count();
+            var count = frames.Count();
 
             sb.AppendLine("Frames: " + count);
             sb.Append(framePadding);
 
-            int i = 0;
+            var i = 0;
             foreach (var frame in frames)
             {
                 sb.Append(frame.GrhIndex);
@@ -104,7 +103,7 @@ namespace NetGore.EditorTools
         /// <returns>The tooltip text to use for a <see cref="GrhData"/>.</returns>
         string GetToolTipText()
         {
-            string ret = string.Empty;
+            var ret = string.Empty;
 
             try
             {
@@ -127,7 +126,7 @@ namespace NetGore.EditorTools
         /// <returns>The tool tip text for any animated <see cref="GrhData"/>.</returns>
         static string GetToolTipTextAnimated(GrhData grhData)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             if (grhData is AutomaticAnimatedGrhData)
                 sb.AppendLine("*Automatic Animated GrhData*");
@@ -148,9 +147,9 @@ namespace NetGore.EditorTools
         static string GetToolTipTextStationary(StationaryGrhData grhData)
         {
             // Stationary
-            Rectangle sourceRect = grhData.SourceRect;
+            var sourceRect = grhData.SourceRect;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.AppendLine("Grh: " + grhData.GrhIndex);
             sb.AppendLine("Texture: " + grhData.TextureName);
@@ -220,7 +219,7 @@ namespace NetGore.EditorTools
         /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
         void SetIconImageStationary(StationaryGrhData grhData)
         {
-            string imageKey = GrhImageList.GetImageKey(grhData);
+            var imageKey = GrhImageList.GetImageKey(grhData);
             SetImageKeys(imageKey);
         }
 
@@ -253,8 +252,8 @@ namespace NetGore.EditorTools
                 return;
             }
 
-            string category = ((GrhTreeViewFolderNode)Parent).FullCategory;
-            string title = Text;
+            var category = ((GrhTreeViewFolderNode)Parent).FullCategory;
+            var title = Text;
             GrhData.SetCategorization(new SpriteCategorization(category, title));
         }
 
@@ -315,7 +314,7 @@ namespace NetGore.EditorTools
             if (oldGrhData != _animationGrh.CurrentGrhData)
             {
                 // Change the image
-                string imageKey = GrhImageList.GetImageKey(current);
+                var imageKey = GrhImageList.GetImageKey(current);
                 SetImageKeys(imageKey);
             }
         }

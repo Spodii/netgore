@@ -120,7 +120,7 @@ namespace NetGore.Features.Emoticons
         /// <param name="currentTime">The current game time.</param>
         public void Update(int currentTime)
         {
-            int removeCount = 0;
+            var removeCount = 0;
 
             // Update all the living emoticons
             foreach (var value in _activeEmoticons.Values)

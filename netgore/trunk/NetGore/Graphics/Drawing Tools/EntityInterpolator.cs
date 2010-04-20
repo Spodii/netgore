@@ -57,7 +57,7 @@ namespace NetGore.Graphics
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            Vector2 position = entity.Position;
+            var position = entity.Position;
             UpdateGreatestVelocity(entity.Velocity);
 
             // Draw position and real position are already equal
@@ -65,7 +65,7 @@ namespace NetGore.Graphics
                 return;
 
             // Get the velocity to use
-            Vector2 velocity = entity.Velocity.Abs();
+            var velocity = entity.Velocity.Abs();
 
             // If the velocity we grabbed is zero, but we're not at the position we need to be at, we will have to use
             // the greatest velocity so we can "guess" on how to move (since not moving is not a good option). If we also
@@ -93,7 +93,7 @@ namespace NetGore.Graphics
                 velocity.Y *= -1;
 
             // Get the new position
-            Vector2 newPosition = _drawPosition + (velocity * deltaTime);
+            var newPosition = _drawPosition + (velocity * deltaTime);
 
             // Don't allow the draw position to exceed the real position
             if (velocity.X > 0)
@@ -123,7 +123,7 @@ namespace NetGore.Graphics
             }
 
             // If we are too far out of sync, just jump to the real position
-            float diff = newPosition.QuickDistance(position);
+            var diff = newPosition.QuickDistance(position);
             if (diff > _maxAllowedDistance)
                 newPosition = position;
 

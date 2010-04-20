@@ -48,7 +48,7 @@ namespace NetGore
             if (_filterPieces == null || _filterPieces.Length == 0)
                 return true;
 
-            for (int i = 0; i < _filterPieces.Length; i++)
+            for (var i = 0; i < _filterPieces.Length; i++)
             {
                 if (text.Contains(_filterPieces[i], StringComparison.OrdinalIgnoreCase))
                     return true;

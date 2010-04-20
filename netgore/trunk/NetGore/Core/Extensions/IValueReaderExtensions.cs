@@ -28,7 +28,7 @@ namespace NetGore
 
             if (reader.SupportsNameLookup)
             {
-                string value = reader.ReadString(name);
+                var value = reader.ReadString(name);
                 var split = value.Split(',');
                 r = Parser.Invariant.ParseByte(split[0]);
                 g = Parser.Invariant.ParseByte(split[1]);
@@ -48,7 +48,7 @@ namespace NetGore
 
         public static ContentAssetName ReadContentAssetName(this IValueReader reader, string name)
         {
-            string s = reader.ReadString(name);
+            var s = reader.ReadString(name);
             return new ContentAssetName(s);
         }
 
@@ -62,16 +62,16 @@ namespace NetGore
         {
             if (reader.SupportsNameLookup)
             {
-                string value = reader.ReadString(name);
+                var value = reader.ReadString(name);
                 var split = value.Split(',');
-                int x = Parser.Invariant.ParseInt(split[0]);
-                int y = Parser.Invariant.ParseInt(split[1]);
+                var x = Parser.Invariant.ParseInt(split[0]);
+                var y = Parser.Invariant.ParseInt(split[1]);
                 return new Point(x, y);
             }
             else
             {
-                int x = reader.ReadInt(null);
-                int y = reader.ReadInt(null);
+                var x = reader.ReadInt(null);
+                var y = reader.ReadInt(null);
                 return new Point(x, y);
             }
         }
@@ -88,7 +88,7 @@ namespace NetGore
 
             if (reader.SupportsNameLookup)
             {
-                string value = reader.ReadString(name);
+                var value = reader.ReadString(name);
                 var split = value.Split(',');
                 x = Parser.Invariant.ParseInt(split[0]);
                 y = Parser.Invariant.ParseInt(split[1]);
@@ -108,25 +108,25 @@ namespace NetGore
 
         public static SpriteCategorization ReadSpriteCategorization(this IValueReader reader, string name)
         {
-            string s = reader.ReadString(name);
+            var s = reader.ReadString(name);
             return new SpriteCategorization(s);
         }
 
         public static SpriteCategory ReadSpriteCategory(this IValueReader reader, string name)
         {
-            string s = reader.ReadString(name);
+            var s = reader.ReadString(name);
             return new SpriteCategory(s);
         }
 
         public static SpriteTitle ReadSpriteTitle(this IValueReader reader, string name)
         {
-            string s = reader.ReadString(name);
+            var s = reader.ReadString(name);
             return new SpriteTitle(s);
         }
 
         public static TextureAssetName ReadTextureAssetName(this IValueReader reader, string name)
         {
-            string s = reader.ReadString(name);
+            var s = reader.ReadString(name);
             return new TextureAssetName(s);
         }
 
@@ -144,12 +144,12 @@ namespace NetGore
                 throw new ArgumentOutOfRangeException("maxValue", "MaxValue must be greater than or equal to MinValue.");
 
             // Find the number of bits required for the range of desired values
-            uint maxWriteValue = maxValue - minValue;
-            int bitsRequired = BitOps.RequiredBits(maxWriteValue);
+            var maxWriteValue = maxValue - minValue;
+            var bitsRequired = BitOps.RequiredBits(maxWriteValue);
 
             // Read the value, which is the offset from the minimum possible value, then add it to the minimum
             // possible value
-            uint offsetFromMin = reader.ReadUInt(name, bitsRequired);
+            var offsetFromMin = reader.ReadUInt(name, bitsRequired);
             return minValue + offsetFromMin;
         }
 
@@ -167,12 +167,12 @@ namespace NetGore
                 throw new ArgumentOutOfRangeException("maxValue", "MaxValue must be greater than or equal to MinValue.");
 
             // Find the number of bits required for the range of desired values
-            uint maxWriteValue = (uint)(maxValue - minValue);
-            int bitsRequired = BitOps.RequiredBits(maxWriteValue);
+            var maxWriteValue = (uint)(maxValue - minValue);
+            var bitsRequired = BitOps.RequiredBits(maxWriteValue);
 
             // Read the value, which is the offset from the minimum possible value, then add it to the minimum
             // possible value
-            uint offsetFromMin = reader.ReadUInt(name, bitsRequired);
+            var offsetFromMin = reader.ReadUInt(name, bitsRequired);
             return minValue + (int)offsetFromMin;
         }
 
@@ -305,16 +305,16 @@ namespace NetGore
         {
             if (reader.SupportsNameLookup)
             {
-                string value = reader.ReadString(name);
+                var value = reader.ReadString(name);
                 var split = value.Split(',');
-                float x = Parser.Invariant.ParseFloat(split[0]);
-                float y = Parser.Invariant.ParseFloat(split[1]);
+                var x = Parser.Invariant.ParseFloat(split[0]);
+                var y = Parser.Invariant.ParseFloat(split[1]);
                 return new Vector2(x, y);
             }
             else
             {
-                float x = reader.ReadFloat(null);
-                float y = reader.ReadFloat(null);
+                var x = reader.ReadFloat(null);
+                var y = reader.ReadFloat(null);
                 return new Vector2(x, y);
             }
         }
@@ -329,18 +329,18 @@ namespace NetGore
         {
             if (reader.SupportsNameLookup)
             {
-                string value = reader.ReadString(name);
+                var value = reader.ReadString(name);
                 var split = value.Split(',');
-                float x = Parser.Invariant.ParseFloat(split[0]);
-                float y = Parser.Invariant.ParseFloat(split[1]);
-                float z = Parser.Invariant.ParseFloat(split[2]);
+                var x = Parser.Invariant.ParseFloat(split[0]);
+                var y = Parser.Invariant.ParseFloat(split[1]);
+                var z = Parser.Invariant.ParseFloat(split[2]);
                 return new Vector3(x, y, z);
             }
             else
             {
-                float x = reader.ReadFloat(null);
-                float y = reader.ReadFloat(null);
-                float z = reader.ReadFloat(null);
+                var x = reader.ReadFloat(null);
+                var y = reader.ReadFloat(null);
+                var z = reader.ReadFloat(null);
                 return new Vector3(x, y, z);
             }
         }
@@ -355,20 +355,20 @@ namespace NetGore
         {
             if (reader.SupportsNameLookup)
             {
-                string value = reader.ReadString(name);
+                var value = reader.ReadString(name);
                 var split = value.Split(',');
-                float x = Parser.Invariant.ParseFloat(split[0]);
-                float y = Parser.Invariant.ParseFloat(split[1]);
-                float z = Parser.Invariant.ParseFloat(split[2]);
-                float w = Parser.Invariant.ParseFloat(split[3]);
+                var x = Parser.Invariant.ParseFloat(split[0]);
+                var y = Parser.Invariant.ParseFloat(split[1]);
+                var z = Parser.Invariant.ParseFloat(split[2]);
+                var w = Parser.Invariant.ParseFloat(split[3]);
                 return new Vector4(x, y, z, w);
             }
             else
             {
-                float x = reader.ReadFloat(null);
-                float y = reader.ReadFloat(null);
-                float z = reader.ReadFloat(null);
-                float w = reader.ReadFloat(null);
+                var x = reader.ReadFloat(null);
+                var y = reader.ReadFloat(null);
+                var z = reader.ReadFloat(null);
+                var w = reader.ReadFloat(null);
                 return new Vector4(x, y, z, w);
             }
         }

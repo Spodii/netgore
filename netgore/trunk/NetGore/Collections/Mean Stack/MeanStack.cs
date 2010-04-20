@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace NetGore.Collections
 {
@@ -28,7 +27,7 @@ namespace NetGore.Collections
                 return (MeanFinderHandler<T>)del;
 
             // Find the method to handle the type
-            MethodInfo method = typeof(MeanStack).GetMethod("Mean", new Type[] { typeof(T[]), typeof(int), typeof(int) });
+            var method = typeof(MeanStack).GetMethod("Mean", new Type[] { typeof(T[]), typeof(int), typeof(int) });
 
             // Ensure we got a valid method
             if (method == null)
@@ -56,9 +55,9 @@ namespace NetGore.Collections
             if (count == 0)
                 return 0;
 
-            int sum = 0;
+            var sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -80,7 +79,7 @@ namespace NetGore.Collections
 
             uint sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -100,9 +99,9 @@ namespace NetGore.Collections
             if (count == 0)
                 return 0;
 
-            int sum = 0;
+            var sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -122,9 +121,9 @@ namespace NetGore.Collections
             if (count == 0)
                 return 0;
 
-            int sum = 0;
+            var sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -144,9 +143,9 @@ namespace NetGore.Collections
             if (count == 0)
                 return 0;
 
-            int sum = 0;
+            var sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -166,9 +165,9 @@ namespace NetGore.Collections
             if (count == 0)
                 return 0;
 
-            int sum = 0;
+            var sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -190,7 +189,7 @@ namespace NetGore.Collections
 
             float sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -212,7 +211,7 @@ namespace NetGore.Collections
 
             double sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -234,7 +233,7 @@ namespace NetGore.Collections
 
             long sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -256,7 +255,7 @@ namespace NetGore.Collections
 
             ulong sum = 0;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }
@@ -315,7 +314,7 @@ namespace NetGore.Collections
         /// <param name="value">Value to fill the stack with.</param>
         public void Fill(T value)
         {
-            for (int i = 0; i < _buffer.Length; i++)
+            for (var i = 0; i < _buffer.Length; i++)
             {
                 _buffer[i] = value;
             }
@@ -347,7 +346,7 @@ namespace NetGore.Collections
                 _high++;
 
             // Shift up all existing values, dropping the last one
-            for (int i = _high; i > 0; i--)
+            for (var i = _high; i > 0; i--)
             {
                 _buffer[i] = _buffer[i - 1];
             }

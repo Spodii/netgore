@@ -14,7 +14,7 @@ namespace DemoGame.Server
             if (!v.Chance.Test())
                 return null;
 
-            ItemEntity instance = new ItemEntity(v.ItemTemplate, Vector2.Zero, 1);
+            var instance = new ItemEntity(v.ItemTemplate, Vector2.Zero, 1);
             return instance;
         }
     }

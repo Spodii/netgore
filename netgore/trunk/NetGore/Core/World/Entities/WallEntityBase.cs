@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Linq;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -156,8 +155,8 @@ namespace NetGore
 
         void Read(IValueReader r)
         {
-            Vector2 position = r.ReadVector2(_positionValueKey);
-            Vector2 size = r.ReadVector2(_sizeValueKey);
+            var position = r.ReadVector2(_positionValueKey);
+            var size = r.ReadVector2(_sizeValueKey);
             IsPlatform = r.ReadBool(_isPlatformValueKey);
 
             SetPositionRaw(position);

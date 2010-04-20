@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -22,8 +20,8 @@ namespace NetGore.Graphics.ParticleEngine
         const string _modifyBlueKeyName = "ModifyBlue";
         const string _modifyGreenKeyName = "ModifyGreen";
         const string _modifyRedKeyName = "ModifyRed";
-        const string _releaseColorKeyName = "ReleaseColor";
         const byte _rOffset = 0;
+        const string _releaseColorKeyName = "ReleaseColor";
         const string _ultimateColorKeyName = "UltimateColor";
         byte _modifyFlags = byte.MaxValue;
 

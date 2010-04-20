@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the PointConverter class.</summary>
         public PointConverter()
         {
-            Type type = typeof(Point);
+            var type = typeof(Point);
             base.propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")) }).Sort(
@@ -27,7 +26,7 @@ namespace SFML.Graphics.Design
         /// <param name="value">The object to convert.</param>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            int[] numArray = ConvertToValues<int>(context, culture, value, 2, new string[] { "X", "Y" });
+            var numArray = ConvertToValues<int>(context, culture, value, 2, new string[] { "X", "Y" });
             if (numArray != null)
                 return new Point(numArray[0], numArray[1]);
             return base.ConvertFrom(context, culture, value);
@@ -44,13 +43,13 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(string)) && (value is Point))
             {
-                Point point2 = (Point)value;
+                var point2 = (Point)value;
                 return ConvertFromValues(context, culture, new int[] { point2.X, point2.Y });
             }
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Point))
             {
-                Point point = (Point)value;
-                ConstructorInfo constructor = typeof(Point).GetConstructor(new Type[] { typeof(int), typeof(int) });
+                var point = (Point)value;
+                var constructor = typeof(Point).GetConstructor(new Type[] { typeof(int), typeof(int) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor, new object[] { point.X, point.Y });
             }

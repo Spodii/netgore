@@ -101,15 +101,15 @@ namespace NetGore.Graphics
             if (IsExpired)
                 return;
 
-            Vector2 size = Size;
-            Vector2 drawPos = _manager.GetDrawOffset(Owner, size).Round();
+            var size = Size;
+            var drawPos = _manager.GetDrawOffset(Owner, size).Round();
 
             // Draw the border
-            Rectangle borderArea = new Rectangle((int)drawPos.X, (int)drawPos.Y, (int)size.X, (int)size.Y);
+            var borderArea = new Rectangle((int)drawPos.X, (int)drawPos.Y, (int)size.X, (int)size.Y);
             _manager.Border.Draw(sb, borderArea);
 
             // Draw the text
-            Vector2 textPos = drawPos + new Vector2(_manager.Border.LeftWidth, _manager.Border.TopHeight);
+            var textPos = drawPos + new Vector2(_manager.Border.LeftWidth, _manager.Border.TopHeight);
             sb.DrawString(_manager.Font, Text, textPos, _manager.FontColor);
         }
 

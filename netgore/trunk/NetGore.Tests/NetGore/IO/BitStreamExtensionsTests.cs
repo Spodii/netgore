@@ -10,7 +10,7 @@ namespace NetGore.Tests.NetGore.IO
         static void AreArraysEqual<T>(T[] a, T[] b)
         {
             Assert.AreEqual(a.Length, b.Length);
-            for (int i = 0; i < a.Length; i++)
+            for (var i = 0; i < a.Length; i++)
             {
                 Assert.AreEqual(a[i], b[i]);
             }

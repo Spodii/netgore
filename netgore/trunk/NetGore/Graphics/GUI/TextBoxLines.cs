@@ -55,7 +55,7 @@ namespace NetGore.Graphics.GUI
         {
             get
             {
-                int i = CurrentLineIndex;
+                var i = CurrentLineIndex;
 
                 // Do some quick bounds validating
                 if (i < 0)
@@ -175,8 +175,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="defaultColor">The default font color.</param>
         public void Draw(ISpriteBatch sb, Font font, int start, int count, Vector2 screenPos, Color defaultColor)
         {
-            int end = Math.Min(start + count, _lines.Count);
-            for (int i = start; i < end; i++)
+            var end = Math.Min(start + count, _lines.Count);
+            for (var i = start; i < end; i++)
             {
                 var curr = _lines[i];
                 curr.Draw(sb, font, screenPos, defaultColor);
@@ -192,7 +192,7 @@ namespace NetGore.Graphics.GUI
         {
             var lines = GetText();
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var line in lines)
             {
                 foreach (var lineText in line)
@@ -227,10 +227,10 @@ namespace NetGore.Graphics.GUI
         /// <returns>A List containing a List of the <see cref="StyledText"/>s that each line is composed of.</returns>
         public List<List<StyledText>> GetText()
         {
-            List<List<StyledText>> retLines = new List<List<StyledText>>();
+            var retLines = new List<List<StyledText>>();
             List<StyledText> currRetLine = null;
 
-            for (int i = 0; i < _lines.Count; i++)
+            for (var i = 0; i < _lines.Count; i++)
             {
                 var curr = _lines[i];
                 if (currRetLine == null || !curr.WasAutoBroken)
@@ -372,13 +372,13 @@ namespace NetGore.Graphics.GUI
             line.Clear();
             line.Append(newLines[0]);
 
-            int lineIndex = _lines.IndexOf(line);
+            var lineIndex = _lines.IndexOf(line);
 
             if (lineIndex != _lines.Count - 1 && _lines[lineIndex + 1].WasAutoBroken)
             {
                 // We're not at the last line AND the next line was auto-split, so keep inserting at the
                 // start of the next line in reverse
-                for (int i = newLines.Count - 1; i > 0; i--)
+                for (var i = newLines.Count - 1; i > 0; i--)
                 {
                     foreach (var j in newLines[i].Reverse<StyledText>())
                     {
@@ -389,7 +389,7 @@ namespace NetGore.Graphics.GUI
             else
             {
                 // We're at the last line or the next line was not an auto-split line
-                for (int i = 1; i < newLines.Count; i++)
+                for (var i = 1; i < newLines.Count; i++)
                 {
                     var newLine = new TextBoxLine(this, true);
                     newLine.Append(newLines[i]);
@@ -407,7 +407,7 @@ namespace NetGore.Graphics.GUI
 
             Clear();
 
-            for (int i = 0; i < contents.Count; i++)
+            for (var i = 0; i < contents.Count; i++)
             {
                 TextBoxLine newLine;
                 if (i < _lines.Count)

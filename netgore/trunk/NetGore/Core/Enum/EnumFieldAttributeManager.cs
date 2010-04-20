@@ -30,7 +30,7 @@ namespace NetGore
             var fields = typeof(TEnum).GetFields().Where(x => !x.IsSpecialName);
             foreach (var field in fields)
             {
-                TEnum value = (TEnum)field.GetValue(null);
+                var value = (TEnum)field.GetValue(null);
 
                 // Grab the given attribute
                 var attribute = field.GetCustomAttributes(typeof(TAttribute), true).OfType<TAttribute>().FirstOrDefault();
@@ -40,7 +40,7 @@ namespace NetGore
                     if (requireAttribute)
                     {
                         const string errmsg = "Enum `{0}`'s value `{1}` does not contain the required attribute `{2}`.";
-                        string err = string.Format(errmsg, typeof(TEnum), field.Name, typeof(TAttribute));
+                        var err = string.Format(errmsg, typeof(TEnum), field.Name, typeof(TAttribute));
                         log.Fatal(err);
                         throw new TypeException(err, typeof(TEnum));
                     }

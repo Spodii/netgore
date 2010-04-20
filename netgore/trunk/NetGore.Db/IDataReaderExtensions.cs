@@ -199,7 +199,7 @@ namespace NetGore.Db
         /// <returns>The nullable Boolean of the specified field.</returns>
         public static bool? GetNullableBoolean(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableBoolean(i);
         }
 
@@ -225,7 +225,7 @@ namespace NetGore.Db
         /// <returns>The nullable Byte of the specified field.</returns>
         public static byte? GetNullableByte(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableByte(i);
         }
 
@@ -251,7 +251,7 @@ namespace NetGore.Db
         /// <returns>The nullable Decimal of the specified field.</returns>
         public static decimal? GetNullableDecimal(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableDecimal(i);
         }
 
@@ -277,7 +277,7 @@ namespace NetGore.Db
         /// <returns>The nullable Float of the specified field.</returns>
         public static float? GetNullableFloat(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableFloat(i);
         }
 
@@ -303,7 +303,7 @@ namespace NetGore.Db
         /// <returns>The nullable Short of the specified field.</returns>
         public static short? GetNullableInt16(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableInt16(i);
         }
 
@@ -329,7 +329,7 @@ namespace NetGore.Db
         /// <returns>The nullable Int32 of the specified field.</returns>
         public static int? GetNullableInt32(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableInt32(i);
         }
 
@@ -355,7 +355,7 @@ namespace NetGore.Db
         /// <returns>The nullable Int64 of the specified field.</returns>
         public static long? GetNullableInt64(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableInt64(i);
         }
 
@@ -381,7 +381,7 @@ namespace NetGore.Db
         /// <returns>The nullable SByte of the specified field.</returns>
         public static sbyte? GetNullableSByte(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableSByte(i);
         }
 
@@ -407,7 +407,7 @@ namespace NetGore.Db
         /// <returns>The nullable UInt16 of the specified field.</returns>
         public static ushort? GetNullableUInt16(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableUInt16(i);
         }
 
@@ -433,7 +433,7 @@ namespace NetGore.Db
         /// <returns>The nullable UInt32 of the specified field.</returns>
         public static ulong? GetNullableUInt32(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableUInt32(i);
         }
 
@@ -459,7 +459,7 @@ namespace NetGore.Db
         /// <returns>The nullable UInt64 of the specified field.</returns>
         public static ulong? GetNullableUInt64(this IDataReader dataReader, string name)
         {
-            int i = dataReader.GetOrdinal(name);
+            var i = dataReader.GetOrdinal(name);
             return dataReader.GetNullableUInt64(i);
         }
 
@@ -482,7 +482,7 @@ namespace NetGore.Db
         /// <returns>The 8-bit unsigned integer value of the specified field.</returns>
         public static sbyte GetSByte(this IDataReader dataReader, int i)
         {
-            object value = dataReader.GetValue(i);
+            var value = dataReader.GetValue(i);
             if (value is sbyte)
                 return (sbyte)value;
 
@@ -519,7 +519,7 @@ namespace NetGore.Db
         /// <returns>The 16-bit unsigned integer value of the specified field.</returns>
         public static ushort GetUInt16(this IDataReader dataReader, int i)
         {
-            object value = dataReader.GetValue(i);
+            var value = dataReader.GetValue(i);
             if (value is ushort)
                 return (ushort)value;
 
@@ -545,7 +545,7 @@ namespace NetGore.Db
         /// <returns>The 32-bit unsigned integer value of the specified field.</returns>
         public static uint GetUInt32(this IDataReader dataReader, int i)
         {
-            object value = dataReader.GetValue(i);
+            var value = dataReader.GetValue(i);
             if (value is uint)
                 return (uint)value;
 
@@ -571,7 +571,7 @@ namespace NetGore.Db
         /// <returns>The 64-bit unsigned integer value of the specified field.</returns>
         public static ulong GetUInt64(this IDataReader dataReader, int i)
         {
-            object value = dataReader.GetValue(i);
+            var value = dataReader.GetValue(i);
             if (value is ulong)
                 return (ulong)value;
 

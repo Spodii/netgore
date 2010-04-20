@@ -21,7 +21,7 @@ namespace NetGore
         /// <returns>A randomly chosen element in the given collection <paramref name="items"/>.</returns>
         public static T Choose<T>(params T[] items)
         {
-            int index = NextInt(items.Length);
+            var index = NextInt(items.Length);
             return items[index];
         }
 
@@ -45,7 +45,7 @@ namespace NetGore
         /// <returns>A randomly chosen element in the given set of items.</returns>
         public static T Choose<T>(T a, T b)
         {
-            int index = NextInt(2);
+            var index = NextInt(2);
             switch (index)
             {
                 case 0:
@@ -65,7 +65,7 @@ namespace NetGore
         /// <returns>A randomly chosen element in the given set of items.</returns>
         public static T Choose<T>(T a, T b, T c)
         {
-            int index = NextInt(3);
+            var index = NextInt(3);
             switch (index)
             {
                 case 0:
@@ -88,7 +88,7 @@ namespace NetGore
         /// <returns>A randomly chosen element in the given set of items.</returns>
         public static T Choose<T>(T a, T b, T c, T d)
         {
-            int index = NextInt(4);
+            var index = NextInt(4);
             switch (index)
             {
                 case 0:
@@ -114,7 +114,7 @@ namespace NetGore
         /// <returns>A randomly chosen element in the given set of items.</returns>
         public static T Choose<T>(T a, T b, T c, T d, T e)
         {
-            int index = NextInt(5);
+            var index = NextInt(5);
             switch (index)
             {
                 case 0:
@@ -143,7 +143,7 @@ namespace NetGore
         /// <returns>A randomly chosen element in the given set of items.</returns>
         public static T Choose<T>(T a, T b, T c, T d, T e, T f)
         {
-            int index = NextInt(6);
+            var index = NextInt(6);
             switch (index)
             {
                 case 0:
@@ -175,7 +175,7 @@ namespace NetGore
         /// <returns>A randomly chosen element in the given set of items.</returns>
         public static T Choose<T>(T a, T b, T c, T d, T e, T f, T g)
         {
-            int index = NextInt(7);
+            var index = NextInt(7);
             switch (index)
             {
                 case 0:
@@ -210,7 +210,7 @@ namespace NetGore
         /// <returns>A randomly chosen element in the given set of items.</returns>
         public static T Choose<T>(T a, T b, T c, T d, T e, T f, T g, T h)
         {
-            int index = NextInt(8);
+            var index = NextInt(8);
             switch (index)
             {
                 case 0:

@@ -32,7 +32,7 @@ namespace NetGore
             list.Sort();
 
             // Push all the items back into the stack backwards
-            foreach (T item in list.Reverse<T>())
+            foreach (var item in list.Reverse<T>())
             {
                 stack.Push(item);
             }
@@ -81,7 +81,7 @@ namespace NetGore
             list.Sort();
 
             // Push all the items back into the stack
-            foreach (T item in list)
+            foreach (var item in list)
             {
                 stack.Push(item);
             }

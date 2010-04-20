@@ -125,7 +125,7 @@ namespace NetGore.Features.Quests
 
                 default:
                     const string errmsg = "Unknown QuestInfoMessages value `{0}`. Could not parse!";
-                    string err = string.Format(errmsg, id);
+                    var err = string.Format(errmsg, id);
                     log.Fatal(err);
                     Debug.Fail(err);
                     return;
@@ -188,15 +188,15 @@ namespace NetGore.Features.Quests
             _activeQuests.Clear();
 
             // Read completed quests
-            byte count = bs.ReadByte();
-            for (int i = 0; i < count; i++)
+            var count = bs.ReadByte();
+            for (var i = 0; i < count; i++)
             {
                 _completedQuests.Add(bs.ReadQuestID());
             }
 
             // Read Active quests
             count = bs.ReadByte();
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 _activeQuests.Add(bs.ReadQuestID());
             }

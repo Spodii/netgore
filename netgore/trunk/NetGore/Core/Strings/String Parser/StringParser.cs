@@ -85,7 +85,7 @@ namespace NetGore
         static MethodInfo GetMethodInfo(string name, Type handledType, Type[] parameters)
         {
             const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.InvokeMethod;
-            MethodInfo method = handledType.GetMethod(name, flags, null, parameters, null);
+            var method = handledType.GetMethod(name, flags, null, parameters, null);
             if (method == null || method.ReturnType != handledType)
                 return null;
 
@@ -121,7 +121,7 @@ namespace NetGore
                 return true;
 
             // Get the parse method for this Type
-            MethodInfo method = _parsers[type];
+            var method = _parsers[type];
             if (method == null)
             {
                 value = null;
@@ -136,7 +136,7 @@ namespace NetGore
                     // An explicit/implicit operator - have to convert first to the system type, then call the operator
                     // to get whatever type this is
                     object parsedSystemType;
-                    bool successful = TryParseSystemType(s, method.GetParameters().First().ParameterType, out parsedSystemType);
+                    var successful = TryParseSystemType(s, method.GetParameters().First().ParameterType, out parsedSystemType);
                     if (!successful)
                     {
                         value = null;
@@ -181,7 +181,7 @@ namespace NetGore
             if (type == typeof(float))
             {
                 float v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -189,7 +189,7 @@ namespace NetGore
             if (type == typeof(double))
             {
                 double v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -197,7 +197,7 @@ namespace NetGore
             if (type == typeof(long))
             {
                 long v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -205,7 +205,7 @@ namespace NetGore
             if (type == typeof(ulong))
             {
                 ulong v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -213,7 +213,7 @@ namespace NetGore
             if (type == typeof(int))
             {
                 int v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -221,7 +221,7 @@ namespace NetGore
             if (type == typeof(uint))
             {
                 uint v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -229,7 +229,7 @@ namespace NetGore
             if (type == typeof(short))
             {
                 short v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -237,7 +237,7 @@ namespace NetGore
             if (type == typeof(ushort))
             {
                 ushort v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -245,7 +245,7 @@ namespace NetGore
             if (type == typeof(byte))
             {
                 byte v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -253,7 +253,7 @@ namespace NetGore
             if (type == typeof(sbyte))
             {
                 sbyte v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -261,7 +261,7 @@ namespace NetGore
             if (type == typeof(DateTime))
             {
                 DateTime v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -269,7 +269,7 @@ namespace NetGore
             if (type == typeof(bool))
             {
                 bool v;
-                bool ret = ParserToUse.TryParse(s, out v);
+                var ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }

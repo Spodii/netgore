@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -34,10 +35,10 @@ namespace SFML.Graphics.Design
         {
             if (culture == null)
                 culture = CultureInfo.CurrentCulture;
-            string separator = culture.TextInfo.ListSeparator + " ";
-            TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
-            string[] strArray = new string[values.Length];
-            for (int i = 0; i < values.Length; i++)
+            var separator = culture.TextInfo.ListSeparator + " ";
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+            var strArray = new string[values.Length];
+            for (var i = 0; i < values.Length; i++)
             {
                 strArray[i] = converter.ConvertToString(context, culture, values[i]);
             }
@@ -47,7 +48,7 @@ namespace SFML.Graphics.Design
         internal static T[] ConvertToValues<T>(ITypeDescriptorContext context, CultureInfo culture, object value, int arrayCount,
                                                params string[] expectedParams)
         {
-            string str = value as string;
+            var str = value as string;
             if (str == null)
                 return null;
 
@@ -60,10 +61,10 @@ namespace SFML.Graphics.Design
             if (culture == null)
                 culture = CultureInfo.CurrentCulture;
 
-            string[] strArray = str.Split(new string[] { culture.TextInfo.ListSeparator }, StringSplitOptions.None);
-            T[] localArray = new T[strArray.Length];
-            TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
-            for (int i = 0; i < localArray.Length; i++)
+            var strArray = str.Split(new string[] { culture.TextInfo.ListSeparator }, StringSplitOptions.None);
+            var localArray = new T[strArray.Length];
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+            for (var i = 0; i < localArray.Length; i++)
             {
                 try
                 {

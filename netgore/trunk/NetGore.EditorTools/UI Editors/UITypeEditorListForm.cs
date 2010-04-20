@@ -48,54 +48,6 @@ namespace NetGore.EditorTools
         public Func<T, bool> SkipItems { get; set; }
 
         /// <summary>
-        /// Handles when the filter changes.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void _filter_FilterChanged(TextFilterContainer sender)
-        {
-            // Store the currently selected item
-            var selected = lstItems.SelectedItem;
-
-            // Clear the list
-            lstItems.Items.Clear();
-
-            // Display the filtered list
-            var filteredItems = _filter.Filter.FilterItems(_items, GetItemDisplayString);
-            lstItems.Items.AddRange(filteredItems.Cast<object>().ToArray());
-
-            // Restore the selected item
-            lstItems.SelectedItem = selected;
-
-            // If the previously selected item is not available in the filtered list, just select the first item available
-            if (lstItems.SelectedIndex < 0 && lstItems.Items.Count > 0)
-                lstItems.SelectedIndex = 0;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnApplyFilter control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnApplyFilter_Click(object sender, EventArgs e)
-        {
-            // Try to get the selected filter name
-            var s = cmbFilterType.SelectedItem == null ? null : cmbFilterType.SelectedItem.ToString();
-
-            // Try to change the filter
-            bool success;
-            if (string.IsNullOrEmpty(s))
-                success = _filter.TryChangeFilter(txtFilter.Text);
-            else
-                success = _filter.TryChangeFilter(txtFilter.Text, s);
-
-            if (!success)
-            {
-                MessageBox.Show("Invalid filter string specified.");
-                return;
-            }
-        }
-
-        /// <summary>
         /// When overridden in the derived class, draws the <paramref name="item"/>.
         /// </summary>
         /// <param name="e">The <see cref="System.Windows.Forms.DrawItemEventArgs"/> instance containing the event data.</param>
@@ -135,29 +87,6 @@ namespace NetGore.EditorTools
         protected virtual bool IsItemValid(T item)
         {
             return true;
-        }
-
-        /// <summary>
-        /// Handles the DoubleClick event of the lstItems control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lstItems_DoubleClick(object sender, EventArgs e)
-        {
-            // Check for a valid selection range
-            if (lstItems.SelectedIndex < 0 || lstItems.SelectedIndex >= lstItems.Items.Count)
-                return;
-
-            // Get the item
-            var item = (T)lstItems.SelectedItem;
-
-            // Check for a valid item
-            if (!IsItemValid(item))
-                return;
-
-            HandleItemSelected(item);
-
-            DialogResult = DialogResult.OK;
         }
 
         /// <summary>
@@ -221,6 +150,77 @@ namespace NetGore.EditorTools
         {
             if (e.KeyCode == Keys.F && e.Modifiers == Keys.Control)
                 splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
+        }
+
+        /// <summary>
+        /// Handles when the filter changes.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void _filter_FilterChanged(TextFilterContainer sender)
+        {
+            // Store the currently selected item
+            var selected = lstItems.SelectedItem;
+
+            // Clear the list
+            lstItems.Items.Clear();
+
+            // Display the filtered list
+            var filteredItems = _filter.Filter.FilterItems(_items, GetItemDisplayString);
+            lstItems.Items.AddRange(filteredItems.Cast<object>().ToArray());
+
+            // Restore the selected item
+            lstItems.SelectedItem = selected;
+
+            // If the previously selected item is not available in the filtered list, just select the first item available
+            if (lstItems.SelectedIndex < 0 && lstItems.Items.Count > 0)
+                lstItems.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnApplyFilter control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnApplyFilter_Click(object sender, EventArgs e)
+        {
+            // Try to get the selected filter name
+            var s = cmbFilterType.SelectedItem == null ? null : cmbFilterType.SelectedItem.ToString();
+
+            // Try to change the filter
+            bool success;
+            if (string.IsNullOrEmpty(s))
+                success = _filter.TryChangeFilter(txtFilter.Text);
+            else
+                success = _filter.TryChangeFilter(txtFilter.Text, s);
+
+            if (!success)
+            {
+                MessageBox.Show("Invalid filter string specified.");
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Handles the DoubleClick event of the lstItems control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lstItems_DoubleClick(object sender, EventArgs e)
+        {
+            // Check for a valid selection range
+            if (lstItems.SelectedIndex < 0 || lstItems.SelectedIndex >= lstItems.Items.Count)
+                return;
+
+            // Get the item
+            var item = (T)lstItems.SelectedItem;
+
+            // Check for a valid item
+            if (!IsItemValid(item))
+                return;
+
+            HandleItemSelected(item);
+
+            DialogResult = DialogResult.OK;
         }
     }
 }

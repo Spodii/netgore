@@ -99,7 +99,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
-            Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
+            var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             _errorLabel = new Label(cScreen, new Vector2(410, 80)) { IsVisible = false };
 
@@ -128,7 +128,7 @@ namespace DemoGame.Client
         {
             if (!successful)
             {
-                string s = "Failed to create account: ";
+                var s = "Failed to create account: ";
                 if (!string.IsNullOrEmpty(s))
                     s += errorMessage;
                 else
@@ -173,6 +173,11 @@ namespace DemoGame.Client
             _errorLabel.ForeColor = Color.Green;
         }
 
+        void sockets_ConnectFailed(SocketManager sender)
+        {
+            ShowError("Failed to connect to the server.");
+        }
+
         void sockets_Connected(SocketManager sender, IIPSocket conn)
         {
             ShowMessage("Connected to server. Sending new account request...");
@@ -181,11 +186,6 @@ namespace DemoGame.Client
             {
                 _sockets.Send(pw);
             }
-        }
-
-        void sockets_ConnectFailed(SocketManager sender)
-        {
-            ShowError("Failed to connect to the server.");
         }
 
         void sockets_Disconnected(SocketManager sender, IIPSocket conn)

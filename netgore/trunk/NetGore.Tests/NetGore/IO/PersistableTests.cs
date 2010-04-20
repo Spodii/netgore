@@ -12,7 +12,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void ReadWriteFromHelperUsingPropertyTest()
         {
-            BitStream bs = new BitStream(BitStreamMode.Write, 512);
+            var bs = new BitStream(BitStreamMode.Write, 512);
             var a = new ClassB { A = "asdf", B = 512 };
             var b = new ClassB();
 
@@ -29,7 +29,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void ReadWriteFromInterfaceTest()
         {
-            BitStream bs = new BitStream(BitStreamMode.Write, 512);
+            var bs = new BitStream(BitStreamMode.Write, 512);
             var a = new ClassA { A = "asdf", B = 512 };
             var b = new ClassA();
 

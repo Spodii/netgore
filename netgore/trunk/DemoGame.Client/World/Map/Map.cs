@@ -9,7 +9,6 @@ using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using SFML.Graphics;
-using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {
@@ -66,20 +65,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets or sets the size of the map. This properly is only added for usage in editors.
-        /// </summary>
-        [Browsable(true)]
-        [Description("The size of the map in pixels.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [DisplayName("Size")]
-        [Category("Map")]
-        public Vector2 _Size
-        {
-            get { return Size; }
-            set { SetDimensions(value); }
-        }
-
-        /// <summary>
         /// Gets or sets the ambient light color.
         /// </summary>
         [Browsable(true)]
@@ -126,6 +111,20 @@ namespace DemoGame.Client
         public MapParticleEffectCollection ParticleEffects
         {
             get { return _particleEffects; }
+        }
+
+        /// <summary>
+        /// Gets or sets the size of the map. This properly is only added for usage in editors.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The size of the map in pixels.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DisplayName("Size")]
+        [Category("Map")]
+        public Vector2 _Size
+        {
+            get { return Size; }
+            set { SetDimensions(value); }
         }
 
         /// <summary>
@@ -218,7 +217,7 @@ namespace DemoGame.Client
             foreach (var a in Entities.OfType<WallEntityBase>())
             {
                 // Loop through each WallEntity in the comparison enum
-                foreach (WallEntityBase b in compareTo)
+                foreach (var b in compareTo)
                 {
                     // Check for duplicate location and collision type
                     if (a.Position == b.Position && a.Size == b.Size && a.GetType() == b.GetType())
@@ -292,7 +291,7 @@ namespace DemoGame.Client
             var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName, x => new BackgroundLayer(this, this, x));
 
             // Add the loaded background images
-            foreach (BackgroundImage bgImage in loadedBGImages)
+            foreach (var bgImage in loadedBGImages)
             {
                 AddBackgroundImage(bgImage);
             }
@@ -307,9 +306,9 @@ namespace DemoGame.Client
             BuildAtlas(usedGrhIndexes);
 
             // MapGrhs
-            int currentTime = GetTime();
+            var currentTime = GetTime();
             var loadedMapGrhs = reader.ReadManyNodes(_mapGrhsNodeName, x => new MapGrh(x, currentTime));
-            foreach (MapGrh mapGrh in loadedMapGrhs)
+            foreach (var mapGrh in loadedMapGrhs)
             {
                 AddMapGrh(mapGrh);
             }
@@ -443,17 +442,17 @@ namespace DemoGame.Client
         {
             base.Update(deltaTime);
 
-            int currentTime = GetTime();
+            var currentTime = GetTime();
 
             // Update the map Grhs
-            foreach (MapGrh g in _mapGrhs)
+            foreach (var g in _mapGrhs)
             {
                 if (Camera.InView(g.Grh, g.Position))
                     g.Update(currentTime);
             }
 
             // Update the background images
-            foreach (BackgroundImage bgImage in _backgroundImages)
+            foreach (var bgImage in _backgroundImages)
             {
                 bgImage.Update(currentTime);
             }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -13,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the Vector2Converter class.</summary>
         public Vector2Converter()
         {
-            Type type = typeof(Vector2);
+            var type = typeof(Vector2);
             propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")) }).Sort(
@@ -26,7 +26,7 @@ namespace SFML.Graphics.Design
         /// <param name="value">The object to convert.</param>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            float[] numArray = ConvertToValues<float>(context, culture, value, 2, new string[] { "X", "Y" });
+            var numArray = ConvertToValues<float>(context, culture, value, 2, new string[] { "X", "Y" });
             if (numArray != null)
                 return new Vector2(numArray[0], numArray[1]);
             return base.ConvertFrom(context, culture, value);
@@ -43,13 +43,13 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(string)) && (value is Vector2))
             {
-                Vector2 vector2 = (Vector2)value;
+                var vector2 = (Vector2)value;
                 return ConvertFromValues(context, culture, new float[] { vector2.X, vector2.Y });
             }
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Vector2))
             {
-                Vector2 vector = (Vector2)value;
-                ConstructorInfo constructor = typeof(Vector2).GetConstructor(new Type[] { typeof(float), typeof(float) });
+                var vector = (Vector2)value;
+                var constructor = typeof(Vector2).GetConstructor(new Type[] { typeof(float), typeof(float) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor, new object[] { vector.X, vector.Y });
             }

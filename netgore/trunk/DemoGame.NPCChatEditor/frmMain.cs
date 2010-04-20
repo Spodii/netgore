@@ -77,6 +77,260 @@ namespace DemoGame.NPCChatEditor
             get { return _editingObj as TreeNode; }
         }
 
+        /// <summary>
+        /// Creates the test dialog.
+        /// </summary>
+        /// <returns>The test dialog.</returns>
+        // ReSharper disable UnusedMember.Local
+        static EditorNPCChatDialog CreateTestDialog() // ReSharper restore UnusedMember.Local
+        {
+            var dialog = new EditorNPCChatDialog();
+
+            var haveYouDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(0), "Have you done this quest?");
+            haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "False"),
+                                             new EditorNPCChatResponse(new NPCChatDialogItemID(2), "True"));
+
+            var hasNotDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(1), "Think you can help me out?");
+            hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(3), "Yes"),
+                                            new EditorNPCChatResponse(new NPCChatDialogItemID(4), "No"));
+
+            var acceptHelp = new EditorNPCChatDialogItem(new NPCChatDialogItemID(3), "Sweet, thanks!");
+
+            var declineHelp = new EditorNPCChatDialogItem(new NPCChatDialogItemID(4), "Fine. Screw you too, you selfish jerk!");
+
+            var hasDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(2),
+                                                               "Sorry dude, you already did this quest!");
+            hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "So? Just let me do it!"),
+                                         new EditorNPCChatResponse("Ok, fine, whatever. Dick."));
+
+            dialog.Add(new EditorNPCChatDialogItem[]
+            { haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest });
+
+            return dialog;
+        }
+
+        /// <summary>
+        /// Disables all tabs in the TabControl except for the given page.
+        /// </summary>
+        /// <param name="tabControl">The TabControl.</param>
+        /// <param name="enabledTab">The TabPage to leave enabled.</param>
+        void DisableAllTabsExcept(TabControl tabControl, TabPage enabledTab)
+        {
+            txtDialogText.Text = string.Empty;
+
+            foreach (var tab in tabControl.TabPages.Cast<TabPage>())
+            {
+                if (tab == enabledTab)
+                {
+                    tabControl.SelectedTab = tab;
+                    SetAllChildrenEnabled(tab.Controls, true);
+                }
+                else
+                    SetAllChildrenEnabled(tab.Controls, false);
+            }
+        }
+
+        /// <summary>
+        /// Gets all the Controls from the given <paramref name="root"/>.
+        /// </summary>
+        /// <param name="root">The root Control.</param>
+        /// <returns>All the Controls from the given <paramref name="root"/>.</returns>
+        static IEnumerable<Control> GetAllControls(Control root)
+        {
+            foreach (var child in root.Controls.Cast<Control>())
+            {
+                yield return child;
+                foreach (var c2 in GetAllControls(child))
+                {
+                    yield return c2;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets all of the child TreeNodes from the given <paramref name="root"/>.
+        /// </summary>
+        /// <param name="root">The root TreeNode.</param>
+        /// <returns>All of the child TreeNodes from the given <paramref name="root"/>.</returns>
+        static IEnumerable<TreeNode> GetChildNodes(TreeNode root)
+        {
+            foreach (var node in root.Nodes.Cast<TreeNode>())
+            {
+                yield return node;
+                foreach (var n2 in GetChildNodes(node))
+                {
+                    yield return n2;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            EditorNPCChatManager.SaveDialogs();
+
+            base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            CustomUITypeEditors.AddEditors();
+
+            // Set controls that are initially disabled in the tab control to always be disabled
+            var controls = GetAllControls(tcChatDialogItem);
+            foreach (var control in controls)
+            {
+                if (control.Enabled == false)
+                    control.EnabledChanged += ((obj, eArgs) => ((Control)obj).Enabled = false);
+            }
+
+            // Disable conditional controls by default
+            SetConditionalsEnabled(false);
+
+            // Add the dialogs
+            cmbSelectedDialog.Items.Clear();
+            cmbSelectedDialog.AddDialog(EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>());
+
+            // Select the first one
+            if (cmbSelectedDialog.Items.Count > 0)
+                cmbSelectedDialog.SelectedIndex = 0;
+
+            // Populate the evaluation types
+            var evaluationTypes = EnumHelper<NPCChatConditionalEvaluationType>.Values;
+            cmbEvaluateType.Items.Clear();
+            cmbEvaluateType.Items.AddRange(evaluationTypes.Select(x => (object)x).ToArray());
+
+            // Population the response action types
+            var actionTypes = NPCChatResponseActionBase.Conditionals.OrderBy(x => x.Name);
+            cmbAddAction.Items.Clear();
+            cmbAddAction.Items.AddRange(actionTypes.Select(x => (object)x).ToArray());
+
+            // Perform the initial resize
+            OnResize(new EventArgs());
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            gbSelectedNode.Top = ClientSize.Height - gbSelectedNode.Height - gbSelectedNode.Left;
+            gbSelectedNode.Width = ClientSize.Width - (gbSelectedNode.Left * 2);
+
+            npcChatDialogView.Width = ClientSize.Width - (npcChatDialogView.Left * 2);
+            npcChatDialogView.Height = gbSelectedNode.Top - npcChatDialogView.Top - 6;
+
+            button1.Left = ClientSize.Width - button1.Width - 3;
+        }
+
+        /// <summary>
+        /// Sets the enabled value of the child controls from the given <paramref name="controls"/>.
+        /// </summary>
+        /// <param name="controls">The root control collection.</param>
+        /// <param name="enabled">True to set the controls as enabled; false for disabled.</param>
+        static void SetAllChildrenEnabled(IEnumerable controls, bool enabled)
+        {
+            foreach (var child in controls.OfType<Control>())
+            {
+                SetAllChildrenEnabled(child.Controls, enabled);
+                child.Enabled = enabled;
+            }
+        }
+
+        /// <summary>
+        /// Enables the Conditionals list.
+        /// </summary>
+        /// <param name="enabled">True to enable; false to disable.</param>
+        void SetConditionalsEnabled(bool enabled)
+        {
+            gbConditionals.Enabled = enabled;
+
+            if (enabled == false)
+                lstConditionals.ConditionalCollection = null;
+        }
+
+        /// <summary>
+        /// Sets the NPC chat object being edited.
+        /// </summary>
+        /// <param name="obj">The NPC chat object.</param>
+        void SetEditingObject(object obj)
+        {
+            if (_editingObj == obj)
+                return;
+
+            _doNotUpdateObj = true;
+            _editingObj = obj;
+
+            SetConditionalsEnabled(false);
+
+            if (obj is EditorNPCChatDialogItem)
+            {
+                DisableAllTabsExcept(tcChatDialogItem, tpDialog);
+                txtTitle.Enabled = true;
+
+                txtTitle.Text = EditingObjAsDialogItem.Title;
+                txtDialogText.Text = EditingObjAsDialogItem.Text;
+                txtDialogPage.Text = EditingObjAsDialogItem.ID.ToString();
+                chkIsBranch.Checked = EditingObjAsDialogItem.IsBranch;
+
+                if (EditingObjAsDialogItem.IsBranch)
+                {
+                    SetConditionalsEnabled(true);
+                    lstConditionals.SetConditionalCollection(EditingObjAsDialogItem.Conditionals);
+                    EditingObjAsDialogItem.SetConditionals(lstConditionals.ConditionalCollection);
+                }
+            }
+            else if (obj is EditorNPCChatResponse)
+            {
+                DisableAllTabsExcept(tcChatDialogItem, tpResponse);
+                txtTitle.Enabled = true;
+
+                txtTitle.Text = EditingObjAsResponse.Text;
+                txtDialogText.Text = EditingObjAsResponse.Text;
+                txtResponseIndex.Text = EditingObjAsResponse.Page.ToString();
+                txtResponseValue.Text = EditingObjAsResponse.Value.ToString();
+
+                SetConditionalsEnabled(true);
+                lstConditionals.SetConditionalCollection(EditingObjAsResponse.Conditionals);
+                EditingObjAsResponse.SetConditionals(lstConditionals.ConditionalCollection);
+
+                lstActions.Items.Clear();
+                lstActions.Items.AddRange(EditingObjAsResponse.Actions.ToArray());
+            }
+            else if (obj is TreeNode)
+            {
+                DisableAllTabsExcept(tcChatDialogItem, tpRedirect);
+                txtTitle.Enabled = false;
+
+                var redirectTo = (EditorNPCChatDialogItem)EditingObjAsTreeNode.Tag;
+                txtTitle.Text = redirectTo.Text;
+                txtRedirectID.Text = redirectTo.ID.ToString();
+            }
+            else
+                SetAllChildrenEnabled(tcChatDialogItem.Controls, false);
+
+            _doNotUpdateObj = false;
+        }
+
+        void UpdateActionsList()
+        {
+            if (EditingObjAsResponse == null)
+            {
+                lstActions.Items.Clear();
+                return;
+            }
+
+            lstActions.SynchronizeItemList(EditingObjAsResponse.Actions);
+        }
+
         void btnAddAction_Click(object sender, EventArgs e)
         {
             if (EditingObjAsResponse == null)
@@ -416,93 +670,6 @@ namespace DemoGame.NPCChatEditor
             _doNotUpdateObj = initialDoNotUpdateValue;
         }
 
-        /// <summary>
-        /// Creates the test dialog.
-        /// </summary>
-        /// <returns>The test dialog.</returns>
-        // ReSharper disable UnusedMember.Local
-        static EditorNPCChatDialog CreateTestDialog() // ReSharper restore UnusedMember.Local
-        {
-            var dialog = new EditorNPCChatDialog();
-
-            var haveYouDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(0), "Have you done this quest?");
-            haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "False"),
-                                             new EditorNPCChatResponse(new NPCChatDialogItemID(2), "True"));
-
-            var hasNotDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(1), "Think you can help me out?");
-            hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(3), "Yes"),
-                                            new EditorNPCChatResponse(new NPCChatDialogItemID(4), "No"));
-
-            var acceptHelp = new EditorNPCChatDialogItem(new NPCChatDialogItemID(3), "Sweet, thanks!");
-
-            var declineHelp = new EditorNPCChatDialogItem(new NPCChatDialogItemID(4), "Fine. Screw you too, you selfish jerk!");
-
-            var hasDoneThisQuest = new EditorNPCChatDialogItem(new NPCChatDialogItemID(2),
-                                                               "Sorry dude, you already did this quest!");
-            hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(new NPCChatDialogItemID(1), "So? Just let me do it!"),
-                                         new EditorNPCChatResponse("Ok, fine, whatever. Dick."));
-
-            dialog.Add(new EditorNPCChatDialogItem[]
-            { haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest });
-
-            return dialog;
-        }
-
-        /// <summary>
-        /// Disables all tabs in the TabControl except for the given page.
-        /// </summary>
-        /// <param name="tabControl">The TabControl.</param>
-        /// <param name="enabledTab">The TabPage to leave enabled.</param>
-        void DisableAllTabsExcept(TabControl tabControl, TabPage enabledTab)
-        {
-            txtDialogText.Text = string.Empty;
-
-            foreach (var tab in tabControl.TabPages.Cast<TabPage>())
-            {
-                if (tab == enabledTab)
-                {
-                    tabControl.SelectedTab = tab;
-                    SetAllChildrenEnabled(tab.Controls, true);
-                }
-                else
-                    SetAllChildrenEnabled(tab.Controls, false);
-            }
-        }
-
-        /// <summary>
-        /// Gets all the Controls from the given <paramref name="root"/>.
-        /// </summary>
-        /// <param name="root">The root Control.</param>
-        /// <returns>All the Controls from the given <paramref name="root"/>.</returns>
-        static IEnumerable<Control> GetAllControls(Control root)
-        {
-            foreach (var child in root.Controls.Cast<Control>())
-            {
-                yield return child;
-                foreach (var c2 in GetAllControls(child))
-                {
-                    yield return c2;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets all of the child TreeNodes from the given <paramref name="root"/>.
-        /// </summary>
-        /// <param name="root">The root TreeNode.</param>
-        /// <returns>All of the child TreeNodes from the given <paramref name="root"/>.</returns>
-        static IEnumerable<TreeNode> GetChildNodes(TreeNode root)
-        {
-            foreach (var node in root.Nodes.Cast<TreeNode>())
-            {
-                yield return node;
-                foreach (var n2 in GetChildNodes(node))
-                {
-                    yield return n2;
-                }
-            }
-        }
-
         void lstActions_KeyDown(object sender, KeyEventArgs e)
         {
             if (_doNotUpdateObj)
@@ -539,162 +706,6 @@ namespace DemoGame.NPCChatEditor
         void npcChatDialogView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             SetEditingObject(e.Node.Tag);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            EditorNPCChatManager.SaveDialogs();
-
-            base.OnFormClosing(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            CustomUITypeEditors.AddEditors();
-
-            // Set controls that are initially disabled in the tab control to always be disabled
-            var controls = GetAllControls(tcChatDialogItem);
-            foreach (var control in controls)
-            {
-                if (control.Enabled == false)
-                    control.EnabledChanged += ((obj, eArgs) => ((Control)obj).Enabled = false);
-            }
-
-            // Disable conditional controls by default
-            SetConditionalsEnabled(false);
-
-            // Add the dialogs
-            cmbSelectedDialog.Items.Clear();
-            cmbSelectedDialog.AddDialog(EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>());
-
-            // Select the first one
-            if (cmbSelectedDialog.Items.Count > 0)
-                cmbSelectedDialog.SelectedIndex = 0;
-
-            // Populate the evaluation types
-            var evaluationTypes = EnumHelper<NPCChatConditionalEvaluationType>.Values;
-            cmbEvaluateType.Items.Clear();
-            cmbEvaluateType.Items.AddRange(evaluationTypes.Select(x => (object)x).ToArray());
-
-            // Population the response action types
-            var actionTypes = NPCChatResponseActionBase.Conditionals.OrderBy(x => x.Name);
-            cmbAddAction.Items.Clear();
-            cmbAddAction.Items.AddRange(actionTypes.Select(x => (object)x).ToArray());
-
-            // Perform the initial resize
-            OnResize(new EventArgs());
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-
-            gbSelectedNode.Top = ClientSize.Height - gbSelectedNode.Height - gbSelectedNode.Left;
-            gbSelectedNode.Width = ClientSize.Width - (gbSelectedNode.Left * 2);
-
-            npcChatDialogView.Width = ClientSize.Width - (npcChatDialogView.Left * 2);
-            npcChatDialogView.Height = gbSelectedNode.Top - npcChatDialogView.Top - 6;
-
-            button1.Left = ClientSize.Width - button1.Width - 3;
-        }
-
-        /// <summary>
-        /// Sets the enabled value of the child controls from the given <paramref name="controls"/>.
-        /// </summary>
-        /// <param name="controls">The root control collection.</param>
-        /// <param name="enabled">True to set the controls as enabled; false for disabled.</param>
-        static void SetAllChildrenEnabled(IEnumerable controls, bool enabled)
-        {
-            foreach (var child in controls.OfType<Control>())
-            {
-                SetAllChildrenEnabled(child.Controls, enabled);
-                child.Enabled = enabled;
-            }
-        }
-
-        /// <summary>
-        /// Enables the Conditionals list.
-        /// </summary>
-        /// <param name="enabled">True to enable; false to disable.</param>
-        void SetConditionalsEnabled(bool enabled)
-        {
-            gbConditionals.Enabled = enabled;
-
-            if (enabled == false)
-                lstConditionals.ConditionalCollection = null;
-        }
-
-        /// <summary>
-        /// Sets the NPC chat object being edited.
-        /// </summary>
-        /// <param name="obj">The NPC chat object.</param>
-        void SetEditingObject(object obj)
-        {
-            if (_editingObj == obj)
-                return;
-
-            _doNotUpdateObj = true;
-            _editingObj = obj;
-
-            SetConditionalsEnabled(false);
-
-            if (obj is EditorNPCChatDialogItem)
-            {
-                DisableAllTabsExcept(tcChatDialogItem, tpDialog);
-                txtTitle.Enabled = true;
-
-                txtTitle.Text = EditingObjAsDialogItem.Title;
-                txtDialogText.Text = EditingObjAsDialogItem.Text;
-                txtDialogPage.Text = EditingObjAsDialogItem.ID.ToString();
-                chkIsBranch.Checked = EditingObjAsDialogItem.IsBranch;
-
-                if (EditingObjAsDialogItem.IsBranch)
-                {
-                    SetConditionalsEnabled(true);
-                    lstConditionals.SetConditionalCollection(EditingObjAsDialogItem.Conditionals);
-                    EditingObjAsDialogItem.SetConditionals(lstConditionals.ConditionalCollection);
-                }
-            }
-            else if (obj is EditorNPCChatResponse)
-            {
-                DisableAllTabsExcept(tcChatDialogItem, tpResponse);
-                txtTitle.Enabled = true;
-
-                txtTitle.Text = EditingObjAsResponse.Text;
-                txtDialogText.Text = EditingObjAsResponse.Text;
-                txtResponseIndex.Text = EditingObjAsResponse.Page.ToString();
-                txtResponseValue.Text = EditingObjAsResponse.Value.ToString();
-
-                SetConditionalsEnabled(true);
-                lstConditionals.SetConditionalCollection(EditingObjAsResponse.Conditionals);
-                EditingObjAsResponse.SetConditionals(lstConditionals.ConditionalCollection);
-
-                lstActions.Items.Clear();
-                lstActions.Items.AddRange(EditingObjAsResponse.Actions.ToArray());
-            }
-            else if (obj is TreeNode)
-            {
-                DisableAllTabsExcept(tcChatDialogItem, tpRedirect);
-                txtTitle.Enabled = false;
-
-                var redirectTo = (EditorNPCChatDialogItem)EditingObjAsTreeNode.Tag;
-                txtTitle.Text = redirectTo.Text;
-                txtRedirectID.Text = redirectTo.ID.ToString();
-            }
-            else
-                SetAllChildrenEnabled(tcChatDialogItem.Controls, false);
-
-            _doNotUpdateObj = false;
         }
 
         /// <summary>
@@ -796,17 +807,6 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
-        }
-
-        void UpdateActionsList()
-        {
-            if (EditingObjAsResponse == null)
-            {
-                lstActions.Items.Clear();
-                return;
-            }
-
-            lstActions.SynchronizeItemList(EditingObjAsResponse.Actions);
         }
     }
 }

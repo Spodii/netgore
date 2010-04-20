@@ -69,16 +69,6 @@ namespace DemoGame.Client
             get { return _guildInfo; }
         }
 
-        public HasQuestRequirementsTracker HasFinishQuestRequirements
-        {
-            get { return _hasFinishQuestRequirements; }
-        }
-
-        public HasQuestRequirementsTracker HasStartQuestRequirements
-        {
-            get { return _hasStartQuestRequirements; }
-        }
-
         public SPValueType HP { get; set; }
 
         public byte HPPercent
@@ -93,17 +83,22 @@ namespace DemoGame.Client
             }
         }
 
+        public HasQuestRequirementsTracker HasFinishQuestRequirements
+        {
+            get { return _hasFinishQuestRequirements; }
+        }
+
+        public HasQuestRequirementsTracker HasStartQuestRequirements
+        {
+            get { return _hasStartQuestRequirements; }
+        }
+
         public Inventory Inventory
         {
             get { return _inventory; }
         }
 
         public byte Level { get; set; }
-
-        public StatCollection<StatType> ModStats
-        {
-            get { return _modStats; }
-        }
 
         public SPValueType MP { get; set; }
 
@@ -117,6 +112,11 @@ namespace DemoGame.Client
 
                 return (byte)((MP / (float)max) * 100.0f).Clamp(0, 100);
             }
+        }
+
+        public StatCollection<StatType> ModStats
+        {
+            get { return _modStats; }
         }
 
         public UserQuestInformation QuestInfo

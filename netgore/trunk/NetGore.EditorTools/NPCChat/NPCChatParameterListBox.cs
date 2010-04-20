@@ -43,7 +43,7 @@ namespace NetGore.EditorTools.NPCChat
         {
             get
             {
-                ParameterListItem o = SelectedItem as ParameterListItem;
+                var o = SelectedItem as ParameterListItem;
                 if (o == null)
                     return null;
 
@@ -109,7 +109,7 @@ namespace NetGore.EditorTools.NPCChat
 
         void RebuildItemList()
         {
-            int si = SelectedIndex;
+            var si = SelectedIndex;
             Items.Clear();
             if (ConditionalCollectionItem != null)
             {
@@ -136,10 +136,10 @@ namespace NetGore.EditorTools.NPCChat
             if (_doNotUpdateParameterValue)
                 return;
 
-            bool wasValueSet = SelectedParameter.TrySetValue(ValueTextBox.Text, Parser.Current);
+            var wasValueSet = SelectedParameter.TrySetValue(ValueTextBox.Text, Parser.Current);
 
-            int selStart = ValueTextBox.SelectionStart;
-            int selLen = ValueTextBox.SelectionLength;
+            var selStart = ValueTextBox.SelectionStart;
+            var selLen = ValueTextBox.SelectionLength;
 
             if (!wasValueSet)
                 ValueTextBox.BackColor = EditorColors.Error;
@@ -174,7 +174,7 @@ namespace NetGore.EditorTools.NPCChat
 
             public override string ToString()
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append(Parameter.ValueType);
                 sb.Append(" \t");
                 sb.Append(Parameter.Value.ToString());

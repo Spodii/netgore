@@ -50,7 +50,7 @@ namespace DemoGame.Server
             if (_characterTemplate == null)
             {
                 const string errmsg = "Failed to find the CharacterTemplate for CharacterTemplateID `{0}`.";
-                string err = string.Format(errmsg, mapSpawnValues.CharacterTemplateID);
+                var err = string.Format(errmsg, mapSpawnValues.CharacterTemplateID);
                 if (log.IsFatalEnabled)
                     log.Fatal(err);
                 Debug.Fail(err);
@@ -102,9 +102,9 @@ namespace DemoGame.Server
             var queryValues = MapSpawnValues.Load(map.DbController, map.ID);
             var ret = new List<NPCSpawner>();
 
-            foreach (MapSpawnValues queryValue in queryValues)
+            foreach (var queryValue in queryValues)
             {
-                NPCSpawner spawner = new NPCSpawner(queryValue, map);
+                var spawner = new NPCSpawner(queryValue, map);
                 ret.Add(spawner);
             }
 
@@ -120,7 +120,7 @@ namespace DemoGame.Server
             Debug.Assert(character is NPC, "How is this not a NPC?!");
             Debug.Assert(!character.IsDisposed, "Uhm, why did somebody dispose my precious little map-spawned NPC? :(");
 
-            Vector2 respawnPos = RandomSpawnPosition();
+            var respawnPos = RandomSpawnPosition();
 
             character.RespawnMapID = _map.ID;
             character.RespawnPosition = respawnPos;
@@ -132,8 +132,8 @@ namespace DemoGame.Server
         /// <returns>A random position that fits inside the <see cref="NPCSpawner.Area"/>.</returns>
         Vector2 RandomSpawnPosition()
         {
-            int x = _rnd.Next(Area.Left, Area.Right + 1);
-            int y = _rnd.Next(Area.Top, Area.Bottom + 1);
+            var x = _rnd.Next(Area.Left, Area.Right + 1);
+            var y = _rnd.Next(Area.Top, Area.Bottom + 1);
 
             return new Vector2(x, y);
         }
@@ -143,10 +143,10 @@ namespace DemoGame.Server
         /// </summary>
         void SpawnNPCs()
         {
-            for (int i = 0; i < Amount; i++)
+            for (var i = 0; i < Amount; i++)
             {
-                Vector2 pos = RandomSpawnPosition();
-                NPC npc = new NPC(_map.World, _characterTemplate, _map, pos);
+                var pos = RandomSpawnPosition();
+                var npc = new NPC(_map.World, _characterTemplate, _map, pos);
                 npc.Killed += NPC_Killed;
             }
         }

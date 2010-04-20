@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the RayConverter class.</summary>
         public RayConverter()
         {
-            Type type = typeof(Ray);
+            var type = typeof(Ray);
             base.propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
@@ -43,8 +42,8 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Ray))
             {
-                Ray ray = (Ray)value;
-                ConstructorInfo constructor = typeof(Ray).GetConstructor(new Type[] { typeof(Vector3), typeof(Vector3) });
+                var ray = (Ray)value;
+                var constructor = typeof(Ray).GetConstructor(new Type[] { typeof(Vector3), typeof(Vector3) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor, new object[] { ray.Position, ray.Direction });
             }

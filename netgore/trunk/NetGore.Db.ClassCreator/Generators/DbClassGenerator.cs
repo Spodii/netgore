@@ -1158,7 +1158,7 @@ namespace NetGore.Db.ClassCreator
         {
             LoadDbContent();
 
-            bool isFilteringTables = (TablesToGenerate != null && TablesToGenerate.Count() > 0);
+            var isFilteringTables = (TablesToGenerate != null && TablesToGenerate.Count() > 0);
 
             foreach (var table in _dbTables)
             {

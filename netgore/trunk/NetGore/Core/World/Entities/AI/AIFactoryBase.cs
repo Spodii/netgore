@@ -68,7 +68,7 @@ namespace NetGore.AI
                 if (_aiByID.ContainsKey(id))
                 {
                     const string errmsg = "Failed to load AI `{0}` - AIID `{1}` is already in use by Type `{2}`";
-                    string err = string.Format(errmsg, loadedType, id, _aiByID[id]);
+                    var err = string.Format(errmsg, loadedType, id, _aiByID[id]);
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     Debug.Fail(err);

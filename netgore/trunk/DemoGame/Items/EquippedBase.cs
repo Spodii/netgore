@@ -110,14 +110,14 @@ namespace DemoGame
                 default:
                     // There are multiple slots, so first try on empty slots
                     var emptySlots = slots.Where(index => this[index] == null);
-                    foreach (EquipmentSlot slot in emptySlots)
+                    foreach (var slot in emptySlots)
                     {
                         if (TrySetSlot(slot, item, false))
                             return true;
                     }
 
                     // Couldn't set on an empty slot, or there was no empty slots, so try all the non-empty slots
-                    foreach (EquipmentSlot slot in slots.Except(emptySlots))
+                    foreach (var slot in slots.Except(emptySlots))
                     {
                         if (TrySetSlot(slot, item, false))
                             return true;
@@ -146,7 +146,7 @@ namespace DemoGame
         /// <exception cref="ArgumentException">Specified item could not be found in this EquippedBase.</exception>
         public EquipmentSlot GetSlot(T item)
         {
-            for (int i = 0; i < _equipped.Length; i++)
+            for (var i = 0; i < _equipped.Length; i++)
             {
                 if (item == this[i])
                     return (EquipmentSlot)i;
@@ -161,7 +161,7 @@ namespace DemoGame
         /// <param name="entity">Item that was disposed.</param>
         protected virtual void ItemDisposeHandler(Entity entity)
         {
-            T item = (T)entity;
+            var item = (T)entity;
 
             // Try to get the slot of the item
             EquipmentSlot slot;
@@ -207,9 +207,9 @@ namespace DemoGame
         /// they will only be removed from the EquippedBase, but could still referenced by other objects.</param>
         public void RemoveAll(bool dispose)
         {
-            for (int i = 0; i < _equipped.Length; i++)
+            for (var i = 0; i < _equipped.Length; i++)
             {
-                T item = this[i];
+                var item = this[i];
                 if (item == null)
                     continue;
 
@@ -268,11 +268,11 @@ namespace DemoGame
             }
 
             // Get the array index for the slot
-            byte index = slot.GetValue();
+            var index = slot.GetValue();
 
             // If the slot is equal to the value we are trying to set it, we never want
             // to do anything extra, so just abort
-            T currentItem = this[index];
+            var currentItem = this[index];
             if (currentItem == item)
                 return false;
 
@@ -313,7 +313,7 @@ namespace DemoGame
                 if (!CanRemove(slot))
                     return false;
 
-                T oldItem = _equipped[index];
+                var oldItem = _equipped[index];
 
                 // Remove the listener for the OnDispose event
                 oldItem.Disposed -= ItemDisposeHandler;
@@ -343,9 +343,9 @@ namespace DemoGame
         ///
         public IEnumerator<KeyValuePair<EquipmentSlot, T>> GetEnumerator()
         {
-            for (int i = 0; i < _equipped.Length; i++)
+            for (var i = 0; i < _equipped.Length; i++)
             {
-                T item = this[i];
+                var item = this[i];
                 if (item != null)
                     yield return new KeyValuePair<EquipmentSlot, T>((EquipmentSlot)i, item);
             }

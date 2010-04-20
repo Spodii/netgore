@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using SFML.Graphics;
 
@@ -12,7 +10,7 @@ namespace NetGore.Graphics
     public static class FontExtensions
     {
         static readonly String2D _s = new String2D();
-        
+
         /// <summary>
         /// Measures the size of a string.
         /// </summary>

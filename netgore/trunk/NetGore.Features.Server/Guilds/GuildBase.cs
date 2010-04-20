@@ -268,7 +268,7 @@ namespace NetGore.Features.Guilds
             // If they were the only founder remaining, destroy the guild completely instead
             if (invoker.GuildRank == _guildSettings.HighestRank)
             {
-                int founders = GetNumberOfFounders();
+                var founders = GetNumberOfFounders();
                 if (founders == 1)
                 {
                     DestroyGuild();
@@ -655,9 +655,9 @@ namespace NetGore.Features.Guilds
             if (_name == newName || !GuildManager.IsNameAvailable(newName))
                 return false;
 
-            string oldValue = Name;
+            var oldValue = Name;
 
-            bool success = InternalTryChangeName(newName);
+            var success = InternalTryChangeName(newName);
 
             if (success)
             {
@@ -690,9 +690,9 @@ namespace NetGore.Features.Guilds
             if (_tag == newTag || !GuildManager.IsTagAvailable(newTag))
                 return false;
 
-            string oldValue = Tag;
+            var oldValue = Tag;
 
-            bool success = InternalTryChangeTag(newTag);
+            var success = InternalTryChangeTag(newTag);
 
             if (success)
             {

@@ -19,11 +19,11 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void SelectTest()
         {
-            using (MyNonReader nonReader = CreateNonReader())
+            using (var nonReader = CreateNonReader())
             {
-                DbConnectionPool cp = nonReader.ConnectionPool;
+                var cp = nonReader.ConnectionPool;
 
-                for (int i = 0; i < 100; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     Assert.AreEqual(0, cp.LiveObjects);
                     nonReader.Execute(new QueryTestValues(5, 10, 15));

@@ -14,9 +14,9 @@ namespace NetGore.Tests.NetGore
         public void NextFloatTest()
         {
             var r = new Random(555);
-            float last = 0f;
+            var last = 0f;
 
-            for (int i = 0; i < 20; i++)
+            for (var i = 0; i < 20; i++)
             {
                 var f = r.NextFloat();
                 Assert.AreNotEqual(last, f);

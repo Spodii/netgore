@@ -24,7 +24,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
-            Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
+            var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "New Account", "Options", "Quit");

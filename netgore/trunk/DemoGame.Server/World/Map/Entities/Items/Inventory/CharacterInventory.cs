@@ -55,7 +55,7 @@ namespace DemoGame.Server
         public void DecreaseItemAmount(InventorySlot slot)
         {
             // Get the ItemEntity
-            ItemEntity item = this[slot];
+            var item = this[slot];
             if (item == null)
             {
                 const string errmsg = "Tried to decrease amount of inventory slot `{0}`, but it contains no item.";
@@ -96,7 +96,7 @@ namespace DemoGame.Server
         public bool Drop(InventorySlot slot)
         {
             // Get the item to drop
-            ItemEntity dropItem = this[slot];
+            var dropItem = this[slot];
 
             // Check for an invalid item
             if (dropItem == null)

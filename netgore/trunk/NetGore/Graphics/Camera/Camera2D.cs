@@ -73,7 +73,7 @@ namespace NetGore.Graphics
             }
 
             // Update the matrix
-            Vector3 origin = new Vector3(_min, 0);
+            var origin = new Vector3(_min, 0);
             _matrix = Matrix.CreateTranslation(-origin) * Matrix.CreateScale(_scale) * Matrix.CreateRotationZ(_rotation);
         }
 

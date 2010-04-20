@@ -98,7 +98,7 @@ namespace DemoGame
         /// <returns>The MapSpawnValuesID read from the IValueReader.</returns>
         public static MapSpawnValuesID Read(IValueReader reader, string name)
         {
-            int value = reader.ReadInt(name);
+            var value = reader.ReadInt(name);
             return new MapSpawnValuesID(value);
         }
 
@@ -110,11 +110,11 @@ namespace DemoGame
         /// <returns>The MapSpawnValuesID read from the IDataReader.</returns>
         public static MapSpawnValuesID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is int)
                 return new MapSpawnValuesID((int)value);
 
-            int convertedValue = Convert.ToInt32(value);
+            var convertedValue = Convert.ToInt32(value);
             return new MapSpawnValuesID(convertedValue);
         }
 
@@ -136,7 +136,7 @@ namespace DemoGame
         /// <returns>The MapSpawnValuesID read from the BitStream.</returns>
         public static MapSpawnValuesID Read(BitStream bitStream)
         {
-            int value = bitStream.ReadInt();
+            var value = bitStream.ReadInt();
             return new MapSpawnValuesID(value);
         }
 
@@ -850,7 +850,7 @@ namespace DemoGame
         public static bool TryParse(this Parser parser, string value, out MapSpawnValuesID outValue)
         {
             int tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new MapSpawnValuesID(tmp);
             return ret;
         }

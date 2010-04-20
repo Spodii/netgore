@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-
+using System.Linq;
 using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
@@ -42,7 +42,7 @@ namespace SFML.Graphics
         /// <param name="obj">The Object to compare with the current BoundingSphere.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
+            var flag = false;
             if (obj is BoundingSphere)
                 flag = Equals((BoundingSphere)obj);
             return flag;
@@ -57,7 +57,7 @@ namespace SFML.Graphics
         /// <summary>Returns a String that represents the current BoundingSphere.</summary>
         public override string ToString()
         {
-            CultureInfo currentCulture = CultureInfo.CurrentCulture;
+            var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{Center:{0} Radius:{1}}}",
                                  new object[] { Center.ToString(), Radius.ToString(currentCulture) });
         }
@@ -70,9 +70,9 @@ namespace SFML.Graphics
             BoundingSphere sphere;
             Vector3 vector2;
             Vector3.Subtract(ref additional.Center, ref original.Center, out vector2);
-            float num = vector2.Length();
-            float radius = original.Radius;
-            float num2 = additional.Radius;
+            var num = vector2.Length();
+            var radius = original.Radius;
+            var num2 = additional.Radius;
             if ((radius + num2) >= num)
             {
                 if ((radius - num2) >= num)
@@ -80,9 +80,9 @@ namespace SFML.Graphics
                 if ((num2 - radius) >= num)
                     return additional;
             }
-            Vector3 vector = (vector2 * (1f / num));
-            float num5 = MathHelper.Min(-radius, num - num2);
-            float num4 = (MathHelper.Max(radius, num + num2) - num5) * 0.5f;
+            var vector = (vector2 * (1f / num));
+            var num5 = MathHelper.Min(-radius, num - num2);
+            var num4 = (MathHelper.Max(radius, num + num2) - num5) * 0.5f;
             sphere.Center = original.Center + ((vector * (num4 + num5)));
             sphere.Radius = num4;
             return sphere;
@@ -96,9 +96,9 @@ namespace SFML.Graphics
         {
             Vector3 vector2;
             Vector3.Subtract(ref additional.Center, ref original.Center, out vector2);
-            float num = vector2.Length();
-            float radius = original.Radius;
-            float num2 = additional.Radius;
+            var num = vector2.Length();
+            var radius = original.Radius;
+            var num2 = additional.Radius;
             if ((radius + num2) >= num)
             {
                 if ((radius - num2) >= num)
@@ -112,9 +112,9 @@ namespace SFML.Graphics
                     return;
                 }
             }
-            Vector3 vector = (vector2 * (1f / num));
-            float num5 = MathHelper.Min(-radius, num - num2);
-            float num4 = (MathHelper.Max(radius, num + num2) - num5) * 0.5f;
+            var vector = (vector2 * (1f / num));
+            var num5 = MathHelper.Min(-radius, num - num2);
+            var num4 = (MathHelper.Max(radius, num + num2) - num5) * 0.5f;
             result.Center = original.Center + ((vector * (num4 + num5)));
             result.Radius = num4;
         }
@@ -159,11 +159,11 @@ namespace SFML.Graphics
             Vector3 vector9;
             if (points == null)
                 throw new ArgumentNullException("points");
-            IEnumerator<Vector3> enumerator = points.GetEnumerator();
+            var enumerator = points.GetEnumerator();
             if (!enumerator.MoveNext())
                 throw new ArgumentException(FrameworkResources.BoundingSphereZeroPoints);
-            Vector3 vector4 = vector5 = vector6 = vector7 = vector8 = vector9 = enumerator.Current;
-            foreach (Vector3 vector in points)
+            var vector4 = vector5 = vector6 = vector7 = vector8 = vector9 = enumerator.Current;
+            foreach (var vector in points)
             {
                 if (vector.X < vector4.X)
                     vector4 = vector;
@@ -204,13 +204,13 @@ namespace SFML.Graphics
                 Vector3.Lerp(ref vector9, ref vector8, 0.5f, out vector2);
                 num = num2 * 0.5f;
             }
-            foreach (Vector3 vector10 in points)
+            foreach (var vector10 in points)
             {
                 Vector3 vector3;
                 vector3.X = vector10.X - vector2.X;
                 vector3.Y = vector10.Y - vector2.Y;
                 vector3.Z = vector10.Z - vector2.Z;
-                float num3 = vector3.Length();
+                var num3 = vector3.Length();
                 if (num3 > num)
                 {
                     num = (num + num3) * 0.5f;
@@ -301,8 +301,8 @@ namespace SFML.Graphics
         {
             float num3;
             Vector3.DistanceSquared(ref Center, ref sphere.Center, out num3);
-            float radius = Radius;
-            float num = sphere.Radius;
+            var radius = Radius;
+            var num = sphere.Radius;
             if ((((radius * radius) + ((2f * radius) * num)) + (num * num)) <= num3)
                 return false;
             return true;
@@ -315,8 +315,8 @@ namespace SFML.Graphics
         {
             float num3;
             Vector3.DistanceSquared(ref Center, ref sphere.Center, out num3);
-            float radius = Radius;
-            float num = sphere.Radius;
+            var radius = Radius;
+            var num = sphere.Radius;
             result = (((radius * radius) + ((2f * radius) * num)) + (num * num)) > num3;
         }
 
@@ -327,7 +327,7 @@ namespace SFML.Graphics
             Vector3 vector;
             if (!box.Intersects(this))
                 return ContainmentType.Disjoint;
-            float num = Radius * Radius;
+            var num = Radius * Radius;
             vector.X = Center.X - box.Min.X;
             vector.Y = Center.Y - box.Max.Y;
             vector.Z = Center.Z - box.Max.Z;
@@ -383,7 +383,7 @@ namespace SFML.Graphics
             else
             {
                 Vector3 vector;
-                float num = Radius * Radius;
+                var num = Radius * Radius;
                 result = ContainmentType.Intersects;
                 vector.X = Center.X - box.Min.X;
                 vector.Y = Center.Y - box.Max.Y;
@@ -443,8 +443,8 @@ namespace SFML.Graphics
                 throw new ArgumentNullException("frustum", FrameworkResources.NullNotAllowed);
             if (!frustum.Intersects(this))
                 return ContainmentType.Disjoint;
-            float num2 = Radius * Radius;
-            foreach (Vector3 vector2 in frustum.cornerArray)
+            var num2 = Radius * Radius;
+            foreach (var vector2 in frustum.cornerArray)
             {
                 Vector3 vector;
                 vector.X = vector2.X - Center.X;
@@ -481,8 +481,8 @@ namespace SFML.Graphics
         {
             float num3;
             Vector3.Distance(ref Center, ref sphere.Center, out num3);
-            float radius = Radius;
-            float num = sphere.Radius;
+            var radius = Radius;
+            var num = sphere.Radius;
             if ((radius + num) < num3)
                 return ContainmentType.Disjoint;
             if ((radius - num) < num3)
@@ -497,8 +497,8 @@ namespace SFML.Graphics
         {
             float num3;
             Vector3.Distance(ref Center, ref sphere.Center, out num3);
-            float radius = Radius;
-            float num = sphere.Radius;
+            var radius = Radius;
+            var num = sphere.Radius;
             result = ((radius + num) >= num3)
                          ? (((radius - num) >= num3) ? ContainmentType.Contains : ContainmentType.Intersects)
                          : ContainmentType.Disjoint;
@@ -506,8 +506,8 @@ namespace SFML.Graphics
 
         internal void SupportMapping(ref Vector3 v, out Vector3 result)
         {
-            float num2 = v.Length();
-            float num = Radius / num2;
+            var num2 = v.Length();
+            var num = Radius / num2;
             result.X = Center.X + (v.X * num);
             result.Y = Center.Y + (v.Y * num);
             result.Z = Center.Z + (v.Z * num);
@@ -517,11 +517,11 @@ namespace SFML.Graphics
         /// <param name="matrix">A transformation matrix that might include translation, rotation, or uniform scaling. Note that BoundingSphere.Transform will not return correct results if there are non-uniform scaling, shears, or other unusual transforms in this transformation matrix. This is because there is no way to shear or non-uniformly scale a sphere. Such an operation would cause the sphere to lose its shape as a sphere.</param>
         public BoundingSphere Transform(Matrix matrix)
         {
-            BoundingSphere sphere = new BoundingSphere { Center = Vector3.Transform(Center, matrix) };
-            float num4 = ((matrix.M11 * matrix.M11) + (matrix.M12 * matrix.M12)) + (matrix.M13 * matrix.M13);
-            float num3 = ((matrix.M21 * matrix.M21) + (matrix.M22 * matrix.M22)) + (matrix.M23 * matrix.M23);
-            float num2 = ((matrix.M31 * matrix.M31) + (matrix.M32 * matrix.M32)) + (matrix.M33 * matrix.M33);
-            float num = Math.Max(num4, Math.Max(num3, num2));
+            var sphere = new BoundingSphere { Center = Vector3.Transform(Center, matrix) };
+            var num4 = ((matrix.M11 * matrix.M11) + (matrix.M12 * matrix.M12)) + (matrix.M13 * matrix.M13);
+            var num3 = ((matrix.M21 * matrix.M21) + (matrix.M22 * matrix.M22)) + (matrix.M23 * matrix.M23);
+            var num2 = ((matrix.M31 * matrix.M31) + (matrix.M32 * matrix.M32)) + (matrix.M33 * matrix.M33);
+            var num = Math.Max(num4, Math.Max(num3, num2));
             sphere.Radius = Radius * ((float)Math.Sqrt(num));
             return sphere;
         }
@@ -532,10 +532,10 @@ namespace SFML.Graphics
         public void Transform(ref Matrix matrix, out BoundingSphere result)
         {
             result.Center = Vector3.Transform(Center, matrix);
-            float num4 = ((matrix.M11 * matrix.M11) + (matrix.M12 * matrix.M12)) + (matrix.M13 * matrix.M13);
-            float num3 = ((matrix.M21 * matrix.M21) + (matrix.M22 * matrix.M22)) + (matrix.M23 * matrix.M23);
-            float num2 = ((matrix.M31 * matrix.M31) + (matrix.M32 * matrix.M32)) + (matrix.M33 * matrix.M33);
-            float num = Math.Max(num4, Math.Max(num3, num2));
+            var num4 = ((matrix.M11 * matrix.M11) + (matrix.M12 * matrix.M12)) + (matrix.M13 * matrix.M13);
+            var num3 = ((matrix.M21 * matrix.M21) + (matrix.M22 * matrix.M22)) + (matrix.M23 * matrix.M23);
+            var num2 = ((matrix.M31 * matrix.M31) + (matrix.M32 * matrix.M32)) + (matrix.M33 * matrix.M33);
+            var num = Math.Max(num4, Math.Max(num3, num2));
             result.Radius = Radius * ((float)Math.Sqrt(num));
         }
 

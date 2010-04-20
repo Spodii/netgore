@@ -24,7 +24,7 @@ namespace NetGore
             if (ao == null)
                 return false;
 
-            int flags = TryGetAccessibleObjectState(ao);
+            var flags = TryGetAccessibleObjectState(ao);
             return (flags & _stateFlagSelected) == 0;
         }
 

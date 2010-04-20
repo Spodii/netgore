@@ -14,8 +14,7 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="RoundedSpriteBatch"/> class.
         /// </summary>
         /// <param name="graphicsDevice">The graphics device.</param>
-        public RoundedSpriteBatch(RenderWindow graphicsDevice)
-            : base(graphicsDevice)
+        public RoundedSpriteBatch(RenderWindow graphicsDevice) : base(graphicsDevice)
         {
         }
 

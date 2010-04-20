@@ -80,7 +80,7 @@ namespace NetGore.Scripting
         /// <param name="innerCode">The method's body.</param>
         public void AddMethod(string name, string visibility, string returnType, string args, string innerCode)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Header
             sb.Append(visibility);
@@ -186,7 +186,7 @@ namespace NetGore.Scripting
         /// <returns>The class source code.</returns>
         protected virtual string GetSourceCode(List<string> members)
         {
-            StringBuilder sb = new StringBuilder(1024);
+            var sb = new StringBuilder(1024);
 
             // Class header
             sb.AppendLine("class " + ClassName);
@@ -220,16 +220,16 @@ namespace NetGore.Scripting
         /// <returns>The JScript code for the <paramref name="s"/>.</returns>
         protected virtual string MessageScriptToJScript(string s, int start, int length)
         {
-            StringBuilder sb = new StringBuilder((int)((s.Length + 8) * 1.5));
+            var sb = new StringBuilder((int)((s.Length + 8) * 1.5));
 
             // Start not in a code block
-            bool inQuoteBlock = false;
+            var inQuoteBlock = false;
 
             // Get the chars
             var chars = s.ToCharArray();
 
             // Loop through all the chars
-            for (int i = start; i < start + length; i++)
+            for (var i = start; i < start + length; i++)
             {
                 // Get the current character
                 var c = chars[i];
@@ -257,7 +257,7 @@ namespace NetGore.Scripting
                         }
 
                         // Remember the index the value started at.
-                        int pieceStart = i;
+                        var pieceStart = i;
 
                         // Keep getting chars until we run out of digits.
                         while (++i < (start + length))

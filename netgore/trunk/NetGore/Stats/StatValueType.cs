@@ -121,7 +121,7 @@ namespace NetGore.Stats
         /// <returns>The <see cref="StatValueType"/> read from the IValueReader.</returns>
         public static StatValueType Read(IValueReader reader, string name)
         {
-            short value = reader.ReadShort(name);
+            var value = reader.ReadShort(name);
             return new StatValueType(value);
         }
 
@@ -133,11 +133,11 @@ namespace NetGore.Stats
         /// <returns>The <see cref="StatValueType"/> read from the <see cref="IDataReader"/>.</returns>
         public static StatValueType Read(IDataRecord reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is short)
                 return new StatValueType((short)value);
 
-            short convertedValue = Convert.ToInt16(value);
+            var convertedValue = Convert.ToInt16(value);
             return new StatValueType(convertedValue);
         }
 
@@ -159,7 +159,7 @@ namespace NetGore.Stats
         /// <returns>The <see cref="StatValueType"/> read from the <see cref="BitStream"/>.</returns>
         public static StatValueType Read(BitStream bitStream)
         {
-            short value = bitStream.ReadShort();
+            var value = bitStream.ReadShort();
             return new StatValueType(value);
         }
 
@@ -667,7 +667,7 @@ namespace NetGore.Stats
         public static bool TryParse(this Parser parser, string value, out StatValueType outValue)
         {
             short tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new StatValueType(tmp);
             return ret;
         }

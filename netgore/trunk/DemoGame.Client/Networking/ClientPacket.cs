@@ -33,7 +33,7 @@ namespace DemoGame.Client
 
         public static PacketWriter BuyFromShop(ShopItemIndex index, byte amount)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.BuyFromShop);
+            var pw = GetWriter(ClientPacketID.BuyFromShop);
             pw.Write(index);
             pw.Write(amount);
             return pw;
@@ -41,14 +41,14 @@ namespace DemoGame.Client
 
         public static PacketWriter DropInventoryItem(InventorySlot slot)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.DropInventoryItem);
+            var pw = GetWriter(ClientPacketID.DropInventoryItem);
             pw.Write(slot);
             return pw;
         }
 
         public static PacketWriter Emoticon(Emoticon emoticon)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.Emoticon);
+            var pw = GetWriter(ClientPacketID.Emoticon);
             pw.WriteEnum(emoticon);
             return pw;
         }
@@ -60,35 +60,35 @@ namespace DemoGame.Client
 
         public static PacketWriter GetEquipmentItemInfo(EquipmentSlot slot)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.GetEquipmentItemInfo);
+            var pw = GetWriter(ClientPacketID.GetEquipmentItemInfo);
             pw.WriteEnum(slot);
             return pw;
         }
 
         public static PacketWriter GetInventoryItemInfo(InventorySlot slot)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.GetInventoryItemInfo);
+            var pw = GetWriter(ClientPacketID.GetInventoryItemInfo);
             pw.Write(slot);
             return pw;
         }
 
         public static PacketWriter HasQuestStartRequirements(QuestID questID)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.HasQuestStartRequirements);
+            var pw = GetWriter(ClientPacketID.HasQuestStartRequirements);
             pw.Write(questID);
             return pw;
         }
 
         public static PacketWriter HasQuestFinishRequirements(QuestID questID)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.HasQuestFinishRequirements);
+            var pw = GetWriter(ClientPacketID.HasQuestFinishRequirements);
             pw.Write(questID);
             return pw;
         }
 
         static PacketWriter GetWriter(ClientPacketID id)
         {
-            PacketWriter pw = _writerPool.Acquire();
+            var pw = _writerPool.Acquire();
             pw.Write(id);
             return pw;
         }
@@ -102,7 +102,7 @@ namespace DemoGame.Client
 
         public static PacketWriter Login(string name, string password)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.Login);
+            var pw = GetWriter(ClientPacketID.Login);
             pw.Write(name);
             pw.Write(password);
             return pw;
@@ -110,14 +110,14 @@ namespace DemoGame.Client
 
         public static PacketWriter CreateNewAccountCharacter(string name)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.CreateNewAccountCharacter);
+            var pw = GetWriter(ClientPacketID.CreateNewAccountCharacter);
             pw.Write(name);
             return pw;
         }
 
         public static PacketWriter CreateNewAccount(string name, string password, string email)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.CreateNewAccount);
+            var pw = GetWriter(ClientPacketID.CreateNewAccount);
             pw.Write(name);
             pw.Write(password);
             pw.Write(email);
@@ -169,7 +169,7 @@ namespace DemoGame.Client
 
         public static PacketWriter PickupItem(MapEntityIndex mapEntityIndex)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.PickupItem);
+            var pw = GetWriter(ClientPacketID.PickupItem);
             pw.Write(mapEntityIndex);
             return pw;
         }
@@ -181,35 +181,35 @@ namespace DemoGame.Client
 
         public static PacketWriter RaiseStat(StatType statType)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.RaiseStat);
+            var pw = GetWriter(ClientPacketID.RaiseStat);
             pw.WriteEnum(statType);
             return pw;
         }
 
         public static PacketWriter Say(string text)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.Say);
+            var pw = GetWriter(ClientPacketID.Say);
             pw.Write(text, GameData.MaxClientSayLength);
             return pw;
         }
 
         public static PacketWriter SelectAccountCharacter(byte index)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.SelectAccountCharacter);
+            var pw = GetWriter(ClientPacketID.SelectAccountCharacter);
             pw.Write(index);
             return pw;
         }
 
         public static PacketWriter SelectNPCChatDialogResponse(byte responseIndex)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.SelectNPCChatDialogResponse);
+            var pw = GetWriter(ClientPacketID.SelectNPCChatDialogResponse);
             pw.Write(responseIndex);
             return pw;
         }
 
         public static PacketWriter SellInventoryToShop(InventorySlot slot, byte amount)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.SellInventoryToShop);
+            var pw = GetWriter(ClientPacketID.SellInventoryToShop);
             pw.Write(slot);
             pw.Write(amount);
             return pw;
@@ -217,14 +217,14 @@ namespace DemoGame.Client
 
         public static PacketWriter SetUDPPort(int port)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.SetUDPPort);
+            var pw = GetWriter(ClientPacketID.SetUDPPort);
             pw.Write((ushort)port);
             return pw;
         }
 
         public static PacketWriter StartNPCChatDialog(MapEntityIndex npcIndex, bool forceSkipQuestDialog)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.StartNPCChatDialog);
+            var pw = GetWriter(ClientPacketID.StartNPCChatDialog);
             pw.Write(npcIndex);
             pw.Write(forceSkipQuestDialog);
             return pw;
@@ -232,14 +232,14 @@ namespace DemoGame.Client
 
         public static PacketWriter StartShopping(MapEntityIndex entityIndex)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.StartShopping);
+            var pw = GetWriter(ClientPacketID.StartShopping);
             pw.Write(entityIndex);
             return pw;
         }
 
         public static PacketWriter SwapInventorySlots(InventorySlot a, InventorySlot b)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.SwapInventorySlots);
+            var pw = GetWriter(ClientPacketID.SwapInventorySlots);
             pw.Write(a);
             pw.Write(b);
             return pw;
@@ -247,21 +247,21 @@ namespace DemoGame.Client
 
         public static PacketWriter UnequipItem(EquipmentSlot slot)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.UnequipItem);
+            var pw = GetWriter(ClientPacketID.UnequipItem);
             pw.WriteEnum(slot);
             return pw;
         }
 
         public static PacketWriter UseInventoryItem(InventorySlot slot)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.UseInventoryItem);
+            var pw = GetWriter(ClientPacketID.UseInventoryItem);
             pw.Write(slot);
             return pw;
         }
 
         public static PacketWriter UseSkill(SkillType skillType, MapEntityIndex? target)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.UseSkill);
+            var pw = GetWriter(ClientPacketID.UseSkill);
             pw.WriteEnum(skillType);
             pw.Write(target.HasValue);
             if (target.HasValue)
@@ -271,7 +271,7 @@ namespace DemoGame.Client
 
         public static PacketWriter UseWorld(MapEntityIndex useItemIndex)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.UseWorld);
+            var pw = GetWriter(ClientPacketID.UseWorld);
             pw.Write(useItemIndex);
             return pw;
         }

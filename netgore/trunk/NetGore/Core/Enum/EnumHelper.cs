@@ -26,7 +26,7 @@ namespace NetGore
         /// </summary>
         static EnumHelper()
         {
-            Type[] supportedCastTypes = new Type[] { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
+            var supportedCastTypes = new Type[] { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
 
             // Make sure we have an enum
             if (!typeof(T).IsEnum)

@@ -13,7 +13,6 @@ using NetGore.Db;
 using NetGore.Features.Emoticons;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
-using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
 using SFML.Graphics;
@@ -941,7 +940,7 @@ namespace DemoGame.Server
         void AttackMelee(ItemEntityBase weapon, Character target)
         {
             // We will show the melee attack animation no matter what, so just send it now
-            using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
+            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex))
             {
                 Map.SendToArea(this, charAttack);
             }
@@ -979,7 +978,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            bool ammoUsed = false;
+            var ammoUsed = false;
 
             // Check for the needed ammo
             switch (weapon.WeaponType)
@@ -1005,7 +1004,7 @@ namespace DemoGame.Server
                 return;
 
             // Attack
-            using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
+            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex))
             {
                 Map.SendToArea(this, charAttack);
             }
@@ -1025,7 +1024,7 @@ namespace DemoGame.Server
         void AttackApplyReal(Character target)
         {
             // Get the damage
-            int damage = GetAttackDamage(target);
+            var damage = GetAttackDamage(target);
 
             // Apply the damage to the target
             target.Damage(this, damage);
@@ -1112,12 +1111,12 @@ namespace DemoGame.Server
         public virtual void Damage(Entity source, int damage)
         {
             // Apply damage
-            using (PacketWriter pw = ServerPacket.CharDamage(MapEntityIndex, damage))
+            using (var pw = ServerPacket.CharDamage(MapEntityIndex, damage))
             {
                 Map.SendToArea(this, pw);
             }
 
-            int newHP = HP - damage;
+            var newHP = HP - damage;
             if (newHP < 0)
                 newHP = 0;
 
@@ -1128,7 +1127,7 @@ namespace DemoGame.Server
             {
                 if (source != null)
                 {
-                    Character sourceCharacter = source as Character;
+                    var sourceCharacter = source as Character;
                     if (sourceCharacter != null)
                     {
                         sourceCharacter.OnKilledCharacter(this);
@@ -1162,7 +1161,7 @@ namespace DemoGame.Server
         /// <param name="item">ItemEntity to drop.</param>
         public void DropItem(ItemEntity item)
         {
-            Vector2 dropPos = GetDropPos();
+            var dropPos = GetDropPos();
             item.Position = dropPos;
 
             // Add the item to the map
@@ -1182,10 +1181,10 @@ namespace DemoGame.Server
         /// <param name="amount">Amount of the item to drop.</param>
         protected void DropItem(IItemTemplateTable itemTemplate, byte amount)
         {
-            Vector2 dropPos = GetDropPos();
+            var dropPos = GetDropPos();
 
             // Create the item on the map
-            ItemEntity droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
+            var droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
 
             OnDroppedItem(droppedItem);
             if (DroppedItem != null)
@@ -1212,7 +1211,7 @@ namespace DemoGame.Server
         public bool Equip(InventorySlot inventorySlot)
         {
             // Get the item from the inventory
-            ItemEntity item = Inventory[inventorySlot];
+            var item = Inventory[inventorySlot];
 
             // Do not try to equip null items
             if (item == null)
@@ -1236,12 +1235,12 @@ namespace DemoGame.Server
             }
 
             // Try to equip the item
-            bool successful = Equipped.Equip(item);
+            var successful = Equipped.Equip(item);
 
             // If failed to equip, give the item back to the User
             if (!successful)
             {
-                ItemEntity remainder = GiveItem(item);
+                var remainder = GiveItem(item);
                 if (remainder != null)
                 {
                     Debug.Fail("What the hell just happened? Failed to equip the item, and failed to add back to inventory?");
@@ -1268,7 +1267,7 @@ namespace DemoGame.Server
             if (minHit > maxHit)
                 maxHit = minHit;
 
-            int damage = Rand.Next(minHit, maxHit);
+            var damage = Rand.Next(minHit, maxHit);
 
             // Apply the defence, and ensure the damage is in a valid range
             int defence = target.ModStats[StatType.Defence];
@@ -1286,7 +1285,7 @@ namespace DemoGame.Server
             const int _dropRange = 32;
 
             // Get the center point of the Character
-            Vector2 dropPos = Position + (Size / 2);
+            var dropPos = Position + (Size / 2);
 
             // Move the X point randomly dropRange pixels in either direction
             dropPos.X += -_dropRange + Rand.Next(_dropRange * 2);
@@ -1321,8 +1320,8 @@ namespace DemoGame.Server
             Debug.Assert(item.Amount != 0, "Invalid item amount.");
 
             // Add as much of the item to the inventory as we can
-            byte startAmount = item.Amount;
-            ItemEntity remainder = _inventory.Add(item);
+            var startAmount = item.Amount;
+            var remainder = _inventory.Add(item);
 
             // Check how much was added
             byte amountAdded;
@@ -1463,19 +1462,19 @@ namespace DemoGame.Server
 
         protected void Load(CharacterID characterID)
         {
-            ICharacterTable values = DbController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
+            var values = DbController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
             LoadFromQueryValues(values);
         }
 
         protected void Load(string characterName)
         {
-            ICharacterTable values = DbController.GetQuery<SelectCharacterQuery>().Execute(characterName);
+            var values = DbController.GetQuery<SelectCharacterQuery>().Execute(characterName);
             LoadFromQueryValues(values);
         }
 
         protected void Load(CharacterTemplate template)
         {
-            ICharacterTemplateTable v = template.TemplateTable;
+            var v = template.TemplateTable;
 
             Name = v.Name;
             Alliance = _allianceManager[v.AllianceID];
@@ -1557,7 +1556,7 @@ namespace DemoGame.Server
             HandleAdditionalLoading(v);
 
             // Set the map
-            Map m = World.GetMap(v.MapID);
+            var m = World.GetMap(v.MapID);
             if (m != null)
                 ChangeMap(m);
             else
@@ -1637,7 +1636,7 @@ namespace DemoGame.Server
         /// <param name="st">StatType of the stat to raise.</param>
         public void RaiseStat(StatType st)
         {
-            int cost = GameData.StatCost(BaseStats[st]);
+            var cost = GameData.StatCost(BaseStats[st]);
 
             if (StatPoints < cost)
             {
@@ -1843,7 +1842,7 @@ namespace DemoGame.Server
             _updateModStats = false;
 
             // Update all the mod stats
-            for (int i = 0; i <= EnumHelper<StatType>.MaxValue; i++)
+            for (var i = 0; i <= EnumHelper<StatType>.MaxValue; i++)
             {
                 var statType = (StatType)i;
                 ModStats[statType] = ModStatHelper<StatType>.Calculate(BaseStats, statType, Equipped, StatusEffects);
@@ -1858,7 +1857,7 @@ namespace DemoGame.Server
         /// </summary>
         void UpdateSPRecovery()
         {
-            int time = GetTime();
+            var time = GetTime();
 
             // Check that enough time has elapsed
             if (_spRecoverTime > time)
@@ -2132,7 +2131,7 @@ namespace DemoGame.Server
                 if (_cash == value)
                     return;
 
-                int oldValue = _cash;
+                var oldValue = _cash;
                 _cash = value;
 
                 OnCashChanged(oldValue, _cash);
@@ -2166,7 +2165,7 @@ namespace DemoGame.Server
                 if (_exp == value)
                     return;
 
-                int oldValue = _exp;
+                var oldValue = _exp;
                 _exp = value;
 
                 OnExpChanged(oldValue, _exp);
@@ -2197,7 +2196,7 @@ namespace DemoGame.Server
                     newValue = value;
 
                 // Check that the value has changed
-                SPValueType oldValue = _hp;
+                var oldValue = _hp;
                 if (newValue == oldValue)
                     return;
 
@@ -2226,7 +2225,7 @@ namespace DemoGame.Server
                 if (_level == value)
                     return;
 
-                byte oldValue = _level;
+                var oldValue = _level;
                 _level = value;
                 _nextLevelExp = GameData.LevelCost(_level);
 
@@ -2276,7 +2275,7 @@ namespace DemoGame.Server
                     newValue = value;
 
                 // Check that the value has changed
-                SPValueType oldValue = _mp;
+                var oldValue = _mp;
                 if (newValue == oldValue)
                     return;
 
@@ -2366,7 +2365,7 @@ namespace DemoGame.Server
                 if (_statPoints == value)
                     return;
 
-                int oldValue = _statPoints;
+                var oldValue = _statPoints;
                 _statPoints = value;
 
                 OnStatPointsChanged(oldValue, _statPoints);
@@ -2469,7 +2468,7 @@ namespace DemoGame.Server
             }
             else
             {
-                Map respawnMap = World.GetMap(RespawnMapID.Value);
+                var respawnMap = World.GetMap(RespawnMapID.Value);
                 if (respawnMap == null)
                 {
                     const string errmsg = "Tried to respawn `{0}` but the map they tried to respawn on (ID `{1}`) returned null!";

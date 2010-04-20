@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
-using NetGore.Network;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server
@@ -46,7 +45,7 @@ namespace DemoGame.Server
             if (!EnumHelper<ResponseConditionalFailureHandleType>.IsDefined(_responseConditionalFailureType))
             {
                 const string errmsg = "Invalid _responseConditionalFailureType value `{0}`.";
-                string err = string.Format(errmsg, _responseConditionalFailureType);
+                var err = string.Format(errmsg, _responseConditionalFailureType);
                 log.Fatal(err);
                 Debug.Fail(err);
                 throw new Exception(err);
@@ -69,7 +68,7 @@ namespace DemoGame.Server
         {
             get
             {
-                NPC npc = _chattingWith;
+                var npc = _chattingWith;
                 if (npc == null)
                     return null;
 
@@ -199,7 +198,7 @@ namespace DemoGame.Server
             }
 
             // Get the response
-            NPCChatResponseBase response = _dialogItem.GetResponse(responseIndex);
+            var response = _dialogItem.GetResponse(responseIndex);
             if (response == null)
             {
                 EndChat();
@@ -231,14 +230,14 @@ namespace DemoGame.Server
             // Execute the actions
             if (response.Actions != null)
             {
-                foreach (NPCChatResponseActionBase action in response.Actions)
+                foreach (var action in response.Actions)
                 {
                     action.Execute(_user, _chattingWith);
                 }
             }
 
             // Get the next page
-            NPCChatDialogItemBase nextPage = ChatDialog.GetDialogItem(response.Page);
+            var nextPage = ChatDialog.GetDialogItem(response.Page);
             nextPage = GetNextDialogPage(nextPage);
 
             // Set the new page
@@ -264,12 +263,12 @@ namespace DemoGame.Server
             while (page != null && page.IsBranch)
             {
                 // Evaluate the branch to get the response
-                NPCChatResponseBase branchResponse = page.EvaluateBranch(_user, _chattingWith);
+                var branchResponse = page.EvaluateBranch(_user, _chattingWith);
 
                 // Make sure we execute any actions on the response
                 if (branchResponse.Actions != null)
                 {
-                    foreach (NPCChatResponseActionBase action in branchResponse.Actions)
+                    foreach (var action in branchResponse.Actions)
                     {
                         action.Execute(_user, _chattingWith);
                     }
@@ -290,7 +289,7 @@ namespace DemoGame.Server
         {
             List<byte> retValues = null;
 
-            foreach (NPCChatResponseBase response in _dialogItem.Responses)
+            foreach (var response in _dialogItem.Responses)
             {
                 if (!response.CheckConditionals(_user, _chattingWith))
                 {
@@ -312,7 +311,7 @@ namespace DemoGame.Server
             if (_dialogItem == null)
             {
                 // Dialog has ended
-                using (PacketWriter pw = ServerPacket.EndChatDialog())
+                using (var pw = ServerPacket.EndChatDialog())
                 {
                     _user.Send(pw);
                 }
@@ -320,7 +319,7 @@ namespace DemoGame.Server
             else
             {
                 // New page
-                using (PacketWriter pw = ServerPacket.SetChatDialogPage(_dialogItem.ID, GetResponsesToSkip()))
+                using (var pw = ServerPacket.SetChatDialogPage(_dialogItem.ID, GetResponsesToSkip()))
                 {
                     _user.Send(pw);
                 }
@@ -341,13 +340,13 @@ namespace DemoGame.Server
             _chattingWith = npc;
 
             // Tell the client to open the dialog
-            using (PacketWriter pw = ServerPacket.StartChatDialog(npc.MapEntityIndex, ChatDialog.ID))
+            using (var pw = ServerPacket.StartChatDialog(npc.MapEntityIndex, ChatDialog.ID))
             {
                 _user.Send(pw);
             }
 
             // Get the first page to use
-            NPCChatDialogItemBase initialPage = ChatDialog.GetInitialDialogItem();
+            var initialPage = ChatDialog.GetInitialDialogItem();
             Debug.Assert(initialPage != null);
             _dialogItem = GetNextDialogPage(initialPage);
 

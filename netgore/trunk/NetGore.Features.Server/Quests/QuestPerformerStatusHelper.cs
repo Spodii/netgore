@@ -135,7 +135,7 @@ namespace NetGore.Features.Quests
         /// <returns>True if the quest was successfully canceled; otherwise false.</returns>
         public bool CancelQuest(IQuest<TCharacter> quest)
         {
-            bool ret = _activeQuests.Remove(quest);
+            var ret = _activeQuests.Remove(quest);
 
             // Ensure the quest was even in the collection
             if (!ret)
@@ -284,7 +284,7 @@ namespace NetGore.Features.Quests
             Debug.Assert(quest.Repeatable || !HasCompletedQuest(quest), "Uh-oh, this user has already completed this quest!");
 
             // Remove from the active quests and give the rewards
-            bool removed = _activeQuests.Remove(quest);
+            var removed = _activeQuests.Remove(quest);
             Debug.Assert(removed);
 
             quest.Rewards.Give(Owner);

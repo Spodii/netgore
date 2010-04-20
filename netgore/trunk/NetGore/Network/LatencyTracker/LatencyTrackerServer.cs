@@ -49,7 +49,7 @@ namespace NetGore.Network
                 return;
 
             // Parse the available data
-            foreach (AddressedPacket recvPacket in data)
+            foreach (var recvPacket in data)
             {
                 Debug.Assert(recvPacket.Data != null);
                 Debug.Assert(recvPacket.RemoteEndPoint != null);

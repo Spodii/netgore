@@ -129,7 +129,7 @@ namespace NetGore.Db
             if (ex != null)
             {
                 const string errmsg = "Failed to open DbConnectionSettings file to edit. File path: {0}. Exception: {1}";
-                string msg = string.Format(errmsg, FilePath, ex);
+                var msg = string.Format(errmsg, FilePath, ex);
                 log.Fatal(msg);
                 Debug.Fail(msg);
                 return false;

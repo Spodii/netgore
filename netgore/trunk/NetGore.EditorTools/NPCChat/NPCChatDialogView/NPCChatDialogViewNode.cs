@@ -152,7 +152,7 @@ namespace NetGore.EditorTools.NPCChat
         {
             // Check if the node already exists
             var children = Nodes.OfType<NPCChatDialogViewNode>();
-            NPCChatDialogViewNode retNode =
+            var retNode =
                 children.FirstOrDefault(
                     x =>
                     (x.ChatItemType == NPCChatDialogViewNodeItemType.DialogItem ||
@@ -162,7 +162,7 @@ namespace NetGore.EditorTools.NPCChat
             if (retNode == null)
             {
                 // Check if it has to be a redirect node
-                NPCChatDialogViewNode existingDialogNode = TreeViewCasted.GetNodeForDialogItem(dialogItem);
+                var existingDialogNode = TreeViewCasted.GetNodeForDialogItem(dialogItem);
                 if (existingDialogNode != null)
                     retNode = new NPCChatDialogViewNode(this, existingDialogNode);
                 else
@@ -181,7 +181,7 @@ namespace NetGore.EditorTools.NPCChat
         {
             // Check if the node already exists
             var children = Nodes.OfType<NPCChatDialogViewNode>();
-            NPCChatDialogViewNode retNode =
+            var retNode =
                 children.FirstOrDefault(
                     x => x.ChatItemType == NPCChatDialogViewNodeItemType.Response && x.ChatItemAsResponse == response);
 
@@ -198,7 +198,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <returns>The text for a NPCChatDialogItemBase.</returns>
         static string GetText(NPCChatDialogItemBase item)
         {
-            string text = item.Title;
+            var text = item.Title;
             if (string.IsNullOrEmpty(text))
             {
                 text = item.Text;
@@ -252,7 +252,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="recursive">If true, all nodes under this NPCChatDialogViewNode are updated, too.</param>
         public void Update(bool recursive)
         {
-            bool checkToSwapRedirectNodes = false;
+            var checkToSwapRedirectNodes = false;
             var childNodes = Nodes.OfType<NPCChatDialogViewNode>();
             IEnumerable<NPCChatDialogViewNode> nodesToRemove = null;
 
@@ -260,9 +260,9 @@ namespace NetGore.EditorTools.NPCChat
             {
                 case NPCChatDialogViewNodeItemType.DialogItem:
                     // For a dialog item, add the responses
-                    EditorNPCChatDialogItem asDialogItem = ChatItemAsDialogItem;
+                    var asDialogItem = ChatItemAsDialogItem;
                     var validNodes = new List<NPCChatDialogViewNode>(asDialogItem.Responses.Count());
-                    foreach (NPCChatResponseBase response in asDialogItem.Responses)
+                    foreach (var response in asDialogItem.Responses)
                     {
                         validNodes.Add(CreateNode(response));
                     }
@@ -284,7 +284,7 @@ namespace NetGore.EditorTools.NPCChat
 
                 case NPCChatDialogViewNodeItemType.Response:
                     // For a response, add the dialog item, using a redirect if needed
-                    NPCChatDialogItemBase dialogItem = TreeViewCasted.NPCChatDialog.GetDialogItem(ChatItemAsResponse.Page);
+                    var dialogItem = TreeViewCasted.NPCChatDialog.GetDialogItem(ChatItemAsResponse.Page);
                     NPCChatDialogViewNode validNode = null;
                     if (dialogItem != null)
                     {
@@ -306,7 +306,7 @@ namespace NetGore.EditorTools.NPCChat
             // Remove the marked nodes to be removed
             if (nodesToRemove != null)
             {
-                foreach (NPCChatDialogViewNode node in nodesToRemove)
+                foreach (var node in nodesToRemove)
                 {
                     node.Remove();
                 }
@@ -318,7 +318,7 @@ namespace NetGore.EditorTools.NPCChat
             // Check to recursively update all the children nodes
             if (recursive)
             {
-                foreach (NPCChatDialogViewNode child in childNodes)
+                foreach (var child in childNodes)
                 {
                     child.Update(true);
                 }
@@ -329,13 +329,11 @@ namespace NetGore.EditorTools.NPCChat
             // and some nodes will end up not appearing in the tree
             if (checkToSwapRedirectNodes)
             {
-                foreach (
-                    NPCChatDialogViewNode child in childNodes.Where(x => x.ChatItemType == NPCChatDialogViewNodeItemType.Redirect)
-                    )
+                foreach (var child in childNodes.Where(x => x.ChatItemType == NPCChatDialogViewNodeItemType.Redirect))
                 {
-                    NPCChatDialogViewNode existing = TreeViewCasted.GetNodeForDialogItem(child.ChatItemAsDialogItem);
-                    int existingDepth = existing.GetDepth();
-                    int childDepth = child.GetDepth();
+                    var existing = TreeViewCasted.GetNodeForDialogItem(child.ChatItemAsDialogItem);
+                    var existingDepth = existing.GetDepth();
+                    var childDepth = child.GetDepth();
 
                     if (existingDepth > childDepth)
                         existing.SwapNode(child, existing.Nodes.Count <= 0);

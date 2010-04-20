@@ -59,16 +59,16 @@ namespace DemoGame.Client
             var values = EnumHelper<ToolbarItemType>.Values.Select(EnumHelper<ToolbarItemType>.ToInt);
 
             // Find the largest value, and create the array
-            int max = values.Max();
+            var max = values.Max();
             var items = new ToolbarItem[max + 1];
 
             // Create the items
-            foreach (int index in values)
+            foreach (var index in values)
             {
-                Vector2 pos = GetItemPosition(index);
-                ISprite sprite = GetItemSprite(index);
+                var pos = GetItemPosition(index);
+                var sprite = GetItemSprite(index);
 
-                ToolbarItem item = new ToolbarItem(this, (ToolbarItemType)index, pos, sprite);
+                var item = new ToolbarItem(this, (ToolbarItemType)index, pos, sprite);
                 items[index] = item;
                 item.Clicked += ToolbarItem_Clicked;
             }
@@ -111,7 +111,7 @@ namespace DemoGame.Client
             if (_items == null)
                 return;
 
-            for (int i = 0; i < _items.Length; i++)
+            for (var i = 0; i < _items.Length; i++)
             {
                 if (_items[i] == null)
                     continue;
@@ -136,7 +136,7 @@ namespace DemoGame.Client
             if (ItemClicked == null)
                 return;
 
-            ToolbarItem item = (ToolbarItem)sender;
+            var item = (ToolbarItem)sender;
             ItemClicked(this, item.ToolbarItemType, item);
         }
 

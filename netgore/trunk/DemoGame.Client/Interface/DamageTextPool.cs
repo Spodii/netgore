@@ -21,7 +21,7 @@ namespace DemoGame.Client
         /// <param name="currTime">Current time</param>
         public void Create(int damage, Entity entity, int currTime)
         {
-            DamageText obj = _pool.Acquire();
+            var obj = _pool.Acquire();
             obj.Activate(damage, entity, currTime);
         }
 
@@ -41,7 +41,7 @@ namespace DemoGame.Client
         /// <param name="currentTime">Current time</param>
         public void Update(int currentTime)
         {
-            bool collectGarbage = false;
+            var collectGarbage = false;
 
             _pool.Perform(delegate(DamageText x)
             {

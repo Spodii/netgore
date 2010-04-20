@@ -79,12 +79,12 @@ namespace NetGore.EditorTools
             GrhTreeViewFolderNode current = null;
             var currentColl = grhTreeView.Nodes;
 
-            for (int i = 0; i < categoryParts.Length; i++)
+            for (var i = 0; i < categoryParts.Length; i++)
             {
-                string subCategory = categoryParts[i];
+                var subCategory = categoryParts[i];
                 var matches = currentColl.OfType<GrhTreeViewFolderNode>().Where(x => x.SubCategory == subCategory);
 
-                int count = matches.Count();
+                var count = matches.Count();
                 if (count == 0)
                 {
                     // Create the new folder node for the subcategory
@@ -150,8 +150,8 @@ namespace NetGore.EditorTools
             var grhs = Nodes.OfType<GrhTreeViewNode>().Count();
 
             // Count the total number of sub-categories and grhs
-            int totalGrhs = 0;
-            int totalSubCategories = 0;
+            var totalGrhs = 0;
+            var totalSubCategories = 0;
             foreach (var child in GetAllChildren(this))
             {
                 if (child is GrhTreeViewNode)
@@ -161,7 +161,7 @@ namespace NetGore.EditorTools
             }
 
             // Create the string
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("Category: ");
             sb.AppendLine(FullCategory);
 
@@ -200,7 +200,7 @@ namespace NetGore.EditorTools
         /// </summary>
         public void UpdateToolTip()
         {
-            int time = Environment.TickCount;
+            var time = Environment.TickCount;
             if (_nextUpdateToolTipTime > time)
                 return;
 

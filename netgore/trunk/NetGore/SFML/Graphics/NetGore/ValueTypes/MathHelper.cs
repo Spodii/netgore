@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 
 namespace SFML.Graphics
 {
@@ -46,8 +46,8 @@ namespace SFML.Graphics
         /// <param name="amount">Weighting factor.</param>
         public static float CatmullRom(float value1, float value2, float value3, float value4, float amount)
         {
-            float num = amount * amount;
-            float num2 = amount * num;
+            var num = amount * amount;
+            var num2 = amount * num;
             return (0.5f *
                     ((((2f * value2) + ((-value1 + value3) * amount)) +
                       (((((2f * value1) - (5f * value2)) + (4f * value3)) - value4) * num)) +
@@ -81,13 +81,13 @@ namespace SFML.Graphics
         /// <param name="amount">Weighting factor.</param>
         public static float Hermite(float value1, float tangent1, float value2, float tangent2, float amount)
         {
-            float num3 = amount;
-            float num = num3 * num3;
-            float num2 = num3 * num;
-            float num7 = ((2f * num2) - (3f * num)) + 1f;
-            float num6 = (-2f * num2) + (3f * num);
-            float num5 = (num2 - (2f * num)) + num3;
-            float num4 = num2 - num;
+            var num3 = amount;
+            var num = num3 * num3;
+            var num2 = num3 * num;
+            var num7 = ((2f * num2) - (3f * num)) + 1f;
+            var num6 = (-2f * num2) + (3f * num);
+            var num5 = (num2 - (2f * num)) + num3;
+            var num4 = num2 - num;
             return ((((value1 * num7) + (value2 * num6)) + (tangent1 * num5)) + (tangent2 * num4));
         }
 
@@ -122,7 +122,7 @@ namespace SFML.Graphics
         /// <param name="amount">Weighting value.</param>
         public static float SmoothStep(float value1, float value2, float amount)
         {
-            float num = Clamp(amount, 0f, 1f);
+            var num = Clamp(amount, 0f, 1f);
             return Lerp(value1, value2, (num * num) * (3f - (2f * num)));
         }
 

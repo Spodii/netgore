@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using log4net;
 using NetGore.Audio;
 using NetGore.Content;
@@ -10,6 +11,7 @@ namespace NetGore.EditorTools
 {
     public class MusicUITypeEditorForm : UITypeEditorListForm<IMusicInfo>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IMusicInfo _current;
 
         /// <summary>
@@ -30,7 +32,7 @@ namespace NetGore.EditorTools
                 const string errmsg = "Failed to get AudioManager instance when passing a null ContentManager: {0}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, ex);
-                DialogResult = System.Windows.Forms.DialogResult.Abort;
+                DialogResult = DialogResult.Abort;
                 Close();
                 return;
             }
@@ -60,8 +62,6 @@ namespace NetGore.EditorTools
             return item.ID + ". " + item.Name;
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// When overridden in the derived class, gets the items to add to the list.
         /// </summary>
@@ -78,7 +78,7 @@ namespace NetGore.EditorTools
                 const string errmsg = "Failed to get AudioManager instance when passing a null ContentManager: {0}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, ex);
-                DialogResult = System.Windows.Forms.DialogResult.Abort;
+                DialogResult = DialogResult.Abort;
                 Close();
                 return null;
             }

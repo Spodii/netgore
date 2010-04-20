@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 // EnumComparer code base credit goes to: http://www.codeproject.com/KB/cs/EnumComparer.aspx
 
@@ -40,7 +39,7 @@ namespace NetGore
             }
 
             // Make sure the underlying type is supported
-            Type underlyingType = Enum.GetUnderlyingType(typeof(T));
+            var underlyingType = Enum.GetUnderlyingType(typeof(T));
 
             if (!_supportedUnderlyingTypes.Contains(underlyingType))
             {
@@ -73,9 +72,9 @@ namespace NetGore
         /// <returns>The code for the Equals method.</returns>
         static Func<T, T, bool> GenerateEquals()
         {
-            ParameterExpression xParam = Expression.Parameter(typeof(T), "x");
-            ParameterExpression yParam = Expression.Parameter(typeof(T), "y");
-            BinaryExpression equalExpression = Expression.Equal(xParam, yParam);
+            var xParam = Expression.Parameter(typeof(T), "x");
+            var yParam = Expression.Parameter(typeof(T), "y");
+            var equalExpression = Expression.Equal(xParam, yParam);
             return Expression.Lambda<Func<T, T, bool>>(equalExpression, new[] { xParam, yParam }).Compile();
         }
 
@@ -85,11 +84,11 @@ namespace NetGore
         /// <returns>The code for the GetHashCode method.</returns>
         static Func<T, int> GenerateGetHashCode()
         {
-            ParameterExpression objParam = Expression.Parameter(typeof(T), "obj");
-            Type underlyingType = Enum.GetUnderlyingType(typeof(T));
-            UnaryExpression convertExpression = Expression.Convert(objParam, underlyingType);
-            MethodInfo getHashCodeMethod = underlyingType.GetMethod("GetHashCode");
-            MethodCallExpression getHashCodeExpression = Expression.Call(convertExpression, getHashCodeMethod);
+            var objParam = Expression.Parameter(typeof(T), "obj");
+            var underlyingType = Enum.GetUnderlyingType(typeof(T));
+            var convertExpression = Expression.Convert(objParam, underlyingType);
+            var getHashCodeMethod = underlyingType.GetMethod("GetHashCode");
+            var getHashCodeExpression = Expression.Call(convertExpression, getHashCodeMethod);
             return Expression.Lambda<Func<T, int>>(getHashCodeExpression, new[] { objParam }).Compile();
         }
 

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
 using NetGore.EditorTools;
 using SFML.Graphics;
-using Image=System.Drawing.Image;
+using Image = System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -74,7 +74,7 @@ namespace DemoGame.MapEditor
             Container.CursorManager.SelectedCursor = Container.CursorManager.TryGetCursor<WallCursor>();
 
             // Create the new wall
-            WallEntity w = new WallEntity(Container.Camera.ToWorld(e.X, e.Y), Vector2.One);
+            var w = new WallEntity(Container.Camera.ToWorld(e.X, e.Y), Vector2.One);
             Container.Map.AddEntity(w);
             if (_mnuSnapToGrid.Checked)
                 Container.Grid.Align(w);
@@ -82,7 +82,7 @@ namespace DemoGame.MapEditor
             // Create the transformation boxes for the wall and select the bottom/right one
             Container.TransBoxes.Clear();
             TransBox.SurroundEntity(w, Container.TransBoxes);
-            foreach (TransBox tBox in Container.TransBoxes)
+            foreach (var tBox in Container.TransBoxes)
             {
                 if (tBox.TransType == TransBoxType.BottomRight)
                 {

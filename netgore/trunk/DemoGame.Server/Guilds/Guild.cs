@@ -310,7 +310,7 @@ namespace DemoGame.Server.Guilds
         static void SendGuildMemberList(IClientCommunicator user, string header, IEnumerable<GuildMemberNameRank> members)
         {
             // Build the string
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine(header);
 
             foreach (var member in members)

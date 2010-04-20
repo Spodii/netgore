@@ -14,7 +14,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseBoolTest()
         {
-            Type type = typeof(bool);
+            var type = typeof(bool);
 
             StringParser.CanParseType(type);
 
@@ -30,15 +30,15 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseByteTest()
         {
-            Type type = typeof(byte);
+            var type = typeof(byte);
             const int min = byte.MinValue;
             const int max = byte.MaxValue;
 
             StringParser.CanParseType(type);
 
-            for (int i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
+            for (var i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
             {
-                string s = Parser.Invariant.ToString(i);
+                var s = Parser.Invariant.ToString(i);
                 object o;
                 StringParser.TryParse(s, type, out o);
                 Assert.AreEqual((byte)i, (byte)o);
@@ -56,15 +56,15 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseDoubleTest()
         {
-            Type type = typeof(double);
+            var type = typeof(double);
             const double min = double.MinValue;
             const double max = double.MaxValue;
 
             StringParser.CanParseType(type);
 
-            for (int i = (int)Math.Max(-200, min); i < Math.Min(max, 200); i++)
+            for (var i = (int)Math.Max(-200, min); i < Math.Min(max, 200); i++)
             {
-                string s = Parser.Invariant.ToString(i);
+                var s = Parser.Invariant.ToString(i);
                 object o;
                 StringParser.TryParse(s, type, out o);
                 Assert.AreEqual((double)i, (double)o);
@@ -74,15 +74,15 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseFloatTest()
         {
-            Type type = typeof(float);
+            var type = typeof(float);
             const float min = float.MinValue;
             const float max = float.MaxValue;
 
             StringParser.CanParseType(type);
 
-            for (int i = (int)Math.Max(-200, min); i < Math.Min(max, 200); i++)
+            for (var i = (int)Math.Max(-200, min); i < Math.Min(max, 200); i++)
             {
-                string s = Parser.Invariant.ToString(i);
+                var s = Parser.Invariant.ToString(i);
                 object o;
                 StringParser.TryParse(s, type, out o);
                 Assert.AreEqual((float)i, (float)o);
@@ -92,15 +92,15 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseIntTest()
         {
-            Type type = typeof(int);
+            var type = typeof(int);
             const int min = int.MinValue;
             const int max = int.MaxValue;
 
             StringParser.CanParseType(type);
 
-            for (int i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
+            for (var i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
             {
-                string s = Parser.Invariant.ToString(i);
+                var s = Parser.Invariant.ToString(i);
                 object o;
                 StringParser.TryParse(s, type, out o);
                 Assert.AreEqual((int)i, (int)o);
@@ -118,15 +118,15 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseSByteTest()
         {
-            Type type = typeof(sbyte);
+            var type = typeof(sbyte);
             const int min = sbyte.MinValue;
             const int max = sbyte.MaxValue;
 
             StringParser.CanParseType(type);
 
-            for (int i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
+            for (var i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
             {
-                string s = Parser.Invariant.ToString(i);
+                var s = Parser.Invariant.ToString(i);
                 object o;
                 StringParser.TryParse(s, type, out o);
                 Assert.AreEqual((sbyte)i, (sbyte)o);
@@ -144,15 +144,15 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseShortTest()
         {
-            Type type = typeof(short);
+            var type = typeof(short);
             const int min = short.MinValue;
             const int max = short.MaxValue;
 
             StringParser.CanParseType(type);
 
-            for (int i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
+            for (var i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
             {
-                string s = Parser.Invariant.ToString(i);
+                var s = Parser.Invariant.ToString(i);
                 object o;
                 StringParser.TryParse(s, type, out o);
                 Assert.AreEqual((short)i, (short)o);
@@ -170,15 +170,15 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseUIntTest()
         {
-            Type type = typeof(uint);
+            var type = typeof(uint);
             const uint min = uint.MinValue;
             const uint max = uint.MaxValue;
 
             StringParser.CanParseType(type);
 
-            for (uint i = (uint)Math.Max(-200, min); i < Math.Min(max, 200); i++)
+            for (var i = (uint)Math.Max(-200, min); i < Math.Min(max, 200); i++)
             {
-                string s = Parser.Invariant.ToString(i);
+                var s = Parser.Invariant.ToString(i);
                 object o;
                 StringParser.TryParse(s, type, out o);
                 Assert.AreEqual((uint)i, (uint)o);
@@ -196,15 +196,15 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseUShortTest()
         {
-            Type type = typeof(ushort);
+            var type = typeof(ushort);
             const int min = ushort.MinValue;
             const int max = ushort.MaxValue;
 
             StringParser.CanParseType(type);
 
-            for (int i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
+            for (var i = Math.Max(-200, min); i < Math.Min(max, 200); i++)
             {
-                string s = Parser.Invariant.ToString(i);
+                var s = Parser.Invariant.ToString(i);
                 object o;
                 StringParser.TryParse(s, type, out o);
                 Assert.AreEqual((ushort)i, (ushort)o);

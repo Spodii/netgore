@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Text;
 using NetGore.Content;
@@ -187,7 +186,7 @@ namespace NetGore.Graphics
             _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);
             _sprite.Scale = new Vector2((float)destinationRectangle.Width / _sprite.SubRect.Width,
                                         (float)destinationRectangle.Height / _sprite.SubRect.Height);
-       
+
             _rw.Draw(_sprite);
         }
 

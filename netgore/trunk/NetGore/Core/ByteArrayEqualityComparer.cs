@@ -46,7 +46,7 @@ namespace NetGore
             if (x == null || y == null || x.Length != y.Length)
                 return false;
 
-            for (int i = 0; i < x.Length; i++)
+            for (var i = 0; i < x.Length; i++)
             {
                 if (x[i] != y[i])
                     return false;
@@ -69,9 +69,9 @@ namespace NetGore
             unchecked
             {
                 const int p = 16777619;
-                int hash = (int)2166136261;
+                var hash = (int)2166136261;
 
-                for (int i = 0; i < obj.Length; i++)
+                for (var i = 0; i < obj.Length; i++)
                 {
                     hash = (hash ^ obj[i]) * p;
                 }

@@ -54,7 +54,7 @@ namespace DemoGame.EditorTools
             AdvancedClassTypeConverter.AddTypes(typesToAdd.ToArray());
 
             // Also automatically add all the instantiable types that derive from some of our base classes
-            Type[] baseTypes = new Type[] { typeof(Entity), typeof(MapBase) };
+            var baseTypes = new Type[] { typeof(Entity), typeof(MapBase) };
             filterCreator = new TypeFilterCreator
             { IsClass = true, IsAbstract = false, CustomFilter = (x => baseTypes.Any(x.IsSubclassOf)) };
             filter = filterCreator.GetFilter();

@@ -109,7 +109,7 @@ namespace DemoGame
         /// <param name="reader">The <see cref="IValueReader"/> to read the <see cref="BodyInfoManager"/> data from.</param>
         public void Read(IValueReader reader)
         {
-            var bodies = reader.ReadManyNodes<BodyInfo>(_bodyNodeName, BodyInfo.Read);
+            var bodies = reader.ReadManyNodes(_bodyNodeName, BodyInfo.Read);
             _bodies.Clear();
 
             foreach (var body in bodies)

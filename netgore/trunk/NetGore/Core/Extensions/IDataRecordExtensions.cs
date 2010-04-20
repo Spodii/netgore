@@ -18,7 +18,7 @@ namespace NetGore
         /// <returns>Index of the named field.</returns>
         public static byte GetOrdinalAsByte(this IDataRecord dataRecord, string name)
         {
-            int ordinal = dataRecord.GetOrdinal(name);
+            var ordinal = dataRecord.GetOrdinal(name);
 
             if (!ordinal.IsBetween(byte.MinValue, byte.MaxValue))
             {

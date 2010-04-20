@@ -20,9 +20,9 @@ namespace NetGore
             if (count == 0)
                 return Vector2.Zero;
 
-            Vector2 sum = Vector2.Zero;
+            var sum = Vector2.Zero;
 
-            for (int i = offset; i < offset + count; i++)
+            for (var i = offset; i < offset + count; i++)
             {
                 sum += values[i];
             }

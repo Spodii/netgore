@@ -1,5 +1,4 @@
 using System.Linq;
-using NetGore.Network;
 
 namespace DemoGame.Server
 {
@@ -22,15 +21,15 @@ namespace DemoGame.Server
 
         void SynchronizeSelf()
         {
-            SPValueType hp = Character.HP;
-            SPValueType mp = Character.MP;
+            var hp = Character.HP;
+            var mp = Character.MP;
 
-            bool updateHP = hp != _lastSentHP;
-            bool updateMP = mp != _lastSentMP;
+            var updateHP = hp != _lastSentHP;
+            var updateMP = mp != _lastSentMP;
 
             if (updateHP)
             {
-                using (PacketWriter pw = ServerPacket.SetHP(hp))
+                using (var pw = ServerPacket.SetHP(hp))
                 {
                     _user.Send(pw);
                 }
@@ -38,7 +37,7 @@ namespace DemoGame.Server
 
             if (updateMP)
             {
-                using (PacketWriter pw = ServerPacket.SetMP(mp))
+                using (var pw = ServerPacket.SetMP(mp))
                 {
                     _user.Send(pw);
                 }

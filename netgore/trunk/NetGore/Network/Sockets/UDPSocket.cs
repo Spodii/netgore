@@ -95,7 +95,7 @@ namespace NetGore.Network
             try
             {
                 // Read the received data and put it into a temporary buffer
-                int bytesRead = _socket.EndReceiveFrom(result, ref remoteEndPoint);
+                var bytesRead = _socket.EndReceiveFrom(result, ref remoteEndPoint);
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
             }
@@ -181,7 +181,7 @@ namespace NetGore.Network
             _socket.Bind(_bindEndPoint);
 
             // Get the port
-            EndPoint endPoint = _socket.LocalEndPoint;
+            var endPoint = _socket.LocalEndPoint;
             if (endPoint == null)
             {
                 const string errmsg = "Failed to bind the UDPSocket!";
@@ -272,7 +272,7 @@ namespace NetGore.Network
         {
             lock (_receiveQueue)
             {
-                int length = _receiveQueue.Count;
+                var length = _receiveQueue.Count;
                 if (length == 0)
                     return null;
 

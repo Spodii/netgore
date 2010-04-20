@@ -7,7 +7,6 @@ using log4net;
 using NetGore;
 using NetGore.Graphics;
 using SFML.Graphics;
-using IDrawable=NetGore.Graphics.IDrawable;
 
 // LATER: When editing Grhs and changing texture, change the preview
 // LATER: When updating a Grh, update the preview image

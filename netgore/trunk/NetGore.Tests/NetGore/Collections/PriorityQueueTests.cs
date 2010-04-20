@@ -12,14 +12,14 @@ namespace NetGore.Tests.NetGore.Collections
         [Test]
         public void SimpleTest()
         {
-            PriorityQueue<int> Test = new PriorityQueue<int>();
+            var Test = new PriorityQueue<int>();
 
             Test.Push(5);
             Test.Push(12);
             Test.Push(1);
 
             Assert.IsTrue(Test[0] == 1, "Assert1 (should == 1) + " + Test[0]);
-            int i = Test.Pop();
+            var i = Test.Pop();
             Assert.IsTrue(i == 1, "i should equal 1" + i);
 
             Assert.IsTrue(Test[0] == 5, "Assert2 (should == 5) + " + Test[0]);

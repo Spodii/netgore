@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Security;
 using Microsoft.Win32;
@@ -30,7 +29,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         static EditableTextHandler()
         {
-            int blinkRate = _defaultCursorBlinkRate;
+            var blinkRate = _defaultCursorBlinkRate;
 
             try
             {
@@ -40,8 +39,8 @@ namespace NetGore.Graphics.GUI
                     var desktopKey = regSubKey.OpenSubKey("Desktop");
                     if (desktopKey != null)
                     {
-                        object blinkRateObj = regSubKey.GetValue("CursorBlinkRate");
-                        string blinkRateStr = blinkRateObj != null ? blinkRateObj.ToString() : null;
+                        var blinkRateObj = regSubKey.GetValue("CursorBlinkRate");
+                        var blinkRateStr = blinkRateObj != null ? blinkRateObj.ToString() : null;
 
                         if (blinkRateStr == null || !int.TryParse(blinkRateStr, out blinkRate))
                             blinkRate = _defaultCursorBlinkRate;

@@ -27,7 +27,7 @@ namespace DemoGame.Server.UI
             Console.WriteLine("Type `help` to see the list of console commands.");
 
             // Spawn a thread to handle the console input
-            Thread t = new Thread(ConsoleInputHandler) { IsBackground = true };
+            var t = new Thread(ConsoleInputHandler) { IsBackground = true };
             t.Start();
 
             // Start the server loop, which will block the thread until the server closes
@@ -42,7 +42,7 @@ namespace DemoGame.Server.UI
             while (true)
             {
                 // Read the line from the console
-                string s = Console.ReadLine();
+                var s = Console.ReadLine();
                 if (string.IsNullOrEmpty(s))
                     continue;
 

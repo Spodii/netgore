@@ -36,17 +36,17 @@ namespace NetGore.Tests
             get { return ""; }
         }
 
+        public static uint Port
+        {
+            get { return 3306; }
+        }
+
         /// <summary>
         /// Gets the database user.
         /// </summary>
         public static string User
         {
             get { return "root"; }
-        }
-
-        public static uint Port
-        {
-            get { return 3306; }
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace NetGore.Tests
         /// <returns>The connection to use to talk to the test database.</returns>
         public static DbConnection Open()
         {
-            MySqlConnection conn = new MySqlConnection(GetConnectionString());
+            var conn = new MySqlConnection(GetConnectionString());
             conn.Open();
             return conn;
         }

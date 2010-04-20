@@ -5,7 +5,7 @@ using DemoGame.MapEditor.Properties;
 using NetGore;
 using NetGore.EditorTools;
 using SFML.Graphics;
-using Image=System.Drawing.Image;
+using Image = System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -92,7 +92,7 @@ namespace DemoGame.MapEditor
                 return;
 
             // Create the Entity
-            Entity entity = (Entity)Activator.CreateInstance(_selectedType);
+            var entity = (Entity)Activator.CreateInstance(_selectedType);
             Container.Map.AddEntity(entity);
 
             // Move to the center of the screen

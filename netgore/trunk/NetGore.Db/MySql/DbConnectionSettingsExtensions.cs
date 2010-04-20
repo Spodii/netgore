@@ -14,7 +14,7 @@ namespace NetGore.Db.MySql
         /// <returns>The MySql connection string.</returns>
         public static string GetMySqlConnectionString(this DbConnectionSettings settings)
         {
-            MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
+            var sb = new MySqlConnectionStringBuilder
             {
                 Database = settings.Database,
                 UserID = settings.User,

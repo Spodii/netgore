@@ -13,8 +13,8 @@ namespace NetGore.Db.Schema
     public class ColumnSchema
     {
         const string _keyValueName = "Key";
-        const string _valuesNodeName = "Values";
         const string _valueValueName = "Value";
+        const string _valuesNodeName = "Values";
 
         /// <summary>
         /// All the schema value names possible for the <see cref="ColumnSchema"/>.
@@ -33,7 +33,7 @@ namespace NetGore.Db.Schema
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public ColumnSchema(IValueReader reader)
         {
-            var values = reader.ReadManyNodes<KeyValuePair<string, string>>(_valuesNodeName, ReadKVP);
+            var values = reader.ReadManyNodes(_valuesNodeName, ReadKVP);
             _values = values.ToDictionary(x => x.Key, x => x.Value);
         }
 
@@ -120,8 +120,8 @@ namespace NetGore.Db.Schema
 
         static KeyValuePair<string, string> ReadKVP(IValueReader reader)
         {
-            string key = reader.ReadString(_keyValueName);
-            string value = reader.ReadString(_valueValueName);
+            var key = reader.ReadString(_keyValueName);
+            var value = reader.ReadString(_valueValueName);
             return new KeyValuePair<string, string>(key, value);
         }
 
@@ -132,10 +132,10 @@ namespace NetGore.Db.Schema
         /// <returns>The read values.</returns>
         public static IDictionary<string, string> ReadValues(IDataReader r)
         {
-            Dictionary<string, string> d = new Dictionary<string, string>(_valueNames.Length);
+            var d = new Dictionary<string, string>(_valueNames.Length);
             foreach (var v in ValueNames)
             {
-                int ordinal = r.GetOrdinal(v);
+                var ordinal = r.GetOrdinal(v);
                 if (r.IsDBNull(ordinal))
                     d.Add(v, null);
                 else

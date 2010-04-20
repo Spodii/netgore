@@ -1,14 +1,12 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML.Graphics;
-using Color=SFML.Graphics.Color;
-using Image=System.Drawing.Image;
+using Image = System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -81,7 +79,7 @@ namespace DemoGame.MapEditor
 
         Entity GetEntityUnderCursor(ScreenForm screen)
         {
-            Vector2 cursorPos = screen.CursorPos;
+            var cursorPos = screen.CursorPos;
             return screen.Map.Spatial.Get<Entity>(cursorPos, GetEntityUnderCursorFilter);
         }
 
@@ -140,7 +138,7 @@ namespace DemoGame.MapEditor
         public override void MouseMove(MouseEventArgs e)
         {
             // Get the map and ensure a valid cursor position
-            Map map = Container.Map;
+            var map = Container.Map;
             if (map == null || !map.IsInMapBoundaries(Container.CursorPos))
                 return;
 
@@ -153,7 +151,7 @@ namespace DemoGame.MapEditor
                     if (Container.KeyEventArgs.Control)
                     {
                         // Resize the entity
-                        Vector2 size = Container.CursorPos - focusedEntity.Position;
+                        var size = Container.CursorPos - focusedEntity.Position;
                         if (size.X < 4)
                             size.X = 4;
                         if (size.Y < 4)
@@ -170,7 +168,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Set the tooltip to the entity under the cursor
-                Entity hoverEntity = GetEntityUnderCursor(Container);
+                var hoverEntity = GetEntityUnderCursor(Container);
 
                 if (hoverEntity == null)
                 {

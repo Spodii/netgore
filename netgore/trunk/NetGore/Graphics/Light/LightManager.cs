@@ -1,8 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
-using log4net;
-
 using NetGore.Collections;
 using SFML.Graphics;
 
@@ -13,11 +10,11 @@ namespace NetGore.Graphics
     /// </summary>
     public class LightManager : VirtualList<ILight>, ILightManager
     {
-        ISpriteBatch _sb;
         Color _ambient;
         Grh _defaultSprite;
         Image _lightMap;
         RenderWindow _rw;
+        ISpriteBatch _sb;
 
         /// <summary>
         /// Draws all of the lights in this <see cref="ILightManager"/>.

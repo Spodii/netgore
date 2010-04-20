@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Timers;
 using log4net;
-using Timer=System.Timers.Timer;
+using Timer = System.Timers.Timer;
 
 namespace NetGore.IO
 {
@@ -101,7 +101,7 @@ namespace NetGore.IO
             var loadedItems = LoadSettings(filePath);
             if (loadedItems == null)
             {
-                foreach (string secondaryPath in secondaryPaths.Where(x => !string.IsNullOrEmpty(x)))
+                foreach (var secondaryPath in secondaryPaths.Where(x => !string.IsNullOrEmpty(x)))
                 {
                     loadedItems = LoadSettings(secondaryPath);
                     if (loadedItems != null)
@@ -230,7 +230,7 @@ namespace NetGore.IO
                 {
                     // If we fail to read the state, just absorb the exception while printing an error
                     const string errmsg = "Failed to load settings for object `{0}` with key `{1}`: {2}";
-                    string err = string.Format(errmsg, obj, key, ex);
+                    var err = string.Format(errmsg, obj, key, ex);
                     log.Error(err);
                     Debug.Fail(err);
                 }
@@ -284,20 +284,20 @@ namespace NetGore.IO
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
                 return null;
 
-            FileInfo fi = new FileInfo(path);
+            var fi = new FileInfo(path);
             if (fi.Length < 1)
                 return null;
 
-            Dictionary<string, IValueReader> nodeReaders = new Dictionary<string, IValueReader>(_keyStringComparer);
+            var nodeReaders = new Dictionary<string, IValueReader>(_keyStringComparer);
 
             try
             {
                 IValueReader reader = new XmlValueReader(path, _rootNode);
 
                 reader = reader.ReadNode(_itemsNodeName);
-                int count = reader.ReadInt(_countValueName);
+                var count = reader.ReadInt(_countValueName);
 
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     var nodeReader = reader.ReadNode(_itemNodeName + i);
                     var keyName = nodeReader.ReadString(_keyValueName);
@@ -334,7 +334,7 @@ namespace NetGore.IO
                     w.WriteStartNode(_itemsNodeName);
                     {
                         w.Write(_countValueName, objs.Length);
-                        for (int i = 0; i < objs.Length; i++)
+                        for (var i = 0; i < objs.Length; i++)
                         {
                             w.WriteStartNode(_itemNodeName + i);
                             {

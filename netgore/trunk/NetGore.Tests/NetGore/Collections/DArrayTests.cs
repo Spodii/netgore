@@ -15,8 +15,8 @@ namespace NetGore.Tests.Collections
     {
         static void AddTestSub(bool trackFree)
         {
-            object o1 = new object();
-            object o2 = new object();
+            var o1 = new object();
+            var o2 = new object();
             var d = new DArray<object>(trackFree) { o1, o2 };
 
             Assert.IsTrue(d.Contains(o1), "TrackFree = " + trackFree);
@@ -40,7 +40,7 @@ namespace NetGore.Tests.Collections
             var d = new DArray<object>(trackFree);
             d[0] = new object();
 
-            object o = d[0];
+            var o = d[0];
 
             try
             {
@@ -68,7 +68,7 @@ namespace NetGore.Tests.Collections
             const int size = 50;
 
             var d = new DArray<object>(trackFree);
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 d[i] = new object();
             }
@@ -80,7 +80,7 @@ namespace NetGore.Tests.Collections
 
             try
             {
-                object o = d[0];
+                var o = d[0];
                 Assert.Fail("Failed to generate IndexOutOfRangeException for d[-1].");
             }
             catch (IndexOutOfRangeException)
@@ -94,12 +94,12 @@ namespace NetGore.Tests.Collections
             const int size = 10;
 
             var d = new DArray<object>(trackFree);
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 d[i] = new object();
             }
 
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 Assert.IsTrue(d.Contains(d[i]));
             }
@@ -107,11 +107,11 @@ namespace NetGore.Tests.Collections
 
         static void CountTestSub(bool trackFree)
         {
-            int expectedCount = 0;
+            var expectedCount = 0;
 
             var d = new DArray<object>(trackFree);
 
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 if ((i % 3) == 0)
                 {
@@ -121,7 +121,7 @@ namespace NetGore.Tests.Collections
                 }
             }
 
-            for (int i = 0; i < d.Length; i++)
+            for (var i = 0; i < d.Length; i++)
             {
                 if ((i % 2) == 0 && d[i] != null)
                 {
@@ -133,7 +133,7 @@ namespace NetGore.Tests.Collections
                 }
             }
 
-            for (int i = 0; i < 50; i++)
+            for (var i = 0; i < 50; i++)
             {
                 d.Add(new object());
                 expectedCount++;
@@ -146,22 +146,22 @@ namespace NetGore.Tests.Collections
             const int size = 100;
 
             var objs = new object[size];
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 if ((i % 2) == 0)
                     objs[i] = new object();
             }
 
             var d = new DArray<object>(size * 2, trackFree);
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 if (objs[i] != null)
                     d[i] = objs[i];
             }
 
-            foreach (object obj in d)
+            foreach (var obj in d)
             {
-                int i = d.IndexOf(obj);
+                var i = d.IndexOf(obj);
 
                 Assert.IsNotNull(obj);
                 Assert.AreSame(objs[i], obj);
@@ -170,7 +170,7 @@ namespace NetGore.Tests.Collections
                 objs[i] = null;
             }
 
-            int remainingObjs = objs.Where(obj => obj != null).Count();
+            var remainingObjs = objs.Where(obj => obj != null).Count();
             Assert.AreEqual(0, remainingObjs,
                             "One or more items failed to be enumerated since all enumerated " +
                             "items should have been removed from objs[].");
@@ -181,20 +181,20 @@ namespace NetGore.Tests.Collections
             const int size = 100;
 
             var objs = new int[size];
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 objs[i] = i * 4;
             }
 
             var d = new DArray<int>(size * 2, trackFree);
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 d[i] = objs[i];
             }
 
-            foreach (int obj in d)
+            foreach (var obj in d)
             {
-                int i = d.IndexOf(obj);
+                var i = d.IndexOf(obj);
 
                 Assert.AreEqual(objs[i], obj);
                 Assert.AreEqual(objs[i], d[i]);
@@ -202,7 +202,7 @@ namespace NetGore.Tests.Collections
                 objs[i] = -1;
             }
 
-            int remainingObjs = objs.Where(obj => obj != -1).Count();
+            var remainingObjs = objs.Where(obj => obj != -1).Count();
             Assert.AreEqual(0, remainingObjs,
                             "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
         }
@@ -213,7 +213,7 @@ namespace NetGore.Tests.Collections
 
             try
             {
-                foreach (object obj in d)
+                foreach (var obj in d)
                 {
                     d[10] = new object();
                 }
@@ -225,7 +225,7 @@ namespace NetGore.Tests.Collections
 
             try
             {
-                foreach (object obj in d)
+                foreach (var obj in d)
                 {
                     d.RemoveAt(0);
                 }
@@ -237,7 +237,7 @@ namespace NetGore.Tests.Collections
 
             try
             {
-                foreach (object obj in d)
+                foreach (var obj in d)
                 {
                     d[0] = new object();
                 }
@@ -253,19 +253,19 @@ namespace NetGore.Tests.Collections
             const int size = 1000;
 
             var objs = new object[size];
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 objs[i] = new object();
             }
 
             var d = new DArray<object>(trackFree);
 
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 d[i] = objs[i];
             }
 
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 Assert.AreSame(objs[i], d[i]);
             }
@@ -276,12 +276,12 @@ namespace NetGore.Tests.Collections
             const int size = 50;
 
             var d = new DArray<object>(trackFree);
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 d[i] = new object();
             }
 
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 Assert.AreEqual(i, d.IndexOf(d[i]));
             }
@@ -292,12 +292,12 @@ namespace NetGore.Tests.Collections
             const int size = 50;
 
             var d = new DArray<int>(trackFree);
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 d[i] = i * 4;
             }
 
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 Assert.AreEqual(i, d.IndexOf(d[i]));
             }
@@ -306,7 +306,7 @@ namespace NetGore.Tests.Collections
         static void LengthTestSub(bool trackFree)
         {
             var d = new DArray<object>(trackFree);
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 Assert.AreEqual(i, d.Length, "TrackFree = " + trackFree);
                 d[i] = new object();
@@ -317,7 +317,7 @@ namespace NetGore.Tests.Collections
         {
             var d = new DArray<object>(trackFree);
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 d[i] = new object();
             }
@@ -328,7 +328,7 @@ namespace NetGore.Tests.Collections
             d.RemoveAt(9);
 
             var usedIndices = new List<int>();
-            for (int i = 0; i < 7; i++)
+            for (var i = 0; i < 7; i++)
             {
                 usedIndices.Add(d.Insert(new object()));
             }
@@ -337,7 +337,7 @@ namespace NetGore.Tests.Collections
 
             Assert.AreEqual(usedIndices.Count(), expected.Length);
 
-            foreach (int i in usedIndices)
+            foreach (var i in usedIndices)
             {
                 Assert.IsTrue(expected.Contains(i), "TrackFree = " + trackFree);
             }
@@ -347,12 +347,12 @@ namespace NetGore.Tests.Collections
         {
             var d = new DArray<object>(trackFree);
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 d[i] = new object();
             }
 
-            object o = d[5];
+            var o = d[5];
             Assert.IsTrue(d.Remove(o));
             Assert.IsFalse(d.Contains(o));
         }
@@ -362,14 +362,14 @@ namespace NetGore.Tests.Collections
             const int size = 1000;
 
             var objs = new object[size];
-            for (int i = 0; i < size / 2; i++)
+            for (var i = 0; i < size / 2; i++)
             {
                 if ((i % 3) == 0)
                     objs[i] = i.ToString();
             }
 
             var d = new DArray<object>(size, trackFree);
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 if (objs[i] != null)
                     d[i] = objs[i];
@@ -378,22 +378,22 @@ namespace NetGore.Tests.Collections
             d.Trim();
 
             // Make sure our data has not changed
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 if (objs[i] != null)
                     Assert.AreSame(objs[i], d[i], "TrackFree = " + trackFree);
             }
 
             // Make sure the null slots are still null
-            for (int i = 0; i < d.Length; i++)
+            for (var i = 0; i < d.Length; i++)
             {
                 Assert.AreSame(objs[i], d[i], "TrackFree = " + trackFree);
             }
 
             // Make sure that inserts first fill up the gaps, THEN expand
-            int startLen = d.Length;
-            int gaps = startLen - d.Count;
-            for (int i = 0; i < gaps; i++)
+            var startLen = d.Length;
+            var gaps = startLen - d.Count;
+            for (var i = 0; i < gaps; i++)
             {
                 d.Insert(new object());
             }
@@ -401,9 +401,9 @@ namespace NetGore.Tests.Collections
             Assert.AreEqual(startLen, d.Length, "TrackFree = " + trackFree);
 
             // Make sure we start expanding now
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                int before = d.Length;
+                var before = d.Length;
                 d.Insert(new object());
                 Assert.AreEqual(before + 1, d.Length, "TrackFree = " + trackFree);
             }

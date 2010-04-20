@@ -12,6 +12,16 @@ namespace NetGore.Graphics.ParticleEngine
         bool _isDisposed = false;
 
         /// <summary>
+        /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in
+        /// a valid state to draw.
+        /// </summary>
+        /// <returns>True if in a valid state to draw; otherwise false.</returns>
+        protected virtual bool InValidRenderState()
+        {
+            return true;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles the actual disposing.
         /// </summary>
         protected abstract void InternalDispose();
@@ -26,16 +36,6 @@ namespace NetGore.Graphics.ParticleEngine
         /// <see cref="BlendMode"/> is set to <see cref="BlendMode.Alpha"/>.</param>
         protected abstract void InternalRenderEmitter(ICamera2D camera, IEnumerable<ParticleEmitter> additiveEmitters,
                                                       IEnumerable<ParticleEmitter> alphaEmitters);
-
-        /// <summary>
-        /// When overridden in the derived class, gets if the <see cref="ParticleRendererBase"/> is in
-        /// a valid state to draw.
-        /// </summary>
-        /// <returns>True if in a valid state to draw; otherwise false.</returns>
-        protected virtual bool InValidRenderState()
-        {
-            return true;
-        }
 
         #region IParticleRenderer Members
 

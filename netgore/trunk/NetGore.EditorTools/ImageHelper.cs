@@ -1,13 +1,7 @@
-using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Color=System.Drawing.Color;
 
 namespace NetGore.EditorTools
 {
@@ -121,7 +115,7 @@ namespace NetGore.EditorTools
             if (log.IsDebugEnabled)
                 log.DebugFormat("Creating solid image of size {0}x{1} with color {2}.", width, height, color);
 
-            Bitmap bmp = new Bitmap(width, height);
+            var bmp = new Bitmap(width, height);
             bmp.SetResolution(72, 72);
 
             using (var g = System.Drawing.Graphics.FromImage(bmp))

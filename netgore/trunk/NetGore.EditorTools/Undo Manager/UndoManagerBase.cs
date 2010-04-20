@@ -49,7 +49,7 @@ namespace NetGore.EditorTools
         public IUndoEvent Pop()
         {
             //Store the current cursor index because I can't figure out a better way to do this.
-            int cu = _cursorIndex;
+            var cu = _cursorIndex;
 
             //Move the cursor down by 1 if it isn't already at 0.
             _cursorIndex -= _cursorIndex != 0 ? 1 : 0;
@@ -74,7 +74,7 @@ namespace NetGore.EditorTools
             //If there are any undone events (events after the cursor index in the list), remove them.
             if (_cursorIndex < _events.Count() - 1)
             {
-                foreach (IUndoEvent eve in _events.GetRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1)))
+                foreach (var eve in _events.GetRange(_cursorIndex + 1, _events.Count() - (_cursorIndex + 1)))
                 {
                     eve.Dispose();
                 }
@@ -137,7 +137,7 @@ namespace NetGore.EditorTools
             try
             {
                 //Pop the current event and then undo it.
-                IUndoEvent eventToUndo = Pop();
+                var eventToUndo = Pop();
                 eventToUndo.Undo();
 
                 //If successful, return true; otherwise, false!

@@ -277,7 +277,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Find the text offset
-            Vector2 textOffset = new Vector2(sprite.Source.Width + _textXAdjust, 0);
+            var textOffset = new Vector2(sprite.Source.Width + _textXAdjust, 0);
 
             // Draw the checkbox
             if (sprite.Texture != null)
@@ -293,7 +293,7 @@ namespace NetGore.Graphics.GUI
         void HandleAutoResize()
         {
             // Start with the size of the text
-            Vector2 textSize = Font.MeasureString(Text);
+            var textSize = Font.MeasureString(Text);
 
             // Add the width of checkbox
             textSize.X += Math.Max(_unticked.Source.Width, _ticked.Source.Width);

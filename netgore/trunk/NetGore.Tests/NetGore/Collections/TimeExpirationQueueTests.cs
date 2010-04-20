@@ -13,7 +13,7 @@ namespace NetGore.Tests.NetGore.Collections
         [Test]
         public void AddTest()
         {
-            TestQ q = new TestQ();
+            var q = new TestQ();
             Assert.IsTrue(q.Items.IsEmpty());
 
             q.Add("a", 0, 10);
@@ -41,7 +41,7 @@ namespace NetGore.Tests.NetGore.Collections
         [Test]
         public void RemoveTest()
         {
-            TestQ q = new TestQ();
+            var q = new TestQ();
 
             q.Add("abc", 0, 10);
             Assert.AreEqual("abc", q.Items.First().Key);
@@ -57,7 +57,7 @@ namespace NetGore.Tests.NetGore.Collections
         [Test]
         public void UpdateTest()
         {
-            TestQ q = new TestQ();
+            var q = new TestQ();
             q.Add("b", 0, 50);
             q.Add("a", 0, 10);
             q.Add("c", 0, 100);

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -53,7 +52,7 @@ namespace NetGore.Graphics
                 const string errmsg =
                     "Failed to create GrhData with category `{0}`." +
                     " No GrhData may be created with a GrhIndex equal to GrhIndex.Invalid";
-                string err = string.Format(errmsg, cat);
+                var err = string.Format(errmsg, cat);
                 log.Error(err);
                 throw new ArgumentOutOfRangeException("grhIndex", err);
             }
@@ -129,7 +128,7 @@ namespace NetGore.Graphics
             if (GrhInfo.GetData(newCategorization) != null)
                 throw new ArgumentException("Category already in use.", "newCategorization");
 
-            GrhIndex index = GrhInfo.NextFreeIndex();
+            var index = GrhInfo.NextFreeIndex();
             Debug.Assert(GrhInfo.GetData(index) == null,
                          "Slot to use is already in use! How the hell did this happen!? GrhInfo.NextFreeIndex() must be broken.");
 
@@ -160,7 +159,7 @@ namespace NetGore.Graphics
             if (grhDatas == null || grhDatas.Count() == 0)
                 return Vector2.Zero;
 
-            Vector2 ret = Vector2.Zero;
+            var ret = Vector2.Zero;
             foreach (var f in grhDatas)
             {
                 if (f.Size.X > ret.X)

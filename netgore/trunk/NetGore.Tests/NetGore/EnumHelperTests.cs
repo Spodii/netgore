@@ -14,10 +14,10 @@ namespace NetGore.Tests.NetGore
 
         static string CreateRandomString()
         {
-            int length = r.Next(2, 10);
+            var length = r.Next(2, 10);
             var ret = new char[length];
 
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 int j;
                 if (i == 0)
@@ -78,7 +78,7 @@ namespace NetGore.Tests.NetGore
             object o;
 #pragma warning restore 219
 
-            BitStream bs = new BitStream(BitStreamMode.Write, 128);
+            var bs = new BitStream(BitStreamMode.Write, 128);
 
             Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.BitsRequired);
             Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.MaxValue);
@@ -138,7 +138,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsDefinedInvalidValuesTest()
         {
-            for (int i = 50; i < 80; i++)
+            for (var i = 50; i < 80; i++)
             {
                 Assert.IsFalse(EnumHelper<EVByte>.IsDefined((EVByte)i));
                 Assert.IsFalse(EnumHelper<EVSByte>.IsDefined((EVSByte)i));
@@ -320,7 +320,7 @@ namespace NetGore.Tests.NetGore
 
             foreach (var v in EnumHelper<EVByte>.Values)
             {
-                EVByte b = v;
+                var b = v;
                 Assert.Throws<ArgumentException>(() => o = EnumHelper<EVByte>.Parse(b.ToString().ToLower()));
             }
 
@@ -502,7 +502,7 @@ namespace NetGore.Tests.NetGore
         {
             var names = Enum.GetNames(typeof(TestEnum));
 
-            foreach (string name in names)
+            foreach (var name in names)
             {
                 TestEnum outValue;
                 Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
@@ -510,7 +510,7 @@ namespace NetGore.Tests.NetGore
                 Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
             }
 
-            foreach (string name in names.Select(x => x.ToUpper()))
+            foreach (var name in names.Select(x => x.ToUpper()))
             {
                 TestEnum outValue;
                 Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
@@ -518,7 +518,7 @@ namespace NetGore.Tests.NetGore
                 Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
             }
 
-            foreach (string name in names.Select(x => x.ToLower()))
+            foreach (var name in names.Select(x => x.ToLower()))
             {
                 TestEnum outValue;
                 Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
@@ -532,7 +532,7 @@ namespace NetGore.Tests.NetGore
         {
             var names = Enum.GetNames(typeof(TestEnum));
 
-            foreach (string name in names)
+            foreach (var name in names)
             {
                 TestEnum outValue;
                 Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, false, out outValue));
@@ -540,9 +540,9 @@ namespace NetGore.Tests.NetGore
                 Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, false), outValue);
             }
 
-            foreach (string name in names)
+            foreach (var name in names)
             {
-                string nameUpper = name.ToUpper();
+                var nameUpper = name.ToUpper();
                 if (name.Equals(nameUpper, StringComparison.CurrentCulture))
                     continue;
 
@@ -550,9 +550,9 @@ namespace NetGore.Tests.NetGore
                 Assert.IsFalse(EnumHelper<TestEnum>.TryParse(nameUpper, false, out outValue));
             }
 
-            foreach (string name in names)
+            foreach (var name in names)
             {
-                string nameLower = name.ToLower();
+                var nameLower = name.ToLower();
                 if (name.Equals(nameLower, StringComparison.CurrentCulture))
                     continue;
 
@@ -566,9 +566,9 @@ namespace NetGore.Tests.NetGore
         {
             var names = Enum.GetNames(typeof(TestEnum));
 
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
-                string s = CreateRandomString();
+                var s = CreateRandomString();
                 if (names.Contains(s, StringComparer.OrdinalIgnoreCase))
                     continue;
 

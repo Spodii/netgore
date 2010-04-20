@@ -13,7 +13,7 @@ namespace NetGore.Tests.NetGore
         public void RemoveAllTest()
         {
             var original = new int[] { 1, 1, 1, 1, 1, 1 };
-            List<int> l = new List<int>(original);
+            var l = new List<int>(original);
 
             Assert.AreEqual(original.Length, l.Count());
             l.RemoveDuplicates((x, y) => x == y);
@@ -25,7 +25,7 @@ namespace NetGore.Tests.NetGore
         public void RemoveFromEndTest()
         {
             var original = new int[] { 1, 2, 3, 4, 4 };
-            List<int> l = new List<int>(original);
+            var l = new List<int>(original);
 
             Assert.AreEqual(original.Length, l.Count());
             l.RemoveDuplicates((x, y) => x == y);
@@ -40,7 +40,7 @@ namespace NetGore.Tests.NetGore
         public void RemoveFromMiddleTest()
         {
             var original = new int[] { 1, 2, 3, 3, 4 };
-            List<int> l = new List<int>(original);
+            var l = new List<int>(original);
 
             Assert.AreEqual(original.Length, l.Count());
             l.RemoveDuplicates((x, y) => x == y);
@@ -55,7 +55,7 @@ namespace NetGore.Tests.NetGore
         public void RemoveFromStartTest()
         {
             var original = new int[] { 1, 1, 2, 3, 4 };
-            List<int> l = new List<int>(original);
+            var l = new List<int>(original);
 
             Assert.AreEqual(original.Length, l.Count());
             l.RemoveDuplicates((x, y) => x == y);
@@ -70,7 +70,7 @@ namespace NetGore.Tests.NetGore
         public void RemoveNoneTest()
         {
             var original = new int[] { 1, 2, 3, 4, 5, 6 };
-            List<int> l = new List<int>(original);
+            var l = new List<int>(original);
 
             Assert.AreEqual(original.Length, l.Count());
             l.RemoveDuplicates((x, y) => x == y);
@@ -82,7 +82,7 @@ namespace NetGore.Tests.NetGore
         public void RemoveRandomTest()
         {
             var original = new int[] { 4, 4, 4, 3, 2, 1, 1, 2, 3, 3, 4, 4, 1, 1, 2, 34, 4, 1, 1, 1, 2, 3, 4, 5, 1 };
-            List<int> l = new List<int>(original);
+            var l = new List<int>(original);
 
             Assert.AreEqual(original.Length, l.Count());
             l.RemoveDuplicates((x, y) => x == y);

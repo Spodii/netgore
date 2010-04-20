@@ -42,29 +42,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Processes a command key.
-        /// </summary>
-        /// <param name="msg">A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the
-        /// Win32 message to process.</param>
-        /// <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values that represents
-        /// the key to process.</param>
-        /// <returns>
-        /// true if the keystroke was processed and consumed by the control; otherwise, false to allow further processing.
-        /// </returns>
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            // Prevents the form menu from showing when pressing alt
-            if (keyData == (Keys.RButton | Keys.ShiftKey | Keys.Alt))
-                return true;
-
-            // Prevents closing the form via alt+F4
-            if (keyData == (Keys.Alt | Keys.F4))
-                return true;
-
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
@@ -136,6 +113,29 @@ namespace DemoGame.Client
                 // Invalidate the whole screen so that it will be fully redrawn as soon as possible
                 Invalidate();
             }
+        }
+
+        /// <summary>
+        /// Processes a command key.
+        /// </summary>
+        /// <param name="msg">A <see cref="T:System.Windows.Forms.Message"/>, passed by reference, that represents the
+        /// Win32 message to process.</param>
+        /// <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values that represents
+        /// the key to process.</param>
+        /// <returns>
+        /// true if the keystroke was processed and consumed by the control; otherwise, false to allow further processing.
+        /// </returns>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Prevents the form menu from showing when pressing alt
+            if (keyData == (Keys.RButton | Keys.ShiftKey | Keys.Alt))
+                return true;
+
+            // Prevents closing the form via alt+F4
+            if (keyData == (Keys.Alt | Keys.F4))
+                return true;
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

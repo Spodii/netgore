@@ -133,7 +133,7 @@ namespace DemoGame.Client
                     ReceiveInfo(_slot, (IItemTable)null);
                 else
                 {
-                    using (BitStream pw = GetRequest(_slot))
+                    using (var pw = GetRequest(_slot))
                     {
                         Socket.Send(pw);
                     }

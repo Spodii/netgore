@@ -21,7 +21,7 @@ namespace DemoGame.Server.Queries
 
         public IEnumerable<IGuildTable> Execute()
         {
-            List<IGuildTable> ret = new List<IGuildTable>();
+            var ret = new List<IGuildTable>();
 
             using (var r = ExecuteReader())
             {

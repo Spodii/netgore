@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore.Content;
 using NetGore.IO;
 using SFML;
 using SFML.Audio;
@@ -19,7 +18,7 @@ namespace NetGore.Audio
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IMusicInfo[] _infos;
         readonly Dictionary<string, IMusicInfo> _infosByName = new Dictionary<string, IMusicInfo>(StringComparer.OrdinalIgnoreCase);
-        
+
         bool _loop = true;
         Music _playing;
         IMusicInfo _playingInfo;
@@ -31,13 +30,13 @@ namespace NetGore.Audio
             var values = AudioManager.LoadValues("music", "Music");
 
             // Create the _infos array large enough to hold all values
-            int max = values.Max(x => x.Value);
+            var max = values.Max(x => x.Value);
             _infos = new IMusicInfo[max + 1];
 
             // Populate both collections
             foreach (var value in values)
             {
-                MusicID id = new MusicID(value.Value);
+                var id = new MusicID(value.Value);
                 var musicInfo = new MusicInfo(value.Key, id);
 
                 // Ensure no duplicates

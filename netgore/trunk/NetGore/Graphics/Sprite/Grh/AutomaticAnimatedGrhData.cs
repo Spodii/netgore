@@ -45,8 +45,8 @@ namespace NetGore.Graphics
             // This basically just says that the only non-digits that may be before the end of the string are either nothing,
             // or a single path separator and some characters. This allows us to also match when the path of a frame
             // is passed.
-            string regexStr = string.Format(@"[{1}]{0}(?<Title>[^{1}]+?){0}frames{0}(?<Speed>\d+)([{1}][^{1}{0}]*)?$",
-                                            DirectoryNameDelimiter, @"\\/");
+            var regexStr = string.Format(@"[{1}]{0}(?<Title>[^{1}]+?){0}frames{0}(?<Speed>\d+)([{1}][^{1}{0}]*)?$",
+                                         DirectoryNameDelimiter, @"\\/");
             _aaFolderRegex = new Regex(regexStr, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
         }
 
@@ -132,7 +132,7 @@ namespace NetGore.Graphics
 
             // Build the individual frames
             var frames = new StationaryGrhData[files.Length];
-            for (int i = 0; i < frames.Length; i++)
+            for (var i = 0; i < frames.Length; i++)
             {
                 var contentAssetName = ContentAssetName.FromAbsoluteFilePath(files[i], ContentPaths.Build.Grhs).Value;
                 var textureAssetName = new TextureAssetName(contentAssetName);
@@ -169,13 +169,13 @@ namespace NetGore.Graphics
             const int defaultSpeed = 400;
 
             // Get the regex match
-            Match match = _aaFolderRegex.Match(directory);
+            var match = _aaFolderRegex.Match(directory);
             if (!match.Success)
                 return null;
 
             // Grab the different parts, and return the values
-            string title = match.Groups["Title"].Value;
-            int speed = defaultSpeed;
+            var title = match.Groups["Title"].Value;
+            var speed = defaultSpeed;
             if (match.Groups["Speed"].Success)
                 speed = Parser.Invariant.ParseInt(match.Groups["Speed"].Value);
 
@@ -209,12 +209,12 @@ namespace NetGore.Graphics
         /// if the directory could not be found.</returns>
         string GetFramesDirectory()
         {
-            string category = Categorization.Category.ToString();
-            string categoryAsFilePath = category.Replace(SpriteCategorization.Delimiter, Path.DirectorySeparatorChar.ToString());
+            var category = Categorization.Category.ToString();
+            var categoryAsFilePath = category.Replace(SpriteCategorization.Delimiter, Path.DirectorySeparatorChar.ToString());
             var rootDir = ContentPaths.Build.Grhs.Join(categoryAsFilePath);
 
             // Create the filter that will be used to find the directory containing the frames
-            string dirNameFilter = string.Format("{0}{1}{0}frames{0}*", DirectoryNameDelimiter, Categorization.Title);
+            var dirNameFilter = string.Format("{0}{1}{0}frames{0}*", DirectoryNameDelimiter, Categorization.Title);
 
             // Try to find the directory
             string[] potentialDirs;
@@ -274,12 +274,12 @@ namespace NetGore.Graphics
         /// <returns>The files that have a valid name, ordered numerically by file name.</returns>
         static string[] SortAndFilterFrameFiles(IEnumerable<string> files)
         {
-            List<KeyValuePair<int, string>> validFiles = new List<KeyValuePair<int, string>>(files.Count());
+            var validFiles = new List<KeyValuePair<int, string>>(files.Count());
 
             // Parse and filter
             foreach (var file in files)
             {
-                string fileName = Path.GetFileNameWithoutExtension(file);
+                var fileName = Path.GetFileNameWithoutExtension(file);
 
                 // If we can't parse it as an int, then we won't include it
                 int o;

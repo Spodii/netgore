@@ -44,6 +44,11 @@ namespace NetGore.Network
         int _maxDupeIP = 3;
 
         /// <summary>
+        /// Notifies listeners when a connection with Connect() failed to be made to a host.
+        /// </summary>
+        public event SocketManagerEventHandler ConnectFailed;
+
+        /// <summary>
         /// Notifies listeners when a connection with <see cref="SocketManager.Connect"/> was successfully made with a host.
         /// </summary>
         public event SocketManagerSocketEventHandler Connected;
@@ -53,11 +58,6 @@ namespace NetGore.Network
         /// with us.
         /// </summary>
         public event SocketManagerSocketEventHandler ConnectedFrom;
-
-        /// <summary>
-        /// Notifies listeners when a connection with Connect() failed to be made to a host.
-        /// </summary>
-        public event SocketManagerEventHandler ConnectFailed;
 
         /// <summary>
         /// Notifies listeners when a connection has been terminated.
@@ -106,7 +106,7 @@ namespace NetGore.Network
         public IIPSocket Connect(string host, int port)
         {
             // Create the socket to connect with
-            TCPSocket conn = new TCPSocket();
+            var conn = new TCPSocket();
             if (log.IsInfoEnabled)
                 log.InfoFormat("Connecting to host at {0}:{1}", host, port);
 
@@ -158,6 +158,17 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Establishes the UDP connection for a client when requested by the server.
+        /// </summary>
+        /// <param name="host">The host to connect to.</param>
+        /// <param name="port">The port to connect to.</param>
+        /// <param name="challenge">The received challenge value from the server.</param>
+        public void ConnectUDP(string host, int port, int challenge)
+        {
+            _udpSocket.Connect(host, port, BitConverter.GetBytes(challenge));
+        }
+
+        /// <summary>
         /// Returns the number of connections found from a single IP. This method itself is not thread-safe, so it
         /// must only be called where a lock on _connectionsLock is set.
         /// </summary>
@@ -174,17 +185,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Establishes the UDP connection for a client when requested by the server.
-        /// </summary>
-        /// <param name="host">The host to connect to.</param>
-        /// <param name="port">The port to connect to.</param>
-        /// <param name="challenge">The received challenge value from the server.</param>
-        public void ConnectUDP(string host, int port, int challenge)
-        {
-            _udpSocket.Connect(host, port, BitConverter.GetBytes(challenge));
-        }
-
-        /// <summary>
         /// Closes and disposes all connections made, leaving just the listen socket (if one exists).
         /// </summary>
         public void Disconnect()
@@ -198,7 +198,7 @@ namespace NetGore.Network
             }
 
             // Remove each of the connections
-            foreach (IPSocket ipSocket in connsToRemove)
+            foreach (var ipSocket in connsToRemove)
             {
                 ipSocket.TCPSocket.Dispose();
             }
@@ -255,7 +255,7 @@ namespace NetGore.Network
                     {
                         foreach (var v in udpData)
                         {
-                            int challenge = BitConverter.ToInt32(v.Data, 0);
+                            var challenge = BitConverter.ToInt32(v.Data, 0);
                             var ipEP = ((IPEndPoint)v.RemoteEndPoint);
                             var ipAsUInt = IPAddressHelper.IPv4AddressToUInt(ipEP.Address.GetAddressBytes(), 0);
 
@@ -276,7 +276,7 @@ namespace NetGore.Network
                 }
 
                 // Loop through each socket
-                foreach (IPSocket conn in Connections)
+                foreach (var conn in Connections)
                 {
                     // Get the queued receive data from the socket, continue if has data
                     var data = conn.GetRecvData();
@@ -333,6 +333,15 @@ namespace NetGore.Network
         /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
         /// the corresponding event when possible.
         /// </summary>
+        protected virtual void OnConnectFailed()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling the corresponding event without
+        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
+        /// the corresponding event when possible.
+        /// </summary>
         /// <param name="conn">Connection on which the event occured.</param>
         protected virtual void OnConnected(IIPSocket conn)
         {
@@ -345,15 +354,6 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="conn">Connection on which the event occured.</param>
         protected virtual void OnConnectedFrom(IIPSocket conn)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        protected virtual void OnConnectFailed()
         {
         }
 
@@ -377,7 +377,7 @@ namespace NetGore.Network
 
             lock (_connectionsLock)
             {
-                foreach (IPSocket ipSocket in _connections)
+                foreach (var ipSocket in _connections)
                 {
                     if (match(ipSocket))
                         connsToRemove.Push(ipSocket);
@@ -385,14 +385,14 @@ namespace NetGore.Network
             }
 
             // Get the number of matches found
-            int removeCount = connsToRemove.Count();
+            var removeCount = connsToRemove.Count();
 
             // If no connections match the condition, we can leave now
             if (removeCount == 0)
                 return;
 
             // Call dispose on all the connections being removed
-            foreach (IPSocket conn in connsToRemove)
+            foreach (var conn in connsToRemove)
             {
                 conn.Dispose();
             }

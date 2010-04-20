@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -23,8 +23,7 @@ namespace SFML
             /// <param name="width">Video mode width</param>
             /// <param name="height">Video mode height</param>
             ////////////////////////////////////////////////////////////
-            public VideoMode(uint width, uint height) :
-                this(width, height, 32)
+            public VideoMode(uint width, uint height) : this(width, height, 32)
             {
             }
 
@@ -38,8 +37,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public VideoMode(uint width, uint height, uint bpp)
             {
-                Width        = width;
-                Height       = height;
+                Width = width;
+                Height = height;
                 BitsPerPixel = bpp;
             }
 
@@ -61,7 +60,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public static uint ModesCount
             {
-                get {return sfVideoMode_GetModesCount();}
+                get { return sfVideoMode_GetModesCount(); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -85,7 +84,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public static VideoMode DesktopMode
             {
-                get {return sfVideoMode_GetDesktopMode();}
+                get { return sfVideoMode_GetDesktopMode(); }
             }
 
             /// <summary>Video mode width, in pixels</summary>
@@ -98,17 +97,23 @@ namespace SFML
             public uint BitsPerPixel;
 
             #region Imports
-            [DllImport("csfml-window"), SuppressUnmanagedCodeSecurity]
+
+            [DllImport("csfml-window")]
+            [SuppressUnmanagedCodeSecurity]
             static extern VideoMode sfVideoMode_GetDesktopMode();
 
-            [DllImport("csfml-window"), SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window")]
+            [SuppressUnmanagedCodeSecurity]
             static extern uint sfVideoMode_GetModesCount();
 
-            [DllImport("csfml-window"), SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window")]
+            [SuppressUnmanagedCodeSecurity]
             static extern VideoMode sfVideoMode_GetMode(uint Index);
 
-            [DllImport("csfml-window"), SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window")]
+            [SuppressUnmanagedCodeSecurity]
             static extern bool sfVideoMode_IsValid(VideoMode Mode);
+
             #endregion
         }
     }

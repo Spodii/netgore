@@ -44,7 +44,7 @@ namespace NetGore.IO
         public void MoveTo(string targetFilePath)
         {
             // Check if we need to create the directory
-            string dir = Path.GetDirectoryName(targetFilePath);
+            var dir = Path.GetDirectoryName(targetFilePath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 

@@ -21,7 +21,7 @@ namespace NetGore
         /// </summary>
         public ConsoleInputBuffer()
         {
-            Thread inputThread = new Thread(ReceiveInputLoop) { IsBackground = true, Name = "Console Input" };
+            var inputThread = new Thread(ReceiveInputLoop) { IsBackground = true, Name = "Console Input" };
             inputThread.Start();
         }
 
@@ -56,7 +56,7 @@ namespace NetGore
         {
             while (_isRunning)
             {
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(input))
                 {

@@ -24,8 +24,8 @@ namespace NetGore.Tests.NetGore
             if (args.Length == 0)
                 return string.Empty;
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < args.Length; i++)
+            var sb = new StringBuilder();
+            for (var i = 0; i < args.Length; i++)
             {
                 sb.Append(args[i].ToString());
                 sb.Append(" ");
@@ -97,9 +97,9 @@ namespace NetGore.Tests.NetGore
 
             public void TestParse(StringCommandParserTests binder, string command, params object[] objs)
             {
-                string expected = Implode(objs);
+                var expected = Implode(objs);
                 string actual;
-                bool successful = TryParse(binder, command + " " + expected, out actual);
+                var successful = TryParse(binder, command + " " + expected, out actual);
 
                 Assert.IsTrue(successful);
                 Assert.AreEqual(expected, actual);
@@ -107,9 +107,9 @@ namespace NetGore.Tests.NetGore
 
             public void TestParseInvalid(StringCommandParserTests binder, string command, params object[] objs)
             {
-                string expected = Implode(objs);
+                var expected = Implode(objs);
                 string actual;
-                bool successful = TryParse(binder, command + " " + expected, out actual);
+                var successful = TryParse(binder, command + " " + expected, out actual);
                 Assert.IsFalse(successful);
             }
         }

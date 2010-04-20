@@ -35,9 +35,9 @@ namespace DemoGame.MapEditor
             if (MapSpawns == null)
                 return;
 
-            foreach (MapSpawnValues item in MapSpawns)
+            foreach (var item in MapSpawns)
             {
-                Rectangle rect = item.SpawnArea.ToRectangle(map);
+                var rect = item.SpawnArea.ToRectangle(map);
                 if (map.Camera.InView(rect))
                     RenderRectangle.Draw(spriteBatch, rect, _drawColor);
             }

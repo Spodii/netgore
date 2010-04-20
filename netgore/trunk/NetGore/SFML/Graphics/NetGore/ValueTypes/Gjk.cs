@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 
 namespace SFML.Graphics
 {
@@ -22,7 +22,7 @@ namespace SFML.Graphics
         // Methods
         public Gjk()
         {
-            for (int i = 0; i < 0x10; i++)
+            for (var i = 0; i < 0x10; i++)
             {
                 det[i] = new float[4];
             }
@@ -45,13 +45,13 @@ namespace SFML.Graphics
 
         public bool AddSupportPoint(ref Vector3 newPoint)
         {
-            int index = (BitsToIndices[simplexBits ^ 15] & 7) - 1;
+            var index = (BitsToIndices[simplexBits ^ 15] & 7) - 1;
             y[index] = newPoint;
             yLengthSq[index] = newPoint.LengthSquared();
-            for (int i = BitsToIndices[simplexBits]; i != 0; i = i >> 3)
+            for (var i = BitsToIndices[simplexBits]; i != 0; i = i >> 3)
             {
-                int num2 = (i & 7) - 1;
-                Vector3 vector = y[num2] - newPoint;
+                var num2 = (i & 7) - 1;
+                var vector = y[num2] - newPoint;
                 edges[num2][index] = vector;
                 edges[index][num2] = -(vector);
                 edgeLengthSq[index][num2] = edgeLengthSq[num2][index] = vector.LengthSquared();
@@ -62,13 +62,13 @@ namespace SFML.Graphics
 
         Vector3 ComputeClosestPoint()
         {
-            float num3 = 0f;
-            Vector3 zero = Vector3.Zero;
+            var num3 = 0f;
+            var zero = Vector3.Zero;
             maxLengthSq = 0f;
-            for (int i = BitsToIndices[simplexBits]; i != 0; i = i >> 3)
+            for (var i = BitsToIndices[simplexBits]; i != 0; i = i >> 3)
             {
-                int index = (i & 7) - 1;
-                float num4 = det[simplexBits][index];
+                var index = (i & 7) - 1;
+                var num4 = det[simplexBits][index];
                 num3 += num4;
                 zero += (y[index] * num4);
                 maxLengthSq = MathHelper.Max(maxLengthSq, yLengthSq[index]);
@@ -83,10 +83,10 @@ namespace SFML.Graphics
 
         bool IsSatisfiesRule(int xBits, int yBits)
         {
-            for (int i = BitsToIndices[yBits]; i != 0; i = i >> 3)
+            for (var i = BitsToIndices[yBits]; i != 0; i = i >> 3)
             {
-                int index = (i & 7) - 1;
-                int num3 = (1) << index;
+                var index = (i & 7) - 1;
+                var num3 = (1) << index;
                 if ((num3 & xBits) != 0)
                 {
                     if (det[xBits][index] <= 0f)
@@ -106,24 +106,24 @@ namespace SFML.Graphics
 
         void UpdateDeterminant(int xmIdx)
         {
-            int index = (1) << xmIdx;
+            var index = (1) << xmIdx;
             det[index][xmIdx] = 1f;
-            int num14 = BitsToIndices[simplexBits];
-            int num8 = num14;
-            for (int i = 0; num8 != 0; i++)
+            var num14 = BitsToIndices[simplexBits];
+            var num8 = num14;
+            for (var i = 0; num8 != 0; i++)
             {
-                int num = (num8 & 7) - 1;
-                int num12 = (1) << num;
-                int num6 = num12 | index;
+                var num = (num8 & 7) - 1;
+                var num12 = (1) << num;
+                var num6 = num12 | index;
                 det[num6][num] = Dot(ref edges[xmIdx][num], ref y[xmIdx]);
                 det[num6][xmIdx] = Dot(ref edges[num][xmIdx], ref y[num]);
-                int num11 = num14;
-                for (int j = 0; j < i; j++)
+                var num11 = num14;
+                for (var j = 0; j < i; j++)
                 {
-                    int num3 = (num11 & 7) - 1;
-                    int num5 = (1) << num3;
-                    int num9 = num6 | num5;
-                    int num4 = (edgeLengthSq[num][num3] < edgeLengthSq[xmIdx][num3]) ? num : xmIdx;
+                    var num3 = (num11 & 7) - 1;
+                    var num5 = (1) << num3;
+                    var num9 = num6 | num5;
+                    var num4 = (edgeLengthSq[num][num3] < edgeLengthSq[xmIdx][num3]) ? num : xmIdx;
                     det[num9][num3] = (det[num6][num] * Dot(ref edges[num4][num3], ref y[num])) +
                                       (det[num6][xmIdx] * Dot(ref edges[num4][num3], ref y[xmIdx]));
                     num4 = (edgeLengthSq[num3][num] < edgeLengthSq[xmIdx][num]) ? num3 : xmIdx;
@@ -138,7 +138,7 @@ namespace SFML.Graphics
             }
             if ((simplexBits | index) == 15)
             {
-                int num2 = (edgeLengthSq[1][0] < edgeLengthSq[2][0])
+                var num2 = (edgeLengthSq[1][0] < edgeLengthSq[2][0])
                                ? ((edgeLengthSq[1][0] < edgeLengthSq[3][0]) ? 1 : 3)
                                : ((edgeLengthSq[2][0] < edgeLengthSq[3][0]) ? 2 : 3);
                 det[15][0] = ((det[14][1] * Dot(ref edges[num2][0], ref y[1])) + (det[14][2] * Dot(ref edges[num2][0], ref y[2]))) +
@@ -163,9 +163,9 @@ namespace SFML.Graphics
 
         bool UpdateSimplex(int newIndex)
         {
-            int yBits = simplexBits | ((1) << newIndex);
-            int xBits = (1) << newIndex;
-            for (int i = simplexBits; i != 0; i--)
+            var yBits = simplexBits | ((1) << newIndex);
+            var xBits = (1) << newIndex;
+            for (var i = simplexBits; i != 0; i--)
             {
                 if (((i & yBits) == i) && IsSatisfiesRule(i | xBits, yBits))
                 {
@@ -174,7 +174,7 @@ namespace SFML.Graphics
                     return true;
                 }
             }
-            bool flag = false;
+            var flag = false;
             if (IsSatisfiesRule(xBits, yBits))
             {
                 simplexBits = xBits;

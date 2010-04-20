@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
@@ -130,7 +131,7 @@ namespace SFML.Graphics
         /// <summary>Retrieves a string representation of the current object.</summary>
         public override string ToString()
         {
-            CultureInfo currentCulture = CultureInfo.CurrentCulture;
+            var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{X:{0} Y:{1} Z:{2}}}",
                                  new object[]
                                  { X.ToString(currentCulture), Y.ToString(currentCulture), Z.ToString(currentCulture) });
@@ -147,7 +148,7 @@ namespace SFML.Graphics
         /// <param name="obj">Object to make the comparison with.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
+            var flag = false;
             if (obj is Vector3)
                 flag = Equals((Vector3)obj);
             return flag;
@@ -162,7 +163,7 @@ namespace SFML.Graphics
         /// <summary>Calculates the length of the vector.</summary>
         public float Length()
         {
-            float num = ((X * X) + (Y * Y)) + (Z * Z);
+            var num = ((X * X) + (Y * Y)) + (Z * Z);
             return (float)Math.Sqrt(num);
         }
 
@@ -177,10 +178,10 @@ namespace SFML.Graphics
         /// <param name="value2">Source vector.</param>
         public static float Distance(Vector3 value1, Vector3 value2)
         {
-            float num3 = value1.X - value2.X;
-            float num2 = value1.Y - value2.Y;
-            float num = value1.Z - value2.Z;
-            float num4 = ((num3 * num3) + (num2 * num2)) + (num * num);
+            var num3 = value1.X - value2.X;
+            var num2 = value1.Y - value2.Y;
+            var num = value1.Z - value2.Z;
+            var num4 = ((num3 * num3) + (num2 * num2)) + (num * num);
             return (float)Math.Sqrt(num4);
         }
 
@@ -190,10 +191,10 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The distance between the vectors.</param>
         public static void Distance(ref Vector3 value1, ref Vector3 value2, out float result)
         {
-            float num3 = value1.X - value2.X;
-            float num2 = value1.Y - value2.Y;
-            float num = value1.Z - value2.Z;
-            float num4 = ((num3 * num3) + (num2 * num2)) + (num * num);
+            var num3 = value1.X - value2.X;
+            var num2 = value1.Y - value2.Y;
+            var num = value1.Z - value2.Z;
+            var num4 = ((num3 * num3) + (num2 * num2)) + (num * num);
             result = (float)Math.Sqrt(num4);
         }
 
@@ -202,9 +203,9 @@ namespace SFML.Graphics
         /// <param name="value2">Source vector.</param>
         public static float DistanceSquared(Vector3 value1, Vector3 value2)
         {
-            float num3 = value1.X - value2.X;
-            float num2 = value1.Y - value2.Y;
-            float num = value1.Z - value2.Z;
+            var num3 = value1.X - value2.X;
+            var num2 = value1.Y - value2.Y;
+            var num = value1.Z - value2.Z;
             return (((num3 * num3) + (num2 * num2)) + (num * num));
         }
 
@@ -214,9 +215,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The distance between the two vectors squared.</param>
         public static void DistanceSquared(ref Vector3 value1, ref Vector3 value2, out float result)
         {
-            float num3 = value1.X - value2.X;
-            float num2 = value1.Y - value2.Y;
-            float num = value1.Z - value2.Z;
+            var num3 = value1.X - value2.X;
+            var num2 = value1.Y - value2.Y;
+            var num = value1.Z - value2.Z;
             result = ((num3 * num3) + (num2 * num2)) + (num * num);
         }
 
@@ -240,8 +241,8 @@ namespace SFML.Graphics
         /// <summary>Turns the current vector into a unit vector. The result is a vector one unit in length pointing in the same direction as the original vector.</summary>
         public void Normalize()
         {
-            float num2 = ((X * X) + (Y * Y)) + (Z * Z);
-            float num = 1f / ((float)Math.Sqrt(num2));
+            var num2 = ((X * X) + (Y * Y)) + (Z * Z);
+            var num = 1f / ((float)Math.Sqrt(num2));
             X *= num;
             Y *= num;
             Z *= num;
@@ -252,8 +253,8 @@ namespace SFML.Graphics
         public static Vector3 Normalize(Vector3 value)
         {
             Vector3 vector;
-            float num2 = ((value.X * value.X) + (value.Y * value.Y)) + (value.Z * value.Z);
-            float num = 1f / ((float)Math.Sqrt(num2));
+            var num2 = ((value.X * value.X) + (value.Y * value.Y)) + (value.Z * value.Z);
+            var num = 1f / ((float)Math.Sqrt(num2));
             vector.X = value.X * num;
             vector.Y = value.Y * num;
             vector.Z = value.Z * num;
@@ -265,8 +266,8 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The normalized vector.</param>
         public static void Normalize(ref Vector3 value, out Vector3 result)
         {
-            float num2 = ((value.X * value.X) + (value.Y * value.Y)) + (value.Z * value.Z);
-            float num = 1f / ((float)Math.Sqrt(num2));
+            var num2 = ((value.X * value.X) + (value.Y * value.Y)) + (value.Z * value.Z);
+            var num = 1f / ((float)Math.Sqrt(num2));
             result.X = value.X * num;
             result.Y = value.Y * num;
             result.Z = value.Z * num;
@@ -290,9 +291,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The cross product of the vectors.</param>
         public static void Cross(ref Vector3 vector1, ref Vector3 vector2, out Vector3 result)
         {
-            float num3 = (vector1.Y * vector2.Z) - (vector1.Z * vector2.Y);
-            float num2 = (vector1.Z * vector2.X) - (vector1.X * vector2.Z);
-            float num = (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
+            var num3 = (vector1.Y * vector2.Z) - (vector1.Z * vector2.Y);
+            var num2 = (vector1.Z * vector2.X) - (vector1.X * vector2.Z);
+            var num = (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
             result.X = num3;
             result.Y = num2;
             result.Z = num;
@@ -304,7 +305,7 @@ namespace SFML.Graphics
         public static Vector3 Reflect(Vector3 vector, Vector3 normal)
         {
             Vector3 vector2;
-            float num = ((vector.X * normal.X) + (vector.Y * normal.Y)) + (vector.Z * normal.Z);
+            var num = ((vector.X * normal.X) + (vector.Y * normal.Y)) + (vector.Z * normal.Z);
             vector2.X = vector.X - ((2f * num) * normal.X);
             vector2.Y = vector.Y - ((2f * num) * normal.Y);
             vector2.Z = vector.Z - ((2f * num) * normal.Z);
@@ -317,7 +318,7 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The reflected vector.</param>
         public static void Reflect(ref Vector3 vector, ref Vector3 normal, out Vector3 result)
         {
-            float num = ((vector.X * normal.X) + (vector.Y * normal.Y)) + (vector.Z * normal.Z);
+            var num = ((vector.X * normal.X) + (vector.Y * normal.Y)) + (vector.Z * normal.Z);
             result.X = vector.X - ((2f * num) * normal.X);
             result.Y = vector.Y - ((2f * num) * normal.Y);
             result.Z = vector.Z - ((2f * num) * normal.Z);
@@ -376,13 +377,13 @@ namespace SFML.Graphics
         public static Vector3 Clamp(Vector3 value1, Vector3 min, Vector3 max)
         {
             Vector3 vector;
-            float x = value1.X;
+            var x = value1.X;
             x = (x > max.X) ? max.X : x;
             x = (x < min.X) ? min.X : x;
-            float y = value1.Y;
+            var y = value1.Y;
             y = (y > max.Y) ? max.Y : y;
             y = (y < min.Y) ? min.Y : y;
-            float z = value1.Z;
+            var z = value1.Z;
             z = (z > max.Z) ? max.Z : z;
             z = (z < min.Z) ? min.Z : z;
             vector.X = x;
@@ -398,13 +399,13 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The clamped value.</param>
         public static void Clamp(ref Vector3 value1, ref Vector3 min, ref Vector3 max, out Vector3 result)
         {
-            float x = value1.X;
+            var x = value1.X;
             x = (x > max.X) ? max.X : x;
             x = (x < min.X) ? min.X : x;
-            float y = value1.Y;
+            var y = value1.Y;
             y = (y > max.Y) ? max.Y : y;
             y = (y < min.Y) ? min.Y : y;
-            float z = value1.Z;
+            var z = value1.Z;
             z = (z > max.Z) ? max.Z : z;
             z = (z < min.Z) ? min.Z : z;
             result.X = x;
@@ -505,8 +506,8 @@ namespace SFML.Graphics
         public static Vector3 CatmullRom(Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, float amount)
         {
             Vector3 vector;
-            float num = amount * amount;
-            float num2 = amount * num;
+            var num = amount * amount;
+            var num2 = amount * num;
             vector.X = 0.5f *
                        ((((2f * value2.X) + ((-value1.X + value3.X) * amount)) +
                          (((((2f * value1.X) - (5f * value2.X)) + (4f * value3.X)) - value4.X) * num)) +
@@ -532,8 +533,8 @@ namespace SFML.Graphics
         public static void CatmullRom(ref Vector3 value1, ref Vector3 value2, ref Vector3 value3, ref Vector3 value4, float amount,
                                       out Vector3 result)
         {
-            float num = amount * amount;
-            float num2 = amount * num;
+            var num = amount * amount;
+            var num2 = amount * num;
             result.X = 0.5f *
                        ((((2f * value2.X) + ((-value1.X + value3.X) * amount)) +
                          (((((2f * value1.X) - (5f * value2.X)) + (4f * value3.X)) - value4.X) * num)) +
@@ -557,12 +558,12 @@ namespace SFML.Graphics
         public static Vector3 Hermite(Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, float amount)
         {
             Vector3 vector;
-            float num = amount * amount;
-            float num2 = amount * num;
-            float num6 = ((2f * num2) - (3f * num)) + 1f;
-            float num5 = (-2f * num2) + (3f * num);
-            float num4 = (num2 - (2f * num)) + amount;
-            float num3 = num2 - num;
+            var num = amount * amount;
+            var num2 = amount * num;
+            var num6 = ((2f * num2) - (3f * num)) + 1f;
+            var num5 = (-2f * num2) + (3f * num);
+            var num4 = (num2 - (2f * num)) + amount;
+            var num3 = num2 - num;
             vector.X = (((value1.X * num6) + (value2.X * num5)) + (tangent1.X * num4)) + (tangent2.X * num3);
             vector.Y = (((value1.Y * num6) + (value2.Y * num5)) + (tangent1.Y * num4)) + (tangent2.Y * num3);
             vector.Z = (((value1.Z * num6) + (value2.Z * num5)) + (tangent1.Z * num4)) + (tangent2.Z * num3);
@@ -579,12 +580,12 @@ namespace SFML.Graphics
         public static void Hermite(ref Vector3 value1, ref Vector3 tangent1, ref Vector3 value2, ref Vector3 tangent2,
                                    float amount, out Vector3 result)
         {
-            float num = amount * amount;
-            float num2 = amount * num;
-            float num6 = ((2f * num2) - (3f * num)) + 1f;
-            float num5 = (-2f * num2) + (3f * num);
-            float num4 = (num2 - (2f * num)) + amount;
-            float num3 = num2 - num;
+            var num = amount * amount;
+            var num2 = amount * num;
+            var num6 = ((2f * num2) - (3f * num)) + 1f;
+            var num5 = (-2f * num2) + (3f * num);
+            var num4 = (num2 - (2f * num)) + amount;
+            var num3 = num2 - num;
             result.X = (((value1.X * num6) + (value2.X * num5)) + (tangent1.X * num4)) + (tangent2.X * num3);
             result.Y = (((value1.Y * num6) + (value2.Y * num5)) + (tangent1.Y * num4)) + (tangent2.Y * num3);
             result.Z = (((value1.Z * num6) + (value2.Z * num5)) + (tangent1.Z * num4)) + (tangent2.Z * num3);
@@ -596,9 +597,9 @@ namespace SFML.Graphics
         public static Vector3 Transform(Vector3 position, Matrix matrix)
         {
             Vector3 vector;
-            float num3 = (((position.X * matrix.M11) + (position.Y * matrix.M21)) + (position.Z * matrix.M31)) + matrix.M41;
-            float num2 = (((position.X * matrix.M12) + (position.Y * matrix.M22)) + (position.Z * matrix.M32)) + matrix.M42;
-            float num = (((position.X * matrix.M13) + (position.Y * matrix.M23)) + (position.Z * matrix.M33)) + matrix.M43;
+            var num3 = (((position.X * matrix.M11) + (position.Y * matrix.M21)) + (position.Z * matrix.M31)) + matrix.M41;
+            var num2 = (((position.X * matrix.M12) + (position.Y * matrix.M22)) + (position.Z * matrix.M32)) + matrix.M42;
+            var num = (((position.X * matrix.M13) + (position.Y * matrix.M23)) + (position.Z * matrix.M33)) + matrix.M43;
             vector.X = num3;
             vector.Y = num2;
             vector.Z = num;
@@ -611,9 +612,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The transformed vector.</param>
         public static void Transform(ref Vector3 position, ref Matrix matrix, out Vector3 result)
         {
-            float num3 = (((position.X * matrix.M11) + (position.Y * matrix.M21)) + (position.Z * matrix.M31)) + matrix.M41;
-            float num2 = (((position.X * matrix.M12) + (position.Y * matrix.M22)) + (position.Z * matrix.M32)) + matrix.M42;
-            float num = (((position.X * matrix.M13) + (position.Y * matrix.M23)) + (position.Z * matrix.M33)) + matrix.M43;
+            var num3 = (((position.X * matrix.M11) + (position.Y * matrix.M21)) + (position.Z * matrix.M31)) + matrix.M41;
+            var num2 = (((position.X * matrix.M12) + (position.Y * matrix.M22)) + (position.Z * matrix.M32)) + matrix.M42;
+            var num = (((position.X * matrix.M13) + (position.Y * matrix.M23)) + (position.Z * matrix.M33)) + matrix.M43;
             result.X = num3;
             result.Y = num2;
             result.Z = num;
@@ -625,9 +626,9 @@ namespace SFML.Graphics
         public static Vector3 TransformNormal(Vector3 normal, Matrix matrix)
         {
             Vector3 vector;
-            float num3 = ((normal.X * matrix.M11) + (normal.Y * matrix.M21)) + (normal.Z * matrix.M31);
-            float num2 = ((normal.X * matrix.M12) + (normal.Y * matrix.M22)) + (normal.Z * matrix.M32);
-            float num = ((normal.X * matrix.M13) + (normal.Y * matrix.M23)) + (normal.Z * matrix.M33);
+            var num3 = ((normal.X * matrix.M11) + (normal.Y * matrix.M21)) + (normal.Z * matrix.M31);
+            var num2 = ((normal.X * matrix.M12) + (normal.Y * matrix.M22)) + (normal.Z * matrix.M32);
+            var num = ((normal.X * matrix.M13) + (normal.Y * matrix.M23)) + (normal.Z * matrix.M33);
             vector.X = num3;
             vector.Y = num2;
             vector.Z = num;
@@ -640,9 +641,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The Vector3 resulting from the transformation.</param>
         public static void TransformNormal(ref Vector3 normal, ref Matrix matrix, out Vector3 result)
         {
-            float num3 = ((normal.X * matrix.M11) + (normal.Y * matrix.M21)) + (normal.Z * matrix.M31);
-            float num2 = ((normal.X * matrix.M12) + (normal.Y * matrix.M22)) + (normal.Z * matrix.M32);
-            float num = ((normal.X * matrix.M13) + (normal.Y * matrix.M23)) + (normal.Z * matrix.M33);
+            var num3 = ((normal.X * matrix.M11) + (normal.Y * matrix.M21)) + (normal.Z * matrix.M31);
+            var num2 = ((normal.X * matrix.M12) + (normal.Y * matrix.M22)) + (normal.Z * matrix.M32);
+            var num = ((normal.X * matrix.M13) + (normal.Y * matrix.M23)) + (normal.Z * matrix.M33);
             result.X = num3;
             result.Y = num2;
             result.Z = num;
@@ -654,21 +655,21 @@ namespace SFML.Graphics
         public static Vector3 Transform(Vector3 value, Quaternion rotation)
         {
             Vector3 vector;
-            float num12 = rotation.X + rotation.X;
-            float num2 = rotation.Y + rotation.Y;
-            float num = rotation.Z + rotation.Z;
-            float num11 = rotation.W * num12;
-            float num10 = rotation.W * num2;
-            float num9 = rotation.W * num;
-            float num8 = rotation.X * num12;
-            float num7 = rotation.X * num2;
-            float num6 = rotation.X * num;
-            float num5 = rotation.Y * num2;
-            float num4 = rotation.Y * num;
-            float num3 = rotation.Z * num;
-            float num15 = ((value.X * ((1f - num5) - num3)) + (value.Y * (num7 - num9))) + (value.Z * (num6 + num10));
-            float num14 = ((value.X * (num7 + num9)) + (value.Y * ((1f - num8) - num3))) + (value.Z * (num4 - num11));
-            float num13 = ((value.X * (num6 - num10)) + (value.Y * (num4 + num11))) + (value.Z * ((1f - num8) - num5));
+            var num12 = rotation.X + rotation.X;
+            var num2 = rotation.Y + rotation.Y;
+            var num = rotation.Z + rotation.Z;
+            var num11 = rotation.W * num12;
+            var num10 = rotation.W * num2;
+            var num9 = rotation.W * num;
+            var num8 = rotation.X * num12;
+            var num7 = rotation.X * num2;
+            var num6 = rotation.X * num;
+            var num5 = rotation.Y * num2;
+            var num4 = rotation.Y * num;
+            var num3 = rotation.Z * num;
+            var num15 = ((value.X * ((1f - num5) - num3)) + (value.Y * (num7 - num9))) + (value.Z * (num6 + num10));
+            var num14 = ((value.X * (num7 + num9)) + (value.Y * ((1f - num8) - num3))) + (value.Z * (num4 - num11));
+            var num13 = ((value.X * (num6 - num10)) + (value.Y * (num4 + num11))) + (value.Z * ((1f - num8) - num5));
             vector.X = num15;
             vector.Y = num14;
             vector.Z = num13;
@@ -681,21 +682,21 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] An existing Vector3 filled in with the results of the rotation.</param>
         public static void Transform(ref Vector3 value, ref Quaternion rotation, out Vector3 result)
         {
-            float num12 = rotation.X + rotation.X;
-            float num2 = rotation.Y + rotation.Y;
-            float num = rotation.Z + rotation.Z;
-            float num11 = rotation.W * num12;
-            float num10 = rotation.W * num2;
-            float num9 = rotation.W * num;
-            float num8 = rotation.X * num12;
-            float num7 = rotation.X * num2;
-            float num6 = rotation.X * num;
-            float num5 = rotation.Y * num2;
-            float num4 = rotation.Y * num;
-            float num3 = rotation.Z * num;
-            float num15 = ((value.X * ((1f - num5) - num3)) + (value.Y * (num7 - num9))) + (value.Z * (num6 + num10));
-            float num14 = ((value.X * (num7 + num9)) + (value.Y * ((1f - num8) - num3))) + (value.Z * (num4 - num11));
-            float num13 = ((value.X * (num6 - num10)) + (value.Y * (num4 + num11))) + (value.Z * ((1f - num8) - num5));
+            var num12 = rotation.X + rotation.X;
+            var num2 = rotation.Y + rotation.Y;
+            var num = rotation.Z + rotation.Z;
+            var num11 = rotation.W * num12;
+            var num10 = rotation.W * num2;
+            var num9 = rotation.W * num;
+            var num8 = rotation.X * num12;
+            var num7 = rotation.X * num2;
+            var num6 = rotation.X * num;
+            var num5 = rotation.Y * num2;
+            var num4 = rotation.Y * num;
+            var num3 = rotation.Z * num;
+            var num15 = ((value.X * ((1f - num5) - num3)) + (value.Y * (num7 - num9))) + (value.Z * (num6 + num10));
+            var num14 = ((value.X * (num7 + num9)) + (value.Y * ((1f - num8) - num3))) + (value.Z * (num4 - num11));
+            var num13 = ((value.X * (num6 - num10)) + (value.Y * (num4 + num11))) + (value.Z * ((1f - num8) - num5));
             result.X = num15;
             result.Y = num14;
             result.Z = num13;
@@ -714,11 +715,11 @@ namespace SFML.Graphics
             if (destinationArray.Length < sourceArray.Length)
                 throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
 
-            for (int i = 0; i < sourceArray.Length; i++)
+            for (var i = 0; i < sourceArray.Length; i++)
             {
-                float x = sourceArray[i].X;
-                float y = sourceArray[i].Y;
-                float z = sourceArray[i].Z;
+                var x = sourceArray[i].X;
+                var y = sourceArray[i].Y;
+                var z = sourceArray[i].Z;
                 destinationArray[i].X = (((x * matrix.M11) + (y * matrix.M21)) + (z * matrix.M31)) + matrix.M41;
                 destinationArray[i].Y = (((x * matrix.M12) + (y * matrix.M22)) + (z * matrix.M32)) + matrix.M42;
                 destinationArray[i].Z = (((x * matrix.M13) + (y * matrix.M23)) + (z * matrix.M33)) + matrix.M43;
@@ -745,9 +746,9 @@ namespace SFML.Graphics
                 throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
             while (length > 0)
             {
-                float x = sourceArray[sourceIndex].X;
-                float y = sourceArray[sourceIndex].Y;
-                float z = sourceArray[sourceIndex].Z;
+                var x = sourceArray[sourceIndex].X;
+                var y = sourceArray[sourceIndex].Y;
+                var z = sourceArray[sourceIndex].Z;
                 destinationArray[destinationIndex].X = (((x * matrix.M11) + (y * matrix.M21)) + (z * matrix.M31)) + matrix.M41;
                 destinationArray[destinationIndex].Y = (((x * matrix.M12) + (y * matrix.M22)) + (z * matrix.M32)) + matrix.M42;
                 destinationArray[destinationIndex].Z = (((x * matrix.M13) + (y * matrix.M23)) + (z * matrix.M33)) + matrix.M43;
@@ -769,11 +770,11 @@ namespace SFML.Graphics
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
                 throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
-            for (int i = 0; i < sourceArray.Length; i++)
+            for (var i = 0; i < sourceArray.Length; i++)
             {
-                float x = sourceArray[i].X;
-                float y = sourceArray[i].Y;
-                float z = sourceArray[i].Z;
+                var x = sourceArray[i].X;
+                var y = sourceArray[i].Y;
+                var z = sourceArray[i].Z;
                 destinationArray[i].X = ((x * matrix.M11) + (y * matrix.M21)) + (z * matrix.M31);
                 destinationArray[i].Y = ((x * matrix.M12) + (y * matrix.M22)) + (z * matrix.M32);
                 destinationArray[i].Z = ((x * matrix.M13) + (y * matrix.M23)) + (z * matrix.M33);
@@ -800,9 +801,9 @@ namespace SFML.Graphics
                 throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
             while (length > 0)
             {
-                float x = sourceArray[sourceIndex].X;
-                float y = sourceArray[sourceIndex].Y;
-                float z = sourceArray[sourceIndex].Z;
+                var x = sourceArray[sourceIndex].X;
+                var y = sourceArray[sourceIndex].Y;
+                var z = sourceArray[sourceIndex].Z;
                 destinationArray[destinationIndex].X = ((x * matrix.M11) + (y * matrix.M21)) + (z * matrix.M31);
                 destinationArray[destinationIndex].Y = ((x * matrix.M12) + (y * matrix.M22)) + (z * matrix.M32);
                 destinationArray[destinationIndex].Z = ((x * matrix.M13) + (y * matrix.M23)) + (z * matrix.M33);
@@ -824,32 +825,32 @@ namespace SFML.Graphics
                 throw new ArgumentNullException("destinationArray");
             if (destinationArray.Length < sourceArray.Length)
                 throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
-            float num16 = rotation.X + rotation.X;
-            float num6 = rotation.Y + rotation.Y;
-            float num2 = rotation.Z + rotation.Z;
-            float num15 = rotation.W * num16;
-            float num14 = rotation.W * num6;
-            float num13 = rotation.W * num2;
-            float num12 = rotation.X * num16;
-            float num11 = rotation.X * num6;
-            float num10 = rotation.X * num2;
-            float num9 = rotation.Y * num6;
-            float num8 = rotation.Y * num2;
-            float num7 = rotation.Z * num2;
-            float num25 = (1f - num9) - num7;
-            float num24 = num11 - num13;
-            float num23 = num10 + num14;
-            float num22 = num11 + num13;
-            float num21 = (1f - num12) - num7;
-            float num20 = num8 - num15;
-            float num19 = num10 - num14;
-            float num18 = num8 + num15;
-            float num17 = (1f - num12) - num9;
-            for (int i = 0; i < sourceArray.Length; i++)
+            var num16 = rotation.X + rotation.X;
+            var num6 = rotation.Y + rotation.Y;
+            var num2 = rotation.Z + rotation.Z;
+            var num15 = rotation.W * num16;
+            var num14 = rotation.W * num6;
+            var num13 = rotation.W * num2;
+            var num12 = rotation.X * num16;
+            var num11 = rotation.X * num6;
+            var num10 = rotation.X * num2;
+            var num9 = rotation.Y * num6;
+            var num8 = rotation.Y * num2;
+            var num7 = rotation.Z * num2;
+            var num25 = (1f - num9) - num7;
+            var num24 = num11 - num13;
+            var num23 = num10 + num14;
+            var num22 = num11 + num13;
+            var num21 = (1f - num12) - num7;
+            var num20 = num8 - num15;
+            var num19 = num10 - num14;
+            var num18 = num8 + num15;
+            var num17 = (1f - num12) - num9;
+            for (var i = 0; i < sourceArray.Length; i++)
             {
-                float x = sourceArray[i].X;
-                float y = sourceArray[i].Y;
-                float z = sourceArray[i].Z;
+                var x = sourceArray[i].X;
+                var y = sourceArray[i].Y;
+                var z = sourceArray[i].Z;
                 destinationArray[i].X = ((x * num25) + (y * num24)) + (z * num23);
                 destinationArray[i].Y = ((x * num22) + (y * num21)) + (z * num20);
                 destinationArray[i].Z = ((x * num19) + (y * num18)) + (z * num17);
@@ -874,32 +875,32 @@ namespace SFML.Graphics
                 throw new ArgumentException(FrameworkResources.NotEnoughSourceSize);
             if (destinationArray.Length < (destinationIndex + length))
                 throw new ArgumentException(FrameworkResources.NotEnoughTargetSize);
-            float num15 = rotation.X + rotation.X;
-            float num5 = rotation.Y + rotation.Y;
-            float num = rotation.Z + rotation.Z;
-            float num14 = rotation.W * num15;
-            float num13 = rotation.W * num5;
-            float num12 = rotation.W * num;
-            float num11 = rotation.X * num15;
-            float num10 = rotation.X * num5;
-            float num9 = rotation.X * num;
-            float num8 = rotation.Y * num5;
-            float num7 = rotation.Y * num;
-            float num6 = rotation.Z * num;
-            float num24 = (1f - num8) - num6;
-            float num23 = num10 - num12;
-            float num22 = num9 + num13;
-            float num21 = num10 + num12;
-            float num20 = (1f - num11) - num6;
-            float num19 = num7 - num14;
-            float num18 = num9 - num13;
-            float num17 = num7 + num14;
-            float num16 = (1f - num11) - num8;
+            var num15 = rotation.X + rotation.X;
+            var num5 = rotation.Y + rotation.Y;
+            var num = rotation.Z + rotation.Z;
+            var num14 = rotation.W * num15;
+            var num13 = rotation.W * num5;
+            var num12 = rotation.W * num;
+            var num11 = rotation.X * num15;
+            var num10 = rotation.X * num5;
+            var num9 = rotation.X * num;
+            var num8 = rotation.Y * num5;
+            var num7 = rotation.Y * num;
+            var num6 = rotation.Z * num;
+            var num24 = (1f - num8) - num6;
+            var num23 = num10 - num12;
+            var num22 = num9 + num13;
+            var num21 = num10 + num12;
+            var num20 = (1f - num11) - num6;
+            var num19 = num7 - num14;
+            var num18 = num9 - num13;
+            var num17 = num7 + num14;
+            var num16 = (1f - num11) - num8;
             while (length > 0)
             {
-                float x = sourceArray[sourceIndex].X;
-                float y = sourceArray[sourceIndex].Y;
-                float z = sourceArray[sourceIndex].Z;
+                var x = sourceArray[sourceIndex].X;
+                var y = sourceArray[sourceIndex].Y;
+                var z = sourceArray[sourceIndex].Z;
                 destinationArray[destinationIndex].X = ((x * num24) + (y * num23)) + (z * num22);
                 destinationArray[destinationIndex].Y = ((x * num21) + (y * num20)) + (z * num19);
                 destinationArray[destinationIndex].Z = ((x * num18) + (y * num17)) + (z * num16);
@@ -1051,7 +1052,7 @@ namespace SFML.Graphics
         public static Vector3 Divide(Vector3 value1, float value2)
         {
             Vector3 vector;
-            float num = 1f / value2;
+            var num = 1f / value2;
             vector.X = value1.X * num;
             vector.Y = value1.Y * num;
             vector.Z = value1.Z * num;
@@ -1064,7 +1065,7 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The result of the division.</param>
         public static void Divide(ref Vector3 value1, float value2, out Vector3 result)
         {
-            float num = 1f / value2;
+            var num = 1f / value2;
             result.X = value1.X * num;
             result.Y = value1.Y * num;
             result.Z = value1.Z * num;
@@ -1177,7 +1178,7 @@ namespace SFML.Graphics
         public static Vector3 operator /(Vector3 value, float divider)
         {
             Vector3 vector;
-            float num = 1f / divider;
+            var num = 1f / divider;
             vector.X = value.X * num;
             vector.Y = value.Y * num;
             vector.Z = value.Z * num;

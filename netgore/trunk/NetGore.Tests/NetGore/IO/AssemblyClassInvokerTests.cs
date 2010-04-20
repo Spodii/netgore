@@ -13,7 +13,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void InvalidMethodTest()
         {
-            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
+            var c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             var i = c.Compile();
             Assert.Throws<MissingMethodException>(() => i.Invoke("asdf"));
         }
@@ -21,7 +21,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void InvokeAsStringTest()
         {
-            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
+            var c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", "String", null, "return \"hi\";");
             var i = c.Compile();
 
@@ -31,7 +31,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void InvokeAsStringWithParamsTest()
         {
-            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
+            var c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", "String", "a", "return \"hi \" + a;");
             var i = c.Compile();
 
@@ -41,7 +41,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void InvokeEmptyMethodTest()
         {
-            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
+            var c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", null, null, "");
             var i = c.Compile();
             i.Invoke("TestM");

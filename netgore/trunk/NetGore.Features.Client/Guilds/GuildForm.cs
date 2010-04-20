@@ -43,19 +43,9 @@ namespace NetGore.Features.Guilds
             CreateControls();
         }
 
-        void btnMembers_Clicked(object sender, MouseButtonEventArgs e)
-        {
-            _frmMembers.IsVisible = !_frmMembers.IsVisible;
-        }
-
-        void btnOnline_Clicked(object sender, MouseButtonEventArgs e)
-        {
-            _frmOnline.IsVisible = !_frmOnline.IsVisible;
-        }
-
         void CreateControls()
         {
-            Vector2 buttonSize = new Vector2(100, 20);
+            var buttonSize = new Vector2(100, 20);
 
             _lblName = new Label(this, Vector2.Zero);
 
@@ -180,6 +170,16 @@ namespace NetGore.Features.Guilds
             base.SetDefaultValues();
 
             Text = "Guild";
+        }
+
+        void btnMembers_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            _frmMembers.IsVisible = !_frmMembers.IsVisible;
+        }
+
+        void btnOnline_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            _frmOnline.IsVisible = !_frmOnline.IsVisible;
         }
     }
 }

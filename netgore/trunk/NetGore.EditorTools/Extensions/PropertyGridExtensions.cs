@@ -20,7 +20,7 @@ namespace NetGore.EditorTools
             const BindingFlags gridViewFlags = BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance;
             const BindingFlags moveSplitterToFlags = BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance;
 
-            object propertyGridView = typeof(PropertyGrid).InvokeMember("gridView", gridViewFlags, null, propertyGrid, null);
+            var propertyGridView = typeof(PropertyGrid).InvokeMember("gridView", gridViewFlags, null, propertyGrid, null);
 
             var pgvType = propertyGridView.GetType();
             var invokeParams = new object[] { x };

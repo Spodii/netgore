@@ -193,7 +193,7 @@ namespace DemoGame.Server
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
-            IItemTable itemValues = DeepCopyValues();
+            var itemValues = DeepCopyValues();
             _queryReplaceItem.Execute(itemValues);
 
             Resized += ItemEntity_Resized;
@@ -296,7 +296,7 @@ namespace DemoGame.Server
                 return false;
 
             // Check for non-equal stats
-            ItemEntity sourceItem = (ItemEntity)source;
+            var sourceItem = (ItemEntity)source;
             if (!BaseStats.HasSameValues(sourceItem.BaseStats) || !ReqStats.HasSameValues(sourceItem.ReqStats))
                 return false;
 
@@ -348,10 +348,10 @@ namespace DemoGame.Server
             Debug.Assert(entity == this, "Why did we receive an ItemEntity_OnResize for another Entity?");
 
             // Get the sizes as a byte
-            byte oldWidth = (byte)oldSize.X;
-            byte oldHeight = (byte)oldSize.Y;
-            byte width = (byte)entity.Size.X;
-            byte height = (byte)entity.Size.Y;
+            var oldWidth = (byte)oldSize.X;
+            var oldHeight = (byte)oldSize.Y;
+            var width = (byte)entity.Size.X;
+            var height = (byte)entity.Size.Y;
 
             // Update the changed sizes
             if (oldWidth != width)
@@ -366,7 +366,7 @@ namespace DemoGame.Server
         /// </summary>
         StatCollection<StatType> NewItemStats(IEnumerable<Stat<StatType>> statValues, StatCollectionType statCollectionType)
         {
-            StatCollection<StatType> ret = new StatCollection<StatType>(statCollectionType, statValues);
+            var ret = new StatCollection<StatType>(statCollectionType, statValues);
 
             switch (statCollectionType)
             {
@@ -407,7 +407,7 @@ namespace DemoGame.Server
                 return false;
 
             // Convert to a character
-            Character character = charEntity as Character;
+            var character = charEntity as Character;
             if (character == null)
             {
                 const string errmsg =
@@ -458,7 +458,7 @@ namespace DemoGame.Server
                 return null;
 
             // Create the new ItemEntity
-            ItemEntity child = new ItemEntity(this) { Amount = amount };
+            var child = new ItemEntity(this) { Amount = amount };
 
             // Lower the amount of this ItemEntity
             Amount -= amount;
@@ -479,7 +479,7 @@ namespace DemoGame.Server
             Debug.Assert(statCollection.StatCollectionType != StatCollectionType.Modified,
                          "ItemEntity does not use StatCollectionType.Modified.");
 
-            string field = statType.GetDatabaseField(statCollection.StatCollectionType);
+            var field = statType.GetDatabaseField(statCollection.StatCollectionType);
             SynchronizeField(field, newValue);
         }
 
@@ -593,14 +593,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the value of the database column `height`.
-        /// </summary>
-        byte IItemTable.Height
-        {
-            get { return (byte)Size.Y; }
-        }
-
-        /// <summary>
         /// Gets the value of the database column `hp`.
         /// </summary>
         public SPValueType HP
@@ -615,6 +607,14 @@ namespace DemoGame.Server
 
                 SynchronizeField("hp", _hp);
             }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `height`.
+        /// </summary>
+        byte IItemTable.Height
+        {
+            get { return (byte)Size.Y; }
         }
 
         /// <summary>

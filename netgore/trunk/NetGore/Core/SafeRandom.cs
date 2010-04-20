@@ -91,7 +91,7 @@ namespace NetGore
             if (minValue > maxValue)
                 throw new ArgumentOutOfRangeException("maxValue", maxValue, "maxValue must be >= minValue");
 
-            int range = maxValue - minValue;
+            var range = maxValue - minValue;
             if (range < 0)
             {
                 // If range is <0 then an overflow has occured and must resort to using long integer arithmetic instead (slower).
@@ -132,7 +132,7 @@ namespace NetGore
             if (_bitMask == 1)
             {
                 // Generate 32 more bits
-                uint t = (_x ^ (_x << 11));
+                var t = (_x ^ (_x << 11));
                 _x = _y;
                 _y = _z;
                 _z = _w;
@@ -161,11 +161,11 @@ namespace NetGore
             var z = _z;
             var w = _w;
 
-            int i = 0;
+            var i = 0;
             uint t;
 
             // Generate 4 values at a time
-            for (int bound = buffer.Length - 3; i < bound;)
+            for (var bound = buffer.Length - 3; i < bound;)
             {
                 t = (x ^ (x << 11));
                 x = y;
@@ -224,7 +224,7 @@ namespace NetGore
         /// <returns>A random number in the range of 0 to <see cref="int.MaxValue"/>, inclusive.</returns>
         int NextInt()
         {
-            uint t = (_x ^ (_x << 11));
+            var t = (_x ^ (_x << 11));
             _x = _y;
             _y = _z;
             _z = _w;
@@ -238,7 +238,7 @@ namespace NetGore
         /// <returns>An unsigned 32-bit number in the range of 0 to <see cref="uint.MaxValue"/></returns>
         public uint NextUInt()
         {
-            uint t = (_x ^ (_x << 11));
+            var t = (_x ^ (_x << 11));
             _x = _y;
             _y = _z;
             _z = _w;

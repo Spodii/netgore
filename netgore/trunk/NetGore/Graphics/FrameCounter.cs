@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 namespace NetGore.Graphics
@@ -14,11 +13,6 @@ namespace NetGore.Graphics
         const int _targetElapseTime = 1000;
 
         /// <summary>
-        /// Target time (will reset FPS count after hitting this value).
-        /// </summary>
-        int _targetTime = int.MinValue;
-
-        /// <summary>
         /// Counts the FPS.
         /// </summary>
         int _frameCounter = 60;
@@ -27,6 +21,11 @@ namespace NetGore.Graphics
         /// Last completed FPS value.
         /// </summary>
         int _frameRate = 60;
+
+        /// <summary>
+        /// Target time (will reset FPS count after hitting this value).
+        /// </summary>
+        int _targetTime = int.MinValue;
 
         /// <summary>
         /// Gets the last FPS. This value is updated once per second.

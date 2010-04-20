@@ -98,7 +98,7 @@ namespace DemoGame
         /// <returns>The BodyID read from the IValueReader.</returns>
         public static BodyID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new BodyID(value);
         }
 
@@ -110,11 +110,11 @@ namespace DemoGame
         /// <returns>The BodyID read from the IDataReader.</returns>
         public static BodyID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new BodyID((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new BodyID(convertedValue);
         }
 
@@ -136,7 +136,7 @@ namespace DemoGame
         /// <returns>The BodyID read from the BitStream.</returns>
         public static BodyID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new BodyID(value);
         }
 
@@ -849,7 +849,7 @@ namespace DemoGame
         public static bool TryParse(this Parser parser, string value, out BodyID outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new BodyID(tmp);
             return ret;
         }

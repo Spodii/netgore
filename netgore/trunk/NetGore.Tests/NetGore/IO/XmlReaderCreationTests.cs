@@ -12,7 +12,7 @@ namespace NetGore.Tests.IO
     {
         static XmlReader GetTestXmlValueReaderReader()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 
             sb.AppendLine("<TestValues>");
@@ -38,7 +38,7 @@ namespace NetGore.Tests.IO
             sb.AppendLine("</TestValues>");
 
             var bytes = Encoding.UTF8.GetBytes(sb.ToString());
-            MemoryStream ms = new MemoryStream(bytes, false);
+            var ms = new MemoryStream(bytes, false);
 
             return XmlReader.Create(ms);
         }
@@ -63,10 +63,10 @@ namespace NetGore.Tests.IO
         public void CreateXmlReaderAtNodeTest()
         {
             // Create the reader at the Values node
-            XmlReader xmlReader = GetTestXmlValueReaderReader();
+            var xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "Values");
 
-            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
+            var r = new XmlValueReader(xmlReader, "Values");
             TestXmlValueReader(r);
         }
 
@@ -74,10 +74,10 @@ namespace NetGore.Tests.IO
         public void CreateXmlReaderInsideNodeTest()
         {
             // Create the reader at the MyInt node (first value node)
-            XmlReader xmlReader = GetTestXmlValueReaderReader();
+            var xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "MyInt");
 
-            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
+            var r = new XmlValueReader(xmlReader, "Values");
             TestXmlValueReader(r);
         }
 

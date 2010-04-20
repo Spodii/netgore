@@ -3,9 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
-using SFML.Graphics;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -15,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the ColorConverter class.</summary>
         public ColorConverter()
         {
-            Type type = typeof(Color);
+            var type = typeof(Color);
             base.propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
@@ -31,7 +29,7 @@ namespace SFML.Graphics.Design
         /// <param name="value">The object to convert.</param>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            byte[] buffer = ConvertToValues<byte>(context, culture, value, 4, new string[] { "R", "G", "B", "A" });
+            var buffer = ConvertToValues<byte>(context, culture, value, 4, new string[] { "R", "G", "B", "A" });
             if (buffer != null)
                 return new Color(buffer[0], buffer[1], buffer[2], buffer[3]);
             return base.ConvertFrom(context, culture, value);
@@ -48,13 +46,13 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(string)) && (value is Color))
             {
-                Color color2 = (Color)value;
+                var color2 = (Color)value;
                 return ConvertFromValues(context, culture, new byte[] { color2.R, color2.G, color2.B, color2.A });
             }
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Color))
             {
-                Color color = (Color)value;
-                ConstructorInfo constructor =
+                var color = (Color)value;
+                var constructor =
                     typeof(Color).GetConstructor(new Type[] { typeof(byte), typeof(byte), typeof(byte), typeof(byte) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor, new object[] { color.R, color.G, color.B, color.A });
