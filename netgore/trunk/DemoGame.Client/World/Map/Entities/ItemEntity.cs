@@ -8,10 +8,6 @@ using NetGore;
 using NetGore.Graphics;
 using SFML.Graphics;
 
-// LATER: When editing Grhs and changing texture, change the preview
-// LATER: When updating a Grh, update the preview image
-// LATER: The client doesn't seem to ever use the item's name, desc, or value
-
 namespace DemoGame.Client
 {
     /// <summary>
