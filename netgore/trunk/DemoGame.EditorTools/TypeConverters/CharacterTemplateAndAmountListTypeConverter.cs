@@ -54,10 +54,10 @@ namespace DemoGame.EditorTools
                 var ev = value as IEnumerable<MutablePair<CharacterTemplateID, ushort>>;
                 if (ev != null)
                 {
-                    CharacterTemplateManager m = CharacterTemplateManager.Instance;
+                    var m = CharacterTemplateManager.Instance;
                     if (m != null)
                     {
-                        StringBuilder sb = new StringBuilder();
+                        var sb = new StringBuilder();
                         foreach (var v in ev)
                         {
                             sb.Append("{");

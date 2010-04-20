@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace SFML.Graphics
 {
@@ -12,9 +11,21 @@ namespace SFML.Graphics
         readonly string _filename;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LazyImage"/> class.
+        /// </summary>
+        /// <param name="filename">The file name.</param>
+        public LazyImage(string filename) : base(IntPtr.Zero)
+        {
+            _filename = filename;
+        }
+
+        /// <summary>
         /// Gets the file name that this image uses to load.
         /// </summary>
-        public string FileName { get { return _filename; } }
+        public string FileName
+        {
+            get { return _filename; }
+        }
 
         /// <summary>
         /// Access to the internal pointer of the object.
@@ -32,13 +43,6 @@ namespace SFML.Graphics
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the <see cref="LazyImage"/> is reloaded.
-        /// </summary>
-        protected virtual void OnReload()
-        {
-        }
-
-        /// <summary>
         /// Explicitely dispose the object
         /// </summary>
         public override void Dispose()
@@ -47,12 +51,10 @@ namespace SFML.Graphics
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LazyImage"/> class.
+        /// When overridden in the derived class, handles when the <see cref="LazyImage"/> is reloaded.
         /// </summary>
-        /// <param name="filename">The file name.</param>
-        public LazyImage(string filename) : base(IntPtr.Zero)
+        protected virtual void OnReload()
         {
-            _filename = filename;
         }
     }
 }

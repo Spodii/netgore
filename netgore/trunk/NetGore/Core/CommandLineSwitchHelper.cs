@@ -70,14 +70,14 @@ namespace NetGore
 
             var ret = new List<KeyValuePair<string, string[]>>(args.Length);
 
-            string currentKey = PrimaryKeyName;
+            var currentKey = PrimaryKeyName;
             var currentArgs = new List<string>(args.Length);
 
             // Iterate through all the strings
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
-                string currentArg = args[i];
-                string currentArgTrimmed = args[i].Trim();
+                var currentArg = args[i];
+                var currentArgTrimmed = args[i].Trim();
 
                 if (currentArgTrimmed.StartsWith(SwitchPrefix, StringComparison.OrdinalIgnoreCase))
                 {

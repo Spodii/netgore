@@ -106,9 +106,9 @@ namespace NetGore.Network
                 throw new ArgumentException("Expected a dotted address with 4 segments.", "dottedAddress");
 
             var bytes = new byte[4];
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
-                byte parsedByte = byte.Parse(split[i]);
+                var parsedByte = byte.Parse(split[i]);
                 bytes[i] = parsedByte;
             }
 
@@ -134,7 +134,7 @@ namespace NetGore.Network
         /// <returns>The dotted IP address string for the given <paramref name="address"/>.</returns>
         public static string ToIPv4Address(byte[] address, int startIndex)
         {
-            StringBuilder sb = new StringBuilder(16);
+            var sb = new StringBuilder(16);
             sb.Append(address[startIndex + 0]);
             sb.Append(".");
             sb.Append(address[startIndex + 1]);

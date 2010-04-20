@@ -58,20 +58,20 @@ namespace NetGore.Graphics.GUI
         protected virtual ControlBorder CreateBorder(string controlName, SpriteCategory subCategory)
         {
             // Get the full sub-category
-            SpriteCategory fullSubCategory = GetControlSpriteSubCategory(controlName);
+            var fullSubCategory = GetControlSpriteSubCategory(controlName);
             if (subCategory != null && subCategory.ToString().Length > 0)
                 fullSubCategory += SpriteCategorization.Delimiter + subCategory;
 
             // Load all the sides
-            ISprite bg = GetSprite(fullSubCategory, "Background");
-            ISprite l = GetSprite(fullSubCategory, "Left");
-            ISprite r = GetSprite(fullSubCategory, "Right");
-            ISprite b = GetSprite(fullSubCategory, "Bottom");
-            ISprite bl = GetSprite(fullSubCategory, "BottomLeft");
-            ISprite br = GetSprite(fullSubCategory, "BottomRight");
-            ISprite tl = GetSprite(fullSubCategory, "TopLeft");
-            ISprite t = GetSprite(fullSubCategory, "Top");
-            ISprite tr = GetSprite(fullSubCategory, "TopRight");
+            var bg = GetSprite(fullSubCategory, "Background");
+            var l = GetSprite(fullSubCategory, "Left");
+            var r = GetSprite(fullSubCategory, "Right");
+            var b = GetSprite(fullSubCategory, "Bottom");
+            var bl = GetSprite(fullSubCategory, "BottomLeft");
+            var br = GetSprite(fullSubCategory, "BottomRight");
+            var tl = GetSprite(fullSubCategory, "TopLeft");
+            var t = GetSprite(fullSubCategory, "Top");
+            var tr = GetSprite(fullSubCategory, "TopRight");
 
             return new ControlBorder(tl, t, tr, r, br, b, bl, l, bg);
         }
@@ -96,7 +96,7 @@ namespace NetGore.Graphics.GUI
         {
             const string del = SpriteCategorization.Delimiter;
 
-            StringBuilder sb = new StringBuilder(64);
+            var sb = new StringBuilder(64);
             sb.Append("GUI");
             sb.Append(del);
             sb.Append(skinName);
@@ -205,7 +205,7 @@ namespace NetGore.Graphics.GUI
         /// <returns>The <see cref="ControlBorder"/> for the <see cref="Control"/> with the given name.</returns>
         public ControlBorder GetBorder(string controlName, SpriteCategory subCategory)
         {
-            string key = controlName;
+            var key = controlName;
             if (subCategory != null && subCategory.ToString().Length > 0)
                 key += subCategory;
 
@@ -254,7 +254,7 @@ namespace NetGore.Graphics.GUI
         /// <paramref name="spriteTitle"/>.</returns>
         public ISprite GetControlSprite(string controlName, SpriteCategory subCategory, SpriteTitle spriteTitle)
         {
-            SpriteCategory completeSubCategory = GetControlSpriteSubCategory(controlName);
+            var completeSubCategory = GetControlSpriteSubCategory(controlName);
             if (subCategory != null && subCategory.ToString().Length > 0)
                 completeSubCategory += SpriteCategorization.Delimiter + subCategory;
 
@@ -281,7 +281,7 @@ namespace NetGore.Graphics.GUI
         /// or null if no <see cref="ISprite"/> could be created with the given categorization information.</returns>
         public ISprite GetSprite(SpriteCategory subCategory, SpriteTitle spriteTitle)
         {
-            string key = string.Empty;
+            var key = string.Empty;
             if (subCategory != null && subCategory.ToString().Length > 0)
                 key += subCategory;
             key += spriteTitle;

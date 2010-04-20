@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.MapEditor.Properties;
 using NetGore.AI;
 using NetGore.EditorTools;
 using NetGore.Extensions;
 using NetGore.Graphics;
 using SFML.Graphics;
-using Color=SFML.Graphics.Color;
-using Image=System.Drawing.Image;
+using Image = System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -26,20 +24,20 @@ namespace DemoGame.MapEditor
         readonly MenuItem _mnuBlocked;
         readonly MenuItem _mnuFill;
         readonly MenuItem _mnuWeight;
+        byte UpdateCellTo;
 
         Vector2 _debugNodeEnd;
         Vector2 _debugNodeStart;
         string _toolTip = string.Empty;
         object _toolTipObject = null;
         Vector2 _toolTipPos;
-        byte UpdateCellTo;
 
         public AINodeCursor()
         {
             _mnuBlocked = new MenuItem("Block", Menu_Block_OnClick) { Checked = false };
             _mnuFill = new MenuItem("Fill", Menu_Fill_OnClick) { Enabled = true };
 
-            List<MenuItem> items = new List<MenuItem>();
+            var items = new List<MenuItem>();
             items.Add(_mnu1 = new MenuItem("1", Menu_1_OnClick) { Checked = false });
             items.Add(_mnu10 = new MenuItem("10", Menu_10_OnClick) { Checked = false });
             items.Add(_mnu20 = new MenuItem("20", Menu_20_OnClick) { Checked = false });
@@ -102,12 +100,12 @@ namespace DemoGame.MapEditor
 
         static int[] GetMemoryCellUnderCursor(ScreenForm screen)
         {
-            Vector2 CursorPos = screen.CursorPos;
+            var CursorPos = screen.CursorPos;
 
             var mmap = screen.Map.MemoryMap;
-            for (int X = 0; X < mmap.CellsX; X++)
+            for (var X = 0; X < mmap.CellsX; X++)
             {
-                for (int Y = 0; Y < mmap.CellsY; Y++)
+                for (var Y = 0; Y < mmap.CellsY; Y++)
                 {
                     var area = mmap.MemoryCells[X, Y].GetArea(mmap.CellSize);
                     if (area.Contains(CursorPos))
@@ -135,10 +133,10 @@ namespace DemoGame.MapEditor
             return pos;
         }
 
-        void Menu_1_OnClick(object sender, EventArgs e)
+        void Menu_100_OnClick(object sender, EventArgs e)
         {
-            UpdateCellTo = 1;
-            _mnu1.Checked = !_mnu1.Checked;
+            UpdateCellTo = 100;
+            _mnu100.Checked = !_mnu100.Checked;
         }
 
         void Menu_10_OnClick(object sender, EventArgs e)
@@ -147,10 +145,10 @@ namespace DemoGame.MapEditor
             _mnu10.Checked = !_mnu10.Checked;
         }
 
-        void Menu_100_OnClick(object sender, EventArgs e)
+        void Menu_1_OnClick(object sender, EventArgs e)
         {
-            UpdateCellTo = 100;
-            _mnu100.Checked = !_mnu100.Checked;
+            UpdateCellTo = 1;
+            _mnu1.Checked = !_mnu1.Checked;
         }
 
         void Menu_20_OnClick(object sender, EventArgs e)
@@ -171,9 +169,9 @@ namespace DemoGame.MapEditor
             {
                 _debugMode.Checked = !_debugMode.Checked;
 
-                for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
+                for (var X = 0; X < Container.Map.MemoryMap.CellsX; X++)
                 {
-                    for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
+                    for (var Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                     {
                         Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus = 0;
                     }
@@ -190,9 +188,9 @@ namespace DemoGame.MapEditor
 
         void Menu_Fill_OnClick(object sender, EventArgs e)
         {
-            for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
+            for (var X = 0; X < Container.Map.MemoryMap.CellsX; X++)
             {
-                for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
+                for (var Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                 {
                     Container.Map.MemoryMap.MemoryCells[X, Y].Weight = 100;
                 }
@@ -217,7 +215,7 @@ namespace DemoGame.MapEditor
             {
             }
 
-            int[] id = GetMemoryCellUnderCursor(Container);
+            var id = GetMemoryCellUnderCursor(Container);
             Container.SelectedObjs.SetSelected(Container.Map.MemoryMap.MemoryCells[id[0], id[1]]);
 
             switch (e.Button)
@@ -233,9 +231,9 @@ namespace DemoGame.MapEditor
                     else
                     {
                         // Debug with this position as start node.
-                        for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
+                        for (var X = 0; X < Container.Map.MemoryMap.CellsX; X++)
                         {
-                            for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
+                            for (var Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                             {
                                 if (Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 2)
                                     break;
@@ -246,15 +244,15 @@ namespace DemoGame.MapEditor
                         _debugNodeStart = new Vector2(id[0], id[1]);
                         Container.Map.MemoryMap.MemoryCells[id[0], id[1]].DebugStatus = 1;
 
-                        byte[,] grid = Container.Map.MemoryMap.ToByteArray();
-                        AIGrid aiGrid = new AIGrid(grid);
-                        PathFinder pathFinder = new PathFinder(aiGrid) { HeuristicFormula = Heuristics.Manhattan, SearchLimit = 3000 };
+                        var grid = Container.Map.MemoryMap.ToByteArray();
+                        var aiGrid = new AIGrid(grid);
+                        var pathFinder = new PathFinder(aiGrid) { HeuristicFormula = Heuristics.Manhattan, SearchLimit = 3000 };
 
-                        List<Node> nodes = pathFinder.FindPath(_debugNodeStart, _debugNodeEnd);
+                        var nodes = pathFinder.FindPath(_debugNodeStart, _debugNodeEnd);
 
                         if (nodes != null)
                         {
-                            foreach (Node n in nodes)
+                            foreach (var n in nodes)
                             {
                                 Container.Map.MemoryMap.MemoryCells[n.X, n.Y].DebugStatus = 3;
                             }
@@ -263,9 +261,9 @@ namespace DemoGame.MapEditor
                     break;
 
                 case MouseButtons.Right:
-                    for (int X = 0; X < Container.Map.MemoryMap.CellsX; X++)
+                    for (var X = 0; X < Container.Map.MemoryMap.CellsX; X++)
                     {
-                        for (int Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
+                        for (var Y = 0; Y < Container.Map.MemoryMap.CellsY; Y++)
                         {
                             if (Container.Map.MemoryMap.MemoryCells[X, Y].DebugStatus == 1)
                                 break;
@@ -288,14 +286,14 @@ namespace DemoGame.MapEditor
         public override void MouseMove(MouseEventArgs e)
         {
             // Get the map and ensure a valid cursor position
-            Map map = Container.Map;
+            var map = Container.Map;
             if (map == null || !map.IsInMapBoundaries(Container.CursorPos))
                 return;
 
             // Set the tooltip to the entity under the cursor
-            int[] id = GetMemoryCellUnderCursor(Container);
+            var id = GetMemoryCellUnderCursor(Container);
             var mm = Container.Map.MemoryMap;
-            MemoryCell hoverNode = mm.MemoryCells[id[0], id[1]];
+            var hoverNode = mm.MemoryCells[id[0], id[1]];
 
             if (e.Button == MouseButtons.Left)
             {
@@ -329,7 +327,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         public override void PressDelete()
         {
-            int[] id = GetMemoryCellUnderCursor(Container);
+            var id = GetMemoryCellUnderCursor(Container);
             Container.Map.MemoryMap.MemoryCells[id[0], id[1]].Weight = 0;
         }
     }

@@ -121,9 +121,9 @@ namespace NetGore.Features.GameTime
         /// <returns>The new night <see cref="Color"/>.</returns>
         protected virtual Color ApplyNightMultiplier(float nightMultiplier, Color originalColor)
         {
-            byte r = (byte)(originalColor.R * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
-            byte g = (byte)(originalColor.G * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
-            byte b = (byte)(originalColor.B * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
+            var r = (byte)(originalColor.R * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
+            var g = (byte)(originalColor.G * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
+            var b = (byte)(originalColor.B * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
             const byte a = byte.MaxValue;
 
             return new Color(r, g, b, a);
@@ -145,9 +145,9 @@ namespace NetGore.Features.GameTime
             // and multiplying the RGB values of the light by that.
 
             // How long darkness lasts in minutes (time between nightStartHour and nightEndHour)
-            int minutesOfDarkness = (int)((GameDateTime.HoursPerDay - NightStartHour) + NightEndHour);
+            var minutesOfDarkness = (int)((GameDateTime.HoursPerDay - NightStartHour) + NightEndHour);
             minutesOfDarkness *= (int)GameDateTime.MinutesPerHour;
-            float halfMinutesOfDarkness = minutesOfDarkness / 2f;
+            var halfMinutesOfDarkness = minutesOfDarkness / 2f;
 
             // How far into the darkness we are with the current time (will be between 0 and hoursOfDarkness)
             int minutesIntoDarkness;
@@ -162,7 +162,7 @@ namespace NetGore.Features.GameTime
             // Since hoursOfDarkness/2 is the darkest point, get the difference of how many hours we are into
             // darkness and half the total hours of darkness as a percent. This will give us a scale from
             // [-1, 1] where -1 is the start of night, 0 is the darkest point of night, and 1 is the end of night.
-            float nightMultiplier = (halfMinutesOfDarkness - minutesIntoDarkness) / halfMinutesOfDarkness;
+            var nightMultiplier = (halfMinutesOfDarkness - minutesIntoDarkness) / halfMinutesOfDarkness;
 
             // Get the absolute value of the night multiplier so that it instead of -1 to 1, it goes from 1 to 0 to 1
             nightMultiplier = Math.Abs(nightMultiplier);

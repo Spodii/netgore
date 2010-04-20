@@ -60,13 +60,13 @@ namespace NetGore.Tests.Db.ClassCreator
             }
 
             // Get the temp files and write the code to them
-            List<string> tempFiles = new List<string>(codeItems.Count());
+            var tempFiles = new List<string>(codeItems.Count());
             ScriptTypeCollection ret;
             try
             {
                 foreach (var item in codeItems)
                 {
-                    string tempFile = Path.GetTempFileName() + ".cs";
+                    var tempFile = Path.GetTempFileName() + ".cs";
                     tempFiles.Add(tempFile);
                     File.WriteAllText(tempFile, item.Code);
                 }

@@ -1,8 +1,8 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.IO;
-using System.Runtime.ConstrainedExecution;
 
 namespace SFML
 {
@@ -22,8 +22,7 @@ namespace SFML
             /// </summary>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Image() :
-                base(sfImage_Create())
+            public Image() : base(sfImage_Create())
             {
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("image");
@@ -37,8 +36,7 @@ namespace SFML
             /// <param name="height">Image height</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Image(uint width, uint height) :
-                this(width, height, Color.Black)
+            public Image(uint width, uint height) : this(width, height, Color.Black)
             {
             }
 
@@ -51,8 +49,7 @@ namespace SFML
             /// <param name="color">Color to fill the image with</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Image(uint width, uint height, Color color) :
-                base(sfImage_CreateFromColor(width, height, color))
+            public Image(uint width, uint height, Color color) : base(sfImage_CreateFromColor(width, height, color))
             {
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("image");
@@ -65,29 +62,10 @@ namespace SFML
             /// <param name="filename">Path of the image file to load</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Image(string filename) :
-                base(sfImage_CreateFromFile(filename))
+            public Image(string filename) : base(sfImage_CreateFromFile(filename))
             {
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("image", filename);
-           }
-
-            /// <summary>
-            /// Reloads the asset from file if it is not loaded.
-            /// </summary>
-            /// <param name="filename">Path of the image file to load</param>
-            /// <returns>True if already loaded; false if it had to load.</returns>
-            protected internal bool EnsureLoaded(string filename)
-            {
-                if (ThisRaw != IntPtr.Zero)
-                    return true;
-
-                SetThis(sfImage_CreateFromFile(filename));
-
-                if (ThisRaw == IntPtr.Zero)
-                    throw new LoadingFailedException("image", filename);
-
-                return false;
             }
 
             ////////////////////////////////////////////////////////////
@@ -97,12 +75,11 @@ namespace SFML
             /// <param name="stream">Stream containing the file contents</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Image(Stream stream) :
-                base(IntPtr.Zero)
+            public Image(Stream stream) : base(IntPtr.Zero)
             {
                 stream.Position = 0;
-                byte[] StreamData = new byte[stream.Length];
-                uint Read = (uint)stream.Read(StreamData, 0, StreamData.Length);
+                var StreamData = new byte[stream.Length];
+                var Read = (uint)stream.Read(StreamData, 0, StreamData.Length);
                 unsafe
                 {
                     fixed (byte* dataPtr = StreamData)
@@ -121,15 +98,14 @@ namespace SFML
             /// <param name="pixels">2 dimensions array containing the pixels</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Image(Color[,] pixels) :
-                base(IntPtr.Zero)
+            public Image(Color[,] pixels) : base(IntPtr.Zero)
             {
                 unsafe
                 {
                     fixed (Color* PixelsPtr = pixels)
                     {
-                        uint Width  = (uint)pixels.GetLength(0);
-                        uint Height = (uint)pixels.GetLength(1);
+                        var Width = (uint)pixels.GetLength(0);
+                        var Height = (uint)pixels.GetLength(1);
                         SetThis(sfImage_CreateFromPixels(Width, Height, PixelsPtr));
                     }
                 }
@@ -138,40 +114,70 @@ namespace SFML
                     throw new LoadingFailedException("image");
             }
 
-            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Save the contents of the image to a file
+            /// Internal constructor
             /// </summary>
-            /// <param name="filename">Path of the file to save (overwritten if already exist)</param>
-            /// <returns>True if saving was successful</returns>
+            /// <param name="thisPtr">Pointer to the object in C library</param>
             ////////////////////////////////////////////////////////////
-            public bool SaveToFile(string filename)
+            internal Image(IntPtr thisPtr) : base(thisPtr)
             {
-                return sfImage_SaveToFile(This, filename);
+            }
+
+            /// <summary>
+            /// Height of the image, in pixels
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public uint Height
+            {
+                get { return sfImage_GetHeight(This); }
+            }
+
+            /// <summary>
+            /// Get a copy of the array of pixels (RGBA 8 bits integers components)
+            /// Array size is Width x Height x 4
+            /// </summary>
+            /// <returns>Array of pixels</returns>
+            ////////////////////////////////////////////////////////////
+            public byte[] Pixels
+            {
+                get
+                {
+                    var PixelsPtr = new byte[Width * Height * 4];
+                    Marshal.Copy(sfImage_GetPixelsPtr(This), PixelsPtr, 0, PixelsPtr.Length);
+                    return PixelsPtr;
+                }
+            }
+
+            /// <summary>
+            /// Control the smooth filter
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public bool Smooth
+            {
+                get { return sfImage_IsSmooth(This); }
+                set { sfImage_SetSmooth(This, value); }
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Create a transparency mask from a specified colorkey
+            /// Width of the image, in pixels
             /// </summary>
-            /// <param name="color">Color to become transparent</param>
             ////////////////////////////////////////////////////////////
-            public void CreateMaskFromColor(Color color)
+            public uint Width
             {
-                CreateMaskFromColor(color, 0);
+                get { return sfImage_GetWidth(This); }
+            }
+
+            /// <summary>
+            /// Bind the image for rendering
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public void Bind()
+            {
+                sfImage_Bind(This);
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Create a transparency mask from a specified colorkey
-            /// </summary>
-            /// <param name="color">Color to become transparent</param>
-            /// <param name="alpha">Alpha value to use for transparent pixels</param>
-            ////////////////////////////////////////////////////////////
-            public void CreateMaskFromColor(Color color, byte alpha)
-            {
-                sfImage_CreateMaskFromColor(This, color, alpha);
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -231,102 +237,28 @@ namespace SFML
                 return sfImage_CopyScreen(This, window.This, sourceRect);
             }
 
-            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Get a pixel from the image
+            /// Create a transparency mask from a specified colorkey
             /// </summary>
-            /// <param name="x">X coordinate of pixel in the image</param>
-            /// <param name="y">Y coordinate of pixel in the image</param>
-            /// <returns>Color of pixel (x, y)</returns>
+            /// <param name="color">Color to become transparent</param>
             ////////////////////////////////////////////////////////////
-            public Color GetPixel(uint x, uint y)
+            public void CreateMaskFromColor(Color color)
             {
-                return sfImage_GetPixel(This, x, y);
+                CreateMaskFromColor(color, 0);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Change the color of a pixel
+            /// Create a transparency mask from a specified colorkey
             /// </summary>
-            /// <param name="x">X coordinate of pixel in the image</param>
-            /// <param name="y">Y coordinate of pixel in the image</param>
-            /// <param name="color">New color for pixel (x, y)</param>
+            /// <param name="color">Color to become transparent</param>
+            /// <param name="alpha">Alpha value to use for transparent pixels</param>
             ////////////////////////////////////////////////////////////
-            public void SetPixel(uint x, uint y, Color color)
+            public void CreateMaskFromColor(Color color, byte alpha)
             {
-                sfImage_SetPixel(This, x, y, color);
+                sfImage_CreateMaskFromColor(This, color, alpha);
             }
 
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Get a copy of the array of pixels (RGBA 8 bits integers components)
-            /// Array size is Width x Height x 4
-            /// </summary>
-            /// <returns>Array of pixels</returns>
-            ////////////////////////////////////////////////////////////
-            public byte[] Pixels
-            {
-                get
-                {
-                    byte[] PixelsPtr = new byte[Width * Height * 4];
-                    Marshal.Copy(sfImage_GetPixelsPtr(This), PixelsPtr, 0, PixelsPtr.Length);
-                    return PixelsPtr;
-                }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Bind the image for rendering
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public void Bind()
-            {
-                sfImage_Bind(This);
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Control the smooth filter
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public bool Smooth
-            {
-                get {return sfImage_IsSmooth(This);}
-                set {sfImage_SetSmooth(This, value);}
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Width of the image, in pixels
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public uint Width
-            {
-                get {return sfImage_GetWidth(This);}
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Height of the image, in pixels
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public uint Height
-            {
-                get {return sfImage_GetHeight(This);}
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Internal constructor
-            /// </summary>
-            /// <param name="thisPtr">Pointer to the object in C library</param>
-            ////////////////////////////////////////////////////////////
-            internal Image(IntPtr thisPtr) :
-                base(thisPtr)
-            {
-            }
-
-            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Handle the destruction of the object
             /// </summary>
@@ -343,61 +275,138 @@ namespace SFML
                     Context.Global.SetActive(false);
             }
 
+            /// <summary>
+            /// Reloads the asset from file if it is not loaded.
+            /// </summary>
+            /// <param name="filename">Path of the image file to load</param>
+            /// <returns>True if already loaded; false if it had to load.</returns>
+            protected internal bool EnsureLoaded(string filename)
+            {
+                if (ThisRaw != IntPtr.Zero)
+                    return true;
+
+                SetThis(sfImage_CreateFromFile(filename));
+
+                if (ThisRaw == IntPtr.Zero)
+                    throw new LoadingFailedException("image", filename);
+
+                return false;
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Get a pixel from the image
+            /// </summary>
+            /// <param name="x">X coordinate of pixel in the image</param>
+            /// <param name="y">Y coordinate of pixel in the image</param>
+            /// <returns>Color of pixel (x, y)</returns>
+            ////////////////////////////////////////////////////////////
+            public Color GetPixel(uint x, uint y)
+            {
+                return sfImage_GetPixel(This, x, y);
+            }
+
+            /// <summary>
+            /// Save the contents of the image to a file
+            /// </summary>
+            /// <param name="filename">Path of the file to save (overwritten if already exist)</param>
+            /// <returns>True if saving was successful</returns>
+            ////////////////////////////////////////////////////////////
+            public bool SaveToFile(string filename)
+            {
+                return sfImage_SaveToFile(This, filename);
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Change the color of a pixel
+            /// </summary>
+            /// <param name="x">X coordinate of pixel in the image</param>
+            /// <param name="y">Y coordinate of pixel in the image</param>
+            /// <param name="color">New color for pixel (x, y)</param>
+            ////////////////////////////////////////////////////////////
+            public void SetPixel(uint x, uint y, Color color)
+            {
+                sfImage_SetPixel(This, x, y, color);
+            }
+
             #region Imports
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_Create();
 
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_CreateFromColor(uint Width, uint Height, Color Col);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            unsafe static extern IntPtr sfImage_CreateFromPixels(uint Width, uint Height, Color* Pixels);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_CreateFromFile(string Filename);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            unsafe static extern IntPtr sfImage_CreateFromMemory(char* Data, uint Size);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_Destroy(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern bool sfImage_SaveToFile(IntPtr This, string Filename);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_CreateMaskFromColor(IntPtr This, Color Col, byte Alpha);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern bool sfImage_CopyScreen(IntPtr This, IntPtr Window, IntRect SourceRect);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_Copy(IntPtr This, IntPtr Source, uint DestX, uint DestY, IntRect SourceRect);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_SetPixel(IntPtr This, uint X, uint Y, Color Col);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern Color sfImage_GetPixel(IntPtr This, uint X, uint Y);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfImage_GetPixelsPtr(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
             static extern void sfImage_Bind(IntPtr This);
 
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfImage_SetSmooth(IntPtr This, bool Smooth);
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfImage_Copy(IntPtr This, IntPtr Source, uint DestX, uint DestY, IntRect SourceRect);
 
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern uint sfImage_GetWidth(IntPtr This);
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern bool sfImage_CopyScreen(IntPtr This, IntPtr Window, IntRect SourceRect);
 
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfImage_Create();
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfImage_CreateFromColor(uint Width, uint Height, Color Col);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfImage_CreateFromFile(string Filename);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern unsafe IntPtr sfImage_CreateFromMemory(char* Data, uint Size);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern unsafe IntPtr sfImage_CreateFromPixels(uint Width, uint Height, Color* Pixels);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfImage_CreateMaskFromColor(IntPtr This, Color Col, byte Alpha);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfImage_Destroy(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
             static extern uint sfImage_GetHeight(IntPtr This);
 
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern Color sfImage_GetPixel(IntPtr This, uint X, uint Y);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfImage_GetPixelsPtr(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern uint sfImage_GetWidth(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
             static extern bool sfImage_IsSmooth(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern bool sfImage_SaveToFile(IntPtr This, string Filename);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfImage_SetPixel(IntPtr This, uint X, uint Y, Color Col);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfImage_SetSmooth(IntPtr This, bool Smooth);
+
             #endregion
+
+            ////////////////////////////////////////////////////////////
         }
     }
 }

@@ -84,7 +84,7 @@ namespace NetGore
                 {
                     // Grab the group values
                     values = new string[matches.Count];
-                    for (int i = 0; i < values.Length; i++)
+                    for (var i = 0; i < values.Length; i++)
                     {
                         values[i] = matches[i].Groups["value"].Value;
                     }
@@ -100,7 +100,7 @@ namespace NetGore
 
                 // Convert
                 bool wasConverted;
-                T converted = default(T);
+                var converted = default(T);
                 try
                 {
                     converted = ConvertFromString(values, out wasConverted);

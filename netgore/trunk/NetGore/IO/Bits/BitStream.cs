@@ -722,8 +722,8 @@ namespace NetGore.IO
         /// </returns>
         public bool[] ReadBools(int count)
         {
-            bool[] ret = new bool[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new bool[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadBool();
             }
@@ -870,8 +870,8 @@ namespace NetGore.IO
         /// </returns>
         public float[] ReadFloats(int count)
         {
-            float[] ret = new float[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new float[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadFloat();
             }
@@ -920,8 +920,8 @@ namespace NetGore.IO
         /// </returns>
         public int[] ReadInts(int count)
         {
-            int[] ret = new int[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new int[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadInt();
             }
@@ -975,8 +975,8 @@ namespace NetGore.IO
         /// </returns>
         public long[] ReadLongs(int count)
         {
-            long[] ret = new long[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new long[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadLong();
             }
@@ -1393,8 +1393,8 @@ namespace NetGore.IO
         /// </returns>
         public sbyte[] ReadSBytes(int count)
         {
-            sbyte[] ret = new sbyte[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new sbyte[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadSByte();
             }
@@ -1443,8 +1443,8 @@ namespace NetGore.IO
         /// </returns>
         public short[] ReadShorts(int count)
         {
-            short[] ret = new short[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new short[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadShort();
             }
@@ -1547,8 +1547,8 @@ namespace NetGore.IO
         /// <returns>Strings read from the BitStream.</returns>
         public string[] ReadStrings(int count)
         {
-            string[] ret = new string[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new string[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadString();
             }
@@ -1601,8 +1601,8 @@ namespace NetGore.IO
         /// </returns>
         public uint[] ReadUInts(int count)
         {
-            uint[] ret = new uint[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new uint[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadUInt();
             }
@@ -1642,10 +1642,64 @@ namespace NetGore.IO
         /// </returns>
         public ulong[] ReadULongs(int count)
         {
-            ulong[] ret = new ulong[count];
-            for (int i = 0; i < ret.Length; i++)
+            var ret = new ulong[count];
+            for (var i = 0; i < ret.Length; i++)
             {
                 ret[i] = ReadULong();
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Reads 16 bits from the BitStream and returns the result as a ushort 
+        /// </summary>
+        /// <returns>Value of the next 16 bits in the BitStream as a ushort</returns>
+        public ushort ReadUShort()
+        {
+            return ReadUShort(_bitsUShort);
+        }
+
+        /// <summary>
+        /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a ushort  
+        /// </summary>
+        /// <param name="numBits">Number of bits to read from the BitStream (0 to 16)</param>
+        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a ushort</returns>
+        public ushort ReadUShort(int numBits)
+        {
+            if (numBits == 0)
+                return 0;
+            if (numBits < 0 || numBits > _bitsUShort)
+                throw new ArgumentOutOfRangeException("numBits", string.Format("Invalid number of bits specified ({0})", numBits));
+            return (ushort)ReadUnsigned(numBits);
+        }
+
+        /// <summary>
+        /// Reads an array of ushorts from the BitStream
+        /// </summary>
+        /// <param name="dest">Array to store the read values in</param>
+        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
+        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
+        public void ReadUShort(ushort[] dest, int offset, int length)
+        {
+            for (var i = offset; i < offset + length; i++)
+            {
+                dest[i] = ReadUShort();
+            }
+        }
+
+        /// <summary>
+        /// Reads an array of unsigned 16-bit integers.
+        /// </summary>
+        /// <param name="count">The number of values to read.</param>
+        /// <returns>
+        /// The array of unsigned 16-bit integers read from the BitStream.
+        /// </returns>
+        public ushort[] ReadUShorts(int count)
+        {
+            var ret = new ushort[count];
+            for (var i = 0; i < ret.Length; i++)
+            {
+                ret[i] = ReadUShort();
             }
             return ret;
         }
@@ -1762,60 +1816,6 @@ namespace NetGore.IO
                 while (true);
             }
 
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads 16 bits from the BitStream and returns the result as a ushort 
-        /// </summary>
-        /// <returns>Value of the next 16 bits in the BitStream as a ushort</returns>
-        public ushort ReadUShort()
-        {
-            return ReadUShort(_bitsUShort);
-        }
-
-        /// <summary>
-        /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a ushort  
-        /// </summary>
-        /// <param name="numBits">Number of bits to read from the BitStream (0 to 16)</param>
-        /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a ushort</returns>
-        public ushort ReadUShort(int numBits)
-        {
-            if (numBits == 0)
-                return 0;
-            if (numBits < 0 || numBits > _bitsUShort)
-                throw new ArgumentOutOfRangeException("numBits", string.Format("Invalid number of bits specified ({0})", numBits));
-            return (ushort)ReadUnsigned(numBits);
-        }
-
-        /// <summary>
-        /// Reads an array of ushorts from the BitStream
-        /// </summary>
-        /// <param name="dest">Array to store the read values in</param>
-        /// <param name="offset">Initial index to write the results to in the <paramref name="dest"/> array</param>
-        /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
-        public void ReadUShort(ushort[] dest, int offset, int length)
-        {
-            for (var i = offset; i < offset + length; i++)
-            {
-                dest[i] = ReadUShort();
-            }
-        }
-
-        /// <summary>
-        /// Reads an array of unsigned 16-bit integers.
-        /// </summary>
-        /// <param name="count">The number of values to read.</param>
-        /// <returns>
-        /// The array of unsigned 16-bit integers read from the BitStream.
-        /// </returns>
-        public ushort[] ReadUShorts(int count)
-        {
-            ushort[] ret = new ushort[count];
-            for (int i = 0; i < ret.Length; i++)
-            {
-                ret[i] = ReadUShort();
-            }
             return ret;
         }
 
@@ -3254,7 +3254,8 @@ namespace NetGore.IO
         /// <returns>
         /// Array of the values read the IValueReader.
         /// </returns>
-        T[] IValueReader.ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler, Action<int, Exception> handleMissingKey)
+        T[] IValueReader.ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler,
+                                          Action<int, Exception> handleMissingKey)
         {
             return ((IValueReader)this).ReadManyNodes(nodeName, readHandler);
         }

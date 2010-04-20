@@ -18,7 +18,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using SFML.Graphics;
-using CustomUITypeEditors=DemoGame.EditorTools.CustomUITypeEditors;
+using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable UnusedParameter.Local
@@ -131,6 +131,11 @@ namespace DemoGame.MapEditor
         /// </summary>
         ParticleEmitterUITypeEditorForm _emitterSelectionForm = null;
 
+        /// <summary>
+        /// The default font.
+        /// </summary>
+        Font _font;
+
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
         Map _map;
         IMapBoundControl[] _mapBoundControls;
@@ -146,17 +151,12 @@ namespace DemoGame.MapEditor
         /// </summary>
         SpriteBatchParticleRenderer _particleEmitterRenderer;
 
-        SelectedObjectsManager<object> _selectedObjectsManager;
-
         /// <summary>
         /// Currently selected transformation box
         /// </summary>
         TransBox _selTransBox = null;
 
-        /// <summary>
-        /// The default font.
-        /// </summary>
-        Font _font;
+        SelectedObjectsManager<object> _selectedObjectsManager;
 
         /// <summary>
         /// Current world - used for reference by the map being edited only.
@@ -250,7 +250,7 @@ namespace DemoGame.MapEditor
                 if (value == null)
                     throw new ArgumentNullException("value");
 
-                Map oldMap = _map;
+                var oldMap = _map;
 
                 // Remove old map
                 if (oldMap != null)
@@ -302,6 +302,14 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
+        /// Gets the <see cref="Font"/> used to draw text to the screen.
+        /// </summary>
+        public Font RenderFont
+        {
+            get { return _font; }
+        }
+
+        /// <summary>
         /// Gets the currently selected Grh
         /// </summary>
         public Grh SelectedGrh
@@ -335,15 +343,6 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the <see cref="Font"/> used to draw text to the screen.
-        /// </summary>
-        public Font RenderFont
-        {
-            get { 
-                return _font; }
-        }
-
-        /// <summary>
         /// Gets the <see cref="ToolTip"/> to use for the form's tooltips.
         /// </summary>
         public ToolTip ToolTip
@@ -357,6 +356,948 @@ namespace DemoGame.MapEditor
         public List<TransBox> TransBoxes
         {
             get { return _transBoxes; }
+        }
+
+        /// <summary>
+        /// Creates an instance of a <see cref="MapDrawingExtension"/> that is toggled on and off from a <see cref="CheckBox"/>,
+        /// and adds it to the <see cref="MapDrawingExtensionCollection"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of MapDrawExtensionBase to create.</typeparam>
+        /// <param name="checkBox">The CheckBox that is used to set the Enabled property.</param>
+        /// <returns>The instanced MapDrawExtensionBase of type <typeparamref name="T"/>.</returns>
+        T CreateMapDrawExtension<T>(CheckBox checkBox) where T : IMapDrawingExtension, new()
+        {
+            // Create the instance of the MapDrawExtensionBase
+            var instance = new T { Enabled = checkBox.Checked };
+
+            // Handle when the CheckBox value changes
+            checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
+
+            // Add to the collection
+            _mapDrawingExtensions.Add(instance);
+
+            return instance;
+        }
+
+        Map CreateMapFromFilePath(string filePath)
+        {
+            const string errmsg = "Invalid map file selected:{0}{1}";
+
+            if (!MapBase.IsValidMapFile(filePath))
+            {
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
+                return null;
+            }
+
+            MapID index;
+            if (!MapBase.TryGetIndexFromPath(filePath, out index))
+            {
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
+                return null;
+            }
+
+            return new Map(index, Camera, _world);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
+        /// </summary>
+        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
+        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
+        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
+        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size)
+        {
+            return new WallEntity(position, size);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read the creation values from.</param>
+        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
+        static WallEntityBase CreateWallEntity(IValueReader reader)
+        {
+            return new WallEntity(reader);
+        }
+
+        /// <summary>
+        /// Handles the OnChangeCurrentCursor event of the CursorManager.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void CursorManager_CurrentCursorChanged(EditorCursorManager<ScreenForm> sender)
+        {
+            _transBoxes.Clear();
+            _selTransBox = null;
+        }
+
+        /// <summary>
+        /// Draws the game.
+        /// </summary>
+        /// <param name="sb">The sprite batch.</param>
+        void DrawGame(ISpriteBatch sb)
+        {
+            // Draw the GrhTreeView if needed
+            if (treeGrhs.NeedsToDraw)
+            {
+                treeGrhs.Draw(sb);
+                return;
+            }
+
+            // Draw the selected ParticleEmitter if needed
+            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null &&
+                !_emitterSelectionForm.SelectedItem.IsDisposed)
+            {
+                DrawParticleEmitterOnly(sb, _emitterSelectionForm.SelectedItem);
+                return;
+            }
+
+            // Check for a valid map
+            if (Map == null)
+                return;
+
+            // Begin the rendering
+            DrawingManager.LightManager.Ambient = Map.AmbientLight;
+            sb = DrawingManager.BeginDrawWorld(_camera);
+            if (sb == null)
+                return;
+
+            // Map
+            Map.Draw(sb);
+
+            // MapGrh bound walls
+            if (chkDrawAutoWalls.Checked)
+            {
+                foreach (var mg in Map.MapGrhs)
+                {
+                    if (!_camera.InView(mg.Grh, mg.Position))
+                        continue;
+
+                    var boundWalls = _mapGrhWalls[mg.Grh.GrhData];
+                    if (boundWalls == null)
+                        continue;
+
+                    foreach (var wall in boundWalls)
+                    {
+                        EntityDrawer.Draw(sb, wall, mg.Position);
+                    }
+                }
+            }
+
+            // End drawing with lighting, start drawing world without lighting
+            DrawingManager.EndDrawWorld();
+            sb = DrawingManager.BeginDrawWorld(Camera, false, true);
+            if (sb == null)
+                return;
+
+            // Border
+            _mapBorderDrawer.Draw(sb, Map, _camera);
+
+            // Selection area
+            CursorManager.DrawSelection(sb);
+
+            // Grid
+            if (chkDrawGrid.Checked)
+                Grid.Draw(sb, Camera);
+
+            // On-screen wall editor
+            foreach (var box in _transBoxes)
+            {
+                box.Draw(sb);
+            }
+
+            // Light sources
+            if (chkLightSources.Checked)
+            {
+                var offset = AddLightCursor.LightSprite.Size / 2f;
+                foreach (var light in DrawingManager.LightManager)
+                {
+                    AddLightCursor.LightSprite.Draw(sb, light.Position - offset);
+                }
+            }
+
+            // Tool interface
+            CursorManager.DrawInterface(sb);
+
+            // Focused selected object (don't draw it for lights, though)
+            foreach (var selected in SelectedObjs.SelectedObjects.Where(x => !(x is ILight)))
+            {
+                if (selected == SelectedObjs.Focused)
+                    _focusedSpatialDrawer.DrawFocused(selected as ISpatial, sb);
+                else
+                    FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
+            }
+
+            if (chkAIGrid.Checked)
+            {
+                var visibleArea = Map.Camera.GetViewArea();
+                visibleArea.Inflate(50, 50);
+
+                var B = new Color(100, 100, 100, 100);
+
+                // TODO: Horrible performance. Instead of using visibleArea.Contains(), just loop over the actual visible area.
+                var mm = Map.MemoryMap;
+                for (var X = 0; X < mm.CellsX; X++)
+                {
+                    for (var Y = 0; Y < mm.CellsY; Y++)
+                    {
+                        if (visibleArea.Contains(mm.MemoryCells[X, Y].Location))
+                        {
+                            var cellArea = mm.MemoryCells[X, Y].GetArea(mm.CellSize);
+
+                            if (mm.MemoryCells[X, Y].DebugStatus == 0)
+                            {
+                                Color C;
+                                if (mm.MemoryCells[X, Y].Weight == 0)
+                                    C = new Color(0, 100, 255, 150);
+                                else
+                                {
+                                    C = new Color(255, 255, 255);
+                                    C.A = (byte)MathHelper.Clamp(mm.MemoryCells[X, Y].Weight * 1.5f, 0, 255);
+                                }
+                                RenderRectangle.Draw(sb, cellArea, C, B);
+                            }
+
+                            if (mm.MemoryCells[X, Y].DebugStatus == 1)
+                            {
+                                // Start debug node.
+                                RenderRectangle.Draw(sb, cellArea, Color.Green, B);
+                            }
+
+                            if (mm.MemoryCells[X, Y].DebugStatus == 2)
+                            {
+                                // End debug node.
+                                RenderRectangle.Draw(sb, cellArea, Color.Red, B);
+                            }
+
+                            if (mm.MemoryCells[X, Y].DebugStatus == 3)
+                            {
+                                // Found path.
+                                RenderRectangle.Draw(sb, cellArea, Color.LightBlue, B);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // End map rendering
+            DrawingManager.EndDrawWorld();
+
+            // Begin GUI rendering
+            sb = DrawingManager.BeginDrawGUI();
+            if (sb == null)
+                return;
+
+            // Cursor position
+            var cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - new Vector2(100, 30);
+            sb.DrawStringShaded(RenderFont, CursorPos.ToString(), cursorPosText, Color.White, Color.Black);
+
+            // End GUI rendering
+            DrawingManager.EndDrawGUI();
+        }
+
+        /// <summary>
+        /// Draws a <see cref="ParticleEmitter"/> as the only item on the screen.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
+        /// <param name="emitter">The <see cref="ParticleEmitter"/> to draw.</param>
+        void DrawParticleEmitterOnly(ISpriteBatch sb, ParticleEmitter emitter)
+        {
+            // Set up the particle renderer
+            if (_particleEmitterRenderer == null)
+                _particleEmitterRenderer = new SpriteBatchParticleRenderer();
+
+            _particleEmitterRenderer.SpriteBatch = sb;
+
+            // Start drawing
+            sb.Begin(BlendMode.Alpha, Camera);
+
+            try
+            {
+                _particleEmitterRenderer.Draw(Camera, new ParticleEmitter[] { _emitterSelectionForm.SelectedItem });
+            }
+            finally
+            {
+                sb.End();
+            }
+        }
+
+        /// <summary>
+        /// Finds which control has focus and no children controls
+        /// </summary>
+        /// <param name="control">Base control to check</param>
+        /// <returns>Lowest-level control with focus</returns>
+        static Control FindFocusControl(Control control)
+        {
+            Control ret = null;
+
+            foreach (Control c in control.Controls)
+            {
+                if (c.Focused && c.Controls.Count == 0)
+                {
+                    ret = c;
+                    break;
+                }
+
+                var tmpRet = FindFocusControl(c);
+                if (tmpRet != null)
+                {
+                    ret = tmpRet;
+                    break;
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Handles the MouseWheel event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta == 0)
+                return;
+
+            var delta = e.Delta > 0 ? 1 : -1;
+
+            if (!treeGrhs.NeedsToDraw)
+            {
+                if (e.Delta != 0)
+                    CursorManager.MoveMouseWheel(delta);
+            }
+            else
+            {
+                var v = (delta * 0.1f);
+                if (e.Button == MouseButtons.Middle)
+                    v *= 10;
+
+                var newScale = treeGrhs.EditGrhForm.Camera.Scale + v;
+                treeGrhs.EditGrhForm.Camera.Scale = Math.Max(_minCameraScale, Math.Min(_maxCameraScale, newScale));
+            }
+        }
+
+        /// <summary>
+        /// Handles the Resize event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void GameScreen_Resize(object sender, EventArgs e)
+        {
+            _camera.Size = GameScreenSize;
+        }
+
+        void HandleSwitch_SaveAllMaps(string[] parameters)
+        {
+            foreach (var file in MapBase.GetMapFiles(ContentPaths.Dev))
+            {
+                if (!MapBase.IsValidMapFile(file))
+                    continue;
+
+                MapID index;
+                if (!MapBase.TryGetIndexFromPath(file, out index))
+                    continue;
+
+                using (var tempMap = new Map(index, Camera, _world))
+                {
+                    tempMap.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
+                    tempMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
+                }
+            }
+        }
+
+        void HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
+        {
+            if (switches == null || switches.Count() == 0)
+                return;
+
+            var willClose = false;
+
+            foreach (var item in switches)
+            {
+                switch (item.Key)
+                {
+                    case CommandLineSwitch.SaveAllMaps:
+                        HandleSwitch_SaveAllMaps(item.Value);
+                        break;
+
+                    case CommandLineSwitch.Close:
+                        willClose = true;
+                        break;
+                }
+            }
+
+            // To close, we actually will create a timer to close the form one ms from now
+            if (willClose)
+            {
+                var t = new Timer { Interval = 1 };
+                t.Tick += delegate { Close(); };
+                t.Start();
+            }
+        }
+
+        static void HookFormKeyEvents(Control root, KeyEventHandler kehDown, KeyEventHandler kehUp)
+        {
+            foreach (Control c in root.Controls)
+            {
+                if (c.Controls.Count > 0)
+                    HookFormKeyEvents(c, kehDown, kehUp);
+                c.KeyDown += kehDown;
+                c.KeyUp += kehUp;
+            }
+        }
+
+        /// <summary>
+        /// Checks if a key is valid to be forwarded
+        /// </summary>
+        static bool IsKeyToForward(Keys key)
+        {
+            switch (key)
+            {
+                case _cameraUp:
+                case _cameraDown:
+                case _cameraLeft:
+                case _cameraRight:
+                case Keys.Delete:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        void Map_Saved(MapBase map)
+        {
+            DbController.GetQuery<UpdateMapQuery>().Execute(map);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (DesignMode)
+                return;
+
+            GrhInfo.Save(ContentPaths.Dev);
+            SettingsManager.Save();
+
+            base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (DesignMode)
+                return;
+
+            base.OnKeyDown(e);
+
+            var focusControl = FindFocusControl(this);
+            if (focusControl != null)
+            {
+                var focusControlType = focusControl.GetType();
+                if (_focusOverrideTypes.Any(x => x.IsAssignableFrom(focusControlType)))
+                    return;
+            }
+
+            var startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
+
+            switch (e.KeyCode)
+            {
+                case _cameraUp:
+                    _moveCamera.Y = -_cameraMoveRate;
+                    break;
+                case _cameraRight:
+                    _moveCamera.X = _cameraMoveRate;
+                    break;
+                case _cameraDown:
+                    _moveCamera.Y = _cameraMoveRate;
+                    break;
+                case _cameraLeft:
+                    _moveCamera.X = -_cameraMoveRate;
+                    break;
+
+                case Keys.Delete:
+                    CursorManager.PressDelete();
+                    _selTransBox = null;
+                    _transBoxes.Clear();
+                    break;
+            }
+
+            if (startMoveCamera != _moveCamera)
+                e.Handled = true;
+        }
+
+        /// <summary>
+        /// Forwards special KeyDown events to the form
+        /// </summary>
+        void OnKeyDownForward(object sender, KeyEventArgs e)
+        {
+            _keyEventArgs = e;
+            _cursorManager.UseAlternateCursor = e.Shift;
+
+            if (IsKeyToForward(e.KeyCode))
+                OnKeyDown(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if (DesignMode)
+                return;
+
+            var startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
+
+            switch (e.KeyCode)
+            {
+                case _cameraUp:
+                case _cameraDown:
+                    _moveCamera.Y = 0;
+                    break;
+
+                case _cameraLeft:
+                case _cameraRight:
+                    _moveCamera.X = 0;
+                    break;
+            }
+
+            if (startMoveCamera != _moveCamera)
+                e.Handled = true;
+
+            if (e.KeyCode == Keys.F12)
+            {
+                var previewer = new MapPreviewer();
+                var tmpFile = new TempFile();
+                previewer.CreatePreview(GameScreen.RenderWindow, Map, _mapDrawingExtensions, tmpFile.FilePath);
+            }
+
+            base.OnKeyUp(e);
+        }
+
+        /// <summary>
+        /// Forwards special KeyUp events to the form
+        /// </summary>
+        void OnKeyUpForward(object sender, KeyEventArgs e)
+        {
+            _keyEventArgs = e;
+            _cursorManager.UseAlternateCursor = e.Shift;
+
+            if (IsKeyToForward(e.KeyCode))
+                OnKeyUp(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            Show();
+            Refresh();
+
+            numZoom.Minimum = (decimal)_minCameraScale * 100;
+            numZoom.Maximum = (decimal)_maxCameraScale * 100;
+
+            // Make sure we skip doing all of this loading when in design mode
+            if (DesignMode)
+                return;
+
+            scTabsAndSelected.Panel2Collapsed = true;
+
+            _camera = new Camera2D(GameScreenSize);
+
+            // Set up the object manager
+            _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
+            SelectedObjs.SelectedChanged += SelectedObjectsManager_SelectedChanged;
+            SelectedObjs.FocusedChanged += SelectedObjectsManager_FocusedChanged;
+
+            // Get the IMapBoundControls
+            _mapBoundControls = this.GetControls().OfType<IMapBoundControl>().ToArray();
+
+            // Create and set up the cursor manager
+            _cursorManager = new EditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
+                                                                 x => Map != null && !treeGrhs.IsEditingGrhData);
+            CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
+            CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
+            CursorManager.CurrentCursorChanged += CursorManager_CurrentCursorChanged;
+
+            // Create the world
+            _world = new World(this, _camera, null);
+
+            // Set up the GameScreenControl
+            GameScreen.Camera = _camera;
+            GameScreen.UpdateHandler = UpdateGame;
+            GameScreen.DrawHandler = DrawGame;
+            GameScreen.MouseWheel += GameScreen_MouseWheel;
+
+            // Create the engine objects 
+            _content = ContentManager.Create();
+
+            // Read the Grh information
+            GrhInfo.Load(ContentPaths.Dev, _content);
+            treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
+
+            _drawingManager = new DrawingManager(GameScreen.RenderWindow);
+            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
+
+            // Prepare the GrhImageList to avoid stalling the loading later
+            GrhImageList.Prepare();
+
+            // Grab the audio manager instances, which will ensure that they are property initialized
+            // before something that can't pass it an ContentManager (such as the UITypeEditor) tries to get an instance.
+            AudioManager.GetInstance(_content);
+
+            // Create the database connection
+            var settings = new DbConnectionSettings();
+            _dbController =
+                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
+                                                                 x => settings.PromptEditFileMessageBox(x));
+
+            if (_dbController == null)
+            {
+                Close();
+                return;
+            }
+
+            // Create the font
+            _font = _content.LoadFont("Font/Arial", 16, ContentLevel.Global);
+            Character.NameFont = RenderFont;
+
+            // Hook all controls to forward camera movement keys Form
+            KeyEventHandler kehDown = OnKeyDownForward;
+            KeyEventHandler kehUp = OnKeyUpForward;
+            HookFormKeyEvents(this, kehDown, kehUp);
+
+            // Set the custom UITypeEditors
+            CustomUITypeEditors.AddEditors(_dbController);
+
+            // Populate the SettingsManager
+            PopulateSettingsManager();
+            SelectedObjs.Clear();
+
+            // Set up the PropertyGrids
+            PropertyGridHelper.AttachShrinkerEventHandler(pgMap);
+            foreach (var pg in this.GetControls().OfType<PropertyGrid>())
+            {
+                PropertyGridHelper.AttachRefresherEventHandler(pg);
+                PropertyGridHelper.SetContextMenuIfNone(pg);
+            }
+
+            // Read the first map
+            // ReSharper disable EmptyGeneralCatchClause
+            try
+            {
+                Map = new Map(new MapID(1), Camera, _world);
+            }
+            catch (Exception)
+            {
+                // Doesn't matter if we fail to load the first map...
+            }
+            // ReSharper restore EmptyGeneralCatchClause
+
+            // Start the stopwatch for the elapsed time checking
+            _stopWatch.Start();
+
+            // Set up the MapDrawExtensionCollection
+            CreateMapDrawExtension<MapEntityBoxDrawer>(chkDrawEntities);
+            CreateMapDrawExtension<MapWallDrawer>(chkShowWalls);
+
+            var v = CreateMapDrawExtension<MapSpawnDrawer>(chkDrawSpawnAreas);
+            lstNPCSpawns.SelectedIndexChanged += ((o, x) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
+
+            _camera.Size = GameScreenSize;
+
+            // Handle any command-line switches
+            HandleSwitches(_switches);
+        }
+
+        /// <summary>
+        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.MapChanged"/>
+        /// event when possible.
+        /// </summary>
+        protected virtual void OnMapChanged(Map oldMap, Map newMap)
+        {
+            // Clear the selected item
+            SelectedObjs.Clear();
+
+            // Forward the change to some controls manually
+            Camera.Map = newMap;
+            MapDrawingExtensions.Map = newMap;
+
+            // Automatically update all the controls that implement IMapBoundControl
+            foreach (var c in _mapBoundControls)
+            {
+                c.IMap = newMap;
+            }
+
+            // Remove all lights for the old map from the light manager
+            if (oldMap != newMap)
+            {
+                if (oldMap != null)
+                {
+                    foreach (var light in oldMap.Lights)
+                    {
+                        DrawingManager.LightManager.Remove(light);
+                    }
+                }
+
+                // Add the lights from the new map
+                foreach (var light in newMap.Lights)
+                {
+                    DrawingManager.LightManager.Add(light);
+                }
+            }
+
+            pgMap.SelectedObject = newMap;
+        }
+
+        /// <summary>
+        /// Adds all the <see cref="IPersistable"/>s to the <see cref="SettingsManager"/>.
+        /// </summary>
+        void PopulateSettingsManager()
+        {
+            // Add the Controls that implement IPersistable
+            var persistableControls = this.GetPersistableControls();
+            var keyValuePairs =
+                persistableControls.Select(x => new KeyValuePair<string, IPersistable>("Control_" + x.Name, (IPersistable)x));
+            SettingsManager.Add(keyValuePairs);
+
+            // Manually add the other things that implement IPersistable
+            SettingsManager.Add("Grid", Grid);
+        }
+
+        /// <summary>
+        /// Saves the current map.
+        /// </summary>
+        void SaveMap()
+        {
+            if (Map == null)
+                return;
+
+            Cursor = Cursors.WaitCursor;
+            Enabled = false;
+
+            // Add the MapGrh-bound walls
+            var extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
+            foreach (var wall in extraWalls)
+            {
+                Map.AddEntity(wall);
+            }
+
+            // Write the map
+            Map.Save(ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
+
+            // Remove the extra walls
+            foreach (var wall in extraWalls)
+            {
+                Map.RemoveEntity(wall);
+            }
+
+            Enabled = true;
+            Cursor = Cursors.Default;
+        }
+
+        void SelectedObjectsManager_FocusedChanged(SelectedObjectsManager<object> sender, object newFocused)
+        {
+            scTabsAndSelected.Panel2Collapsed = (SelectedObjs.SelectedObjects.Count() == 0 && SelectedObjs.Focused == null);
+        }
+
+        void SelectedObjectsManager_SelectedChanged(SelectedObjectsManager<object> sender)
+        {
+            scSelectedItems.Panel2Collapsed = SelectedObjs.SelectedObjects.Count() < 2;
+        }
+
+        /// <summary>
+        /// Updates the cursor based on the transformation box the cursor is over
+        /// or the currently selected transformation box
+        /// </summary>
+        void UpdateCursor()
+        {
+            // Don't do anything if we have an unknown cursor
+            if (Cursor != Cursors.Default && Cursor != Cursors.SizeAll && Cursor != Cursors.SizeNESW && Cursor != Cursors.SizeNS &&
+                Cursor != Cursors.SizeNWSE && Cursor != Cursors.SizeWE)
+                return;
+
+            // Set to default if it wasn't yet set
+            Cursor = Cursors.Default;
+
+            CursorManager.Update();
+        }
+
+        /// <summary>
+        /// Handles updating when the <see cref="EditGrhForm"/> is visible and has taken over the main screen (so it
+        /// can draw the preview of the GrhData).
+        /// </summary>
+        void UpdateEditGrhView()
+        {
+            var frm = treeGrhs.EditGrhForm;
+            if (frm == null)
+                return;
+
+            // Check that there are even any walls
+            if (frm.BoundWalls.IsEmpty())
+            {
+                _editGrhSelectedWall = null;
+                _editGrhSelectedWallDir = Direction.North;
+                Cursor = Cursors.Default;
+                return;
+            }
+
+            // If the left mouse button is no longer down, unset the _editGrhSelectedWall
+            if (MouseButtons != MouseButtons.Left)
+                _editGrhSelectedWall = null;
+
+            // Get the world position for the cursor
+            var worldPos = frm.Camera.ToWorld(CursorPos).Round();
+
+            // Select a new wall if null, or if not null, check to move the wall
+            if (_editGrhSelectedWall == null)
+            {
+                // Check if the cursor is on the corner of any of the bound walls, with a 1 pixel resolution
+                var dir = Direction.North;
+                WallEntityBase selWall = null;
+                foreach (var wall in frm.BoundWalls)
+                {
+                    dir = Direction.North;
+
+                    var wallPos = wall.Position.Round();
+                    var wallMax = wall.Max.Round();
+
+                    if (wallPos.X == worldPos.X)
+                    {
+                        if (wallPos.Y == worldPos.Y)
+                            dir = Direction.NorthWest;
+                        else if (wallMax.Y == worldPos.Y)
+                            dir = Direction.SouthWest;
+                    }
+                    else if (wallMax.X == worldPos.X)
+                    {
+                        if (wallPos.Y == worldPos.Y)
+                            dir = Direction.NorthEast;
+                        else if (wallMax.Y == worldPos.Y)
+                            dir = Direction.SouthEast;
+                    }
+
+                    if (dir != Direction.North)
+                    {
+                        selWall = wall;
+                        break;
+                    }
+                }
+
+                // Set the selected wall if there is one
+                if (selWall != null)
+                {
+                    _editGrhSelectedWall = selWall;
+                    _editGrhSelectedWallDir = dir;
+                }
+                else
+                {
+                    _editGrhSelectedWall = null;
+                    _editGrhSelectedWallDir = Direction.North;
+                }
+            }
+            else
+            {
+                // Move/resize the bound wall
+                var wall = _editGrhSelectedWall;
+                var newPos = wall.Position;
+                var newSize = wall.Size;
+                switch (_editGrhSelectedWallDir)
+                {
+                    case Direction.NorthWest:
+                        newPos = worldPos;
+                        break;
+
+                    case Direction.NorthEast:
+                        newPos = new Vector2(wall.Position.X, worldPos.Y);
+                        newSize = new Vector2(worldPos.X - wall.Position.X, wall.Size.Y);
+                        break;
+
+                    case Direction.SouthEast:
+                        newSize = worldPos - wall.Position;
+                        break;
+
+                    case Direction.SouthWest:
+                        newPos = new Vector2(worldPos.X, wall.Position.Y);
+                        newSize = new Vector2(wall.Size.X, worldPos.Y - wall.Position.Y);
+                        break;
+                }
+
+                newSize += wall.Position - newPos;
+                newSize = newSize.Max(Vector2.One);
+
+                wall.Position = newPos;
+                wall.Size = newSize;
+            }
+
+            // If we do have a wall corner under the cursor, show it by changing the cursor
+            switch (_editGrhSelectedWallDir)
+            {
+                case Direction.NorthWest:
+                case Direction.SouthEast:
+                    Cursor = Cursors.SizeNWSE;
+                    break;
+
+                case Direction.NorthEast:
+                case Direction.SouthWest:
+                    Cursor = Cursors.SizeNESW;
+                    break;
+
+                default:
+                    Cursor = Cursors.Default;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Updates the game.
+        /// </summary>
+        void UpdateGame()
+        {
+            // Update the time
+            var currTime = (int)_stopWatch.ElapsedMilliseconds;
+            var deltaTime = currTime - _currentTime;
+            _currentTime = currTime;
+
+            // Update stuff in selection forms (moving it to the center of the camera so it draws centered)
+            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null &&
+                !_emitterSelectionForm.SelectedItem.IsDisposed)
+            {
+                var originalOrigin = _emitterSelectionForm.SelectedItem.Origin;
+                _emitterSelectionForm.SelectedItem.Origin = Camera.Center;
+                _emitterSelectionForm.SelectedItem.Update(_currentTime);
+                _emitterSelectionForm.SelectedItem.Origin = originalOrigin;
+            }
+
+            // Check for a map
+            if (Map == null)
+                return;
+
+            if (treeGrhs.NeedsToDraw)
+            {
+                UpdateEditGrhView();
+                return;
+            }
+
+            // Move the camera
+            _camera.Min += _moveCamera;
+
+            // Update other stuff
+            Map.Update(deltaTime);
+            UpdateCursor();
+            DrawingManager.Update(currTime);
+            _selectedGrh.Update(currTime);
         }
 
         void btnAddSpawn_Click(object sender, EventArgs e)
@@ -412,7 +1353,7 @@ namespace DemoGame.MapEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnNewBGLayer_Click(object sender, EventArgs e)
         {
-            BackgroundLayer bgLayer = new BackgroundLayer(Map, Map);
+            var bgLayer = new BackgroundLayer(Map, Map);
             Map.AddBackgroundImage(bgLayer);
         }
 
@@ -552,7 +1493,7 @@ namespace DemoGame.MapEditor
                                 "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            MapID index = MapBase.GetNextFreeIndex(ContentPaths.Dev);
+            var index = MapBase.GetNextFreeIndex(ContentPaths.Dev);
 
             var newMap = new Map(index, Camera, _world);
             DbController.GetQuery<ReplaceMapQuery>().Execute(newMap);
@@ -569,414 +1510,6 @@ namespace DemoGame.MapEditor
         void cmdSave_Click(object sender, EventArgs e)
         {
             SaveMap();
-        }
-
-        /// <summary>
-        /// Creates an instance of a <see cref="MapDrawingExtension"/> that is toggled on and off from a <see cref="CheckBox"/>,
-        /// and adds it to the <see cref="MapDrawingExtensionCollection"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of MapDrawExtensionBase to create.</typeparam>
-        /// <param name="checkBox">The CheckBox that is used to set the Enabled property.</param>
-        /// <returns>The instanced MapDrawExtensionBase of type <typeparamref name="T"/>.</returns>
-        T CreateMapDrawExtension<T>(CheckBox checkBox) where T : IMapDrawingExtension, new()
-        {
-            // Create the instance of the MapDrawExtensionBase
-            T instance = new T { Enabled = checkBox.Checked };
-
-            // Handle when the CheckBox value changes
-            checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
-
-            // Add to the collection
-            _mapDrawingExtensions.Add(instance);
-
-            return instance;
-        }
-
-        Map CreateMapFromFilePath(string filePath)
-        {
-            const string errmsg = "Invalid map file selected:{0}{1}";
-
-            if (!MapBase.IsValidMapFile(filePath))
-            {
-                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
-                return null;
-            }
-
-            MapID index;
-            if (!MapBase.TryGetIndexFromPath(filePath, out index))
-            {
-                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
-                return null;
-            }
-
-            return new Map(index, Camera, _world);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
-        /// </summary>
-        /// <param name="position">The position to give the <see cref="WallEntityBase"/>.</param>
-        /// <param name="size">The size to give the <see cref="WallEntityBase"/>.</param>
-        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
-        static WallEntityBase CreateWallEntity(Vector2 position, Vector2 size)
-        {
-            return new WallEntity(position, size);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="WallEntity"/>. This method is purely for convenience in using Lambdas.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> to read the creation values from.</param>
-        /// <returns>A <see cref="WallEntityBase"/> created with the specified parameters.</returns>
-        static WallEntityBase CreateWallEntity(IValueReader reader)
-        {
-            return new WallEntity(reader);
-        }
-
-        /// <summary>
-        /// Handles the OnChangeCurrentCursor event of the CursorManager.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void CursorManager_CurrentCursorChanged(EditorCursorManager<ScreenForm> sender)
-        {
-            _transBoxes.Clear();
-            _selTransBox = null;
-        }
-
-        /// <summary>
-        /// Draws the game.
-        /// </summary>
-        /// <param name="sb">The sprite batch.</param>
-        void DrawGame(ISpriteBatch sb)
-        {
-            // Draw the GrhTreeView if needed
-            if (treeGrhs.NeedsToDraw)
-            {
-                treeGrhs.Draw(sb);
-                return;
-            }
-
-            // Draw the selected ParticleEmitter if needed
-            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null &&
-                !_emitterSelectionForm.SelectedItem.IsDisposed)
-            {
-                DrawParticleEmitterOnly(sb, _emitterSelectionForm.SelectedItem);
-                return;
-            }
-
-            // Check for a valid map
-            if (Map == null)
-                return;
-
-            // Begin the rendering
-            DrawingManager.LightManager.Ambient = Map.AmbientLight;
-            sb = DrawingManager.BeginDrawWorld(_camera);
-            if (sb == null)
-                return;
-
-            // Map
-            Map.Draw(sb);
-
-            // MapGrh bound walls
-            if (chkDrawAutoWalls.Checked)
-            {
-                foreach (MapGrh mg in Map.MapGrhs)
-                {
-                    if (!_camera.InView(mg.Grh, mg.Position))
-                        continue;
-
-                    var boundWalls = _mapGrhWalls[mg.Grh.GrhData];
-                    if (boundWalls == null)
-                        continue;
-
-                    foreach (WallEntityBase wall in boundWalls)
-                    {
-                        EntityDrawer.Draw(sb, wall, mg.Position);
-                    }
-                }
-            }
-
-            // End drawing with lighting, start drawing world without lighting
-            DrawingManager.EndDrawWorld();
-            sb = DrawingManager.BeginDrawWorld(Camera, false, true);
-            if (sb == null)
-                return;
-
-            // Border
-            _mapBorderDrawer.Draw(sb, Map, _camera);
-
-            // Selection area
-            CursorManager.DrawSelection(sb);
-
-            // Grid
-            if (chkDrawGrid.Checked)
-                Grid.Draw(sb, Camera);
-
-            // On-screen wall editor
-            foreach (TransBox box in _transBoxes)
-            {
-                box.Draw(sb);
-            }
-
-            // Light sources
-            if (chkLightSources.Checked)
-            {
-                var offset = AddLightCursor.LightSprite.Size / 2f;
-                foreach (var light in DrawingManager.LightManager)
-                {
-                    AddLightCursor.LightSprite.Draw(sb, light.Position - offset);
-                }
-            }
-
-            // Tool interface
-            CursorManager.DrawInterface(sb);
-
-            // Focused selected object (don't draw it for lights, though)
-            foreach (var selected in SelectedObjs.SelectedObjects.Where(x => !(x is ILight)))
-            {
-                if (selected == SelectedObjs.Focused)
-                    _focusedSpatialDrawer.DrawFocused(selected as ISpatial, sb);
-                else
-                    FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
-            }
-
-            if (chkAIGrid.Checked)
-            {
-                var visibleArea = Map.Camera.GetViewArea();
-                visibleArea.Inflate(50, 50);
-
-                Color B = new Color(100, 100, 100, 100);
-
-                // TODO: Horrible performance. Instead of using visibleArea.Contains(), just loop over the actual visible area.
-                var mm = Map.MemoryMap;
-                for (int X = 0; X < mm.CellsX; X++)
-                {
-                    for (int Y = 0; Y < mm.CellsY; Y++)
-                    {
-                        if (visibleArea.Contains(mm.MemoryCells[X, Y].Location))
-                        {
-                            var cellArea = mm.MemoryCells[X, Y].GetArea(mm.CellSize);
-
-                            if (mm.MemoryCells[X, Y].DebugStatus == 0)
-                            {
-                                Color C;
-                                if (mm.MemoryCells[X, Y].Weight == 0)
-                                    C = new Color(0, 100, 255, 150);
-                                else
-                                {
-                                    C = new Color(255, 255, 255);
-                                    C.A = (byte)MathHelper.Clamp(mm.MemoryCells[X, Y].Weight * 1.5f, 0, 255);
-                                }
-                                RenderRectangle.Draw(sb, cellArea, C, B);
-                            }
-
-                            if (mm.MemoryCells[X, Y].DebugStatus == 1)
-                            {
-                                // Start debug node.
-                                RenderRectangle.Draw(sb, cellArea, Color.Green, B);
-                            }
-
-                            if (mm.MemoryCells[X, Y].DebugStatus == 2)
-                            {
-                                // End debug node.
-                                RenderRectangle.Draw(sb, cellArea, Color.Red, B);
-                            }
-
-                            if (mm.MemoryCells[X, Y].DebugStatus == 3)
-                            {
-                                // Found path.
-                                RenderRectangle.Draw(sb, cellArea, Color.LightBlue, B);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // End map rendering
-            DrawingManager.EndDrawWorld();
-
-            // Begin GUI rendering
-            sb = DrawingManager.BeginDrawGUI();
-            if (sb == null)
-                return;
-
-            // Cursor position
-            Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - new Vector2(100, 30);
-            sb.DrawStringShaded(RenderFont, CursorPos.ToString(), cursorPosText, Color.White, Color.Black);
-
-            // End GUI rendering
-            DrawingManager.EndDrawGUI();
-        }
-
-        /// <summary>
-        /// Draws a <see cref="ParticleEmitter"/> as the only item on the screen.
-        /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to draw.</param>
-        void DrawParticleEmitterOnly(ISpriteBatch sb, ParticleEmitter emitter)
-        {
-            // Set up the particle renderer
-            if (_particleEmitterRenderer == null)
-                _particleEmitterRenderer = new SpriteBatchParticleRenderer();
-
-            _particleEmitterRenderer.SpriteBatch = sb;
-
-            // Start drawing
-            sb.Begin(BlendMode.Alpha, Camera);
-
-            try
-            {
-                _particleEmitterRenderer.Draw(Camera, new ParticleEmitter[] { _emitterSelectionForm.SelectedItem });
-            }
-            finally
-            {
-                sb.End();
-            }
-        }
-
-        /// <summary>
-        /// Finds which control has focus and no children controls
-        /// </summary>
-        /// <param name="control">Base control to check</param>
-        /// <returns>Lowest-level control with focus</returns>
-        static Control FindFocusControl(Control control)
-        {
-            Control ret = null;
-
-            foreach (Control c in control.Controls)
-            {
-                if (c.Focused && c.Controls.Count == 0)
-                {
-                    ret = c;
-                    break;
-                }
-
-                Control tmpRet = FindFocusControl(c);
-                if (tmpRet != null)
-                {
-                    ret = tmpRet;
-                    break;
-                }
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Handles the MouseWheel event of the GameScreen control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
-        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
-        {
-            if (e.Delta == 0)
-                return;
-
-            int delta = e.Delta > 0 ? 1 : -1;
-
-            if (!treeGrhs.NeedsToDraw)
-            {
-                if (e.Delta != 0)
-                    CursorManager.MoveMouseWheel(delta);
-            }
-            else
-            {
-                var v = (delta * 0.1f);
-                if (e.Button == MouseButtons.Middle)
-                    v *= 10;
-
-                var newScale = treeGrhs.EditGrhForm.Camera.Scale + v;
-                treeGrhs.EditGrhForm.Camera.Scale = Math.Max(_minCameraScale, Math.Min(_maxCameraScale, newScale));
-            }
-        }
-
-        /// <summary>
-        /// Handles the Resize event of the GameScreen control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void GameScreen_Resize(object sender, EventArgs e)
-        {
-            _camera.Size = GameScreenSize;
-        }
-
-        void HandleSwitch_SaveAllMaps(string[] parameters)
-        {
-            foreach (string file in MapBase.GetMapFiles(ContentPaths.Dev))
-            {
-                if (!MapBase.IsValidMapFile(file))
-                    continue;
-
-                MapID index;
-                if (!MapBase.TryGetIndexFromPath(file, out index))
-                    continue;
-
-                using (Map tempMap = new Map(index, Camera, _world))
-                {
-                    tempMap.Load(ContentPaths.Dev, true, MapEditorDynamicEntityFactory.Instance);
-                    tempMap.Save(index, ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
-                }
-            }
-        }
-
-        void HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
-        {
-            if (switches == null || switches.Count() == 0)
-                return;
-
-            bool willClose = false;
-
-            foreach (var item in switches)
-            {
-                switch (item.Key)
-                {
-                    case CommandLineSwitch.SaveAllMaps:
-                        HandleSwitch_SaveAllMaps(item.Value);
-                        break;
-
-                    case CommandLineSwitch.Close:
-                        willClose = true;
-                        break;
-                }
-            }
-
-            // To close, we actually will create a timer to close the form one ms from now
-            if (willClose)
-            {
-                Timer t = new Timer { Interval = 1 };
-                t.Tick += delegate { Close(); };
-                t.Start();
-            }
-        }
-
-        static void HookFormKeyEvents(Control root, KeyEventHandler kehDown, KeyEventHandler kehUp)
-        {
-            foreach (Control c in root.Controls)
-            {
-                if (c.Controls.Count > 0)
-                    HookFormKeyEvents(c, kehDown, kehUp);
-                c.KeyDown += kehDown;
-                c.KeyUp += kehUp;
-            }
-        }
-
-        /// <summary>
-        /// Checks if a key is valid to be forwarded
-        /// </summary>
-        static bool IsKeyToForward(Keys key)
-        {
-            switch (key)
-            {
-                case _cameraUp:
-                case _cameraDown:
-                case _cameraLeft:
-                case _cameraRight:
-                case Keys.Delete:
-                    return true;
-
-                default:
-                    return false;
-            }
         }
 
         /// <summary>
@@ -1033,14 +1566,9 @@ namespace DemoGame.MapEditor
                 _focusedSpatialDrawer.ResetIndicator();
         }
 
-        void Map_Saved(MapBase map)
-        {
-            DbController.GetQuery<UpdateMapQuery>().Execute(map);
-        }
-
         void numZoom_ValueChanged(object sender, EventArgs e)
         {
-            float value = Convert.ToSingle(numZoom.Value);
+            var value = Convert.ToSingle(numZoom.Value);
 
             value *= 0.01f;
 
@@ -1048,352 +1576,6 @@ namespace DemoGame.MapEditor
                 return;
 
             Camera.Scale = value;
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            if (DesignMode)
-                return;
-
-            GrhInfo.Save(ContentPaths.Dev);
-            SettingsManager.Save();
-
-            base.OnFormClosing(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            if (DesignMode)
-                return;
-
-            base.OnKeyDown(e);
-
-            Control focusControl = FindFocusControl(this);
-            if (focusControl != null)
-            {
-                var focusControlType = focusControl.GetType();
-                if (_focusOverrideTypes.Any(x => x.IsAssignableFrom(focusControlType)))
-                    return;
-            }
-
-            Vector2 startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
-
-            switch (e.KeyCode)
-            {
-                case _cameraUp:
-                    _moveCamera.Y = -_cameraMoveRate;
-                    break;
-                case _cameraRight:
-                    _moveCamera.X = _cameraMoveRate;
-                    break;
-                case _cameraDown:
-                    _moveCamera.Y = _cameraMoveRate;
-                    break;
-                case _cameraLeft:
-                    _moveCamera.X = -_cameraMoveRate;
-                    break;
-
-                case Keys.Delete:
-                    CursorManager.PressDelete();
-                    _selTransBox = null;
-                    _transBoxes.Clear();
-                    break;
-            }
-
-            if (startMoveCamera != _moveCamera)
-                e.Handled = true;
-        }
-
-        /// <summary>
-        /// Forwards special KeyDown events to the form
-        /// </summary>
-        void OnKeyDownForward(object sender, KeyEventArgs e)
-        {
-            _keyEventArgs = e;
-            _cursorManager.UseAlternateCursor = e.Shift;
-
-            if (IsKeyToForward(e.KeyCode))
-                OnKeyDown(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            if (DesignMode)
-                return;
-
-            Vector2 startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
-
-            switch (e.KeyCode)
-            {
-                case _cameraUp:
-                case _cameraDown:
-                    _moveCamera.Y = 0;
-                    break;
-
-                case _cameraLeft:
-                case _cameraRight:
-                    _moveCamera.X = 0;
-                    break;
-            }
-
-            if (startMoveCamera != _moveCamera)
-                e.Handled = true;
-
-            if (e.KeyCode == Keys.F12)
-            {
-                var previewer = new MapPreviewer();
-                var tmpFile = new TempFile();
-                previewer.CreatePreview(GameScreen.RenderWindow, Map, _mapDrawingExtensions, tmpFile.FilePath);
-            }
-
-            base.OnKeyUp(e);
-        }
-
-        /// <summary>
-        /// Forwards special KeyUp events to the form
-        /// </summary>
-        void OnKeyUpForward(object sender, KeyEventArgs e)
-        {
-            _keyEventArgs = e;
-            _cursorManager.UseAlternateCursor = e.Shift;
-
-            if (IsKeyToForward(e.KeyCode))
-                OnKeyUp(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            Show();
-            Refresh();
-
-            numZoom.Minimum = (decimal)_minCameraScale * 100;
-            numZoom.Maximum = (decimal)_maxCameraScale * 100;
-
-            // Make sure we skip doing all of this loading when in design mode
-            if (DesignMode)
-                return;
-
-            scTabsAndSelected.Panel2Collapsed = true;
-
-            _camera = new Camera2D(GameScreenSize);
-
-            // Set up the object manager
-            _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
-            SelectedObjs.SelectedChanged += SelectedObjectsManager_SelectedChanged;
-            SelectedObjs.FocusedChanged += SelectedObjectsManager_FocusedChanged;
-
-            // Get the IMapBoundControls
-            _mapBoundControls = this.GetControls().OfType<IMapBoundControl>().ToArray();
-
-            // Create and set up the cursor manager
-            _cursorManager = new EditorCursorManager<ScreenForm>(this, ToolTip, panToolBar, GameScreen,
-                                                                 x => Map != null && !treeGrhs.IsEditingGrhData);
-            CursorManager.SelectedCursor = CursorManager.TryGetCursor<EntityCursor>();
-            CursorManager.SelectedAltCursor = CursorManager.TryGetCursor<AddEntityCursor>();
-            CursorManager.CurrentCursorChanged += CursorManager_CurrentCursorChanged;
-
-            // Create the world
-            _world = new World(this, _camera, null);
-
-            // Set up the GameScreenControl
-            GameScreen.Camera = _camera;
-            GameScreen.UpdateHandler = UpdateGame;
-            GameScreen.DrawHandler = DrawGame;
-            GameScreen.MouseWheel += GameScreen_MouseWheel;
-
-            // Create the engine objects 
-            _content = ContentManager.Create();
-
-            // Read the Grh information
-            GrhInfo.Load(ContentPaths.Dev, _content);
-            treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
- 
-            _drawingManager = new DrawingManager(GameScreen.RenderWindow);
-            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
-
-            // Prepare the GrhImageList to avoid stalling the loading later
-            GrhImageList.Prepare();
-
-            // Grab the audio manager instances, which will ensure that they are property initialized
-            // before something that can't pass it an ContentManager (such as the UITypeEditor) tries to get an instance.
-            AudioManager.GetInstance(_content);
-
-            // Create the database connection
-            DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController =
-                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                                                                 x => settings.PromptEditFileMessageBox(x));
-
-            if (_dbController == null)
-            {
-                Close();
-                return;
-            }
-
-            // Create the font
-            _font = _content.LoadFont("Font/Arial", 16, ContentLevel.Global);
-            Character.NameFont = RenderFont;
-
-            // Hook all controls to forward camera movement keys Form
-            KeyEventHandler kehDown = OnKeyDownForward;
-            KeyEventHandler kehUp = OnKeyUpForward;
-            HookFormKeyEvents(this, kehDown, kehUp);
-
-            // Set the custom UITypeEditors
-            CustomUITypeEditors.AddEditors(_dbController);
-
-            // Populate the SettingsManager
-            PopulateSettingsManager();
-            SelectedObjs.Clear();
-
-            // Set up the PropertyGrids
-            PropertyGridHelper.AttachShrinkerEventHandler(pgMap);
-            foreach (var pg in this.GetControls().OfType<PropertyGrid>())
-            {
-                PropertyGridHelper.AttachRefresherEventHandler(pg);
-                PropertyGridHelper.SetContextMenuIfNone(pg);
-            }
-
-            // Read the first map
-            // ReSharper disable EmptyGeneralCatchClause
-            try
-            {
-                Map = new Map(new MapID(1), Camera, _world);
-            }
-            catch (Exception)
-            {
-                // Doesn't matter if we fail to load the first map...
-            }
-            // ReSharper restore EmptyGeneralCatchClause
-
-            // Start the stopwatch for the elapsed time checking
-            _stopWatch.Start();
-
-            // Set up the MapDrawExtensionCollection
-            CreateMapDrawExtension<MapEntityBoxDrawer>(chkDrawEntities);
-            CreateMapDrawExtension<MapWallDrawer>(chkShowWalls);
-
-            MapSpawnDrawer v = CreateMapDrawExtension<MapSpawnDrawer>(chkDrawSpawnAreas);
-            lstNPCSpawns.SelectedIndexChanged += ((o, x) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
-
-            _camera.Size = GameScreenSize;
-
-            // Handle any command-line switches
-            HandleSwitches(_switches);
-        }
-
-        /// <summary>
-        /// Allows for handling when the map has changed. Use this instead of the <see cref="ScreenForm.MapChanged"/>
-        /// event when possible.
-        /// </summary>
-        protected virtual void OnMapChanged(Map oldMap, Map newMap)
-        {
-            // Clear the selected item
-            SelectedObjs.Clear();
-
-            // Forward the change to some controls manually
-            Camera.Map = newMap;
-            MapDrawingExtensions.Map = newMap;
-
-            // Automatically update all the controls that implement IMapBoundControl
-            foreach (var c in _mapBoundControls)
-            {
-                c.IMap = newMap;
-            }
-
-            // Remove all lights for the old map from the light manager
-            if (oldMap != newMap)
-            {
-                if (oldMap != null)
-                {
-                    foreach (var light in oldMap.Lights)
-                    {
-                        DrawingManager.LightManager.Remove(light);
-                    }
-                }
-
-                // Add the lights from the new map
-                foreach (var light in newMap.Lights)
-                {
-                    DrawingManager.LightManager.Add(light);
-                }
-            }
-
-            pgMap.SelectedObject = newMap;
-        }
-
-        /// <summary>
-        /// Adds all the <see cref="IPersistable"/>s to the <see cref="SettingsManager"/>.
-        /// </summary>
-        void PopulateSettingsManager()
-        {
-            // Add the Controls that implement IPersistable
-            var persistableControls = this.GetPersistableControls();
-            var keyValuePairs =
-                persistableControls.Select(x => new KeyValuePair<string, IPersistable>("Control_" + x.Name, (IPersistable)x));
-            SettingsManager.Add(keyValuePairs);
-
-            // Manually add the other things that implement IPersistable
-            SettingsManager.Add("Grid", Grid);
-        }
-
-        /// <summary>
-        /// Saves the current map.
-        /// </summary>
-        void SaveMap()
-        {
-            if (Map == null)
-                return;
-
-            Cursor = Cursors.WaitCursor;
-            Enabled = false;
-
-            // Add the MapGrh-bound walls
-            var extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs, CreateWallEntity);
-            foreach (WallEntityBase wall in extraWalls)
-            {
-                Map.AddEntity(wall);
-            }
-
-            // Write the map
-            Map.Save(ContentPaths.Dev, MapEditorDynamicEntityFactory.Instance);
-
-            // Remove the extra walls
-            foreach (WallEntityBase wall in extraWalls)
-            {
-                Map.RemoveEntity(wall);
-            }
-
-            Enabled = true;
-            Cursor = Cursors.Default;
-        }
-
-        void SelectedObjectsManager_FocusedChanged(SelectedObjectsManager<object> sender, object newFocused)
-        {
-            scTabsAndSelected.Panel2Collapsed = (SelectedObjs.SelectedObjects.Count() == 0 && SelectedObjs.Focused == null);
-        }
-
-        void SelectedObjectsManager_SelectedChanged(SelectedObjectsManager<object> sender)
-        {
-            scSelectedItems.Panel2Collapsed = SelectedObjs.SelectedObjects.Count() < 2;
         }
 
         /// <summary>
@@ -1447,189 +1629,6 @@ namespace DemoGame.MapEditor
             float result;
             if (Parser.Current.TryParse(txtGridWidth.Text, out result))
                 Grid.Width = result;
-        }
-
-        /// <summary>
-        /// Updates the cursor based on the transformation box the cursor is over
-        /// or the currently selected transformation box
-        /// </summary>
-        void UpdateCursor()
-        {
-            // Don't do anything if we have an unknown cursor
-            if (Cursor != Cursors.Default && Cursor != Cursors.SizeAll && Cursor != Cursors.SizeNESW && Cursor != Cursors.SizeNS &&
-                Cursor != Cursors.SizeNWSE && Cursor != Cursors.SizeWE)
-                return;
-
-            // Set to default if it wasn't yet set
-            Cursor = Cursors.Default;
-
-            CursorManager.Update();
-        }
-
-        /// <summary>
-        /// Handles updating when the <see cref="EditGrhForm"/> is visible and has taken over the main screen (so it
-        /// can draw the preview of the GrhData).
-        /// </summary>
-        void UpdateEditGrhView()
-        {
-            var frm = treeGrhs.EditGrhForm;
-            if (frm == null)
-                return;
-
-            // Check that there are even any walls
-            if (frm.BoundWalls.IsEmpty())
-            {
-                _editGrhSelectedWall = null;
-                _editGrhSelectedWallDir = Direction.North;
-                Cursor = Cursors.Default;
-                return;
-            }
-
-            // If the left mouse button is no longer down, unset the _editGrhSelectedWall
-            if (MouseButtons != MouseButtons.Left)
-                _editGrhSelectedWall = null;
-
-            // Get the world position for the cursor
-            var worldPos = frm.Camera.ToWorld(CursorPos).Round();
-
-            // Select a new wall if null, or if not null, check to move the wall
-            if (_editGrhSelectedWall == null)
-            {
-                // Check if the cursor is on the corner of any of the bound walls, with a 1 pixel resolution
-                Direction dir = Direction.North;
-                WallEntityBase selWall = null;
-                foreach (var wall in frm.BoundWalls)
-                {
-                    dir = Direction.North;
-
-                    var wallPos = wall.Position.Round();
-                    var wallMax = wall.Max.Round();
-
-                    if (wallPos.X == worldPos.X)
-                    {
-                        if (wallPos.Y == worldPos.Y)
-                            dir = Direction.NorthWest;
-                        else if (wallMax.Y == worldPos.Y)
-                            dir = Direction.SouthWest;
-                    }
-                    else if (wallMax.X == worldPos.X)
-                    {
-                        if (wallPos.Y == worldPos.Y)
-                            dir = Direction.NorthEast;
-                        else if (wallMax.Y == worldPos.Y)
-                            dir = Direction.SouthEast;
-                    }
-
-                    if (dir != Direction.North)
-                    {
-                        selWall = wall;
-                        break;
-                    }
-                }
-
-                // Set the selected wall if there is one
-                if (selWall != null)
-                {
-                    _editGrhSelectedWall = selWall;
-                    _editGrhSelectedWallDir = dir;
-                }
-                else
-                {
-                    _editGrhSelectedWall = null;
-                    _editGrhSelectedWallDir = Direction.North;
-                }
-            }
-            else
-            {
-                // Move/resize the bound wall
-                var wall = _editGrhSelectedWall;
-                Vector2 newPos = wall.Position;
-                Vector2 newSize = wall.Size;
-                switch (_editGrhSelectedWallDir)
-                {
-                    case Direction.NorthWest:
-                        newPos = worldPos;
-                        break;
-
-                    case Direction.NorthEast:
-                        newPos = new Vector2(wall.Position.X, worldPos.Y);
-                        newSize = new Vector2(worldPos.X - wall.Position.X, wall.Size.Y);
-                        break;
-
-                    case Direction.SouthEast:
-                        newSize = worldPos - wall.Position;
-                        break;
-
-                    case Direction.SouthWest:
-                        newPos = new Vector2(worldPos.X, wall.Position.Y);
-                        newSize = new Vector2(wall.Size.X, worldPos.Y - wall.Position.Y);
-                        break;
-                }
-
-                newSize += wall.Position - newPos;
-                newSize = newSize.Max(Vector2.One);
-
-                wall.Position = newPos;
-                wall.Size = newSize;
-            }
-
-            // If we do have a wall corner under the cursor, show it by changing the cursor
-            switch (_editGrhSelectedWallDir)
-            {
-                case Direction.NorthWest:
-                case Direction.SouthEast:
-                    Cursor = Cursors.SizeNWSE;
-                    break;
-
-                case Direction.NorthEast:
-                case Direction.SouthWest:
-                    Cursor = Cursors.SizeNESW;
-                    break;
-
-                default:
-                    Cursor = Cursors.Default;
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Updates the game.
-        /// </summary>
-        void UpdateGame()
-        {
-            // Update the time
-            int currTime = (int)_stopWatch.ElapsedMilliseconds;
-            int deltaTime = currTime - _currentTime;
-            _currentTime = currTime;
-
-            // Update stuff in selection forms (moving it to the center of the camera so it draws centered)
-            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null &&
-                !_emitterSelectionForm.SelectedItem.IsDisposed)
-            {
-                var originalOrigin = _emitterSelectionForm.SelectedItem.Origin;
-                _emitterSelectionForm.SelectedItem.Origin = Camera.Center;
-                _emitterSelectionForm.SelectedItem.Update(_currentTime);
-                _emitterSelectionForm.SelectedItem.Origin = originalOrigin;
-            }
-
-            // Check for a map
-            if (Map == null)
-                return;
-
-            if (treeGrhs.NeedsToDraw)
-            {
-                UpdateEditGrhView();
-                return;
-            }
-
-            // Move the camera
-            _camera.Min += _moveCamera;
-
-            // Update other stuff
-            Map.Update(deltaTime);
-            UpdateCursor();
-            DrawingManager.Update(currTime);
-            _selectedGrh.Update(currTime);
         }
 
         #region IGetTime Members

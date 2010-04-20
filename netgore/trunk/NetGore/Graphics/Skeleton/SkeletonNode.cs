@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -174,10 +173,10 @@ namespace NetGore.Graphics
                 return null;
             }
 
-            SkeletonNode ret = new SkeletonNode(new Vector2(root.Position.X, root.Position.Y)) { Name = root.Name };
-            foreach (SkeletonNode node in root.Nodes)
+            var ret = new SkeletonNode(new Vector2(root.Position.X, root.Position.Y)) { Name = root.Name };
+            foreach (var node in root.Nodes)
             {
-                SkeletonNode newChild = Duplicate(node);
+                var newChild = Duplicate(node);
                 newChild.Parent = ret;
                 newChild.Name = node.Name;
                 newChild.IsModifier = node.IsModifier;
@@ -256,10 +255,10 @@ namespace NetGore.Graphics
             }
 
             var ret = new List<SkeletonNode>();
-            foreach (SkeletonNode node in root.Nodes)
+            foreach (var node in root.Nodes)
             {
                 ret.Add(node);
-                foreach (SkeletonNode subNode in GetNodes(node))
+                foreach (var subNode in GetNodes(node))
                 {
                     ret.Add(subNode);
                 }
@@ -287,9 +286,9 @@ namespace NetGore.Graphics
                 return false;
             }
 
-            Vector2 size = Vector2.Divide(HalfJointVector, camera.Scale);
-            Vector2 min = node.Position - size;
-            Vector2 max = node.Position + size;
+            var size = Vector2.Divide(HalfJointVector, camera.Scale);
+            var min = node.Position - size;
+            var max = node.Position + size;
             return (position.X >= min.X && position.X <= max.X && position.Y >= min.Y && position.Y <= max.Y);
         }
 
@@ -311,7 +310,7 @@ namespace NetGore.Graphics
         public void MoveTo(Vector2 newPosition)
         {
             // Apply the position difference to this node and all its children
-            Vector2 diff = Position - newPosition;
+            var diff = Position - newPosition;
             if (diff.X != 0 || diff.Y != 0)
                 RecursiveMove(this, diff);
         }
@@ -327,7 +326,7 @@ namespace NetGore.Graphics
             Name = reader.ReadString(_nameValueKey);
             Position = reader.ReadVector2(_positionValueKey);
             IsModifier = reader.ReadBool(_isModifierValueKey);
-            bool hasParent = reader.ReadBool(_hasParentValueKey);
+            var hasParent = reader.ReadBool(_hasParentValueKey);
 
             string parentName = null;
             if (hasParent)
@@ -347,7 +346,7 @@ namespace NetGore.Graphics
             node.Position -= diff;
 
             // Update the children
-            foreach (SkeletonNode childNode in node.Nodes)
+            foreach (var childNode in node.Nodes)
             {
                 RecursiveMove(childNode, diff);
             }
@@ -372,10 +371,10 @@ namespace NetGore.Graphics
         public void Rotate(float radians)
         {
             // Find the difference between the current angle and the new angle
-            float diff = GetAngle() - radians;
+            var diff = GetAngle() - radians;
 
             // Loop through the children, performing the same rotation task
-            foreach (SkeletonNode node in Nodes)
+            foreach (var node in Nodes)
             {
                 node.Rotate(node.GetAngle() - diff);
             }
@@ -419,10 +418,10 @@ namespace NetGore.Graphics
         public void SetAngle(float radians)
         {
             // Find the distance between the node and its parent so we can preserve it
-            float dist = Vector2.Distance(Position, Parent.Position);
+            var dist = Vector2.Distance(Position, Parent.Position);
 
             // Find the new position the node will be taking and move to it
-            Vector2 newPos = new Vector2((float)Math.Cos(radians) * dist, (float)Math.Sin(radians) * dist);
+            var newPos = new Vector2((float)Math.Cos(radians) * dist, (float)Math.Sin(radians) * dist);
             MoveTo(newPos + Parent.Position);
         }
 
@@ -445,7 +444,7 @@ namespace NetGore.Graphics
         /// <param name="radians">Angle of the node to its parent in radians</param>
         public void SetLength(float length, float radians)
         {
-            Vector2 newPos = new Vector2((float)Math.Cos(radians) * length, (float)Math.Sin(radians) * length);
+            var newPos = new Vector2((float)Math.Cos(radians) * length, (float)Math.Sin(radians) * length);
             MoveTo(newPos + Parent.Position);
         }
 

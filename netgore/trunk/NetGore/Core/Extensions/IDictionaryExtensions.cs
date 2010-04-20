@@ -292,7 +292,7 @@ namespace NetGore
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
 
-            TEnum enumValue = EnumHelper<TEnum>.Parse(value);
+            var enumValue = EnumHelper<TEnum>.Parse(value);
             if (!EnumHelper<TEnum>.IsDefined(enumValue))
                 return defaultValue;
 
@@ -680,7 +680,7 @@ namespace NetGore
                 // Remove the items
                 foreach (var key in toRemove)
                 {
-                    bool b = dict.Remove(key);
+                    var b = dict.Remove(key);
                     Debug.Assert(b, "How did we fail to remove an item? Hmm... not good.");
                 }
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
 using NUnit.Framework;
@@ -16,19 +15,19 @@ namespace NetGore.Tests.NetGore.IO
         static void TestSync(string propertyName, object value)
         {
             // Get the property
-            PropertyInfo property = typeof(TestClass).GetProperty(propertyName);
+            var property = typeof(TestClass).GetProperty(propertyName);
 
             // Set the value and ensure it was set correctly
-            TestClass cSrc = new TestClass();
+            var cSrc = new TestClass();
             property.SetValue(cSrc, value, null);
             Assert.AreEqual(value, property.GetValue(cSrc, null));
 
             // Serialize
-            BitStream bs = new BitStream(BitStreamMode.Write, 64);
+            var bs = new BitStream(BitStreamMode.Write, 64);
             cSrc.Serialize(bs);
 
             // Deserialize
-            TestClass cDest = new TestClass();
+            var cDest = new TestClass();
             bs.Mode = BitStreamMode.Read;
             cDest.Deserialize(bs);
 
@@ -39,19 +38,19 @@ namespace NetGore.Tests.NetGore.IO
         static void TestSyncNullable(string propertyName, object value)
         {
             // Get the property
-            PropertyInfo property = typeof(NullableTestClass).GetProperty(propertyName);
+            var property = typeof(NullableTestClass).GetProperty(propertyName);
 
             // Set the value and ensure it was set correctly
-            NullableTestClass cSrc = new NullableTestClass();
+            var cSrc = new NullableTestClass();
             property.SetValue(cSrc, value, null);
             Assert.AreEqual(value, property.GetValue(cSrc, null));
 
             // Serialize
-            BitStream bs = new BitStream(BitStreamMode.Write, 64);
+            var bs = new BitStream(BitStreamMode.Write, 64);
             cSrc.Serialize(bs);
 
             // Deserialize
-            NullableTestClass cDest = new NullableTestClass();
+            var cDest = new NullableTestClass();
             bs.Mode = BitStreamMode.Read;
             cDest.Deserialize(bs);
 
@@ -221,7 +220,7 @@ namespace NetGore.Tests.NetGore.IO
             {
                 int count = reader.ReadByte("Count");
 
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     int propIndex = reader.ReadByte("PropertyIndex" + i);
                     _propertySyncs[propIndex].ReadValue(this, reader);
@@ -230,9 +229,9 @@ namespace NetGore.Tests.NetGore.IO
 
             public void Serialize(IValueWriter writer)
             {
-                Queue<int> changed = new Queue<int>();
+                var changed = new Queue<int>();
 
-                for (int i = 0; i < _propertySyncs.Length; i++)
+                for (var i = 0; i < _propertySyncs.Length; i++)
                 {
                     if (_propertySyncs[i].HasValueChanged(this))
                         changed.Enqueue(i);
@@ -240,7 +239,7 @@ namespace NetGore.Tests.NetGore.IO
 
                 writer.Write("Count", (byte)changed.Count);
 
-                int index = 0;
+                var index = 0;
                 foreach (var i in changed)
                 {
                     writer.Write("PropertyIndex" + index++, (byte)i);
@@ -313,7 +312,7 @@ namespace NetGore.Tests.NetGore.IO
             {
                 int count = reader.ReadByte("Count");
 
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     int propIndex = reader.ReadByte("PropertyIndex" + i);
                     _propertySyncs[propIndex].ReadValue(this, reader);
@@ -322,9 +321,9 @@ namespace NetGore.Tests.NetGore.IO
 
             public void Serialize(IValueWriter writer)
             {
-                Queue<int> changed = new Queue<int>();
+                var changed = new Queue<int>();
 
-                for (int i = 0; i < _propertySyncs.Length; i++)
+                for (var i = 0; i < _propertySyncs.Length; i++)
                 {
                     if (_propertySyncs[i].HasValueChanged(this))
                         changed.Enqueue(i);
@@ -332,7 +331,7 @@ namespace NetGore.Tests.NetGore.IO
 
                 writer.Write("Count", (byte)changed.Count);
 
-                int index = 0;
+                var index = 0;
                 foreach (var i in changed)
                 {
                     writer.Write("PropertyIndex" + index++, (byte)i);

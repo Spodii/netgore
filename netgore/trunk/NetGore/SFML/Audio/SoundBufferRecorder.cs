@@ -1,7 +1,5 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SFML
 {
@@ -16,29 +14,19 @@ namespace SFML
         public class SoundBufferRecorder : SoundRecorder
         {
             ////////////////////////////////////////////////////////////
+            readonly List<short> mySamplesArray = new List<short>();
+            SoundBuffer mySoundBuffer = null;
+
             /// <summary>
             /// Sound buffer containing the recorded data (invalid until the capture stops)
             /// </summary>
             ////////////////////////////////////////////////////////////
             public SoundBuffer SoundBuffer
             {
-                get
-                {
-                    return mySoundBuffer;
-                }
+                get { return mySoundBuffer; }
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Called when a new capture starts
-            /// </summary>
-            /// <returns>False to abort recording audio data, true to continue</returns>
-            ////////////////////////////////////////////////////////////
-            protected override bool OnStart()
-            {
-                mySamplesArray.Clear();
-                return true;
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -53,6 +41,17 @@ namespace SFML
                 return true;
             }
 
+            /// <summary>
+            /// Called when a new capture starts
+            /// </summary>
+            /// <returns>False to abort recording audio data, true to continue</returns>
+            ////////////////////////////////////////////////////////////
+            protected override bool OnStart()
+            {
+                mySamplesArray.Clear();
+                return true;
+            }
+
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Called when the current capture stops
@@ -62,9 +61,6 @@ namespace SFML
             {
                 mySoundBuffer = new SoundBuffer(mySamplesArray.ToArray(), 1, SampleRate);
             }
-
-            List<short> mySamplesArray = new List<short>();
-            SoundBuffer mySoundBuffer  = null;
         }
     }
 }

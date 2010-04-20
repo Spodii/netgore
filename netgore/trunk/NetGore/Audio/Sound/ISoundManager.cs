@@ -72,9 +72,10 @@ namespace NetGore.Audio
         void Stop();
 
         /// <summary>
-        /// Stops all 3D sounds. Any 2D sounds playing will continue to play.
+        /// Stops all instances of a sound with the given <see cref="SoundID"/>.
         /// </summary>
-        void Stop3D();
+        /// <param name="id">The ID of the sounds to stop.</param>
+        void Stop(SoundID id);
 
         /// <summary>
         /// Stops all 2D sounds. Any 3D sounds playing will continue to play.
@@ -82,10 +83,9 @@ namespace NetGore.Audio
         void Stop2D();
 
         /// <summary>
-        /// Stops all instances of a sound with the given <see cref="SoundID"/>.
+        /// Stops all 3D sounds. Any 2D sounds playing will continue to play.
         /// </summary>
-        /// <param name="id">The ID of the sounds to stop.</param>
-        void Stop(SoundID id);
+        void Stop3D();
 
         /// <summary>
         /// Updates the <see cref="ISoundManager"/>.

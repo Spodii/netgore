@@ -22,7 +22,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
         protected override bool DoEvaluate(User user, NPC npc, NPCChatConditionalParameter[] parameters)
         {
-            float percent = GetPercent(user.MP, user.ModStats[StatType.MaxMP]);
+            var percent = GetPercent(user.MP, user.ModStats[StatType.MaxMP]);
 
             return percent <= parameters[0].ValueAsFloat;
         }

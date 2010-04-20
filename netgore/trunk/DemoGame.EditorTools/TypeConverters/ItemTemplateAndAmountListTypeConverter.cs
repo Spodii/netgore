@@ -54,10 +54,10 @@ namespace DemoGame.EditorTools
                 var ev = value as IEnumerable<MutablePair<ItemTemplateID, byte>>;
                 if (ev != null)
                 {
-                    ItemTemplateManager m = ItemTemplateManager.Instance;
+                    var m = ItemTemplateManager.Instance;
                     if (m != null)
                     {
-                        StringBuilder sb = new StringBuilder();
+                        var sb = new StringBuilder();
                         foreach (var v in ev)
                         {
                             sb.Append("{");

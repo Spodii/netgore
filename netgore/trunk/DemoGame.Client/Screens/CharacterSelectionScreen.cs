@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.Graphics.GUI;
-using NetGore.Network;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -44,15 +43,15 @@ namespace DemoGame.Client
 
         void ClickButton_CharacterSelection(object sender, MouseButtonEventArgs e)
         {
-            Button src = (Button)sender;
-            byte index = (byte)src.Tag;
+            var src = (Button)sender;
+            var index = (byte)src.Tag;
 
             AccountCharacterInfo charInfo;
             if (!_sockets.PacketHandler.AccountCharacterInfos.TryGetInfo(index, out charInfo))
                 ScreenManager.SetScreen(CreateCharacterScreen.ScreenName);
             else
             {
-                using (PacketWriter pw = ClientPacket.SelectAccountCharacter(index))
+                using (var pw = ClientPacket.SelectAccountCharacter(index))
                 {
                     _sockets.Send(pw);
                 }
@@ -83,7 +82,7 @@ namespace DemoGame.Client
 
         void HandleCharInfosUpdated(AccountCharacterInfos sender)
         {
-            for (int i = 0; i < _characterButtons.Length; i++)
+            for (var i = 0; i < _characterButtons.Length; i++)
             {
                 AccountCharacterInfo charInfo;
                 _sockets.PacketHandler.AccountCharacterInfos.TryGetInfo((byte)i, out charInfo);
@@ -98,7 +97,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
-            Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
+            var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Log out");
@@ -106,11 +105,11 @@ namespace DemoGame.Client
 
             // Create the character controls
             _characterButtons = new Button[GameData.MaxCharactersPerAccount];
-            for (int i = 0; i < GameData.MaxCharactersPerAccount; i++)
+            for (var i = 0; i < GameData.MaxCharactersPerAccount; i++)
             {
-                Vector2 size = new Vector2(250, 35);
-                Vector2 pos = new Vector2((ScreenManager.ScreenSize.X / 2f) - (size.X / 2), 10 + (i * (size.Y + 10)));
-                Button characterButton = new Button(cScreen, pos, size) { Text = _unusedCharacterSlotText, Tag = (byte)i };
+                var size = new Vector2(250, 35);
+                var pos = new Vector2((ScreenManager.ScreenSize.X / 2f) - (size.X / 2), 10 + (i * (size.Y + 10)));
+                var characterButton = new Button(cScreen, pos, size) { Text = _unusedCharacterSlotText, Tag = (byte)i };
                 characterButton.Clicked += ClickButton_CharacterSelection;
                 _characterButtons[i] = characterButton;
             }

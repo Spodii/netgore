@@ -371,7 +371,7 @@ namespace NetGore.IO
                 throw new ArgumentException(errmsg);
             }
 
-            string expectedName = _nodeStack.Pop();
+            var expectedName = _nodeStack.Pop();
             if (name != expectedName)
             {
                 const string errmsg = "Node name `{0}` does not match the expected name `{1}`.";
@@ -443,8 +443,8 @@ namespace NetGore.IO
                 Write(XmlValueHelper.CountValueKey, count);
                 if (values != null && count > 0)
                 {
-                    int i = 0;
-                    foreach (T value in values)
+                    var i = 0;
+                    foreach (var value in values)
                     {
                         writeHandler(XmlValueHelper.GetItemKey(i), value);
                         i++;
@@ -476,7 +476,7 @@ namespace NetGore.IO
                 Write(XmlValueHelper.CountValueKey, count);
                 if (values != null && count > 0)
                 {
-                    for (int i = 0; i < values.Length; i++)
+                    for (var i = 0; i < values.Length; i++)
                     {
                         writeHandler(XmlValueHelper.GetItemKey(i), values[i]);
                     }
@@ -507,10 +507,10 @@ namespace NetGore.IO
                 Write("Count", count);
                 if (values != null && count > 0)
                 {
-                    int i = 0;
-                    foreach (T value in values)
+                    var i = 0;
+                    foreach (var value in values)
                     {
-                        string childNodeName = XmlValueHelper.GetItemKey(i);
+                        var childNodeName = XmlValueHelper.GetItemKey(i);
                         WriteStartNode(childNodeName);
                         writeHandler(this, value);
                         WriteEndNode(childNodeName);
@@ -543,9 +543,9 @@ namespace NetGore.IO
                 Write(XmlValueHelper.CountValueKey, count);
                 if (values != null && count > 0)
                 {
-                    for (int i = 0; i < values.Length; i++)
+                    for (var i = 0; i < values.Length; i++)
                     {
-                        string childNodeName = XmlValueHelper.GetItemKey(i);
+                        var childNodeName = XmlValueHelper.GetItemKey(i);
                         WriteStartNode(childNodeName);
                         writeHandler(this, values[i]);
                         WriteEndNode(childNodeName);

@@ -97,7 +97,7 @@ namespace DemoGame.Server
         {
             _modStats.SetAll(0);
 
-            foreach (ActiveStatusEffect item in this)
+            foreach (var item in this)
             {
                 item.AddBonusesTo(_modStats);
             }
@@ -114,7 +114,7 @@ namespace DemoGame.Server
             // Create a stack of the items to remove
             // We must create a temporary collection since HandleExpired will likely cause the collection to be modified
             // We also want to avoid creating the removeStack if possible
-            foreach (ActiveStatusEffect item in this)
+            foreach (var item in this)
             {
                 if (item.DisableTime < currentTime)
                 {
@@ -128,7 +128,7 @@ namespace DemoGame.Server
             // Remove each of the items
             if (removeStack != null)
             {
-                foreach (ActiveStatusEffect item in removeStack)
+                foreach (var item in removeStack)
                 {
                     HandleExpired(item);
                 }
@@ -149,7 +149,7 @@ namespace DemoGame.Server
 
         public virtual void Update()
         {
-            int currentTime = GetTime();
+            var currentTime = GetTime();
             if (_lastUpdateTime + _updateFrequency < currentTime)
             {
                 _lastUpdateTime = currentTime;

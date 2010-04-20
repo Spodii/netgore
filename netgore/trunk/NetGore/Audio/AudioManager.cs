@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using NetGore.Content;
 using NetGore.IO;
 using SFML.Audio;
@@ -18,32 +18,6 @@ namespace NetGore.Audio
 
         readonly IMusicManager _musicManager;
         readonly ISoundManager _soundManager;
-
-        /// <summary>
-        /// Gets the <see cref="IAudioManager"/> instance.
-        /// </summary>
-        /// <param name="contentManager">The <see cref="IContentManager"/> to use to load the audio content. Although it is
-        /// recommended to always use a non-null value to ensure an <see cref="IAudioManager"/> instance
-        /// can be returned, this value can be null if it has already been called before while passing a non-null
-        /// value.</param>
-        /// <returns>The <see cref="IAudioManager"/> instance.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="contentManager"/> is null and a valid
-        /// <see cref="IContentManager"/> has not been passed to this method before.</exception>
-        public static IAudioManager GetInstance(IContentManager contentManager)
-        {
-            lock (_instanceSync)
-            {
-                if (_instance == null)
-                {
-                    if (contentManager == null || contentManager.IsDisposed)
-                        throw new ArgumentNullException("contentManager", "The contentManager parameter cannot be null or disposed on the first call to this method.");
-
-                    _instance = new AudioManager(contentManager);
-                }
-            }
-
-            return _instance;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioManager"/> class.
@@ -86,17 +60,46 @@ namespace NetGore.Audio
             return new SoundManager(contentManager);
         }
 
+        /// <summary>
+        /// Gets the <see cref="IAudioManager"/> instance.
+        /// </summary>
+        /// <param name="contentManager">The <see cref="IContentManager"/> to use to load the audio content. Although it is
+        /// recommended to always use a non-null value to ensure an <see cref="IAudioManager"/> instance
+        /// can be returned, this value can be null if it has already been called before while passing a non-null
+        /// value.</param>
+        /// <returns>The <see cref="IAudioManager"/> instance.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="contentManager"/> is null and a valid
+        /// <see cref="IContentManager"/> has not been passed to this method before.</exception>
+        public static IAudioManager GetInstance(IContentManager contentManager)
+        {
+            lock (_instanceSync)
+            {
+                if (_instance == null)
+                {
+                    if (contentManager == null || contentManager.IsDisposed)
+                    {
+                        throw new ArgumentNullException("contentManager",
+                                                        "The contentManager parameter cannot be null or disposed on the first call to this method.");
+                    }
+
+                    _instance = new AudioManager(contentManager);
+                }
+            }
+
+            return _instance;
+        }
+
         internal static IEnumerable<KeyValuePair<string, int>> LoadValues(string fileName, string rootNode)
         {
             IValueReader r = new XmlValueReader(ContentPaths.Build.Data.Join(fileName + ".xml"), rootNode);
-            var ret = r.ReadManyNodes<KeyValuePair<string, int>>("Items", ReadValue);
+            var ret = r.ReadManyNodes("Items", ReadValue);
             return ret;
         }
 
         internal static KeyValuePair<string, int> ReadValue(IValueReader r)
         {
-            string file = r.ReadString("File");
-            int index = r.ReadInt("Index");
+            var file = r.ReadString("File");
+            var index = r.ReadInt("Index");
 
             return new KeyValuePair<string, int>(file, index);
         }
@@ -123,6 +126,16 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// Gets or sets the world position of the audio listener. This is almost always the user's character position.
+        /// Only valid for when using 3D audio.
+        /// </summary>
+        public Vector2 ListenerPosition
+        {
+            get { return new Vector2(Listener.Position.X, Listener.Position.Y); }
+            set { Listener.Position = new Vector3(value, 0); }
+        }
+
+        /// <summary>
         /// Gets the <see cref="IMusicManager"/> instance.
         /// </summary>
         public IMusicManager MusicManager
@@ -145,19 +158,6 @@ namespace NetGore.Audio
         {
             MusicManager.Stop();
             SoundManager.Stop();
-        }
-
-        /// <summary>
-        /// Gets or sets the world position of the audio listener. This is almost always the user's character position.
-        /// Only valid for when using 3D audio.
-        /// </summary>
-        public Vector2 ListenerPosition
-        {
-            get { return new Vector2(Listener.Position.X, Listener.Position.Y); }
-            set
-            {
-                Listener.Position = new Vector3(value, 0);
-            }
         }
 
         /// <summary>

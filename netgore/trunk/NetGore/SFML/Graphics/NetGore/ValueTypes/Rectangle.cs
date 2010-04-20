@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-
+using System.Linq;
 using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
@@ -184,14 +184,14 @@ namespace SFML.Graphics
         public static Rectangle Intersect(Rectangle value1, Rectangle value2)
         {
             Rectangle rectangle;
-            int num8 = value1.X + value1.Width;
-            int num7 = value2.X + value2.Width;
-            int num6 = value1.Y + value1.Height;
-            int num5 = value2.Y + value2.Height;
-            int num2 = (value1.X > value2.X) ? value1.X : value2.X;
-            int num = (value1.Y > value2.Y) ? value1.Y : value2.Y;
-            int num4 = (num8 < num7) ? num8 : num7;
-            int num3 = (num6 < num5) ? num6 : num5;
+            var num8 = value1.X + value1.Width;
+            var num7 = value2.X + value2.Width;
+            var num6 = value1.Y + value1.Height;
+            var num5 = value2.Y + value2.Height;
+            var num2 = (value1.X > value2.X) ? value1.X : value2.X;
+            var num = (value1.Y > value2.Y) ? value1.Y : value2.Y;
+            var num4 = (num8 < num7) ? num8 : num7;
+            var num3 = (num6 < num5) ? num6 : num5;
             if ((num4 > num2) && (num3 > num))
             {
                 rectangle.X = num2;
@@ -213,14 +213,14 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The area where the two first parameters overlap.</param>
         public static void Intersect(ref Rectangle value1, ref Rectangle value2, out Rectangle result)
         {
-            int num8 = value1.X + value1.Width;
-            int num7 = value2.X + value2.Width;
-            int num6 = value1.Y + value1.Height;
-            int num5 = value2.Y + value2.Height;
-            int num2 = (value1.X > value2.X) ? value1.X : value2.X;
-            int num = (value1.Y > value2.Y) ? value1.Y : value2.Y;
-            int num4 = (num8 < num7) ? num8 : num7;
-            int num3 = (num6 < num5) ? num6 : num5;
+            var num8 = value1.X + value1.Width;
+            var num7 = value2.X + value2.Width;
+            var num6 = value1.Y + value1.Height;
+            var num5 = value2.Y + value2.Height;
+            var num2 = (value1.X > value2.X) ? value1.X : value2.X;
+            var num = (value1.Y > value2.Y) ? value1.Y : value2.Y;
+            var num4 = (num8 < num7) ? num8 : num7;
+            var num3 = (num6 < num5) ? num6 : num5;
             if ((num4 > num2) && (num3 > num))
             {
                 result.X = num2;
@@ -243,14 +243,14 @@ namespace SFML.Graphics
         public static Rectangle Union(Rectangle value1, Rectangle value2)
         {
             Rectangle rectangle;
-            int num6 = value1.X + value1.Width;
-            int num5 = value2.X + value2.Width;
-            int num4 = value1.Y + value1.Height;
-            int num3 = value2.Y + value2.Height;
-            int num2 = (value1.X < value2.X) ? value1.X : value2.X;
-            int num = (value1.Y < value2.Y) ? value1.Y : value2.Y;
-            int num8 = (num6 > num5) ? num6 : num5;
-            int num7 = (num4 > num3) ? num4 : num3;
+            var num6 = value1.X + value1.Width;
+            var num5 = value2.X + value2.Width;
+            var num4 = value1.Y + value1.Height;
+            var num3 = value2.Y + value2.Height;
+            var num2 = (value1.X < value2.X) ? value1.X : value2.X;
+            var num = (value1.Y < value2.Y) ? value1.Y : value2.Y;
+            var num8 = (num6 > num5) ? num6 : num5;
+            var num7 = (num4 > num3) ? num4 : num3;
             rectangle.X = num2;
             rectangle.Y = num;
             rectangle.Width = num8 - num2;
@@ -264,14 +264,14 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The Rectangle that must be the union of the first two rectangles.</param>
         public static void Union(ref Rectangle value1, ref Rectangle value2, out Rectangle result)
         {
-            int num6 = value1.X + value1.Width;
-            int num5 = value2.X + value2.Width;
-            int num4 = value1.Y + value1.Height;
-            int num3 = value2.Y + value2.Height;
-            int num2 = (value1.X < value2.X) ? value1.X : value2.X;
-            int num = (value1.Y < value2.Y) ? value1.Y : value2.Y;
-            int num8 = (num6 > num5) ? num6 : num5;
-            int num7 = (num4 > num3) ? num4 : num3;
+            var num6 = value1.X + value1.Width;
+            var num5 = value2.X + value2.Width;
+            var num4 = value1.Y + value1.Height;
+            var num3 = value2.Y + value2.Height;
+            var num2 = (value1.X < value2.X) ? value1.X : value2.X;
+            var num = (value1.Y < value2.Y) ? value1.Y : value2.Y;
+            var num8 = (num6 > num5) ? num6 : num5;
+            var num7 = (num4 > num3) ? num4 : num3;
             result.X = num2;
             result.Y = num;
             result.Width = num8 - num2;
@@ -289,7 +289,7 @@ namespace SFML.Graphics
         /// <param name="obj">Object to make the comparison with.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
+            var flag = false;
             if (obj is Rectangle)
                 flag = Equals((Rectangle)obj);
             return flag;
@@ -298,7 +298,7 @@ namespace SFML.Graphics
         /// <summary>Retrieves a string representation of the current object.</summary>
         public override string ToString()
         {
-            CultureInfo currentCulture = CultureInfo.CurrentCulture;
+            var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{X:{0} Y:{1} Width:{2} Height:{3}}}",
                                  new object[]
                                  {

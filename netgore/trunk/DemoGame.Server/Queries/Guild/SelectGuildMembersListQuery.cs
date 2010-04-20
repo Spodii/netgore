@@ -28,7 +28,7 @@ namespace DemoGame.Server.Queries
 
         public IEnumerable<GuildMemberNameRank> Execute(GuildID guildID)
         {
-            List<GuildMemberNameRank> ret = new List<GuildMemberNameRank>();
+            var ret = new List<GuildMemberNameRank>();
 
             using (var r = ExecuteReader(guildID))
             {

@@ -103,7 +103,7 @@ namespace DemoGame.Server
             // Load all the items
             foreach (var item in items)
             {
-                ItemEntity itemEntity = new ItemEntity(item.Value);
+                var itemEntity = new ItemEntity(item.Value);
                 if (TrySetSlot(item.Key, itemEntity))
                 {
                     SendSlotUpdate(item.Key, itemEntity.GraphicIndex);
@@ -130,7 +130,7 @@ namespace DemoGame.Server
 
             if (_isPersistent)
             {
-                CharacterEquippedTable values = new CharacterEquippedTable(Character.ID, item.ID, slot);
+                var values = new CharacterEquippedTable(Character.ID, item.ID, slot);
                 DbController.GetQuery<ReplaceCharacterEquippedItemQuery>().Execute(values);
             }
 
@@ -158,7 +158,7 @@ namespace DemoGame.Server
             if (item.IsDisposed)
                 return;
 
-            ItemEntity remainder = Character.Inventory.Add(item);
+            var remainder = Character.Inventory.Add(item);
 
             SendSlotUpdate(slot, null);
 
@@ -216,7 +216,7 @@ namespace DemoGame.Server
             // database as garbage
             if (!_isPersistent)
             {
-                foreach (ItemEntity item in this.Select(x => x.Value))
+                foreach (var item in this.Select(x => x.Value))
                 {
                     item.Dispose();
                 }

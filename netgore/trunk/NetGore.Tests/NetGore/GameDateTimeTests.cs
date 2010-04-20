@@ -122,10 +122,10 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TimeOffsetTest()
         {
-            DateTime clientTime = DateTime.Now;
+            var clientTime = DateTime.Now;
 
-            DateTime serverTime = new DateTime(clientTime.Year, clientTime.Month, clientTime.Day, clientTime.Hour - (clientTime.Hour <= 1 ? 0 : 1),
-                                               clientTime.Minute, clientTime.Second);
+            var serverTime = new DateTime(clientTime.Year, clientTime.Month, clientTime.Day,
+                                          clientTime.Hour - (clientTime.Hour <= 1 ? 0 : 1), clientTime.Minute, clientTime.Second);
             GameDateTime.SetServerTimeOffset(serverTime);
 
             Assert.AreEqual((clientTime.Hour <= 1 ? 0 : 1), Math.Round(GameDateTime.ServerTimeOffset.TotalHours));

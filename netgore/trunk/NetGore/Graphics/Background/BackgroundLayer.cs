@@ -1,9 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-
 using NetGore.IO;
-using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -68,7 +66,7 @@ namespace NetGore.Graphics
         /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw the image to.</param>
         public override void Draw(ISpriteBatch spriteBatch)
         {
-            Vector2 spriteSize = SpriteSourceSize;
+            var spriteSize = SpriteSourceSize;
 
             // Adjust the horizontal layout
             switch (HorizontalLayout)

@@ -20,9 +20,9 @@ namespace NetGore
         /// are different.</param>
         public static void RemoveDuplicates<T>(this IList<T> list, Func<T, T, bool> equalityComparer)
         {
-            for (int i = 0; i < list.Count - 1; i++)
+            for (var i = 0; i < list.Count - 1; i++)
             {
-                for (int j = i + 1; j < list.Count; j++)
+                for (var j = i + 1; j < list.Count; j++)
                 {
                     if (equalityComparer(list[i], list[j]))
                     {

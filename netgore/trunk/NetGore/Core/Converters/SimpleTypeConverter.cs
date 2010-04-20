@@ -75,7 +75,7 @@ namespace NetGore
             {
                 // Convert
                 bool wasConverted;
-                T converted = default(T);
+                var converted = default(T);
                 try
                 {
                     converted = ConvertFromString(s, out wasConverted);

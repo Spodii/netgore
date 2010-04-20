@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
@@ -254,7 +255,7 @@ namespace SFML.Graphics
             vector.X = objectPosition.X - cameraPosition.X;
             vector.Y = objectPosition.Y - cameraPosition.Y;
             vector.Z = objectPosition.Z - cameraPosition.Z;
-            float num = vector.LengthSquared();
+            var num = vector.LengthSquared();
             if (num < 0.0001f)
                 vector = cameraForwardVector.HasValue ? -(cameraForwardVector.Value) : Vector3.Forward;
             else
@@ -296,7 +297,7 @@ namespace SFML.Graphics
             vector.X = objectPosition.X - cameraPosition.X;
             vector.Y = objectPosition.Y - cameraPosition.Y;
             vector.Z = objectPosition.Z - cameraPosition.Z;
-            float num = vector.LengthSquared();
+            var num = vector.LengthSquared();
             if (num < 0.0001f)
                 vector = cameraForwardVector.HasValue ? -(cameraForwardVector.Value) : Vector3.Forward;
             else
@@ -339,12 +340,12 @@ namespace SFML.Graphics
             vector2.X = objectPosition.X - cameraPosition.X;
             vector2.Y = objectPosition.Y - cameraPosition.Y;
             vector2.Z = objectPosition.Z - cameraPosition.Z;
-            float num2 = vector2.LengthSquared();
+            var num2 = vector2.LengthSquared();
             if (num2 < 0.0001f)
                 vector2 = cameraForwardVector.HasValue ? -(cameraForwardVector.Value) : Vector3.Forward;
             else
                 Vector3.Multiply(ref vector2, (1f / ((float)Math.Sqrt(num2))), out vector2);
-            Vector3 vector4 = rotateAxis;
+            var vector4 = rotateAxis;
             Vector3.Dot(ref rotateAxis, ref vector2, out num);
             if (Math.Abs(num) > 0.9982547f)
             {
@@ -414,12 +415,12 @@ namespace SFML.Graphics
             vector2.X = objectPosition.X - cameraPosition.X;
             vector2.Y = objectPosition.Y - cameraPosition.Y;
             vector2.Z = objectPosition.Z - cameraPosition.Z;
-            float num2 = vector2.LengthSquared();
+            var num2 = vector2.LengthSquared();
             if (num2 < 0.0001f)
                 vector2 = cameraForwardVector.HasValue ? -(cameraForwardVector.Value) : Vector3.Forward;
             else
                 Vector3.Multiply(ref vector2, (1f / ((float)Math.Sqrt(num2))), out vector2);
-            Vector3 vector4 = rotateAxis;
+            var vector4 = rotateAxis;
             Vector3.Dot(ref rotateAxis, ref vector2, out num);
             if (Math.Abs(num) > 0.9982547f)
             {
@@ -575,9 +576,9 @@ namespace SFML.Graphics
         public static Matrix CreateScale(float xScale, float yScale, float zScale)
         {
             Matrix matrix;
-            float num3 = xScale;
-            float num2 = yScale;
-            float num = zScale;
+            var num3 = xScale;
+            var num2 = yScale;
+            var num = zScale;
             matrix.M11 = num3;
             matrix.M12 = 0f;
             matrix.M13 = 0f;
@@ -604,9 +605,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The created scaling Matrix.</param>
         public static void CreateScale(float xScale, float yScale, float zScale, out Matrix result)
         {
-            float num3 = xScale;
-            float num2 = yScale;
-            float num = zScale;
+            var num3 = xScale;
+            var num2 = yScale;
+            var num = zScale;
             result.M11 = num3;
             result.M12 = 0f;
             result.M13 = 0f;
@@ -630,9 +631,9 @@ namespace SFML.Graphics
         public static Matrix CreateScale(Vector3 scales)
         {
             Matrix matrix;
-            float x = scales.X;
-            float y = scales.Y;
-            float z = scales.Z;
+            var x = scales.X;
+            var y = scales.Y;
+            var z = scales.Z;
             matrix.M11 = x;
             matrix.M12 = 0f;
             matrix.M13 = 0f;
@@ -657,9 +658,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The created scaling Matrix.</param>
         public static void CreateScale(ref Vector3 scales, out Matrix result)
         {
-            float x = scales.X;
-            float y = scales.Y;
-            float z = scales.Z;
+            var x = scales.X;
+            var y = scales.Y;
+            var z = scales.Z;
             result.M11 = x;
             result.M12 = 0f;
             result.M13 = 0f;
@@ -683,7 +684,7 @@ namespace SFML.Graphics
         public static Matrix CreateScale(float scale)
         {
             Matrix matrix;
-            float num = scale;
+            var num = scale;
             matrix.M11 = num;
             matrix.M12 = 0f;
             matrix.M13 = 0f;
@@ -708,7 +709,7 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The created scaling Matrix.</param>
         public static void CreateScale(float scale, out Matrix result)
         {
-            float num = scale;
+            var num = scale;
             result.M11 = num;
             result.M12 = 0f;
             result.M13 = 0f;
@@ -732,8 +733,8 @@ namespace SFML.Graphics
         public static Matrix CreateRotationX(float radians)
         {
             Matrix matrix;
-            float num2 = (float)Math.Cos(radians);
-            float num = (float)Math.Sin(radians);
+            var num2 = (float)Math.Cos(radians);
+            var num = (float)Math.Sin(radians);
             matrix.M11 = 1f;
             matrix.M12 = 0f;
             matrix.M13 = 0f;
@@ -758,8 +759,8 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The matrix in which to place the calculated data.</param>
         public static void CreateRotationX(float radians, out Matrix result)
         {
-            float num2 = (float)Math.Cos(radians);
-            float num = (float)Math.Sin(radians);
+            var num2 = (float)Math.Cos(radians);
+            var num = (float)Math.Sin(radians);
             result.M11 = 1f;
             result.M12 = 0f;
             result.M13 = 0f;
@@ -783,8 +784,8 @@ namespace SFML.Graphics
         public static Matrix CreateRotationY(float radians)
         {
             Matrix matrix;
-            float num2 = (float)Math.Cos(radians);
-            float num = (float)Math.Sin(radians);
+            var num2 = (float)Math.Cos(radians);
+            var num = (float)Math.Sin(radians);
             matrix.M11 = num2;
             matrix.M12 = 0f;
             matrix.M13 = -num;
@@ -809,8 +810,8 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The matrix in which to place the calculated data.</param>
         public static void CreateRotationY(float radians, out Matrix result)
         {
-            float num2 = (float)Math.Cos(radians);
-            float num = (float)Math.Sin(radians);
+            var num2 = (float)Math.Cos(radians);
+            var num = (float)Math.Sin(radians);
             result.M11 = num2;
             result.M12 = 0f;
             result.M13 = -num;
@@ -834,8 +835,8 @@ namespace SFML.Graphics
         public static Matrix CreateRotationZ(float radians)
         {
             Matrix matrix;
-            float num2 = (float)Math.Cos(radians);
-            float num = (float)Math.Sin(radians);
+            var num2 = (float)Math.Cos(radians);
+            var num = (float)Math.Sin(radians);
             matrix.M11 = num2;
             matrix.M12 = num;
             matrix.M13 = 0f;
@@ -860,8 +861,8 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The rotation matrix.</param>
         public static void CreateRotationZ(float radians, out Matrix result)
         {
-            float num2 = (float)Math.Cos(radians);
-            float num = (float)Math.Sin(radians);
+            var num2 = (float)Math.Cos(radians);
+            var num = (float)Math.Sin(radians);
             result.M11 = num2;
             result.M12 = num;
             result.M13 = 0f;
@@ -886,17 +887,17 @@ namespace SFML.Graphics
         public static Matrix CreateFromAxisAngle(Vector3 axis, float angle)
         {
             Matrix matrix;
-            float x = axis.X;
-            float y = axis.Y;
-            float z = axis.Z;
-            float num2 = (float)Math.Sin(angle);
-            float num = (float)Math.Cos(angle);
-            float num11 = x * x;
-            float num10 = y * y;
-            float num9 = z * z;
-            float num8 = x * y;
-            float num7 = x * z;
-            float num6 = y * z;
+            var x = axis.X;
+            var y = axis.Y;
+            var z = axis.Z;
+            var num2 = (float)Math.Sin(angle);
+            var num = (float)Math.Cos(angle);
+            var num11 = x * x;
+            var num10 = y * y;
+            var num9 = z * z;
+            var num8 = x * y;
+            var num7 = x * z;
+            var num6 = y * z;
             matrix.M11 = num11 + (num * (1f - num11));
             matrix.M12 = (num8 - (num * num8)) + (num2 * z);
             matrix.M13 = (num7 - (num * num7)) - (num2 * y);
@@ -922,17 +923,17 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The created Matrix.</param>
         public static void CreateFromAxisAngle(ref Vector3 axis, float angle, out Matrix result)
         {
-            float x = axis.X;
-            float y = axis.Y;
-            float z = axis.Z;
-            float num2 = (float)Math.Sin(angle);
-            float num = (float)Math.Cos(angle);
-            float num11 = x * x;
-            float num10 = y * y;
-            float num9 = z * z;
-            float num8 = x * y;
-            float num7 = x * z;
-            float num6 = y * z;
+            var x = axis.X;
+            var y = axis.Y;
+            var z = axis.Z;
+            var num2 = (float)Math.Sin(angle);
+            var num = (float)Math.Cos(angle);
+            var num11 = x * x;
+            var num10 = y * y;
+            var num9 = z * z;
+            var num8 = x * y;
+            var num7 = x * z;
+            var num6 = y * z;
             result.M11 = num11 + (num * (1f - num11));
             result.M12 = (num8 - (num * num8)) + (num2 * z);
             result.M13 = (num7 - (num * num7)) - (num2 * y);
@@ -983,8 +984,8 @@ namespace SFML.Graphics
             }
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkResources.OppositePlanes);
-            float num = 1f / ((float)Math.Tan((fieldOfView * 0.5f)));
-            float num9 = num / aspectRatio;
+            var num = 1f / ((float)Math.Tan((fieldOfView * 0.5f)));
+            var num9 = num / aspectRatio;
             matrix.M11 = num9;
             matrix.M12 = matrix.M13 = matrix.M14 = 0f;
             matrix.M22 = num;
@@ -1029,8 +1030,8 @@ namespace SFML.Graphics
             }
             if (nearPlaneDistance >= farPlaneDistance)
                 throw new ArgumentOutOfRangeException("nearPlaneDistance", FrameworkResources.OppositePlanes);
-            float num = 1f / ((float)Math.Tan((fieldOfView * 0.5f)));
-            float num9 = num / aspectRatio;
+            var num = 1f / ((float)Math.Tan((fieldOfView * 0.5f)));
+            var num9 = num / aspectRatio;
             result.M11 = num9;
             result.M12 = result.M13 = result.M14 = 0f;
             result.M22 = num;
@@ -1286,9 +1287,9 @@ namespace SFML.Graphics
         public static Matrix CreateLookAt(Vector3 cameraPosition, Vector3 cameraTarget, Vector3 cameraUpVector)
         {
             Matrix matrix;
-            Vector3 vector = Vector3.Normalize(cameraPosition - cameraTarget);
-            Vector3 vector2 = Vector3.Normalize(Vector3.Cross(cameraUpVector, vector));
-            Vector3 vector3 = Vector3.Cross(vector, vector2);
+            var vector = Vector3.Normalize(cameraPosition - cameraTarget);
+            var vector2 = Vector3.Normalize(Vector3.Cross(cameraUpVector, vector));
+            var vector3 = Vector3.Cross(vector, vector2);
             matrix.M11 = vector2.X;
             matrix.M12 = vector3.X;
             matrix.M13 = vector.X;
@@ -1316,9 +1317,9 @@ namespace SFML.Graphics
         public static void CreateLookAt(ref Vector3 cameraPosition, ref Vector3 cameraTarget, ref Vector3 cameraUpVector,
                                         out Matrix result)
         {
-            Vector3 vector = Vector3.Normalize(cameraPosition - cameraTarget);
-            Vector3 vector2 = Vector3.Normalize(Vector3.Cross(cameraUpVector, vector));
-            Vector3 vector3 = Vector3.Cross(vector, vector2);
+            var vector = Vector3.Normalize(cameraPosition - cameraTarget);
+            var vector2 = Vector3.Normalize(Vector3.Cross(cameraUpVector, vector));
+            var vector3 = Vector3.Cross(vector, vector2);
             result.M11 = vector2.X;
             result.M12 = vector3.X;
             result.M13 = vector.X;
@@ -1344,9 +1345,9 @@ namespace SFML.Graphics
         public static Matrix CreateWorld(Vector3 position, Vector3 forward, Vector3 up)
         {
             Matrix matrix;
-            Vector3 vector = Vector3.Normalize(-(forward));
-            Vector3 vector2 = Vector3.Normalize(Vector3.Cross(up, vector));
-            Vector3 vector3 = Vector3.Cross(vector, vector2);
+            var vector = Vector3.Normalize(-(forward));
+            var vector2 = Vector3.Normalize(Vector3.Cross(up, vector));
+            var vector3 = Vector3.Cross(vector, vector2);
             matrix.M11 = vector2.X;
             matrix.M12 = vector2.Y;
             matrix.M13 = vector2.Z;
@@ -1373,9 +1374,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The created world matrix.</param>
         public static void CreateWorld(ref Vector3 position, ref Vector3 forward, ref Vector3 up, out Matrix result)
         {
-            Vector3 vector = Vector3.Normalize(-(forward));
-            Vector3 vector2 = Vector3.Normalize(Vector3.Cross(up, vector));
-            Vector3 vector3 = Vector3.Cross(vector, vector2);
+            var vector = Vector3.Normalize(-(forward));
+            var vector2 = Vector3.Normalize(Vector3.Cross(up, vector));
+            var vector3 = Vector3.Cross(vector, vector2);
             result.M11 = vector2.X;
             result.M12 = vector2.Y;
             result.M13 = vector2.Z;
@@ -1399,15 +1400,15 @@ namespace SFML.Graphics
         public static Matrix CreateFromQuaternion(Quaternion quaternion)
         {
             Matrix matrix;
-            float num9 = quaternion.X * quaternion.X;
-            float num8 = quaternion.Y * quaternion.Y;
-            float num7 = quaternion.Z * quaternion.Z;
-            float num6 = quaternion.X * quaternion.Y;
-            float num5 = quaternion.Z * quaternion.W;
-            float num4 = quaternion.Z * quaternion.X;
-            float num3 = quaternion.Y * quaternion.W;
-            float num2 = quaternion.Y * quaternion.Z;
-            float num = quaternion.X * quaternion.W;
+            var num9 = quaternion.X * quaternion.X;
+            var num8 = quaternion.Y * quaternion.Y;
+            var num7 = quaternion.Z * quaternion.Z;
+            var num6 = quaternion.X * quaternion.Y;
+            var num5 = quaternion.Z * quaternion.W;
+            var num4 = quaternion.Z * quaternion.X;
+            var num3 = quaternion.Y * quaternion.W;
+            var num2 = quaternion.Y * quaternion.Z;
+            var num = quaternion.X * quaternion.W;
             matrix.M11 = 1f - (2f * (num8 + num7));
             matrix.M12 = 2f * (num6 + num5);
             matrix.M13 = 2f * (num4 - num3);
@@ -1432,15 +1433,15 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The created Matrix.</param>
         public static void CreateFromQuaternion(ref Quaternion quaternion, out Matrix result)
         {
-            float num9 = quaternion.X * quaternion.X;
-            float num8 = quaternion.Y * quaternion.Y;
-            float num7 = quaternion.Z * quaternion.Z;
-            float num6 = quaternion.X * quaternion.Y;
-            float num5 = quaternion.Z * quaternion.W;
-            float num4 = quaternion.Z * quaternion.X;
-            float num3 = quaternion.Y * quaternion.W;
-            float num2 = quaternion.Y * quaternion.Z;
-            float num = quaternion.X * quaternion.W;
+            var num9 = quaternion.X * quaternion.X;
+            var num8 = quaternion.Y * quaternion.Y;
+            var num7 = quaternion.Z * quaternion.Z;
+            var num6 = quaternion.X * quaternion.Y;
+            var num5 = quaternion.Z * quaternion.W;
+            var num4 = quaternion.Z * quaternion.X;
+            var num3 = quaternion.Y * quaternion.W;
+            var num2 = quaternion.Y * quaternion.Z;
+            var num = quaternion.X * quaternion.W;
             result.M11 = 1f - (2f * (num8 + num7));
             result.M12 = 2f * (num6 + num5);
             result.M13 = 2f * (num4 - num3);
@@ -1492,12 +1493,12 @@ namespace SFML.Graphics
             Matrix matrix;
             Plane plane2;
             Plane.Normalize(ref plane, out plane2);
-            float num = ((plane2.Normal.X * lightDirection.X) + (plane2.Normal.Y * lightDirection.Y)) +
-                        (plane2.Normal.Z * lightDirection.Z);
-            float num5 = -plane2.Normal.X;
-            float num4 = -plane2.Normal.Y;
-            float num3 = -plane2.Normal.Z;
-            float num2 = -plane2.D;
+            var num = ((plane2.Normal.X * lightDirection.X) + (plane2.Normal.Y * lightDirection.Y)) +
+                      (plane2.Normal.Z * lightDirection.Z);
+            var num5 = -plane2.Normal.X;
+            var num4 = -plane2.Normal.Y;
+            var num3 = -plane2.Normal.Z;
+            var num2 = -plane2.D;
             matrix.M11 = (num5 * lightDirection.X) + num;
             matrix.M21 = num4 * lightDirection.X;
             matrix.M31 = num3 * lightDirection.X;
@@ -1525,12 +1526,12 @@ namespace SFML.Graphics
         {
             Plane plane2;
             Plane.Normalize(ref plane, out plane2);
-            float num = ((plane2.Normal.X * lightDirection.X) + (plane2.Normal.Y * lightDirection.Y)) +
-                        (plane2.Normal.Z * lightDirection.Z);
-            float num5 = -plane2.Normal.X;
-            float num4 = -plane2.Normal.Y;
-            float num3 = -plane2.Normal.Z;
-            float num2 = -plane2.D;
+            var num = ((plane2.Normal.X * lightDirection.X) + (plane2.Normal.Y * lightDirection.Y)) +
+                      (plane2.Normal.Z * lightDirection.Z);
+            var num5 = -plane2.Normal.X;
+            var num4 = -plane2.Normal.Y;
+            var num3 = -plane2.Normal.Z;
+            var num2 = -plane2.D;
             result.M11 = (num5 * lightDirection.X) + num;
             result.M21 = num4 * lightDirection.X;
             result.M31 = num3 * lightDirection.X;
@@ -1555,12 +1556,12 @@ namespace SFML.Graphics
         {
             Matrix matrix;
             value.Normalize();
-            float x = value.Normal.X;
-            float y = value.Normal.Y;
-            float z = value.Normal.Z;
-            float num3 = -2f * x;
-            float num2 = -2f * y;
-            float num = -2f * z;
+            var x = value.Normal.X;
+            var y = value.Normal.Y;
+            var z = value.Normal.Z;
+            var num3 = -2f * x;
+            var num2 = -2f * y;
+            var num = -2f * z;
             matrix.M11 = (num3 * x) + 1f;
             matrix.M12 = num2 * x;
             matrix.M13 = num * x;
@@ -1588,12 +1589,12 @@ namespace SFML.Graphics
             Plane plane;
             Plane.Normalize(ref value, out plane);
             value.Normalize();
-            float x = plane.Normal.X;
-            float y = plane.Normal.Y;
-            float z = plane.Normal.Z;
-            float num3 = -2f * x;
-            float num2 = -2f * y;
-            float num = -2f * z;
+            var x = plane.Normal.X;
+            var y = plane.Normal.Y;
+            var z = plane.Normal.Z;
+            var num3 = -2f * x;
+            var num2 = -2f * y;
+            var num = -2f * z;
             result.M11 = (num3 * x) + 1f;
             result.M12 = num2 * x;
             result.M13 = num * x;
@@ -1618,27 +1619,27 @@ namespace SFML.Graphics
         public static Matrix Transform(Matrix value, Quaternion rotation)
         {
             Matrix matrix;
-            float num21 = rotation.X + rotation.X;
-            float num11 = rotation.Y + rotation.Y;
-            float num10 = rotation.Z + rotation.Z;
-            float num20 = rotation.W * num21;
-            float num19 = rotation.W * num11;
-            float num18 = rotation.W * num10;
-            float num17 = rotation.X * num21;
-            float num16 = rotation.X * num11;
-            float num15 = rotation.X * num10;
-            float num14 = rotation.Y * num11;
-            float num13 = rotation.Y * num10;
-            float num12 = rotation.Z * num10;
-            float num9 = (1f - num14) - num12;
-            float num8 = num16 - num18;
-            float num7 = num15 + num19;
-            float num6 = num16 + num18;
-            float num5 = (1f - num17) - num12;
-            float num4 = num13 - num20;
-            float num3 = num15 - num19;
-            float num2 = num13 + num20;
-            float num = (1f - num17) - num14;
+            var num21 = rotation.X + rotation.X;
+            var num11 = rotation.Y + rotation.Y;
+            var num10 = rotation.Z + rotation.Z;
+            var num20 = rotation.W * num21;
+            var num19 = rotation.W * num11;
+            var num18 = rotation.W * num10;
+            var num17 = rotation.X * num21;
+            var num16 = rotation.X * num11;
+            var num15 = rotation.X * num10;
+            var num14 = rotation.Y * num11;
+            var num13 = rotation.Y * num10;
+            var num12 = rotation.Z * num10;
+            var num9 = (1f - num14) - num12;
+            var num8 = num16 - num18;
+            var num7 = num15 + num19;
+            var num6 = num16 + num18;
+            var num5 = (1f - num17) - num12;
+            var num4 = num13 - num20;
+            var num3 = num15 - num19;
+            var num2 = num13 + num20;
+            var num = (1f - num17) - num14;
             matrix.M11 = ((value.M11 * num9) + (value.M12 * num8)) + (value.M13 * num7);
             matrix.M12 = ((value.M11 * num6) + (value.M12 * num5)) + (value.M13 * num4);
             matrix.M13 = ((value.M11 * num3) + (value.M12 * num2)) + (value.M13 * num);
@@ -1664,43 +1665,43 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] An existing Matrix filled in with the result of the transform.</param>
         public static void Transform(ref Matrix value, ref Quaternion rotation, out Matrix result)
         {
-            float num21 = rotation.X + rotation.X;
-            float num11 = rotation.Y + rotation.Y;
-            float num10 = rotation.Z + rotation.Z;
-            float num20 = rotation.W * num21;
-            float num19 = rotation.W * num11;
-            float num18 = rotation.W * num10;
-            float num17 = rotation.X * num21;
-            float num16 = rotation.X * num11;
-            float num15 = rotation.X * num10;
-            float num14 = rotation.Y * num11;
-            float num13 = rotation.Y * num10;
-            float num12 = rotation.Z * num10;
-            float num9 = (1f - num14) - num12;
-            float num8 = num16 - num18;
-            float num7 = num15 + num19;
-            float num6 = num16 + num18;
-            float num5 = (1f - num17) - num12;
-            float num4 = num13 - num20;
-            float num3 = num15 - num19;
-            float num2 = num13 + num20;
-            float num = (1f - num17) - num14;
-            float num37 = ((value.M11 * num9) + (value.M12 * num8)) + (value.M13 * num7);
-            float num36 = ((value.M11 * num6) + (value.M12 * num5)) + (value.M13 * num4);
-            float num35 = ((value.M11 * num3) + (value.M12 * num2)) + (value.M13 * num);
-            float num34 = value.M14;
-            float num33 = ((value.M21 * num9) + (value.M22 * num8)) + (value.M23 * num7);
-            float num32 = ((value.M21 * num6) + (value.M22 * num5)) + (value.M23 * num4);
-            float num31 = ((value.M21 * num3) + (value.M22 * num2)) + (value.M23 * num);
-            float num30 = value.M24;
-            float num29 = ((value.M31 * num9) + (value.M32 * num8)) + (value.M33 * num7);
-            float num28 = ((value.M31 * num6) + (value.M32 * num5)) + (value.M33 * num4);
-            float num27 = ((value.M31 * num3) + (value.M32 * num2)) + (value.M33 * num);
-            float num26 = value.M34;
-            float num25 = ((value.M41 * num9) + (value.M42 * num8)) + (value.M43 * num7);
-            float num24 = ((value.M41 * num6) + (value.M42 * num5)) + (value.M43 * num4);
-            float num23 = ((value.M41 * num3) + (value.M42 * num2)) + (value.M43 * num);
-            float num22 = value.M44;
+            var num21 = rotation.X + rotation.X;
+            var num11 = rotation.Y + rotation.Y;
+            var num10 = rotation.Z + rotation.Z;
+            var num20 = rotation.W * num21;
+            var num19 = rotation.W * num11;
+            var num18 = rotation.W * num10;
+            var num17 = rotation.X * num21;
+            var num16 = rotation.X * num11;
+            var num15 = rotation.X * num10;
+            var num14 = rotation.Y * num11;
+            var num13 = rotation.Y * num10;
+            var num12 = rotation.Z * num10;
+            var num9 = (1f - num14) - num12;
+            var num8 = num16 - num18;
+            var num7 = num15 + num19;
+            var num6 = num16 + num18;
+            var num5 = (1f - num17) - num12;
+            var num4 = num13 - num20;
+            var num3 = num15 - num19;
+            var num2 = num13 + num20;
+            var num = (1f - num17) - num14;
+            var num37 = ((value.M11 * num9) + (value.M12 * num8)) + (value.M13 * num7);
+            var num36 = ((value.M11 * num6) + (value.M12 * num5)) + (value.M13 * num4);
+            var num35 = ((value.M11 * num3) + (value.M12 * num2)) + (value.M13 * num);
+            var num34 = value.M14;
+            var num33 = ((value.M21 * num9) + (value.M22 * num8)) + (value.M23 * num7);
+            var num32 = ((value.M21 * num6) + (value.M22 * num5)) + (value.M23 * num4);
+            var num31 = ((value.M21 * num3) + (value.M22 * num2)) + (value.M23 * num);
+            var num30 = value.M24;
+            var num29 = ((value.M31 * num9) + (value.M32 * num8)) + (value.M33 * num7);
+            var num28 = ((value.M31 * num6) + (value.M32 * num5)) + (value.M33 * num4);
+            var num27 = ((value.M31 * num3) + (value.M32 * num2)) + (value.M33 * num);
+            var num26 = value.M34;
+            var num25 = ((value.M41 * num9) + (value.M42 * num8)) + (value.M43 * num7);
+            var num24 = ((value.M41 * num6) + (value.M42 * num5)) + (value.M43 * num4);
+            var num23 = ((value.M41 * num3) + (value.M42 * num2)) + (value.M43 * num);
+            var num22 = value.M44;
             result.M11 = num37;
             result.M12 = num36;
             result.M13 = num35;
@@ -1722,7 +1723,7 @@ namespace SFML.Graphics
         /// <summary>Retrieves a string representation of the current object.</summary>
         public override string ToString()
         {
-            CultureInfo currentCulture = CultureInfo.CurrentCulture;
+            var currentCulture = CultureInfo.CurrentCulture;
             return ("{ " +
                     string.Format(currentCulture, "{{M11:{0} M12:{1} M13:{2} M14:{3}}} ",
                                   new object[]
@@ -1764,7 +1765,7 @@ namespace SFML.Graphics
         /// <param name="obj">Object with which to make the comparison.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
+            var flag = false;
             if (obj is Matrix)
                 flag = Equals((Matrix)obj);
             return flag;
@@ -1808,22 +1809,22 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Transposed matrix.</param>
         public static void Transpose(ref Matrix matrix, out Matrix result)
         {
-            float num16 = matrix.M11;
-            float num15 = matrix.M12;
-            float num14 = matrix.M13;
-            float num13 = matrix.M14;
-            float num12 = matrix.M21;
-            float num11 = matrix.M22;
-            float num10 = matrix.M23;
-            float num9 = matrix.M24;
-            float num8 = matrix.M31;
-            float num7 = matrix.M32;
-            float num6 = matrix.M33;
-            float num5 = matrix.M34;
-            float num4 = matrix.M41;
-            float num3 = matrix.M42;
-            float num2 = matrix.M43;
-            float num = matrix.M44;
+            var num16 = matrix.M11;
+            var num15 = matrix.M12;
+            var num14 = matrix.M13;
+            var num13 = matrix.M14;
+            var num12 = matrix.M21;
+            var num11 = matrix.M22;
+            var num10 = matrix.M23;
+            var num9 = matrix.M24;
+            var num8 = matrix.M31;
+            var num7 = matrix.M32;
+            var num6 = matrix.M33;
+            var num5 = matrix.M34;
+            var num4 = matrix.M41;
+            var num3 = matrix.M42;
+            var num2 = matrix.M43;
+            var num = matrix.M44;
             result.M11 = num16;
             result.M12 = num12;
             result.M13 = num8;
@@ -1845,28 +1846,28 @@ namespace SFML.Graphics
         /// <summary>Calculates the determinant of the matrix.</summary>
         public float Determinant()
         {
-            float num22 = M11;
-            float num21 = M12;
-            float num20 = M13;
-            float num19 = M14;
-            float num12 = M21;
-            float num11 = M22;
-            float num10 = M23;
-            float num9 = M24;
-            float num8 = M31;
-            float num7 = M32;
-            float num6 = M33;
-            float num5 = M34;
-            float num4 = M41;
-            float num3 = M42;
-            float num2 = M43;
-            float num = M44;
-            float num18 = (num6 * num) - (num5 * num2);
-            float num17 = (num7 * num) - (num5 * num3);
-            float num16 = (num7 * num2) - (num6 * num3);
-            float num15 = (num8 * num) - (num5 * num4);
-            float num14 = (num8 * num2) - (num6 * num4);
-            float num13 = (num8 * num3) - (num7 * num4);
+            var num22 = M11;
+            var num21 = M12;
+            var num20 = M13;
+            var num19 = M14;
+            var num12 = M21;
+            var num11 = M22;
+            var num10 = M23;
+            var num9 = M24;
+            var num8 = M31;
+            var num7 = M32;
+            var num6 = M33;
+            var num5 = M34;
+            var num4 = M41;
+            var num3 = M42;
+            var num2 = M43;
+            var num = M44;
+            var num18 = (num6 * num) - (num5 * num2);
+            var num17 = (num7 * num) - (num5 * num3);
+            var num16 = (num7 * num2) - (num6 * num3);
+            var num15 = (num8 * num) - (num5 * num4);
+            var num14 = (num8 * num2) - (num6 * num4);
+            var num13 = (num8 * num3) - (num7 * num4);
             return ((((num22 * (((num11 * num18) - (num10 * num17)) + (num9 * num16))) -
                       (num21 * (((num12 * num18) - (num10 * num15)) + (num9 * num14)))) +
                      (num20 * (((num12 * num17) - (num11 * num15)) + (num9 * num13)))) -
@@ -1878,33 +1879,33 @@ namespace SFML.Graphics
         public static Matrix Invert(Matrix matrix)
         {
             Matrix matrix2;
-            float num5 = matrix.M11;
-            float num4 = matrix.M12;
-            float num3 = matrix.M13;
-            float num2 = matrix.M14;
-            float num9 = matrix.M21;
-            float num8 = matrix.M22;
-            float num7 = matrix.M23;
-            float num6 = matrix.M24;
-            float num17 = matrix.M31;
-            float num16 = matrix.M32;
-            float num15 = matrix.M33;
-            float num14 = matrix.M34;
-            float num13 = matrix.M41;
-            float num12 = matrix.M42;
-            float num11 = matrix.M43;
-            float num10 = matrix.M44;
-            float num23 = (num15 * num10) - (num14 * num11);
-            float num22 = (num16 * num10) - (num14 * num12);
-            float num21 = (num16 * num11) - (num15 * num12);
-            float num20 = (num17 * num10) - (num14 * num13);
-            float num19 = (num17 * num11) - (num15 * num13);
-            float num18 = (num17 * num12) - (num16 * num13);
-            float num39 = ((num8 * num23) - (num7 * num22)) + (num6 * num21);
-            float num38 = -(((num9 * num23) - (num7 * num20)) + (num6 * num19));
-            float num37 = ((num9 * num22) - (num8 * num20)) + (num6 * num18);
-            float num36 = -(((num9 * num21) - (num8 * num19)) + (num7 * num18));
-            float num = 1f / ((((num5 * num39) + (num4 * num38)) + (num3 * num37)) + (num2 * num36));
+            var num5 = matrix.M11;
+            var num4 = matrix.M12;
+            var num3 = matrix.M13;
+            var num2 = matrix.M14;
+            var num9 = matrix.M21;
+            var num8 = matrix.M22;
+            var num7 = matrix.M23;
+            var num6 = matrix.M24;
+            var num17 = matrix.M31;
+            var num16 = matrix.M32;
+            var num15 = matrix.M33;
+            var num14 = matrix.M34;
+            var num13 = matrix.M41;
+            var num12 = matrix.M42;
+            var num11 = matrix.M43;
+            var num10 = matrix.M44;
+            var num23 = (num15 * num10) - (num14 * num11);
+            var num22 = (num16 * num10) - (num14 * num12);
+            var num21 = (num16 * num11) - (num15 * num12);
+            var num20 = (num17 * num10) - (num14 * num13);
+            var num19 = (num17 * num11) - (num15 * num13);
+            var num18 = (num17 * num12) - (num16 * num13);
+            var num39 = ((num8 * num23) - (num7 * num22)) + (num6 * num21);
+            var num38 = -(((num9 * num23) - (num7 * num20)) + (num6 * num19));
+            var num37 = ((num9 * num22) - (num8 * num20)) + (num6 * num18);
+            var num36 = -(((num9 * num21) - (num8 * num19)) + (num7 * num18));
+            var num = 1f / ((((num5 * num39) + (num4 * num38)) + (num3 * num37)) + (num2 * num36));
             matrix2.M11 = num39 * num;
             matrix2.M21 = num38 * num;
             matrix2.M31 = num37 * num;
@@ -1913,22 +1914,22 @@ namespace SFML.Graphics
             matrix2.M22 = (((num5 * num23) - (num3 * num20)) + (num2 * num19)) * num;
             matrix2.M32 = -(((num5 * num22) - (num4 * num20)) + (num2 * num18)) * num;
             matrix2.M42 = (((num5 * num21) - (num4 * num19)) + (num3 * num18)) * num;
-            float num35 = (num7 * num10) - (num6 * num11);
-            float num34 = (num8 * num10) - (num6 * num12);
-            float num33 = (num8 * num11) - (num7 * num12);
-            float num32 = (num9 * num10) - (num6 * num13);
-            float num31 = (num9 * num11) - (num7 * num13);
-            float num30 = (num9 * num12) - (num8 * num13);
+            var num35 = (num7 * num10) - (num6 * num11);
+            var num34 = (num8 * num10) - (num6 * num12);
+            var num33 = (num8 * num11) - (num7 * num12);
+            var num32 = (num9 * num10) - (num6 * num13);
+            var num31 = (num9 * num11) - (num7 * num13);
+            var num30 = (num9 * num12) - (num8 * num13);
             matrix2.M13 = (((num4 * num35) - (num3 * num34)) + (num2 * num33)) * num;
             matrix2.M23 = -(((num5 * num35) - (num3 * num32)) + (num2 * num31)) * num;
             matrix2.M33 = (((num5 * num34) - (num4 * num32)) + (num2 * num30)) * num;
             matrix2.M43 = -(((num5 * num33) - (num4 * num31)) + (num3 * num30)) * num;
-            float num29 = (num7 * num14) - (num6 * num15);
-            float num28 = (num8 * num14) - (num6 * num16);
-            float num27 = (num8 * num15) - (num7 * num16);
-            float num26 = (num9 * num14) - (num6 * num17);
-            float num25 = (num9 * num15) - (num7 * num17);
-            float num24 = (num9 * num16) - (num8 * num17);
+            var num29 = (num7 * num14) - (num6 * num15);
+            var num28 = (num8 * num14) - (num6 * num16);
+            var num27 = (num8 * num15) - (num7 * num16);
+            var num26 = (num9 * num14) - (num6 * num17);
+            var num25 = (num9 * num15) - (num7 * num17);
+            var num24 = (num9 * num16) - (num8 * num17);
             matrix2.M14 = -(((num4 * num29) - (num3 * num28)) + (num2 * num27)) * num;
             matrix2.M24 = (((num5 * num29) - (num3 * num26)) + (num2 * num25)) * num;
             matrix2.M34 = -(((num5 * num28) - (num4 * num26)) + (num2 * num24)) * num;
@@ -1941,33 +1942,33 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The inverse of matrix. The same matrix can be used for both arguments.</param>
         public static void Invert(ref Matrix matrix, out Matrix result)
         {
-            float num5 = matrix.M11;
-            float num4 = matrix.M12;
-            float num3 = matrix.M13;
-            float num2 = matrix.M14;
-            float num9 = matrix.M21;
-            float num8 = matrix.M22;
-            float num7 = matrix.M23;
-            float num6 = matrix.M24;
-            float num17 = matrix.M31;
-            float num16 = matrix.M32;
-            float num15 = matrix.M33;
-            float num14 = matrix.M34;
-            float num13 = matrix.M41;
-            float num12 = matrix.M42;
-            float num11 = matrix.M43;
-            float num10 = matrix.M44;
-            float num23 = (num15 * num10) - (num14 * num11);
-            float num22 = (num16 * num10) - (num14 * num12);
-            float num21 = (num16 * num11) - (num15 * num12);
-            float num20 = (num17 * num10) - (num14 * num13);
-            float num19 = (num17 * num11) - (num15 * num13);
-            float num18 = (num17 * num12) - (num16 * num13);
-            float num39 = ((num8 * num23) - (num7 * num22)) + (num6 * num21);
-            float num38 = -(((num9 * num23) - (num7 * num20)) + (num6 * num19));
-            float num37 = ((num9 * num22) - (num8 * num20)) + (num6 * num18);
-            float num36 = -(((num9 * num21) - (num8 * num19)) + (num7 * num18));
-            float num = 1f / ((((num5 * num39) + (num4 * num38)) + (num3 * num37)) + (num2 * num36));
+            var num5 = matrix.M11;
+            var num4 = matrix.M12;
+            var num3 = matrix.M13;
+            var num2 = matrix.M14;
+            var num9 = matrix.M21;
+            var num8 = matrix.M22;
+            var num7 = matrix.M23;
+            var num6 = matrix.M24;
+            var num17 = matrix.M31;
+            var num16 = matrix.M32;
+            var num15 = matrix.M33;
+            var num14 = matrix.M34;
+            var num13 = matrix.M41;
+            var num12 = matrix.M42;
+            var num11 = matrix.M43;
+            var num10 = matrix.M44;
+            var num23 = (num15 * num10) - (num14 * num11);
+            var num22 = (num16 * num10) - (num14 * num12);
+            var num21 = (num16 * num11) - (num15 * num12);
+            var num20 = (num17 * num10) - (num14 * num13);
+            var num19 = (num17 * num11) - (num15 * num13);
+            var num18 = (num17 * num12) - (num16 * num13);
+            var num39 = ((num8 * num23) - (num7 * num22)) + (num6 * num21);
+            var num38 = -(((num9 * num23) - (num7 * num20)) + (num6 * num19));
+            var num37 = ((num9 * num22) - (num8 * num20)) + (num6 * num18);
+            var num36 = -(((num9 * num21) - (num8 * num19)) + (num7 * num18));
+            var num = 1f / ((((num5 * num39) + (num4 * num38)) + (num3 * num37)) + (num2 * num36));
             result.M11 = num39 * num;
             result.M21 = num38 * num;
             result.M31 = num37 * num;
@@ -1976,22 +1977,22 @@ namespace SFML.Graphics
             result.M22 = (((num5 * num23) - (num3 * num20)) + (num2 * num19)) * num;
             result.M32 = -(((num5 * num22) - (num4 * num20)) + (num2 * num18)) * num;
             result.M42 = (((num5 * num21) - (num4 * num19)) + (num3 * num18)) * num;
-            float num35 = (num7 * num10) - (num6 * num11);
-            float num34 = (num8 * num10) - (num6 * num12);
-            float num33 = (num8 * num11) - (num7 * num12);
-            float num32 = (num9 * num10) - (num6 * num13);
-            float num31 = (num9 * num11) - (num7 * num13);
-            float num30 = (num9 * num12) - (num8 * num13);
+            var num35 = (num7 * num10) - (num6 * num11);
+            var num34 = (num8 * num10) - (num6 * num12);
+            var num33 = (num8 * num11) - (num7 * num12);
+            var num32 = (num9 * num10) - (num6 * num13);
+            var num31 = (num9 * num11) - (num7 * num13);
+            var num30 = (num9 * num12) - (num8 * num13);
             result.M13 = (((num4 * num35) - (num3 * num34)) + (num2 * num33)) * num;
             result.M23 = -(((num5 * num35) - (num3 * num32)) + (num2 * num31)) * num;
             result.M33 = (((num5 * num34) - (num4 * num32)) + (num2 * num30)) * num;
             result.M43 = -(((num5 * num33) - (num4 * num31)) + (num3 * num30)) * num;
-            float num29 = (num7 * num14) - (num6 * num15);
-            float num28 = (num8 * num14) - (num6 * num16);
-            float num27 = (num8 * num15) - (num7 * num16);
-            float num26 = (num9 * num14) - (num6 * num17);
-            float num25 = (num9 * num15) - (num7 * num17);
-            float num24 = (num9 * num16) - (num8 * num17);
+            var num29 = (num7 * num14) - (num6 * num15);
+            var num28 = (num8 * num14) - (num6 * num16);
+            var num27 = (num8 * num15) - (num7 * num16);
+            var num26 = (num9 * num14) - (num6 * num17);
+            var num25 = (num9 * num15) - (num7 * num17);
+            var num24 = (num9 * num16) - (num8 * num17);
             result.M14 = -(((num4 * num29) - (num3 * num28)) + (num2 * num27)) * num;
             result.M24 = (((num5 * num29) - (num3 * num26)) + (num2 * num25)) * num;
             result.M34 = -(((num5 * num28) - (num4 * num26)) + (num2 * num24)) * num;
@@ -2241,38 +2242,38 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Result of the multiplication.</param>
         public static void Multiply(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
         {
-            float num16 = (((matrix1.M11 * matrix2.M11) + (matrix1.M12 * matrix2.M21)) + (matrix1.M13 * matrix2.M31)) +
-                          (matrix1.M14 * matrix2.M41);
-            float num15 = (((matrix1.M11 * matrix2.M12) + (matrix1.M12 * matrix2.M22)) + (matrix1.M13 * matrix2.M32)) +
-                          (matrix1.M14 * matrix2.M42);
-            float num14 = (((matrix1.M11 * matrix2.M13) + (matrix1.M12 * matrix2.M23)) + (matrix1.M13 * matrix2.M33)) +
-                          (matrix1.M14 * matrix2.M43);
-            float num13 = (((matrix1.M11 * matrix2.M14) + (matrix1.M12 * matrix2.M24)) + (matrix1.M13 * matrix2.M34)) +
-                          (matrix1.M14 * matrix2.M44);
-            float num12 = (((matrix1.M21 * matrix2.M11) + (matrix1.M22 * matrix2.M21)) + (matrix1.M23 * matrix2.M31)) +
-                          (matrix1.M24 * matrix2.M41);
-            float num11 = (((matrix1.M21 * matrix2.M12) + (matrix1.M22 * matrix2.M22)) + (matrix1.M23 * matrix2.M32)) +
-                          (matrix1.M24 * matrix2.M42);
-            float num10 = (((matrix1.M21 * matrix2.M13) + (matrix1.M22 * matrix2.M23)) + (matrix1.M23 * matrix2.M33)) +
-                          (matrix1.M24 * matrix2.M43);
-            float num9 = (((matrix1.M21 * matrix2.M14) + (matrix1.M22 * matrix2.M24)) + (matrix1.M23 * matrix2.M34)) +
-                         (matrix1.M24 * matrix2.M44);
-            float num8 = (((matrix1.M31 * matrix2.M11) + (matrix1.M32 * matrix2.M21)) + (matrix1.M33 * matrix2.M31)) +
-                         (matrix1.M34 * matrix2.M41);
-            float num7 = (((matrix1.M31 * matrix2.M12) + (matrix1.M32 * matrix2.M22)) + (matrix1.M33 * matrix2.M32)) +
-                         (matrix1.M34 * matrix2.M42);
-            float num6 = (((matrix1.M31 * matrix2.M13) + (matrix1.M32 * matrix2.M23)) + (matrix1.M33 * matrix2.M33)) +
-                         (matrix1.M34 * matrix2.M43);
-            float num5 = (((matrix1.M31 * matrix2.M14) + (matrix1.M32 * matrix2.M24)) + (matrix1.M33 * matrix2.M34)) +
-                         (matrix1.M34 * matrix2.M44);
-            float num4 = (((matrix1.M41 * matrix2.M11) + (matrix1.M42 * matrix2.M21)) + (matrix1.M43 * matrix2.M31)) +
-                         (matrix1.M44 * matrix2.M41);
-            float num3 = (((matrix1.M41 * matrix2.M12) + (matrix1.M42 * matrix2.M22)) + (matrix1.M43 * matrix2.M32)) +
-                         (matrix1.M44 * matrix2.M42);
-            float num2 = (((matrix1.M41 * matrix2.M13) + (matrix1.M42 * matrix2.M23)) + (matrix1.M43 * matrix2.M33)) +
-                         (matrix1.M44 * matrix2.M43);
-            float num = (((matrix1.M41 * matrix2.M14) + (matrix1.M42 * matrix2.M24)) + (matrix1.M43 * matrix2.M34)) +
-                        (matrix1.M44 * matrix2.M44);
+            var num16 = (((matrix1.M11 * matrix2.M11) + (matrix1.M12 * matrix2.M21)) + (matrix1.M13 * matrix2.M31)) +
+                        (matrix1.M14 * matrix2.M41);
+            var num15 = (((matrix1.M11 * matrix2.M12) + (matrix1.M12 * matrix2.M22)) + (matrix1.M13 * matrix2.M32)) +
+                        (matrix1.M14 * matrix2.M42);
+            var num14 = (((matrix1.M11 * matrix2.M13) + (matrix1.M12 * matrix2.M23)) + (matrix1.M13 * matrix2.M33)) +
+                        (matrix1.M14 * matrix2.M43);
+            var num13 = (((matrix1.M11 * matrix2.M14) + (matrix1.M12 * matrix2.M24)) + (matrix1.M13 * matrix2.M34)) +
+                        (matrix1.M14 * matrix2.M44);
+            var num12 = (((matrix1.M21 * matrix2.M11) + (matrix1.M22 * matrix2.M21)) + (matrix1.M23 * matrix2.M31)) +
+                        (matrix1.M24 * matrix2.M41);
+            var num11 = (((matrix1.M21 * matrix2.M12) + (matrix1.M22 * matrix2.M22)) + (matrix1.M23 * matrix2.M32)) +
+                        (matrix1.M24 * matrix2.M42);
+            var num10 = (((matrix1.M21 * matrix2.M13) + (matrix1.M22 * matrix2.M23)) + (matrix1.M23 * matrix2.M33)) +
+                        (matrix1.M24 * matrix2.M43);
+            var num9 = (((matrix1.M21 * matrix2.M14) + (matrix1.M22 * matrix2.M24)) + (matrix1.M23 * matrix2.M34)) +
+                       (matrix1.M24 * matrix2.M44);
+            var num8 = (((matrix1.M31 * matrix2.M11) + (matrix1.M32 * matrix2.M21)) + (matrix1.M33 * matrix2.M31)) +
+                       (matrix1.M34 * matrix2.M41);
+            var num7 = (((matrix1.M31 * matrix2.M12) + (matrix1.M32 * matrix2.M22)) + (matrix1.M33 * matrix2.M32)) +
+                       (matrix1.M34 * matrix2.M42);
+            var num6 = (((matrix1.M31 * matrix2.M13) + (matrix1.M32 * matrix2.M23)) + (matrix1.M33 * matrix2.M33)) +
+                       (matrix1.M34 * matrix2.M43);
+            var num5 = (((matrix1.M31 * matrix2.M14) + (matrix1.M32 * matrix2.M24)) + (matrix1.M33 * matrix2.M34)) +
+                       (matrix1.M34 * matrix2.M44);
+            var num4 = (((matrix1.M41 * matrix2.M11) + (matrix1.M42 * matrix2.M21)) + (matrix1.M43 * matrix2.M31)) +
+                       (matrix1.M44 * matrix2.M41);
+            var num3 = (((matrix1.M41 * matrix2.M12) + (matrix1.M42 * matrix2.M22)) + (matrix1.M43 * matrix2.M32)) +
+                       (matrix1.M44 * matrix2.M42);
+            var num2 = (((matrix1.M41 * matrix2.M13) + (matrix1.M42 * matrix2.M23)) + (matrix1.M43 * matrix2.M33)) +
+                       (matrix1.M44 * matrix2.M43);
+            var num = (((matrix1.M41 * matrix2.M14) + (matrix1.M42 * matrix2.M24)) + (matrix1.M43 * matrix2.M34)) +
+                      (matrix1.M44 * matrix2.M44);
             result.M11 = num16;
             result.M12 = num15;
             result.M13 = num14;
@@ -2297,7 +2298,7 @@ namespace SFML.Graphics
         public static Matrix Multiply(Matrix matrix1, float scaleFactor)
         {
             Matrix matrix;
-            float num = scaleFactor;
+            var num = scaleFactor;
             matrix.M11 = matrix1.M11 * num;
             matrix.M12 = matrix1.M12 * num;
             matrix.M13 = matrix1.M13 * num;
@@ -2323,7 +2324,7 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The result of the multiplication.</param>
         public static void Multiply(ref Matrix matrix1, float scaleFactor, out Matrix result)
         {
-            float num = scaleFactor;
+            var num = scaleFactor;
             result.M11 = matrix1.M11 * num;
             result.M12 = matrix1.M12 * num;
             result.M13 = matrix1.M13 * num;
@@ -2397,7 +2398,7 @@ namespace SFML.Graphics
         public static Matrix Divide(Matrix matrix1, float divider)
         {
             Matrix matrix;
-            float num = 1f / divider;
+            var num = 1f / divider;
             matrix.M11 = matrix1.M11 * num;
             matrix.M12 = matrix1.M12 * num;
             matrix.M13 = matrix1.M13 * num;
@@ -2423,7 +2424,7 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Result of the division.</param>
         public static void Divide(ref Matrix matrix1, float divider, out Matrix result)
         {
-            float num = 1f / divider;
+            var num = 1f / divider;
             result.M11 = matrix1.M11 * num;
             result.M12 = matrix1.M12 * num;
             result.M13 = matrix1.M13 * num;
@@ -2594,7 +2595,7 @@ namespace SFML.Graphics
         public static Matrix operator *(Matrix matrix, float scaleFactor)
         {
             Matrix matrix2;
-            float num = scaleFactor;
+            var num = scaleFactor;
             matrix2.M11 = matrix.M11 * num;
             matrix2.M12 = matrix.M12 * num;
             matrix2.M13 = matrix.M13 * num;
@@ -2620,7 +2621,7 @@ namespace SFML.Graphics
         public static Matrix operator *(float scaleFactor, Matrix matrix)
         {
             Matrix matrix2;
-            float num = scaleFactor;
+            var num = scaleFactor;
             matrix2.M11 = matrix.M11 * num;
             matrix2.M12 = matrix.M12 * num;
             matrix2.M13 = matrix.M13 * num;
@@ -2671,7 +2672,7 @@ namespace SFML.Graphics
         public static Matrix operator /(Matrix matrix1, float divider)
         {
             Matrix matrix;
-            float num = 1f / divider;
+            var num = 1f / divider;
             matrix.M11 = matrix1.M11 * num;
             matrix.M12 = matrix1.M12 * num;
             matrix.M13 = matrix1.M13 * num;

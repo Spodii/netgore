@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -62,11 +61,11 @@ namespace NetGore.Graphics
         /// </exception>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            string s = value as string;
+            var s = value as string;
             if (s != null)
             {
-                Grh grh = GetPropertyValue<Grh>(context);
-                GrhData grhData = TryGetGrhData(s);
+                var grh = GetPropertyValue<Grh>(context);
+                var grhData = TryGetGrhData(s);
                 if (grh != null && grhData != null)
                     grh.SetGrh(grhData);
                 return grh;
@@ -98,7 +97,7 @@ namespace NetGore.Graphics
         {
             if (destinationType == typeof(string))
             {
-                Grh grh = value as Grh;
+                var grh = value as Grh;
                 if (grh == null || grh.GrhData == null)
                     return string.Empty;
 
@@ -110,10 +109,10 @@ namespace NetGore.Graphics
 
         static T GetPropertyValue<T>(ITypeDescriptorContext context) where T : class
         {
-            PropertyDescriptor descriptor = context.PropertyDescriptor;
-            string propertyName = descriptor.Name;
-            PropertyInfo property = descriptor.ComponentType.GetProperty(propertyName);
-            object value = property.GetValue(context.Instance, null);
+            var descriptor = context.PropertyDescriptor;
+            var propertyName = descriptor.Name;
+            var property = descriptor.ComponentType.GetProperty(propertyName);
+            var value = property.GetValue(context.Instance, null);
             return value as T;
         }
 
@@ -128,10 +127,10 @@ namespace NetGore.Graphics
         /// </returns>
         public override bool IsValid(ITypeDescriptorContext context, object value)
         {
-            string s = value as string;
+            var s = value as string;
             if (!string.IsNullOrEmpty(s))
             {
-                GrhData grhData = TryGetGrhData(s);
+                var grhData = TryGetGrhData(s);
                 return grhData != null;
             }
 

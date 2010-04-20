@@ -58,7 +58,7 @@ namespace NetGore.Db
         static DatabaseConnectionException CreateConnectionException(string connectionString, Exception innerException)
         {
             const string errmsg = "Failed to create connection to database: {0}{1}{0}{0}Connection string:{0}{2}";
-            string msg = string.Format(errmsg, Environment.NewLine, innerException.Message, connectionString);
+            var msg = string.Format(errmsg, Environment.NewLine, innerException.Message, connectionString);
             if (log.IsFatalEnabled)
                 log.Fatal(msg, innerException);
             throw new DatabaseConnectionException(msg, innerException);

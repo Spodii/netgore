@@ -53,6 +53,11 @@ namespace NetGore
         static readonly Regex _multPar = new Regex(@"([0-9]\()|(\)[0-9])", _regexOptions);
 
         /// <summary>
+        /// Regex for finding the operator in a given problem
+        /// </summary>
+        static readonly Regex _opFinder = new Regex(string.Format("[{0}]", _ops), _regexOptions);
+
+        /// <summary>
         /// Regex for addition problems (a+b)
         /// </summary>
         static readonly Regex _operationsA = new Regex(string.Format("{1}+[{0}]{1}+", _opsA, _nums), _regexOptions);
@@ -66,11 +71,6 @@ namespace NetGore
         /// Regex for multiplication and divison problems (a/b or a*b)
         /// </summary>
         static readonly Regex _operationsMD = new Regex(string.Format("{1}+[{0}]{1}+", _opsMD, _nums), _regexOptions);
-
-        /// <summary>
-        /// Regex for finding the operator in a given problem
-        /// </summary>
-        static readonly Regex _opFinder = new Regex(string.Format("[{0}]", _ops), _regexOptions);
 
         static readonly Regex _repMinusMinus = new Regex(string.Format("{0}[ ]*-[ ]*-[ ]*{0}", "[^" + _ops + "]"), _regexOptions);
 
@@ -104,7 +104,7 @@ namespace NetGore
             // Replace the variables with their values
             if (variables != null)
             {
-                foreach (string variable in variables.Keys)
+                foreach (var variable in variables.Keys)
                 {
                     text = text.Replace(variable, variables[variable].ToString());
                 }
@@ -118,7 +118,7 @@ namespace NetGore
             while ((match = _multPar.Match(text)).Success)
             {
                 // Grab the matched value
-                string mv = match.Value;
+                var mv = match.Value;
 
                 // Replace the operations as needed
                 mv = mv.Replace("(", "*(");
@@ -133,7 +133,7 @@ namespace NetGore
             while ((match = _repMinusMinus.Match(text)).Success)
             {
                 // Grab the matched value
-                string mv = match.Value;
+                var mv = match.Value;
 
                 // Replace the operations as needed
                 mv = mv.Replace("--", "+");
@@ -147,7 +147,7 @@ namespace NetGore
             while ((match = _repSub.Match(text)).Success)
             {
                 // Grab the matched value
-                string mv = match.Value;
+                var mv = match.Value;
 
                 // Replace the operations as needed
                 mv = mv.Replace("-", "+-");
@@ -228,18 +228,18 @@ namespace NetGore
         static double ParseOperation(string text)
         {
             // Find the operator used in the problem
-            Match match = _opFinder.Match(text);
+            var match = _opFinder.Match(text);
             if (!match.Success)
                 throw new Exception(string.Format("Failed to find operator in the text '{0}'", text));
-            string op = match.Value;
+            var op = match.Value;
 
             // Find the values (should only be 2 - left and right side of the operator)
             var values = text.Split(new[] { op }, StringSplitOptions.RemoveEmptyEntries);
             if (values.Length != 2)
                 throw new Exception(string.Format("Failed to acquire values in the text '{0}'", text));
 
-            double v1 = double.Parse(values[0]);
-            double v2 = double.Parse(values[1]);
+            var v1 = double.Parse(values[0]);
+            var v2 = double.Parse(values[1]);
 
             // Perform the operation and return the result
             switch (op)
@@ -272,7 +272,7 @@ namespace NetGore
             while ((match = operations.Match(text)).Success)
             {
                 // Get the resulting value of the operation
-                double result = ParseOperation(match.Value);
+                var result = ParseOperation(match.Value);
 
                 // Replace the operation text with the result vlaue
                 text = text.Remove(match.Index, match.Length);
@@ -293,10 +293,10 @@ namespace NetGore
             Match match;
             while ((match = _function.Match(text)).Success)
             {
-                string t = match.Value;
+                var t = match.Value;
 
                 // Get the function name, if any, and cut it out
-                string f = t.Substring(0, t.IndexOf("("));
+                var f = t.Substring(0, t.IndexOf("("));
                 t = t.Remove(0, f.Length);
 
                 // Remove the first and last paranthesis
@@ -304,7 +304,7 @@ namespace NetGore
                 t = t.Remove(t.LastIndexOf(")"), 1);
 
                 // Find the result of the function
-                double result = ParseSubString(t, f);
+                var result = ParseSubString(t, f);
 
                 // Replace the function with the value
                 text = text.Remove(match.Index, match.Length);

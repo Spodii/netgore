@@ -60,7 +60,7 @@ namespace NetGore.Collections
         public void Process()
         {
             TaskListNode last = null;
-            TaskListNode current = _first;
+            var current = _first;
 
             PreProcess();
 
@@ -68,7 +68,7 @@ namespace NetGore.Collections
             while (current != null)
             {
                 // Perform the func and get if we need to remove the node
-                bool remove = ProcessItem(current.Value);
+                var remove = ProcessItem(current.Value);
 
                 if (remove)
                 {

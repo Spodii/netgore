@@ -73,12 +73,11 @@ namespace DemoGame.Client
             Draw(sb, tele.ToRectangle(), _teleSourceColor);
 
             // Dest
-            Rectangle destRect = new Rectangle((int)tele.Destination.X, (int)tele.Destination.Y, (int)tele.Size.X,
-                                               (int)tele.Size.Y);
+            var destRect = new Rectangle((int)tele.Destination.X, (int)tele.Destination.Y, (int)tele.Size.X, (int)tele.Size.Y);
             Draw(sb, destRect, _teleDestColor);
 
             // Arrow
-            Vector2 centerOffset = tele.Size / 2;
+            var centerOffset = tele.Size / 2;
             RenderArrow.Draw(sb, tele.Position + centerOffset, tele.Destination + centerOffset, _arrowColor);
         }
 
@@ -101,8 +100,8 @@ namespace DemoGame.Client
         public static void Draw(ISpriteBatch sb, WallEntityBase wall, Vector2 offset)
         {
             // Find the positon to draw to
-            Vector2 p = wall.Position + offset;
-            Rectangle dest = new Rectangle((int)p.X, (int)p.Y, (int)wall.Size.X, (int)wall.Size.Y);
+            var p = wall.Position + offset;
+            var dest = new Rectangle((int)p.X, (int)p.Y, (int)wall.Size.X, (int)wall.Size.Y);
 
             // Draw the collision area
             RenderRectangle.Draw(sb, dest, _wallColor);

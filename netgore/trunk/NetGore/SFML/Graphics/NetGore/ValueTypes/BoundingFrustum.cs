@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-
+using System.Linq;
 
 namespace SFML.Graphics
 {
@@ -78,14 +78,14 @@ namespace SFML.Graphics
 
         static Vector3 ComputeIntersection(ref Plane plane, ref Ray ray)
         {
-            float num = (-plane.D - Vector3.Dot(plane.Normal, ray.Position)) / Vector3.Dot(plane.Normal, ray.Direction);
+            var num = (-plane.D - Vector3.Dot(plane.Normal, ray.Position)) / Vector3.Dot(plane.Normal, ray.Direction);
             return (ray.Position + ((ray.Direction * num)));
         }
 
         static Ray ComputeIntersectionLine(ref Plane p1, ref Plane p2)
         {
-            Ray ray = new Ray { Direction = Vector3.Cross(p1.Normal, p2.Normal) };
-            float num = ray.Direction.LengthSquared();
+            var ray = new Ray { Direction = Vector3.Cross(p1.Normal, p2.Normal) };
+            var num = ray.Direction.LengthSquared();
             ray.Position = (Vector3.Cross(((-p1.D * p2.Normal) + (p2.D * p1.Normal)), ray.Direction) / num);
             return ray;
         }
@@ -94,8 +94,8 @@ namespace SFML.Graphics
         /// <param name="box">The BoundingBox to check against the current BoundingFrustum.</param>
         public ContainmentType Contains(BoundingBox box)
         {
-            bool flag = false;
-            foreach (Plane plane in planes)
+            var flag = false;
+            foreach (var plane in planes)
             {
                 switch (box.Intersects(plane))
                 {
@@ -118,11 +118,11 @@ namespace SFML.Graphics
         {
             if (frustum == null)
                 throw new ArgumentNullException("frustum");
-            ContainmentType disjoint = ContainmentType.Disjoint;
+            var disjoint = ContainmentType.Disjoint;
             if (Intersects(frustum))
             {
                 disjoint = ContainmentType.Contains;
-                for (int i = 0; i < cornerArray.Length; i++)
+                for (var i = 0; i < cornerArray.Length; i++)
                 {
                     if (Contains(frustum.cornerArray[i]) == ContainmentType.Disjoint)
                         return ContainmentType.Intersects;
@@ -135,13 +135,13 @@ namespace SFML.Graphics
         /// <param name="sphere">The BoundingSphere to check against the current BoundingFrustum.</param>
         public ContainmentType Contains(BoundingSphere sphere)
         {
-            Vector3 center = sphere.Center;
-            float radius = sphere.Radius;
-            int num2 = 0;
-            foreach (Plane plane in planes)
+            var center = sphere.Center;
+            var radius = sphere.Radius;
+            var num2 = 0;
+            foreach (var plane in planes)
             {
-                float num5 = ((plane.Normal.X * center.X) + (plane.Normal.Y * center.Y)) + (plane.Normal.Z * center.Z);
-                float num3 = num5 + plane.D;
+                var num5 = ((plane.Normal.X * center.X) + (plane.Normal.Y * center.Y)) + (plane.Normal.Z * center.Z);
+                var num3 = num5 + plane.D;
                 if (num3 > radius)
                     return ContainmentType.Disjoint;
                 if (num3 < -radius)
@@ -156,9 +156,9 @@ namespace SFML.Graphics
         /// <param name="point">The point to check against the current BoundingFrustum.</param>
         public ContainmentType Contains(Vector3 point)
         {
-            foreach (Plane plane in planes)
+            foreach (var plane in planes)
             {
-                float num2 = (((plane.Normal.X * point.X) + (plane.Normal.Y * point.Y)) + (plane.Normal.Z * point.Z)) + plane.D;
+                var num2 = (((plane.Normal.X * point.X) + (plane.Normal.Y * point.Y)) + (plane.Normal.Z * point.Z)) + plane.D;
                 if (num2 > 1E-05f)
                     return ContainmentType.Disjoint;
             }
@@ -170,8 +170,8 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref BoundingBox box, out ContainmentType result)
         {
-            bool flag = false;
-            foreach (Plane plane in planes)
+            var flag = false;
+            foreach (var plane in planes)
             {
                 switch (box.Intersects(plane))
                 {
@@ -192,13 +192,13 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref BoundingSphere sphere, out ContainmentType result)
         {
-            Vector3 center = sphere.Center;
-            float radius = sphere.Radius;
-            int num2 = 0;
-            foreach (Plane plane in planes)
+            var center = sphere.Center;
+            var radius = sphere.Radius;
+            var num2 = 0;
+            foreach (var plane in planes)
             {
-                float num5 = ((plane.Normal.X * center.X) + (plane.Normal.Y * center.Y)) + (plane.Normal.Z * center.Z);
-                float num3 = num5 + plane.D;
+                var num5 = ((plane.Normal.X * center.X) + (plane.Normal.Y * center.Y)) + (plane.Normal.Z * center.Z);
+                var num3 = num5 + plane.D;
                 if (num3 > radius)
                 {
                     result = ContainmentType.Disjoint;
@@ -215,9 +215,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref Vector3 point, out ContainmentType result)
         {
-            foreach (Plane plane in planes)
+            foreach (var plane in planes)
             {
-                float num2 = (((plane.Normal.X * point.X) + (plane.Normal.Y * point.Y)) + (plane.Normal.Z * point.Z)) + plane.D;
+                var num2 = (((plane.Normal.X * point.X) + (plane.Normal.Y * point.Y)) + (plane.Normal.Z * point.Z)) + plane.D;
                 if (num2 > 1E-05f)
                 {
                     result = ContainmentType.Disjoint;
@@ -231,8 +231,8 @@ namespace SFML.Graphics
         /// <param name="obj">The Object to compare with the current BoundingFrustum.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
-            BoundingFrustum frustum = obj as BoundingFrustum;
+            var flag = false;
+            var frustum = obj as BoundingFrustum;
             if (frustum != null)
                 flag = matrix == frustum.matrix;
             return flag;
@@ -283,7 +283,7 @@ namespace SFML.Graphics
             Vector3.Subtract(ref cornerArray[0], ref frustum.cornerArray[0], out closestPoint);
             if (closestPoint.LengthSquared() < 1E-05f)
                 Vector3.Subtract(ref cornerArray[0], ref frustum.cornerArray[1], out closestPoint);
-            float maxValue = float.MaxValue;
+            var maxValue = float.MaxValue;
             float num3;
             do
             {
@@ -297,12 +297,12 @@ namespace SFML.Graphics
                 SupportMapping(ref vector5, out vector4);
                 frustum.SupportMapping(ref closestPoint, out vector3);
                 Vector3.Subtract(ref vector4, ref vector3, out vector2);
-                float num4 = ((closestPoint.X * vector2.X) + (closestPoint.Y * vector2.Y)) + (closestPoint.Z * vector2.Z);
+                var num4 = ((closestPoint.X * vector2.X) + (closestPoint.Y * vector2.Y)) + (closestPoint.Z * vector2.Z);
                 if (num4 > 0f)
                     return false;
                 gjk.AddSupportPoint(ref vector2);
                 closestPoint = gjk.ClosestPoint;
-                float num2 = maxValue;
+                var num2 = maxValue;
                 maxValue = closestPoint.LengthSquared();
                 num3 = 4E-05f * gjk.MaxLengthSquared;
                 if ((num2 - maxValue) <= (1E-05f * num2))
@@ -325,8 +325,8 @@ namespace SFML.Graphics
         /// <param name="plane">The Plane to check for intersection.</param>
         public PlaneIntersectionType Intersects(Plane plane)
         {
-            int num = 0;
-            for (int i = 0; i < 8; i++)
+            var num = 0;
+            for (var i = 0; i < 8; i++)
             {
                 float num3;
                 Vector3.Dot(ref cornerArray[i], ref plane.Normal, out num3);
@@ -367,7 +367,7 @@ namespace SFML.Graphics
             Vector3.Subtract(ref cornerArray[0], ref box.Min, out closestPoint);
             if (closestPoint.LengthSquared() < 1E-05f)
                 Vector3.Subtract(ref cornerArray[0], ref box.Max, out closestPoint);
-            float maxValue = float.MaxValue;
+            var maxValue = float.MaxValue;
             result = false;
             Label_006D:
             vector5.X = -closestPoint.X;
@@ -376,16 +376,16 @@ namespace SFML.Graphics
             SupportMapping(ref vector5, out vector4);
             box.SupportMapping(ref closestPoint, out vector3);
             Vector3.Subtract(ref vector4, ref vector3, out vector2);
-            float num4 = ((closestPoint.X * vector2.X) + (closestPoint.Y * vector2.Y)) + (closestPoint.Z * vector2.Z);
+            var num4 = ((closestPoint.X * vector2.X) + (closestPoint.Y * vector2.Y)) + (closestPoint.Z * vector2.Z);
             if (num4 <= 0f)
             {
                 gjk.AddSupportPoint(ref vector2);
                 closestPoint = gjk.ClosestPoint;
-                float num2 = maxValue;
+                var num2 = maxValue;
                 maxValue = closestPoint.LengthSquared();
                 if ((num2 - maxValue) > (1E-05f * num2))
                 {
-                    float num3 = 4E-05f * gjk.MaxLengthSquared;
+                    var num3 = 4E-05f * gjk.MaxLengthSquared;
                     if (!gjk.FullSimplex && (maxValue >= num3))
                         goto Label_006D;
                     result = true;
@@ -409,7 +409,7 @@ namespace SFML.Graphics
             Vector3.Subtract(ref cornerArray[0], ref sphere.Center, out unitX);
             if (unitX.LengthSquared() < 1E-05f)
                 unitX = Vector3.UnitX;
-            float maxValue = float.MaxValue;
+            var maxValue = float.MaxValue;
             result = false;
             Label_005A:
             vector5.X = -unitX.X;
@@ -418,16 +418,16 @@ namespace SFML.Graphics
             SupportMapping(ref vector5, out vector4);
             sphere.SupportMapping(ref unitX, out vector3);
             Vector3.Subtract(ref vector4, ref vector3, out vector2);
-            float num4 = ((unitX.X * vector2.X) + (unitX.Y * vector2.Y)) + (unitX.Z * vector2.Z);
+            var num4 = ((unitX.X * vector2.X) + (unitX.Y * vector2.Y)) + (unitX.Z * vector2.Z);
             if (num4 <= 0f)
             {
                 gjk.AddSupportPoint(ref vector2);
                 unitX = gjk.ClosestPoint;
-                float num2 = maxValue;
+                var num2 = maxValue;
                 maxValue = unitX.LengthSquared();
                 if ((num2 - maxValue) > (1E-05f * num2))
                 {
-                    float num3 = 4E-05f * gjk.MaxLengthSquared;
+                    var num3 = 4E-05f * gjk.MaxLengthSquared;
                     if (!gjk.FullSimplex && (maxValue >= num3))
                         goto Label_005A;
                     result = true;
@@ -440,8 +440,8 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] An enumeration indicating whether the BoundingFrustum intersects the Plane.</param>
         public void Intersects(ref Plane plane, out PlaneIntersectionType result)
         {
-            int num = 0;
-            for (int i = 0; i < 8; i++)
+            var num = 0;
+            for (var i = 0; i < 8; i++)
             {
                 float num3;
                 Vector3.Dot(ref cornerArray[i], ref plane.Normal, out num3);
@@ -469,14 +469,14 @@ namespace SFML.Graphics
                 result = 0f;
             else
             {
-                float minValue = float.MinValue;
-                float maxValue = float.MaxValue;
+                var minValue = float.MinValue;
+                var maxValue = float.MaxValue;
                 result = 0;
-                foreach (Plane plane in planes)
+                foreach (var plane in planes)
                 {
                     float num3;
                     float num6;
-                    Vector3 normal = plane.Normal;
+                    var normal = plane.Normal;
                     Vector3.Dot(ref ray.Direction, ref normal, out num6);
                     Vector3.Dot(ref ray.Position, ref normal, out num3);
                     num3 += plane.D;
@@ -487,7 +487,7 @@ namespace SFML.Graphics
                     }
                     else
                     {
-                        float num = -num3 / num6;
+                        var num = -num3 / num6;
                         if (num6 < 0f)
                         {
                             if (num > maxValue)
@@ -504,7 +504,7 @@ namespace SFML.Graphics
                         }
                     }
                 }
-                float num7 = (minValue >= 0f) ? minValue : maxValue;
+                var num7 = (minValue >= 0f) ? minValue : maxValue;
                 if (num7 >= 0f)
                     result = new float?(num7);
             }
@@ -537,13 +537,13 @@ namespace SFML.Graphics
             planes[1].Normal.Y = -value.M24 + value.M23;
             planes[1].Normal.Z = -value.M34 + value.M33;
             planes[1].D = -value.M44 + value.M43;
-            for (int i = 0; i < 6; i++)
+            for (var i = 0; i < 6; i++)
             {
-                float num2 = planes[i].Normal.Length();
+                var num2 = planes[i].Normal.Length();
                 planes[i].Normal = (planes[i].Normal / num2);
                 planes[i].D /= num2;
             }
-            Ray ray = ComputeIntersectionLine(ref planes[0], ref planes[2]);
+            var ray = ComputeIntersectionLine(ref planes[0], ref planes[2]);
             cornerArray[0] = ComputeIntersection(ref planes[4], ref ray);
             cornerArray[3] = ComputeIntersection(ref planes[5], ref ray);
             ray = ComputeIntersectionLine(ref planes[3], ref planes[0]);
@@ -560,9 +560,9 @@ namespace SFML.Graphics
         internal void SupportMapping(ref Vector3 v, out Vector3 result)
         {
             float num3;
-            int index = 0;
+            var index = 0;
             Vector3.Dot(ref cornerArray[0], ref v, out num3);
-            for (int i = 1; i < cornerArray.Length; i++)
+            for (var i = 1; i < cornerArray.Length; i++)
             {
                 float num2;
                 Vector3.Dot(ref cornerArray[i], ref v, out num2);

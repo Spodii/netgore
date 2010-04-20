@@ -10,7 +10,7 @@ using NetGore.Graphics;
 using NetGore.IO;
 using SFML;
 using SFML.Graphics;
-using Point=System.Drawing.Point;
+using Point = System.Drawing.Point;
 
 namespace NetGore.EditorTools
 {
@@ -22,12 +22,12 @@ namespace NetGore.EditorTools
         /// </summary>
         const float _defaultViewPaddingPercent = 0.05f;
 
-        static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
-
         /// <summary>
         /// Character used to separate directories
         /// </summary>
         static readonly char DirSep = Path.DirectorySeparatorChar;
+
+        static readonly Color _autoWallColor = new Color(255, 255, 255, 150);
 
         readonly ICamera2D _camera;
         readonly CreateWallEntityHandler _createWall;
@@ -136,11 +136,132 @@ namespace NetGore.EditorTools
             lstWalls.RefreshItemAt(index);
         }
 
+        public void Draw(ISpriteBatch sb)
+        {
+            // Update the Grh first
+            _grh.Update((int)_stopwatch.ElapsedMilliseconds);
+
+            // Begin rendering
+            sb.Begin(BlendMode.Alpha, Camera);
+
+            try
+            {
+                _grh.Draw(sb, Vector2.Zero);
+
+                // Draw the walls
+                foreach (var wall in BoundWalls)
+                {
+                    var rect = wall.ToRectangle();
+                    RenderRectangle.Draw(sb, rect, _autoWallColor);
+                }
+            }
+            finally
+            {
+                // End rendering
+                sb.End();
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (!e.Cancel)
+            {
+                var walls = _mapGrhWalls[_gd];
+                if (walls != null)
+                {
+                    foreach (var wall in walls)
+                    {
+                        wall.Moved -= BoundWallChanged;
+                        wall.Resized -= BoundWallChanged;
+                    }
+                }
+            }
+
+            base.OnClosing(e);
+        }
+
+        void ShowGrhInfo()
+        {
+            txtCategory.ChangeTextToDefault(_gd.Categorization.Category.ToString(), true);
+            txtTitle.Text = _gd.Categorization.Title.ToString();
+            txtIndex.Text = _gd.GrhIndex.ToString();
+
+            // Show the type-specific info
+            if (_gd is StationaryGrhData)
+                ShowGrhInfoForStationary((StationaryGrhData)_gd);
+            else if (_gd is AnimatedGrhData)
+                ShowGrhInfoForAnimated(_gd);
+            else
+                throw new UnsupportedGrhDataTypeException(_gd);
+
+            // Bound walls
+            lstWalls.Items.Clear();
+            var walls = _mapGrhWalls[_gd];
+            if (walls != null)
+            {
+                foreach (var wall in walls)
+                {
+                    lstWalls.AddItemAndReselect(wall);
+                    wall.Moved += BoundWallChanged;
+                    wall.Resized += BoundWallChanged;
+                }
+            }
+        }
+
+        void ShowGrhInfoForAnimated(GrhData grhData)
+        {
+            radioStationary.Checked = false;
+            radioAnimated.Checked = true;
+            txtFrames.Text = string.Empty;
+
+            for (var i = 0; i < grhData.FramesCount; i++)
+            {
+                var frame = grhData.GetFrame(i);
+                if (frame != null)
+                    txtFrames.Text += frame.GrhIndex + Environment.NewLine;
+            }
+
+            txtSpeed.Text = (1f / grhData.Speed).ToString();
+        }
+
+        void ShowGrhInfoForStationary(StationaryGrhData grhData)
+        {
+            // Stationary
+            chkAutoSize.Checked = grhData.AutomaticSize;
+            radioStationary.Checked = true;
+            radioAnimated.Checked = false;
+            var r = grhData.GetOriginalSource();
+            txtX.Text = r.X.ToString();
+            txtY.Text = r.Y.ToString();
+            txtW.Text = r.Width.ToString();
+            txtH.Text = r.Height.ToString();
+            txtTexture.ChangeTextToDefault(grhData.TextureName.ToString(), true);
+        }
+
+        bool ValidateCategorization(bool showMessage)
+        {
+            var gd = GrhInfo.GetData(txtCategory.GetSanitizedText(), txtTitle.Text);
+            if (gd != null && gd != _gd)
+            {
+                if (showMessage)
+                {
+                    MessageBox.Show("A GrhData with the given title and category already exists." +
+                                    "Each GrhData must contain a unique title and category combination.");
+                }
+                return false;
+            }
+            return true;
+        }
+
         void btnAccept_Click(object sender, EventArgs e)
         {
             // TODO: Clean this up a lot by adding more specialized textboxes, and using .IsValid()
-            StationaryGrhData gdStationary = _gd as StationaryGrhData;
-            AnimatedGrhData gdAnimated = _gd as AnimatedGrhData;
+            var gdStationary = _gd as StationaryGrhData;
+            var gdAnimated = _gd as AnimatedGrhData;
 
             // Validate the category and title, making sure its unique
             if (!ValidateCategorization(true))
@@ -151,23 +272,23 @@ namespace NetGore.EditorTools
                 // Generate the frames
                 var framesText = txtFrames.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 var frames = new GrhIndex[framesText.Length];
-                for (int i = 0; i < framesText.Length; i++)
+                for (var i = 0; i < framesText.Length; i++)
                 {
                     // First check if it was entered as by the index
                     if (!Parser.Current.TryParse(framesText[i], out frames[i]))
                     {
                         // Support it being entered by category
-                        int lastPeriod = framesText[i].LastIndexOf('.');
-                        string category = framesText[i].Substring(0, lastPeriod);
-                        string title = framesText[i].Substring(lastPeriod + 1);
-                        GrhData tempGD = GrhInfo.GetData(category, title);
+                        var lastPeriod = framesText[i].LastIndexOf('.');
+                        var category = framesText[i].Substring(0, lastPeriod);
+                        var title = framesText[i].Substring(lastPeriod + 1);
+                        var tempGD = GrhInfo.GetData(category, title);
                         if (tempGD != null)
                             frames[i] = tempGD.GrhIndex;
                     }
                 }
 
                 // Check that all the frames are valid
-                foreach (GrhIndex frame in frames)
+                foreach (var frame in frames)
                 {
                     if (GrhInfo.GetData(frame) == null)
                     {
@@ -215,12 +336,12 @@ namespace NetGore.EditorTools
 
                 // Stationary
                 var cm = gdStationary.ContentManager;
-                int x = Parser.Current.ParseInt(txtX.Text);
-                int y = Parser.Current.ParseInt(txtY.Text);
-                int w = Parser.Current.ParseInt(txtW.Text);
-                int h = Parser.Current.ParseInt(txtH.Text);
-                string textureName = txtTexture.GetSanitizedText();
-                bool autoSize = chkAutoSize.Checked;
+                var x = Parser.Current.ParseInt(txtX.Text);
+                var y = Parser.Current.ParseInt(txtY.Text);
+                var w = Parser.Current.ParseInt(txtW.Text);
+                var h = Parser.Current.ParseInt(txtH.Text);
+                var textureName = txtTexture.GetSanitizedText();
+                var autoSize = chkAutoSize.Checked;
 
                 // Validate the texture
                 try
@@ -246,7 +367,7 @@ namespace NetGore.EditorTools
                     return;
                 }
 
-                float speed = Parser.Current.ParseFloat(txtSpeed.Text);
+                var speed = Parser.Current.ParseFloat(txtSpeed.Text);
                 gdAnimated.SetSpeed(speed);
             }
 
@@ -281,7 +402,7 @@ namespace NetGore.EditorTools
 
         void btnRemove_Click(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -292,7 +413,7 @@ namespace NetGore.EditorTools
 
         void chkAutoSize_CheckedChanged(object sender, EventArgs e)
         {
-            bool enabled = !chkAutoSize.Checked;
+            var enabled = !chkAutoSize.Checked;
 
             txtX.Enabled = enabled;
             txtY.Enabled = enabled;
@@ -302,43 +423,17 @@ namespace NetGore.EditorTools
 
         void chkPlatform_CheckedChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
             wall.IsPlatform = chkPlatform.Checked;
         }
 
-        public void Draw(ISpriteBatch sb)
-        {
-            // Update the Grh first
-            _grh.Update((int)_stopwatch.ElapsedMilliseconds);
-
-            // Begin rendering
-            sb.Begin(BlendMode.Alpha, Camera);
-
-            try
-            {
-                _grh.Draw(sb, Vector2.Zero);
-
-                // Draw the walls
-                foreach (var wall in BoundWalls)
-                {
-                    var rect = wall.ToRectangle();
-                    RenderRectangle.Draw(sb, rect, _autoWallColor);
-                }
-            }
-            finally
-            {
-                // End rendering
-                sb.End();
-            }
-        }
-
         void lstWalls_SelectedIndexChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
-            bool isEnabled = (wall != null);
+            var wall = lstWalls.SelectedItem as WallEntityBase;
+            var isEnabled = (wall != null);
 
             chkPlatform.Enabled = isEnabled;
             txtWallX.Enabled = isEnabled;
@@ -355,28 +450,6 @@ namespace NetGore.EditorTools
                 txtWallH.Text = wall.Size.Y.ToString();
                 chkPlatform.Checked = wall.IsPlatform;
             }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            if (!e.Cancel)
-            {
-                var walls = _mapGrhWalls[_gd];
-                if (walls != null)
-                {
-                    foreach (var wall in walls)
-                    {
-                        wall.Moved -= BoundWallChanged;
-                        wall.Resized -= BoundWallChanged;
-                    }
-                }
-            }
-
-            base.OnClosing(e);
         }
 
         void radioAnimated_CheckedChanged(object sender, EventArgs e)
@@ -432,64 +505,6 @@ namespace NetGore.EditorTools
             radioAnimated.Checked = false;
             gbStationary.Visible = true;
             gbAnimated.Visible = false;
-        }
-
-        void ShowGrhInfo()
-        {
-            txtCategory.ChangeTextToDefault(_gd.Categorization.Category.ToString(), true);
-            txtTitle.Text = _gd.Categorization.Title.ToString();
-            txtIndex.Text = _gd.GrhIndex.ToString();
-
-            // Show the type-specific info
-            if (_gd is StationaryGrhData)
-                ShowGrhInfoForStationary((StationaryGrhData)_gd);
-            else if (_gd is AnimatedGrhData)
-                ShowGrhInfoForAnimated(_gd);
-            else
-                throw new UnsupportedGrhDataTypeException(_gd);
-
-            // Bound walls
-            lstWalls.Items.Clear();
-            var walls = _mapGrhWalls[_gd];
-            if (walls != null)
-            {
-                foreach (WallEntityBase wall in walls)
-                {
-                    lstWalls.AddItemAndReselect(wall);
-                    wall.Moved += BoundWallChanged;
-                    wall.Resized += BoundWallChanged;
-                }
-            }
-        }
-
-        void ShowGrhInfoForAnimated(GrhData grhData)
-        {
-            radioStationary.Checked = false;
-            radioAnimated.Checked = true;
-            txtFrames.Text = string.Empty;
-
-            for (int i = 0; i < grhData.FramesCount; i++)
-            {
-                var frame = grhData.GetFrame(i);
-                if (frame != null)
-                    txtFrames.Text += frame.GrhIndex + Environment.NewLine;
-            }
-
-            txtSpeed.Text = (1f / grhData.Speed).ToString();
-        }
-
-        void ShowGrhInfoForStationary(StationaryGrhData grhData)
-        {
-            // Stationary
-            chkAutoSize.Checked = grhData.AutomaticSize;
-            radioStationary.Checked = true;
-            radioAnimated.Checked = false;
-            Rectangle r = grhData.GetOriginalSource();
-            txtX.Text = r.X.ToString();
-            txtY.Text = r.Y.ToString();
-            txtW.Text = r.Width.ToString();
-            txtH.Text = r.Height.ToString();
-            txtTexture.ChangeTextToDefault(grhData.TextureName.ToString(), true);
         }
 
         void txtH_TextChanged(object sender, EventArgs e)
@@ -559,7 +574,7 @@ namespace NetGore.EditorTools
 
         void txtWallH_TextChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -576,7 +591,7 @@ namespace NetGore.EditorTools
 
         void txtWallW_TextChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -593,7 +608,7 @@ namespace NetGore.EditorTools
 
         void txtWallX_TextChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -610,7 +625,7 @@ namespace NetGore.EditorTools
 
         void txtWallY_TextChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -659,21 +674,6 @@ namespace NetGore.EditorTools
             }
             else
                 txtY.BackColor = EditorColors.Error;
-        }
-
-        bool ValidateCategorization(bool showMessage)
-        {
-            GrhData gd = GrhInfo.GetData(txtCategory.GetSanitizedText(), txtTitle.Text);
-            if (gd != null && gd != _gd)
-            {
-                if (showMessage)
-                {
-                    MessageBox.Show("A GrhData with the given title and category already exists." +
-                                    "Each GrhData must contain a unique title and category combination.");
-                }
-                return false;
-            }
-            return true;
         }
     }
 }

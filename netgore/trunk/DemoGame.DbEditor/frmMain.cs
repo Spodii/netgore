@@ -16,7 +16,7 @@ using NetGore.EditorTools;
 using NetGore.Features.Quests;
 using NetGore.Graphics;
 using NetGore.IO;
-using CustomUITypeEditors=DemoGame.EditorTools.CustomUITypeEditors;
+using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
 
 namespace DemoGame.DbEditor
 {
@@ -39,19 +39,278 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnAlliance control.
+        /// Changes the selected game messages language.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnAlliance_Click(object sender, EventArgs e)
+        /// <param name="newLanguage">The new language name. Can be null or empty to select no language.</param>
+        void ChangeGameMessagesLanguage(string newLanguage)
         {
-            using (var f = new AllianceUITypeEditorForm(pgAlliance.SelectedObject))
-            {
-                if (f.ShowDialog(this) != DialogResult.OK)
-                    return;
+            txtMessages.Text = newLanguage;
 
-                var item = f.SelectedItem;
-                pgAlliance.SelectedObject = new EditorAlliance(item.ID, _dbController);
+            // Clear old values
+            lstMessages.Items.Clear();
+            lstMissingMessages.Items.Clear();
+            _editingGameMessage = null;
+            txtSelectedMessage.Text = string.Empty;
+
+            // Set new values
+            if (!string.IsNullOrEmpty(newLanguage))
+            {
+                // Existing messages
+                var existing = GameMessageCollection.LoadRawMessages(newLanguage).OrderBy(x => x.Key.ToString(),
+                                                                                          NaturalStringComparer.Instance);
+                lstMessages.Items.AddRange(existing.Cast<object>().ToArray());
+
+                // Missing messages
+                var missing = EnumHelper<GameMessage>.Values.Except(existing.Select(x => x.Key));
+                lstMissingMessages.Items.AddRange(missing.Cast<object>().ToArray());
+            }
+        }
+
+        /// <summary>
+        /// Gets the next free <see cref="ItemTemplateID"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TTemplate">The type of the template.</typeparam>
+        /// <param name="dbController">The db controller.</param>
+        /// <param name="reserve">If true, the index will be reserved by inserting the default
+        /// values for the column at the given index.</param>
+        /// <param name="intToT">The int to T.</param>
+        /// <param name="tToInt">The t to int.</param>
+        /// <param name="getUsed">The get used.</param>
+        /// <param name="selector">The selector.</param>
+        /// <param name="inserter">The inserter.</param>
+        /// <returns>
+        /// The next free <see cref="ItemTemplateID"/>.
+        /// </returns>
+        public static T GetFreeID<T, TTemplate>(IDbController dbController, bool reserve, Func<int, T> intToT, Func<T, int> tToInt,
+                                                Func<IEnumerable<T>> getUsed, Func<T, TTemplate> selector, Action<T> inserter)
+            where TTemplate : class
+        {
+            // Get the used IDs as ints
+            var usedIDs = getUsed().Select(tToInt).ToImmutable();
+
+            // Start with ID 0
+            var idBase = 0;
+            T freeIDAsT;
+
+            // Loop until we successfully find an ID that has no template
+            var success = false;
+            do
+            {
+                // Get the next free value
+                var freeID = usedIDs.NextFreeValue(idBase);
+                freeIDAsT = intToT(freeID);
+
+                // Increase the base so that way, if it fails, we are forced to check a higher value
+                idBase = freeID + 1;
+
+                // Ensure the ID is free
+                if (selector(freeIDAsT) != null)
+                    continue;
+
+                // Reserve the ID if needed
+                if (reserve)
+                {
+                    try
+                    {
+                        inserter(freeIDAsT);
+                    }
+                    catch (DuplicateKeyException)
+                    {
+                        // Someone just grabbed the key - those jerks!
+                        continue;
+                    }
+                }
+
+                success = true;
+            }
+            while (!success);
+
+            // Return the value
+            return freeIDAsT;
+        }
+
+        /// <summary>
+        /// Gets if the character template being edited has any unsaved changes.
+        /// </summary>
+        /// <returns>True if there are any unsaved changes; otherwise false.</returns>
+        bool IsCharacterTemplateDirty()
+        {
+            var v = pgCharacterTemplate.SelectedObject as ICharacterTemplateTable;
+            if (_originalCharacterTemplateValues == null || v == null)
+                return false;
+
+            return !_originalCharacterTemplateValues.HasSameValues(v);
+        }
+
+        /// <summary>
+        /// Gets if the item template being edited has any unsaved changes.
+        /// </summary>
+        /// <returns>True if there are any unsaved changes; otherwise false.</returns>
+        bool IsItemTemplateDirty()
+        {
+            var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
+            if (_originalItemTemplateValues == null || v == null)
+                return false;
+
+            return !_originalItemTemplateValues.HasSameValues(v);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (IsCharacterTemplateDirty() || IsItemTemplateDirty())
+            {
+                const string quitMsg =
+                    "One or more open items have changes that have not been saved. If you quit without saving, these changes will be lost. Are you sure you wish to quit?";
+                if (MessageBox.Show(quitMsg, "Quit?", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            // Ensure the GrhImageList's cache is updated
+            GrhImageList.Instance.Save();
+
+            base.OnClosing(e);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            // Don't try to load stuff when in design mode
+            if (DesignMode)
+                return;
+
+            Show();
+            Refresh();
+
+            // Load the engine settings
+            EngineSettingsInitializer.Initialize();
+
+            // If the GrhDatas have no been loaded, we will have to load them. Otherwise, we won't get our
+            // pretty little pictures. :(
+            if (!GrhInfo.IsLoaded)
+            {
+                var cm = ContentManager.Create();
+                GrhInfo.Load(ContentPaths.Dev, cm);
+            }
+
+            // Prepare the GrhImageList to avoid stalling the loading later
+            GrhImageList.Prepare();
+
+            // Create the database connection
+            var settings = new DbConnectionSettings();
+            _dbController =
+                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
+                                                                 x => settings.PromptEditFileMessageBox(x));
+
+            if (_dbController == null)
+            {
+                Close();
+                return;
+            }
+
+            // Load the custom UITypeEditors
+            CustomUITypeEditors.AddEditors(_dbController);
+
+            // Process all the PropertyGrids
+            foreach (var pg in this.GetControls().OfType<PropertyGrid>())
+            {
+                PropertyGridHelper.AttachRefresherEventHandler(pg);
+                PropertyGridHelper.AttachShrinkerEventHandler(pg);
+                PropertyGridHelper.SetContextMenuIfNone(pg);
+            }
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="AllianceID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="AllianceID"/>.</returns>
+        public static AllianceID ReserveFreeAllianceID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectAllianceIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectAllianceQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertAllianceQuery>();
+
+            return GetFreeID(dbController, true, t => new AllianceID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
+                             x => insertByIDQuery.Execute(new AllianceTable { ID = x, Name = string.Empty }));
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="CharacterTemplateID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="CharacterTemplateID"/>.</returns>
+        public static CharacterTemplateID ReserveFreeCharacterTemplateID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectCharacterTemplateIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectCharacterTemplateQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertCharacterTemplateIDOnlyQuery>();
+
+            return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute,
+                             selectQuery.Execute, x => insertByIDQuery.Execute(x));
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="ItemTemplateID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="ItemTemplateID"/>.</returns>
+        public static ItemTemplateID ReserveFreeItemTemplateID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectItemTemplateIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectItemTemplateQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
+
+            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
+                             selectQuery.Execute, x => insertByIDQuery.Execute(x));
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="QuestID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="QuestID"/>.</returns>
+        public static QuestID ReserveFreeQuestID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectQuestIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectQuestQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertQuestQuery>();
+
+            return GetFreeID(dbController, true, t => new QuestID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
+                             x => insertByIDQuery.Execute(new QuestTable { ID = x }));
+        }
+
+        /// <summary>
+        /// Sets the current quest.
+        /// </summary>
+        /// <param name="questID">The quest ID.</param>
+        /// <param name="isNew">Set to new if this is a new quest; otherwise set as false.</param>
+        void SetQuest(QuestID questID, bool isNew)
+        {
+            pgQuest.SelectedObject = new EditorQuest(questID, _dbController);
+
+            if (isNew)
+            {
+                var qdc = (QuestDescriptionCollection)QuestDescriptionCollection.Create(ContentPaths.Dev);
+                var qd = qdc[questID];
+
+                if (qd != null)
+                {
+                    qdc.Remove(qd);
+                    qdc.Save();
+                }
             }
         }
 
@@ -116,26 +375,19 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnCharacterTemplate control.
+        /// Handles the Click event of the btnAlliance control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnCharacterTemplate_Click(object sender, EventArgs e)
+        void btnAlliance_Click(object sender, EventArgs e)
         {
-            using (var f = new CharacterTemplateUITypeEditorForm(pgCharacterTemplate.SelectedObject))
+            using (var f = new AllianceUITypeEditorForm(pgAlliance.SelectedObject))
             {
                 if (f.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                if (IsCharacterTemplateDirty())
-                {
-                    if (MessageBox.Show(_continueLoadLoseChangesMsg, "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
-                        return;
-                }
-
                 var item = f.SelectedItem;
-                pgCharacterTemplate.SelectedObject = item;
-                _originalCharacterTemplateValues = item.DeepCopy();
+                pgAlliance.SelectedObject = new EditorAlliance(item.ID, _dbController);
             }
         }
 
@@ -173,7 +425,7 @@ namespace DemoGame.DbEditor
             if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            bool clone = false;
+            var clone = false;
             if (pgCharacterTemplate.SelectedObject != null)
             {
                 const string cloneMsg = "Do you wish to copy the values from the currently selected character template?";
@@ -230,26 +482,26 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnItemTemplate control.
+        /// Handles the Click event of the btnCharacterTemplate control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnItemTemplate_Click(object sender, EventArgs e)
+        void btnCharacterTemplate_Click(object sender, EventArgs e)
         {
-            using (var f = new ItemTemplateUITypeEditorForm(pgItemTemplate.SelectedObject))
+            using (var f = new CharacterTemplateUITypeEditorForm(pgCharacterTemplate.SelectedObject))
             {
                 if (f.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                if (IsItemTemplateDirty())
+                if (IsCharacterTemplateDirty())
                 {
                     if (MessageBox.Show(_continueLoadLoseChangesMsg, "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
                 }
 
                 var item = f.SelectedItem;
-                pgItemTemplate.SelectedObject = item;
-                _originalItemTemplateValues = item.DeepCopy();
+                pgCharacterTemplate.SelectedObject = item;
+                _originalCharacterTemplateValues = item.DeepCopy();
             }
         }
 
@@ -287,7 +539,7 @@ namespace DemoGame.DbEditor
             if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            bool clone = false;
+            var clone = false;
             if (pgItemTemplate.SelectedObject != null)
             {
                 const string cloneMsg = "Do you wish to copy the values from the currently selected item template?";
@@ -344,18 +596,26 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnMessages control.
+        /// Handles the Click event of the btnItemTemplate control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnMessages_Click(object sender, EventArgs e)
+        void btnItemTemplate_Click(object sender, EventArgs e)
         {
-            using (var f = new GameMessageCollectionLanguageEditorUITypeEditorForm(null))
+            using (var f = new ItemTemplateUITypeEditorForm(pgItemTemplate.SelectedObject))
             {
                 if (f.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                ChangeGameMessagesLanguage(f.SelectedItem);
+                if (IsItemTemplateDirty())
+                {
+                    if (MessageBox.Show(_continueLoadLoseChangesMsg, "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return;
+                }
+
+                var item = f.SelectedItem;
+                pgItemTemplate.SelectedObject = item;
+                _originalItemTemplateValues = item.DeepCopy();
             }
         }
 
@@ -472,8 +732,8 @@ namespace DemoGame.DbEditor
                 return;
 
             string msg;
-            bool success = GameMessageCollection.TestCompilation(lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>(),
-                                                                 out msg);
+            var success = GameMessageCollection.TestCompilation(lstMessages.Items.OfType<KeyValuePair<GameMessage, string>>(),
+                                                                out msg);
 
             if (!success)
                 MessageBox.Show(msg);
@@ -482,19 +742,18 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the btnQuest control.
+        /// Handles the Click event of the btnMessages control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnQuest_Click(object sender, EventArgs e)
+        void btnMessages_Click(object sender, EventArgs e)
         {
-            using (var f = new QuestUITypeEditorForm(null))
+            using (var f = new GameMessageCollectionLanguageEditorUITypeEditorForm(null))
             {
                 if (f.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                var item = f.SelectedItem;
-                SetQuest(item.ID, false);
+                ChangeGameMessagesLanguage(f.SelectedItem);
             }
         }
 
@@ -612,125 +871,24 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Changes the selected game messages language.
+        /// Handles the Click event of the btnQuest control.
         /// </summary>
-        /// <param name="newLanguage">The new language name. Can be null or empty to select no language.</param>
-        void ChangeGameMessagesLanguage(string newLanguage)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnQuest_Click(object sender, EventArgs e)
         {
-            txtMessages.Text = newLanguage;
-
-            // Clear old values
-            lstMessages.Items.Clear();
-            lstMissingMessages.Items.Clear();
-            _editingGameMessage = null;
-            txtSelectedMessage.Text = string.Empty;
-
-            // Set new values
-            if (!string.IsNullOrEmpty(newLanguage))
+            using (var f = new QuestUITypeEditorForm(null))
             {
-                // Existing messages
-                var existing = GameMessageCollection.LoadRawMessages(newLanguage).OrderBy(x => x.Key.ToString(),
-                                                                                          NaturalStringComparer.Instance);
-                lstMessages.Items.AddRange(existing.Cast<object>().ToArray());
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
 
-                // Missing messages
-                var missing = EnumHelper<GameMessage>.Values.Except(existing.Select(x => x.Key));
-                lstMissingMessages.Items.AddRange(missing.Cast<object>().ToArray());
+                var item = f.SelectedItem;
+                SetQuest(item.ID, false);
             }
         }
 
         void frmMain_Load(object sender, EventArgs e)
         {
-        }
-
-        /// <summary>
-        /// Gets the next free <see cref="ItemTemplateID"/>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TTemplate">The type of the template.</typeparam>
-        /// <param name="dbController">The db controller.</param>
-        /// <param name="reserve">If true, the index will be reserved by inserting the default
-        /// values for the column at the given index.</param>
-        /// <param name="intToT">The int to T.</param>
-        /// <param name="tToInt">The t to int.</param>
-        /// <param name="getUsed">The get used.</param>
-        /// <param name="selector">The selector.</param>
-        /// <param name="inserter">The inserter.</param>
-        /// <returns>
-        /// The next free <see cref="ItemTemplateID"/>.
-        /// </returns>
-        public static T GetFreeID<T, TTemplate>(IDbController dbController, bool reserve, Func<int, T> intToT, Func<T, int> tToInt,
-                                                Func<IEnumerable<T>> getUsed, Func<T, TTemplate> selector, Action<T> inserter)
-            where TTemplate : class
-        {
-            // Get the used IDs as ints
-            var usedIDs = getUsed().Select(tToInt).ToImmutable();
-
-            // Start with ID 0
-            int idBase = 0;
-            T freeIDAsT;
-
-            // Loop until we successfully find an ID that has no template
-            bool success = false;
-            do
-            {
-                // Get the next free value
-                var freeID = usedIDs.NextFreeValue(idBase);
-                freeIDAsT = intToT(freeID);
-
-                // Increase the base so that way, if it fails, we are forced to check a higher value
-                idBase = freeID + 1;
-
-                // Ensure the ID is free
-                if (selector(freeIDAsT) != null)
-                    continue;
-
-                // Reserve the ID if needed
-                if (reserve)
-                {
-                    try
-                    {
-                        inserter(freeIDAsT);
-                    }
-                    catch (DuplicateKeyException)
-                    {
-                        // Someone just grabbed the key - those jerks!
-                        continue;
-                    }
-                }
-
-                success = true;
-            }
-            while (!success);
-
-            // Return the value
-            return freeIDAsT;
-        }
-
-        /// <summary>
-        /// Gets if the character template being edited has any unsaved changes.
-        /// </summary>
-        /// <returns>True if there are any unsaved changes; otherwise false.</returns>
-        bool IsCharacterTemplateDirty()
-        {
-            var v = pgCharacterTemplate.SelectedObject as ICharacterTemplateTable;
-            if (_originalCharacterTemplateValues == null || v == null)
-                return false;
-
-            return !_originalCharacterTemplateValues.HasSameValues(v);
-        }
-
-        /// <summary>
-        /// Gets if the item template being edited has any unsaved changes.
-        /// </summary>
-        /// <returns>True if there are any unsaved changes; otherwise false.</returns>
-        bool IsItemTemplateDirty()
-        {
-            var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
-            if (_originalItemTemplateValues == null || v == null)
-                return false;
-
-            return !_originalItemTemplateValues.HasSameValues(v);
         }
 
         /// <summary>
@@ -781,82 +939,6 @@ namespace DemoGame.DbEditor
 
             // Select the new item
             lstMessages.SelectedIndex = lstMessages.Items.IndexOf(newItem);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            if (IsCharacterTemplateDirty() || IsItemTemplateDirty())
-            {
-                const string quitMsg =
-                    "One or more open items have changes that have not been saved. If you quit without saving, these changes will be lost. Are you sure you wish to quit?";
-                if (MessageBox.Show(quitMsg, "Quit?", MessageBoxButtons.YesNo) == DialogResult.No)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-            }
-
-            // Ensure the GrhImageList's cache is updated
-            GrhImageList.Instance.Save();
-
-            base.OnClosing(e);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            // Don't try to load stuff when in design mode
-            if (DesignMode)
-                return;
-
-            Show();
-            Refresh();
-
-            // Load the engine settings
-            EngineSettingsInitializer.Initialize();
-
-            // If the GrhDatas have no been loaded, we will have to load them. Otherwise, we won't get our
-            // pretty little pictures. :(
-            if (!GrhInfo.IsLoaded)
-            {
-                var cm = ContentManager.Create();
-                GrhInfo.Load(ContentPaths.Dev, cm);
-            }
-
-            // Prepare the GrhImageList to avoid stalling the loading later
-            GrhImageList.Prepare();
-
-            // Create the database connection
-            DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController =
-                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                                                                 x => settings.PromptEditFileMessageBox(x));
-
-            if (_dbController == null)
-            {
-                Close();
-                return;
-            }
-
-            // Load the custom UITypeEditors
-            CustomUITypeEditors.AddEditors(_dbController);
-
-            // Process all the PropertyGrids
-            foreach (var pg in this.GetControls().OfType<PropertyGrid>())
-            {
-                PropertyGridHelper.AttachRefresherEventHandler(pg);
-                PropertyGridHelper.AttachShrinkerEventHandler(pg);
-                PropertyGridHelper.SetContextMenuIfNone(pg);
-            }
         }
 
         /// <summary>
@@ -913,89 +995,6 @@ namespace DemoGame.DbEditor
                 txtQuest.Text = string.Empty;
             else
                 txtQuest.Text = string.Format("{0}. {1}", q.ID, q.Name);
-        }
-
-        /// <summary>
-        /// Gets and reserves the next free <see cref="AllianceID"/>.
-        /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="AllianceID"/>.</returns>
-        public static AllianceID ReserveFreeAllianceID(IDbController dbController)
-        {
-            var getUsedQuery = dbController.GetQuery<SelectAllianceIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectAllianceQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertAllianceQuery>();
-
-            return GetFreeID(dbController, true, t => new AllianceID(t), x => (int)x, getUsedQuery.Execute,
-                             selectQuery.Execute,
-                             x => insertByIDQuery.Execute(new AllianceTable { ID = x, Name = string.Empty }));
-        }
-
-        /// <summary>
-        /// Gets and reserves the next free <see cref="CharacterTemplateID"/>.
-        /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="CharacterTemplateID"/>.</returns>
-        public static CharacterTemplateID ReserveFreeCharacterTemplateID(IDbController dbController)
-        {
-            var getUsedQuery = dbController.GetQuery<SelectCharacterTemplateIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectCharacterTemplateQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertCharacterTemplateIDOnlyQuery>();
-
-            return GetFreeID(dbController, true, t => new CharacterTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                             selectQuery.Execute, x => insertByIDQuery.Execute(x));
-        }
-
-        /// <summary>
-        /// Gets and reserves the next free <see cref="ItemTemplateID"/>.
-        /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="ItemTemplateID"/>.</returns>
-        public static ItemTemplateID ReserveFreeItemTemplateID(IDbController dbController)
-        {
-            var getUsedQuery = dbController.GetQuery<SelectItemTemplateIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectItemTemplateQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertItemTemplateIDOnlyQuery>();
-
-            return GetFreeID(dbController, true, t => new ItemTemplateID(t), x => (int)x, getUsedQuery.Execute,
-                             selectQuery.Execute, x => insertByIDQuery.Execute(x));
-        }
-
-        /// <summary>
-        /// Gets and reserves the next free <see cref="QuestID"/>.
-        /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="QuestID"/>.</returns>
-        public static QuestID ReserveFreeQuestID(IDbController dbController)
-        {
-            var getUsedQuery = dbController.GetQuery<SelectQuestIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectQuestQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertQuestQuery>();
-
-            return GetFreeID(dbController, true, t => new QuestID(t), x => (int)x, getUsedQuery.Execute,
-                             selectQuery.Execute, x => insertByIDQuery.Execute(new QuestTable { ID = x }));
-        }
-
-        /// <summary>
-        /// Sets the current quest.
-        /// </summary>
-        /// <param name="questID">The quest ID.</param>
-        /// <param name="isNew">Set to new if this is a new quest; otherwise set as false.</param>
-        void SetQuest(QuestID questID, bool isNew)
-        {
-            pgQuest.SelectedObject = new EditorQuest(questID, _dbController);
-
-            if (isNew)
-            {
-                var qdc = (QuestDescriptionCollection)QuestDescriptionCollection.Create(ContentPaths.Dev);
-                var qd = qdc[questID];
-
-                if (qd != null)
-                {
-                    qdc.Remove(qd);
-                    qdc.Save();
-                }
-            }
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace DemoGame.Client
             _lineSpacing = (int)Math.Max(fontLineSpacing, _iconSize.Y);
 
             // Create all the skills
-            Vector2 offset = Vector2.Zero;
+            var offset = Vector2.Zero;
             foreach (var skillType in EnumHelper<SkillType>.Values)
             {
                 CreateSkillEntry(offset, skillType);
@@ -63,7 +63,7 @@ namespace DemoGame.Client
             PictureBox pb = new SkillPictureBox(this, skillInfo, position);
             pb.Clicked += SkillPicture_Clicked;
 
-            SkillLabel skillLabel = new SkillLabel(this, skillInfo, position + new Vector2(_iconSize.X + 4, 0));
+            var skillLabel = new SkillLabel(this, skillInfo, position + new Vector2(_iconSize.X + 4, 0));
             skillLabel.Clicked += SkillLabel_Clicked;
         }
 
@@ -82,7 +82,7 @@ namespace DemoGame.Client
         {
             if (RequestUseSkill != null)
             {
-                SkillLabel source = (SkillLabel)sender;
+                var source = (SkillLabel)sender;
                 RequestUseSkill(source.SkillInfo.Value);
             }
         }
@@ -91,7 +91,7 @@ namespace DemoGame.Client
         {
             if (RequestUseSkill != null)
             {
-                SkillPictureBox source = (SkillPictureBox)sender;
+                var source = (SkillPictureBox)sender;
                 RequestUseSkill(source.SkillInfo.Value);
             }
         }

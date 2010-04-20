@@ -128,7 +128,7 @@ namespace NetGore
             // 2. Check the filter
             // 3. Once "failed" has reached true, don't let it go back to false
             // 4. If we have failed, only check the filter if there is a chance it can throw an exception
-            bool failed = false;
+            var failed = false;
 
             // Non-required filters (that way we avoid throwing an exception for as long as possible)
             failed |= !FilterConstructorParameters(type, false);
@@ -155,13 +155,13 @@ namespace NetGore
                 return true;
 
             var a = type.GetCustomAttributes(true).Select(x => x.GetType());
-            bool isValid = (MatchAllAttributes ? Attributes.All(x => a.Contains(x)) : Attributes.Any(x => a.Contains(x)));
+            var isValid = (MatchAllAttributes ? Attributes.All(x => a.Contains(x)) : Attributes.Any(x => a.Contains(x)));
             if (!isValid)
             {
                 if (RequireAttributes)
                 {
                     const string errmsg = "Type `{0}` does not have the required attributes: `{1}`.";
-                    string err = string.Format(errmsg, type, GetTypeString(Attributes));
+                    var err = string.Format(errmsg, type, GetTypeString(Attributes));
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     throw new TypeFilterException(err);
@@ -187,7 +187,7 @@ namespace NetGore
                 if (RequireConstructor)
                 {
                     const string errmsg = "Type `{0}` does not have the required constructor containing the parameters: `{1}`.";
-                    string err = string.Format(errmsg, type, GetTypeString(ConstructorParameters));
+                    var err = string.Format(errmsg, type, GetTypeString(ConstructorParameters));
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     throw new TypeFilterException(err);
@@ -208,13 +208,13 @@ namespace NetGore
                 return true;
 
             var i = type.GetInterfaces();
-            bool isValid = (MatchAllInterfaces ? Interfaces.All(x => i.Contains(x)) : Interfaces.Any(x => i.Contains(x)));
+            var isValid = (MatchAllInterfaces ? Interfaces.All(x => i.Contains(x)) : Interfaces.Any(x => i.Contains(x)));
             if (!isValid)
             {
                 if (RequireInterfaces)
                 {
                     const string errmsg = "Type `{0}` does not have the required interfaces: `{1}`.";
-                    string err = string.Format(errmsg, type, GetTypeString(Interfaces));
+                    var err = string.Format(errmsg, type, GetTypeString(Interfaces));
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     throw new TypeFilterException(err);
@@ -248,8 +248,8 @@ namespace NetGore
             if (types.Length == 1)
                 return types[0].Name;
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < types.Length; i++)
+            var sb = new StringBuilder();
+            for (var i = 0; i < types.Length; i++)
             {
                 sb.Append(types[i].Name);
                 sb.Append(", ");

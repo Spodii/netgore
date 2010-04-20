@@ -16,18 +16,18 @@ namespace NetGore.Tests.NetGore
         public void ImplodeSplitWithCharTest()
         {
             var l = new List<int>(50);
-            for (int i = 0; i < 50; i++)
+            for (var i = 0; i < 50; i++)
             {
                 l.Add(rnd.Next(0, 100));
             }
 
-            string implode = l.Implode(',');
+            var implode = l.Implode(',');
 
             var elements = implode.Split(',');
 
             Assert.AreEqual(l.Count, elements.Length);
 
-            for (int i = 0; i < l.Count; i++)
+            for (var i = 0; i < l.Count; i++)
             {
                 Assert.AreEqual(l[i].ToString(), elements[i]);
             }
@@ -37,18 +37,18 @@ namespace NetGore.Tests.NetGore
         public void ImplodeSplitWithStringTest()
         {
             var l = new List<int>(50);
-            for (int i = 0; i < 50; i++)
+            for (var i = 0; i < 50; i++)
             {
                 l.Add(rnd.Next(0, 100));
             }
 
-            string implode = l.Implode(",");
+            var implode = l.Implode(",");
 
             var elements = implode.Split(',');
 
             Assert.AreEqual(l.Count, elements.Length);
 
-            for (int i = 0; i < l.Count; i++)
+            for (var i = 0; i < l.Count; i++)
             {
                 Assert.AreEqual(l[i].ToString(), elements[i]);
             }
@@ -58,18 +58,18 @@ namespace NetGore.Tests.NetGore
         public void ImplodeStringsSplitWithCharTest()
         {
             var l = new List<string>(50);
-            for (int i = 0; i < 50; i++)
+            for (var i = 0; i < 50; i++)
             {
                 l.Add(Parser.Current.ToString(rnd.Next(0, 100)));
             }
 
-            string implode = l.Implode(',');
+            var implode = l.Implode(',');
 
             var elements = implode.Split(',');
 
             Assert.AreEqual(l.Count, elements.Length);
 
-            for (int i = 0; i < l.Count; i++)
+            for (var i = 0; i < l.Count; i++)
             {
                 Assert.AreEqual(l[i], elements[i]);
             }
@@ -79,18 +79,18 @@ namespace NetGore.Tests.NetGore
         public void ImplodeStringsSplitWithStringTest()
         {
             var l = new List<string>(50);
-            for (int i = 0; i < 50; i++)
+            for (var i = 0; i < 50; i++)
             {
                 l.Add(Parser.Current.ToString(rnd.Next(0, 100)));
             }
 
-            string implode = l.Implode(",");
+            var implode = l.Implode(",");
 
             var elements = implode.Split(',');
 
             Assert.AreEqual(l.Count, elements.Length);
 
-            for (int i = 0; i < l.Count; i++)
+            for (var i = 0; i < l.Count; i++)
             {
                 Assert.AreEqual(l[i], elements[i]);
             }
@@ -128,7 +128,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void MaxElementEmptyTest()
         {
-            string[] s = new string[0];
+            var s = new string[0];
             Assert.Throws<ArgumentException>(() => s.MaxElement(x => x.Length));
             Assert.IsNull(s.MaxElementOrDefault(x => x.Length));
         }
@@ -136,7 +136,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void MaxElementTest()
         {
-            string[] s = new string[] { "asdf", "f", "asfkdljas", "sdf" };
+            var s = new string[] { "asdf", "f", "asfkdljas", "sdf" };
             var r = s.MaxElement(x => x.Length);
             Assert.AreEqual("asfkdljas", r);
         }
@@ -144,7 +144,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void MinElementEmptyTest()
         {
-            string[] s = new string[0];
+            var s = new string[0];
             Assert.Throws<ArgumentException>(() => s.MinElement(x => x.Length));
             Assert.IsNull(s.MinElementOrDefault(x => x.Length));
         }
@@ -152,7 +152,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void MinElementTest()
         {
-            string[] s = new string[] { "asdf", "f", "asfkdljas", "sdf" };
+            var s = new string[] { "asdf", "f", "asfkdljas", "sdf" };
             var r = s.MinElement(x => x.Length);
             Assert.AreEqual("f", r);
         }
@@ -272,7 +272,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ToImmutableTest()
         {
-            int[] i = new int[] { 1, 2, 3 };
+            var i = new int[] { 1, 2, 3 };
             var e = i.ToImmutable();
 
             i[0] = 50;

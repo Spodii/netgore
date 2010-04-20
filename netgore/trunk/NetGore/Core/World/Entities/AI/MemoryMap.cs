@@ -77,9 +77,9 @@ namespace NetGore.AI
 
             _memoryCells = new MemoryCell[_cellsX,_cellsY];
 
-            for (int X = 0; X < _cellsX; X++)
+            for (var X = 0; X < _cellsX; X++)
             {
-                for (int Y = 0; Y < _cellsY; Y++)
+                for (var Y = 0; Y < _cellsY; Y++)
                 {
                     _memoryCells[X, Y] = new MemoryCell((ushort)(X * _cellSize), (ushort)(Y * _cellSize));
                 }
@@ -101,10 +101,10 @@ namespace NetGore.AI
 
             _cellSize = read.ReadUShort("CellSize");
 
-            for (int X = 0; X < _cellsX; X++)
+            for (var X = 0; X < _cellsX; X++)
             {
                 var xReader = read.ReadNode("CellX" + X);
-                for (int Y = 0; Y < _cellsY; Y++)
+                for (var Y = 0; Y < _cellsY; Y++)
                 {
                     _memoryCells[X, Y].Weight = xReader.ReadByte("CellY" + Y);
                 }
@@ -117,11 +117,11 @@ namespace NetGore.AI
         /// <returns>Returns an integer greater than or equal to 0</returns>
         public int NumberofCellsVisited()
         {
-            int total = 0;
+            var total = 0;
 
-            for (int X = 0; X < _cellsX; X++)
+            for (var X = 0; X < _cellsX; X++)
             {
-                for (int Y = 0; Y < _cellsY; Y++)
+                for (var Y = 0; Y < _cellsY; Y++)
                 {
                     if (_memoryCells[X, Y].Weight > 0)
                         ++total;
@@ -138,11 +138,11 @@ namespace NetGore.AI
             {
                 writer.Write("CellSize", _cellSize);
 
-                for (int X = 0; X < _cellsX; X++)
+                for (var X = 0; X < _cellsX; X++)
                 {
                     writer.WriteStartNode("CellX" + X);
 
-                    for (int Y = 0; Y < _cellsY; Y++)
+                    for (var Y = 0; Y < _cellsY; Y++)
                     {
                         writer.Write("CellY" + Y, _memoryCells[X, Y].Weight);
                     }
@@ -160,18 +160,18 @@ namespace NetGore.AI
         /// <returns>Integer indicating the amount of ticks spent at this particular cell.</returns>
         public int TicksLingered(double xPos, double yPos)
         {
-            ushort cellX = (ushort)(xPos / _cellSize);
-            ushort cellY = (ushort)(yPos / _cellSize);
+            var cellX = (ushort)(xPos / _cellSize);
+            var cellY = (ushort)(yPos / _cellSize);
 
             return _memoryCells[cellX, cellY].Weight;
         }
 
         public byte[,] ToByteArray()
         {
-            byte[,] temp = new byte[_cellsX,_cellsY];
-            for (int X = 0; X < _cellsX; X++)
+            var temp = new byte[_cellsX,_cellsY];
+            for (var X = 0; X < _cellsX; X++)
             {
-                for (int Y = 0; Y < _cellsY; Y++)
+                for (var Y = 0; Y < _cellsY; Y++)
                 {
                     temp[X, Y] = _memoryCells[X, Y].Weight;
                 }

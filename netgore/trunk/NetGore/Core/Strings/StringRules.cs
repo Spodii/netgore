@@ -49,7 +49,7 @@ namespace NetGore
             _maxLength = (ushort)maxLength;
             _allowedChars = allowedChars;
 
-            string regexStr = BuildRegexString(minLength, maxLength, allowedChars);
+            var regexStr = BuildRegexString(minLength, maxLength, allowedChars);
 
             _regex = new Regex(regexStr, RegexOptions.Compiled | regexOptions);
         }
@@ -87,7 +87,7 @@ namespace NetGore
         /// <returns>The Regex string to use for checking the rules.</returns>
         static string BuildRegexString(int minLength, int maxLength, CharType allowedChars)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Start of string
             sb.Append("^");

@@ -1,7 +1,8 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.IO;
 
 namespace SFML
 {
@@ -16,22 +17,44 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public class Font : ObjectBase
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="Image"/> class.
-            /// </summary>
-            protected internal Font() : base(IntPtr.Zero)
-            {
-            }
-
             ////////////////////////////////////////////////////////////
+            static Font ourDefaultFont = null;
+
+            #region Imports
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfFont_Create();
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfFont_CreateFromFile(string Filename, uint CharSize, IntPtr Charset);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern unsafe IntPtr sfFont_CreateFromMemory(char* Data, uint SizeInBytes, uint CharSize, IntPtr Charset);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfFont_Destroy(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern uint sfFont_GetCharacterSize(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfFont_GetDefaultFont();
+
+            #endregion
+
             /// <summary>
             /// Construct the font from a file
             /// </summary>
             /// <param name="filename">Font file to load</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(string filename) :
-                this(filename, 30)
+            public Font(string filename) : this(filename, 30)
             {
             }
 
@@ -43,8 +66,7 @@ namespace SFML
             /// <param name="charSize">Character size</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(string filename, uint charSize) :
-                this(filename, charSize, string.Empty)
+            public Font(string filename, uint charSize) : this(filename, charSize, string.Empty)
             {
             }
 
@@ -57,41 +79,9 @@ namespace SFML
             /// <param name="charset">Set of characters to generate</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(string filename, uint charSize, string charset) :
-                base(IntPtr.Zero)
+            public Font(string filename, uint charSize, string charset) : base(IntPtr.Zero)
             {
                 EnsureLoaded(filename, charSize, charset);
-            }
-
-            /// <summary>
-            /// Reloads the asset from file if it is not loaded.
-            /// </summary>
-            /// <param name="filename">Font file to load</param>
-            /// <param name="charSize">Character size</param>
-            /// <param name="charset">Set of characters to generate</param>
-            /// <returns>True if already loaded; false if it had to reload.</returns>
-            /// <exception cref="LoadingFailedException"/>
-            protected internal bool EnsureLoaded(string filename, uint charSize, string charset)
-            {
-                if (ThisRaw != IntPtr.Zero)
-                    return true;
-
-                unsafe
-                {
-                    IntPtr ptr;
-                    int size;
-                    if (Int32.TryParse(charset, out size))
-                        ptr = new IntPtr(&size);
-                    else
-                        ptr = IntPtr.Zero;
-
-                    SetThis(sfFont_CreateFromFile(filename, charSize, ptr));
-                }
-
-                if (ThisRaw == IntPtr.Zero)
-                    throw new LoadingFailedException("font", filename);
-
-                return false;
             }
 
             ////////////////////////////////////////////////////////////
@@ -101,8 +91,7 @@ namespace SFML
             /// <param name="stream">Stream containing the file contents</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(Stream stream) :
-                this(stream, 30)
+            public Font(Stream stream) : this(stream, 30)
             {
             }
 
@@ -114,8 +103,7 @@ namespace SFML
             /// <param name="charSize">Character size</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(Stream stream, uint charSize) :
-                this(stream, charSize, "")
+            public Font(Stream stream, uint charSize) : this(stream, charSize, "")
             {
             }
 
@@ -128,8 +116,7 @@ namespace SFML
             /// <param name="charset">Set of characters to generate</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(Stream stream, uint charSize, string charset) :
-                base(IntPtr.Zero)
+            public Font(Stream stream, uint charSize, string charset) : base(IntPtr.Zero)
             {
                 unsafe
                 {
@@ -141,8 +128,8 @@ namespace SFML
                         ptr = IntPtr.Zero;
 
                     stream.Position = 0;
-                    byte[] StreamData = new byte[stream.Length];
-                    uint Read = (uint)stream.Read(StreamData, 0, StreamData.Length);
+                    var StreamData = new byte[stream.Length];
+                    var Read = (uint)stream.Read(StreamData, 0, StreamData.Length);
                     fixed (byte* dataPtr = StreamData)
                     {
                         SetThis(sfFont_CreateFromMemory((char*)dataPtr, Read, charSize, ptr));
@@ -150,6 +137,22 @@ namespace SFML
                 }
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("font");
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Image"/> class.
+            /// </summary>
+            protected internal Font() : base(IntPtr.Zero)
+            {
+            }
+
+            /// <summary>
+            /// Internal constructor
+            /// </summary>
+            /// <param name="thisPtr">Pointer to the object in C library</param>
+            ////////////////////////////////////////////////////////////
+            Font(IntPtr thisPtr) : base(thisPtr)
+            {
             }
 
             ////////////////////////////////////////////////////////////
@@ -198,38 +201,38 @@ namespace SFML
                 }
             }
 
-            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Internal constructor
+            /// Reloads the asset from file if it is not loaded.
             /// </summary>
-            /// <param name="thisPtr">Pointer to the object in C library</param>
-            ////////////////////////////////////////////////////////////
-            private Font(IntPtr thisPtr) :
-                base(thisPtr)
+            /// <param name="filename">Font file to load</param>
+            /// <param name="charSize">Character size</param>
+            /// <param name="charset">Set of characters to generate</param>
+            /// <returns>True if already loaded; false if it had to reload.</returns>
+            /// <exception cref="LoadingFailedException"/>
+            protected internal bool EnsureLoaded(string filename, uint charSize, string charset)
             {
+                if (ThisRaw != IntPtr.Zero)
+                    return true;
+
+                unsafe
+                {
+                    IntPtr ptr;
+                    int size;
+                    if (Int32.TryParse(charset, out size))
+                        ptr = new IntPtr(&size);
+                    else
+                        ptr = IntPtr.Zero;
+
+                    SetThis(sfFont_CreateFromFile(filename, charSize, ptr));
+                }
+
+                if (ThisRaw == IntPtr.Zero)
+                    throw new LoadingFailedException("font", filename);
+
+                return false;
             }
 
-            private static Font ourDefaultFont = null;
-
-            #region Imports
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfFont_Create();
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfFont_CreateFromFile(string Filename, uint CharSize, IntPtr Charset);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            unsafe static extern IntPtr sfFont_CreateFromMemory(char* Data, uint SizeInBytes, uint CharSize, IntPtr Charset);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfFont_Destroy(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern uint sfFont_GetCharacterSize(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfFont_GetDefaultFont();
-            #endregion
+            ////////////////////////////////////////////////////////////
         }
     }
 }

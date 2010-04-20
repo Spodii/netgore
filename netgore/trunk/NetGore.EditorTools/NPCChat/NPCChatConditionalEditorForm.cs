@@ -26,20 +26,6 @@ namespace NetGore.EditorTools.NPCChat
             InitializeComponent();
         }
 
-        void chkNot_CheckedChanged(object sender, EventArgs e)
-        {
-            _item.SetNot(chkNot.Checked);
-        }
-
-        void cmbConditionalType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            NPCChatConditionalBase item = cmbConditionalType.SelectedItem as NPCChatConditionalBase;
-            if (item == null)
-                return;
-
-            _item.SetConditional(item);
-        }
-
         void InitGUI(EditorNPCChatConditionalCollectionItem item)
         {
             chkNot.Checked = item.Not;
@@ -59,6 +45,20 @@ namespace NetGore.EditorTools.NPCChat
             cmbConditionalType.Items.AddRange(_conditionals);
 
             InitGUI(_item);
+        }
+
+        void chkNot_CheckedChanged(object sender, EventArgs e)
+        {
+            _item.SetNot(chkNot.Checked);
+        }
+
+        void cmbConditionalType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var item = cmbConditionalType.SelectedItem as NPCChatConditionalBase;
+            if (item == null)
+                return;
+
+            _item.SetConditional(item);
         }
     }
 }

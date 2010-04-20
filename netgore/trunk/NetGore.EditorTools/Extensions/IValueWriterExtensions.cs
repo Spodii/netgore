@@ -21,8 +21,8 @@ namespace NetGore.EditorTools
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                string x = Parser.Invariant.ToString(value.X);
-                string y = Parser.Invariant.ToString(value.Y);
+                var x = Parser.Invariant.ToString(value.X);
+                var y = Parser.Invariant.ToString(value.Y);
                 writer.Write(name, x + "," + y);
             }
             else
@@ -45,8 +45,8 @@ namespace NetGore.EditorTools
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                string x = Parser.Invariant.ToString(value.Width);
-                string y = Parser.Invariant.ToString(value.Height);
+                var x = Parser.Invariant.ToString(value.Width);
+                var y = Parser.Invariant.ToString(value.Height);
                 writer.Write(name, x + "," + y);
             }
             else

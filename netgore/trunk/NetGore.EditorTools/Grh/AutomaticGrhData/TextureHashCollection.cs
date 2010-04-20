@@ -143,6 +143,32 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the paths of the files to get the hash for.
+        /// </summary>
+        /// <param name="rootDir">The root directory.</param>
+        /// <returns>The paths of the files to get the hash for.</returns>
+        static IEnumerable<string> GetFilesToHash(string rootDir)
+        {
+            // Skip Subversion directories
+            if (rootDir.EndsWith(".svn", StringComparison.OrdinalIgnoreCase))
+                yield break;
+
+            // Recursively scan the child directories
+            var childDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
+            foreach (var cd in childDirs.SelectMany(childDir => GetFilesToHash(rootDir)))
+            {
+                yield return cd;
+            }
+
+            // Return the files
+            var files = Directory.GetFiles(rootDir, "*" + ContentPaths.ContentFileSuffix, SearchOption.TopDirectoryOnly);
+            foreach (var file in files)
+            {
+                yield return file;
+            }
+        }
+
+        /// <summary>
         ///   Loads the collection's values from file.
         /// </summary>
         void Load()
@@ -208,30 +234,6 @@ namespace NetGore.EditorTools
             {
                 w.WriteManyNodes(_rootNodeName, _textureHash, Write);
             }
-        }
-
-        /// <summary>
-        /// Gets the paths of the files to get the hash for.
-        /// </summary>
-        /// <param name="rootDir">The root directory.</param>
-        /// <returns>The paths of the files to get the hash for.</returns>
-        static IEnumerable<string> GetFilesToHash(string rootDir)
-        {
-            // Skip Subversion directories
-            if (rootDir.EndsWith(".svn", StringComparison.OrdinalIgnoreCase))
-                yield break;
-
-            // Recursively scan the child directories
-            var childDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-            foreach (var cd in childDirs.SelectMany(childDir => GetFilesToHash(rootDir)))
-            {
-                yield return cd;
-            }
-
-            // Return the files
-            var files = Directory.GetFiles(rootDir, "*" + ContentPaths.ContentFileSuffix, SearchOption.TopDirectoryOnly);
-            foreach (var file in files)
-                yield return file;
         }
 
         /// <summary>

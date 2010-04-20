@@ -43,10 +43,10 @@ namespace DemoGame.Server
         public IEnumerable<InventoryChangeInfo> GetChanges()
         {
             // Iterate through every slot
-            for (int i = 0; i < _buffer.Length; i++)
+            for (var i = 0; i < _buffer.Length; i++)
             {
-                ItemEntity invItem = _inventory[new InventorySlot(i)];
-                ItemValueTracker tracker = _buffer[i];
+                var invItem = _inventory[new InventorySlot(i)];
+                var tracker = _buffer[i];
 
                 // If the values are already equal, skip it
                 if (ItemValueTracker.AreValuesEqual(invItem, tracker))

@@ -13,7 +13,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void AddEmptyMethodTest()
         {
-            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
+            var c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", null, null, "");
 
             Assembly asm;
@@ -25,7 +25,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void AddMethodNoParametersTest()
         {
-            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
+            var c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", "String", null, "return \"hi\";");
 
             Assembly asm;
@@ -37,7 +37,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void AddMethodOneParameterTest()
         {
-            JScriptAssemblyCreator c = new JScriptAssemblyCreator { ClassName = "TestClass" };
+            var c = new JScriptAssemblyCreator { ClassName = "TestClass" };
             c.AddMethod("TestM", "public", "String", "a", "return \"hi \" + a;");
 
             Assembly asm;

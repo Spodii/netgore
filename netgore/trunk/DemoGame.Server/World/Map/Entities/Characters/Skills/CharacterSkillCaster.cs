@@ -99,7 +99,7 @@ namespace DemoGame.Server
                 return;
 
             // Check if it is time to use the skill
-            int currentTime = _character.GetTime();
+            var currentTime = _character.GetTime();
             if (currentTime <= _castingSkillUsageTime)
             {
                 // Not yet time to use
@@ -120,7 +120,7 @@ namespace DemoGame.Server
         /// <param name="target">The optional character to use the skill on. Can be null.</param>
         void UseSkill(ISkill<SkillType, StatType, Character> skill, Character target)
         {
-            bool successful = skill.Use(_character, target);
+            var successful = skill.Use(_character, target);
 
             if (successful)
             {

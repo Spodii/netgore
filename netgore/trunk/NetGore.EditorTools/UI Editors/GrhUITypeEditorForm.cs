@@ -52,6 +52,28 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            // If we were given an invalid default value, just use whatever the first valid one we can find is
+            if (_selected == GrhIndex.Invalid)
+            {
+                var gd = GrhInfo.GrhDatas.FirstOrDefault();
+                if (gd != null)
+                    _selected = gd.GrhIndex;
+            }
+
+            // Load the GrhTreeView
+            gtv.InitializeCompact();
+            gtv.CollapseAll();
+            gtv.SelectedNode = gtv.FindGrhDataNode(GrhInfo.GetData(_selected));
+        }
+
+        /// <summary>
         /// Handles the GrhMouseClick event of the gtv control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -81,28 +103,6 @@ namespace NetGore.EditorTools
             Debug.Assert(_selected != GrhIndex.Invalid);
 
             DialogResult = DialogResult.OK;
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            // If we were given an invalid default value, just use whatever the first valid one we can find is
-            if (_selected == GrhIndex.Invalid)
-            {
-                var gd = GrhInfo.GrhDatas.FirstOrDefault();
-                if (gd != null)
-                    _selected = gd.GrhIndex;
-            }
-
-            // Load the GrhTreeView
-            gtv.InitializeCompact();
-            gtv.CollapseAll();
-            gtv.SelectedNode = gtv.FindGrhDataNode(GrhInfo.GetData(_selected));
         }
     }
 }

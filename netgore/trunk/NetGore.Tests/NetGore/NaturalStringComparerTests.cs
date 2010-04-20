@@ -16,7 +16,7 @@ namespace NetGore.Tests.NetGore
         {
             unsorted.Sort(NaturalStringComparer.Instance);
 
-            for (int i = 0; i < expected.Count; i++)
+            for (var i = 0; i < expected.Count; i++)
             {
                 Assert.AreEqual(expected[i], unsorted[i]);
             }

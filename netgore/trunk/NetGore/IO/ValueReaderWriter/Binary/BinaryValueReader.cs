@@ -68,8 +68,8 @@ namespace NetGore.IO
         /// <returns>An IValueReader for reading the next node.</returns>
         IValueReader ReadNode()
         {
-            uint bitLength = ReadUInt(null);
-            BitStream bs = _reader.ReadBits((int)bitLength);
+            var bitLength = ReadUInt(null);
+            var bs = _reader.ReadBits((int)bitLength);
             return new BinaryValueReader(bs);
         }
 
@@ -220,11 +220,11 @@ namespace NetGore.IO
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
         {
-            IValueReader nodeReader = ReadNode(null);
-            int count = nodeReader.ReadInt(null);
+            var nodeReader = ReadNode(null);
+            var count = nodeReader.ReadInt(null);
 
             var ret = new T[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = readHandler(nodeReader, null);
             }
@@ -241,13 +241,13 @@ namespace NetGore.IO
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
         {
-            IValueReader nodeReader = ReadNode(nodeName);
-            int count = nodeReader.ReadInt(null);
+            var nodeReader = ReadNode(nodeName);
+            var count = nodeReader.ReadInt(null);
 
             var ret = new T[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                IValueReader childNodeReader = nodeReader.ReadNode(null);
+                var childNodeReader = nodeReader.ReadNode(null);
                 ret[i] = readHandler(childNodeReader);
             }
 
@@ -269,7 +269,8 @@ namespace NetGore.IO
         /// <returns>
         /// Array of the values read the IValueReader.
         /// </returns>
-        T[] IValueReader.ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler, Action<int, Exception> handleMissingKey)
+        T[] IValueReader.ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler,
+                                          Action<int, Exception> handleMissingKey)
         {
             return ReadManyNodes(nodeName, readHandler);
         }
@@ -305,7 +306,7 @@ namespace NetGore.IO
                 throw new ArgumentOutOfRangeException("count");
 
             var ret = new IValueReader[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = ReadNode();
             }

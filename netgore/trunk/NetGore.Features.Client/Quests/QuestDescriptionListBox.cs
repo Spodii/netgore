@@ -9,8 +9,8 @@ namespace NetGore.Features.Quests
 {
     public class QuestDescriptionListBox : ListBox<IQuestDescription>
     {
-        static readonly Color _defaultCannotStartColor = new Color(150, 0, 0);
         static readonly Color _defaultCanTurnInColor = new Color(0, 150, 0);
+        static readonly Color _defaultCannotStartColor = new Color(150, 0, 0);
 
         readonly Func<QuestID, bool> _hasFinishQuestReqs;
         readonly Func<QuestID, bool> _hasStartQuestReqs;
@@ -55,15 +55,15 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
+        /// Gets or sets the font color for a quest that can be turned in.
+        /// </summary>
+        public Color CanTurnInQuestForeColor { get; set; }
+
+        /// <summary>
         /// Gets or sets the font color for a quest that the is available but the user does not have the
         /// requirements to start.
         /// </summary>
         public Color CannotStartQuestForeColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the font color for a quest that can be turned in.
-        /// </summary>
-        public Color CanTurnInQuestForeColor { get; set; }
 
         /// <summary>
         /// Gets or sets the items to display.
@@ -126,7 +126,7 @@ namespace NetGore.Features.Quests
                 return;
 
             // Write the list index
-            string indexStr = "  " + (index + 1) + ". ";
+            var indexStr = "  " + (index + 1) + ". ";
             var indexStrWidth = Font.MeasureString(indexStr).X;
             sb.DrawString(Font, indexStr, pos, ForeColor);
 

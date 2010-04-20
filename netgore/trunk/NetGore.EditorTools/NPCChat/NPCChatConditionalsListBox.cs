@@ -92,16 +92,6 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// Handles the FormClosed event of the conditionalEditorForm control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.FormClosedEventArgs"/> instance containing the event data.</param>
-        void conditionalEditorForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            RefreshItems();
-        }
-
-        /// <summary>
         /// Edits the SelectedConditionalItem.
         /// </summary>
         /// <param name="npcChatConditionals">The NPCChatConditionalBases that can be chosen.</param>
@@ -217,6 +207,16 @@ namespace NetGore.EditorTools.NPCChat
         public bool TryDeleteSelectedConditionalItem()
         {
             return TryDeleteConditionalItem(SelectedConditionalItem);
+        }
+
+        /// <summary>
+        /// Handles the FormClosed event of the conditionalEditorForm control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.FormClosedEventArgs"/> instance containing the event data.</param>
+        void conditionalEditorForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            RefreshItems();
         }
     }
 }

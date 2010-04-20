@@ -374,7 +374,7 @@ namespace NetGore.Graphics.GUI
                 case KeyCode.Add:
                     return "+";
                 case KeyCode.Slash:
-                     return "?";
+                    return "?";
                 case KeyCode.Quote:
                     return "\"";
                 case KeyCode.SemiColon:

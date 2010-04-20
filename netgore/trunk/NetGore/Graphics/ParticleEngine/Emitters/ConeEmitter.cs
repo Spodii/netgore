@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Linq;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -57,8 +56,8 @@ namespace NetGore.Graphics.ParticleEngine
         {
             offset = Vector2.Zero;
 
-            float f = ConeAngle * 0.5f;
-            float radians = RandomHelper.NextFloat(Direction - f, Direction + f);
+            var f = ConeAngle * 0.5f;
+            var radians = RandomHelper.NextFloat(Direction - f, Direction + f);
 
             GetForce(radians, out force);
         }

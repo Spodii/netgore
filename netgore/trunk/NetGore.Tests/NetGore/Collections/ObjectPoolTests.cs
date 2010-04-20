@@ -20,7 +20,7 @@ namespace NetGore.Tests.Collections
         public void ClearTest()
         {
             var pool = CreateTestPool();
-            for (int i = 0; i < 25; i++)
+            for (var i = 0; i < 25; i++)
             {
                 pool.Acquire();
             }
@@ -35,10 +35,10 @@ namespace NetGore.Tests.Collections
         public void ExtensiveAllocationTest()
         {
             var pool = CreateTestPool();
-            List<MyTestObj> objs = new List<MyTestObj>(1000);
-            int expectedLive = 0;
+            var objs = new List<MyTestObj>(1000);
+            var expectedLive = 0;
 
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 objs.Add(pool.Acquire());
                 expectedLive++;
@@ -46,7 +46,7 @@ namespace NetGore.Tests.Collections
 
             Assert.AreEqual(expectedLive, pool.LiveObjects);
 
-            for (int i = 250; i < 150; i -= 2)
+            for (var i = 250; i < 150; i -= 2)
             {
                 pool.Free(objs[i]);
                 objs.RemoveAt(i);
@@ -55,7 +55,7 @@ namespace NetGore.Tests.Collections
 
             Assert.AreEqual(expectedLive, pool.LiveObjects);
 
-            for (int i = 0; i < 50; i += 2)
+            for (var i = 0; i < 50; i += 2)
             {
                 objs.Add(pool.Acquire());
                 expectedLive++;
@@ -84,7 +84,7 @@ namespace NetGore.Tests.Collections
         {
             var pool = CreateTestPool();
             MyTestObj testObj = null;
-            for (int i = 0; i < 25; i++)
+            for (var i = 0; i < 25; i++)
             {
                 testObj = pool.Acquire();
             }

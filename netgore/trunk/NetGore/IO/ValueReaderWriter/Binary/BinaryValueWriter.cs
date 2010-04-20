@@ -316,9 +316,9 @@ namespace NetGore.IO
                 throw new ArgumentException(errmsg);
             }
 
-            int nodeStart = _nodeOffsetStack.Pop();
-            int nodeEnd = _writer.PositionBits;
-            uint nodeLength = (uint)(nodeEnd - nodeStart - 32);
+            var nodeStart = _nodeOffsetStack.Pop();
+            var nodeEnd = _writer.PositionBits;
+            var nodeLength = (uint)(nodeEnd - nodeStart - 32);
 
             Debug.Assert(nodeLength >= 0);
 
@@ -393,7 +393,7 @@ namespace NetGore.IO
                 Write(null, count);
                 if (values != null && count > 0)
                 {
-                    foreach (T value in values)
+                    foreach (var value in values)
                     {
                         writeHandler(null, value);
                     }
@@ -424,7 +424,7 @@ namespace NetGore.IO
                 Write(null, count);
                 if (values != null && count > 0)
                 {
-                    for (int i = 0; i < values.Length; i++)
+                    for (var i = 0; i < values.Length; i++)
                     {
                         writeHandler(null, values[i]);
                     }
@@ -455,7 +455,7 @@ namespace NetGore.IO
                 Write(null, count);
                 if (values != null && count > 0)
                 {
-                    foreach (T value in values)
+                    foreach (var value in values)
                     {
                         WriteStartNode(null);
                         writeHandler(this, value);
@@ -488,7 +488,7 @@ namespace NetGore.IO
                 Write(null, count);
                 if (values != null && count > 0)
                 {
-                    for (int i = 0; i < values.Length; i++)
+                    for (var i = 0; i < values.Length; i++)
                     {
                         WriteStartNode(null);
                         writeHandler(this, values[i]);
@@ -510,7 +510,7 @@ namespace NetGore.IO
             if (_nodeOffsetStack == null)
                 _nodeOffsetStack = new Stack<int>(4);
 
-            int bitOffset = _writer.PositionBits;
+            var bitOffset = _writer.PositionBits;
             Write(null, reservedValue);
             _nodeOffsetStack.Push(bitOffset);
         }

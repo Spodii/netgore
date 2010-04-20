@@ -19,7 +19,7 @@ namespace NetGore.Graphics
         /// with an item of the given <paramref name="itemSize"/>.</returns>
         public static float GetFillScreenZoomLevel(this ICamera2D camera, Vector2 itemSize)
         {
-            Vector2 zoom = (camera.Size * camera.Scale) / itemSize;
+            var zoom = (camera.Size * camera.Scale) / itemSize;
             return Math.Min(zoom.X, zoom.Y);
         }
     }

@@ -12,8 +12,8 @@ namespace NetGore.Tests.NetGore
 
         static IEnumerable<Entity> CreateEntities(int amount, Vector2 minPos, Vector2 maxPos)
         {
-            Entity[] ret = new Entity[amount];
-            for (int i = 0; i < amount; i++)
+            var ret = new Entity[amount];
+            for (var i = 0; i < amount; i++)
             {
                 ret[i] = new TestEntity { Position = RandomHelperXna.NextVector2(minPos, maxPos) };
             }
@@ -52,9 +52,9 @@ namespace NetGore.Tests.NetGore
         public void GetEntitiesTest()
         {
             const int count = 25;
-            Vector2 min = new Vector2(32, 64);
-            Vector2 max = new Vector2(256, 128);
-            Vector2 diff = max - min;
+            var min = new Vector2(32, 64);
+            var max = new Vector2(256, 128);
+            var diff = max - min;
 
             foreach (var spatial in GetSpatials())
             {

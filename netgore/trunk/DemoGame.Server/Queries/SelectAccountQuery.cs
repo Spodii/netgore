@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -45,7 +44,7 @@ namespace DemoGame.Server.Queries
         {
             bool ret;
 
-            using (IDataReader r = ExecuteReader(new QueryArgs(name, password)))
+            using (var r = ExecuteReader(new QueryArgs(name, password)))
             {
                 if (!r.Read())
                     ret = false;

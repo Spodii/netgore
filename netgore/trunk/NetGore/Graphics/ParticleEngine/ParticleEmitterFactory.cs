@@ -132,7 +132,7 @@ namespace NetGore.Graphics.ParticleEngine
                 throw new ParticleEmitterNotFoundException(emitterName);
 
             // Get the reader and read the emitter
-            XmlValueReader reader = new XmlValueReader(filePath, _rootNodeName);
+            var reader = new XmlValueReader(filePath, _rootNodeName);
             var emitter = Read(reader);
 
             Debug.Assert(emitter.Name.Equals(emitterName, StringComparison.OrdinalIgnoreCase));

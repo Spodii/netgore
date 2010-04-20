@@ -33,30 +33,6 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// Handles the CellValueChanged event of the dgv control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.DataGridViewCellEventArgs"/> instance containing
-        /// the event data.</param>
-        void dgv_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            var key = EnumHelper<StatType>.Parse(dgv[0, e.RowIndex].Value.ToString());
-
-            try
-            {
-                _src[key] = (int)dgv[1, e.RowIndex].Value;
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                dgv[1, e.RowIndex].ErrorText = ex.Message;
-                return;
-            }
-
-            dgv[1, e.RowIndex].Value = _src[key];
-            dgv[1, e.RowIndex].ErrorText = string.Empty;
-        }
-
-        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -116,6 +92,30 @@ namespace DemoGame.EditorTools
             dgv.Dock = DockStyle.Fill;
 
             dgv.CellValueChanged += dgv_CellValueChanged;
+        }
+
+        /// <summary>
+        /// Handles the CellValueChanged event of the dgv control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.DataGridViewCellEventArgs"/> instance containing
+        /// the event data.</param>
+        void dgv_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var key = EnumHelper<StatType>.Parse(dgv[0, e.RowIndex].Value.ToString());
+
+            try
+            {
+                _src[key] = (int)dgv[1, e.RowIndex].Value;
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                dgv[1, e.RowIndex].ErrorText = ex.Message;
+                return;
+            }
+
+            dgv[1, e.RowIndex].Value = _src[key];
+            dgv[1, e.RowIndex].ErrorText = string.Empty;
         }
 
         #region Windows Form Designer generated code

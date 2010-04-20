@@ -33,9 +33,9 @@ namespace DemoGame.Server
 
         public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
         {
-            ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
+            var secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
 
-            PacketWriter pw = GetWriter(ServerPacketID.AddStatusEffect);
+            var pw = GetWriter(ServerPacketID.AddStatusEffect);
             pw.WriteEnum(statusEffectType);
             pw.Write(power);
             pw.Write(secsLeft);
@@ -44,14 +44,14 @@ namespace DemoGame.Server
 
         public static PacketWriter CharAttack(MapEntityIndex mapEntityIndex)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.CharAttack);
+            var pw = GetWriter(ServerPacketID.CharAttack);
             pw.Write(mapEntityIndex);
             return pw;
         }
 
         public static PacketWriter CharDamage(MapEntityIndex mapEntityIndex, int damage)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.CharDamage);
+            var pw = GetWriter(ServerPacketID.CharDamage);
             pw.Write(mapEntityIndex);
             pw.Write(damage);
             return pw;
@@ -59,14 +59,14 @@ namespace DemoGame.Server
 
         public static PacketWriter Chat(string text)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.Chat);
+            var pw = GetWriter(ServerPacketID.Chat);
             pw.Write(text, GameData.MaxServerSayLength);
             return pw;
         }
 
         public static PacketWriter ChatSay(string name, MapEntityIndex mapEntityIndex, string text)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.ChatSay);
+            var pw = GetWriter(ServerPacketID.ChatSay);
             pw.Write(name, GameData.MaxServerSayNameLength);
             pw.Write(mapEntityIndex);
             pw.Write(text, GameData.MaxServerSayLength);
@@ -100,14 +100,14 @@ namespace DemoGame.Server
 
         public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             CreateDynamicEntity(pw, dynamicEntity);
             return pw;
         }
 
         public static PacketWriter Emote(MapEntityIndex mapEntityIndex, Emoticon emoticon)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.Emote);
+            var pw = GetWriter(ServerPacketID.Emote);
             pw.Write(mapEntityIndex);
             pw.WriteEnum(emoticon);
             return pw;
@@ -136,7 +136,7 @@ namespace DemoGame.Server
         /// <returns>PacketWriter to use.</returns>
         static PacketWriter GetWriter(ServerPacketID id)
         {
-            PacketWriter pw = _writerPool.Acquire();
+            var pw = _writerPool.Acquire();
             pw.Write(id);
             return pw;
         }
@@ -185,7 +185,7 @@ namespace DemoGame.Server
         /// <param name="gameMessage">GameMessage for explaining why the login was unsuccessful.</param>
         public static PacketWriter LoginUnsuccessful(GameMessage gameMessage)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.LoginUnsuccessful);
+            var pw = GetWriter(ServerPacketID.LoginUnsuccessful);
             pw.Write(gameMessage);
             return pw;
         }
@@ -197,14 +197,14 @@ namespace DemoGame.Server
         /// <param name="p">Arguments for the GameMessage.</param>
         public static PacketWriter LoginUnsuccessful(GameMessage gameMessage, params object[] p)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.LoginUnsuccessful);
+            var pw = GetWriter(ServerPacketID.LoginUnsuccessful);
             pw.Write(gameMessage, p);
             return pw;
         }
 
         public static PacketWriter NotifyExpCash(int exp, int cash)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.NotifyExpCash);
+            var pw = GetWriter(ServerPacketID.NotifyExpCash);
             pw.Write(exp);
             pw.Write(cash);
             return pw;
@@ -212,7 +212,7 @@ namespace DemoGame.Server
 
         public static PacketWriter NotifyGetItem(string name, byte amount)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.NotifyGetItem);
+            var pw = GetWriter(ServerPacketID.NotifyGetItem);
             pw.Write(name);
             pw.Write(amount);
             return pw;
@@ -220,7 +220,7 @@ namespace DemoGame.Server
 
         public static PacketWriter NotifyLevel(MapEntityIndex mapEntityIndex)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.NotifyLevel);
+            var pw = GetWriter(ServerPacketID.NotifyLevel);
             pw.Write(mapEntityIndex);
             return pw;
         }
@@ -232,14 +232,14 @@ namespace DemoGame.Server
 
         public static PacketWriter PlaySound(SoundID sound)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.PlaySound);
+            var pw = GetWriter(ServerPacketID.PlaySound);
             pw.Write(sound);
             return pw;
         }
 
         public static PacketWriter PlaySoundAt(SoundID sound, Vector2 position)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.PlaySoundAt);
+            var pw = GetWriter(ServerPacketID.PlaySoundAt);
             pw.Write(sound);
             pw.Write(position);
             return pw;
@@ -247,7 +247,7 @@ namespace DemoGame.Server
 
         public static PacketWriter PlaySoundAtEntity(SoundID sound, MapEntityIndex mapEntityIndex)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.PlaySoundAtEntity);
+            var pw = GetWriter(ServerPacketID.PlaySoundAtEntity);
             pw.Write(sound);
             pw.Write(mapEntityIndex);
             return pw;
@@ -262,35 +262,35 @@ namespace DemoGame.Server
 
         public static PacketWriter RemoveDynamicEntity(DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.RemoveDynamicEntity);
+            var pw = GetWriter(ServerPacketID.RemoveDynamicEntity);
             pw.Write(dynamicEntity.MapEntityIndex);
             return pw;
         }
 
         public static PacketWriter RemoveStatusEffect(StatusEffectType statusEffectType)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.RemoveStatusEffect);
+            var pw = GetWriter(ServerPacketID.RemoveStatusEffect);
             pw.WriteEnum(statusEffectType);
             return pw;
         }
 
         public static PacketWriter RequestUDPConnection(int challenge)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.RequestUDPConnection);
+            var pw = GetWriter(ServerPacketID.RequestUDPConnection);
             pw.Write(challenge);
             return pw;
         }
 
         public static PacketWriter SendAccountCharacters(AccountCharacterInfo[] charInfos)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SendAccountCharacters);
+            var pw = GetWriter(ServerPacketID.SendAccountCharacters);
 
             if (charInfos == null || charInfos.Length == 0)
                 pw.Write((byte)0);
             else
             {
                 pw.Write((byte)charInfos.Length);
-                for (int i = 0; i < charInfos.Length; i++)
+                for (var i = 0; i < charInfos.Length; i++)
                 {
                     pw.Write(charInfos[i]);
                 }
@@ -301,7 +301,7 @@ namespace DemoGame.Server
 
         public static PacketWriter SendEquipmentItemInfo(EquipmentSlot slot, ItemEntity item)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SendEquipmentItemInfo);
+            var pw = GetWriter(ServerPacketID.SendEquipmentItemInfo);
             pw.WriteEnum(slot);
             new ItemTable(item).WriteState(pw);
             return pw;
@@ -309,7 +309,7 @@ namespace DemoGame.Server
 
         public static PacketWriter SendInventoryItemInfo(InventorySlot slot, ItemEntity item)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SendInventoryItemInfo);
+            var pw = GetWriter(ServerPacketID.SendInventoryItemInfo);
             pw.Write(slot);
             new ItemTable(item).WriteState(pw);
             return pw;
@@ -317,21 +317,21 @@ namespace DemoGame.Server
 
         public static PacketWriter SendMessage(GameMessage gameMessage)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SendMessage);
+            var pw = GetWriter(ServerPacketID.SendMessage);
             pw.Write(gameMessage);
             return pw;
         }
 
         public static PacketWriter SendMessage(GameMessage gameMessage, params object[] p)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SendMessage);
+            var pw = GetWriter(ServerPacketID.SendMessage);
             pw.Write(gameMessage, p);
             return pw;
         }
 
         public static PacketWriter SetCash(int cash)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCash);
+            var pw = GetWriter(ServerPacketID.SetCash);
             pw.Write(cash);
             return pw;
         }
@@ -345,7 +345,7 @@ namespace DemoGame.Server
 
         public static PacketWriter SetCharacterHPPercent(MapEntityIndex mapEntityIndex, byte hpPercent)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             SetCharacterHPPercent(pw, mapEntityIndex, hpPercent);
             return pw;
         }
@@ -359,14 +359,14 @@ namespace DemoGame.Server
 
         public static PacketWriter SetCharacterMPPercent(MapEntityIndex mapEntityIndex, byte mpPercent)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             SetCharacterMPPercent(pw, mapEntityIndex, mpPercent);
             return pw;
         }
 
         public static PacketWriter SetCharacterPaperDoll(MapEntityIndex mapEntityIndex, IEnumerable<string> layers)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCharacterPaperDoll);
+            var pw = GetWriter(ServerPacketID.SetCharacterPaperDoll);
             pw.Write(mapEntityIndex);
 
             pw.Write((byte)layers.Count());
@@ -380,7 +380,7 @@ namespace DemoGame.Server
 
         public static PacketWriter SetChatDialogPage(NPCChatDialogItemID pageID, IEnumerable<byte> responsesToSkip)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetChatDialogPage);
+            var pw = GetWriter(ServerPacketID.SetChatDialogPage);
             pw.Write(pageID);
 
             // Get the number of responses to skip
@@ -396,7 +396,7 @@ namespace DemoGame.Server
             if (skipCount > 0)
             {
                 Debug.Assert(responsesToSkip != null);
-                foreach (byte responseToSkip in responsesToSkip)
+                foreach (var responseToSkip in responsesToSkip)
                 {
                     pw.Write(responseToSkip);
                 }
@@ -407,14 +407,14 @@ namespace DemoGame.Server
 
         public static PacketWriter SetExp(int exp)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetExp);
+            var pw = GetWriter(ServerPacketID.SetExp);
             pw.Write(exp);
             return pw;
         }
 
         public static PacketWriter SetGameTime(DateTime serverTime)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetGameTime);
+            var pw = GetWriter(ServerPacketID.SetGameTime);
             pw.Write(serverTime.ToBinary());
             return pw;
         }
@@ -427,7 +427,7 @@ namespace DemoGame.Server
 
         public static PacketWriter SetHP(SPValueType hp)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             SetHP(pw, hp);
             return pw;
         }
@@ -450,28 +450,15 @@ namespace DemoGame.Server
 
         public static PacketWriter SetInventorySlot(InventorySlot slot, GrhIndex graphic, byte amount)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             SetInventorySlot(pw, slot, graphic, amount);
             return pw;
         }
 
         public static PacketWriter SetLevel(byte level)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetLevel);
+            var pw = GetWriter(ServerPacketID.SetLevel);
             pw.Write(level);
-            return pw;
-        }
-
-        public static void SetMap(PacketWriter pw, MapID mapID)
-        {
-            pw.Write(ServerPacketID.SetMap);
-            pw.Write(mapID);
-        }
-
-        public static PacketWriter SetMap(MapID mapID)
-        {
-            PacketWriter pw = GetWriter();
-            SetMap(pw, mapID);
             return pw;
         }
 
@@ -483,8 +470,21 @@ namespace DemoGame.Server
 
         public static PacketWriter SetMP(SPValueType mp)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             SetMP(pw, mp);
+            return pw;
+        }
+
+        public static void SetMap(PacketWriter pw, MapID mapID)
+        {
+            pw.Write(ServerPacketID.SetMap);
+            pw.Write(mapID);
+        }
+
+        public static PacketWriter SetMap(MapID mapID)
+        {
+            var pw = GetWriter();
+            SetMap(pw, mapID);
             return pw;
         }
 
@@ -501,7 +501,7 @@ namespace DemoGame.Server
 
         public static PacketWriter SetSkillGroupCooldown(byte skillGroup, ushort cooldownTime)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetSkillGroupCooldown);
+            var pw = GetWriter(ServerPacketID.SetSkillGroupCooldown);
             pw.Write(skillGroup);
             pw.Write(cooldownTime);
             return pw;
@@ -509,7 +509,7 @@ namespace DemoGame.Server
 
         public static PacketWriter SetStatPoints(int statPoints)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetStatPoints);
+            var pw = GetWriter(ServerPacketID.SetStatPoints);
             pw.Write(statPoints);
             return pw;
         }
@@ -526,14 +526,14 @@ namespace DemoGame.Server
         /// <param name="mapEntityIndex">Map character index controlled by the user</param>
         public static PacketWriter SetUserChar(MapEntityIndex mapEntityIndex)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             SetUserChar(pw, mapEntityIndex);
             return pw;
         }
 
         public static PacketWriter StartCastingSkill(SkillType skillType, ushort castTime)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.StartCastingSkill);
+            var pw = GetWriter(ServerPacketID.StartCastingSkill);
             pw.WriteEnum(skillType);
             pw.Write(castTime);
             return pw;
@@ -541,7 +541,7 @@ namespace DemoGame.Server
 
         public static PacketWriter StartChatDialog(MapEntityIndex npcIndex, NPCChatDialogID dialogID)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.StartChatDialog);
+            var pw = GetWriter(ServerPacketID.StartChatDialog);
             pw.Write(npcIndex);
             pw.Write(dialogID);
             return pw;
@@ -550,7 +550,7 @@ namespace DemoGame.Server
         public static PacketWriter StartQuestChatDialog(MapEntityIndex npcIndex, IEnumerable<QuestID> availableQuests,
                                                         IEnumerable<QuestID> turnInQuests)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.StartQuestChatDialog);
+            var pw = GetWriter(ServerPacketID.StartQuestChatDialog);
 
             pw.Write(npcIndex);
 
@@ -587,7 +587,7 @@ namespace DemoGame.Server
 
         public static PacketWriter StartShopping(MapEntityIndex shopOwnerIndex, IShop<ShopItem> shop)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.StartShopping);
+            var pw = GetWriter(ServerPacketID.StartShopping);
             pw.Write(shopOwnerIndex);
             pw.Write(shop.CanBuy);
             pw.Write(shop.Name);
@@ -609,14 +609,14 @@ namespace DemoGame.Server
 
         public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             SynchronizeDynamicEntity(pw, dynamicEntity);
             return pw;
         }
 
         public static PacketWriter UpdateEquipmentSlot(EquipmentSlot slot, GrhIndex? graphic)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.UpdateEquipmentSlot);
+            var pw = GetWriter(ServerPacketID.UpdateEquipmentSlot);
             pw.WriteEnum(slot);
             pw.Write(graphic.HasValue);
 
@@ -628,7 +628,7 @@ namespace DemoGame.Server
 
         public static void UpdateStat(PacketWriter pw, Stat<StatType> stat, StatCollectionType statCollectionType)
         {
-            bool isBaseStat = (statCollectionType == StatCollectionType.Base);
+            var isBaseStat = (statCollectionType == StatCollectionType.Base);
 
             pw.Write(ServerPacketID.UpdateStat);
             pw.Write(isBaseStat);
@@ -637,7 +637,7 @@ namespace DemoGame.Server
 
         public static PacketWriter UpdateStat(Stat<StatType> stat, StatCollectionType statCollectionType)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             UpdateStat(pw, stat, statCollectionType);
             return pw;
         }
@@ -651,14 +651,14 @@ namespace DemoGame.Server
 
         public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, int currentTime)
         {
-            PacketWriter pw = GetWriter();
+            var pw = GetWriter();
             UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);
             return pw;
         }
 
         public static PacketWriter UseEntity(MapEntityIndex usedEntity, MapEntityIndex usedBy)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.UseEntity);
+            var pw = GetWriter(ServerPacketID.UseEntity);
             pw.Write(usedEntity);
             pw.Write(usedBy);
             return pw;
@@ -666,7 +666,7 @@ namespace DemoGame.Server
 
         public static PacketWriter UseSkill(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.UseSkill);
+            var pw = GetWriter(ServerPacketID.UseSkill);
             pw.Write(user);
 
             if (target.HasValue)

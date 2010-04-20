@@ -283,7 +283,7 @@ namespace DemoGame
         {
 #if !TOPDOWN
             // Start with the idle state
-            CharacterState newState = CharacterState.Idle;
+            var newState = CharacterState.Idle;
 
             // Check the vertical state (moving up or down)
             if (Velocity.Y != 0 || StandingOn == null)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
@@ -87,7 +88,7 @@ namespace SFML.Graphics
         /// <param name="obj">The Object to compare with the current BoundingBox.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
+            var flag = false;
             if (obj is BoundingBox)
                 flag = Equals((BoundingBox)obj);
             return flag;
@@ -164,12 +165,12 @@ namespace SFML.Graphics
         {
             if (points == null)
                 throw new ArgumentNullException();
-            bool flag = false;
-            Vector3 vector3 = new Vector3(float.MaxValue);
-            Vector3 vector2 = new Vector3(float.MinValue);
-            foreach (Vector3 vector in points)
+            var flag = false;
+            var vector3 = new Vector3(float.MaxValue);
+            var vector2 = new Vector3(float.MinValue);
+            foreach (var vector in points)
             {
-                Vector3 vector4 = vector;
+                var vector4 = vector;
                 Vector3.Min(ref vector3, ref vector4, out vector3);
                 Vector3.Max(ref vector2, ref vector4, out vector2);
                 flag = true;
@@ -222,7 +223,7 @@ namespace SFML.Graphics
             vector.X = (plane.Normal.X >= 0f) ? Max.X : Min.X;
             vector.Y = (plane.Normal.Y >= 0f) ? Max.Y : Min.Y;
             vector.Z = (plane.Normal.Z >= 0f) ? Max.Z : Min.Z;
-            float num = ((plane.Normal.X * vector2.X) + (plane.Normal.Y * vector2.Y)) + (plane.Normal.Z * vector2.Z);
+            var num = ((plane.Normal.X * vector2.X) + (plane.Normal.Y * vector2.Y)) + (plane.Normal.Z * vector2.Z);
             if ((num + plane.D) > 0f)
                 return PlaneIntersectionType.Front;
             num = ((plane.Normal.X * vector.X) + (plane.Normal.Y * vector.Y)) + (plane.Normal.Z * vector.Z);
@@ -244,7 +245,7 @@ namespace SFML.Graphics
             vector.X = (plane.Normal.X >= 0f) ? Max.X : Min.X;
             vector.Y = (plane.Normal.Y >= 0f) ? Max.Y : Min.Y;
             vector.Z = (plane.Normal.Z >= 0f) ? Max.Z : Min.Z;
-            float num = ((plane.Normal.X * vector2.X) + (plane.Normal.Y * vector2.Y)) + (plane.Normal.Z * vector2.Z);
+            var num = ((plane.Normal.X * vector2.X) + (plane.Normal.Y * vector2.Y)) + (plane.Normal.Z * vector2.Z);
             if ((num + plane.D) > 0f)
                 result = PlaneIntersectionType.Front;
             else
@@ -261,8 +262,8 @@ namespace SFML.Graphics
         /// <param name="ray">The Ray to check for intersection with.</param>
         public float? Intersects(Ray ray)
         {
-            float num = 0f;
-            float maxValue = float.MaxValue;
+            var num = 0f;
+            var maxValue = float.MaxValue;
             if (Math.Abs(ray.Direction.X) < 1E-06f)
             {
                 if ((ray.Position.X < Min.X) || (ray.Position.X > Max.X))
@@ -270,12 +271,12 @@ namespace SFML.Graphics
             }
             else
             {
-                float num11 = 1f / ray.Direction.X;
-                float num8 = (Min.X - ray.Position.X) * num11;
-                float num7 = (Max.X - ray.Position.X) * num11;
+                var num11 = 1f / ray.Direction.X;
+                var num8 = (Min.X - ray.Position.X) * num11;
+                var num7 = (Max.X - ray.Position.X) * num11;
                 if (num8 > num7)
                 {
-                    float num14 = num8;
+                    var num14 = num8;
                     num8 = num7;
                     num7 = num14;
                 }
@@ -291,12 +292,12 @@ namespace SFML.Graphics
             }
             else
             {
-                float num10 = 1f / ray.Direction.Y;
-                float num6 = (Min.Y - ray.Position.Y) * num10;
-                float num5 = (Max.Y - ray.Position.Y) * num10;
+                var num10 = 1f / ray.Direction.Y;
+                var num6 = (Min.Y - ray.Position.Y) * num10;
+                var num5 = (Max.Y - ray.Position.Y) * num10;
                 if (num6 > num5)
                 {
-                    float num13 = num6;
+                    var num13 = num6;
                     num6 = num5;
                     num5 = num13;
                 }
@@ -312,12 +313,12 @@ namespace SFML.Graphics
             }
             else
             {
-                float num9 = 1f / ray.Direction.Z;
-                float num4 = (Min.Z - ray.Position.Z) * num9;
-                float num3 = (Max.Z - ray.Position.Z) * num9;
+                var num9 = 1f / ray.Direction.Z;
+                var num4 = (Min.Z - ray.Position.Z) * num9;
+                var num3 = (Max.Z - ray.Position.Z) * num9;
                 if (num4 > num3)
                 {
-                    float num12 = num4;
+                    var num12 = num4;
                     num4 = num3;
                     num3 = num12;
                 }
@@ -335,8 +336,8 @@ namespace SFML.Graphics
         public void Intersects(ref Ray ray, out float? result)
         {
             result = 0;
-            float num = 0f;
-            float maxValue = float.MaxValue;
+            var num = 0f;
+            var maxValue = float.MaxValue;
             if (Math.Abs(ray.Direction.X) < 1E-06f)
             {
                 if ((ray.Position.X < Min.X) || (ray.Position.X > Max.X))
@@ -344,12 +345,12 @@ namespace SFML.Graphics
             }
             else
             {
-                float num11 = 1f / ray.Direction.X;
-                float num8 = (Min.X - ray.Position.X) * num11;
-                float num7 = (Max.X - ray.Position.X) * num11;
+                var num11 = 1f / ray.Direction.X;
+                var num8 = (Min.X - ray.Position.X) * num11;
+                var num7 = (Max.X - ray.Position.X) * num11;
                 if (num8 > num7)
                 {
-                    float num14 = num8;
+                    var num14 = num8;
                     num8 = num7;
                     num7 = num14;
                 }
@@ -365,12 +366,12 @@ namespace SFML.Graphics
             }
             else
             {
-                float num10 = 1f / ray.Direction.Y;
-                float num6 = (Min.Y - ray.Position.Y) * num10;
-                float num5 = (Max.Y - ray.Position.Y) * num10;
+                var num10 = 1f / ray.Direction.Y;
+                var num6 = (Min.Y - ray.Position.Y) * num10;
+                var num5 = (Max.Y - ray.Position.Y) * num10;
                 if (num6 > num5)
                 {
-                    float num13 = num6;
+                    var num13 = num6;
                     num6 = num5;
                     num5 = num13;
                 }
@@ -386,12 +387,12 @@ namespace SFML.Graphics
             }
             else
             {
-                float num9 = 1f / ray.Direction.Z;
-                float num4 = (Min.Z - ray.Position.Z) * num9;
-                float num3 = (Max.Z - ray.Position.Z) * num9;
+                var num9 = 1f / ray.Direction.Z;
+                var num4 = (Min.Z - ray.Position.Z) * num9;
+                var num3 = (Max.Z - ray.Position.Z) * num9;
                 if (num4 > num3)
                 {
-                    float num12 = num4;
+                    var num12 = num4;
                     num4 = num3;
                     num3 = num12;
                 }
@@ -464,7 +465,7 @@ namespace SFML.Graphics
                 throw new ArgumentNullException("frustum", FrameworkResources.NullNotAllowed);
             if (!frustum.Intersects(this))
                 return ContainmentType.Disjoint;
-            foreach (Vector3 vector in frustum.cornerArray)
+            foreach (var vector in frustum.cornerArray)
             {
                 if (Contains(vector) == ContainmentType.Disjoint)
                     return ContainmentType.Intersects;
@@ -499,7 +500,7 @@ namespace SFML.Graphics
             Vector3 vector;
             Vector3.Clamp(ref sphere.Center, ref Min, ref Max, out vector);
             Vector3.DistanceSquared(ref sphere.Center, ref vector, out num2);
-            float radius = sphere.Radius;
+            var radius = sphere.Radius;
             if (num2 > (radius * radius))
                 return ContainmentType.Disjoint;
             if (((((Min.X + radius) <= sphere.Center.X) && (sphere.Center.X <= (Max.X - radius))) &&
@@ -519,7 +520,7 @@ namespace SFML.Graphics
             Vector3 vector;
             Vector3.Clamp(ref sphere.Center, ref Min, ref Max, out vector);
             Vector3.DistanceSquared(ref sphere.Center, ref vector, out num2);
-            float radius = sphere.Radius;
+            var radius = sphere.Radius;
             if (num2 > (radius * radius))
                 result = ContainmentType.Disjoint;
             else

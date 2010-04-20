@@ -97,7 +97,7 @@ namespace NetGore.Audio
         /// <returns>The MusicID read from the IValueReader.</returns>
         public static MusicID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new MusicID(value);
         }
 
@@ -109,11 +109,11 @@ namespace NetGore.Audio
         /// <returns>The MusicID read from the IDataReader.</returns>
         public static MusicID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new MusicID((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new MusicID(convertedValue);
         }
 
@@ -135,7 +135,7 @@ namespace NetGore.Audio
         /// <returns>The MusicID read from the BitStream.</returns>
         public static MusicID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new MusicID(value);
         }
 
@@ -848,7 +848,7 @@ namespace NetGore.Audio
         public static bool TryParse(this Parser parser, string value, out MusicID outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new MusicID(tmp);
             return ret;
         }

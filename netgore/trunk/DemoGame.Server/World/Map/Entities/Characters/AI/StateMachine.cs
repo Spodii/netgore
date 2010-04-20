@@ -367,7 +367,8 @@ namespace DemoGame.Server
 
     #region Sidescroller AI Algorithm
 
-#if !TOPDOWN //The Sidescroller AI Algorithm.
+#if !TOPDOWN
+    //The Sidescroller AI Algorithm.
     [AI(_id)]
     class StateMachine : AIBase
     {
@@ -379,8 +380,8 @@ namespace DemoGame.Server
             Idle
         }
 
-        const int _id = 2;
         const int _UpdateRate = 3000;
+        const int _id = 2;
         State _characterState = State.Patrol;
         bool _hasTarget;
         int _lastUpdateTime = int.MinValue;
@@ -403,16 +404,6 @@ namespace DemoGame.Server
         public override AIID ID
         {
             get { return new AIID(_id); }
-        }
-
-        /// <summary>
-        /// Called when the target is killed.  It resets whether the Actor should be trying to attack the _target.
-        /// </summary>
-        /// <param name="character">The character that is killed</param>
-        void _target_Killed(Character character)
-        {
-            //Stop attacking target. Job done.
-            _hasTarget = false;
         }
 
         /// <summary>
@@ -500,7 +491,7 @@ namespace DemoGame.Server
                 }
             }
 
-            int YDifference = Convert.ToInt32((_target.Position.Y - Actor.Position.Y));
+            var YDifference = Convert.ToInt32((_target.Position.Y - Actor.Position.Y));
 
             if ((YDifference <= 5) && (YDifference >= -5))
             {
@@ -551,7 +542,7 @@ namespace DemoGame.Server
         {
             //Updates a few variables that don't need to be updated every frame
             //and calls the EvaluateState method
-            int time = GetTime();
+            var time = GetTime();
             if (_lastUpdateTime + _UpdateRate < time)
             {
                 _lastUpdateTime = time;
@@ -600,7 +591,7 @@ namespace DemoGame.Server
                 }
             }
 
-            int YDifference = Convert.ToInt32((_target.Position.Y - Actor.Position.Y));
+            var YDifference = Convert.ToInt32((_target.Position.Y - Actor.Position.Y));
 
             if ((YDifference <= 5) && (YDifference >= -5))
             {
@@ -735,6 +726,16 @@ namespace DemoGame.Server
                     Patrol();
                     break;
             }
+        }
+
+        /// <summary>
+        /// Called when the target is killed.  It resets whether the Actor should be trying to attack the _target.
+        /// </summary>
+        /// <param name="character">The character that is killed</param>
+        void _target_Killed(Character character)
+        {
+            //Stop attacking target. Job done.
+            _hasTarget = false;
         }
     }
 #endif

@@ -118,7 +118,7 @@ namespace NetGore.Features.Groups
 
                 default:
                     const string errmsg = "Unknown GroupInfoMessages value `{0}`. Could not parse!";
-                    string err = string.Format(errmsg, id);
+                    var err = string.Format(errmsg, id);
                     log.Fatal(err);
                     Debug.Fail(err);
                     return;
@@ -131,7 +131,7 @@ namespace NetGore.Features.Groups
         /// <param name="bs">The <see cref="BitStream"/> to read from.</param>
         void ReadAddMember(BitStream bs)
         {
-            string name = bs.ReadString();
+            var name = bs.ReadString();
 
             if (!_members.Contains(name, _membersListComparer))
                 _members.Add(name);
@@ -156,7 +156,7 @@ namespace NetGore.Features.Groups
         /// <param name="bs">The <see cref="BitStream"/> to read from.</param>
         void ReadRemoveMember(BitStream bs)
         {
-            string name = bs.ReadString();
+            var name = bs.ReadString();
 
             if (!_members.Remove(name))
             {
@@ -182,12 +182,12 @@ namespace NetGore.Features.Groups
             _members.Clear();
             _founder = null;
 
-            bool isInGroup = bs.ReadBool();
+            var isInGroup = bs.ReadBool();
 
             if (isInGroup)
             {
                 // Read the group members
-                byte numMembers = bs.ReadByte();
+                var numMembers = bs.ReadByte();
                 var members = bs.ReadStrings(numMembers);
                 _members.AddRange(members);
 

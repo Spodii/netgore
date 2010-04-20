@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using NetGore;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -22,31 +20,13 @@ namespace DemoGame.Client
 
         IEnumerable<TextureAtlas> _globalAtlases;
 
-        public void HandleFrame()
-        {
-            // Process events
-            DispatchEvents();
-
-            // Draw everything
-            Draw();
-
-            // Update the sockets
-            _sockets.Heartbeat();
-
-            // Update everything else
-            Update();
-
-            // Display the window
-            Display();
-        }
-
         /// <summary>
         /// Sets up all the primary components of the game
         /// </summary>
         public DemoGame(IntPtr p) : base(p)
         {
             EngineSettingsInitializer.Initialize();
- 
+
             // Create the screen manager
             _screenManager = new ScreenManager(this, new SkinManager("Default"), "Font/Arial", 24);
 
@@ -79,12 +59,6 @@ namespace DemoGame.Client
             KeyPressed += DemoGame_KeyPressed;
         }
 
-        void DemoGame_KeyPressed(object sender, KeyEventArgs e)
-        {
-            if (e.Code == KeyCode.Tilde)
-                _screenManager.ShowConsole = !_screenManager.ShowConsole;
-        }
-
         /// <summary>
         /// Decides the <see cref="ContentLevel"/> to use for <see cref="GrhData"/>s.
         /// </summary>
@@ -94,7 +68,7 @@ namespace DemoGame.Client
         {
             const StringComparison comp = StringComparison.OrdinalIgnoreCase;
 
-            string cat = grhData.Categorization.Category.ToString();
+            var cat = grhData.Categorization.Category.ToString();
 
             // For stuff that will be put into a global atlas, use the temporary level
             if (cat.StartsWith("gui", comp))
@@ -106,6 +80,12 @@ namespace DemoGame.Client
 
             // Everything else, return global
             return ContentLevel.Global;
+        }
+
+        void DemoGame_KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Code == KeyCode.Tilde)
+                _screenManager.ShowConsole = !_screenManager.ShowConsole;
         }
 
         protected override void Destroy(bool disposing)
@@ -121,6 +101,32 @@ namespace DemoGame.Client
             _screenManager.Dispose();
 
             base.Destroy(disposing);
+        }
+
+        /// <summary>
+        /// Draws the game.
+        /// </summary>
+        public virtual void Draw()
+        {
+            _screenManager.Draw(Environment.TickCount);
+        }
+
+        public void HandleFrame()
+        {
+            // Process events
+            DispatchEvents();
+
+            // Draw everything
+            Draw();
+
+            // Update the sockets
+            _sockets.Heartbeat();
+
+            // Update everything else
+            Update();
+
+            // Display the window
+            Display();
         }
 
         /// <summary>
@@ -156,7 +162,7 @@ namespace DemoGame.Client
 
             if (gdGUI.Count > 0)
                 globalAtlasesList.Add(new TextureAtlas(gdGUI));
-            
+
             _globalAtlases = globalAtlasesList.ToArray();
 
             // Unload all of the textures temporarily loaded into the MapContent
@@ -170,14 +176,6 @@ namespace DemoGame.Client
         public virtual void Update()
         {
             _screenManager.Update(Environment.TickCount);
-        }
-
-        /// <summary>
-        /// Draws the game.
-        /// </summary>
-        public virtual void Draw()
-        {
-            _screenManager.Draw(Environment.TickCount);
         }
     }
 }

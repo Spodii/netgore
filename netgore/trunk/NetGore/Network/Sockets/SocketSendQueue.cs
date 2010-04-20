@@ -68,7 +68,7 @@ namespace NetGore.Network
         /// <param name="sourceStream">BitStream containing the data to add to the _sendStream.</param>
         void AddToSendStream(BitStream sourceStream)
         {
-            int buildStreamLenBits = sourceStream.LengthBits;
+            var buildStreamLenBits = sourceStream.LengthBits;
 
             // Check for data in the stream
             if (buildStreamLenBits == 0)

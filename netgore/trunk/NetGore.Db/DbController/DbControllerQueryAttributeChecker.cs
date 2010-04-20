@@ -30,7 +30,7 @@ namespace NetGore.Db
             _missingAttributeHandler = missingAttributeHandler;
             _typesToIgnore = typesToIgnore;
 
-            TypeFilterCreator filter = new TypeFilterCreator
+            var filter = new TypeFilterCreator
             {
                 IsClass = true,
                 IsAbstract = false,

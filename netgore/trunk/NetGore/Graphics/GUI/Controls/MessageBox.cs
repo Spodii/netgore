@@ -168,7 +168,7 @@ namespace NetGore.Graphics.GUI
         /// <returns>The created buttons.</returns>
         IEnumerable<Button> CreateButtons(MessageBoxButton types)
         {
-            List<Button> ret = new List<Button>();
+            var ret = new List<Button>();
 
             // Create the buttons
             var typesInt = (int)types;
@@ -178,7 +178,7 @@ namespace NetGore.Graphics.GUI
                 if (((int)possibleType & typesInt) == 0)
                     continue;
 
-                string text = possibleType.ToString();
+                var text = possibleType.ToString();
                 var fontSize = Font.MeasureString(text);
                 var btn = new Button(this, Vector2.Zero, fontSize + new Vector2(6)) { Text = text, Tag = possibleType };
                 btn.Clicked += Button_Clicked;
@@ -186,7 +186,7 @@ namespace NetGore.Graphics.GUI
             }
 
             // Resize all buttons to equal the size of the largest button (looks better when consistently sized)
-            Vector2 greatestSize = new Vector2(ret.Max(x => x.ClientSize.X), ret.Max(x => x.ClientSize.Y));
+            var greatestSize = new Vector2(ret.Max(x => x.ClientSize.X), ret.Max(x => x.ClientSize.Y));
             foreach (var btn in ret)
             {
                 btn.ClientSize = greatestSize;
@@ -217,7 +217,7 @@ namespace NetGore.Graphics.GUI
             // Create the text
             var lines = StyledText.ToMultiline(new StyledText[] { new StyledText(Message) }, true, Font,
                                                MaxWidth - (_padding * 2) - Border.Width);
-            int yOffset = _padding;
+            var yOffset = _padding;
             foreach (var line in lines)
             {
                 var concatLine = StyledText.ToString(line);
@@ -233,12 +233,12 @@ namespace NetGore.Graphics.GUI
             _msgBoxChildren.AddRange(buttons.Cast<Control>());
 
             // Expand the form if needed to fit the buttons
-            float neededButtonWidth = buttons.Sum(x => x.Size.X) + ((buttons.Count() + 1) * _padding);
+            var neededButtonWidth = buttons.Sum(x => x.Size.X) + ((buttons.Count() + 1) * _padding);
             if (ClientSize.X < neededButtonWidth)
                 ClientSize = new Vector2(neededButtonWidth, ClientSize.Y);
 
             // Arrange the buttons
-            float xOffset = Math.Max(_padding, (ClientSize.X - neededButtonWidth) / 2f);
+            var xOffset = Math.Max(_padding, (ClientSize.X - neededButtonWidth) / 2f);
             foreach (var button in buttons)
             {
                 button.Position = new Vector2(xOffset, yOffset);

@@ -36,7 +36,7 @@ namespace DemoGame.MapEditor.Forms
             if (Camera == null || Camera.Map == null)
                 return;
 
-            float targetRatio = Camera.Map.Size.X / Camera.Map.Size.Y;
+            var targetRatio = Camera.Map.Size.X / Camera.Map.Size.Y;
             this.ResizeToAspectRatio(targetRatio, true);
         }
     }

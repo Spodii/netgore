@@ -110,7 +110,7 @@ namespace NetGore.EditorTools
                 BeginUpdate();
 
                 // Remove the extra items
-                foreach (TItem item in toRemove)
+                foreach (var item in toRemove)
                 {
                     Items.Remove(item);
                 }

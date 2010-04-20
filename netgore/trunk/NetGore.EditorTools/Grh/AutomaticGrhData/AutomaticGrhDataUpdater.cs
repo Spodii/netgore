@@ -19,7 +19,10 @@ namespace NetGore.EditorTools
     public static class AutomaticGrhDataUpdater
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly string[] _graphicFileSuffixes = { ".bmp", ".jpg", ".jpeg", ".dds", ".psd", ".png", ".gif", ".tga", ".hdr" };
+
+        static readonly string[] _graphicFileSuffixes = {
+            ".bmp", ".jpg", ".jpeg", ".dds", ".psd", ".png", ".gif", ".tga", ".hdr"
+        };
 
         /// <summary>
         /// Finds all of the texture files from the root directory.
@@ -104,7 +107,7 @@ namespace NetGore.EditorTools
         /// <paramref name="rootDir"/>.</returns>
         static int GetRelativeTrimLength(string rootDir)
         {
-            int len = rootDir.Length;
+            var len = rootDir.Length;
             if (!rootDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 len++;
             return len;
@@ -154,10 +157,10 @@ namespace NetGore.EditorTools
             absolute = absolute.Replace('\\', '/');
 
             // Trim down to the relative path
-            string rel = absolute.Substring(trimLen);
+            var rel = absolute.Substring(trimLen);
 
             // Remove the file suffix since we don't use that
-            int lastPeriod = rel.LastIndexOf('.');
+            var lastPeriod = rel.LastIndexOf('.');
             rel = rel.Substring(0, lastPeriod);
 
             return rel;
@@ -199,7 +202,7 @@ namespace NetGore.EditorTools
             if (log.IsInfoEnabled)
                 log.InfoFormat("Searching for automatic animated GrhDatas from root `{0}`.");
 
-            List<GrhData> ret = new List<GrhData>();
+            var ret = new List<GrhData>();
 
             // Find all directories that match the needed pattern
             var dirs = GetAnimatedDirectories(rootGrhDir);
@@ -218,7 +221,7 @@ namespace NetGore.EditorTools
                     partialDir = partialDir.Substring(1);
 
                 // Get the categorization
-                int lastDirSep = partialDir.LastIndexOf(Path.DirectorySeparatorChar);
+                var lastDirSep = partialDir.LastIndexOf(Path.DirectorySeparatorChar);
                 if (lastDirSep < 0)
                 {
                     if (log.IsWarnEnabled)
@@ -226,7 +229,7 @@ namespace NetGore.EditorTools
                     continue;
                 }
 
-                string categoryStr = partialDir.Substring(0, lastDirSep);
+                var categoryStr = partialDir.Substring(0, lastDirSep);
 
                 var categorization = new SpriteCategorization(new SpriteCategory(categoryStr), new SpriteTitle(animInfo.Title));
 
@@ -250,7 +253,7 @@ namespace NetGore.EditorTools
         /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
         public static IEnumerable<GrhData> UpdateStationary(IContentManager cm, string rootGrhDir)
         {
-            char[] dirSepChars = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+            var dirSepChars = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Searching for automatic stationary GrhDatas from root `{0}`.");
@@ -263,7 +266,7 @@ namespace NetGore.EditorTools
 
             // Grab the relative path instead of the complete file path since this
             // is how they are stored in the GrhData, then if it is in the usedTextures, remove it
-            int trimLen = GetRelativeTrimLength(rootGrhDir);
+            var trimLen = GetRelativeTrimLength(rootGrhDir);
             textures.RemoveAll(x => usedTextures.ContainsKey(TextureAbsoluteToRelativePath(trimLen, x)));
 
             // Check if there are any unused textures
@@ -272,10 +275,10 @@ namespace NetGore.EditorTools
 
             // Create the GrhDatas
             var ret = new List<GrhData>();
-            foreach (string texture in textures)
+            foreach (var texture in textures)
             {
                 // Go back to the relative path, and use it to figure out the categorization
-                string relative = TextureAbsoluteToRelativePath(trimLen, texture);
+                var relative = TextureAbsoluteToRelativePath(trimLen, texture);
                 if (relative.LastIndexOfAny(dirSepChars) < 0)
                 {
                     if (log.IsWarnEnabled)

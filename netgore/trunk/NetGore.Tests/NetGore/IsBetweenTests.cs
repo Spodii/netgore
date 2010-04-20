@@ -18,7 +18,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (byte k = 0; k < 60; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -35,16 +35,16 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsBetweenDateTimeTest()
         {
-            DateTime i = new DateTime(0);
+            var i = new DateTime(0);
             while ((i = i.AddTicks(1)) < new DateTime(40))
             {
-                DateTime j = new DateTime(0);
+                var j = new DateTime(0);
                 while ((j = j.AddTicks(1)) < new DateTime(40))
                 {
-                    DateTime k = new DateTime(0);
+                    var k = new DateTime(0);
                     while ((k = k.AddTicks(1)) < new DateTime(60))
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -67,7 +67,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (decimal k = -30; k < 30; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -90,7 +90,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (double k = -30; k < 30; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -113,7 +113,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (float k = -30; k < 30; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -130,13 +130,13 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void IsBetweenIntTest()
         {
-            for (int i = -20; i < 20; i++)
+            for (var i = -20; i < 20; i++)
             {
-                for (int j = -20; j < 20; j++)
+                for (var j = -20; j < 20; j++)
                 {
-                    for (int k = -30; k < 30; k++)
+                    for (var k = -30; k < 30; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -159,7 +159,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (long k = -30; k < 30; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -182,7 +182,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (sbyte k = -30; k < 30; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -205,7 +205,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (short k = -30; k < 30; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -228,7 +228,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (uint k = 0; k < 60; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -251,7 +251,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (ulong k = 0; k < 60; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)
@@ -274,7 +274,7 @@ namespace NetGore.Tests.NetGore
                 {
                     for (ushort k = 0; k < 60; k++)
                     {
-                        bool b = k.IsBetween(i, j);
+                        var b = k.IsBetween(i, j);
 
                         bool b2;
                         if (i < j)

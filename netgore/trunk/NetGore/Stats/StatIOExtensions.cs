@@ -18,7 +18,7 @@ namespace NetGore.Stats
         public static Stat<TStatType> ReadStat<TStatType>(this BitStream bitStream)
             where TStatType : struct, IComparable, IConvertible, IFormattable
         {
-            TStatType statType = bitStream.ReadEnum<TStatType>();
+            var statType = bitStream.ReadEnum<TStatType>();
             var value = bitStream.ReadStatValueType();
             return new Stat<TStatType>(statType, value);
         }
@@ -36,13 +36,13 @@ namespace NetGore.Stats
             if (reader.SupportsNodes)
             {
                 reader = reader.ReadNode(name);
-                TStatType statType = reader.ReadEnum<TStatType>("StatType");
+                var statType = reader.ReadEnum<TStatType>("StatType");
                 var value = reader.ReadStatValueType("Value");
                 return new Stat<TStatType>(statType, value);
             }
             else
             {
-                TStatType statType = reader.ReadEnum<TStatType>(name + "_StatType");
+                var statType = reader.ReadEnum<TStatType>(name + "_StatType");
                 var value = reader.ReadStatValueType(name + "_Value");
                 return new Stat<TStatType>(statType, value);
             }

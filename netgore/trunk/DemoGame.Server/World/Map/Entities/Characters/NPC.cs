@@ -76,7 +76,7 @@ namespace DemoGame.Server
             if (template == null)
                 throw new ArgumentNullException("template");
 
-            ICharacterTemplateTable v = template.TemplateTable;
+            var v = template.TemplateTable;
 
             // Set the rest of the template stuff
             Load(template);
@@ -323,7 +323,7 @@ namespace DemoGame.Server
             if (!CharacterTemplateID.HasValue)
                 return;
 
-            CharacterTemplate template = CharacterTemplateManager[CharacterTemplateID.Value];
+            var template = CharacterTemplateManager[CharacterTemplateID.Value];
             if (template == null)
                 return;
 
@@ -354,7 +354,7 @@ namespace DemoGame.Server
             if (!templateID.HasValue)
                 return;
 
-            CharacterTemplate template = CharacterTemplateManager[templateID.Value];
+            var template = CharacterTemplateManager[templateID.Value];
             if (template == null)
                 return;
 
@@ -364,13 +364,13 @@ namespace DemoGame.Server
             // Create the items
             if (spawnInventory != null)
             {
-                foreach (CharacterTemplateInventoryItem inventoryItem in spawnInventory)
+                foreach (var inventoryItem in spawnInventory)
                 {
-                    ItemEntity item = inventoryItem.CreateInstance();
+                    var item = inventoryItem.CreateInstance();
                     if (item == null)
                         continue;
 
-                    ItemEntity extraItems = Inventory.Add(item);
+                    var extraItems = Inventory.Add(item);
                     if (extraItems != null)
                         extraItems.Dispose();
                 }
@@ -378,9 +378,9 @@ namespace DemoGame.Server
 
             if (spawnEquipment != null)
             {
-                foreach (CharacterTemplateEquipmentItem equippedItem in spawnEquipment)
+                foreach (var equippedItem in spawnEquipment)
                 {
-                    ItemEntity item = equippedItem.CreateInstance();
+                    var item = equippedItem.CreateInstance();
                     if (item == null)
                         continue;
 

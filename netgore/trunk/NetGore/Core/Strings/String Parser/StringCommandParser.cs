@@ -56,7 +56,7 @@ namespace NetGore
             var dict = new Dictionary<string, List<MethodInfo>>(StringComparer.OrdinalIgnoreCase);
 
             // Set up the methods
-            foreach (MethodInfo method in methods)
+            foreach (var method in methods)
             {
                 // Get the StringCommandBaseAttributes
                 var attributes = method.GetCustomAttributes(typeof(T), true).Cast<T>();
@@ -64,7 +64,7 @@ namespace NetGore
                 {
                     // This should never happen, but just in case...
                     const string errmsg = "Type `{0}` does not contain the required StringCommandBaseAttribute.";
-                    string err = string.Format(errmsg, method);
+                    var err = string.Format(errmsg, method);
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     Debug.Fail(err);
@@ -72,12 +72,12 @@ namespace NetGore
                 }
 
                 // Make sure the parameters are supported
-                foreach (ParameterInfo param in method.GetParameters())
+                foreach (var param in method.GetParameters())
                 {
                     if (!StringParser.CanParseType(param.ParameterType))
                     {
                         const string errmsg = "Cannot add method `{0}`. Parameter `{1}` has type `{2}`, which cannot be parsed.";
-                        string err = string.Format(errmsg, method.Name, param.Name, param.ParameterType);
+                        var err = string.Format(errmsg, method.Name, param.Name, param.ParameterType);
                         if (log.IsErrorEnabled)
                             log.Error(err);
                         Debug.Fail(err);
@@ -86,7 +86,7 @@ namespace NetGore
                 }
 
                 // Add the commands
-                foreach (T attrib in attributes)
+                foreach (var attrib in attributes)
                 {
                     Add(dict, attrib.Command, method);
                 }
@@ -125,12 +125,12 @@ namespace NetGore
             {
                 // Check for duplicate parameters for this command
                 var p = methodInfo.GetParameters();
-                foreach (MethodInfo m in methods)
+                foreach (var m in methods)
                 {
                     if (AreParameterTypesSame(p, m.GetParameters()))
                     {
                         const string errmsg = "Methods `{0}` and `{1}` both handle command `{2}` and contain the same parameters.";
-                        string err = string.Format(errmsg, methodInfo, m, commandName);
+                        var err = string.Format(errmsg, methodInfo, m, commandName);
                         if (log.IsFatalEnabled)
                             log.Error(err);
                         Debug.Fail(err);
@@ -158,7 +158,7 @@ namespace NetGore
             if (a.Count != b.Count)
                 return false;
 
-            for (int i = 0; i < a.Count; i++)
+            for (var i = 0; i < a.Count; i++)
             {
                 if (a[i].ParameterType != b[i].ParameterType)
                     return false;
@@ -180,8 +180,8 @@ namespace NetGore
             if (start == end)
                 return strings[start];
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = start; i <= end; i++)
+            var sb = new StringBuilder();
+            for (var i = start; i <= end; i++)
             {
                 sb.Append(strings[i]);
                 sb.Append(separator);
@@ -210,8 +210,8 @@ namespace NetGore
             if (parameters.Length == 0)
                 return string.Empty;
 
-            StringBuilder sb = new StringBuilder(128);
-            foreach (ParameterInfo p in parameters)
+            var sb = new StringBuilder(128);
+            foreach (var p in parameters)
             {
                 sb.Append(p.ParameterType.Name);
                 sb.Append(" ");
@@ -268,15 +268,15 @@ namespace NetGore
             }
 
             var splits = new List<string>();
-            bool isInQuoted = false;
-            int start = 0;
+            var isInQuoted = false;
+            var start = 0;
 
             var cs = commandString.ToCharArray();
 
             // Just split the string at spaces except for when it is a quoted string
-            for (int end = 1; end < commandString.Length; end++)
+            for (var end = 1; end < commandString.Length; end++)
             {
-                bool endReached = false;
+                var endReached = false;
 
                 if (end == commandString.Length - 1)
                     endReached = true;
@@ -302,19 +302,19 @@ namespace NetGore
                 {
                     isInQuoted = false;
 
-                    int s = start;
-                    int e = end;
+                    var s = start;
+                    var e = end;
 
                     if (cs[s] == '\"' || cs[s] == ' ')
                         s++;
                     if (cs[e] == '\"' || cs[e] == ' ')
                         e--;
 
-                    int len = e - s + 1;
+                    var len = e - s + 1;
                     if (len < 1)
                         continue;
 
-                    string subStr = commandString.Substring(s, len);
+                    var subStr = commandString.Substring(s, len);
 
                     Debug.Assert(!subStr.StartsWith("\""));
                     Debug.Assert(!subStr.EndsWith("\""));
@@ -353,7 +353,7 @@ namespace NetGore
             }
 
             // The number of parameters can only be less than the number of args if the last parameter is a string
-            ParameterInfo lastParameter = parameters.LastOrDefault();
+            var lastParameter = parameters.LastOrDefault();
             if (parameters.Length < args.Length && (lastParameter == null || lastParameter.ParameterType != typeof(string)))
             {
                 result = string.Empty;
@@ -364,16 +364,16 @@ namespace NetGore
 
             // If args.Length > parameters.Length, then the last parameter is a string, so just join them all together
             // as one big string. Otherwise, we have to parse the last argument.
-            int length = parameters.Length;
+            var length = parameters.Length;
             if (parameters.Length < args.Length)
             {
                 length--; // Makes it so we don't try to parse the last argument
-                string combinedString = CombineStrings(args, convertedArgs.Length - 1, args.Length - 1, ' ');
+                var combinedString = CombineStrings(args, convertedArgs.Length - 1, args.Length - 1, ' ');
                 convertedArgs[convertedArgs.Length - 1] = combinedString;
             }
 
             // Try to perform the needed casts for all of the arguments
-            for (int i = 0; i < length; i++)
+            for (var i = 0; i < length; i++)
             {
                 object parsed;
                 if (!StringParser.TryParse(args[i], parameters[i].ParameterType, out parsed) || parsed == null)
@@ -439,7 +439,7 @@ namespace NetGore
 
             // Try invoking all of the methods handling this command in order, stopping on the first
             // one that was invoked successfully
-            foreach (MethodInfo method in methods)
+            foreach (var method in methods)
             {
                 if (TryInvokeMethod(binder, method, args, out result))
                     return true;
@@ -476,9 +476,9 @@ namespace NetGore
             ///                 </param>
             public int Compare(MethodInfo x, MethodInfo y)
             {
-                int nonStringX =
+                var nonStringX =
                     x.GetParameters().Count(p => p.ParameterType != typeof(string) && p.ParameterType != typeof(object));
-                int nonStringY =
+                var nonStringY =
                     x.GetParameters().Count(p => p.ParameterType != typeof(string) && p.ParameterType != typeof(object));
 
                 return nonStringX.CompareTo(nonStringY);

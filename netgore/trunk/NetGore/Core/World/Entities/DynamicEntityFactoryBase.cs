@@ -66,9 +66,9 @@ namespace NetGore
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            string typeName = reader.ReadString(TypeNameStringKey);
+            var typeName = reader.ReadString(TypeNameStringKey);
 
-            DynamicEntity dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
+            var dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
 
             dEntity.ReadAll(reader);
 
@@ -91,8 +91,8 @@ namespace NetGore
             if (dEntity == null)
                 throw new ArgumentNullException("dEntity");
 
-            Type type = dEntity.GetType();
-            string typeName = _typeCollection[type];
+            var type = dEntity.GetType();
+            var typeName = _typeCollection[type];
 
             if (typeName == null)
             {

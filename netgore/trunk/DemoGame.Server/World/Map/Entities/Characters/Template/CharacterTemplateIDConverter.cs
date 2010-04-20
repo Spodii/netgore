@@ -62,7 +62,7 @@ namespace DemoGame.Server
             {
                 try
                 {
-                    CharacterTemplateID id = Parser.Current.ParseCharacterTemplateID((string)value);
+                    var id = Parser.Current.ParseCharacterTemplateID((string)value);
                     if (!id.TemplateExists())
                         throw new InvalidCastException(string.Format("No CharacterTemplate with ID `{0}`.", id));
                     return id;

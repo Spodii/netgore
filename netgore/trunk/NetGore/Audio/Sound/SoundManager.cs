@@ -43,14 +43,14 @@ namespace NetGore.Audio
             var values = AudioManager.LoadValues("sounds", "Sound");
 
             // Create the _infos and _soundBuffers arrays large enough to hold all values
-            int max = values.Max(x => x.Value);
+            var max = values.Max(x => x.Value);
             _infos = new ISoundInfo[max + 1];
             _soundBuffers = new SoundBuffer[_infos.Length];
 
             // Populate both collections
             foreach (var value in values)
             {
-                SoundID id = new SoundID(value.Value);
+                var id = new SoundID(value.Value);
                 var soundInfo = new SoundInfo(value.Key, id);
 
                 // Ensure no duplicates
@@ -64,8 +64,8 @@ namespace NetGore.Audio
                 // Add
                 _infosByName.Add(soundInfo.Name, soundInfo);
                 _infos[(int)soundInfo.ID] = soundInfo;
-                _soundBuffers[(int)soundInfo.ID] = contentManager.LoadSoundBuffer(ContentPaths.SoundsFolder + "/" + soundInfo.Name,
-                                                                                  ContentLevel.GameScreen);
+                _soundBuffers[(int)soundInfo.ID] = contentManager.LoadSoundBuffer(
+                    ContentPaths.SoundsFolder + "/" + soundInfo.Name, ContentLevel.GameScreen);
             }
         }
 
@@ -205,7 +205,7 @@ namespace NetGore.Audio
         /// was invalid.</returns>
         public ISoundInfo GetSoundInfo(SoundID id)
         {
-            int i = (int)id;
+            var i = (int)id;
             if (i < 0 || i >= _infos.Length)
                 return null;
 
@@ -403,13 +403,14 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Stops all 3D sounds. Any 2D sounds playing will continue to play.
+        /// Stops all instances of a sound with the given <see cref="SoundID"/>.
         /// </summary>
-        public void Stop3D()
+        /// <param name="id">The ID of the sounds to stop.</param>
+        public void Stop(SoundID id)
         {
-            for (int i = 0; i < _soundInstances.Count; i++)
+            for (var i = 0; i < _soundInstances.Count; i++)
             {
-                if (!_soundInstances[i].Sound.RelativeToListener)
+                if (_soundInstances[i].SoundInfo.ID != id)
                     continue;
 
                 _soundInstances.RemoveAt(i);
@@ -422,7 +423,7 @@ namespace NetGore.Audio
         /// </summary>
         public void Stop2D()
         {
-            for (int i = 0; i < _soundInstances.Count; i++)
+            for (var i = 0; i < _soundInstances.Count; i++)
             {
                 if (_soundInstances[i].Sound.RelativeToListener)
                     continue;
@@ -433,14 +434,13 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Stops all instances of a sound with the given <see cref="SoundID"/>.
+        /// Stops all 3D sounds. Any 2D sounds playing will continue to play.
         /// </summary>
-        /// <param name="id">The ID of the sounds to stop.</param>
-        public void Stop(SoundID id)
+        public void Stop3D()
         {
-            for (int i = 0; i < _soundInstances.Count; i++)
+            for (var i = 0; i < _soundInstances.Count; i++)
             {
-                if (_soundInstances[i].SoundInfo.ID != id)
+                if (!_soundInstances[i].Sound.RelativeToListener)
                     continue;
 
                 _soundInstances.RemoveAt(i);
@@ -460,7 +460,7 @@ namespace NetGore.Audio
             _nextUpdateTime = time + _updateRate;
 
             // Loop through all the sounds
-            for (int i = 0; i < _soundInstances.Count; i++)
+            for (var i = 0; i < _soundInstances.Count; i++)
             {
                 var curr = _soundInstances[i];
 

@@ -41,6 +41,21 @@ namespace DemoGame.EditorTools
         public bool RequireDistinct { get; set; }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (DesignMode)
+                return;
+
+            _list.Clear();
+            _list.AddRange(lstItems.Items.OfType<AllianceID>());
+
+            base.OnClosing(e);
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnAdd control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -101,21 +116,6 @@ namespace DemoGame.EditorTools
 
                 txtItem.Text = item.ID + " [" + item.Name + "]";
             }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            if (DesignMode)
-                return;
-
-            _list.Clear();
-            _list.AddRange(lstItems.Items.OfType<AllianceID>());
-
-            base.OnClosing(e);
         }
     }
 }

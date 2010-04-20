@@ -5,8 +5,7 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML.Graphics;
-using Color=SFML.Graphics.Color;
-using Image=System.Drawing.Image;
+using Image = System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {

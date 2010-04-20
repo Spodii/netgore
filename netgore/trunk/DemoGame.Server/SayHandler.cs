@@ -5,7 +5,6 @@ using DemoGame.Server.Guilds;
 using NetGore;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
-using NetGore.Network;
 
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable UnusedMember.Local
@@ -35,7 +34,7 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            using (PacketWriter pw = ServerPacket.Chat(text))
+            using (var pw = ServerPacket.Chat(text))
             {
                 user.Send(pw);
             }
@@ -50,7 +49,7 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            using (PacketWriter pw = ServerPacket.ChatSay(user.Name, user.MapEntityIndex, text))
+            using (var pw = ServerPacket.ChatSay(user.Name, user.MapEntityIndex, text))
             {
                 user.Map.SendToArea(user, pw);
             }
@@ -102,7 +101,7 @@ namespace DemoGame.Server
             [SayCommand("Shout")]
             public void Shout(string message)
             {
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandShout, User.Name, message))
+                using (var pw = ServerPacket.SendMessage(GameMessage.CommandShout, User.Name, message))
                 {
                     World.Send(pw);
                 }
@@ -125,7 +124,7 @@ namespace DemoGame.Server
                 if (string.IsNullOrEmpty(userName))
                 {
                     // Invalid message
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoName))
+                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellNoName))
                     {
                         User.Send(pw);
                     }
@@ -136,26 +135,26 @@ namespace DemoGame.Server
                 if (string.IsNullOrEmpty(message))
                 {
                     // No or invalid message
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoMessage))
+                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellNoMessage))
                     {
                         User.Send(pw);
                     }
                     return;
                 }
 
-                User target = World.FindUser(userName);
+                var target = World.FindUser(userName);
 
                 // Check if the target user is available or not
                 if (target != null)
                 {
                     // Message to sender ("You tell...")
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellSender, target.Name, message))
+                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellSender, target.Name, message))
                     {
                         User.Send(pw);
                     }
 
                     // Message to receivd ("X tells you...")
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellReceiver, User.Name, message))
+                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellReceiver, User.Name, message))
                     {
                         target.Send(pw);
                     }
@@ -163,7 +162,7 @@ namespace DemoGame.Server
                 else
                 {
                     // User not found
-                    using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, userName))
+                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, userName))
                     {
                         User.Send(pw);
                     }
@@ -323,7 +322,7 @@ namespace DemoGame.Server
                 if (!RequireInGroup())
                     return;
 
-                User target = World.FindUser(userName);
+                var target = World.FindUser(userName);
 
                 if (target == null)
                 {
@@ -426,7 +425,7 @@ namespace DemoGame.Server
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankDemote))
                     return;
 
-                bool success = false;
+                var success = false;
                 World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryDemoteMember(User, x));
 
                 if (success)
@@ -438,7 +437,7 @@ namespace DemoGame.Server
             [SayCommand("GuildHelp")]
             public void GuildHelp()
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine("Guild commands:");
                 sb.AppendLine("/JoinGuild [name]");
                 sb.AppendLine("/CreateGuild [name] [symbol]");
@@ -466,7 +465,7 @@ namespace DemoGame.Server
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankInvite))
                     return;
 
-                User invitee = World.FindUser(toInvite);
+                var invitee = World.FindUser(toInvite);
                 if (invitee == null)
                 {
                     User.Send(GameMessage.GuildInviteFailedInvalidUser, toInvite);
@@ -485,7 +484,7 @@ namespace DemoGame.Server
                     return;
                 }
 
-                bool success = User.Guild.TryInviteMember(User, invitee);
+                var success = User.Guild.TryInviteMember(User, invitee);
 
                 if (!success)
                     User.Send(GameMessage.GuildInviteFailedUnknownReason, invitee.Name);
@@ -566,7 +565,7 @@ namespace DemoGame.Server
                 if (!RequireUserInGuild() || !CheckGuildPermissions(_guildSettings.MinRankPromote))
                     return;
 
-                bool success = false;
+                var success = false;
                 World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryPromoteMember(User, x));
 
                 if (success)

@@ -149,7 +149,7 @@ namespace NetGore.Graphics.GUI
             {
                 _currentPage = Math.Max(1, Math.Min(value, NumPages));
 
-                string s = _currentPage + "/" + NumPages;
+                var s = _currentPage + "/" + NumPages;
                 if (!StringComparer.OrdinalIgnoreCase.Equals(_pageText.Text, s))
                     _pageText = new StyledText(s);
             }
@@ -236,7 +236,7 @@ namespace NetGore.Graphics.GUI
                 if (!CanSelect)
                     return -1;
 
-                int c = Items.Count();
+                var c = Items.Count();
                 if (_selectedIndex >= c)
                     SelectedIndex = c - 1;
 
@@ -251,7 +251,7 @@ namespace NetGore.Graphics.GUI
                 if (value < 0)
                     value = -1;
 
-                int c = Items.Count();
+                var c = Items.Count();
                 if (value >= c)
                     value = c - 1;
 
@@ -341,14 +341,14 @@ namespace NetGore.Graphics.GUI
                 return;
 
             var pos = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
-            int ipp = ItemsPerPage;
-            int offset = (CurrentPage - 1) * ipp;
-            int ih = ItemHeight;
-            int count = Items.Count();
+            var ipp = ItemsPerPage;
+            var offset = (CurrentPage - 1) * ipp;
+            var ih = ItemHeight;
+            var count = Items.Count();
 
             var selIndex = SelectedIndex;
 
-            for (int i = offset; i < offset + ipp && i < count; i++)
+            for (var i = offset; i < offset + ipp && i < count; i++)
             {
                 if (selIndex == i)
                     DrawSelectionRegion(spriteBatch, new Rectangle((int)pos.X, (int)pos.Y, (int)ClientSize.X, ItemHeight));
@@ -439,7 +439,7 @@ namespace NetGore.Graphics.GUI
             if (!CanSelect)
                 return;
 
-            int itemIndex = (int)Math.Floor((float)e.Y / ItemHeight) + ((CurrentPage - 1) * ItemsPerPage);
+            var itemIndex = (int)Math.Floor((float)e.Y / ItemHeight) + ((CurrentPage - 1) * ItemsPerPage);
             SelectedIndex = itemIndex;
         }
 

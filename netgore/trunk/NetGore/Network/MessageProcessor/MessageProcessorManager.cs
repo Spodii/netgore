@@ -36,23 +36,23 @@ namespace NetGore.Network
             _messageIDBitLength = messageIDBitLength;
 
             // Store the types we will use
-            Type mpdType = typeof(MessageProcessorHandler);
-            Type atbType = typeof(MessageHandlerAttribute);
-            Type voidType = typeof(void);
+            var mpdType = typeof(MessageProcessorHandler);
+            var atbType = typeof(MessageHandlerAttribute);
+            var voidType = typeof(void);
 
             // Create the processors array
             _processors = new MessageProcessor[256];
 
             // Search through all types in the Assembly
-            Assembly assemb = Assembly.GetAssembly(source.GetType());
-            foreach (Type type in assemb.GetTypes())
+            var assemb = Assembly.GetAssembly(source.GetType());
+            foreach (var type in assemb.GetTypes())
             {
                 const BindingFlags bindFlags =
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod |
                     BindingFlags.Static;
 
                 // Search through every method in the class
-                foreach (MethodInfo method in type.GetMethods(bindFlags))
+                foreach (var method in type.GetMethods(bindFlags))
                 {
                     // Only accept a method if it returns a void
                     if (method.ReturnType != voidType)
@@ -64,9 +64,9 @@ namespace NetGore.Network
                         throw new Exception(string.Format("Multiple MessageAttributes found for method `{0}`.", method.Name));
 
                     // Create the message processor for the method
-                    foreach (MessageHandlerAttribute atb in atbs)
+                    foreach (var atb in atbs)
                     {
-                        MessageProcessorHandler del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);
+                        var del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);
                         _processors[atb.MsgID] = new MessageProcessor(atb.MsgID, del);
                     }
                 }
@@ -139,13 +139,13 @@ namespace NetGore.Network
             }
 
             // Create a BitStream to read the data
-            BitStream recvReader = new BitStream(data);
+            var recvReader = new BitStream(data);
 
             // Loop through the data until it is emptied
             while (recvReader.PositionBytes < data.Length)
             {
                 // Get the ID of the message
-                byte msgID = recvReader.ReadByte(_messageIDBitLength);
+                var msgID = recvReader.ReadByte(_messageIDBitLength);
 
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Parsing message ID `{0}`. Stream now at bit position `{1}`.", msgID, recvReader.PositionBits);
@@ -159,7 +159,7 @@ namespace NetGore.Network
                 }
 
                 // Find the corresponding processor and call it
-                MessageProcessor processor = _processors[msgID];
+                var processor = _processors[msgID];
 
                 // Ensure the processor exists
                 if (processor == null)
@@ -196,7 +196,7 @@ namespace NetGore.Network
                 return;
 
             // Loop through the received data collections from each socket
-            foreach (SocketReceiveData rec in recvData)
+            foreach (var rec in recvData)
             {
                 Process(rec);
             }

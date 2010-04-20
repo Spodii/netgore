@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -88,8 +86,8 @@ namespace NetGore.Graphics
                 return;
             }
 
-            float x = (float)(Math.Round(entity.Position.X / Width)) * Width;
-            float y = (float)(Math.Round(entity.Position.Y / Height)) * Height;
+            var x = (float)(Math.Round(entity.Position.X / Width)) * Width;
+            var y = (float)(Math.Round(entity.Position.Y / Height)) * Height;
             entity.Teleport(new Vector2(x, y));
         }
 
@@ -100,8 +98,8 @@ namespace NetGore.Graphics
         /// <returns>Vector aligned to the grid.</returns>
         public Vector2 AlignDown(Vector2 pos)
         {
-            float x = (float)(Math.Floor(pos.X / Width) * Width);
-            float y = (float)(Math.Floor(pos.Y / Height) * Height);
+            var x = (float)(Math.Floor(pos.X / Width) * Width);
+            var y = (float)(Math.Floor(pos.Y / Height) * Height);
             return new Vector2(x, y);
         }
 
@@ -128,8 +126,8 @@ namespace NetGore.Graphics
                 return;
             }
 
-            Vector2 p1 = new Vector2();
-            Vector2 p2 = new Vector2();
+            var p1 = new Vector2();
+            var p2 = new Vector2();
 
             var min = camera.Min;
             var max = camera.Max;
@@ -139,7 +137,7 @@ namespace NetGore.Graphics
             // Vertical lines
             p1.Y = min.Y;
             p2.Y = p1.Y + size.Y + 32;
-            for (float x = min.X; x < max.X; x += Size.X)
+            for (var x = min.X; x < max.X; x += Size.X)
             {
                 p1.X = x;
                 p2.X = x;
@@ -149,7 +147,7 @@ namespace NetGore.Graphics
             // Horizontal lines
             p1.X = camera.Min.X;
             p2.X = p1.X + size.X + 32;
-            for (float y = min.Y; y < max.Y; y += Size.Y)
+            for (var y = min.Y; y < max.Y; y += Size.Y)
             {
                 p1.Y = y;
                 p2.Y = y;
@@ -169,7 +167,7 @@ namespace NetGore.Graphics
                 return;
             }
 
-            Vector2 newPos = (entity.Position / Size).Round() * Size;
+            var newPos = (entity.Position / Size).Round() * Size;
 
             // TODO: map.SafeTeleportEntity()
             entity.Teleport(newPos);
@@ -187,7 +185,7 @@ namespace NetGore.Graphics
                 return;
             }
 
-            Vector2 newSize = (entity.Size / Size).Round() * Size;
+            var newSize = (entity.Size / Size).Round() * Size;
 
             if (newSize.X < Size.X)
                 newSize.X = Size.X;

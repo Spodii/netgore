@@ -12,8 +12,8 @@ namespace NetGore.Tests.NetGore
 
         static IEnumerable<Entity> CreateEntities(int amount, Vector2 minPos, Vector2 maxPos)
         {
-            Entity[] ret = new Entity[amount];
-            for (int i = 0; i < amount; i++)
+            var ret = new Entity[amount];
+            for (var i = 0; i < amount; i++)
             {
                 ret[i] = new TestEntity { Position = RandomHelperXna.NextVector2(minPos, maxPos) };
             }

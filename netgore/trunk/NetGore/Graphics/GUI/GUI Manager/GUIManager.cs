@@ -95,9 +95,9 @@ namespace NetGore.Graphics.GUI
                 return null;
 
             // Crawl backwards through each child control until we find one that also contains the point
-            foreach (Control child in root.Controls.Reverse())
+            foreach (var child in root.Controls.Reverse())
             {
-                Control c = GetControlAtPoint(point, child);
+                var c = GetControlAtPoint(point, child);
                 if (c != null)
                     return c;
             }
@@ -334,7 +334,7 @@ namespace NetGore.Graphics.GUI
         public void Draw(ISpriteBatch spriteBatch)
         {
             // Iterate forward through the list so the last control is on top
-            foreach (Control control in Controls)
+            foreach (var control in Controls)
             {
                 control.Draw(spriteBatch);
             }
@@ -354,10 +354,10 @@ namespace NetGore.Graphics.GUI
         /// <returns>All of the <see cref="Control"/>s in this <see cref="GUIManager"/>.</returns>
         public IEnumerable<Control> GetAllControls()
         {
-            foreach (Control c in Controls)
+            foreach (var c in Controls)
             {
                 yield return c;
-                foreach (Control c2 in c.GetAllChildren())
+                foreach (var c2 in c.GetAllChildren())
                 {
                     yield return c2;
                 }
@@ -375,10 +375,10 @@ namespace NetGore.Graphics.GUI
             // Enumerate through the controls in reverse until we find the first Control containing
             // our desired point. We will have to enumerate in reverse because we want to check the
             // top-most controls first, which are contained at the end of the collection.
-            foreach (Control child in Controls.Reverse())
+            foreach (var child in Controls.Reverse())
             {
                 // Start a recursive crawl through controls at the given point
-                Control control = GetControlAtPoint(point, child);
+                var control = GetControlAtPoint(point, child);
 
                 // If the control returned is non-null, we have a control under the cursor
                 if (control != null)
@@ -577,7 +577,7 @@ namespace NetGore.Graphics.GUI
         public void Update(int currentTime)
         {
             // Update the controls
-            foreach (Control control in Controls.Reverse())
+            foreach (var control in Controls.Reverse())
             {
                 control.Update(currentTime);
             }

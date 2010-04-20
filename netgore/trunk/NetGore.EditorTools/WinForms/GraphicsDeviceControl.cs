@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using log4net;
 using NetGore.Graphics;
 using SFML.Graphics;
-using Color=System.Drawing.Color;
+using Color = System.Drawing.Color;
 
 namespace NetGore.EditorTools
 {
@@ -90,10 +90,7 @@ namespace NetGore.EditorTools
         [Browsable(false)]
         public ISpriteBatch SpriteBatch
         {
-            get
-            {
-                return _spriteBatch;
-            }
+            get { return _spriteBatch; }
         }
 
         /// <summary>
@@ -176,7 +173,7 @@ namespace NetGore.EditorTools
                 Initialize();
 
                 // Create the redraw timer
-                Timer t = new Timer { Interval = 1000 / 100 };
+                var t = new Timer { Interval = 1000 / 100 };
                 t.Tick += delegate { Invalidate(); };
                 t.Start();
             }
@@ -207,7 +204,7 @@ namespace NetGore.EditorTools
                 return;
             }
 
-            string beginDrawError = BeginDraw();
+            var beginDrawError = BeginDraw();
 
             // Check if BeginDraw() created an error before attempting to actually draw
             if (string.IsNullOrEmpty(beginDrawError))

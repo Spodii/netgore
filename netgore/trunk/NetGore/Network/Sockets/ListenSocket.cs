@@ -48,10 +48,10 @@ namespace NetGore.Network
             try
             {
                 // Use IPAddress.Any for public
-                IPEndPoint localEndPoint = new IPEndPoint((allowRemoteConnections ? IPAddress.Any : IPAddress.Loopback), port);
+                var localEndPoint = new IPEndPoint((allowRemoteConnections ? IPAddress.Any : IPAddress.Loopback), port);
                 _socket = new Socket(localEndPoint.Address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Socket created on address {0}", localEndPoint.ToString());
+                    log.InfoFormat("Socket created on address {0}", localEndPoint);
 
                 _socket.Bind(localEndPoint);
                 if (log.IsInfoEnabled)
@@ -109,7 +109,7 @@ namespace NetGore.Network
 
         void EndAccept(object sender, SocketAsyncEventArgs e)
         {
-            Socket sock = e.AcceptSocket;
+            var sock = e.AcceptSocket;
 
             if (sock == null)
             {
@@ -130,7 +130,7 @@ namespace NetGore.Network
                 log.InfoFormat("Connection request from {0}", sock.RemoteEndPoint);
 
             // Set up the new TCPSocket and send it to the accept event
-            TCPSocket conn = new TCPSocket();
+            var conn = new TCPSocket();
             conn.SetSocket(sock);
 
             // Start accepting again on the ListenSocket

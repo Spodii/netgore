@@ -30,7 +30,7 @@ namespace NetGore.Graphics
         public DrawableSorter()
         {
             _layers = new List<IDrawable>[_requiredArraySize];
-            for (int i = 0; i < _layers.Length; i++)
+            for (var i = 0; i < _layers.Length; i++)
             {
                 _layers[i] = new List<IDrawable>(32);
             }
@@ -60,7 +60,7 @@ namespace NetGore.Graphics
             }
 
             // Return the results for each layer, making sure to sort them as we return them
-            for (int i = 0; i < _layers.Length; i++)
+            for (var i = 0; i < _layers.Length; i++)
             {
                 yield return
                     new KeyValuePair<MapRenderLayer, IEnumerable<IDrawable>>((MapRenderLayer)i,

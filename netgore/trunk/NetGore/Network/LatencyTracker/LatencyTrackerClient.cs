@@ -73,11 +73,11 @@ namespace NetGore.Network
         {
             // Find the remote endpoint
             var ips = Dns.GetHostAddresses(hostAddress);
-            IPAddress ipAddress = ips.FirstOrDefault();
+            var ipAddress = ips.FirstOrDefault();
             if (ipAddress == null)
                 throw new ArgumentException("hostAddress");
 
-            IPEndPoint endPoint = new IPEndPoint(ipAddress, hostPort);
+            var endPoint = new IPEndPoint(ipAddress, hostPort);
             _endPoint = endPoint;
 
             // Create the socket and connect
@@ -125,7 +125,7 @@ namespace NetGore.Network
                     return false;
 
                 // All latencies will be 0, too
-                foreach (ushort latency in _latencies)
+                foreach (var latency in _latencies)
                 {
                     if (latency != 0)
                         return false;
@@ -181,13 +181,13 @@ namespace NetGore.Network
                 roundTripTime = ushort.MaxValue;
 
             // Divide the ping by two to get the approximate one-way time
-            ushort latency = (ushort)(roundTripTime / 2);
+            var latency = (ushort)(roundTripTime / 2);
 
             // Add the latency to the buffer
             // If this is the first time adding to the buffer, flood the whole buffer
             if (IsFirstLatencyUpdate)
             {
-                for (int i = 0; i < _latencies.Length; i++)
+                for (var i = 0; i < _latencies.Length; i++)
                 {
                     _latencies[i] = latency;
                 }
@@ -219,7 +219,7 @@ namespace NetGore.Network
                 return;
 
             // Parse the available data
-            foreach (AddressedPacket recvPacket in data)
+            foreach (var recvPacket in data)
             {
                 Debug.Assert(recvPacket.Data != null);
                 Debug.Assert(recvPacket.RemoteEndPoint != null);
@@ -234,7 +234,7 @@ namespace NetGore.Network
                 }
 
                 // Grab the signature, which should be the same as what we sent
-                int recvSignature = LatencyTrackerHelper.ReadSignature(packet, 0);
+                var recvSignature = LatencyTrackerHelper.ReadSignature(packet, 0);
                 if (recvSignature != _pingSignature)
                     continue;
 

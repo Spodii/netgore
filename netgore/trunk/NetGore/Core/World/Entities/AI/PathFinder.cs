@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using NetGore.Collections;
 using SFML.Graphics;
 
@@ -129,7 +128,7 @@ namespace NetGore.AI
                         return null;
                     }
 
-                    for (int i = 0; i < (topDown ? 8 : 4); i++)
+                    for (var i = 0; i < (topDown ? 8 : 4); i++)
                     {
                         _newLocationX = (ushort)(_locationX + _direction[i, 0]);
                         _newLocationY = (ushort)(_locationY + _direction[i, 1]);
@@ -156,8 +155,8 @@ namespace NetGore.AI
                         switch (_heuristicFormula)
                         {
                             case Heuristics.DiagonalShortCut:
-                                int _hDiag = (int)Math.Min(Math.Abs(_newLocationX - End.X), Math.Abs(_newLocationY - End.Y));
-                                int _hStra = (int)(Math.Abs(_newLocationX - End.X) + Math.Abs(_newLocationY - End.Y));
+                                var _hDiag = (int)Math.Min(Math.Abs(_newLocationX - End.X), Math.Abs(_newLocationY - End.Y));
+                                var _hStra = (int)(Math.Abs(_newLocationX - End.X) + Math.Abs(_newLocationY - End.Y));
 
                                 _h = (_heuristicEstimate * 2) * _hDiag + _heuristicEstimate * (_hStra - 2 * _hDiag);
                                 break;
@@ -198,8 +197,8 @@ namespace NetGore.AI
                 {
                     _close.Clear();
 
-                    Node _tmpNode = _nodeGrid[((int)End.Y << (int)_grid.Log2GridY) + (int)End.X];
-                    Node _node = new Node
+                    var _tmpNode = _nodeGrid[((int)End.Y << (int)_grid.Log2GridY) + (int)End.X];
+                    var _node = new Node
                     { F = _tmpNode.F, G = _tmpNode.G, PX = _tmpNode.PX, PY = _tmpNode.PY, X = (int)End.X, Y = (int)End.Y, H = 0 };
 
                     while (_node.X != _node.PX || _node.Y != _node.PY)

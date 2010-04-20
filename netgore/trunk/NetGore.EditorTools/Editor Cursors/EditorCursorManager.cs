@@ -157,30 +157,6 @@ namespace NetGore.EditorTools
             }
         }
 
-        void _gameScreen_MouseDown(object sender, MouseEventArgs e)
-        {
-            var cursor = GetCurrentCursor();
-
-            if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseDown(e);
-        }
-
-        void _gameScreen_MouseMove(object sender, MouseEventArgs e)
-        {
-            var cursor = GetCurrentCursor();
-
-            if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseMove(e);
-        }
-
-        void _gameScreen_MouseUp(object sender, MouseEventArgs e)
-        {
-            var cursor = GetCurrentCursor();
-
-            if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseUp(e);
-        }
-
         /// <summary>
         /// Sets the coloring for the cursor <see cref="PictureBox"/>es.
         /// </summary>
@@ -261,7 +237,7 @@ namespace NetGore.EditorTools
         void LoadTypeInstances()
         {
             // Get the type filter and set up the factory
-            TypeFilterCreator filterCreator = new TypeFilterCreator
+            var filterCreator = new TypeFilterCreator
             {
                 IsAbstract = false,
                 IsClass = true,
@@ -304,7 +280,7 @@ namespace NetGore.EditorTools
 
                 if (ToolTip != null)
                 {
-                    string s = cursor.Name;
+                    var s = cursor.Name;
                     if (cursorControl.ContextMenu != null)
                         s += " (right-click for cursor settings)";
 
@@ -388,6 +364,30 @@ namespace NetGore.EditorTools
 
             if (cursor != null)
                 cursor.UpdateCursor();
+        }
+
+        void _gameScreen_MouseDown(object sender, MouseEventArgs e)
+        {
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null && _allowCursorEventChecker(cursor))
+                cursor.MouseDown(e);
+        }
+
+        void _gameScreen_MouseMove(object sender, MouseEventArgs e)
+        {
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null && _allowCursorEventChecker(cursor))
+                cursor.MouseMove(e);
+        }
+
+        void _gameScreen_MouseUp(object sender, MouseEventArgs e)
+        {
+            var cursor = GetCurrentCursor();
+
+            if (cursor != null && _allowCursorEventChecker(cursor))
+                cursor.MouseUp(e);
         }
     }
 }

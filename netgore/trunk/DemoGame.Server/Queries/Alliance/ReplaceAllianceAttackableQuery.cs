@@ -29,7 +29,7 @@ namespace DemoGame.Server.Queries
 
         public int Execute(AllianceID allianceID, IEnumerable<AllianceID> attackableIDs)
         {
-            int sum = 0;
+            var sum = 0;
             foreach (var attackableID in attackableIDs)
             {
                 sum += Execute(allianceID, attackableID);

@@ -113,7 +113,7 @@ namespace NetGore.Graphics
                 angle = SkeletonNode.GetAngle(Source.Position * m, Dest.Position * m) - MathHelper.PiOver2;
 
             // Draw
-            Vector2 v = Source.Position + ItemInfo.Offset;
+            var v = Source.Position + ItemInfo.Offset;
             Grh.Draw(sb, (v * m) + position, color, effect, angle, ItemInfo.Origin, scale);
         }
 

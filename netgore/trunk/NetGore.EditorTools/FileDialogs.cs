@@ -154,7 +154,7 @@ namespace NetGore.EditorTools
         /// <param name="innerException">The inner exception, or null if none.</param>
         static void HandleError(string message, bool wasLoadError, Exception innerException)
         {
-            string caption = string.Format("File {0} error", wasLoadError ? "load" : "save");
+            var caption = string.Format("File {0} error", wasLoadError ? "load" : "save");
 
             if (wasLoadError)
                 message = "Failed to load file - " + message;
@@ -175,8 +175,8 @@ namespace NetGore.EditorTools
         /// <param name="innerException">The inner exception.</param>
         static void HandleUnhandledException(string contentType, bool wasLoadError, Exception innerException)
         {
-            string msg = string.Format("Failed to {0} {1}:{2}{2}{3}", wasLoadError ? "load" : "save", contentType,
-                                       Environment.NewLine, innerException);
+            var msg = string.Format("Failed to {0} {1}:{2}{2}{3}", wasLoadError ? "load" : "save", contentType,
+                                    Environment.NewLine, innerException);
 
             MessageBox.Show(msg, "Unhandled I/O error", MessageBoxButtons.OK);
         }

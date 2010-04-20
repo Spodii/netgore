@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SFML.Graphics;
 
-
 namespace NetGore.Graphics
 {
     /// <summary>

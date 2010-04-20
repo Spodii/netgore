@@ -28,6 +28,27 @@ namespace NetGore.EditorTools.NPCChat
         EditorNPCChatDialog _npcChatDialog;
 
         /// <summary>
+        /// Gets or sets the NPCChatDialog currently being displayed.
+        /// </summary>
+        public EditorNPCChatDialog NPCChatDialog
+        {
+            get { return _npcChatDialog; }
+            set
+            {
+                if (_npcChatDialog == value)
+                    return;
+
+                _npcChatDialog = value;
+
+                Nodes.Clear();
+                _objToTreeNode.Clear();
+
+                if (_npcChatDialog != null)
+                    new NPCChatDialogViewNode(this, _npcChatDialog.GetInitialDialogItem());
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the font color of branch chat dialog nodes.
         /// </summary>
         [Description("The font color of branch chat dialog nodes.")]
@@ -65,27 +86,6 @@ namespace NetGore.EditorTools.NPCChat
         {
             get { return _nodeForeColorResponse; }
             set { _nodeForeColorResponse = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the NPCChatDialog currently being displayed.
-        /// </summary>
-        public EditorNPCChatDialog NPCChatDialog
-        {
-            get { return _npcChatDialog; }
-            set
-            {
-                if (_npcChatDialog == value)
-                    return;
-
-                _npcChatDialog = value;
-
-                Nodes.Clear();
-                _objToTreeNode.Clear();
-
-                if (_npcChatDialog != null)
-                    new NPCChatDialogViewNode(this, _npcChatDialog.GetInitialDialogItem());
-            }
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace NetGore.Tests.NetGore.IO
         {
             const string fileContents = @"A: ""Spodi says: \""Hi\""""";
 
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 new MsgColl(f.FilePath);
@@ -30,7 +30,7 @@ namespace NetGore.Tests.NetGore.IO
                 @"A: ""Spodi says: \""Hi\""""
                                          B: ""Spodi hates you. >:|""";
 
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 new MsgColl(f.FilePath);
@@ -44,7 +44,7 @@ namespace NetGore.Tests.NetGore.IO
                 @"A: ""Spodi says: \""Hi\""""
                                          B: ""$0 hates you. >:|""";
 
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 new MsgColl(f.FilePath);
@@ -58,7 +58,7 @@ namespace NetGore.Tests.NetGore.IO
                 @"A: ""Spodi says: \""Hi\""""
                                          B: ""$0 says: \""$1\""""";
 
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 new MsgColl(f.FilePath);
@@ -71,7 +71,7 @@ namespace NetGore.Tests.NetGore.IO
             const string fileContents = @"A: ""Spodi says: \""Hi\""""";
 
             MsgColl c;
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 c = new MsgColl(f.FilePath);
@@ -90,7 +90,7 @@ namespace NetGore.Tests.NetGore.IO
                                          B: ""Spodi hates you. >:|""";
 
             MsgColl c;
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 c = new MsgColl(f.FilePath);
@@ -111,7 +111,7 @@ namespace NetGore.Tests.NetGore.IO
                                          B: ""$0 hates you. >:|""";
 
             MsgColl c;
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 c = new MsgColl(f.FilePath);
@@ -132,7 +132,7 @@ namespace NetGore.Tests.NetGore.IO
                                          B: ""$0 eats $1 for $2. Yummy.""";
 
             MsgColl c;
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 c = new MsgColl(f.FilePath);
@@ -151,7 +151,7 @@ namespace NetGore.Tests.NetGore.IO
             const string fileContents = @"A: ""Spodi says $0*$1 equals "" + $0 * $1 + """;
 
             MsgColl c;
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 c = new MsgColl(f.FilePath);
@@ -170,11 +170,11 @@ namespace NetGore.Tests.NetGore.IO
 
             MsgColl cA;
             MsgColl cB;
-            using (TempFile fA = new TempFile())
+            using (var fA = new TempFile())
             {
                 File.WriteAllText(fA.FilePath, fileContentsA);
                 cA = new MsgColl(fA.FilePath);
-                using (TempFile fB = new TempFile())
+                using (var fB = new TempFile())
                 {
                     File.WriteAllText(fB.FilePath, fileContentsB);
                     cB = new MsgColl(fB.FilePath, cA);
@@ -194,7 +194,7 @@ namespace NetGore.Tests.NetGore.IO
             const string fileContents = @"A: ""Hi""";
 
             MsgColl c;
-            using (TempFile f = new TempFile())
+            using (var f = new TempFile())
             {
                 File.WriteAllText(f.FilePath, fileContents);
                 c = new MsgColl(f.FilePath);

@@ -6,8 +6,7 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML;
 using SFML.Graphics;
-using Color=SFML.Graphics.Color;
-using Image=System.Drawing.Image;
+using Image = System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -97,7 +96,8 @@ namespace DemoGame.MapEditor
             {
             }
             catch (InvalidOperationException)
-            { }
+            {
+            }
             catch (LoadingFailedException)
             {
             }
@@ -142,7 +142,7 @@ namespace DemoGame.MapEditor
         /// <param name="e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            Vector2 cursorPos = Container.CursorPos;
+            var cursorPos = Container.CursorPos;
 
             // On left-click place the Grh on the map
             switch (e.Button)
@@ -165,7 +165,7 @@ namespace DemoGame.MapEditor
                         return;
 
                     // Add the MapGrh to the map
-                    Grh g = new Grh(Container.SelectedGrh.GrhData, AnimType.Loop, Container.GetTime());
+                    var g = new Grh(Container.SelectedGrh.GrhData, AnimType.Loop, Container.GetTime());
                     Container.Map.AddMapGrh(new MapGrh(g, drawPos, _mnuForeground.Checked));
 
                     break;
@@ -173,7 +173,7 @@ namespace DemoGame.MapEditor
                 case MouseButtons.Right:
                     while (true)
                     {
-                        MapGrh mapGrh = Container.Map.Spatial.Get<MapGrh>(cursorPos);
+                        var mapGrh = Container.Map.Spatial.Get<MapGrh>(cursorPos);
                         if (mapGrh == null)
                             break;
 

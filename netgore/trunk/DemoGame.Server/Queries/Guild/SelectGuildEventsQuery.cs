@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
 
         public IEnumerable<IGuildEventTable> Execute(GuildID guildID)
         {
-            List<IGuildEventTable> ret = new List<IGuildEventTable>();
+            var ret = new List<IGuildEventTable>();
 
             using (var r = ExecuteReader(guildID))
             {

@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the BoundingSphereConverter class.</summary>
         public BoundingSphereConverter()
         {
-            Type type = typeof(BoundingSphere);
+            var type = typeof(BoundingSphere);
             base.propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("Center")), new FieldPropertyDescriptor(type.GetField("Radius")) }).
@@ -42,8 +41,8 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(InstanceDescriptor)) && (value is BoundingSphere))
             {
-                BoundingSphere sphere = (BoundingSphere)value;
-                ConstructorInfo constructor = typeof(BoundingSphere).GetConstructor(new Type[] { typeof(Vector3), typeof(float) });
+                var sphere = (BoundingSphere)value;
+                var constructor = typeof(BoundingSphere).GetConstructor(new Type[] { typeof(Vector3), typeof(float) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor, new object[] { sphere.Center, sphere.Radius });
             }

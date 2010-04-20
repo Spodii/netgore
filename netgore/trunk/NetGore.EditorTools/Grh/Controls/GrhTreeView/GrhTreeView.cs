@@ -10,7 +10,7 @@ using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;
-using Point=System.Drawing.Point;
+using Point = System.Drawing.Point;
 
 namespace NetGore.EditorTools
 {
@@ -195,7 +195,7 @@ namespace NetGore.EditorTools
         {
             // We must create the hash collection since its constructor has the updating goodies, and we want
             // to make sure that is called
-            TextureHashCollection hashCollection = new TextureHashCollection();
+            var hashCollection = new TextureHashCollection();
 
             // Get the GrhDatas with missing textures
             var missing = GrhInfo.FindMissingTextures();
@@ -205,7 +205,7 @@ namespace NetGore.EditorTools
             // Display a form showing which textures need to be fixed
             // The GrhTreeView will be disabled until the MissingTexturesForm is closed
             Enabled = false;
-            MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing.Cast<GrhData>(), _contentManager);
+            var frm = new MissingTexturesForm(hashCollection, missing.Cast<GrhData>(), _contentManager);
             frm.FormClosed += delegate
             {
                 RebuildTree();
@@ -356,9 +356,9 @@ namespace NetGore.EditorTools
             GrhTreeViewFolderNode current = null;
             var currentColl = Nodes;
 
-            for (int i = 0; i < categoryParts.Length; i++)
+            for (var i = 0; i < categoryParts.Length; i++)
             {
-                string subCategory = categoryParts[i];
+                var subCategory = categoryParts[i];
                 current = currentColl.OfType<GrhTreeViewFolderNode>().Where(x => x.SubCategory == subCategory).FirstOrDefault();
 
                 if (current == null)
@@ -547,7 +547,7 @@ namespace NetGore.EditorTools
             ImageList = GrhImageList.Instance.ImageList;
 
             // Iterate through all the GrhDatas
-            foreach (GrhData grhData in GrhInfo.GrhDatas)
+            foreach (var grhData in GrhInfo.GrhDatas)
             {
                 AddGrhToTree(grhData);
             }
@@ -575,7 +575,7 @@ namespace NetGore.EditorTools
                 throw new Exception("Failed to find a ContentManager to use.");
 
             var newGDs = AutomaticGrhDataUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
-            int newCount = newGDs.Count();
+            var newCount = newGDs.Count();
 
             if (newCount > 0)
             {
@@ -588,13 +588,13 @@ namespace NetGore.EditorTools
 
         void MenuClickDuplicate(object sender, EventArgs e)
         {
-            TreeNode node = SelectedNode;
+            var node = SelectedNode;
 
             if (node == null)
                 return;
 
             // Confirm the duplicate request
-            int count = NodeCount(node);
+            var count = NodeCount(node);
             string text;
             if (count <= 0)
             {
@@ -614,12 +614,12 @@ namespace NetGore.EditorTools
 
         void MenuClickEdit(object sender, EventArgs e)
         {
-            TreeNode node = SelectedNode;
+            var node = SelectedNode;
 
             if (node == null)
                 return;
 
-            GrhData gd = GetGrhData(node);
+            var gd = GetGrhData(node);
             if (gd is AutomaticAnimatedGrhData)
                 return;
 
@@ -661,7 +661,7 @@ namespace NetGore.EditorTools
                 return 0;
 
             // 1 because we are counting ourself
-            int count = 1;
+            var count = 1;
 
             // Recursively count the children
             foreach (TreeNode child in root.Nodes)
@@ -703,7 +703,7 @@ namespace NetGore.EditorTools
             if (GrhAfterSelect == null || e.Node == null || !IsGrhDataNode(e.Node))
                 return;
 
-            GrhData gd = GetGrhData(e.Node);
+            var gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhAfterSelect(this, new GrhTreeViewEventArgs(gd, e));
         }
@@ -719,7 +719,7 @@ namespace NetGore.EditorTools
             if (GrhBeforeSelect == null || e.Node == null || !IsGrhDataNode(e.Node))
                 return;
 
-            GrhData gd = GetGrhData(e.Node);
+            var gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhBeforeSelect(this, new GrhTreeViewCancelEventArgs(gd, e));
         }
@@ -743,9 +743,9 @@ namespace NetGore.EditorTools
             if (!e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false))
                 return;
 
-            Point pt = PointToClient(new Point(e.X, e.Y));
-            TreeNode destNode = GetNodeAt(pt);
-            TreeNode newNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
+            var pt = PointToClient(new Point(e.X, e.Y));
+            var destNode = GetNodeAt(pt);
+            var newNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
             TreeNode addedNode;
 
             // Don't allow dropping onto itself
@@ -772,7 +772,7 @@ namespace NetGore.EditorTools
                 // Move a folder node
 
                 // Do not allow a node to be moved into its own child
-                TreeNode tmp = destNode;
+                var tmp = destNode;
                 while (tmp.Parent != null)
                 {
                     if (tmp.Parent == newNode)
@@ -816,11 +816,11 @@ namespace NetGore.EditorTools
             if (_compactMode)
                 return;
 
-            TreeNode nodeOver = GetNodeAt(PointToClient(new Point(e.X, e.Y)));
+            var nodeOver = GetNodeAt(PointToClient(new Point(e.X, e.Y)));
             if (nodeOver != null)
             {
                 // Find the folder the node will drop into
-                TreeNode folderNode = nodeOver;
+                var folderNode = nodeOver;
                 if (!IsGrhDataNode(folderNode))
                     folderNode = folderNode.Parent;
 
@@ -900,7 +900,7 @@ namespace NetGore.EditorTools
                 return;
 
             // Get the GrhData for the node clicked, raising the GrhMouseClick event if valid
-            GrhData gd = GetGrhData(e.Node);
+            var gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhMouseClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
         }
@@ -919,7 +919,7 @@ namespace NetGore.EditorTools
                 return;
 
             // Get the GrhData for the node double-clicked, raising the GrhMouseDoubleClick event if valid
-            GrhData gd = GetGrhData(e.Node);
+            var gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhMouseDoubleClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
         }
@@ -933,7 +933,7 @@ namespace NetGore.EditorTools
             Nodes.Clear();
 
             // Re-add every GrhData
-            foreach (GrhData grh in GrhInfo.GrhDatas)
+            foreach (var grh in GrhInfo.GrhDatas)
             {
                 AddGrhToTree(grh);
             }
@@ -972,7 +972,7 @@ namespace NetGore.EditorTools
 
         public void UpdateGrhDatas(IEnumerable<GrhData> grhDatas)
         {
-            foreach (GrhData grhData in grhDatas)
+            foreach (var grhData in grhDatas)
             {
                 UpdateGrhData(grhData);
             }

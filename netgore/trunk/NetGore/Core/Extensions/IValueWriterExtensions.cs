@@ -138,12 +138,12 @@ namespace NetGore
                 throw new ArgumentOutOfRangeException("maxValue", "MaxValue must be greater than or equal to MinValue.");
 
             // Find the number of bits required for the range of desired values
-            uint maxWriteValue = maxValue - minValue;
-            int bitsRequired = BitOps.RequiredBits(maxWriteValue);
+            var maxWriteValue = maxValue - minValue;
+            var bitsRequired = BitOps.RequiredBits(maxWriteValue);
 
             // Subtract the minimum value from the value since we want to write how high above the minimum value
             // the value is, not the actual value
-            uint offsetFromMin = value - minValue;
+            var offsetFromMin = value - minValue;
             writer.Write(name, offsetFromMin, bitsRequired);
 
             Debug.Assert((value - minValue) <= maxWriteValue);
@@ -166,12 +166,12 @@ namespace NetGore
                 throw new ArgumentOutOfRangeException("maxValue", "MaxValue must be greater than or equal to MinValue.");
 
             // Find the number of bits required for the range of desired values
-            uint maxWriteValue = (uint)(maxValue - minValue);
-            int bitsRequired = BitOps.RequiredBits(maxWriteValue);
+            var maxWriteValue = (uint)(maxValue - minValue);
+            var bitsRequired = BitOps.RequiredBits(maxWriteValue);
 
             // Subtract the minimum value from the value since we want to write how high above the minimum value
             // the value is, not the actual value
-            uint offsetFromMin = (uint)(value - minValue);
+            var offsetFromMin = (uint)(value - minValue);
             writer.Write(name, offsetFromMin, bitsRequired);
 
             Debug.Assert((value - minValue) <= maxWriteValue);
@@ -190,8 +190,8 @@ namespace NetGore
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                string x = Parser.Invariant.ToString(value.X);
-                string y = Parser.Invariant.ToString(value.Y);
+                var x = Parser.Invariant.ToString(value.X);
+                var y = Parser.Invariant.ToString(value.Y);
                 writer.Write(name, x + "," + y);
             }
             else
@@ -214,9 +214,9 @@ namespace NetGore
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                string x = Parser.Invariant.ToString(value.X);
-                string y = Parser.Invariant.ToString(value.Y);
-                string z = Parser.Invariant.ToString(value.Z);
+                var x = Parser.Invariant.ToString(value.X);
+                var y = Parser.Invariant.ToString(value.Y);
+                var z = Parser.Invariant.ToString(value.Z);
                 writer.Write(name, x + "," + y + "," + z);
             }
             else
@@ -240,10 +240,10 @@ namespace NetGore
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                string x = Parser.Invariant.ToString(value.X);
-                string y = Parser.Invariant.ToString(value.Y);
-                string z = Parser.Invariant.ToString(value.Z);
-                string w = Parser.Invariant.ToString(value.W);
+                var x = Parser.Invariant.ToString(value.X);
+                var y = Parser.Invariant.ToString(value.Y);
+                var z = Parser.Invariant.ToString(value.Z);
+                var w = Parser.Invariant.ToString(value.W);
                 writer.Write(name, x + "," + y + "," + z + "," + w);
             }
             else
@@ -268,8 +268,8 @@ namespace NetGore
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                string x = Parser.Invariant.ToString(value.X);
-                string y = Parser.Invariant.ToString(value.Y);
+                var x = Parser.Invariant.ToString(value.X);
+                var y = Parser.Invariant.ToString(value.Y);
                 writer.Write(name, x + "," + y);
             }
             else
@@ -292,10 +292,10 @@ namespace NetGore
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                string x = Parser.Invariant.ToString(value.X);
-                string y = Parser.Invariant.ToString(value.Y);
-                string w = Parser.Invariant.ToString(value.Width);
-                string h = Parser.Invariant.ToString(value.Height);
+                var x = Parser.Invariant.ToString(value.X);
+                var y = Parser.Invariant.ToString(value.Y);
+                var w = Parser.Invariant.ToString(value.Width);
+                var h = Parser.Invariant.ToString(value.Height);
                 writer.Write(name, x + "," + y + "," + w + "," + h);
             }
             else
@@ -321,7 +321,7 @@ namespace NetGore
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
                 const string delimiter = ",";
-                StringBuilder sb = new StringBuilder(16);
+                var sb = new StringBuilder(16);
                 sb.Append(Parser.Invariant.ToString(value.R));
                 sb.Append(delimiter);
                 sb.Append(Parser.Invariant.ToString(value.G));

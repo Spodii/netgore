@@ -1,10 +1,9 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using SFML.Graphics;
-using Image=System.Drawing.Image;
 
 namespace DemoGame.MapEditor
 {
@@ -51,7 +50,7 @@ namespace DemoGame.MapEditor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
-            Vector2 cursorPos = Container.CursorPos;
+            var cursorPos = Container.CursorPos;
             _lightSprite.Draw(spriteBatch, cursorPos);
         }
 

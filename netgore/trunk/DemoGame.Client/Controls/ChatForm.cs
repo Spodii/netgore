@@ -79,7 +79,7 @@ namespace DemoGame.Client
                 case KeyCode.Return:
                     if (Say != null && !string.IsNullOrEmpty(_input.Text))
                     {
-                        string text = _input.Text;
+                        var text = _input.Text;
                         _input.Text = string.Empty;
                         Say(this, text);
                     }
@@ -145,11 +145,11 @@ namespace DemoGame.Client
             if (_input == null || _output == null)
                 return;
 
-            Vector2 inputSize = new Vector2(ClientSize.X, Font.CharacterSize + _input.Border.Height);
-            Vector2 outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
+            var inputSize = new Vector2(ClientSize.X, Font.CharacterSize + _input.Border.Height);
+            var outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
 
-            Vector2 inputPos = new Vector2(0, outputSize.Y);
-            Vector2 outputPos = Vector2.Zero;
+            var inputPos = new Vector2(0, outputSize.Y);
+            var outputPos = Vector2.Zero;
 
             _input.Size = inputSize;
             _input.Position = inputPos;
@@ -177,7 +177,7 @@ namespace DemoGame.Client
             if (_bufferOffset < 0)
                 _bufferOffset = 0;
 
-            int pos = _output.LineCount - _bufferOffset - _output.MaxVisibleLines - 1;
+            var pos = _output.LineCount - _bufferOffset - _output.MaxVisibleLines - 1;
             if (pos < 0)
                 pos = 0;
             else if (pos >= _output.LineCount)

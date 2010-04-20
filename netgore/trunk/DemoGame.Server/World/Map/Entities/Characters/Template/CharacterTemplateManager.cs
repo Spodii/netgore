@@ -106,13 +106,13 @@ namespace DemoGame.Server
             Debug.Assert(itemValues.All(x => id == x.CharacterTemplateID));
             Debug.Assert(equippedValues.All(x => id == x.CharacterTemplateID));
 
-            ItemTemplateManager itm = ItemTemplateManager.Instance;
+            var itm = ItemTemplateManager.Instance;
 
             var items = itemValues.Select(x => new CharacterTemplateInventoryItem(itm[x.ItemTemplateID], x.Min, x.Max, x.Chance));
             var equipped = equippedValues.Select(x => new CharacterTemplateEquipmentItem(itm[x.ItemTemplateID], x.Chance));
             var quests = questValues.Select(x => _questManager.GetQuest(x));
 
-            CharacterTemplate template = new CharacterTemplate(v, items, equipped, quests);
+            var template = new CharacterTemplate(v, items, equipped, quests);
 
             return template;
         }

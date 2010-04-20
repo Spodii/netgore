@@ -147,11 +147,11 @@ namespace NetGore
                 return _stringComparer.Compare(l, r);
 
             // Set the initial markers both to zero
-            int lMarker = 0;
-            int rMarker = 0;
+            var lMarker = 0;
+            var rMarker = 0;
 
             // Create a generic string builder that will be used for building up the string chunks
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Loop through the strings
             while ((lMarker < l.Length) || (rMarker < r.Length))

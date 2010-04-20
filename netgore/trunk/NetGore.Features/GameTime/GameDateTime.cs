@@ -274,7 +274,7 @@ namespace NetGore.Features.GameTime
         {
             unchecked
             {
-                int result = _day.GetHashCode();
+                var result = _day.GetHashCode();
                 result = (result * 397) ^ _hour.GetHashCode();
                 result = (result * 397) ^ _minute.GetHashCode();
                 result = (result * 397) ^ _month.GetHashCode();

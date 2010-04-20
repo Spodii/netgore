@@ -31,13 +31,13 @@ namespace NetGore.Tests.NetGore
         static void ReadWriteTest<T>(IVariableValue<T> value, Action<IValueWriter, string, IVariableValue<T>> write,
                                      Func<IValueReader, string, IVariableValue<T>> read, bool testRead)
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     using (var w = creator.GetWriter())
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (var i = 0; i < 3; i++)
                         {
                             write(w, GetValueKey(i), value);
                         }
@@ -47,7 +47,7 @@ namespace NetGore.Tests.NetGore
                     {
                         var r = creator.GetReader();
                         {
-                            for (int i = 0; i < 3; i++)
+                            for (var i = 0; i < 3; i++)
                             {
                                 var readValue = read(r, GetValueKey(i));
                                 Assert.AreEqual(value.Min, readValue.Min);
@@ -70,7 +70,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void RandomVariableByteTest()
         {
-            for (int i = 0; i < _randomVariableTestIterations; i++)
+            for (var i = 0; i < _randomVariableTestIterations; i++)
             {
                 const byte min = byte.MinValue;
                 const byte max = byte.MaxValue;
@@ -87,7 +87,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void RandomVariableColorTest()
         {
-            for (int i = 0; i < _randomVariableTestIterations; i++)
+            for (var i = 0; i < _randomVariableTestIterations; i++)
             {
                 const byte min = byte.MinValue;
                 const byte max = byte.MaxValue;
@@ -110,7 +110,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void RandomVariableFloatTest()
         {
-            for (int i = 0; i < _randomVariableTestIterations; i++)
+            for (var i = 0; i < _randomVariableTestIterations; i++)
             {
                 const float min = float.MinValue;
                 const float max = float.MaxValue;
@@ -127,7 +127,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void RandomVariableIntTest()
         {
-            for (int i = 0; i < _randomVariableTestIterations; i++)
+            for (var i = 0; i < _randomVariableTestIterations; i++)
             {
                 const int min = int.MinValue;
                 const int max = int.MaxValue;
@@ -144,7 +144,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void RandomVariableSByteTest()
         {
-            for (int i = 0; i < _randomVariableTestIterations; i++)
+            for (var i = 0; i < _randomVariableTestIterations; i++)
             {
                 const sbyte min = sbyte.MinValue;
                 const sbyte max = sbyte.MaxValue;
@@ -161,7 +161,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void RandomVariableShortTest()
         {
-            for (int i = 0; i < _randomVariableTestIterations; i++)
+            for (var i = 0; i < _randomVariableTestIterations; i++)
             {
                 const short min = short.MinValue;
                 const short max = short.MaxValue;
@@ -178,7 +178,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void RandomVariableUShortTest()
         {
-            for (int i = 0; i < _randomVariableTestIterations; i++)
+            for (var i = 0; i < _randomVariableTestIterations; i++)
             {
                 const ushort min = ushort.MinValue;
                 const ushort max = ushort.MaxValue;

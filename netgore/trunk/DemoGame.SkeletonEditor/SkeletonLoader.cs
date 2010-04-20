@@ -25,9 +25,9 @@ namespace DemoGame.SkeletonEditor
         /// <returns>A SkeletonSet for the standing Skeleton.</returns>
         public static SkeletonSet GetStandingSkeletonSet()
         {
-            Skeleton newSkeleton = new Skeleton(StandingSkeletonName, ContentPaths.Dev);
-            SkeletonFrame nFrame0 = new SkeletonFrame(StandingSkeletonName, newSkeleton);
-            SkeletonSet newSet = new SkeletonSet(new[] { nFrame0 });
+            var newSkeleton = new Skeleton(StandingSkeletonName, ContentPaths.Dev);
+            var nFrame0 = new SkeletonFrame(StandingSkeletonName, newSkeleton);
+            var newSet = new SkeletonSet(new[] { nFrame0 });
             return newSet;
         }
 
@@ -38,14 +38,14 @@ namespace DemoGame.SkeletonEditor
         /// <returns>The loaded Skeleton, or null if the Skeleton failed to load.</returns>
         public static Skeleton LoadSkeleton(string filePath)
         {
-            string skeletonName = Path.GetFileNameWithoutExtension(filePath);
-            string realFilePath = Skeleton.GetFilePath(skeletonName, ContentPaths.Dev);
+            var skeletonName = Path.GetFileNameWithoutExtension(filePath);
+            var realFilePath = Skeleton.GetFilePath(skeletonName, ContentPaths.Dev);
 
             // Make sure the file exists
             if (!File.Exists(realFilePath))
             {
                 const string errmsg = "Failed to load Skeleton `{0}` from `{1}` - file does not exist.";
-                string err = string.Format(errmsg, skeletonName, filePath);
+                var err = string.Format(errmsg, skeletonName, filePath);
                 MessageBox.Show(err);
                 return null;
             }
@@ -59,7 +59,7 @@ namespace DemoGame.SkeletonEditor
             catch (Exception ex)
             {
                 const string errmsg = "Failed to load Skeleton `{0}` from `{1}`:{2}{3})";
-                string err = string.Format(errmsg, skeletonName, filePath, Environment.NewLine, ex);
+                var err = string.Format(errmsg, skeletonName, filePath, Environment.NewLine, ex);
                 MessageBox.Show(err);
                 return null;
             }
@@ -74,14 +74,14 @@ namespace DemoGame.SkeletonEditor
         /// <returns>The loaded SkeletonBodyInfo, or null if the SkeletonBodyInfo failed to load.</returns>
         public static SkeletonBodyInfo LoadSkeletonBodyInfo(string filePath)
         {
-            string bodyName = Path.GetFileNameWithoutExtension(filePath);
-            string realFilePath = SkeletonBodyInfo.GetFilePath(bodyName, ContentPaths.Dev);
+            var bodyName = Path.GetFileNameWithoutExtension(filePath);
+            var realFilePath = SkeletonBodyInfo.GetFilePath(bodyName, ContentPaths.Dev);
 
             // Make sure the file exists
             if (!File.Exists(realFilePath))
             {
                 const string errmsg = "Failed to load SkeletonBodyInfo `{0}` from `{1}` - file does not exist.";
-                string err = string.Format(errmsg, bodyName, filePath);
+                var err = string.Format(errmsg, bodyName, filePath);
                 MessageBox.Show(err);
                 return null;
             }
@@ -95,7 +95,7 @@ namespace DemoGame.SkeletonEditor
             catch (Exception ex)
             {
                 const string errmsg = "Failed to load SkeletonBodyInfo `{0}` from `{1}`:{2}{3})";
-                string err = string.Format(errmsg, bodyName, filePath, Environment.NewLine, ex);
+                var err = string.Format(errmsg, bodyName, filePath, Environment.NewLine, ex);
                 MessageBox.Show(err);
                 return null;
             }
@@ -110,14 +110,14 @@ namespace DemoGame.SkeletonEditor
         /// <returns>The loaded SkeletonSet, or null if the SkeletonSet failed to load.</returns>
         public static SkeletonSet LoadSkeletonSet(string filePath)
         {
-            string skeletonSetName = Path.GetFileNameWithoutExtension(filePath);
-            string realFilePath = SkeletonSet.GetFilePath(skeletonSetName, ContentPaths.Dev);
+            var skeletonSetName = Path.GetFileNameWithoutExtension(filePath);
+            var realFilePath = SkeletonSet.GetFilePath(skeletonSetName, ContentPaths.Dev);
 
             // Make sure the file exists
             if (!File.Exists(realFilePath))
             {
                 const string errmsg = "Failed to load SkeletonSet `{0}` from `{1}` - file does not exist.";
-                string err = string.Format(errmsg, skeletonSetName, filePath);
+                var err = string.Format(errmsg, skeletonSetName, filePath);
                 MessageBox.Show(err);
                 return null;
             }
@@ -131,7 +131,7 @@ namespace DemoGame.SkeletonEditor
             catch (Exception ex)
             {
                 const string errmsg = "Failed to load SkeletonSet `{0}` from `{1}`:{2}{3})";
-                string err = string.Format(errmsg, skeletonSetName, filePath, Environment.NewLine, ex);
+                var err = string.Format(errmsg, skeletonSetName, filePath, Environment.NewLine, ex);
                 MessageBox.Show(err);
                 return null;
             }
@@ -153,7 +153,7 @@ namespace DemoGame.SkeletonEditor
             var sep = new[] { "/" };
 
             var frames = new SkeletonFrame[framesTxt.Length];
-            for (int i = 0; i < frames.Length; i++)
+            for (var i = 0; i < frames.Length; i++)
             {
                 // Split up the time and frame name
                 var frameInfo = framesTxt[i].Split(sep, StringSplitOptions.RemoveEmptyEntries);
@@ -164,7 +164,7 @@ namespace DemoGame.SkeletonEditor
                     frameTime = 200f;
 
                 // Create the keyframe
-                Skeleton newSkeleton = new Skeleton(frameInfo[0], ContentPaths.Dev);
+                var newSkeleton = new Skeleton(frameInfo[0], ContentPaths.Dev);
                 frames[i] = new SkeletonFrame(frameInfo[0], newSkeleton, frameTime);
             }
             return new SkeletonSet(frames);

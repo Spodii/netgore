@@ -16,10 +16,10 @@ namespace NetGore.Tests.Collections
         /// </summary>
         static void DummyEnumerator(object obj)
         {
-            IEnumerable e = (IEnumerable)obj;
+            var e = (IEnumerable)obj;
 
-            string s = string.Empty;
-            foreach (object item in e)
+            var s = string.Empty;
+            foreach (var item in e)
             {
                 s += item.ToString();
                 Thread.Sleep(1);
@@ -37,13 +37,13 @@ namespace NetGore.Tests.Collections
         {
             var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.Add(i);
             }
@@ -54,34 +54,15 @@ namespace NetGore.Tests.Collections
         {
             var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.Find(y => y == 10);
-            }
-        }
-
-        [Test]
-        public void ThreadSafeIndexerTest()
-        {
-            var l = new TSList<int>(Enumerable.Range(1, _testRange));
-
-            for (int i = 0; i < 10; i++)
-            {
-                Thread t = new Thread(DummyEnumerator);
-                t.Start(l);
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                int x = l[i];
-                l[i] = x + 1;
-                Assert.AreEqual(x + 1, l[i]);
             }
         }
 
@@ -90,16 +71,35 @@ namespace NetGore.Tests.Collections
         {
             var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 1; i < 10; i++)
+            for (var i = 1; i < 10; i++)
             {
-                int x = l.IndexOf(i);
+                var x = l.IndexOf(i);
                 Assert.AreEqual(i, l[x]);
+            }
+        }
+
+        [Test]
+        public void ThreadSafeIndexerTest()
+        {
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
+
+            for (var i = 0; i < 10; i++)
+            {
+                var t = new Thread(DummyEnumerator);
+                t.Start(l);
+            }
+
+            for (var i = 0; i < 10; i++)
+            {
+                var x = l[i];
+                l[i] = x + 1;
+                Assert.AreEqual(x + 1, l[i]);
             }
         }
 
@@ -108,13 +108,13 @@ namespace NetGore.Tests.Collections
         {
             var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.Insert(0, i);
             }
@@ -125,13 +125,13 @@ namespace NetGore.Tests.Collections
         {
             var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.RemoveAt(0);
             }
@@ -142,13 +142,13 @@ namespace NetGore.Tests.Collections
         {
             var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.Remove(i);
             }
@@ -159,13 +159,13 @@ namespace NetGore.Tests.Collections
         {
             var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.ToArray();
             }
@@ -176,13 +176,13 @@ namespace NetGore.Tests.Collections
         {
             var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.TrimExcess();
                 l.AddRange(Enumerable.Range(1, _testRange / 2));

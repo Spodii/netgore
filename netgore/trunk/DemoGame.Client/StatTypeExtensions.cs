@@ -30,7 +30,7 @@ namespace DemoGame.Client
 
         static StatType GetModFromBase(StatType baseStat)
         {
-            StatType value = EnumHelper<StatType>.Parse("Mod" + baseStat, true);
+            var value = EnumHelper<StatType>.Parse("Mod" + baseStat, true);
             if (!EnumHelper<StatType>.IsDefined(value))
                 throw new ArgumentException("No mod StatType for the given base StatType", "baseStat");
 

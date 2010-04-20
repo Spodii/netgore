@@ -102,15 +102,15 @@ namespace NetGore.Graphics.GUI
             if (_sprite == null || _sprite.Texture == null)
                 return;
 
-            Vector2 sp = ScreenPosition;
-            Vector2 min = sp + new Vector2(Border.LeftWidth, Border.TopHeight);
+            var sp = ScreenPosition;
+            var min = sp + new Vector2(Border.LeftWidth, Border.TopHeight);
 
             // Draw the picture
             if (StretchSprite)
             {
                 // Stretched draw
-                Vector2 drawSize = ClientSize;
-                Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)drawSize.X, (int)drawSize.Y);
+                var drawSize = ClientSize;
+                var dest = new Rectangle((int)min.X, (int)min.Y, (int)drawSize.X, (int)drawSize.Y);
                 _sprite.Draw(spriteBatch, dest, Color.White);
             }
             else

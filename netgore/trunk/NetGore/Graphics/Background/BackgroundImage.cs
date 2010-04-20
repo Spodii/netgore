@@ -71,7 +71,7 @@ namespace NetGore.Graphics
             Color = reader.ReadColor(_valueKeyColor);
             Depth = reader.ReadFloat(_valueKeyDepth);
             Offset = reader.ReadVector2(_valueKeyOffset);
-            GrhIndex grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
+            var grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
 
             _sprite = new Grh(grhIndex, AnimType.Loop, map.GetTime());
         }
@@ -184,8 +184,8 @@ namespace NetGore.Graphics
             if (!IsSpriteSet())
                 return;
 
-            Vector2 position = GetPosition(Map.Size, Camera, spriteSize);
-            Rectangle rect = new Rectangle((int)position.X, (int)position.Y, (int)spriteSize.X, (int)spriteSize.Y);
+            var position = GetPosition(Map.Size, Camera, spriteSize);
+            var rect = new Rectangle((int)position.X, (int)position.Y, (int)spriteSize.X, (int)spriteSize.Y);
             Sprite.Draw(spriteBatch, rect, Color);
         }
 
@@ -230,13 +230,13 @@ namespace NetGore.Graphics
                 return Vector2.Zero;
 
             // Get the position from the alignment
-            Vector2 alignmentPosition = AlignmentHelper.FindOffset(Alignment, spriteSize, mapSize);
+            var alignmentPosition = AlignmentHelper.FindOffset(Alignment, spriteSize, mapSize);
 
             // Add the custom offset
-            Vector2 position = alignmentPosition + Offset;
+            var position = alignmentPosition + Offset;
 
             // Find the difference between the position and the camera's min position
-            Vector2 diff = camera.Min - position;
+            var diff = camera.Min - position;
 
             // Use the multiplier to align it to the correct part of the camera
             diff += (camera.Size - spriteSize) * GetOffsetMultiplier(Alignment);
@@ -449,7 +449,7 @@ namespace NetGore.Graphics
 
             if (IsVisible)
             {
-                Vector2 position = GetPosition(Map.Size, Camera);
+                var position = GetPosition(Map.Size, Camera);
                 Sprite.Draw(sb, position, Color);
             }
 

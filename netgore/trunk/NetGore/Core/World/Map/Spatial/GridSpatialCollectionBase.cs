@@ -115,12 +115,12 @@ namespace NetGore
         /// <returns>The grid segments for the specified grid index range.</returns>
         protected IEnumerable<IGridSpatialCollectionSegment> GetSegments(Point startIndex, Point length)
         {
-            int maxX = startIndex.X + length.X;
-            int maxY = startIndex.Y + length.Y;
+            var maxX = startIndex.X + length.X;
+            var maxY = startIndex.Y + length.Y;
 
-            for (int x = Math.Max(0, startIndex.X); x <= Math.Min(maxX, GridSize.X); x++)
+            for (var x = Math.Max(0, startIndex.X); x <= Math.Min(maxX, GridSize.X); x++)
             {
-                for (int y = Math.Max(0, startIndex.Y); y <= Math.Min(maxY, GridSize.Y); y++)
+                for (var y = Math.Max(0, startIndex.Y); y <= Math.Min(maxY, GridSize.Y); y++)
                 {
                     yield return GetSegment(new Point(x, y));
                 }
@@ -135,9 +135,9 @@ namespace NetGore
         /// <returns>The grid segments for the specified world area.</returns>
         protected IEnumerable<IGridSpatialCollectionSegment> GetSegments(Rectangle worldArea)
         {
-            Point min = WorldPositionToGridSegment(new Vector2(worldArea.X, worldArea.Y));
-            Point max = WorldPositionToGridSegment(new Vector2(worldArea.Right, worldArea.Bottom));
-            Point len = new Point(max.X - min.X, max.Y - min.Y);
+            var min = WorldPositionToGridSegment(new Vector2(worldArea.X, worldArea.Y));
+            var max = WorldPositionToGridSegment(new Vector2(worldArea.Right, worldArea.Bottom));
+            var len = new Point(max.X - min.X, max.Y - min.Y);
             return GetSegments(min, len);
         }
 
@@ -795,7 +795,7 @@ namespace NetGore
         /// <param name="size">The size of the area to keep track of <see cref="ISpatial"/> objects in.</param>
         public void SetAreaSize(Vector2 size)
         {
-            Point newSize = WorldPositionToGridSegment(size);
+            var newSize = WorldPositionToGridSegment(size);
 
             // Don't rebuild the grid of the size didn't change at all
             if (_gridSegments != null && newSize == GridSize)
@@ -817,7 +817,7 @@ namespace NetGore
             _gridSegments = new IGridSpatialCollectionSegment[(newSize.X + 1) * (newSize.Y + 1)];
 
             // Instantiate the segments
-            for (int i = 0; i < _gridSegments.Length; i++)
+            for (var i = 0; i < _gridSegments.Length; i++)
             {
                 IGridSpatialCollectionSegment segment;
 

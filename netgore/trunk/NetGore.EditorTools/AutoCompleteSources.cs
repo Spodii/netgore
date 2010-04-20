@@ -85,7 +85,7 @@ namespace NetGore.EditorTools
 
             // Auto-update every 30 seconds so any unexpected synchronization problems self-resolve eventually
             // without any noticeable hits to performance
-            Timer t = new Timer { Interval = 30000 };
+            var t = new Timer { Interval = 30000 };
             t.Tick += delegate { UpdateCategories(); };
 
             // Perform initial population
@@ -102,8 +102,8 @@ namespace NetGore.EditorTools
                                            SearchOption.AllDirectories);
 
             // Cache the amount we need to remove from the start and end of each string
-            int start = ContentPaths.Build.Grhs.ToString().Length + 1;
-            int trimEnd = ContentPaths.ContentFileSuffix.Length;
+            var start = ContentPaths.Build.Grhs.ToString().Length + 1;
+            var trimEnd = ContentPaths.ContentFileSuffix.Length;
 
             // Remove from the start so we only have the relative path, and remove the suffix from the end
             files =

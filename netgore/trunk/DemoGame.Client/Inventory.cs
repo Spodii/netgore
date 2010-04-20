@@ -46,7 +46,7 @@ namespace DemoGame.Client
                 }
 
                 // If the item has an amount of 0, return null
-                ItemEntity item = _buffer[(int)slot];
+                var item = _buffer[(int)slot];
                 if (item != null && item.Amount == 0)
                     return null;
 
@@ -72,11 +72,11 @@ namespace DemoGame.Client
 
         public void Drop(InventorySlot slot)
         {
-            ItemEntity item = this[slot];
+            var item = this[slot];
             if (item == null)
                 return;
 
-            using (PacketWriter pw = ClientPacket.DropInventoryItem(slot))
+            using (var pw = ClientPacket.DropInventoryItem(slot))
             {
                 _socket.Send(pw);
             }
@@ -106,7 +106,7 @@ namespace DemoGame.Client
             else
             {
                 // Update an existing item
-                ItemEntity item = this[slot];
+                var item = this[slot];
                 item.GraphicIndex = graphic;
                 item.Amount = amount;
             }
@@ -117,7 +117,7 @@ namespace DemoGame.Client
         /// </summary>
         public void UpdateEmpty(InventorySlot slot)
         {
-            ItemEntity item = this[slot];
+            var item = this[slot];
             if (item == null)
                 return;
 
@@ -132,11 +132,11 @@ namespace DemoGame.Client
         /// <param name="slot">Slot of the item to use.</param>
         public void Use(InventorySlot slot)
         {
-            ItemEntity item = this[slot];
+            var item = this[slot];
             if (item == null)
                 return;
 
-            using (PacketWriter pw = ClientPacket.UseInventoryItem(slot))
+            using (var pw = ClientPacket.UseInventoryItem(slot))
             {
                 _socket.Send(pw);
             }

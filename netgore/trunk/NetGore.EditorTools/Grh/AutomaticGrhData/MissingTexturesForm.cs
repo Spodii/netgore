@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.Content;
 using NetGore.Graphics;
-using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
@@ -37,19 +36,19 @@ namespace NetGore.EditorTools
         void ApplyBtn_Click(object sender, EventArgs e)
         {
             // Ensure the new texture is valid
-            string newTexture = NewTxt.Text;
+            var newTexture = NewTxt.Text;
             if (string.IsNullOrEmpty(newTexture))
                 return;
             if (!new ContentAssetName(newTexture).ContentExists())
                 return;
 
             // Find the selected item
-            TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
+            var selectedItem = TextureList.SelectedItem as TextureListItem;
             if (selectedItem == null)
                 return;
 
             // Change all of the GrhDatas
-            string currTexture = selectedItem.TextureName;
+            var currTexture = selectedItem.TextureName;
             foreach (var gd in selectedItem.GrhDatas.OfType<StationaryGrhData>())
             {
                 if (gd.TextureName.ToString() != currTexture)
@@ -68,7 +67,7 @@ namespace NetGore.EditorTools
 
         void BadGrhDatasList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
+            var selectedItem = TextureList.SelectedItem as TextureListItem;
             if (selectedItem == null)
             {
                 NewTxt.Enabled = false;
@@ -83,7 +82,7 @@ namespace NetGore.EditorTools
             NewTxt.Text = _hashCollection.FindBestMatchTexture(selectedItem.TextureName) ?? string.Empty;
 
             GrhDatasList.Items.Clear();
-            foreach (GrhData grhData in selectedItem.GrhDatas)
+            foreach (var grhData in selectedItem.GrhDatas)
             {
                 GrhDatasList.AddItemAndReselect(grhData.Categorization.ToString());
             }
@@ -117,12 +116,12 @@ namespace NetGore.EditorTools
         void DeleteBtn_Click(object sender, EventArgs e)
         {
             // Find the selected item
-            TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
+            var selectedItem = TextureList.SelectedItem as TextureListItem;
             if (selectedItem == null)
                 return;
 
             // Delete every GrhData using the texture
-            foreach (GrhData gd in selectedItem.GrhDatas)
+            foreach (var gd in selectedItem.GrhDatas)
             {
                 GrhInfo.Delete(gd);
             }
@@ -136,14 +135,14 @@ namespace NetGore.EditorTools
             TextureList.Items.Clear();
             foreach (var item in _missingTextures)
             {
-                TextureListItem listItem = new TextureListItem(item.Key, item.Value);
+                var listItem = new TextureListItem(item.Key, item.Value);
                 TextureList.AddItemAndReselect(listItem);
             }
         }
 
         void NewTxt_TextChanged(object sender, EventArgs e)
         {
-            string textureName = NewTxt.Text;
+            var textureName = NewTxt.Text;
 
             var assetName = new ContentAssetName(NewTxt.Text);
             if (!string.IsNullOrEmpty(textureName) && assetName.ContentExists())
@@ -151,10 +150,10 @@ namespace NetGore.EditorTools
                 NewTxt.BackColor = EditorColors.Normal;
 
                 var texture = _cm.LoadImage(assetName, ContentLevel.Temporary);
-                int w = (int)texture.Width;
-                int h = (int)texture.Height;
+                var w = (int)texture.Width;
+                var h = (int)texture.Height;
 
-                Image previewImage = texture.ToBitmap(new Rectangle(0,0,w,h), PreviewPic.Width, PreviewPic.Height);
+                Image previewImage = texture.ToBitmap(new Rectangle(0, 0, w, h), PreviewPic.Width, PreviewPic.Height);
                 PreviewPic.Image = previewImage;
             }
             else
@@ -166,7 +165,7 @@ namespace NetGore.EditorTools
 
         void RemoveSelectedTextureListItem()
         {
-            object selectedItem = TextureList.SelectedItem;
+            var selectedItem = TextureList.SelectedItem;
             if (selectedItem == null)
                 return;
 

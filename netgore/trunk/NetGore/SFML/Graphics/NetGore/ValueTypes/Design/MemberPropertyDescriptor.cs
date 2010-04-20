@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-
+using System.Linq;
 using System.Reflection;
 
 namespace SFML.Graphics.Design
@@ -63,7 +63,7 @@ namespace SFML.Graphics.Design
         /// </returns>
         public override bool Equals(object obj)
         {
-            MemberPropertyDescriptor descriptor = obj as MemberPropertyDescriptor;
+            var descriptor = obj as MemberPropertyDescriptor;
             return ((descriptor != null) && descriptor._member.Equals(_member));
         }
 

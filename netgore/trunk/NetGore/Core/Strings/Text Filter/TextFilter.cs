@@ -116,7 +116,7 @@ namespace NetGore
         {
             var instance = (TextFilter)TypeFactory.GetTypeInstance(type);
 
-            string key = instance.DisplayName;
+            var key = instance.DisplayName;
 
             // Ensure the name is not already in use
             if (_filterInstancesByName.ContainsKey(key))

@@ -66,7 +66,7 @@ namespace NetGore.Db.Schema
 
         static IEnumerable<TableSchema> ExecuteQuery(MySqlConnection conn, DbConnectionSettings dbSettings)
         {
-            Dictionary<string, List<ColumnSchema>> tableColumns = new Dictionary<string, List<ColumnSchema>>();
+            var tableColumns = new Dictionary<string, List<ColumnSchema>>();
 
             using (var cmd = conn.CreateCommand())
             {
@@ -97,7 +97,7 @@ namespace NetGore.Db.Schema
 
         static string GetColumnsString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var c in ColumnSchema.ValueNames)
             {
                 sb.Append(_columnsAlias);
@@ -133,7 +133,7 @@ namespace NetGore.Db.Schema
         /// <returns>The <see cref="MySqlConnection"/>.</returns>
         static MySqlConnection OpenConnection(DbConnectionSettings dbSettings)
         {
-            MySqlConnectionStringBuilder s = new MySqlConnectionStringBuilder
+            var s = new MySqlConnectionStringBuilder
             { UserID = dbSettings.User, Password = dbSettings.Pass, Server = dbSettings.Host, Database = "information_schema" };
 
             var connStr = s.ToString();

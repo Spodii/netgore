@@ -45,8 +45,8 @@ namespace NetGore
             var tarMax = target.Max;
 
             // Down
-            float mtd = source.Max.Y - tarMin.Y;
-            BoxSide side = BoxSide.Bottom;
+            var mtd = source.Max.Y - tarMin.Y;
+            var side = BoxSide.Bottom;
 
             // Left
             var diff = srcMax.X - tarMin.X;

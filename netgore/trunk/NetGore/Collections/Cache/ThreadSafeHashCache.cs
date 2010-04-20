@@ -185,8 +185,8 @@ namespace NetGore.Collections
                     return;
 
                 // Create the values for all the keys
-                TValue[] values = new TValue[keysToCreate.Length];
-                for (int i = 0; i < keysToCreate.Length; i++)
+                var values = new TValue[keysToCreate.Length];
+                for (var i = 0; i < keysToCreate.Length; i++)
                 {
                     values[i] = _valueCreator(keysToCreate[i]);
                 }
@@ -194,7 +194,7 @@ namespace NetGore.Collections
                 // Grab the cache lock again so we can add the new values
                 lock (_cacheSync)
                 {
-                    for (int i = 0; i < keysToCreate.Length; i++)
+                    for (var i = 0; i < keysToCreate.Length; i++)
                     {
                         Debug.Assert(!_cache.ContainsKey(keysToCreate[i]));
                         _cache.Add(keysToCreate[i], values[i]);

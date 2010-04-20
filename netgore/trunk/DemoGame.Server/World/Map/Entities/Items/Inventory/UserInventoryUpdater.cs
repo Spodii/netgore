@@ -64,7 +64,7 @@ namespace DemoGame.Server
             try
             {
                 // Loop through all slots
-                for (int slot = 0; slot < GameData.MaxInventorySize; slot++)
+                for (var slot = 0; slot < GameData.MaxInventorySize; slot++)
                 {
                     // Skip unchanged slots
                     if (!_slotChanged[slot])
@@ -72,7 +72,7 @@ namespace DemoGame.Server
 
                     // Get the item in the slot
                     var invSlot = new InventorySlot(slot);
-                    ItemEntity item = UserInventory[invSlot];
+                    var item = UserInventory[invSlot];
 
                     // Get the values to send, which depends on if the slot is empty (item == null) or not
                     GrhIndex sendItemGraphic;

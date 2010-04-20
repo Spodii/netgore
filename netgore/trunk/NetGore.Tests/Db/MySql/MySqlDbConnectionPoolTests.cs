@@ -1,7 +1,5 @@
 using System.Data;
-using System.Data.Common;
 using System.Linq;
-using NetGore.Db;
 using NUnit.Framework;
 
 namespace NetGore.Tests.Db.MySql
@@ -14,10 +12,10 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void ConnectionCloseTest()
         {
-            DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
+            var pool = DbManagerTestSettings.CreateConnectionPool();
 
             IDbConnection conn;
-            using (PooledDbConnection connPool = pool.Acquire())
+            using (var connPool = pool.Acquire())
             {
                 conn = connPool.Connection;
             }
@@ -27,11 +25,11 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void ConnectionOpenTest()
         {
-            DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
+            var pool = DbManagerTestSettings.CreateConnectionPool();
 
-            using (PooledDbConnection connPool = pool.Acquire())
+            using (var connPool = pool.Acquire())
             {
-                DbConnection conn = connPool.Connection;
+                var conn = connPool.Connection;
                 Assert.IsNotNull(conn);
                 Assert.AreEqual(ConnectionState.Open, conn.State);
             }
@@ -40,16 +38,16 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void MultiplePoolItemsTest()
         {
-            DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
+            var pool = DbManagerTestSettings.CreateConnectionPool();
 
             Assert.AreEqual(0, pool.LiveObjects);
-            using (PooledDbConnection a = pool.Acquire())
+            using (var a = pool.Acquire())
             {
                 Assert.AreEqual(1, pool.LiveObjects);
-                using (PooledDbConnection b = pool.Acquire())
+                using (var b = pool.Acquire())
                 {
                     Assert.AreEqual(2, pool.LiveObjects);
-                    using (PooledDbConnection c = pool.Acquire())
+                    using (var c = pool.Acquire())
                     {
                         Assert.AreEqual(3, pool.LiveObjects);
                         Assert.IsNotNull(a);
@@ -66,14 +64,14 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void SelectQueryTest()
         {
-            DbConnectionPool pool = DbManagerTestSettings.CreateConnectionPool();
+            var pool = DbManagerTestSettings.CreateConnectionPool();
 
-            using (PooledDbConnection connPool = pool.Acquire())
+            using (var connPool = pool.Acquire())
             {
-                using (DbCommand cmd = connPool.Connection.CreateCommand())
+                using (var cmd = connPool.Connection.CreateCommand())
                 {
                     cmd.CommandText = "SELECT 100 + 500";
-                    using (DbDataReader r = cmd.ExecuteReader())
+                    using (var r = cmd.ExecuteReader())
                     {
                         r.Read();
                         Assert.AreEqual(600, r[0]);

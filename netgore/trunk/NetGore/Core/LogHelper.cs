@@ -55,12 +55,12 @@ namespace NetGore
         /// </example>
         public static string GetBufferDump(byte[] buffer, int start, int length)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine("{");
-            int count = 0;
-            int end = start + length;
+            var count = 0;
+            var end = start + length;
 
-            for (int i = start; i < end; i++)
+            for (var i = start; i < end; i++)
             {
                 sb.Append(buffer[i].ToString("000"));
                 if (i < end - 1)

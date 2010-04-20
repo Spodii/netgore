@@ -70,12 +70,12 @@ namespace NetGore.Network
         /// <returns>An EndPoint with the given <paramref name="address"/> and <paramref name="port"/>.</returns>
         static EndPoint CreateEndPoint(string address, int port)
         {
-            IPAddress ipAddress = IPAddress.Parse(address);
+            var ipAddress = IPAddress.Parse(address);
 
             if (ipAddress == null)
                 throw new ArgumentException("address");
 
-            IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
+            var endPoint = new IPEndPoint(ipAddress, port);
             return endPoint;
         }
 

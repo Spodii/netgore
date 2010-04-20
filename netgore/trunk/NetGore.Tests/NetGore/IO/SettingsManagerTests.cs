@@ -14,10 +14,10 @@ namespace NetGore.Tests.IO
 
         static string CreateRandomString()
         {
-            int length = r.Next(2, 10);
+            var length = r.Next(2, 10);
             var ret = new char[length];
 
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 int j;
                 if (i == 0)
@@ -65,25 +65,25 @@ namespace NetGore.Tests.IO
         [Test]
         public void AddNewItemTest()
         {
-            InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-            InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
-            InterfaceTester t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
+            var t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
+            var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+            var t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
 
-            InterfaceTester retT1 = new InterfaceTester();
-            InterfaceTester retT2 = new InterfaceTester();
+            var retT1 = new InterfaceTester();
+            var retT2 = new InterfaceTester();
             InterfaceTester retT3;
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
                     settingsWriter.Add("t1", t1);
                     settingsWriter.Add("t2", t2);
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", t3);
                     settingsReader.Add("t1", retT1);
@@ -105,26 +105,26 @@ namespace NetGore.Tests.IO
         [Test]
         public void CaseInsensitiveLowerTest()
         {
-            InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-            InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
-            InterfaceTester t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
+            var t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
+            var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+            var t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
 
-            InterfaceTester retT1 = new InterfaceTester();
-            InterfaceTester retT2 = new InterfaceTester();
-            InterfaceTester retT3 = new InterfaceTester();
+            var retT1 = new InterfaceTester();
+            var retT2 = new InterfaceTester();
+            var retT3 = new InterfaceTester();
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
                     settingsWriter.Add("T2", t2);
                     settingsWriter.Add("T3", t3);
                     settingsWriter.Add("T1", t1);
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", retT3);
                     settingsReader.Add("t1", retT1);
@@ -145,26 +145,26 @@ namespace NetGore.Tests.IO
         [Test]
         public void CaseInsensitiveUpperTest()
         {
-            InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-            InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
-            InterfaceTester t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
+            var t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
+            var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+            var t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
 
-            InterfaceTester retT1 = new InterfaceTester();
-            InterfaceTester retT2 = new InterfaceTester();
-            InterfaceTester retT3 = new InterfaceTester();
+            var retT1 = new InterfaceTester();
+            var retT2 = new InterfaceTester();
+            var retT3 = new InterfaceTester();
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
                     settingsWriter.Add("t2", t2);
                     settingsWriter.Add("t3", t3);
                     settingsWriter.Add("t1", t1);
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
                     settingsReader.Add("T3", retT3);
                     settingsReader.Add("T1", retT1);
@@ -185,14 +185,14 @@ namespace NetGore.Tests.IO
         [Test]
         public void DuplicateKeyTest()
         {
-            InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-            InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+            var t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
+            var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
                     settingsWriter.Add("t1", t1);
                     Assert.Throws<ArgumentException>(() => settingsWriter.Add("t1", t2));
@@ -209,24 +209,24 @@ namespace NetGore.Tests.IO
         public void MissingItemTest()
         {
             new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-            InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
-            InterfaceTester t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
+            var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+            var t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
 
-            InterfaceTester retT1 = new InterfaceTester();
-            InterfaceTester retT2 = new InterfaceTester();
-            InterfaceTester retT3 = new InterfaceTester();
+            var retT1 = new InterfaceTester();
+            var retT2 = new InterfaceTester();
+            var retT3 = new InterfaceTester();
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
                     settingsWriter.Add("t2", t2);
                     settingsWriter.Add("t3", t3);
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", retT3);
                     settingsReader.Add("t1", retT1);
@@ -250,28 +250,28 @@ namespace NetGore.Tests.IO
 
             var items = new List<InterfaceTester>(iterations);
 
-            for (int i = 0; i < iterations; i++)
+            for (var i = 0; i < iterations; i++)
             {
                 items.Add(GetRandomInterfaceTester());
             }
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
-                    for (int i = 0; i < items.Count; i++)
+                    for (var i = 0; i < items.Count; i++)
                     {
                         settingsWriter.Add("item" + Parser.Invariant.ToString(i), items[i]);
                     }
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
-                    for (int i = 0; i < items.Count; i++)
+                    for (var i = 0; i < items.Count; i++)
                     {
-                        InterfaceTester newItem = new InterfaceTester();
+                        var newItem = new InterfaceTester();
                         settingsReader.Add("item" + Parser.Invariant.ToString(i), newItem);
                         Assert.IsTrue(items[i].HaveSameValues(newItem), "Index: {0}", i);
                     }
@@ -287,26 +287,26 @@ namespace NetGore.Tests.IO
         [Test]
         public void VariableLoadOrderTest()
         {
-            InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-            InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
-            InterfaceTester t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
+            var t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
+            var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+            var t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
 
-            InterfaceTester retT1 = new InterfaceTester();
-            InterfaceTester retT2 = new InterfaceTester();
-            InterfaceTester retT3 = new InterfaceTester();
+            var retT1 = new InterfaceTester();
+            var retT2 = new InterfaceTester();
+            var retT3 = new InterfaceTester();
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
                     settingsWriter.Add("t1", t1);
                     settingsWriter.Add("t2", t2);
                     settingsWriter.Add("t3", t3);
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", retT3);
                     settingsReader.Add("t1", retT1);
@@ -327,26 +327,26 @@ namespace NetGore.Tests.IO
         [Test]
         public void VariableSaveOrderTest()
         {
-            InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-            InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
-            InterfaceTester t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
+            var t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
+            var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+            var t3 = new InterfaceTester { A = "wb", B = 24, C = 1234.3f };
 
-            InterfaceTester retT1 = new InterfaceTester();
-            InterfaceTester retT2 = new InterfaceTester();
-            InterfaceTester retT3 = new InterfaceTester();
+            var retT1 = new InterfaceTester();
+            var retT2 = new InterfaceTester();
+            var retT3 = new InterfaceTester();
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
                     settingsWriter.Add("t2", t2);
                     settingsWriter.Add("t3", t3);
                     settingsWriter.Add("t1", t1);
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
                     settingsReader.Add("t3", retT3);
                     settingsReader.Add("t1", retT1);
@@ -367,23 +367,23 @@ namespace NetGore.Tests.IO
         [Test]
         public void WriteReadTest()
         {
-            InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-            InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+            var t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
+            var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
 
-            InterfaceTester retT1 = new InterfaceTester();
-            InterfaceTester retT2 = new InterfaceTester();
+            var retT1 = new InterfaceTester();
+            var retT2 = new InterfaceTester();
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
                     settingsWriter.Add("t1", t1);
                     settingsWriter.Add("t2", t2);
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
                     settingsReader.Add("t1", retT1);
                     settingsReader.Add("t2", retT2);
@@ -406,28 +406,28 @@ namespace NetGore.Tests.IO
 
             var items = new List<InterfaceTester>(iterations);
 
-            for (int i = 0; i < iterations; i++)
+            for (var i = 0; i < iterations; i++)
             {
                 items.Add(GetRandomInterfaceTester());
             }
 
-            string filePath = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
             try
             {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                using (var settingsWriter = new SettingsManager("TestSettings", filePath))
                 {
-                    for (int i = 0; i < items.Count; i++)
+                    for (var i = 0; i < items.Count; i++)
                     {
                         settingsWriter.Add("item" + Parser.Invariant.ToString(i), items[i]);
                     }
                 }
 
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                using (var settingsReader = new SettingsManager("TestSettings", filePath))
                 {
-                    for (int i = items.Count - 1; i > 0; i -= 22)
+                    for (var i = items.Count - 1; i > 0; i -= 22)
                     {
-                        InterfaceTester newItem = new InterfaceTester();
+                        var newItem = new InterfaceTester();
                         settingsReader.Add("item" + Parser.Invariant.ToString(i), newItem);
                         Assert.IsTrue(items[i].HaveSameValues(newItem), "Index: {0}", i);
                     }

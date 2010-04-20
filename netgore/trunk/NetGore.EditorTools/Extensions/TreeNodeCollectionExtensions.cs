@@ -17,8 +17,8 @@ namespace NetGore.EditorTools
         public static T[] ToArray<T>(this TreeNodeCollection c)
         {
             var ret = new T[c.Count];
-            int i = 0;
-            foreach (object node in c)
+            var i = 0;
+            foreach (var node in c)
             {
                 ret[i] = (T)node;
                 i++;
@@ -35,8 +35,8 @@ namespace NetGore.EditorTools
         public static object[] ToArray(this TreeNodeCollection c)
         {
             var ret = new object[c.Count];
-            int i = 0;
-            foreach (object node in c)
+            var i = 0;
+            foreach (var node in c)
             {
                 ret[i] = node;
                 i++;

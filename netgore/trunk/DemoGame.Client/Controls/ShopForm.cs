@@ -48,8 +48,8 @@ namespace DemoGame.Client
 
             IsVisible = false;
 
-            Vector2 itemsSize = _columns * _itemSize;
-            Vector2 paddingSize = (_columns + 1) * _padding;
+            var itemsSize = _columns * _itemSize;
+            var paddingSize = (_columns + 1) * _padding;
             Size = itemsSize + paddingSize + Border.Size;
 
             CreateItemSlots();
@@ -73,14 +73,14 @@ namespace DemoGame.Client
         /// </summary>
         void CreateItemSlots()
         {
-            Vector2 offset = _padding;
-            Vector2 offsetMultiplier = _itemSize + _padding;
+            var offset = _padding;
+            var offsetMultiplier = _itemSize + _padding;
 
-            for (int i = 0; i < _shopSettings.MaxShopItems; i++)
+            for (var i = 0; i < _shopSettings.MaxShopItems; i++)
             {
-                int x = i % _columns;
-                int y = i / _columns;
-                Vector2 pos = offset + new Vector2(x, y) * offsetMultiplier;
+                var x = i % _columns;
+                var y = i / _columns;
+                var pos = offset + new Vector2(x, y) * offsetMultiplier;
 
                 new ShopItemPB(this, pos, new ShopItemIndex((byte)i));
             }
@@ -123,7 +123,7 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
         void ShopItemPB_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            ShopItemPB src = (ShopItemPB)sender;
+            var src = (ShopItemPB)sender;
             if (src.ItemInfo != null)
             {
                 if (RequestPurchase != null)
@@ -290,7 +290,7 @@ namespace DemoGame.Client
                     return;
 
                 // Draw the item in the center of the slot
-                Vector2 offset = (_itemSize - _grh.Size) / 2f;
+                var offset = (_itemSize - _grh.Size) / 2f;
                 _grh.Draw(spriteBatch, ScreenPosition + offset);
             }
 
@@ -327,7 +327,7 @@ namespace DemoGame.Client
             /// <returns>The text for the <see cref="Tooltip"/>.</returns>
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
             {
-                ShopItemPB src = (ShopItemPB)sender;
+                var src = (ShopItemPB)sender;
                 var itemInfo = src.ItemInfo;
                 return ItemInfoHelper.GetStyledText(itemInfo);
             }

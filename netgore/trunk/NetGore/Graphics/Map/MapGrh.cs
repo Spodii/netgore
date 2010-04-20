@@ -2,8 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -92,7 +90,7 @@ namespace NetGore.Graphics
                 if (_isForeground == value)
                     return;
 
-                MapRenderLayer oldLayer = MapRenderLayer;
+                var oldLayer = MapRenderLayer;
                 _isForeground = value;
 
                 if (RenderLayerChanged != null)
@@ -269,7 +267,7 @@ namespace NetGore.Graphics
         public void ReadState(IValueReader reader)
         {
             Position = reader.ReadVector2(_positionKeyName);
-            GrhIndex grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
+            var grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
             _isForeground = reader.ReadBool(_isForegroundKeyName);
             _layerDepth = reader.ReadShort(_layerDepthKeyName);
 

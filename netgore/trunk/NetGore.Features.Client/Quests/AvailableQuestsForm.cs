@@ -96,30 +96,6 @@ namespace NetGore.Features.Quests
         public MapEntityIndex QuestProviderIndex { get; set; }
 
         /// <summary>
-        /// Handles the Clicked event of the <see cref="_btnAccept"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        void btnAccept_Clicked(object sender, MouseButtonEventArgs e)
-        {
-            var selItem = _lstQuests.SelectedItem;
-            if (selItem == null)
-                return;
-
-            InvokeQuestAccepted(selItem);
-        }
-
-        /// <summary>
-        /// Handles the Clicked event of the <see cref="_btnClose"/> control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
-        void btnClose_Clicked(object sender, MouseButtonEventArgs e)
-        {
-            IsVisible = false;
-        }
-
-        /// <summary>
         /// Creates the children controls for this form.
         /// </summary>
         void CreateChildren()
@@ -180,34 +156,6 @@ namespace NetGore.Features.Quests
             var handler = Events[_eventQuestAccepted] as ControlEventHandler<IQuestDescription>;
             if (handler != null)
                 handler(this, questDescription);
-        }
-
-        /// <summary>
-        /// Handles when the available quests list's index changes.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void lstQuests_SelectedIndexChanged(Control sender)
-        {
-            // Get the selected item
-            var selectedItem = _lstQuests.SelectedItem;
-
-            var acceptButtonText = "Accept";
-
-            if (selectedItem == null)
-            {
-                _txtQuestInfo.Text = string.Empty;
-                _btnAccept.IsEnabled = false;
-            }
-            else
-            {
-                _txtQuestInfo.Text = selectedItem.Description;
-                _btnAccept.IsEnabled = true;
-
-                if (_hasFinishQuestReqs(selectedItem.QuestID))
-                    acceptButtonText = "Turn in!";
-            }
-
-            _btnAccept.Text = acceptButtonText;
         }
 
         /// <summary>
@@ -287,6 +235,58 @@ namespace NetGore.Features.Quests
             // If there are no quests listed, close the form
             if (AvailableQuests.Count() == 0)
                 IsVisible = false;
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the <see cref="_btnAccept"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void btnAccept_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            var selItem = _lstQuests.SelectedItem;
+            if (selItem == null)
+                return;
+
+            InvokeQuestAccepted(selItem);
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the <see cref="_btnClose"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        void btnClose_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            IsVisible = false;
+        }
+
+        /// <summary>
+        /// Handles when the available quests list's index changes.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void lstQuests_SelectedIndexChanged(Control sender)
+        {
+            // Get the selected item
+            var selectedItem = _lstQuests.SelectedItem;
+
+            var acceptButtonText = "Accept";
+
+            if (selectedItem == null)
+            {
+                _txtQuestInfo.Text = string.Empty;
+                _btnAccept.IsEnabled = false;
+            }
+            else
+            {
+                _txtQuestInfo.Text = selectedItem.Description;
+                _btnAccept.IsEnabled = true;
+
+                if (_hasFinishQuestReqs(selectedItem.QuestID))
+                    acceptButtonText = "Turn in!";
+            }
+
+            _btnAccept.Text = acceptButtonText;
         }
     }
 }

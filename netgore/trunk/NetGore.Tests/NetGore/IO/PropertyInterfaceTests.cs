@@ -62,6 +62,12 @@ namespace NetGore.Tests.NetGore.IO
         }
 
         [Test]
+        public void IntTest()
+        {
+            DoTest<int>("Int", 55, (pi, o, v) => pi.Set(o, v));
+        }
+
+        [Test]
         public void InternalClassTest()
         {
             var o = new InternalTestClass();
@@ -75,12 +81,6 @@ namespace NetGore.Tests.NetGore.IO
         public void IntsTest()
         {
             DoTest<int[]>("Ints", new int[] { 55, 52, 23 }, (pi, o, v) => pi.Set(o, v));
-        }
-
-        [Test]
-        public void IntTest()
-        {
-            DoTest<int>("Int", 55, (pi, o, v) => pi.Set(o, v));
         }
 
         [Test]

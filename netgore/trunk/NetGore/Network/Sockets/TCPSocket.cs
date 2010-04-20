@@ -195,7 +195,7 @@ namespace NetGore.Network
                 return;
             }
 
-            int msgLength = dataToSend.Length;
+            var msgLength = dataToSend.Length;
 
             // Copy over the contents of the message into the send buffer, along with the
             // 2 byte prefix that states the length of the message
@@ -272,7 +272,7 @@ namespace NetGore.Network
         void EndRecv(object sender, SocketAsyncEventArgs e)
         {
             // Read from the socket
-            int readLength = e.BytesTransferred;
+            var readLength = e.BytesTransferred;
 
             // 0 receive length = gracefully closed
             if (readLength == 0)
@@ -371,7 +371,7 @@ namespace NetGore.Network
         /// </summary>
         void ProcessRecvBuffer()
         {
-            int offset = 0;
+            var offset = 0;
 
             lock (_recvLock)
             {
@@ -380,7 +380,7 @@ namespace NetGore.Network
                 while (offset < _recvBufferPos)
                 {
                     // Grab the message length (significant byte first, insignificant second)
-                    ushort msgLen = (ushort)((_recvBuffer[offset] << 8) | _recvBuffer[offset + 1]);
+                    var msgLen = (ushort)((_recvBuffer[offset] << 8) | _recvBuffer[offset + 1]);
 
                     // Check for a valid length
                     if (msgLen == 0)
@@ -419,7 +419,7 @@ namespace NetGore.Network
                 {
                     // If there was an incomplete message, shift the buffer contents down,
                     // placing the first incomplete message at the first index
-                    int tmpLen = _recvBufferPos - offset;
+                    var tmpLen = _recvBufferPos - offset;
                     Buffer.BlockCopy(_recvBuffer, offset, _recvBuffer, 0, tmpLen);
 
                     // Move the receive buffer write pointer to the next free index
@@ -443,7 +443,7 @@ namespace NetGore.Network
             _socket = newSocket;
             _address = _socket.RemoteEndPoint.ToString();
 
-            IPEndPoint ipEndPoint = (IPEndPoint)_socket.RemoteEndPoint;
+            var ipEndPoint = (IPEndPoint)_socket.RemoteEndPoint;
 
             _port = (ushort)ipEndPoint.Port;
             Debug.Assert(ipEndPoint.Port >= ushort.MinValue && ipEndPoint.Port <= ushort.MaxValue);

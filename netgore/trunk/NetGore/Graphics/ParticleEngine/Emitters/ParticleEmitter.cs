@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -477,7 +475,7 @@ namespace NetGore.Graphics.ParticleEngine
         void ReleaseParticles(int currentTime, int amount)
         {
             // Find how many we can actually release
-            int lastIndex = Math.Min(Budget - 1, _lastAliveIndex + amount);
+            var lastIndex = Math.Min(Budget - 1, _lastAliveIndex + amount);
 
             // Ensure our particles array is large enough to fit the new particles.
             // When we resize the array, we use the "next power of two" sizing concept to reduce the
@@ -485,7 +483,7 @@ namespace NetGore.Graphics.ParticleEngine
             // we just find the next power of two instead of looping until we have a large enough value.
             if (particles.Length - 1 < lastIndex)
             {
-                int newSize = BitOps.NextPowerOf2(lastIndex + 1);
+                var newSize = BitOps.NextPowerOf2(lastIndex + 1);
                 Debug.Assert(BitOps.IsPowerOf2(newSize),
                              "If this assert fails, something is probably wrong with BitOps.NextPowerOf2() or BitOps.IsPowerOf2().");
                 Debug.Assert(newSize >= lastIndex + 1);
@@ -493,8 +491,8 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             // Start releasing the particles
-            bool hasReleaseModifiers = ParticleModifiers.HasReleaseModifiers;
-            for (int i = _lastAliveIndex + 1; i <= lastIndex; i++)
+            var hasReleaseModifiers = ParticleModifiers.HasReleaseModifiers;
+            for (var i = _lastAliveIndex + 1; i <= lastIndex; i++)
             {
                 var particle = particles[i];
                 if (particle == null)
@@ -611,7 +609,7 @@ namespace NetGore.Graphics.ParticleEngine
                     _nextReleaseTime = currentTime - MaxDeltaTime;
 
                 // Keep calculating the releases until we catch up to the current time
-                int amountToRelease = 0;
+                var amountToRelease = 0;
                 while (_nextReleaseTime < currentTime)
                 {
                     amountToRelease += ReleaseAmount.GetNext();
@@ -624,8 +622,8 @@ namespace NetGore.Graphics.ParticleEngine
             }
 
             // Update the particles
-            bool hasUpdateModifiers = ParticleModifiers.HasUpdateModifiers;
-            int i = 0;
+            var hasUpdateModifiers = ParticleModifiers.HasUpdateModifiers;
+            var i = 0;
             while (i <= _lastAliveIndex)
             {
                 var particle = particles[i];

@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -129,14 +128,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the size of the current frame in pixels.
-        /// </summary>
-        public Vector2 Size
-        {
-            get { return CurrentGrhData != null ? CurrentGrhData.Size : Vector2.Zero; }
-        }
-
-        /// <summary>
         /// Performs a detailed check to ensure the Grh can be drawn without problem. This should be called before
         /// any drawing is done!
         /// </summary>
@@ -161,7 +152,8 @@ namespace NetGore.Graphics
                     var sgd = GrhData as StationaryGrhData;
                     if (sgd == null)
                     {
-                        const string errmsg = "Failed to render Grh `{0}` - GrhData `{1}` is of type `{2}` instead of the expected type `{3}`!";
+                        const string errmsg =
+                            "Failed to render Grh `{0}` - GrhData `{1}` is of type `{2}` instead of the expected type `{3}`!";
                         log.ErrorFormat(errmsg, this, GrhData, GrhData.GetType(), typeof(StationaryGrhData));
                     }
                     else
@@ -192,6 +184,157 @@ namespace NetGore.Graphics
 
             // All is good
             return true;
+        }
+
+        /// <summary>
+        /// Creates a duplicate (deep copy) of the Grh.
+        /// </summary>
+        /// <returns>Duplicate of the Grh.</returns>
+        public Grh Duplicate()
+        {
+            return new Grh(_grhData, _anim, _lastUpdated) { _frame = _frame };
+        }
+
+        /// <summary>
+        /// Sets the Grh to a new index.
+        /// </summary>
+        /// <param name="grhIndex">New Grh index to use for the stationary Grh.</param>
+        public void SetGrh(GrhIndex grhIndex)
+        {
+            SetGrh(grhIndex, AnimType, LastUpdated);
+        }
+
+        /// <summary>
+        /// Sets the Grh to a new index.
+        /// </summary>
+        /// <param name="grhData">New GrhData to use for the Grh.</param>
+        /// <param name="anim">Type of animation.</param>
+        /// <param name="currentTime">Current time.</param>
+        public void SetGrh(GrhData grhData, AnimType anim, int currentTime)
+        {
+            _grhData = grhData;
+            _frame = 0;
+            _anim = anim;
+            _lastUpdated = currentTime;
+        }
+
+        /// <summary>
+        /// Sets the Grh to a new index.
+        /// </summary>
+        /// <param name="grhData">New GrhData to use for the stationary Grh.</param>
+        public void SetGrh(GrhData grhData)
+        {
+            if (GrhData == grhData)
+                return;
+
+            SetGrh(grhData, AnimType, LastUpdated);
+        }
+
+        /// <summary>
+        /// Sets the Grh to a new index.
+        /// </summary>
+        /// <param name="grhIndex">New Grh index to use.</param>
+        /// <param name="anim">Type of animation.</param>
+        /// <param name="currentTime">Current time.</param>
+        public void SetGrh(GrhIndex grhIndex, AnimType anim, int currentTime)
+        {
+            var grhData = GrhInfo.GetData(grhIndex);
+            if (grhData == null && grhIndex != 0)
+            {
+                const string errmsg = "Failed to set Grh - GrhIndex `{0}` does not exist.";
+                Debug.Fail(string.Format(errmsg, grhIndex));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, grhIndex);
+                return;
+            }
+
+            SetGrh(grhData, anim, currentTime);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return "Grh: " + (GrhData != null ? GrhData.ToString() : "(No GrhData loaded)");
+        }
+
+        /// <summary>
+        /// Updates the current frame.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        void UpdateFrameIndex(int currentTime)
+        {
+            var elapsedTime = currentTime - _lastUpdated;
+            Debug.Assert(elapsedTime >= 0, "How is the elapsed time negative? Did the computer fall into a wormhole?");
+            if (elapsedTime <= 0)
+                return;
+
+            // Store the temporary new frame
+            var tmpFrame = _frame + (elapsedTime * GrhData.Speed);
+
+            // Check if the frame limit has been exceeded
+            if (tmpFrame >= GrhData.FramesCount)
+            {
+                if (_anim == AnimType.LoopOnce)
+                {
+                    // The animation was only looping once, so end it and set at the first frame
+                    _anim = AnimType.None;
+                    _frame = 0;
+                    return;
+                }
+                else
+                {
+                    // Animation is looping so get the frame back into range
+                    tmpFrame = tmpFrame % GrhData.FramesCount;
+                }
+            }
+
+            // Set the new frame
+            _frame = tmpFrame;
+        }
+
+        #region ISprite Members
+
+        /// <summary>
+        /// Gets the size of the current frame in pixels.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return CurrentGrhData != null ? CurrentGrhData.Size : Vector2.Zero; }
+        }
+
+        /// <summary>
+        /// Gets the source rectangle for the current frame.
+        /// </summary>
+        public Rectangle Source
+        {
+            get
+            {
+                var asStationary = CurrentGrhData;
+                if (asStationary == null)
+                    return Rectangle.Empty;
+
+                return asStationary.SourceRect;
+            }
+        }
+
+        /// <summary>
+        /// Gets the texture for the current frame.
+        /// </summary>
+        public Image Texture
+        {
+            get
+            {
+                var asStationary = CurrentGrhData;
+                if (asStationary == null)
+                    return null;
+
+                return asStationary.Texture;
+            }
         }
 
         /// <summary>
@@ -288,149 +431,6 @@ namespace NetGore.Graphics
                 return;
 
             sb.Draw(Texture, dest, Source, color, rotation, origin, effect);
-        }
-
-        /// <summary>
-        /// Creates a duplicate (deep copy) of the Grh.
-        /// </summary>
-        /// <returns>Duplicate of the Grh.</returns>
-        public Grh Duplicate()
-        {
-            return new Grh(_grhData, _anim, _lastUpdated) { _frame = _frame };
-        }
-
-        /// <summary>
-        /// Sets the Grh to a new index.
-        /// </summary>
-        /// <param name="grhIndex">New Grh index to use for the stationary Grh.</param>
-        public void SetGrh(GrhIndex grhIndex)
-        {
-            SetGrh(grhIndex, AnimType, LastUpdated);
-        }
-
-        /// <summary>
-        /// Sets the Grh to a new index.
-        /// </summary>
-        /// <param name="grhData">New GrhData to use for the Grh.</param>
-        /// <param name="anim">Type of animation.</param>
-        /// <param name="currentTime">Current time.</param>
-        public void SetGrh(GrhData grhData, AnimType anim, int currentTime)
-        {
-            _grhData = grhData;
-            _frame = 0;
-            _anim = anim;
-            _lastUpdated = currentTime;
-        }
-
-        /// <summary>
-        /// Sets the Grh to a new index.
-        /// </summary>
-        /// <param name="grhData">New GrhData to use for the stationary Grh.</param>
-        public void SetGrh(GrhData grhData)
-        {
-            if (GrhData == grhData)
-                return;
-
-            SetGrh(grhData, AnimType, LastUpdated);
-        }
-
-        /// <summary>
-        /// Sets the Grh to a new index.
-        /// </summary>
-        /// <param name="grhIndex">New Grh index to use.</param>
-        /// <param name="anim">Type of animation.</param>
-        /// <param name="currentTime">Current time.</param>
-        public void SetGrh(GrhIndex grhIndex, AnimType anim, int currentTime)
-        {
-            GrhData grhData = GrhInfo.GetData(grhIndex);
-            if (grhData == null && grhIndex != 0)
-            {
-                const string errmsg = "Failed to set Grh - GrhIndex `{0}` does not exist.";
-                Debug.Fail(string.Format(errmsg, grhIndex));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, grhIndex);
-                return;
-            }
-
-            SetGrh(grhData, anim, currentTime);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return "Grh: " + (GrhData != null ? GrhData.ToString() : "(No GrhData loaded)");
-        }
-
-        /// <summary>
-        /// Updates the current frame.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        void UpdateFrameIndex(int currentTime)
-        {
-            int elapsedTime = currentTime - _lastUpdated;
-            Debug.Assert(elapsedTime >= 0, "How is the elapsed time negative? Did the computer fall into a wormhole?");
-            if (elapsedTime <= 0)
-                return;
-
-            // Store the temporary new frame
-            float tmpFrame = _frame + (elapsedTime * GrhData.Speed);
-
-            // Check if the frame limit has been exceeded
-            if (tmpFrame >= GrhData.FramesCount)
-            {
-                if (_anim == AnimType.LoopOnce)
-                {
-                    // The animation was only looping once, so end it and set at the first frame
-                    _anim = AnimType.None;
-                    _frame = 0;
-                    return;
-                }
-                else
-                {
-                    // Animation is looping so get the frame back into range
-                    tmpFrame = tmpFrame % GrhData.FramesCount;
-                }
-            }
-
-            // Set the new frame
-            _frame = tmpFrame;
-        }
-
-        #region ISprite Members
-
-        /// <summary>
-        /// Gets the source rectangle for the current frame.
-        /// </summary>
-        public Rectangle Source
-        {
-            get
-            {
-                var asStationary = CurrentGrhData;
-                if (asStationary == null)
-                    return Rectangle.Empty;
-
-                return asStationary.SourceRect;
-            }
-        }
-
-        /// <summary>
-        /// Gets the texture for the current frame.
-        /// </summary>
-        public Image Texture
-        {
-            get
-            {
-                var asStationary = CurrentGrhData;
-                if (asStationary == null)
-                    return null;
-
-                return asStationary.Texture;
-            }
         }
 
         /// <summary>

@@ -57,7 +57,7 @@ namespace NetGore.Features.Skills
 
         static Func<Type, bool> GetTypeFilter()
         {
-            TypeFilterCreator filterCreator = new TypeFilterCreator
+            var filterCreator = new TypeFilterCreator
             {
                 IsClass = true,
                 IsAbstract = false,

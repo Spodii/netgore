@@ -10,10 +10,10 @@ namespace DemoGame
     public static class LogLevelExtensions
     {
         static readonly Color _colorDebug = new Color(0, 100, 0, 255);
-        static readonly Color _colorInfo = new Color(0, 0, 100, 255);
-        static readonly Color _colorWarn = new Color(100, 0, 100, 255);
         static readonly Color _colorError = new Color(0, 100, 0, 255);
         static readonly Color _colorFatal = new Color(255, 0, 0, 255);
+        static readonly Color _colorInfo = new Color(0, 0, 100, 255);
+        static readonly Color _colorWarn = new Color(100, 0, 100, 255);
 
         /// <summary>
         /// Gets the color to use for a log message.

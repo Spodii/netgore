@@ -198,7 +198,7 @@ namespace NetGore.Graphics.ParticleEngine
         public void Read(string nodeName, IValueReader reader)
         {
             // Read the modifiers
-            var modifiers = reader.ReadManyNodes<ParticleModifier>(nodeName, ParticleModifier.Read);
+            var modifiers = reader.ReadManyNodes(nodeName, ParticleModifier.Read);
 
             // Clear the collection and add the created modifiers
             Clear();

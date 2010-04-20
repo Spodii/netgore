@@ -53,7 +53,7 @@ namespace DemoGame.EditorTools
                 var ev = value as IEnumerable<QuestID>;
                 if (ev != null)
                 {
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
                     sb.Append("{");
                     foreach (var v in ev)
                     {

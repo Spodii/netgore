@@ -12,42 +12,6 @@ namespace NetGore.Graphics.GUI
     public interface IGUIManager
     {
         /// <summary>
-        /// Sends an event for a mouse button being released to this <see cref="IGUIManager"/>.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        void SendEventMouseButtonReleased(MouseButtonEventArgs e);
-
-        /// <summary>
-        /// Sends an event for the mouse moving to this <see cref="IGUIManager"/>.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        void SendEventMouseMoved(MouseMoveEventArgs e);
-
-        /// <summary>
-        /// Sends an event for a mouse button being pressed to this <see cref="IGUIManager"/>.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        void SendEventMouseButtonPressed(MouseButtonEventArgs e);
-
-        /// <summary>
-        /// Sends an event for text being entered to this <see cref="IGUIManager"/>.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        void SendEventTextEntered(TextEventArgs e);
-
-        /// <summary>
-        /// Sends an event for a key being released to this <see cref="IGUIManager"/>.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        void SendEventKeyReleased(KeyEventArgs e);
-
-        /// <summary>
-        /// Sends an event for a key being pressed to this <see cref="IGUIManager"/>.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        void SendEventKeyPressed(KeyEventArgs e);
-
-        /// <summary>
         /// Notifies listeners when the focused <see cref="Control"/> has changed.
         /// </summary>
         event GUIEventHandler FocusedControlChanged;
@@ -62,6 +26,12 @@ namespace NetGore.Graphics.GUI
         /// only contains the top-level <see cref="Control"/>s, not any of the child <see cref="Control"/>s.
         /// </summary>
         IEnumerable<Control> Controls { get; }
+
+        /// <summary>
+        /// Gets the cursor position.
+        /// </summary>
+        /// <value>The cursor position.</value>
+        Vector2 CursorPosition { get; }
 
         /// <summary>
         /// Gets the <see cref="IDragDropProvider"/> that is currently being dragged for drag-and-drop. Not to
@@ -99,24 +69,10 @@ namespace NetGore.Graphics.GUI
         Font Font { get; set; }
 
         /// <summary>
-        /// Gets if a given <see cref="KeyCode"/> is currently being pressed.
+        /// Gets the <see cref="Control"/> that was last the <see cref="IGUIManager.PressedControl"/>. Unlike
+        /// <see cref="IGUIManager.PressedControl"/>, this value will not be set to null when the mouse button is raised.
         /// </summary>
-        /// <param name="key">The <see cref="KeyCode"/> to check if pressed.</param>
-        /// <returns>True if the <paramref name="key"/> is currently being pressed; otherwise false.</returns>
-        bool IsKeyDown(KeyCode key);
-
-        /// <summary>
-        /// Gets if a given <see cref="MouseButton"/> is currently being pressed.
-        /// </summary>
-        /// <param name="button">The <see cref="MouseButton"/> to check if pressed.</param>
-        /// <returns>True if the <paramref name="button"/> is currently being pressed; otherwise false.</returns>
-        bool IsMouseButtonDown(MouseButton button);
-
-        /// <summary>
-        /// Gets the cursor position.
-        /// </summary>
-        /// <value>The cursor position.</value>
-        Vector2 CursorPosition { get; }
+        Control LastPressedControl { get; }
 
         /// <summary>
         /// Gets the <see cref="Control"/> that the left mouse button was pressed down on. Will be null if the cursor
@@ -124,12 +80,6 @@ namespace NetGore.Graphics.GUI
         /// currently up.
         /// </summary>
         Control PressedControl { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Control"/> that was last the <see cref="IGUIManager.PressedControl"/>. Unlike
-        /// <see cref="IGUIManager.PressedControl"/>, this value will not be set to null when the mouse button is raised.
-        /// </summary>
-        Control LastPressedControl { get; }
 
         /// <summary>
         /// Gets or sets the size of the screen.
@@ -187,6 +137,20 @@ namespace NetGore.Graphics.GUI
         Control GetControlAtPoint(Vector2 point);
 
         /// <summary>
+        /// Gets if a given <see cref="KeyCode"/> is currently being pressed.
+        /// </summary>
+        /// <param name="key">The <see cref="KeyCode"/> to check if pressed.</param>
+        /// <returns>True if the <paramref name="key"/> is currently being pressed; otherwise false.</returns>
+        bool IsKeyDown(KeyCode key);
+
+        /// <summary>
+        /// Gets if a given <see cref="MouseButton"/> is currently being pressed.
+        /// </summary>
+        /// <param name="button">The <see cref="MouseButton"/> to check if pressed.</param>
+        /// <returns>True if the <paramref name="button"/> is currently being pressed; otherwise false.</returns>
+        bool IsMouseButtonDown(MouseButton button);
+
+        /// <summary>
         /// Remove a <see cref="Control"/> from this <see cref="IGUIManager"/> from the root level. This should only be called
         /// by the <see cref="Control"/>'s constructor.
         /// </summary>
@@ -195,6 +159,42 @@ namespace NetGore.Graphics.GUI
         /// could not be removed or was not in this <see cref="IGUIManager"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="control"/> is null.</exception>
         bool Remove(Control control);
+
+        /// <summary>
+        /// Sends an event for a key being pressed to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        void SendEventKeyPressed(KeyEventArgs e);
+
+        /// <summary>
+        /// Sends an event for a key being released to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        void SendEventKeyReleased(KeyEventArgs e);
+
+        /// <summary>
+        /// Sends an event for a mouse button being pressed to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        void SendEventMouseButtonPressed(MouseButtonEventArgs e);
+
+        /// <summary>
+        /// Sends an event for a mouse button being released to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        void SendEventMouseButtonReleased(MouseButtonEventArgs e);
+
+        /// <summary>
+        /// Sends an event for the mouse moving to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        void SendEventMouseMoved(MouseMoveEventArgs e);
+
+        /// <summary>
+        /// Sends an event for text being entered to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        void SendEventTextEntered(TextEventArgs e);
 
         /// <summary>
         /// Updates the <see cref="IGUIManager"/> and all of the <see cref="Control"/>s in it.

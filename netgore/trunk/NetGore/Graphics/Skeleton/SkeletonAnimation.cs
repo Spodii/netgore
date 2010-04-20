@@ -269,13 +269,13 @@ namespace NetGore.Graphics
             var frames = new SkeletonFrame[set.KeyFrames.Length + 2];
 
             // Move the old frames into the new frames array
-            for (int i = 0; i < set.KeyFrames.Length; i++)
+            for (var i = 0; i < set.KeyFrames.Length; i++)
             {
                 frames[i + 1] = set.KeyFrames[i];
             }
 
             // Set the first and last frame to the skeleton
-            int lastFrame = frames.Length - 1;
+            var lastFrame = frames.Length - 1;
             frames[0] = new SkeletonFrame(string.Empty, skel, frames[1].Delay);
             frames[lastFrame] = new SkeletonFrame(string.Empty, skel, frames[lastFrame - 1].Delay);
 
@@ -385,25 +385,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Removes a SkeletonAnimation after a single loop by hooking to the OnLoop event.
-        /// </summary>
-        static void modifier_Looped(object sender, EventArgs e)
-        {
-            SkeletonAnimation src = sender as SkeletonAnimation;
-            if (src == null)
-            {
-                Debug.Fail("src == null - unable to convert sender to SkeletonAnimation.");
-                return;
-            }
-
-            // Remove all the events from the modifier SkeletonAnimation
-            src.Looped = null;
-
-            // If it has a parent (which it should), remove the references
-            src.Detach();
-        }
-
-        /// <summary>
         /// Recursively updates all the children of a node.
         /// </summary>
         /// <param name="srcA">Source skeleton node for the current frame.</param>
@@ -444,9 +425,9 @@ namespace NetGore.Graphics
             }
 
             // Update the child nodes (if there is any)
-            for (int i = 0; i < srcA.Nodes.Count; i++)
+            for (var i = 0; i < srcA.Nodes.Count; i++)
             {
-                SkeletonNode nextSrcP = (srcP == null ? null : srcP.Nodes[i]);
+                var nextSrcP = (srcP == null ? null : srcP.Nodes[i]);
                 RecursiveUpdate(srcA.Nodes[i], srcB.Nodes[i], nextSrcP, dest.Nodes[i], framePercent);
             }
         }
@@ -463,7 +444,7 @@ namespace NetGore.Graphics
                 dest.SetAngle(src.GetAngle());
 
             // Update the child nodes (if there is any)
-            for (int i = 0; i < src.Nodes.Count; i++)
+            for (var i = 0; i < src.Nodes.Count; i++)
             {
                 RecursiveUpdateParent(src.Nodes[i], dest.Nodes[i]);
             }
@@ -475,10 +456,10 @@ namespace NetGore.Graphics
         /// <param name="time">The time in milliseconds.</param>
         void SetTargetTime(int time)
         {
-            float totalTime = 0.0f;
+            var totalTime = 0.0f;
 
             //Find the total time taken to run through all of the frames
-            foreach (SkeletonFrame frame in _skelSet.KeyFrames)
+            foreach (var frame in _skelSet.KeyFrames)
             {
                 totalTime += frame.Delay;
             }
@@ -509,7 +490,7 @@ namespace NetGore.Graphics
                 else
                     delay = CurrentFrame.Delay;
 
-                float newFrame = _frame + ((elapsedTime * _speed) / delay);
+                var newFrame = _frame + ((elapsedTime * _speed) / delay);
                 if (_skelSet.KeyFrames.Length != 1)
                     newFrame %= _skelSet.KeyFrames.Length;
 
@@ -537,7 +518,7 @@ namespace NetGore.Graphics
                 _frame = newFrame;
 
                 // Update the nodes of the working skeleton
-                float framePercent = _frame - (int)_frame;
+                var framePercent = _frame - (int)_frame;
                 SkeletonNode parentNode;
                 if (_parent == null)
                     parentNode = null;
@@ -563,6 +544,25 @@ namespace NetGore.Graphics
             // Apply the modifiers
             if (_mod != null)
                 _mod.Update(currentTime);
+        }
+
+        /// <summary>
+        /// Removes a SkeletonAnimation after a single loop by hooking to the OnLoop event.
+        /// </summary>
+        static void modifier_Looped(object sender, EventArgs e)
+        {
+            var src = sender as SkeletonAnimation;
+            if (src == null)
+            {
+                Debug.Fail("src == null - unable to convert sender to SkeletonAnimation.");
+                return;
+            }
+
+            // Remove all the events from the modifier SkeletonAnimation
+            src.Looped = null;
+
+            // If it has a parent (which it should), remove the references
+            src.Detach();
         }
     }
 }

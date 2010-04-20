@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -68,7 +67,7 @@ namespace NetGore.Db
                 _isRefilling = true;
 
                 // Start the refill thread
-                Thread refillThread = new Thread(Refill) { Name = "ID Refiller" };
+                var refillThread = new Thread(Refill) { Name = "ID Refiller" };
                 refillThread.Start();
             }
         }
@@ -80,7 +79,7 @@ namespace NetGore.Db
         /// <param name="id">ID value to freed.</param>
         public virtual void FreeID(T id)
         {
-            int value = ToInt(id);
+            var value = ToInt(id);
 
             lock (_stackLock)
             {
@@ -127,7 +126,7 @@ namespace NetGore.Db
                     // Return only if we have something available
                     if (_freeIndices.Count > 0)
                     {
-                        int value = _freeIndices.Pop();
+                        var value = _freeIndices.Pop();
                         return FromInt(value);
                     }
                 }
@@ -151,17 +150,17 @@ namespace NetGore.Db
                 throw new ArgumentOutOfRangeException("amount", "The amount must be greater than or equal to 1.");
 
             var returnValues = new List<int>(amount);
-            int lastValue = -1;
+            var lastValue = -1;
 
             // Execute the reader
-            using (IDataReader r = ((IDbQueryReader)_selectIDQuery).ExecuteReader())
+            using (var r = ((IDbQueryReader)_selectIDQuery).ExecuteReader())
             {
                 // Read until we run out of rows
                 while (r.Read())
                 {
                     // Get the value of the index from the row
                     // We know this will be the 0th element since we only SELECT one thing
-                    int value = r.GetInt32(0);
+                    var value = r.GetInt32(0);
 
                     // If the value is greater than the last value used + 1, this means that there
                     // was a gap of 2 or more numbers between the last value and the current value.
@@ -173,8 +172,8 @@ namespace NetGore.Db
                         // sure we don't add more than we need, so if the gap contains more values than
                         // we need, only grab the amount we need. This is just an alternative to adding
                         // a "returnValues.Count < amount" check on each loop iteration.
-                        int needed = amount - returnValues.Count;
-                        int gapSize = value - (lastValue + 1);
+                        var needed = amount - returnValues.Count;
+                        var gapSize = value - (lastValue + 1);
                         int loopEnd;
 
                         if (needed > gapSize)
@@ -182,7 +181,7 @@ namespace NetGore.Db
                         else
                             loopEnd = lastValue + 1 + needed;
 
-                        for (int i = lastValue + 1; i < loopEnd; i++)
+                        for (var i = lastValue + 1; i < loopEnd; i++)
                         {
                             returnValues.Add(i);
                         }
@@ -202,8 +201,8 @@ namespace NetGore.Db
             // If we made it this far, that means we read through every record from the database. At this
             // point, we can conclude the highest index used is equal to lastValue, so we are safe to just
             // keep adding every value greater than lastValue until we have enough values.
-            int valuesRemaining = amount - returnValues.Count;
-            for (int i = 0; i < valuesRemaining; i++)
+            var valuesRemaining = amount - returnValues.Count;
+            for (var i = 0; i < valuesRemaining; i++)
             {
                 returnValues.Add(++lastValue);
             }
@@ -217,7 +216,7 @@ namespace NetGore.Db
         void Refill()
         {
             // Get the free values from the database
-            int amount = _criticalSize - _freeIndices.Count;
+            var amount = _criticalSize - _freeIndices.Count;
             if (amount < 1)
                 amount = 1;
             var freeValues = GetFreeFromDB(amount);
@@ -228,7 +227,7 @@ namespace NetGore.Db
             // Lock the stack and add all the new values
             lock (_stackLock)
             {
-                foreach (int value in freeValues)
+                foreach (var value in freeValues)
                 {
                     _freeIndices.Push(value);
                 }

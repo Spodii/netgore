@@ -20,13 +20,13 @@ namespace DemoGame.Client
         public static IDictionary<string, Button> CreateMenuButtons(Control parent, params string[] names)
         {
             const float spacing = 10;
-            Vector2 buttonSize = new Vector2(225, 40);
-            Vector2 bottomButtonPosition = GameData.ScreenSize - buttonSize - new Vector2(50, 50);
+            var buttonSize = new Vector2(225, 40);
+            var bottomButtonPosition = GameData.ScreenSize - buttonSize - new Vector2(50, 50);
 
-            Dictionary<string, Button> ret = new Dictionary<string, Button>(StringComparer.OrdinalIgnoreCase);
+            var ret = new Dictionary<string, Button>(StringComparer.OrdinalIgnoreCase);
 
-            Vector2 pos = bottomButtonPosition;
-            for (int i = names.Length - 1; i >= 0; i--)
+            var pos = bottomButtonPosition;
+            for (var i = names.Length - 1; i >= 0; i--)
             {
                 var button = new Button(parent, pos, buttonSize) { Text = names[i] };
                 pos.Y -= spacing + button.Size.Y;

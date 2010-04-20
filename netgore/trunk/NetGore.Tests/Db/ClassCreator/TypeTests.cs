@@ -197,18 +197,6 @@ namespace NetGore.Tests.Db.ClassCreator
         }
 
         [Test]
-        public void CreateUnsignedDoubleNullableTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "dun", typeof(double?));
-        }
-
-        [Test]
-        public void CreateUnsignedDoubleTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "du", typeof(double));
-        }
-
-        [Test]
         public void CreateUShortNullableTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "sun", typeof(ushort?));
@@ -218,6 +206,18 @@ namespace NetGore.Tests.Db.ClassCreator
         public void CreateUShortTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "su", typeof(ushort));
+        }
+
+        [Test]
+        public void CreateUnsignedDoubleNullableTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "dun", typeof(double?));
+        }
+
+        [Test]
+        public void CreateUnsignedDoubleTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAProperties, "du", typeof(double));
         }
 
         [Test]
@@ -377,18 +377,6 @@ namespace NetGore.Tests.Db.ClassCreator
         }
 
         [Test]
-        public void CreateViewUnsignedDoubleNullableTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "dun", typeof(double?));
-        }
-
-        [Test]
-        public void CreateViewUnsignedDoubleTest()
-        {
-            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "du", typeof(double));
-        }
-
-        [Test]
         public void CreateViewUShortNullableTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "sun", typeof(ushort?));
@@ -398,6 +386,18 @@ namespace NetGore.Tests.Db.ClassCreator
         public void CreateViewUShortTest()
         {
             ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "su", typeof(ushort));
+        }
+
+        [Test]
+        public void CreateViewUnsignedDoubleNullableTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "dun", typeof(double?));
+        }
+
+        [Test]
+        public void CreateViewUnsignedDoubleTest()
+        {
+            ClassCreatorHelper.AssertContainsProperty(_dbAViewProperties, "du", typeof(double));
         }
 
         [Test]

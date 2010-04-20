@@ -89,7 +89,7 @@ namespace NetGore.Graphics
 
         public void Save(string filePath)
         {
-            using (XmlValueWriter writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
             {
                 Write(writer);
             }

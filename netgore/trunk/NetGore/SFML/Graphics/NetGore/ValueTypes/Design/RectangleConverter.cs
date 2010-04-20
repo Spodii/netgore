@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,8 +13,8 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the RectangleConverter class.</summary>
         public RectangleConverter()
         {
-            Type type = typeof(Rectangle);
-            PropertyDescriptorCollection descriptors =
+            var type = typeof(Rectangle);
+            var descriptors =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
                     new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")),
@@ -36,8 +35,8 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Rectangle))
             {
-                Rectangle rectangle = (Rectangle)value;
-                ConstructorInfo constructor =
+                var rectangle = (Rectangle)value;
+                var constructor =
                     typeof(Rectangle).GetConstructor(new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor,

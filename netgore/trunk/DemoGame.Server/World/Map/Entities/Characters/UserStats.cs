@@ -1,6 +1,5 @@
 using System.Linq;
 using NetGore;
-using NetGore.Network;
 using NetGore.Stats;
 
 namespace DemoGame.Server
@@ -54,7 +53,7 @@ namespace DemoGame.Server
                 return;
 
             // Build a packet containing all the new stat values and send it to the user
-            using (PacketWriter pw = ServerPacket.GetWriter())
+            using (var pw = ServerPacket.GetWriter())
             {
                 foreach (var stat in statsToUpdate)
                 {

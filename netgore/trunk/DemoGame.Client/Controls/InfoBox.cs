@@ -86,7 +86,7 @@ namespace DemoGame.Client
         {
             ThreadAsserts.IsMainThread();
 
-            InfoBoxItem newItem = new InfoBoxItem(Environment.TickCount, message, color, _sf);
+            var newItem = new InfoBoxItem(Environment.TickCount, message, color, _sf);
 
             // If we are full, remove the old messages until we have room
             while (_items.Count >= _maxItems)
@@ -113,18 +113,18 @@ namespace DemoGame.Client
             }
 
             // Loop through all items
-            int i = 0;
+            var i = 0;
             foreach (var item in _items)
             {
                 // Set the position
-                Vector2 pos = _position;
+                var pos = _position;
                 pos.Y -= _sf.CharacterSize * (i++ + 1);
                 pos.X -= item.Width;
 
                 // Set the color
-                int lifeLeft = (item.CreatedTime + _messageLife) - Environment.TickCount;
-                byte alpha = (byte)Math.Min(255, lifeLeft);
-                Color color = new Color(item.Color.R, item.Color.G, item.Color.B, alpha);
+                var lifeLeft = (item.CreatedTime + _messageLife) - Environment.TickCount;
+                var alpha = (byte)Math.Min(255, lifeLeft);
+                var color = new Color(item.Color.R, item.Color.G, item.Color.B, alpha);
 
                 // Draw
                 sb.DrawString(_sf, item.Message, pos, color);

@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Collections.Generic;
 
 namespace SFML
 {
@@ -15,13 +16,62 @@ namespace SFML
         public class PostFx : ObjectBase
         {
             ////////////////////////////////////////////////////////////
+            readonly Dictionary<string, Image> myTextures = new Dictionary<string, Image>();
+
+            #region Imports
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern bool sfPostFX_CanUsePostFX();
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfPostFX_CreateFromFile(string Filename);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfPostFX_CreateFromMemory(string Effect);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfPostFX_Destroy(IntPtr PostFX);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfPostFX_SetParameter1(IntPtr PostFX, string Name, float X);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfPostFX_SetParameter2(IntPtr PostFX, string Name, float X, float Y);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfPostFX_SetParameter3(IntPtr PostFX, string Name, float X, float Y, float Z);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfPostFX_SetParameter4(IntPtr PostFX, string Name, float X, float Y, float Z, float W);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfPostFX_SetTexture(IntPtr PostFX, string Name, IntPtr Texture);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfPostFx_Create();
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfPostFx_Destroy(IntPtr This);
+
+            #endregion
+
             /// <summary>
             /// Default constructor (invalid effect)
             /// </summary>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public PostFx() :
-                base(sfPostFx_Create())
+            public PostFx() : base(sfPostFx_Create())
             {
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("post-fx");
@@ -34,11 +84,37 @@ namespace SFML
             /// <param name="filename">Path of the effect file to load</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public PostFx(string filename) :
-                base(sfPostFX_CreateFromFile(filename))
+            public PostFx(string filename) : base(sfPostFX_CreateFromFile(filename))
             {
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("post-fx", filename);
+            }
+
+            /// <summary>
+            /// Tell whether or not the system supports post-effects
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public static bool CanUsePostFX
+            {
+                get { return sfPostFX_CanUsePostFX(); }
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Handle the destruction of the object
+            /// </summary>
+            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            ////////////////////////////////////////////////////////////
+            protected override void Destroy(bool disposing)
+            {
+                if (!disposing)
+                    Context.Global.SetActive(true);
+
+                myTextures.Clear();
+                sfPostFX_Destroy(This);
+
+                if (!disposing)
+                    Context.Global.SetActive(false);
             }
 
             ////////////////////////////////////////////////////////////
@@ -124,70 +200,6 @@ namespace SFML
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Tell whether or not the system supports post-effects
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public static bool CanUsePostFX
-            {
-                get {return sfPostFX_CanUsePostFX();}
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Handle the destruction of the object
-            /// </summary>
-            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-            ////////////////////////////////////////////////////////////
-            protected override void Destroy(bool disposing)
-            {
-                if (!disposing)
-                    Context.Global.SetActive(true);
-
-                myTextures.Clear();
-                sfPostFX_Destroy(This);
-
-                if (!disposing)
-                    Context.Global.SetActive(false);
-            }
-
-            Dictionary<string, Image> myTextures = new Dictionary<string, Image>();
-
-            #region Imports
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfPostFx_Create();
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfPostFx_Destroy(IntPtr This);
-            
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfPostFX_CreateFromFile(string Filename);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfPostFX_CreateFromMemory(string Effect);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfPostFX_Destroy(IntPtr PostFX);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfPostFX_SetParameter1(IntPtr PostFX, string Name, float X);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfPostFX_SetParameter2(IntPtr PostFX, string Name, float X, float Y);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfPostFX_SetParameter3(IntPtr PostFX, string Name, float X, float Y, float Z);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfPostFX_SetParameter4(IntPtr PostFX, string Name, float X, float Y, float Z, float W);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfPostFX_SetTexture(IntPtr PostFX, string Name, IntPtr Texture);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern bool sfPostFX_CanUsePostFX();
-
-            #endregion
         }
     }
 }

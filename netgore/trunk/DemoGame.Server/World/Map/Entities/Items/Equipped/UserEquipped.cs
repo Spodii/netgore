@@ -1,6 +1,5 @@
 using System.Linq;
 using NetGore;
-using NetGore.Network;
 
 namespace DemoGame.Server
 {
@@ -37,7 +36,7 @@ namespace DemoGame.Server
         /// <param name="graphicIndex">The new graphic index of the slot.</param>
         protected override void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {
-            using (PacketWriter msg = ServerPacket.UpdateEquipmentSlot(slot, graphicIndex))
+            using (var msg = ServerPacket.UpdateEquipmentSlot(slot, graphicIndex))
             {
                 User.Send(msg);
             }

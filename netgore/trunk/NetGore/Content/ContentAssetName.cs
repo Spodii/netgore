@@ -71,13 +71,14 @@ namespace NetGore.Content
         /// <returns>The <see cref="ContentAssetName"/> from the <paramref name="filePath"/>.</returns>
         public static ContentAssetName FromAbsoluteFilePath(string filePath, string contentRoot)
         {
-            int start = contentRoot.Length;
+            var start = contentRoot.Length;
             if (!contentRoot.EndsWith("/") && !contentRoot.EndsWith("\\") &&
                 !contentRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 ++start;
 
-            int len = filePath.Length - start;
-            if (ContentPaths.ContentFileSuffix.Length > 0 && filePath.EndsWith(ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase))
+            var len = filePath.Length - start;
+            if (ContentPaths.ContentFileSuffix.Length > 0 &&
+                filePath.EndsWith(ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase))
                 len -= ContentPaths.ContentFileSuffix.Length;
 
             var substr = filePath.Substring(start, len);
@@ -91,7 +92,7 @@ namespace NetGore.Content
         /// <returns>The absolute file path for the content asset.</returns>
         public string GetAbsoluteFilePath(ContentPaths rootPath)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             var rootPathStr = rootPath.Root.ToString();
             sb.Append(rootPathStr);
@@ -131,7 +132,7 @@ namespace NetGore.Content
         /// <returns>The sanitized asset name.</returns>
         public static string Sanitize(string assetName)
         {
-            int suffixLen = ContentPaths.ContentFileSuffix.Length;
+            var suffixLen = ContentPaths.ContentFileSuffix.Length;
 
             // Replace \\ with the proper character
             assetName = assetName.Replace("\\", PathSeparator);
@@ -144,7 +145,8 @@ namespace NetGore.Content
                 assetName = assetName.Substring(0, assetName.Length - 1);
 
             if (assetName.Length > suffixLen &&
-                (ContentPaths.ContentFileSuffix.Length == 0 || assetName.EndsWith(ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase)))
+                (ContentPaths.ContentFileSuffix.Length == 0 ||
+                 assetName.EndsWith(ContentPaths.ContentFileSuffix, StringComparison.OrdinalIgnoreCase)))
                 assetName = assetName.Substring(0, assetName.Length - suffixLen);
 
             return assetName;

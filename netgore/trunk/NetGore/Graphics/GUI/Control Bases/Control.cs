@@ -36,12 +36,12 @@ namespace NetGore.Graphics.GUI
         static readonly object _eventMouseMoved = new object();
         static readonly object _eventMouseUp = new object();
         static readonly object _eventMoved = new object();
-        static readonly object _eventResized = new object();
         static readonly object _eventResizeToChildrenChanged = new object();
         static readonly object _eventResizeToChildrenPaddingChanged = new object();
+        static readonly object _eventResized = new object();
+        static readonly object _eventTextEntered = new object();
         static readonly object _eventTooltipChanged = new object();
         static readonly object _eventVisibleChanged = new object();
-        static readonly object _eventTextEntered = new object();
 
         readonly List<Control> _controls = new List<Control>(1);
         readonly EventHandlerList _eventHandlerList = new EventHandlerList();
@@ -227,30 +227,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Notifies listeners when a key has been released while the <see cref="Control"/> has focus.
-        /// </summary>
-        public event KeyboardEventHandler KeyReleased
-        {
-            add { Events.AddHandler(_eventKeyReleased, value); }
-            remove { Events.RemoveHandler(_eventKeyReleased, value); }
-        }
-
-        /// <summary>
-        /// Notifies listeners text has been entered into this <see cref="Control"/>.
-        /// </summary>
-        public event TextEnteredEventHandler TextEntered
-        {
-            add { Events.AddHandler(_eventTextEntered, value); }
-            remove { Events.RemoveHandler(_eventTextEntered, value); }
-        }
-
-        /// <summary>
         /// Notifies listeners when a key is being pressed while the <see cref="Control"/> has focus.
         /// </summary>
         public event KeyboardEventHandler KeyPressed
         {
             add { Events.AddHandler(_eventKeyPressed, value); }
             remove { Events.RemoveHandler(_eventKeyPressed, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when a key has been released while the <see cref="Control"/> has focus.
+        /// </summary>
+        public event KeyboardEventHandler KeyReleased
+        {
+            add { Events.AddHandler(_eventKeyReleased, value); }
+            remove { Events.RemoveHandler(_eventKeyReleased, value); }
         }
 
         /// <summary>
@@ -317,15 +308,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Notifies listeners when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// </summary>
-        public event ControlEventHandler Resized
-        {
-            add { Events.AddHandler(_eventResized, value); }
-            remove { Events.RemoveHandler(_eventResized, value); }
-        }
-
-        /// <summary>
         /// Notifies listeners when the <see cref="Control.ResizeToChildren"/> of this <see cref="Control"/> has changed.
         /// </summary>
         public event ControlEventHandler ResizeToChildrenChanged
@@ -341,6 +323,24 @@ namespace NetGore.Graphics.GUI
         {
             add { Events.AddHandler(_eventResizeToChildrenPaddingChanged, value); }
             remove { Events.RemoveHandler(_eventResizeToChildrenPaddingChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// </summary>
+        public event ControlEventHandler Resized
+        {
+            add { Events.AddHandler(_eventResized, value); }
+            remove { Events.RemoveHandler(_eventResized, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners text has been entered into this <see cref="Control"/>.
+        /// </summary>
+        public event TextEnteredEventHandler TextEntered
+        {
+            add { Events.AddHandler(_eventTextEntered, value); }
+            remove { Events.RemoveHandler(_eventTextEntered, value); }
         }
 
         /// <summary>
@@ -389,7 +389,7 @@ namespace NetGore.Graphics.GUI
                     Size += (_border.Size - oldBorderSize);
 
                 // The border changed, thus the ClientArea probably changed and we need to update the KeepInParent
-                for (int i = 0; i < _controls.Count; i++)
+                for (var i = 0; i < _controls.Count; i++)
                 {
                     _controls[i].KeepInParent();
                 }
@@ -661,8 +661,8 @@ namespace NetGore.Graphics.GUI
         {
             get
             {
-                Control parent = Parent;
-                Vector2 pos = Position;
+                var parent = Parent;
+                var pos = Position;
 
                 if (parent != null)
                     return pos + parent.ScreenPosition + parent.GetBorderOffset();
@@ -730,7 +730,7 @@ namespace NetGore.Graphics.GUI
         /// <returns>True if the Control contains the given screen point, else false.</returns>
         public bool ContainsPoint(Vector2 screenPoint)
         {
-            Vector2 sp = ScreenPosition;
+            var sp = ScreenPosition;
             return IsPointInRegion(screenPoint, sp, sp + Size);
         }
 
@@ -750,7 +750,7 @@ namespace NetGore.Graphics.GUI
                 // Dispose of all the child controls. An immutable collection must be
                 // created so we can iterate through them since the list will be modifying as it goes.
                 var tmpControls = Controls.ToImmutable();
-                foreach (Control child in tmpControls)
+                foreach (var child in tmpControls)
                 {
                     child.Dispose();
                 }
@@ -829,7 +829,7 @@ namespace NetGore.Graphics.GUI
                 ((IDragDropProvider)this).DrawDropHighlight(spriteBatch);
 
             // Draw all the child controls
-            for (int i = 0; i < _controls.Count; i++)
+            for (var i = 0; i < _controls.Count; i++)
             {
                 _controls[i].DrawControlStart(spriteBatch);
             }
@@ -846,7 +846,7 @@ namespace NetGore.Graphics.GUI
             float x = 1;
             float y = 1;
 
-            for (int i = 0; i < _controls.Count; i++)
+            for (var i = 0; i < _controls.Count; i++)
             {
                 var max = _controls[i].Position + _controls[i].Size;
                 x = Math.Max(max.X, x);
@@ -863,10 +863,10 @@ namespace NetGore.Graphics.GUI
         /// this <see cref="Control"/>.</returns>
         public IEnumerable<Control> GetAllChildren()
         {
-            foreach (Control c in Controls)
+            foreach (var c in Controls)
             {
                 yield return c;
-                foreach (Control c2 in c.GetAllChildren())
+                foreach (var c2 in c.GetAllChildren())
                 {
                     yield return c2;
                 }
@@ -900,13 +900,13 @@ namespace NetGore.Graphics.GUI
         /// <returns>Child found at the given point if any, else null.</returns>
         public Control GetChild(Vector2 point, bool canFocusOnly)
         {
-            for (int i = 0; i < _controls.Count; i++)
+            for (var i = 0; i < _controls.Count; i++)
             {
                 var c = _controls[i];
                 if (canFocusOnly && !c.CanFocus)
                     continue;
 
-                Vector2 sp = c.ScreenPosition;
+                var sp = c.ScreenPosition;
                 if (IsPointInRegion(point, sp, sp + c.Size))
                     return c;
             }
@@ -932,7 +932,7 @@ namespace NetGore.Graphics.GUI
         /// <returns>Root Control for this Control.</returns>
         Control GetRootControl()
         {
-            Control root = this;
+            var root = this;
             while (root.Parent != null)
             {
                 root = root.Parent;
@@ -1098,36 +1098,23 @@ namespace NetGore.Graphics.GUI
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
         /// <param name="e">The event args.</param>
-        void InvokeKeyReleased(KeyEventArgs e)
-        {
-            OnKeyReleased(e);
-            var handler = Events[_eventKeyReleased] as KeyboardEventHandler;
-            if (handler != null)
-                handler(this, e);
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        void InvokeTextEntered(TextEventArgs e)
-        {
-            OnTextEntered(e);
-            var handler = Events[_eventTextEntered] as TextEnteredEventHandler;
-            if (handler != null)
-                handler(this, e);
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
-        /// <param name="e">The event args.</param>
         void InvokeKeyPressed(KeyEventArgs e)
         {
             OnKeyPressed(e);
             var handler = Events[_eventKeyPressed] as KeyboardEventHandler;
+            if (handler != null)
+                handler(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeKeyReleased(KeyEventArgs e)
+        {
+            OnKeyReleased(e);
+            var handler = Events[_eventKeyReleased] as KeyboardEventHandler;
             if (handler != null)
                 handler(this, e);
         }
@@ -1225,18 +1212,6 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeResized()
-        {
-            OnResized();
-            var handler = Events[_eventResized] as ControlEventHandler;
-            if (handler != null)
-                handler(this);
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
         void InvokeResizeToChildrenChanged()
         {
             OnResizeToChildrenChanged();
@@ -1255,6 +1230,31 @@ namespace NetGore.Graphics.GUI
             var handler = Events[_eventResizeToChildrenPaddingChanged] as ControlEventHandler;
             if (handler != null)
                 handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        void InvokeResized()
+        {
+            OnResized();
+            var handler = Events[_eventResized] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        void InvokeTextEntered(TextEventArgs e)
+        {
+            OnTextEntered(e);
+            var handler = Events[_eventTextEntered] as TextEnteredEventHandler;
+            if (handler != null)
+                handler(this, e);
         }
 
         /// <summary>
@@ -1301,12 +1301,12 @@ namespace NetGore.Graphics.GUI
             if (!IsBoundToParentArea)
                 return;
 
-            Control parent = Parent;
+            var parent = Parent;
             if (parent == null)
                 return;
 
-            Vector2 min = Vector2.Zero;
-            Vector2 max = parent.ClientSize - Size;
+            var min = Vector2.Zero;
+            var max = parent.ClientSize - Size;
             Position = Vector2.Min(Vector2.Max(Position, min), max);
         }
 
@@ -1318,7 +1318,7 @@ namespace NetGore.Graphics.GUI
         public virtual void LoadSkin(ISkinManager skinManager)
         {
             var type = GetType();
-            string name = type.Name;
+            var name = type.Name;
 
             if (type.IsGenericType)
                 name = name.Substring(0, name.IndexOf('`'));
@@ -1410,32 +1410,22 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
-        /// This is called immediately before <see cref="Control.KeyReleased"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.KeyReleased"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void OnKeyReleased(KeyEventArgs e)
-        {
-        }
-
-        /// <summary>
-        /// Handles when text has been entered into this <see cref="Control"/>.
-        /// This is called immediately before <see cref="Control.TextEntered"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.TextEntered"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected virtual void OnTextEntered(TextEventArgs e)
-        {
-        }
-
-        /// <summary>
         /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
         /// This is called immediately before <see cref="Control.KeyPressed"/>.
         /// Override this method instead of using an event hook on <see cref="Control.KeyPressed"/> when possible.
         /// </summary>
         /// <param name="e">The event args.</param>
         protected virtual void OnKeyPressed(KeyEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles when a key has been pressed down while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.KeyReleased"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.KeyReleased"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnKeyReleased(KeyEventArgs e)
         {
         }
 
@@ -1540,15 +1530,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
-        /// This is called immediately before <see cref="Control.Resized"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
-        /// </summary>
-        protected virtual void OnResized()
-        {
-        }
-
-        /// <summary>
         /// Handles when the <see cref="Control.ResizeToChildren"/> of this <see cref="Control"/> has changed.
         /// This is called immediately before <see cref="Control.ResizeToChildrenChanged"/>.
         /// Override this method instead of using an event hook on
@@ -1565,6 +1546,25 @@ namespace NetGore.Graphics.GUI
         /// <see cref="Control.ResizeToChildrenPaddingChanged"/> when possible.
         /// </summary>
         protected virtual void OnResizeToChildrenPaddingChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.Resized"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
+        /// </summary>
+        protected virtual void OnResized()
+        {
+        }
+
+        /// <summary>
+        /// Handles when text has been entered into this <see cref="Control"/>.
+        /// This is called immediately before <see cref="Control.TextEntered"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.TextEntered"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnTextEntered(TextEventArgs e)
         {
         }
 
@@ -1600,7 +1600,7 @@ namespace NetGore.Graphics.GUI
             while (_setTopMostQueue.Count > 0)
             {
                 // Get the control to process
-                Control child = _setTopMostQueue.Dequeue();
+                var child = _setTopMostQueue.Dequeue();
 
                 // Remove the control from the list, then add it to the top (end of the list)
                 _controls.Remove(child);
@@ -1608,12 +1608,92 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        internal void SendFocusedEvent(MouseButtonEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeFocused();
+        }
+
+        internal void SendKeyPressedEvent(KeyEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeKeyPressed(e);
+        }
+
+        internal void SendKeyReleasedEvent(KeyEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeKeyReleased(e);
+        }
+
+        internal void SendLostFocusEvent(MouseButtonEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeLostFocus();
+        }
+
+        internal void SendMouseButtonPressedEvent(MouseButtonEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeMouseDown(e);
+        }
+
+        internal void SendMouseButtonReleasedEvent(MouseButtonEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeMouseUp(e);
+        }
+
+        internal void SendMouseEnterEvent(MouseMoveEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeMouseEnter(e);
+        }
+
+        internal void SendMouseLeaveEvent(MouseMoveEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeMouseLeave(e);
+        }
+
+        internal void SendMouseMoveEvent(MouseMoveEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeMouseMoved(e);
+        }
+
+        internal void SendTextEnteredEvent(TextEventArgs e)
+        {
+            if (IsDisposed || !IsEnabled || !IsVisible)
+                return;
+
+            InvokeTextEntered(e);
+        }
+
         /// <summary>
         /// Sets this Control as the top-most Control, if possible.
         /// </summary>
         void SetAsTopMost()
         {
-            Control parent = Parent;
+            var parent = Parent;
             if (parent != null)
                 parent.SetTopMostChild(this);
         }
@@ -1650,7 +1730,7 @@ namespace NetGore.Graphics.GUI
         {
             // Do this recursively all the way back to the lowest-level parent Control, which will make sure that
             // even a sub-control will cause it's parent to become the focus Control
-            Control parent = Parent;
+            var parent = Parent;
             if (parent != null)
                 parent.SetTopMostChild(this);
 
@@ -1681,7 +1761,9 @@ namespace NetGore.Graphics.GUI
 
             // Update the children 
             foreach (var child in Controls)
+            {
                 child.Update(currentTime);
+            }
 
             // Update the control's position if it is being dragged
             if (_isDragging)
@@ -1715,7 +1797,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Update all the child controls
-            for (int i = 0; i < _controls.Count; i++)
+            for (var i = 0; i < _controls.Count; i++)
             {
                 _controls[i].UpdateControl(currentTime);
             }
@@ -1726,86 +1808,6 @@ namespace NetGore.Graphics.GUI
             // Auto-resize if needed
             if (ResizeToChildren)
                 UpdateResizeToChildren();
-        }
-
-        internal void SendTextEnteredEvent(TextEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeTextEntered(e);
-        }
-
-        internal void SendMouseButtonPressedEvent(MouseButtonEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeMouseDown(e);
-        }
-
-        internal void SendMouseLeaveEvent(MouseMoveEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeMouseLeave(e);
-        }
-
-        internal void SendLostFocusEvent(MouseButtonEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeLostFocus();
-        }
-
-        internal void SendFocusedEvent(MouseButtonEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeFocused();
-        }
-
-        internal void SendMouseMoveEvent(MouseMoveEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeMouseMoved(e);
-        }
-
-        internal void SendMouseEnterEvent(MouseMoveEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeMouseEnter(e);
-        }
-
-        internal void SendMouseButtonReleasedEvent(MouseButtonEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeMouseUp(e);
-        }
-
-        internal void SendKeyReleasedEvent(KeyEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeKeyReleased(e);
-        }
-
-        internal void SendKeyPressedEvent(KeyEventArgs e)
-        {
-            if (IsDisposed || !IsEnabled || !IsVisible)
-                return;
-
-            InvokeKeyPressed(e);
         }
 
         /// <summary>

@@ -72,12 +72,12 @@ namespace DemoGame
 
         readonly ISpatialCollection _spatialCollection;
 
-        readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
-
         /// <summary>
         /// StopWatch used to update the map
         /// </summary>
         readonly Stopwatch _updateStopWatch = new Stopwatch();
+
+        readonly List<IUpdateableEntity> _updateableEntities = new List<IUpdateableEntity>();
 
         /// <summary>
         /// If the map is actively updating (set to false to "pause" the physics)
@@ -329,15 +329,6 @@ namespace DemoGame
         protected abstract WallEntityBase CreateWall(IValueReader r);
 
         /// <summary>
-        /// Handles when an Entity is disposed while still on the map.
-        /// </summary>
-        /// <param name="entity"></param>
-        void Entity_Disposed(Entity entity)
-        {
-            RemoveEntity(entity);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, allows for additional processing on Entities added to the map.
         /// This is called after the Entity has finished being added to the map.
         /// </summary>
@@ -353,6 +344,15 @@ namespace DemoGame
         /// <param name="entity">Entity that was removed from the map.</param>
         protected virtual void EntityRemoved(Entity entity)
         {
+        }
+
+        /// <summary>
+        /// Handles when an Entity is disposed while still on the map.
+        /// </summary>
+        /// <param name="entity"></param>
+        void Entity_Disposed(Entity entity)
+        {
+            RemoveEntity(entity);
         }
 
         /// <summary>
@@ -722,7 +722,7 @@ namespace DemoGame
         /// <see cref="DynamicEntity"/>s.</param>
         public void Load(ContentPaths contentPath, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
-            string path = GetMapFilePath(contentPath, ID);
+            var path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
             _memoryMap.Initialize((ushort)Width, (ushort)Height);
             _memoryMap.LoadMemoryMap(contentPath, ID.GetRawValue());
@@ -758,7 +758,7 @@ namespace DemoGame
 
         void LoadDynamicEntities(IValueReader r, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
-            var loadedDynamicEntities = r.ReadManyNodes<DynamicEntity>(_dynamicEntitiesNodeName, dynamicEntityFactory.Read);
+            var loadedDynamicEntities = r.ReadManyNodes(_dynamicEntitiesNodeName, dynamicEntityFactory.Read);
 
             // Add the loaded DynamicEntities to the map
             if (loadDynamicEntities)
@@ -784,7 +784,7 @@ namespace DemoGame
             // Read the values
             Name = nodeReader.ReadString(_headerNodeNameKey);
 
-            bool hasMusic = nodeReader.ReadBool(_headerNodeHasMusicKey);
+            var hasMusic = nodeReader.ReadBool(_headerNodeHasMusicKey);
             MusicID = nodeReader.ReadMusicID(_headerNodeMusicKey);
             if (!hasMusic)
                 MusicID = null;
@@ -813,7 +813,7 @@ namespace DemoGame
             if (r == null)
                 throw new ArgumentNullException("r");
 
-            var loadedWalls = r.ReadManyNodes<WallEntityBase>(_wallsNodeName, CreateWall);
+            var loadedWalls = r.ReadManyNodes(_wallsNodeName, CreateWall);
 
             // Add the loaded walls to the map
             foreach (var wall in loadedWalls)
@@ -1147,7 +1147,7 @@ namespace DemoGame
             // Update the Entities
             // We use a for loop because entities might be added/removed when they update
             IUpdateableEntity current;
-            int i = 0;
+            var i = 0;
             while (true)
             {
                 // Check if we hit the end

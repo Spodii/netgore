@@ -41,10 +41,10 @@ namespace DemoGame.Client
 
             // Draw the progress bar
             float elapsedTime = _currentTime - _castStartTime;
-            float percent = elapsedTime / _currentCastTime;
+            var percent = elapsedTime / _currentCastTime;
             var startDrawPos = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
             var drawWidth = ClientSize.X * Math.Min(percent, 1);
-            Rectangle r = new Rectangle((int)startDrawPos.X, (int)startDrawPos.Y, (int)drawWidth, (int)ClientSize.Y);
+            var r = new Rectangle((int)startDrawPos.X, (int)startDrawPos.Y, (int)drawWidth, (int)ClientSize.Y);
             RenderRectangle.Draw(spriteBatch, r, new Color(255, 0, 0, 200));
 
             // Draw the name

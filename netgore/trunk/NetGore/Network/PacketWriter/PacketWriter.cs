@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -17,8 +15,6 @@ namespace NetGore.Network
     /// </summary>
     public class PacketWriter : BitStream, IPoolable, IDisposable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         readonly IObjectPool<PacketWriter> _objectPool;
 
         /// <summary>

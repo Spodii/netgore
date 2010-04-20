@@ -79,7 +79,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected virtual void UpdateBackground()
         {
-            float maxWidth = _drawer.Texts.Max(x => x.Sum(y => y.GetWidth(Font)));
+            var maxWidth = _drawer.Texts.Max(x => x.Sum(y => y.GetWidth(Font)));
             float height = _drawer.Texts.Count() * (int)Font.CharacterSize;
             _borderSize = new Vector2(maxWidth, height);
         }
@@ -233,14 +233,14 @@ namespace NetGore.Graphics.GUI
             if (!IsDisplayed)
                 return;
 
-            Vector2 pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
+            var pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
 
             // Draw the border
-            Rectangle borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
-                                                 (int)(_borderSize.X + (BorderPadding.X * 2)),
-                                                 (int)(_borderSize.Y + (BorderPadding.Y * 2)));
+            var borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
+                                           (int)(_borderSize.X + (BorderPadding.X * 2)),
+                                           (int)(_borderSize.Y + (BorderPadding.Y * 2)));
 
-            ControlBorder b = _args.Border;
+            var b = _args.Border;
             if (b != null)
                 b.Draw(sb, borderRect);
             else
@@ -260,7 +260,7 @@ namespace NetGore.Graphics.GUI
             if (!IsVisible)
                 return;
 
-            Control currentUnderCursor = GUIManager.UnderCursor;
+            var currentUnderCursor = GUIManager.UnderCursor;
 
             // Check if the control under the cursor has changed
             if (_lastUnderCursor != currentUnderCursor)
@@ -281,7 +281,7 @@ namespace NetGore.Graphics.GUI
                 if (_args.Timeout <= 0)
                     return;
 
-                int timeoutTime = _startHoverTime + Delay + _args.Timeout;
+                var timeoutTime = _startHoverTime + Delay + _args.Timeout;
                 if (currentTime > timeoutTime)
                     _tooltipTimedOut = true;
 

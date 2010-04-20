@@ -22,10 +22,10 @@ namespace DemoGame.MapEditor
         /// </summary>
         static readonly Color _colorNormal = new Color(255, 255, 255, 175);
 
-        readonly static ISprite _move;
-        readonly static Vector2 _moveSize;
-        readonly static ISprite _scale;
-        readonly static Vector2 _scaleSize;
+        static readonly ISprite _move;
+        static readonly Vector2 _moveSize;
+        static readonly ISprite _scale;
+        static readonly Vector2 _scaleSize;
 
         /// <summary>
         /// Area the box occupies.
@@ -81,7 +81,7 @@ namespace DemoGame.MapEditor
                 sourceSprite = Scale;
 
             // Get the size based on the sprite
-            Vector2 size = sourceSprite.Size;
+            var size = sourceSprite.Size;
 
             // For move boxes, ensure it is in view
             if (transType == TransBoxType.Move)
@@ -174,7 +174,7 @@ namespace DemoGame.MapEditor
         public static void SurroundEntity(Entity entity, ICollection<TransBox> destList)
         {
             var ret = SurroundEntity(entity);
-            foreach (TransBox box in ret)
+            foreach (var box in ret)
             {
                 destList.Add(box);
             }
@@ -188,16 +188,16 @@ namespace DemoGame.MapEditor
         {
             var ret = new List<TransBox>(9);
 
-            Vector2 min = entity.Position;
-            Vector2 max = entity.Max;
+            var min = entity.Position;
+            var max = entity.Max;
 
-            Vector2 halfScaleSize = ScaleSize / 2f;
+            var halfScaleSize = ScaleSize / 2f;
 
             // Find the center of the sides for the resize and move icons
-            Vector2 sizeCenter = min + (entity.Size / 2f) - halfScaleSize;
+            var sizeCenter = min + (entity.Size / 2f) - halfScaleSize;
             sizeCenter = sizeCenter.Round();
 
-            float moveCenterX = min.X + (entity.Size.X / 2f) - (MoveSize.X / 2f);
+            var moveCenterX = min.X + (entity.Size.X / 2f) - (MoveSize.X / 2f);
             moveCenterX = (float)Math.Round(moveCenterX);
 
             // Move box

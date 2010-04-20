@@ -6,7 +6,6 @@ using NetGore;
 using NetGore.Features.Quests;
 using NetGore.Graphics;
 using SFML.Graphics;
-using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {
@@ -112,8 +111,8 @@ namespace DemoGame.Client
             var font = NameFont;
             if (font != null && !string.IsNullOrEmpty(Name))
             {
-                Vector2 nameSize = GetNameSize();
-                Vector2 namePos = DrawPosition + (new Vector2(Size.X / 2, 0) - new Vector2(nameSize.X / 2f, nameSize.Y)).Round();
+                var nameSize = GetNameSize();
+                var namePos = DrawPosition + (new Vector2(Size.X / 2, 0) - new Vector2(nameSize.X / 2f, nameSize.Y)).Round();
                 sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
             }
         }
@@ -130,10 +129,10 @@ namespace DemoGame.Client
             const float spBarWidth = 55;
             const float spBarHeight = 6;
 
-            Vector2 pos = DrawPosition + new Vector2((Size.X / 2f) - (spBarWidth / 2f), Size.Y + (spBarHeight * index)).Round();
+            var pos = DrawPosition + new Vector2((Size.X / 2f) - (spBarWidth / 2f), Size.Y + (spBarHeight * index)).Round();
 
-            Rectangle border = new Rectangle((int)pos.X, (int)pos.Y, (int)spBarWidth, (int)spBarHeight);
-            Rectangle bar = border;
+            var border = new Rectangle((int)pos.X, (int)pos.Y, (int)spBarWidth, (int)spBarHeight);
+            var bar = border;
             bar.Width = (int)((spBarWidth * (percent / 100.0f))).Clamp(0.0f, spBarWidth);
 
             RenderRectangle.Draw(sb, border, new Color(0, 0, 0, 0), Color.Black);
@@ -149,7 +148,7 @@ namespace DemoGame.Client
         /// </returns>
         public Vector2 GetCameraPos(ICamera2D camera)
         {
-            Vector2 pos = DrawPosition + (Size / 2.0f) - (camera.Size / 2.0f);
+            var pos = DrawPosition + (Size / 2.0f) - (camera.Size / 2.0f);
             return pos.Round();
         }
 
@@ -215,8 +214,8 @@ namespace DemoGame.Client
             base.HandleUpdate(imap, deltaTime);
 
             // Get the delta time
-            int currentTime = GetTime();
-            int lastDrawnDelta = Math.Min(currentTime - _lastDrawnTime, GameData.MaxDrawDeltaTime);
+            var currentTime = GetTime();
+            var lastDrawnDelta = Math.Min(currentTime - _lastDrawnTime, GameData.MaxDrawDeltaTime);
             _lastDrawnTime = currentTime;
 
             // Update the sprite

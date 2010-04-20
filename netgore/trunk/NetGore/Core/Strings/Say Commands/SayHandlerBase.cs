@@ -99,9 +99,9 @@ namespace NetGore
                 return false;
 
             // Check each character in the string to make sure they are valid
-            foreach (char letter in text)
+            foreach (var letter in text)
             {
-                int i = Convert.ToInt32(letter);
+                var i = Convert.ToInt32(letter);
                 if (i > 126 || i < 32)
                     return false;
             }

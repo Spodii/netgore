@@ -98,7 +98,7 @@ namespace DemoGame
         /// <returns>The CharacterID read from the IValueReader.</returns>
         public static CharacterID Read(IValueReader reader, string name)
         {
-            int value = reader.ReadInt(name);
+            var value = reader.ReadInt(name);
             return new CharacterID(value);
         }
 
@@ -110,11 +110,11 @@ namespace DemoGame
         /// <returns>The CharacterID read from the IDataReader.</returns>
         public static CharacterID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is int)
                 return new CharacterID((int)value);
 
-            int convertedValue = Convert.ToInt32(value);
+            var convertedValue = Convert.ToInt32(value);
             return new CharacterID(convertedValue);
         }
 
@@ -136,7 +136,7 @@ namespace DemoGame
         /// <returns>The CharacterID read from the BitStream.</returns>
         public static CharacterID Read(BitStream bitStream)
         {
-            int value = bitStream.ReadInt();
+            var value = bitStream.ReadInt();
             return new CharacterID(value);
         }
 
@@ -849,7 +849,7 @@ namespace DemoGame
         public static bool TryParse(this Parser parser, string value, out CharacterID outValue)
         {
             int tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new CharacterID(tmp);
             return ret;
         }

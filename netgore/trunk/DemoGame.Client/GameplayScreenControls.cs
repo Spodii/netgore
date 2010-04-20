@@ -3,7 +3,6 @@ using System.Linq;
 using NetGore;
 using NetGore.Features.Emoticons;
 using NetGore.Graphics.GUI;
-using NetGore.Network;
 
 namespace DemoGame.Client
 {
@@ -153,7 +152,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_Attack(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.Attack(TargetIndex))
+            using (var pw = ClientPacket.Attack(TargetIndex))
             {
                 Socket.Send(pw);
             }
@@ -161,7 +160,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_Emote(Emoticon emoticon)
         {
-            using (PacketWriter pw = ClientPacket.Emoticon(emoticon))
+            using (var pw = ClientPacket.Emoticon(emoticon))
             {
                 Socket.Send(pw);
             }
@@ -175,7 +174,7 @@ namespace DemoGame.Client
 #if !TOPDOWN
         void HandleGameControl_Jump(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.Jump())
+            using (var pw = ClientPacket.Jump())
             {
                 Socket.Send(pw);
             }
@@ -194,7 +193,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_MoveLeft(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.MoveLeft())
+            using (var pw = ClientPacket.MoveLeft())
             {
                 Socket.Send(pw);
             }
@@ -202,7 +201,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_MoveRight(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.MoveRight())
+            using (var pw = ClientPacket.MoveRight())
             {
                 Socket.Send(pw);
             }
@@ -210,7 +209,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_MoveStop(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.MoveStop())
+            using (var pw = ClientPacket.MoveStop())
             {
                 Socket.Send(pw);
             }
@@ -248,11 +247,11 @@ namespace DemoGame.Client
 
         void HandleGameControl_PickUp(GameControl sender)
         {
-            ItemEntity pickupItem = Map.Spatial.Get<ItemEntity>(GameData.GetPickupRegion(UserChar));
+            var pickupItem = Map.Spatial.Get<ItemEntity>(GameData.GetPickupRegion(UserChar));
             if (pickupItem == null)
                 return;
 
-            using (PacketWriter pw = ClientPacket.PickupItem(pickupItem.MapEntityIndex))
+            using (var pw = ClientPacket.PickupItem(pickupItem.MapEntityIndex))
             {
                 Socket.Send(pw);
             }
@@ -260,11 +259,11 @@ namespace DemoGame.Client
 
         void HandleGameControl_Shop(GameControl sender)
         {
-            DynamicEntity shopOwner = GetClosestValidShopOwner(UserChar);
+            var shopOwner = GetClosestValidShopOwner(UserChar);
             if (shopOwner == null)
                 return;
 
-            using (PacketWriter pw = ClientPacket.StartShopping(shopOwner.MapEntityIndex))
+            using (var pw = ClientPacket.StartShopping(shopOwner.MapEntityIndex))
             {
                 Socket.Send(pw);
             }
@@ -277,7 +276,7 @@ namespace DemoGame.Client
             if (npc == null)
                 return;
 
-            using (PacketWriter pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex, false))
+            using (var pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex, false))
             {
                 Socket.Send(pw);
             }
@@ -285,11 +284,11 @@ namespace DemoGame.Client
 
         void HandleGameControl_Use(GameControl sender)
         {
-            DynamicEntity useEntity = Map.Spatial.Get<DynamicEntity>(UserChar.ToRectangle(), UsableEntityFilter);
+            var useEntity = Map.Spatial.Get<DynamicEntity>(UserChar.ToRectangle(), UsableEntityFilter);
             if (useEntity == null)
                 return;
 
-            using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
+            using (var pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
             {
                 Socket.Send(pw);
             }
@@ -303,7 +302,7 @@ namespace DemoGame.Client
         static bool UsableEntityFilter(DynamicEntity dynamicEntity)
         {
             // Make sure it is usable
-            IUsableEntity asUsable = dynamicEntity as IUsableEntity;
+            var asUsable = dynamicEntity as IUsableEntity;
             if (asUsable == null)
                 return false;
 

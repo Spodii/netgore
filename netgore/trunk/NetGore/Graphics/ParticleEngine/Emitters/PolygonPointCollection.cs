@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -54,13 +53,13 @@ namespace NetGore.Graphics.ParticleEngine
             else
                 v0 = Vector2.Zero;
 
-            float left = v0.X;
-            float right = v0.X;
-            float top = v0.Y;
-            float bottom = v0.Y;
+            var left = v0.X;
+            var right = v0.X;
+            var top = v0.Y;
+            var bottom = v0.Y;
 
             // Check all the points to make the rectangle surround the entire polygon
-            for (int i = 1; i < Count; i++)
+            for (var i = 1; i < Count; i++)
             {
                 var v = base[i];
 
@@ -98,7 +97,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="matrix">The translation <see cref="Matrix"/> for the origin.</param>
         void GetOriginTranslation(out Matrix matrix)
         {
-            Vector2 point = Vector2.Zero;
+            var point = Vector2.Zero;
 
             if (Count > 0)
                 point = base[0];
@@ -162,7 +161,7 @@ namespace NetGore.Graphics.ParticleEngine
             get { return base[index]; }
             set
             {
-                Vector2 v = (Vector2)value;
+                var v = (Vector2)value;
 
                 base[index] = v;
 
@@ -184,7 +183,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </exception>
         int IList.Add(object value)
         {
-            Vector2 v = (Vector2)value;
+            var v = (Vector2)value;
 
             Add(v);
 
@@ -215,7 +214,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </exception>
         void IList.Remove(object value)
         {
-            Vector2 v = (Vector2)value;
+            var v = (Vector2)value;
 
             if (Contains(v))
                 Remove(v);

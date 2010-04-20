@@ -64,8 +64,8 @@ namespace DemoGame.Client
             _isUserInv = isUserInv;
             _infoRequester = infoRequester;
 
-            Vector2 itemsSize = _columns * _itemSize;
-            Vector2 paddingSize = (_columns + 1) * _padding;
+            var itemsSize = _columns * _itemSize;
+            var paddingSize = (_columns + 1) * _padding;
             Size = itemsSize + paddingSize + Border.Size;
 
             CreateItemSlots();
@@ -97,14 +97,14 @@ namespace DemoGame.Client
 
         void CreateItemSlots()
         {
-            Vector2 offset = _padding;
-            Vector2 offsetMultiplier = _itemSize + _padding;
+            var offset = _padding;
+            var offsetMultiplier = _itemSize + _padding;
 
-            for (int i = 0; i < GameData.MaxInventorySize; i++)
+            for (var i = 0; i < GameData.MaxInventorySize; i++)
             {
-                int x = i % _columns;
-                int y = i / _columns;
-                Vector2 pos = offset + new Vector2(x, y) * offsetMultiplier;
+                var x = i % _columns;
+                var y = i / _columns;
+                var pos = offset + new Vector2(x, y) * offsetMultiplier;
 
                 new InventoryItemPB(this, pos, new InventorySlot(i));
             }
@@ -117,7 +117,7 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
         void InventoryItemPB_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            InventoryItemPB itemPB = (InventoryItemPB)sender;
+            var itemPB = (InventoryItemPB)sender;
 
             if (e.Button == MouseButton.Right)
             {
@@ -261,14 +261,14 @@ namespace DemoGame.Client
             {
                 get
                 {
-                    Inventory inv = InventoryForm.Inventory;
+                    var inv = InventoryForm.Inventory;
                     if (inv == null)
                         return null;
 
                     if (inv[_slot] == null)
                         return null;
 
-                    ItemEntity item = inv[_slot];
+                    var item = inv[_slot];
                     if (item == null)
                         return null;
 
@@ -297,7 +297,7 @@ namespace DemoGame.Client
                     return;
 
                 // Draw the item in the center of the slot
-                Vector2 offset = (_itemSize - item.Grh.Size) / 2f;
+                var offset = (_itemSize - item.Grh.Size) / 2f;
                 item.Draw(spriteBatch, ScreenPosition + offset.Round());
 
                 // Draw the amount
@@ -332,8 +332,8 @@ namespace DemoGame.Client
 
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
             {
-                InventoryItemPB src = (InventoryItemPB)sender;
-                InventorySlot slot = src.Slot;
+                var src = (InventoryItemPB)sender;
+                var slot = src.Slot;
                 IItemTable itemInfo;
 
                 if (!src.InventoryForm._infoRequester.TryGetInfo(slot, out itemInfo))

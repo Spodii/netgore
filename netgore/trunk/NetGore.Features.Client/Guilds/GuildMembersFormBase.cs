@@ -106,7 +106,7 @@ namespace NetGore.Features.Guilds
             base.UpdateControl(currentTime);
 
             // Check to update the cache due to the elapsed time or guild state change
-            bool isInGuild = GuildInfo != null && GuildInfo.InGuild;
+            var isInGuild = GuildInfo != null && GuildInfo.InGuild;
             if ((_cacheUpdateTime < currentTime) || (_cacheStateInGuild != isInGuild))
                 UpdateCache();
         }

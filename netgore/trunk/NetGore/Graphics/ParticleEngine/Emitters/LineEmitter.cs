@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -101,7 +100,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="force">The normalized force vector.</param>
         protected override void GenerateParticleOffsetAndForce(Particle particle, out Vector2 offset, out Vector2 force)
         {
-            float halfLength = Length * 0.5f;
+            var halfLength = Length * 0.5f;
 
             offset = new Vector2(RandomHelper.NextFloat(-halfLength, halfLength), 0);
 

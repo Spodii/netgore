@@ -57,36 +57,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the KeyPressed event of the _cNameText control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
-        void cNameText_KeyPressed(object sender, KeyEventArgs e)
-        {
-            // Tab to the next control
-            if (e.Code== KeyCode.Tab)
-            {
-                _cPasswordText.SetFocus();
-                _cPasswordText.CursorLinePosition = _cPasswordText.Text.Length;
-            }
-        }
-
-        /// <summary>
-        /// Handles the KeyPressed event of the _cPasswordText control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
-        void cPasswordText_KeyPressed(object sender, KeyEventArgs e)
-        {
-            // Tab to the next control
-            if (e.Code == KeyCode.Tab)
-            {
-                _cNameText.SetFocus();
-                _cNameText.CursorLinePosition = _cNameText.Text.Length;
-            }
-        }
-
-        /// <summary>
         /// Handles screen deactivation, which occurs every time the screen changes from being
         /// the current active screen. Good place to clean up any objects created in Activate().
         /// </summary>
@@ -107,7 +77,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
-            Panel cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
+            var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the login fields
             new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
@@ -143,17 +113,57 @@ namespace DemoGame.Client
             _cError.Text = string.Format("Error: {0}", message);
         }
 
-        void sockets_Connected(SocketManager sender, IIPSocket conn)
+        /// <summary>
+        /// Updates the screen if it is currently the active screen.
+        /// </summary>
+        /// <param name="gameTime">The current game time.</param>
+        public override void Update(int gameTime)
         {
-            using (PacketWriter pw = ClientPacket.Login(_cNameText.Text, _cPasswordText.Text))
+            _btnLogin.IsEnabled = !(_sockets.IsConnecting || _sockets.IsConnected);
+            base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// Handles the KeyPressed event of the _cNameText control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
+        void cNameText_KeyPressed(object sender, KeyEventArgs e)
+        {
+            // Tab to the next control
+            if (e.Code == KeyCode.Tab)
             {
-                _sockets.Send(pw);
+                _cPasswordText.SetFocus();
+                _cPasswordText.CursorLinePosition = _cPasswordText.Text.Length;
+            }
+        }
+
+        /// <summary>
+        /// Handles the KeyPressed event of the _cPasswordText control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
+        void cPasswordText_KeyPressed(object sender, KeyEventArgs e)
+        {
+            // Tab to the next control
+            if (e.Code == KeyCode.Tab)
+            {
+                _cNameText.SetFocus();
+                _cNameText.CursorLinePosition = _cNameText.Text.Length;
             }
         }
 
         void sockets_ConnectFailed(SocketManager sender)
         {
             SetError("Failed to connect to server.");
+        }
+
+        void sockets_Connected(SocketManager sender, IIPSocket conn)
+        {
+            using (var pw = ClientPacket.Login(_cNameText.Text, _cPasswordText.Text))
+            {
+                _sockets.Send(pw);
+            }
         }
 
         void sockets_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
@@ -164,16 +174,6 @@ namespace DemoGame.Client
         void sockets_ReceivedLoginUnsuccessful(ClientPacketHandler sender, IIPSocket conn, string message)
         {
             SetError(message);
-        }
-
-        /// <summary>
-        /// Updates the screen if it is currently the active screen.
-        /// </summary>
-        /// <param name="gameTime">The current game time.</param>
-        public override void Update(int gameTime)
-        {
-            _btnLogin.IsEnabled = !(_sockets.IsConnecting || _sockets.IsConnected);
-            base.Update(gameTime);
         }
     }
 }

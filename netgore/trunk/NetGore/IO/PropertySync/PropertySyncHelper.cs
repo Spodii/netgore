@@ -45,7 +45,7 @@ namespace NetGore.IO.PropertySync
 
             var typeFilter = typeFilterCreator.GetFilter();
 
-            foreach (Type type in TypeHelper.AllTypes(false).Where(typeFilter))
+            foreach (var type in TypeHelper.AllTypes(false).Where(typeFilter))
             {
                 // Look for classes that inherit the PropertySyncHandlerAttribute
                 var attribs = type.GetCustomAttributes(typeof(PropertySyncHandlerAttribute), true);
@@ -60,7 +60,7 @@ namespace NetGore.IO.PropertySync
                 }
 
                 // Grab the attribute so we can find out what type this class handles
-                PropertySyncHandlerAttribute attrib = (PropertySyncHandlerAttribute)attribs[0];
+                var attrib = (PropertySyncHandlerAttribute)attribs[0];
 
                 // Store the handled type
                 _propertySyncTypes.Add(attrib.HandledType, type);
@@ -115,7 +115,7 @@ namespace NetGore.IO.PropertySync
             if (instance == null)
             {
                 const string errmsg = "Failed to create IPropertySync of type `{0}` for `{1}`.";
-                string err = string.Format(errmsg, _propertySyncTypes[attribInfo.PropertyType], attribInfo);
+                var err = string.Format(errmsg, _propertySyncTypes[attribInfo.PropertyType], attribInfo);
                 log.Fatal(err);
                 throw new TypeLoadException(err);
             }
@@ -131,10 +131,10 @@ namespace NetGore.IO.PropertySync
         public static IPropertySync[] GetPropertySyncs(Type type)
         {
             var infos = _factory[type];
-            IPropertySync[] ret = new IPropertySync[infos.Length];
+            var ret = new IPropertySync[infos.Length];
 
             // Loop through each of the property sync infos
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 var instance = GetPropertySync(infos[i]);
                 ret[i] = instance;
@@ -211,7 +211,7 @@ namespace NetGore.IO.PropertySync
                 var tempPropInfos = new List<SyncValueAttributeInfo>();
 
                 // Find all of the properties for this type
-                foreach (PropertyInfo property in key.GetProperties(flags))
+                foreach (var property in key.GetProperties(flags))
                 {
                     // Get the SyncValueAttribute for the property, skipping if none found
                     var attribs = TypeHelper.GetAllCustomAttributes<SyncValueAttribute>(property, flags).ToArray();
@@ -221,14 +221,14 @@ namespace NetGore.IO.PropertySync
                     if (attribs.Length > 1)
                     {
                         const string errmsg = "Property `{0}` contains more than one SyncValueAttribute!";
-                        string err = string.Format(errmsg, property);
+                        var err = string.Format(errmsg, property);
                         log.FatalFormat(err);
                         Debug.Fail(err);
                         throw new Exception(err);
                     }
 
                     // Get the attribute attached to this Property
-                    SyncValueAttribute attribute = attribs.First();
+                    var attribute = attribs.First();
 
                     // Create the SyncValueAttributeInfo
                     var targetSVAIType = typeof(SyncValueAttributeInfo<>).MakeGenericType(property.PropertyType);
@@ -238,7 +238,7 @@ namespace NetGore.IO.PropertySync
                     if (tempPropInfos.Any(x => x.Name == svai.Name))
                     {
                         const string errmsg = "Class `{0}` contains more than one SyncValueAttribute with the name `{1}`!";
-                        string err = string.Format(errmsg, key, svai.Name);
+                        var err = string.Format(errmsg, key, svai.Name);
                         log.FatalFormat(err);
                         Debug.Fail(err);
                         throw new Exception(err);

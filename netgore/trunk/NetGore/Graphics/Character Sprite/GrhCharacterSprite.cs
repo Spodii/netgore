@@ -4,7 +4,6 @@ using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
 
-
 namespace NetGore.Graphics
 {
     /// <summary>
@@ -177,8 +176,8 @@ namespace NetGore.Graphics
             // If we are moving, the body modifier is not set, or the sprite is invalid, use the non-modifier set
             if (Character.Velocity != Vector2.Zero || _currentBodyModifier == null || _grh.GrhData == null)
             {
-                string prefix = (Character.Velocity == Vector2.Zero ? string.Empty : "Walk ");
-                string directionSuffix = GetDirectionSetName(heading);
+                var prefix = (Character.Velocity == Vector2.Zero ? string.Empty : "Walk ");
+                var directionSuffix = GetDirectionSetName(heading);
 
                 _currentBodyModifier = null;
                 InternalSetSet(prefix + directionSuffix);

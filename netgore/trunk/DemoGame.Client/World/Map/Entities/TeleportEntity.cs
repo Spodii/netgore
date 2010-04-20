@@ -3,7 +3,6 @@ using System.Linq;
 using NetGore;
 using NetGore.Graphics;
 using SFML.Graphics;
-using IDrawable=NetGore.Graphics.IDrawable;
 
 namespace DemoGame.Client
 {
@@ -140,7 +139,7 @@ namespace DemoGame.Client
 
             if (IsVisible)
             {
-                Rectangle rect = ToRectangle();
+                var rect = ToRectangle();
                 RenderRectangle.Draw(sb, rect, Color, Color.Black);
             }
 

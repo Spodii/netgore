@@ -79,7 +79,7 @@ namespace NetGore.Collections
 
             // Create the initial pool and the object instances
             _poolObjects = new T[initialSize];
-            for (int i = 0; i < _poolObjects.Length; i++)
+            for (var i = 0; i < _poolObjects.Length; i++)
             {
                 _poolObjects[i] = CreateObject(i);
             }
@@ -129,7 +129,7 @@ namespace NetGore.Collections
         [Conditional("DEBUG")]
         void AssertValidPoolIndexForLiveObjects()
         {
-            for (int i = 0; i < LiveObjects; i++)
+            for (var i = 0; i < LiveObjects; i++)
             {
                 var obj = _poolObjects[i];
                 Debug.Assert(obj.PoolIndex == i);
@@ -143,7 +143,7 @@ namespace NetGore.Collections
         /// <returns>A new instance of the poolable object.</returns>
         T CreateObject(int index)
         {
-            T obj = Creator(this);
+            var obj = Creator(this);
             obj.PoolIndex = index;
             return obj;
         }
@@ -153,13 +153,13 @@ namespace NetGore.Collections
         /// </summary>
         void ExpandPool()
         {
-            int oldLength = _poolObjects.Length;
+            var oldLength = _poolObjects.Length;
 
             // Expand the pool
             Array.Resize(ref _poolObjects, _poolObjects.Length << 2);
 
             // Allocate the new object instances
-            for (int i = oldLength; i < _poolObjects.Length; i++)
+            for (var i = oldLength; i < _poolObjects.Length; i++)
             {
                 Debug.Assert(_poolObjects[i] == null);
                 _poolObjects[i] = CreateObject(i);
@@ -177,7 +177,7 @@ namespace NetGore.Collections
             Debug.Assert(LiveObjects < _poolObjects.Length);
 
             // Grab the next free object
-            T ret = _poolObjects[_liveObjects++];
+            var ret = _poolObjects[_liveObjects++];
 
             Debug.Assert(ret.PoolIndex == LiveObjects - 1);
 
@@ -189,7 +189,7 @@ namespace NetGore.Collections
             // Call the deinitializer on all the live objects
             if (Deinitializer != null)
             {
-                for (int i = 0; i < LiveObjects; i++)
+                for (var i = 0; i < LiveObjects; i++)
                 {
                     Deinitializer(_poolObjects[i]);
                 }
@@ -234,10 +234,10 @@ namespace NetGore.Collections
 
         int InternalFreeAll(Func<T, bool> condition)
         {
-            int count = 0;
+            var count = 0;
 
             // Loop through all live objects
-            int i = 0;
+            var i = 0;
             while (i < LiveObjects)
             {
                 // Check the condition
@@ -267,7 +267,7 @@ namespace NetGore.Collections
 
         void InternalPerform(Action<T> action)
         {
-            for (int i = 0; i < LiveObjects; i++)
+            for (var i = 0; i < LiveObjects; i++)
             {
                 action(_poolObjects[i]);
             }

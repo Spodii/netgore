@@ -101,7 +101,7 @@ namespace NetGore
         /// <returns>The MapEntityIndex read from the IValueReader.</returns>
         public static MapEntityIndex Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new MapEntityIndex(value);
         }
 
@@ -113,11 +113,11 @@ namespace NetGore
         /// <returns>The MapEntityIndex read from the IDataReader.</returns>
         public static MapEntityIndex Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new MapEntityIndex((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new MapEntityIndex(convertedValue);
         }
 
@@ -139,7 +139,7 @@ namespace NetGore
         /// <returns>The MapEntityIndex read from the BitStream.</returns>
         public static MapEntityIndex Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new MapEntityIndex(value);
         }
 
@@ -852,7 +852,7 @@ namespace NetGore
         public static bool TryParse(this Parser parser, string value, out MapEntityIndex outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new MapEntityIndex(tmp);
             return ret;
         }

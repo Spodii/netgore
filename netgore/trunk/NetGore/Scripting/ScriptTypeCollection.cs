@@ -49,8 +49,8 @@ namespace NetGore.Scripting
             var csFiles = sourceFiles.Where(x => x.EndsWith(".cs", StringComparison.OrdinalIgnoreCase));
             var vbFiles = sourceFiles.Where(x => x.EndsWith(".vb", StringComparison.OrdinalIgnoreCase));
 
-            CompilerErrorCollection csErrors = AddScriptFiles(csFiles, ScriptLanguage.CS);
-            CompilerErrorCollection vbErrors = AddScriptFiles(vbFiles, ScriptLanguage.VB);
+            var csErrors = AddScriptFiles(csFiles, ScriptLanguage.CS);
+            var vbErrors = AddScriptFiles(vbFiles, ScriptLanguage.VB);
 
             if (csErrors != null)
                 _compilerErrors.AddRange(csErrors.Cast<CompilerError>());
@@ -128,7 +128,7 @@ namespace NetGore.Scripting
             {
                 // Add the new types
                 var newTypes = asm.GetExportedTypes();
-                foreach (Type newType in newTypes)
+                foreach (var newType in newTypes)
                 {
                     _types.Add(newType.Name, newType);
                 }
@@ -175,7 +175,7 @@ namespace NetGore.Scripting
             CompilerResults result;
             using (codeDomProvider)
             {
-                CompilerParameters options = new CompilerParameters
+                var options = new CompilerParameters
                 { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = outputFilePath };
 
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();

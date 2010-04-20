@@ -84,7 +84,7 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            User u = _user;
+            var u = _user;
             if (u == null)
                 return;
 
@@ -107,10 +107,10 @@ namespace DemoGame.Server
         {
             MD5 md5 = new MD5CryptoServiceProvider();
 
-            byte[] originalBytes = Encoding.Default.GetBytes(originalPassword);
-            byte[] encodedBytes = md5.ComputeHash(originalBytes);
+            var originalBytes = Encoding.Default.GetBytes(originalPassword);
+            var encodedBytes = md5.ComputeHash(originalBytes);
 
-            string ret = BitConverter.ToString(encodedBytes);
+            var ret = BitConverter.ToString(encodedBytes);
             ret = ret.Replace("-", string.Empty).ToLower();
 
             return ret;
@@ -215,13 +215,13 @@ namespace DemoGame.Server
         public void SendAccountCharacterInfos()
         {
             var charInfos = new AccountCharacterInfo[CharacterCount];
-            for (int i = 0; i < charInfos.Length; i++)
+            for (var i = 0; i < charInfos.Length; i++)
             {
-                CharacterID characterID = _characterIDs[i];
+                var characterID = _characterIDs[i];
                 charInfos[i] = _dbController.GetQuery<SelectAccountCharacterInfoQuery>().Execute(characterID, (byte)i);
             }
 
-            using (PacketWriter pw = ServerPacket.SendAccountCharacters(charInfos))
+            using (var pw = ServerPacket.SendAccountCharacters(charInfos))
             {
                 Socket.Send(pw);
             }
@@ -285,10 +285,10 @@ namespace DemoGame.Server
         public static bool TryAddCharacter(IDbController dbController, string accountName, string characterName,
                                            out string errorMsg)
         {
-            CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
-            CharacterID characterID = idCreator.GetNext();
+            var idCreator = dbController.GetQuery<CharacterIDCreator>();
+            var characterID = idCreator.GetNext();
 
-            bool success = TryAddCharacter(dbController, accountName, characterName, characterID, out errorMsg);
+            var success = TryAddCharacter(dbController, accountName, characterName, characterID, out errorMsg);
 
             if (!success)
                 idCreator.FreeID(characterID);
@@ -357,12 +357,12 @@ namespace DemoGame.Server
             }
 
             // Get the IP to use
-            uint ip = socket != null ? socket.IP : GameData.DefaultCreateAccountIP;
+            var ip = socket != null ? socket.IP : GameData.DefaultCreateAccountIP;
 
             // Check if too many accounts have been created from this IP
             if (ip != GameData.DefaultCreateAccountIP)
             {
-                int recentCreatedCount = dbController.GetQuery<CountRecentlyCreatedAccounts>().Execute(ip);
+                var recentCreatedCount = dbController.GetQuery<CountRecentlyCreatedAccounts>().Execute(ip);
                 if (recentCreatedCount >= GameData.MaxRecentlyCreatedAccounts)
                 {
                     errorMessage = "Too many accounts have been created from this IP recently";
@@ -371,11 +371,11 @@ namespace DemoGame.Server
             }
 
             // Get the account ID
-            AccountIDCreator idCreator = dbController.GetQuery<AccountIDCreator>();
+            var idCreator = dbController.GetQuery<AccountIDCreator>();
             accountID = idCreator.GetNext();
 
             // Try to execute the query
-            bool success = dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email, ip);
+            var success = dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email, ip);
 
             // If unsuccessful, free the account ID so it can be reused
             if (!success)

@@ -10,7 +10,6 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
-using NetGore.Network;
 using SFML.Graphics;
 
 namespace DemoGame.Server
@@ -116,19 +115,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets an IEnumerable of NPCs on the Map.
-        /// </summary>
-        public IEnumerable<NPC> NPCs
-        {
-            get { return _npcs; }
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of the NPCSpawners on this Map.
         /// </summary>
         public IEnumerable<NPCSpawner> NPCSpawners
         {
             get { return _npcSpawners; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of NPCs on the Map.
+        /// </summary>
+        public IEnumerable<NPC> NPCs
+        {
+            get { return _npcs; }
         }
 
         /// <summary>
@@ -155,7 +154,7 @@ namespace DemoGame.Server
         {
             // Add IRespawnable entities that are not ready to spawn to the respawn queue.
             // Everything else goes right into the map like normal.
-            IRespawnable respawnable = entity as IRespawnable;
+            var respawnable = entity as IRespawnable;
             if (respawnable != null && !respawnable.ReadyToRespawn(GetTime()))
             {
                 AddToRespawn(respawnable);
@@ -192,7 +191,7 @@ namespace DemoGame.Server
             }
 
             // Added character is a User
-            User user = character as User;
+            var user = character as User;
             if (user != null)
             {
                 Debug.Assert(!Users.Contains(user), string.Format("Users list already contains `{0}`!", user));
@@ -202,7 +201,7 @@ namespace DemoGame.Server
             }
 
             // Added character is a NPC
-            NPC npc = character as NPC;
+            var npc = character as NPC;
             if (npc != null)
             {
                 Debug.Assert(!NPCs.Contains(npc), string.Format("NPCs list already contains `{0}`!", npc));
@@ -262,7 +261,7 @@ namespace DemoGame.Server
             }
 
             // Create the characterID, add it to the map, and return the reference
-            ItemEntity item = new ItemEntity(template, pos, amount);
+            var item = new ItemEntity(template, pos, amount);
             AddEntity(item);
             return item;
         }
@@ -292,10 +291,10 @@ namespace DemoGame.Server
             // Create the DynamicEntity for everyone on the map
             if (_users.Count > 0)
             {
-                DynamicEntity de = entity as DynamicEntity;
+                var de = entity as DynamicEntity;
                 if (de != null)
                 {
-                    using (PacketWriter pw = ServerPacket.CreateDynamicEntity(de))
+                    using (var pw = ServerPacket.CreateDynamicEntity(de))
                     {
                         Send(pw);
                     }
@@ -308,7 +307,7 @@ namespace DemoGame.Server
                 _mapItemsCleaner.Add(item, GetTime());
 
             // Handle the different types of entities
-            Character character = entity as Character;
+            var character = entity as Character;
             if (character != null)
                 CharacterAdded(character);
         }
@@ -326,14 +325,14 @@ namespace DemoGame.Server
             DynamicEntity dynamicEntity;
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
-                Character character = entity as Character;
+                var character = entity as Character;
                 if (character != null)
                     CharacterRemoved(character);
 
                 // Destroy the DynamicEntity for everyone on the map
                 if (_users.Count > 0)
                 {
-                    using (PacketWriter pw = ServerPacket.RemoveDynamicEntity(dynamicEntity))
+                    using (var pw = ServerPacket.RemoveDynamicEntity(dynamicEntity))
                     {
                         Send(pw);
                     }
@@ -367,15 +366,15 @@ namespace DemoGame.Server
         /// need to have the <paramref name="toSynchronize"/>'s Position and Velocity synchronized.</returns>
         IEnumerable<User> GetUsersToSyncPandVTo(ISpatial toSynchronize)
         {
-            int xPad = (int)(GameData.ScreenSize.X * 1.5);
-            int yPad = (int)(GameData.ScreenSize.Y * 1.5);
+            var xPad = (int)(GameData.ScreenSize.X * 1.5);
+            var yPad = (int)(GameData.ScreenSize.Y * 1.5);
 
-            Rectangle r = toSynchronize.ToRectangle();
-            Rectangle syncRegion = new Rectangle(r.X - xPad, r.Y - yPad, r.Width + xPad * 2, r.Height + xPad * 2);
+            var r = toSynchronize.ToRectangle();
+            var syncRegion = new Rectangle(r.X - xPad, r.Y - yPad, r.Width + xPad * 2, r.Height + xPad * 2);
 
-            foreach (User user in Users)
+            foreach (var user in Users)
             {
-                Rectangle userRegion = user.ToRectangle();
+                var userRegion = user.ToRectangle();
                 if (syncRegion.Intersects(userRegion))
                     yield return user;
             }
@@ -454,7 +453,7 @@ namespace DemoGame.Server
             }
 
             // Send the data to all users in the map
-            foreach (User user in Users)
+            foreach (var user in Users)
             {
                 if (user != null)
                 {
@@ -477,21 +476,21 @@ namespace DemoGame.Server
         /// <param name="user">User to send the map data to</param>
         void SendMapData(User user)
         {
-            using (PacketWriter pw = ServerPacket.GetWriter())
+            using (var pw = ServerPacket.GetWriter())
             {
                 // Tell the user to change the map
                 ServerPacket.SetMap(pw, ID);
                 user.Send(pw);
 
                 // Send dynamic entities
-                foreach (DynamicEntity dynamicEntity in DynamicEntities)
+                foreach (var dynamicEntity in DynamicEntities)
                 {
                     pw.Reset();
                     ServerPacket.CreateDynamicEntity(pw, dynamicEntity);
                     user.Send(pw);
 
                     // Perform special synchronizations for Characters
-                    Character character = dynamicEntity as Character;
+                    var character = dynamicEntity as Character;
                     if (character != null)
                     {
                         character.SynchronizeSPTo(user);
@@ -528,15 +527,15 @@ namespace DemoGame.Server
             if (data == null)
                 return;
 
-            Vector2 screenSize = GameData.ScreenSize * 1.25f;
-            Vector2 min = origin - screenSize;
-            Vector2 max = origin + screenSize;
+            var screenSize = GameData.ScreenSize * 1.25f;
+            var min = origin - screenSize;
+            var max = origin + screenSize;
 
-            foreach (User user in Users)
+            foreach (var user in Users)
             {
                 Debug.Assert(user != null, "There shouldn't be null users in the Users list!");
 
-                Vector2 p = user.Position;
+                var p = user.Position;
                 if (p.X > min.X && p.Y > min.Y && p.X < max.X && p.Y < max.Y)
                     user.Send(data);
             }
@@ -551,12 +550,12 @@ namespace DemoGame.Server
             if (_users.Count == 0)
                 return;
 
-            int currentTime = GetTime();
+            var currentTime = GetTime();
 
-            using (PacketWriter pw = ServerPacket.GetWriter())
+            using (var pw = ServerPacket.GetWriter())
             {
                 // Loop through each DynamicEntity
-                foreach (DynamicEntity dynamicEntity in DynamicEntities)
+                foreach (var dynamicEntity in DynamicEntities)
                 {
                     // Check to synchronize everything but the Position and Velocity
                     if (!dynamicEntity.IsSynchronized)
@@ -578,7 +577,7 @@ namespace DemoGame.Server
                         {
                             pw.Reset();
                             ServerPacket.UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);
-                            foreach (User user in usersToSyncTo)
+                            foreach (var user in usersToSyncTo)
                             {
                                 user.SendUnreliableBuffered(pw);
                             }
@@ -588,7 +587,7 @@ namespace DemoGame.Server
             }
 
             // Flush the unreliable buffers for all of the users
-            foreach (User user in Users)
+            foreach (var user in Users)
             {
                 user.FlushUnreliableBuffer();
             }

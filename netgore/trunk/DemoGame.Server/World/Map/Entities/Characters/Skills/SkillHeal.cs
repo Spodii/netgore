@@ -44,7 +44,7 @@ namespace DemoGame.Server
             if (target == null)
                 target = user;
 
-            int power = user.ModStats[StatType.Int] * 2 + 5;
+            var power = user.ModStats[StatType.Int] * 2 + 5;
             target.HP += power;
 
             return true;

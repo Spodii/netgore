@@ -17,14 +17,14 @@ namespace NetGore.NPCChat.Conditionals
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Array used for an empty set of <see cref="NPCChatConditionalParameter"/>s.
-        /// </summary>
-        static readonly NPCChatConditionalParameter[] _emptyParameters;
-
-        /// <summary>
         /// Array used for an empty set of <see cref="NPCChatConditionalParameterType"/>s.
         /// </summary>
         static readonly NPCChatConditionalParameterType[] _emptyParameterTypes;
+
+        /// <summary>
+        /// Array used for an empty set of <see cref="NPCChatConditionalParameter"/>s.
+        /// </summary>
+        static readonly NPCChatConditionalParameter[] _emptyParameters;
 
         /// <summary>
         /// Dictionary that contains the <see cref="NPCChatConditionalBase"/> instance

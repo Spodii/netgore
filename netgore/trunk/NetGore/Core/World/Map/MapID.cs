@@ -97,7 +97,7 @@ namespace NetGore
         /// <returns>The MapID read from the IValueReader.</returns>
         public static MapID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new MapID(value);
         }
 
@@ -109,11 +109,11 @@ namespace NetGore
         /// <returns>The MapID read from the IDataReader.</returns>
         public static MapID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new MapID((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new MapID(convertedValue);
         }
 
@@ -135,7 +135,7 @@ namespace NetGore
         /// <returns>The MapID read from the BitStream.</returns>
         public static MapID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new MapID(value);
         }
 
@@ -848,7 +848,7 @@ namespace NetGore
         public static bool TryParse(this Parser parser, string value, out MapID outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new MapID(tmp);
             return ret;
         }

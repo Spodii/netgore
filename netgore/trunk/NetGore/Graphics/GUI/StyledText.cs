@@ -112,9 +112,9 @@ namespace NetGore.Graphics.GUI
         {
             var ret = new List<StyledText>(input.Length);
 
-            for (int i = 0; i < input.Length; i++)
+            for (var i = 0; i < input.Length; i++)
             {
-                StyledText current = input[i];
+                var current = input[i];
                 while (i + 1 < input.Length && current.HasSameStyle(input[i + 1]))
                 {
                     current += input[i + 1].Text;
@@ -135,9 +135,9 @@ namespace NetGore.Graphics.GUI
         {
             var ret = new List<StyledText>(input.Count);
 
-            for (int i = 0; i < input.Count; i++)
+            for (var i = 0; i < input.Count; i++)
             {
-                StyledText current = input[i];
+                var current = input[i];
                 while (i + 1 < input.Count && current.HasSameStyle(input[i + 1]))
                 {
                     current += input[i + 1].Text;
@@ -174,11 +174,11 @@ namespace NetGore.Graphics.GUI
         /// <returns>The 0-based index of the first character that will fit into a single line.</returns>
         public static int FindFirstFittingChar(string text, Font font, int maxLineLength)
         {
-            StringBuilder sb = new StringBuilder(text);
+            var sb = new StringBuilder(text);
 
-            for (int i = 0; i < text.Length; i++)
+            for (var i = 0; i < text.Length; i++)
             {
-                float length = font.MeasureString(sb).X;
+                var length = font.MeasureString(sb).X;
                 if (length <= maxLineLength)
                     return text.Length - sb.Length;
                 sb.Remove(0, 1);
@@ -196,7 +196,7 @@ namespace NetGore.Graphics.GUI
         public static int FindIndexToSplitAt(string text, int maxChars)
         {
             // Split at either the first acceptable split character
-            for (int i = maxChars; i > Math.Max(0, maxChars - 8); i--)
+            for (var i = maxChars; i > Math.Max(0, maxChars - 8); i--)
             {
                 if (SplitChars.Contains(text[i]))
                     return i;
@@ -215,11 +215,11 @@ namespace NetGore.Graphics.GUI
         /// <returns>The 0-based index of the last character that will fit into a single line.</returns>
         public static int FindLastFittingChar(string text, Font font, int maxLineLength)
         {
-            StringBuilder sb = new StringBuilder(text);
+            var sb = new StringBuilder(text);
 
-            for (int i = 0; i < text.Length; i++)
+            for (var i = 0; i < text.Length; i++)
             {
-                float length = font.MeasureString(sb).X;
+                var length = font.MeasureString(sb).X;
                 if (length <= maxLineLength)
                     return sb.Length;
 
@@ -271,7 +271,7 @@ namespace NetGore.Graphics.GUI
             var strings = Text.Split(separator);
 
             var ret = new StyledText[strings.Length];
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 if (strings[i] == Text)
                     ret[i] = this;
@@ -295,7 +295,7 @@ namespace NetGore.Graphics.GUI
             var strings = Text.Split(separator, count);
 
             var ret = new StyledText[strings.Length];
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 if (strings[i] == Text)
                     ret[i] = this;
@@ -322,7 +322,7 @@ namespace NetGore.Graphics.GUI
             var strings = Text.Split(separator, count, options);
 
             var ret = new StyledText[strings.Length];
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 if (strings[i] == Text)
                     ret[i] = this;
@@ -349,7 +349,7 @@ namespace NetGore.Graphics.GUI
             var strings = Text.Split(separator, count, options);
 
             var ret = new StyledText[strings.Length];
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 if (strings[i] == Text)
                     ret[i] = this;
@@ -375,7 +375,7 @@ namespace NetGore.Graphics.GUI
             var strings = Text.Split(separator, options);
 
             var ret = new StyledText[strings.Length];
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 if (strings[i] == Text)
                     ret[i] = this;
@@ -401,7 +401,7 @@ namespace NetGore.Graphics.GUI
             var strings = Text.Split(separator, options);
 
             var ret = new StyledText[strings.Length];
-            for (int i = 0; i < ret.Length; i++)
+            for (var i = 0; i < ret.Length; i++)
             {
                 if (strings[i] == Text)
                     ret[i] = this;
@@ -453,7 +453,7 @@ namespace NetGore.Graphics.GUI
         /// greater than the length of this instance.</exception>
         public StyledText Substring(int startIndex)
         {
-            string s = Text.Substring(startIndex);
+            var s = Text.Substring(startIndex);
             if (string.IsNullOrEmpty(s))
                 return Empty;
 
@@ -471,7 +471,7 @@ namespace NetGore.Graphics.GUI
         /// greater than the length of this instance -or- startIndex or length is less than zero.</exception>
         public StyledText Substring(int startIndex, int length)
         {
-            string s = Text.Substring(startIndex, length);
+            var s = Text.Substring(startIndex, length);
             if (string.IsNullOrEmpty(s))
                 return Empty;
 
@@ -484,7 +484,7 @@ namespace NetGore.Graphics.GUI
             var lines = ToMultiline(texts, putInputOnNewLines);
             var ret = new List<List<StyledText>>();
 
-            StringBuilder currentLineText = new StringBuilder();
+            var currentLineText = new StringBuilder();
             var linePartsStack = new Stack<StyledText>();
 
             foreach (var line in lines)
@@ -492,14 +492,14 @@ namespace NetGore.Graphics.GUI
                 currentLineText.Length = 0;
                 var retLine = new List<StyledText>();
 
-                for (int i = line.Count - 1; i >= 0; i--)
+                for (var i = line.Count - 1; i >= 0; i--)
                 {
                     linePartsStack.Push(line[i]);
                 }
 
                 while (linePartsStack.Count > 0)
                 {
-                    StyledText current = linePartsStack.Pop();
+                    var current = linePartsStack.Pop();
                     currentLineText.Append(current.Text);
 
                     // Check if the line has become too long
@@ -507,10 +507,10 @@ namespace NetGore.Graphics.GUI
                         retLine.Add(current);
                     else
                     {
-                        string s = currentLineText.ToString();
+                        var s = currentLineText.ToString();
 
-                        int lastFittingChar = FindLastFittingChar(s, font, maxLineLength);
-                        int splitAt = FindIndexToSplitAt(s, lastFittingChar - 1);
+                        var lastFittingChar = FindLastFittingChar(s, font, maxLineLength);
+                        var splitAt = FindIndexToSplitAt(s, lastFittingChar - 1);
 
                         splitAt -= (s.Length - current.Text.Length);
 
@@ -531,8 +531,8 @@ namespace NetGore.Graphics.GUI
                         }
                         else
                         {
-                            StyledText left = current.Substring(0, splitAt + 1);
-                            StyledText right = current.Substring(splitAt + 1);
+                            var left = current.Substring(0, splitAt + 1);
+                            var right = current.Substring(splitAt + 1);
 
                             // Split like normal
                             if (left.Text.Length > 0)
@@ -566,9 +566,9 @@ namespace NetGore.Graphics.GUI
             var ret = new List<StyledText>();
 
             var split = text.Split('\n');
-            foreach (StyledText s in split)
+            foreach (var s in split)
             {
-                StyledText newS = new StyledText(s.Text.Replace('\r'.ToString(), string.Empty), s);
+                var newS = new StyledText(s.Text.Replace('\r'.ToString(), string.Empty), s);
                 ret.Add(newS);
             }
 
@@ -581,12 +581,12 @@ namespace NetGore.Graphics.GUI
 
             if (putInputOnNewLines)
             {
-                foreach (StyledText t in texts)
+                foreach (var t in texts)
                 {
                     var split = t.Split('\n');
-                    foreach (StyledText s in split)
+                    foreach (var s in split)
                     {
-                        StyledText newS = new StyledText(s.Text.Replace('\r'.ToString(), string.Empty), s);
+                        var newS = new StyledText(s.Text.Replace('\r'.ToString(), string.Empty), s);
                         ret.Add(new List<StyledText> { newS });
                     }
                 }
@@ -594,14 +594,14 @@ namespace NetGore.Graphics.GUI
             else
             {
                 var line = new List<StyledText>();
-                foreach (StyledText t in texts)
+                foreach (var t in texts)
                 {
                     var split = t.Split('\n');
                     line.Add(split[0]);
 
                     if (split.Length > 1)
                     {
-                        for (int i = 1; i < split.Length; i++)
+                        for (var i = 1; i < split.Length; i++)
                         {
                             ret.Add(line);
                             line = new List<StyledText> { split[i] };
@@ -634,7 +634,7 @@ namespace NetGore.Graphics.GUI
             if (string.IsNullOrEmpty(Text))
                 return new StyledText(string.Empty, Color);
 
-            string newText = Text.Replace("\r\n", replacementString);
+            var newText = Text.Replace("\r\n", replacementString);
             if (newText.Length > 0)
                 newText = newText.Replace("\n", replacementString);
             if (newText.Length > 0)
@@ -653,7 +653,7 @@ namespace NetGore.Graphics.GUI
             if (texts == null)
                 return string.Empty;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var text in texts)
             {
                 sb.Append(text);
@@ -673,7 +673,7 @@ namespace NetGore.Graphics.GUI
             if (texts == null)
                 return string.Empty;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var text in texts)
             {
                 sb.Append(text);

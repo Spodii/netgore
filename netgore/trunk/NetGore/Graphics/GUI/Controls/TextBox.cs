@@ -306,7 +306,7 @@ namespace NetGore.Graphics.GUI
                 var textLines = StyledText.ToMultiline(text);
                 _lines.LastLine.Append(textLines[0]);
 
-                for (int i = 1; i < textLines.Count; i++)
+                for (var i = 1; i < textLines.Count; i++)
                 {
                     var newLine = new TextBoxLine(_lines);
                     newLine.Append(textLines[i]);
@@ -388,7 +388,7 @@ namespace NetGore.Graphics.GUI
             base.DrawControl(spriteBatch);
 
             // Get the text offset
-            Vector2 textDrawOffset = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
+            var textDrawOffset = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
 
             // Draw the text
             if (IsMultiLine)
@@ -413,16 +413,16 @@ namespace NetGore.Graphics.GUI
             if (_cursorBlinkTimer + EditableTextHandler.CursorBlinkRate < _currentTime)
                 return;
 
-            int offset = 0;
+            var offset = 0;
             if (CursorLinePosition > 0)
             {
-                int len = Math.Min(CursorLinePosition, _lines.CurrentLine.LineText.Length);
+                var len = Math.Min(CursorLinePosition, _lines.CurrentLine.LineText.Length);
                 offset =
                     (int)
                     Font.MeasureString(_lines.CurrentLine.LineText.Substring(LineCharBufferOffset, len - LineCharBufferOffset)).X;
             }
 
-            int visibleLineOffset = (_lines.CurrentLineIndex - LineBufferOffset) * (int)Font.CharacterSize;
+            var visibleLineOffset = (_lines.CurrentLineIndex - LineBufferOffset) * (int)Font.CharacterSize;
 
             var p1 = textPos + new Vector2(offset, visibleLineOffset);
             var p2 = p1 + new Vector2(0, (int)Font.CharacterSize);
@@ -543,6 +543,19 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
+        /// This is called immediately before <see cref="Control.KeyPressed"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.KeyPressed"/> when possible.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected override void OnKeyPressed(KeyEventArgs e)
+        {
+            _editableTextHandler.HandleKey(e);
+
+            base.OnKeyPressed(e);
+        }
+
+        /// <summary>
         /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
         /// This is called immediately before <see cref="Control.Resized"/>.
         /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
@@ -571,19 +584,6 @@ namespace NetGore.Graphics.GUI
             _editableTextHandler.HandleText(e);
 
             base.OnTextEntered(e);
-        }
-
-        /// <summary>
-        /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
-        /// This is called immediately before <see cref="Control.KeyPressed"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.KeyPressed"/> when possible.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        protected override void OnKeyPressed(KeyEventArgs e)
-        {
-            _editableTextHandler.HandleKey(e);
-
-            base.OnKeyPressed(e);
         }
 
         void ResetCursorBlink()
@@ -679,12 +679,12 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         void IEditableText.DeleteChar()
         {
-            int charToDelete = CursorLinePosition - 1;
+            var charToDelete = CursorLinePosition - 1;
             if (charToDelete < 0)
             {
                 if (IsMultiLine && _lines.CurrentLineIndex > 0)
                 {
-                    int oldLineLength = _lines[_lines.CurrentLineIndex - 1].LineText.Length;
+                    var oldLineLength = _lines[_lines.CurrentLineIndex - 1].LineText.Length;
 
                     // Join the current line to the previous line
                     _lines.JoinLineWithPrevious(_lines.CurrentLineIndex);
@@ -715,8 +715,8 @@ namespace NetGore.Graphics.GUI
         {
             // HACK: This stuff with lineOldLen and oldLine is a cheap way to make the cursor move to the end of the text
             // removed from one line and appended to the next when the line breaks
-            int lineOldLen = _lines.CurrentLine.LineText.Length;
-            int oldLine = _lines.CurrentLineIndex;
+            var lineOldLen = _lines.CurrentLine.LineText.Length;
+            var oldLine = _lines.CurrentLineIndex;
 
             if (MaxInputTextLength > 0 && lineOldLen >= MaxInputTextLength)
                 return;
@@ -726,7 +726,7 @@ namespace NetGore.Graphics.GUI
 
             if (IsMultiLine && oldLine < _lines.CurrentLineIndex && oldLine < _lines.Count)
             {
-                for (int i = 0; i < lineOldLen - _lines[oldLine].LineText.Length + 1; i++)
+                for (var i = 0; i < lineOldLen - _lines[oldLine].LineText.Length + 1; i++)
                 {
                     ((IEditableText)this).MoveCursor(MoveCursorDirection.Right);
                 }

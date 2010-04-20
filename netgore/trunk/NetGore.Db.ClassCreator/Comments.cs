@@ -9,21 +9,6 @@ namespace NetGore.Db.ClassCreator
     static class Comments
     {
         /// <summary>
-        /// Comments used in CreateMethodCopyValuesToDict().
-        /// </summary>
-        public static class CopyToDict
-        {
-            public const string ParameterDict = "The Dictionary to copy the values into.";
-
-            public const string ParameterSource = "The object to copy the values from.";
-
-            public static readonly string Summary =
-                "Copies the column values into the given Dictionary using the database column name" + Environment.NewLine +
-                "with a prefixed @ as the key. The keys must already exist in the Dictionary;" + Environment.NewLine +
-                "this method will not create them if they are missing.";
-        }
-
-        /// <summary>
         /// Comments used in CreateMethodCopyValuesToDbParameterValues().
         /// </summary>
         public static class CopyToDPV
@@ -36,6 +21,21 @@ namespace NetGore.Db.ClassCreator
                 "Copies the column values into the given DbParameterValues using the database column name" + Environment.NewLine +
                 "with a prefixed @ as the key. The keys must already exist in the DbParameterValues;" + Environment.NewLine +
                 " this method will not create them if they are missing.";
+        }
+
+        /// <summary>
+        /// Comments used in CreateMethodCopyValuesToDict().
+        /// </summary>
+        public static class CopyToDict
+        {
+            public const string ParameterDict = "The Dictionary to copy the values into.";
+
+            public const string ParameterSource = "The object to copy the values from.";
+
+            public static readonly string Summary =
+                "Copies the column values into the given Dictionary using the database column name" + Environment.NewLine +
+                "with a prefixed @ as the key. The keys must already exist in the Dictionary;" + Environment.NewLine +
+                "this method will not create them if they are missing.";
         }
 
         /// <summary>

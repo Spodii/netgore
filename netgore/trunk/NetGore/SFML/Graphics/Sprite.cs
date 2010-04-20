@@ -1,6 +1,7 @@
 using System;
-using System.Security;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace SFML
 {
@@ -15,12 +16,133 @@ namespace SFML
         public class Sprite : Drawable
         {
             ////////////////////////////////////////////////////////////
+            Image myImage = null;
+
+            #region Imports
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfRenderWindow_DrawSprite(IntPtr This, IntPtr Sprite);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfSprite_Create();
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_Destroy(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_FlipX(IntPtr This, bool Flipped);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_FlipY(IntPtr This, bool Flipped);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern BlendMode sfSprite_GetBlendMode(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetCenterX(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetCenterY(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern Color sfSprite_GetColor(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetHeight(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern Color sfSprite_GetPixel(IntPtr This, uint X, uint Y);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetRotation(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetScaleX(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetScaleY(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntRect sfSprite_GetSubRect(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetWidth(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetX(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern float sfSprite_GetY(IntPtr This);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_Resize(IntPtr This, float Width, float Height);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_SetBlendMode(IntPtr This, BlendMode Mode);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_SetCenter(IntPtr This, float X, float Y);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_SetColor(IntPtr This, Color Color);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_SetImage(IntPtr This, IntPtr Image);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_SetPosition(IntPtr This, float X, float Y);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_SetRotation(IntPtr This, float Rotation);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_SetScale(IntPtr This, float X, float Y);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfSprite_SetSubRect(IntPtr This, IntRect Rect);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern Vector2 sfSprite_TransformToGlobal(IntPtr This, float PointX, float PointY, out float X, out float Y);
+
+            [DllImport("csfml-graphics")]
+            [SuppressUnmanagedCodeSecurity]
+            static extern Vector2 sfSprite_TransformToLocal(IntPtr This, float PointX, float PointY, out float X, out float Y);
+
+            #endregion
+
             /// <summary>
             /// Default constructor
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public Sprite() :
-                base(sfSprite_Create())
+            public Sprite() : base(sfSprite_Create())
             {
             }
 
@@ -30,13 +152,74 @@ namespace SFML
             /// </summary>
             /// <param name="image">Source image to assign to the sprite</param>
             ////////////////////////////////////////////////////////////
-            public Sprite(Image image) :
-                base(sfSprite_Create())
+            public Sprite(Image image) : base(sfSprite_Create())
             {
                 Image = image;
             }
 
+            /// <summary>
+            /// Blending mode of the object
+            /// </summary>
             ////////////////////////////////////////////////////////////
+            public override BlendMode BlendMode
+            {
+                get { return sfSprite_GetBlendMode(This); }
+                set { sfSprite_SetBlendMode(This, value); }
+            }
+
+            ////////////////////////////////////////////////////////////
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Center of the transformation of the object
+            /// (center of translation, rotation and scale)
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public override Vector2 Center
+            {
+                get { return new Vector2(sfSprite_GetCenterX(This), sfSprite_GetCenterY(This)); }
+                set { sfSprite_SetCenter(This, value.X, value.Y); }
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Global color of the object
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public override Color Color
+            {
+                get { return sfSprite_GetColor(This); }
+                set { sfSprite_SetColor(This, value); }
+            }
+
+            ////////////////////////////////////////////////////////////
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Height of the sprite
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public float Height
+            {
+                get { return sfSprite_GetHeight(This); }
+                set { sfSprite_Resize(This, Width, value); }
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Source images displayed by the sprite
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public Image Image
+            {
+                get { return myImage; }
+                set
+                {
+                    myImage = value;
+                    sfSprite_SetImage(This, value != null ? value.This : IntPtr.Zero);
+                }
+            }
+
             /// <summary>
             /// Position of the object on screen
             /// </summary>
@@ -71,105 +254,6 @@ namespace SFML
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Center of the transformation of the object
-            /// (center of translation, rotation and scale)
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public override Vector2 Center
-            {
-                get { return new Vector2(sfSprite_GetCenterX(This), sfSprite_GetCenterY(This)); }
-                set { sfSprite_SetCenter(This, value.X, value.Y); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Global color of the object
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public override Color Color
-            {
-                get { return sfSprite_GetColor(This); }
-                set { sfSprite_SetColor(This, value); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Blending mode of the object
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public override BlendMode BlendMode
-            {
-                get { return sfSprite_GetBlendMode(This); }
-                set { sfSprite_SetBlendMode(This, value); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Transform a point from global coordinates into local coordinates
-            /// (ie it applies the inverse of object's center, translation, rotation and scale to the point)
-            /// </summary>
-            /// <param name="point">Point to transform</param>
-            /// <returns>Transformed point</returns>
-            ////////////////////////////////////////////////////////////
-            public override Vector2 TransformToLocal(Vector2 point)
-            {
-                Vector2 Transformed;
-                sfSprite_TransformToLocal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
-
-                return Transformed;
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Transform a point from local coordinates into global coordinates
-            /// (ie it applies the object's center, translation, rotation and scale to the point)
-            /// </summary>
-            /// <param name="point">Point to transform</param>
-            /// <returns>Transformed point</returns>
-            ////////////////////////////////////////////////////////////
-            public override Vector2 TransformToGlobal(Vector2 point)
-            {
-                Vector2 Transformed;
-                sfSprite_TransformToGlobal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
-
-                return Transformed;
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Width of the sprite
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public float Width
-            {
-                get { return sfSprite_GetWidth(This); }
-                set { sfSprite_Resize(This, value, this.Height); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Height of the sprite
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public float Height
-            {
-                get { return sfSprite_GetHeight(This); }
-                set { sfSprite_Resize(This, this.Width, value); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Source images displayed by the sprite
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public Image Image
-            {
-                get { return myImage; }
-                set { myImage = value; sfSprite_SetImage(This, value != null ? value.This : IntPtr.Zero); }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
             /// Sub-rectangle of the source image displayed by the sprite
             /// </summary>
             ////////////////////////////////////////////////////////////
@@ -177,6 +261,26 @@ namespace SFML
             {
                 get { return sfSprite_GetSubRect(This); }
                 set { sfSprite_SetSubRect(This, value); }
+            }
+
+            /// <summary>
+            /// Width of the sprite
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public float Width
+            {
+                get { return sfSprite_GetWidth(This); }
+                set { sfSprite_Resize(This, value, Height); }
+            }
+
+            /// <summary>
+            /// Handle the destruction of the object
+            /// </summary>
+            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            ////////////////////////////////////////////////////////////
+            protected override void Destroy(bool disposing)
+            {
+                sfSprite_Destroy(This);
             }
 
             ////////////////////////////////////////////////////////////
@@ -226,107 +330,37 @@ namespace SFML
                 sfRenderWindow_DrawSprite(window.This, This);
             }
 
-            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Handle the destruction of the object
+            /// Transform a point from local coordinates into global coordinates
+            /// (ie it applies the object's center, translation, rotation and scale to the point)
             /// </summary>
-            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            /// <param name="point">Point to transform</param>
+            /// <returns>Transformed point</returns>
             ////////////////////////////////////////////////////////////
-            protected override void Destroy(bool disposing)
+            public override Vector2 TransformToGlobal(Vector2 point)
             {
-                sfSprite_Destroy(This);
+                Vector2 Transformed;
+                sfSprite_TransformToGlobal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
+
+                return Transformed;
             }
 
-            private Image myImage = null;
+            /// <summary>
+            /// Transform a point from global coordinates into local coordinates
+            /// (ie it applies the inverse of object's center, translation, rotation and scale to the point)
+            /// </summary>
+            /// <param name="point">Point to transform</param>
+            /// <returns>Transformed point</returns>
+            ////////////////////////////////////////////////////////////
+            public override Vector2 TransformToLocal(Vector2 point)
+            {
+                Vector2 Transformed;
+                sfSprite_TransformToLocal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
 
-            #region Imports
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfSprite_Create();
+                return Transformed;
+            }
 
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_Destroy(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetPosition(IntPtr This, float X, float Y);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetX(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetY(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetRotation(IntPtr This, float Rotation);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetRotation(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetScale(IntPtr This, float X, float Y);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetScaleX(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetScaleY(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetCenter(IntPtr This, float X, float Y);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetCenterX(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetCenterY(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetColor(IntPtr This, Color Color);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern Color sfSprite_GetColor(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetBlendMode(IntPtr This, BlendMode Mode);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern BlendMode sfSprite_GetBlendMode(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern Vector2 sfSprite_TransformToLocal(IntPtr This, float PointX, float PointY, out float X, out float Y);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern Vector2 sfSprite_TransformToGlobal(IntPtr This, float PointX, float PointY, out float X, out float Y);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_DrawSprite(IntPtr This, IntPtr Sprite);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_Resize(IntPtr This, float Width, float Height);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetWidth(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetHeight(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetImage(IntPtr This, IntPtr Image);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetSubRect(IntPtr This, IntRect Rect);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern IntRect sfSprite_GetSubRect(IntPtr This);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_FlipX(IntPtr This, bool Flipped);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_FlipY(IntPtr This, bool Flipped);
-
-            [DllImport("csfml-graphics"), SuppressUnmanagedCodeSecurity]
-            static extern Color sfSprite_GetPixel(IntPtr This, uint X, uint Y);
-            #endregion
+            ////////////////////////////////////////////////////////////
         }
     }
 }

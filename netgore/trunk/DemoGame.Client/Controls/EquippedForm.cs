@@ -65,8 +65,8 @@ namespace DemoGame.Client
 
         void CreateItemSlots(int row, int column, EquipmentSlot slot)
         {
-            Vector2 loc = new Vector2(row, column);
-            Vector2 pos = _itemSize * loc;
+            var loc = new Vector2(row, column);
+            var pos = _itemSize * loc;
 
             new EquippedItemPB(this, pos, slot);
         }
@@ -82,7 +82,7 @@ namespace DemoGame.Client
             if (UserEquipped == null)
                 return;
 
-            EquipmentSlot slot = ((EquippedItemPB)sender).Slot;
+            var slot = ((EquippedItemPB)sender).Slot;
             if (UserEquipped[slot] == null)
                 return;
 
@@ -201,7 +201,7 @@ namespace DemoGame.Client
             {
                 get
                 {
-                    UserEquipped equipped = EquippedForm.UserEquipped;
+                    var equipped = EquippedForm.UserEquipped;
                     if (equipped == null)
                         return null;
 
@@ -230,7 +230,7 @@ namespace DemoGame.Client
                     return;
 
                 // Draw the item in the center of the slot
-                Vector2 offset = (_itemSize - item.Grh.Size) / 2f;
+                var offset = (_itemSize - item.Grh.Size) / 2f;
                 item.Draw(spriteBatch, ScreenPosition + offset);
             }
 
@@ -249,8 +249,8 @@ namespace DemoGame.Client
 
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
             {
-                EquippedItemPB src = (EquippedItemPB)sender;
-                EquipmentSlot slot = src.Slot;
+                var src = (EquippedItemPB)sender;
+                var slot = src.Slot;
                 IItemTable itemInfo;
 
                 if (!src.EquippedForm._infoRequester.TryGetInfo(slot, out itemInfo))

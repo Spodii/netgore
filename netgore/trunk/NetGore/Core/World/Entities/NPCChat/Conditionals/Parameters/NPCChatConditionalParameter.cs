@@ -169,14 +169,14 @@ namespace NetGore.NPCChat.Conditionals
         /// <returns>The NPCChatConditionalParameter read from the IValueReader.</returns>
         public static NPCChatConditionalParameter Read(IValueReader reader)
         {
-            byte valueTypeValue = reader.ReadByte("ValueType");
-            NPCChatConditionalParameterType valueType = (NPCChatConditionalParameterType)valueTypeValue;
+            var valueTypeValue = reader.ReadByte("ValueType");
+            var valueType = (NPCChatConditionalParameterType)valueTypeValue;
 
             if (!EnumHelper<NPCChatConditionalParameterType>.IsDefined(valueType))
                 throw new Exception(string.Format("Invalid NPCChatConditionalParameterType `{0}`.", valueType));
 
             // Create the parameter and read the value
-            NPCChatConditionalParameter parameter = CreateParameter(valueType);
+            var parameter = CreateParameter(valueType);
             parameter.ReadValue(reader, "Value");
 
             return parameter;

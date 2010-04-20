@@ -102,7 +102,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="textBoxLine">The other <see cref="TextBoxLine"/> to append to this.</param>
         public void Append(TextBoxLine textBoxLine)
         {
-            for (int i = 0; i < textBoxLine._texts.Count; i++)
+            for (var i = 0; i < textBoxLine._texts.Count; i++)
             {
                 InternalAppend(textBoxLine._texts[i]);
             }
@@ -160,7 +160,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="defaultColor">The default color of the text.</param>
         public void Draw(ISpriteBatch sb, Font font, Vector2 screenPos, Color defaultColor)
         {
-            for (int i = 0; i < _texts.Count; i++)
+            for (var i = 0; i < _texts.Count; i++)
             {
                 var curr = _texts[i];
                 curr.Draw(sb, font, screenPos, defaultColor);
@@ -183,16 +183,16 @@ namespace NetGore.Graphics.GUI
             if (firstChar + numChars > _lineText.Length)
                 numChars = _lineText.Length - firstChar;
 
-            int currCharCount = 0;
-            int lastChar = firstChar + numChars - 1;
+            var currCharCount = 0;
+            var lastChar = firstChar + numChars - 1;
 
-            for (int i = 0; i < _texts.Count; i++)
+            for (var i = 0; i < _texts.Count; i++)
             {
                 var curr = _texts[i];
-                int currLen = curr.Text.Length;
+                var currLen = curr.Text.Length;
 
-                int start = firstChar - currCharCount;
-                int end = lastChar - currCharCount;
+                var start = firstChar - currCharCount;
+                var end = lastChar - currCharCount;
 
                 currCharCount += currLen;
 
@@ -221,7 +221,7 @@ namespace NetGore.Graphics.GUI
         [Conditional("DEBUG")]
         void EnsureCacheMatchesActualText()
         {
-            string combinedTexts = StyledText.ToString(_texts);
+            var combinedTexts = StyledText.ToString(_texts);
             if (_lineText != combinedTexts)
             {
                 const string errmsg = "Line cache does not match the styled text list. Cache: `{0}` Text: `{1}`";
@@ -247,11 +247,11 @@ namespace NetGore.Graphics.GUI
             if (index < 0 || index >= _lineText.Length)
                 throw new ArgumentOutOfRangeException("index");
 
-            int sumLength = 0;
+            var sumLength = 0;
             for (listIndex = 0; listIndex < _texts.Count; listIndex++)
             {
                 text = _texts[listIndex];
-                int currTextLen = text.Text.Length;
+                var currTextLen = text.Text.Length;
                 if (sumLength + currTextLen > index)
                 {
                     // The character we want is somewhere in this text
@@ -359,7 +359,7 @@ namespace NetGore.Graphics.GUI
                 // Try to combine the texts
                 if (text.HasSameStyle(subText))
                 {
-                    string combined = string.Empty;
+                    var combined = string.Empty;
                     if (subTextIndex > 0)
                         combined += subText.Text.Substring(0, subTextIndex);
                     combined += text.Text;
@@ -455,7 +455,7 @@ namespace NetGore.Graphics.GUI
             else
             {
                 // Remove the one character
-                StyledText newText = new StyledText(text.Text.Remove(textIndex, 1), text);
+                var newText = new StyledText(text.Text.Remove(textIndex, 1), text);
                 _texts[listIndex] = newText;
             }
 
@@ -510,7 +510,7 @@ namespace NetGore.Graphics.GUI
                 // The first line will be all the StyledTexts before the one split, plus the left side of the split
                 // The second line will be the right side of the split, plus all the StyledTexts after the one split
                 currentLine = new TextBoxLine(TextBoxLines);
-                for (int i = 0; i < listIndex; i++)
+                for (var i = 0; i < listIndex; i++)
                 {
                     currentLine.Append(_texts[i]);
                 }
@@ -518,7 +518,7 @@ namespace NetGore.Graphics.GUI
 
                 nextLine = new TextBoxLine(TextBoxLines);
                 nextLine.Append(right);
-                for (int i = listIndex + 1; i < _texts.Count; i++)
+                for (var i = listIndex + 1; i < _texts.Count; i++)
                 {
                     nextLine.Append(_texts[i]);
                 }

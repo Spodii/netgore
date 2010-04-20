@@ -45,7 +45,7 @@ namespace NetGore.Graphics.ParticleEngine
         public static EmitterModifier Read(IValueReader reader)
         {
             // Get the type
-            string typeName = reader.ReadString(_typeKeyName);
+            var typeName = reader.ReadString(_typeKeyName);
 
             // Create the instance
             EmitterModifier modifier;
@@ -97,7 +97,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         public void Write(IValueWriter writer)
         {
-            string typeName = _typeFactory.GetTypeName(GetType());
+            var typeName = _typeFactory.GetTypeName(GetType());
 
             writer.Write(_typeKeyName, typeName);
 

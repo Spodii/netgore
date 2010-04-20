@@ -18,7 +18,8 @@ namespace NetGore.Db.ClassCreator
         /// <param name="userID">The user ID.</param>
         /// <param name="password">The password.</param>
         /// <param name="database">The database.</param>
-        public MySqlClassGenerator(string server, string userID, string password, string database) : this(server, userID, password, database, 3306)
+        public MySqlClassGenerator(string server, string userID, string password, string database)
+            : this(server, userID, password, database, 3306)
         {
         }
 
@@ -73,6 +74,26 @@ namespace NetGore.Db.ClassCreator
             return DbColumnKeyType.Foreign;
         }
 
+        Type GetColumnType(string table, DbColumnInfo column)
+        {
+            Type ret;
+
+            if (column.DatabaseType.Equals("tinyint(1) unsigned", StringComparison.OrdinalIgnoreCase))
+                return typeof(bool);
+
+            using (var cmd = _conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT `" + column.Name + "` FROM `" + table + "` WHERE 0=1";
+                using (var r = cmd.ExecuteReader())
+                {
+                    Debug.Assert(r.FieldCount == 1);
+                    ret = r.GetFieldType(0);
+                }
+            }
+
+            return ret;
+        }
+
         /// <summary>
         /// When overridden in the derived class, gets the <see cref="DbColumnInfo"/>s for the given
         /// <paramref name="table"/>.
@@ -119,26 +140,6 @@ namespace NetGore.Db.ClassCreator
                                                       table));
 
                 column.Type = type;
-            }
-
-            return ret;
-        }
-
-        Type GetColumnType(string table, DbColumnInfo column)
-        {
-            Type ret;
-
-            if (column.DatabaseType.Equals("tinyint(1) unsigned", StringComparison.OrdinalIgnoreCase))
-                return typeof(bool);
-
-            using (var cmd = _conn.CreateCommand())
-            {
-                cmd.CommandText = "SELECT `" + column.Name + "` FROM `" + table + "` WHERE 0=1";
-                using (var r = cmd.ExecuteReader())
-                {
-                    Debug.Assert(r.FieldCount == 1);
-                    ret = r.GetFieldType(0);
-                }
             }
 
             return ret;

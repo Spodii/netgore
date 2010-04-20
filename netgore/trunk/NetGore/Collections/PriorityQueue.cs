@@ -87,18 +87,18 @@ namespace NetGore.Collections
         /// <returns>The smallest object.</returns>
         public T Pop()
         {
-            T Result = _list[0];
+            var Result = _list[0];
 
-            int a = 0;
+            var a = 0;
 
             _list[0] = _list[_list.Count - 1];
             _list.RemoveAt(_list.Count - 1);
 
             do
             {
-                int d = a;
-                int b = 2 * a + 1;
-                int c = 2 * a + 2;
+                var d = a;
+                var b = 2 * a + 1;
+                var c = 2 * a + 2;
 
                 if (_list.Count > b && OnCompare(a, b) > 0)
                     a = b;
@@ -123,7 +123,7 @@ namespace NetGore.Collections
         /// <returns>The position of the Object when it is pushed onto the queue.</returns>
         public int Push(T Object)
         {
-            int a = _list.Count;
+            var a = _list.Count;
 
             _list.Add(Object);
 
@@ -132,7 +132,7 @@ namespace NetGore.Collections
                 if (a == 0)
                     break;
 
-                int b = (int)((a - 1) * 0.5f);
+                var b = (int)((a - 1) * 0.5f);
 
                 if (OnCompare(a, b) >= 0)
                     break;
@@ -151,9 +151,9 @@ namespace NetGore.Collections
         /// <param name="Object">The object to remove.</param>
         public void RemoveLocation(T Object)
         {
-            int idx = -1;
+            var idx = -1;
 
-            for (int i = 0; i < _list.Count; i++)
+            for (var i = 0; i < _list.Count; i++)
             {
                 if (_comparer.Compare(_list[i], Object) == 0)
                     idx = i;
@@ -165,7 +165,7 @@ namespace NetGore.Collections
 
         void Switch(int A, int B)
         {
-            T C = _list[A];
+            var C = _list[A];
             _list[A] = _list[B];
             _list[B] = C;
         }
@@ -177,7 +177,7 @@ namespace NetGore.Collections
         public void Update(int i)
         {
             int d;
-            int a = i;
+            var a = i;
 
             do
             {
@@ -202,9 +202,9 @@ namespace NetGore.Collections
 
             do
             {
-                int b = a;
+                var b = a;
 
-                int c = 2 * a + 1;
+                var c = 2 * a + 1;
                 d = 2 * a + 2;
 
                 // If C is less than _list.Count and if A is greater than C then A = C.

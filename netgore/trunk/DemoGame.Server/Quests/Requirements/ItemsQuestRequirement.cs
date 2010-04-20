@@ -74,7 +74,7 @@ namespace DemoGame.Server.Quests
                 var id = item.ItemTemplate.ID;
 
                 // Count how many items the user has of this item template in their whole inventory
-                int count = character.Inventory.Where(x => x.Value.ItemTemplateID == id).Sum(x => x.Value.Amount);
+                var count = character.Inventory.Where(x => x.Value.ItemTemplateID == id).Sum(x => x.Value.Amount);
 
                 // If they have less than the required amount, they don't meet all reuqirements
                 if (count < item.Amount)

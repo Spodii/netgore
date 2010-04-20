@@ -30,8 +30,8 @@ namespace NetGore.Graphics
 
         public Skeleton(string skeletonName, ContentPaths contentPath)
         {
-            string filePath = GetFilePath(skeletonName, contentPath);
-            XmlValueReader reader = new XmlValueReader(filePath, _rootNodeName);
+            var filePath = GetFilePath(skeletonName, contentPath);
+            var reader = new XmlValueReader(filePath, _rootNodeName);
             Read(reader);
         }
 
@@ -78,7 +78,7 @@ namespace NetGore.Graphics
             }
 
             dest.IsModifier = src.IsModifier;
-            for (int i = 0; i < src.Nodes.Count; i++)
+            for (var i = 0; i < src.Nodes.Count; i++)
             {
                 CopyIsModifier(src.Nodes[i], dest.Nodes[i]);
             }
@@ -124,7 +124,7 @@ namespace NetGore.Graphics
             }
 
             dest.SetLength(src.GetLength());
-            for (int i = 0; i < src.Nodes.Count; i++)
+            for (var i = 0; i < src.Nodes.Count; i++)
             {
                 CopyIsModifier(src.Nodes[i], dest.Nodes[i]);
             }
@@ -158,7 +158,7 @@ namespace NetGore.Graphics
                 return null;
             }
 
-            foreach (SkeletonNode node in nodes)
+            foreach (var node in nodes)
             {
                 if (node.Name == name)
                     return node;
@@ -204,9 +204,9 @@ namespace NetGore.Graphics
             else
             {
                 // Check the child nodes for a name match
-                foreach (SkeletonNode child in rootNode.Nodes)
+                foreach (var child in rootNode.Nodes)
                 {
-                    SkeletonNode ret = FindNode(child, name);
+                    var ret = FindNode(child, name);
                     if (ret != null)
                         return ret;
                 }
@@ -236,9 +236,9 @@ namespace NetGore.Graphics
             var nodes = RootNode.GetAllNodes();
 
             // Check for duplicate names
-            for (int i = 0; i < nodes.Count - 1; i++)
+            for (var i = 0; i < nodes.Count - 1; i++)
             {
-                for (int j = i + 1; j < nodes.Count; j++)
+                for (var j = i + 1; j < nodes.Count; j++)
                 {
                     if (nodes[i].Name == nodes[j].Name)
                         return false;
@@ -267,16 +267,15 @@ namespace NetGore.Graphics
             // Set up the parents
             foreach (var nodeWithParent in nodesWithParents)
             {
-                SkeletonNode node = nodeWithParent.Key;
-                string parentName = nodeWithParent.Value;
+                var node = nodeWithParent.Key;
+                var parentName = nodeWithParent.Value;
 
-                SkeletonNode parentNode =
-                    loadedNodes.FirstOrDefault(x => parentName.Equals(x.Name, StringComparison.OrdinalIgnoreCase));
+                var parentNode = loadedNodes.FirstOrDefault(x => parentName.Equals(x.Name, StringComparison.OrdinalIgnoreCase));
 
                 if (parentNode == null)
                 {
                     const string errmsg = "Unable to find parent node `{0}` for node `{1}`.";
-                    string err = string.Format(errmsg, parentName, node.Name);
+                    var err = string.Format(errmsg, parentName, node.Name);
                     throw new Exception(err);
                 }
 
@@ -289,7 +288,7 @@ namespace NetGore.Graphics
                                                     ICollection<KeyValuePair<SkeletonNode, string>> nodesWithParents)
         {
             string parentName;
-            SkeletonNode node = new SkeletonNode(r, out parentName);
+            var node = new SkeletonNode(r, out parentName);
 
             if (parentName != null)
             {
@@ -310,7 +309,7 @@ namespace NetGore.Graphics
                 throw new Exception("Skeleton returned false for IsValid() - unable to save!");
 
             // Write the file
-            using (XmlValueWriter writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
             {
                 Write(writer);
             }

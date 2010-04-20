@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using SFML.Graphics;
 
@@ -31,7 +30,9 @@ namespace NetGore.Graphics
         /// <param name="borderThickness">The thickness of the border in pixels. Default is 1.</param>
         public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, Color borderColor, float borderThickness)
         {
-            using (var s = Shape.Rectangle(new Vector2(dest.X, dest.Y), new Vector2(dest.Right, dest.Bottom), color, borderThickness, borderColor))
+            using (
+                var s = Shape.Rectangle(new Vector2(dest.X, dest.Y), new Vector2(dest.Right, dest.Bottom), color, borderThickness,
+                                        borderColor))
             {
                 sb.Draw(s);
             }

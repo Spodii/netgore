@@ -77,7 +77,7 @@ namespace NetGore.EditorTools
             var ret = new List<WallEntityBase>();
 
             // Iterate through the requested MapGrhs
-            foreach (MapGrh mg in mapGrhs)
+            foreach (var mg in mapGrhs)
             {
                 // Grab the List for the given MapGrh
                 var mgWalls = this[mg.Grh.GrhData];
@@ -85,7 +85,7 @@ namespace NetGore.EditorTools
                     continue;
 
                 // Create a new instance of each of the walls and add it to the return List
-                foreach (WallEntityBase wall in mgWalls)
+                foreach (var wall in mgWalls)
                 {
                     var position = mg.Position + wall.Position;
                     var size = wall.Size;
@@ -115,7 +115,7 @@ namespace NetGore.EditorTools
 
         public void Load(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
         {
-            string filePath = GetFilePath(contentPath);
+            var filePath = GetFilePath(contentPath);
 
             // Clear the old walls in case this isn't the first load
             _walls.Clear();
@@ -124,7 +124,7 @@ namespace NetGore.EditorTools
                 return;
 
             // Read the values
-            XmlValueReader reader = new XmlValueReader(filePath, _rootNodeName);
+            var reader = new XmlValueReader(filePath, _rootNodeName);
             var loadedWalls = reader.ReadManyNodes(_rootNodeName, x => ReadWalls(x, createWall));
 
             foreach (var wall in loadedWalls)
@@ -135,7 +135,7 @@ namespace NetGore.EditorTools
 
         static KeyValuePair<GrhIndex, List<WallEntityBase>> ReadWalls(IValueReader r, CreateWallEntityFromReaderHandler createWall)
         {
-            GrhIndex grhIndex = r.ReadGrhIndex(_grhIndexValueKey);
+            var grhIndex = r.ReadGrhIndex(_grhIndexValueKey);
             var walls = r.ReadManyNodes(_wallsNodeName, x => createWall(x));
 
             return new KeyValuePair<GrhIndex, List<WallEntityBase>>(grhIndex, walls.ToList());
@@ -157,11 +157,11 @@ namespace NetGore.EditorTools
 
         public void Save(ContentPaths contentPath)
         {
-            string filePath = GetFilePath(contentPath);
+            var filePath = GetFilePath(contentPath);
 
             // Build up a list of the valid walls, and join them with their GrhIndex
             var wallsToWrite = new List<KeyValuePair<GrhIndex, List<WallEntityBase>>>(_walls.Count);
-            for (int i = 0; i < _walls.Length; i++)
+            for (var i = 0; i < _walls.Length; i++)
             {
                 var walls = _walls[i];
                 if (walls == null || walls.Count == 0)
@@ -172,7 +172,7 @@ namespace NetGore.EditorTools
             }
 
             // Write the values
-            using (XmlValueWriter writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
             {
                 writer.WriteManyNodes(_rootNodeName, wallsToWrite, WriteWalls);
             }
@@ -180,7 +180,7 @@ namespace NetGore.EditorTools
 
         static void WriteWalls(IValueWriter w, KeyValuePair<GrhIndex, List<WallEntityBase>> item)
         {
-            GrhIndex grhIndex = item.Key;
+            var grhIndex = item.Key;
             var walls = item.Value;
 
             w.Write(_grhIndexValueKey, grhIndex);

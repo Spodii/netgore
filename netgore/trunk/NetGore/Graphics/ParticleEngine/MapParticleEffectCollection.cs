@@ -17,7 +17,7 @@ namespace NetGore.Graphics.ParticleEngine
         public void Read(IValueReader reader, string nodeName)
         {
             Clear();
-            var emitters = reader.ReadManyNodes<ParticleEmitter>(nodeName, ParticleEmitterFactory.Read);
+            var emitters = reader.ReadManyNodes(nodeName, ParticleEmitterFactory.Read);
             AddRange(emitters);
         }
 

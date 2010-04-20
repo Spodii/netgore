@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
@@ -59,7 +60,7 @@ namespace SFML.Graphics
         /// <summary>Retireves a string representation of the current object.</summary>
         public override string ToString()
         {
-            CultureInfo currentCulture = CultureInfo.CurrentCulture;
+            var currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{X:{0} Y:{1} Z:{2} W:{3}}}",
                                  new object[]
                                  {
@@ -79,7 +80,7 @@ namespace SFML.Graphics
         /// <param name="obj">Object to make the comparison with.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
+            var flag = false;
             if (obj is Quaternion)
                 flag = Equals((Quaternion)obj);
             return flag;
@@ -100,15 +101,15 @@ namespace SFML.Graphics
         /// <summary>Calculates the length of a Quaternion.</summary>
         public float Length()
         {
-            float num = (((X * X) + (Y * Y)) + (Z * Z)) + (W * W);
+            var num = (((X * X) + (Y * Y)) + (Z * Z)) + (W * W);
             return (float)Math.Sqrt(num);
         }
 
         /// <summary>Divides each component of the quaternion by the length of the quaternion.</summary>
         public void Normalize()
         {
-            float num2 = (((X * X) + (Y * Y)) + (Z * Z)) + (W * W);
-            float num = 1f / ((float)Math.Sqrt(num2));
+            var num2 = (((X * X) + (Y * Y)) + (Z * Z)) + (W * W);
+            var num = 1f / ((float)Math.Sqrt(num2));
             X *= num;
             Y *= num;
             Z *= num;
@@ -120,9 +121,9 @@ namespace SFML.Graphics
         public static Quaternion Normalize(Quaternion quaternion)
         {
             Quaternion quaternion2;
-            float num2 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
-                         (quaternion.W * quaternion.W);
-            float num = 1f / ((float)Math.Sqrt(num2));
+            var num2 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
+                       (quaternion.W * quaternion.W);
+            var num = 1f / ((float)Math.Sqrt(num2));
             quaternion2.X = quaternion.X * num;
             quaternion2.Y = quaternion.Y * num;
             quaternion2.Z = quaternion.Z * num;
@@ -135,9 +136,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Normalized quaternion.</param>
         public static void Normalize(ref Quaternion quaternion, out Quaternion result)
         {
-            float num2 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
-                         (quaternion.W * quaternion.W);
-            float num = 1f / ((float)Math.Sqrt(num2));
+            var num2 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
+                       (quaternion.W * quaternion.W);
+            var num = 1f / ((float)Math.Sqrt(num2));
             result.X = quaternion.X * num;
             result.Y = quaternion.Y * num;
             result.Z = quaternion.Z * num;
@@ -180,9 +181,9 @@ namespace SFML.Graphics
         public static Quaternion Inverse(Quaternion quaternion)
         {
             Quaternion quaternion2;
-            float num2 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
-                         (quaternion.W * quaternion.W);
-            float num = 1f / num2;
+            var num2 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
+                       (quaternion.W * quaternion.W);
+            var num = 1f / num2;
             quaternion2.X = -quaternion.X * num;
             quaternion2.Y = -quaternion.Y * num;
             quaternion2.Z = -quaternion.Z * num;
@@ -195,9 +196,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The inverse of the Quaternion.</param>
         public static void Inverse(ref Quaternion quaternion, out Quaternion result)
         {
-            float num2 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
-                         (quaternion.W * quaternion.W);
-            float num = 1f / num2;
+            var num2 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
+                       (quaternion.W * quaternion.W);
+            var num = 1f / num2;
             result.X = -quaternion.X * num;
             result.Y = -quaternion.Y * num;
             result.Z = -quaternion.Z * num;
@@ -210,9 +211,9 @@ namespace SFML.Graphics
         public static Quaternion CreateFromAxisAngle(Vector3 axis, float angle)
         {
             Quaternion quaternion;
-            float num2 = angle * 0.5f;
-            float num = (float)Math.Sin(num2);
-            float num3 = (float)Math.Cos(num2);
+            var num2 = angle * 0.5f;
+            var num = (float)Math.Sin(num2);
+            var num3 = (float)Math.Cos(num2);
             quaternion.X = axis.X * num;
             quaternion.Y = axis.Y * num;
             quaternion.Z = axis.Z * num;
@@ -226,9 +227,9 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The created Quaternion.</param>
         public static void CreateFromAxisAngle(ref Vector3 axis, float angle, out Quaternion result)
         {
-            float num2 = angle * 0.5f;
-            float num = (float)Math.Sin(num2);
-            float num3 = (float)Math.Cos(num2);
+            var num2 = angle * 0.5f;
+            var num = (float)Math.Sin(num2);
+            var num3 = (float)Math.Cos(num2);
             result.X = axis.X * num;
             result.Y = axis.Y * num;
             result.Z = axis.Z * num;
@@ -242,15 +243,15 @@ namespace SFML.Graphics
         public static Quaternion CreateFromYawPitchRoll(float yaw, float pitch, float roll)
         {
             Quaternion quaternion;
-            float num9 = roll * 0.5f;
-            float num6 = (float)Math.Sin(num9);
-            float num5 = (float)Math.Cos(num9);
-            float num8 = pitch * 0.5f;
-            float num4 = (float)Math.Sin(num8);
-            float num3 = (float)Math.Cos(num8);
-            float num7 = yaw * 0.5f;
-            float num2 = (float)Math.Sin(num7);
-            float num = (float)Math.Cos(num7);
+            var num9 = roll * 0.5f;
+            var num6 = (float)Math.Sin(num9);
+            var num5 = (float)Math.Cos(num9);
+            var num8 = pitch * 0.5f;
+            var num4 = (float)Math.Sin(num8);
+            var num3 = (float)Math.Cos(num8);
+            var num7 = yaw * 0.5f;
+            var num2 = (float)Math.Sin(num7);
+            var num = (float)Math.Cos(num7);
             quaternion.X = ((num * num4) * num5) + ((num2 * num3) * num6);
             quaternion.Y = ((num2 * num3) * num5) - ((num * num4) * num6);
             quaternion.Z = ((num * num3) * num6) - ((num2 * num4) * num5);
@@ -265,15 +266,15 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] An existing Quaternion filled in to express the specified yaw, pitch, and roll angles.</param>
         public static void CreateFromYawPitchRoll(float yaw, float pitch, float roll, out Quaternion result)
         {
-            float num9 = roll * 0.5f;
-            float num6 = (float)Math.Sin(num9);
-            float num5 = (float)Math.Cos(num9);
-            float num8 = pitch * 0.5f;
-            float num4 = (float)Math.Sin(num8);
-            float num3 = (float)Math.Cos(num8);
-            float num7 = yaw * 0.5f;
-            float num2 = (float)Math.Sin(num7);
-            float num = (float)Math.Cos(num7);
+            var num9 = roll * 0.5f;
+            var num6 = (float)Math.Sin(num9);
+            var num5 = (float)Math.Cos(num9);
+            var num8 = pitch * 0.5f;
+            var num4 = (float)Math.Sin(num8);
+            var num3 = (float)Math.Cos(num8);
+            var num7 = yaw * 0.5f;
+            var num2 = (float)Math.Sin(num7);
+            var num = (float)Math.Cos(num7);
             result.X = ((num * num4) * num5) + ((num2 * num3) * num6);
             result.Y = ((num2 * num3) * num5) - ((num * num4) * num6);
             result.Z = ((num * num3) * num6) - ((num2 * num4) * num5);
@@ -284,11 +285,11 @@ namespace SFML.Graphics
         /// <param name="matrix">The rotation Matrix to create the Quaternion from.</param>
         public static Quaternion CreateFromRotationMatrix(Matrix matrix)
         {
-            float num8 = (matrix.M11 + matrix.M22) + matrix.M33;
-            Quaternion quaternion = new Quaternion();
+            var num8 = (matrix.M11 + matrix.M22) + matrix.M33;
+            var quaternion = new Quaternion();
             if (num8 > 0f)
             {
-                float num = (float)Math.Sqrt((num8 + 1f));
+                var num = (float)Math.Sqrt((num8 + 1f));
                 quaternion.W = num * 0.5f;
                 num = 0.5f / num;
                 quaternion.X = (matrix.M23 - matrix.M32) * num;
@@ -298,8 +299,8 @@ namespace SFML.Graphics
             }
             if ((matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33))
             {
-                float num7 = (float)Math.Sqrt((((1f + matrix.M11) - matrix.M22) - matrix.M33));
-                float num4 = 0.5f / num7;
+                var num7 = (float)Math.Sqrt((((1f + matrix.M11) - matrix.M22) - matrix.M33));
+                var num4 = 0.5f / num7;
                 quaternion.X = 0.5f * num7;
                 quaternion.Y = (matrix.M12 + matrix.M21) * num4;
                 quaternion.Z = (matrix.M13 + matrix.M31) * num4;
@@ -308,16 +309,16 @@ namespace SFML.Graphics
             }
             if (matrix.M22 > matrix.M33)
             {
-                float num6 = (float)Math.Sqrt((((1f + matrix.M22) - matrix.M11) - matrix.M33));
-                float num3 = 0.5f / num6;
+                var num6 = (float)Math.Sqrt((((1f + matrix.M22) - matrix.M11) - matrix.M33));
+                var num3 = 0.5f / num6;
                 quaternion.X = (matrix.M21 + matrix.M12) * num3;
                 quaternion.Y = 0.5f * num6;
                 quaternion.Z = (matrix.M32 + matrix.M23) * num3;
                 quaternion.W = (matrix.M31 - matrix.M13) * num3;
                 return quaternion;
             }
-            float num5 = (float)Math.Sqrt((((1f + matrix.M33) - matrix.M11) - matrix.M22));
-            float num2 = 0.5f / num5;
+            var num5 = (float)Math.Sqrt((((1f + matrix.M33) - matrix.M11) - matrix.M22));
+            var num2 = 0.5f / num5;
             quaternion.X = (matrix.M31 + matrix.M13) * num2;
             quaternion.Y = (matrix.M32 + matrix.M23) * num2;
             quaternion.Z = 0.5f * num5;
@@ -330,10 +331,10 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The created Quaternion.</param>
         public static void CreateFromRotationMatrix(ref Matrix matrix, out Quaternion result)
         {
-            float num8 = (matrix.M11 + matrix.M22) + matrix.M33;
+            var num8 = (matrix.M11 + matrix.M22) + matrix.M33;
             if (num8 > 0f)
             {
-                float num = (float)Math.Sqrt((num8 + 1f));
+                var num = (float)Math.Sqrt((num8 + 1f));
                 result.W = num * 0.5f;
                 num = 0.5f / num;
                 result.X = (matrix.M23 - matrix.M32) * num;
@@ -342,8 +343,8 @@ namespace SFML.Graphics
             }
             else if ((matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33))
             {
-                float num7 = (float)Math.Sqrt((((1f + matrix.M11) - matrix.M22) - matrix.M33));
-                float num4 = 0.5f / num7;
+                var num7 = (float)Math.Sqrt((((1f + matrix.M11) - matrix.M22) - matrix.M33));
+                var num4 = 0.5f / num7;
                 result.X = 0.5f * num7;
                 result.Y = (matrix.M12 + matrix.M21) * num4;
                 result.Z = (matrix.M13 + matrix.M31) * num4;
@@ -351,8 +352,8 @@ namespace SFML.Graphics
             }
             else if (matrix.M22 > matrix.M33)
             {
-                float num6 = (float)Math.Sqrt((((1f + matrix.M22) - matrix.M11) - matrix.M33));
-                float num3 = 0.5f / num6;
+                var num6 = (float)Math.Sqrt((((1f + matrix.M22) - matrix.M11) - matrix.M33));
+                var num3 = 0.5f / num6;
                 result.X = (matrix.M21 + matrix.M12) * num3;
                 result.Y = 0.5f * num6;
                 result.Z = (matrix.M32 + matrix.M23) * num3;
@@ -360,8 +361,8 @@ namespace SFML.Graphics
             }
             else
             {
-                float num5 = (float)Math.Sqrt((((1f + matrix.M33) - matrix.M11) - matrix.M22));
-                float num2 = 0.5f / num5;
+                var num5 = (float)Math.Sqrt((((1f + matrix.M33) - matrix.M11) - matrix.M22));
+                var num2 = 0.5f / num5;
                 result.X = (matrix.M31 + matrix.M13) * num2;
                 result.Y = (matrix.M32 + matrix.M23) * num2;
                 result.Z = 0.5f * num5;
@@ -397,10 +398,10 @@ namespace SFML.Graphics
             float num2;
             float num3;
             Quaternion quaternion;
-            float num = amount;
-            float num4 = (((quaternion1.X * quaternion2.X) + (quaternion1.Y * quaternion2.Y)) + (quaternion1.Z * quaternion2.Z)) +
-                         (quaternion1.W * quaternion2.W);
-            bool flag = false;
+            var num = amount;
+            var num4 = (((quaternion1.X * quaternion2.X) + (quaternion1.Y * quaternion2.Y)) + (quaternion1.Z * quaternion2.Z)) +
+                       (quaternion1.W * quaternion2.W);
+            var flag = false;
             if (num4 < 0f)
             {
                 flag = true;
@@ -413,8 +414,8 @@ namespace SFML.Graphics
             }
             else
             {
-                float num5 = (float)Math.Acos(num4);
-                float num6 = (float)(1.0 / Math.Sin(num5));
+                var num5 = (float)Math.Acos(num4);
+                var num6 = (float)(1.0 / Math.Sin(num5));
                 num3 = ((float)Math.Sin(((1f - num) * num5))) * num6;
                 num2 = flag ? (((float)-Math.Sin((num * num5))) * num6) : (((float)Math.Sin((num * num5))) * num6);
             }
@@ -434,10 +435,10 @@ namespace SFML.Graphics
         {
             float num2;
             float num3;
-            float num = amount;
-            float num4 = (((quaternion1.X * quaternion2.X) + (quaternion1.Y * quaternion2.Y)) + (quaternion1.Z * quaternion2.Z)) +
-                         (quaternion1.W * quaternion2.W);
-            bool flag = false;
+            var num = amount;
+            var num4 = (((quaternion1.X * quaternion2.X) + (quaternion1.Y * quaternion2.Y)) + (quaternion1.Z * quaternion2.Z)) +
+                       (quaternion1.W * quaternion2.W);
+            var flag = false;
             if (num4 < 0f)
             {
                 flag = true;
@@ -450,8 +451,8 @@ namespace SFML.Graphics
             }
             else
             {
-                float num5 = (float)Math.Acos(num4);
-                float num6 = (float)(1.0 / Math.Sin(num5));
+                var num5 = (float)Math.Acos(num4);
+                var num6 = (float)(1.0 / Math.Sin(num5));
                 num3 = ((float)Math.Sin(((1f - num) * num5))) * num6;
                 num2 = flag ? (((float)-Math.Sin((num * num5))) * num6) : (((float)Math.Sin((num * num5))) * num6);
             }
@@ -467,11 +468,11 @@ namespace SFML.Graphics
         /// <param name="amount">Value indicating how far to interpolate between the quaternions.</param>
         public static Quaternion Lerp(Quaternion quaternion1, Quaternion quaternion2, float amount)
         {
-            float num = amount;
-            float num2 = 1f - num;
-            Quaternion quaternion = new Quaternion();
-            float num5 = (((quaternion1.X * quaternion2.X) + (quaternion1.Y * quaternion2.Y)) + (quaternion1.Z * quaternion2.Z)) +
-                         (quaternion1.W * quaternion2.W);
+            var num = amount;
+            var num2 = 1f - num;
+            var quaternion = new Quaternion();
+            var num5 = (((quaternion1.X * quaternion2.X) + (quaternion1.Y * quaternion2.Y)) + (quaternion1.Z * quaternion2.Z)) +
+                       (quaternion1.W * quaternion2.W);
             if (num5 >= 0f)
             {
                 quaternion.X = (num2 * quaternion1.X) + (num * quaternion2.X);
@@ -486,9 +487,9 @@ namespace SFML.Graphics
                 quaternion.Z = (num2 * quaternion1.Z) - (num * quaternion2.Z);
                 quaternion.W = (num2 * quaternion1.W) - (num * quaternion2.W);
             }
-            float num4 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
-                         (quaternion.W * quaternion.W);
-            float num3 = 1f / ((float)Math.Sqrt(num4));
+            var num4 = (((quaternion.X * quaternion.X) + (quaternion.Y * quaternion.Y)) + (quaternion.Z * quaternion.Z)) +
+                       (quaternion.W * quaternion.W);
+            var num3 = 1f / ((float)Math.Sqrt(num4));
             quaternion.X *= num3;
             quaternion.Y *= num3;
             quaternion.Z *= num3;
@@ -503,10 +504,10 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The resulting quaternion.</param>
         public static void Lerp(ref Quaternion quaternion1, ref Quaternion quaternion2, float amount, out Quaternion result)
         {
-            float num = amount;
-            float num2 = 1f - num;
-            float num5 = (((quaternion1.X * quaternion2.X) + (quaternion1.Y * quaternion2.Y)) + (quaternion1.Z * quaternion2.Z)) +
-                         (quaternion1.W * quaternion2.W);
+            var num = amount;
+            var num2 = 1f - num;
+            var num5 = (((quaternion1.X * quaternion2.X) + (quaternion1.Y * quaternion2.Y)) + (quaternion1.Z * quaternion2.Z)) +
+                       (quaternion1.W * quaternion2.W);
             if (num5 >= 0f)
             {
                 result.X = (num2 * quaternion1.X) + (num * quaternion2.X);
@@ -521,8 +522,8 @@ namespace SFML.Graphics
                 result.Z = (num2 * quaternion1.Z) - (num * quaternion2.Z);
                 result.W = (num2 * quaternion1.W) - (num * quaternion2.W);
             }
-            float num4 = (((result.X * result.X) + (result.Y * result.Y)) + (result.Z * result.Z)) + (result.W * result.W);
-            float num3 = 1f / ((float)Math.Sqrt(num4));
+            var num4 = (((result.X * result.X) + (result.Y * result.Y)) + (result.Z * result.Z)) + (result.W * result.W);
+            var num3 = 1f / ((float)Math.Sqrt(num4));
             result.X *= num3;
             result.Y *= num3;
             result.Z *= num3;
@@ -535,18 +536,18 @@ namespace SFML.Graphics
         public static Quaternion Concatenate(Quaternion value1, Quaternion value2)
         {
             Quaternion quaternion;
-            float x = value2.X;
-            float y = value2.Y;
-            float z = value2.Z;
-            float w = value2.W;
-            float num4 = value1.X;
-            float num3 = value1.Y;
-            float num2 = value1.Z;
-            float num = value1.W;
-            float num12 = (y * num2) - (z * num3);
-            float num11 = (z * num4) - (x * num2);
-            float num10 = (x * num3) - (y * num4);
-            float num9 = ((x * num4) + (y * num3)) + (z * num2);
+            var x = value2.X;
+            var y = value2.Y;
+            var z = value2.Z;
+            var w = value2.W;
+            var num4 = value1.X;
+            var num3 = value1.Y;
+            var num2 = value1.Z;
+            var num = value1.W;
+            var num12 = (y * num2) - (z * num3);
+            var num11 = (z * num4) - (x * num2);
+            var num10 = (x * num3) - (y * num4);
+            var num9 = ((x * num4) + (y * num3)) + (z * num2);
             quaternion.X = ((x * num) + (num4 * w)) + num12;
             quaternion.Y = ((y * num) + (num3 * w)) + num11;
             quaternion.Z = ((z * num) + (num2 * w)) + num10;
@@ -560,18 +561,18 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The Quaternion rotation representing the concatenation of value1 followed by value2.</param>
         public static void Concatenate(ref Quaternion value1, ref Quaternion value2, out Quaternion result)
         {
-            float x = value2.X;
-            float y = value2.Y;
-            float z = value2.Z;
-            float w = value2.W;
-            float num4 = value1.X;
-            float num3 = value1.Y;
-            float num2 = value1.Z;
-            float num = value1.W;
-            float num12 = (y * num2) - (z * num3);
-            float num11 = (z * num4) - (x * num2);
-            float num10 = (x * num3) - (y * num4);
-            float num9 = ((x * num4) + (y * num3)) + (z * num2);
+            var x = value2.X;
+            var y = value2.Y;
+            var z = value2.Z;
+            var w = value2.W;
+            var num4 = value1.X;
+            var num3 = value1.Y;
+            var num2 = value1.Z;
+            var num = value1.W;
+            var num12 = (y * num2) - (z * num3);
+            var num11 = (z * num4) - (x * num2);
+            var num10 = (x * num3) - (y * num4);
+            var num9 = ((x * num4) + (y * num3)) + (z * num2);
             result.X = ((x * num) + (num4 * w)) + num12;
             result.Y = ((y * num) + (num3 * w)) + num11;
             result.Z = ((z * num) + (num2 * w)) + num10;
@@ -657,18 +658,18 @@ namespace SFML.Graphics
         public static Quaternion Multiply(Quaternion quaternion1, Quaternion quaternion2)
         {
             Quaternion quaternion;
-            float x = quaternion1.X;
-            float y = quaternion1.Y;
-            float z = quaternion1.Z;
-            float w = quaternion1.W;
-            float num4 = quaternion2.X;
-            float num3 = quaternion2.Y;
-            float num2 = quaternion2.Z;
-            float num = quaternion2.W;
-            float num12 = (y * num2) - (z * num3);
-            float num11 = (z * num4) - (x * num2);
-            float num10 = (x * num3) - (y * num4);
-            float num9 = ((x * num4) + (y * num3)) + (z * num2);
+            var x = quaternion1.X;
+            var y = quaternion1.Y;
+            var z = quaternion1.Z;
+            var w = quaternion1.W;
+            var num4 = quaternion2.X;
+            var num3 = quaternion2.Y;
+            var num2 = quaternion2.Z;
+            var num = quaternion2.W;
+            var num12 = (y * num2) - (z * num3);
+            var num11 = (z * num4) - (x * num2);
+            var num10 = (x * num3) - (y * num4);
+            var num9 = ((x * num4) + (y * num3)) + (z * num2);
             quaternion.X = ((x * num) + (num4 * w)) + num12;
             quaternion.Y = ((y * num) + (num3 * w)) + num11;
             quaternion.Z = ((z * num) + (num2 * w)) + num10;
@@ -682,18 +683,18 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The result of the multiplication.</param>
         public static void Multiply(ref Quaternion quaternion1, ref Quaternion quaternion2, out Quaternion result)
         {
-            float x = quaternion1.X;
-            float y = quaternion1.Y;
-            float z = quaternion1.Z;
-            float w = quaternion1.W;
-            float num4 = quaternion2.X;
-            float num3 = quaternion2.Y;
-            float num2 = quaternion2.Z;
-            float num = quaternion2.W;
-            float num12 = (y * num2) - (z * num3);
-            float num11 = (z * num4) - (x * num2);
-            float num10 = (x * num3) - (y * num4);
-            float num9 = ((x * num4) + (y * num3)) + (z * num2);
+            var x = quaternion1.X;
+            var y = quaternion1.Y;
+            var z = quaternion1.Z;
+            var w = quaternion1.W;
+            var num4 = quaternion2.X;
+            var num3 = quaternion2.Y;
+            var num2 = quaternion2.Z;
+            var num = quaternion2.W;
+            var num12 = (y * num2) - (z * num3);
+            var num11 = (z * num4) - (x * num2);
+            var num10 = (x * num3) - (y * num4);
+            var num9 = ((x * num4) + (y * num3)) + (z * num2);
             result.X = ((x * num) + (num4 * w)) + num12;
             result.Y = ((y * num) + (num3 * w)) + num11;
             result.Z = ((z * num) + (num2 * w)) + num10;
@@ -731,21 +732,21 @@ namespace SFML.Graphics
         public static Quaternion Divide(Quaternion quaternion1, Quaternion quaternion2)
         {
             Quaternion quaternion;
-            float x = quaternion1.X;
-            float y = quaternion1.Y;
-            float z = quaternion1.Z;
-            float w = quaternion1.W;
-            float num14 = (((quaternion2.X * quaternion2.X) + (quaternion2.Y * quaternion2.Y)) + (quaternion2.Z * quaternion2.Z)) +
-                          (quaternion2.W * quaternion2.W);
-            float num5 = 1f / num14;
-            float num4 = -quaternion2.X * num5;
-            float num3 = -quaternion2.Y * num5;
-            float num2 = -quaternion2.Z * num5;
-            float num = quaternion2.W * num5;
-            float num13 = (y * num2) - (z * num3);
-            float num12 = (z * num4) - (x * num2);
-            float num11 = (x * num3) - (y * num4);
-            float num10 = ((x * num4) + (y * num3)) + (z * num2);
+            var x = quaternion1.X;
+            var y = quaternion1.Y;
+            var z = quaternion1.Z;
+            var w = quaternion1.W;
+            var num14 = (((quaternion2.X * quaternion2.X) + (quaternion2.Y * quaternion2.Y)) + (quaternion2.Z * quaternion2.Z)) +
+                        (quaternion2.W * quaternion2.W);
+            var num5 = 1f / num14;
+            var num4 = -quaternion2.X * num5;
+            var num3 = -quaternion2.Y * num5;
+            var num2 = -quaternion2.Z * num5;
+            var num = quaternion2.W * num5;
+            var num13 = (y * num2) - (z * num3);
+            var num12 = (z * num4) - (x * num2);
+            var num11 = (x * num3) - (y * num4);
+            var num10 = ((x * num4) + (y * num3)) + (z * num2);
             quaternion.X = ((x * num) + (num4 * w)) + num13;
             quaternion.Y = ((y * num) + (num3 * w)) + num12;
             quaternion.Z = ((z * num) + (num2 * w)) + num11;
@@ -759,21 +760,21 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Result of the division.</param>
         public static void Divide(ref Quaternion quaternion1, ref Quaternion quaternion2, out Quaternion result)
         {
-            float x = quaternion1.X;
-            float y = quaternion1.Y;
-            float z = quaternion1.Z;
-            float w = quaternion1.W;
-            float num14 = (((quaternion2.X * quaternion2.X) + (quaternion2.Y * quaternion2.Y)) + (quaternion2.Z * quaternion2.Z)) +
-                          (quaternion2.W * quaternion2.W);
-            float num5 = 1f / num14;
-            float num4 = -quaternion2.X * num5;
-            float num3 = -quaternion2.Y * num5;
-            float num2 = -quaternion2.Z * num5;
-            float num = quaternion2.W * num5;
-            float num13 = (y * num2) - (z * num3);
-            float num12 = (z * num4) - (x * num2);
-            float num11 = (x * num3) - (y * num4);
-            float num10 = ((x * num4) + (y * num3)) + (z * num2);
+            var x = quaternion1.X;
+            var y = quaternion1.Y;
+            var z = quaternion1.Z;
+            var w = quaternion1.W;
+            var num14 = (((quaternion2.X * quaternion2.X) + (quaternion2.Y * quaternion2.Y)) + (quaternion2.Z * quaternion2.Z)) +
+                        (quaternion2.W * quaternion2.W);
+            var num5 = 1f / num14;
+            var num4 = -quaternion2.X * num5;
+            var num3 = -quaternion2.Y * num5;
+            var num2 = -quaternion2.Z * num5;
+            var num = quaternion2.W * num5;
+            var num13 = (y * num2) - (z * num3);
+            var num12 = (z * num4) - (x * num2);
+            var num11 = (x * num3) - (y * num4);
+            var num10 = ((x * num4) + (y * num3)) + (z * num2);
             result.X = ((x * num) + (num4 * w)) + num13;
             result.Y = ((y * num) + (num3 * w)) + num12;
             result.Z = ((z * num) + (num2 * w)) + num11;
@@ -843,18 +844,18 @@ namespace SFML.Graphics
         public static Quaternion operator *(Quaternion quaternion1, Quaternion quaternion2)
         {
             Quaternion quaternion;
-            float x = quaternion1.X;
-            float y = quaternion1.Y;
-            float z = quaternion1.Z;
-            float w = quaternion1.W;
-            float num4 = quaternion2.X;
-            float num3 = quaternion2.Y;
-            float num2 = quaternion2.Z;
-            float num = quaternion2.W;
-            float num12 = (y * num2) - (z * num3);
-            float num11 = (z * num4) - (x * num2);
-            float num10 = (x * num3) - (y * num4);
-            float num9 = ((x * num4) + (y * num3)) + (z * num2);
+            var x = quaternion1.X;
+            var y = quaternion1.Y;
+            var z = quaternion1.Z;
+            var w = quaternion1.W;
+            var num4 = quaternion2.X;
+            var num3 = quaternion2.Y;
+            var num2 = quaternion2.Z;
+            var num = quaternion2.W;
+            var num12 = (y * num2) - (z * num3);
+            var num11 = (z * num4) - (x * num2);
+            var num10 = (x * num3) - (y * num4);
+            var num9 = ((x * num4) + (y * num3)) + (z * num2);
             quaternion.X = ((x * num) + (num4 * w)) + num12;
             quaternion.Y = ((y * num) + (num3 * w)) + num11;
             quaternion.Z = ((z * num) + (num2 * w)) + num10;
@@ -881,21 +882,21 @@ namespace SFML.Graphics
         public static Quaternion operator /(Quaternion quaternion1, Quaternion quaternion2)
         {
             Quaternion quaternion;
-            float x = quaternion1.X;
-            float y = quaternion1.Y;
-            float z = quaternion1.Z;
-            float w = quaternion1.W;
-            float num14 = (((quaternion2.X * quaternion2.X) + (quaternion2.Y * quaternion2.Y)) + (quaternion2.Z * quaternion2.Z)) +
-                          (quaternion2.W * quaternion2.W);
-            float num5 = 1f / num14;
-            float num4 = -quaternion2.X * num5;
-            float num3 = -quaternion2.Y * num5;
-            float num2 = -quaternion2.Z * num5;
-            float num = quaternion2.W * num5;
-            float num13 = (y * num2) - (z * num3);
-            float num12 = (z * num4) - (x * num2);
-            float num11 = (x * num3) - (y * num4);
-            float num10 = ((x * num4) + (y * num3)) + (z * num2);
+            var x = quaternion1.X;
+            var y = quaternion1.Y;
+            var z = quaternion1.Z;
+            var w = quaternion1.W;
+            var num14 = (((quaternion2.X * quaternion2.X) + (quaternion2.Y * quaternion2.Y)) + (quaternion2.Z * quaternion2.Z)) +
+                        (quaternion2.W * quaternion2.W);
+            var num5 = 1f / num14;
+            var num4 = -quaternion2.X * num5;
+            var num3 = -quaternion2.Y * num5;
+            var num2 = -quaternion2.Z * num5;
+            var num = quaternion2.W * num5;
+            var num13 = (y * num2) - (z * num3);
+            var num12 = (z * num4) - (x * num2);
+            var num11 = (x * num3) - (y * num4);
+            var num10 = ((x * num4) + (y * num3)) + (z * num2);
             quaternion.X = ((x * num) + (num4 * w)) + num13;
             quaternion.Y = ((y * num) + (num3 * w)) + num12;
             quaternion.Z = ((z * num) + (num2 * w)) + num11;

@@ -103,10 +103,10 @@ namespace DemoGame.Server
             var center = Actor.Center;
             var min = center - _halfScreenSize;
 
-            int x = (int)Math.Max(0, min.X);
-            int y = (int)Math.Max(0, min.Y);
-            int w = (int)Math.Max(Actor.Map.Width, min.X + GameData.ScreenSize.X);
-            int h = (int)Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
+            var x = (int)Math.Max(0, min.X);
+            var y = (int)Math.Max(0, min.Y);
+            var w = (int)Math.Max(Actor.Map.Width, min.X + GameData.ScreenSize.X);
+            var h = (int)Math.Max(Actor.Map.Height, min.Y + GameData.ScreenSize.Y);
 
             return new Rectangle(x, y, w, h);
         }
@@ -118,7 +118,7 @@ namespace DemoGame.Server
         /// <returns>True if the actor is hostile towards the <paramref name="character"/>; otherwise false.</returns>
         public virtual bool IsHostileTowards(Character character)
         {
-            bool ret = Actor.Alliance.IsHostile(character.Alliance);
+            var ret = Actor.Alliance.IsHostile(character.Alliance);
             if (!ret)
             {
                 if (_explicitHostiles.ContainsKey(character))
@@ -238,7 +238,7 @@ namespace DemoGame.Server
                 return;
 
             // Get the absolute timeout time
-            int timeoutTime = GetTime() + timeout;
+            var timeoutTime = GetTime() + timeout;
 
             if (_explicitHostiles.ContainsKey(target))
             {
@@ -309,7 +309,7 @@ namespace DemoGame.Server
             // Check to update the explicit hostiles
             if (_explicitHostiles.Count > 0)
             {
-                int time = GetTime();
+                var time = GetTime();
                 if (_expireExplicitHostilesTime < time)
                 {
                     _expireExplicitHostilesTime = time + _expireExplicitHostilesRate;

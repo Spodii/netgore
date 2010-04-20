@@ -9,6 +9,11 @@ namespace NetGore.Graphics
     public interface ISprite
     {
         /// <summary>
+        /// Gets the size of the <see cref="ISprite"/> in pixels.
+        /// </summary>
+        Vector2 Size { get; }
+
+        /// <summary>
         /// Gets the source rectangle of the sprite on the texture.
         /// </summary>
         Rectangle Source { get; }
@@ -17,11 +22,6 @@ namespace NetGore.Graphics
         /// Gets the texture containing the sprite.
         /// </summary>
         Image Texture { get; }
-
-        /// <summary>
-        /// Gets the size of the <see cref="ISprite"/> in pixels.
-        /// </summary>
-        Vector2 Size { get; }
 
         /// <summary>
         /// Draws the <see cref="ISprite"/>.
@@ -72,8 +72,7 @@ namespace NetGore.Graphics
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
         /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
         /// <param name="scale">Uniform multiply by which to scale the width and height.</param>
-        void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
-                         float scale);
+        void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin, float scale);
 
         /// <summary>
         /// Draws the <see cref="ISprite"/>.
@@ -85,8 +84,7 @@ namespace NetGore.Graphics
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
         /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
         /// <param name="scale">Vector2 defining the scale.</param>
-        void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
-                         Vector2 scale);
+        void Draw(ISpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin, Vector2 scale);
 
         /// <summary>
         /// Draws the <see cref="ISprite"/>.

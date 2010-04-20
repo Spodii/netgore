@@ -42,7 +42,7 @@ namespace DemoGame.Client
         /// <returns>The <see cref="QuickBarItemPB"/>.</returns>
         QuickBarItemPB CreateQuickBarSlot(int slot)
         {
-            QuickBarItemPB c = new QuickBarItemPB(this, Vector2.Zero, (byte)slot);
+            var c = new QuickBarItemPB(this, Vector2.Zero, (byte)slot);
             c.Position = new Vector2((c.Size.X + _slotPadding) * (slot - 1), _slotPadding);
             return c;
         }
@@ -57,7 +57,7 @@ namespace DemoGame.Client
 
             _slots = new QuickBarItemPB[_numSlots];
 
-            for (int i = 0; i < _numSlots; i++)
+            for (var i = 0; i < _numSlots; i++)
             {
                 _slots[i] = CreateQuickBarSlot(i);
             }
@@ -86,7 +86,7 @@ namespace DemoGame.Client
 
             CreateSlots();
 
-            var slotValues = reader.ReadManyNodes<QuickBarSlotValues>("QuickBarItems", QuickBarSlotValues.Read);
+            var slotValues = reader.ReadManyNodes("QuickBarItems", QuickBarSlotValues.Read);
 
             foreach (var sv in slotValues)
             {
@@ -103,8 +103,8 @@ namespace DemoGame.Client
         {
             CreateSlots();
 
-            Vector2 offset = new Vector2(_slotPadding);
-            for (int i = 0; i < _slots.Length; i++)
+            var offset = new Vector2(_slotPadding);
+            for (var i = 0; i < _slots.Length; i++)
             {
                 _slots[i].Position = offset;
                 offset.X += _slots[i].Size.X + _slotPadding;
@@ -256,7 +256,7 @@ namespace DemoGame.Client
             /// <param name="color">The color.</param>
             void DrawQuickBarItem(ISpriteBatch spriteBatch, Vector2? position, Color color)
             {
-                bool isOnBar = (position == null);
+                var isOnBar = (position == null);
 
                 // Draw the item in the quick bar
                 switch (QuickBarItemType)

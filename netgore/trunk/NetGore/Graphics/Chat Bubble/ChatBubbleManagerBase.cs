@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
-
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 
@@ -156,7 +154,7 @@ namespace NetGore.Graphics
             // Remove dead bubbles
             while (_bubblesToRemove.Count > 0)
             {
-                Entity toRemove = _bubblesToRemove.Pop();
+                var toRemove = _bubblesToRemove.Pop();
                 Debug.Assert(_chatBubbles[toRemove].IsExpired,
                              "Why are we removing a non-expired bubble with the remove stack...?");
                 _chatBubbles.Remove(toRemove);

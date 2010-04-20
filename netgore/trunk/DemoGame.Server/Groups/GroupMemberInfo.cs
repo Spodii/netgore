@@ -48,7 +48,7 @@ namespace DemoGame.Server.Groups
         /// <param name="group">The group they failed to join.</param>
         protected override void OnFailedJoinGroup(IGroup group)
         {
-            string founderName = GetGroupFounderName(group);
+            var founderName = GetGroupFounderName(group);
 
             // Give some more details on why they failed to join the group, if possible. Otherwise, just use the
             // generic "failed to join" message (which is not ideal, but better than nothing).

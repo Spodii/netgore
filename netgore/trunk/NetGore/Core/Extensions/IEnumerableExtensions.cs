@@ -30,7 +30,7 @@ namespace NetGore
 
             var listB = b.ToList();
 
-            foreach (T item in a)
+            foreach (var item in a)
             {
                 if (!listB.Remove(item))
                     return false;
@@ -48,9 +48,9 @@ namespace NetGore
 
             var a = source.ToArray();
 
-            for (int outer = 0; outer < a.Length - 1; outer++)
+            for (var outer = 0; outer < a.Length - 1; outer++)
             {
-                for (int inner = outer + 1; inner < a.Length; inner++)
+                for (var inner = outer + 1; inner < a.Length; inner++)
                 {
                     if (a[inner].Equals(a[outer]))
                         return true;
@@ -68,10 +68,10 @@ namespace NetGore
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
         public static string Implode(this IEnumerable<string> source, char delimiter)
         {
-            StringBuilder sb = new StringBuilder(128);
+            var sb = new StringBuilder(128);
 
             // Add all to the StringBuilder
-            foreach (string item in source)
+            foreach (var item in source)
             {
                 sb.Append(item);
                 sb.Append(delimiter);
@@ -113,10 +113,10 @@ namespace NetGore
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
         public static string Implode(this IEnumerable<string> source, string delimiter)
         {
-            StringBuilder sb = new StringBuilder(128);
+            var sb = new StringBuilder(128);
 
             // Add all to the StringBuilder
-            foreach (string item in source)
+            foreach (var item in source)
             {
                 sb.Append(item);
                 sb.Append(delimiter);
@@ -140,10 +140,10 @@ namespace NetGore
         public static string Implode<T>(this IEnumerable<T> source, char delimiter)
         {
             // Allocate 16 characters for each value, plus room for the delimiter
-            StringBuilder sb = new StringBuilder(source.Count() * (8 + 1));
+            var sb = new StringBuilder(source.Count() * (8 + 1));
 
             // Add all to the StringBuilder
-            foreach (T item in source)
+            foreach (var item in source)
             {
                 sb.Append(item);
                 sb.Append(delimiter);
@@ -167,10 +167,10 @@ namespace NetGore
         public static string Implode<T>(this IEnumerable<T> source, string delimiter)
         {
             // Allocate 8 characters for each value, plus room for the delimiter
-            StringBuilder sb = new StringBuilder(source.Count() * (8 + delimiter.Length));
+            var sb = new StringBuilder(source.Count() * (8 + delimiter.Length));
 
             // Add all to the StringBuilder
-            foreach (T item in source)
+            foreach (var item in source)
             {
                 sb.Append(item);
                 sb.Append(delimiter);
@@ -248,14 +248,14 @@ namespace NetGore
             }
 
             // Set the initial max element to the first element
-            T maxItem = elements[0];
-            TCompare maxValue = func(maxItem);
+            var maxItem = elements[0];
+            var maxValue = func(maxItem);
 
             // Compare against all the remaining values
-            for (int i = 1; i < elements.Length; i++)
+            for (var i = 1; i < elements.Length; i++)
             {
                 // Get the "value" of the element
-                TCompare temp = func(elements[i]);
+                var temp = func(elements[i]);
 
                 // Set the new min element if the value is greater
                 if (temp.CompareTo(maxValue) > 0)
@@ -333,14 +333,14 @@ namespace NetGore
             }
 
             // Set the initial min element to the first element
-            T minItem = elements[0];
-            TCompare minValue = func(minItem);
+            var minItem = elements[0];
+            var minValue = func(minItem);
 
             // Compare against all the remaining values
-            for (int i = 1; i < elements.Length; i++)
+            for (var i = 1; i < elements.Length; i++)
             {
                 // Get the "value" of the element
-                TCompare temp = func(elements[i]);
+                var temp = func(elements[i]);
 
                 // Set the new min element if the value is less
                 if (temp.CompareTo(minValue) < 0)
@@ -377,7 +377,7 @@ namespace NetGore
         /// <returns>The next free value available.</returns>
         public static int NextFreeValue(this IEnumerable<int> usedValues, int minValue)
         {
-            int expected = minValue;
+            var expected = minValue;
 
             // Loop through the sorted used values until we find a gap
             foreach (var value in usedValues.OrderBy(x => x))

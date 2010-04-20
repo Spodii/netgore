@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
 using NetGore.Db;
@@ -17,12 +16,12 @@ namespace NetGore.Tests.Db.MySql
 
         static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth, int initialDepth)
         {
-            DbConnectionPool cp = reader.ConnectionPool;
-            QueryTestValues v = new QueryTestValues(depth * 2, depth - 2, depth + 57);
-            int expectedPoolSize = initialDepth - depth;
+            var cp = reader.ConnectionPool;
+            var v = new QueryTestValues(depth * 2, depth - 2, depth + 57);
+            var expectedPoolSize = initialDepth - depth;
 
             Assert.AreEqual(expectedPoolSize, cp.LiveObjects);
-            using (IDataReader r = reader.ExecuteReader(v))
+            using (var r = reader.ExecuteReader(v))
             {
                 expectedPoolSize++;
 
@@ -50,9 +49,9 @@ namespace NetGore.Tests.Db.MySql
         {
             // Tests 3 concurrently open selects 100 times total
 
-            using (MyReader reader = CreateReader())
+            using (var reader = CreateReader())
             {
-                for (int i = 0; i < 100; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     SelectTestRecurse(reader, 3);
                 }
@@ -62,7 +61,7 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void DisposeTest()
         {
-            MyReader reader = CreateReader();
+            var reader = CreateReader();
 
             using (reader)
             {
@@ -75,16 +74,16 @@ namespace NetGore.Tests.Db.MySql
         [Test]
         public void SelectTest()
         {
-            QueryTestValues testValues = new QueryTestValues(5, 10, 15);
+            var testValues = new QueryTestValues(5, 10, 15);
 
-            using (MyReader reader = CreateReader())
+            using (var reader = CreateReader())
             {
-                DbConnectionPool cp = reader.ConnectionPool;
+                var cp = reader.ConnectionPool;
 
-                for (int i = 0; i < 100; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     Assert.AreEqual(0, cp.LiveObjects);
-                    using (IDataReader r = ((IDbQueryReader<QueryTestValues>)reader).ExecuteReader(testValues))
+                    using (var r = ((IDbQueryReader<QueryTestValues>)reader).ExecuteReader(testValues))
                     {
                         Assert.AreEqual(1, cp.LiveObjects);
                         Assert.IsTrue(r.Read());
@@ -99,7 +98,7 @@ namespace NetGore.Tests.Db.MySql
         {
             // Recurses 50 levels deep, resulting in 50 concurrent selects being open
 
-            using (MyReader reader = CreateReader())
+            using (var reader = CreateReader())
             {
                 SelectTestRecurse(reader, 50);
             }

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using SFML.Window;
 
 namespace NetGore.Graphics.GUI
 {
@@ -25,7 +24,7 @@ namespace NetGore.Graphics.GUI
         public GameControl CreateAndAdd(GameControlKeys keys, int delay, Func<bool> additionalRequirements,
                                         GameControlEventHandler invokeHandler)
         {
-            GameControl c = new GameControl(keys) { Delay = delay, AdditionalRequirements = additionalRequirements };
+            var c = new GameControl(keys) { Delay = delay, AdditionalRequirements = additionalRequirements };
             c.Invoked += invokeHandler;
 
             Add(c);
@@ -39,7 +38,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="currentTime">The current time in milliseconds.</param>
         public void Update(IGUIManager guiManager, int currentTime)
         {
-            foreach (GameControl gc in this)
+            foreach (var gc in this)
             {
                 gc.Update(guiManager, currentTime);
             }

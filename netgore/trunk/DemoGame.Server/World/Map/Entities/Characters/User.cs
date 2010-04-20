@@ -759,7 +759,7 @@ namespace DemoGame.Server
             var remainderItem = Inventory.Add(itemEntity);
 
             // Find the number of remaining items (in case something went wrong and not all was added)
-            int remainderAmount = 0;
+            var remainderAmount = 0;
             if (remainderItem != null)
             {
                 remainderAmount = remainderItem.Amount;

@@ -132,7 +132,7 @@ namespace NetGore.Features.Guilds
             {
                 if (InGuild)
                 {
-                    for (int i = 0; i < _members.Count; i++)
+                    for (var i = 0; i < _members.Count; i++)
                     {
                         if (_onlineMembers.Contains(_members[i].Name))
                             yield return _members[i];
@@ -244,7 +244,7 @@ namespace NetGore.Features.Guilds
 
                 default:
                     const string errmsg = "Unknown GuildInfoMessages value `{0}`. Could not parse!";
-                    string err = string.Format(errmsg, id);
+                    var err = string.Format(errmsg, id);
                     log.Fatal(err);
                     Debug.Fail(err);
                     return;
@@ -273,7 +273,7 @@ namespace NetGore.Features.Guilds
         /// <param name="r">The stream to read the message from.</param>
         void ReadAddOnlineMember(BitStream r)
         {
-            string name = r.ReadString();
+            var name = r.ReadString();
             SetOnlineValue(name, true);
 
             OnOnlineMemberAdded(name);
@@ -289,7 +289,7 @@ namespace NetGore.Features.Guilds
         void ReadRemoveMember(BitStream r)
         {
             var name = r.ReadString();
-            int removeCount = _members.RemoveAll(x => StringComparer.OrdinalIgnoreCase.Equals(x.Name, name));
+            var removeCount = _members.RemoveAll(x => StringComparer.OrdinalIgnoreCase.Equals(x.Name, name));
 
             Debug.Assert(removeCount != 0, "Nobody with the name " + name + " existed in the collection.");
             Debug.Assert(removeCount < 2, "How the hell did we remove more than one item?");
@@ -306,7 +306,7 @@ namespace NetGore.Features.Guilds
         /// <param name="r">The stream to read the message from.</param>
         void ReadRemoveOnlineMember(BitStream r)
         {
-            string name = r.ReadString();
+            var name = r.ReadString();
             SetOnlineValue(name, false);
 
             OnOnlineMemberRemoved(name);
@@ -331,17 +331,17 @@ namespace NetGore.Features.Guilds
                 Name = r.ReadString();
                 Tag = r.ReadString();
 
-                ushort numMembers = r.ReadUShort();
-                for (int i = 0; i < numMembers; i++)
+                var numMembers = r.ReadUShort();
+                for (var i = 0; i < numMembers; i++)
                 {
                     var v = r.ReadGuildMemberNameRank(null);
                     _members.Add(v);
                 }
 
-                ushort onlineMembers = r.ReadUShort();
-                for (int i = 0; i < onlineMembers; i++)
+                var onlineMembers = r.ReadUShort();
+                for (var i = 0; i < onlineMembers; i++)
                 {
-                    string name = r.ReadString();
+                    var name = r.ReadString();
                     SetOnlineValue(name, true);
                 }
 
@@ -452,13 +452,13 @@ namespace NetGore.Features.Guilds
             pw.Write(guild.Tag);
 
             pw.Write((ushort)members.Length);
-            for (int i = 0; i < members.Length; i++)
+            for (var i = 0; i < members.Length; i++)
             {
                 pw.Write(null, members[i]);
             }
 
             pw.Write((ushort)onlineMembers.Length);
-            for (int i = 0; i < onlineMembers.Length; i++)
+            for (var i = 0; i < onlineMembers.Length; i++)
             {
                 pw.Write(onlineMembers[i].Name);
             }

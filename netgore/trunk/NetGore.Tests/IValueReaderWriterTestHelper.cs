@@ -56,7 +56,7 @@ namespace NetGore.Tests
                     Debug.Fail("Too many objects are using the destructor to clear the temp files. Use IDisposable, damnit!");
             }
 
-            string ret = Path.GetTempFileName();
+            var ret = Path.GetTempFileName();
             _createdTempFiles.Add(ret);
             return ret;
         }

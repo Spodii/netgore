@@ -22,7 +22,7 @@ namespace DemoGame.SkeletonEditor
 
         static string GetDSIString(SkeletonBodyItem dsi)
         {
-            string s = "_null_";
+            var s = "_null_";
             if (dsi.Dest != null)
                 s = dsi.Dest.Name;
 

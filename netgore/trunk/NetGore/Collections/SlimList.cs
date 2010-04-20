@@ -48,7 +48,7 @@ namespace NetGore.Collections
 
                 if (value > 0)
                 {
-                    T[] destArray = new T[value];
+                    var destArray = new T[value];
                     Array.Copy(_items, 0, destArray, 0, _size);
                     _items = destArray;
                 }
@@ -97,7 +97,7 @@ namespace NetGore.Collections
         {
             if (_items.Length < min)
             {
-                int num = (_items.Length == 0) ? 4 : (_items.Length * 2);
+                var num = (_items.Length == 0) ? 4 : (_items.Length * 2);
 
                 if (num < min)
                     num = min;

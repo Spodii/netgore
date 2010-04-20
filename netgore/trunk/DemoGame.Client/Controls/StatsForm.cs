@@ -82,13 +82,13 @@ namespace DemoGame.Client
             AddLine();
 
             // Create the stat label
-            Vector2 pos = new Vector2(_xOffset, _yOffset);
+            var pos = new Vector2(_xOffset, _yOffset);
             new StatLabel(this, statType, pos);
 
             // Add the stat raise button
             if (StatTypeHelper.RaisableStats.Contains(statType))
             {
-                RaiseStatPB statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, statType);
+                var statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, statType);
                 statPB.Clicked += StatPB_Clicked;
             }
         }
@@ -96,7 +96,7 @@ namespace DemoGame.Client
         void NewUserInfoLabel(string title, UserInfoLabelValueHandler valueHandler)
         {
             AddLine();
-            Vector2 pos = new Vector2(_xOffset, _yOffset);
+            var pos = new Vector2(_xOffset, _yOffset);
             new UserInfoLabel(this, pos, title, valueHandler);
         }
 
@@ -113,7 +113,7 @@ namespace DemoGame.Client
 
         void StatPB_Clicked(object sender, MouseButtonEventArgs e)
         {
-            RaiseStatPB statPB = (RaiseStatPB)sender;
+            var statPB = (RaiseStatPB)sender;
 
             // Ensure the stat can be raised
             if (!statPB.CanRaiseStat)
@@ -141,8 +141,8 @@ namespace DemoGame.Client
 
         class RaiseStatPB : PictureBox
         {
-            readonly StatsForm _statsForm;
             readonly StatType _statType;
+            readonly StatsForm _statsForm;
 
             public RaiseStatPB(Vector2 position, Grh sprite, StatsForm parent, StatType statType)
                 : base(parent, position, sprite.Size)
@@ -176,14 +176,14 @@ namespace DemoGame.Client
                 get { return Stats[_statType]; }
             }
 
-            StatCollection<StatType> Stats
-            {
-                get { return _statsForm.UserInfo.BaseStats; }
-            }
-
             public StatType StatType
             {
                 get { return _statType; }
+            }
+
+            StatCollection<StatType> Stats
+            {
+                get { return _statsForm.UserInfo.BaseStats; }
             }
 
             /// <summary>
@@ -205,8 +205,8 @@ namespace DemoGame.Client
             /// </summary>
             const int _textUpdateRate = 250;
 
-            readonly StatsForm _statsForm;
             readonly StatType _statType;
+            readonly StatsForm _statsForm;
 
             int _lastBaseValue = int.MinValue;
             int _lastModValue = int.MinValue;

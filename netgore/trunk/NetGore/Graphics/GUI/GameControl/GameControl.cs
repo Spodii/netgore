@@ -76,7 +76,8 @@ namespace NetGore.Graphics.GUI
         public bool IsEnabled
         {
             get { return _isEnabled; }
-            set { 
+            set
+            {
                 _isEnabled = value;
                 _needsReset = false;
             }

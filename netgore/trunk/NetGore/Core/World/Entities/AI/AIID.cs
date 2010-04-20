@@ -97,7 +97,7 @@ namespace NetGore.AI
         /// <returns>The AIID read from the IValueReader.</returns>
         public static AIID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new AIID(value);
         }
 
@@ -109,11 +109,11 @@ namespace NetGore.AI
         /// <returns>The AIID read from the IDataReader.</returns>
         public static AIID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new AIID((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new AIID(convertedValue);
         }
 
@@ -135,7 +135,7 @@ namespace NetGore.AI
         /// <returns>The AIID read from the BitStream.</returns>
         public static AIID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new AIID(value);
         }
 
@@ -848,7 +848,7 @@ namespace NetGore.AI
         public static bool TryParse(this Parser parser, string value, out AIID outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new AIID(tmp);
             return ret;
         }

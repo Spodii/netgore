@@ -30,19 +30,19 @@ namespace NetGore.EditorTools
         {
             if (value is Color)
             {
-                Color c = (Color)value;
+                var c = (Color)value;
                 return new SFMLColor(c.R, c.G, c.B, c.A);
             }
 
             if (value is SFMLColor)
             {
-                SFMLColor c = (SFMLColor)value;
+                var c = (SFMLColor)value;
                 return new SFMLColor(c.R, c.G, c.B, c.A);
             }
 
             if (value is Color?)
             {
-                Color? nc = (Color?)value;
+                var nc = (Color?)value;
                 if (!nc.HasValue)
                 {
                     if (context.PropertyDescriptor.PropertyType == typeof(SFMLColor))
@@ -59,7 +59,7 @@ namespace NetGore.EditorTools
 
             if (value is SFMLColor?)
             {
-                SFMLColor? nc = (SFMLColor?)value;
+                var nc = (SFMLColor?)value;
                 if (!nc.HasValue)
                 {
                     if (context.PropertyDescriptor.PropertyType == typeof(SFMLColor))

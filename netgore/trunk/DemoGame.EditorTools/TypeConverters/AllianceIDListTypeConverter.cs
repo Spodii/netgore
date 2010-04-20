@@ -55,7 +55,7 @@ namespace DemoGame.EditorTools
                 {
                     var am = AllianceManager.Instance;
 
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
                     sb.Append("{");
                     foreach (var v in ev)
                     {

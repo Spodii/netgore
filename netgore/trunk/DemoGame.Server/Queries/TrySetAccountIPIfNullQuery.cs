@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -36,7 +35,7 @@ namespace DemoGame.Server.Queries
         {
             bool ret;
 
-            using (IDataReader r = ExecuteReader(new QueryArgs(accountID, ip)))
+            using (var r = ExecuteReader(new QueryArgs(accountID, ip)))
             {
                 switch (r.RecordsAffected)
                 {
@@ -50,7 +49,7 @@ namespace DemoGame.Server.Queries
 
                     default:
                         const string errmsg = "How the hell did we update more than one account!? Account ID: `{0}`.";
-                        string err = string.Format(errmsg, accountID);
+                        var err = string.Format(errmsg, accountID);
                         throw new Exception(err);
                 }
             }

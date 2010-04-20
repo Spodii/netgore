@@ -9,7 +9,6 @@ using NetGore;
 using NetGore.Db;
 using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
-using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Network;
 
@@ -115,8 +114,8 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.AcceptOrTurnInQuest)]
         void RecvAcceptOrTurnInQuest(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex providerIndex = r.ReadMapEntityIndex();
-            QuestID questID = r.ReadQuestID();
+            var providerIndex = r.ReadMapEntityIndex();
+            var questID = r.ReadQuestID();
 
             // Get the user
             User user;
@@ -147,7 +146,7 @@ namespace DemoGame.Server
             if (user.ActiveQuests.Contains(quest))
             {
                 // Quest already started, try to turn in
-                bool success = user.TryFinishQuest(quest);
+                var success = user.TryFinishQuest(quest);
                 using (var pw = ServerPacket.AcceptOrTurnInQuestReply(questID, success, false))
                 {
                     user.Send(pw);
@@ -156,7 +155,7 @@ namespace DemoGame.Server
             else
             {
                 // Quest not started yet, try to add it
-                bool success = user.TryAddQuest(quest);
+                var success = user.TryAddQuest(quest);
                 using (var pw = ServerPacket.AcceptOrTurnInQuestReply(questID, success, true))
                 {
                     user.Send(pw);
@@ -170,7 +169,7 @@ namespace DemoGame.Server
             User user;
             MapEntityIndex? targetIndex = null;
 
-            bool hasTarget = r.ReadBool();
+            var hasTarget = r.ReadBool();
             if (hasTarget)
                 targetIndex = r.ReadMapEntityIndex();
 
@@ -181,8 +180,8 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.BuyFromShop)]
         void RecvBuyFromShop(IIPSocket conn, BitStream r)
         {
-            ShopItemIndex slot = r.ReadShopItemIndex();
-            byte amount = r.ReadByte();
+            var slot = r.ReadShopItemIndex();
+            var amount = r.ReadByte();
 
             User user;
             if ((user = TryGetUser(conn)) == null)
@@ -214,7 +213,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.DropInventoryItem)]
         void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
-            InventorySlot slot = r.ReadInventorySlot();
+            var slot = r.ReadInventorySlot();
 
             User user;
             if ((user = TryGetUser(conn)) == null)
@@ -236,7 +235,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.GetEquipmentItemInfo)]
         void RecvGetEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEnum<EquipmentSlot>();
+            var slot = r.ReadEnum<EquipmentSlot>();
 
             User user;
             if ((user = TryGetUser(conn)) != null)
@@ -253,7 +252,7 @@ namespace DemoGame.Server
                 return;
 
             var quest = _questManager.GetQuest(questID);
-            bool hasRequirements = false;
+            var hasRequirements = false;
 
             if (quest == null)
             {
@@ -280,7 +279,7 @@ namespace DemoGame.Server
                 return;
 
             var quest = _questManager.GetQuest(questID);
-            bool hasRequirements = false;
+            var hasRequirements = false;
 
             if (quest == null)
             {
@@ -300,7 +299,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.GetInventoryItemInfo)]
         void RecvGetInventoryItemInfo(IIPSocket conn, BitStream r)
         {
-            InventorySlot slot = r.ReadInventorySlot();
+            var slot = r.ReadInventorySlot();
 
             User user;
             if ((user = TryGetUser(conn)) != null)
@@ -322,8 +321,8 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            string name = r.ReadString();
-            string password = r.ReadString();
+            var name = r.ReadString();
+            var password = r.ReadString();
 
             Server.LoginAccount(conn, name, password);
         }
@@ -333,7 +332,7 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            string name = r.ReadString();
+            var name = r.ReadString();
 
             // Check for a valid account
             var account = TryGetAccount(conn);
@@ -364,9 +363,9 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            string name = r.ReadString();
-            string password = r.ReadString();
-            string email = r.ReadString();
+            var name = r.ReadString();
+            var password = r.ReadString();
+            var email = r.ReadString();
 
             // Ensure the connection isn't logged in
             var user = TryGetUser(conn, false);
@@ -449,7 +448,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.PickupItem)]
         void RecvPickupItem(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
+            var mapEntityIndex = r.ReadMapEntityIndex();
 
             User user;
             Map map;
@@ -482,7 +481,7 @@ namespace DemoGame.Server
             if ((user = TryGetUser(conn)) == null)
                 return;
 
-            using (PacketWriter pw = ServerPacket.Ping())
+            using (var pw = ServerPacket.Ping())
             {
                 user.Send(pw);
             }
@@ -519,7 +518,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.Say)]
         void RecvSay(IIPSocket conn, BitStream r)
         {
-            string text = r.ReadString(GameData.MaxClientSayLength);
+            var text = r.ReadString(GameData.MaxClientSayLength);
 
             User user;
             if ((user = TryGetUser(conn)) == null)
@@ -533,10 +532,10 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
-            byte index = r.ReadByte();
+            var index = r.ReadByte();
 
             // Ensure the client is in a valid state to select an account character
-            UserAccount userAccount = World.GetUserAccount(conn);
+            var userAccount = World.GetUserAccount(conn);
             if (userAccount == null)
                 return;
 
@@ -575,7 +574,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.SelectNPCChatDialogResponse)]
         void RecvSelectNPCChatDialogResponse(IIPSocket conn, BitStream r)
         {
-            byte responseIndex = r.ReadByte();
+            var responseIndex = r.ReadByte();
 
             User user;
             if ((user = TryGetUser(conn)) == null)
@@ -587,8 +586,8 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.SellInventoryToShop)]
         void RecvSellInventoryToShop(IIPSocket conn, BitStream r)
         {
-            InventorySlot slot = r.ReadInventorySlot();
-            byte amount = r.ReadByte();
+            var slot = r.ReadInventorySlot();
+            var amount = r.ReadByte();
 
             User user;
             if ((user = TryGetUser(conn)) == null)
@@ -600,22 +599,22 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.SetUDPPort)]
         void RecvSetUDPPort(IIPSocket conn, BitStream r)
         {
-            ushort remotePort = r.ReadUShort();
+            var remotePort = r.ReadUShort();
             conn.SetRemoteUnreliablePort(remotePort);
         }
 
         [MessageHandler((byte)ClientPacketID.StartNPCChatDialog)]
         void RecvStartNPCChatDialog(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
-            bool forceSkipQuestDialog = r.ReadBool();
+            var npcIndex = r.ReadMapEntityIndex();
+            var forceSkipQuestDialog = r.ReadBool();
 
             User user;
             Map map;
             if (!TryGetMap(conn, out user, out map))
                 return;
 
-            NPC npc = map.GetDynamicEntity<NPC>(npcIndex);
+            var npc = map.GetDynamicEntity<NPC>(npcIndex);
             if (npc == null)
                 return;
 
@@ -653,7 +652,7 @@ namespace DemoGame.Server
             var a = r.ReadInventorySlot();
             var b = r.ReadInventorySlot();
 
-            User user = TryGetUser(conn);
+            var user = TryGetUser(conn);
             if (user == null)
                 return;
 
@@ -663,14 +662,14 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.StartShopping)]
         void RecvStartShopping(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex entityIndex = r.ReadMapEntityIndex();
+            var entityIndex = r.ReadMapEntityIndex();
 
             User user;
             Map map;
             if (!TryGetMap(conn, out user, out map))
                 return;
 
-            Character shopkeeper = map.GetDynamicEntity<Character>(entityIndex);
+            var shopkeeper = map.GetDynamicEntity<Character>(entityIndex);
             if (shopkeeper == null)
                 return;
 
@@ -680,7 +679,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.UnequipItem)]
         void RecvUnequipItem(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEnum<EquipmentSlot>();
+            var slot = r.ReadEnum<EquipmentSlot>();
 
             User user;
             if ((user = TryGetUser(conn)) != null)
@@ -690,7 +689,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.UseInventoryItem)]
         void RecvUseInventoryItem(IIPSocket conn, BitStream r)
         {
-            InventorySlot slot = r.ReadInventorySlot();
+            var slot = r.ReadInventorySlot();
 
             User user;
             if ((user = TryGetUser(conn)) == null)
@@ -717,7 +716,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            bool hasTarget = r.ReadBool();
+            var hasTarget = r.ReadBool();
             if (hasTarget)
                 targetIndex = r.ReadMapEntityIndex();
 
@@ -729,7 +728,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.UseWorld)]
         void RecvUseWorld(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex useEntityIndex = r.ReadMapEntityIndex();
+            var useEntityIndex = r.ReadMapEntityIndex();
 
             // Get the map and user
             User user;
@@ -738,7 +737,7 @@ namespace DemoGame.Server
                 return;
 
             // Grab the DynamicEntity to use
-            DynamicEntity useEntity = map.GetDynamicEntity(useEntityIndex);
+            var useEntity = map.GetDynamicEntity(useEntityIndex);
             if (useEntity == null)
             {
                 const string errmsg = "UseEntity received but usedEntityIndex `{0}` is not a valid DynamicEntity.";
@@ -749,7 +748,7 @@ namespace DemoGame.Server
             }
 
             // Ensure the used DynamicEntity is even usable
-            IUsableEntity asUsable = useEntity as IUsableEntity;
+            var asUsable = useEntity as IUsableEntity;
             if (asUsable == null)
             {
                 const string errmsg =
@@ -767,7 +766,7 @@ namespace DemoGame.Server
                 // Notify everyone in the map it was used
                 if (asUsable.NotifyClientsOfUsage)
                 {
-                    using (PacketWriter pw = ServerPacket.UseEntity(useEntity.MapEntityIndex, user.MapEntityIndex))
+                    using (var pw = ServerPacket.UseEntity(useEntity.MapEntityIndex, user.MapEntityIndex))
                     {
                         map.Send(pw);
                     }

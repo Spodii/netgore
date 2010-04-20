@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
@@ -40,7 +41,7 @@ namespace SFML.Graphics
         /// <param name="obj">The Object to compare with the current Ray.</param>
         public override bool Equals(object obj)
         {
-            bool flag = false;
+            var flag = false;
             if ((obj != null) && (obj is Ray))
                 flag = Equals((Ray)obj);
             return flag;
@@ -87,11 +88,11 @@ namespace SFML.Graphics
         /// <param name="plane">The Plane with which to calculate this Ray's intersection.</param>
         public float? Intersects(Plane plane)
         {
-            float num2 = ((plane.Normal.X * Direction.X) + (plane.Normal.Y * Direction.Y)) + (plane.Normal.Z * Direction.Z);
+            var num2 = ((plane.Normal.X * Direction.X) + (plane.Normal.Y * Direction.Y)) + (plane.Normal.Z * Direction.Z);
             if (Math.Abs(num2) < 1E-05f)
                 return null;
-            float num3 = ((plane.Normal.X * Position.X) + (plane.Normal.Y * Position.Y)) + (plane.Normal.Z * Position.Z);
-            float num = (-plane.D - num3) / num2;
+            var num3 = ((plane.Normal.X * Position.X) + (plane.Normal.Y * Position.Y)) + (plane.Normal.Z * Position.Z);
+            var num = (-plane.D - num3) / num2;
             if (num < 0f)
             {
                 if (num < -1E-05f)
@@ -106,13 +107,13 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] The distance at which this Ray intersects the specified Plane, or null if there is no intersection.</param>
         public void Intersects(ref Plane plane, out float? result)
         {
-            float num2 = ((plane.Normal.X * Direction.X) + (plane.Normal.Y * Direction.Y)) + (plane.Normal.Z * Direction.Z);
+            var num2 = ((plane.Normal.X * Direction.X) + (plane.Normal.Y * Direction.Y)) + (plane.Normal.Z * Direction.Z);
             if (Math.Abs(num2) < 1E-05f)
                 result = 0;
             else
             {
-                float num3 = ((plane.Normal.X * Position.X) + (plane.Normal.Y * Position.Y)) + (plane.Normal.Z * Position.Z);
-                float num = (-plane.D - num3) / num2;
+                var num3 = ((plane.Normal.X * Position.X) + (plane.Normal.Y * Position.Y)) + (plane.Normal.Z * Position.Z);
+                var num = (-plane.D - num3) / num2;
                 if (num < 0f)
                 {
                     if (num < -1E-05f)
@@ -120,7 +121,6 @@ namespace SFML.Graphics
                         result = 0;
                         return;
                     }
-                    result = 0f;
                 }
                 result = new float?(num);
             }
@@ -130,20 +130,20 @@ namespace SFML.Graphics
         /// <param name="sphere">The BoundingSphere to check for intersection with the Ray.</param>
         public float? Intersects(BoundingSphere sphere)
         {
-            float num5 = sphere.Center.X - Position.X;
-            float num4 = sphere.Center.Y - Position.Y;
-            float num3 = sphere.Center.Z - Position.Z;
-            float num7 = ((num5 * num5) + (num4 * num4)) + (num3 * num3);
-            float num2 = sphere.Radius * sphere.Radius;
+            var num5 = sphere.Center.X - Position.X;
+            var num4 = sphere.Center.Y - Position.Y;
+            var num3 = sphere.Center.Z - Position.Z;
+            var num7 = ((num5 * num5) + (num4 * num4)) + (num3 * num3);
+            var num2 = sphere.Radius * sphere.Radius;
             if (num7 <= num2)
                 return 0f;
-            float num = ((num5 * Direction.X) + (num4 * Direction.Y)) + (num3 * Direction.Z);
+            var num = ((num5 * Direction.X) + (num4 * Direction.Y)) + (num3 * Direction.Z);
             if (num < 0f)
                 return null;
-            float num6 = num7 - (num * num);
+            var num6 = num7 - (num * num);
             if (num6 > num2)
                 return null;
-            float num8 = (float)Math.Sqrt((num2 - num6));
+            var num8 = (float)Math.Sqrt((num2 - num6));
             return num - num8;
         }
 
@@ -152,23 +152,23 @@ namespace SFML.Graphics
         /// <param name="result">[OutAttribute] Distance at which the ray intersects the BoundingSphere or null if there is no intersection.</param>
         public void Intersects(ref BoundingSphere sphere, out float? result)
         {
-            float num5 = sphere.Center.X - Position.X;
-            float num4 = sphere.Center.Y - Position.Y;
-            float num3 = sphere.Center.Z - Position.Z;
-            float num7 = ((num5 * num5) + (num4 * num4)) + (num3 * num3);
-            float num2 = sphere.Radius * sphere.Radius;
+            var num5 = sphere.Center.X - Position.X;
+            var num4 = sphere.Center.Y - Position.Y;
+            var num3 = sphere.Center.Z - Position.Z;
+            var num7 = ((num5 * num5) + (num4 * num4)) + (num3 * num3);
+            var num2 = sphere.Radius * sphere.Radius;
             if (num7 <= num2)
                 result = 0f;
             else
             {
                 result = 0;
-                float num = ((num5 * Direction.X) + (num4 * Direction.Y)) + (num3 * Direction.Z);
+                var num = ((num5 * Direction.X) + (num4 * Direction.Y)) + (num3 * Direction.Z);
                 if (num >= 0f)
                 {
-                    float num6 = num7 - (num * num);
+                    var num6 = num7 - (num * num);
                     if (num6 <= num2)
                     {
-                        float num8 = (float)Math.Sqrt((num2 - num6));
+                        var num8 = (float)Math.Sqrt((num2 - num6));
                         result = new float?(num - num8);
                     }
                 }

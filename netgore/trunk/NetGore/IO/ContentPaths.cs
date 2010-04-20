@@ -65,11 +65,6 @@ namespace NetGore.IO
         public const string MusicFolder = "Music";
 
         /// <summary>
-        /// The relative path to the Sounds directory from the Contents directory.
-        /// </summary>
-        public const string SoundsFolder = "Sounds";
-
-        /// <summary>
         /// The relative path to the Settings directory from the Contents directory.
         /// </summary>
         public const string SettingsFolder = "Settings";
@@ -78,6 +73,11 @@ namespace NetGore.IO
         /// The relative path to the Skeletons directory from the Contents directory.
         /// </summary>
         public const string SkeletonsFolder = "Skeletons";
+
+        /// <summary>
+        /// The relative path to the Sounds directory from the Contents directory.
+        /// </summary>
+        public const string SoundsFolder = "Sounds";
 
         /// <summary>
         /// Suffix for temporary files.
@@ -113,18 +113,18 @@ namespace NetGore.IO
         readonly PathString _languages;
         readonly PathString _maps;
         readonly PathString _music;
-        readonly PathString _sounds;
         readonly PathString _particleEffects;
         readonly PathString _root;
         readonly PathString _settings;
         readonly PathString _skeletons;
+        readonly PathString _sounds;
 
         /// <summary>
         /// Initializes the <see cref="ContentPaths"/> class.
         /// </summary>
         static ContentPaths()
         {
-            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
             _appRoot = Path.GetFullPath(baseDir);
 
             // Set the _freeFileIndex to a random initial value
@@ -262,14 +262,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets the file path to the Sounds directory.
-        /// </summary>
-        public PathString Sounds
-        {
-            get { return _sounds; }
-        }
-
-        /// <summary>
         /// Gets the file path to the ParticleEffects directory.
         /// </summary>
         public PathString ParticleEffects
@@ -299,6 +291,14 @@ namespace NetGore.IO
         public PathString Skeletons
         {
             get { return _skeletons; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the Sounds directory.
+        /// </summary>
+        public PathString Sounds
+        {
+            get { return _sounds; }
         }
 
         /// <summary>
@@ -365,7 +365,7 @@ namespace NetGore.IO
         /// <returns>The full file path to the development content directory.</returns>
         static string GetBuildContentPath(string rootPath)
         {
-            string childPath = "Content" + Path.DirectorySeparatorChar;
+            var childPath = "Content" + Path.DirectorySeparatorChar;
             return Path.Combine(rootPath, childPath);
         }
 
@@ -379,7 +379,7 @@ namespace NetGore.IO
         static PathString GetChildPath(string root, string child)
         {
             // Create the desired path
-            string path = Path.Combine(root, child);
+            var path = Path.Combine(root, child);
 
             // Ensure the directory exists
             if (!Directory.Exists(path))
@@ -451,7 +451,7 @@ namespace NetGore.IO
         {
             const string errmsg = "Temp file deletion failed: {0}";
 
-            uint index = ++_freeFileIndex;
+            var index = ++_freeFileIndex;
 
             string filePath = _temp.Join(index + _tempFileSuffix);
 

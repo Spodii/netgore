@@ -54,7 +54,7 @@ namespace NetGore.IO.PropertySync
             }
             else
             {
-                bool hasValue = reader.ReadBool(null);
+                var hasValue = reader.ReadBool(null);
                 if (hasValue)
                     ret = _nonNullableSync.InternalRead(name, reader);
                 else

@@ -45,7 +45,7 @@ namespace NetGore.Tests.IO
 
         static void AssertArraysEqual<T>(T[] expected, T[] actual, string msg, params object[] objs)
         {
-            string customMsg = string.Empty;
+            var customMsg = string.Empty;
             if (!string.IsNullOrEmpty(msg))
             {
                 if (objs != null && objs.Length > 0)
@@ -56,7 +56,7 @@ namespace NetGore.Tests.IO
 
             Assert.AreEqual(expected.Length, actual.Length, "Lengths not equal. Type: `{0}`. Message: {1}", typeof(T), customMsg);
 
-            for (int i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Length; i++)
             {
                 Assert.AreEqual(expected[i], actual[i], "Type: `{0}`  Index: `{1}`  Message: {2}", typeof(T), i, customMsg);
             }
@@ -74,8 +74,8 @@ namespace NetGore.Tests.IO
 
         static string Implode(IEnumerable<string> src)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (string s in src)
+            var sb = new StringBuilder();
+            foreach (var s in src)
             {
                 sb.Append(s);
             }
@@ -96,8 +96,8 @@ namespace NetGore.Tests.IO
         {
             var ret = new T[count];
 
-            double current = start;
-            for (int i = 0; i < count; i++)
+            var current = start;
+            for (var i = 0; i < count; i++)
             {
                 ret[i] = creator(current);
                 current += step;
@@ -119,7 +119,7 @@ namespace NetGore.Tests.IO
         {
             var actual = new T[expected.Length];
 
-            for (int i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Length; i++)
             {
                 actual[i] = readHandler(r, GetValueKey(i));
             }
@@ -139,7 +139,7 @@ namespace NetGore.Tests.IO
         /// <param name="writeHandler">The write handler.</param>
         static void WriteTestValues<T>(IValueWriter w, T[] values, WriteTestValuesHandler<T> writeHandler)
         {
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 writeHandler(w, GetValueKey(i), values[i]);
             }
@@ -150,18 +150,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestBools()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => x % 3 == 0);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadBool(pname)));
                     }
@@ -172,18 +172,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestBytes()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (byte)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadByte(pname)));
                     }
@@ -194,18 +194,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestDoubles()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadDouble(pname)));
                     }
@@ -222,22 +222,22 @@ namespace NetGore.Tests.IO
                 TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
             };
 
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNameLookup)
                         continue;
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
-                        for (int i = 0; i < values.Length; i++)
+                        for (var i = 0; i < values.Length; i++)
                         {
                             w.WriteEnumName(GetValueKey(i), values[i]);
                         }
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         Assert.AreEqual(values[3], r.ReadEnumName<TestEnum>(GetValueKey(3)));
                         Assert.AreEqual(values[5], r.ReadEnumName<TestEnum>(GetValueKey(5)));
@@ -261,23 +261,55 @@ namespace NetGore.Tests.IO
                 TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
             };
 
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
-                        for (int i = 0; i < values.Length; i++)
+                        for (var i = 0; i < values.Length; i++)
                         {
                             w.WriteEnumName(GetValueKey(i), values[i]);
                         }
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
-                        for (int i = 0; i < values.Length; i++)
+                        for (var i = 0; i < values.Length; i++)
                         {
                             Assert.AreEqual(values[i], r.ReadEnumName<TestEnum>(GetValueKey(i)));
+                        }
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestEnumValueWithoutNameLookup()
+        {
+            var values = new TestEnum[]
+            {
+                TestEnum.A, TestEnum.Dee, TestEnum.Eeie, TestEnum.Cee, TestEnum.Eeie, TestEnum.Ayche, TestEnum.B, TestEnum.B,
+                TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
+            };
+
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            {
+                using (var creator = createCreator())
+                {
+                    using (var w = creator.GetWriter())
+                    {
+                        for (var i = 0; i < values.Length; i++)
+                        {
+                            w.WriteEnumValue(GetValueKey(i), values[i]);
+                        }
+                    }
+
+                    var r = creator.GetReader();
+                    {
+                        for (var i = 0; i < values.Length; i++)
+                        {
+                            Assert.AreEqual(values[i], r.ReadEnumValue<TestEnum>(GetValueKey(i)));
                         }
                     }
                 }
@@ -293,22 +325,22 @@ namespace NetGore.Tests.IO
                 TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
             };
 
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNameLookup)
                         continue;
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
-                        for (int i = 0; i < values.Length; i++)
+                        for (var i = 0; i < values.Length; i++)
                         {
                             w.WriteEnumValue(GetValueKey(i), values[i]);
                         }
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         Assert.AreEqual(values[3], r.ReadEnumValue<TestEnum>(GetValueKey(3)));
                         Assert.AreEqual(values[5], r.ReadEnumValue<TestEnum>(GetValueKey(5)));
@@ -324,52 +356,20 @@ namespace NetGore.Tests.IO
         }
 
         [Test]
-        public void TestEnumValueWithoutNameLookup()
-        {
-            var values = new TestEnum[]
-            {
-                TestEnum.A, TestEnum.Dee, TestEnum.Eeie, TestEnum.Cee, TestEnum.Eeie, TestEnum.Ayche, TestEnum.B, TestEnum.B,
-                TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee
-            };
-
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
-            {
-                using (ReaderWriterCreatorBase creator = createCreator())
-                {
-                    using (IValueWriter w = creator.GetWriter())
-                    {
-                        for (int i = 0; i < values.Length; i++)
-                        {
-                            w.WriteEnumValue(GetValueKey(i), values[i]);
-                        }
-                    }
-
-                    IValueReader r = creator.GetReader();
-                    {
-                        for (int i = 0; i < values.Length; i++)
-                        {
-                            Assert.AreEqual(values[i], r.ReadEnumValue<TestEnum>(GetValueKey(i)));
-                        }
-                    }
-                }
-            }
-        }
-
-        [Test]
         public void TestFloats()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (float)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadFloat(pname)));
                     }
@@ -381,15 +381,15 @@ namespace NetGore.Tests.IO
         public void TestIllegalXmlCharactersInStrings()
         {
             var illegalStrs = new string[] { "<", ">", "\\", "/", "&", "'", "\"", "?", Environment.NewLine };
-            string allStrings = Implode(illegalStrs);
+            var allStrings = Implode(illegalStrs);
 
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
-                        for (int i = 0; i < illegalStrs.Length; i++)
+                        for (var i = 0; i < illegalStrs.Length; i++)
                         {
                             w.Write(GetValueKey(i), illegalStrs[i]);
                         }
@@ -397,9 +397,9 @@ namespace NetGore.Tests.IO
                         w.Write("All", allStrings);
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
 
-                    for (int i = 0; i < illegalStrs.Length; i++)
+                    for (var i = 0; i < illegalStrs.Length; i++)
                     {
                         Assert.AreEqual(illegalStrs[i], r.ReadString(GetValueKey(i)));
                     }
@@ -412,18 +412,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestInts()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (int)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadInt(pname)));
                     }
@@ -434,18 +434,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestLongs()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (long)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadLong(pname)));
                     }
@@ -456,9 +456,9 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNameLookup()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNameLookup)
                         continue;
@@ -471,7 +471,7 @@ namespace NetGore.Tests.IO
                     const string f = "asdf asdf lkjwreoiuwalj jk wark qoiuwer";
                     const int g = 2092142;
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         w.Write("a", a);
                         w.Write("b", b);
@@ -482,7 +482,7 @@ namespace NetGore.Tests.IO
                         w.Write("g", g);
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         Assert.AreEqual(f, r.ReadString("f"));
                         Assert.AreEqual(c, r.ReadFloat("c"));
@@ -502,9 +502,9 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNameLookupCaseSensitivity()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNameLookup)
                         continue;
@@ -519,7 +519,7 @@ namespace NetGore.Tests.IO
                     const string f = "asdf asdf lkjwreoiuwalj jk wark qoiuwer";
                     const int g = 2092142;
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         w.Write("A", a);
                         w.Write("B", b);
@@ -530,7 +530,7 @@ namespace NetGore.Tests.IO
                         w.Write("G", g);
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         Assert.AreEqual(f, r.ReadString("f"));
                         Assert.AreEqual(c, r.ReadFloat("c"));
@@ -550,9 +550,9 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNameLookupWithNodes()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNameLookup)
                         continue;
@@ -583,7 +583,7 @@ namespace NetGore.Tests.IO
                     const string f3 = "asdf asdasfwerqwreadsahhewwqrqwreqref lkjwreoiuwalj jk wark qoiuwer";
                     const int g3 = 2342;
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         w.WriteStartNode("NodeA");
                         w.Write("a", a1);
@@ -616,11 +616,11 @@ namespace NetGore.Tests.IO
                         w.WriteEndNode("NodeC");
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
-                        IValueReader nodeB = r.ReadNode("NodeB");
-                        IValueReader nodeC = r.ReadNode("NodeC");
-                        IValueReader nodeA = r.ReadNode("NodeA");
+                        var nodeB = r.ReadNode("NodeB");
+                        var nodeC = r.ReadNode("NodeC");
+                        var nodeA = r.ReadNode("NodeA");
 
                         Assert.AreEqual(f2, nodeB.ReadString("f"));
                         Assert.AreEqual(c2, nodeB.ReadFloat("c"));
@@ -662,9 +662,9 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNameLookupWithNodesCaseSensitivity()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNameLookup)
                         continue;
@@ -695,7 +695,7 @@ namespace NetGore.Tests.IO
                     const string f3 = "asdf asdasfwerqwreadsahhewwqrqwreqref lkjwreoiuwalj jk wark qoiuwer";
                     const int g3 = 2342;
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         w.WriteStartNode("NodeA");
                         w.Write("a", a1);
@@ -728,11 +728,11 @@ namespace NetGore.Tests.IO
                         w.WriteEndNode("NodeC");
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
-                        IValueReader nodeB = r.ReadNode("NodeB");
-                        IValueReader nodeC = r.ReadNode("NodeC");
-                        IValueReader nodeA = r.ReadNode("NodeA");
+                        var nodeB = r.ReadNode("NodeB");
+                        var nodeC = r.ReadNode("NodeC");
+                        var nodeA = r.ReadNode("NodeA");
 
                         Assert.AreEqual(f2, nodeB.ReadString("f"));
                         Assert.AreEqual(c2, nodeB.ReadFloat("c"));
@@ -774,9 +774,9 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNodes()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNodes)
                         continue;
@@ -788,7 +788,7 @@ namespace NetGore.Tests.IO
                     var v5 = Range(0, 100, 1, x => (ushort)x);
                     var v6 = Range(0, 100, 1, x => Parser.Invariant.ToString(x));
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         w.WriteMany("v1", v1, w.Write);
                         w.WriteMany("v2", v2, w.Write);
@@ -798,7 +798,7 @@ namespace NetGore.Tests.IO
                         w.WriteMany("v6", v6, w.Write);
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         var r1 = r.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname)));
                         var r2 = r.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname)));
@@ -821,26 +821,26 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNodesBoolsOnly()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase tmp = createCreator())
+                using (var tmp = createCreator())
                 {
                     if (!tmp.SupportsNodes)
                         continue;
                 }
 
-                for (int i = 1; i < 40; i++)
+                for (var i = 1; i < 40; i++)
                 {
-                    using (ReaderWriterCreatorBase creator = createCreator())
+                    using (var creator = createCreator())
                     {
                         var v1 = Range(0, i, 1, x => x % 3 == 0);
 
-                        using (IValueWriter w = creator.GetWriter())
+                        using (var w = creator.GetWriter())
                         {
                             w.WriteMany("v1", v1, w.Write);
                         }
 
-                        IValueReader r = creator.GetReader();
+                        var r = creator.GetReader();
                         {
                             var r1 = r.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname)));
 
@@ -854,9 +854,9 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNodesDeepLinear()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNodes)
                         continue;
@@ -868,7 +868,7 @@ namespace NetGore.Tests.IO
                     var v5 = Range(0, 100, 1, x => (ushort)x);
                     var v6 = Range(0, 100, 1, x => Parser.Invariant.ToString(x));
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         w.WriteStartNode("a1");
                         {
@@ -981,10 +981,10 @@ namespace NetGore.Tests.IO
                         w.WriteEndNode("a2");
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
-                        IValueReader a1 = r.ReadNode("a1");
-                        IValueReader c = a1;
+                        var a1 = r.ReadNode("a1");
+                        var c = a1;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
                         AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
@@ -992,7 +992,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a1b1 = a1.ReadNode("b1");
+                        var a1b1 = a1.ReadNode("b1");
                         c = a1b1;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1001,7 +1001,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a1b1c1 = a1b1.ReadNode("c1");
+                        var a1b1c1 = a1b1.ReadNode("c1");
                         c = a1b1c1;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1010,7 +1010,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a1b1c2 = a1b1.ReadNode("c2");
+                        var a1b1c2 = a1b1.ReadNode("c2");
                         c = a1b1c2;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1019,7 +1019,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a1b1c2d1 = a1b1c2.ReadNode("d1");
+                        var a1b1c2d1 = a1b1c2.ReadNode("d1");
                         c = a1b1c2d1;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1028,7 +1028,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a1b2 = a1.ReadNode("b2");
+                        var a1b2 = a1.ReadNode("b2");
                         c = a1b2;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1037,7 +1037,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a1b2c1 = a1b2.ReadNode("c1");
+                        var a1b2c1 = a1b2.ReadNode("c1");
                         c = a1b2c1;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1046,7 +1046,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a2 = r.ReadNode("a2");
+                        var a2 = r.ReadNode("a2");
                         c = a2;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1055,7 +1055,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a2b1 = a2.ReadNode("b1");
+                        var a2b1 = a2.ReadNode("b1");
                         c = a2b1;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1064,7 +1064,7 @@ namespace NetGore.Tests.IO
                         AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
                         AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
 
-                        IValueReader a2b2 = a2.ReadNode("b2");
+                        var a2b2 = a2.ReadNode("b2");
                         c = a2b2;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
@@ -1080,9 +1080,9 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestNodesDeepRandom()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     if (!creator.SupportsNodes || !creator.SupportsNameLookup)
                         continue;
@@ -1094,7 +1094,7 @@ namespace NetGore.Tests.IO
                     var v5 = Range(0, 100, 1, x => (ushort)x);
                     var v6 = Range(0, 100, 1, x => Parser.Invariant.ToString(x));
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         w.WriteStartNode("a1");
                         {
@@ -1207,21 +1207,21 @@ namespace NetGore.Tests.IO
                         w.WriteEndNode("a2");
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
-                        IValueReader a1 = r.ReadNode("a1");
-                        IValueReader a1b1 = a1.ReadNode("b1");
-                        IValueReader a1b1c1 = a1b1.ReadNode("c1");
-                        IValueReader a1b1c2 = a1b1.ReadNode("c2");
-                        IValueReader a1b1c2d1 = a1b1c2.ReadNode("d1");
-                        IValueReader a1b2 = a1.ReadNode("b2");
-                        IValueReader a1b2c1 = a1b2.ReadNode("c1");
+                        var a1 = r.ReadNode("a1");
+                        var a1b1 = a1.ReadNode("b1");
+                        var a1b1c1 = a1b1.ReadNode("c1");
+                        var a1b1c2 = a1b1.ReadNode("c2");
+                        var a1b1c2d1 = a1b1c2.ReadNode("d1");
+                        var a1b2 = a1.ReadNode("b2");
+                        var a1b2c1 = a1b2.ReadNode("c1");
 
-                        IValueReader a2 = r.ReadNode("a2");
-                        IValueReader a2b1 = a2.ReadNode("b1");
-                        IValueReader a2b2 = a2.ReadNode("b2");
+                        var a2 = r.ReadNode("a2");
+                        var a2b1 = a2.ReadNode("b1");
+                        var a2b2 = a2.ReadNode("b2");
 
-                        IValueReader c = a1;
+                        var c = a1;
                         AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
                         AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
                         AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
@@ -1308,18 +1308,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestSBytes()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (sbyte)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadSByte(pname)));
                     }
@@ -1330,18 +1330,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestShorts()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (short)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadShort(pname)));
                     }
@@ -1352,18 +1352,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestStrings()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => Parser.Invariant.ToString(x));
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadString(pname)));
                     }
@@ -1374,18 +1374,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestUInts()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (uint)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadUInt(pname)));
                     }
@@ -1396,18 +1396,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestULongs()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (ulong)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadULong(pname)));
                     }
@@ -1418,18 +1418,18 @@ namespace NetGore.Tests.IO
         [Test]
         public void TestUShorts()
         {
-            foreach (CreateCreatorHandler createCreator in IValueReaderWriterTestHelper.CreateCreators)
+            foreach (var createCreator in IValueReaderWriterTestHelper.CreateCreators)
             {
-                using (ReaderWriterCreatorBase creator = createCreator())
+                using (var creator = createCreator())
                 {
                     var v1 = Range(0, 100, 1, x => (ushort)x);
 
-                    using (IValueWriter w = creator.GetWriter())
+                    using (var w = creator.GetWriter())
                     {
                         WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
                     }
 
-                    IValueReader r = creator.GetReader();
+                    var r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadUShort(pname)));
                     }

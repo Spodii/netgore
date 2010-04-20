@@ -30,7 +30,7 @@ namespace DemoGame.Server.Queries
 
         public int Execute(QuestID questID, IEnumerable<KeyValuePair<ItemTemplateID, byte>> items)
         {
-            int sum = 0;
+            var sum = 0;
             foreach (var item in items)
             {
                 sum += Execute(questID, item.Key, item.Value);

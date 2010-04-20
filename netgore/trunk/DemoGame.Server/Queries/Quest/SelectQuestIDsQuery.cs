@@ -22,7 +22,7 @@ namespace DemoGame.Server.Queries
 
         public IEnumerable<QuestID> Execute()
         {
-            List<QuestID> ret = new List<QuestID>();
+            var ret = new List<QuestID>();
 
             using (var r = ExecuteReader())
             {

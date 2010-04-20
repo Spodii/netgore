@@ -42,7 +42,7 @@ namespace DemoGame.Server
             if (AISettings.AIDisabled)
                 return;
 
-            int time = GetTime();
+            var time = GetTime();
 
             // Ensure the target is still valid, or enough time has elapsed to check for a better target
             if ((_target != null && !IsValidTarget(_target)) || (_lastTargetUpdateTime + _targetUpdateRate < time))

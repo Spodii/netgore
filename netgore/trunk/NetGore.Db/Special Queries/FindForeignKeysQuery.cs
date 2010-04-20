@@ -43,7 +43,7 @@ namespace NetGore.Db
         /// <returns>The results of the query.</returns>
         public IEnumerable<TableColumnPair> Execute(string database, string table, string column)
         {
-            List<TableColumnPair> ret = new List<TableColumnPair>();
+            var ret = new List<TableColumnPair>();
 
             using (var r = ExecuteReader(new QueryArgs(database, table, column)))
             {

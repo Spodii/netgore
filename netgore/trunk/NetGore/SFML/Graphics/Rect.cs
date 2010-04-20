@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace SFML
@@ -25,9 +26,9 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public IntRect(int left, int top, int right, int bottom)
             {
-                Left   = left;
-                Top    = top;
-                Right  = right;
+                Left = left;
+                Top = top;
+                Right = right;
                 Bottom = bottom;
             }
 
@@ -38,7 +39,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public int Width
             {
-                get {return Right - Left;}
+                get { return Right - Left; }
             }
 
             ////////////////////////////////////////////////////////////
@@ -48,7 +49,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public int Height
             {
-                get {return Bottom - Top;}
+                get { return Bottom - Top; }
             }
 
             ////////////////////////////////////////////////////////////
@@ -60,9 +61,9 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public void Offset(int offsetX, int offsetY)
             {
-                Left   += offsetX;
-                Top    += offsetY;
-                Right  += offsetX;
+                Left += offsetX;
+                Top += offsetY;
+                Right += offsetX;
                 Bottom += offsetY;
             }
 
@@ -88,8 +89,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public bool Intersects(IntRect rect)
             {
-                return ((Math.Max(Left, rect.Left) < Math.Min(Right,  rect.Right)) &&
-                        (Math.Max(Top,  rect.Top)  < Math.Min(Bottom, rect.Bottom)));
+                return ((Math.Max(Left, rect.Left) < Math.Min(Right, rect.Right)) &&
+                        (Math.Max(Top, rect.Top) < Math.Min(Bottom, rect.Bottom)));
             }
 
             ////////////////////////////////////////////////////////////
@@ -102,24 +103,22 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public bool Intersects(IntRect rect, out IntRect overlap)
             {
-                IntRect Overlapping = new IntRect(Math.Max(Left,   rect.Left),
-                                                  Math.Max(Top,    rect.Top),
-                                                  Math.Min(Right,  rect.Right),
-                                                  Math.Min(Bottom, rect.Bottom));
+                var Overlapping = new IntRect(Math.Max(Left, rect.Left), Math.Max(Top, rect.Top), Math.Min(Right, rect.Right),
+                                              Math.Min(Bottom, rect.Bottom));
 
                 if ((Overlapping.Left < Overlapping.Right) && (Overlapping.Top < Overlapping.Bottom))
                 {
-                    overlap.Left   = Overlapping.Left;
-                    overlap.Top    = Overlapping.Top;
-                    overlap.Right  = Overlapping.Right;
+                    overlap.Left = Overlapping.Left;
+                    overlap.Top = Overlapping.Top;
+                    overlap.Right = Overlapping.Right;
                     overlap.Bottom = Overlapping.Bottom;
                     return true;
                 }
                 else
                 {
-                    overlap.Left   = 0;
-                    overlap.Top    = 0;
-                    overlap.Right  = 0;
+                    overlap.Left = 0;
+                    overlap.Top = 0;
+                    overlap.Right = 0;
                     overlap.Bottom = 0;
                     return false;
                 }
@@ -158,9 +157,9 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public FloatRect(float left, float top, float right, float bottom)
             {
-                Left   = left;
-                Top    = top;
-                Right  = right;
+                Left = left;
+                Top = top;
+                Right = right;
                 Bottom = bottom;
             }
 
@@ -171,7 +170,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public float Width
             {
-                get {return Right - Left;}
+                get { return Right - Left; }
             }
 
             ////////////////////////////////////////////////////////////
@@ -181,7 +180,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public float Height
             {
-                get {return Bottom - Top;}
+                get { return Bottom - Top; }
             }
 
             ////////////////////////////////////////////////////////////
@@ -193,9 +192,9 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public void Offset(float offsetX, float offsetY)
             {
-                Left   += offsetX;
-                Top    += offsetY;
-                Right  += offsetX;
+                Left += offsetX;
+                Top += offsetY;
+                Right += offsetX;
                 Bottom += offsetY;
             }
 
@@ -221,8 +220,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public bool Intersects(FloatRect rect)
             {
-                return ((Math.Max(Left, rect.Left) < Math.Min(Right,  rect.Right)) &&
-                        (Math.Max(Top,  rect.Top)  < Math.Min(Bottom, rect.Bottom)));
+                return ((Math.Max(Left, rect.Left) < Math.Min(Right, rect.Right)) &&
+                        (Math.Max(Top, rect.Top) < Math.Min(Bottom, rect.Bottom)));
             }
 
             ////////////////////////////////////////////////////////////
@@ -235,24 +234,22 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public bool Intersects(FloatRect rect, out FloatRect overlap)
             {
-                FloatRect Overlapping = new FloatRect(Math.Max(Left,   rect.Left),
-                                                      Math.Max(Top,    rect.Top),
-                                                      Math.Min(Right,  rect.Right),
-                                                      Math.Min(Bottom, rect.Bottom));
+                var Overlapping = new FloatRect(Math.Max(Left, rect.Left), Math.Max(Top, rect.Top), Math.Min(Right, rect.Right),
+                                                Math.Min(Bottom, rect.Bottom));
 
                 if ((Overlapping.Left < Overlapping.Right) && (Overlapping.Top < Overlapping.Bottom))
                 {
-                    overlap.Left   = Overlapping.Left;
-                    overlap.Top    = Overlapping.Top;
-                    overlap.Right  = Overlapping.Right;
+                    overlap.Left = Overlapping.Left;
+                    overlap.Top = Overlapping.Top;
+                    overlap.Right = Overlapping.Right;
                     overlap.Bottom = Overlapping.Bottom;
                     return true;
                 }
                 else
                 {
-                    overlap.Left   = 0;
-                    overlap.Top    = 0;
-                    overlap.Right  = 0;
+                    overlap.Left = 0;
+                    overlap.Top = 0;
+                    overlap.Right = 0;
                     overlap.Bottom = 0;
                     return false;
                 }

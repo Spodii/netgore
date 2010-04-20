@@ -66,13 +66,13 @@ namespace DemoGame.Server
             // Load the maps
             var mapFiles = MapBase.GetMapFiles(ContentPaths.Build);
             _maps = new DArray<Map>(mapFiles.Count() + 10, false);
-            foreach (string mapFile in mapFiles)
+            foreach (var mapFile in mapFiles)
             {
                 MapID mapID;
                 if (!MapBase.TryGetIndexFromPath(mapFile, out mapID))
                     throw new Exception(string.Format("Failed to get the ID of map file `{0}`.", mapFile));
 
-                Map m = new Map(mapID, this);
+                var m = new Map(mapID, this);
                 _maps[(int)mapID] = m;
                 m.Load();
             }
@@ -82,10 +82,10 @@ namespace DemoGame.Server
 
 #if true
             // NOTE: Create some test items
-            Random rand = new Random();
-            foreach (Map m in Maps)
+            var rand = new Random();
+            foreach (var m in Maps)
             {
-                for (int i = 0; i < 10; i++)
+                for (var i = 0; i < 10; i++)
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
@@ -237,7 +237,7 @@ namespace DemoGame.Server
         /// </returns>
         public User GetUser(IIPSocket conn, bool errorOnFailure)
         {
-            UserAccount userAccount = GetUserAccount(conn);
+            var userAccount = GetUserAccount(conn);
             if (userAccount == null)
                 return null;
 
@@ -253,7 +253,7 @@ namespace DemoGame.Server
             }
 
             // No user bound to connection, perform manual search
-            User ret = _users.Values.FirstOrDefault(x => x.Conn == conn);
+            var ret = _users.Values.FirstOrDefault(x => x.Conn == conn);
             if (ret == null && errorOnFailure)
             {
                 const string errmsg2 = "No user found on socket `{0}`.";
@@ -282,7 +282,7 @@ namespace DemoGame.Server
                 return null;
             }
 
-            UserAccount userAccount = conn.Tag as UserAccount;
+            var userAccount = conn.Tag as UserAccount;
             if (userAccount == null)
             {
                 const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but the tag was invalid (`{1}`).";
@@ -349,7 +349,7 @@ namespace DemoGame.Server
             }
 
             // Send to all users in all maps
-            foreach (Map map in Maps)
+            foreach (var map in Maps)
             {
                 map.Send(data, reliable);
             }
@@ -375,7 +375,7 @@ namespace DemoGame.Server
 
             ProcessDisposeStack();
 
-            int currentTime = GetTime();
+            var currentTime = GetTime();
 
             if (_updateRespawnablesTime < currentTime)
             {
@@ -399,7 +399,7 @@ namespace DemoGame.Server
         protected override void UpdateMaps(int deltaTime)
         {
             // Update every map
-            foreach (Map map in Maps)
+            foreach (var map in Maps)
             {
                 // Make sure we do not have a null map somehow
                 if (map == null)
@@ -449,7 +449,7 @@ namespace DemoGame.Server
             _unarmedWeapon.Dispose();
 
             // Dispose of the maps
-            foreach (Map map in Maps)
+            foreach (var map in Maps)
             {
                 map.Dispose();
             }

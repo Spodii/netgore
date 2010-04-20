@@ -30,7 +30,7 @@ namespace DemoGame.Server.Queries
 
         public int Execute(QuestID questID, IEnumerable<QuestID> reqQuests)
         {
-            int sum = 0;
+            var sum = 0;
             foreach (var item in reqQuests)
             {
                 sum += Execute(questID, item);

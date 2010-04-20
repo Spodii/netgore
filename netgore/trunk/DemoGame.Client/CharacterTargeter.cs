@@ -4,7 +4,7 @@ using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
-using IDrawable=NetGore.Graphics.IDrawable;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -173,7 +173,7 @@ namespace DemoGame.Client
 
             MouseOverCharacter = World.Map.Spatial.Get<Character>(World.Camera.Min + cursorPos, x => x != World.UserChar);
 
-            if (MouseOverCharacter != null && gui.IsMouseButtonDown(SFML.Window.MouseButton.Left))
+            if (MouseOverCharacter != null && gui.IsMouseButtonDown(MouseButton.Left))
                 TargetCharacter = MouseOverCharacter;
 
             if (MouseOverCharacter != null && MouseOverCharacter.IsDisposed)

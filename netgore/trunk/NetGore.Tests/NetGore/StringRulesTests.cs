@@ -22,7 +22,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void AllTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.All);
+            var r = new StringRules(_minLength, _maxLength, CharType.All);
             Assert.IsTrue(r.IsValid(_sLower));
             Assert.IsTrue(r.IsValid(_sUpper));
             Assert.IsTrue(r.IsValid(_sUpperLower));
@@ -35,7 +35,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void AlphaLowerTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.AlphaLower);
+            var r = new StringRules(_minLength, _maxLength, CharType.AlphaLower);
             Assert.IsTrue(r.IsValid(_sLower));
             Assert.IsFalse(r.IsValid(_sUpper));
             Assert.IsFalse(r.IsValid(_sUpperLower));
@@ -48,7 +48,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void AlphaTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.Alpha);
+            var r = new StringRules(_minLength, _maxLength, CharType.Alpha);
             Assert.IsTrue(r.IsValid(_sLower));
             Assert.IsTrue(r.IsValid(_sUpper));
             Assert.IsTrue(r.IsValid(_sUpperLower));
@@ -61,7 +61,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void AlphaUpperTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.AlphaUpper);
+            var r = new StringRules(_minLength, _maxLength, CharType.AlphaUpper);
             Assert.IsFalse(r.IsValid(_sLower));
             Assert.IsTrue(r.IsValid(_sUpper));
             Assert.IsFalse(r.IsValid(_sUpperLower));
@@ -74,7 +74,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void EmptyInputTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.All);
+            var r = new StringRules(_minLength, _maxLength, CharType.All);
             Assert.IsFalse(r.IsValid(string.Empty));
         }
 
@@ -99,14 +99,14 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void NullInputTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.All);
+            var r = new StringRules(_minLength, _maxLength, CharType.All);
             Assert.IsFalse(r.IsValid(null));
         }
 
         [Test]
         public void NumericTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.Numeric);
+            var r = new StringRules(_minLength, _maxLength, CharType.Numeric);
             Assert.IsFalse(r.IsValid(_sLower));
             Assert.IsFalse(r.IsValid(_sUpper));
             Assert.IsFalse(r.IsValid(_sUpperLower));
@@ -119,7 +119,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void PropertyTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.AlphaLower);
+            var r = new StringRules(_minLength, _maxLength, CharType.AlphaLower);
             Assert.AreEqual(_minLength, r.MinLength);
             Assert.AreEqual(_maxLength, r.MaxLength);
             Assert.AreEqual(CharType.AlphaLower, r.AllowedChars);
@@ -128,7 +128,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void PunctuationTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.Punctuation);
+            var r = new StringRules(_minLength, _maxLength, CharType.Punctuation);
             Assert.IsFalse(r.IsValid(_sLower));
             Assert.IsFalse(r.IsValid(_sUpper));
             Assert.IsFalse(r.IsValid(_sUpperLower));
@@ -141,7 +141,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void StringTooLongTest()
         {
-            StringRules r = new StringRules(_minLength, _minLength, CharType.Alpha | CharType.Punctuation | CharType.Whitespace);
+            var r = new StringRules(_minLength, _minLength, CharType.Alpha | CharType.Punctuation | CharType.Whitespace);
             Assert.IsFalse(r.IsValid(_sLower));
             Assert.IsFalse(r.IsValid(_sUpper));
             Assert.IsFalse(r.IsValid(_sUpperLower));
@@ -154,7 +154,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void StringTooShortTest()
         {
-            StringRules r = new StringRules(_maxLength, _maxLength, CharType.Alpha | CharType.Punctuation | CharType.Whitespace);
+            var r = new StringRules(_maxLength, _maxLength, CharType.Alpha | CharType.Punctuation | CharType.Whitespace);
             Assert.IsFalse(r.IsValid(_sLower));
             Assert.IsFalse(r.IsValid(_sUpper));
             Assert.IsFalse(r.IsValid(_sUpperLower));
@@ -167,7 +167,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void WhitespaceTest()
         {
-            StringRules r = new StringRules(_minLength, _maxLength, CharType.Whitespace);
+            var r = new StringRules(_minLength, _maxLength, CharType.Whitespace);
             Assert.IsFalse(r.IsValid(_sLower));
             Assert.IsFalse(r.IsValid(_sUpper));
             Assert.IsFalse(r.IsValid(_sUpperLower));

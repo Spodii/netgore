@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore.Network;
 
 namespace DemoGame.Server
 {
@@ -51,7 +50,7 @@ namespace DemoGame.Server
 
         public virtual void ForceSynchronizeTo(User user)
         {
-            using (PacketWriter pw = ServerPacket.GetWriter())
+            using (var pw = ServerPacket.GetWriter())
             {
                 ServerPacket.SetCharacterHPPercent(pw, _character.MapEntityIndex, _lastSentHPPercent);
                 ServerPacket.SetCharacterMPPercent(pw, _character.MapEntityIndex, _lastSentMPPercent);
@@ -84,11 +83,11 @@ namespace DemoGame.Server
                 return;
             }
 
-            byte newHPPercent = (byte)(((float)_character.HP / maxHP) * 100.0f);
-            byte newMPPercent = (byte)(((float)_character.MP / maxMP) * 100.0f);
+            var newHPPercent = (byte)(((float)_character.HP / maxHP) * 100.0f);
+            var newMPPercent = (byte)(((float)_character.MP / maxMP) * 100.0f);
 
-            bool updateHP = Math.Abs(newHPPercent - _lastSentHPPercent) >= _updatePercentDiff;
-            bool updateMP = Math.Abs(newMPPercent - _lastSentMPPercent) >= _updatePercentDiff;
+            var updateHP = Math.Abs(newHPPercent - _lastSentHPPercent) >= _updatePercentDiff;
+            var updateMP = Math.Abs(newMPPercent - _lastSentMPPercent) >= _updatePercentDiff;
 
             if (!updateHP && !updateMP)
                 return;
@@ -97,7 +96,7 @@ namespace DemoGame.Server
             _lastSentMPPercent = newMPPercent;
 
             // Get the map
-            Map map = _character.Map;
+            var map = _character.Map;
             if (map == null)
                 return;
 
@@ -109,13 +108,13 @@ namespace DemoGame.Server
                 return;
 
             // Send the updates
-            using (PacketWriter pw = ServerPacket.GetWriter())
+            using (var pw = ServerPacket.GetWriter())
             {
                 if (updateHP)
                 {
                     pw.Reset();
                     ServerPacket.SetCharacterHPPercent(pw, _character.MapEntityIndex, newHPPercent);
-                    foreach (User user in users)
+                    foreach (var user in users)
                     {
                         user.Send(pw);
                     }
@@ -124,7 +123,7 @@ namespace DemoGame.Server
                 {
                     pw.Reset();
                     ServerPacket.SetCharacterMPPercent(pw, _character.MapEntityIndex, newMPPercent);
-                    foreach (User user in users)
+                    foreach (var user in users)
                     {
                         user.Send(pw);
                     }

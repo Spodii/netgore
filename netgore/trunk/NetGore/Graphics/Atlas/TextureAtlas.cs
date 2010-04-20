@@ -117,8 +117,8 @@ namespace NetGore.Graphics
             workingList.Sort(SizeCompare);
 
             // Loop until the list is empty
-            int width = 0;
-            int height = 0;
+            var width = 0;
+            var height = 0;
             while (workingList.Count > 0)
             {
                 // If sizes are 0, find the starting size
@@ -126,7 +126,7 @@ namespace NetGore.Graphics
                     GetStartSize(workingList, MaxTextureSize, out width, out height);
 
                 // Try to build the atlas
-                bool isMaxSize = (width == MaxTextureSize && height == MaxTextureSize);
+                var isMaxSize = (width == MaxTextureSize && height == MaxTextureSize);
                 var combinedNodes = CombineSingleTexture(workingList, width, height, !isMaxSize);
 
                 // If all items have been added to the atlas, we're done
@@ -228,12 +228,12 @@ namespace NetGore.Graphics
                 throw new ArgumentException(errmsg, "items");
             }
 
-            int maxWidth = 0;
-            int maxHeight = 0;
-            int totalSize = 0;
+            var maxWidth = 0;
+            var maxHeight = 0;
+            var totalSize = 0;
 
             // Add the area of every AtlasItem along with find the largest width
-            foreach (ITextureAtlasable item in items)
+            foreach (var item in items)
             {
                 maxWidth = Math.Max(maxWidth, item.SourceRect.Width + Padding * 2);
                 maxHeight = Math.Max(maxHeight, item.SourceRect.Height + Padding * 2);
@@ -241,7 +241,7 @@ namespace NetGore.Graphics
             }
 
             // Get the guessed size to use
-            int guessedSize = (int)Math.Sqrt(totalSize);
+            var guessedSize = (int)Math.Sqrt(totalSize);
 
             // Check that the maxSize is able to fit the textures
             if (maxWidth > maxSize || maxHeight > maxSize)
@@ -284,8 +284,8 @@ namespace NetGore.Graphics
                 throw new ArgumentNullException("b");
             }
 
-            int aSize = a.SourceRect.Height * a.SourceRect.Width;
-            int bSize = b.SourceRect.Height * b.SourceRect.Width;
+            var aSize = a.SourceRect.Height * a.SourceRect.Width;
+            var bSize = b.SourceRect.Height * b.SourceRect.Width;
             return bSize.CompareTo(aSize);
         }
 
@@ -388,10 +388,9 @@ namespace NetGore.Graphics
                 _atlasTexture = DrawAtlas(padding, out successful);
 
                 // Tell all the items that were successfully added to use the new atlas texture
-                foreach (AtlasTextureItem node in successful)
+                foreach (var node in successful)
                 {
-                    Rectangle r = new Rectangle(node.X + Padding, node.Y + Padding, node.Width - Padding * 2,
-                                                node.Height - Padding * 2);
+                    var r = new Rectangle(node.X + Padding, node.Y + Padding, node.Width - Padding * 2, node.Height - Padding * 2);
                     node.ITextureAtlasable.SetAtlas(_atlasTexture, r);
                 }
             }
@@ -406,7 +405,7 @@ namespace NetGore.Graphics
             Image DrawAtlas(int padding, out IEnumerable<AtlasTextureItem> successfulItems)
             {
                 // Create the list for successful items
-                List<AtlasTextureItem> successful = new List<AtlasTextureItem>();
+                var successful = new List<AtlasTextureItem>();
                 successfulItems = successful;
 
                 // Try to create the atlas texture. If any exceptions are thrown when trying to create the texture,
@@ -469,7 +468,7 @@ namespace NetGore.Graphics
             void DrawAtlasDrawingHandler(Image destImg, int padding, ICollection<AtlasTextureItem> successful)
             {
                 // Draw every atlas item to the texture
-                foreach (AtlasTextureItem item in Nodes)
+                foreach (var item in Nodes)
                 {
                     // Make sure this item is not already part of an atlas. While it is handy to have an atlas
                     // draw to another atlas, the benefits of that are likely minimal, and it is far more important
@@ -498,9 +497,9 @@ namespace NetGore.Graphics
                     }
 
                     // Draw the actual image (raw, no borders)
-                    Rectangle srcRect = item.ITextureAtlasable.SourceRect;
-                    Vector2 dest = new Vector2(item.Rect.X + padding, item.Y + padding);
-                    Rectangle src = srcRect;
+                    var srcRect = item.ITextureAtlasable.SourceRect;
+                    var dest = new Vector2(item.Rect.X + padding, item.Y + padding);
+                    var src = srcRect;
                     DrawToAtlas(destImg, tex, dest, src);
 
                     // Successfully drawn
@@ -573,7 +572,7 @@ namespace NetGore.Graphics
             [Conditional("DEBUG")]
             static void SaveTextureToTempFile(Image texture)
             {
-                TempFile f = new TempFile();
+                var f = new TempFile();
                 texture.SaveToFile(f.FilePath);
             }
 
@@ -585,7 +584,9 @@ namespace NetGore.Graphics
             public void Dispose()
             {
                 foreach (var node in Nodes)
+                {
                     node.ITextureAtlasable.RemoveAtlas();
+                }
 
                 if (_atlasTexture != null && !_atlasTexture.IsDisposed())
                 {

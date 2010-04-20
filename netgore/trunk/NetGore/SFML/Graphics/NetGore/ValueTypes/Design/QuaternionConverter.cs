@@ -3,8 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
-
-using System.Reflection;
+using System.Linq;
 
 namespace SFML.Graphics.Design
 {
@@ -14,7 +13,7 @@ namespace SFML.Graphics.Design
         /// <summary>Initializes a new instance of the QuaternionConverter class.</summary>
         public QuaternionConverter()
         {
-            Type type = typeof(Quaternion);
+            var type = typeof(Quaternion);
             base.propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
@@ -30,7 +29,7 @@ namespace SFML.Graphics.Design
         /// <param name="value">The object to convert.</param>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            float[] numArray = ConvertToValues<float>(context, culture, value, 4, new string[] { "X", "Y", "Z", "W" });
+            var numArray = ConvertToValues<float>(context, culture, value, 4, new string[] { "X", "Y", "Z", "W" });
             if (numArray != null)
                 return new Quaternion(numArray[0], numArray[1], numArray[2], numArray[3]);
             return base.ConvertFrom(context, culture, value);
@@ -47,14 +46,14 @@ namespace SFML.Graphics.Design
                 throw new ArgumentNullException("destinationType");
             if ((destinationType == typeof(string)) && (value is Quaternion))
             {
-                Quaternion quaternion2 = (Quaternion)value;
+                var quaternion2 = (Quaternion)value;
                 return ConvertFromValues(context, culture,
                                          new float[] { quaternion2.X, quaternion2.Y, quaternion2.Z, quaternion2.W });
             }
             if ((destinationType == typeof(InstanceDescriptor)) && (value is Quaternion))
             {
-                Quaternion quaternion = (Quaternion)value;
-                ConstructorInfo constructor =
+                var quaternion = (Quaternion)value;
+                var constructor =
                     typeof(Quaternion).GetConstructor(new Type[] { typeof(float), typeof(float), typeof(float), typeof(float) });
                 if (constructor != null)
                     return new InstanceDescriptor(constructor,

@@ -138,7 +138,7 @@ namespace NetGore
         /// sum of the differences for the components of the <see cref="Vector2"/>s.</returns>
         public static float QuickDistance(this Vector2 source, Vector2 target)
         {
-            Vector2 diff = source - target;
+            var diff = source - target;
             return Abs(diff).Sum();
         }
 
