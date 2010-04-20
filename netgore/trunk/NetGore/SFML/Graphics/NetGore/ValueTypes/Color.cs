@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using SFML.Graphics.Design;
 
 namespace SFML
@@ -14,13 +15,14 @@ namespace SFML
         /// </summary>
         ////////////////////////////////////////////////////////////
         [Serializable]
+        [StructLayout(LayoutKind.Sequential)]
         [TypeConverter(typeof(ColorConverter))]
         public struct Color : IEquatable<Color>
         {
-            byte _a;
-            byte _b;
-            byte _g;
             byte _r;
+            byte _g;
+            byte _b;
+            byte _a;
 
             ////////////////////////////////////////////////////////////
             /// <summary>
