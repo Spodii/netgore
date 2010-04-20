@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using NetGore.Collections;
@@ -22,7 +23,8 @@ namespace NetGore.Db
         protected DbConnectionPool(string connectionString)
         {
             _connectionString = connectionString;
-            _pool = new ObjectPool<PooledDbConnection>(CreateNewObj, x => x.Connection.Open(), x => x.Connection.Close(), true);
+            _pool = new ObjectPool<PooledDbConnection>(CreateNewObj, InitializePooledConnection, DeinitializePooledConnection,
+                                                       true);
         }
 
         /// <summary>
@@ -60,6 +62,25 @@ namespace NetGore.Db
         /// <param name="parameterName">Reference name of the parameter.</param>
         /// <returns>DbParameter that is compatible with the connections in this DbConnectionPool.</returns>
         public abstract DbParameter CreateParameter(string parameterName);
+
+        /// <summary>
+        /// Performs the deinitialization of a <see cref="PooledDbConnection"/> as it is released back into the object pool.
+        /// </summary>
+        /// <param name="conn">The <see cref="PooledDbConnection"/> to deinitialize.</param>
+        protected virtual void DeinitializePooledConnection(PooledDbConnection conn)
+        {
+            conn.Connection.Close();
+        }
+
+        /// <summary>
+        /// Performs the initialization of a <see cref="PooledDbConnection"/> as it is grabbed from the object pool.
+        /// </summary>
+        /// <param name="conn">The <see cref="PooledDbConnection"/> to initialize.</param>
+        protected virtual void InitializePooledConnection(PooledDbConnection conn)
+        {
+            if (conn.Connection.State != ConnectionState.Open)
+                conn.Connection.Open();
+        }
 
         #region IDisposable Members
 
