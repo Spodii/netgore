@@ -180,7 +180,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NetGore.PathString"/> to <see cref="System.String"/>.
+        /// Performs an implicit conversion from <see cref="PathString"/> to <see cref="System.String"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
@@ -190,7 +190,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.PathString"/>.
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="PathString"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>

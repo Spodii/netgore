@@ -22,7 +22,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="ChatBubbleManagerBase"/> class.
         /// </summary>
         /// <param name="skinManager">The skin manager.</param>
-        /// <param name="font">The <see cref="SpriteFont"/> to use to write the bubble's text.</param>
+        /// <param name="font">The <see cref="Font"/> to use to write the bubble's text.</param>
         public ChatBubbleManager(ISkinManager skinManager, Font font) : base(skinManager.GetBorder(_controlSkinName), font)
         {
             _skinManager = skinManager;

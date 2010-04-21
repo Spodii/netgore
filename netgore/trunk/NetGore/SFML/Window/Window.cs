@@ -487,17 +487,6 @@ namespace SFML
                 return sfWindow_IsOpened(This);
             }
 
-            /// <summary>
-            /// Activate the window as the current target
-            /// for rendering
-            /// </summary>
-            /// <returns>True if operation was successful, false otherwise</returns>
-            ////////////////////////////////////////////////////////////
-            public virtual bool SetActive()
-            {
-                return SetActive(true);
-            }
-
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Activate of deactivate the window as the current target
@@ -506,7 +495,7 @@ namespace SFML
             /// <param name="active">True to activate, false to deactivate (true by default)</param>
             /// <returns>True if operation was successful, false otherwise</returns>
             ////////////////////////////////////////////////////////////
-            public virtual bool SetActive(bool active)
+            public virtual bool SetActive(bool active = true)
             {
                 return sfWindow_SetActive(This, active);
             }

@@ -14,7 +14,7 @@ namespace SFML.Graphics.Design
         public ColorConverter()
         {
             var type = typeof(Color);
-            base.propertyDescriptions =
+            propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
                     new PropertyPropertyDescriptor(type.GetProperty("R")), new PropertyPropertyDescriptor(type.GetProperty("G")),

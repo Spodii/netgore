@@ -83,17 +83,17 @@ namespace NetGore.Graphics
             get { return _speed; }
         }
 
-        StationaryGrhData[] CreateFrames(GrhIndex[] frameIndices)
+        StationaryGrhData[] CreateFrames(IList<GrhIndex> frameIndices)
         {
-            var frames = new StationaryGrhData[frameIndices.Length];
-            for (var i = 0; i < frameIndices.Length; i++)
+            var frames = new StationaryGrhData[frameIndices.Count];
+            for (var i = 0; i < frameIndices.Count; i++)
             {
                 frames[i] = GrhInfo.GetData(frameIndices[i]) as StationaryGrhData;
                 if (frames[i] == null)
                 {
                     const string errmsg =
                         "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
-                    var err = string.Format(errmsg, frames[i], this, i, frameIndices.Length);
+                    var err = string.Format(errmsg, frames[i], this, i, frameIndices.Count);
                     throw new Exception(err);
                 }
             }

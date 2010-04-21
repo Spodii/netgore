@@ -24,7 +24,7 @@ namespace NetGore
         {
             if (_types == null)
             {
-                var types = TypeHelper.FindTypesThatInherit(typeof(Entity), null, false);
+                var types = TypeHelper.FindTypesThatInherit(typeof(Entity), null);
                 types = types.Where(x => x.GetCustomAttributes(typeof(MapFileEntityAttribute), true).Length > 0);
                 _types = types.ToCompact();
             }

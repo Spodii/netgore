@@ -111,7 +111,6 @@ namespace NetGore
         /// </summary>
         /// <param name="rect">Region to find the <see cref="ISpatial"/> in.</param>
         /// <param name="condition">Additional condition an <see cref="ISpatial"/> must meet.</param>
-        /// <param name="condition">Condition the <see cref="ISpatial"/>s must meet.</param>
         /// <returns>The first <see cref="ISpatial"/> found in the given region, or null if none found.</returns>
         T Get<T>(Rectangle rect, Predicate<T> condition);
 

@@ -32,7 +32,7 @@ namespace NetGore.IO
         /// <param name="writer"><see cref="BitStream"/> that will be written to.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BinaryValueWriter(BitStream writer, bool useEnumNames)
+        public BinaryValueWriter(BitStream writer, bool useEnumNames = true)
         {
             _useEnumNames = useEnumNames;
 
@@ -48,26 +48,10 @@ namespace NetGore.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
         /// </summary>
-        /// <param name="writer">BitStream that will be written to.</param>
-        public BinaryValueWriter(BitStream writer) : this(writer, true)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
-        /// </summary>
-        /// <param name="filePath">Path to the file to write to.</param>
-        public BinaryValueWriter(string filePath) : this(filePath, true)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
-        /// </summary>
         /// <param name="filePath">Path to the file to write to.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BinaryValueWriter(string filePath, bool useEnumNames) : this(new BitStream(BitStreamMode.Write, 8192))
+        public BinaryValueWriter(string filePath, bool useEnumNames = true) : this(new BitStream(BitStreamMode.Write, 8192))
         {
             _useEnumNames = useEnumNames;
             _filePath = filePath;

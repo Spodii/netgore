@@ -20,8 +20,12 @@ namespace NetGore.Features.Shops
         readonly TShopItem[] _shopItems;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Shop"/> class.
+        /// Initializes a new instance of the <see cref="ShopBase&lt;TShopItem&gt;"/> class.
         /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="canBuy">Whether or not the shop can buy items from shoppers.</param>
+        /// <param name="shopItems">The shop items.</param>
         protected ShopBase(ShopID id, string name, bool canBuy, IEnumerable<TShopItem> shopItems)
         {
             _id = id;
@@ -61,7 +65,7 @@ namespace NetGore.Features.Shops
         #region IShop<TShopItem> Members
 
         /// <summary>
-        /// Gets if this shop can buy items instead of just sell them.
+        /// Gets if this shop can buy items from shoppers instead of just sell items to them.
         /// </summary>
         public bool CanBuy
         {
@@ -85,7 +89,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Gets an IEnumerable of the <see cref="ShopItem"/>s in this <see cref="Shop"/>.
+        /// Gets an <see cref="IEnumerable{T}"/> of the items in this shop.
         /// </summary>
         public IEnumerable<TShopItem> ShopItems
         {
@@ -93,10 +97,10 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Gets the <see cref="ShopItem"/> at the specified <paramref name="slot"/>.
+        /// Gets the item at the specified <paramref name="slot"/>.
         /// </summary>
         /// <param name="slot">The slot of the shop item.</param>
-        /// <returns>The <see cref="ShopItem"/> at the specified <paramref name="slot"/>, or null if
+        /// <returns>The shop item at the specified <paramref name="slot"/>, or null if
         /// the slot was invalid or contains no item.</returns>
         public TShopItem GetShopItem(ShopItemIndex slot)
         {

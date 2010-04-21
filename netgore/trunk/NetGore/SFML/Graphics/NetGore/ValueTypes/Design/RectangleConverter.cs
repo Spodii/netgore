@@ -20,8 +20,8 @@ namespace SFML.Graphics.Design
                     new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")),
                     new FieldPropertyDescriptor(type.GetField("Width")), new FieldPropertyDescriptor(type.GetField("Height"))
                 });
-            base.propertyDescriptions = descriptors;
-            base.supportStringConvert = false;
+            propertyDescriptions = descriptors;
+            supportStringConvert = false;
         }
 
         /// <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>

@@ -14,20 +14,11 @@ namespace SFML.Graphics.Design
         public BoundingSphereConverter()
         {
             var type = typeof(BoundingSphere);
-            base.propertyDescriptions =
+            propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("Center")), new FieldPropertyDescriptor(type.GetField("Radius")) }).
                     Sort(new string[] { "Center", "Radius" });
-            base.supportStringConvert = false;
-        }
-
-        /// <summary>Converts the given object to the type of this converter, using the specified context and culture information.</summary>
-        /// <param name="context">The format context.</param>
-        /// <param name="culture">The current culture.</param>
-        /// <param name="value">The object to convert.</param>
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            return base.ConvertFrom(context, culture, value);
+            supportStringConvert = false;
         }
 
         /// <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>

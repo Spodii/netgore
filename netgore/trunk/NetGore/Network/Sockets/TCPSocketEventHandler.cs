@@ -14,5 +14,5 @@ namespace NetGore.Network
     /// <typeparam name="T">The Type of additional argument.</typeparam>
     /// <param name="sender">The <see cref="TCPSocket"/> the event came from.</param>
     /// <param name="e">The additional event arguments.</param>
-    public delegate void TCPSocketEventHandler<T>(TCPSocket sender, T e);
+    public delegate void TCPSocketEventHandler<in T>(TCPSocket sender, T e);
 }

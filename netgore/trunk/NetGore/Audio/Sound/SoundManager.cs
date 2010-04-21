@@ -119,7 +119,7 @@ namespace NetGore.Audio
             if (info == null)
             {
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Could not play sound ID `{0}` - no sound with that ID exists.");
+                    log.Info("Could not play sound - was given a null ISoundInfo.");
                 return null;
             }
 

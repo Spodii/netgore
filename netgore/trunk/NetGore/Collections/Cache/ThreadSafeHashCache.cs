@@ -37,16 +37,8 @@ namespace NetGore.Collections
         /// Initializes a new instance of the <see cref="ThreadSafeHashCache{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="valueCreator">The function used to create the values for the cache.</param>
-        public ThreadSafeHashCache(Func<TKey, TValue> valueCreator) : this(valueCreator, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadSafeHashCache{TKey, TValue}"/> class.
-        /// </summary>
-        /// <param name="valueCreator">The function used to create the values for the cache.</param>
         /// <param name="keyComparer">The key comparer.</param>
-        public ThreadSafeHashCache(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> keyComparer)
+        public ThreadSafeHashCache(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> keyComparer = null)
         {
             if (valueCreator == null)
                 throw new ArgumentNullException("valueCreator");

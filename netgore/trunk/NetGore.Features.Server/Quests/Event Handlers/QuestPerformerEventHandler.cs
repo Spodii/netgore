@@ -7,6 +7,6 @@ namespace NetGore.Features.Quests
     /// </summary>
     /// <typeparam name="TCharacter">The type of <see cref="IQuestPerformer{TCharacter}"/>.</typeparam>
     /// <param name="questPerformer">The quest performer that the event came from.</param>
-    public delegate void QuestPerformerEventHandler<TCharacter>(TCharacter questPerformer)
+    public delegate void QuestPerformerEventHandler<in TCharacter>(TCharacter questPerformer)
         where TCharacter : IQuestPerformer<TCharacter>;
 }

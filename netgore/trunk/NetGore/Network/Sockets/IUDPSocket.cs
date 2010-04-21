@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -69,7 +70,7 @@ namespace NetGore.Network
         /// Gets the queued data received by this <see cref="IUDPSocket"/>.
         /// </summary>
         /// <returns>The queued data received by this <see cref="IUDPSocket"/>, or null if empty.</returns>
-        AddressedPacket[] GetRecvData();
+        IEnumerable<AddressedPacket> GetRecvData();
 
         /// <summary>
         /// Sends data to the specified <paramref name="endPoint"/>.

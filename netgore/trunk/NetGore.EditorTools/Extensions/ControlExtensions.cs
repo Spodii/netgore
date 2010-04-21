@@ -20,7 +20,7 @@ namespace NetGore.EditorTools
         /// be treated as if it were to always return true.</param>
         /// <returns>All of the <see cref="Control"/>s from the given <paramref name="root"/> <see cref="Control"/>,
         /// including the <paramref name="root"/>.</returns>
-        public static IEnumerable<Control> GetControls(this Control root, Func<Control, bool> filter)
+        public static IEnumerable<Control> GetControls(this Control root, Func<Control, bool> filter = null)
         {
             if (root != null)
             {
@@ -37,17 +37,6 @@ namespace NetGore.EditorTools
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets all of the <see cref="Control"/>s from the given <paramref name="root"/>.
-        /// </summary>
-        /// <param name="root">The root <see cref="Control"/> to search from.</param>
-        /// <returns>All of the <see cref="Control"/>s from the given <paramref name="root"/> <see cref="Control"/>,
-        /// including the <paramref name="root"/>.</returns>
-        public static IEnumerable<Control> GetControls(this Control root)
-        {
-            return GetControls(root, null);
         }
 
         /// <summary>

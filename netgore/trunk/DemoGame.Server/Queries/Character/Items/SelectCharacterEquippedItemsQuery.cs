@@ -23,7 +23,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IDictionary<EquipmentSlot, IItemTable> Execute(CharacterID characterID)
+        public IEnumerable<KeyValuePair<EquipmentSlot, IItemTable>> Execute(CharacterID characterID)
         {
             var retValues = new Dictionary<EquipmentSlot, IItemTable>();
 

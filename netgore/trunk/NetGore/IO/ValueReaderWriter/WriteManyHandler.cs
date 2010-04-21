@@ -8,5 +8,5 @@ namespace NetGore.IO
     /// <typeparam name="T">The Type of value.</typeparam>
     /// <param name="name">The unique name of the value.</param>
     /// <param name="value">The value to write.</param>
-    public delegate void WriteManyHandler<T>(string name, T value);
+    public delegate void WriteManyHandler<in T>(string name, T value);
 }

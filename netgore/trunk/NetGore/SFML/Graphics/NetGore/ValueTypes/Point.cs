@@ -14,10 +14,10 @@ namespace SFML.Graphics
     public struct Point : IEquatable<Point>
     {
         /// <summary>Specifies the x-coordinate of the Point.</summary>
-        public int X;
+        public readonly int X;
 
         /// <summary>Specifies the y-coordinate of the Point.</summary>
-        public int Y;
+        public readonly int Y;
 
         static readonly Point _zero;
 

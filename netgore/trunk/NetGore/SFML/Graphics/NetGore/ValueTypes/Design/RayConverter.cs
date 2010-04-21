@@ -14,21 +14,13 @@ namespace SFML.Graphics.Design
         public RayConverter()
         {
             var type = typeof(Ray);
-            base.propertyDescriptions =
+            propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
                     new FieldPropertyDescriptor(type.GetField("Position")), new FieldPropertyDescriptor(type.GetField("Direction"))
                 }).Sort(new string[] { "Position", "Direction" });
-            base.supportStringConvert = false;
-        }
 
-        /// <summary>Converts the given object to the type of this converter, using the specified context and culture information.</summary>
-        /// <param name="context">The format context.</param>
-        /// <param name="culture">The current culture.</param>
-        /// <param name="value">The object to convert.</param>
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            return base.ConvertFrom(context, culture, value);
+            supportStringConvert = false;
         }
 
         /// <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>

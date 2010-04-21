@@ -175,7 +175,7 @@ namespace NetGore
         /// <param name="end">Index of the last string to combine.</param>
         /// <param name="separator">Character used to separate the combined strings.</param>
         /// <returns>The combined strings.</returns>
-        static string CombineStrings(string[] strings, int start, int end, char separator)
+        static string CombineStrings(IList<string> strings, int start, int end, char separator)
         {
             if (start == end)
                 return strings[start];
@@ -194,7 +194,7 @@ namespace NetGore
         /// Gets a dictionary of each command and the method or methods that handle the command.
         /// </summary>
         /// <returns>A dictionary of each command and the method or methods that handle the command.</returns>
-        public IDictionary<string, IEnumerable<MethodInfo>> GetCommands()
+        public IEnumerable<KeyValuePair<string, IEnumerable<MethodInfo>>> GetCommands()
         {
             return _commands;
         }

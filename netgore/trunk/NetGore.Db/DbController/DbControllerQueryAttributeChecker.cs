@@ -43,7 +43,7 @@ namespace NetGore.Db
                 IsEnum = false
             };
 
-            new TypeFactory(filter.GetFilter(), LoadTypeHandler, false);
+            new TypeFactory(filter.GetFilter(), LoadTypeHandler);
         }
 
         void LoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)

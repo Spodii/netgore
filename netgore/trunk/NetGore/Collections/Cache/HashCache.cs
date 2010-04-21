@@ -18,18 +18,9 @@ namespace NetGore.Collections
         /// Initializes a new instance of the <see cref="HashCache{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="valueCreator">The function used to create the values for the cache.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="valueCreator"/> is null.</exception>
-        public HashCache(Func<TKey, TValue> valueCreator) : this(valueCreator, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HashCache{TKey, TValue}"/> class.
-        /// </summary>
-        /// <param name="valueCreator">The function used to create the values for the cache.</param>
         /// <param name="keyComparer">The key comparer.</param>
         /// <exception cref="ArgumentNullException"><paramref name="valueCreator"/> is null.</exception>
-        public HashCache(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> keyComparer)
+        public HashCache(Func<TKey, TValue> valueCreator, IEqualityComparer<TKey> keyComparer = null)
         {
             if (valueCreator == null)
                 throw new ArgumentNullException("valueCreator");

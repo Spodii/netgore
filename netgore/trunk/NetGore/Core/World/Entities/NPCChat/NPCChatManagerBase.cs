@@ -19,7 +19,7 @@ namespace NetGore.NPCChat
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly bool _isReadonly;
-        readonly DArray<NPCChatDialogBase> _npcChatDialogs = new DArray<NPCChatDialogBase>(32, false);
+        readonly DArray<NPCChatDialogBase> _npcChatDialogs = new DArray<NPCChatDialogBase>(32);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatManagerBase"/> class.

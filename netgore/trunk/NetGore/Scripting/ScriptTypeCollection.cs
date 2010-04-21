@@ -193,7 +193,7 @@ namespace NetGore.Scripting
             return result.CompiledAssembly;
         }
 
-        static string[] SafeGetFiles(string dir, string searchPattern, SearchOption searchOptions)
+        static IEnumerable<string> SafeGetFiles(string dir, string searchPattern, SearchOption searchOptions)
         {
             if (!Directory.Exists(dir))
                 return new string[0];

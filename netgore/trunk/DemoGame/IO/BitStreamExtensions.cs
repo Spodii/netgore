@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -234,7 +235,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="statCollection">IStatCollection containing the stat values to write.</param>
-        public static void Write(this BitStream bitStream, IStatCollection<StatType> statCollection)
+        public static void Write(this BitStream bitStream, IEnumerable<Stat<StatType>> statCollection)
         {
             // Get the IEnumerable of all the non-zero stats
             var nonZeroStats = statCollection.Where(stat => stat.Value != 0);

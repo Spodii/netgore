@@ -42,7 +42,7 @@ namespace NetGore.Features.StatusEffects
         /// <param name="filter">The filter used to get the <see cref="Type"/>s to try to instantiate.</param>
         public StatusEffectManager(Func<Type, bool> filter)
         {
-            new TypeFactory(filter, HandleLoadType, false);
+            new TypeFactory(filter, HandleLoadType);
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace SFML.Graphics.Design
         public Vector4Converter()
         {
             var type = typeof(Vector4);
-            base.propertyDescriptions =
+            propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
                     new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")),

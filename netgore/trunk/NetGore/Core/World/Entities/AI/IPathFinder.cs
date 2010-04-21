@@ -8,6 +8,6 @@ namespace NetGore.AI
     {
         Heuristics HeuristicFormula { get; set; }
 
-        List<Node> FindPath(Vector2 Start, Vector2 End);
+        IEnumerable<Node> FindPath(Vector2 Start, Vector2 End);
     }
 }

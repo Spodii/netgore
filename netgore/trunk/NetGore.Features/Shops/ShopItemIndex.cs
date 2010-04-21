@@ -3,7 +3,7 @@ using System.Linq;
 namespace NetGore.Features.Shops
 {
     /// <summary>
-    /// Represents the index of a ShopItem in a Shop.
+    /// Represents the index of an item in a shop.
     /// </summary>
     public struct ShopItemIndex
     {
@@ -29,7 +29,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NetGore.ShopItemIndex"/> to <see cref="System.Byte"/>.
+        /// Performs an implicit conversion from <see cref="ShopItemIndex"/> to <see cref="System.Byte"/>.
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns>The result of the conversion.</returns>
@@ -39,7 +39,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.Byte"/> to <see cref="NetGore.ShopItemIndex"/>.
+        /// Performs an implicit conversion from <see cref="System.Byte"/> to <see cref="ShopItemIndex"/>.
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns>The result of the conversion.</returns>

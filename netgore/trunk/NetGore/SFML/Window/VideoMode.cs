@@ -17,15 +17,6 @@ namespace SFML
         public struct VideoMode
         {
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Construct the video mode with its width and height
-            /// </summary>
-            /// <param name="width">Video mode width</param>
-            /// <param name="height">Video mode height</param>
-            ////////////////////////////////////////////////////////////
-            public VideoMode(uint width, uint height) : this(width, height, 32)
-            {
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -35,7 +26,7 @@ namespace SFML
             /// <param name="height">Video mode height</param>
             /// <param name="bpp">Video mode depth (bits per pixel)</param>
             ////////////////////////////////////////////////////////////
-            public VideoMode(uint width, uint height, uint bpp)
+            public VideoMode(uint width, uint height, uint bpp = 32u)
             {
                 Width = width;
                 Height = height;
@@ -56,7 +47,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Get the number of valid video modes
-            /// <summary>
+            /// </summary>
             ////////////////////////////////////////////////////////////
             public static uint ModesCount
             {
@@ -80,7 +71,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Get the current desktop video mode
-            /// <summary>
+            /// </summary>
             ////////////////////////////////////////////////////////////
             public static VideoMode DesktopMode
             {

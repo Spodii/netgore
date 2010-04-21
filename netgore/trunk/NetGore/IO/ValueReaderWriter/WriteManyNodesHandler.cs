@@ -8,5 +8,5 @@ namespace NetGore.IO
     /// <typeparam name="T">The Type of node.</typeparam>
     /// <param name="w">IValueWriter to write to.</param>
     /// <param name="item">The item to write.</param>
-    public delegate void WriteManyNodesHandler<T>(IValueWriter w, T item);
+    public delegate void WriteManyNodesHandler<in T>(IValueWriter w, T item);
 }

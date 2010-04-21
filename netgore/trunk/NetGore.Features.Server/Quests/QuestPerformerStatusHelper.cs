@@ -77,23 +77,12 @@ namespace NetGore.Features.Quests
         /// <see cref="IQuest{TCharacter}"/>.
         /// </summary>
         /// <param name="quest">The quest to see if the owner can accept.</param>
-        /// <returns>True if the owner can accept the <paramref name="quest"/>; otherwise false.</returns>
-        public bool CanAcceptQuest(IQuest<TCharacter> quest)
-        {
-            return CanAcceptQuest(quest, false);
-        }
-
-        /// <summary>
-        /// Checks if the <see cref="QuestPerformerStatusHelper{TCharacter}.Owner"/> can accept an
-        /// <see cref="IQuest{TCharacter}"/>.
-        /// </summary>
-        /// <param name="quest">The quest to see if the owner can accept.</param>
         /// <param name="notifyOwner">If true, the owner will be notified that they failed to accept the quest. If false,
         /// they will not receive any notification. Default is false.</param>
         /// <returns>
         /// True if the owner can accept the <paramref name="quest"/>; otherwise false.
         /// </returns>
-        public bool CanAcceptQuest(IQuest<TCharacter> quest, bool notifyOwner)
+        public bool CanAcceptQuest(IQuest<TCharacter> quest, bool notifyOwner = false)
         {
             // Cannot accept the quest if we have reached the active quest limit, it is already in the active quests,
             // or it is a non-repeatable quest and we have finished it

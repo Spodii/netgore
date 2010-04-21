@@ -16,7 +16,7 @@ namespace NetGore.Tests.IO
         /// <typeparam name="T">The Type of value to create.</typeparam>
         /// <param name="value">The value to give the new type. Round is fine as long as it is consistent.</param>
         /// <returns>The new value as type <typeparamref name="T"/>.</returns>
-        delegate T CreateValueTypeHandler<T>(double value);
+        delegate T CreateValueTypeHandler<out T>(double value);
 
         /// <summary>
         /// Handler for reading a value.
@@ -25,7 +25,7 @@ namespace NetGore.Tests.IO
         /// <param name="r">IValueReader to read from.</param>
         /// <param name="name">Name to use for reading.</param>
         /// <returns>The read value.</returns>
-        delegate T ReadTestValuesHandler<T>(IValueReader r, string name);
+        delegate T ReadTestValuesHandler<out T>(IValueReader r, string name);
 
         /// <summary>
         /// Handler for writing a value.
@@ -34,16 +34,16 @@ namespace NetGore.Tests.IO
         /// <param name="w">IValueWriter to write to.</param>
         /// <param name="name">Name to use for writing.</param>
         /// <param name="value">Value to write.</param>
-        delegate void WriteTestValuesHandler<T>(IValueWriter w, string name, T value);
+        delegate void WriteTestValuesHandler<in T>(IValueWriter w, string name, T value);
 
         static readonly object[] _emptyObjArray = new object[0];
 
-        static void AssertArraysEqual<T>(T[] expected, T[] actual)
+        static void AssertArraysEqual<T>(IList<T> expected, IList<T> actual)
         {
             AssertArraysEqual(expected, actual, string.Empty, _emptyObjArray);
         }
 
-        static void AssertArraysEqual<T>(T[] expected, T[] actual, string msg, params object[] objs)
+        static void AssertArraysEqual<T>(IList<T> expected, IList<T> actual, string msg, params object[] objs)
         {
             var customMsg = string.Empty;
             if (!string.IsNullOrEmpty(msg))
@@ -54,9 +54,9 @@ namespace NetGore.Tests.IO
                     customMsg = msg;
             }
 
-            Assert.AreEqual(expected.Length, actual.Length, "Lengths not equal. Type: `{0}`. Message: {1}", typeof(T), customMsg);
+            Assert.AreEqual(expected.Count, actual.Count, "Lengths not equal. Type: `{0}`. Message: {1}", typeof(T), customMsg);
 
-            for (var i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Count; i++)
             {
                 Assert.AreEqual(expected[i], actual[i], "Type: `{0}`  Index: `{1}`  Message: {2}", typeof(T), i, customMsg);
             }
@@ -115,11 +115,11 @@ namespace NetGore.Tests.IO
         /// <param name="r">IValueReader to read from.</param>
         /// <param name="expected">The values expected to be read.</param>
         /// <param name="readHandler">The read handler.</param>
-        static void ReadTestValues<T>(IValueReader r, T[] expected, ReadTestValuesHandler<T> readHandler)
+        static void ReadTestValues<T>(IValueReader r, IList<T> expected, ReadTestValuesHandler<T> readHandler)
         {
-            var actual = new T[expected.Length];
+            var actual = new T[expected.Count];
 
-            for (var i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Count; i++)
             {
                 actual[i] = readHandler(r, GetValueKey(i));
             }
@@ -137,9 +137,9 @@ namespace NetGore.Tests.IO
         /// <param name="w">IValueWriter to write to.</param>
         /// <param name="values">The values to write.</param>
         /// <param name="writeHandler">The write handler.</param>
-        static void WriteTestValues<T>(IValueWriter w, T[] values, WriteTestValuesHandler<T> writeHandler)
+        static void WriteTestValues<T>(IValueWriter w, IList<T> values, WriteTestValuesHandler<T> writeHandler)
         {
-            for (var i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Count; i++)
             {
                 writeHandler(w, GetValueKey(i), values[i]);
             }

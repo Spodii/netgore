@@ -61,20 +61,20 @@ namespace NetGore
         /// </summary>
         /// <param name="args">The array of strings.</param>
         /// <returns>The switches grouped with their values.</returns>
-        static IEnumerable<KeyValuePair<string, string[]>> GroupValuesToSwitches(string[] args)
+        static IEnumerable<KeyValuePair<string, string[]>> GroupValuesToSwitches(IList<string> args)
         {
-            if (args == null || args.Length == 0)
+            if (args == null || args.Count == 0)
                 return Enumerable.Empty<KeyValuePair<string, string[]>>();
 
             var switchPrefixAsCharArray = SwitchPrefix.ToCharArray();
 
-            var ret = new List<KeyValuePair<string, string[]>>(args.Length);
+            var ret = new List<KeyValuePair<string, string[]>>(args.Count);
 
             var currentKey = PrimaryKeyName;
-            var currentArgs = new List<string>(args.Length);
+            var currentArgs = new List<string>(args.Count);
 
             // Iterate through all the strings
-            for (var i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Count; i++)
             {
                 var currentArg = args[i];
                 var currentArgTrimmed = args[i].Trim();

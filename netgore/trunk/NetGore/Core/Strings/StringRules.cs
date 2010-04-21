@@ -21,18 +21,8 @@ namespace NetGore
         /// <param name="minLength">The minimum string length allowed.</param>
         /// <param name="maxLength">The maximum string length allowed.</param>
         /// <param name="allowedChars">The set of allowed characters.</param>
-        public StringRules(int minLength, int maxLength, CharType allowedChars) : this(minLength, maxLength, allowedChars, 0)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringRules"/> class.
-        /// </summary>
-        /// <param name="minLength">The minimum string length allowed.</param>
-        /// <param name="maxLength">The maximum string length allowed.</param>
-        /// <param name="allowedChars">The set of allowed characters.</param>
         /// <param name="regexOptions">The additional regex options to use.</param>
-        public StringRules(int minLength, int maxLength, CharType allowedChars, RegexOptions regexOptions)
+        public StringRules(int minLength, int maxLength, CharType allowedChars, RegexOptions regexOptions = RegexOptions.None)
         {
             if (minLength < 0)
                 throw new ArgumentOutOfRangeException("minLength");

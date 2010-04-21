@@ -31,19 +31,11 @@ namespace NetGore.IO
         /// Initializes a new instance of the <see cref="MessageCollectionBase{T}"/> class.
         /// </summary>
         /// <param name="file">Path to the file to load the messages from.</param>
-        protected MessageCollectionBase(string file) : this(file, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageCollectionBase{T}"/> class.
-        /// </summary>
-        /// <param name="file">Path to the file to load the messages from.</param>
         /// <param name="secondary">Collection of messages to add missing messages from. If null, the
         /// collection will only contain messages specified in the file. Otherwise, any message that exists
         /// in this secondary collection but does not exist in the <paramref name="file"/> will be loaded
         /// to this collection from this secondary collection.</param>
-        protected MessageCollectionBase(string file, IEnumerable<KeyValuePair<T, string>> secondary)
+        protected MessageCollectionBase(string file, IEnumerable<KeyValuePair<T, string>> secondary = null)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
 

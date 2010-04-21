@@ -90,6 +90,7 @@ namespace DemoGame
             get { return Velocity.X != 0; }
         }
 
+#pragma warning disable 1587
 #if TOPDOWN
     /// <summary>
     /// Gets if the character is moving up.
@@ -100,6 +101,7 @@ namespace DemoGame
             get { return Velocity.Y > 0; }
         }
 #endif
+#pragma warning restore 1587
 
         /// <summary>
         /// Gets if the character is moving to the left.
@@ -119,6 +121,7 @@ namespace DemoGame
             get { return Velocity.X > 0; }
         }
 
+#pragma warning disable 1587
 #if TOPDOWN
     /// <summary>
     /// Gets if the character is moving up.
@@ -129,6 +132,7 @@ namespace DemoGame
             get { return Velocity.Y < 0; }
         }
 #endif
+#pragma warning restore 1587
 
         /// <summary>
         /// Gets or sets the name of the CharacterEntity.
@@ -205,6 +209,7 @@ namespace DemoGame
 #endif
         }
 
+#pragma warning disable 1587
 #if TOPDOWN
     /// <summary>
     /// Stops the character's horizontal movement. Any forces acting upon the character, such as gravity, will
@@ -215,7 +220,9 @@ namespace DemoGame
             SetVelocity(new Vector2(0, Velocity.Y));
         }
 #endif
+#pragma warning restore 1587
 
+#pragma warning disable 1587
 #if TOPDOWN
     /// <summary>
     /// Stops the character's vertical movement. Any forces acting upon the character, such as gravity, will
@@ -226,6 +233,7 @@ namespace DemoGame
             SetVelocity(new Vector2(Velocity.X, 0));
         }
 #endif
+#pragma warning restore 1587
 
         /// <summary>
         /// Moves the character to a new location instantly. The character's velocity will

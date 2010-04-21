@@ -130,7 +130,7 @@ namespace SFML
             /// Default constructor
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public SoundStream() : base(IntPtr.Zero)
+            protected SoundStream() : base(IntPtr.Zero)
             {
             }
 

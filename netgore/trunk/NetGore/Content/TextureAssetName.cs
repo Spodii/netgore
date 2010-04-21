@@ -51,7 +51,7 @@ namespace NetGore.Content
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.IO.TextureAssetName"/>.
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="TextureAssetName"/>.
         /// </summary>
         /// <param name="textureName">Name of the texture asset.</param>
         /// <returns>The result of the conversion.</returns>

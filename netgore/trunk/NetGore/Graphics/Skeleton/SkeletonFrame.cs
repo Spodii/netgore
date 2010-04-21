@@ -34,7 +34,7 @@ namespace NetGore.Graphics
         /// <param name="skeleton">Skeleton to use for the frame</param>
         /// <param name="delay">Amount of time the animation will stay on this frame in milliseconds.
         /// A value of 0 will result in the delay being found by the other frame - useful for stopped animation frames.</param>
-        public SkeletonFrame(string fileName, Skeleton skeleton, float delay)
+        public SkeletonFrame(string fileName, Skeleton skeleton, float delay = 0f)
         {
             if (skeleton == null)
                 throw new ArgumentNullException("skeleton");
@@ -42,15 +42,6 @@ namespace NetGore.Graphics
             _fileName = fileName;
             _skeleton = skeleton;
             _delay = delay;
-        }
-
-        /// <summary>
-        /// Skeleton frame constructor
-        /// </summary>
-        /// <param name="fileName">Path to the file used to load the frame</param>
-        /// <param name="skeleton">Skeleton to use for the frame</param>
-        public SkeletonFrame(string fileName, Skeleton skeleton) : this(fileName, skeleton, 0f)
-        {
         }
 
         public SkeletonFrame(IValueReader reader, ContentPaths contentPath)

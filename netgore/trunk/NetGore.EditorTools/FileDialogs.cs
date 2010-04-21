@@ -141,18 +141,8 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <param name="wasLoadError">True if the error was from loading; false if from saving.</param>
-        static void HandleError(string message, bool wasLoadError)
-        {
-            HandleError(message, wasLoadError, null);
-        }
-
-        /// <summary>
-        /// Handles an error made from one of this class's methods.
-        /// </summary>
-        /// <param name="message">The error message.</param>
-        /// <param name="wasLoadError">True if the error was from loading; false if from saving.</param>
         /// <param name="innerException">The inner exception, or null if none.</param>
-        static void HandleError(string message, bool wasLoadError, Exception innerException)
+        static void HandleError(string message, bool wasLoadError, Exception innerException = null)
         {
             var caption = string.Format("File {0} error", wasLoadError ? "load" : "save");
 

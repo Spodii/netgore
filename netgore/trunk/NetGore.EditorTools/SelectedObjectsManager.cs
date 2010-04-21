@@ -183,22 +183,11 @@ namespace NetGore.EditorTools
         /// Sets the focused object.
         /// </summary>
         /// <param name="obj">The object to set as focused.</param>
-        /// <returns>True if the <paramref name="obj"/> was successfully set as the focused object; otherwise
-        /// false.</returns>
-        public bool SetFocused(T obj)
-        {
-            return SetFocused(obj, false);
-        }
-
-        /// <summary>
-        /// Sets the focused object.
-        /// </summary>
-        /// <param name="obj">The object to set as focused.</param>
         /// <param name="addIfMissing">If true, <paramref name="obj"/> will be added to the collection
         /// if it is not already in it.</param>
         /// <returns>True if the <paramref name="obj"/> was successfully set as the focused object; otherwise
         /// false.</returns>
-        public bool SetFocused(T obj, bool addIfMissing)
+        public bool SetFocused(T obj, bool addIfMissing = false)
         {
             if (!_selectedObjs.Contains(obj))
             {

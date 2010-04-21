@@ -185,15 +185,6 @@ namespace SFML
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Construct the string from a text and a font
-            /// </summary>
-            /// <param name="text">Text to display</param>
-            /// <param name="font">Font to use</param>
-            ////////////////////////////////////////////////////////////
-            public String2D(string text, Font font) : this(text, font, 30)
-            {
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -203,7 +194,7 @@ namespace SFML
             /// <param name="font">Font to use</param>
             /// <param name="size">Base characters size</param>
             ////////////////////////////////////////////////////////////
-            public String2D(string text, Font font, uint size) : base(sfString_Create())
+            public String2D(string text, Font font, uint size = 30u) : base(sfString_Create())
             {
                 Text = text;
                 Font = font;

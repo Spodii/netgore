@@ -40,19 +40,8 @@ namespace NetGore.Graphics
         /// <param name="skeleton">The <see cref="Skeleton"/> to draw.</param>
         /// <param name="camera">Camera to use.</param>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
-        public static void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb)
-        {
-            Draw(skeleton, camera, sb, null);
-        }
-
-        /// <summary>
-        /// Draws a <see cref="Skeleton"/>.
-        /// </summary>
-        /// <param name="skeleton">The <see cref="Skeleton"/> to draw.</param>
-        /// <param name="camera">Camera to use.</param>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
         /// <param name="selectedNode">The <see cref="SkeletonNode"/> to draw as selected.</param>
-        public static void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb, SkeletonNode selectedNode)
+        public static void Draw(Skeleton skeleton, ICamera2D camera, ISpriteBatch sb, SkeletonNode selectedNode = null)
         {
             if (skeleton == null)
             {

@@ -588,22 +588,26 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Implements operator > for comparing an <see cref="int"/> to a <see cref="GuildID"/>.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than the right.
+        /// </returns>
         public static bool operator >(int left, GuildID right)
         {
             return left > right._value;
         }
 
         /// <summary>
-        /// Implements operator < for comparing an <see cref="int"/> to a <see cref="GuildID"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(int left, GuildID right)
         {
             return left < right._value;
@@ -622,34 +626,39 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Implements operator < for comparing a <see cref="GuildID"/> to another
-        /// <see cref="GuildID"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(GuildID left, GuildID right)
         {
             return left._value < right._value;
         }
 
         /// <summary>
-        /// Implements operator > for comparing a <see cref="GuildID"/> to an <see cref="int"/>.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than the right.
+        /// </returns>
         public static bool operator >(GuildID left, int right)
         {
             return left._value > right;
         }
 
         /// <summary>
-        /// Implements operator < for comparing a <see cref="GuildID"/> to an <see cref="int"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(GuildID left, int right)
         {
             return left._value < right;
@@ -667,11 +676,13 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Implements operator <= for comparing an <see cref="int"/> to a <see cref="GuildID"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(int left, GuildID right)
         {
             return left <= right._value;
@@ -689,35 +700,39 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// Implements operator <= for comparing a <see cref="GuildID"/> to an <see cref="int"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(GuildID left, int right)
         {
             return left._value <= right;
         }
 
         /// <summary>
-        /// Implements operator >= for comparing a <see cref="GuildID"/> to another
-        /// <see cref="GuildID"/>.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than or equal to the right.
+        /// </returns>
         public static bool operator >=(GuildID left, GuildID right)
         {
             return left._value >= right._value;
         }
 
         /// <summary>
-        /// Implements operator <= for comparing a <see cref="GuildID"/> to another
-        /// <see cref="GuildID"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(GuildID left, GuildID right)
         {
             return left._value <= right._value;

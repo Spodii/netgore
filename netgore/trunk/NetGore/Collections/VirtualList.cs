@@ -393,7 +393,7 @@ namespace NetGore.Collections
         #endregion
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="NetGore.IO.VirtualList{T}"/>
+        /// Performs an explicit conversion from <see cref="VirtualList{T}"/>
         /// to <see cref="System.Collections.Generic.List{T}"/>.
         /// </summary>
         /// <param name="l">The list.</param>

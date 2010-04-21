@@ -51,7 +51,7 @@ namespace DemoGame.Server.Guilds
         /// <returns>The name and rank for all the members in the guild.</returns>
         public override IEnumerable<GuildMemberNameRank> GetMembers()
         {
-            return _selectGuildMembersListQuery.Execute(ID).Cast<GuildMemberNameRank>();
+            return _selectGuildMembersListQuery.Execute(ID);
         }
 
         /// <summary>
@@ -93,10 +93,10 @@ namespace DemoGame.Server.Guilds
 
         /// <summary>
         /// When overridden in the derived class, attempts to set the tag of this guild to the given
-        /// <paramref tag="newTag"/> in the database. The <paramref tag="newTag"/> does not need to
+        /// <paramref name="newTag"/> in the database. The <paramref name="newTag"/> does not need to
         /// be checked if valid.
         /// </summary>
-        /// <param tag="newTag">The new tag for the guild.</param>
+        /// <param name="newTag">The new tag for the guild.</param>
         /// <returns>True if the tag was successfully changed; otherwise false.</returns>
         protected override bool InternalTryChangeTag(string newTag)
         {

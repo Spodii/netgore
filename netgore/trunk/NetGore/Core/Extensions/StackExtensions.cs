@@ -16,7 +16,7 @@ namespace NetGore
         /// <param name="stack">Stack to perform the sort on.</param>
         /// <param name="where">Condition that all items need to include to remain in the Stack.
         /// Every item that fails to meet this condition will end up removed from the Stack completely.</param>
-        public static void Sort<T>(this Stack<T> stack, Func<T, bool> where)
+        public static void Sort<T>(this Stack<T> stack, Func<T, bool> where = null)
         {
             // Copy the values to a temporary List
             List<T> list;
@@ -39,33 +39,13 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Sorts all of the items in a Stack so they will pop in ascending order.
-        /// </summary>
-        /// <typeparam name="T">Type of item contained in the stack.</typeparam>
-        /// <param name="stack">Stack to perform the sort on.</param>
-        public static void Sort<T>(this Stack<T> stack)
-        {
-            Sort(stack, null);
-        }
-
-        /// <summary>
-        /// Sorts all of the items in a Stack so they will pop in descending order.
-        /// </summary>
-        /// <typeparam name="T">Type of item contained in the stack.</typeparam>
-        /// <param name="stack">Stack to perform the sort on.</param>
-        public static void SortDescending<T>(this Stack<T> stack)
-        {
-            SortDescending(stack, null);
-        }
-
-        /// <summary>
         /// Sorts all of the items in a Stack so they will pop in descending order.
         /// </summary>
         /// <typeparam name="T">Type of item contained in the stack.</typeparam>
         /// <param name="stack">Stack to perform the sort on.</param>
         /// <param name="where">Condition that all items need to include to remain in the Stack.
         /// Every item that fails to meet this condition will end up removed from the Stack completely.</param>
-        public static void SortDescending<T>(this Stack<T> stack, Func<T, bool> where)
+        public static void SortDescending<T>(this Stack<T> stack, Func<T, bool> where = null)
         {
             // Copy the values to a temporary List
             List<T> list;

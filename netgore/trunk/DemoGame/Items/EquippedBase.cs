@@ -173,26 +173,13 @@ namespace DemoGame
         /// </summary>
         /// <param name="slot">Slot to set the item in.</param>
         /// <param name="item">Item to set the slot to.</param>
-        /// <returns>True if the <paramref name="item"/> was successfully added to the specified
-        /// <paramref name="slot"/>, else false. When false, it is guarenteed the equipment will
-        /// not have been modified.</returns>
-        protected bool TrySetSlot(EquipmentSlot slot, T item)
-        {
-            return TrySetSlot(slot, item, true);
-        }
-
-        /// <summary>
-        /// Tries to set a given <paramref name="slot"/> to a new <paramref name="item"/>.
-        /// </summary>
-        /// <param name="slot">Slot to set the item in.</param>
-        /// <param name="item">Item to set the slot to.</param>
         /// <param name="checkIfCanEquip">If true, the specified <paramref name="item"/> will
         /// be checked if it can be euqipped with <see cref="CanEquip"/>. If false, this additional
         /// check will be completely bypassed.</param>
         /// <returns>True if the <paramref name="item"/> was successfully added to the specified
         /// <paramref name="slot"/>, else false. When false, it is guarenteed the equipment will
         /// not have been modified.</returns>
-        protected bool TrySetSlot(EquipmentSlot slot, T item, bool checkIfCanEquip)
+        protected bool TrySetSlot(EquipmentSlot slot, T item, bool checkIfCanEquip = true)
         {
             // Check for a valid EquipmentSlot
             if (!EnumHelper<EquipmentSlot>.IsDefined(slot))

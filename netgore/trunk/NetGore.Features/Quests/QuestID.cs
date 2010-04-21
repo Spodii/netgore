@@ -588,136 +588,156 @@ namespace NetGore.Features.Quests
         }
 
         /// <summary>
-        /// Implements operator > for comparing an <see cref="int"/> to a <see cref="QuestID"/>.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than the right.
+        /// </returns>
         public static bool operator >(int left, QuestID right)
         {
             return left > right._value;
         }
 
         /// <summary>
-        /// Implements operator < for comparing an <see cref="int"/> to a <see cref="QuestID"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(int left, QuestID right)
         {
             return left < right._value;
         }
 
         /// <summary>
-        /// Implements operator > for comparing a <see cref="QuestID"/> to another
-        /// <see cref="QuestID"/>.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than the right.
+        /// </returns>
         public static bool operator >(QuestID left, QuestID right)
         {
             return left._value > right._value;
         }
 
         /// <summary>
-        /// Implements operator < for comparing a <see cref="QuestID"/> to another
-        /// <see cref="QuestID"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(QuestID left, QuestID right)
         {
             return left._value < right._value;
         }
 
         /// <summary>
-        /// Implements operator > for comparing a <see cref="QuestID"/> to an <see cref="int"/>.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than the right.
+        /// </returns>
         public static bool operator >(QuestID left, int right)
         {
             return left._value > right;
         }
 
         /// <summary>
-        /// Implements operator < for comparing a <see cref="QuestID"/> to an <see cref="int"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(QuestID left, int right)
         {
             return left._value < right;
         }
 
         /// <summary>
-        /// Implements operator >= for comparing an <see cref="int"/> to a <see cref="QuestID"/>.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than or equal to the right.
+        /// </returns>
         public static bool operator >=(int left, QuestID right)
         {
             return left >= right._value;
         }
 
         /// <summary>
-        /// Implements operator <= for comparing an <see cref="int"/> to a <see cref="QuestID"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(int left, QuestID right)
         {
             return left <= right._value;
         }
 
         /// <summary>
-        /// Implements operator >= for comparing a <see cref="QuestID"/> to an <see cref="int"/>.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than or equal to the right.
+        /// </returns>
         public static bool operator >=(QuestID left, int right)
         {
             return left._value >= right;
         }
 
         /// <summary>
-        /// Implements operator <= for comparing a <see cref="QuestID"/> to an <see cref="int"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(QuestID left, int right)
         {
             return left._value <= right;
         }
 
         /// <summary>
-        /// Implements operator >= for comparing a <see cref="QuestID"/> to another
-        /// <see cref="QuestID"/>.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than or equal to the right.
+        /// </returns>
         public static bool operator >=(QuestID left, QuestID right)
         {
             return left._value >= right._value;
         }
 
         /// <summary>
-        /// Implements operator <= for comparing a <see cref="QuestID"/> to another
-        /// <see cref="QuestID"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(QuestID left, QuestID right)
         {
             return left._value <= right._value;

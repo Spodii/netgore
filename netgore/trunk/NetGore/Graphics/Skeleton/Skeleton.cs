@@ -145,7 +145,7 @@ namespace NetGore.Graphics
         /// <param name="name">Name of the node to look for</param>
         /// <param name="nodes">List of SkeletonNodes to search through</param>
         /// <returns>SkeletonNode with the specified name, or null if none found</returns>
-        public static SkeletonNode FindNode(List<SkeletonNode> nodes, string name)
+        public static SkeletonNode FindNode(IEnumerable<SkeletonNode> nodes, string name)
         {
             if (nodes == null)
             {

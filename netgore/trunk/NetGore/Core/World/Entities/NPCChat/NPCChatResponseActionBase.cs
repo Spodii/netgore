@@ -26,12 +26,7 @@ namespace NetGore.NPCChat
         /// of each derived class, with the <see cref="Name"/> as the key.
         /// </summary>
         static readonly Dictionary<string, NPCChatResponseActionBase> _instances =
-            new Dictionary<string, NPCChatResponseActionBase>(_nameComparer);
-
-        /// <summary>
-        /// <see cref="StringComparer"/> used for the Name.
-        /// </summary>
-        static readonly StringComparer _nameComparer = StringComparer.Ordinal;
+            new Dictionary<string, NPCChatResponseActionBase>(StringComparer.Ordinal);
 
         readonly string _name;
 
@@ -51,7 +46,7 @@ namespace NetGore.NPCChat
                 ConstructorParameters = Type.EmptyTypes
             };
 
-            new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
+            new TypeFactory(filter.GetFilter(), OnLoadTypeHandler);
         }
 
         /// <summary>

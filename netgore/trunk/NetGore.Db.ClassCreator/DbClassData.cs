@@ -128,7 +128,7 @@ namespace NetGore.Db.ClassCreator
         /// andy ColumnCollection in this table.
         /// </summary>
         /// <param name="dbColumn">The DbColumnInfo to get the ColumnCollection for.</param>
-        /// <<param name="item">The ColumnCollectionItem for the <paramref name="dbColumn"/> in the ColumnCollection.</param>
+        /// <param name="item">The ColumnCollectionItem for the <paramref name="dbColumn"/> in the ColumnCollection.</param>
         /// <returns>The ColumnCollection the DbColumnInfo is part of, or null if it
         /// is not part of a ColumnCollection.</returns>
         public ColumnCollection GetCollectionForColumn(DbColumnInfo dbColumn, out ColumnCollectionItem item)
@@ -188,20 +188,9 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <param name="dbColumn">The DbColumnInfo to get the value mutator for.</param>
         /// <param name="valueName">Code to generate for the value to set.</param>
-        /// <returns>The code to use for the mutator for a DbColumnInfo.</returns>
-        public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName)
-        {
-            return GetColumnValueMutator(dbColumn, valueName, null);
-        }
-
-        /// <summary>
-        /// Gets the code to use for the mutator for a DbColumnInfo.
-        /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the value mutator for.</param>
-        /// <param name="valueName">Code to generate for the value to set.</param>
         /// <param name="columnSource">The name of the source collection if it is not in an instanced method. Can be null.</param>
         /// <returns>The code to use for the mutator for a DbColumnInfo.</returns>
-        public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName, string columnSource)
+        public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName, string columnSource = null)
         {
             ColumnCollectionItem item;
             var coll = GetCollectionForColumn(dbColumn, out item);

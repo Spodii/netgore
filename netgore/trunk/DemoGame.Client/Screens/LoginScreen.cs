@@ -127,7 +127,7 @@ namespace DemoGame.Client
         /// Handles the KeyPressed event of the _cNameText control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
         void cNameText_KeyPressed(object sender, KeyEventArgs e)
         {
             // Tab to the next control
@@ -142,7 +142,7 @@ namespace DemoGame.Client
         /// Handles the KeyPressed event of the _cPasswordText control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="NetGore.Graphics.GUI.KeyboardEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="KeyEventArgs"/> instance containing the event data.</param>
         void cPasswordText_KeyPressed(object sender, KeyEventArgs e)
         {
             // Tab to the next control

@@ -240,7 +240,7 @@ namespace NetGore.Network
         /// Gets all received data queues from all active connections
         /// </summary>
         /// <returns>List of received data if any sockets contain any data, else null</returns>
-        protected List<SocketReceiveData> GetReceivedData()
+        protected IEnumerable<SocketReceiveData> GetReceivedData()
         {
             List<SocketReceiveData> ret = null;
 

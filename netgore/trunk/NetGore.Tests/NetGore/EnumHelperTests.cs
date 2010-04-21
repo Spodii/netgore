@@ -316,54 +316,52 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void ParseValidValuesInvalidCaseTest()
         {
-            object o;
-
             foreach (var v in EnumHelper<EVByte>.Values)
             {
                 var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVByte>.Parse(b.ToString().ToLower()));
+                Assert.Throws<ArgumentException>(() => EnumHelper<EVByte>.Parse(b.ToString().ToLower()));
             }
 
             foreach (var v in EnumHelper<EVSByte>.Values)
             {
                 var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVSByte>.Parse(b.ToString().ToLower()));
+                Assert.Throws<ArgumentException>(() => EnumHelper<EVSByte>.Parse(b.ToString().ToLower()));
             }
 
             foreach (var v in EnumHelper<EVShort>.Values)
             {
                 var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVShort>.Parse(b.ToString().ToLower()));
+                Assert.Throws<ArgumentException>(() => EnumHelper<EVShort>.Parse(b.ToString().ToLower()));
             }
 
             foreach (var v in EnumHelper<EVUShort>.Values)
             {
                 var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVUShort>.Parse(b.ToString().ToLower()));
+                Assert.Throws<ArgumentException>(() => EnumHelper<EVUShort>.Parse(b.ToString().ToLower()));
             }
 
             foreach (var v in EnumHelper<EVInt>.Values)
             {
                 var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVInt>.Parse(b.ToString().ToLower()));
+                Assert.Throws<ArgumentException>(() => EnumHelper<EVInt>.Parse(b.ToString().ToLower()));
             }
 
             foreach (var v in EnumHelper<EVLong>.Values)
             {
                 var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVLong>.Parse(b.ToString().ToLower()));
+                Assert.Throws<ArgumentException>(() => EnumHelper<EVLong>.Parse(b.ToString().ToLower()));
             }
 
             foreach (var v in EnumHelper<EVULong>.Values)
             {
                 var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVULong>.Parse(b.ToString().ToLower()));
+                Assert.Throws<ArgumentException>(() => EnumHelper<EVULong>.Parse(b.ToString().ToLower()));
             }
 
             foreach (var v in EnumHelper<EVUInt>.Values)
             {
                 var b = v;
-                Assert.Throws<ArgumentException>(() => o = EnumHelper<EVUInt>.Parse(b.ToString().ToLower()));
+                Assert.Throws<ArgumentException>(() => EnumHelper<EVUInt>.Parse(b.ToString().ToLower()));
             }
         }
 

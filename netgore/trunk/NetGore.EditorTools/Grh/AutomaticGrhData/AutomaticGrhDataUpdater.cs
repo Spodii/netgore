@@ -200,7 +200,7 @@ namespace NetGore.EditorTools
         public static IEnumerable<GrhData> UpdateAnimated(IContentManager cm, string rootGrhDir)
         {
             if (log.IsInfoEnabled)
-                log.InfoFormat("Searching for automatic animated GrhDatas from root `{0}`.");
+                log.InfoFormat("Searching for automatic animated GrhDatas from root `{0}`.", rootGrhDir);
 
             var ret = new List<GrhData>();
 
@@ -225,7 +225,7 @@ namespace NetGore.EditorTools
                 if (lastDirSep < 0)
                 {
                     if (log.IsWarnEnabled)
-                        log.WarnFormat("Animated GrhData found at `{0}`, but could not be created because it has no category.");
+                        log.WarnFormat("Animated GrhData found at `{0}`, but could not be created because it has no category.", dir);
                     continue;
                 }
 
@@ -256,7 +256,7 @@ namespace NetGore.EditorTools
             var dirSepChars = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
 
             if (log.IsInfoEnabled)
-                log.InfoFormat("Searching for automatic stationary GrhDatas from root `{0}`.");
+                log.InfoFormat("Searching for automatic stationary GrhDatas from root `{0}`.", rootGrhDir);
 
             // Get a List of all of the textures from the root directory
             var textures = FindTextures(rootGrhDir);
@@ -282,7 +282,7 @@ namespace NetGore.EditorTools
                 if (relative.LastIndexOfAny(dirSepChars) < 0)
                 {
                     if (log.IsWarnEnabled)
-                        log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.");
+                        log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.", texture);
                     continue;
                 }
 

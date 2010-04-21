@@ -14,7 +14,7 @@ namespace SFML.Graphics.Design
         public QuaternionConverter()
         {
             var type = typeof(Quaternion);
-            base.propertyDescriptions =
+            propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 {
                     new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")),

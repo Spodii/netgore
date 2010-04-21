@@ -116,7 +116,7 @@ namespace NetGore.Db
 
             // Find the classes marked with our attribute
             var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
-            var types = TypeHelper.FindTypesWithAttribute(typeof(DbControllerQueryAttribute), requiredConstructorParams, false);
+            var types = TypeHelper.FindTypesWithAttribute(typeof(DbControllerQueryAttribute), requiredConstructorParams);
 
             // Create an instance of each of the types
             foreach (var type in types)

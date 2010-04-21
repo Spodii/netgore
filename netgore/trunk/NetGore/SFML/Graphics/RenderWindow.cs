@@ -467,7 +467,7 @@ namespace SFML
             /// <param name="active">True to activate, false to deactivate (true by default)</param>
             /// <returns>True if operation was successful, false otherwise</returns>
             ////////////////////////////////////////////////////////////
-            public override bool SetActive(bool active)
+            public override bool SetActive(bool active = true)
             {
                 return sfRenderWindow_SetActive(This, active);
             }

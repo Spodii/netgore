@@ -48,7 +48,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _releaseSpeedKeyName = "ReleaseSpeed";
 
         static readonly IEnumerable<Type> _emitterTypes =
-            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes, false).OrderBy(x => x.Name).ToCompact();
+            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes).OrderBy(x => x.Name).ToCompact();
 
         /// <summary>
         /// The array of <see cref="Particle"/>s.

@@ -14,9 +14,9 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class BitStreamTests
     {
-        delegate T BitStreamReadHandler<T>();
+        delegate T BitStreamReadHandler<out T>();
 
-        delegate void BitStreamWriteHandler<T>(T value);
+        delegate void BitStreamWriteHandler<in T>(T value);
 
         /// <summary>
         /// Maximum number of iterations to use for I/O tests.
@@ -1119,7 +1119,7 @@ namespace NetGore.Tests.IO
             for (var i = 0; i < 100; i++)
             {
                 Assert.AreEqual(expectedBits, bs.LengthBits);
-                bs.Write((byte)1, 8);
+                bs.Write((byte)1);
                 expectedBits += 8;
             }
         }

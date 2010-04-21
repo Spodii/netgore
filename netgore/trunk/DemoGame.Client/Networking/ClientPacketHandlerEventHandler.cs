@@ -17,5 +17,5 @@ namespace DemoGame.Client
     /// <param name="sender">The <see cref="ClientPacketHandler"/> the event came from.</param>
     /// <param name="conn">The <see cref="IIPSocket"/> the event is related to.</param>
     /// <param name="e">The event args.</param>
-    delegate void ClientPacketHandlerEventHandler<T>(ClientPacketHandler sender, IIPSocket conn, T e);
+    delegate void ClientPacketHandlerEventHandler<in T>(ClientPacketHandler sender, IIPSocket conn, T e);
 }

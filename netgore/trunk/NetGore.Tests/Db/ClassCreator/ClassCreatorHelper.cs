@@ -33,12 +33,7 @@ namespace NetGore.Tests.Db.ClassCreator
             return type.GetProperties();
         }
 
-        public static IEnumerable<Type> GetTableTypes(string tableName)
-        {
-            return GetTableTypes(tableName, null);
-        }
-
-        public static IEnumerable<Type> GetTableTypes(string tableName, Action<MySqlClassGenerator> additionalProcessing)
+        public static IEnumerable<Type> GetTableTypes(string tableName, Action<MySqlClassGenerator> additionalProcessing = null)
         {
             IEnumerable<GeneratedTableCode> codeItems;
 

@@ -14,5 +14,5 @@ namespace NetGore.Network
     /// <typeparam name="T">The Type of additional argument.</typeparam>
     /// <param name="sender">The <see cref="UDPSocket"/> the event came from.</param>
     /// <param name="e">The additional event arguments.</param>
-    public delegate void UDPSocketEventHandler<T>(UDPSocket sender, T e);
+    public delegate void UDPSocketEventHandler<in T>(UDPSocket sender, T e);
 }

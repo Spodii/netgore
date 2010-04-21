@@ -124,9 +124,8 @@ namespace NetGore.Features.GameTime
             var r = (byte)(originalColor.R * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
             var g = (byte)(originalColor.G * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
             var b = (byte)(originalColor.B * nightMultiplier).Clamp(MinAmbient, byte.MaxValue);
-            const byte a = byte.MaxValue;
 
-            return new Color(r, g, b, a);
+            return new Color(r, g, b);
         }
 
         /// <summary>

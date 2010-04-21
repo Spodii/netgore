@@ -588,7 +588,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -599,18 +599,20 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(int left, ShopID right)
         {
             return left < right._value;
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -621,7 +623,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -632,7 +634,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -643,7 +645,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -654,7 +656,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -665,7 +667,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -676,29 +678,33 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than or equal to the right.
+        /// </returns>
         public static bool operator >=(ShopID left, int right)
         {
             return left._value >= right;
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(ShopID left, int right)
         {
             return left._value <= right;
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -709,7 +715,7 @@ namespace NetGore.Features.Shops
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>

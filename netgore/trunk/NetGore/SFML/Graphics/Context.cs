@@ -51,13 +51,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public static Context Global
             {
-                get
-                {
-                    if (ourGlobalContext == null)
-                        ourGlobalContext = new Context();
-
-                    return ourGlobalContext;
-                }
+                get { return ourGlobalContext ?? (ourGlobalContext = new Context()); }
             }
 
             ////////////////////////////////////////////////////////////

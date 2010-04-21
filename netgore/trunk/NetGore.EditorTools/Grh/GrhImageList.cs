@@ -40,7 +40,7 @@ namespace NetGore.EditorTools
 
         /// <summary>
         /// If the cache is dirty. That is, if there is items that have been loaded into the <see cref="GrhImageList"/>
-        /// since the last call to <see cref="GrhImageList.Save()"/>.
+        /// since the last call to <see cref="GrhImageList.Save"/>.
         /// </summary>
         bool _dirty = false;
 
@@ -364,19 +364,10 @@ namespace NetGore.EditorTools
         /// Saves the <see cref="GrhImageList"/> information to a cache file so prevent having to recreate
         /// the images next time the <see cref="GrhImageList"/> is loaded.
         /// </summary>
-        public void Save()
-        {
-            Save(false);
-        }
-
-        /// <summary>
-        /// Saves the <see cref="GrhImageList"/> information to a cache file so prevent having to recreate
-        /// the images next time the <see cref="GrhImageList"/> is loaded.
-        /// </summary>
         /// <param name="forced">By default, the <see cref="GrhImageList"/> will only be saved if there has
         /// been changes to it since the last save or the cache file does not exist. If this value is set
         /// to true, the file will be saved anyways.</param>
-        public void Save(bool forced)
+        public void Save(bool forced = false)
         {
             if (!forced && !_dirty && File.Exists(CacheFilePath))
                 return;

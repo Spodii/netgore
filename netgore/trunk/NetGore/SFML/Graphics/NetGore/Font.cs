@@ -48,16 +48,6 @@ namespace SFML
 
             #endregion
 
-            /// <summary>
-            /// Construct the font from a file
-            /// </summary>
-            /// <param name="filename">Font file to load</param>
-            /// <exception cref="LoadingFailedException" />
-            ////////////////////////////////////////////////////////////
-            public Font(string filename) : this(filename, 30)
-            {
-            }
-
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Construct the font from a file, using custom size
@@ -66,7 +56,7 @@ namespace SFML
             /// <param name="charSize">Character size</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(string filename, uint charSize) : this(filename, charSize, string.Empty)
+            public Font(string filename, uint charSize = 30u) : this(filename, charSize, string.Empty)
             {
             }
 
@@ -89,34 +79,11 @@ namespace SFML
             /// Construct the font from a file in a stream
             /// </summary>
             /// <param name="stream">Stream containing the file contents</param>
-            /// <exception cref="LoadingFailedException" />
-            ////////////////////////////////////////////////////////////
-            public Font(Stream stream) : this(stream, 30)
-            {
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Construct the font from a file in a stream, using custom size
-            /// </summary>
-            /// <param name="stream">Stream containing the file contents</param>
-            /// <param name="charSize">Character size</param>
-            /// <exception cref="LoadingFailedException" />
-            ////////////////////////////////////////////////////////////
-            public Font(Stream stream, uint charSize) : this(stream, charSize, "")
-            {
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Construct the font from a file in a stream
-            /// </summary>
-            /// <param name="stream">Stream containing the file contents</param>
             /// <param name="charSize">Character size</param>
             /// <param name="charset">Set of characters to generate</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(Stream stream, uint charSize, string charset) : base(IntPtr.Zero)
+            public Font(Stream stream, uint charSize = 30u, string charset = "") : base(IntPtr.Zero)
             {
                 unsafe
                 {
@@ -135,8 +102,11 @@ namespace SFML
                         SetThis(sfFont_CreateFromMemory((char*)dataPtr, Read, charSize, ptr));
                     }
                 }
+
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("font");
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
 
             /// <summary>
@@ -172,13 +142,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public static Font DefaultFont
             {
-                get
-                {
-                    if (ourDefaultFont == null)
-                        ourDefaultFont = new Font(sfFont_GetDefaultFont());
-
-                    return ourDefaultFont;
-                }
+                get { return ourDefaultFont ?? (ourDefaultFont = new Font(sfFont_GetDefaultFont())); }
             }
 
             ////////////////////////////////////////////////////////////

@@ -35,19 +35,11 @@ namespace NetGore.Features.Quests
         /// Initializes a new instance of the <see cref="QuestPerformerKillCounterBase{TCharacter, TKillID}"/> class.
         /// </summary>
         /// <param name="owner">The owner.</param>
-        protected QuestPerformerKillCounterBase(TCharacter owner) : this(owner, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="QuestPerformerKillCounterBase{TCharacter, TKillID}"/> class.
-        /// </summary>
-        /// <param name="owner">The owner.</param>
         /// <param name="initialCounts">The initial counts.</param>
         protected QuestPerformerKillCounterBase(TCharacter owner,
                                                 IEnumerable
                                                     <KeyValuePair<IQuest<TCharacter>, IEnumerable<KeyValuePair<TKillID, ushort>>>>
-                                                    initialCounts)
+                                                    initialCounts = null)
         {
             // Add the initial values
             if (initialCounts != null)
