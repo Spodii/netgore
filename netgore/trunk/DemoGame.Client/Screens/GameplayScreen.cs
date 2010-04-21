@@ -582,7 +582,7 @@ namespace DemoGame.Client
                 return;
             }
 
-            ScreenManager.AudioManager.ListenerPosition = UserChar.Position;
+            ScreenManager.AudioManager.ListenerPosition = UserChar.Center;
 
             _userLight.IsEnabled = true;
             _userLight.Teleport(UserChar.Position);
