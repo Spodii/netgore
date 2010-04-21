@@ -937,7 +937,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="weapon">The weapon to attack with.</param>
         /// <param name="target">The target to attack. Can be null.</param>
-        void AttackMelee(ItemEntityBase weapon, Character target)
+        void AttackMelee(ItemEntity weapon, Character target)
         {
             // We will show the melee attack animation no matter what, so just send it now
             using (var charAttack = ServerPacket.CharAttack(MapEntityIndex))
@@ -969,7 +969,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="weapon">The weapon to attack with.</param>
         /// <param name="target">The target to attack. Can be null.</param>
-        void AttackRanged(ItemEntityBase weapon, Character target)
+        void AttackRanged(ItemEntity weapon, Character target)
         {
             // We can't do anything with ranged attacks if no target is given
             if (target == null)
