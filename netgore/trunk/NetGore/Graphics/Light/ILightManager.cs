@@ -8,7 +8,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Interface for a manager of multiple <see cref="ILight"/>s.
     /// </summary>
-    public interface ILightManager : IList<ILight>
+    public interface ILightManager : IList<ILight>, IDisposable
     {
         /// <summary>
         /// Gets or sets the ambient light color. The alpha value has no affect and will always be set to 255.

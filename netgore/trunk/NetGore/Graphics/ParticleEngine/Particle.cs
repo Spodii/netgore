@@ -170,7 +170,7 @@ namespace NetGore.Graphics.ParticleEngine
         public void Dispose()
         {
             if (_isDisposed)
-                throw new MethodAccessException("Particle is already disposed.");
+                return;
 
             _isDisposed = true;
 

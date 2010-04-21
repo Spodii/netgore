@@ -247,6 +247,9 @@ namespace NetGore.Db
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             // NOTE: I do not believe this is being disposed of ever

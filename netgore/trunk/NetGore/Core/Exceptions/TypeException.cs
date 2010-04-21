@@ -6,6 +6,7 @@ namespace NetGore
     /// <summary>
     /// Exception for when a <see cref="Type"/> does not include require information or is not of the expected type.
     /// </summary>
+    [Serializable]
     public class TypeException : Exception
     {
         /// <summary>

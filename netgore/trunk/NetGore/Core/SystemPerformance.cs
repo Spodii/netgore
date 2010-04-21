@@ -32,6 +32,9 @@ namespace NetGore
             /// </summary>
             static int _numFailures = 0;
 
+            /// <summary>
+            /// Initializes the <see cref="CPU"/> class.
+            /// </summary>
             static CPU()
             {
                 try

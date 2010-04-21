@@ -31,13 +31,18 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.             
+        /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        public override void Dispose()
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposeManaged)
         {
-            DataReader.Dispose();
-            _dbQueryBase.ReleaseCommand((DbCommand)Command);
-            _poolableConn.Dispose();
+            if (disposeManaged)
+            {
+                DataReader.Dispose();
+                _dbQueryBase.ReleaseCommand((DbCommand)Command);
+                _poolableConn.Dispose();
+            }
         }
     }
 }

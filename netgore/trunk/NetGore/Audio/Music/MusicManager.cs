@@ -24,6 +24,9 @@ namespace NetGore.Audio
         IMusicInfo _playingInfo;
         float _volume = 100;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MusicManager"/> class.
+        /// </summary>
         public MusicManager()
         {
             // Load the values from file
@@ -270,5 +273,29 @@ namespace NetGore.Audio
         }
 
         #endregion
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+            if (!disposeManaged)
+                return;
+
+            Stop();
+
+            if (_playing != null && !_playing.IsDisposed())
+                _playing.Dispose();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
     }
 }

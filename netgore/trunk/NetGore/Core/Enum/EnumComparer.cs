@@ -14,7 +14,7 @@ namespace NetGore
     /// <typeparam name="T">Type of Enum to compare.</typeparam>
     public sealed class EnumComparer<T> : IEqualityComparer<T> where T : struct, IComparable, IConvertible, IFormattable
     {
-        static readonly EnumComparer<T> _instance = new EnumComparer<T>();
+        static readonly EnumComparer<T> _instance;
 
         /// <summary>
         /// The underlying Enum types that are supported.
@@ -26,10 +26,12 @@ namespace NetGore
         readonly Func<T, int> _getHashCode;
 
         /// <summary>
-        /// EnumComparer static constructor.
+        /// Initializes the <see cref="EnumComparer{T}"/> class.
         /// </summary>
         static EnumComparer()
         {
+            _instance = new EnumComparer<T>();
+
             // Ensure T is an Enum
             if (!typeof(T).IsEnum)
             {
@@ -50,7 +52,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// EnumComparer constructor.
+        /// Initializes a new instance of the <see cref="EnumComparer{T}"/> class.
         /// </summary>
         EnumComparer()
         {

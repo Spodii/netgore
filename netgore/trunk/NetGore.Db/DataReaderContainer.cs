@@ -157,12 +157,32 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+            {
+                _dataReader.Dispose();
+                _command.Dispose();
+            }
+        }
+
+        bool _isDisposed = false;
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.             
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            _dataReader.Dispose();
-            _command.Dispose();
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
+            Dispose(true);
         }
 
         ///<summary>

@@ -6,6 +6,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// A generic <see cref="Exception"/> involving a <see cref="GrhData"/>.
     /// </summary>
+    [Serializable]
     public class GrhDataException : Exception
     {
         /// <summary>

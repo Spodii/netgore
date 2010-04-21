@@ -6,6 +6,7 @@ namespace NetGore
     /// <summary>
     /// An <see cref="Exception"/> for when a key already exists in a collection.
     /// </summary>
+    [Serializable]
     public class DuplicateKeyException : Exception
     {
         /// <summary>

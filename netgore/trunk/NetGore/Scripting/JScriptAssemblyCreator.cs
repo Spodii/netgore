@@ -149,14 +149,16 @@ namespace NetGore.Scripting
         /// <returns>The generated <see cref="Assembly"/>. Can be null if there was any errors generating it.</returns>
         protected virtual Assembly CompileSourceToAssembly(string sourceCode, string filePath)
         {
-            var provider = new JScriptCodeProvider();
+            CompilerResults results;
 
             // Set up the compiler parameters
-            var p = new CompilerParameters
-            { GenerateInMemory = false, IncludeDebugInformation = false, OutputAssembly = filePath };
+            var p = new CompilerParameters { GenerateInMemory = false, IncludeDebugInformation = false, OutputAssembly = filePath };
 
             // Compile
-            var results = provider.CompileAssemblyFromSource(p, sourceCode);
+            using (var provider = new JScriptCodeProvider())
+            {
+                results = provider.CompileAssemblyFromSource(p, sourceCode);
+            }
 
             // Store the compilation errors
             if (results.Errors.Count > 0)

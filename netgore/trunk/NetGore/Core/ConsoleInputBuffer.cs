@@ -26,6 +26,25 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+            _isRunning = false;
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="ConsoleInputBuffer"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~ConsoleInputBuffer()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of the input strings since the last call to this method.
         /// </summary>
         /// <returns>An IEnumerable of the input strings since the last call to this method.</returns>
@@ -75,7 +94,12 @@ namespace NetGore
         /// </summary>
         public void Dispose()
         {
-            _isRunning = false;
+            if (!_isRunning)
+                return;
+
+            GC.SuppressFinalize(this);
+
+            Dispose(true);
         }
 
         #endregion
