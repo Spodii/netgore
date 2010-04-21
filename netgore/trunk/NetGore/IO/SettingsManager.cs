@@ -354,6 +354,15 @@ namespace NetGore.IO
             }
         }
 
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="SettingsManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~SettingsManager()
+        {
+            Dispose();
+        }
+
         #region IDisposable Members
 
         /// <summary>
@@ -363,7 +372,10 @@ namespace NetGore.IO
         {
             if (_disposed)
                 return;
+
             _disposed = true;
+
+            GC.SuppressFinalize(this);
 
             Save();
         }
