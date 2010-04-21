@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Collections;
+using SFML;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -10,6 +13,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class LightManager : VirtualList<ILight>, ILightManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         Color _ambient;
         Grh _defaultSprite;
         Image _lightMap;
@@ -36,14 +41,9 @@ namespace NetGore.Graphics
             if (!IsInitialized)
                 throw new InvalidOperationException("You must initialize the ILightManager before drawing.");
 
-            // Ensure the light map is created and of the needed size
-            if (_lightMap == null || _lightMap.IsDisposed() || _lightMap.Width != _rw.Width || _lightMap.Height != _rw.Height)
-            {
-                if (_lightMap != null && !_lightMap.IsDisposed())
-                    _lightMap.Dispose();
-
-                _lightMap = new Image(_rw.Width, _rw.Height);
-            }
+            // Ensure the light map is ready
+            if (!PrepareLightMap())
+                return null;
 
             // Clear the buffer with the ambient light color
             _rw.Clear(Ambient);
@@ -63,6 +63,89 @@ namespace NetGore.Graphics
             _lightMap.CopyScreen(_rw);
 
             return _lightMap;
+        }
+
+        /// <summary>
+        /// Ensures the <see cref="_lightMap"/> <see cref="Image"/> is all ready.
+        /// </summary>
+        /// <returns>True if the light map <see cref="Image"/> was prepared; false if there was some issue in preparing the
+        /// <see cref="Image"/> and drawing cannot continue.</returns>
+        bool PrepareLightMap()
+        {
+            // Ensure the light map is created and of the needed size
+            var mustRecreateLightMap = false;
+            try
+            {
+                if (_lightMap == null || _lightMap.IsDisposed() || _lightMap.Width != _rw.Width || _lightMap.Height != _rw.Height)
+                    mustRecreateLightMap = true;
+            }
+            catch (InvalidOperationException)
+            {
+                mustRecreateLightMap = true;
+            }
+
+            // Create the light map Image if needed
+            if (mustRecreateLightMap)
+            {
+                // If there is an old Image, make sure to dispose of it... or at least try to
+                if (_lightMap != null)
+                {
+                    try
+                    {
+                        if (!_lightMap.IsDisposed())
+                            _lightMap.Dispose();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Ignore failure to dispose
+                    }
+                }
+
+                // Get the size to make the light map (same size of the window)
+                int width;
+                int height;
+                try
+                {
+                    width = (int)_rw.Width;
+                    height = (int)_rw.Height;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    const string errmsg =
+                        "Failed to create light map Image - failed to get RenderWindow width/height. Will attempt again next frame. Exception: {0}";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+                    return false;
+                }
+
+                // Check for a valid RenderWindow size. These can be 0 when the RenderWindow has been minimized.
+                if (width <= 0 || height <= 0)
+                {
+                    if (log.IsDebugEnabled)
+                    {
+                        log.DebugFormat(
+                            "Unable to recreate LightMap - invalid Width/Height ({0},{1}) returned from RenderWindow. Most likely, the form was minimized.",
+                            width, height);
+                    }
+                    return false;
+                }
+
+                // Create the new Image
+                try
+                {
+                    _lightMap = new Image(_rw.Width, _rw.Height) { Smooth = false };
+                }
+                catch (LoadingFailedException ex)
+                {
+                    const string errmsg =
+                        "Failed to create light map Image - construction of Image failed. Will attempt again next frame. Exception: {0}";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         #region ILightManager Members
@@ -156,6 +239,7 @@ namespace NetGore.Graphics
                 _sb.Dispose();
 
             _rw = renderWindow;
+
             _sb = new RoundedSpriteBatch(renderWindow);
         }
 
