@@ -2,7 +2,10 @@ using System.Linq;
 
 namespace InstallationValidator
 {
-    public enum TestStatus
+    /// <summary>
+    /// Contains the different statuses possible for a test.
+    /// </summary>
+    public enum TestStatus : byte
     {
         /// <summary>
         /// The test has yet to be run.

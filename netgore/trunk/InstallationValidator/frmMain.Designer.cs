@@ -256,7 +256,6 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmMain";
             this.Text = "NetGore Installation Validator";
-            this.Load += new System.EventHandler(this.frmMain_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);

@@ -15,12 +15,20 @@ namespace InstallationValidator
     {
         ITestable[] _tests;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="frmMain"/> class.
+        /// </summary>
         public frmMain()
         {
             InitializeComponent();
             SetTestSuiteStatus(TestSuiteStatus.Waiting);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnDbSettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnDbSettings_Click(object sender, EventArgs e)
         {
             if (!File.Exists(MySqlHelper.DbSettingsFile))
@@ -39,6 +47,11 @@ namespace InstallationValidator
                                               Environment.NewLine, ex));
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnRun control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnRun_Click(object sender, EventArgs e)
         {
             btnRun.Enabled = false;
@@ -85,6 +98,11 @@ namespace InstallationValidator
             btnRun.Refresh();
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnSetupGuide control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnSetupGuide_Click(object sender, EventArgs e)
         {
             const string url = "http://www.netgore.com/wiki/setup-guide.html";
@@ -114,8 +132,14 @@ namespace InstallationValidator
             }
         }
 
-        void frmMain_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+
             DoubleBuffered = true;
 
             SetCurrentDirectory();
@@ -140,6 +164,11 @@ namespace InstallationValidator
             lstTests.Items.AddRange(_tests);
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the lstTests control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void lstTests_SelectedIndexChanged(object sender, EventArgs e)
         {
             var item = lstTests.SelectedItem as ITestable;
@@ -187,6 +216,11 @@ namespace InstallationValidator
             }
         }
 
+        /// <summary>
+        /// Sets the test suite status.
+        /// </summary>
+        /// <param name="currentTest">The current test.</param>
+        /// <param name="totalTests">The total tests.</param>
         void SetTestSuiteStatus(int currentTest, int totalTests)
         {
             SetTestSuiteStatus(TestSuiteStatus.Running);
@@ -194,6 +228,10 @@ namespace InstallationValidator
             lblStatus.Refresh();
         }
 
+        /// <summary>
+        /// Sets the test suite status.
+        /// </summary>
+        /// <param name="status">The status.</param>
         void SetTestSuiteStatus(TestSuiteStatus status)
         {
             string txt;
@@ -229,7 +267,10 @@ namespace InstallationValidator
             lblStatus.Text = txt;
         }
 
-        enum TestSuiteStatus
+        /// <summary>
+        /// The possible test suite statuses.
+        /// </summary>
+        enum TestSuiteStatus : byte
         {
             /// <summary>
             /// No tests failed.
