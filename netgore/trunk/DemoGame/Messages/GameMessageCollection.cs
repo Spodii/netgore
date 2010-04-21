@@ -107,20 +107,11 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the <see cref="GameMessageCollection"/> for the default language.
-        /// </summary>
-        /// <returns>The <see cref="GameMessageCollection"/> for the default language.</returns>
-        public static GameMessageCollection Create()
-        {
-            return Create(_defaultLanguageName);
-        }
-
-        /// <summary>
         /// Gets the <see cref="GameMessageCollection"/> for the specified language.
         /// </summary>
         /// <param name="language">The game message language.</param>
         /// <returns>The <see cref="GameMessageCollection"/> for the specified language.</returns>
-        public static GameMessageCollection Create(string language)
+        public static GameMessageCollection Create(string language = _defaultLanguageName)
         {
             GameMessageCollection instance;
             if (!_instances.TryGetValue(language, out instance))

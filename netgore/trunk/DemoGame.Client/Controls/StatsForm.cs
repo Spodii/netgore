@@ -144,7 +144,7 @@ namespace DemoGame.Client
             readonly StatType _statType;
             readonly StatsForm _statsForm;
 
-            public RaiseStatPB(Vector2 position, Grh sprite, StatsForm parent, StatType statType)
+            public RaiseStatPB(Vector2 position, ISprite sprite, StatsForm parent, StatType statType)
                 : base(parent, position, sprite.Size)
             {
                 if (parent == null)

@@ -39,7 +39,7 @@ namespace NetGore.Graphics.GUI
         Vector2 DrawOffset { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteFont"/> used by this <see cref="ITooltip"/>. By default, this value will
+        /// Gets or sets the <see cref="Font"/> used by this <see cref="ITooltip"/>. By default, this value will
         /// be equal to the <see cref="IGUIManager"/>'s Font. Cannot be null.
         /// </summary>
         Font Font { get; set; }

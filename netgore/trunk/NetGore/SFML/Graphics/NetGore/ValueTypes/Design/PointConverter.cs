@@ -14,7 +14,7 @@ namespace SFML.Graphics.Design
         public PointConverter()
         {
             var type = typeof(Point);
-            base.propertyDescriptions =
+            propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("X")), new FieldPropertyDescriptor(type.GetField("Y")) }).Sort(
                     new string[] { "X", "Y" });

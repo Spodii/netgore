@@ -165,7 +165,8 @@ namespace NetGore
             uint t;
 
             // Generate 4 values at a time
-            for (var bound = buffer.Length - 3; i < bound;)
+            var bound = buffer.Length - 3; 
+            while (i < bound)
             {
                 t = (x ^ (x << 11));
                 x = y;

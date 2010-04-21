@@ -59,13 +59,7 @@ namespace NetGore.EditorTools
         /// of this property.</returns>
         public override TypeConverter Converter
         {
-            get
-            {
-                if (_converter == null)
-                    _converter = TypeConverterWrapper.Create(ForceTypeConverter ?? base.Converter);
-
-                return _converter;
-            }
+            get { return _converter ?? (_converter = TypeConverterWrapper.Create(ForceTypeConverter ?? base.Converter)); }
         }
 
         /// <summary>

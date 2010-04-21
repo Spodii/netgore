@@ -36,17 +36,9 @@ namespace NetGore.Collections
         int _version = 0;
 
         /// <summary>
-        /// DArray constructor
+        /// Initializes a new instance of the <see cref="DArray{T}"/> class.
         /// </summary>
         public DArray() : this(_defaultSize)
-        {
-        }
-
-        /// <summary>
-        /// DArray constructor
-        /// </summary>
-        /// <param name="initialSize">Initial size of the internal buffer (default 8)</param>
-        public DArray(int initialSize) : this(initialSize, false)
         {
         }
 
@@ -63,7 +55,7 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="initialSize">Initial size of the internal buffer (default 8)</param>
         /// <param name="trackFree">If free indices will be tracked and Add can be used</param>
-        public DArray(int initialSize, bool trackFree)
+        public DArray(int initialSize, bool trackFree = false)
         {
             if (initialSize <= 0)
                 throw new ArgumentOutOfRangeException("initialSize", "Invalid initialSize - must be greater than 0.");
@@ -458,7 +450,7 @@ namespace NetGore.Collections
         /// Copies the elements of the DArray to an System.Array, starting at a particular System.Array index.
         /// </summary>
         /// <param name="array">The one-dimensional System.Array that is the destination of the elements copied 
-        /// from DArray. The System.Array must have zero-based indexing.
+        /// from DArray. The System.Array must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {

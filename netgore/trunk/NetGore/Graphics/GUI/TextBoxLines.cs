@@ -168,7 +168,7 @@ namespace NetGore.Graphics.GUI
         /// Draws the specified range of lines.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="font">The <see cref="SpriteFont"/> to use.</param>
+        /// <param name="font">The <see cref="Font"/> to use.</param>
         /// <param name="start">The index of the first line to draw.</param>
         /// <param name="count">The maximum of lines to draw.</param>
         /// <param name="screenPos">The top-left corner of the location to begin drawing the text.</param>

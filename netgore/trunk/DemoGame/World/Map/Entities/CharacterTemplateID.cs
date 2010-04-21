@@ -590,7 +590,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -601,7 +601,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -612,7 +612,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -623,7 +623,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -634,7 +634,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -645,7 +645,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -656,7 +656,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -667,7 +667,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -678,7 +678,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -689,7 +689,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -700,7 +700,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -711,7 +711,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>

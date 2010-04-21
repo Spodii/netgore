@@ -218,7 +218,7 @@ namespace NetGore.Graphics
             return gd;
         }
 
-        public static AnimatedGrhData CreateGrhData(GrhIndex[] frames, float speed, SpriteCategorization categorization)
+        public static AnimatedGrhData CreateGrhData(IEnumerable<GrhIndex> frames, float speed, SpriteCategorization categorization)
         {
             var grhIndex = NextFreeIndex();
             var gd = new AnimatedGrhData(grhIndex, categorization);
@@ -513,7 +513,7 @@ namespace NetGore.Graphics
             {
                 // Create the GrhData DArray
                 if (_grhDatas == null)
-                    _grhDatas = new DArray<GrhData>(256, false);
+                    _grhDatas = new DArray<GrhData>(256);
                 else
                     _grhDatas.Clear();
 

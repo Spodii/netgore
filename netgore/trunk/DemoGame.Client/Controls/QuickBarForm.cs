@@ -221,7 +221,7 @@ namespace DemoGame.Client
             /// </summary>
             /// <param name="grh">The <see cref="Grh"/> being drawn.</param>
             /// <returns>The screen position to use to place an item centered in this control.</returns>
-            Vector2 CenterOnSlot(Grh grh)
+            Vector2 CenterOnSlot(ISprite grh)
             {
                 return CenterOnSlot(grh != null ? grh.Size : Vector2.Zero);
             }

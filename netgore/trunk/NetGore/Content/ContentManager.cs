@@ -132,10 +132,7 @@ namespace NetGore.Content
         {
             lock (_instanceSync)
             {
-                if (_instance == null)
-                    _instance = new ContentManager();
-
-                return _instance;
+                return _instance ?? (_instance = new ContentManager());
             }
         }
 

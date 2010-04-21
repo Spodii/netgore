@@ -26,7 +26,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="EmitterModifierFactory"/> class.
         /// </summary>
-        EmitterModifierFactory() : base(GetTypeFilter(), null, false)
+        EmitterModifierFactory() : base(GetTypeFilter())
         {
         }
 

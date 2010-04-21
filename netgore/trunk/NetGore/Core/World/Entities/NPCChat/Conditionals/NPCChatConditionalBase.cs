@@ -31,12 +31,7 @@ namespace NetGore.NPCChat.Conditionals
         /// of each derived class, with the <see cref="Name"/> as the key.
         /// </summary>
         static readonly Dictionary<string, NPCChatConditionalBase> _instances =
-            new Dictionary<string, NPCChatConditionalBase>(_nameComparer);
-
-        /// <summary>
-        /// <see cref="StringComparer"/> used for the <see cref="Name"/>.
-        /// </summary>
-        static readonly StringComparer _nameComparer = StringComparer.Ordinal;
+            new Dictionary<string, NPCChatConditionalBase>(StringComparer.Ordinal);
 
         readonly string _name;
         readonly NPCChatConditionalParameterType[] _parameterTypes;
@@ -58,7 +53,7 @@ namespace NetGore.NPCChat.Conditionals
                 ConstructorParameters = Type.EmptyTypes
             };
 
-            new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
+            new TypeFactory(filter.GetFilter(), OnLoadTypeHandler);
         }
 
         /// <summary>

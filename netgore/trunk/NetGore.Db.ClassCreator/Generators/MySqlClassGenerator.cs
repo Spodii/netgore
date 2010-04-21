@@ -18,20 +18,8 @@ namespace NetGore.Db.ClassCreator
         /// <param name="userID">The user ID.</param>
         /// <param name="password">The password.</param>
         /// <param name="database">The database.</param>
-        public MySqlClassGenerator(string server, string userID, string password, string database)
-            : this(server, userID, password, database, 3306)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MySqlClassGenerator"/> class.
-        /// </summary>
-        /// <param name="server">The server.</param>
-        /// <param name="userID">The user ID.</param>
-        /// <param name="password">The password.</param>
-        /// <param name="database">The database.</param>
         /// <param name="port">The port.</param>
-        public MySqlClassGenerator(string server, string userID, string password, string database, uint port)
+        public MySqlClassGenerator(string server, string userID, string password, string database, uint port = 3306u)
         {
             var sb = new MySqlConnectionStringBuilder
             { Server = server, UserID = userID, Password = password, Database = database, Port = port };

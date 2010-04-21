@@ -14,11 +14,11 @@ namespace SFML.Graphics.Design
         public PlaneConverter()
         {
             var type = typeof(Plane);
-            base.propertyDescriptions =
+            propertyDescriptions =
                 new PropertyDescriptorCollection(new PropertyDescriptor[]
                 { new FieldPropertyDescriptor(type.GetField("Normal")), new FieldPropertyDescriptor(type.GetField("D")) }).Sort(
                     new string[] { "Normal", "D" });
-            base.supportStringConvert = false;
+            supportStringConvert = false;
         }
 
         /// <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>

@@ -60,6 +60,7 @@ namespace DemoGame
 
         /// <summary>
         /// Tried to log in, but an invalid account name was given.
+        /// </summary>
         LoginInvalidName,
 
         /// <summary>

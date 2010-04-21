@@ -136,7 +136,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteFont"/> used by this <see cref="ITooltip"/>. By default, this value will
+        /// Gets or sets the <see cref="Font"/> used by this <see cref="ITooltip"/>. By default, this value will
         /// be equal to the <see cref="IGUIManager"/>'s Font. Cannot be null.
         /// </summary>
         public Font Font

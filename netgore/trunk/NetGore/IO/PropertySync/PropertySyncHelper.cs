@@ -45,7 +45,7 @@ namespace NetGore.IO.PropertySync
 
             var typeFilter = typeFilterCreator.GetFilter();
 
-            foreach (var type in TypeHelper.AllTypes(false).Where(typeFilter))
+            foreach (var type in TypeHelper.AllTypes().Where(typeFilter))
             {
                 // Look for classes that inherit the PropertySyncHandlerAttribute
                 var attribs = type.GetCustomAttributes(typeof(PropertySyncHandlerAttribute), true);
@@ -128,7 +128,7 @@ namespace NetGore.IO.PropertySync
         /// </summary>
         /// <param name="type">The <see cref="Type"/> to get the <see cref="IPropertySync"/>s for.</param>
         /// <returns>The <see cref="IPropertySync"/> instances for the given <paramref name="type"/>.</returns>
-        public static IPropertySync[] GetPropertySyncs(Type type)
+        public static IEnumerable<IPropertySync> GetPropertySyncs(Type type)
         {
             var infos = _factory[type];
             var ret = new IPropertySync[infos.Length];

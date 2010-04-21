@@ -19,17 +19,9 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="TextBoxLine"/> class.
         /// </summary>
         /// <param name="owner">The <see cref="TextBoxLines"/> this line is part of.</param>
-        public TextBoxLine(TextBoxLines owner) : this(owner, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextBoxLine"/> class.
-        /// </summary>
-        /// <param name="owner">The <see cref="TextBoxLines"/> this line is part of.</param>
         /// <param name="wasAutoBroken">if this <see cref="TextBoxLine"/> was created as the result of automatic line
         /// breaking due to word wrapping.</param>
-        public TextBoxLine(TextBoxLines owner, bool wasAutoBroken)
+        public TextBoxLine(TextBoxLines owner, bool wasAutoBroken = false)
         {
             TextBoxLines = owner;
             _wasAutoBroken = wasAutoBroken;
@@ -155,7 +147,7 @@ namespace NetGore.Graphics.GUI
         /// Draws the line of text.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="font">The <see cref="SpriteFont"/> to draw the text with.</param>
+        /// <param name="font">The <see cref="Font"/> to draw the text with.</param>
         /// <param name="screenPos">The screen position to start drawing the text at.</param>
         /// <param name="defaultColor">The default color of the text.</param>
         public void Draw(ISpriteBatch sb, Font font, Vector2 screenPos, Color defaultColor)
@@ -173,7 +165,7 @@ namespace NetGore.Graphics.GUI
         /// Draws the line of text.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="font">The <see cref="SpriteFont"/> to draw the text with.</param>
+        /// <param name="font">The <see cref="Font"/> to draw the text with.</param>
         /// <param name="screenPos">The screen position to start drawing the text at.</param>
         /// <param name="defaultColor">The default color of the text.</param>
         /// <param name="firstChar">The index of the first character to draw.</param>

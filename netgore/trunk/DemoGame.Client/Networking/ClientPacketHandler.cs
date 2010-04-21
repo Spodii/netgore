@@ -155,7 +155,7 @@ namespace DemoGame.Client
             get { return GameplayScreen.World; }
         }
 
-        static List<StyledText> CreateChatText(string name, string message)
+        static IEnumerable<StyledText> CreateChatText(string name, string message)
         {
             var left = new StyledText(name + ": ", Color.Green);
             var right = new StyledText(message, Color.Black);

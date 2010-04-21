@@ -27,7 +27,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="border">The <see cref="ControlBorder"/> to use for the <see cref="ChatBubble"/>s when
         /// drawing.</param>
-        /// <param name="font">The <see cref="SpriteFont"/> to use to write the bubble's text.</param>
+        /// <param name="font">The <see cref="Font"/> to use to write the bubble's text.</param>
         protected ChatBubbleManagerBase(ControlBorder border, Font font)
         {
             Lifespan = 50000;
@@ -61,7 +61,7 @@ namespace NetGore.Graphics
         public Color BorderColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="SpriteFont"/> used to draw the chat bubble text.
+        /// Gets or sets the <see cref="Font"/> used to draw the chat bubble text.
         /// Cannot be null.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>

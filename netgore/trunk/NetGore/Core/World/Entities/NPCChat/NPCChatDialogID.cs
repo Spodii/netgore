@@ -594,11 +594,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Implements operator < for comparing an <see cref="int"/> to a <see cref="NPCChatDialogID"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(int left, NPCChatDialogID right)
         {
             return left < right._value;
@@ -617,12 +619,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Implements operator < for comparing a <see cref="NPCChatDialogID"/> to another
-        /// <see cref="NPCChatDialogID"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(NPCChatDialogID left, NPCChatDialogID right)
         {
             return left._value < right._value;
@@ -640,11 +643,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Implements operator < for comparing a <see cref="NPCChatDialogID"/> to an <see cref="int"/>.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(NPCChatDialogID left, int right)
         {
             return left._value < right;
@@ -662,11 +667,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Implements operator <= for comparing an <see cref="int"/> to a <see cref="NPCChatDialogID"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(int left, NPCChatDialogID right)
         {
             return left <= right._value;
@@ -684,11 +691,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Implements operator <= for comparing a <see cref="NPCChatDialogID"/> to an <see cref="int"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(NPCChatDialogID left, int right)
         {
             return left._value <= right;
@@ -707,12 +716,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Implements operator <= for comparing a <see cref="NPCChatDialogID"/> to another
-        /// <see cref="NPCChatDialogID"/>.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than or equal to the left.
+        /// </returns>
         public static bool operator <=(NPCChatDialogID left, NPCChatDialogID right)
         {
             return left._value <= right._value;

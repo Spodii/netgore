@@ -17,7 +17,7 @@ namespace NetGore.Db
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IDbController _dbController;
-        readonly DArray<TItem> _items = new DArray<TItem>(32, false);
+        readonly DArray<TItem> _items = new DArray<TItem>(32);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbTableDataManager{TID, TItem}"/> class.

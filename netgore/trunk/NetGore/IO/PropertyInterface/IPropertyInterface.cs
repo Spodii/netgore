@@ -7,7 +7,7 @@ namespace NetGore.IO
     /// </summary>
     /// <typeparam name="TObj">Type of the object to get the property of.</typeparam>
     /// <typeparam name="T">The type of the property.</typeparam>
-    public interface IPropertyInterface<TObj, T>
+    public interface IPropertyInterface<in TObj, T>
     {
         /// <summary>
         /// Gets the value of the property for the given <paramref name="obj"/> instance.

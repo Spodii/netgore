@@ -23,19 +23,10 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="GameControlKeys"/> class.
         /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keysDown">The keys required to be down.</param>
-        public GameControlKeys(string name, IEnumerable<KeyCode> keysDown) : this(name, keysDown, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControlKeys"/> class.
-        /// </summary>
         /// <param name="name">The optional name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
         /// <param name="keysDown">The keys required to be down.</param>
         /// <param name="keysUp">The keys required to be up.</param>
-        public GameControlKeys(string name, IEnumerable<KeyCode> keysDown, IEnumerable<KeyCode> keysUp)
+        public GameControlKeys(string name, IEnumerable<KeyCode> keysDown, IEnumerable<KeyCode> keysUp = null)
             : this(name, keysDown, keysUp, null)
         {
         }
@@ -61,28 +52,9 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="name">The optional name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
         /// <param name="keyDown">The key required to be down.</param>
-        public GameControlKeys(string name, KeyCode? keyDown) : this(name, keyDown, null, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControlKeys"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
-        /// <param name="keyDown">The key required to be down.</param>
-        /// <param name="keyUp">The key required to be up.</param>
-        public GameControlKeys(string name, KeyCode? keyDown, KeyCode? keyUp) : this(name, keyDown, keyUp, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControlKeys"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the <see cref="GameControlKeys"/>. Cannot be null.</param>
-        /// <param name="keyDown">The key required to be down.</param>
         /// <param name="keyUp">The key required to be up.</param>
         /// <param name="newKeyDown">The key required to be down this frame, and up last frame.</param>
-        public GameControlKeys(string name, KeyCode? keyDown, KeyCode? keyUp, KeyCode? newKeyDown)
+        public GameControlKeys(string name, KeyCode? keyDown, KeyCode? keyUp = null, KeyCode? newKeyDown = null)
         {
             Name = name;
             KeysDown = keyDown.HasValue ? new KeyCode[] { keyDown.Value } : _emptyKeys;

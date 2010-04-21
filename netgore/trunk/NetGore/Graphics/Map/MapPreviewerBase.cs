@@ -18,7 +18,7 @@ namespace NetGore.Graphics
         protected MapPreviewerBase()
         {
             TextureSize = new Vector2(2048);
-            BackgroundColor = new Color(255, 0, 255, 255);
+            BackgroundColor = new Color(255, 0, 255);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Creates the preview of a map.
         /// </summary>
-        /// <param name="graphicsDevice">The graphics device.</param>
+        /// <param name="rw">The <see cref="RenderWindow"/>.</param>
         /// <param name="map">The map to create the preview of.</param>
         /// <param name="drawExtensions">The collection of <see cref="IMapDrawingExtension"/>s applied to the map.</param>
         /// <param name="filePath">The file path to save the created preview to.</param>
@@ -49,11 +49,14 @@ namespace NetGore.Graphics
         /// <summary>
         /// Creates the preview of a map.
         /// </summary>
-        /// <param name="graphicsDevice">The graphics device.</param>
+        /// <param name="rw">The <see cref="RenderWindow"/>.</param>
         /// <param name="map">The map to create the preview of.</param>
         /// <param name="drawExtensions">The collection of <see cref="IMapDrawingExtension"/>s applied to the map.</param>
         public Image CreatePreview(RenderWindow rw, T map, ICollection<IMapDrawingExtension> drawExtensions)
         {
+            if (rw == null)
+                throw new ArgumentNullException("rw");
+
             // Set up the new camera
             var cam = new Camera2D(TextureSize);
             var scaleValues = cam.Size / map.Size;

@@ -83,7 +83,7 @@ namespace NetGore.AI
             set { _heuristicFormula = value; }
         }
 
-        public List<Node> FindPath(Vector2 Start, Vector2 End)
+        public IEnumerable<Node> FindPath(Vector2 Start, Vector2 End)
         {
             lock (this)
             {

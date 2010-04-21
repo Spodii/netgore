@@ -21,5 +21,5 @@ namespace NetGore.Network
     /// <param name="socketManager">The <see cref="SocketManager"/> the event came from.</param>
     /// <param name="conn">Connection on which the event occured.</param>
     /// <param name="args">Additional arguments for the event.</param>
-    public delegate void SocketManagerSocketEventHandler<T>(SocketManager socketManager, IIPSocket conn, T args);
+    public delegate void SocketManagerSocketEventHandler<in T>(SocketManager socketManager, IIPSocket conn, T args);
 }

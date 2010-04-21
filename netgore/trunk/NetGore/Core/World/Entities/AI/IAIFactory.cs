@@ -51,7 +51,7 @@ namespace NetGore.AI
     /// Interface for an AI factory.
     /// </summary>
     /// <typeparam name="T">The Type of DynamicEntity that uses the AI.</typeparam>
-    public interface IAIFactory<T> : IAIFactory where T : DynamicEntity
+    public interface IAIFactory<in T> : IAIFactory where T : DynamicEntity
     {
         /// <summary>
         /// Creates an <see cref="IAI"/> instance.

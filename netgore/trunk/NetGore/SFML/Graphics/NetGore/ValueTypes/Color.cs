@@ -25,16 +25,6 @@ namespace SFML
             byte _a;
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Construct the color from its red, green and blue components
-            /// </summary>
-            /// <param name="red">Red component</param>
-            /// <param name="green">Green component</param>
-            /// <param name="blue">Blue component</param>
-            ////////////////////////////////////////////////////////////
-            public Color(byte red, byte green, byte blue) : this(red, green, blue, 255)
-            {
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -45,7 +35,7 @@ namespace SFML
             /// <param name="blue">Blue component</param>
             /// <param name="alpha">Alpha (transparency) component</param>
             ////////////////////////////////////////////////////////////
-            public Color(byte red, byte green, byte blue, byte alpha)
+            public Color(byte red, byte green, byte blue, byte alpha = byte.MaxValue)
             {
                 _r = red;
                 _g = green;

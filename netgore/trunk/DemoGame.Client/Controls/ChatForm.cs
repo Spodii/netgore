@@ -65,7 +65,7 @@ namespace DemoGame.Client
         /// Appends a set of styled text to the output TextBox.
         /// </summary>
         /// <param name="text">Text to append to the output TextBox.</param>
-        public void AppendToOutput(List<StyledText> text)
+        public void AppendToOutput(IEnumerable<StyledText> text)
         {
             _output.AppendLine(text);
         }

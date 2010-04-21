@@ -19,7 +19,7 @@ namespace NetGore.Db
     /// Interface for a class that is used to perform a queries on a database that return a reader.
     /// </summary>
     /// <typeparam name="T">Type of the object used for executing the query.</typeparam>
-    public interface IDbQueryReader<T> : IDbQueryHandler
+    public interface IDbQueryReader<in T> : IDbQueryHandler
     {
         /// <summary>
         /// Executes the query on the database using the specified <paramref name="item"/>.

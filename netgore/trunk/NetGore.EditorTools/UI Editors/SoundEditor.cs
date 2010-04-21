@@ -12,7 +12,7 @@ using NetGore.Audio;
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// A <see cref="UITypeEditor"/> for selecting the <see cref="ISound"/>.
+    /// A <see cref="UITypeEditor"/> for selecting the <see cref="ISoundInfo"/>.
     /// </summary>
     public class SoundEditor : UITypeEditor
     {

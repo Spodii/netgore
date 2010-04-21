@@ -25,7 +25,7 @@ namespace NetGore
         /// </summary>
         static TextFilter()
         {
-            new TypeFactory(CreateTypeFilter(), FactoryTypeAdded, false);
+            new TypeFactory(CreateTypeFilter(), FactoryTypeAdded);
         }
 
         /// <summary>

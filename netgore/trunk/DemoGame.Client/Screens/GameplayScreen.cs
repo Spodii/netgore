@@ -225,7 +225,7 @@ namespace DemoGame.Client
         /// Appends a set of styled text to the chat's output TextBox.
         /// </summary>
         /// <param name="text">Text to append to the chat's output TextBox.</param>
-        public void AppendToChatOutput(List<StyledText> text)
+        public void AppendToChatOutput(IEnumerable<StyledText> text)
         {
             _chatForm.AppendToOutput(text);
         }
@@ -608,8 +608,7 @@ namespace DemoGame.Client
             _gameControls.TargetIndex = _characterTargeter.TargetCharacterIndex;
 
             // Update controls
-            if (UserChar != null)
-                _gameControls.Update(GUIManager, _currentTime);
+            _gameControls.Update(GUIManager, _currentTime);
 
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);

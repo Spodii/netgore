@@ -65,7 +65,7 @@ namespace DemoGame.Server
 
             // Load the maps
             var mapFiles = MapBase.GetMapFiles(ContentPaths.Build);
-            _maps = new DArray<Map>(mapFiles.Count() + 10, false);
+            _maps = new DArray<Map>(mapFiles.Count() + 10);
             foreach (var mapFile in mapFiles)
             {
                 MapID mapID;
@@ -212,7 +212,7 @@ namespace DemoGame.Server
 
             // Could not grab by index
             if (log.IsWarnEnabled)
-                log.WarnFormat("GetMap() on ID `{0}` returned null because map does not exist.");
+                log.WarnFormat("GetMap() on ID `{0}` returned null because map does not exist.", mapID);
 
             return null;
         }
@@ -326,17 +326,8 @@ namespace DemoGame.Server
         /// Send a message to every user in the world. This method is thread-safe.
         /// </summary>
         /// <param name="data">BitStream containing the data to send.</param>
-        public void Send(BitStream data)
-        {
-            Send(data, true);
-        }
-
-        /// <summary>
-        /// Send a message to every user in the world. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send.</param>
         /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
-        public void Send(BitStream data, bool reliable)
+        public void Send(BitStream data, bool reliable = true)
         {
             // Ensure the data is not null and of a valid length
             if (data == null || data.Length < 1)

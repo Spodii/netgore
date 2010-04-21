@@ -10,6 +10,7 @@ namespace DemoGame.Server
 
     #region Topdown AI Algorithm
 
+#pragma warning disable 1587
 #if TOPDOWN //Top down AI Algorithm
     [AI(_id)]
     class StateMachine : AIBase
@@ -362,11 +363,13 @@ namespace DemoGame.Server
 
     }
 #endif
+#pragma warning restore 1587
 
     #endregion
 
     #region Sidescroller AI Algorithm
 
+#pragma warning disable 1587
 #if !TOPDOWN
     //The Sidescroller AI Algorithm.
     [AI(_id)]
@@ -739,6 +742,7 @@ namespace DemoGame.Server
         }
     }
 #endif
+#pragma warning restore 1587
 
     #endregion
 }

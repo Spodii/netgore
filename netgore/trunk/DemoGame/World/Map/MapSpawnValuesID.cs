@@ -589,62 +589,72 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than the right.
+        /// </returns>
         public static bool operator >(int left, MapSpawnValuesID right)
         {
             return left > right._value;
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(int left, MapSpawnValuesID right)
         {
             return left < right._value;
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than the right.
+        /// </returns>
         public static bool operator >(MapSpawnValuesID left, MapSpawnValuesID right)
         {
             return left._value > right._value;
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
+        /// <returns>
+        /// If the right argument is greater than the left.
+        /// </returns>
         public static bool operator <(MapSpawnValuesID left, MapSpawnValuesID right)
         {
             return left._value < right._value;
         }
 
         /// <summary>
-        /// Implements operator >.
+        /// Implements the operator &gt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>
+        /// If the left argument is greater than the right.
+        /// </returns>
         public static bool operator >(MapSpawnValuesID left, int right)
         {
             return left._value > right;
         }
 
         /// <summary>
-        /// Implements operator <.
+        /// Implements the operator &lt;.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -655,7 +665,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -666,7 +676,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -677,7 +687,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -688,7 +698,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -699,7 +709,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator >=.
+        /// Implements the operator &gt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -710,7 +720,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements the operator &lt;=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>

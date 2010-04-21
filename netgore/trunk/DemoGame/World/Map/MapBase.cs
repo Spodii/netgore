@@ -1048,19 +1048,9 @@ namespace DemoGame
         /// Snaps a entity to any near-by entity
         /// </summary>
         /// <param name="entity">Entity to edit</param>
-        /// <returns>New position for the entity</returns>
-        public Vector2 SnapToWalls(Entity entity)
-        {
-            return SnapToWalls(entity, 20f);
-        }
-
-        /// <summary>
-        /// Snaps a entity to any near-by entity
-        /// </summary>
-        /// <param name="entity">Entity to edit</param>
         /// <param name="maxDiff">Maximum position difference</param>
         /// <returns>New position for the entity</returns>
-        public Vector2 SnapToWalls(Entity entity, float maxDiff)
+        public Vector2 SnapToWalls(Entity entity, float maxDiff = 20f)
         {
             var ret = new Vector2(entity.Position.X, entity.Position.Y);
             var pos = entity.Position - new Vector2(maxDiff / 2f);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -240,16 +241,16 @@ namespace NetGore
         /// </summary>
         /// <param name="types">The Types.</param>
         /// <returns>A string containing the name of the <paramref name="types"/>.</returns>
-        static string GetTypeString(Type[] types)
+        static string GetTypeString(IList<Type> types)
         {
-            if (types == null || types.Length == 0)
+            if (types == null || types.Count == 0)
                 return string.Empty;
 
-            if (types.Length == 1)
+            if (types.Count == 1)
                 return types[0].Name;
 
             var sb = new StringBuilder();
-            for (var i = 0; i < types.Length; i++)
+            for (var i = 0; i < types.Count; i++)
             {
                 sb.Append(types[i].Name);
                 sb.Append(", ");

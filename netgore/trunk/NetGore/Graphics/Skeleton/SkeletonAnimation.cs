@@ -193,7 +193,7 @@ namespace NetGore.Graphics
         /// <param name="modifier">SkeletonAnimation to use as a modifier.</param>
         /// <param name="loop">If true, the modifier will loop forever until Detach() is called on the
         /// modifier or RemoveModifiers() is called on the parent.</param>
-        public void AddModifier(SkeletonAnimation modifier, bool loop)
+        public void AddModifier(SkeletonAnimation modifier, bool loop = false)
         {
             if (modifier == null)
             {
@@ -212,15 +212,6 @@ namespace NetGore.Graphics
             // If not looping, detach once the animation finishes
             if (!loop)
                 modifier.Looped += modifier_Looped;
-        }
-
-        /// <summary>
-        /// Adds a SkeletonAnimation modifier to this SkeletonAnimation.
-        /// </summary>
-        /// <param name="modifier">SkeletonAnimation to use as a modifier.</param>
-        public void AddModifier(SkeletonAnimation modifier)
-        {
-            AddModifier(modifier, false);
         }
 
         /// <summary>
@@ -307,17 +298,7 @@ namespace NetGore.Graphics
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         public void Draw(ISpriteBatch sb)
         {
-            Draw(sb, Vector2.Zero, SpriteEffects.None);
-        }
-
-        /// <summary>
-        /// Draws the skeleton animation.
-        /// </summary>
-        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="position">Position offset to draw at.</param>
-        public void Draw(ISpriteBatch sb, Vector2 position)
-        {
-            Draw(sb, position, SpriteEffects.None);
+            Draw(sb, Vector2.Zero);
         }
 
         /// <summary>
@@ -327,7 +308,7 @@ namespace NetGore.Graphics
         /// <param name="position">Position offset to draw at.</param>
         /// <param name="color">The color.</param>
         /// <param name="effect">SpriteEffect to use when drawing.</param>
-        public void Draw(ISpriteBatch sb, Vector2 position, Color color, SpriteEffects effect)
+        public void Draw(ISpriteBatch sb, Vector2 position, Color color, SpriteEffects effect = SpriteEffects.None)
         {
             if (sb == null)
             {
@@ -368,20 +349,9 @@ namespace NetGore.Graphics
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
         /// <param name="position">Position offset to draw at.</param>
         /// <param name="effect">SpriteEffect to use when drawing.</param>
-        public void Draw(ISpriteBatch sb, Vector2 position, SpriteEffects effect)
+        public void Draw(ISpriteBatch sb, Vector2 position, SpriteEffects effect = SpriteEffects.None)
         {
             Draw(sb, position, Color.White, effect);
-        }
-
-        /// <summary>
-        /// Draws the skeleton animation.
-        /// </summary>
-        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="position">Position offset to draw at.</param>
-        /// <param name="color">The color to draw with.</param>
-        public void Draw(ISpriteBatch sb, Vector2 position, Color color)
-        {
-            Draw(sb, position, color, SpriteEffects.None);
         }
 
         /// <summary>

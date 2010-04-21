@@ -937,7 +937,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="weapon">The weapon to attack with.</param>
         /// <param name="target">The target to attack. Can be null.</param>
-        void AttackMelee(ItemEntity weapon, Character target)
+        void AttackMelee(IItemTable weapon, Character target)
         {
             // We will show the melee attack animation no matter what, so just send it now
             using (var charAttack = ServerPacket.CharAttack(MapEntityIndex))
@@ -1569,6 +1569,7 @@ namespace DemoGame.Server
                 log.InfoFormat("Loaded Character `{0}`.", Name);
         }
 
+#pragma warning disable 1587
 #if TOPDOWN
     /// <summary>
     /// Starts moving the character down.
@@ -1584,6 +1585,7 @@ namespace DemoGame.Server
             SetVelocity(new Vector2(Velocity.X, _moveSpeedVelocityCache));
         }
 #endif
+#pragma warning restore 1587
 
         /// <summary>
         /// Starts moving the character to the left.
@@ -1613,6 +1615,7 @@ namespace DemoGame.Server
             SetVelocity(new Vector2(_moveSpeedVelocityCache, Velocity.Y));
         }
 
+#pragma warning disable 1587
 #if TOPDOWN
     /// <summary>
     /// Starts moving the character up.
@@ -1628,6 +1631,7 @@ namespace DemoGame.Server
             SetVelocity(new Vector2(Velocity.X, -_moveSpeedVelocityCache));
         }
 #endif
+#pragma warning restore 1587
 
         /// <summary>
         /// Makes the Character raise their base Stat of the corresponding type by one point, assuming they have enough
@@ -2461,7 +2465,7 @@ namespace DemoGame.Server
             {
                 // If the respawn map is invalid, there is nothing we can do to spawn it, so dispose of it
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Disposing Character `{0}` since they had no respawn map.");
+                    log.InfoFormat("Disposing Character `{0}` since they had no respawn map.", this);
 
                 Debug.Assert(!IsDisposed);
                 DelayedDispose();

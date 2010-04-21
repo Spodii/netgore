@@ -44,7 +44,7 @@ namespace NetGore.AI
                 RequireInterfaces = (subclass != null ? true : false)
             };
 
-            _typeFactory = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
+            _typeFactory = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler);
         }
 
         /// <summary>

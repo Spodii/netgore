@@ -35,8 +35,8 @@ namespace SFML.Graphics.Design
                     new FieldPropertyDescriptor(componentType.GetField("M43")),
                     new FieldPropertyDescriptor(componentType.GetField("M44"))
                 });
-            base.propertyDescriptions = descriptors;
-            base.supportStringConvert = false;
+            propertyDescriptions = descriptors;
+            supportStringConvert = false;
         }
 
         /// <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>

@@ -4,10 +4,14 @@ using NetGore.IO;
 
 namespace NetGore.Features.Shops
 {
+    /// <summary>
+    /// Interface for a shop.
+    /// </summary>
+    /// <typeparam name="TShopItem">The type of shop item.</typeparam>
     public interface IShop<TShopItem>
     {
         /// <summary>
-        /// Gets if this shop can buy items instead of just sell them.
+        /// Gets if this shop can buy items from shoppers instead of just sell items to them.
         /// </summary>
         bool CanBuy { get; }
 
@@ -22,7 +26,7 @@ namespace NetGore.Features.Shops
         string Name { get; }
 
         /// <summary>
-        /// Gets an IEnumerable of the items in this <see cref="Shop"/>.
+        /// Gets an <see cref="IEnumerable{T}"/> of the items in this shop.
         /// </summary>
         IEnumerable<TShopItem> ShopItems { get; }
 

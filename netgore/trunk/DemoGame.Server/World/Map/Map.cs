@@ -75,7 +75,7 @@ namespace DemoGame.Server
 
             var filter = filterCreator.GetFilter();
 
-            _checkDynamicEntitiesForIServerSaveableOnly = TypeHelper.FindTypes(filter, null, false).IsEmpty();
+            _checkDynamicEntitiesForIServerSaveableOnly = TypeHelper.FindTypes(filter, null).IsEmpty();
         }
 
         /// <summary>
@@ -409,15 +409,6 @@ namespace DemoGame.Server
         /// Send a message to every user in the map. This method is thread-safe.
         /// </summary>
         /// <param name="data">BitStream containing the data to send.</param>
-        public void Send(BitStream data)
-        {
-            Send(data, null, true);
-        }
-
-        /// <summary>
-        /// Send a message to every user in the map. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send.</param>
         /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
         public void Send(BitStream data, bool reliable)
         {
@@ -429,18 +420,8 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="data">BitStream containing the data to send.</param>
         /// <param name="skipUser">User to skip sending to.</param>
-        public void Send(BitStream data, User skipUser)
-        {
-            Send(data, skipUser, true);
-        }
-
-        /// <summary>
-        /// Send a packet to every user in the map. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send.</param>
-        /// <param name="skipUser">User to skip sending to.</param>
         /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
-        public void Send(BitStream data, User skipUser, bool reliable)
+        public void Send(BitStream data, User skipUser = null, bool reliable = true)
         {
             // Check for valid data
             if (data == null || data.Length < 1)

@@ -26,7 +26,7 @@ namespace NetGore
             var filter = GetTypeFilterCreator();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
+            _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler);
         }
 
         /// <summary>

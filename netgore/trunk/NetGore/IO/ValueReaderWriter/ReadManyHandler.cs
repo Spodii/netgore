@@ -9,5 +9,5 @@ namespace NetGore.IO
     /// <param name="r">IValueReader to read from.</param>
     /// <param name="name">The item to read.</param>
     /// <returns>The value read from the IValueReader <paramref name="r"/>.</returns>
-    public delegate T ReadManyHandler<T>(IValueReader r, string name);
+    public delegate T ReadManyHandler<out T>(IValueReader r, string name);
 }

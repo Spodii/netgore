@@ -30,19 +30,16 @@ namespace NetGore.EditorTools
                 {
                     if (TrackTextChanged && Text != _originalText)
                     {
-                        if (BackColor != EditorColors.Changed)
-                            BackColor = EditorColors.Changed;
+                        BackColor = EditorColors.Changed;
                     }
                     else
                     {
-                        if (BackColor != EditorColors.Normal)
-                            BackColor = EditorColors.Normal;
+                        BackColor = EditorColors.Normal;
                     }
                 }
                 else
                 {
-                    if (BackColor != EditorColors.Error)
-                        BackColor = EditorColors.Error;
+                    BackColor = EditorColors.Error;
                 }
             }
         }
@@ -66,19 +63,9 @@ namespace NetGore.EditorTools
         /// <see cref="ApplyTextChanges"/> combined.
         /// </summary>
         /// <param name="text">The new default and display text.</param>
-        public void ChangeTextToDefault(string text)
-        {
-            ChangeTextToDefault(text, false);
-        }
-
-        /// <summary>
-        /// Changes the text and sets the new text as the default. Essentially just setting the text and
-        /// <see cref="ApplyTextChanges"/> combined.
-        /// </summary>
-        /// <param name="text">The new default and display text.</param>
         /// <param name="sanitize">Gets if the <paramref name="text"/> should be sanitized automatically first.
         /// Default is false.</param>
-        public void ChangeTextToDefault(string text, bool sanitize)
+        public void ChangeTextToDefault(string text, bool sanitize = false)
         {
             if (sanitize)
                 text = GetSanitizedText(text);

@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 4/18/2010 5:38:40 PM
+This file was generated on (UTC): 4/21/2010 7:54:47 PM
 ********************************************************************/
 
 using System;
@@ -49,6 +49,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Checks if this <see cref="IShopTable"/> contains the same values as another <see cref="IShopTable"/>.
         /// </summary>
+        /// <param name="source">The source <see cref="IShopTable"/>.</param>
         /// <param name="otherItem">The <see cref="IShopTable"/> to compare the values to.</param>
         /// <returns>
         /// True if this <see cref="IShopTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.

@@ -89,29 +89,9 @@ namespace NetGore
         /// Combines all items in an IEnumerable together into a delimited string.
         /// </summary>
         /// <param name="source">A sequence that contains elements to be imploded.</param>
-        /// <returns>All items in an IEnumerable together into a delimited string.</returns>
-        public static string Implode(this IEnumerable<string> source)
-        {
-            return Implode(source, _defaultImplodeDelimiter);
-        }
-
-        /// <summary>
-        /// Combines all items in an IEnumerable together into a delimited string.
-        /// </summary>
-        /// <param name="source">A sequence that contains elements to be imploded.</param>
-        /// <returns>All items in an IEnumerable together into a delimited string.</returns>
-        public static string Implode<T>(this IEnumerable<T> source)
-        {
-            return Implode(source, _defaultImplodeDelimiter);
-        }
-
-        /// <summary>
-        /// Combines all items in an IEnumerable together into a delimited string.
-        /// </summary>
-        /// <param name="source">A sequence that contains elements to be imploded.</param>
         /// <param name="delimiter">Character to use when combining the characters.</param>
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
-        public static string Implode(this IEnumerable<string> source, string delimiter)
+        public static string Implode(this IEnumerable<string> source, string delimiter = _defaultImplodeDelimiter)
         {
             var sb = new StringBuilder(128);
 
@@ -164,7 +144,7 @@ namespace NetGore
         /// <param name="source">A sequence that contains elements to be imploded.</param>
         /// <param name="delimiter">Character to use when combining the characters.</param>
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
-        public static string Implode<T>(this IEnumerable<T> source, string delimiter)
+        public static string Implode<T>(this IEnumerable<T> source, string delimiter = _defaultImplodeDelimiter)
         {
             // Allocate 8 characters for each value, plus room for the delimiter
             var sb = new StringBuilder(source.Count() * (8 + delimiter.Length));
@@ -375,7 +355,7 @@ namespace NetGore
         /// <param name="usedValues">The used values.</param>
         /// <param name="minValue">The lowest acceptable value.</param>
         /// <returns>The next free value available.</returns>
-        public static int NextFreeValue(this IEnumerable<int> usedValues, int minValue)
+        public static int NextFreeValue(this IEnumerable<int> usedValues, int minValue = 0)
         {
             var expected = minValue;
 
@@ -389,16 +369,6 @@ namespace NetGore
             }
 
             return Math.Max(expected, minValue);
-        }
-
-        /// <summary>
-        /// Gets the smallest free value available.
-        /// </summary>
-        /// <param name="usedValues">The used values.</param>
-        /// <returns>The next free value available.</returns>
-        public static int NextFreeValue(this IEnumerable<int> usedValues)
-        {
-            return NextFreeValue(usedValues, 0);
         }
 
         /// <summary>

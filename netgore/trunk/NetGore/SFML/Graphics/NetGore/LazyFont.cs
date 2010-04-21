@@ -15,18 +15,9 @@ namespace SFML.Graphics
         /// Initializes a new instance of the <see cref="LazyFont"/> class.
         /// </summary>
         /// <param name="filename">Font file to load</param>
-        /// <exception cref="LoadingFailedException"/>
-        public LazyFont(string filename) : this(filename, 30)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LazyFont"/> class.
-        /// </summary>
-        /// <param name="filename">Font file to load</param>
         /// <param name="charSize">Character size</param>
         /// <exception cref="LoadingFailedException"/>
-        public LazyFont(string filename, uint charSize)
+        public LazyFont(string filename, uint charSize = 30u)
         {
             if (charSize > ushort.MaxValue)
                 throw new ArgumentOutOfRangeException("charSize");

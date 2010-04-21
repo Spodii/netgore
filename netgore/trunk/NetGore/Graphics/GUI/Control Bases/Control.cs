@@ -886,19 +886,9 @@ namespace NetGore.Graphics.GUI
         /// Finds the child Control in this Control at a given screen location.
         /// </summary>
         /// <param name="point">Screen location to check.</param>
-        /// <returns>Child found at the given point if any, else null.</returns>
-        public Control GetChild(Vector2 point)
-        {
-            return GetChild(point, false);
-        }
-
-        /// <summary>
-        /// Finds the child Control in this Control at a given screen location.
-        /// </summary>
-        /// <param name="point">Screen location to check.</param>
         /// <param name="canFocusOnly">If true, only controls that can get focus will be checked.</param>
         /// <returns>Child found at the given point if any, else null.</returns>
-        public Control GetChild(Vector2 point, bool canFocusOnly)
+        public Control GetChild(Vector2 point, bool canFocusOnly = false)
         {
             for (var i = 0; i < _controls.Count; i++)
             {

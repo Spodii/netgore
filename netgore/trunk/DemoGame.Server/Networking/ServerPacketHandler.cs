@@ -859,7 +859,7 @@ namespace DemoGame.Server
         /// there will be no <see cref="User"/>.</param>
         /// <returns>The <see cref="User"/> from the <paramref name="conn"/>, or null if no <see cref="User"/>
         /// could be found.</returns>
-        User TryGetUser(IIPSocket conn, bool errorOnFailure)
+        User TryGetUser(IIPSocket conn, bool errorOnFailure = true)
         {
             // Check for a valid connection
             if (conn == null)
@@ -885,17 +885,6 @@ namespace DemoGame.Server
             }
 
             return user;
-        }
-
-        /// <summary>
-        /// Tries to get the <see cref="User"/> from an <see cref="IIPSocket"/>.
-        /// </summary>
-        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="User"/> from.</param>
-        /// <returns>The <see cref="User"/> from the <paramref name="conn"/>, or null if no <see cref="User"/>
-        /// could be found.</returns>
-        User TryGetUser(IIPSocket conn)
-        {
-            return TryGetUser(conn, true);
         }
 
         #region IGetTime Members

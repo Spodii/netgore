@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
 
@@ -7,10 +8,10 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class BitStreamExtensionsTests
     {
-        static void AreArraysEqual<T>(T[] a, T[] b)
+        static void AreArraysEqual<T>(IList<T> a, IList<T> b)
         {
-            Assert.AreEqual(a.Length, b.Length);
-            for (var i = 0; i < a.Length; i++)
+            Assert.AreEqual(a.Count, b.Count);
+            for (var i = 0; i < a.Count; i++)
             {
                 Assert.AreEqual(a[i], b[i]);
             }

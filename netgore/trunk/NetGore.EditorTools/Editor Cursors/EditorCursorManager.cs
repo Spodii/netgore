@@ -148,8 +148,8 @@ namespace NetGore.EditorTools
             get { return _useAlternateCursor; }
             set
             {
-                if (_useAlternateCursor != value)
-                    _useAlternateCursor = value;
+                if (_useAlternateCursor == value)
+                    return;
 
                 _useAlternateCursor = value;
 
@@ -341,8 +341,10 @@ namespace NetGore.EditorTools
 
         static void SetControlBackColor(Control control, Color color)
         {
-            if (control.BackColor != color)
-                control.BackColor = color;
+            if (control == null)
+                return;
+            
+            control.BackColor = color;
         }
 
         /// <summary>

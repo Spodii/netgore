@@ -443,7 +443,7 @@ namespace DemoGame.Client
             if (src == dest || src.Slot == dest.Slot)
                 return false;
 
-            if (src.Parent != src.Parent)
+            if (src.Parent != dest.Parent)
                 return false;
 
             if (src.InventoryForm.Inventory != _gps.UserInfo.Inventory)

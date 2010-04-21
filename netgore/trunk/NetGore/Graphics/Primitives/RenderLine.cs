@@ -16,20 +16,8 @@ namespace NetGore.Graphics
         /// <param name="p1">First point of the line.</param>
         /// <param name="p2">Second point of the line.</param>
         /// <param name="color">Color of the line.</param>
-        public static void Draw(ISpriteBatch sb, Vector2 p1, Vector2 p2, Color color)
-        {
-            Draw(sb, p1, p2, color, 1f);
-        }
-
-        /// <summary>
-        /// Draws a line.
-        /// </summary>
-        /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="p1">First point of the line.</param>
-        /// <param name="p2">Second point of the line.</param>
-        /// <param name="color">Color of the line.</param>
         /// <param name="thickness">The thickness of the line in pixels. Default is 1.</param>
-        public static void Draw(ISpriteBatch sb, Vector2 p1, Vector2 p2, Color color, float thickness)
+        public static void Draw(ISpriteBatch sb, Vector2 p1, Vector2 p2, Color color, float thickness = 1f)
         {
             if (sb == null)
             {

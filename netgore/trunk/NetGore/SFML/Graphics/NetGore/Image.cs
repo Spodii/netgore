@@ -24,8 +24,10 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Image() : base(sfImage_Create())
             {
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("image");
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
 
             ////////////////////////////////////////////////////////////
@@ -51,8 +53,10 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Image(uint width, uint height, Color color) : base(sfImage_CreateFromColor(width, height, color))
             {
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("image");
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
 
             ////////////////////////////////////////////////////////////
@@ -64,8 +68,10 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Image(string filename) : base(sfImage_CreateFromFile(filename))
             {
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("image", filename);
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
 
             ////////////////////////////////////////////////////////////
@@ -77,9 +83,11 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Image(Stream stream) : base(IntPtr.Zero)
             {
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 stream.Position = 0;
                 var StreamData = new byte[stream.Length];
                 var Read = (uint)stream.Read(StreamData, 0, StreamData.Length);
+
                 unsafe
                 {
                     fixed (byte* dataPtr = StreamData)
@@ -87,8 +95,10 @@ namespace SFML
                         SetThis(sfImage_CreateFromMemory((char*)dataPtr, Read));
                     }
                 }
+
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("image");
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
 
             ////////////////////////////////////////////////////////////
@@ -100,18 +110,20 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Image(Color[,] pixels) : base(IntPtr.Zero)
             {
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 unsafe
                 {
                     fixed (Color* PixelsPtr = pixels)
                     {
-                        var Width = (uint)pixels.GetLength(0);
-                        var Height = (uint)pixels.GetLength(1);
-                        SetThis(sfImage_CreateFromPixels(Width, Height, PixelsPtr));
+                        var width = (uint)pixels.GetLength(0);
+                        var height = (uint)pixels.GetLength(1);
+                        SetThis(sfImage_CreateFromPixels(width, height, PixelsPtr));
                     }
                 }
 
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("image");
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
 
             /// <summary>
@@ -237,16 +249,6 @@ namespace SFML
                 return sfImage_CopyScreen(This, window.This, sourceRect);
             }
 
-            /// <summary>
-            /// Create a transparency mask from a specified colorkey
-            /// </summary>
-            /// <param name="color">Color to become transparent</param>
-            ////////////////////////////////////////////////////////////
-            public void CreateMaskFromColor(Color color)
-            {
-                CreateMaskFromColor(color, 0);
-            }
-
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Create a transparency mask from a specified colorkey
@@ -254,7 +256,7 @@ namespace SFML
             /// <param name="color">Color to become transparent</param>
             /// <param name="alpha">Alpha value to use for transparent pixels</param>
             ////////////////////////////////////////////////////////////
-            public void CreateMaskFromColor(Color color, byte alpha)
+            public void CreateMaskFromColor(Color color, byte alpha = (byte)0)
             {
                 sfImage_CreateMaskFromColor(This, color, alpha);
             }

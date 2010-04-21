@@ -30,18 +30,9 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="reader">XmlReader that the values will be read from.</param>
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
-        public XmlValueReader(XmlReader reader, string rootNodeName) : this(reader, rootNodeName, true)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlValueReader"/> class.
-        /// </summary>
-        /// <param name="reader">XmlReader that the values will be read from.</param>
-        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public XmlValueReader(XmlReader reader, string rootNodeName, bool useEnumNames)
+        public XmlValueReader(XmlReader reader, string rootNodeName, bool useEnumNames = true)
             : this(reader, rootNodeName, false, useEnumNames)
         {
         }
@@ -51,18 +42,9 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="filePath">Path of the file to read.</param>
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
-        public XmlValueReader(string filePath, string rootNodeName) : this(filePath, rootNodeName, true)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlValueReader"/> class.
-        /// </summary>
-        /// <param name="filePath">Path of the file to read.</param>
-        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public XmlValueReader(string filePath, string rootNodeName, bool useEnumNames)
+        public XmlValueReader(string filePath, string rootNodeName, bool useEnumNames = true)
         {
             _useEnumNames = useEnumNames;
 

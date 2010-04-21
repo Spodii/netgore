@@ -14,15 +14,6 @@ namespace SFML
         public struct WindowSettings
         {
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Construct the settings from depth / stencil bits
-            /// </summary>
-            /// <param name="depthBits">Depth buffer bits</param>
-            /// <param name="stencilBits">Stencil buffer bits</param>
-            ////////////////////////////////////////////////////////////
-            public WindowSettings(uint depthBits, uint stencilBits) : this(depthBits, stencilBits, 0)
-            {
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -32,7 +23,7 @@ namespace SFML
             /// <param name="stencilBits">Stencil buffer bits</param>
             /// <param name="antialiasingLevel">Antialiasing level</param>
             ////////////////////////////////////////////////////////////
-            public WindowSettings(uint depthBits, uint stencilBits, uint antialiasingLevel)
+            public WindowSettings(uint depthBits, uint stencilBits, uint antialiasingLevel = 0u)
             {
                 DepthBits = depthBits;
                 StencilBits = stencilBits;

@@ -100,16 +100,16 @@ namespace NetGore.NPCChat
         /// </summary>
         /// <param name="names">The array of names of the <see cref="NPCChatResponseActionBase"/>s to get.</param>
         /// <returns>An array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.</returns>
-        NPCChatResponseActionBase[] GetActionsFromNames(string[] names)
+        NPCChatResponseActionBase[] GetActionsFromNames(IList<string> names)
         {
             if (!LoadActions)
                 return NPCChatResponseActionBase.EmptyActions;
 
-            if (names == null || names.Length == 0)
+            if (names == null || names.Count == 0)
                 return NPCChatResponseActionBase.EmptyActions;
 
-            var ret = new NPCChatResponseActionBase[names.Length];
-            for (var i = 0; i < names.Length; i++)
+            var ret = new NPCChatResponseActionBase[names.Count];
+            for (var i = 0; i < names.Count; i++)
             {
                 ret[i] = NPCChatResponseActionBase.GetResponseAction(names[i]);
             }

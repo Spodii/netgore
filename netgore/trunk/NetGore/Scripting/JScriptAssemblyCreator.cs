@@ -184,7 +184,7 @@ namespace NetGore.Scripting
         /// </summary>
         /// <param name="members">The members to include.</param>
         /// <returns>The class source code.</returns>
-        protected virtual string GetSourceCode(List<string> members)
+        protected virtual string GetSourceCode(IEnumerable<string> members)
         {
             var sb = new StringBuilder(1024);
 

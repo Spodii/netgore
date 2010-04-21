@@ -31,17 +31,8 @@ namespace NetGore.EditorTools
         /// Shrinks the left column (property names) on the <see cref="PropertyGrid"/>.
         /// </summary>
         /// <param name="propertyGrid">The <see cref="PropertyGrid"/>.</param>
-        public static void ShrinkPropertiesColumn(this PropertyGrid propertyGrid)
-        {
-            ShrinkPropertiesColumn(propertyGrid, 0);
-        }
-
-        /// <summary>
-        /// Shrinks the left column (property names) on the <see cref="PropertyGrid"/>.
-        /// </summary>
-        /// <param name="propertyGrid">The <see cref="PropertyGrid"/>.</param>
         /// <param name="padding">The number of extra pixels to pad. Can be negative to shrink the column more.</param>
-        public static void ShrinkPropertiesColumn(this PropertyGrid propertyGrid, int padding)
+        public static void ShrinkPropertiesColumn(this PropertyGrid propertyGrid, int padding = 0)
         {
             using (var g = propertyGrid.CreateGraphics())
             {

@@ -114,18 +114,9 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="buffer">The initial buffer (default mode set to read). A shallow copy of this object
         /// is used, so altering the buffer directly will alter the stream.</param>
-        public BitStream(byte[] buffer) : this(buffer, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BitStream"/> class.
-        /// </summary>
-        /// <param name="buffer">The initial buffer (default mode set to read). A shallow copy of this object
-        /// is used, so altering the buffer directly will alter the stream.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BitStream(byte[] buffer, bool useEnumNames)
+        public BitStream(byte[] buffer, bool useEnumNames = false)
         {
             _useEnumNames = useEnumNames;
 
@@ -145,7 +136,7 @@ namespace NetGore.IO
         /// <param name="bufferSize">Initial size of the internal buffer in bytes (must be greater than 0)</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BitStream(BitStreamMode mode, int bufferSize, bool useEnumNames)
+        public BitStream(BitStreamMode mode, int bufferSize, bool useEnumNames = false)
         {
             _useEnumNames = useEnumNames;
 
@@ -158,15 +149,6 @@ namespace NetGore.IO
 
             _mode = mode;
             _buffer = new byte[bufferSize];
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BitStream"/> class.
-        /// </summary>
-        /// <param name="mode">Initial I/O mode to create the bit stream in</param>
-        /// <param name="bufferSize">Initial size of the internal buffer in bytes (must be greater than 0)</param>
-        public BitStream(BitStreamMode mode, int bufferSize) : this(mode, bufferSize, false)
-        {
         }
 
         /// <summary>
@@ -731,20 +713,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a byte from the BitStream and returns the result as a byte 
-        /// </summary>
-        /// <returns>Value of the next 8 bits in the BitStream as a byte</returns>
-        public byte ReadByte()
-        {
-            return ReadByte(8);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a byte  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 8)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a byte</returns>
-        public byte ReadByte(int numBits)
+        public byte ReadByte(int numBits = 8)
         {
             if (numBits == 0)
                 return 0;
@@ -879,20 +852,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 32 bits from the BitStream and returns the result as an int 
-        /// </summary>
-        /// <returns>Value of the next 32 bits in the BitStream as a int</returns>
-        public int ReadInt()
-        {
-            return ReadInt(_bitsInt);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as an int  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 32)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as an int</returns>
-        public int ReadInt(int numBits)
+        public int ReadInt(int numBits = _bitsInt)
         {
             return ReadSigned(numBits, _bitsInt);
         }
@@ -1006,7 +970,7 @@ namespace NetGore.IO
             if (!hasValue)
                 return null;
 
-            return ReadByte(8);
+            return ReadByte();
         }
 
         /// <summary>
@@ -1113,20 +1077,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 32 bits of a nullable value from the BitStream and returns the result as an int 
-        /// </summary>
-        /// <returns>Value of the next 32 bits in the BitStream as a int</returns>
-        public int? ReadNullableInt()
-        {
-            return ReadNullableInt(_bitsInt);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as an int  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 32)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as an int</returns>
-        public int? ReadNullableInt(int numBits)
+        public int? ReadNullableInt(int numBits = _bitsInt)
         {
             var hasValue = ReadBool();
             if (!hasValue)
@@ -1163,20 +1118,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 8 bits of a nullable value from the BitStream and returns the result as a SByte 
-        /// </summary>
-        /// <returns>Value of the next 8 bits in the BitStream as a SByte</returns>
-        public sbyte? ReadNullableSByte()
-        {
-            return ReadNullableSByte(_bitsSByte);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a SByte  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 8)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a SByte</returns>
-        public sbyte? ReadNullableSByte(int numBits)
+        public sbyte? ReadNullableSByte(int numBits = _bitsSByte)
         {
             var hasValue = ReadBool();
             if (!hasValue)
@@ -1186,20 +1132,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 16 bits of a nullable value from the BitStream and returns the result as a short
-        /// </summary>
-        /// <returns>Value of the next 16 bits in the BitStream as a short</returns>
-        public short? ReadNullableShort()
-        {
-            return ReadNullableShort(_bitsShort);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a short  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 16)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a short</returns>
-        public short? ReadNullableShort(int numBits)
+        public short? ReadNullableShort(int numBits = _bitsShort)
         {
             var hasValue = ReadBool();
             if (!hasValue)
@@ -1223,20 +1160,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 32 bits of a nullable value from the BitStream and returns the result as a uint 
-        /// </summary>
-        /// <returns>Value of the next 32 bits in the BitStream as a uint</returns>
-        public uint? ReadNullableUInt()
-        {
-            return ReadNullableUInt(_bitsUInt);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits of a nullable value from the BitStream and returns the result as a uint  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 32)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a uint</returns>
-        public uint? ReadNullableUInt(int numBits)
+        public uint? ReadNullableUInt(int numBits = _bitsUInt)
         {
             if (numBits == 0)
                 return 0;
@@ -1301,7 +1229,7 @@ namespace NetGore.IO
             if (!hasValue)
                 return null;
 
-            return ReadUShort(_bitsUShort);
+            return ReadUShort();
         }
 
         /// <summary>
@@ -1338,20 +1266,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 8 bits from the BitStream and returns the result as a SByte 
-        /// </summary>
-        /// <returns>Value of the next 8 bits in the BitStream as a SByte</returns>
-        public sbyte ReadSByte()
-        {
-            return ReadSByte(_bitsSByte);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a SByte  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 8)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a SByte</returns>
-        public sbyte ReadSByte(int numBits)
+        public sbyte ReadSByte(int numBits = _bitsSByte)
         {
             return (sbyte)ReadSigned(numBits, _bitsSByte);
         }
@@ -1402,20 +1321,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 16 bits from the BitStream and returns the result as a short
-        /// </summary>
-        /// <returns>Value of the next 16 bits in the BitStream as a short</returns>
-        public short ReadShort()
-        {
-            return ReadShort(_bitsShort);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a short  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 16)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a short</returns>
-        public short ReadShort(int numBits)
+        public short ReadShort(int numBits = _bitsShort)
         {
             return (short)ReadSigned(numBits, _bitsShort);
         }
@@ -1489,21 +1399,12 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads a string containing a maximum of DefaultStringMaxLength characters from the BitStream
-        /// </summary>
-        /// <returns>String read from the BitStream</returns>
-        public string ReadString()
-        {
-            return ReadString(DefaultStringMaxLength);
-        }
-
-        /// <summary>
         /// Reads a string containing a maximum of <paramref name="maxLength"/> characters from the BitStream
         /// </summary>
         /// <param name="maxLength">Maximum length of the string in characters. Must be equal to the specified
         /// number of characters used when writing this string.</param>
         /// <returns>String read from the BitStream</returns>
-        public string ReadString(int maxLength)
+        public string ReadString(int maxLength = DefaultStringMaxLength)
         {
             return ReadString((uint)maxLength);
         }
@@ -1556,25 +1457,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 32 bits from the BitStream and returns the result as a uint 
-        /// </summary>
-        /// <returns>Value of the next 32 bits in the BitStream as a uint</returns>
-        public uint ReadUInt()
-        {
-            return ReadUInt(_bitsUInt);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a uint  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 32)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a uint</returns>
-        public uint ReadUInt(int numBits)
+        public uint ReadUInt(int numBits = _bitsUInt)
         {
             if (numBits == 0)
                 return 0;
             if (numBits < 0 || numBits > _bitsInt)
                 throw new ArgumentOutOfRangeException("numBits", string.Format("Invalid number of bits specified ({0})", numBits));
+
             return (uint)ReadUnsigned(numBits);
         }
 
@@ -1651,25 +1544,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads 16 bits from the BitStream and returns the result as a ushort 
-        /// </summary>
-        /// <returns>Value of the next 16 bits in the BitStream as a ushort</returns>
-        public ushort ReadUShort()
-        {
-            return ReadUShort(_bitsUShort);
-        }
-
-        /// <summary>
         /// Reads <paramref name="numBits"/> bits from the BitStream and returns the result as a ushort  
         /// </summary>
         /// <param name="numBits">Number of bits to read from the BitStream (0 to 16)</param>
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a ushort</returns>
-        public ushort ReadUShort(int numBits)
+        public ushort ReadUShort(int numBits = _bitsUShort)
         {
             if (numBits == 0)
                 return 0;
             if (numBits < 0 || numBits > _bitsUShort)
                 throw new ArgumentOutOfRangeException("numBits", string.Format("Invalid number of bits specified ({0})", numBits));
+
             return (ushort)ReadUnsigned(numBits);
         }
 
@@ -2215,15 +2100,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes a uint (32 bits) to the BitStream
-        /// </summary>
-        /// <param name="value">Value of the uint to write</param>
-        public void Write(uint value)
-        {
-            Write(value, _bitsUInt);
-        }
-
-        /// <summary>
         /// Writes a nullable uint (32 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the uint to write</param>
@@ -2231,7 +2107,7 @@ namespace NetGore.IO
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(value.Value, _bitsUInt);
+                Write(value.Value);
         }
 
         /// <summary>
@@ -2239,7 +2115,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">Value to write to the BitStream</param>
         /// <param name="numBits">Number of bits to write</param>
-        public void Write(uint value, int numBits)
+        public void Write(uint value, int numBits = _bitsUInt)
         {
             WriteUnsigned((int)value, numBits);
         }
@@ -2285,15 +2161,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes a short (16 bits) to the BitStream
-        /// </summary>
-        /// <param name="value">Value of the short to write</param>
-        public void Write(short value)
-        {
-            Write(value, _bitsShort);
-        }
-
-        /// <summary>
         /// Writes a nullable short (16 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the short to write</param>
@@ -2301,7 +2168,7 @@ namespace NetGore.IO
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(value.Value, _bitsShort);
+                Write(value.Value);
         }
 
         /// <summary>
@@ -2309,7 +2176,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">Value to write to the BitStream</param>
         /// <param name="numBits">Number of bits to write</param>
-        public void Write(short value, int numBits)
+        public void Write(short value, int numBits = _bitsShort)
         {
             WriteSigned(value, numBits);
         }
@@ -2358,20 +2225,11 @@ namespace NetGore.IO
         /// Writes a ushort (16 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the ushort to write</param>
-        public void Write(ushort value)
-        {
-            Write(value, _bitsUShort);
-        }
-
-        /// <summary>
-        /// Writes a ushort (16 bits) to the BitStream
-        /// </summary>
-        /// <param name="value">Value of the ushort to write</param>
         public void Write(ushort? value)
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(value.Value, _bitsUShort);
+                Write(value.Value);
         }
 
         /// <summary>
@@ -2379,7 +2237,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">Value to write to the BitStream</param>
         /// <param name="numBits">Number of bits to write</param>
-        public void Write(ushort value, int numBits)
+        public void Write(ushort value, int numBits = _bitsUShort)
         {
             WriteUnsigned(value, numBits);
         }
@@ -2425,15 +2283,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes a sbyte (8 bits) to the BitStream
-        /// </summary>
-        /// <param name="value">Value of the sbyte to write</param>
-        public void Write(sbyte value)
-        {
-            Write(value, _bitsSByte);
-        }
-
-        /// <summary>
         /// Writes a nullable sbyte (8 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the sbyte to write</param>
@@ -2441,7 +2290,7 @@ namespace NetGore.IO
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(value.Value, _bitsSByte);
+                Write(value.Value);
         }
 
         /// <summary>
@@ -2449,7 +2298,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">Value to write to the BitStream</param>
         /// <param name="numBits">Number of bits to write</param>
-        public void Write(sbyte value, int numBits)
+        public void Write(sbyte value, int numBits = _bitsSByte)
         {
             WriteSigned(value, numBits);
         }
@@ -2495,15 +2344,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes a byte (8 bits) to the BitStream
-        /// </summary>
-        /// <param name="value">Value of the byte to write</param>
-        public void Write(byte value)
-        {
-            Write(value, _bitsByte);
-        }
-
-        /// <summary>
         /// Writes a nullable byte (8 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the byte to write</param>
@@ -2511,7 +2351,7 @@ namespace NetGore.IO
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(value.Value, _bitsByte);
+                Write(value.Value);
         }
 
         /// <summary>
@@ -2519,7 +2359,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="value">Value to write to the BitStream</param>
         /// <param name="numBits">Number of bits to write</param>
-        public void Write(byte value, int numBits)
+        public void Write(byte value, int numBits = _bitsByte)
         {
             WriteUnsigned(value, numBits);
         }
@@ -2567,20 +2407,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes a string with a maximum length of DefaultStringMaxLength characters to the BitStream
-        /// </summary>
-        /// <param name="value">Value of the string to write</param>
-        public void Write(string value)
-        {
-            Write(value, DefaultStringMaxLength);
-        }
-
-        /// <summary>
         /// Writes a string with a maximum length of <paramref name="maxLength"/> characters to the BitStream
         /// </summary>
         /// <param name="value">Value of the string to write</param>
         /// <param name="maxLength">Maximum number of characters the string may contain</param>
-        public void Write(string value, uint maxLength)
+        public void Write(string value, uint maxLength = DefaultStringMaxLength)
         {
             if (string.IsNullOrEmpty(value))
             {

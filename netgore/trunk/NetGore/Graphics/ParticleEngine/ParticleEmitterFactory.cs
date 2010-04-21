@@ -60,7 +60,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitterFactory"/> class.
         /// </summary>
-        ParticleEmitterFactory() : base(_particleEmitterFilter, null, false)
+        ParticleEmitterFactory() : base(_particleEmitterFilter)
         {
         }
 

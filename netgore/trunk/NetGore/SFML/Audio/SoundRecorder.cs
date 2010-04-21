@@ -62,7 +62,7 @@ namespace SFML
             /// Default constructor
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public SoundRecorder() : base(IntPtr.Zero)
+            protected SoundRecorder() : base(IntPtr.Zero)
             {
                 myStartCallback = new StartCallback(OnStart);
                 myProcessCallback = new ProcessCallback(ProcessSamples);
@@ -155,16 +155,6 @@ namespace SFML
                 return OnProcessSamples(samplesArray);
             }
 
-            /// <summary>
-            /// Start the capture using default sample rate (44100 Hz)
-            /// Warning : only one capture can happen at the same time
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public void Start()
-            {
-                Start(44100);
-            }
-
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Start the capture.
@@ -172,7 +162,7 @@ namespace SFML
             /// </summary>
             /// <param name="sampleRate"> Sound frequency; the more samples, the higher the quality (44100 by default = CD quality)</param>
             ////////////////////////////////////////////////////////////
-            public void Start(uint sampleRate)
+            public void Start(uint sampleRate = 44100u)
             {
                 sfSoundRecorder_Start(This, sampleRate);
             }

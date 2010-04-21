@@ -240,7 +240,14 @@ namespace NetGore.Network
         /// <param name="data">The initial data to send.</param>
         public void Connect(string ip, int port, byte[] data)
         {
-            Connect(new IPEndPoint(Dns.GetHostAddresses(ip).FirstOrDefault(), port), data);
+            var hostAddresses =Dns.GetHostAddresses(ip);
+            var hostAddr = hostAddresses.FirstOrDefault();
+
+            if (hostAddr == null)
+                throw new ArgumentException(string.Format("Could not find any host addresses for ip `{0}`.", ip));
+
+            var ep = new IPEndPoint(hostAddr, port);
+            Connect(ep, data);
         }
 
         /// <summary>
@@ -268,7 +275,7 @@ namespace NetGore.Network
         /// <returns>
         /// The queued data received by this <see cref="IUDPSocket"/>, or null if empty.
         /// </returns>
-        public AddressedPacket[] GetRecvData()
+        public IEnumerable<AddressedPacket> GetRecvData()
         {
             lock (_receiveQueue)
             {

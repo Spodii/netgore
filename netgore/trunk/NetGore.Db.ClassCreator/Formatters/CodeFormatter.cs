@@ -118,12 +118,7 @@ namespace NetGore.Db.ClassCreator
                 _aliases[fieldName] = alias;
         }
 
-        protected string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value)
-        {
-            return AddXmlCommentParamRefs(paramNames, value, null);
-        }
-
-        protected virtual string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value, string currentParameter)
+        protected virtual string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value, string currentParameter = null)
         {
             if (paramNames == null || paramNames.Count() == 0)
                 return value;

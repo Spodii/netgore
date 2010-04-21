@@ -175,14 +175,14 @@ namespace NetGore.Tests.NetGore
         public void NextFreeValueTestA()
         {
             var values = new int[] { 0, 1, 2, 3, 4, 5, 6 };
-            Assert.AreEqual(7, values.NextFreeValue(0));
+            Assert.AreEqual(7, values.NextFreeValue());
         }
 
         [Test]
         public void NextFreeValueTestB()
         {
             var values = new int[] { 1, 2, 3, 4, 5, 6 };
-            Assert.AreEqual(0, values.NextFreeValue(0));
+            Assert.AreEqual(0, values.NextFreeValue());
         }
 
         [Test]

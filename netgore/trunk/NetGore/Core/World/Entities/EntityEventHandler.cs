@@ -13,5 +13,5 @@ namespace NetGore
     /// </summary>
     /// <param name="entity"><see cref="Entity"/> this event came from.</param>
     /// <param name="value">Value related to this event.</param>
-    public delegate void EntityEventHandler<T>(Entity entity, T value);
+    public delegate void EntityEventHandler<in T>(Entity entity, T value);
 }

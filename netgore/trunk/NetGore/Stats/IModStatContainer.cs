@@ -7,7 +7,7 @@ namespace NetGore.Stats
     /// Interface for an object that can contribute the modified stat values.
     /// </summary>
     /// <typeparam name="TStatType">The type of stat.</typeparam>
-    public interface IModStatContainer<TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
+    public interface IModStatContainer<in TStatType> where TStatType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Gets the modifier value for the given <paramref name="statType"/>, where a positive value adds to the

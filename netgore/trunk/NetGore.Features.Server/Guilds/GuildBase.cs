@@ -171,10 +171,10 @@ namespace NetGore.Features.Guilds
 
         /// <summary>
         /// When overridden in the derived class, attempts to set the tag of this guild to the given
-        /// <paramref tag="newTag"/> in the database. The <paramref tag="newTag"/> does not need to
+        /// <paramref name="newTag"/> in the database. The <paramref name="newTag"/> does not need to
         /// be checked if valid.
         /// </summary>
-        /// <param tag="newTag">The new tag for the guild.</param>
+        /// <param name="newTag">The new tag for the guild.</param>
         /// <returns>True if the tag was successfully changed; otherwise false.</returns>
         protected abstract bool InternalTryChangeTag(string newTag);
 
