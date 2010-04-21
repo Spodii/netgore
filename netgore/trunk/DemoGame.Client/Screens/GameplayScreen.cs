@@ -482,8 +482,8 @@ namespace DemoGame.Client
 
         /// <summary>
         /// Handles the loading of game content. Any content that is loaded should be placed in here.
-        /// This will be invoked once (right after Initialize()), along with an additional time for
-        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
+        /// This will be invoked once (right after Initialize()), along with any time the content needs
+        /// to be reloaded for whatever reason.
         /// </summary>
         public override void LoadContent()
         {

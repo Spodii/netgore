@@ -13,9 +13,8 @@ using Color = System.Drawing.Color;
 namespace NetGore.EditorTools
 {
     /// <summary>
-    /// Custom control uses the XNA Framework GraphicsDevice to render onto
-    /// a Windows Form. Derived classes can override the Initialize and Draw
-    /// methods to add their own drawing code.
+    /// Custom control that uses the graphics device to draw onto a WinForms control.
+    /// Derived classes can override the Initialize and Draw methods to add their own drawing code.
     /// </summary>
     public class GraphicsDeviceControl : Control
     {
@@ -228,10 +227,7 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Ignores WinForms paint-background messages. The default implementation
-        /// would clear the control to the current background color, causing
-        /// flickering when our OnPaint implementation then immediately draws some
-        /// other color over the top using the XNA Framework GraphicsDevice.
+        /// Ignore WinForms paint-background messages, unless using design mode.
         /// </summary>
         /// <param name="pevent">Event args.</param>
         protected override void OnPaintBackground(PaintEventArgs pevent)

@@ -19,8 +19,8 @@ namespace DemoGame.Server.UI
         /// <returns>The color to use for the <paramref name="level"/>.</returns>
         public static Color GetSystemColor(this Level level)
         {
-            var xnaColor = level.GetColor();
-            return Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
+            var c = level.GetColor();
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
         /// <summary>

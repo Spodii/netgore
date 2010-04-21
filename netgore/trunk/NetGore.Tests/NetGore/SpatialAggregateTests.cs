@@ -15,7 +15,7 @@ namespace NetGore.Tests.NetGore
             var ret = new Entity[amount];
             for (var i = 0; i < amount; i++)
             {
-                ret[i] = new TestEntity { Position = RandomHelperXna.NextVector2(minPos, maxPos) };
+                ret[i] = new TestEntity { Position = RandomHelper.NextVector2(minPos, maxPos) };
             }
 
             return ret;

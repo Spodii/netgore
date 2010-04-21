@@ -296,7 +296,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads a <see cref="Microsoft.Xna.Framework.Vector2"/>.
+        /// Reads a <see cref="Vector2"/>.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
