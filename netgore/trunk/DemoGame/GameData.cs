@@ -6,7 +6,8 @@ using SFML.Graphics;
 namespace DemoGame
 {
     /// <summary>
-    /// Contains static data for the game.
+    /// Contains static data for the game that describes how some different aspects of the general game works.
+    /// <seealso cref="EngineSettingsInitializer"/>
     /// </summary>
     public static class GameData
     {
