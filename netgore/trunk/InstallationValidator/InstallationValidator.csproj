@@ -68,7 +68,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyHelper.cs" />
@@ -93,14 +92,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TestStatus.cs" />
-    <Compile Include="Tests\CheckForMySqlConnector.cs" />
     <Compile Include="Tests\ConnectToDatabase.cs" />
     <Compile Include="Tests\DatabaseExists.cs" />
     <Compile Include="Tests\DatabaseFileExists.cs" />
     <Compile Include="Tests\DatabasePopulated.cs" />
     <Compile Include="Tests\DatabaseVersion.cs" />
     <Compile Include="Tests\LoadDbConnectionSettings.cs" />
-    <Compile Include="Tests\LoadMySqlData.cs" />
     <Compile Include="Tests\LoadSchemaFile.cs" />
     <Compile Include="Tests\LocateMySqlExe.cs" />
   </ItemGroup>
