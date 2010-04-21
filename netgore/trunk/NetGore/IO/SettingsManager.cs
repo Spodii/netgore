@@ -275,6 +275,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="SettingsManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~SettingsManager()
+        {
+            Dispose();
+        }
+
+        /// <summary>
         /// Loads the existing settings into memory.
         /// </summary>
         /// <param name="path">Path of the file to load the settings from.</param>
@@ -352,15 +361,6 @@ namespace NetGore.IO
                     w.WriteEndNode(_itemsNodeName);
                 }
             }
-        }
-
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="SettingsManager"/> is reclaimed by garbage collection.
-        /// </summary>
-        ~SettingsManager()
-        {
-            Dispose();
         }
 
         #region IDisposable Members

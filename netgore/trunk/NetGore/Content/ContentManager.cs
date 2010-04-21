@@ -114,6 +114,17 @@ namespace NetGore.Content
         }
 
         /// <summary>
+        /// Handles the DoNotUploadSetFalse event of the <see cref="ContentManager"/> object.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void ContentManager_DoNotUploadSetFalse(object sender, EventArgs e)
+        {
+            if (_queuedUnloadLevel != null)
+                DoUnload(_queuedUnloadLevel.Value);
+        }
+
+        /// <summary>
         /// Creates a <see cref="IContentManager"/>.
         /// </summary>
         /// <returns>The <see cref="IContentManager"/> instance.</returns>
@@ -339,17 +350,6 @@ namespace NetGore.Content
         static string SanitizeAssetName(string assetName)
         {
             return assetName.Replace('\\', '/');
-        }
-
-        /// <summary>
-        /// Handles the DoNotUploadSetFalse event of the <see cref="ContentManager"/> object.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void ContentManager_DoNotUploadSetFalse(object sender, EventArgs e)
-        {
-            if (_queuedUnloadLevel != null)
-                DoUnload(_queuedUnloadLevel.Value);
         }
 
         #region IContentManager Members

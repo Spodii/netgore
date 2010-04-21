@@ -18,10 +18,15 @@ namespace CodeReleasePreparer
 
             _regexes = new Regex[patterns.Length];
 
-            for (int i = 0; i < patterns.Length; i++)
+            for (var i = 0; i < patterns.Length; i++)
             {
                 _regexes[i] = new Regex(patterns[i], _options);
             }
+        }
+
+        public bool Matches(string s)
+        {
+            return _regexes.Any(x => x.IsMatch(s));
         }
 
         /// <summary>
@@ -32,17 +37,14 @@ namespace CodeReleasePreparer
         /// <returns>The string with all the replacements made to it.</returns>
         public string ReplaceMatches(string input, string replacement)
         {
-            string s = input;
+            var s = input;
 
             foreach (var r in _regexes)
+            {
                 s = r.Replace(s, replacement);
+            }
 
             return s;
-        }
-
-        public bool Matches(string s)
-        {
-            return _regexes.Any(x => x.IsMatch(s));
         }
     }
 }

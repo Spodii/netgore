@@ -23,16 +23,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the slot object.
-        /// </summary>
-        /// <param name="slot">The slot.</param>
-        /// <returns></returns>
-        protected override object GetSlotObject(InventorySlot slot)
-        {
-            return Inventory[slot];
-        }
-
-        /// <summary>
         /// Gets or sets the <see cref="Inventory"/> the requests are being made for.
         /// </summary>
         public Inventory Inventory
@@ -51,6 +41,16 @@ namespace DemoGame.Client
         protected override BitStream GetRequest(InventorySlot slotToRequest)
         {
             return ClientPacket.GetInventoryItemInfo(slotToRequest);
+        }
+
+        /// <summary>
+        /// Gets the slot object.
+        /// </summary>
+        /// <param name="slot">The slot.</param>
+        /// <returns></returns>
+        protected override object GetSlotObject(InventorySlot slot)
+        {
+            return Inventory[slot];
         }
 
         /// <summary>

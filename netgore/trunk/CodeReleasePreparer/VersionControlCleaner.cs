@@ -19,6 +19,13 @@ namespace CodeReleasePreparer
         static readonly RegexCollection _slnRegexes =
             new RegexCollection(new string[] { @"GlobalSection\(SubversionScc\).+?EndGlobalSection" });
 
+        static void DoReplace(string filePath, RegexCollection regexes)
+        {
+            var txt = File.ReadAllText(filePath, Encoding.UTF8);
+            txt = regexes.ReplaceMatches(txt, string.Empty);
+            File.WriteAllText(filePath, txt, Encoding.UTF8);
+        }
+
         /// <summary>
         /// Runs the version control cleaning, cleaning up anything under the given root directory.
         /// </summary>
@@ -29,17 +36,14 @@ namespace CodeReleasePreparer
             var slnFiles = Directory.GetFiles(rootDir, "*.sln", SearchOption.AllDirectories);
 
             foreach (var f in projFiles)
+            {
                 DoReplace(f, _projRegexes);
+            }
 
             foreach (var f in slnFiles)
+            {
                 DoReplace(f, _slnRegexes);
-        }
-
-        static void DoReplace(string filePath, RegexCollection regexes)
-        {
-            var txt = File.ReadAllText(filePath, Encoding.UTF8);
-            txt = regexes.ReplaceMatches(txt, string.Empty);
-            File.WriteAllText(filePath, txt, Encoding.UTF8);
+            }
         }
     }
 }

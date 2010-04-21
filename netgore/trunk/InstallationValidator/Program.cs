@@ -1,9 +1,5 @@
-using System;
-using System.Diagnostics;
-using System.IO;
+using System.Linq;
 using System.Windows.Forms;
-using InstallationValidator.Tests;
-using NetGore;
 
 namespace InstallationValidator
 {

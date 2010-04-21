@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -6,11 +7,17 @@ namespace InstallationValidator.Tests
 {
     public sealed class NUnitInstalled : TestableBase
     {
-        const string _testName = "NUnit installed";
-        const string _description = "Checks if NUnit version 2.5 or later is installed. This is not required to use NetGore, but is required to run the unit tests in NetGore, and is highly recommended since unit tests can help significantly with ensuring things are working properly.";
-        const string _failMessage = "Could not find NUnit version 2.5 or later. You either do not have NUnit installed, or you have a version earlier than 2.5 installed. To resolve this, you can do one of the following:\n1. Go to http://nunit.com/ to download and install the latest version of NUnit.\n2. Ignore this error and don't install NUnit. To build NetGore, when you open the solution, you will need to right-click the NetGore.Tests project in the Solution Explorer window, and click Unload Project to prevent it from building.";
+        const string _description =
+            "Checks if NUnit version 2.5 or later is installed. This is not required to use NetGore, but is required to run the unit tests in NetGore, and is highly recommended since unit tests can help significantly with ensuring things are working properly.";
 
-        static readonly Regex _versionRegex = new Regex(@"Version=(?<Major>\d+)\.(?<Minor>\d+)\.\d+", RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.CultureInvariant);
+        const string _failMessage =
+            "Could not find NUnit version 2.5 or later. You either do not have NUnit installed, or you have a version earlier than 2.5 installed. To resolve this, you can do one of the following:\n1. Go to http://nunit.com/ to download and install the latest version of NUnit.\n2. Ignore this error and don't install NUnit. To build NetGore, when you open the solution, you will need to right-click the NetGore.Tests project in the Solution Explorer window, and click Unload Project to prevent it from building.";
+
+        const string _testName = "NUnit installed";
+
+        static readonly Regex _versionRegex = new Regex(@"Version=(?<Major>\d+)\.(?<Minor>\d+)\.\d+",
+                                                        RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase |
+                                                        RegexOptions.Singleline | RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NUnitInstalled"/> class.

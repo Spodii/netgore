@@ -67,6 +67,14 @@ namespace DemoGame.Client
         protected abstract BitStream GetRequest(T slotToRequest);
 
         /// <summary>
+        /// When overridden in the derived class, gets the object in the <paramref name="slot"/>. It doesn't matter what kind of object
+        /// is used, just as long as it is an object that can be used to determine if the slot's contents have changed.
+        /// </summary>
+        /// <param name="slot">The slot of the item.</param>
+        /// <returns>An object representing the item in the <paramref name="slot"/>. Can be null if the slot is empty.</returns>
+        protected abstract object GetSlotObject(T slot);
+
+        /// <summary>
         /// When overridden in the derived class, gets if the given <paramref name="slot"/> contains a null
         /// <see cref="IItemTable"/>. This allows for bypassing having to request the item info for a slot that
         /// is known to be empty.
@@ -106,14 +114,6 @@ namespace DemoGame.Client
                 _isItemInfoSet = true;
             }
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the object in the <paramref name="slot"/>. It doesn't matter what kind of object
-        /// is used, just as long as it is an object that can be used to determine if the slot's contents have changed.
-        /// </summary>
-        /// <param name="slot">The slot of the item.</param>
-        /// <returns>An object representing the item in the <paramref name="slot"/>. Can be null if the slot is empty.</returns>
-        protected abstract object GetSlotObject(T slot);
 
         /// <summary>
         /// Gets the <see cref="IItemTable"/> for the item in the given <paramref name="slot"/>.

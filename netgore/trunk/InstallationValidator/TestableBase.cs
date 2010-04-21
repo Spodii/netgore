@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace InstallationValidator
 {
@@ -10,12 +8,12 @@ namespace InstallationValidator
     /// </summary>
     public abstract class TestableBase : ITestable
     {
-        readonly string _name;
         readonly string _description;
         readonly bool _isVital;
+        readonly string _name;
 
-        TestStatus _testStatus = TestStatus.NotTested;
         string _lastRunError = null;
+        TestStatus _testStatus = TestStatus.NotTested;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestableBase"/> class.
@@ -31,16 +29,6 @@ namespace InstallationValidator
         }
 
         /// <summary>
-        /// When overridden in the derived class, runs the test.
-        /// </summary>
-        /// <param name="errorMessage">When the method returns false, contains an error message as to why
-        /// the test failed. Otherwise, contains an empty string.</param>
-        /// <returns>
-        /// True if the test passed; false if the test failed.
-        /// </returns>
-        protected abstract bool RunTest(ref string errorMessage);
-
-        /// <summary>
         /// Appends the error details to an error message.
         /// </summary>
         /// <param name="errorMessage">The error message.</param>
@@ -52,6 +40,69 @@ namespace InstallationValidator
                 return errorMessage;
 
             return errorMessage + "\n\nError details:\n" + details;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, runs the test.
+        /// </summary>
+        /// <param name="errorMessage">When the method returns false, contains an error message as to why
+        /// the test failed. Otherwise, contains an empty string.</param>
+        /// <returns>
+        /// True if the test passed; false if the test failed.
+        /// </returns>
+        protected abstract bool RunTest(ref string errorMessage);
+
+        #region ITestable Members
+
+        /// <summary>
+        /// Gets the description of the test.
+        /// </summary>
+        public string Description
+        {
+            get { return _description; }
+        }
+
+        /// <summary>
+        /// Gets if this test performs something that is vital to any other tests. If true, execution of tests will break
+        /// immediately after this test fails. If false, tests will continue to be executed if this test fails.
+        /// </summary>
+        public bool IsVital
+        {
+            get { return _isVital; }
+        }
+
+        /// <summary>
+        /// Gets the error message from the last run. If the test has not yet been run, or it was successful, this
+        /// will return null.
+        /// </summary>
+        public string LastRunError
+        {
+            get { return _lastRunError; }
+        }
+
+        /// <summary>
+        /// Gets the status of the last time the test was run.
+        /// </summary>
+        public TestStatus LastRunStatus
+        {
+            get { return _testStatus; }
+        }
+
+        /// <summary>
+        /// Gets the name of the test.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Clears any information about when the test was last run.
+        /// </summary>
+        public void ClearStatus()
+        {
+            _testStatus = TestStatus.NotTested;
+            _lastRunError = null;
         }
 
         /// <summary>
@@ -89,55 +140,6 @@ namespace InstallationValidator
             return passed;
         }
 
-        /// <summary>
-        /// Gets the name of the test.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets the description of the test.
-        /// </summary>
-        public string Description
-        {
-            get { return _description; }
-        }
-
-        /// <summary>
-        /// Gets the status of the last time the test was run.
-        /// </summary>
-        public TestStatus LastRunStatus
-        {
-            get { return _testStatus; }
-        }
-
-        /// <summary>
-        /// Gets if this test performs something that is vital to any other tests. If true, execution of tests will break
-        /// immediately after this test fails. If false, tests will continue to be executed if this test fails.
-        /// </summary>
-        public bool IsVital
-        {
-            get { return _isVital; }
-        }
-
-        /// <summary>
-        /// Gets the error message from the last run. If the test has not yet been run, or it was successful, this
-        /// will return null.
-        /// </summary>
-        public string LastRunError
-        {
-            get { return _lastRunError; }
-        }
-
-        /// <summary>
-        /// Clears any information about when the test was last run.
-        /// </summary>
-        public void ClearStatus()
-        {
-            _testStatus = TestStatus.NotTested;
-            _lastRunError = null;
-        }
+        #endregion
     }
 }

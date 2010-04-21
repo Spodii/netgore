@@ -1,16 +1,21 @@
+using System.Linq;
+
 namespace InstallationValidator.Tests
 {
     public sealed class DatabaseExists : TestableBase
     {
+        const string _description =
+            "Checks if the database for the game exists. This will only check that the actual database exists, not if it contains the needed data.";
+
+        const string _failMessage =
+            "The database does not exist. You have either used a different name by default and did not update the database settings file, or you have not imported the database.";
+
         const string _testName = "Game database exists";
-        const string _description = "Checks if the database for the game exists. This will only check that the actual database exists, not if it contains the needed data.";
-        const string _failMessage = "The database does not exist. You have either used a different name by default and did not update the database settings file, or you have not imported the database.";
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseExists"/> class.
         /// </summary>
-        public DatabaseExists()
-            : base(_testName, _description)
+        public DatabaseExists() : base(_testName, _description)
         {
         }
 
@@ -39,7 +44,7 @@ namespace InstallationValidator.Tests
 
         static bool TestInternal(out string errmsg)
         {
-            string[] commands = new string[] { "use " + MySqlHelper.ConnectionSettings.Database, "exit" };
+            var commands = new string[] { "use " + MySqlHelper.ConnectionSettings.Database, "exit" };
             return MySqlHelper.TestMySqlCommand(null, commands, out errmsg);
         }
     }

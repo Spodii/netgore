@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using NetGore.Db.Schema;
 
 namespace InstallationValidator.Tests
 {
     public sealed class LoadSchemaFile : TestableBase
     {
-        const string _testName = "Load database schema file";
-        const string _description = "Attempts to load the database schema file that describes the schema of the database for this release. If this file cannot be loaded, the engine will function fine, but the Installation Validator will not be able to check if your database schema is up-to-date.";
+        const string _description =
+            "Attempts to load the database schema file that describes the schema of the database for this release. If this file cannot be loaded, the engine will function fine, but the Installation Validator will not be able to check if your database schema is up-to-date.";
+
         const string _failMessage = "Failed to load the database schema file from: {0}";
+        const string _testName = "Load database schema file";
 
         static SchemaReader _schema;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LoadSchemaFile"/> class.
         /// </summary>
-        public LoadSchemaFile()
-            : base(_testName, _description)
+        public LoadSchemaFile() : base(_testName, _description)
         {
         }
 
@@ -42,11 +41,12 @@ namespace InstallationValidator.Tests
         /// </returns>
         protected override bool RunTest(ref string errorMessage)
         {
-            string schemaFile = MySqlHelper.DbSchemaFile;
+            var schemaFile = MySqlHelper.DbSchemaFile;
 
             if (!File.Exists(schemaFile))
             {
-                errorMessage = "The database schema file could not be found at `{0}`, so this program will not be able to check your database schema to see if it is up-to-date.";
+                errorMessage =
+                    "The database schema file could not be found at `{0}`, so this program will not be able to check your database schema to see if it is up-to-date.";
                 return false;
             }
 
