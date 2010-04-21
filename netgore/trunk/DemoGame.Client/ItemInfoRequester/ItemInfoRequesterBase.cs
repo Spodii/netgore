@@ -7,17 +7,19 @@ using NetGore.Network;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Manages requests for the <see cref="IItemTable"/> for items in various collections.
+    /// Manages sending requests to the server for the <see cref="IItemTable"/> for items in various collections.
     /// </summary>
+    /// <typeparam name="T">The slot type.</typeparam>
     abstract class ItemInfoRequesterBase<T>
     {
         readonly ItemTable _reusableItemInfo = new ItemTable();
         readonly ISocketSender _socket;
-        bool _isItemInfoSet;
 
-        IItemTable _item;
+        bool _isItemInfoSet;
+        IItemTable _itemInfo;
         bool _needToRequest;
         T _slot;
+        object _slotObj;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemInfoRequesterBase{T}"/> class.
@@ -34,9 +36,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the current <see cref="IItemTable"/>. Can be null.
         /// </summary>
-        public IItemTable CurrentItemInfo
+        public IItemTable CurrentItemInfoInfo
         {
-            get { return _item; }
+            get { return _itemInfo; }
         }
 
         /// <summary>
@@ -71,10 +73,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="slot">The slot.</param>
         /// <returns>True if the <see cref="slot"/> is known to be null; otherwise false.</returns>
-        protected virtual bool IsSlotNull(T slot)
-        {
-            return false;
-        }
+        protected abstract bool IsSlotNull(T slot);
 
         /// <summary>
         /// Handles when the ItemInfo for the given slot has been received.
@@ -86,7 +85,7 @@ namespace DemoGame.Client
         {
             if (_slot.Equals(slot))
             {
-                _item = itemInfo;
+                _itemInfo = itemInfo;
                 _isItemInfoSet = true;
             }
         }
@@ -103,10 +102,18 @@ namespace DemoGame.Client
 
             if (_slot.Equals(slot))
             {
-                _item = _reusableItemInfo;
+                _itemInfo = _reusableItemInfo;
                 _isItemInfoSet = true;
             }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the object in the <paramref name="slot"/>. It doesn't matter what kind of object
+        /// is used, just as long as it is an object that can be used to determine if the slot's contents have changed.
+        /// </summary>
+        /// <param name="slot">The slot of the item.</param>
+        /// <returns>An object representing the item in the <paramref name="slot"/>. Can be null if the slot is empty.</returns>
+        protected abstract object GetSlotObject(T slot);
 
         /// <summary>
         /// Gets the <see cref="IItemTable"/> for the item in the given <paramref name="slot"/>.
@@ -118,33 +125,38 @@ namespace DemoGame.Client
         /// the given <paramref name="slot"/> contained no item.</returns>
         public bool TryGetInfo(T slot, out IItemTable itemInfo)
         {
-            // Check if the slot has changed
-            if (!_slot.Equals(slot))
+            // If the item in the slot is null, don't even bother - just return a null IItemTable
+            if (IsSlotNull(slot))
+            {
+                itemInfo = null;
+                return true;
+            }
+
+            // Check if the slot to get the information has changed, or if the item in the slot is different
+            var currSlotObj = GetSlotObject(slot);
+            if (!_slot.Equals(slot) || (_slotObj != GetSlotObject(slot)))
             {
                 _slot = slot;
                 _needToRequest = true;
                 _isItemInfoSet = false;
+                _slotObj = currSlotObj;
             }
 
             // Send the request for the slot if it hasn't been made yet
             if (_needToRequest)
             {
-                if (IsSlotNull(_slot))
-                    ReceiveInfo(_slot, (IItemTable)null);
-                else
+                // Send a request to the server for the information on the item in the slot
+                using (var pw = GetRequest(_slot))
                 {
-                    using (var pw = GetRequest(_slot))
-                    {
-                        Socket.Send(pw);
-                    }
-
-                    _needToRequest = false;
-                    itemInfo = null;
-                    return false;
+                    Socket.Send(pw);
                 }
+
+                _needToRequest = false;
+                itemInfo = null;
+                return false;
             }
 
-            itemInfo = _item;
+            itemInfo = _itemInfo;
             return _isItemInfoSet;
         }
 
@@ -154,7 +166,8 @@ namespace DemoGame.Client
         public void Unset()
         {
             _slot = default(T);
-            _item = null;
+            _itemInfo = null;
+            _slotObj = null;
             _needToRequest = true;
             _isItemInfoSet = false;
         }

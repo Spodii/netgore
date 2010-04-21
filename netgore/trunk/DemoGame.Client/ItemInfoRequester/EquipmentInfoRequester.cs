@@ -31,6 +31,16 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the slot object.
+        /// </summary>
+        /// <param name="slot">The slot.</param>
+        /// <returns></returns>
+        protected override object GetSlotObject(EquipmentSlot slot)
+        {
+            return Equipment[slot];
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the <see cref="BitStream"/> containing the data
         /// needed to make a request for the given slot's <see cref="ItemInfo"/>.
         /// </summary>
