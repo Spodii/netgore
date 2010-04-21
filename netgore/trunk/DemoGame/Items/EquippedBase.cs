@@ -76,69 +76,6 @@ namespace DemoGame
         protected abstract bool CanRemove(EquipmentSlot slot);
 
         /// <summary>
-        /// Equips an <paramref name="item"/>, automatically choosing the EquipmentSlot to use.
-        /// </summary>
-        /// <param name="item">Item to be equipped.</param>
-        /// <returns>True if the item was successfully equipped, else false.</returns>
-        public bool Equip(T item)
-        {
-            // Do not equip invalid items
-            if (item == null)
-                return false;
-
-            // Check that the item can be equipped at all
-            if (!CanEquip(item))
-                return false;
-
-            // Get the possible slots
-            var slots = GetPossibleSlots(item);
-
-            // Check for valid slots
-            if (slots == null)
-                return false;
-
-            switch (slots.Count())
-            {
-                case 0:
-                    // If there are no slots, abort
-                    return false;
-
-                case 1:
-                    // If there is just one slot, try only that slot
-                    return TrySetSlot(slots.First(), item, false);
-
-                default:
-                    // There are multiple slots, so first try on empty slots
-                    var emptySlots = slots.Where(index => this[index] == null);
-                    foreach (var slot in emptySlots)
-                    {
-                        if (TrySetSlot(slot, item, false))
-                            return true;
-                    }
-
-                    // Couldn't set on an empty slot, or there was no empty slots, so try all the non-empty slots
-                    foreach (var slot in slots.Except(emptySlots))
-                    {
-                        if (TrySetSlot(slot, item, false))
-                            return true;
-                    }
-
-                    // Couldn't set in any slots
-                    return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of EquipmentSlots possible for a given item.
-        /// </summary>
-        /// <param name="item">Item to get the possible EquipmentSlots for.</param>
-        /// <returns>An IEnumerable of EquipmentSlots possible for the <paramref name="item"/>.</returns>
-        protected virtual IEnumerable<EquipmentSlot> GetPossibleSlots(T item)
-        {
-            return item.Type.GetPossibleSlots();
-        }
-
-        /// <summary>
         /// Gets the EquipmentSlot of the specified <paramref name="item"/> in this EquippedBase.
         /// </summary>
         /// <param name="item">Item to find the EquipmentSlot for.</param>
@@ -255,7 +192,7 @@ namespace DemoGame
         /// <returns>True if the <paramref name="item"/> was successfully added to the specified
         /// <paramref name="slot"/>, else false. When false, it is guarenteed the equipment will
         /// not have been modified.</returns>
-        bool TrySetSlot(EquipmentSlot slot, T item, bool checkIfCanEquip)
+        protected bool TrySetSlot(EquipmentSlot slot, T item, bool checkIfCanEquip)
         {
             // Check for a valid EquipmentSlot
             if (!EnumHelper<EquipmentSlot>.IsDefined(slot))

@@ -863,7 +863,7 @@ namespace DemoGame.Server
             }
 
             // Give the user the money for selling
-            var sellValue = GameData.GetItemSellValue(invItem);
+            var sellValue = ServerGameData.GetItemSellValue(invItem);
             var totalCash = sellValue * amountToSell;
             Cash += totalCash;
 

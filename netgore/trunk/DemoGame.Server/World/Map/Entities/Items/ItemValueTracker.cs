@@ -42,7 +42,7 @@ namespace DemoGame.Server
             get { return _value; }
         }
 
-        public static bool AreValuesEqual(ItemEntityBase item, ItemValueTracker tracker)
+        public static bool AreValuesEqual(ItemEntity item, ItemValueTracker tracker)
         {
             // Treat a null ItemValueTracker just like if it was a tracker with IsNull set
             if (tracker == null)
@@ -55,7 +55,7 @@ namespace DemoGame.Server
             return tracker.IsEqualTo(item);
         }
 
-        public bool IsEqualTo(ItemEntityBase item)
+        public bool IsEqualTo(ItemEntity item)
         {
             if (item == null)
             {
@@ -74,7 +74,7 @@ namespace DemoGame.Server
             }
         }
 
-        public void SetValues(ItemEntityBase item)
+        public void SetValues(ItemEntity item)
         {
             // Check if we are setting the value to a null item
             if (item == null)

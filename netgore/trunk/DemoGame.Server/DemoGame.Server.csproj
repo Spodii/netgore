@@ -240,6 +240,7 @@
     <Compile Include="Quests\QuestManager.cs" />
     <Compile Include="Quests\ItemTemplateAndAmount.cs" />
     <Compile Include="Quests\Rewards\MoneyQuestReward.cs" />
+    <Compile Include="ServerGameData.cs" />
     <Compile Include="ServerSettings.cs" />
     <Compile Include="UI\Compact\CompactUI.cs" />
     <Compile Include="UI\WinForms\frmMain.cs">

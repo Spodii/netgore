@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -12,6 +13,9 @@ using NetGore.Stats;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// Base class for a <see cref="EquippedBase{T}"/> for any kind of <see cref="Character"/>.
+    /// </summary>
     public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable, IModStatContainer<StatType>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -26,6 +30,69 @@ namespace DemoGame.Server
         /// When true, the <see cref="OnEquipped"/> and <see cref="OnUnequipped"/> methods will be ignored.
         /// </summary>
         bool _ignoreEquippedBaseEvents = false;
+
+        /// <summary>
+        /// Gets an IEnumerable of EquipmentSlots possible for a given item.
+        /// </summary>
+        /// <param name="item">Item to get the possible EquipmentSlots for.</param>
+        /// <returns>An IEnumerable of EquipmentSlots possible for the <paramref name="item"/>.</returns>
+        protected virtual IEnumerable<EquipmentSlot> GetPossibleSlots(ItemEntity item)
+        {
+            return item.Type.GetPossibleSlots();
+        }
+
+        /// <summary>
+        /// Equips an <paramref name="item"/>, automatically choosing the EquipmentSlot to use.
+        /// </summary>
+        /// <param name="item">Item to be equipped.</param>
+        /// <returns>True if the item was successfully equipped, else false.</returns>
+        public bool Equip(ItemEntity item)
+        {
+            // Do not equip invalid items
+            if (item == null)
+                return false;
+
+            // Check that the item can be equipped at all
+            if (!CanEquip(item))
+                return false;
+
+            // Get the possible slots
+            var slots = GetPossibleSlots(item);
+
+            // Check for valid slots
+            if (slots == null)
+                return false;
+
+            switch (slots.Count())
+            {
+                case 0:
+                    // If there are no slots, abort
+                    return false;
+
+                case 1:
+                    // If there is just one slot, try only that slot
+                    return TrySetSlot(slots.First(), item, false);
+
+                default:
+                    // There are multiple slots, so first try on empty slots
+                    var emptySlots = slots.Where(index => this[index] == null);
+                    foreach (var slot in emptySlots)
+                    {
+                        if (TrySetSlot(slot, item, false))
+                            return true;
+                    }
+
+                    // Couldn't set on an empty slot, or there was no empty slots, so try all the non-empty slots
+                    foreach (var slot in slots.Except(emptySlots))
+                    {
+                        if (TrySetSlot(slot, item, false))
+                            return true;
+                    }
+
+                    // Couldn't set in any slots
+                    return false;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterEquipped"/> class.

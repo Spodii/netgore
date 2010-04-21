@@ -41,46 +41,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets or sets the description of the item.
-        /// </summary>
-        [SyncValue(SkipNetworkSync = true)]
-        public abstract string Description { get; set; }
-
-        /// <summary>
         /// Gets or sets the index of the graphic that is used for this item.
         /// </summary>
         [SyncValue]
         public abstract GrhIndex GraphicIndex { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the item.
-        /// </summary>
-        [SyncValue(SkipNetworkSync = true)]
-        public abstract string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the attack range of the item.
-        /// </summary>
-        [SyncValue(SkipNetworkSync = true)]
-        public abstract ushort Range { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of item this is.
-        /// </summary>
-        [SyncValue(SkipNetworkSync = true)]
-        public abstract ItemType Type { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of the item.
-        /// </summary>
-        [SyncValue(SkipNetworkSync = true)]
-        public abstract int Value { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of weapon.
-        /// </summary>
-        [SyncValue(SkipNetworkSync = true)]
-        public abstract WeaponType WeaponType { get; set; }
 
         /// <summary>
         /// Checks if this item can be stacked with another item. To stack, both items must contain the same

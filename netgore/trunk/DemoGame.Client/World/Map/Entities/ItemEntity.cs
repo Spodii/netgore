@@ -24,8 +24,6 @@ namespace DemoGame.Client
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            Name = string.Empty;
-            Description = string.Empty;
             Amount = 1;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
@@ -35,8 +33,6 @@ namespace DemoGame.Client
         public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            Name = string.Empty;
-            Description = string.Empty;
             Amount = amount;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
@@ -47,8 +43,6 @@ namespace DemoGame.Client
             : base(pos, size)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            Name = string.Empty;
-            Description = string.Empty;
             Amount = 0;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
@@ -71,11 +65,6 @@ namespace DemoGame.Client
         public override byte Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets the description of the item
-        /// </summary>
-        public override string Description { get; set; }
-
-        /// <summary>
         /// Gets or sets the index of the graphic that is used for this item
         /// </summary>
         public override GrhIndex GraphicIndex
@@ -91,31 +80,6 @@ namespace DemoGame.Client
         {
             get { return _grh; }
         }
-
-        /// <summary>
-        /// Gets or sets the name of the item
-        /// </summary>
-        public override string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the attack range of the item.
-        /// </summary>
-        public override ushort Range { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of item this is.
-        /// </summary>
-        public override ItemType Type { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value of the item
-        /// </summary>
-        public override int Value { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of weapon.
-        /// </summary>
-        public override WeaponType WeaponType { get; set; }
 
         /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does

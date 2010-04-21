@@ -268,13 +268,31 @@ namespace DemoGame.Server
             return true;
         }
 
+
+        /// <summary>
+        /// Checks if this item can be stacked with another item. To stack, both items must contain the same
+        /// stat modifiers, name, description, value, and graphic index.
+        /// </summary>
+        /// <param name="source">Item to check if can stack on this item</param>
+        /// <returns>
+        /// True if the two items can stack on each other, else false
+        /// </returns>
+        public override bool CanStack(ItemEntityBase source)
+        {
+            var s = source as ItemEntity;
+            if (s == null)
+                return false;
+
+            return CanStack(s);
+        }
+
         /// <summary>
         /// Checks if this ItemEntity can be stacked with another ItemEntity. To stack, both items must contain the same
         /// stat modifiers, name, description, value, and graphic index.
         /// </summary>
         /// <param name="source">Item to check if can stack on this ItemEntity.</param>
         /// <returns>True if the two items can stack on each other, else false.</returns>
-        public override bool CanStack(ItemEntityBase source)
+        public bool CanStack(ItemEntity source)
         {
             // Check for equal reference
             if (ReferenceEquals(this, source))
@@ -296,8 +314,7 @@ namespace DemoGame.Server
                 return false;
 
             // Check for non-equal stats
-            var sourceItem = (ItemEntity)source;
-            if (!BaseStats.HasSameValues(sourceItem.BaseStats) || !ReqStats.HasSameValues(sourceItem.ReqStats))
+            if (!BaseStats.HasSameValues(source.BaseStats) || !ReqStats.HasSameValues(source.ReqStats))
                 return false;
 
             // Everything important is equal, so they can be stacked
@@ -553,7 +570,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the description of the ItemEntity.
         /// </summary>
-        public override string Description
+        public string Description
         {
             get { return _description; }
             set
@@ -662,7 +679,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the name of the ItemEntity.
         /// </summary>
-        public override string Name
+        public string Name
         {
             get { return _name; }
             set
@@ -679,7 +696,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the value of the database column `range`.
         /// </summary>
-        public override ushort Range
+        public ushort Range
         {
             get { return _range; }
             set
@@ -714,7 +731,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the type of ItemEntity this is.
         /// </summary>
-        public override ItemType Type
+        public ItemType Type
         {
             get { return _type; }
             set
@@ -731,7 +748,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the value of the ItemEntity.
         /// </summary>
-        public override int Value
+        public int Value
         {
             get { return _value; }
             set
@@ -748,7 +765,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the value of the database column `weapon_type`.
         /// </summary>
-        public override WeaponType WeaponType
+        public WeaponType WeaponType
         {
             get { return _weaponType; }
             set
