@@ -7,8 +7,8 @@ namespace DemoGame
 {
     /// <summary>
     /// Contains static data for the game that describes how some different aspects of the general game works.
-    /// <seealso cref="EngineSettingsInitializer"/>
     /// </summary>
+    /// <seealso cref="EngineSettingsInitializer"/>
     public static class GameData
     {
         /// <summary>
