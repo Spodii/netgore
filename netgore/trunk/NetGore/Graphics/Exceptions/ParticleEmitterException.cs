@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace NetGore.Graphics.ParticleEngine
 {
+    [Serializable]
     public class ParticleEmitterException : Exception
     {
         /// <summary>

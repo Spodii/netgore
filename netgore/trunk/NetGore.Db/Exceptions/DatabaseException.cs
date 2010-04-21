@@ -7,6 +7,7 @@ namespace NetGore.Db
     /// <summary>
     /// A generic database exception.
     /// </summary>
+    [Serializable]
     public class DatabaseException : DbException
     {
         /// <summary>

@@ -6,6 +6,7 @@ namespace NetGore
     /// <summary>
     /// Exception for when a <see cref="Type"/> failed to be instantiated.
     /// </summary>
+    [Serializable]
     public sealed class InstantiateTypeException : TypeException
     {
         /// <summary>

@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +10,7 @@ namespace NetGore.Network
     /// Server that responds to pings received from a <see cref="LatencyTrackerClient"/>. This does not actually
     /// care about who is pinging it or the latency.
     /// </summary>
-    public class LatencyTrackerServer
+    public class LatencyTrackerServer : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -71,6 +72,28 @@ namespace NetGore.Network
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Ping received and resent to `{0}`.", recvPacket.RemoteEndPoint);
             }
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
+        /// only unmanaged resources.</param>
+        protected void Dispose(bool disposeManaged)
+        {
+            if (!disposeManaged)
+                return;
+
+            if (_socket != null && !_socket.IsDisposed)
+                _socket.Dispose();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
 }

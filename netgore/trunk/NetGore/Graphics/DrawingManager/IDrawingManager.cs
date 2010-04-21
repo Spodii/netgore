@@ -7,7 +7,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Interface for a component that manages the preparation and tear-down for drawing.
     /// </summary>
-    public interface IDrawingManager
+    public interface IDrawingManager : IDisposable
     {
         /// <summary>
         /// Gets or sets the <see cref="Color"/> to use when clearing the screen.

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace NetGore.Audio
     /// <summary>
     /// Interface for an object that manages the game music.
     /// </summary>
-    public interface IMusicManager
+    public interface IMusicManager : IDisposable
     {
         /// <summary>
         /// Gets or sets if music will loop. Default is true.

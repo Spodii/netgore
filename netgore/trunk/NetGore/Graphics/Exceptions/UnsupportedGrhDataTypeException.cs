@@ -6,6 +6,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Exception for when a <see cref="GrhData"/> is of an unsupported derived type.
     /// </summary>
+    [Serializable]
     public class UnsupportedGrhDataTypeException : GrhDataException
     {
         /// <summary>

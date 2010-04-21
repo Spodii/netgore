@@ -7,6 +7,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// An <see cref="Exception"/> for when a <see cref="ParticleEmitter"/> fails to load because the
     /// <see cref="ParticleEmitter"/>'s type cannot be found or instantiated.
     /// </summary>
+    [Serializable]
     public sealed class ParticleEmitterLoadEmitterException : ParticleEmitterException
     {
         /// <summary>

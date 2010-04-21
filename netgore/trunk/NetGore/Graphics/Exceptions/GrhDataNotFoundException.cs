@@ -6,6 +6,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// <see cref="Exception"/> for when a <see cref="GrhData"/> could not be found.
     /// </summary>
+    [Serializable]
     public sealed class GrhDataNotFoundException : GrhDataException
     {
         /// <summary>
