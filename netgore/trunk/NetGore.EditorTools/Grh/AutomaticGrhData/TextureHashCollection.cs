@@ -155,7 +155,7 @@ namespace NetGore.EditorTools
 
             // Recursively scan the child directories
             var childDirs = Directory.GetDirectories(rootDir, "*", SearchOption.TopDirectoryOnly);
-            foreach (var cd in childDirs.SelectMany(childDir => GetFilesToHash(rootDir)))
+            foreach (var cd in childDirs.SelectMany(GetFilesToHash))
             {
                 yield return cd;
             }
