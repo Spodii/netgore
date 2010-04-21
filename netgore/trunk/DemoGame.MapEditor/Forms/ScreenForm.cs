@@ -90,8 +90,7 @@ namespace DemoGame.MapEditor
                                                                         ContentPaths.Build.Settings.Join("MapEditor.xml"));
 
         /// <summary>
-        /// Stopwatch used for calculating the game time (cant use XNA's GameTime since the
-        /// form does not inherit DrawableGameComponent).
+        /// Stopwatch used for calculating the game time.
         /// </summary>
         readonly Stopwatch _stopWatch = new Stopwatch();
 

@@ -202,16 +202,17 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Handles the loading of game content. Any content that is loaded should be placed in here.
-        /// This will be invoked once (right after Initialize()), along with an additional time for
-        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
+        /// This will be invoked once (right after Initialize()), along with any time the content needs
+        /// to be reloaded for whatever reason.
         /// </summary>
         public virtual void LoadContent()
         {
         }
 
         /// <summary>
-        /// Handles the unloading of game content. This is raised whenever XNA notifies the ScreenManager
-        /// that the content is to be unloaded.
+        /// Handles the unloading of game content. This is raised whenever the content for this screen
+        /// needs to be unloaded. All content loaded in <see cref="IGameScreen.LoadContent"/> should
+        /// be unloaded here to ensure complete and proper disposal.
         /// </summary>
         public virtual void UnloadContent()
         {

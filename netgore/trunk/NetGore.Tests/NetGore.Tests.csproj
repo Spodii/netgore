@@ -107,9 +107,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.4.10098, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -151,7 +149,6 @@
     <Compile Include="NetGore\IO\ContentAssetNameTests.cs" />
     <Compile Include="NetGore\MethodInfoHelperTests.cs" />
     <Compile Include="NetGore\RandomHelperTests.cs" />
-    <Compile Include="NetGore\RandomHelperXnaTests.cs" />
     <Compile Include="NetGore\SpatialAggregateTests.cs" />
     <Compile Include="NetGore\Collections\DArrayTests.cs" />
     <Compile Include="NetGore\Collections\MeanStackTests.cs" />

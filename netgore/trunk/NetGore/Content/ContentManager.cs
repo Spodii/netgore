@@ -53,7 +53,7 @@ namespace NetGore.Content
                 _loadedAssets[i] = new Dictionary<string, IMyLazyAsset>(_stringComp);
             }
 
-            DoNotUploadSetFalse += XnaContentManager_DoNotUploadSetFalse;
+            DoNotUploadSetFalse += ContentManager_DoNotUploadSetFalse;
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace NetGore.Content
         /// <param name="disposeManaged">If false, this was called from the destructor.</param>
         protected virtual void Dispose(bool disposeManaged)
         {
-            DoNotUploadSetFalse -= XnaContentManager_DoNotUploadSetFalse;
+            DoNotUploadSetFalse -= ContentManager_DoNotUploadSetFalse;
             Unload();
         }
 
@@ -342,11 +342,11 @@ namespace NetGore.Content
         }
 
         /// <summary>
-        /// Handles the DoNotUploadSetFalse event of the XnaContentManager control.
+        /// Handles the DoNotUploadSetFalse event of the <see cref="ContentManager"/> object.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void XnaContentManager_DoNotUploadSetFalse(object sender, EventArgs e)
+        void ContentManager_DoNotUploadSetFalse(object sender, EventArgs e)
         {
             if (_queuedUnloadLevel != null)
                 DoUnload(_queuedUnloadLevel.Value);

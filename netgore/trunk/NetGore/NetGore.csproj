@@ -517,7 +517,6 @@
     <Compile Include="Network\Sockets\UDPSocket.cs" />
     <Compile Include="Core\Parser.cs" />
     <Compile Include="Core\RandomHelper.cs" />
-    <Compile Include="Core\RandomHelperXna.cs" />
     <Compile Include="Scripting\ScriptLanguage.cs" />
     <Compile Include="Scripting\ScriptTypeCollection.cs" />
     <Compile Include="Scripting\ScriptTypeHelper.cs" />
