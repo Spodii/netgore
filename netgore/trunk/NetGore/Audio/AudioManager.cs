@@ -132,7 +132,11 @@ namespace NetGore.Audio
         public Vector2 ListenerPosition
         {
             get { return new Vector2(Listener.Position.X, Listener.Position.Y); }
-            set { Listener.Position = new Vector3(value, 0); }
+            set
+            {
+                Listener.Position = new Vector3(value, -300);
+                Listener.Target = new Vector3(value, -300);
+            }
         }
 
         /// <summary>
