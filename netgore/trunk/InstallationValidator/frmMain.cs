@@ -46,7 +46,7 @@ namespace InstallationValidator
             // Create the tests
             _tests = new ITestable[]
             {
-                new NUnitInstalled(), new LocateMySqlExe(), new DatabaseFileExists(), new LoadDbConnectionSettings(),
+                new LocateMySqlExe(), new DatabaseFileExists(), new LoadDbConnectionSettings(),
                 new ConnectToDatabase(), new DatabaseExists(), new DatabaseVersion(), new LoadSchemaFile(),
                 new DatabasePopulated()
             };
