@@ -70,7 +70,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyHelper.cs" />
     <Compile Include="FileFinder.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>

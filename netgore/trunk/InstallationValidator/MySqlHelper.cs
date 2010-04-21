@@ -4,30 +4,40 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using NetGore;
 using NetGore.Db;
 
 namespace InstallationValidator
 {
+    /// <summary>
+    /// Helper methods for MySQL.
+    /// </summary>
     public static class MySqlHelper
     {
+        /// <summary>
+        /// The name of the database dump file.
+        /// </summary>
         public const string DbSqlFile = "db.sql";
 
+        /// <summary>
+        /// The relative path to the database schema file.
+        /// </summary>
         public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema.xml",
                                                                    Path.DirectorySeparatorChar);
 
+        /// <summary>
+        /// The relative path to the database settings file.
+        /// </summary>
         public static readonly string DbSettingsFile = string.Format("DemoGame.Server{0}DbSettings.xml",
                                                                      Path.DirectorySeparatorChar);
 
-        public static readonly string[] DbTables = new string[]
-        {
-            "account", "alliance", "alliance_attackable", "alliance_hostile", "character", "character_equipped",
-            "character_inventory", "character_status_effect", "character_template", "character_template_equipped",
-            "character_template_inventory", "game_constant", "item", "item_template", "map", "map_spawn", "server_setting",
-            "server_time", "shop", "shop_item"
-        };
-
+        /// <summary>
+        /// The database connection settings.
+        /// </summary>
         public static DbConnectionSettings ConnectionSettings;
+
+        /// <summary>
+        /// The path to the MySql command-line binary (mysql.exe).
+        /// </summary>
         public static string MySqlPath = FindMySqlFile("mysql.exe");
 
         /// <summary>
@@ -35,8 +45,8 @@ namespace InstallationValidator
         /// </summary>
         public static void AskToImportDatabase(bool dbExists)
         {
-            StringBuilder sb = new StringBuilder();
-            
+            var sb = new StringBuilder();
+
             if (!dbExists)
                 sb.AppendFormat("Database `{0}` does not exist. Do you wish to create it (Y/N)?", ConnectionSettings.Database);
             else
@@ -57,6 +67,11 @@ namespace InstallationValidator
             ImportDatabaseContents();
         }
 
+        /// <summary>
+        /// Finds the path to a MySql file.
+        /// </summary>
+        /// <param name="fileName">The MySql file to search for.</param>
+        /// <returns>The path to the MySql file.</returns>
         public static string FindMySqlFile(string fileName)
         {
             var path1 = Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "MySql";
@@ -70,6 +85,14 @@ namespace InstallationValidator
             return filePath;
         }
 
+        /// <summary>
+        /// Gets a formatted error string from the MySql command line.
+        /// </summary>
+        /// <param name="mysqlOut">The output string.</param>
+        /// <param name="mysqlError">The error string.</param>
+        /// <param name="errmsg">The error.</param>
+        /// <param name="p">The parameters.</param>
+        /// <returns>The formatted error string.</returns>
         static string GetMySqlCommandErrorStr(string mysqlOut, string mysqlError, string errmsg, params string[] p)
         {
             const string div1 = "=====";
@@ -81,7 +104,7 @@ namespace InstallationValidator
             else
                 err = errmsg;
 
-            string errDetails = string.Empty;
+            var errDetails = string.Empty;
 
             if (mysqlOut != null)
             {
@@ -106,20 +129,24 @@ namespace InstallationValidator
             return err + "\n";
         }
 
+        /// <summary>
+        /// Imports the database contents into the database.
+        /// </summary>
         static void ImportDatabaseContents()
         {
-            string dbFile = Path.GetFullPath(DbSqlFile);
+            var dbFile = Path.GetFullPath(DbSqlFile);
 
-            const string title ="Failed to find db.sql";
-            const string msg = "Failed to find the db.sql file. Make sure you didn't move/delete it, or run this program from a different directory than the default.";
-            
+            const string title = "Failed to find db.sql";
+            const string msg =
+                "Failed to find the db.sql file. Make sure you didn't move/delete it, or run this program from a different directory than the default.";
+
             while (!File.Exists(dbFile))
             {
                 if (MessageBox.Show(msg, title, MessageBoxButtons.RetryCancel) == DialogResult.Cancel)
                     return;
             }
 
-            string[] commands = new string[]
+            var commands = new string[]
             {
                 "DROP DATABASE IF EXISTS " + ConnectionSettings.Database + ";",
                 "CREATE DATABASE " + ConnectionSettings.Database + ";", "USE " + ConnectionSettings.Database + ";",
@@ -142,13 +169,13 @@ namespace InstallationValidator
             // Build the default command string
             if (string.IsNullOrEmpty(command))
             {
-                string username = ConnectionSettings.User;
-                string password = ConnectionSettings.Pass;
-                string host = ConnectionSettings.Host;
+                var username = ConnectionSettings.User;
+                var password = ConnectionSettings.Pass;
+                var host = ConnectionSettings.Host;
                 command = string.Format("--user={0} --password={1} --host={2}", username, password, host);
             }
 
-            ProcessStartInfo psi = new ProcessStartInfo(MySqlPath, command)
+            var psi = new ProcessStartInfo(MySqlPath, command)
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,
@@ -158,12 +185,12 @@ namespace InstallationValidator
                 WindowStyle = ProcessWindowStyle.Hidden
             };
 
-            Process p = new Process { StartInfo = psi };
+            var p = new Process { StartInfo = psi };
             p.Start();
 
             if (cmds != null)
             {
-                for (int i = 0; i < cmds.Length; i++)
+                for (var i = 0; i < cmds.Length; i++)
                 {
                     p.StandardInput.WriteLine(cmds[i]);
                 }
@@ -217,7 +244,7 @@ namespace InstallationValidator
 
             if (error.Length > 0)
             {
-                string errorLower = error.ToLower();
+                var errorLower = error.ToLower();
                 if (errorLower.Contains("access denied"))
                 {
                     const string failInfo = "Access denied. Ensure the connection string contains valid account info: `{0}`";
@@ -269,11 +296,17 @@ namespace InstallationValidator
             return true;
         }
 
+        /// <summary>
+        /// Checks if that the <see cref="MySqlPath"/> is set and valid. If not valid, opens up a prompt to allow the user
+        /// to select the correct path.
+        /// </summary>
+        /// <returns>True if valid; otherwise false.</returns>
         public static bool ValidateFilePathsLoaded()
         {
             if (string.IsNullOrEmpty(MySqlPath) || !File.Exists(MySqlPath))
             {
-                StringBuilder sb = new StringBuilder();
+                // Create the error message
+                var sb = new StringBuilder();
 
                 sb.AppendLine("Failed to automatically find the path to mysql.exe.");
                 sb.AppendLine(
@@ -282,6 +315,7 @@ namespace InstallationValidator
 
                 MessageBox.Show(sb.ToString(), "Failed to find mysql.exe", MessageBoxButtons.OK);
 
+                // Open a prompt to allow the user to select the correct path
                 while (true)
                 {
                     using (var fs = new OpenFileDialog())
@@ -299,13 +333,12 @@ namespace InstallationValidator
                         MySqlPath = fs.FileName;
                     }
 
-                    if (MySqlPath != null)
-                    {
-                        if (MySqlPath.Length > 2 && File.Exists(MySqlPath))
-                            break;
-                    }
+                    if (MySqlPath != null && MySqlPath.Length > 2 && File.Exists(MySqlPath))
+                        break;
 
-                    if (MessageBox.Show("The selected file was invalid. Please select mysql.exe.", "Select mysql.exe", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    if (
+                        MessageBox.Show("The selected file was invalid. Please select mysql.exe.", "Select mysql.exe",
+                                        MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                         return false;
                 }
             }
