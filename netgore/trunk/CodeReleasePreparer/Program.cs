@@ -22,8 +22,8 @@ namespace CodeReleasePreparer
         static readonly string[] _deleteFolderPatterns = new string[]
         { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$" };
 
-        static readonly string _mysqldumpPath = MySqlHelper.FindMySqlFile("mysqldump.exe");
         static readonly string _mysqlPath = MySqlHelper.FindMySqlFile("mysql.exe");
+        static readonly string _mysqldumpPath = MySqlHelper.FindMySqlFile("mysqldump.exe");
         static RegexCollection _fileRegexes;
         static RegexCollection _folderRegexes;
 
@@ -140,7 +140,7 @@ namespace CodeReleasePreparer
 
             // Save the schema file
             Console.WriteLine("Updating the database schema file...");
-            string schemaFile = Paths.Root + MySqlHelper.DbSchemaFile;
+            var schemaFile = Paths.Root + MySqlHelper.DbSchemaFile;
             if (File.Exists(schemaFile))
                 File.Delete(schemaFile);
 
@@ -195,7 +195,7 @@ namespace CodeReleasePreparer
 
             // Move dump file
             Console.WriteLine("Moving dump file to trunk root...");
-            string dbfileRooted = string.Format("..{0}..{0}..{0}", Path.DirectorySeparatorChar) + dbfile;
+            var dbfileRooted = string.Format("..{0}..{0}..{0}", Path.DirectorySeparatorChar) + dbfile;
             if (File.Exists(dbfileRooted))
                 File.Delete(dbfileRooted);
 
@@ -211,7 +211,7 @@ namespace CodeReleasePreparer
 
             // Create self-destroying batch file that will delete this program's binaries
             Console.WriteLine("Creating self-destruct batch file...");
-            string programPath = string.Format("{0}CodeReleasePreparer{1}", Paths.Root, Path.DirectorySeparatorChar);
+            var programPath = string.Format("{0}CodeReleasePreparer{1}", Paths.Root, Path.DirectorySeparatorChar);
             RunBatchFile(true, "CHOICE /c 1 /d 1 /t 2 > nul", "RMDIR /S /Q \"" + programPath + "bin\"",
                          "RMDIR /S /Q \"" + programPath + "obj\"", "DEL %0");
 
@@ -227,7 +227,7 @@ namespace CodeReleasePreparer
         /// <param name="cmds">The additional commands to input when running the process.</param>
         static void MySqlCommand(string command, out string output, out string error, params string[] cmds)
         {
-            ProcessStartInfo psi = new ProcessStartInfo(_mysqlPath, command)
+            var psi = new ProcessStartInfo(_mysqlPath, command)
             {
                 CreateNoWindow = true,
                 UseShellExecute = false,
@@ -237,12 +237,12 @@ namespace CodeReleasePreparer
                 WindowStyle = ProcessWindowStyle.Hidden
             };
 
-            Process p = new Process { StartInfo = psi };
+            var p = new Process { StartInfo = psi };
             p.Start();
 
             if (cmds != null)
             {
-                for (int i = 0; i < cmds.Length; i++)
+                for (var i = 0; i < cmds.Length; i++)
                 {
                     p.StandardInput.WriteLine(cmds[i]);
                 }
@@ -257,7 +257,7 @@ namespace CodeReleasePreparer
         {
             var filePath = Path.GetTempFileName() + ".bat";
             File.WriteAllLines(filePath, lines);
-            ProcessStartInfo psi = new ProcessStartInfo(filePath)
+            var psi = new ProcessStartInfo(filePath)
             { CreateNoWindow = true, UseShellExecute = true, WindowStyle = ProcessWindowStyle.Hidden };
 
             var p = Process.Start(psi);
@@ -270,7 +270,7 @@ namespace CodeReleasePreparer
                     Console.WriteLine("(empty)");
                 else
                 {
-                    for (int i = 0; i < lines.Length; i++)
+                    for (var i = 0; i < lines.Length; i++)
                     {
                         Console.WriteLine(lines[i]);
                     }

@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace InstallationValidator
 {
     /// <summary>
@@ -6,27 +8,9 @@ namespace InstallationValidator
     public interface ITestable
     {
         /// <summary>
-        /// Runs the test.
-        /// </summary>
-        /// <param name="errorMessage">When the method returns false, contains an error message as to why
-        /// the test failed. Otherwise, contains an empty string.</param>
-        /// <returns>True if the test passed; false if the test failed.</returns>
-        bool Test(out string errorMessage);
-
-        /// <summary>
-        /// Gets the name of the test.
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
         /// Gets the description of the test.
         /// </summary>
         string Description { get; }
-
-        /// <summary>
-        /// Gets the status of the last time the test was run.
-        /// </summary>
-        TestStatus LastRunStatus { get; }
 
         /// <summary>
         /// Gets if this test performs something that is vital to any other tests. If true, execution of tests will break
@@ -41,8 +25,26 @@ namespace InstallationValidator
         string LastRunError { get; }
 
         /// <summary>
+        /// Gets the status of the last time the test was run.
+        /// </summary>
+        TestStatus LastRunStatus { get; }
+
+        /// <summary>
+        /// Gets the name of the test.
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// Clears any information about when the test was last run.
         /// </summary>
         void ClearStatus();
+
+        /// <summary>
+        /// Runs the test.
+        /// </summary>
+        /// <param name="errorMessage">When the method returns false, contains an error message as to why
+        /// the test failed. Otherwise, contains an empty string.</param>
+        /// <returns>True if the test passed; false if the test failed.</returns>
+        bool Test(out string errorMessage);
     }
 }

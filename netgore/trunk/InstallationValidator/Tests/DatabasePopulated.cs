@@ -8,15 +8,38 @@ namespace InstallationValidator.Tests
 {
     public sealed class DatabasePopulated : TestableBase
     {
+        const string _description =
+            "Checks to make sure the database is populated, and using the expected schema. The schema check is primarily for ensuring that your database is up-to-date after upgrading NetGore. While the engine can function if the schema does not match, it is not guaranteed, and not recommended unless you change the respective code.";
+
         const string _testName = "Database populated";
-        const string _description = "Checks to make sure the database is populated, and using the expected schema. The schema check is primarily for ensuring that your database is up-to-date after upgrading NetGore. While the engine can function if the schema does not match, it is not guaranteed, and not recommended unless you change the respective code.";
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabasePopulated"/> class.
         /// </summary>
-        public DatabasePopulated()
-            : base(_testName, _description)
+        public DatabasePopulated() : base(_testName, _description)
         {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, runs the test.
+        /// </summary>
+        /// <param name="errorMessage">When the method returns false, contains an error message as to why
+        /// the test failed. Otherwise, contains an empty string.</param>
+        /// <returns>
+        /// True if the test passed; false if the test failed.
+        /// </returns>
+        protected override bool RunTest(ref string errorMessage)
+        {
+            string errmsg;
+            if (!TestInternal(out errmsg))
+                MySqlHelper.AskToImportDatabase(true);
+
+            var success = TestInternal(out errmsg);
+
+            if (!success)
+                errorMessage = errmsg;
+
+            return success;
         }
 
         /// <summary>
@@ -62,34 +85,12 @@ namespace InstallationValidator.Tests
 
         static string ToNewLines(IEnumerable<string> s)
         {
-            StringBuilder ret = new StringBuilder();
+            var ret = new StringBuilder();
             foreach (var item in s)
             {
                 ret.AppendLine(item);
             }
             return ret.ToString();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, runs the test.
-        /// </summary>
-        /// <param name="errorMessage">When the method returns false, contains an error message as to why
-        /// the test failed. Otherwise, contains an empty string.</param>
-        /// <returns>
-        /// True if the test passed; false if the test failed.
-        /// </returns>
-        protected override bool RunTest(ref string errorMessage)
-        {
-            string errmsg;
-            if (!TestInternal(out errmsg))
-                MySqlHelper.AskToImportDatabase(true);
-
-            bool success = TestInternal(out errmsg);
-
-            if (!success)
-                errorMessage = errmsg;
-
-            return success;
         }
     }
 }

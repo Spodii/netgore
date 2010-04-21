@@ -32,13 +32,56 @@ namespace DemoGame.Server
         bool _ignoreEquippedBaseEvents = false;
 
         /// <summary>
-        /// Gets an IEnumerable of EquipmentSlots possible for a given item.
+        /// Initializes a new instance of the <see cref="CharacterEquipped"/> class.
         /// </summary>
-        /// <param name="item">Item to get the possible EquipmentSlots for.</param>
-        /// <returns>An IEnumerable of EquipmentSlots possible for the <paramref name="item"/>.</returns>
-        protected virtual IEnumerable<EquipmentSlot> GetPossibleSlots(ItemEntity item)
+        /// <param name="character">The <see cref="Character"/> the instance is for.</param>
+        protected CharacterEquipped(Character character)
         {
-            return item.Type.GetPossibleSlots();
+            if (character == null)
+                throw new ArgumentNullException("character");
+
+            _character = character;
+            _isPersistent = character.IsPersistent;
+            _paperDoll = new EquippedPaperDoll(Character);
+        }
+
+        /// <summary>
+        /// Gets the Character that this UserEquipped belongs to.
+        /// </summary>
+        public Character Character
+        {
+            get { return _character; }
+        }
+
+        public IDbController DbController
+        {
+            get { return Character.DbController; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, checks if the given <paramref name="item"/> can be 
+        /// equipped at all by the owner of this EquippedBase.
+        /// </summary>
+        /// <param name="item">Item to check if able be equip.</param>
+        /// <returns>True if the <paramref name="item"/> can be equipped, else false.</returns>
+        public override bool CanEquip(ItemEntity item)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, checks if the item in the given <paramref name="slot"/> 
+        /// can be removed properly.
+        /// </summary>
+        /// <param name="slot">Slot of the item to be removed.</param>
+        /// <returns>True if the item can be properly removed, else false.</returns>
+        protected override bool CanRemove(EquipmentSlot slot)
+        {
+            ItemEntityBase item = this[slot];
+            if (item == null)
+                return true;
+
+            return Character.Inventory.CanAdd((ItemEntity)item);
         }
 
         /// <summary>
@@ -95,56 +138,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CharacterEquipped"/> class.
+        /// Gets an IEnumerable of EquipmentSlots possible for a given item.
         /// </summary>
-        /// <param name="character">The <see cref="Character"/> the instance is for.</param>
-        protected CharacterEquipped(Character character)
+        /// <param name="item">Item to get the possible EquipmentSlots for.</param>
+        /// <returns>An IEnumerable of EquipmentSlots possible for the <paramref name="item"/>.</returns>
+        protected virtual IEnumerable<EquipmentSlot> GetPossibleSlots(ItemEntity item)
         {
-            if (character == null)
-                throw new ArgumentNullException("character");
-
-            _character = character;
-            _isPersistent = character.IsPersistent;
-            _paperDoll = new EquippedPaperDoll(Character);
-        }
-
-        /// <summary>
-        /// Gets the Character that this UserEquipped belongs to.
-        /// </summary>
-        public Character Character
-        {
-            get { return _character; }
-        }
-
-        public IDbController DbController
-        {
-            get { return Character.DbController; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, checks if the given <paramref name="item"/> can be 
-        /// equipped at all by the owner of this EquippedBase.
-        /// </summary>
-        /// <param name="item">Item to check if able be equip.</param>
-        /// <returns>True if the <paramref name="item"/> can be equipped, else false.</returns>
-        public override bool CanEquip(ItemEntity item)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, checks if the item in the given <paramref name="slot"/> 
-        /// can be removed properly.
-        /// </summary>
-        /// <param name="slot">Slot of the item to be removed.</param>
-        /// <returns>True if the item can be properly removed, else false.</returns>
-        protected override bool CanRemove(EquipmentSlot slot)
-        {
-            ItemEntityBase item = this[slot];
-            if (item == null)
-                return true;
-
-            return Character.Inventory.CanAdd((ItemEntity)item);
+            return item.Type.GetPossibleSlots();
         }
 
         /// <summary>

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using InstallationValidator.Properties;
 
@@ -41,8 +40,8 @@ namespace InstallationValidator
             var textRect = new Rectangle(e.Bounds.X + 10, e.Bounds.Y, e.Bounds.Width - 10, e.Bounds.Height);
 
             // Set up a smooth drawing
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+            e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
             // Draw the text
             e.Graphics.DrawString(test.Name, e.Font, Brushes.Black, textRect);

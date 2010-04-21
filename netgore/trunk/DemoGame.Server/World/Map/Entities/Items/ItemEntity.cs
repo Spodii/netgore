@@ -268,7 +268,6 @@ namespace DemoGame.Server
             return true;
         }
 
-
         /// <summary>
         /// Checks if this item can be stacked with another item. To stack, both items must contain the same
         /// stat modifiers, name, description, value, and graphic index.

@@ -1,7 +1,5 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using InstallationValidator;
-using NetGore;
 using NetGore.Db;
 using NetGore.Db.Schema;
 

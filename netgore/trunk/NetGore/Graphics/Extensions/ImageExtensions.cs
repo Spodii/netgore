@@ -5,7 +5,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using Image = SFML.Graphics.Image;
 
 namespace NetGore.Graphics
 {
@@ -26,8 +25,8 @@ namespace NetGore.Graphics
         /// <returns>
         /// A <see cref="Bitmap"/> resized to the given values.
         /// </returns>
-        public static Bitmap CreateScaled(this System.Drawing.Image original, int destWidth, int destHeight, bool keepAspectRatio,
-                                          Color? bgColor, Color? transparentColor)
+        public static Bitmap CreateScaled(this Image original, int destWidth, int destHeight, bool keepAspectRatio, Color? bgColor,
+                                          Color? transparentColor)
         {
             int w;
             int h;
@@ -104,7 +103,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, Rectangle source, int destWidth, int destHeight)
+        public static Bitmap ToBitmap(this SFML.Graphics.Image image, Rectangle source, int destWidth, int destHeight)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -128,7 +127,8 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, SFML.Graphics.Rectangle source, int destWidth, int destHeight)
+        public static Bitmap ToBitmap(this SFML.Graphics.Image image, SFML.Graphics.Rectangle source, int destWidth,
+                                      int destHeight)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -147,7 +147,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static Bitmap ToBitmap(this Image image, SFML.Graphics.Rectangle source)
+        public static Bitmap ToBitmap(this SFML.Graphics.Image image, SFML.Graphics.Rectangle source)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -166,7 +166,7 @@ namespace NetGore.Graphics
         /// <exception cref="ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="source"/> specifies an area
         /// outside of the <paramref name="image"/>.</exception>
-        public static unsafe Bitmap ToBitmap(this Image image, Rectangle source)
+        public static unsafe Bitmap ToBitmap(this SFML.Graphics.Image image, Rectangle source)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -227,13 +227,13 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="img">The <see cref="System.Drawing.Image"/>.</param>
         /// <returns>The <see cref="SFML.Graphics.Image"/>.</returns>
-        public static Image ToSFMLImage(this System.Drawing.Image img)
+        public static SFML.Graphics.Image ToSFMLImage(this Image img)
         {
             using (var ms = new MemoryStream((img.Width * img.Height * 4) + 64))
             {
                 img.Save(ms, ImageFormat.Bmp);
 
-                return new Image(ms);
+                return new SFML.Graphics.Image(ms);
             }
         }
     }
