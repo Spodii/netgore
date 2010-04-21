@@ -77,13 +77,15 @@ namespace InstallationValidator
                 {
                     SetTestSuiteStatus(i + 1, _tests.Length);
 
+                    var currTest = _tests[i];
                     string s;
-                    anyFailed |= !_tests[i].Test(out s);
+                    var currTestFailed = !currTest.Test(out s);
+                    anyFailed |= currTestFailed;
 
                     lstTests.SelectedIndex = i;
                     lstTests.Refresh();
 
-                    if (anyFailed)
+                    if (currTestFailed && currTest.IsVital)
                         break;
                 }
 
