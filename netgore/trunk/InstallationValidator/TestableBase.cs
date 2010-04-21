@@ -5,10 +5,14 @@ using System.Text;
 
 namespace InstallationValidator
 {
+    /// <summary>
+    /// Base class for a <see cref="ITestable"/>.
+    /// </summary>
     public abstract class TestableBase : ITestable
     {
         readonly string _name;
         readonly string _description;
+        readonly bool _isVital;
 
         TestStatus _testStatus = TestStatus.NotTested;
         string _lastRunError = null;
@@ -18,10 +22,12 @@ namespace InstallationValidator
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
-        protected TestableBase(string name, string description)
+        /// <param name="isVital">True if the tests will stop executing if this test fails; otherwise false.</param>
+        protected TestableBase(string name, string description, bool isVital = true)
         {
             _name = name;
             _description = description;
+            _isVital = isVital;
         }
 
         /// <summary>
@@ -34,6 +40,12 @@ namespace InstallationValidator
         /// </returns>
         protected abstract bool RunTest(ref string errorMessage);
 
+        /// <summary>
+        /// Appends the error details to an error message.
+        /// </summary>
+        /// <param name="errorMessage">The error message.</param>
+        /// <param name="details">The error details.</param>
+        /// <returns>The formatted error message with appended error details.</returns>
         public static string AppendErrorDetails(string errorMessage, string details)
         {
             if (string.IsNullOrEmpty(details))
@@ -99,6 +111,15 @@ namespace InstallationValidator
         public TestStatus LastRunStatus
         {
             get { return _testStatus; }
+        }
+
+        /// <summary>
+        /// Gets if this test performs something that is vital to any other tests. If true, execution of tests will break
+        /// immediately after this test fails. If false, tests will continue to be executed if this test fails.
+        /// </summary>
+        public bool IsVital
+        {
+            get { return _isVital; }
         }
 
         /// <summary>

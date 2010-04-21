@@ -29,6 +29,12 @@ namespace InstallationValidator
         TestStatus LastRunStatus { get; }
 
         /// <summary>
+        /// Gets if this test performs something that is vital to any other tests. If true, execution of tests will break
+        /// immediately after this test fails. If false, tests will continue to be executed if this test fails.
+        /// </summary>
+        bool IsVital { get; }
+
+        /// <summary>
         /// Gets the error message from the last run. If the test has not yet been run, or it was successful, this
         /// will return null.
         /// </summary>
