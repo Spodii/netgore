@@ -82,10 +82,9 @@ namespace CodeReleasePreparer
 
             // Delete all files in the directory that match the filter
             var files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
+            foreach (var f in files.Where(fileFilter))
             {
-                if (fileFilter(f))
-                    DeleteFile(f);
+                DeleteFile(f);
             }
 
             // Delete all the child directories recursively
