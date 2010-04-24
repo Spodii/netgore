@@ -43,7 +43,8 @@ namespace NetGore
         /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
         /// Default is false.</param>
         /// <returns>All Types that match the given conditions.</returns>
-        public static IEnumerable<Type> FindTypes(Func<Type, bool> conditions, Type[] constructorParams, bool includeGAC = _gacDefault)
+        public static IEnumerable<Type> FindTypes(Func<Type, bool> conditions, Type[] constructorParams,
+                                                  bool includeGAC = _gacDefault)
         {
             // Grab all types
             var types = AllTypes(includeGAC);
@@ -89,7 +90,8 @@ namespace NetGore
         /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
         /// Default is false.</param>
         /// <returns>IEnumerable of all Types that inherit the specified <paramref name="baseType"/>.</returns>
-        public static IEnumerable<Type> FindTypesThatInherit(Type baseType, Type[] constructorParams, bool includeGAC = _gacDefault)
+        public static IEnumerable<Type> FindTypesThatInherit(Type baseType, Type[] constructorParams,
+                                                             bool includeGAC = _gacDefault)
         {
             return FindTypes(x => x.IsSubclassOf(baseType), constructorParams, includeGAC);
         }
@@ -107,7 +109,8 @@ namespace NetGore
         /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
         /// Default is false.</param>
         /// <returns>IEnumerable of all Types that have the specified <paramref name="attributeType"/>.</returns>
-        public static IEnumerable<Type> FindTypesWithAttribute(Type attributeType, Type[] constructorParams, bool includeGAC = _gacDefault)
+        public static IEnumerable<Type> FindTypesWithAttribute(Type attributeType, Type[] constructorParams,
+                                                               bool includeGAC = _gacDefault)
         {
             Func<Type, bool> func = (x => x.GetCustomAttributes(attributeType, true).Count() > 0);
             return FindTypes(func, constructorParams, includeGAC);

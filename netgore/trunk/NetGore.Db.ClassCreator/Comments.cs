@@ -193,12 +193,12 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public static class HasSameValues
         {
-            public const string SourceParameter = "The source <see cref=\"{0}\"/>.";
-
             public const string OtherParameter = "The <see cref=\"{0}\"/> to compare the values to.";
 
             public const string Returns =
                 "True if this <see cref=\"{0}\"/> contains the same values as the otherItem; otherwise false.";
+
+            public const string SourceParameter = "The source <see cref=\"{0}\"/>.";
 
             public const string Summary =
                 "Checks if this <see cref=\"{0}\"/> contains the same values as another <see cref=\"{0}\"/>.";

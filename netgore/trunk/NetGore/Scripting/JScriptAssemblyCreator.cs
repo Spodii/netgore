@@ -152,7 +152,8 @@ namespace NetGore.Scripting
             CompilerResults results;
 
             // Set up the compiler parameters
-            var p = new CompilerParameters { GenerateInMemory = false, IncludeDebugInformation = false, OutputAssembly = filePath };
+            var p = new CompilerParameters
+            { GenerateInMemory = false, IncludeDebugInformation = false, OutputAssembly = filePath };
 
             // Compile
             using (var provider = new JScriptCodeProvider())

@@ -9,9 +9,9 @@ namespace NetGore.Features.StatusEffects
     /// </summary>
     /// <typeparam name="TStatType">The type of stat.</typeparam>
     /// <typeparam name="TStatusEffectType">The type of status effect.</typeparam>
-    public interface IStatusEffect<TStatType, out TStatusEffectType> where TStatType : struct, IComparable, IConvertible, IFormattable
-                                                                 where TStatusEffectType : struct, IComparable, IConvertible,
-                                                                     IFormattable
+    public interface IStatusEffect<TStatType, out TStatusEffectType>
+        where TStatType : struct, IComparable, IConvertible, IFormattable
+        where TStatusEffectType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Gets the <see cref="StatusEffectMergeType"/> that describes how to handle merging multiple applications

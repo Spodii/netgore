@@ -343,7 +343,7 @@ namespace NetGore.EditorTools
         {
             if (control == null)
                 return;
-            
+
             control.BackColor = color;
         }
 

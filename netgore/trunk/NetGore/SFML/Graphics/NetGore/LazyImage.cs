@@ -35,10 +35,7 @@ namespace SFML.Graphics
         /// </summary>
         public override bool IsDisposed
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         /// <summary>

@@ -21,6 +21,14 @@ namespace SFML.Graphics
         }
 
         /// <summary>
+        /// Gets the file name that this sound buffer uses to load.
+        /// </summary>
+        public string FileName
+        {
+            get { return _filename; }
+        }
+
+        /// <summary>
         /// Gets if this object has been disposed. For objects that will automatically reload after being disposed (such as content
         /// loaded through a ContentManager), this will always return true since, even if the object is disposed at the time the
         /// call is made to the method, it will reload automatically when needed. Such objects are often variations of existing
@@ -28,18 +36,7 @@ namespace SFML.Graphics
         /// </summary>
         public override bool IsDisposed
         {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets the file name that this sound buffer uses to load.
-        /// </summary>
-        public string FileName
-        {
-            get { return _filename; }
+            get { return false; }
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ namespace NetGore.Db
     {
         readonly IDbCommand _command;
         readonly IDataReader _dataReader;
+        bool _isDisposed = false;
 
         internal DataReaderContainer(IDbCommand command, IDataReader dataReader)
         {
@@ -28,6 +29,20 @@ namespace NetGore.Db
         protected IDataReader DataReader
         {
             get { return _dataReader; }
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+            if (disposeManaged)
+            {
+                _dataReader.Dispose();
+                _command.Dispose();
+            }
         }
 
         #region IDataReader Members
@@ -155,22 +170,6 @@ namespace NetGore.Db
         {
             _dataReader.Close();
         }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
-        /// <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposeManaged)
-        {
-            if (disposeManaged)
-            {
-                _dataReader.Dispose();
-                _command.Dispose();
-            }
-        }
-
-        bool _isDisposed = false;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.             

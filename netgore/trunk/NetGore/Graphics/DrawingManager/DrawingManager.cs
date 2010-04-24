@@ -55,6 +55,23 @@ namespace NetGore.Graphics
             return new LightManager();
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to
+        /// release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+            if (!disposeManaged)
+                return;
+
+            if (_sb != null)
+                _sb.Dispose();
+
+            if (_lightManager != null)
+                _lightManager.Dispose();
+        }
+
         #region IDrawingManager Members
 
         /// <summary>
@@ -209,6 +226,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        /// <summary>
         /// Ends drawing the graphical user interface.
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
@@ -272,30 +297,5 @@ namespace NetGore.Graphics
         }
 
         #endregion
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to
-        /// release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposeManaged)
-        {
-            if (!disposeManaged)
-                return;
-
-            if (_sb != null)
-                _sb.Dispose();
-
-            if (_lightManager != null)
-                _lightManager.Dispose();
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
     }
 }

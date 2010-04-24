@@ -57,6 +57,22 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposeManaged)
+        {
+            if (!disposeManaged)
+                return;
+
+            Stop();
+
+            if (_playing != null && !_playing.IsDisposed)
+                _playing.Dispose();
+        }
+
+        /// <summary>
         /// Gets the file path for a music file.
         /// </summary>
         /// <param name="musicInfo">The <see cref="IMusicInfo"/> to get the file path for.</param>
@@ -131,6 +147,14 @@ namespace NetGore.Audio
                 if (_playing != null)
                     _playing.Volume = _volume;
             }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
         }
 
         /// <summary>
@@ -273,29 +297,5 @@ namespace NetGore.Audio
         }
 
         #endregion
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources;
-        /// <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposeManaged)
-        {
-            if (!disposeManaged)
-                return;
-
-            Stop();
-
-            if (_playing != null && !_playing.IsDisposed)
-                _playing.Dispose();
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
     }
 }
