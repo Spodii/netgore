@@ -480,7 +480,7 @@ namespace NetGore.Graphics
                     try
                     {
                         tex = item.ITextureAtlasable.Texture;
-                        if (tex.IsDisposed())
+                        if (tex.IsDisposed)
                             tex = null;
                     }
                     catch (LoadingFailedException)
@@ -588,7 +588,7 @@ namespace NetGore.Graphics
                     node.ITextureAtlasable.RemoveAtlas();
                 }
 
-                if (_atlasTexture != null && !_atlasTexture.IsDisposed())
+                if (_atlasTexture != null && !_atlasTexture.IsDisposed)
                 {
                     try
                     {

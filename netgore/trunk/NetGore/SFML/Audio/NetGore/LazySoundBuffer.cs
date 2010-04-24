@@ -21,6 +21,20 @@ namespace SFML.Graphics
         }
 
         /// <summary>
+        /// Gets if this object has been disposed. For objects that will automatically reload after being disposed (such as content
+        /// loaded through a ContentManager), this will always return true since, even if the object is disposed at the time the
+        /// call is made to the method, it will reload automatically when needed. Such objects are often variations of existing
+        /// objects, prefixed with the word "Lazy" (e.g. Image and LazyImage).
+        /// </summary>
+        public override bool IsDisposed
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Gets the file name that this sound buffer uses to load.
         /// </summary>
         public string FileName

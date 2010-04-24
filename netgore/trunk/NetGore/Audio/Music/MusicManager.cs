@@ -286,7 +286,7 @@ namespace NetGore.Audio
 
             Stop();
 
-            if (_playing != null && !_playing.IsDisposed())
+            if (_playing != null && !_playing.IsDisposed)
                 _playing.Dispose();
         }
 
