@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace CodeReleasePreparer
 {
+    /// <summary>
+    /// Contains some commonly-used paths.
+    /// </summary>
     public static class Paths
     {
         static string _root = null;
@@ -12,13 +15,7 @@ namespace CodeReleasePreparer
         /// </summary>
         public static string Root
         {
-            get
-            {
-                if (_root == null)
-                    _root = Path.GetFullPath(string.Format("..{0}..{0}..{0}", Path.DirectorySeparatorChar));
-
-                return _root;
-            }
+            get { return _root ?? (_root = Path.GetFullPath(string.Format("..{0}..{0}..{0}", Path.DirectorySeparatorChar))); }
         }
     }
 }
