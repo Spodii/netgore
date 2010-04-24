@@ -27,15 +27,7 @@ namespace CodeReleasePreparer
             if (patterns == null)
                 throw new ArgumentNullException("patterns");
 
-            var regexesList = new List<Regex>();
-
-            foreach (var p in patterns)
-            {
-                var r = new Regex(p, _options);
-                regexesList.Add(r);
-            }
-
-            _regexes = regexesList.ToArray();
+            _regexes = patterns.Select(p => new Regex(p, _options)).ToArray();
         }
 
         /// <summary>
