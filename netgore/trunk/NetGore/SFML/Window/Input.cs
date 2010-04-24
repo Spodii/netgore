@@ -109,27 +109,27 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml-window")]
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern float sfInput_GetJoystickAxis(IntPtr This, uint JoyId, JoyAxis Axis);
 
-            [DllImport("csfml-window")]
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern int sfInput_GetMouseX(IntPtr This);
 
-            [DllImport("csfml-window")]
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern int sfInput_GetMouseY(IntPtr This);
 
-            [DllImport("csfml-window")]
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfInput_IsJoystickButtonDown(IntPtr This, uint JoyId, uint Button);
 
-            [DllImport("csfml-window")]
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfInput_IsKeyDown(IntPtr This, KeyCode Key);
 
-            [DllImport("csfml-window")]
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfInput_IsMouseButtonDown(IntPtr This, MouseButton Button);
 

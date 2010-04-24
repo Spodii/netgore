@@ -22,27 +22,27 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfFont_Create();
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfFont_CreateFromFile(string Filename, uint CharSize, IntPtr Charset);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern unsafe IntPtr sfFont_CreateFromMemory(char* Data, uint SizeInBytes, uint CharSize, IntPtr Charset);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfFont_Destroy(IntPtr This);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern uint sfFont_GetCharacterSize(IntPtr This);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfFont_GetDefaultFont();
 
