@@ -170,44 +170,44 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfSoundBuffer_CreateFromFile(string Filename);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern unsafe IntPtr sfSoundBuffer_CreateFromMemory(char* Data, uint SizeInBytes);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern unsafe IntPtr sfSoundBuffer_CreateFromSamples(short* Samples, uint SamplesCount, uint ChannelsCount,
                                                                         uint SampleRate);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfSoundBuffer_Destroy(IntPtr SoundBuffer);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern uint sfSoundBuffer_GetChannelsCount(IntPtr SoundBuffer);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern float sfSoundBuffer_GetDuration(IntPtr SoundBuffer);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern uint sfSoundBuffer_GetSampleRate(IntPtr SoundBuffer);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfSoundBuffer_GetSamples(IntPtr SoundBuffer);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern uint sfSoundBuffer_GetSamplesCount(IntPtr SoundBuffer);
 
-            [DllImport("csfml-audio")]
+            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfSoundBuffer_SaveToFile(IntPtr SoundBuffer, string Filename);
 

@@ -135,55 +135,55 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfView_Create();
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfView_CreateFromRect(FloatRect Rect);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfView_Destroy(IntPtr View);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern float sfView_GetCenterX(IntPtr View);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern float sfView_GetCenterY(IntPtr View);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern float sfView_GetHalfSizeX(IntPtr View);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern float sfView_GetHalfSizeY(IntPtr View);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern FloatRect sfView_GetRect(IntPtr View);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfView_Move(IntPtr View, float OffsetX, float OffsetY);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfView_SetCenter(IntPtr View, float X, float Y);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfView_SetFromRect(IntPtr View, FloatRect ViewRect);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfView_SetHalfSize(IntPtr View, float HalfWidth, float HalfHeight);
 
-            [DllImport("csfml-graphics")]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfView_Zoom(IntPtr View, float Factor);
 
