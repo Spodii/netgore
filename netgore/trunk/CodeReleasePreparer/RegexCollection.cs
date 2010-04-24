@@ -22,17 +22,20 @@ namespace CodeReleasePreparer
         /// Initializes a new instance of the <see cref="RegexCollection"/> class.
         /// </summary>
         /// <param name="patterns">The <see cref="Regex"/> patterns.</param>
-        public RegexCollection(IList<string> patterns)
+        public RegexCollection(IEnumerable<string> patterns)
         {
             if (patterns == null)
                 throw new ArgumentNullException("patterns");
 
-            _regexes = new Regex[patterns.Count];
+            var regexesList = new List<Regex>();
 
-            for (var i = 0; i < patterns.Count; i++)
+            foreach (var p in patterns)
             {
-                _regexes[i] = new Regex(patterns[i], _options);
+                var r = new Regex(p, _options);
+                regexesList.Add(r);
             }
+
+            _regexes = regexesList.ToArray();
         }
 
         /// <summary>
