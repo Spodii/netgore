@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -21,14 +22,14 @@ namespace CodeReleasePreparer
         /// Initializes a new instance of the <see cref="RegexCollection"/> class.
         /// </summary>
         /// <param name="patterns">The <see cref="Regex"/> patterns.</param>
-        public RegexCollection(string[] patterns)
+        public RegexCollection(IList<string> patterns)
         {
             if (patterns == null)
                 throw new ArgumentNullException("patterns");
 
-            _regexes = new Regex[patterns.Length];
+            _regexes = new Regex[patterns.Count];
 
-            for (var i = 0; i < patterns.Length; i++)
+            for (var i = 0; i < patterns.Count; i++)
             {
                 _regexes[i] = new Regex(patterns[i], _options);
             }
