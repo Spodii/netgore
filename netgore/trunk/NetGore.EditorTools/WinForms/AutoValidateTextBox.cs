@@ -29,18 +29,12 @@ namespace NetGore.EditorTools
                 if (_isValid)
                 {
                     if (TrackTextChanged && Text != _originalText)
-                    {
                         BackColor = EditorColors.Changed;
-                    }
                     else
-                    {
                         BackColor = EditorColors.Normal;
-                    }
                 }
                 else
-                {
                     BackColor = EditorColors.Error;
-                }
             }
         }
 

@@ -240,7 +240,7 @@ namespace NetGore.Network
         /// <param name="data">The initial data to send.</param>
         public void Connect(string ip, int port, byte[] data)
         {
-            var hostAddresses =Dns.GetHostAddresses(ip);
+            var hostAddresses = Dns.GetHostAddresses(ip);
             var hostAddr = hostAddresses.FirstOrDefault();
 
             if (hostAddr == null)

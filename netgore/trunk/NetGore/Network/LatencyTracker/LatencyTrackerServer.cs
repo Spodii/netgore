@@ -40,6 +40,20 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
+        /// only unmanaged resources.</param>
+        protected void Dispose(bool disposeManaged)
+        {
+            if (!disposeManaged)
+                return;
+
+            if (_socket != null && !_socket.IsDisposed)
+                _socket.Dispose();
+        }
+
+        /// <summary>
         /// Updates the buffer and parses any received data. It is recommended that this is called every frame.
         /// </summary>
         public void Update()
@@ -74,19 +88,7 @@ namespace NetGore.Network
             }
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
-        /// only unmanaged resources.</param>
-        protected void Dispose(bool disposeManaged)
-        {
-            if (!disposeManaged)
-                return;
-
-            if (_socket != null && !_socket.IsDisposed)
-                _socket.Dispose();
-        }
+        #region IDisposable Members
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -95,5 +97,7 @@ namespace NetGore.Network
         {
             Dispose(true);
         }
+
+        #endregion
     }
 }

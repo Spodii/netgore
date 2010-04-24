@@ -32,7 +32,10 @@ namespace SFML
         /// call is made to the method, it will reload automatically when needed. Such objects are often variations of existing
         /// objects, prefixed with the word "Lazy" (e.g. Image and LazyImage).
         /// </summary>
-        public virtual bool IsDisposed { get { return This != IntPtr.Zero; } }
+        public virtual bool IsDisposed
+        {
+            get { return This != IntPtr.Zero; }
+        }
 
         ////////////////////////////////////////////////////////////
         /// <summary>

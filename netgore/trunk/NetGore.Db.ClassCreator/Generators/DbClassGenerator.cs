@@ -835,7 +835,10 @@ namespace NetGore.Db.ClassCreator
             // Header
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.HasSameValues.Summary, cd.InterfaceName),
                                                   string.Format(Comments.HasSameValues.Returns, cd.InterfaceName),
-                                                  new KeyValuePair<string, string>(_extensionParamName, string.Format(Comments.HasSameValues.SourceParameter, cd.InterfaceName)),
+                                                  new KeyValuePair<string, string>(_extensionParamName,
+                                                                                   string.Format(
+                                                                                       Comments.HasSameValues.SourceParameter,
+                                                                                       cd.InterfaceName)),
                                                   new KeyValuePair<string, string>(otherName,
                                                                                    string.Format(
                                                                                        Comments.HasSameValues.OtherParameter,

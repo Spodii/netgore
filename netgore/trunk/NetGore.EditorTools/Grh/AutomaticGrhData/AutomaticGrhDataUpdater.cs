@@ -225,7 +225,8 @@ namespace NetGore.EditorTools
                 if (lastDirSep < 0)
                 {
                     if (log.IsWarnEnabled)
-                        log.WarnFormat("Animated GrhData found at `{0}`, but could not be created because it has no category.", dir);
+                        log.WarnFormat("Animated GrhData found at `{0}`, but could not be created because it has no category.",
+                                       dir);
                     continue;
                 }
 
@@ -282,7 +283,8 @@ namespace NetGore.EditorTools
                 if (relative.LastIndexOfAny(dirSepChars) < 0)
                 {
                     if (log.IsWarnEnabled)
-                        log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.", texture);
+                        log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.",
+                                       texture);
                     continue;
                 }
 
