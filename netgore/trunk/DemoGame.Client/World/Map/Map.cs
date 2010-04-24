@@ -476,7 +476,7 @@ namespace DemoGame.Client
 
             foreach (var atlas in _mapAtlases)
             {
-                if (atlas != null && !atlas.IsDisposed())
+                if (atlas != null && !atlas.IsDisposed)
                     atlas.Dispose();
             }
 

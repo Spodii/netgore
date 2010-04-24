@@ -166,7 +166,6 @@
     <Compile Include="Core\Extensions\ITypeDescriptorContextExtensions.cs" />
     <Compile Include="Core\Extensions\KeysExtensions.cs" />
     <Compile Include="Core\Extensions\MouseButtonEventArgsExtensions.cs" />
-    <Compile Include="Core\Extensions\ObjectBaseExtensions.cs" />
     <Compile Include="Core\Extensions\RandomExtensions.cs" />
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\Extensions\Vector3Extensions.cs" />

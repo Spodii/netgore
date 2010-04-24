@@ -40,7 +40,7 @@ namespace NetGore.Graphics
         /// <returns>True if the <paramref name="asset"/> is in a valid state to be used; otherwise false.</returns>
         protected static bool IsAssetValid(Image asset)
         {
-            if (asset == null || asset.IsDisposed())
+            if (asset == null || asset.IsDisposed)
                 return false;
 
             return true;
@@ -53,7 +53,7 @@ namespace NetGore.Graphics
         /// <returns>True if the <paramref name="asset"/> is in a valid state to be used; otherwise false.</returns>
         protected static bool IsAssetValid(Font asset)
         {
-            if (asset == null || asset.IsDisposed())
+            if (asset == null || asset.IsDisposed)
                 return false;
 
             return true;

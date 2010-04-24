@@ -218,7 +218,7 @@ namespace NetGore.EditorTools
             var dest = ImageList.ImageSize;
 
             var tex = grhData.Texture;
-            if (tex == null || tex.IsDisposed())
+            if (tex == null || tex.IsDisposed)
             {
                 const string errmsg =
                     "Failed to acquire the texture for StationaryGrhData `{0}`, probably since the texture file no longer exists.";

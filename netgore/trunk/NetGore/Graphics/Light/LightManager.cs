@@ -76,7 +76,7 @@ namespace NetGore.Graphics
             var mustRecreateLightMap = false;
             try
             {
-                if (_lightMap == null || _lightMap.IsDisposed() || _lightMap.Width != _rw.Width || _lightMap.Height != _rw.Height)
+                if (_lightMap == null || _lightMap.IsDisposed || _lightMap.Width != _rw.Width || _lightMap.Height != _rw.Height)
                     mustRecreateLightMap = true;
             }
             catch (InvalidOperationException)
@@ -92,7 +92,7 @@ namespace NetGore.Graphics
                 {
                     try
                     {
-                        if (!_lightMap.IsDisposed())
+                        if (!_lightMap.IsDisposed)
                             _lightMap.Dispose();
                     }
                     catch (InvalidOperationException)
@@ -232,7 +232,7 @@ namespace NetGore.Graphics
             if (renderWindow == null)
                 throw new ArgumentNullException("renderWindow");
 
-            if (_lightMap != null && !_lightMap.IsDisposed())
+            if (_lightMap != null && !_lightMap.IsDisposed)
                 _lightMap.Dispose();
 
             if (_sb != null && !_sb.IsDisposed)
@@ -267,7 +267,7 @@ namespace NetGore.Graphics
             if (!disposeManaged)
                 return;
 
-            if (_lightMap != null && !_lightMap.IsDisposed())
+            if (_lightMap != null && !_lightMap.IsDisposed)
                 _lightMap.Dispose();
         }
 

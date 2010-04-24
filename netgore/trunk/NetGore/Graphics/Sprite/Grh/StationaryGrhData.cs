@@ -119,7 +119,7 @@ namespace NetGore.Graphics
                     _texture = null;
                     ValidateTexture();
 
-                    if (Texture == null || Texture.IsDisposed())
+                    if (Texture == null || Texture.IsDisposed)
                     {
                         const string errmsg = "GrhData `{0}` cannot be automatically sized since the texture is null or disposed!";
                         if (log.IsErrorEnabled)
