@@ -11,8 +11,15 @@ namespace CodeReleasePreparer
     /// </summary>
     public static class SchemaSaver
     {
-        public static void Save()
+        /// <summary>
+        /// Saves the schema to file.
+        /// </summary>
+        /// <param name="path">The file path to save to. If null, the default path will be used.</param>
+        public static void Save(string path = null)
         {
+            if (string.IsNullOrEmpty(path))
+                path = Paths.Root + MySqlHelper.DbSchemaFile;
+
             // Load the database settings
             var dbSettings = new DbConnectionSettings(Paths.Root + MySqlHelper.DbSettingsFile, true);
 
@@ -20,7 +27,7 @@ namespace CodeReleasePreparer
             var schema = new SchemaReader(dbSettings);
 
             // Save
-            schema.Save(Paths.Root + MySqlHelper.DbSchemaFile);
+            schema.Save(path);
         }
     }
 }

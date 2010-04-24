@@ -9,6 +9,9 @@ using InstallationValidator;
 
 namespace CodeReleasePreparer
 {
+    /// <summary>
+    /// The main program.s
+    /// </summary>
     class Program
     {
         /// <summary>
@@ -253,6 +256,11 @@ namespace CodeReleasePreparer
             error = p.StandardError.ReadToEnd();
         }
 
+        /// <summary>
+        /// Runs a batch file.
+        /// </summary>
+        /// <param name="async">If false, this method will stall until the batch file finishes.</param>
+        /// <param name="lines">The batch file lines to execute.</param>
         static void RunBatchFile(bool async, params string[] lines)
         {
             var filePath = Path.GetTempFileName() + ".bat";
@@ -284,6 +292,11 @@ namespace CodeReleasePreparer
                 p.WaitForExit();
         }
 
+        /// <summary>
+        /// Checks if a file will be deleted.
+        /// </summary>
+        /// <param name="fileName">The path to the file to check.</param>
+        /// <returns>True if the file should be deleted; otherwise false.</returns>
         static bool WillDeleteFile(string fileName)
         {
             if (fileName.ToLower().Contains(string.Format("installationvalidator{0}bin", Path.DirectorySeparatorChar)))
@@ -292,6 +305,11 @@ namespace CodeReleasePreparer
             return _fileRegexes.Matches(fileName);
         }
 
+        /// <summary>
+        /// Checks if a folder will be deleted.
+        /// </summary>
+        /// <param name="folderName">The path to the folder to check.</param>
+        /// <returns>True if the folder should be deleted; otherwise false.</returns>
         static bool WillDeleteFolder(string folderName)
         {
             if (folderName.ToLower().Contains(string.Format("installationvalidator{0}bin", Path.DirectorySeparatorChar)))

@@ -9,6 +9,9 @@ namespace CodeReleasePreparer
     /// </summary>
     static class VersionControlCleaner
     {
+        /// <summary>
+        /// Regex of the .csproj file items to delete.
+        /// </summary>
         static readonly RegexCollection _projRegexes =
             new RegexCollection(new string[]
             {
@@ -16,9 +19,17 @@ namespace CodeReleasePreparer
                 @"<SccProvider>.+?</SccProvider>"
             });
 
+        /// <summary>
+        /// Regex of the .sln file items to delete.
+        /// </summary>
         static readonly RegexCollection _slnRegexes =
             new RegexCollection(new string[] { @"GlobalSection\(SubversionScc\).+?EndGlobalSection" });
 
+        /// <summary>
+        /// Replaces text in a file.
+        /// </summary>
+        /// <param name="filePath">The path to the file to replace the text in.</param>
+        /// <param name="regexes">The regexes to use to replace the contents.</param>
         static void DoReplace(string filePath, RegexCollection regexes)
         {
             var txt = File.ReadAllText(filePath, Encoding.UTF8);
