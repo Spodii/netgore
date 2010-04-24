@@ -208,7 +208,11 @@ namespace InstallationValidator
         /// <param name="command">The primary command (command line command). Leave null or empty to use
         /// the default connection string.</param>
         /// <param name="cmds">The additional commands to execute.</param>
-        /// <returns>True if the test was successful; false if the test failed.</returns>
+        /// <param name="retStr">When this method returns false, contains the error string. When this method returns true,
+        /// contains an empty string.</param>
+        /// <returns>
+        /// True if the test was successful; false if the test failed.
+        /// </returns>
         public static bool TestMySqlCommand(string command, string[] cmds, out string retStr)
         {
             // Check for a valid application path
