@@ -18,28 +18,7 @@ namespace NetGore.Graphics.GUI
         const string _controlSkinName = "Form";
 
         FormButton _closeButton;
-
         bool _isCloseButtonVisible = true;
-
-        /// <summary>
-        /// Gets or sets if the Close button on the form is visible. Default is true.
-        /// </summary>
-        [DefaultValue(true)]
-        [SyncValue]
-        public bool IsCloseButtonVisible
-        {
-            get { return _isCloseButtonVisible; }
-            set
-            {
-                if (_isCloseButtonVisible == value)
-                    return;
-
-                _isCloseButtonVisible = value;
-
-                if (_closeButton != null)
-                    _closeButton.IsVisible = _isCloseButtonVisible;
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Form"/> class.
@@ -61,6 +40,25 @@ namespace NetGore.Graphics.GUI
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
         public Form(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
         {
+        }
+
+        /// <summary>
+        /// Gets or sets if the Close button on the form is visible. Default is true.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool IsCloseButtonVisible
+        {
+            get { return _isCloseButtonVisible; }
+            set
+            {
+                if (_isCloseButtonVisible == value)
+                    return;
+
+                _isCloseButtonVisible = value;
+
+                if (_closeButton != null)
+                    _closeButton.IsVisible = _isCloseButtonVisible;
+            }
         }
 
         /// <summary>
