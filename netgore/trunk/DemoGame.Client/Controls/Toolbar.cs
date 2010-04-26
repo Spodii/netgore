@@ -129,6 +129,7 @@ namespace DemoGame.Client
             base.SetDefaultValues();
 
             Text = "Menu";
+            IsCloseButtonVisible = false;
         }
 
         void ToolbarItem_Clicked(object sender, MouseButtonEventArgs e)
