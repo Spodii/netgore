@@ -69,8 +69,9 @@ namespace DemoGame.Client
                 var sprite = GetItemSprite(index);
 
                 var item = new ToolbarItem(this, (ToolbarItemType)index, pos, sprite);
-                items[index] = item;
                 item.Clicked += ToolbarItem_Clicked;
+
+                items[index] = item;
             }
 
             return items;
@@ -107,10 +108,11 @@ namespace DemoGame.Client
         {
             base.LoadSkin(skinManager);
 
-            // Re-load the toolbar icons
+            // Don't reload the toolbar icons if the toolbar items have not been made yet
             if (_items == null)
                 return;
 
+            // Re-load the toolbar icons
             for (var i = 0; i < _items.Length; i++)
             {
                 if (_items[i] == null)
@@ -132,6 +134,11 @@ namespace DemoGame.Client
             IsCloseButtonVisible = false;
         }
 
+        /// <summary>
+        /// Handles when a <see cref="ToolbarItem"/> in this <see cref="Toolbar"/> is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void ToolbarItem_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (ItemClicked == null)
@@ -141,20 +148,46 @@ namespace DemoGame.Client
             ItemClicked(this, item.ToolbarItemType, item);
         }
 
+        /// <summary>
+        /// A <see cref="Control"/> for a single item in a <see cref="Toolbar"/>.
+        /// </summary>
         class ToolbarItem : PictureBox
         {
             readonly ToolbarItemType _type;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ToolbarItem"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="type">The type.</param>
+            /// <param name="pos">The position.</param>
+            /// <param name="sprite">The sprite.</param>
             public ToolbarItem(Control parent, ToolbarItemType type, Vector2 pos, ISprite sprite)
                 : base(parent, pos, new Vector2(_itemSize))
             {
                 Sprite = sprite;
                 _type = type;
+
+                Tooltip = TooltipHandler;
             }
 
+            /// <summary>
+            /// Gets the <see cref="ToolbarItemType"/> for this item.
+            /// </summary>
             public ToolbarItemType ToolbarItemType
             {
                 get { return _type; }
+            }
+
+            /// <summary>
+            /// Gets the default tooltip handler for a <see cref="ToolbarItem"/>.
+            /// </summary>
+            /// <param name="sender">The sender.</param>
+            /// <param name="args">The args.</param>
+            /// <returns>The tooltip text.</returns>
+            StyledText[] TooltipHandler(Control sender, TooltipArgs args)
+            {
+                return new StyledText[] { new StyledText(ToolbarItemType.ToString()) };
             }
         }
     }
