@@ -631,7 +631,7 @@
             this.lstLog.FormattingEnabled = true;
             this.lstLog.Location = new System.Drawing.Point(0, 0);
             this.lstLog.Name = "lstLog";
-            this.lstLog.Size = new System.Drawing.Size(536, 238);
+            this.lstLog.Size = new System.Drawing.Size(536, 240);
             this.lstLog.TabIndex = 0;
             this.lstLog.SelectedIndexChanged += new System.EventHandler(this.lbLog_SelectedIndexChanged);
             this.lstLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbLog_KeyDown);

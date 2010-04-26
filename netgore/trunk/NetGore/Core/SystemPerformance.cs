@@ -11,19 +11,22 @@ namespace NetGore
     /// </summary>
     public static class SystemPerformance
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
-        /// System CPU information.
+        /// Provides information about the system's CPU usage and availability.
         /// </summary>
         public static class CPU
         {
+            static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
             /// <summary>
             /// The maximum number of times the <see cref="PerformanceCounter"/> can fail before it stops
             /// attempting to be used.
             /// </summary>
             const int _maxFailures = 10;
 
+            /// <summary>
+            /// The CPU <see cref="PerformanceCounter"/>.
+            /// </summary>
             static PerformanceCounter _cpu;
 
             /// <summary>
@@ -46,6 +49,7 @@ namespace NetGore
                 {
                     const string errmsg =
                         "Could not create PerformanceCounter for the Processor usage since this system does not support it. Exception: {0}";
+
                     if (log.IsWarnEnabled)
                         log.WarnFormat(errmsg, ex);
                 }
@@ -54,7 +58,6 @@ namespace NetGore
                     const string errmsg = "Could not create PerformanceCounter for the Processor usage. Exception: {0}";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, ex);
-                    Debug.Fail(string.Format(errmsg, ex));
                 }
             }
 
@@ -74,34 +77,41 @@ namespace NetGore
                         {
                             return _cpu.NextValue();
                         }
-                        catch (InvalidOperationException ex)
-                        {
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, ex);
-
-                            _cpu = null;
-                        }
-                        catch (UnauthorizedAccessException ex)
-                        {
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, ex);
-
-                            _cpu = null;
-                        }
-                        catch (PlatformNotSupportedException ex)
-                        {
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, ex);
-
-                            _cpu = null;
-                        }
                         catch (Exception ex)
                         {
+                            var willDispose = false;
+
                             if (log.IsErrorEnabled)
                                 log.ErrorFormat(errmsg, ex);
 
-                            if (++_numFailures >= _maxFailures)
+                            // For some exceptions, we will fail immediately instead of retrying
+                            if (ex is PlatformNotSupportedException || ex is UnauthorizedAccessException ||
+                                ex is InvalidOperationException)
+                                willDispose = true;
+                            else
+                            {
+                                // For general exceptions, we will retry a few times before disposing
+                                if (++_numFailures >= _maxFailures)
+                                    willDispose = true;
+                            }
+
+                            // Dispose if needed
+                            if (willDispose)
+                            {
+                                try
+                                {
+                                    _cpu.Dispose();
+                                }
+                                catch (Exception exDispose)
+                                {
+                                    const string errmsgDispose = "Failed to dispose PerformanceCounter `{0}`: {1}";
+                                    if (log.IsErrorEnabled)
+                                        log.ErrorFormat(errmsgDispose, _cpu, exDispose);
+                                    Debug.Fail(string.Format(errmsgDispose, _cpu, exDispose));
+                                }
+
                                 _cpu = null;
+                            }
                         }
                     }
 
@@ -111,10 +121,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// System memory information.
+        /// Provides information about the system's memory usage and availability.
         /// </summary>
         public static class Memory
         {
+            static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
             /// <summary>
             /// The maximum number of times the <see cref="PerformanceCounter"/> can fail before it stops
             /// attempting to be used.
@@ -124,9 +136,12 @@ namespace NetGore
             /// <summary>
             /// The current process.
             /// </summary>
-            static Process _currentProcess = Process.GetCurrentProcess();
+            static Process _currentProcess;
 
-            static PerformanceCounter _memory = new PerformanceCounter("Memory", "Available MBytes");
+            /// <summary>
+            /// The memory usage <see cref="PerformanceCounter"/>.
+            /// </summary>
+            static PerformanceCounter _memory;
 
             /// <summary>
             /// The current count on the number of times acquiring the <see cref="PerformanceCounter"/>'s
@@ -135,80 +150,129 @@ namespace NetGore
             static int _numFailures = 0;
 
             /// <summary>
-            /// Gets the amount of system memory available in megabytes.
+            /// Initializes the <see cref="Memory"/> class.
+            /// </summary>
+            static Memory()
+            {
+                // Create the memory PerformanceCounter
+                try
+                {
+                    _memory = new PerformanceCounter("Memory", "Available MBytes");
+                }
+                catch (PlatformNotSupportedException ex)
+                {
+                    const string errmsg =
+                        "Could not create PerformanceCounter for the Memory usage since this system does not support it. Exception: {0}";
+
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to create Memory performance counter: {0}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+
+                    _memory = null;
+                }
+
+                // Get the current process
+                try
+                {
+                    _currentProcess = Process.GetCurrentProcess();
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to get the current process: {0}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+                    Debug.Fail(string.Format(errmsg, ex));
+
+                    _currentProcess = null;
+                }
+            }
+
+            /// <summary>
+            /// Gets the amount of system memory available in megabytes, or -1 if the value could not be acquired.
             /// </summary>
             public static int AvailableMB
             {
                 get
                 {
-                    if (_memory != null)
+                    if (_memory == null)
+                        return -1;
+
+                    const string errmsg = "Failed to acquire memory usage. Exception: {0}";
+
+                    try
                     {
-                        const string errmsg = "Failed to acquire memory usage. Exception: {0}";
+                        return (int)_memory.NextValue();
+                    }
+                    catch (Exception ex)
+                    {
+                        var willDispose = false;
 
-                        try
-                        {
-                            return (int)_memory.NextValue();
-                        }
-                        catch (InvalidOperationException ex)
-                        {
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, ex);
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, ex);
 
-                            _memory = null;
-                        }
-                        catch (UnauthorizedAccessException ex)
+                        // For some exceptions, we will fail immediately instead of retrying
+                        if (ex is PlatformNotSupportedException || ex is UnauthorizedAccessException ||
+                            ex is InvalidOperationException)
+                            willDispose = true;
+                        else
                         {
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, ex);
-
-                            _memory = null;
-                        }
-                        catch (PlatformNotSupportedException ex)
-                        {
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, ex);
-
-                            _memory = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, ex);
-
+                            // For general exceptions, we will retry a few times before disposing
                             if (++_numFailures >= _maxFailures)
-                                _memory = null;
+                                willDispose = true;
+                        }
+
+                        // Dispose if needed
+                        if (willDispose)
+                        {
+                            try
+                            {
+                                _memory.Dispose();
+                            }
+                            catch (Exception exDispose)
+                            {
+                                const string errmsgDispose = "Failed to dispose PerformanceCounter `{0}`: {1}";
+                                if (log.IsErrorEnabled)
+                                    log.ErrorFormat(errmsgDispose, _memory, exDispose);
+                                Debug.Fail(string.Format(errmsgDispose, _memory, exDispose));
+                            }
+
+                            _memory = null;
                         }
                     }
 
-                    return 0;
+                    return -1;
                 }
             }
 
             /// <summary>
-            /// Gets the amount of system memory in use by this process in bytes.
+            /// Gets the amount of system memory in use by this process in bytes, or -1 if the value could not be acquired.
             /// </summary>
             public static long ProcessUsageBytes
             {
                 get
                 {
-                    if (_currentProcess != null)
-                    {
-                        try
-                        {
-                            return _currentProcess.PrivateMemorySize64;
-                        }
-                        catch (Exception ex)
-                        {
-                            const string errmsg =
-                                "Failed to acquire the private memory size of the current process. Exception: {0}";
-                            if (log.IsErrorEnabled)
-                                log.ErrorFormat(errmsg, ex);
+                    if (_currentProcess == null)
+                        return -1;
 
-                            _currentProcess = null;
-                        }
+                    try
+                    {
+                        return _currentProcess.PrivateMemorySize64;
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to acquire the private memory size of the current process. Exception: {0}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, ex);
+
+                        _currentProcess = null;
                     }
 
-                    return 0;
+                    return -1;
                 }
             }
 
@@ -217,21 +281,7 @@ namespace NetGore
             /// </summary>
             public static int ProcessUsageMB
             {
-                get
-                {
-                    var pu = ProcessUsageBytes;
-                    if (pu == 0)
-                        return 0;
-
-                    try
-                    {
-                        return (int)(ProcessUsageBytes / 1024f / 1024f);
-                    }
-                    catch (DivideByZeroException)
-                    {
-                        return 0;
-                    }
-                }
+                get { return (int)(ProcessUsageBytes / (1024f * 1024f)); }
             }
         }
     }
