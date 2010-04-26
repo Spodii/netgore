@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -105,6 +106,8 @@ namespace NetGore.IO
         /// </summary>
         static volatile uint _freeFileIndex;
 
+        static bool _isDevPathLoaded = false;
+
         readonly PathString _data;
         readonly PathString _engine;
         readonly PathString _fonts;
@@ -180,25 +183,21 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets the <see cref="ContentPaths"/> for the Development content.
+        /// Gets the <see cref="ContentPaths"/> for the Development content. Will return null if the path cannot be found.
         /// </summary>
-        /// <exception cref="DirectoryNotFoundException">The <see cref="ContentPaths"/> for the Development
-        /// content could not be found.</exception>
         public static ContentPaths Dev
         {
             get
             {
-                if (_devPaths == null)
+                if (!_isDevPathLoaded)
                 {
+                    _isDevPathLoaded = true;
                     var devPath = GetDevContentPath();
-                    if (devPath == null)
-                    {
-                        throw new DirectoryNotFoundException(
-                            @"Could not find the directory to the development content path (ContentPaths.Dev)." +
-                            @" Please make sure that the path to this directory is defined in the \Content\Data\devpath.txt file in the build directory.");
-                    }
 
-                    _devPaths = new ContentPaths(devPath);
+                    if (string.IsNullOrEmpty(devPath))
+                        _devPaths = null;
+                    else
+                        _devPaths = new ContentPaths(devPath);
                 }
 
                 return _devPaths;
@@ -477,6 +476,69 @@ namespace NetGore.IO
             }
 
             return filePath;
+        }
+
+        /// <summary>
+        /// Runs the CopyContent program to copy content from the development directory to the build directory.
+        /// </summary>
+        /// <param name="dev">The path to the development directory. If null, <see cref="ContentPaths.Dev"/> will be used.</param>
+        /// <param name="build">The path to the build directory. If null, <see cref="ContentPaths.Build"/> will be used.</param>
+        /// <param name="copyContentFile">The path to the CopyContent.exe program file. If null, the file will be searched
+        /// for in the <paramref name="dev"/> path.</param>
+        /// <returns>True if the process was successfully run; otherwise false.</returns>
+        public static bool TryCopyContent(ContentPaths dev = null, ContentPaths build = null, string copyContentFile = null)
+        {
+            // Use the default dev/build paths if not defined
+            if (dev == null)
+                dev = Dev;
+
+            if (build == null)
+                build = Build;
+
+            if (dev == null || build == null)
+            {
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat("Failed to run CopyContent: Could not acquire the dev ContentPath.");
+                return false;
+            }
+
+            // Get the CopyContent binary file path
+            if (string.IsNullOrEmpty(copyContentFile))
+                copyContentFile = dev.Root.Join("CopyContent.exe");
+
+            // Ensure the file exists
+            if (!File.Exists(copyContentFile))
+            {
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat("Failed to run CopyContent: Could not find the CopyContent program at `{0}`", copyContentFile);
+                return false;
+            }
+
+            // Try to run the program
+            ProcessStartInfo pi = new ProcessStartInfo(copyContentFile, string.Format("\"{0}\" \"{1}\"", dev.Root, build.Root))
+            { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden};
+
+            try
+            {
+                var proc = Process.Start(pi);
+                if (proc == null)
+                {
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat("Failed to run CopyContent process: Process.Start returned null.");
+                    return false;
+                }
+
+                proc.WaitForExit(30000);
+            }
+            catch (Exception ex)
+            {
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat("Failed to run CopyContent process: {0}", ex);
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

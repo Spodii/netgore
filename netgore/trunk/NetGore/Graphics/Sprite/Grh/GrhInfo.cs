@@ -555,8 +555,8 @@ namespace NetGore.Graphics
                 "in which case you can ignore it.";
 
             // Create our "read key failed" handler for when a node for a GrhData is invalid
-            var failedLoads = new List<int>();
-            Action<int, Exception> grhLoadFailHandler = (i, ex) => failedLoads.Add(i);
+            var failedLoads = new List<KeyValuePair<int, Exception>>();
+            Action<int, Exception> grhLoadFailHandler = (i, ex) => failedLoads.Add(new KeyValuePair<int, Exception>(i, ex));
 
             // Load the GrhDatas
             var loadedGrhDatas = reader.ReadManyNodes(nodeName, loader, grhLoadFailHandler);
@@ -585,8 +585,8 @@ namespace NetGore.Graphics
             if (failedLoads.Count > 0)
             {
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsgFailedLoads, Environment.NewLine, failedLoads.Implode(), typeof(T).Name);
-                Debug.Fail(string.Format(errmsgFailedLoads, Environment.NewLine, failedLoads.Implode(), typeof(T).Name));
+                    log.ErrorFormat(errmsgFailedLoads, Environment.NewLine, failedLoads.Select(x => x.Key).Implode(), typeof(T).Name);
+                Debug.Fail(string.Format(errmsgFailedLoads, Environment.NewLine, failedLoads.Select(x => x.Key).Implode(), typeof(T).Name));
                 failedLoads.Clear();
             }
         }

@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
 using NetGore;
 using NetGore.EditorTools;
+using NetGore.IO;
 
 namespace DemoGame.MapEditor
 {
@@ -27,6 +29,17 @@ namespace DemoGame.MapEditor
             EngineSettingsInitializer.Initialize();
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
 
+            // Ensure the content is copied over
+            if (!ContentPaths.TryCopyContent())
+            {
+                const string errmsg = "Failed to copy the content from the dev to build path." +
+                    " Content in the build path will likely not update to reflect changes made in the content in the dev path.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg);
+                Debug.Fail(errmsg);
+            }
+
+            // Run the program
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new ScreenForm(switches));
