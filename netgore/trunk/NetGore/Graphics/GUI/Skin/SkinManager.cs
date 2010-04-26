@@ -284,7 +284,9 @@ namespace NetGore.Graphics.GUI
             var key = string.Empty;
             if (subCategory != null && subCategory.ToString().Length > 0)
                 key += subCategory;
-            key += spriteTitle;
+
+            if (spriteTitle != null)
+                key += "." + spriteTitle;
 
             // Check for the sprite in the cache
             ISprite sprite;
@@ -292,12 +294,16 @@ namespace NetGore.Graphics.GUI
                 return sprite;
 
             // Check for the sprite in the current skin
-            var grhData = GrhInfo.GetData(GetSpriteCategory(CurrentSkin, subCategory), spriteTitle);
+            var fullSC = GetSpriteCategory(CurrentSkin, subCategory);
+            var grhData = GrhInfo.GetData(fullSC, spriteTitle);
 
             // The sprite was not found in the current category, so check the default category only if the current category
             // is not the default category
             if (grhData == null && !IsCurrentSkinDefault)
-                grhData = GrhInfo.GetData(GetSpriteCategory(DefaultSkin, subCategory), spriteTitle);
+            {
+                fullSC =GetSpriteCategory(DefaultSkin, subCategory);
+                grhData = GrhInfo.GetData(fullSC, spriteTitle);
+            }
 
             // If the grhData is not null, create the sprite, otherwise have the sprite be null
             if (grhData == null)

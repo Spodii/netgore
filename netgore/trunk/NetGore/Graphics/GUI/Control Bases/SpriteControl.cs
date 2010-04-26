@@ -11,6 +11,7 @@ namespace NetGore.Graphics.GUI
     {
         static readonly object _eventSpriteChanged = new object();
         static readonly object _eventStretchSpriteChanged = new object();
+
         ISprite _sprite;
         bool _stretch = true;
 
