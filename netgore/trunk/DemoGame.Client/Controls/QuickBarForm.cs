@@ -55,6 +55,7 @@ namespace DemoGame.Client
         {
             base.SetDefaultValues();
 
+            Text = "Quickbar";
             IsCloseButtonVisible = false;
         }
 
