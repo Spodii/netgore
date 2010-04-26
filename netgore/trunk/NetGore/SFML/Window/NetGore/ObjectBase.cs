@@ -34,7 +34,7 @@ namespace SFML
         /// </summary>
         public virtual bool IsDisposed
         {
-            get { return This != IntPtr.Zero; }
+            get { return This == IntPtr.Zero; }
         }
 
         ////////////////////////////////////////////////////////////
