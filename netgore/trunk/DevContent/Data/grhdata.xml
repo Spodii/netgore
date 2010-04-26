@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>192</Count>
+    <Count>193</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -804,15 +804,24 @@
       </Texture>
     </Item88>
     <Item89>
-      <Index>62</Index>
-      <Categorization>GUI.Default.Controls.Form.Buttons.CloseHover</Categorization>
+      <Index>63</Index>
+      <Categorization>GUI.Default.Controls.Form.Buttons.CloseMouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>Grh/GUI/Default/Controls/Form/Buttons/CloseHover</Name>
+        <Name>Grh/GUI/Default/Controls/Form/Buttons/CloseMouseOver</Name>
         <Source>0,0,9,9</Source>
       </Texture>
     </Item89>
     <Item90>
+      <Index>64</Index>
+      <Categorization>GUI.Default.Controls.Form.Buttons.ClosePressed</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/GUI/Default/Controls/Form/Buttons/ClosePressed</Name>
+        <Source>0,0,9,9</Source>
+      </Texture>
+    </Item90>
+    <Item91>
       <Index>20</Index>
       <Categorization>GUI.Default.Controls.Form.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -820,8 +829,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Left</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item90>
-    <Item91>
+    </Item91>
+    <Item92>
       <Index>21</Index>
       <Categorization>GUI.Default.Controls.Form.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -829,8 +838,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Right</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item91>
-    <Item92>
+    </Item92>
+    <Item93>
       <Index>22</Index>
       <Categorization>GUI.Default.Controls.Form.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -838,8 +847,8 @@
         <Name>Grh/GUI/Default/Controls/Form/Top</Name>
         <Source>0,0,6,22</Source>
       </Texture>
-    </Item92>
-    <Item93>
+    </Item93>
+    <Item94>
       <Index>23</Index>
       <Categorization>GUI.Default.Controls.Form.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -847,8 +856,8 @@
         <Name>Grh/GUI/Default/Controls/Form/TopLeft</Name>
         <Source>0,0,6,22</Source>
       </Texture>
-    </Item93>
-    <Item94>
+    </Item94>
+    <Item95>
       <Index>24</Index>
       <Categorization>GUI.Default.Controls.Form.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -856,8 +865,8 @@
         <Name>Grh/GUI/Default/Controls/Form/TopRight</Name>
         <Source>0,0,6,22</Source>
       </Texture>
-    </Item94>
-    <Item95>
+    </Item95>
+    <Item96>
       <Index>153</Index>
       <Categorization>GUI.Default.Controls.ListBox.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -865,8 +874,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Background</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item95>
-    <Item96>
+    </Item96>
+    <Item97>
       <Index>154</Index>
       <Categorization>GUI.Default.Controls.ListBox.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -874,8 +883,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Bottom</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item96>
-    <Item97>
+    </Item97>
+    <Item98>
       <Index>155</Index>
       <Categorization>GUI.Default.Controls.ListBox.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -883,8 +892,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item97>
-    <Item98>
+    </Item98>
+    <Item99>
       <Index>156</Index>
       <Categorization>GUI.Default.Controls.ListBox.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -892,8 +901,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item98>
-    <Item99>
+    </Item99>
+    <Item100>
       <Index>157</Index>
       <Categorization>GUI.Default.Controls.ListBox.Center</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -901,8 +910,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Center</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item99>
-    <Item100>
+    </Item100>
+    <Item101>
       <Index>162</Index>
       <Categorization>GUI.Default.Controls.ListBox.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -910,8 +919,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Left</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item100>
-    <Item101>
+    </Item101>
+    <Item102>
       <Index>163</Index>
       <Categorization>GUI.Default.Controls.ListBox.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -919,8 +928,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Right</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item101>
-    <Item102>
+    </Item102>
+    <Item103>
       <Index>168</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.First</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -928,8 +937,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/First</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item102>
-    <Item103>
+    </Item103>
+    <Item104>
       <Index>172</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.First_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -937,8 +946,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/First_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item103>
-    <Item104>
+    </Item104>
+    <Item105>
       <Index>169</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Last</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -946,8 +955,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Last</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item104>
-    <Item105>
+    </Item105>
+    <Item106>
       <Index>173</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Last_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -955,8 +964,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Last_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item105>
-    <Item106>
+    </Item106>
+    <Item107>
       <Index>170</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Next</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -964,8 +973,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Next</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item106>
-    <Item107>
+    </Item107>
+    <Item108>
       <Index>174</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Next_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -973,8 +982,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Next_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item107>
-    <Item108>
+    </Item108>
+    <Item109>
       <Index>171</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Previous</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -982,8 +991,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Previous</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item108>
-    <Item109>
+    </Item109>
+    <Item110>
       <Index>175</Index>
       <Categorization>GUI.Default.Controls.ListBox.Toolbar.Previous_MouseOver</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -991,8 +1000,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Toolbar/Previous_MouseOver</Name>
         <Source>0,0,9,7</Source>
       </Texture>
-    </Item109>
-    <Item110>
+    </Item110>
+    <Item111>
       <Index>164</Index>
       <Categorization>GUI.Default.Controls.ListBox.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1000,8 +1009,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/Top</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item110>
-    <Item111>
+    </Item111>
+    <Item112>
       <Index>165</Index>
       <Categorization>GUI.Default.Controls.ListBox.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1009,8 +1018,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item111>
-    <Item112>
+    </Item112>
+    <Item113>
       <Index>166</Index>
       <Categorization>GUI.Default.Controls.ListBox.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1018,8 +1027,8 @@
         <Name>Grh/GUI/Default/Controls/ListBox/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item112>
-    <Item113>
+    </Item113>
+    <Item114>
       <Index>126</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1027,8 +1036,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Background</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item113>
-    <Item114>
+    </Item114>
+    <Item115>
       <Index>127</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1036,8 +1045,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Bottom</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item114>
-    <Item115>
+    </Item115>
+    <Item116>
       <Index>128</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1045,8 +1054,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomLeft</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item115>
-    <Item116>
+    </Item116>
+    <Item117>
       <Index>129</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1054,8 +1063,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomRight</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item116>
-    <Item117>
+    </Item117>
+    <Item118>
       <Index>130</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1063,8 +1072,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Left</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item117>
-    <Item118>
+    </Item118>
+    <Item119>
       <Index>131</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1072,8 +1081,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Right</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item118>
-    <Item119>
+    </Item119>
+    <Item120>
       <Index>132</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1081,8 +1090,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Top</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item119>
-    <Item120>
+    </Item120>
+    <Item121>
       <Index>218</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1090,8 +1099,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopLeft</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item120>
-    <Item121>
+    </Item121>
+    <Item122>
       <Index>219</Index>
       <Categorization>GUI.Default.Controls.SkillCastProgressBar.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1099,8 +1108,8 @@
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopRight</Name>
         <Source>0,0,6,6</Source>
       </Texture>
-    </Item121>
-    <Item122>
+    </Item122>
+    <Item123>
       <Index>59</Index>
       <Categorization>GUI.Default.Controls.TextBox.Background</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1108,8 +1117,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Background</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item122>
-    <Item123>
+    </Item123>
+    <Item124>
       <Index>8</Index>
       <Categorization>GUI.Default.Controls.TextBox.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1117,8 +1126,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Bottom</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item123>
-    <Item124>
+    </Item124>
+    <Item125>
       <Index>9</Index>
       <Categorization>GUI.Default.Controls.TextBox.BottomLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1126,8 +1135,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/BottomLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item124>
-    <Item125>
+    </Item125>
+    <Item126>
       <Index>10</Index>
       <Categorization>GUI.Default.Controls.TextBox.BottomRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1135,8 +1144,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/BottomRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item125>
-    <Item126>
+    </Item126>
+    <Item127>
       <Index>54</Index>
       <Categorization>GUI.Default.Controls.TextBox.Center</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1144,8 +1153,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Center</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item126>
-    <Item127>
+    </Item127>
+    <Item128>
       <Index>11</Index>
       <Categorization>GUI.Default.Controls.TextBox.Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1153,8 +1162,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Left</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item127>
-    <Item128>
+    </Item128>
+    <Item129>
       <Index>12</Index>
       <Categorization>GUI.Default.Controls.TextBox.Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1162,8 +1171,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Right</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item128>
-    <Item129>
+    </Item129>
+    <Item130>
       <Index>13</Index>
       <Categorization>GUI.Default.Controls.TextBox.Top</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1171,8 +1180,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/Top</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item129>
-    <Item130>
+    </Item130>
+    <Item131>
       <Index>14</Index>
       <Categorization>GUI.Default.Controls.TextBox.TopLeft</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1180,8 +1189,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/TopLeft</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item130>
-    <Item131>
+    </Item131>
+    <Item132>
       <Index>15</Index>
       <Categorization>GUI.Default.Controls.TextBox.TopRight</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1189,8 +1198,8 @@
         <Name>Grh/GUI/Default/Controls/TextBox/TopRight</Name>
         <Source>0,0,4,4</Source>
       </Texture>
-    </Item131>
-    <Item132>
+    </Item132>
+    <Item133>
       <Index>136</Index>
       <Categorization>GUI.Default.item_slot</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1198,8 +1207,8 @@
         <Name>Grh/GUI/Default/item_slot</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item132>
-    <Item133>
+    </Item133>
+    <Item134>
       <Index>143</Index>
       <Categorization>GUI.Default.status icon border</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1207,8 +1216,8 @@
         <Name>Grh/GUI/Default/status icon border</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item133>
-    <Item134>
+    </Item134>
+    <Item135>
       <Index>133</Index>
       <Categorization>GUI.Default.Toolbar.Equipped</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1216,8 +1225,8 @@
         <Name>Grh/GUI/Default/Toolbar/Equipped</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item134>
-    <Item135>
+    </Item135>
+    <Item136>
       <Index>167</Index>
       <Categorization>GUI.Default.Toolbar.Guild</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1225,8 +1234,8 @@
         <Name>Grh/GUI/Default/Toolbar/Guild</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item135>
-    <Item136>
+    </Item136>
+    <Item137>
       <Index>134</Index>
       <Categorization>GUI.Default.Toolbar.Inventory</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1234,8 +1243,8 @@
         <Name>Grh/GUI/Default/Toolbar/Inventory</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item136>
-    <Item137>
+    </Item137>
+    <Item138>
       <Index>135</Index>
       <Categorization>GUI.Default.Toolbar.Skills</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1243,8 +1252,8 @@
         <Name>Grh/GUI/Default/Toolbar/Skills</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item137>
-    <Item138>
+    </Item138>
+    <Item139>
       <Index>144</Index>
       <Categorization>GUI.Default.Toolbar.Stats</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1252,8 +1261,8 @@
         <Name>Grh/GUI/Default/Toolbar/Stats</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item138>
-    <Item139>
+    </Item139>
+    <Item140>
       <Index>100</Index>
       <Categorization>Item.Back.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1261,8 +1270,8 @@
         <Name>Grh/Item/Back/crystal</Name>
         <Source>0,0,15,25</Source>
       </Texture>
-    </Item139>
-    <Item140>
+    </Item140>
+    <Item141>
       <Index>99</Index>
       <Categorization>Item.Body.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1270,8 +1279,8 @@
         <Name>Grh/Item/Body/crystal</Name>
         <Source>0,0,22,22</Source>
       </Texture>
-    </Item140>
-    <Item141>
+    </Item141>
+    <Item142>
       <Index>98</Index>
       <Categorization>Item.Feet.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1279,8 +1288,8 @@
         <Name>Grh/Item/Feet/crystal</Name>
         <Source>0,0,15,14</Source>
       </Texture>
-    </Item141>
-    <Item142>
+    </Item142>
+    <Item143>
       <Index>97</Index>
       <Categorization>Item.Head.crystal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1288,8 +1297,8 @@
         <Name>Grh/Item/Head/crystal</Name>
         <Source>0,0,11,16</Source>
       </Texture>
-    </Item142>
-    <Item143>
+    </Item143>
+    <Item144>
       <Index>96</Index>
       <Categorization>Item.Melee.titaniumsword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1297,8 +1306,8 @@
         <Name>Grh/Item/Melee/titaniumsword</Name>
         <Source>0,0,24,24</Source>
       </Texture>
-    </Item143>
-    <Item144>
+    </Item144>
+    <Item145>
       <Index>151</Index>
       <Categorization>Item.Misc.boombox</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1306,8 +1315,8 @@
         <Name>Grh/Item/Misc/boombox</Name>
         <Source>0,0,70,37</Source>
       </Texture>
-    </Item144>
-    <Item145>
+    </Item145>
+    <Item146>
       <Index>94</Index>
       <Categorization>Item.Potion.blue</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1315,8 +1324,8 @@
         <Name>Grh/Item/Potion/blue</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item145>
-    <Item146>
+    </Item146>
+    <Item147>
       <Index>95</Index>
       <Categorization>Item.Potion.red</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1324,8 +1333,8 @@
         <Name>Grh/Item/Potion/red</Name>
         <Source>0,0,9,16</Source>
       </Texture>
-    </Item146>
-    <Item147>
+    </Item147>
+    <Item148>
       <Index>177</Index>
       <Categorization>Item.Ranged.pistol</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1333,8 +1342,8 @@
         <Name>Grh/Item/Ranged/pistol</Name>
         <Source>0,0,15,18</Source>
       </Texture>
-    </Item147>
-    <Item148>
+    </Item148>
+    <Item149>
       <Index>182</Index>
       <Categorization>Item.Ranged.rock</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1342,8 +1351,8 @@
         <Name>Grh/Item/Ranged/rock</Name>
         <Source>0,0,11,9</Source>
       </Texture>
-    </Item148>
-    <Item149>
+    </Item149>
+    <Item150>
       <Index>114</Index>
       <Categorization>Map.Desert.doorway</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1351,8 +1360,8 @@
         <Name>Grh/Map/Desert/doorway</Name>
         <Source>0,0,101,99</Source>
       </Texture>
-    </Item149>
-    <Item150>
+    </Item150>
+    <Item151>
       <Index>115</Index>
       <Categorization>Map.Desert.hill 1</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1360,8 +1369,8 @@
         <Name>Grh/Map/Desert/hill 1</Name>
         <Source>0,0,97,64</Source>
       </Texture>
-    </Item150>
-    <Item151>
+    </Item151>
+    <Item152>
       <Index>116</Index>
       <Categorization>Map.Desert.hill 2</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1369,8 +1378,8 @@
         <Name>Grh/Map/Desert/hill 2</Name>
         <Source>0,0,69,43</Source>
       </Texture>
-    </Item151>
-    <Item152>
+    </Item152>
+    <Item153>
       <Index>117</Index>
       <Categorization>Map.Desert.Platforms.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1378,8 +1387,8 @@
         <Name>Grh/Map/Desert/Platforms/01</Name>
         <Source>0,0,93,47</Source>
       </Texture>
-    </Item152>
-    <Item153>
+    </Item153>
+    <Item154>
       <Index>118</Index>
       <Categorization>Map.Desert.Shrubbery.blue flower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1387,8 +1396,8 @@
         <Name>Grh/Map/Desert/Shrubbery/blue flower</Name>
         <Source>0,0,23,34</Source>
       </Texture>
-    </Item153>
-    <Item154>
+    </Item154>
+    <Item155>
       <Index>119</Index>
       <Categorization>Map.Desert.Shrubbery.cactus</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1396,8 +1405,8 @@
         <Name>Grh/Map/Desert/Shrubbery/cactus</Name>
         <Source>0,0,40,65</Source>
       </Texture>
-    </Item154>
-    <Item155>
+    </Item155>
+    <Item156>
       <Index>120</Index>
       <Categorization>Map.Desert.Shrubbery.red flower</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1405,8 +1414,8 @@
         <Name>Grh/Map/Desert/Shrubbery/red flower</Name>
         <Source>0,0,23,34</Source>
       </Texture>
-    </Item155>
-    <Item156>
+    </Item156>
+    <Item157>
       <Index>121</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1414,8 +1423,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 01</Name>
         <Source>0,0,24,23</Source>
       </Texture>
-    </Item156>
-    <Item157>
+    </Item157>
+    <Item158>
       <Index>122</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 02</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1423,8 +1432,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 02</Name>
         <Source>0,0,22,27</Source>
       </Texture>
-    </Item157>
-    <Item158>
+    </Item158>
+    <Item159>
       <Index>123</Index>
       <Categorization>Map.Desert.Shrubbery.shrub 03</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1432,8 +1441,8 @@
         <Name>Grh/Map/Desert/Shrubbery/shrub 03</Name>
         <Source>0,0,13,16</Source>
       </Texture>
-    </Item158>
-    <Item159>
+    </Item159>
+    <Item160>
       <Index>124</Index>
       <Categorization>Map.Desert.Shrubbery.tree</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1441,8 +1450,8 @@
         <Name>Grh/Map/Desert/Shrubbery/tree</Name>
         <Source>0,0,39,89</Source>
       </Texture>
-    </Item159>
-    <Item160>
+    </Item160>
+    <Item161>
       <Index>145</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Center.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1450,8 +1459,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Center/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item160>
-    <Item161>
+    </Item161>
+    <Item162>
       <Index>146</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Left.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1459,8 +1468,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Left/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item161>
-    <Item162>
+    </Item162>
+    <Item163>
       <Index>147</Index>
       <Categorization>Map.Desert.Tiled platform toppers.Grassy.Right.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1468,8 +1477,8 @@
         <Name>Grh/Map/Desert/Tiled platform toppers/Grassy/Right/01</Name>
         <Source>0,0,32,21</Source>
       </Texture>
-    </Item162>
-    <Item163>
+    </Item163>
+    <Item164>
       <Index>148</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Center.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1477,8 +1486,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Center/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item163>
-    <Item164>
+    </Item164>
+    <Item165>
       <Index>149</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Left.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1486,8 +1495,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Left/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item164>
-    <Item165>
+    </Item165>
+    <Item166>
       <Index>150</Index>
       <Categorization>Map.Desert.Tiled platforms.Rocky.Right.01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1495,8 +1504,8 @@
         <Name>Grh/Map/Desert/Tiled platforms/Rocky/Right/01</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item165>
-    <Item166>
+    </Item166>
+    <Item167>
       <Index>7</Index>
       <Categorization>Map.Platform.Grass.Bottom</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1504,8 +1513,8 @@
         <Name>Grh/Map/Platform/Grass/Bottom</Name>
         <Source>0,0,32,1</Source>
       </Texture>
-    </Item166>
-    <Item167>
+    </Item167>
+    <Item168>
       <Index>4</Index>
       <Categorization>Map.Platform.Grass.Mid-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1513,8 +1522,8 @@
         <Name>Grh/Map/Platform/Grass/Mid-Left</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item167>
-    <Item168>
+    </Item168>
+    <Item169>
       <Index>5</Index>
       <Categorization>Map.Platform.Grass.Mid-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1522,8 +1531,8 @@
         <Name>Grh/Map/Platform/Grass/Mid-Mid</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item168>
-    <Item169>
+    </Item169>
+    <Item170>
       <Index>6</Index>
       <Categorization>Map.Platform.Grass.Mid-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1531,8 +1540,8 @@
         <Name>Grh/Map/Platform/Grass/Mid-Right</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item169>
-    <Item170>
+    </Item170>
+    <Item171>
       <Index>1</Index>
       <Categorization>Map.Platform.Grass.Top-Left</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1540,8 +1549,8 @@
         <Name>Grh/Map/Platform/Grass/Top-Left</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item170>
-    <Item171>
+    </Item171>
+    <Item172>
       <Index>2</Index>
       <Categorization>Map.Platform.Grass.Top-Mid</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1549,8 +1558,8 @@
         <Name>Grh/Map/Platform/Grass/Top-Mid</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item171>
-    <Item172>
+    </Item172>
+    <Item173>
       <Index>3</Index>
       <Categorization>Map.Platform.Grass.Top-Right</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1558,8 +1567,8 @@
         <Name>Grh/Map/Platform/Grass/Top-Right</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item172>
-    <Item173>
+    </Item173>
+    <Item174>
       <Index>66</Index>
       <Categorization>Particle.ankh</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1567,8 +1576,8 @@
         <Name>Grh/Particle/ankh</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item173>
-    <Item174>
+    </Item174>
+    <Item175>
       <Index>67</Index>
       <Categorization>Particle.ball</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1576,8 +1585,8 @@
         <Name>Grh/Particle/ball</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item174>
-    <Item175>
+    </Item175>
+    <Item176>
       <Index>68</Index>
       <Categorization>Particle.raindrop</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1585,8 +1594,8 @@
         <Name>Grh/Particle/raindrop</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item175>
-    <Item176>
+    </Item176>
+    <Item177>
       <Index>69</Index>
       <Categorization>Particle.shield</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1594,8 +1603,8 @@
         <Name>Grh/Particle/shield</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item176>
-    <Item177>
+    </Item177>
+    <Item178>
       <Index>70</Index>
       <Categorization>Particle.skull</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1603,8 +1612,8 @@
         <Name>Grh/Particle/skull</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item177>
-    <Item178>
+    </Item178>
+    <Item179>
       <Index>72</Index>
       <Categorization>Particle.snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1612,8 +1621,8 @@
         <Name>Grh/Particle/snow</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item178>
-    <Item179>
+    </Item179>
+    <Item180>
       <Index>71</Index>
       <Categorization>Particle.snow sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1621,8 +1630,8 @@
         <Name>Grh/Particle/snow sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item179>
-    <Item180>
+    </Item180>
+    <Item181>
       <Index>73</Index>
       <Categorization>Particle.sparkle</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1630,8 +1639,8 @@
         <Name>Grh/Particle/sparkle</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item180>
-    <Item181>
+    </Item181>
+    <Item182>
       <Index>74</Index>
       <Categorization>Particle.splatter</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1639,8 +1648,8 @@
         <Name>Grh/Particle/splatter</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item181>
-    <Item182>
+    </Item182>
+    <Item183>
       <Index>76</Index>
       <Categorization>Particle.star</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1648,8 +1657,8 @@
         <Name>Grh/Particle/star</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item182>
-    <Item183>
+    </Item183>
+    <Item184>
       <Index>75</Index>
       <Categorization>Particle.star sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1657,8 +1666,8 @@
         <Name>Grh/Particle/star sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item183>
-    <Item184>
+    </Item184>
+    <Item185>
       <Index>77</Index>
       <Categorization>Particle.sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1666,8 +1675,8 @@
         <Name>Grh/Particle/sword</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item184>
-    <Item185>
+    </Item185>
+    <Item186>
       <Index>183</Index>
       <Categorization>Quest.can start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1675,8 +1684,8 @@
         <Name>Grh/Quest/can start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item185>
-    <Item186>
+    </Item186>
+    <Item187>
       <Index>186</Index>
       <Categorization>Quest.cannot start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1684,8 +1693,8 @@
         <Name>Grh/Quest/cannot start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item186>
-    <Item187>
+    </Item187>
+    <Item188>
       <Index>184</Index>
       <Categorization>Quest.started</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1693,8 +1702,8 @@
         <Name>Grh/Quest/started</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item187>
-    <Item188>
+    </Item188>
+    <Item189>
       <Index>185</Index>
       <Categorization>Quest.turnin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1702,8 +1711,8 @@
         <Name>Grh/Quest/turnin</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item188>
-    <Item189>
+    </Item189>
+    <Item190>
       <Index>140</Index>
       <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1711,8 +1720,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item189>
-    <Item190>
+    </Item190>
+    <Item191>
       <Index>142</Index>
       <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1720,8 +1729,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item190>
-    <Item191>
+    </Item191>
+    <Item192>
       <Index>141</Index>
       <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1729,7 +1738,7 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item191>
+    </Item192>
   </Stationary>
   <Animated>
     <Count>0</Count>
