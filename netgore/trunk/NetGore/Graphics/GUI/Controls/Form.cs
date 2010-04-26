@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
@@ -17,6 +18,28 @@ namespace NetGore.Graphics.GUI
         const string _controlSkinName = "Form";
 
         FormButton _closeButton;
+
+        bool _isCloseButtonVisible = true;
+
+        /// <summary>
+        /// Gets or sets if the Close button on the form is visible. Default is true.
+        /// </summary>
+        [DefaultValue(true)]
+        [SyncValue]
+        public bool IsCloseButtonVisible
+        {
+            get { return _isCloseButtonVisible; }
+            set
+            {
+                if (_isCloseButtonVisible == value)
+                    return;
+
+                _isCloseButtonVisible = value;
+
+                if (_closeButton != null)
+                    _closeButton.IsVisible = _isCloseButtonVisible;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Form"/> class.
@@ -79,14 +102,17 @@ namespace NetGore.Graphics.GUI
         /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
         public override void LoadSkin(ISkinManager skinManager)
         {
+            // Create the toolbar buttons for the form, if needed
             if (_closeButton == null)
             {
-                _closeButton = new FormButton(this, Vector2.Zero);
+                _closeButton = new FormButton(this, "Close") { IsVisible = IsCloseButtonVisible };
                 _closeButton.Clicked += CloseButton_Clicked;
             }
 
+            // Load the border
             Border = skinManager.GetBorder(_controlSkinName);
 
+            // Update the toolbar button positions
             UpdateToolbarButtonPositions();
         }
 
@@ -113,6 +139,7 @@ namespace NetGore.Graphics.GUI
             CanDrag = true;
             CanFocus = true;
             ForeColor = Color.White;
+            IsCloseButtonVisible = true;
         }
 
         /// <summary>
@@ -130,19 +157,28 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// A button that is part of a <see cref="Form"/>'s toolbar.
         /// </summary>
-        class FormButton : PictureBox
+        sealed class FormButton : PictureBox
         {
+            readonly string _spriteName;
+
             ISprite _sprite;
-            ISprite _spriteOver;
+            ISprite _spriteMouseOver;
+            ISprite _spritePressed;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="FormButton"/> class.
             /// </summary>
             /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
-            /// <param name="position">Position of the Control reletive to its parent.</param>
+            /// <param name="spriteName">The name of the button sprite to load.</param>
             /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-            public FormButton(Control parent, Vector2 position) : base(parent, position, Vector2.One)
+            public FormButton(Control parent, string spriteName) : base(parent, Vector2.Zero, Vector2.One)
             {
+                if (string.IsNullOrEmpty(spriteName))
+                    throw new ArgumentNullException("spriteName");
+
+                _spriteName = spriteName;
+
+                LoadSkin(GUIManager.SkinManager);
             }
 
             /// <summary>
@@ -152,21 +188,29 @@ namespace NetGore.Graphics.GUI
             /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
             public override void LoadSkin(ISkinManager skinManager)
             {
+                if (_spriteName == null)
+                    return;
+
                 base.LoadSkin(skinManager);
 
                 const string buttonsCategory = _controlSkinName + SpriteCategorization.Delimiter + "Buttons";
 
                 // Get the sprites
-                _sprite = skinManager.GetControlSprite(buttonsCategory, "Close");
-                _spriteOver = skinManager.GetControlSprite(buttonsCategory, "CloseHover");
+                _sprite = skinManager.GetControlSprite(buttonsCategory, _spriteName);
+                _spriteMouseOver = skinManager.GetControlSprite(buttonsCategory, _spriteName + "MouseOver");
+                _spritePressed = skinManager.GetControlSprite(buttonsCategory, _spriteName + "Pressed");
 
                 // Set the control's size to the largest of the sprites
                 var newSize = Vector2.One;
+
                 if (_sprite != null)
                     newSize = newSize.Max(_sprite.Size);
 
-                if (_spriteOver != null)
-                    newSize = newSize.Max(_spriteOver.Size);
+                if (_spriteMouseOver != null)
+                    newSize = newSize.Max(_spriteMouseOver.Size);
+
+                if (_spritePressed != null)
+                    newSize = newSize.Max(_spritePressed.Size);
 
                 ClientSize = newSize;
             }
@@ -193,9 +237,24 @@ namespace NetGore.Graphics.GUI
                 base.UpdateControl(currentTime);
 
                 if (GUIManager.UnderCursor == this)
-                    Sprite = _spriteOver;
+                {
+                    // Cursor is over
+                    if (GUIManager.IsMouseButtonDown(MouseButton.Left))
+                    {
+                        // Left button is down
+                        Sprite = _spritePressed;
+                    }
+                    else
+                    {
+                        // Left button is not down
+                        Sprite = _spriteMouseOver;
+                    }
+                }
                 else
+                {
+                    // Cursor is not over
                     Sprite = _sprite;
+                }
             }
         }
     }
