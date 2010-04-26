@@ -31,7 +31,9 @@ namespace NetGore.EditorTools
         /// </summary>
         static readonly Image _errorImage;
 
-        static readonly GrhImageList _instance;
+        static readonly object _instanceSync = new object();
+
+        static GrhImageList _instance;
 
         readonly Dictionary<string, GrhImageListCacheItem> _imageCache =
             new Dictionary<string, GrhImageListCacheItem>(StringComparer.OrdinalIgnoreCase);
@@ -57,10 +59,8 @@ namespace NetGore.EditorTools
                 g.DrawLine(Pens.Red, new Point(0, 0), new Point(bmp.Width, bmp.Height));
                 g.DrawLine(Pens.Red, new Point(bmp.Width, 0), new Point(0, bmp.Height));
             }
-            _errorImage = bmp;
 
-            // Create the list instance
-            _instance = new GrhImageList();
+            _errorImage = bmp;
         }
 
         /// <summary>
@@ -139,7 +139,17 @@ namespace NetGore.EditorTools
         /// </summary>
         public static GrhImageList Instance
         {
-            get { return _instance; }
+            get
+            {
+                lock (_instanceSync)
+                {
+                    // Create the list instance
+                    if (_instance == null)
+                        _instance = new GrhImageList();
+
+                    return _instance;
+                }
+            }
         }
 
         /// <summary>
@@ -356,7 +366,13 @@ namespace NetGore.EditorTools
 
             // Spawn a background thread to just grab the property since the property itself will handle loading
             // the instance if it is not already loaded
-            var t = new Thread(() => Debug.Assert(Instance != null)) { IsBackground = true };
+            var t = new Thread((ThreadStart)delegate
+            {
+#pragma warning disable 168
+                var tmp = Instance;
+#pragma warning restore 168
+            }) { IsBackground = false };
+
             t.Start();
         }
 
