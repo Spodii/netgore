@@ -4,6 +4,9 @@ using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
 {
+    /// <summary>
+    /// A standard sub-window that often draggable and is used to contain child controls.
+    /// </summary>
     public class Form : TextControl
     {
         /// <summary>
