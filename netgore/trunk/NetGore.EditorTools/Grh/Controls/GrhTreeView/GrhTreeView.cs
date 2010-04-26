@@ -27,6 +27,7 @@ namespace NetGore.EditorTools
         readonly Timer _animTimer = new Timer();
 
         readonly ContextMenu _contextMenu = new ContextMenu();
+
         bool _compactMode = true;
         IContentManager _contentManager;
         CreateWallEntityHandler _createWall;
