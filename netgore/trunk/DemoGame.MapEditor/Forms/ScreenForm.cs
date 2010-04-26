@@ -944,13 +944,12 @@ namespace DemoGame.MapEditor
 
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
-            treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
-
-            _drawingManager = new DrawingManager(GameScreen.RenderWindow);
-            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
             // Prepare the GrhImageList to avoid stalling the loading later
             GrhImageList.Prepare();
+
+            _drawingManager = new DrawingManager(GameScreen.RenderWindow);
+            DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
             // Grab the audio manager instances, which will ensure that they are property initialized
             // before something that can't pass it an ContentManager (such as the UITypeEditor) tries to get an instance.
@@ -1015,6 +1014,9 @@ namespace DemoGame.MapEditor
             lstNPCSpawns.SelectedIndexChanged += ((o, x) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
 
             _camera.Size = GameScreenSize;
+
+            // Load the Grhs tree
+            treeGrhs.Initialize(_content, _camera.Size, CreateWallEntity, _mapGrhWalls);
 
             // Handle any command-line switches
             HandleSwitches(_switches);
