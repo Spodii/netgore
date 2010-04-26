@@ -54,6 +54,10 @@ namespace NetGore.Graphics.GUI
             Debug.Assert(Font != null);
         }
 
+        /// <summary>
+        /// Refreshes the text of a tooltip.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
         void RefreshText(int currentTime)
         {
             // Request the tooltip text
@@ -234,6 +238,19 @@ namespace NetGore.Graphics.GUI
                 return;
 
             var pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
+            Vector2 size = _borderSize + (BorderPadding * 2);
+            var ss = GUIManager.ScreenSize;
+
+            // Ensure the tooltip is in the screen
+            if (pos.X < 0)
+                pos.X = 0;
+            else if (pos.X + size.X > ss.X)
+                pos.X = ss.X - size.X;
+
+            if (pos.Y < 0)
+                pos.Y = 0;
+            else if (pos.Y + size.Y > ss.Y)
+                pos.Y = ss.Y - size.Y;
 
             // Draw the border
             var borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
