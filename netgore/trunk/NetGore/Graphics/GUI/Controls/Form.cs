@@ -226,6 +226,7 @@ namespace NetGore.Graphics.GUI
                 StretchSprite = false;
                 IsVisible = true;
                 IsBoundToParentArea = false;
+                IncludeInResizeToChildren = false;
             }
 
             /// <summary>

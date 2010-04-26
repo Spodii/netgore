@@ -597,6 +597,23 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        bool _includeInResizeToChildren = true;
+
+        /// <summary>
+        /// Gets or sets if this <see cref="Control"/> will be included when using <see cref="Control.ResizeToChildren"/>. The default
+        /// value for this property is true, and should remain true for most all <see cref="Control"/>s. Only times you should set it false
+        /// is if you have a <see cref="Control"/> that is technically a child control, but behaves like an addition to the parent. An
+        /// example of this is the close button on a <see cref="Form"/>.
+        /// </summary>
+        public bool IncludeInResizeToChildren
+        {
+            get { return _includeInResizeToChildren; }
+            set
+            {
+                _includeInResizeToChildren = value;
+            }
+        }
+
         /// <summary>
         /// Gets or sets if this <see cref="Control"/>'s size will automatically be set to the size needed to fit
         /// all the child <see cref="Control"/>s.
@@ -843,14 +860,26 @@ namespace NetGore.Graphics.GUI
         /// <see cref="Control"/>s.</returns>
         Vector2 FindRequiredClientSizeToFitChildren()
         {
+            // Use the initial values of 1 (so we will never have a size less than 1)
             float x = 1;
             float y = 1;
 
-            for (var i = 0; i < _controls.Count; i++)
+            // Loop through all child controls
+            foreach (Control t in _controls)
             {
-                var max = _controls[i].Position + _controls[i].Size;
-                x = Math.Max(max.X, x);
-                y = Math.Max(max.Y, y);
+                // Skip certain child controls
+                if (!t.IncludeInResizeToChildren)
+                    continue;
+
+                // Get the position + size of the child control
+                var max = t.Position + t.Size;
+
+                // Update the x/y values to the greater of the two values
+                if (max.X > x)
+                    x = max.X;
+
+                if (max.Y > y)
+                    y = max.Y;
             }
 
             return new Vector2(x, y);
