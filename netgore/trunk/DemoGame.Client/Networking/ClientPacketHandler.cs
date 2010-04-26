@@ -852,18 +852,12 @@ namespace DemoGame.Client
         void RecvUpdateVelocityAndPosition(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
-            DynamicEntity dynamicEntity;
+            DynamicEntity dynamicEntity = null;
 
             // Grab the DynamicEntity
-            try
-            {
+            // The map can be null if the spatial updates come very early (which isn't uncommon)
+            if (Map != null)
                 dynamicEntity = Map.GetDynamicEntity<DynamicEntity>(mapEntityIndex);
-            }
-            catch (Exception)
-            {
-                // Ignore errors about finding the DynamicEntity
-                dynamicEntity = null;
-            }
 
             // Deserialize
             if (dynamicEntity != null)
@@ -873,7 +867,7 @@ namespace DemoGame.Client
             }
             else
             {
-                // Just flush the values from the reader
+                // DynamicEntity was null, so just flush the values from the reader
                 DynamicEntity.FlushPositionAndVelocity(r);
             }
         }
