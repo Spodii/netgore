@@ -184,7 +184,7 @@ namespace DemoGame.Client
 #if TOPDOWN
         void HandleGameControl_MoveDown(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.MoveDown())
+            using (var pw = ClientPacket.MoveDown())
             {
                 Socket.Send(pw);
             }
@@ -218,7 +218,7 @@ namespace DemoGame.Client
 #if TOPDOWN
         void HandleGameControl_MoveStopHorizontal(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.MoveStopHorizontal())
+            using (var pw = ClientPacket.MoveStopHorizontal())
             {
                 Socket.Send(pw);
             }
@@ -228,7 +228,7 @@ namespace DemoGame.Client
 #if TOPDOWN
         void HandleGameControl_MoveStopVertical(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.MoveStopVertical())
+            using (var pw = ClientPacket.MoveStopVertical())
             {
                 Socket.Send(pw);
             }
@@ -238,7 +238,7 @@ namespace DemoGame.Client
 #if TOPDOWN
         void HandleGameControl_MoveUp(GameControl sender)
         {
-            using (PacketWriter pw = ClientPacket.MoveUp())
+            using (var pw = ClientPacket.MoveUp())
             {
                 Socket.Send(pw);
             }
