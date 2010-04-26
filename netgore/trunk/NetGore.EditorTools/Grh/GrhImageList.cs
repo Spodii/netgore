@@ -31,6 +31,12 @@ namespace NetGore.EditorTools
         /// </summary>
         static readonly Image _errorImage;
 
+        /// <summary>
+        /// Gets an <see cref="Image"/> that can be used for when the <see cref="GrhImageList"/> did not contain an <see cref="Image"/>
+        /// with the specified key.
+        /// </summary>
+        public static Image ErrorImage { get { return _errorImage; } }
+
         static readonly object _instanceSync = new object();
 
         static GrhImageList _instance;
@@ -71,8 +77,7 @@ namespace NetGore.EditorTools
             ImageList.TransparentColor = EngineSettings.TransparencyColor.ToSystemColor();
 
             // Add the default image
-            var defaultImg = ImageHelper.CreateSolid(16, 16, EngineSettings.TransparencyColor.ToSystemColor());
-            ImageList.Images.Add(defaultImg);
+            ImageList.Images.Add(ErrorImage);
 
             // Add the special images
             ImageList.Images.Add(OpenFolderKey, Resources.folderopen);
@@ -114,14 +119,6 @@ namespace NetGore.EditorTools
         public static string ClosedFolderKey
         {
             get { return "_folder"; }
-        }
-
-        /// <summary>
-        /// Gets the key for the default image.
-        /// </summary>
-        public static string DefaultImageKey
-        {
-            get { return "_default"; }
         }
 
         /// <summary>
@@ -192,7 +189,10 @@ namespace NetGore.EditorTools
                     log.ErrorFormat(errmsg, grhData);
             }
             else
+            {
+                // Add the image to the ImageList
                 ImageList.Images.Add(key, img);
+            }
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace NetGore.EditorTools
                 var key = GetImageKey(gd);
                 var image = ImageList.Images[key];
 
-                if (image == null || image == _errorImage)
+                if (image == null || _errorImage == image)
                     continue;
 
                 var item = new GrhImageListCacheItem(key, image, gd.OriginalSourceRect);
