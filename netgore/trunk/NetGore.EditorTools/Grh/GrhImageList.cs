@@ -176,7 +176,7 @@ namespace NetGore.EditorTools
                 var tempImg = ImageList.Images[key];
                 ImageList.Images.RemoveByKey(key);
 
-                if (tempImg != null && tempImg != _errorImage)
+                if (tempImg != null && tempImg != ErrorImage)
                     tempImg.Dispose();
             }
 
@@ -185,8 +185,8 @@ namespace NetGore.EditorTools
             {
                 const string errmsg =
                     "Failed to create image for GrhData `{0}` - GrhImageList.CreateImage() returned a null image.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, grhData);
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, grhData);
             }
             else
             {
@@ -236,7 +236,7 @@ namespace NetGore.EditorTools
                     "Failed to acquire the texture for StationaryGrhData `{0}`, probably since the texture file no longer exists.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, grhData);
-                return _errorImage;
+                return null;
             }
 
             return tex.ToBitmap(src, dest.Width, dest.Height);
