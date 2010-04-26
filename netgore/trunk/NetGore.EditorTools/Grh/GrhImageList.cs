@@ -71,7 +71,7 @@ namespace NetGore.EditorTools
             ImageList.TransparentColor = EngineSettings.TransparencyColor.ToSystemColor();
 
             // Add the default image
-            var defaultImg = ImageHelper.CreateSolid(32, 32, EngineSettings.TransparencyColor.ToSystemColor());
+            var defaultImg = ImageHelper.CreateSolid(16, 16, EngineSettings.TransparencyColor.ToSystemColor());
             ImageList.Images.Add(defaultImg);
 
             // Add the special images
@@ -179,7 +179,7 @@ namespace NetGore.EditorTools
                 var tempImg = ImageList.Images[key];
                 ImageList.Images.RemoveByKey(key);
 
-                if (tempImg != null)
+                if (tempImg != null && tempImg != _errorImage)
                     tempImg.Dispose();
             }
 
@@ -224,10 +224,12 @@ namespace NetGore.EditorTools
 
             // Item wasn't in the cache, so we have to create it
             _dirty = true;
+
             var src = grhData.SourceRect;
             var dest = ImageList.ImageSize;
-
             var tex = grhData.Texture;
+
+            // If the texture is invalid, return the error image
             if (tex == null || tex.IsDisposed)
             {
                 const string errmsg =
