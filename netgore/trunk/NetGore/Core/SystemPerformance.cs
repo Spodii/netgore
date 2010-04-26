@@ -193,14 +193,14 @@ namespace NetGore
             }
 
             /// <summary>
-            /// Gets the amount of system memory available in megabytes, or -1 if the value could not be acquired.
+            /// Gets the amount of system memory available in megabytes, or 0 if the value could not be acquired.
             /// </summary>
             public static int AvailableMB
             {
                 get
                 {
                     if (_memory == null)
-                        return -1;
+                        return 0;
 
                     const string errmsg = "Failed to acquire memory usage. Exception: {0}";
 
@@ -245,19 +245,19 @@ namespace NetGore
                         }
                     }
 
-                    return -1;
+                    return 0;
                 }
             }
 
             /// <summary>
-            /// Gets the amount of system memory in use by this process in bytes, or -1 if the value could not be acquired.
+            /// Gets the amount of system memory in use by this process in bytes, or 0 if the value could not be acquired.
             /// </summary>
             public static long ProcessUsageBytes
             {
                 get
                 {
                     if (_currentProcess == null)
-                        return -1;
+                        return 0;
 
                     try
                     {
@@ -272,7 +272,7 @@ namespace NetGore
                         _currentProcess = null;
                     }
 
-                    return -1;
+                    return 0;
                 }
             }
 
