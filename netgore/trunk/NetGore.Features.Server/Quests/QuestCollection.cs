@@ -45,6 +45,30 @@ namespace NetGore.Features.Quests
             }
         }
 
+        /// <summary>
+        /// Gets the quest for the given <see cref="QuestID"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="QuestID"/> to get.</param>
+        /// <returns>The quest for the given <paramref name="id"/>, or null if the <paramref name="id"/> is invalid.</returns>
+        public IQuest<TCharacter> this[QuestID id] { get { return GetQuest(id); }}
+
+        /// <summary>
+        /// Forces a quest in this collection to be reloaded from the database.
+        /// Note that reloading an object will create a new object, not update the existing object. As a result, anything referencing
+        /// the old object will continue to reference the old values instead of the newly loaded values.
+        /// </summary>
+        /// <param name="questID">The ID of the quest to force to reload.</param>
+        public virtual void Reload(QuestID questID)
+        {
+            // Check for a valid ID range
+            if (questID < 0 || questID > _quests.Length)
+                return;
+
+            // Try to load the quest
+            var q = LoadQuest(questID);
+            _quests[questID.GetRawValue()] = q;
+        }
+
         #region IQuestCollection<TCharacter> Members
 
         /// <summary>

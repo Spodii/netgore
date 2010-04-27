@@ -6,8 +6,10 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
 using DemoGame.EditorTools;
+using DemoGame.Server;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
+using DemoGame.Server.Quests;
 using NetGore;
 using NetGore.Content;
 using NetGore.Db;
@@ -361,17 +363,26 @@ namespace DemoGame.DbEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAllianceSave_Click(object sender, EventArgs e)
         {
-            var a = pgAlliance.SelectedObject as EditorAlliance;
-            if (a == null)
+            var v = pgAlliance.SelectedObject as EditorAlliance;
+            if (v == null)
                 return;
 
             // Main values
-            _dbController.GetQuery<DeleteAllianceQuery>().Execute(a.ID);
-            _dbController.GetQuery<ReplaceAllianceQuery>().Execute(a);
+            _dbController.GetQuery<DeleteAllianceQuery>().Execute(v.ID);
+            _dbController.GetQuery<ReplaceAllianceQuery>().Execute(v);
 
             // Attackable/hostile lists
-            _dbController.GetQuery<ReplaceAllianceAttackableQuery>().Execute(a.ID, a.Attackable);
-            _dbController.GetQuery<ReplaceAllianceHostileQuery>().Execute(a.ID, a.Hostile);
+            _dbController.GetQuery<ReplaceAllianceAttackableQuery>().Execute(v.ID, v.Attackable);
+            _dbController.GetQuery<ReplaceAllianceHostileQuery>().Execute(v.ID, v.Hostile);
+
+            // Reload from the database
+            AllianceManager.Instance.Reload(v.ID);
+
+            // Refresh the selected object
+            pgAlliance.SelectedObject = null;
+            pgAlliance.SelectedObject = v;
+
+            MessageBox.Show("Alliance " + v.Name + " successfully saved!");
         }
 
         /// <summary>
@@ -471,12 +482,21 @@ namespace DemoGame.DbEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnCharacterTemplateSave_Click(object sender, EventArgs e)
         {
+            // Check for a valid object being edited
             var v = pgCharacterTemplate.SelectedObject as ICharacterTemplateTable;
             if (v == null)
                 return;
 
+            // Save
             _dbController.GetQuery<ReplaceCharacterTemplateQuery>().Execute(v);
             _originalCharacterTemplateValues = v.DeepCopy();
+
+            // Reload from the database
+            CharacterTemplateManager.Instance.Reload(v.ID);
+
+            // Refresh the selected object
+            pgCharacterTemplate.SelectedObject = null;
+            pgCharacterTemplate.SelectedObject = v;
 
             MessageBox.Show(v.Name + " successfully saved!");
         }
@@ -585,12 +605,21 @@ namespace DemoGame.DbEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnItemTemplateSave_Click(object sender, EventArgs e)
         {
+            // Check for a valid object being edited
             var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
             if (v == null)
                 return;
 
+            // Save
             _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
             _originalItemTemplateValues = v.DeepCopy();
+
+            // Reload from the database
+            ItemTemplateManager.Instance.Reload(v.ID);
+
+            // Refresh the selected object
+            pgItemTemplate.SelectedObject = null;
+            pgItemTemplate.SelectedObject = v;
 
             MessageBox.Show(v.Name + " successfully saved!");
         }
@@ -866,6 +895,11 @@ namespace DemoGame.DbEditor
                                                                               x => (KeyValuePair<ItemTemplateID, byte>)x));
 
             SetQuest(v.ID, false);
+
+            QuestManager.Instance.Reload(v.ID);
+
+            pgQuest.SelectedObject = null;
+            pgQuest.SelectedObject = v;
 
             MessageBox.Show("Quest ID `" + v.ID + "` successfully saved!");
         }
