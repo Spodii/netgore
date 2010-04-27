@@ -16,6 +16,7 @@ namespace NetGore.Db
     public abstract class DbTableDataManager<TID, TItem> : IEnumerable<TItem>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly IDbController _dbController;
         readonly DArray<TItem> _items = new DArray<TItem>(32);
 
@@ -120,6 +121,20 @@ namespace NetGore.Db
             }
 
             _items.Trim();
+        }
+
+        /// <summary>
+        /// Forces and item in this collection to be reloaded from the database.
+        /// Note that reloading an object will create a new object, not update the existing object. As a result, anything referencing
+        /// the old object will continue to reference the old values instead of the newly loaded values.
+        /// </summary>
+        /// <param name="id">The ID of the item to reload from the database.</param>
+        public virtual void Reload(TID id)
+        {
+            var item = LoadItem(id);
+            var i = IDToInt(id);
+
+            _items.Insert(i, item);
         }
 
         /// <summary>
