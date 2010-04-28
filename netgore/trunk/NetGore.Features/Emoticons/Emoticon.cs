@@ -5,7 +5,7 @@ namespace NetGore.Features.Emoticons
     /// <summary>
     /// The different emoticons that can be used.
     /// </summary>
-    public enum Emoticon
+    public enum Emoticon : byte
     {
         [EmoticonInfo(248)]
         Ellipsis,

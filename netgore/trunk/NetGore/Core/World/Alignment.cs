@@ -5,7 +5,7 @@ namespace NetGore
     /// <summary>
     /// Describes how something is aligned to the target.
     /// </summary>
-    public enum Alignment
+    public enum Alignment : byte
     {
         /// <summary>
         /// Top-left corner of this item is at the top-left corner of the target.

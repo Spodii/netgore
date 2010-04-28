@@ -5,7 +5,7 @@ namespace NetGore.IO
     /// <summary>
     /// I/O method to use on the bit stream.
     /// </summary>
-    public enum BitStreamMode
+    public enum BitStreamMode : byte
     {
         /// <summary>
         /// Reads values from the buffer.

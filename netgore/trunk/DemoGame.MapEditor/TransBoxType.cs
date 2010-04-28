@@ -7,7 +7,7 @@ namespace DemoGame.MapEditor
     /// States how a transformation box can modify the target
     /// </summary>
     [Flags]
-    public enum TransBoxType
+    public enum TransBoxType : byte
     {
         /// <summary>
         /// Move box (no transformation)

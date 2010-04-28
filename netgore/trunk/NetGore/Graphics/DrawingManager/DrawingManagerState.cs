@@ -5,7 +5,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// The possible states of a <see cref="IDrawingManager"/>.
     /// </summary>
-    public enum DrawingManagerState
+    public enum DrawingManagerState : byte
     {
         /// <summary>
         /// Nothing is current being drawn.

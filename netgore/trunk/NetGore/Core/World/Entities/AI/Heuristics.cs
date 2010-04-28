@@ -2,7 +2,7 @@
 
 namespace NetGore.AI
 {
-    public enum Heuristics
+    public enum Heuristics : byte
     {
         DiagonalShortCut,
         DXDY,

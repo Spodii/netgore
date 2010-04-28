@@ -5,7 +5,7 @@ namespace NetGore.IO
     /// <summary>
     /// BitStream seek origin.
     /// </summary>
-    public enum BitStreamSeekOrigin
+    public enum BitStreamSeekOrigin : byte
     {
         /// <summary>
         /// Specifies the beginning of the stream.

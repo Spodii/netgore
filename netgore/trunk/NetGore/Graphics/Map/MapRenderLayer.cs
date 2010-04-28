@@ -5,7 +5,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Enum consisting of the layer at which map entities are rendered
     /// </summary>
-    public enum MapRenderLayer
+    public enum MapRenderLayer : byte
     {
         /// <summary>
         /// Back-most layer for the Map. Contains all of the background images, which are always behind every other layer.

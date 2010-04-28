@@ -4,7 +4,7 @@ using System.Linq;
 namespace NetGore.Graphics.GUI
 {
     [Flags]
-    public enum MessageBoxButton
+    public enum MessageBoxButton : byte
     {
         /// <summary>
         /// An unknown or invalid button.

@@ -16,7 +16,7 @@ namespace DemoGame.Server
     class StateMachine : AIBase
     {
 
-            public enum State
+            public enum State : byte
         {
             Evade,
             Patrol,
@@ -375,7 +375,7 @@ namespace DemoGame.Server
     [AI(_id)]
     class StateMachine : AIBase
     {
-        public enum State
+        public enum State : byte
         {
             Evade,
             Patrol,

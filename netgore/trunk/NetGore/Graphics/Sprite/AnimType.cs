@@ -5,7 +5,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Defines how an <see cref="ISprite"/> animates.
     /// </summary>
-    public enum AnimType
+    public enum AnimType : byte
     {
         /// <summary>
         /// <see cref="Grh"/> that will not animate.

@@ -5,7 +5,7 @@ namespace NetGore.IO
     /// <summary>
     /// Decides what happens when the end of the buffer is reached.
     /// </summary>
-    public enum BitStreamBufferMode
+    public enum BitStreamBufferMode : byte
     {
         /// <summary>
         /// The buffer will not attempt to expand and an error will

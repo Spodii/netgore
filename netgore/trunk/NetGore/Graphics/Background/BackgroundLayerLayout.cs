@@ -5,7 +5,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Describes how a BackgroundLayer is drawn on an axis.
     /// </summary>
-    public enum BackgroundLayerLayout
+    public enum BackgroundLayerLayout : byte
     {
         /// <summary>
         /// Displays the image as-is without any alterations.

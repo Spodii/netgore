@@ -6,7 +6,7 @@ namespace NetGore.Features.StatusEffects
     /// Describes how a StatusEffect handles when the Character the StatusEffect is being added to
     /// already has a StatusEffect of the same type.
     /// </summary>
-    public enum StatusEffectMergeType
+    public enum StatusEffectMergeType : byte
     {
         /// <summary>
         /// The newer StatusEffect (the one just added) will be discarded, leaving the old StatusEffect.

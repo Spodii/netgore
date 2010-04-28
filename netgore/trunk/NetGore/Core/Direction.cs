@@ -5,7 +5,7 @@ namespace NetGore
     /// <summary>
     /// A direction.
     /// </summary>
-    public enum Direction
+    public enum Direction : byte
     {
         North,
         NorthEast,

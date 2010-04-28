@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace NetGore.Tests.Db.ClassCreator
 {
-    public enum TestCollEnum
+    public enum TestCollEnum : byte
     {
         A,
         B,
@@ -19,7 +19,7 @@ namespace NetGore.Tests.Db.ClassCreator
     [TestFixture]
     public class AliasingTests
     {
-        public enum TestCollNestedEnum
+        public enum TestCollNestedEnum : byte
         {
             A,
             B,

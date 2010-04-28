@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace NetGore.Db.ClassCreator
 {
-    public enum MemberVisibilityLevel
+    public enum MemberVisibilityLevel : byte
     {
         Private,
         Protected,

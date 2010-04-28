@@ -5,7 +5,7 @@ namespace NetGore.Features.Guilds
     /// <summary>
     /// Enum of the different engine-defined guild events.
     /// </summary>
-    public enum GuildEvents
+    public enum GuildEvents : byte
     {
         Rename = 0,
         Kick = 1,
