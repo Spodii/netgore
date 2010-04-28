@@ -2,9 +2,9 @@
 <Map>
   <Header>
     <Name>Desert 1</Name>
-	<HasMusic>True</HasMusic>
+    <HasMusic>True</HasMusic>
     <MusicID>1</MusicID>
-	<Size>1600,800</Size>
+    <Size>1600,800</Size>
     <Indoors>False</Indoors>
   </Header>
   <Walls>
@@ -85,72 +85,120 @@
           <GrhIndex>125</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item0>
         <Item1>
           <Position>192,576</Position>
           <GrhIndex>117</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item1>
         <Item2>
           <Position>0,672</Position>
           <GrhIndex>115</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item2>
         <Item3>
           <Position>32,480</Position>
           <GrhIndex>117</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item3>
         <Item4>
           <Position>1280,608</Position>
           <GrhIndex>117</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item4>
         <Item5>
           <Position>192,384</Position>
           <GrhIndex>117</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item5>
         <Item6>
           <Position>352,320</Position>
           <GrhIndex>117</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item6>
         <Item7>
           <Position>544,256</Position>
           <GrhIndex>117</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item7>
         <Item8>
           <Position>736,160</Position>
           <GrhIndex>117</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item8>
         <Item9>
           <Position>805,134</Position>
           <GrhIndex>120</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item9>
         <Item10>
           <Position>55,661</Position>
           <GrhIndex>121</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item10>
         <Item11>
           <Position>798,636</Position>
           <GrhIndex>114</GrhIndex>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
         </Item11>
       </MapGrhs>
     </MapGrhs>
@@ -261,7 +309,7 @@
             </Item0>
           </ParticleModifiers>
           <EmitterModifiers>
-          <Count>0</Count>
+            <Count>0</Count>
           </EmitterModifiers>
         </Emitter>
       </Item0>
