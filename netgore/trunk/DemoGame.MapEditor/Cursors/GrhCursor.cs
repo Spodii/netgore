@@ -16,6 +16,7 @@ namespace DemoGame.MapEditor
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
         readonly List<MapGrh> _selectedMapGrhs = new List<MapGrh>();
+        Vector2 _lastCursorPos;
 
         TransBox _mapGrhMoveBox = null;
         Vector2 _mouseDragStart = Vector2.Zero;
@@ -295,8 +296,6 @@ namespace DemoGame.MapEditor
                 Container.Map.RemoveMapGrh(mg);
             }
         }
-
-        Vector2 _lastCursorPos;
 
         /// <summary>
         ///   When overridden in the derived class, handles generic updating of the cursor. This is
