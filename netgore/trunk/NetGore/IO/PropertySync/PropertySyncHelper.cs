@@ -107,9 +107,28 @@ namespace NetGore.IO.PropertySync
         /// <returns>The <see cref="IPropertySync"/> for a given <see cref="SyncValueAttributeInfo"/>.</returns>
         /// <exception cref="TypeLoadException">Could not create an <see cref="IPropertySync"/> from the 
         /// <paramref name="attribInfo"/>.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="attribInfo"/> is for a type that does not have a 
+        /// <see cref="PropertySyncHandlerAttribute"/> defined for it.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="attribInfo"/> is null.</exception>
         internal static IPropertySync GetPropertySync(SyncValueAttributeInfo attribInfo)
         {
-            var propertySyncType = _propertySyncTypes[attribInfo.PropertyType];
+            if (attribInfo == null)
+                throw new ArgumentNullException("attribInfo");
+
+            // Get the Type of the class used to handle the type of property
+            Type propertySyncType;
+            try
+            {
+                propertySyncType = _propertySyncTypes[attribInfo.PropertyType];
+            }
+            catch (KeyNotFoundException ex)
+            {
+                const string errmsg =
+                    "No PropertySyncHandler exists for type `{0}`. You must define a class to handle this type (preferably derived from PropertySyncBase) and give it the PropertySyncHandlerAttribute.";
+                throw new ArgumentException(string.Format(errmsg, attribInfo.PropertyType), ex);
+            }
+
+            // Get the instance of the class used to handle the attribute's type
             var instance = (IPropertySync)TypeFactory.GetTypeInstance(propertySyncType, attribInfo);
 
             if (instance == null)
