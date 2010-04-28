@@ -13,6 +13,7 @@ namespace NetGore.Graphics
     /// </summary>
     public class MapGrh : ISpatial, IDrawable, IPersistable
     {
+        const string _distortionCategoryName = "Distortion";
         const string _grhIndexKeyName = "GrhIndex";
         const string _isForegroundKeyName = "IsForeground";
         const string _layerDepthKeyName = "LayerDepth";
@@ -20,12 +21,16 @@ namespace NetGore.Graphics
         const string _positionKeyName = "Position";
 
         readonly Grh _grh;
-        Color _color = Color.White;
 
+        Color _color = Color.White;
         bool _isForeground;
         bool _isVisible = true;
         short _layerDepth;
+        Vector2 _origin = Vector2.Zero;
         Vector2 _position;
+        float _rotation = 0f;
+        Vector2 _scale = Vector2.One;
+        SpriteEffects _spriteEffects;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrh"/> class.
@@ -99,24 +104,74 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the origin of the sprite in pixels, where (0,0) is the top-left corner of the sprite.
+        /// </summary>
+        [Category(_distortionCategoryName)]
+        [Browsable(true)]
+        [DisplayName("Origin")]
+        [Description("The origin of the sprite, in pixels, where (0,0) is the top-left corner.")]
+        [DefaultValue(typeof(Vector2), "0, 0")]
+        [SyncValue]
+        public Vector2 Origin
+        {
+            get { return _origin; }
+            set { _origin = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the rotation of the sprite in radians.
+        /// </summary>
+        [Category(_distortionCategoryName)]
+        [Browsable(true)]
+        [DisplayName("Rotation")]
+        [Description("The rotation of the sprite in radians.")]
+        [DefaultValue(0f)]
+        [SyncValue]
+        public float Rotation
+        {
+            get { return _rotation; }
+            set { _rotation = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the percent to scale the <see cref="MapGrh"/>, where <see cref="Vector2.One"/> is equal to the
+        /// original size (no scaling). <see cref="Vector2.X"/> corresponds to scaling on the X axis, and <see cref="Vector2.Y"/>
+        /// on the Y axis.
+        /// </summary>
+        [Category(_distortionCategoryName)]
+        [Browsable(true)]
+        [DisplayName("Scale")]
+        [Description("The percent to scale the sprite on the X and Y axis.")]
+        [DefaultValue(typeof(Vector2), "1, 1")]
+        [SyncValue]
+        public Vector2 Scale
+        {
+            get { return _scale; }
+            set { _scale = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="SpriteEffects"/> to apply to the sprite when drawing.
+        /// </summary>
+        [Category(_distortionCategoryName)]
+        [Browsable(true)]
+        [DisplayName("Effects")]
+        [Description("The effects to apply to the sprite when drawing.")]
+        [DefaultValue(SpriteEffects.None)]
+        [SyncValue]
+        public SpriteEffects SpriteEffects
+        {
+            get { return _spriteEffects; }
+            set { _spriteEffects = value; }
+        }
+
+        /// <summary>
         /// Updates the <see cref="MapGrh"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         public void Update(int currentTime)
         {
             _grh.Update(currentTime);
-        }
-
-        /// <summary>
-        /// Writes the MapGrh to an IValueWriter.
-        /// </summary>
-        /// <param name="writer">IValueWriter to write the MapGrh to.</param>
-        public void Write(IValueWriter writer)
-        {
-            writer.Write(_positionKeyName, Position);
-            writer.Write(_grhIndexKeyName, Grh.GrhData.GrhIndex);
-            writer.Write(_isForegroundKeyName, IsForeground);
-            writer.Write(_layerDepthKeyName, _layerDepth);
         }
 
         #region IDrawable Members
@@ -152,6 +207,12 @@ namespace NetGore.Graphics
         /// Gets or sets the <see cref="IDrawable.Color"/> to use when drawing this <see cref="IDrawable"/>. By default, this
         /// value will be equal to white (ARGB: 255,255,255,255).
         /// </summary>
+        [Category(_distortionCategoryName)]
+        [Browsable(true)]
+        [DisplayName("Color")]
+        [Description(
+            "The color to use when drawing this MapGrh. Using white (255,255,255,255) will draw with no color alterations.")]
+        [DefaultValue(typeof(Color), "{255, 255, 255, 255}")]
         public Color Color
         {
             get { return _color; }
@@ -237,7 +298,7 @@ namespace NetGore.Graphics
                 BeforeDraw(this, sb);
 
             if (IsVisible)
-                _grh.Draw(sb, Position, Color);
+                _grh.Draw(sb, Position, Color, SpriteEffects, Rotation, Origin, Scale);
 
             if (AfterDraw != null)
                 AfterDraw(this, sb);
@@ -273,6 +334,8 @@ namespace NetGore.Graphics
 
             if (!grhIndex.IsInvalid)
                 _grh.SetGrh(grhIndex);
+
+            PersistableHelper.Read(this, reader);
         }
 
         /// <summary>
@@ -285,6 +348,8 @@ namespace NetGore.Graphics
             writer.Write(_grhIndexKeyName, Grh.GrhData != null ? Grh.GrhData.GrhIndex : GrhIndex.Invalid);
             writer.Write(_isForegroundKeyName, IsForeground);
             writer.Write(_layerDepthKeyName, _layerDepth);
+
+            PersistableHelper.Write(this, writer);
         }
 
         #endregion
@@ -352,7 +417,7 @@ namespace NetGore.Graphics
         [Browsable(false)]
         public Vector2 Size
         {
-            get { return _grh.Size; }
+            get { return _grh.Size * Scale; }
         }
 
         /// <summary>
