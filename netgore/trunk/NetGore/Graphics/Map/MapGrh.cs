@@ -15,10 +15,7 @@ namespace NetGore.Graphics
     {
         const string _distortionCategoryName = "Distortion";
         const string _grhIndexKeyName = "GrhIndex";
-        const string _isForegroundKeyName = "IsForeground";
-        const string _layerDepthKeyName = "LayerDepth";
         const string _mapGrhCategoryName = "MapGrh";
-        const string _positionKeyName = "Position";
 
         readonly Grh _grh;
 
@@ -87,6 +84,7 @@ namespace NetGore.Graphics
         [DisplayName("IsForeground")]
         [Description("If the MapGrh is in the foreground layer, in front of characters and items.")]
         [DefaultValue(false)]
+        [SyncValue]
         public bool IsForeground
         {
             get { return _isForeground; }
@@ -213,6 +211,7 @@ namespace NetGore.Graphics
         [Description(
             "The color to use when drawing this MapGrh. Using white (255,255,255,255) will draw with no color alterations.")]
         [DefaultValue(typeof(Color), "{255, 255, 255, 255}")]
+        [SyncValue]
         public Color Color
         {
             get { return _color; }
@@ -327,10 +326,7 @@ namespace NetGore.Graphics
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         public void ReadState(IValueReader reader)
         {
-            Position = reader.ReadVector2(_positionKeyName);
             var grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
-            _isForeground = reader.ReadBool(_isForegroundKeyName);
-            _layerDepth = reader.ReadShort(_layerDepthKeyName);
 
             if (!grhIndex.IsInvalid)
                 _grh.SetGrh(grhIndex);
@@ -344,10 +340,7 @@ namespace NetGore.Graphics
         /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
         public void WriteState(IValueWriter writer)
         {
-            writer.Write(_positionKeyName, Position);
             writer.Write(_grhIndexKeyName, Grh.GrhData != null ? Grh.GrhData.GrhIndex : GrhIndex.Invalid);
-            writer.Write(_isForegroundKeyName, IsForeground);
-            writer.Write(_layerDepthKeyName, _layerDepth);
 
             PersistableHelper.Write(this, writer);
         }
@@ -395,6 +388,7 @@ namespace NetGore.Graphics
         [DisplayName("Position")]
         [Description("Location of the top-left corner of the MapGrh on the map.")]
         [Browsable(true)]
+        [SyncValue]
         public Vector2 Position
         {
             get { return _position; }
