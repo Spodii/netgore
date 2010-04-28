@@ -5,7 +5,7 @@ namespace NetGore.Db.ClassCreator
     /// <summary>
     /// Describes the type of code a generated code file contains.
     /// </summary>
-    public enum GeneratedCodeType
+    public enum GeneratedCodeType : byte
     {
         /// <summary>
         /// Code for the interface for a table.

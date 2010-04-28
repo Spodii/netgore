@@ -7,7 +7,7 @@ namespace NetGore
     /// Describes the different types of characters in a string.
     /// </summary>
     [Flags]
-    public enum CharType
+    public enum CharType : short
     {
         /// <summary>
         /// Uppercase alphabet characters (A to Z).

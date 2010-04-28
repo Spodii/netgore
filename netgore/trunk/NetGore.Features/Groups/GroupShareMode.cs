@@ -5,7 +5,7 @@ namespace NetGore.Features.Groups
     /// <summary>
     /// Describes the method used to share rewards between the members of a group.
     /// </summary>
-    public enum GroupShareMode
+    public enum GroupShareMode : byte
     {
         /// <summary>
         /// No sharing takes place. All rewards are distributed as normal.

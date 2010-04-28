@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace DemoGame.Server
 {
-    public enum AccountLoginResult
+    public enum AccountLoginResult : byte
     {
         Successful,
         InvalidName,

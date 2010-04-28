@@ -6,7 +6,7 @@ namespace NetGore.EditorTools.NPCChat
     /// <summary>
     /// Describes the type of NPC chat item that a <see cref="NPCChatDialogViewNode"/> handles.
     /// </summary>
-    public enum NPCChatDialogViewNodeItemType
+    public enum NPCChatDialogViewNodeItemType : byte
     {
         /// <summary>
         /// Handles an object that derives from <see cref="NPCChatDialogItemBase"/> and displays the

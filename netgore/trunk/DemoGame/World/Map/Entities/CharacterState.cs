@@ -7,7 +7,7 @@ namespace DemoGame
     /// <summary>
     /// State of the character
     /// </summary>
-    public enum CharacterState
+    public enum CharacterState : byte
     {
         /// <summary>
         /// Standing still on the ground
