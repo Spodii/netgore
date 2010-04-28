@@ -161,13 +161,34 @@ namespace DemoGame.MapEditor
 
             if (_selectedMapGrhs.Count == 1)
             {
-                // Move the selected single MapGrh
-                foreach (var mg in _selectedMapGrhs)
+                if (Container.KeyEventArgs.Alt)
                 {
-                    var pos = cursorPos - _selectedEntityOffset;
-                    if (_mnuSnapToGrid.Checked)
-                        pos = Container.Grid.AlignDown(pos);
-                    mg.Position = pos;
+                    // Rotate
+                    var hDelta = cursorPos.Y - _lastCursorPos.Y;
+                    foreach (var mg in _selectedMapGrhs)
+                    {
+                        mg.Rotation += hDelta * 0.02f;
+                    }
+                }
+                else if (Container.KeyEventArgs.Control)
+                {
+                    // Scale
+                    var delta = (cursorPos - _lastCursorPos).Sum();
+                    foreach (var mg in _selectedMapGrhs)
+                    {
+                        mg.Scale += new Vector2(delta * 0.01f);
+                    }
+                }
+                else
+                {
+                    // Move the selected single MapGrh
+                    foreach (var mg in _selectedMapGrhs)
+                    {
+                        var pos = cursorPos - _selectedEntityOffset;
+                        if (_mnuSnapToGrid.Checked)
+                            pos = Container.Grid.AlignDown(pos);
+                        mg.Position = pos;
+                    }
                 }
             }
             else if (e.Button == MouseButtons.Left && _mapGrhMoveBox != null)
@@ -187,6 +208,8 @@ namespace DemoGame.MapEditor
                     Container.SelectedTransBox = _mapGrhMoveBox;
                 }
             }
+
+            _lastCursorPos = cursorPos;
         }
 
         /// <summary>
@@ -273,6 +296,8 @@ namespace DemoGame.MapEditor
             }
         }
 
+        Vector2 _lastCursorPos;
+
         /// <summary>
         ///   When overridden in the derived class, handles generic updating of the cursor. This is
         ///   called every frame.
@@ -289,7 +314,14 @@ namespace DemoGame.MapEditor
             }
 
             if (isOverBox || _selectedMapGrhs.Count != 0 && Container.MouseButton == MouseButtons.Left)
-                Container.Cursor = Cursors.SizeAll;
+            {
+                if (Container.KeyEventArgs.Alt)
+                    Container.Cursor = Cursors.NoMoveVert;
+                else if (Container.KeyEventArgs.Control)
+                    Container.Cursor = Cursors.SizeNWSE;
+                else
+                    Container.Cursor = Cursors.SizeAll;
+            }
             else
                 Container.Cursor = Cursors.Default;
         }

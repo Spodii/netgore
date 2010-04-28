@@ -1119,21 +1119,28 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Updates the cursor based on the transformation box the cursor is over
-        /// or the currently selected transformation box
+        /// Gets or sets the cursor that is displayed when the mouse pointer is over the control.
         /// </summary>
-        void UpdateCursor()
+        /// <returns>
+        /// A <see cref="T:System.Windows.Forms.Cursor"/> that represents the cursor to display when the mouse pointer is over the control.
+        /// </returns>
+        public override Cursor Cursor
         {
-            // Don't do anything if we have an unknown cursor
-            if (Cursor != Cursors.Default && Cursor != Cursors.SizeAll && Cursor != Cursors.SizeNESW && Cursor != Cursors.SizeNS &&
-                Cursor != Cursors.SizeNWSE && Cursor != Cursors.SizeWE)
-                return;
-
-            // Set to default if it wasn't yet set
-            Cursor = Cursors.Default;
-
-            CursorManager.Update();
+            get
+            {
+                return _currentCursor;
+            }
+            set
+            {
+                _currentCursor = value;
+            }
         }
+
+        /// <summary>
+        /// Used to hold the last set Cursor property value without actually changing the cursor. This way, we only actually change the cursor
+        /// once per frame, which helps avoid "flickering" from changing it multiple times per frame.
+        /// </summary>
+        Cursor _currentCursor = Cursors.Default;
 
         /// <summary>
         /// Handles updating when the <see cref="EditGrhForm"/> is visible and has taken over the main screen (so it
@@ -1266,6 +1273,9 @@ namespace DemoGame.MapEditor
         /// </summary>
         void UpdateGame()
         {
+            // Restore to the default cursor
+            Cursor = Cursors.Default;
+
             // Update the time
             var currTime = (int)_stopWatch.ElapsedMilliseconds;
             var deltaTime = currTime - _currentTime;
@@ -1296,9 +1306,14 @@ namespace DemoGame.MapEditor
 
             // Update other stuff
             Map.Update(deltaTime);
-            UpdateCursor();
             DrawingManager.Update(currTime);
             _selectedGrh.Update(currTime);
+
+            // Update the cursor manager
+            CursorManager.Update();
+
+            // Apply the new cursor
+            base.Cursor = _currentCursor;
         }
 
         void btnAddSpawn_Click(object sender, EventArgs e)
