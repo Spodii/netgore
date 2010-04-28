@@ -1,18 +1,18 @@
-using System.Linq;
+﻿using NetGore.Graphics;
 
 namespace NetGore.IO.PropertySync
 {
     /// <summary>
-    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing an <see cref="Alignment"/>.
+    /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing an <see cref="SpriteEffects"/>.
     /// </summary>
-    [PropertySyncHandler(typeof(Alignment))]
-    public sealed class PropertySyncAlignment : PropertySyncBase<Alignment>
+    [PropertySyncHandler(typeof(SpriteEffects))]
+    public sealed class PropertySyncSpriteEffects : PropertySyncBase<SpriteEffects>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertySyncAlignment"/> class.
+        /// Initializes a new instance of the <see cref="PropertySyncSpriteEffects"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncAlignment(SyncValueAttributeInfo syncValueAttributeInfo)
+        public PropertySyncSpriteEffects(SyncValueAttributeInfo syncValueAttributeInfo)
             : base(syncValueAttributeInfo)
         {
         }
@@ -23,9 +23,9 @@ namespace NetGore.IO.PropertySync
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override Alignment Read(string name, IValueReader reader)
+        protected override SpriteEffects Read(string name, IValueReader reader)
         {
-            return reader.ReadEnum<Alignment>(name);
+            return reader.ReadEnum<SpriteEffects>(name);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace NetGore.IO.PropertySync
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, Alignment value)
+        protected override void Write(string name, IValueWriter writer, SpriteEffects value)
         {
             writer.WriteEnum(name, value);
         }

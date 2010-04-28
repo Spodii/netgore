@@ -408,7 +408,7 @@ namespace DemoGame.Client
                 w.WriteMany(_usedIndiciesNodeName, GetMapGrhList(), w.Write);
 
                 // MapGrhs
-                w.WriteManyNodes(_mapGrhsNodeName, _mapGrhs, ((writer, item) => item.Write(writer)));
+                w.WriteManyNodes(_mapGrhsNodeName, _mapGrhs, ((writer, item) => item.WriteState(writer)));
             }
             w.WriteEndNode(_mapGrhsNodeName);
         }
