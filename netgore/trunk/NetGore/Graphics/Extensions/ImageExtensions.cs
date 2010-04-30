@@ -168,6 +168,8 @@ namespace NetGore.Graphics
         /// outside of the <paramref name="image"/>.</exception>
         public static unsafe Bitmap ToBitmap(this SFML.Graphics.Image image, Rectangle source)
         {
+            const int bytesPerColor = 4;
+
             if (image == null)
                 throw new ArgumentNullException("image");
 
@@ -183,12 +185,10 @@ namespace NetGore.Graphics
             var rect = new Rectangle(0, 0, source.Width, source.Height);
             var data = b.LockBits(rect, ImageLockMode.WriteOnly, b.PixelFormat);
 
-            const int bytesPerColor = 4;
-
-            var srcStride = rect.Width;
-
             try
             {
+                var srcStride = rect.Width;
+
                 // Copy the pixel values byte-by-byte, making sure to copy the RGBA source to the ARGB destination
                 for (var y = 0; y < data.Height; y++)
                 {

@@ -159,7 +159,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the pixel height for a single frame Grh (SourceRect.Height)
+        /// Gets the pixel height for a single frame Grh (SourceRect.Height).
         /// </summary>
         public int Height
         {
@@ -284,7 +284,7 @@ namespace NetGore.Graphics
         /// <param name="newTexture">Name of the new texture to use.</param>
         public void ChangeTexture(TextureAssetName newTexture)
         {
-            ChangeTexture(newTexture, GetOriginalSource());
+            ChangeTexture(newTexture, OriginalSourceRect);
         }
 
         /// <summary>
@@ -341,14 +341,6 @@ namespace NetGore.Graphics
                 delay += failedLoadAttempts * 1000;
 
             return delay;
-        }
-
-        /// <summary>
-        /// Gets the original source rectangle, bypassing any applied atlas
-        /// </summary>
-        public Rectangle GetOriginalSource()
-        {
-            return _sourceRect;
         }
 
         /// <summary>
@@ -426,14 +418,14 @@ namespace NetGore.Graphics
             writer.Write(_automaticSizeValueKey, AutomaticSize);
             writer.WriteStartNode(_textureNodeName);
             writer.Write(_textureNameValueKey, TextureName);
-            writer.Write(_textureSourceValueKey, GetOriginalSource());
+            writer.Write(_textureSourceValueKey, OriginalSourceRect);
             writer.WriteEndNode(_textureNodeName);
         }
 
         #region ITextureAtlasable Members
 
         /// <summary>
-        /// Gets the texture source <see cref="Rectangle"/> of the original image.
+        /// Gets the texture source <see cref="Rectangle"/> of the image.
         /// </summary>
         public Rectangle SourceRect
         {

@@ -225,8 +225,6 @@ namespace NetGore.EditorTools
             // Item wasn't in the cache, so we have to create it
             _dirty = true;
 
-            var src = grhData.SourceRect;
-            var dest = ImageList.ImageSize;
             var tex = grhData.Texture;
 
             // If the texture is invalid, return the error image
@@ -239,7 +237,8 @@ namespace NetGore.EditorTools
                 return null;
             }
 
-            return tex.ToBitmap(src, dest.Width, dest.Height);
+            var destSize = ImageList.ImageSize;
+            return tex.ToBitmap(grhData.SourceRect, destSize.Width, destSize.Height);
         }
 
         /// <summary>
