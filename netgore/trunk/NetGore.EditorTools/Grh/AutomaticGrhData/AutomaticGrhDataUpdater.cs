@@ -323,12 +323,12 @@ namespace NetGore.EditorTools
                 if (++i >= 25)
                 {
                     i = 0;
-                    cm.Unload(ContentLevel.Temporary);
+                    cm.Unload(ContentLevel.Temporary, true);
                 }
             }
 
             // Clear the temporary content (since we may have loaded stuff at the Temporary level with GetTextureSize)
-            cm.Unload(ContentLevel.Temporary);
+            cm.Unload(ContentLevel.Temporary, true);
 
             return ret;
         }
