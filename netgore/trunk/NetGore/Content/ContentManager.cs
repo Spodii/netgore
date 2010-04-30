@@ -36,6 +36,7 @@ namespace NetGore.Content
         bool _isDisposed = false;
         bool _isTrackingLoads = false;
         ContentLevel? _queuedUnloadLevel = null;
+        bool _queuedUnloadIgnoreTime = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentManager"/> class.
@@ -62,7 +63,7 @@ namespace NetGore.Content
         static event EventHandler DoNotUploadSetFalse;
 
         /// <summary>
-        /// Gets or sets if <see cref="ContentManager.Unload()"/> must queue unload calls.
+        /// Gets or sets if <see cref="ContentManager.Unload"/> must queue unload calls.
         /// </summary>
         internal static bool DoNotUnload
         {
@@ -121,7 +122,7 @@ namespace NetGore.Content
         void ContentManager_DoNotUploadSetFalse(object sender, EventArgs e)
         {
             if (_queuedUnloadLevel != null)
-                DoUnload(_queuedUnloadLevel.Value);
+                DoUnload(_queuedUnloadLevel.Value, _queuedUnloadIgnoreTime);
         }
 
         /// <summary>
@@ -146,7 +147,12 @@ namespace NetGore.Content
             Unload();
         }
 
-        void DoUnload(ContentLevel level)
+        /// <summary>
+        /// Does the actual work of unloading assets.
+        /// </summary>
+        /// <param name="level">The <see cref="ContentLevel"/> of the content to unload.</param>
+        /// <param name="ignoreTime">If true, the last-used time will be ignored.</param>
+        void DoUnload(ContentLevel level, bool ignoreTime)
         {
             var currTime = Environment.TickCount;
 
@@ -169,7 +175,7 @@ namespace NetGore.Content
                     {
                         try
                         {
-                            if (currTime - asset.LastUsedTime < _minElapsedTimeToUnload)
+                            if (!ignoreTime && (currTime - asset.LastUsedTime < _minElapsedTimeToUnload))
                                 continue;
 
                             asset.Dispose();
@@ -576,27 +582,31 @@ namespace NetGore.Content
         }
 
         /// <summary>
-        /// Unloads all content from all levels.
+        /// Unloads all content from the specified <see cref="ContentLevel"/>, and all levels
+        /// below that level.
         /// </summary>
-        public void Unload()
+        /// <param name="level">The level of the content to unload. The content at this level, and all levels below it will be
+        /// unloaded. The default is <see cref="ContentLevel.Global"/> to unload content from all levels.</param>
+        /// <param name="ignoreTime">If true, the content in the <paramref name="level"/> will be forced to be unloaded even
+        /// if it was recently used. By default, this is false to prevent excessive reloading. Usually you will only set this
+        /// value to true if you are processing a lot of content at the same time just once, which usually only happens
+        /// in the editors.</param>
+        public void Unload(ContentLevel level = ContentLevel.Global, bool ignoreTime = false)
         {
             if (IsDisposed)
                 return;
 
-            Unload(ContentLevel.Global);
-        }
-
-        /// <summary>
-        /// Unloads all content from the specified <see cref="ContentLevel"/>, and all levels
-        /// below that level.
-        /// </summary>
-        /// <param name="level">The level of the content to unload.</param>
-        public void Unload(ContentLevel level)
-        {
             if (DoNotUnload)
+            {
+                // Store the parameter information to process the unloading later
                 _queuedUnloadLevel = level;
+                _queuedUnloadIgnoreTime = ignoreTime;
+            }
             else
-                DoUnload(level);
+            {
+                // Unload immediately
+                DoUnload(level, ignoreTime);
+            }
         }
 
         #endregion
