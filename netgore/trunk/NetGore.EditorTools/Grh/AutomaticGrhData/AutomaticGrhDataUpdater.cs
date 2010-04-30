@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using NetGore.Content;
 using NetGore.Graphics;
@@ -275,6 +276,7 @@ namespace NetGore.EditorTools
                 return Enumerable.Empty<GrhData>();
 
             // Create the GrhDatas
+            int i = 0;
             var ret = new List<GrhData>();
             foreach (var texture in textures)
             {
@@ -316,9 +318,16 @@ namespace NetGore.EditorTools
 
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Automatic creation of stationary GrhData `{0}`.", gd);
+
+                // Every 25 textures, clear out the temporary content to avoid using too much memory
+                if (++i >= 25)
+                {
+                    i = 0;
+                    cm.Unload(ContentLevel.Temporary);
+                }
             }
 
-            // Clear the temporary content
+            // Clear the temporary content (since we may have loaded stuff at the Temporary level with GetTextureSize)
             cm.Unload(ContentLevel.Temporary);
 
             return ret;

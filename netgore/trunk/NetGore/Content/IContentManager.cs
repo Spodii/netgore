@@ -102,15 +102,15 @@ namespace NetGore.Content
         bool TryGetContentLevel(string assetName, out ContentLevel level);
 
         /// <summary>
-        /// Unloads all content from all levels.
-        /// </summary>
-        void Unload();
-
-        /// <summary>
         /// Unloads all content from the specified <see cref="ContentLevel"/>, and all levels
         /// below that level.
         /// </summary>
-        /// <param name="level">The level of the content to unload.</param>
-        void Unload(ContentLevel level);
+        /// <param name="level">The level of the content to unload. The content at this level, and all levels below it will be
+        /// unloaded. The default is <see cref="ContentLevel.Global"/> to unload content from all levels.</param>
+        /// <param name="ignoreTime">If true, the content in the <paramref name="level"/> will be forced to be unloaded even
+        /// if it was recently used. By default, this is false to prevent excessive reloading. Usually you will only set this
+        /// value to true if you are processing a lot of content at the same time just once, which usually only happens
+        /// in the editors.</param>
+        void Unload(ContentLevel level = ContentLevel.Global, bool ignoreTime = false);
     }
 }
