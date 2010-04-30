@@ -12,6 +12,7 @@ namespace NetGore.EditorTools
     /// <summary>
     /// A <see cref="TreeNode"/> for the <see cref="GrhTreeView"/> that represents a single <see cref="GrhData"/>.
     /// </summary>
+    [Serializable]
     public class GrhTreeViewNode : TreeNode
     {
         readonly GrhData _grhData;

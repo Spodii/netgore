@@ -29,9 +29,9 @@ namespace NetGore.EditorTools
 
             using (var g = System.Drawing.Graphics.FromImage(bmp))
             {
-                using (var pen = new Pen(color, width * 2))
+                using (var brush = new SolidBrush(color))
                 {
-                    g.DrawRectangle(pen, 0, 0, width, height);
+                    g.FillRectangle(brush, 0, 0, width, height);
                 }
             }
 

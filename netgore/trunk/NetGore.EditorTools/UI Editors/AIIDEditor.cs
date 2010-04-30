@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Linq;
 using System.Reflection;
+using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using log4net;
@@ -31,6 +32,7 @@ namespace NetGore.EditorTools
         /// The new value of the object. If the value of the object has not changed, this should return the
         /// same object it was passed.
         /// </returns>
+        [PermissionSet(SecurityAction.LinkDemand, Name = "Fulltrust")]
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             var svc = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
@@ -77,6 +79,7 @@ namespace NetGore.EditorTools
         /// then <see cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle"/> will return
         /// <see cref="F:System.Drawing.Design.UITypeEditorEditStyle.None"/>.
         /// </returns>
+        [PermissionSet(SecurityAction.LinkDemand, Name = "Fulltrust")]
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.Modal;

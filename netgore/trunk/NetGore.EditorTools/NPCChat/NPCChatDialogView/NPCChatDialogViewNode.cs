@@ -10,6 +10,7 @@ namespace NetGore.EditorTools.NPCChat
     /// <summary>
     /// A TreeNode for the <see cref="NPCChatDialogView"/>.
     /// </summary>
+    [Serializable]
     public class NPCChatDialogViewNode : TreeNode
     {
         NPCChatDialogViewNodeItemType _chatItemType;

@@ -234,7 +234,7 @@ namespace NetGore.EditorTools
             chkAutoSize.Checked = grhData.AutomaticSize;
             radioStationary.Checked = true;
             radioAnimated.Checked = false;
-            var r = grhData.GetOriginalSource();
+            var r = grhData.OriginalSourceRect;
             txtX.Text = r.X.ToString();
             txtY.Text = r.Y.ToString();
             txtW.Text = r.Width.ToString();
@@ -516,7 +516,7 @@ namespace NetGore.EditorTools
             uint o;
             if (Parser.Current.TryParse(txtH.Text, out o))
             {
-                if (o == asStationary.GetOriginalSource().Height)
+                if (o == asStationary.OriginalSourceRect.Height)
                     txtH.BackColor = EditorColors.Normal;
                 else
                     txtH.BackColor = EditorColors.Changed;
@@ -563,7 +563,7 @@ namespace NetGore.EditorTools
             uint o;
             if (Parser.Current.TryParse(txtW.Text, out o))
             {
-                if (o == asStationary.GetOriginalSource().Width)
+                if (o == asStationary.OriginalSourceRect.Width)
                     txtW.BackColor = EditorColors.Normal;
                 else
                     txtW.BackColor = EditorColors.Changed;
@@ -649,7 +649,7 @@ namespace NetGore.EditorTools
             uint o;
             if (Parser.Current.TryParse(txtX.Text, out o))
             {
-                if (o == asStationary.GetOriginalSource().X)
+                if (o == asStationary.OriginalSourceRect.X)
                     txtX.BackColor = EditorColors.Normal;
                 else
                     txtX.BackColor = EditorColors.Changed;
@@ -667,7 +667,7 @@ namespace NetGore.EditorTools
             uint o;
             if (Parser.Current.TryParse(txtY.Text, out o))
             {
-                if (o == asStationary.GetOriginalSource().Y)
+                if (o == asStationary.OriginalSourceRect.Y)
                     txtY.BackColor = EditorColors.Normal;
                 else
                     txtY.BackColor = EditorColors.Changed;

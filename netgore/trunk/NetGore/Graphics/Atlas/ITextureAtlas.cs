@@ -9,7 +9,7 @@ namespace NetGore.Graphics
     public interface ITextureAtlasable
     {
         /// <summary>
-        /// Gets the texture source <see cref="Rectangle"/> of the original image.
+        /// Gets the texture source <see cref="Rectangle"/> of the image.
         /// </summary>
         Rectangle SourceRect { get; }
 

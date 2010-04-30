@@ -11,6 +11,7 @@ namespace NetGore.EditorTools
     /// A <see cref="TreeNode"/> for the <see cref="GrhTreeView"/> that represents a folder containing one or more
     /// child nodes.
     /// </summary>
+    [Serializable]
     public class GrhTreeViewFolderNode : TreeNode
     {
         /// <summary>
