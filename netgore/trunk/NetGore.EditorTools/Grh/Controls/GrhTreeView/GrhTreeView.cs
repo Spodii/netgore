@@ -426,6 +426,11 @@ namespace NetGore.EditorTools
             return null;
         }
 
+        /// <summary>
+        /// Gets all of the visible <see cref="GrhTreeViewNode"/>s in this <see cref="GrhTreeView"/> that are animated.
+        /// </summary>
+        /// <param name="root">The root node.</param>
+        /// <returns>All of the visible <see cref="GrhTreeViewNode"/>s in this <see cref="GrhTreeView"/> that are animated.</returns>
         static IEnumerable<GrhTreeViewNode> GetVisibleAnimatedGrhTreeViewNodes(IEnumerable root)
         {
             foreach (var node in root.OfType<TreeNode>())
@@ -434,10 +439,15 @@ namespace NetGore.EditorTools
                     continue;
 
                 var asGrhTreeViewNode = node as GrhTreeViewNode;
+
                 if (asGrhTreeViewNode != null && asGrhTreeViewNode.NeedsToUpdateImage)
-                    yield return asGrhTreeViewNode;
-                else if (node.Nodes.Count > 0)
                 {
+                    // Return the node
+                    yield return asGrhTreeViewNode;
+                }
+                else if (node.Nodes.Count > 0 && node.IsExpanded)
+                {
+                    // Recursively add child nodes of this node if it is expanded
                     foreach (var child in GetVisibleAnimatedGrhTreeViewNodes(node.Nodes))
                     {
                         yield return child;

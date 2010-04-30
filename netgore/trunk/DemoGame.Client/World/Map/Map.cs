@@ -23,8 +23,8 @@ namespace DemoGame.Client
         const string _mapGrhsNodeName = "MapGrhs";
         const string _particleEffectsNodeName = "ParticleEffects";
         const string _usedIndiciesNodeName = "UsedIndicies";
-        static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
 
+        static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
         static readonly SpriteBatchParticleRenderer _particleEffectRenderer = new SpriteBatchParticleRenderer();
 
         /// <summary>
