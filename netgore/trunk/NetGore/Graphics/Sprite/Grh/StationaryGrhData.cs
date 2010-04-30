@@ -41,7 +41,11 @@ namespace NetGore.Graphics
         /// </summary>
         int _nextLoadAttemptTime = int.MinValue;
 
-        Rectangle _sourceRect;
+        ushort _sourceHeight = 0;
+        ushort _sourceWidth = 0;
+        ushort _sourceX = 0;
+        ushort _sourceY = 0;
+
         Image _texture;
         TextureAssetName _textureName;
 
@@ -91,7 +95,7 @@ namespace NetGore.Graphics
             var textureSource = textureReader.ReadRectangle(_textureSourceValueKey);
 
             _textureName = textureName;
-            _sourceRect = textureSource;
+            SetSourceRect(textureSource);
             AutomaticSize = automaticSize;
         }
 
@@ -114,21 +118,7 @@ namespace NetGore.Graphics
                 _automaticSize = value;
 
                 if (AutomaticSize)
-                {
-                    _isUsingAtlas = false;
-                    _texture = null;
-                    ValidateTexture();
-
-                    if (Texture == null || Texture.IsDisposed)
-                    {
-                        const string errmsg = "GrhData `{0}` cannot be automatically sized since the texture is null or disposed!";
-                        if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, this);
-                        _sourceRect = new Rectangle(0, 0, 1, 1);
-                    }
-                    else
-                        _sourceRect = new Rectangle(0, 0, (int)Texture.Width, (int)Texture.Height);
-                }
+                    SetSourceRect(0, 0, 0, 0);
             }
         }
 
@@ -163,7 +153,11 @@ namespace NetGore.Graphics
         /// </summary>
         public int Height
         {
-            get { return _sourceRect.Height; }
+            get
+            {
+                LoadAutoTextureSizeIfNeeded();
+                return _sourceHeight;
+            }
         }
 
         /// <summary>
@@ -172,7 +166,11 @@ namespace NetGore.Graphics
         /// </summary>
         public Rectangle OriginalSourceRect
         {
-            get { return _sourceRect; }
+            get
+            {
+                LoadAutoTextureSizeIfNeeded();
+                return new Rectangle(_sourceX, _sourceY, _sourceWidth, _sourceHeight);
+            }
         }
 
         /// <summary>
@@ -183,8 +181,7 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-                return _isUsingAtlas
-                           ? new Vector2(_atlasSourceRect.X, _atlasSourceRect.Y) : new Vector2(_sourceRect.X, _sourceRect.Y);
+                return _isUsingAtlas ? new Vector2(_atlasSourceRect.X, _atlasSourceRect.Y) : new Vector2(_sourceX, _sourceY);
             }
         }
 
@@ -193,7 +190,11 @@ namespace NetGore.Graphics
         /// </summary>
         public override Vector2 Size
         {
-            get { return new Vector2(_sourceRect.Width, _sourceRect.Height); }
+            get
+            {
+                LoadAutoTextureSizeIfNeeded();
+                return new Vector2(_sourceWidth, _sourceHeight);
+            }
         }
 
         /// <summary>
@@ -218,7 +219,11 @@ namespace NetGore.Graphics
         /// </summary>
         public int Width
         {
-            get { return _sourceRect.Width; }
+            get
+            {
+                LoadAutoTextureSizeIfNeeded();
+                return _sourceWidth;
+            }
         }
 
         /// <summary>
@@ -229,7 +234,7 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-                return _isUsingAtlas ? _atlasSourceRect.X : _sourceRect.X;
+                return _isUsingAtlas ? _atlasSourceRect.X : _sourceX;
             }
         }
 
@@ -241,7 +246,7 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-                return _isUsingAtlas ? _atlasSourceRect.Y : _sourceRect.Y;
+                return _isUsingAtlas ? _atlasSourceRect.Y : _sourceY;
             }
         }
 
@@ -257,10 +262,10 @@ namespace NetGore.Graphics
                 throw new ArgumentNullException("newTexture");
 
             // Check that the values have changed
-            if (source == _sourceRect && TextureName == newTexture)
+            if (source == SourceRect && TextureName == newTexture)
                 return;
 
-            _sourceRect = source;
+            SetSourceRect(source);
 
             // Check that it is actually a different texture
             TextureAssetName oldTextureName = null;
@@ -301,7 +306,8 @@ namespace NetGore.Graphics
         protected override GrhData DeepCopy(SpriteCategorization newCategorization, GrhIndex newGrhIndex)
         {
             var copy = new StationaryGrhData(ContentManager, newGrhIndex, newCategorization)
-            { _textureName = TextureName, _sourceRect = _sourceRect, _automaticSize = _automaticSize };
+            { _textureName = TextureName, _automaticSize = _automaticSize };
+            copy.SetSourceRect(SourceRect);
 
             return copy;
         }
@@ -343,6 +349,30 @@ namespace NetGore.Graphics
             return delay;
         }
 
+        void LoadAutoTextureSizeIfNeeded()
+        {
+            if (!AutomaticSize || _sourceWidth != 0)
+                return;
+
+            _isUsingAtlas = false;
+            _texture = null;
+            ValidateTexture();
+
+            if (Texture == null || Texture.IsDisposed)
+            {
+                // Failed to load, so try to just use the top-left corner pixel
+                const string errmsg = "GrhData `{0}` cannot be automatically sized since the texture is null or disposed!";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                SetSourceRect(0, 0, 1, 1);
+            }
+            else
+            {
+                // Loaded properly
+                SetSourceRect(0, 0, (int)Texture.Width, (int)Texture.Height);
+            }
+        }
+
         /// <summary>
         /// Reads a <see cref="GrhData"/> from an <see cref="IValueReader"/>.
         /// </summary>
@@ -358,6 +388,28 @@ namespace NetGore.Graphics
             ReadHeader(r, out grhIndex, out categorization);
 
             return new StationaryGrhData(r, cm, grhIndex, categorization);
+        }
+
+        void SetSourceRect(Rectangle r)
+        {
+            SetSourceRect(r.X, r.Y, r.Width, r.Height);
+        }
+
+        void SetSourceRect(int x, int y, int width, int height)
+        {
+            if (x < 0)
+                throw new ArgumentOutOfRangeException("x");
+            if (y < 0)
+                throw new ArgumentOutOfRangeException("y");
+            if (width < 0)
+                throw new ArgumentOutOfRangeException("width");
+            if (height < 0)
+                throw new ArgumentOutOfRangeException("height");
+
+            _sourceX = (ushort)x;
+            _sourceY = (ushort)y;
+            _sourceWidth = (ushort)width;
+            _sourceHeight = (ushort)height;
         }
 
         /// <summary>
@@ -432,7 +484,12 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-                return _isUsingAtlas ? _atlasSourceRect : _sourceRect;
+
+                if (_isUsingAtlas)
+                    return _atlasSourceRect;
+
+                LoadAutoTextureSizeIfNeeded();
+                return new Rectangle(_sourceX, _sourceY, _sourceWidth, _sourceHeight);
             }
         }
 

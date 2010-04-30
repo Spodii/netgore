@@ -32,8 +32,10 @@ namespace NetGore.Graphics
 
         readonly IContentManager _cm;
         readonly StationaryGrhData[] _frames;
-        readonly Vector2 _size;
         readonly float _speed;
+
+        ushort _sizeX = 0;
+        ushort _sizeY = 0;
 
         /// <summary>
         /// Initializes the <see cref="AutomaticAnimatedGrhData"/> class.
@@ -71,7 +73,6 @@ namespace NetGore.Graphics
 
             _cm = cm;
             _frames = CreateFrames(framesDir);
-            _size = GetMaxSize(_frames);
         }
 
         /// <summary>
@@ -105,7 +106,11 @@ namespace NetGore.Graphics
         /// </summary>
         public override Vector2 Size
         {
-            get { return _size; }
+            get
+            {
+                LoadSizeIfNeeded();
+                return new Vector2(_sizeX, _sizeY);
+            }
         }
 
         /// <summary>
@@ -248,6 +253,22 @@ namespace NetGore.Graphics
         public static bool IsAutomaticAnimatedGrhDataDirectory(string directory)
         {
             return _aaFolderRegex.IsMatch(directory);
+        }
+
+        void LoadSizeIfNeeded()
+        {
+            if (_sizeX != 0)
+                return;
+
+            var maxSize = GetMaxSize(_frames);
+
+            _sizeX = (ushort)maxSize.X;
+            if (_sizeX < 1)
+                _sizeX = 1;
+
+            _sizeY = (ushort)maxSize.Y;
+            if (_sizeY < 1)
+                _sizeY = 1;
         }
 
         /// <summary>

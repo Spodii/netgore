@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using log4net;
+using NetGore.Content;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
 using NetGore.IO;
@@ -195,6 +196,27 @@ namespace NetGore.EditorTools
             }
         }
 
+        static long GetFileLastWriteTime(ContentAssetName n)
+        {
+            return GetFileLastWriteTime(n.GetAbsoluteFilePath(ContentPaths.Dev));
+        }
+
+        static long GetFileLastWriteTime(string filePath)
+        {
+            try
+            {
+                return File.GetLastWriteTimeUtc(filePath).ToFileTimeUtc();
+            }
+            catch (FileNotFoundException)
+            {
+                return -1;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return -1;
+            }
+        }
+
         /// <summary>
         /// Creates the Image for a GrhData.
         /// </summary>
@@ -210,7 +232,7 @@ namespace NetGore.EditorTools
             var key = GetImageKey(grhData);
             if (_imageCache.TryGetValue(key, out cacheItem))
             {
-                if (grhData.OriginalSourceRect == cacheItem.SourceRect)
+                if (GetFileLastWriteTime(grhData.TextureName) == cacheItem.LastFileWriteTime)
                 {
                     // Item was in the cache and fits the conditions, so use it
                     return cacheItem.Image;
@@ -403,7 +425,10 @@ namespace NetGore.EditorTools
                 if (image == null || _errorImage == image)
                     continue;
 
-                var item = new GrhImageListCacheItem(key, image, gd.OriginalSourceRect);
+                var gdFile = gd.TextureName.GetAbsoluteFilePath(ContentPaths.Dev);
+                var lastModTime = File.GetLastWriteTimeUtc(gdFile);
+
+                var item = new GrhImageListCacheItem(key, image, lastModTime.ToFileTimeUtc());
                 validItems.Push(item);
             }
 
@@ -508,19 +533,27 @@ namespace NetGore.EditorTools
         {
             readonly Image _image;
             readonly string _key;
-            readonly Rectangle _src;
+            readonly long _lastFileWriteTime;
+
+            /// <summary>
+            /// Gets the time that the file was last written to when this cache item was created.
+            /// </summary>
+            public long LastFileWriteTime
+            {
+                get { return _lastFileWriteTime; }
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="GrhImageListCacheItem"/> struct.
             /// </summary>
             /// <param name="key">The key.</param>
             /// <param name="image">The image.</param>
-            /// <param name="sourceRect">The source rect.</param>
-            public GrhImageListCacheItem(string key, Image image, Rectangle sourceRect)
+            /// <param name="lastFileWriteTime">The last file write time.</param>
+            public GrhImageListCacheItem(string key, Image image, long lastFileWriteTime)
             {
                 _key = key;
                 _image = image;
-                _src = sourceRect;
+                _lastFileWriteTime = lastFileWriteTime;
             }
 
             /// <summary>
@@ -540,25 +573,14 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Gets the <see cref="Rectangle"/> describing the source that the <see cref="Image"/> came from.
-            /// </summary>
-            public Rectangle SourceRect
-            {
-                get { return _src; }
-            }
-
-            /// <summary>
             /// Reads a <see cref="GrhImageListCacheItem"/> from a <see cref="BinaryReader"/>.
             /// </summary>
             /// <param name="r">The <see cref="BinaryReader"/>.</param>
             /// <returns>The read <see cref="GrhImageListCacheItem"/>.</returns>
             public static GrhImageListCacheItem Read(BinaryReader r)
             {
-                var x = r.ReadInt32();
-                var y = r.ReadInt32();
-                var w = r.ReadInt32();
-                var h = r.ReadInt32();
                 var key = r.ReadString();
+                var time = r.ReadInt64();
 
                 var len = r.ReadInt32();
                 var b = new byte[len];
@@ -567,7 +589,7 @@ namespace NetGore.EditorTools
                 var ms = new MemoryStream(b);
                 var img = Image.FromStream(ms);
 
-                return new GrhImageListCacheItem(key, img, new Rectangle(x, y, w, h));
+                return new GrhImageListCacheItem(key, img, time);
             }
 
             /// <summary>
@@ -576,16 +598,13 @@ namespace NetGore.EditorTools
             /// <param name="w">The <see cref="BinaryWriter"/> to write to.</param>
             public void Write(BinaryWriter w)
             {
-                w.Write(SourceRect.X);
-                w.Write(SourceRect.Y);
-                w.Write(SourceRect.Width);
-                w.Write(SourceRect.Height);
                 w.Write(Key);
+                w.Write(LastFileWriteTime);
 
                 byte[] asArray;
                 using (var ms = new MemoryStream())
                 {
-                    Image.Save(ms, ImageFormat.Png);
+                    Image.Save(ms, ImageFormat.Bmp);
                     asArray = ms.ToArray();
                 }
 

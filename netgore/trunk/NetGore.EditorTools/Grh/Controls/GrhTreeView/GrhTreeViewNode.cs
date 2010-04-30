@@ -148,14 +148,15 @@ namespace NetGore.EditorTools
         static string GetToolTipTextStationary(StationaryGrhData grhData)
         {
             // Stationary
-            var sourceRect = grhData.SourceRect;
-
             var sb = new StringBuilder();
 
             sb.AppendLine("Grh: " + grhData.GrhIndex);
             sb.AppendLine("Texture: " + grhData.TextureName);
-            sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
-            sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
+
+            // NOTE: Had to remove showing the pos/size to avoid having the textures load...
+            // var sourceRect = grhData.SourceRect;
+            // sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
+            // sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
 
             return sb.ToString();
         }
