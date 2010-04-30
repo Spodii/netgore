@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.EditorTools;
@@ -19,6 +20,7 @@ using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using SFML.Graphics;
 using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
+using Timer = System.Windows.Forms.Timer;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable UnusedParameter.Local

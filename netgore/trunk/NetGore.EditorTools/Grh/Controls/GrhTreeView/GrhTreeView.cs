@@ -5,12 +5,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;
 using Point = System.Drawing.Point;
+using Timer = System.Windows.Forms.Timer;
 
 namespace NetGore.EditorTools
 {
@@ -543,30 +545,7 @@ namespace NetGore.EditorTools
         /// </summary>
         public void InitializeCompact()
         {
-            AllowDrop = false;
-            Nodes.Clear();
-
-            // Create the animate timer
-            _animTimer.Interval = 150;
-            _animTimer.Tick += UpdateAnimations;
-            _animTimer.Start();
-
-            // Set the sort method
-            TreeViewNodeSorter = this;
-
-            // Create the ImageList containing the Grhs as an image
-            ImageList = GrhImageList.Instance.ImageList;
-
-            // Iterate through all the GrhDatas
-            foreach (var grhData in GrhInfo.GrhDatas)
-            {
-                AddGrhToTree(grhData);
-            }
-
-            GrhInfo.Removed += GrhInfo_Removed;
-
-            // Perform the initial sort
-            Sort();
+            RealInitializeCompact();
         }
 
         /// <summary>
@@ -933,6 +912,47 @@ namespace NetGore.EditorTools
             var gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhMouseDoubleClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
+        }
+
+        void RealInitializeCompact()
+        {
+            Enabled = false;
+
+            AllowDrop = false;
+            Nodes.Clear();
+
+            // Create the animate timer
+            _animTimer.Interval = 150;
+            _animTimer.Tick += UpdateAnimations;
+            _animTimer.Start();
+
+            // Set the sort method
+            TreeViewNodeSorter = this;
+
+            // Create the ImageList containing the Grhs as an image. Do it in the background because it can sometimes take
+            // a very long time.
+            ThreadStart dLoadImageList = delegate
+            {
+                var imgList = GrhImageList.Instance.ImageList;
+                Action dSetImageList = delegate { ImageList = imgList; };
+                Invoke(dSetImageList);
+            };
+
+            Thread setImageListThread = new Thread(dLoadImageList) { IsBackground = true, Name = "Set GrhTreeView ImageList" };
+            setImageListThread.Start();
+
+            // Iterate through all the GrhDatas
+            foreach (var grhData in GrhInfo.GrhDatas)
+            {
+                AddGrhToTree(grhData);
+            }
+
+            GrhInfo.Removed += GrhInfo_Removed;
+
+            // Perform the initial sort
+            Sort();
+
+            Enabled = true;
         }
 
         /// <summary>
