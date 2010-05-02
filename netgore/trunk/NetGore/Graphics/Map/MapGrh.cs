@@ -259,6 +259,7 @@ namespace NetGore.Graphics
         [DisplayName("Layer Depth")]
         [Description("The drawing depth of the object. Objects with higher values are drawn above those with lower values.")]
         [DefaultValue((byte)0)]
+        [SyncValue]
         public int LayerDepth
         {
             get { return _layerDepth; }
