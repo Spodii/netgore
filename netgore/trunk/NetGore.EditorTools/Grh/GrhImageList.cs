@@ -14,7 +14,6 @@ using NetGore.Content;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
 using NetGore.IO;
-using Rectangle = SFML.Graphics.Rectangle;
 
 namespace NetGore.EditorTools
 {
@@ -27,16 +26,17 @@ namespace NetGore.EditorTools
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// If the <see cref="_numTimesChanged"/> is greater than or equal to this value, then the <see cref="GrhImageList"/> will
+        /// be automatically saved. This is to ensure that less work has to be repeated next time the list loads. The greater the
+        /// value, the greater the overhead from the constant saves.
+        /// </summary>
+        const ushort _numChangesBeforeSaving = 30;
+
+        /// <summary>
         /// An <see cref="Image"/> used for when an <see cref="Image"/> failed to be created properly. This way, we
         /// at least have something to display.
         /// </summary>
         static readonly Image _errorImage;
-
-        /// <summary>
-        /// Gets an <see cref="Image"/> that can be used for when the <see cref="GrhImageList"/> did not contain an <see cref="Image"/>
-        /// with the specified key.
-        /// </summary>
-        public static Image ErrorImage { get { return _errorImage; } }
 
         static readonly object _instanceSync = new object();
 
@@ -48,10 +48,10 @@ namespace NetGore.EditorTools
         readonly ImageList _imageList = new ImageList();
 
         /// <summary>
-        /// If the cache is dirty. That is, if there is items that have been loaded into the <see cref="GrhImageList"/>
-        /// since the last call to <see cref="GrhImageList.Save"/>.
+        /// Keeps track of how many times the <see cref="GrhImageList"/> has changed since the last save. This is used to make
+        /// sure that we do not save if there was nothing changed (count == 0) and to auto-save after quite a few things have changed.
         /// </summary>
-        bool _dirty = false;
+        ushort _numTimesChanged = 0;
 
         /// <summary>
         /// Initializes the <see cref="GrhImageList"/> class.
@@ -123,6 +123,15 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets an <see cref="Image"/> that can be used for when the <see cref="GrhImageList"/> did not contain an <see cref="Image"/>
+        /// with the specified key.
+        /// </summary>
+        public static Image ErrorImage
+        {
+            get { return _errorImage; }
+        }
+
+        /// <summary>
         /// Gets the ImageList used for the GrhDatas.
         /// </summary>
         public ImageList ImageList
@@ -171,7 +180,7 @@ namespace NetGore.EditorTools
             var img = CreateImage(grhData);
 
             // If the image already exists, remove the old one and add this new one. This should only happen if, for some
-            // reason, we try to add the StationaryGrhData to the image list twice.
+            // reason, we try to add the image to the image list twice.
             if (ImageList.Images.ContainsKey(key))
             {
                 var tempImg = ImageList.Images[key];
@@ -193,27 +202,6 @@ namespace NetGore.EditorTools
             {
                 // Add the image to the ImageList
                 ImageList.Images.Add(key, img);
-            }
-        }
-
-        static long GetFileLastWriteTime(ContentAssetName n)
-        {
-            return GetFileLastWriteTime(n.GetAbsoluteFilePath(ContentPaths.Dev));
-        }
-
-        static long GetFileLastWriteTime(string filePath)
-        {
-            try
-            {
-                return File.GetLastWriteTimeUtc(filePath).ToFileTimeUtc();
-            }
-            catch (FileNotFoundException)
-            {
-                return -1;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return -1;
             }
         }
 
@@ -244,9 +232,12 @@ namespace NetGore.EditorTools
                 }
             }
 
-            // Item wasn't in the cache, so we have to create it
-            _dirty = true;
+            // Increment the change count, and if needed, save
+            _numTimesChanged++;
+            if (_numTimesChanged > _numChangesBeforeSaving)
+                Save();
 
+            // Item wasn't in the cache, so we have to create it
             var tex = grhData.Texture;
 
             // If the texture is invalid, return the error image
@@ -261,6 +252,40 @@ namespace NetGore.EditorTools
 
             var destSize = ImageList.ImageSize;
             return tex.ToBitmap(grhData.SourceRect, destSize.Width, destSize.Height);
+        }
+
+        /// <summary>
+        /// Gets the time a file was last written to.
+        /// </summary>
+        /// <param name="n">The <see cref="ContentAssetName"/> of the asset to get the time for.</param>
+        /// <returns>The time the asset's file was last written to.</returns>
+        static long GetFileLastWriteTime(ContentAssetName n)
+        {
+            // We use the dev path, NOT the build! Otherwise, we will end up having to rebuild the cache every time you rebuild!
+            // Since the dev and build content should be the exact same (but maybe in a different format), there is no reason
+            // to use build.
+            return GetFileLastWriteTime(n.GetAbsoluteFilePath(ContentPaths.Dev));
+        }
+
+        /// <summary>
+        /// Gets the time a file was last written to.
+        /// </summary>
+        /// <param name="filePath">The path to the file to get the time for.</param>
+        /// <returns>The time the file was last written to.</returns>
+        static long GetFileLastWriteTime(string filePath)
+        {
+            try
+            {
+                return File.GetLastWriteTimeUtc(filePath).ToFileTimeUtc();
+            }
+            catch (FileNotFoundException)
+            {
+                return -1;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return -1;
+            }
         }
 
         /// <summary>
@@ -408,10 +433,11 @@ namespace NetGore.EditorTools
         /// to true, the file will be saved anyways.</param>
         public void Save(bool forced = false)
         {
-            if (!forced && !_dirty && File.Exists(CacheFilePath))
+            // If not forcing the save, no changes have been made, and the file exists, then we don't need to save
+            if (!forced && _numTimesChanged == 0 && File.Exists(CacheFilePath))
                 return;
 
-            _dirty = false;
+            _numTimesChanged = 0;
 
             var grhDatas = GrhInfo.GrhDatas.OfType<StationaryGrhData>().ToArray();
             var validItems = new Stack<GrhImageListCacheItem>(grhDatas.Length);
@@ -536,14 +562,6 @@ namespace NetGore.EditorTools
             readonly long _lastFileWriteTime;
 
             /// <summary>
-            /// Gets the time that the file was last written to when this cache item was created.
-            /// </summary>
-            public long LastFileWriteTime
-            {
-                get { return _lastFileWriteTime; }
-            }
-
-            /// <summary>
             /// Initializes a new instance of the <see cref="GrhImageListCacheItem"/> struct.
             /// </summary>
             /// <param name="key">The key.</param>
@@ -570,6 +588,14 @@ namespace NetGore.EditorTools
             public string Key
             {
                 get { return _key; }
+            }
+
+            /// <summary>
+            /// Gets the time that the file was last written to when this cache item was created.
+            /// </summary>
+            public long LastFileWriteTime
+            {
+                get { return _lastFileWriteTime; }
             }
 
             /// <summary>
