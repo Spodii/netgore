@@ -10,6 +10,8 @@ using log4net;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
 
+// FUTURE: Unload images that have not been used for an extended period of time
+
 namespace NetGore.EditorTools
 {
     /// <summary>
