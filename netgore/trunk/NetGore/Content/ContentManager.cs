@@ -35,8 +35,8 @@ namespace NetGore.Content
 
         bool _isDisposed = false;
         bool _isTrackingLoads = false;
-        ContentLevel? _queuedUnloadLevel = null;
         bool _queuedUnloadIgnoreTime = false;
+        ContentLevel? _queuedUnloadLevel = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentManager"/> class.

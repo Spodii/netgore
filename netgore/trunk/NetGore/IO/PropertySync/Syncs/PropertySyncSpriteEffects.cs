@@ -1,4 +1,5 @@
-﻿using NetGore.Graphics;
+﻿using System.Linq;
+using NetGore.Graphics;
 
 namespace NetGore.IO.PropertySync
 {
@@ -12,8 +13,7 @@ namespace NetGore.IO.PropertySync
         /// Initializes a new instance of the <see cref="PropertySyncSpriteEffects"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncSpriteEffects(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncSpriteEffects(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

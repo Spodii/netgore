@@ -48,18 +48,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            Text = "Quickbar";
-            IsCloseButtonVisible = false;
-        }
-
-        /// <summary>
         /// Ensures the <see cref="QuickBarForm"/>'s <see cref="QuickBarItemPB"/>s are created.
         /// </summary>
         void CreateSlots()
@@ -123,6 +111,18 @@ namespace DemoGame.Client
             }
 
             ClientSize = new Vector2(offset.X, _slots.First().Size.Y + (_slotPadding * 2));
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            Text = "Quickbar";
+            IsCloseButtonVisible = false;
         }
 
         /// <summary>

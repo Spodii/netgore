@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 using log4net;
 using NetGore.EditorTools.Properties;
@@ -22,6 +21,17 @@ namespace NetGore.EditorTools
     public class GrhImageList
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// The width of images in the <see cref="GrhImageList"/>.
+        /// </summary>
+        public const int ImageHeight = 16;
+
+        /// <summary>
+        /// The height of images in the <see cref="GrhImageList"/>.
+        /// </summary>
+        public const int ImageWidth = 16;
+
         static readonly Image _closedFolder;
         static readonly Image _errorImage;
         static readonly GrhImageList _instance;
@@ -29,16 +39,6 @@ namespace NetGore.EditorTools
 
         readonly Dictionary<string, Image> _images = new Dictionary<string, Image>();
         readonly object _imagesSync = new object();
-
-        /// <summary>
-        /// The height of images in the <see cref="GrhImageList"/>.
-        /// </summary>
-        public const int ImageWidth = 16;
-
-        /// <summary>
-        /// The width of images in the <see cref="GrhImageList"/>.
-        /// </summary>
-        public const int ImageHeight = 16;
 
         /// <summary>
         /// Initializes the <see cref="GrhImageList"/> class.
@@ -62,6 +62,13 @@ namespace NetGore.EditorTools
 
             // Load the instance
             _instance = new GrhImageList();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhImageList"/> class.
+        /// </summary>
+        GrhImageList()
+        {
         }
 
         /// <summary>
@@ -97,13 +104,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GrhImageList"/> class.
-        /// </summary>
-        GrhImageList()
-        {
-        }
-
-        /// <summary>
         /// Gets the <see cref="Image"/> for the given argument, or null if the <see cref="Image"/> is not yet loaded.
         /// </summary>
         /// <param name="gd">The <see cref="GrhData"/> to get the <see cref="Image"/> for.</param>
@@ -114,23 +114,6 @@ namespace NetGore.EditorTools
                 return _errorImage;
 
             return GetImage(gd.GetFrame(0));
-        }
-        
-        /// <summary>
-        /// Gets the <see cref="Image"/> for the given argument, or null if the <see cref="Image"/> is not yet loaded.
-        /// </summary>
-        /// <param name="obj">The object to get the <see cref="Image"/> for.</param>
-        /// <returns>The <see cref="Image"/> for the <paramref name="obj"/>.</returns>
-        public Image TryGetImage(object obj)
-        {
-            if (obj is Grh)
-                return GetImage((Grh)obj);
-            if (obj is GrhData)
-                return GetImage((GrhData)obj);
-            if (obj is GrhIndex)
-                return GetImage((GrhIndex)obj);
-
-            return ErrorImage;
         }
 
         /// <summary>
@@ -234,6 +217,23 @@ namespace NetGore.EditorTools
                 else
                     return "_" + textureName;
             }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Image"/> for the given argument, or null if the <see cref="Image"/> is not yet loaded.
+        /// </summary>
+        /// <param name="obj">The object to get the <see cref="Image"/> for.</param>
+        /// <returns>The <see cref="Image"/> for the <paramref name="obj"/>.</returns>
+        public Image TryGetImage(object obj)
+        {
+            if (obj is Grh)
+                return GetImage((Grh)obj);
+            if (obj is GrhData)
+                return GetImage((GrhData)obj);
+            if (obj is GrhIndex)
+                return GetImage((GrhIndex)obj);
+
+            return ErrorImage;
         }
     }
 }

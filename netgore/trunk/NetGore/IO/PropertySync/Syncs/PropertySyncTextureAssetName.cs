@@ -1,4 +1,5 @@
-﻿using NetGore.Content;
+﻿using System.Linq;
+using NetGore.Content;
 
 namespace NetGore.IO.PropertySync
 {
@@ -12,8 +13,7 @@ namespace NetGore.IO.PropertySync
         /// Initializes a new instance of the <see cref="PropertySyncTextureAssetName"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncTextureAssetName(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncTextureAssetName(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

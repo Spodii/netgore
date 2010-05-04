@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.EditorTools;
@@ -20,7 +19,6 @@ using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using SFML.Graphics;
 using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
-using Timer = System.Windows.Forms.Timer;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable UnusedParameter.Local
@@ -114,6 +112,12 @@ namespace DemoGame.MapEditor
         IContentManager _content;
 
         /// <summary>
+        /// Used to hold the last set Cursor property value without actually changing the cursor. This way, we only actually change the cursor
+        /// once per frame, which helps avoid "flickering" from changing it multiple times per frame.
+        /// </summary>
+        Cursor _currentCursor = Cursors.Default;
+
+        /// <summary>
         /// Current total time in milliseconds - used as the root of all timing
         /// in external classes through the GetTime method.
         /// </summary>
@@ -185,6 +189,18 @@ namespace DemoGame.MapEditor
         public ICamera2D Camera
         {
             get { return _camera; }
+        }
+
+        /// <summary>
+        /// Gets or sets the cursor that is displayed when the mouse pointer is over the control.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Windows.Forms.Cursor"/> that represents the cursor to display when the mouse pointer is over the control.
+        /// </returns>
+        public override Cursor Cursor
+        {
+            get { return _currentCursor; }
+            set { _currentCursor = value; }
         }
 
         /// <summary>
@@ -1117,30 +1133,6 @@ namespace DemoGame.MapEditor
         {
             scSelectedItems.Panel2Collapsed = SelectedObjs.SelectedObjects.Count() < 2;
         }
-
-        /// <summary>
-        /// Gets or sets the cursor that is displayed when the mouse pointer is over the control.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Windows.Forms.Cursor"/> that represents the cursor to display when the mouse pointer is over the control.
-        /// </returns>
-        public override Cursor Cursor
-        {
-            get
-            {
-                return _currentCursor;
-            }
-            set
-            {
-                _currentCursor = value;
-            }
-        }
-
-        /// <summary>
-        /// Used to hold the last set Cursor property value without actually changing the cursor. This way, we only actually change the cursor
-        /// once per frame, which helps avoid "flickering" from changing it multiple times per frame.
-        /// </summary>
-        Cursor _currentCursor = Cursors.Default;
 
         /// <summary>
         /// Handles updating when the <see cref="EditGrhForm"/> is visible and has taken over the main screen (so it
