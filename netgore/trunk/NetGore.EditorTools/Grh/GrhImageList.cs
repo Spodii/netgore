@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -166,19 +167,38 @@ namespace NetGore.EditorTools
             if (gd == null)
                 return _errorImage;
 
+            // Get the key
             var key = GetImageKey(gd);
 
             Image img;
             lock (_imagesSync)
             {
+                // Check if the image already exists, and return it if it does
                 if (_images.TryGetValue(key, out img))
                     return img;
 
-                img = gd.Texture.ToBitmap(gd.SourceRect, ImageWidth, ImageHeight);
+                // Try to create the image
+                try
+                {
+                    var tex = gd.GetOriginalTexture();
+                    if (tex == null)
+                        img = ErrorImage;
+                    else
+                        img = tex.ToBitmap(gd.OriginalSourceRect, ImageWidth, ImageHeight);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to create GrhImageList image for `{0}`: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, gd, ex);
+                    Debug.Fail(string.Format(errmsg, gd, ex));
+                    return ErrorImage;
+                }
 
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Created GrhImageList image for `{0}`.", img);
 
+                // Add the image to the cache so we never have to create it again
                 _images.Add(key, img);
             }
 

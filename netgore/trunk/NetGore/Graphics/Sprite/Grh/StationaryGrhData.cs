@@ -431,6 +431,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the original texture for this <see cref="StationaryGrhData"/>, bypassing any <see cref="TextureAtlas"/> being used.
+        /// </summary>
+        /// <returns>The original texture for this <see cref="StationaryGrhData"/>.</returns>
+        public Image GetOriginalTexture()
+        {
+            if (!_isUsingAtlas)
+                return Texture;
+
+            return _cm.LoadImage(_textureName, GrhInfo.ContentLevelDecider(this));
+        }
+
+        /// <summary>
         /// Ensures that the texture is properly loaded.
         /// </summary>
         void ValidateTexture()
