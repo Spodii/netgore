@@ -332,7 +332,9 @@
     <Compile Include="IO\FileHelper.cs" />
     <Compile Include="Core\InventorySlot.cs" />
     <Compile Include="Core\InventorySlotTypeConverter.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncContentAssetName.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncSpriteEffects.cs" />
+    <Compile Include="IO\PropertySync\Syncs\PropertySyncTextureAssetName.cs" />
     <Compile Include="Network\ExternalIPParsingRule.cs" />
     <Compile Include="Network\PacketTimeStampHelper.cs" />
     <Compile Include="Core\SafeRandom.cs" />

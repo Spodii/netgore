@@ -94,13 +94,35 @@ namespace NetGore.Content
         {
             var sb = new StringBuilder();
 
+            // Get the root path
             var rootPathStr = rootPath.Root.ToString();
             sb.Append(rootPathStr);
-            if (!rootPathStr.EndsWith("/") && !rootPathStr.EndsWith("\\"))
+
+            // Ensure the root ends with a separator
+            if (!rootPathStr.EndsWith(Path.DirectorySeparatorChar.ToString()) && !rootPathStr.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
                 sb.Append(PathSeparator);
 
-            sb.Append(GetFileName());
+            // Append the name of the file
+            var fileName = GetFileName();
+            sb.Append(fileName);
+
+            // If the dev path, try to find the suffix
+            if (rootPath == ContentPaths.Dev)
+            {
+                var files = Directory.GetFiles(rootPathStr, fileName + ".*").ToImmutable();
+                if (files.Count() == 0)
+                    throw new ArgumentException(string.Format("Could not find a file named `{0}` in path `{1}` with a file suffix.", rootPathStr, fileName));
+                if (files.Count() > 1)
+                    throw new ArgumentException(string.Format("Found multiple suffixes for the file named `{0}` in path `{1}`. Was expecting just one.", rootPathStr, fileName));
+
+                var fileToUse = files.First();
+                var ext = Path.GetExtension(fileToUse);
+                sb.Append(ext);
+            }
+                
+            // Ensure we use the correct path separator
             sb.Replace(PathSeparator, Path.DirectorySeparatorChar.ToString());
+
             return sb.ToString();
         }
 

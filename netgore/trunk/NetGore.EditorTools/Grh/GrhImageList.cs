@@ -336,7 +336,12 @@ namespace NetGore.EditorTools
             if (grhData is StationaryGrhData)
             {
                 // For stationary GrhDatas, its easy enough - just add it
-                AddImage((StationaryGrhData)grhData);
+                var asStationary = (StationaryGrhData)grhData;
+                AddImage(asStationary);
+
+                // Dispose of the texture to avoid overflowing our working memory by creating these image caches
+                if (asStationary.Texture != null)
+                    asStationary.Texture.Dispose();
             }
             else if (grhData is AutomaticAnimatedGrhData)
             {
@@ -344,6 +349,10 @@ namespace NetGore.EditorTools
                 foreach (var frame in grhData.Frames)
                 {
                     AddImage(frame);
+                    
+                    // Dispose of the frame texture to avoid overflowing our working memory by creating these image caches
+                    if (frame.Texture != null)
+                        frame.Texture.Dispose();
                 }
             }
         }
@@ -383,19 +392,32 @@ namespace NetGore.EditorTools
             if (!File.Exists(CacheFilePath))
                 return Enumerable.Empty<GrhImageListCacheItem>();
 
-            using (var stream = new FileStream(CacheFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 8192))
+            try
             {
-                using (var r = new BinaryReader(stream))
+                // Load the image cache
+                using (var stream = new FileStream(CacheFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 8192))
                 {
-                    var count = r.ReadInt32();
-                    ret = new GrhImageListCacheItem[count];
-
-                    for (var i = 0; i < count; i++)
+                    using (var r = new BinaryReader(stream))
                     {
-                        var item = GrhImageListCacheItem.Read(r);
-                        ret[i] = item;
+                        var count = r.ReadInt32();
+                        ret = new GrhImageListCacheItem[count];
+
+                        for (var i = 0; i < count; i++)
+                        {
+                            var item = GrhImageListCacheItem.Read(r);
+                            ret[i] = item;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                // When there is an error loading the cache, don't use the cache at all
+                const string errmsg = "Failed to load GrhImageList cache: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+
+                return Enumerable.Empty<GrhImageListCacheItem>();
             }
 
             return ret;
@@ -630,7 +652,7 @@ namespace NetGore.EditorTools
                 byte[] asArray;
                 using (var ms = new MemoryStream())
                 {
-                    Image.Save(ms, ImageFormat.Bmp);
+                    Image.Save(ms, ImageFormat.Png);
                     asArray = ms.ToArray();
                 }
 

@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
+using System.Windows.Forms;
 using log4net;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
-using SFML;
-using SFML.Graphics;
 
 namespace NetGore.EditorTools
 {
@@ -20,6 +17,11 @@ namespace NetGore.EditorTools
     public static class AutomaticGrhDataUpdater
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// How many tasks there must be for us to show the <see cref="GrhDataUpdaterProgressForm"/>.
+        /// </summary>
+        const int _minTaskToShowTaskForm = 10;
 
         static readonly string[] _graphicFileSuffixes = {
             ".bmp", ".jpg", ".jpeg", ".dds", ".psd", ".png", ".gif", ".tga", ".hdr"
@@ -101,6 +103,59 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Gets the <see cref="IAddGrhDataTask"/>s for animated <see cref="GrhData"/>s.
+        /// </summary>
+        /// <param name="rootGrhDir">The root grh dir.</param>
+        /// <returns>The <see cref="IAddGrhDataTask"/>s for animated <see cref="GrhData"/>s.</returns>
+        static IEnumerable<IAddGrhDataTask> GetAnimatedTasks(string rootGrhDir)
+        {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Searching for automatic animated GrhDatas from root `{0}`.", rootGrhDir);
+
+            var ret = new List<IAddGrhDataTask>();
+
+            // Find all directories that match the needed pattern
+            var dirs = GetAnimatedDirectories(rootGrhDir);
+
+            foreach (var dir in dirs)
+            {
+                // Grab the animation info from the directory
+                var animInfo = AutomaticAnimatedGrhData.GetAutomaticAnimationInfo(dir);
+                if (animInfo == null)
+                    continue;
+
+                // Get the virtual directory (remove the root)
+                var partialDir = dir.Substring(rootGrhDir.Length);
+                if (partialDir.StartsWith(Path.DirectorySeparatorChar.ToString()) ||
+                    partialDir.StartsWith(Path.AltDirectorySeparatorChar.ToString()))
+                    partialDir = partialDir.Substring(1);
+
+                // Get the categorization
+                var lastDirSep = partialDir.LastIndexOf(Path.DirectorySeparatorChar);
+                if (lastDirSep < 0)
+                {
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat("Animated GrhData found at `{0}`, but could not be created because it has no category.",
+                                       dir);
+                    continue;
+                }
+
+                var categoryStr = partialDir.Substring(0, lastDirSep);
+
+                var categorization = new SpriteCategorization(new SpriteCategory(categoryStr), new SpriteTitle(animInfo.Title));
+
+                // Ensure the GrhData doesn't already exist
+                if (GrhInfo.GetData(categorization) != null)
+                    continue;
+
+                // Create the task
+                ret.Add(new AddAnimatedGrhDataTask(categorization));
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Gets the amount to trim off of a directory to make it relative to the specified <paramref name="rootDir"/>.
         /// </summary>
         /// <param name="rootDir">Root directory to make other directories relative to.</param>
@@ -136,15 +191,57 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the size of a texture.
+        /// Gets the <see cref="IAddGrhDataTask"/>s for stationary <see cref="GrhData"/>s.
         /// </summary>
-        /// <param name="cm">The <see cref="IContentManager"/> to use to load the asset.</param>
-        /// <param name="filePath">Absolute file path to the texture.</param>
-        /// <returns>Size of the texture.</returns>
-        static Vector2 GetTextureSize(IContentManager cm, string filePath)
+        /// <param name="rootGrhDir">The root grh dir.</param>
+        /// <returns>The <see cref="IAddGrhDataTask"/>s for stationary <see cref="GrhData"/>s.</returns>
+        static IEnumerable<IAddGrhDataTask> GetStationaryTasks(string rootGrhDir)
         {
-            var img = cm.LoadImage(filePath, ContentLevel.Temporary);
-            return new Vector2(img.Width, img.Height);
+            var dirSepChars = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Searching for automatic stationary GrhDatas from root `{0}`.", rootGrhDir);
+
+            // Get a List of all of the textures from the root directory
+            var textures = FindTextures(rootGrhDir);
+
+            // Get a List of all of the used textures
+            var usedTextures = FindUsedTextures();
+
+            // Grab the relative path instead of the complete file path since this
+            // is how they are stored in the GrhData, then if it is in the usedTextures, remove it
+            var trimLen = GetRelativeTrimLength(rootGrhDir);
+            textures.RemoveAll(x => usedTextures.ContainsKey(TextureAbsoluteToRelativePath(trimLen, x)));
+
+            // Check if there are any unused textures
+            if (textures.Count == 0)
+                return Enumerable.Empty<IAddGrhDataTask>();
+
+            // Create the GrhDatas
+            var ret = new List<IAddGrhDataTask>();
+            foreach (var texture in textures)
+            {
+                // Go back to the relative path, and use it to figure out the categorization
+                var relative = TextureAbsoluteToRelativePath(trimLen, texture);
+                if (relative.LastIndexOfAny(dirSepChars) < 0)
+                {
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.",
+                                       texture);
+                    continue;
+                }
+
+                var categorization = SpriteCategorization.SplitCategoryAndTitle(relative);
+
+                // Ensure the GrhData doesn't already exist
+                if (GrhInfo.GetData(categorization) != null)
+                    continue;
+
+                // Create the task
+                ret.Add(new AddStationaryGrhDataTask(categorization, relative));
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -167,170 +264,172 @@ namespace NetGore.EditorTools
             return rel;
         }
 
+        static Form GetRootForm(Control c)
+        {
+            while (c != null && !(c is Form))
+            {
+                c = c.Parent;
+            }
+
+            return c as Form;
+        }
+
         /// <summary>
         /// Updates all of the automaticly added GrhDatas.
         /// </summary>
         /// <param name="cm"><see cref="IContentManager"/> to use for new GrhDatas.</param>
         /// <param name="rootGrhDir">Root Grh texture directory.</param>
-        /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
-        public static IEnumerable<GrhData> UpdateAll(IContentManager cm, string rootGrhDir)
+        /// <param name="sender">The <see cref="Control"/> that is invoking this event.</param>
+        /// <returns>
+        /// IEnumerable of all of the new GrhDatas created.
+        /// </returns>
+        public static IEnumerable<GrhData> Update(IContentManager cm, string rootGrhDir, Control sender = null)
         {
-            var created = UpdateStationary(cm, rootGrhDir).Concat(UpdateAnimated(cm, rootGrhDir));
+            var senderForm = GetRootForm(sender);
 
-            if (log.IsInfoEnabled)
-                log.WarnFormat("Automatic GrhData creation update resulted in `{0}` new GrhData(s).", created.Count());
-
-            if (log.IsDebugEnabled && created.Count() > 0)
-            {
-                log.Debug("The following GrhDatas were created:");
-                foreach (var c in created)
-                {
-                    log.Debug(" * " + c);
-                }
-            }
-
-            return created;
-        }
-
-        /// <summary>
-        /// Updates the animated automaticly added GrhDatas.
-        /// </summary>
-        /// <param name="cm"><see cref="IContentManager"/> to use for new GrhDatas.</param>
-        /// <param name="rootGrhDir">Root Grh texture directory.</param>
-        /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
-        public static IEnumerable<GrhData> UpdateAnimated(IContentManager cm, string rootGrhDir)
-        {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Searching for automatic animated GrhDatas from root `{0}`.", rootGrhDir);
-
-            var ret = new List<GrhData>();
-
-            // Find all directories that match the needed pattern
-            var dirs = GetAnimatedDirectories(rootGrhDir);
-
-            foreach (var dir in dirs)
-            {
-                // Grab the animation info from the directory
-                var animInfo = AutomaticAnimatedGrhData.GetAutomaticAnimationInfo(dir);
-                if (animInfo == null)
-                    continue;
-
-                // Get the virtual directory (remove the root)
-                var partialDir = dir.Substring(rootGrhDir.Length);
-                if (partialDir.StartsWith(Path.DirectorySeparatorChar.ToString()) ||
-                    partialDir.StartsWith(Path.AltDirectorySeparatorChar.ToString()))
-                    partialDir = partialDir.Substring(1);
-
-                // Get the categorization
-                var lastDirSep = partialDir.LastIndexOf(Path.DirectorySeparatorChar);
-                if (lastDirSep < 0)
-                {
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat("Animated GrhData found at `{0}`, but could not be created because it has no category.",
-                                       dir);
-                    continue;
-                }
-
-                var categoryStr = partialDir.Substring(0, lastDirSep);
-
-                var categorization = new SpriteCategorization(new SpriteCategory(categoryStr), new SpriteTitle(animInfo.Title));
-
-                // Create the AutomaticAnimatedGrhData
-                var gd = GrhInfo.CreateAutomaticAnimatedGrhData(cm, categorization);
-                if (gd != null)
-                    ret.Add(gd);
-
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Automatic creation of animated GrhData `{0}`.", gd);
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Updates the stationary automaticly added GrhDatas.
-        /// </summary>
-        /// <param name="cm"><see cref="IContentManager"/> to use for new GrhDatas.</param>
-        /// <param name="rootGrhDir">Root Grh texture directory.</param>
-        /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
-        public static IEnumerable<GrhData> UpdateStationary(IContentManager cm, string rootGrhDir)
-        {
-            var dirSepChars = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Searching for automatic stationary GrhDatas from root `{0}`.", rootGrhDir);
-
-            // Get a List of all of the textures from the root directory
-            var textures = FindTextures(rootGrhDir);
-
-            // Get a List of all of the used textures
-            var usedTextures = FindUsedTextures();
-
-            // Grab the relative path instead of the complete file path since this
-            // is how they are stored in the GrhData, then if it is in the usedTextures, remove it
-            var trimLen = GetRelativeTrimLength(rootGrhDir);
-            textures.RemoveAll(x => usedTextures.ContainsKey(TextureAbsoluteToRelativePath(trimLen, x)));
-
-            // Check if there are any unused textures
-            if (textures.Count == 0)
-                return Enumerable.Empty<GrhData>();
-
-            // Create the GrhDatas
-            int i = 0;
-            var ret = new List<GrhData>();
-            foreach (var texture in textures)
-            {
-                // Go back to the relative path, and use it to figure out the categorization
-                var relative = TextureAbsoluteToRelativePath(trimLen, texture);
-                if (relative.LastIndexOfAny(dirSepChars) < 0)
-                {
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat("Stationary GrhData found at `{0}`, but could not be created because it has no category.",
-                                       texture);
-                    continue;
-                }
-
-                var categorization = SpriteCategorization.SplitCategoryAndTitle(relative);
-
-                // Ensure the GrhData doesn't already exist
-                if (GrhInfo.GetData(categorization) != null)
-                    continue;
-
-                // Read the texture size from the file
-                Vector2 size;
-                try
-                {
-                    size = GetTextureSize(cm, texture);
-                }
-                catch (LoadingFailedException ex)
-                {
-                    const string errmsg = "Failed to load asset from file `{0}` when trying to acquire the size: {1}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, texture, ex);
-                    Debug.Fail(string.Format(errmsg, texture, ex));
-                    continue;
-                }
-
-                // Create the GrhData
-                var gd = GrhInfo.CreateGrhData(cm, categorization, relative, Vector2.Zero, size);
-                gd.AutomaticSize = true;
-                ret.Add(gd);
-
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Automatic creation of stationary GrhData `{0}`.", gd);
-
-                // Every 25 textures, clear out the temporary content to avoid using too much memory
-                if (++i >= 25)
-                {
-                    i = 0;
-                    cm.Unload(ContentLevel.Temporary, true);
-                }
-            }
-
-            // Clear the temporary content (since we may have loaded stuff at the Temporary level with GetTextureSize)
+            // Clear the temporary content to make sure we have plenty of working memory
             cm.Unload(ContentLevel.Temporary, true);
 
-            return ret;
+            // Get the tasks
+            var tasks = GetStationaryTasks(rootGrhDir).Concat(GetAnimatedTasks(rootGrhDir)).ToArray();
+
+            // If we have a lot of tasks, show a "busy" form
+            GrhDataUpdaterProgressForm frm = null;
+            if (tasks.Length > _minTaskToShowTaskForm)
+            {
+                frm = new GrhDataUpdaterProgressForm(tasks.Length);
+
+                if (senderForm != null)
+                    frm.Show(senderForm);
+                else
+                    frm.Show();
+
+                frm.Focus();
+            }
+
+            var createdGrhDatas = new List<GrhData>();
+
+            if (senderForm != null)
+            {
+                senderForm.Enabled = false;
+                senderForm.Visible = false;
+            }
+
+            try
+            {
+                // Start processing the tasks
+                for (var i = 0; i < tasks.Length; i++)
+                {
+                    if (frm != null)
+                        frm.UpdateStatus(i);
+
+                    var newGD = tasks[i].Add(cm);
+                    if (newGD != null)
+                    {
+                        createdGrhDatas.Add(newGD);
+                        if (log.IsInfoEnabled)
+                            log.InfoFormat("Created automatic GrhData `{0}` ({1} of {2} in batch).", newGD, i, tasks.Length);
+                    }
+                }
+            }
+            finally
+            {
+                // Dispose of the form, if needed
+                if (frm != null)
+                    frm.Dispose();
+
+                if (senderForm != null)
+                {
+                    senderForm.Enabled = true;
+                    senderForm.Visible = true;
+                }
+            }
+
+            if (log.IsInfoEnabled)
+                log.WarnFormat("Automatic GrhData creation update resulted in `{0}` new GrhData(s).", createdGrhDatas.Count);
+
+            return createdGrhDatas;
+        }
+
+        /// <summary>
+        /// Task to create a <see cref="AutomaticAnimatedGrhData"/>.
+        /// </summary>
+        class AddAnimatedGrhDataTask : IAddGrhDataTask
+        {
+            readonly SpriteCategorization _categorization;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="AddAnimatedGrhDataTask"/> class.
+            /// </summary>
+            /// <param name="categorization">The <see cref="SpriteCategorization"/>.</param>
+            public AddAnimatedGrhDataTask(SpriteCategorization categorization)
+            {
+                _categorization = categorization;
+            }
+
+            #region IAddGrhDataTask Members
+
+            /// <summary>
+            /// Adds the <see cref="GrhData"/>.
+            /// </summary>
+            /// <param name="cm">The <see cref="IContentManager"/> to use.</param>
+            /// <returns>
+            /// The <see cref="GrhData"/> that was added.
+            /// </returns>
+            public GrhData Add(IContentManager cm)
+            {
+                return GrhInfo.CreateAutomaticAnimatedGrhData(cm, _categorization);
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Task to add a <see cref="StationaryGrhData"/>.
+        /// </summary>
+        class AddStationaryGrhDataTask : IAddGrhDataTask
+        {
+            readonly SpriteCategorization _categorization;
+            readonly string _relative;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="AddStationaryGrhDataTask"/> class.
+            /// </summary>
+            /// <param name="categorization">The categorization.</param>
+            /// <param name="relative">The relative path.</param>
+            public AddStationaryGrhDataTask(SpriteCategorization categorization, string relative)
+            {
+                _categorization = categorization;
+                _relative = relative;
+            }
+
+            #region IAddGrhDataTask Members
+
+            /// <summary>
+            /// Adds the GrhData.
+            /// </summary>
+            /// <param name="cm">The <see cref="IContentManager"/> to use.</param>
+            public GrhData Add(IContentManager cm)
+            {
+                var gd = GrhInfo.CreateGrhData(cm, _categorization, _relative);
+                gd.AutomaticSize = true;
+                return gd;
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Interface for a task to add a <see cref="GrhData"/>.
+        /// </summary>
+        interface IAddGrhDataTask
+        {
+            /// <summary>
+            /// Adds the <see cref="GrhData"/>.
+            /// </summary>
+            /// <param name="cm">The <see cref="IContentManager"/> to use.</param>
+            /// <returns>The <see cref="GrhData"/> that was added.</returns>
+            GrhData Add(IContentManager cm);
         }
     }
 }
