@@ -16,9 +16,11 @@ namespace NetGore.EditorTools
     [Serializable]
     public class GrhTreeViewNode : TreeNode, IGrhTreeViewNode
     {
+        static readonly GrhImageList _grhImageList = GrhImageList.Instance;
         readonly GrhData _grhData;
 
         Grh _animationGrh = null;
+        Image _image;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhTreeViewNode"/> class.
@@ -216,13 +218,6 @@ namespace NetGore.EditorTools
             _image = _grhImageList.GetImage(grhData);
         }
 
-        Image _image;
-
-        /// <summary>
-        /// Gets the <see cref="Image"/> to use to draw the <see cref="GrhTreeViewNode"/>.
-        /// </summary>
-        public Image Image { get { return _image; } }
-
         /// <summary>
         /// Makes the <see cref="GrhData"/> handled by this <see cref="GrhTreeViewNode"/> synchronize
         /// to the information displayed by the node (in opposed to <see cref="Update"/>, which makes the node
@@ -301,9 +296,20 @@ namespace NetGore.EditorTools
             {
                 // Change the image
                 _image = _grhImageList.GetImage(current);
+                ((GrhTreeView)TreeView).RefreshNodeImage(this);
             }
         }
 
-        static readonly GrhImageList _grhImageList = GrhImageList.Instance;
+        #region IGrhTreeViewNode Members
+
+        /// <summary>
+        /// Gets the <see cref="Image"/> to use to draw the <see cref="GrhTreeViewNode"/>.
+        /// </summary>
+        public Image Image
+        {
+            get { return _image; }
+        }
+
+        #endregion
     }
 }

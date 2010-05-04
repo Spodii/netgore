@@ -962,8 +962,17 @@ namespace NetGore.EditorTools
             {
                 AddGrhToTree(grh);
             }
-
+            
             Sort();
+        }
+
+        /// <summary>
+        /// Forces a node's image to be refreshed.
+        /// </summary>
+        /// <param name="n">The node to refresh.</param>
+        internal void RefreshNodeImage(TreeNode n)
+        {
+            Invalidate(new System.Drawing.Rectangle(n.Bounds.X - 18, n.Bounds.Y, 18, n.Bounds.Height));
         }
 
         /// <summary>
