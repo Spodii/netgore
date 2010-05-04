@@ -136,6 +136,7 @@
     <Compile Include="Grh\AutomaticGrhData\GrhDataUpdaterProgressForm.Designer.cs">
       <DependentUpon>GrhDataUpdaterProgressForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Grh\Controls\GrhTreeView\IGrhTreeViewNode.cs" />
     <Compile Include="MutablePair.cs" />
     <Compile Include="UI Editors\AdvancedClassTypeConverter.cs" />
     <Compile Include="UI Editors\AdvancedPropertyDescriptor.cs" />

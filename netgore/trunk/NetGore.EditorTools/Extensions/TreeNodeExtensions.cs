@@ -25,6 +25,8 @@ namespace NetGore.EditorTools
                 node = node.Parent;
             }
 
+            Debug.Assert(depth == node.Level);
+            // TODO: Remove; use node.Level instead
             return depth;
         }
 

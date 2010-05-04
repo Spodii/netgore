@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -12,19 +13,30 @@ namespace NetGore.EditorTools
     /// child nodes.
     /// </summary>
     [Serializable]
-    public class GrhTreeViewFolderNode : TreeNode
+    public class GrhTreeViewFolderNode : TreeNode, IGrhTreeViewNode
     {
         /// <summary>
         /// The minimum amount of time that must elapse between updates of the ToolTipText.
         /// </summary>
         const int _minUpdateToolTipRate = 5000;
 
+        static readonly Image _closedFolder;
+        static readonly Image _openFolder;
         readonly string _subCategory;
 
         /// <summary>
         /// The ToolTipText will not be updated if the current time is less than this value.
         /// </summary>
         int _nextUpdateToolTipTime = int.MinValue;
+
+        /// <summary>
+        /// Initializes the <see cref="GrhTreeViewFolderNode"/> class.
+        /// </summary>
+        static GrhTreeViewFolderNode()
+        {
+            _closedFolder = GrhImageList.ClosedFolder;
+            _openFolder = GrhImageList.OpenFolder;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhTreeViewFolderNode"/> class.
@@ -37,11 +49,6 @@ namespace NetGore.EditorTools
             Name = FullCategory;
             parent.Add(this);
             Text = SubCategory;
-
-            // Set the images
-            ImageKey = GrhImageList.ClosedFolderKey;
-            SelectedImageKey = GrhImageList.OpenFolderKey;
-            StateImageKey = GrhImageList.ClosedFolderKey;
         }
 
         /// <summary>
@@ -209,5 +216,23 @@ namespace NetGore.EditorTools
 
             ToolTipText = GetToolTipText();
         }
+
+        #region IGrhTreeViewNode Members
+
+        /// <summary>
+        /// Gets the <see cref="Image"/> to use to draw the node.
+        /// </summary>
+        public Image Image
+        {
+            get
+            {
+                if (IsExpanded)
+                    return _openFolder;
+                else
+                    return _closedFolder;
+            }
+        }
+
+        #endregion
     }
 }

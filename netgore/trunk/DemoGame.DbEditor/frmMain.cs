@@ -175,9 +175,6 @@ namespace DemoGame.DbEditor
                 }
             }
 
-            // Ensure the GrhImageList's cache is updated
-            GrhImageList.Instance.Save();
-
             base.OnClosing(e);
         }
 
@@ -206,9 +203,6 @@ namespace DemoGame.DbEditor
                 var cm = ContentManager.Create();
                 GrhInfo.Load(ContentPaths.Dev, cm);
             }
-
-            // Prepare the GrhImageList to avoid stalling the loading later
-            GrhImageList.Prepare();
 
             // Create the database connection
             var settings = new DbConnectionSettings();
