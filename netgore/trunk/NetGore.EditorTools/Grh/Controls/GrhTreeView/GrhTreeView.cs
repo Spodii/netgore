@@ -1,18 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;
 using Point = System.Drawing.Point;
-using Timer = System.Windows.Forms.Timer;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace NetGore.EditorTools
 {
@@ -36,6 +34,15 @@ namespace NetGore.EditorTools
         EditGrhForm _editGrhDataForm;
         Vector2 _gameScreenSize;
         MapGrhWalls _mapGrhWalls;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhTreeView"/> class.
+        /// </summary>
+        public GrhTreeView()
+        {
+            ImageList = new ImageList { ImageSize = new Size(GrhImageList.ImageWidth, GrhImageList.ImageHeight) };
+            DrawMode = TreeViewDrawMode.OwnerDrawAll;
+        }
 
         /// <summary>
         /// Notofies listeners after a new <see cref="GrhData"/> node is selected.
@@ -85,37 +92,6 @@ namespace NetGore.EditorTools
         public bool NeedsToDraw
         {
             get { return _editGrhDataForm != null; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GrhTreeView"/> class.
-        /// </summary>
-        public GrhTreeView()
-        {
-            ImageList = new ImageList { ImageSize = new Size(GrhImageList.ImageWidth, GrhImageList.ImageHeight) };
-            DrawMode = TreeViewDrawMode.OwnerDrawAll;
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.TreeView.DrawNode"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawTreeNodeEventArgs"/> that contains the event data.</param>
-        protected override void OnDrawNode(DrawTreeNodeEventArgs e)
-        {
-            // Perform the default drawing
-            e.DrawDefault = true;
-            base.OnDrawNode(e);
-
-            // Draw the node's image
-            var casted = e.Node as IGrhTreeViewNode;
-            if (casted == null)
-                return;
-
-            var image = casted.Image;
-            if (image == null)
-                return;
-
-            e.Graphics.DrawImage(image, new Point(e.Node.Bounds.X - ImageList.ImageSize.Width - 2, e.Node.Bounds.Y));
         }
 
         /// <summary>
@@ -829,6 +805,28 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.DrawNode"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawTreeNodeEventArgs"/> that contains the event data.</param>
+        protected override void OnDrawNode(DrawTreeNodeEventArgs e)
+        {
+            // Perform the default drawing
+            e.DrawDefault = true;
+            base.OnDrawNode(e);
+
+            // Draw the node's image
+            var casted = e.Node as IGrhTreeViewNode;
+            if (casted == null)
+                return;
+
+            var image = casted.Image;
+            if (image == null)
+                return;
+
+            e.Graphics.DrawImage(image, new Point(e.Node.Bounds.X - ImageList.ImageSize.Width - 2, e.Node.Bounds.Y));
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.TreeView.ItemDrag"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.Windows.Forms.ItemDragEventArgs"/> that contains the event data.</param>
@@ -962,7 +960,7 @@ namespace NetGore.EditorTools
             {
                 AddGrhToTree(grh);
             }
-            
+
             Sort();
         }
 
@@ -972,7 +970,7 @@ namespace NetGore.EditorTools
         /// <param name="n">The node to refresh.</param>
         internal void RefreshNodeImage(TreeNode n)
         {
-            Invalidate(new System.Drawing.Rectangle(n.Bounds.X - 18, n.Bounds.Y, 18, n.Bounds.Height));
+            Invalidate(new Rectangle(n.Bounds.X - 18, n.Bounds.Y, 18, n.Bounds.Height));
         }
 
         /// <summary>

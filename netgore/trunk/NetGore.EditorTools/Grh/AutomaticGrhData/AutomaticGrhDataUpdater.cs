@@ -169,6 +169,16 @@ namespace NetGore.EditorTools
             return len;
         }
 
+        static Form GetRootForm(Control c)
+        {
+            while (c != null && !(c is Form))
+            {
+                c = c.Parent;
+            }
+
+            return c as Form;
+        }
+
         /// <summary>
         /// Gets the directories that are not for automatic animations.
         /// </summary>
@@ -262,16 +272,6 @@ namespace NetGore.EditorTools
             rel = rel.Substring(0, lastPeriod);
 
             return rel;
-        }
-
-        static Form GetRootForm(Control c)
-        {
-            while (c != null && !(c is Form))
-            {
-                c = c.Parent;
-            }
-
-            return c as Form;
         }
 
         /// <summary>

@@ -53,6 +53,7 @@ namespace NetGore.Graphics.GUI
         bool _canDrag = true;
         bool _canFocus = true;
         Vector2 _dragOffset;
+        bool _includeInResizeToChildren = true;
         bool _isBoundToParentArea = true;
         bool _isDisposed = false;
         bool _isDragging = false;
@@ -479,6 +480,18 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets if this <see cref="Control"/> will be included when using <see cref="Control.ResizeToChildren"/>. The default
+        /// value for this property is true, and should remain true for most all <see cref="Control"/>s. Only times you should set it false
+        /// is if you have a <see cref="Control"/> that is technically a child control, but behaves like an addition to the parent. An
+        /// example of this is the close button on a <see cref="Form"/>.
+        /// </summary>
+        public bool IncludeInResizeToChildren
+        {
+            get { return _includeInResizeToChildren; }
+            set { _includeInResizeToChildren = value; }
+        }
+
+        /// <summary>
         /// Gets or sets if the <see cref="Control"/> is bound to the area of its parent. Only valid if the
         /// <see cref="Control"/> has a parent and if the parent does not have <see cref="Control.ResizeToChildren"/> set.
         /// </summary>
@@ -594,23 +607,6 @@ namespace NetGore.Graphics.GUI
                 InvokeMoved();
 
                 KeepInParent();
-            }
-        }
-
-        bool _includeInResizeToChildren = true;
-
-        /// <summary>
-        /// Gets or sets if this <see cref="Control"/> will be included when using <see cref="Control.ResizeToChildren"/>. The default
-        /// value for this property is true, and should remain true for most all <see cref="Control"/>s. Only times you should set it false
-        /// is if you have a <see cref="Control"/> that is technically a child control, but behaves like an addition to the parent. An
-        /// example of this is the close button on a <see cref="Form"/>.
-        /// </summary>
-        public bool IncludeInResizeToChildren
-        {
-            get { return _includeInResizeToChildren; }
-            set
-            {
-                _includeInResizeToChildren = value;
             }
         }
 
@@ -865,7 +861,7 @@ namespace NetGore.Graphics.GUI
             float y = 1;
 
             // Loop through all child controls
-            foreach (Control t in _controls)
+            foreach (var t in _controls)
             {
                 // Skip certain child controls
                 if (!t.IncludeInResizeToChildren)

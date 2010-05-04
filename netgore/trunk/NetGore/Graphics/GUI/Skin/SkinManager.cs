@@ -301,7 +301,7 @@ namespace NetGore.Graphics.GUI
             // is not the default category
             if (grhData == null && !IsCurrentSkinDefault)
             {
-                fullSC =GetSpriteCategory(DefaultSkin, subCategory);
+                fullSC = GetSpriteCategory(DefaultSkin, subCategory);
                 grhData = GrhInfo.GetData(fullSC, spriteTitle);
             }
 

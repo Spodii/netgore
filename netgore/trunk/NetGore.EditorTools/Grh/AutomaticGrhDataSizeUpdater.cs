@@ -8,7 +8,6 @@ using log4net;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
-using SFML;
 using SFML.Graphics;
 
 namespace NetGore.EditorTools
@@ -168,7 +167,7 @@ namespace NetGore.EditorTools
 
                 // The GrhData was not in the cache or the cache contains outdated values, so find the real size by grabbing it directly
                 // from the GrhData's texture
-                Vector2 realSize = new Vector2(gd.Texture.Width, gd.Texture.Height);
+                var realSize = new Vector2(gd.Texture.Width, gd.Texture.Height);
 
                 // To avoid using too much memory, we will dispose of the texture after we are done. Since the textures are lazy-loaded and
                 // automatically reload, this will not do any harm. We may end up disposing a few textures that were actually being used
@@ -200,7 +199,7 @@ namespace NetGore.EditorTools
 
             // Be sure to remove any cache items for GrhDatas that no longer exist just to make sure they don't cause any problems
             // later (and to help remove some storage overhead)
-            Stack<GrhIndex> toRemove = new Stack<GrhIndex>();
+            var toRemove = new Stack<GrhIndex>();
             foreach (var cacheItem in _cache)
             {
                 if (GrhInfo.GetData(cacheItem.Key) == null)

@@ -515,8 +515,8 @@ namespace NetGore.IO
             }
 
             // Try to run the program
-            ProcessStartInfo pi = new ProcessStartInfo(copyContentFile, string.Format("\"{0}\" \"{1}\"", dev.Root, build.Root))
-            { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden};
+            var pi = new ProcessStartInfo(copyContentFile, string.Format("\"{0}\" \"{1}\"", dev.Root, build.Root))
+            { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
 
             try
             {

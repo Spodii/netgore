@@ -1,21 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace NetGore.EditorTools
 {
     public partial class GrhDataUpdaterProgressForm : Form
     {
-        readonly int _total;
+        /// <summary>
+        /// The minimum amount of time that must elapse before <see cref="UpdateStatus"/> to actually update.
+        /// </summary>
+        const int _minSuggestUpdateRate = 500;
+
         readonly int _startTime;
+        readonly int _total;
 
         int _current = 0;
+
+        int _lastUpdateTime = Environment.TickCount;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhDataUpdaterProgressForm"/> class.
@@ -32,13 +33,6 @@ namespace NetGore.EditorTools
             progBar.Maximum = total;
             progBar.Value = 0;
         }
-
-        int _lastUpdateTime = Environment.TickCount;
-
-        /// <summary>
-        /// The minimum amount of time that must elapse before <see cref="UpdateStatus"/> to actually update.
-        /// </summary>
-        const int _minSuggestUpdateRate = 500;
 
         /// <summary>
         /// Updates the status.
@@ -69,7 +63,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Updates the amount of time remaining
         /// </summary>
-        private void UpdateTimeRemaining()
+        void UpdateTimeRemaining()
         {
             var currTime = Environment.TickCount;
             var elapsed = currTime - _startTime;
@@ -78,13 +72,13 @@ namespace NetGore.EditorTools
                 return;
 
             // Calculate how long it has taken so far per item
-            float msPerItem = (float)elapsed / _current;
+            var msPerItem = (float)elapsed / _current;
 
             // Use that average to calculate the total time for all remaining items (assuming the average remains constant)
-            float estMSRem = (float)Math.Round(msPerItem * (_total - _current));
+            var estMSRem = (float)Math.Round(msPerItem * (_total - _current));
 
             // Convert to seconds
-            float estSecRem = estMSRem / 1000f;
+            var estSecRem = estMSRem / 1000f;
 
             string txt;
 
@@ -92,7 +86,7 @@ namespace NetGore.EditorTools
             if (estSecRem > 100)
             {
                 // Display minutes
-                float estMinRem = estSecRem / 60f;
+                var estMinRem = estSecRem / 60f;
                 var disp = Math.Round(estMinRem);
                 txt = disp + " minute" + (disp > 1 ? "s" : "");
             }

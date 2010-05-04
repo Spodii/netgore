@@ -16,6 +16,16 @@ namespace NetGore.Features.Quests
         IQuest<TCharacter>[] _quests;
 
         /// <summary>
+        /// Gets the quest for the given <see cref="QuestID"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="QuestID"/> to get.</param>
+        /// <returns>The quest for the given <paramref name="id"/>, or null if the <paramref name="id"/> is invalid.</returns>
+        public IQuest<TCharacter> this[QuestID id]
+        {
+            get { return GetQuest(id); }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, loads the quest with the specified <see cref="QuestID"/>.
         /// </summary>
         /// <param name="questID">The ID of the quest to load.</param>
@@ -44,13 +54,6 @@ namespace NetGore.Features.Quests
                 _quests[questID.GetRawValue()] = quest;
             }
         }
-
-        /// <summary>
-        /// Gets the quest for the given <see cref="QuestID"/>.
-        /// </summary>
-        /// <param name="id">The <see cref="QuestID"/> to get.</param>
-        /// <returns>The quest for the given <paramref name="id"/>, or null if the <paramref name="id"/> is invalid.</returns>
-        public IQuest<TCharacter> this[QuestID id] { get { return GetQuest(id); }}
 
         /// <summary>
         /// Forces a quest in this collection to be reloaded from the database.

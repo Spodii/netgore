@@ -238,7 +238,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             var pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
-            Vector2 size = _borderSize + (BorderPadding * 2);
+            var size = _borderSize + (BorderPadding * 2);
             var ss = GUIManager.ScreenSize;
 
             // Ensure the tooltip is in the screen

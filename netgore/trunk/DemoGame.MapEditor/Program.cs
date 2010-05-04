@@ -32,7 +32,8 @@ namespace DemoGame.MapEditor
             // Ensure the content is copied over
             if (!ContentPaths.TryCopyContent())
             {
-                const string errmsg = "Failed to copy the content from the dev to build path." +
+                const string errmsg =
+                    "Failed to copy the content from the dev to build path." +
                     " Content in the build path will likely not update to reflect changes made in the content in the dev path.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg);

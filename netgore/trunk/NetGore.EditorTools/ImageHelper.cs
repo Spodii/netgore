@@ -11,7 +11,7 @@ namespace NetGore.EditorTools
     public static class ImageHelper
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
- 
+
         /// <summary>
         /// Creates an Image with a solid color.
         /// </summary>

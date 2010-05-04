@@ -124,6 +124,13 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// When overridden in the derived class, loads an item from the database.
+        /// </summary>
+        /// <param name="id">The ID of the item to load.</param>
+        /// <returns>The item loaded from the database.</returns>
+        protected abstract TItem LoadItem(TID id);
+
+        /// <summary>
         /// Forces and item in this collection to be reloaded from the database.
         /// Note that reloading an object will create a new object, not update the existing object. As a result, anything referencing
         /// the old object will continue to reference the old values instead of the newly loaded values.
@@ -136,13 +143,6 @@ namespace NetGore.Db
 
             _items.Insert(i, item);
         }
-
-        /// <summary>
-        /// When overridden in the derived class, loads an item from the database.
-        /// </summary>
-        /// <param name="id">The ID of the item to load.</param>
-        /// <returns>The item loaded from the database.</returns>
-        protected abstract TItem LoadItem(TID id);
 
         /// <summary>
         /// Tries to get the item for the given <paramref name="id"/>.

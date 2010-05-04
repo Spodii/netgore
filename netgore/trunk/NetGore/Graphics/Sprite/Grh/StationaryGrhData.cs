@@ -59,7 +59,8 @@ namespace NetGore.Graphics
         /// <param name="textureSource">The area of the texture to use, or null for the whole texture.</param>
         /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
-        public StationaryGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat, TextureAssetName textureName, Rectangle? textureSource) : base(grhIndex, cat)
+        public StationaryGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat, TextureAssetName textureName,
+                                 Rectangle? textureSource) : base(grhIndex, cat)
         {
             _cm = cm;
             _textureName = textureName;
@@ -176,7 +177,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                ValidateAutomaticSize(); 
+                ValidateAutomaticSize();
                 return _sourceHeight;
             }
         }
@@ -189,7 +190,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                ValidateAutomaticSize(); 
+                ValidateAutomaticSize();
                 return new Rectangle(_sourceX, _sourceY, _sourceWidth, _sourceHeight);
             }
         }
@@ -213,7 +214,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                ValidateAutomaticSize(); 
+                ValidateAutomaticSize();
                 return new Vector2(_sourceWidth, _sourceHeight);
             }
         }
@@ -240,21 +241,11 @@ namespace NetGore.Graphics
         /// </summary>
         public int Width
         {
-            get {
+            get
+            {
                 ValidateAutomaticSize();
-                return _sourceWidth; }
-        }
-
-        /// <summary>
-        /// Validates the size of the <see cref="StationaryGrhData"/> that uses <see cref="AutomaticSize"/>.
-        /// </summary>
-        void ValidateAutomaticSize()
-        {
-            if (_sourceWidth > 0 || !AutomaticSize || Texture == null || _isUsingAtlas)
-                return;
-
-            _sourceWidth = (ushort)Texture.Width;
-            _sourceHeight = (ushort)Texture.Height;
+                return _sourceWidth;
+            }
         }
 
         /// <summary>
@@ -336,7 +327,8 @@ namespace NetGore.Graphics
         /// </returns>
         protected override GrhData DeepCopy(SpriteCategorization newCategorization, GrhIndex newGrhIndex)
         {
-            var copy = new StationaryGrhData(ContentManager, newGrhIndex, newCategorization, TextureName, AutomaticSize ? (Rectangle?)null : SourceRect);
+            var copy = new StationaryGrhData(ContentManager, newGrhIndex, newCategorization, TextureName,
+                                             AutomaticSize ? (Rectangle?)null : SourceRect);
             return copy;
         }
 
@@ -375,6 +367,18 @@ namespace NetGore.Graphics
                 delay += failedLoadAttempts * 1000;
 
             return delay;
+        }
+
+        /// <summary>
+        /// Gets the original texture for this <see cref="StationaryGrhData"/>, bypassing any <see cref="TextureAtlas"/> being used.
+        /// </summary>
+        /// <returns>The original texture for this <see cref="StationaryGrhData"/>.</returns>
+        public Image GetOriginalTexture()
+        {
+            if (!_isUsingAtlas)
+                return Texture;
+
+            return _cm.LoadImage(_textureName, GrhInfo.ContentLevelDecider(this));
         }
 
         /// <summary>
@@ -431,15 +435,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the original texture for this <see cref="StationaryGrhData"/>, bypassing any <see cref="TextureAtlas"/> being used.
+        /// Validates the size of the <see cref="StationaryGrhData"/> that uses <see cref="AutomaticSize"/>.
         /// </summary>
-        /// <returns>The original texture for this <see cref="StationaryGrhData"/>.</returns>
-        public Image GetOriginalTexture()
+        void ValidateAutomaticSize()
         {
-            if (!_isUsingAtlas)
-                return Texture;
+            if (_sourceWidth > 0 || !AutomaticSize || Texture == null || _isUsingAtlas)
+                return;
 
-            return _cm.LoadImage(_textureName, GrhInfo.ContentLevelDecider(this));
+            _sourceWidth = (ushort)Texture.Width;
+            _sourceHeight = (ushort)Texture.Height;
         }
 
         /// <summary>

@@ -99,7 +99,8 @@ namespace NetGore.Content
             sb.Append(rootPathStr);
 
             // Ensure the root ends with a separator
-            if (!rootPathStr.EndsWith(Path.DirectorySeparatorChar.ToString()) && !rootPathStr.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+            if (!rootPathStr.EndsWith(Path.DirectorySeparatorChar.ToString()) &&
+                !rootPathStr.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
                 sb.Append(PathSeparator);
 
             // Append the name of the file
@@ -111,15 +112,22 @@ namespace NetGore.Content
             {
                 var files = Directory.GetFiles(rootPathStr, fileName + ".*").ToImmutable();
                 if (files.Count() == 0)
-                    throw new ArgumentException(string.Format("Could not find a file named `{0}` in path `{1}` with a file suffix.", rootPathStr, fileName));
+                {
+                    throw new ArgumentException(
+                        string.Format("Could not find a file named `{0}` in path `{1}` with a file suffix.", rootPathStr, fileName));
+                }
                 if (files.Count() > 1)
-                    throw new ArgumentException(string.Format("Found multiple suffixes for the file named `{0}` in path `{1}`. Was expecting just one.", rootPathStr, fileName));
+                {
+                    throw new ArgumentException(
+                        string.Format("Found multiple suffixes for the file named `{0}` in path `{1}`. Was expecting just one.",
+                                      rootPathStr, fileName));
+                }
 
                 var fileToUse = files.First();
                 var ext = Path.GetExtension(fileToUse);
                 sb.Append(ext);
             }
-                
+
             // Ensure we use the correct path separator
             sb.Replace(PathSeparator, Path.DirectorySeparatorChar.ToString());
 
