@@ -948,9 +948,6 @@ namespace DemoGame.MapEditor
             GrhInfo.Load(ContentPaths.Dev, _content);
             AutomaticGrhDataSizeUpdater.Instance.UpdateSizes();
 
-            // Prepare the GrhImageList to avoid stalling the loading later
-            GrhImageList.Prepare();
-
             _drawingManager = new DrawingManager(GameScreen.RenderWindow);
             DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 

@@ -340,7 +340,6 @@ namespace DemoGame.MapEditor
             // 
             this.treeGrhs.AllowDrop = true;
             this.treeGrhs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeGrhs.ImageSize = new System.Drawing.Size(0, 0);
             this.treeGrhs.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.treeGrhs.LabelEdit = true;
             this.treeGrhs.Location = new System.Drawing.Point(0, 0);

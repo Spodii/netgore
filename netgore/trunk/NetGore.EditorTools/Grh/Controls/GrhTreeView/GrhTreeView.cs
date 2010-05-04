@@ -72,28 +72,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets or sets the size of the <see cref="GrhData"/> preview images.
-        /// </summary>
-        [Description("Size of the Grh images in pixels")]
-        public Size ImageSize
-        {
-            get
-            {
-                if (ImageList == null)
-                    return new Size(0, 0);
-
-                return ImageList.ImageSize;
-            }
-            set
-            {
-                if (ImageList == null)
-                    return;
-
-                ImageList.ImageSize = value;
-            }
-        }
-
-        /// <summary>
         /// Gets if the form for editing a <see cref="GrhData"/> is currently visible.
         /// </summary>
         public bool IsEditingGrhData
@@ -107,6 +85,37 @@ namespace NetGore.EditorTools
         public bool NeedsToDraw
         {
             get { return _editGrhDataForm != null; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhTreeView"/> class.
+        /// </summary>
+        public GrhTreeView()
+        {
+            ImageList = new ImageList { ImageSize = new Size(GrhImageList.ImageWidth, GrhImageList.ImageHeight) };
+            DrawMode = TreeViewDrawMode.OwnerDrawAll;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.TreeView.DrawNode"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawTreeNodeEventArgs"/> that contains the event data.</param>
+        protected override void OnDrawNode(DrawTreeNodeEventArgs e)
+        {
+            // Perform the default drawing
+            e.DrawDefault = true;
+            base.OnDrawNode(e);
+
+            // Draw the node's image
+            var casted = e.Node as IGrhTreeViewNode;
+            if (casted == null)
+                return;
+
+            var image = casted.Image;
+            if (image == null)
+                return;
+
+            e.Graphics.DrawImage(image, new Point(e.Node.Bounds.X - ImageList.ImageSize.Width - 2, e.Node.Bounds.Y));
         }
 
         /// <summary>
@@ -257,9 +266,6 @@ namespace NetGore.EditorTools
         {
             if (disposing)
             {
-                if (!_compactMode)
-                    GrhImageList.Instance.Save();
-
                 if (_animTimer != null)
                 {
                     _animTimer.Stop();
@@ -928,18 +934,6 @@ namespace NetGore.EditorTools
 
             // Set the sort method
             TreeViewNodeSorter = this;
-
-            // Create the ImageList containing the Grhs as an image. Do it in the background because it can sometimes take
-            // a very long time.
-            ThreadStart dLoadImageList = delegate
-            {
-                var imgList = GrhImageList.Instance.ImageList;
-                Action dSetImageList = delegate { ImageList = imgList; };
-                Invoke(dSetImageList);
-            };
-
-            Thread setImageListThread = new Thread(dLoadImageList) { IsBackground = true, Name = "Set GrhTreeView ImageList" };
-            setImageListThread.Start();
 
             // Iterate through all the GrhDatas
             foreach (var grhData in GrhInfo.GrhDatas)

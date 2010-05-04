@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace NetGore.EditorTools
     /// A <see cref="TreeNode"/> for the <see cref="GrhTreeView"/> that represents a single <see cref="GrhData"/>.
     /// </summary>
     [Serializable]
-    public class GrhTreeViewNode : TreeNode
+    public class GrhTreeViewNode : TreeNode, IGrhTreeViewNode
     {
         readonly GrhData _grhData;
 
@@ -153,10 +154,9 @@ namespace NetGore.EditorTools
             sb.AppendLine("Grh: " + grhData.GrhIndex);
             sb.AppendLine("Texture: " + grhData.TextureName);
 
-            // NOTE: Had to remove showing the pos/size to avoid having the textures load...
-            // var sourceRect = grhData.SourceRect;
-            // sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
-            // sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
+            var sourceRect = grhData.SourceRect;
+            sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
+            sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
 
             return sb.ToString();
         }
@@ -204,15 +204,7 @@ namespace NetGore.EditorTools
             }
 
             _animationGrh = new Grh(grhData, AnimType.Loop, Environment.TickCount);
-
-            string imageKey;
-            var frame = grhData.GetFrame(0);
-            if (frame != null)
-                imageKey = GrhImageList.GetImageKey(frame);
-            else
-                imageKey = null;
-
-            SetImageKeys(imageKey);
+            _image = _grhImageList.GetImage(grhData.GetFrame(0));
         }
 
         /// <summary>
@@ -221,23 +213,15 @@ namespace NetGore.EditorTools
         /// <param name="grhData">The <see cref="StationaryGrhData"/>.</param>
         void SetIconImageStationary(StationaryGrhData grhData)
         {
-            var imageKey = GrhImageList.GetImageKey(grhData);
-            SetImageKeys(imageKey);
+            _image = _grhImageList.GetImage(grhData);
         }
+
+        Image _image;
 
         /// <summary>
-        /// Sets all of the image keys to the given <paramref name="imageKey"/>.
+        /// Gets the <see cref="Image"/> to use to draw the <see cref="GrhTreeViewNode"/>.
         /// </summary>
-        /// <param name="imageKey">The image key to use.</param>
-        void SetImageKeys(string imageKey)
-        {
-            if (StringComparer.Ordinal.Equals(ImageKey, imageKey))
-                return;
-
-            ImageKey = imageKey;
-            SelectedImageKey = imageKey;
-            StateImageKey = imageKey;
-        }
+        public Image Image { get { return _image; } }
 
         /// <summary>
         /// Makes the <see cref="GrhData"/> handled by this <see cref="GrhTreeViewNode"/> synchronize
@@ -303,7 +287,7 @@ namespace NetGore.EditorTools
             var current = _animationGrh.CurrentGrhData;
             if (current == null)
             {
-                SetImageKeys(null);
+                _image = null;
                 return;
             }
 
@@ -316,9 +300,10 @@ namespace NetGore.EditorTools
             if (oldGrhData != _animationGrh.CurrentGrhData)
             {
                 // Change the image
-                var imageKey = GrhImageList.GetImageKey(current);
-                SetImageKeys(imageKey);
+                _image = _grhImageList.GetImage(current);
             }
         }
+
+        static readonly GrhImageList _grhImageList = GrhImageList.Instance;
     }
 }

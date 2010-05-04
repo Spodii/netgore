@@ -34,7 +34,6 @@
             // gtv
             // 
             this.gtv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gtv.ImageSize = new System.Drawing.Size(0, 0);
             this.gtv.Location = new System.Drawing.Point(0, 0);
             this.gtv.Name = "gtv";
             this.gtv.Size = new System.Drawing.Size(308, 494);
