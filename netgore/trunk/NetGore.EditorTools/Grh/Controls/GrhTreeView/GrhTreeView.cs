@@ -564,7 +564,7 @@ namespace NetGore.EditorTools
             if (cm == null)
                 throw new Exception("Failed to find a ContentManager to use.");
 
-            var newGDs = AutomaticGrhDataUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
+            var newGDs = AutomaticGrhDataUpdater.Update(cm, ContentPaths.Dev.Grhs, this);
             var newCount = newGDs.Count();
 
             if (newCount > 0)

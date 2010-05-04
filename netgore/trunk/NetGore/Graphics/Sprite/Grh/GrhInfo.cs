@@ -234,6 +234,12 @@ namespace NetGore.Graphics
             return CreateGrhData(NextFreeIndex(), contentManager, categorization, texture, pos, size);
         }
 
+        public static StationaryGrhData CreateGrhData(IContentManager contentManager, SpriteCategorization categorization,
+                                                      string texture)
+        {
+            return CreateGrhData(NextFreeIndex(), contentManager, categorization, texture, null, null);
+        }
+
         public static StationaryGrhData CreateGrhData(IContentManager contentManager, SpriteCategory category)
         {
             var index = NextFreeIndex();
@@ -243,14 +249,18 @@ namespace NetGore.Graphics
         }
 
         static StationaryGrhData CreateGrhData(GrhIndex grhIndex, IContentManager contentManager,
-                                               SpriteCategorization categorization, string texture, Vector2 pos, Vector2 size)
+                                               SpriteCategorization categorization, string texture, Vector2? pos, Vector2? size)
         {
             Debug.Assert(!grhIndex.IsInvalid);
 
-            var source = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+            Rectangle? source;
 
-            var gd = new StationaryGrhData(contentManager, grhIndex, categorization);
-            gd.ChangeTexture(texture, source);
+            if (pos == null || size == null)
+                source = null;
+            else
+                source = new Rectangle((int)pos.Value.X, (int)pos.Value.Y, (int)size.Value.X, (int)size.Value.Y);
+
+            var gd = new StationaryGrhData(contentManager, grhIndex, categorization, texture, source);
 
             AddGrhData(gd);
             return gd;
@@ -697,7 +707,8 @@ namespace NetGore.Graphics
             if (gd is StationaryGrhData)
                 return (StationaryGrhData)gd;
 
-            var newGD = new StationaryGrhData(GetContentManager(), gd.GrhIndex, gd.Categorization);
+            var newGD = new StationaryGrhData(GetContentManager(), gd.GrhIndex, gd.Categorization, null, null);
+
             Delete(gd);
             AddGrhData(newGD);
 

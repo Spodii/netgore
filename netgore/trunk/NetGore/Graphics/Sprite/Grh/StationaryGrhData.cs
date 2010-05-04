@@ -55,12 +55,19 @@ namespace NetGore.Graphics
         /// <param name="cm">The <see cref="IContentManager"/>.</param>
         /// <param name="grhIndex">The <see cref="GrhIndex"/>.</param>
         /// <param name="cat">The <see cref="SpriteCategorization"/>.</param>
+        /// <param name="textureName">Name of the texture.</param>
+        /// <param name="textureSource">The area of the texture to use, or null for the whole texture.</param>
         /// <exception cref="ArgumentNullException"><paramref name="cat"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="grhIndex"/> is equal to GrhIndex.Invalid.</exception>
-        public StationaryGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat) : base(grhIndex, cat)
+        public StationaryGrhData(IContentManager cm, GrhIndex grhIndex, SpriteCategorization cat, TextureAssetName textureName, Rectangle? textureSource) : base(grhIndex, cat)
         {
             _cm = cm;
-            AutomaticSize = true;
+            _textureName = textureName;
+
+            if (textureSource == null)
+                AutomaticSize = true;
+            else
+                SetSourceRect(textureSource.Value);
         }
 
         /// <summary>
@@ -96,7 +103,7 @@ namespace NetGore.Graphics
 
             _textureName = textureName;
             SetSourceRect(textureSource);
-            AutomaticSize = automaticSize;
+            _automaticSize = automaticSize;
         }
 
         /// <summary>
@@ -118,7 +125,21 @@ namespace NetGore.Graphics
                 _automaticSize = value;
 
                 if (AutomaticSize)
-                    SetSourceRect(0, 0, 0, 0);
+                {
+                    RemoveAtlas();
+                    ValidateTexture();
+
+                    if (Texture == null)
+                    {
+                        // Cannot set the sizes since the texture is invalid
+                        SetSourceRect(0, 0, 0, 0);
+                    }
+                    else
+                    {
+                        // Use the correct sizes
+                        SetSourceRect(0, 0, (int)Texture.Width, (int)Texture.Height);
+                    }
+                }
             }
         }
 
@@ -155,7 +176,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                LoadAutoTextureSizeIfNeeded();
+                ValidateAutomaticSize(); 
                 return _sourceHeight;
             }
         }
@@ -168,7 +189,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                LoadAutoTextureSizeIfNeeded();
+                ValidateAutomaticSize(); 
                 return new Rectangle(_sourceX, _sourceY, _sourceWidth, _sourceHeight);
             }
         }
@@ -192,7 +213,7 @@ namespace NetGore.Graphics
         {
             get
             {
-                LoadAutoTextureSizeIfNeeded();
+                ValidateAutomaticSize(); 
                 return new Vector2(_sourceWidth, _sourceHeight);
             }
         }
@@ -219,11 +240,21 @@ namespace NetGore.Graphics
         /// </summary>
         public int Width
         {
-            get
-            {
-                LoadAutoTextureSizeIfNeeded();
-                return _sourceWidth;
-            }
+            get {
+                ValidateAutomaticSize();
+                return _sourceWidth; }
+        }
+
+        /// <summary>
+        /// Validates the size of the <see cref="StationaryGrhData"/> that uses <see cref="AutomaticSize"/>.
+        /// </summary>
+        void ValidateAutomaticSize()
+        {
+            if (_sourceWidth > 0 || !AutomaticSize || Texture == null || _isUsingAtlas)
+                return;
+
+            _sourceWidth = (ushort)Texture.Width;
+            _sourceHeight = (ushort)Texture.Height;
         }
 
         /// <summary>
@@ -305,10 +336,7 @@ namespace NetGore.Graphics
         /// </returns>
         protected override GrhData DeepCopy(SpriteCategorization newCategorization, GrhIndex newGrhIndex)
         {
-            var copy = new StationaryGrhData(ContentManager, newGrhIndex, newCategorization)
-            { _textureName = TextureName, _automaticSize = _automaticSize };
-            copy.SetSourceRect(SourceRect);
-
+            var copy = new StationaryGrhData(ContentManager, newGrhIndex, newCategorization, TextureName, AutomaticSize ? (Rectangle?)null : SourceRect);
             return copy;
         }
 
@@ -349,30 +377,6 @@ namespace NetGore.Graphics
             return delay;
         }
 
-        void LoadAutoTextureSizeIfNeeded()
-        {
-            if (!AutomaticSize || _sourceWidth != 0)
-                return;
-
-            _isUsingAtlas = false;
-            _texture = null;
-            ValidateTexture();
-
-            if (Texture == null || Texture.IsDisposed)
-            {
-                // Failed to load, so try to just use the top-left corner pixel
-                const string errmsg = "GrhData `{0}` cannot be automatically sized since the texture is null or disposed!";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                SetSourceRect(0, 0, 1, 1);
-            }
-            else
-            {
-                // Loaded properly
-                SetSourceRect(0, 0, (int)Texture.Width, (int)Texture.Height);
-            }
-        }
-
         /// <summary>
         /// Reads a <see cref="GrhData"/> from an <see cref="IValueReader"/>.
         /// </summary>
@@ -410,6 +414,20 @@ namespace NetGore.Graphics
             _sourceY = (ushort)y;
             _sourceWidth = (ushort)width;
             _sourceHeight = (ushort)height;
+        }
+
+        /// <summary>
+        /// Updates the size of a <see cref="StationaryGrhData"/> where <see cref="AutomaticSize"/> is set. This should only ever
+        /// need to be called by editors, and never the client.
+        /// </summary>
+        /// <param name="newSize">The new, correct size of the texture used by the <see cref="StationaryGrhData"/>.</param>
+        public void UpdateAutomaticSize(Vector2 newSize)
+        {
+            if (!AutomaticSize)
+                throw new InvalidOperationException("This method can only be called when AutomaticSize is set.");
+
+            _sourceWidth = (ushort)newSize.X;
+            _sourceHeight = (ushort)newSize.Y;
         }
 
         /// <summary>
@@ -488,7 +506,6 @@ namespace NetGore.Graphics
                 if (_isUsingAtlas)
                     return _atlasSourceRect;
 
-                LoadAutoTextureSizeIfNeeded();
                 return new Rectangle(_sourceX, _sourceY, _sourceWidth, _sourceHeight);
             }
         }

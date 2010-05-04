@@ -946,6 +946,7 @@ namespace DemoGame.MapEditor
 
             // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
+            AutomaticGrhDataSizeUpdater.Instance.UpdateSizes();
 
             // Prepare the GrhImageList to avoid stalling the loading later
             GrhImageList.Prepare();
