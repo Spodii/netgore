@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Features.Shops;

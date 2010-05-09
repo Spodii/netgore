@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="EditorAlliance.cs" />
     <Compile Include="EditorMapSpawnValues.cs" />
+    <Compile Include="EditorShop.cs" />
     <Compile Include="TypeConverters\AllianceIDListTypeConverter.cs" />
     <Compile Include="TypeConverters\CharacterTemplateAndAmountListTypeConverter.cs" />
     <Compile Include="EditorQuest.cs" />
