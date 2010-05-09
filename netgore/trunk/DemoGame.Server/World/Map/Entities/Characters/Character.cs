@@ -28,62 +28,11 @@ namespace DemoGame.Server
         /// <summary>
         /// Delegate for handling an event from a <see cref="Character"/>.
         /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        public delegate void CharacterEventHandler(Character character);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
         /// <param name="attacker">The <see cref="Character"/> that did the attacking.</param>
         /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
         /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
         /// the <paramref name="attacker"/>.</param>
         public delegate void CharacterAttackCharacterEventHandler(Character attacker, Character attacked, int damage);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="map">The map related to the event.</param>
-        public delegate void CharacterMapEventHandler(Character character, Map map);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldMap">The old map.</param>
-        /// <param name="newMap">The new map.</param>
-        public delegate void CharacterChangeMapEventHandler(Character character, Map oldMap, Map newMap);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="killed">The <see cref="Character"/> that was killed.</param>
-        /// <param name="killer">The <see cref="Character"/> that killed the <paramref name="killed"/>.</param>
-        public delegate void CharacterKillEventHandler(Character killed, Character killer);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="item">The <see cref="ItemEntity"/> related to the event.</param>
-        public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldExp">The old amount of experience.</param>
-        /// <param name="exp">The new amount of experience.</param>
-        public delegate void CharacterExpEventHandler(Character character, int oldExp, int exp);
-
-        /// <summary>
-        /// Delegate for handling an event from a <see cref="Character"/>.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
-        /// <param name="oldLevel">The old level.</param>
-        /// <param name="level">The new level.</param>
-        public delegate void CharacterLevelEventHandler(Character character, byte oldLevel, byte level);
 
         /// <summary>
         /// Delegate for handling an event from a <see cref="Character"/>.
@@ -97,9 +46,60 @@ namespace DemoGame.Server
         /// Delegate for handling an event from a <see cref="Character"/>.
         /// </summary>
         /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+        /// <param name="oldMap">The old map.</param>
+        /// <param name="newMap">The new map.</param>
+        public delegate void CharacterChangeMapEventHandler(Character character, Map oldMap, Map newMap);
+
+        /// <summary>
+        /// Delegate for handling an event from a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
         public delegate void CharacterChangeSPEventHandler(Character character, SPValueType oldValue, SPValueType newValue);
+
+        /// <summary>
+        /// Delegate for handling an event from a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+        public delegate void CharacterEventHandler(Character character);
+
+        /// <summary>
+        /// Delegate for handling an event from a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+        /// <param name="oldExp">The old amount of experience.</param>
+        /// <param name="exp">The new amount of experience.</param>
+        public delegate void CharacterExpEventHandler(Character character, int oldExp, int exp);
+
+        /// <summary>
+        /// Delegate for handling an event from a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+        /// <param name="item">The <see cref="ItemEntity"/> related to the event.</param>
+        public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
+
+        /// <summary>
+        /// Delegate for handling an event from a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="killed">The <see cref="Character"/> that was killed.</param>
+        /// <param name="killer">The <see cref="Character"/> that killed the <paramref name="killed"/>.</param>
+        public delegate void CharacterKillEventHandler(Character killed, Character killer);
+
+        /// <summary>
+        /// Delegate for handling an event from a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+        /// <param name="oldLevel">The old level.</param>
+        /// <param name="level">The new level.</param>
+        public delegate void CharacterLevelEventHandler(Character character, byte oldLevel, byte level);
+
+        /// <summary>
+        /// Delegate for handling an event from a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> the event took place on.</param>
+        /// <param name="map">The map related to the event.</param>
+        public delegate void CharacterMapEventHandler(Character character, Map map);
 
         /// <summary>
         /// Delegate for handling an event from a <see cref="Character"/>.
@@ -110,11 +110,6 @@ namespace DemoGame.Server
         public delegate void CharacterStatPointsEventHandler(Character character, int oldValue, int newValue);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Amount of time the character must wait between attacks
-        /// </summary>
-        const int _attackTimeout = 500;
 
         /// <summary>
         /// How frequently the SP is recovered in milliseconds.
@@ -130,12 +125,14 @@ namespace DemoGame.Server
         static readonly SafeRandom _rand = new SafeRandom();
 
         static readonly ShopManager _shopManager = ShopManager.Instance;
+        static readonly SkillManager _skillManager = SkillManager.Instance;
 
         readonly StatCollection<StatType> _baseStats;
         readonly CharacterEquipped _equipped;
         readonly CharacterInventory _inventory;
         readonly bool _isPersistent;
         readonly StatCollection<StatType> _modStats;
+        readonly CharacterSkillCaster _skillCaster;
         readonly CharacterSPSynchronizer _spSync;
         readonly CharacterStatusEffects _statusEffects;
         readonly World _world;
@@ -151,26 +148,12 @@ namespace DemoGame.Server
         /// </summary>
         Alliance _alliance;
 
+        int _attackTimeout = 500;
+
         int _cash;
         int _exp;
         SPValueType _hp;
         CharacterID _id;
-
-        /// <summary>
-        /// Gets the weapon to use for attacking. Cannot be null.
-        /// </summary>
-        public ItemEntity Weapon
-        {
-            get
-            {
-                var weapon = _equipped[EquipmentSlot.RightHand];
-
-                if (weapon == null)
-                    return World.UnarmedWeapon;
-
-                return weapon;
-            }
-        }
 
         /// <summary>
         /// If the character is alive or not.
@@ -178,11 +161,6 @@ namespace DemoGame.Server
         bool _isAlive = false;
 
         bool _isLoaded = false;
-
-        /// <summary>
-        /// Time at which the character last performed an attack.
-        /// </summary>
-        int _lastAttackTime;
 
         byte _level;
 
@@ -206,6 +184,12 @@ namespace DemoGame.Server
         /// </summary>
         string _name;
 
+        /// <summary>
+        /// The time at which the character will be allowed to attack again. That is, they cannot attack until the game time
+        /// surpasses this time.
+        /// </summary>
+        int _nextAttackTime;
+
         int _nextLevelExp;
 
         /// <summary>
@@ -221,257 +205,8 @@ namespace DemoGame.Server
 
         int _statPoints;
 
-        readonly CharacterSkillCaster _skillCaster;
-
         CharacterTemplateID? _templateID;
-
-        /// <summary>
-        /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
-        /// anything for this event to be raised. This will be raised before <see cref="AttackedCharacter"/>.
-        /// </summary>
-        public event CharacterEventHandler Attacked;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.Attacked"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        protected virtual void OnAttacked()
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this Character has successfully attacked another Character.
-        /// </summary>
-        public event CharacterAttackCharacterEventHandler AttackedCharacter;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.AttackedCharacter"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
-        /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
-        /// the this <see cref="Character"/>.</param>
-        protected virtual void OnAttackedCharacter(Character attacked, int damage)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this Character has been attacked by another Character.
-        /// </summary>
-        public event CharacterAttackCharacterEventHandler AttackedByCharacter;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.AttackedByCharacter"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="attacker">The <see cref="Character"/> that attacked us.</param>
-        /// <param name="damage">The amount of damage inflicted on this <see cref="Character"/>.</param>
-        protected virtual void OnAttackedByCharacter(Character attacker, int damage)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="Character"/>'s cash value has changed.
-        /// </summary>
-        public event CharacterCashEventHandler CashChanged;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.CashChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldCash">The old cash.</param>
-        /// <param name="cash">The cash.</param>
-        protected virtual void OnCashChanged(int oldCash, int cash)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="Character"/>'s exp value has changed.
-        /// </summary>
-        public event CharacterExpEventHandler ExpChanged;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.ExpChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldExp">The old exp.</param>
-        /// <param name="exp">The exp.</param>
-        protected virtual void OnExpChanged(int oldExp, int exp)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="Character"/>'s HP value has changed.
-        /// </summary>
-        public event CharacterChangeSPEventHandler HPChanged;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.HPChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        protected virtual void OnHPChanged(SPValueType oldValue, SPValueType newValue)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="Character"/>'s level value has changed.
-        /// </summary>
-        public event CharacterLevelEventHandler LevelChanged;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.LevelChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        protected virtual void OnLevelChanged(byte oldValue, byte newValue)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="Character"/>'s MP value has changed.
-        /// </summary>
-        public event CharacterChangeSPEventHandler MPChanged;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.MPChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        protected virtual void OnMPChanged(SPValueType oldValue, SPValueType newValue)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="Character"/>'s StatPoints value has changed.
-        /// </summary>
-        public event CharacterStatPointsEventHandler StatPointsChanged;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.StatPointsChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        protected virtual void OnStatPointsChanged(int oldValue, int newValue)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when the Character's TemplateID has changed.
-        /// </summary>
-        public event CharacterEventHandler TemplateIDChanged;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.TemplateIDChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        protected virtual void OnTemplateIDChanged()
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this Character has dropped an item.
-        /// </summary>
-        public event CharacterItemEventHandler DroppedItem;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.DroppedItem"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="item">The item that was dropped.</param>
-        protected virtual void OnDroppedItem(ItemEntity item)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this Character has killed another Character.
-        /// </summary>
-        public event CharacterKillEventHandler KilledCharacter;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
-        protected virtual void OnKilledCharacter(Character killed)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
-        /// </summary>
-        public event CharacterEventHandler Killed;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.Killed"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        protected virtual void OnKilled()
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this Character has been killed by another Character.
-        /// </summary>
-        public event CharacterKillEventHandler KilledByCharacter;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="killer">The <see cref="Character"/> that killed this <see cref="Character"/>.</param>
-        protected virtual void OnKilledByCharacter(Character killer)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this Character uses an item.
-        /// </summary>
-        public event CharacterItemEventHandler UsedItem;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="item">The item that was used.</param>
-        protected virtual void OnUsedItem(ItemEntity item)
-        {
-        }
-
-        /// <summary>
-        /// Notifies listeners when this <see cref="Character"/>'s map has changed.
-        /// </summary>
-        public event CharacterChangeMapEventHandler MapChanged;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.MapChanged"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="oldMap">The old map.</param>
-        /// <param name="newMap">The new map.</param>
-        protected virtual void OnMapChanged(Map oldMap, Map newMap)
-        {
-        }
+        bool _updateModStats = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Character"/> class.
@@ -512,120 +247,85 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles when the <see cref="Character"/> equips an item.
+        /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
+        /// anything for this event to be raised. This will be raised before <see cref="AttackedCharacter"/>.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="item">The <see cref="ItemEntity"/> that was equipped.</param>
-        /// <param name="slot">The slot the <paramref name="item"/> was equipped in.</param>
-        void EquippedHandler(EquippedBase<ItemEntity> sender, ItemEntity item, EquipmentSlot slot)
-        {
-            _updateModStats = true;
-
-            OnEquipped(item, slot);
-        }
+        public event CharacterEventHandler Attacked;
 
         /// <summary>
-        /// Handles when the <see cref="Character"/> unequips an item.
+        /// Notifies listeners when this Character has been attacked by another Character.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="item">The <see cref="ItemEntity"/> that was unequipped.</param>
-        /// <param name="slot">The slot the <paramref name="item"/> was unequipped in.</param>
-        void UnequippedHandler(EquippedBase<ItemEntity> sender, ItemEntity item, EquipmentSlot slot)
-        {
-            _updateModStats = true;
-
-            OnUnequipped(item, slot);
-        }
+        public event CharacterAttackCharacterEventHandler AttackedByCharacter;
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling of
-        /// when the <see cref="Character"/> equips an item.
-        /// Use this overload instead of adding an event listener to the corresponding event when possible.
+        /// Notifies listeners when this Character has successfully attacked another Character.
         /// </summary>
-        /// <param name="item">The <see cref="ItemEntity"/> that was equipped.</param>
-        /// <param name="slot">The slot the <paramref name="item"/> was equipped in.</param>
-        protected virtual void OnEquipped(ItemEntity item, EquipmentSlot slot)
-        {
-        }
+        public event CharacterAttackCharacterEventHandler AttackedCharacter;
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling of
-        /// when the <see cref="Character"/> unequips an item.
-        /// Use this overload instead of adding an event listener to the corresponding event when possible.
+        /// Notifies listeners when this <see cref="Character"/>'s cash value has changed.
         /// </summary>
-        /// <param name="item">The <see cref="ItemEntity"/> that was unequipped.</param>
-        /// <param name="slot">The slot the <paramref name="item"/> was unequipped in.</param>
-        protected virtual void OnUnequipped(ItemEntity item, EquipmentSlot slot)
-        {
-        }
+        public event CharacterCashEventHandler CashChanged;
 
         /// <summary>
-        /// Handles when the <see cref="Character"/>'s base stats change.
+        /// Notifies listeners when this Character has dropped an item.
         /// </summary>
-        /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
-        /// <param name="statType">The type of the stat that changed.</param>
-        /// <param name="oldValue">The old value of the stat.</param>
-        /// <param name="newValue">The new value of the stat.</param>
-        void BaseStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue,
-                                    StatValueType newValue)
-        {
-            _updateModStats = true;
-
-            OnBaseStatChanged(statType, oldValue, newValue);
-        }
+        public event CharacterItemEventHandler DroppedItem;
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling for when a base stat
-        /// changes. Use this overload instead of adding an event listener to the base stat collection when possible.
+        /// Notifies listeners when this <see cref="Character"/>'s exp value has changed.
         /// </summary>
-        /// <param name="statType">The type of the stat that changed.</param>
-        /// <param name="oldValue">The old value of the stat.</param>
-        /// <param name="newValue">The new value of the stat.</param>
-        protected virtual void OnBaseStatChanged(StatType statType, StatValueType oldValue, StatValueType newValue)
-        {
-        }
+        public event CharacterExpEventHandler ExpChanged;
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling for when a mod stat
-        /// changes. Use this overload instead of adding an event listener to the mod stat collection when possible.
+        /// Notifies listeners when this <see cref="Character"/>'s HP value has changed.
         /// </summary>
-        /// <param name="statType">The type of the stat that changed.</param>
-        /// <param name="oldValue">The old value of the stat.</param>
-        /// <param name="newValue">The new value of the stat.</param>
-        protected virtual void OnModStatChanged(StatType statType, StatValueType oldValue, StatValueType newValue)
-        {
-        }
+        public event CharacterChangeSPEventHandler HPChanged;
 
         /// <summary>
-        /// Handles when the <see cref="Character"/>'s mod stats change.
+        /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
         /// </summary>
-        /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
-        /// <param name="statType">The type of the stat that changed.</param>
-        /// <param name="oldValue">The old value of the stat.</param>
-        /// <param name="newValue">The new value of the stat.</param>
-        void ModStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue,
-                                   StatValueType newValue)
-        {
-            _updateModStats = true;
+        public event CharacterEventHandler Killed;
 
-            // Ensure the HP and MP are valid
-            switch (statType)
-            {
-                case StatType.MaxMP:
-                    if (MP > newValue)
-                        MP = (int)newValue;
-                    break;
+        /// <summary>
+        /// Notifies listeners when this Character has been killed by another Character.
+        /// </summary>
+        public event CharacterKillEventHandler KilledByCharacter;
 
-                case StatType.MaxHP:
-                    if (HP > newValue)
-                        HP = (int)newValue;
-                    break;
-            }
+        /// <summary>
+        /// Notifies listeners when this Character has killed another Character.
+        /// </summary>
+        public event CharacterKillEventHandler KilledCharacter;
 
-            OnModStatChanged(statType, oldValue, newValue);
-        }
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s level value has changed.
+        /// </summary>
+        public event CharacterLevelEventHandler LevelChanged;
 
-        bool _updateModStats = true;
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s MP value has changed.
+        /// </summary>
+        public event CharacterChangeSPEventHandler MPChanged;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s map has changed.
+        /// </summary>
+        public event CharacterChangeMapEventHandler MapChanged;
+
+        /// <summary>
+        /// Notifies listeners when this <see cref="Character"/>'s StatPoints value has changed.
+        /// </summary>
+        public event CharacterStatPointsEventHandler StatPointsChanged;
+
+        /// <summary>
+        /// Notifies listeners when the Character's TemplateID has changed.
+        /// </summary>
+        public event CharacterEventHandler TemplateIDChanged;
+
+        /// <summary>
+        /// Notifies listeners when this Character uses an item.
+        /// </summary>
+        public event CharacterItemEventHandler UsedItem;
 
         /// <summary>
         /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
@@ -647,6 +347,14 @@ namespace DemoGame.Server
         protected static AllianceManager AllianceManager
         {
             get { return _allianceManager; }
+        }
+
+        /// <summary>
+        /// Gets the amount of time in milliseconds the <see cref="Character"/> must wait between attacks.
+        /// </summary>
+        public int AttackTimeout
+        {
+            get { return _attackTimeout; }
         }
 
         /// <summary>
@@ -794,6 +502,22 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the weapon to use for attacking. Cannot be null.
+        /// </summary>
+        public ItemEntity Weapon
+        {
+            get
+            {
+                var weapon = _equipped[EquipmentSlot.RightHand];
+
+                if (weapon == null)
+                    return World.UnarmedWeapon;
+
+                return weapon;
+            }
+        }
+
+        /// <summary>
         /// Gets the world the Character is in.
         /// </summary>
         public World World
@@ -836,7 +560,7 @@ namespace DemoGame.Server
                 return;
 
             // Check that enough time has elapsed since the last attack
-            if (_lastAttackTime + _attackTimeout > currTime)
+            if (_nextAttackTime > currTime)
                 return;
 
             // If no weapon is specified, use the unarmed weapon
@@ -906,30 +630,30 @@ namespace DemoGame.Server
             }
 
             // Update the last attack time to now
-            _lastAttackTime = currTime;
+            _nextAttackTime = currTime + _attackTimeout;
         }
 
         /// <summary>
-        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="IClientCommunicator"/>.
+        /// Performs the actual attacking of a specific character. This should only be called by
+        /// <see cref="AttackMelee"/> or <see cref="AttackRanged"/>.
         /// </summary>
-        /// <param name="gameMessage">The game message.</param>
-        void TrySend(GameMessage gameMessage)
+        /// <param name="target">Character to attack.</param>
+        void AttackApplyReal(Character target)
         {
-            var comm = this as IClientCommunicator;
-            if (comm != null)
-                comm.Send(gameMessage);
-        }
+            // Get the damage
+            var damage = GetAttackDamage(target);
 
-        /// <summary>
-        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="IClientCommunicator"/>.
-        /// </summary>
-        /// <param name="gameMessage">The game message.</param>
-        /// <param name="parameters">The message parameters.</param>
-        void TrySend(GameMessage gameMessage, params object[] parameters)
-        {
-            var comm = this as IClientCommunicator;
-            if (comm != null)
-                comm.Send(gameMessage, parameters);
+            // Apply the damage to the target
+            target.Damage(this, damage);
+
+            // Raise attack events
+            OnAttackedCharacter(target, damage);
+            if (AttackedCharacter != null)
+                AttackedCharacter(this, target, damage);
+
+            target.OnAttackedByCharacter(this, damage);
+            if (target.AttackedByCharacter != null)
+                target.AttackedByCharacter(this, target, damage);
         }
 
         /// <summary>
@@ -1017,26 +741,18 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Performs the actual attacking of a specific character. This should only be called by
-        /// <see cref="AttackMelee"/> or <see cref="AttackRanged"/>.
+        /// Handles when the <see cref="Character"/>'s base stats change.
         /// </summary>
-        /// <param name="target">Character to attack.</param>
-        void AttackApplyReal(Character target)
+        /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        void BaseStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue,
+                                    StatValueType newValue)
         {
-            // Get the damage
-            var damage = GetAttackDamage(target);
+            _updateModStats = true;
 
-            // Apply the damage to the target
-            target.Damage(this, damage);
-
-            // Raise attack events
-            OnAttackedCharacter(target, damage);
-            if (AttackedCharacter != null)
-                AttackedCharacter(this, target, damage);
-
-            target.OnAttackedByCharacter(this, damage);
-            if (target.AttackedByCharacter != null)
-                target.AttackedByCharacter(this, target, damage);
+            OnBaseStatChanged(statType, oldValue, newValue);
         }
 
         /// <summary>
@@ -1252,6 +968,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles when the <see cref="Character"/> equips an item.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="item">The <see cref="ItemEntity"/> that was equipped.</param>
+        /// <param name="slot">The slot the <paramref name="item"/> was equipped in.</param>
+        void EquippedHandler(EquippedBase<ItemEntity> sender, ItemEntity item, EquipmentSlot slot)
+        {
+            _updateModStats = true;
+
+            OnEquipped(item, slot);
+        }
+
+        /// <summary>
         /// Gets the amount of damage for a normal attack.
         /// </summary>
         /// <param name="target">Character being attacked.</param>
@@ -1380,6 +1109,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional steps to be taken when saving.
+        /// </summary>
+        protected virtual void HandleSave()
+        {
+        }
+
+        /// <summary>
         /// Handles updating this <see cref="Entity"/>.
         /// </summary>
         /// <param name="imap">The map the <see cref="Entity"/> is on.</param>
@@ -1420,23 +1156,6 @@ namespace DemoGame.Server
         {
             return GameData.UserName.IsValid(s);
         }
-
-#if !TOPDOWN
-        /// <summary>
-        /// Makes the Character jump if <see cref="Character.CanJump"/> is true. If <see cref="Character.CanJump"/> is false,
-        /// this will do nothing.
-        /// </summary>
-        public void Jump()
-        {
-            if (!CanJump)
-                return;
-
-            if (_skillCaster.IsCastingSkill)
-                return;
-
-            SetVelocity(Velocity + new Vector2(0.0f, -0.48f));
-        }
-#endif
 
         /// <summary>
         /// When overridden in the derived class, implements the Character being killed. This 
@@ -1569,23 +1288,38 @@ namespace DemoGame.Server
                 log.InfoFormat("Loaded Character `{0}`.", Name);
         }
 
-#pragma warning disable 1587
-#if TOPDOWN
-    /// <summary>
-    /// Starts moving the character down.
-    /// </summary>
-        public void MoveDown()
+        /// <summary>
+        /// Handles when the <see cref="Character"/>'s mod stats change.
+        /// </summary>
+        /// <param name="sender">The <see cref="IStatCollection{TStatType}"/> the event came from.</param>
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        void ModStatChangedHandler(IStatCollection<StatType> sender, StatType statType, StatValueType oldValue,
+                                   StatValueType newValue)
         {
-            if (IsMovingDown)
-                return;
+            _updateModStats = true;
 
-            if (_skillCaster.IsCastingSkill)
-                return;
+            // Ensure the HP and MP are valid
+            switch (statType)
+            {
+                case StatType.MaxMP:
+                    if (MP > newValue)
+                        MP = (int)newValue;
+                    break;
 
-            SetVelocity(new Vector2(Velocity.X, _moveSpeedVelocityCache));
+                case StatType.MaxHP:
+                    if (HP > newValue)
+                        HP = (int)newValue;
+                    break;
+            }
+
+            // Update the attack rate
+            if (statType == StatType.Agi)
+                _attackTimeout = Math.Max(GameData.AttackTimeoutMin, GameData.AttackTimeoutDefault - ModStats[StatType.Agi] * 2);
+
+            OnModStatChanged(statType, oldValue, newValue);
         }
-#endif
-#pragma warning restore 1587
 
         /// <summary>
         /// Starts moving the character to the left.
@@ -1615,23 +1349,216 @@ namespace DemoGame.Server
             SetVelocity(new Vector2(_moveSpeedVelocityCache, Velocity.Y));
         }
 
-#pragma warning disable 1587
-#if TOPDOWN
-    /// <summary>
-    /// Starts moving the character up.
-    /// </summary>
-        public void MoveUp()
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.Attacked"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnAttacked()
         {
-            if (IsMovingUp)
-                return;
-
-            if (_skillCaster.IsCastingSkill)
-                return;
-
-            SetVelocity(new Vector2(Velocity.X, -_moveSpeedVelocityCache));
         }
-#endif
-#pragma warning restore 1587
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.AttackedByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Character"/> that attacked us.</param>
+        /// <param name="damage">The amount of damage inflicted on this <see cref="Character"/>.</param>
+        protected virtual void OnAttackedByCharacter(Character attacker, int damage)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.AttackedCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="attacked">The <see cref="Character"/> that was attacked.</param>
+        /// <param name="damage">The amount of damage inflicted on the <paramref name="attacked"/> by
+        /// the this <see cref="Character"/>.</param>
+        protected virtual void OnAttackedCharacter(Character attacked, int damage)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling for when a base stat
+        /// changes. Use this overload instead of adding an event listener to the base stat collection when possible.
+        /// </summary>
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        protected virtual void OnBaseStatChanged(StatType statType, StatValueType oldValue, StatValueType newValue)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.CashChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldCash">The old cash.</param>
+        /// <param name="cash">The cash.</param>
+        protected virtual void OnCashChanged(int oldCash, int cash)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.DroppedItem"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was dropped.</param>
+        protected virtual void OnDroppedItem(ItemEntity item)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of
+        /// when the <see cref="Character"/> equips an item.
+        /// Use this overload instead of adding an event listener to the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The <see cref="ItemEntity"/> that was equipped.</param>
+        /// <param name="slot">The slot the <paramref name="item"/> was equipped in.</param>
+        protected virtual void OnEquipped(ItemEntity item, EquipmentSlot slot)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.ExpChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldExp">The old exp.</param>
+        /// <param name="exp">The exp.</param>
+        protected virtual void OnExpChanged(int oldExp, int exp)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.HPChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnHPChanged(SPValueType oldValue, SPValueType newValue)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.Killed"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnKilled()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="killer">The <see cref="Character"/> that killed this <see cref="Character"/>.</param>
+        protected virtual void OnKilledByCharacter(Character killer)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
+        protected virtual void OnKilledCharacter(Character killed)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.LevelChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnLevelChanged(byte oldValue, byte newValue)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.MPChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnMPChanged(SPValueType oldValue, SPValueType newValue)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.MapChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldMap">The old map.</param>
+        /// <param name="newMap">The new map.</param>
+        protected virtual void OnMapChanged(Map oldMap, Map newMap)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling for when a mod stat
+        /// changes. Use this overload instead of adding an event listener to the mod stat collection when possible.
+        /// </summary>
+        /// <param name="statType">The type of the stat that changed.</param>
+        /// <param name="oldValue">The old value of the stat.</param>
+        /// <param name="newValue">The new value of the stat.</param>
+        protected virtual void OnModStatChanged(StatType statType, StatValueType oldValue, StatValueType newValue)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.StatPointsChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        protected virtual void OnStatPointsChanged(int oldValue, int newValue)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.TemplateIDChanged"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        protected virtual void OnTemplateIDChanged()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of
+        /// when the <see cref="Character"/> unequips an item.
+        /// Use this overload instead of adding an event listener to the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The <see cref="ItemEntity"/> that was unequipped.</param>
+        /// <param name="slot">The slot the <paramref name="item"/> was unequipped in.</param>
+        protected virtual void OnUnequipped(ItemEntity item, EquipmentSlot slot)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was used.</param>
+        protected virtual void OnUsedItem(ItemEntity item)
+        {
+        }
 
         /// <summary>
         /// Makes the Character raise their base Stat of the corresponding type by one point, assuming they have enough
@@ -1682,13 +1609,6 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Saved Character `{0}`.", this);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional steps to be taken when saving.
-        /// </summary>
-        protected virtual void HandleSave()
-        {
         }
 
         /// <summary>
@@ -1831,11 +1751,39 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
+        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="IClientCommunicator"/>.
         /// </summary>
-        void IServerSaveable.ServerSave()
+        /// <param name="gameMessage">The game message.</param>
+        void TrySend(GameMessage gameMessage)
         {
-            Save();
+            var comm = this as IClientCommunicator;
+            if (comm != null)
+                comm.Send(gameMessage);
+        }
+
+        /// <summary>
+        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="IClientCommunicator"/>.
+        /// </summary>
+        /// <param name="gameMessage">The game message.</param>
+        /// <param name="parameters">The message parameters.</param>
+        void TrySend(GameMessage gameMessage, params object[] parameters)
+        {
+            var comm = this as IClientCommunicator;
+            if (comm != null)
+                comm.Send(gameMessage, parameters);
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Character"/> unequips an item.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="item">The <see cref="ItemEntity"/> that was unequipped.</param>
+        /// <param name="slot">The slot the <paramref name="item"/> was unequipped in.</param>
+        void UnequippedHandler(EquippedBase<ItemEntity> sender, ItemEntity item, EquipmentSlot slot)
+        {
+            _updateModStats = true;
+
+            OnUnequipped(item, slot);
         }
 
         /// <summary>
@@ -1952,6 +1900,11 @@ namespace DemoGame.Server
             return wasUsed;
         }
 
+        /// <summary>
+        /// Uses a use-once item.
+        /// </summary>
+        /// <param name="item">The item to be used.</param>
+        /// <returns>True if the item was used; otherwise false.</returns>
         bool UseItemUseOnce(ItemEntity item)
         {
             var useBonuses = item.BaseStats.Where(stat => stat.Value != 0);
@@ -1977,8 +1930,6 @@ namespace DemoGame.Server
         {
             UseSkill(_skillManager.GetSkill(skillType), target);
         }
-
-        static readonly SkillManager _skillManager = SkillManager.Instance;
 
         /// <summary>
         /// Makes the Character use a skill.
@@ -2035,41 +1986,60 @@ namespace DemoGame.Server
             return position;
         }
 
+#if !TOPDOWN
         /// <summary>
-        /// Gets or sets the map that the <see cref="IUpdateableMapReference"/> is on. This should only be set
-        /// by the map that the object was added to.
+        /// Makes the Character jump if <see cref="Character.CanJump"/> is true. If <see cref="Character.CanJump"/> is false,
+        /// this will do nothing.
         /// </summary>
-        IMap IUpdateableMapReference.Map
+        public void Jump()
         {
-            get { return Map; }
-            set
-            {
-                if (_map == value)
-                    return;
+            if (!CanJump)
+                return;
 
-                var oldMap = _map;
+            if (_skillCaster.IsCastingSkill)
+                return;
 
-                _map = (Map)value;
-
-                OnMapChanged(oldMap, _map);
-                if (MapChanged != null)
-                    MapChanged(this, oldMap, _map);
-            }
+            SetVelocity(Velocity + new Vector2(0.0f, -0.48f));
         }
+#endif
+
+#pragma warning disable 1587
+#if TOPDOWN
+    /// <summary>
+    /// Starts moving the character down.
+    /// </summary>
+        public void MoveDown()
+        {
+            if (IsMovingDown)
+                return;
+
+            if (_skillCaster.IsCastingSkill)
+                return;
+
+            SetVelocity(new Vector2(Velocity.X, _moveSpeedVelocityCache));
+        }
+#endif
+#pragma warning restore 1587
+
+#pragma warning disable 1587
+#if TOPDOWN
+    /// <summary>
+    /// Starts moving the character up.
+    /// </summary>
+        public void MoveUp()
+        {
+            if (IsMovingUp)
+                return;
+
+            if (_skillCaster.IsCastingSkill)
+                return;
+
+            SetVelocity(new Vector2(Velocity.X, -_moveSpeedVelocityCache));
+        }
+#endif
+#pragma warning restore 1587
 
         #region ICharacterTable Members
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        ICharacterTable ICharacterTable.DeepCopy()
-        {
-            return new CharacterTable(this);
-        }
 
         /// <summary>
         /// Gets the value of the database column `ai_id`.
@@ -2084,28 +2054,6 @@ namespace DemoGame.Server
 
                 return ai.ID;
             }
-        }
-
-        /// <summary>
-        /// Gets the value of the database column in the column collection `Stat`
-        /// that corresponds to the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key that represents the column in this column collection.</param>
-        /// <returns>
-        /// The value of the database column with the corresponding <paramref name="key"/>.
-        /// </returns>
-        int ICharacterTable.GetStat(StatType key)
-        {
-            return BaseStats[key];
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
-        /// key is the collection's key and the value is the value for that corresponding key.
-        /// </summary>
-        IEnumerable<KeyValuePair<StatType, int>> ICharacterTable.Stats
-        {
-            get { return BaseStats.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)); }
         }
 
         /// <summary>
@@ -2141,6 +2089,27 @@ namespace DemoGame.Server
                 OnCashChanged(oldValue, _cash);
                 if (CashChanged != null)
                     CashChanged(this, oldValue, _cash);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the ID of the CharacterTemplate that this Character was created from.
+        /// This will not alter the Character in any way except for functions that make use of the
+        /// CharacterTemplateID, such as Equipment and Inventory Items a NPC spawns with.
+        /// </summary>
+        public CharacterTemplateID? CharacterTemplateID
+        {
+            get { return _templateID; }
+            set
+            {
+                if (_templateID == value)
+                    return;
+
+                _templateID = value;
+
+                OnTemplateIDChanged();
+                if (TemplateIDChanged != null)
+                    TemplateIDChanged(this);
             }
         }
 
@@ -2240,27 +2209,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the value of the database column `map_id`.
-        /// </summary>
-        MapID ICharacterTable.MapID
-        {
-            get { return Map.ID; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value of the database column `move_speed`.
-        /// </summary>
-        public ushort MoveSpeed
-        {
-            get { return _moveSpeed; }
-            set
-            {
-                _moveSpeed = value;
-                _moveSpeedVelocityCache = GameData.MovementSpeedToVelocity(_moveSpeed);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the value of the database column `mp`.
         /// </summary>
         public SPValueType MP
@@ -2289,6 +2237,27 @@ namespace DemoGame.Server
                 OnMPChanged(oldValue, _mp);
                 if (MPChanged != null)
                     MPChanged(this, oldValue, _mp);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `map_id`.
+        /// </summary>
+        MapID ICharacterTable.MapID
+        {
+            get { return Map.ID; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value of the database column `move_speed`.
+        /// </summary>
+        public ushort MoveSpeed
+        {
+            get { return _moveSpeed; }
+            set
+            {
+                _moveSpeed = value;
+                _moveSpeedVelocityCache = GameData.MovementSpeedToVelocity(_moveSpeed);
             }
         }
 
@@ -2379,6 +2348,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
+        /// key is the collection's key and the value is the value for that corresponding key.
+        /// </summary>
+        IEnumerable<KeyValuePair<StatType, int>> ICharacterTable.Stats
+        {
+            get { return BaseStats.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)); }
+        }
+
+        /// <summary>
         /// Gets the value of the database column `x`.
         /// </summary>
         float ICharacterTable.X
@@ -2395,24 +2373,28 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the ID of the CharacterTemplate that this Character was created from.
-        /// This will not alter the Character in any way except for functions that make use of the
-        /// CharacterTemplateID, such as Equipment and Inventory Items a NPC spawns with.
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
         /// </summary>
-        public CharacterTemplateID? CharacterTemplateID
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        ICharacterTable ICharacterTable.DeepCopy()
         {
-            get { return _templateID; }
-            set
-            {
-                if (_templateID == value)
-                    return;
+            return new CharacterTable(this);
+        }
 
-                _templateID = value;
-
-                OnTemplateIDChanged();
-                if (TemplateIDChanged != null)
-                    TemplateIDChanged(this);
-            }
+        /// <summary>
+        /// Gets the value of the database column in the column collection `Stat`
+        /// that corresponds to the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key that represents the column in this column collection.</param>
+        /// <returns>
+        /// The value of the database column with the corresponding <paramref name="key"/>.
+        /// </returns>
+        int ICharacterTable.GetStat(StatType key)
+        {
+            return BaseStats[key];
         }
 
         #endregion
@@ -2431,6 +2413,14 @@ namespace DemoGame.Server
         #endregion
 
         #region IRespawnable Members
+
+        /// <summary>
+        /// Gets the DynamicEntity to respawn (typically just "this").
+        /// </summary>
+        DynamicEntity IRespawnable.DynamicEntity
+        {
+            get { return this; }
+        }
 
         /// <summary>
         /// Checks if the IRespawnable is ready to be respawned. If the object is already spawned, this should
@@ -2490,12 +2480,42 @@ namespace DemoGame.Server
             }
         }
 
+        #endregion
+
+        #region IServerSaveable Members
+
         /// <summary>
-        /// Gets the DynamicEntity to respawn (typically just "this").
+        /// Saves the state of this object and all <see cref="IServerSaveable"/> objects under it to the database.
         /// </summary>
-        DynamicEntity IRespawnable.DynamicEntity
+        void IServerSaveable.ServerSave()
         {
-            get { return this; }
+            Save();
+        }
+
+        #endregion
+
+        #region IUpdateableMapReference Members
+
+        /// <summary>
+        /// Gets or sets the map that the <see cref="IUpdateableMapReference"/> is on. This should only be set
+        /// by the map that the object was added to.
+        /// </summary>
+        IMap IUpdateableMapReference.Map
+        {
+            get { return Map; }
+            set
+            {
+                if (_map == value)
+                    return;
+
+                var oldMap = _map;
+
+                _map = (Map)value;
+
+                OnMapChanged(oldMap, _map);
+                if (MapChanged != null)
+                    MapChanged(this, oldMap, _map);
+            }
         }
 
         #endregion
