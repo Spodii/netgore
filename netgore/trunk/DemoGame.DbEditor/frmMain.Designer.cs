@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tc = new System.Windows.Forms.TabControl();
             this.tpItemTemplate = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -91,6 +92,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.lstMessages = new DemoGame.DbEditor.GameMessageValueListBox();
             this.tc.SuspendLayout();
             this.tpItemTemplate.SuspendLayout();
@@ -138,6 +140,7 @@
             this.tc.Location = new System.Drawing.Point(6, 6);
             this.tc.Name = "tc";
             this.tc.SelectedIndex = 0;
+            this.tc.ShowToolTips = true;
             this.tc.Size = new System.Drawing.Size(464, 403);
             this.tc.TabIndex = 0;
             // 
@@ -146,7 +149,6 @@
             this.tpItemTemplate.Controls.Add(this.splitContainer1);
             this.tpItemTemplate.Location = new System.Drawing.Point(4, 22);
             this.tpItemTemplate.Name = "tpItemTemplate";
-            this.tpItemTemplate.Padding = new System.Windows.Forms.Padding(3);
             this.tpItemTemplate.Size = new System.Drawing.Size(456, 377);
             this.tpItemTemplate.TabIndex = 0;
             this.tpItemTemplate.Text = "Item Templates";
@@ -157,7 +159,7 @@
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -174,7 +176,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.pgItemTemplate);
-            this.splitContainer1.Size = new System.Drawing.Size(450, 371);
+            this.splitContainer1.Size = new System.Drawing.Size(456, 377);
             this.splitContainer1.SplitterDistance = 22;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -185,13 +187,13 @@
             this.txtItemTemplate.Location = new System.Drawing.Point(52, 0);
             this.txtItemTemplate.Name = "txtItemTemplate";
             this.txtItemTemplate.ReadOnly = true;
-            this.txtItemTemplate.Size = new System.Drawing.Size(240, 20);
+            this.txtItemTemplate.Size = new System.Drawing.Size(246, 20);
             this.txtItemTemplate.TabIndex = 16;
             // 
             // btnItemTemplate
             // 
             this.btnItemTemplate.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnItemTemplate.Location = new System.Drawing.Point(292, 0);
+            this.btnItemTemplate.Location = new System.Drawing.Point(298, 0);
             this.btnItemTemplate.Name = "btnItemTemplate";
             this.btnItemTemplate.Size = new System.Drawing.Size(26, 22);
             this.btnItemTemplate.TabIndex = 15;
@@ -202,7 +204,7 @@
             // btnItemTemplateSave
             // 
             this.btnItemTemplateSave.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnItemTemplateSave.Location = new System.Drawing.Point(318, 0);
+            this.btnItemTemplateSave.Location = new System.Drawing.Point(324, 0);
             this.btnItemTemplateSave.Name = "btnItemTemplateSave";
             this.btnItemTemplateSave.Size = new System.Drawing.Size(41, 22);
             this.btnItemTemplateSave.TabIndex = 14;
@@ -213,7 +215,7 @@
             // btnItemTemplateNew
             // 
             this.btnItemTemplateNew.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnItemTemplateNew.Location = new System.Drawing.Point(359, 0);
+            this.btnItemTemplateNew.Location = new System.Drawing.Point(365, 0);
             this.btnItemTemplateNew.Name = "btnItemTemplateNew";
             this.btnItemTemplateNew.Size = new System.Drawing.Size(41, 22);
             this.btnItemTemplateNew.TabIndex = 11;
@@ -224,7 +226,7 @@
             // btnItemTemplateDelete
             // 
             this.btnItemTemplateDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnItemTemplateDelete.Location = new System.Drawing.Point(400, 0);
+            this.btnItemTemplateDelete.Location = new System.Drawing.Point(406, 0);
             this.btnItemTemplateDelete.Name = "btnItemTemplateDelete";
             this.btnItemTemplateDelete.Size = new System.Drawing.Size(50, 22);
             this.btnItemTemplateDelete.TabIndex = 10;
@@ -248,7 +250,7 @@
             this.pgItemTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgItemTemplate.Location = new System.Drawing.Point(0, 0);
             this.pgItemTemplate.Name = "pgItemTemplate";
-            this.pgItemTemplate.Size = new System.Drawing.Size(450, 345);
+            this.pgItemTemplate.Size = new System.Drawing.Size(456, 351);
             this.pgItemTemplate.TabIndex = 0;
             this.pgItemTemplate.SelectedObjectsChanged += new System.EventHandler(this.pgItemTemplate_SelectedObjectsChanged);
             // 
@@ -257,7 +259,6 @@
             this.tpCharacterTemplate.Controls.Add(this.splitContainer3);
             this.tpCharacterTemplate.Location = new System.Drawing.Point(4, 22);
             this.tpCharacterTemplate.Name = "tpCharacterTemplate";
-            this.tpCharacterTemplate.Padding = new System.Windows.Forms.Padding(3);
             this.tpCharacterTemplate.Size = new System.Drawing.Size(456, 377);
             this.tpCharacterTemplate.TabIndex = 1;
             this.tpCharacterTemplate.Text = "Character Templates";
@@ -267,7 +268,7 @@
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer3.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -284,7 +285,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.pgCharacterTemplate);
-            this.splitContainer3.Size = new System.Drawing.Size(450, 371);
+            this.splitContainer3.Size = new System.Drawing.Size(456, 377);
             this.splitContainer3.SplitterDistance = 22;
             this.splitContainer3.TabIndex = 1;
             // 
@@ -295,13 +296,13 @@
             this.txtCharacterTemplate.Location = new System.Drawing.Point(52, 0);
             this.txtCharacterTemplate.Name = "txtCharacterTemplate";
             this.txtCharacterTemplate.ReadOnly = true;
-            this.txtCharacterTemplate.Size = new System.Drawing.Size(240, 20);
+            this.txtCharacterTemplate.Size = new System.Drawing.Size(246, 20);
             this.txtCharacterTemplate.TabIndex = 16;
             // 
             // btnCharacterTemplate
             // 
             this.btnCharacterTemplate.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnCharacterTemplate.Location = new System.Drawing.Point(292, 0);
+            this.btnCharacterTemplate.Location = new System.Drawing.Point(298, 0);
             this.btnCharacterTemplate.Name = "btnCharacterTemplate";
             this.btnCharacterTemplate.Size = new System.Drawing.Size(26, 22);
             this.btnCharacterTemplate.TabIndex = 15;
@@ -312,7 +313,7 @@
             // btnCharacterTemplateSave
             // 
             this.btnCharacterTemplateSave.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnCharacterTemplateSave.Location = new System.Drawing.Point(318, 0);
+            this.btnCharacterTemplateSave.Location = new System.Drawing.Point(324, 0);
             this.btnCharacterTemplateSave.Name = "btnCharacterTemplateSave";
             this.btnCharacterTemplateSave.Size = new System.Drawing.Size(41, 22);
             this.btnCharacterTemplateSave.TabIndex = 14;
@@ -323,7 +324,7 @@
             // btnCharacterTemplateNew
             // 
             this.btnCharacterTemplateNew.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnCharacterTemplateNew.Location = new System.Drawing.Point(359, 0);
+            this.btnCharacterTemplateNew.Location = new System.Drawing.Point(365, 0);
             this.btnCharacterTemplateNew.Name = "btnCharacterTemplateNew";
             this.btnCharacterTemplateNew.Size = new System.Drawing.Size(41, 22);
             this.btnCharacterTemplateNew.TabIndex = 11;
@@ -334,7 +335,7 @@
             // btnCharacterTemplateDelete
             // 
             this.btnCharacterTemplateDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnCharacterTemplateDelete.Location = new System.Drawing.Point(400, 0);
+            this.btnCharacterTemplateDelete.Location = new System.Drawing.Point(406, 0);
             this.btnCharacterTemplateDelete.Name = "btnCharacterTemplateDelete";
             this.btnCharacterTemplateDelete.Size = new System.Drawing.Size(50, 22);
             this.btnCharacterTemplateDelete.TabIndex = 10;
@@ -358,7 +359,7 @@
             this.pgCharacterTemplate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgCharacterTemplate.Location = new System.Drawing.Point(0, 0);
             this.pgCharacterTemplate.Name = "pgCharacterTemplate";
-            this.pgCharacterTemplate.Size = new System.Drawing.Size(450, 345);
+            this.pgCharacterTemplate.Size = new System.Drawing.Size(456, 351);
             this.pgCharacterTemplate.TabIndex = 0;
             this.pgCharacterTemplate.SelectedObjectsChanged += new System.EventHandler(this.pgCharacterTemplate_SelectedObjectsChanged);
             // 
@@ -1040,6 +1041,7 @@
         private System.Windows.Forms.Button btnAllianceDelete;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.PropertyGrid pgAlliance;
+        private System.Windows.Forms.ToolTip tt;
     }
 }
 
