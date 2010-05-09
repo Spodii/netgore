@@ -93,6 +93,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
+            this.tpShops = new System.Windows.Forms.TabPage();
+            this.splitContainer10 = new System.Windows.Forms.SplitContainer();
+            this.txtShop = new System.Windows.Forms.TextBox();
+            this.btnShops = new System.Windows.Forms.Button();
+            this.btnShopSave = new System.Windows.Forms.Button();
+            this.btnShopNew = new System.Windows.Forms.Button();
+            this.btnShopDelete = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.pgShop = new System.Windows.Forms.PropertyGrid();
             this.lstMessages = new DemoGame.DbEditor.GameMessageValueListBox();
             this.tc.SuspendLayout();
             this.tpItemTemplate.SuspendLayout();
@@ -127,6 +136,10 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.tpShops.SuspendLayout();
+            this.splitContainer10.Panel1.SuspendLayout();
+            this.splitContainer10.Panel2.SuspendLayout();
+            this.splitContainer10.SuspendLayout();
             this.SuspendLayout();
             // 
             // tc
@@ -135,6 +148,7 @@
             this.tc.Controls.Add(this.tpCharacterTemplate);
             this.tc.Controls.Add(this.tpQuests);
             this.tc.Controls.Add(this.tpAlliances);
+            this.tc.Controls.Add(this.tpShops);
             this.tc.Controls.Add(this.tpMessages);
             this.tc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tc.Location = new System.Drawing.Point(6, 6);
@@ -908,6 +922,116 @@
             this.propertyGrid1.Size = new System.Drawing.Size(450, 345);
             this.propertyGrid1.TabIndex = 0;
             // 
+            // tpShops
+            // 
+            this.tpShops.Controls.Add(this.splitContainer10);
+            this.tpShops.Location = new System.Drawing.Point(4, 22);
+            this.tpShops.Name = "tpShops";
+            this.tpShops.Size = new System.Drawing.Size(456, 377);
+            this.tpShops.TabIndex = 5;
+            this.tpShops.Text = "Shops";
+            this.tpShops.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer10
+            // 
+            this.splitContainer10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer10.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer10.IsSplitterFixed = true;
+            this.splitContainer10.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer10.Name = "splitContainer10";
+            this.splitContainer10.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer10.Panel1
+            // 
+            this.splitContainer10.Panel1.Controls.Add(this.txtShop);
+            this.splitContainer10.Panel1.Controls.Add(this.btnShops);
+            this.splitContainer10.Panel1.Controls.Add(this.btnShopSave);
+            this.splitContainer10.Panel1.Controls.Add(this.btnShopNew);
+            this.splitContainer10.Panel1.Controls.Add(this.btnShopDelete);
+            this.splitContainer10.Panel1.Controls.Add(this.label10);
+            this.splitContainer10.Panel1MinSize = 22;
+            // 
+            // splitContainer10.Panel2
+            // 
+            this.splitContainer10.Panel2.Controls.Add(this.pgShop);
+            this.splitContainer10.Size = new System.Drawing.Size(456, 377);
+            this.splitContainer10.SplitterDistance = 22;
+            this.splitContainer10.TabIndex = 2;
+            // 
+            // txtShop
+            // 
+            this.txtShop.BackColor = System.Drawing.SystemColors.Window;
+            this.txtShop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtShop.Location = new System.Drawing.Point(52, 0);
+            this.txtShop.Name = "txtShop";
+            this.txtShop.ReadOnly = true;
+            this.txtShop.Size = new System.Drawing.Size(246, 20);
+            this.txtShop.TabIndex = 16;
+            // 
+            // btnShops
+            // 
+            this.btnShops.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnShops.Location = new System.Drawing.Point(298, 0);
+            this.btnShops.Name = "btnShops";
+            this.btnShops.Size = new System.Drawing.Size(26, 22);
+            this.btnShops.TabIndex = 15;
+            this.btnShops.Text = "...";
+            this.btnShops.UseVisualStyleBackColor = true;
+            this.btnShops.Click += new System.EventHandler(this.btnShops_Click);
+            // 
+            // btnShopSave
+            // 
+            this.btnShopSave.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnShopSave.Location = new System.Drawing.Point(324, 0);
+            this.btnShopSave.Name = "btnShopSave";
+            this.btnShopSave.Size = new System.Drawing.Size(41, 22);
+            this.btnShopSave.TabIndex = 14;
+            this.btnShopSave.Text = "Save";
+            this.btnShopSave.UseVisualStyleBackColor = true;
+            this.btnShopSave.Click += new System.EventHandler(this.btnShopSave_Click);
+            // 
+            // btnShopNew
+            // 
+            this.btnShopNew.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnShopNew.Location = new System.Drawing.Point(365, 0);
+            this.btnShopNew.Name = "btnShopNew";
+            this.btnShopNew.Size = new System.Drawing.Size(41, 22);
+            this.btnShopNew.TabIndex = 11;
+            this.btnShopNew.Text = "New";
+            this.btnShopNew.UseVisualStyleBackColor = true;
+            this.btnShopNew.Click += new System.EventHandler(this.btnShopNew_Click);
+            // 
+            // btnShopDelete
+            // 
+            this.btnShopDelete.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnShopDelete.Location = new System.Drawing.Point(406, 0);
+            this.btnShopDelete.Name = "btnShopDelete";
+            this.btnShopDelete.Size = new System.Drawing.Size(50, 22);
+            this.btnShopDelete.TabIndex = 10;
+            this.btnShopDelete.Text = "Delete";
+            this.btnShopDelete.UseVisualStyleBackColor = true;
+            this.btnShopDelete.Click += new System.EventHandler(this.btnShopDelete_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label10.Location = new System.Drawing.Point(0, 0);
+            this.label10.Name = "label10";
+            this.label10.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.label10.Size = new System.Drawing.Size(52, 17);
+            this.label10.TabIndex = 1;
+            this.label10.Text = "Selected:";
+            // 
+            // pgShop
+            // 
+            this.pgShop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgShop.Location = new System.Drawing.Point(0, 0);
+            this.pgShop.Name = "pgShop";
+            this.pgShop.Size = new System.Drawing.Size(456, 351);
+            this.pgShop.TabIndex = 0;
+            this.pgShop.SelectedObjectsChanged += new System.EventHandler(this.pgShop_SelectedObjectsChanged);
+            // 
             // lstMessages
             // 
             this.lstMessages.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -971,6 +1095,11 @@
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.ResumeLayout(false);
+            this.tpShops.ResumeLayout(false);
+            this.splitContainer10.Panel1.ResumeLayout(false);
+            this.splitContainer10.Panel1.PerformLayout();
+            this.splitContainer10.Panel2.ResumeLayout(false);
+            this.splitContainer10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1042,6 +1171,15 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.PropertyGrid pgAlliance;
         private System.Windows.Forms.ToolTip tt;
+        private System.Windows.Forms.TabPage tpShops;
+        private System.Windows.Forms.SplitContainer splitContainer10;
+        private System.Windows.Forms.TextBox txtShop;
+        private System.Windows.Forms.Button btnShops;
+        private System.Windows.Forms.Button btnShopSave;
+        private System.Windows.Forms.Button btnShopNew;
+        private System.Windows.Forms.Button btnShopDelete;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.PropertyGrid pgShop;
     }
 }
 

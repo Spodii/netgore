@@ -229,6 +229,9 @@
     <Compile Include="Queries\Quest\SelectQuestValuesQueryBase.cs" />
     <Compile Include="Queries\Quest\Character\UpdateCharacterQuestStatusFinishedQuery.cs" />
     <Compile Include="Queries\Quest\Character\UpdateCharacterQuestStatusKillsQuery.cs" />
+    <Compile Include="Queries\Shop\DeleteShopQuery.cs" />
+    <Compile Include="Queries\Shop\InsertShopQuery.cs" />
+    <Compile Include="Queries\Shop\ShopItem\ReplaceShopItemQuery.cs" />
     <Compile Include="Quests\QuestPerformerKillCounter.cs" />
     <Compile Include="Quests\QuestPerformerStatusHelper.cs" />
     <Compile Include="Quests\Requirements\CompleteQuestQuestRequirement.cs" />
