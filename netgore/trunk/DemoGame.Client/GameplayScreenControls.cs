@@ -22,7 +22,7 @@ namespace DemoGame.Client
             _gameplayScreen = gameplayScreen;
 
             // Set some delay values for input handling
-            const int minAttackRate = 150;
+            const int minAttackRate = GameData.AttackTimeoutMin;
             const int minMoveRate = 150;
             const int minNPCChatRate = 150;
             const int minPickupRate = 150;

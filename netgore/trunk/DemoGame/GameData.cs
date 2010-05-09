@@ -30,6 +30,16 @@ namespace DemoGame
         public const uint DefaultCreateAccountIP = 0;
 
         /// <summary>
+        /// The base (default) attack timeout value for all characters.
+        /// </summary>
+        public const int AttackTimeoutDefault = 500;
+
+        /// <summary>
+        /// The minimum attack timeout value. The attack timeout may never be less than this value.
+        /// </summary>
+        public const int AttackTimeoutMin = 150;
+
+        /// <summary>
         /// Maximum number of characters allowed in a single account.
         /// </summary>
         public const byte MaxCharactersPerAccount = 10;
