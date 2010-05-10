@@ -46,7 +46,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the <see cref="IWorldStatsTracker{T,U,V}"/> instance.
         /// </summary>
-        public IWorldStatsTracker<User, NPC, ItemEntity> Instance
+        public static IWorldStatsTracker<User, NPC, ItemEntity> Instance
         {
             get { return _instance; }
         }
