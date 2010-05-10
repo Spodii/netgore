@@ -78,6 +78,9 @@ namespace DemoGame.Server
             if (user.Map == null)
                 return;
 
+            if (item.Type != ItemType.UseOnce)
+                return;
+
             var itemTemplate = item.ItemTemplateID;
             if (!itemTemplate.HasValue)
                 return;

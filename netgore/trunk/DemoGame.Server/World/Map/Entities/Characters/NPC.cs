@@ -257,6 +257,23 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="killed">The <see cref="Character"/> that this <see cref="Character"/> killed.</param>
+        protected override void OnKilledCharacter(Character killed)
+        {
+            base.OnKilledCharacter(killed);
+
+            var killedUser = killed as User;
+            if (killedUser != null)
+            {
+                WorldStatsTracker.Instance.AddNPCKillUser(this, killedUser);
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, implements the Character being killed. This 
         /// doesn't actually care how the Character was killed, it just takes the appropriate
         /// actions to kill them.
