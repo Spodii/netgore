@@ -8,6 +8,9 @@ using NetGore.Features.WorldStats;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// Provides support for tracking the world statistics and events.
+    /// </summary>
     public class WorldStatsTracker : WorldStatsTracker<User, NPC, ItemEntity>
     {
         static readonly IWorldStatsTracker<User, NPC, ItemEntity> _instance;
