@@ -4,7 +4,10 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
+using NetGore.Collections;
 using NetGore.Db.ClassCreator.Properties;
 using NetGore.IO;
 
@@ -193,6 +196,40 @@ namespace NetGore.Db.ClassCreator
         public void AddCustomType(string type, string table, params string[] columns)
         {
             AddCustomType(type, new string[] { table }, columns);
+        }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Applies the custom settings defined in classes that implement the <see cref="IDbClassGeneratorSettingsProvider"/>
+        /// interface, using reflection to find the classes.
+        /// </summary>
+        /// <param name="throwOnCreateError">If set to true, classes that are instanceable (non-abstract) and implement
+        /// <see cref="IDbClassGeneratorSettingsProvider"/>, but cannot be instantiated with an empty (default) constructor will
+        /// throw an <see cref="TypeException"/>. If false, no exception will be thrown. In either case, classes that
+        /// do not provide an empty constructor will not be able to be added.</param>
+        public void AddCustomSettings(bool throwOnCreateError = true)
+        {
+            // Find the types
+            var typeFilter = new TypeFilterCreator()
+            {
+                Interfaces = new Type[] { typeof(IDbClassGeneratorSettingsProvider) },
+                IsAbstract = false,
+                IsClass = true,
+                ConstructorParameters = Type.EmptyTypes,
+                RequireConstructor = throwOnCreateError
+            };
+
+            var types = TypeHelper.FindTypes(typeFilter.GetFilter(), null);
+
+            foreach (var type in types)
+            {
+                // Get the instance
+                var instance = (IDbClassGeneratorSettingsProvider)TypeFactory.GetTypeInstance(type);
+
+                // Apply the settings
+                instance.ApplySettings(this);
+            }
         }
 
         public void AddCustomType(Type type, IEnumerable<string> tables, params string[] columns)
