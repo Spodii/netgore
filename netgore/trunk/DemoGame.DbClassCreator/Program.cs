@@ -15,6 +15,9 @@ namespace DemoGame.DbClassCreator
 {
     class Program
     {
+        /// <summary>
+        /// The header to add to all generated code files.
+        /// </summary>
         const string _fileHeader =
             @"/********************************************************************
                    DO NOT MANUALLY EDIT THIS FILE!
