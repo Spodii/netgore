@@ -42,7 +42,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-04-27 17:49:36',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-05-09 12:25:08',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,6 +69,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (1,16777343,'2010-05-09 12:25:08');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +212,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,0,NULL,'Test',0,1,NULL,NULL,NULL,391.6,244,NULL,50,50,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',0,2,NULL,NULL,NULL,747.401,349,1,500,200,1,1800,201340,28,835,135,100,100,100,100,1,1,1,1,1,1),(2,NULL,1,'Test A',0,2,NULL,NULL,1,268.6,1330,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,2,NULL,NULL,1,535,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5);
+INSERT INTO `character` VALUES (0,0,NULL,'Test',0,1,NULL,NULL,NULL,391.6,244,NULL,50,50,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',0,2,NULL,NULL,NULL,779.801,349,1,500,200,1,1800,201350,29,845,140,56,100,100,100,1,1,1,1,1,1),(2,NULL,1,'Test A',0,2,NULL,NULL,1,654,1330,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,2,NULL,NULL,1,922.799,949.32,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,6 +240,7 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
+INSERT INTO `character_equipped` VALUES (3,24,2);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,7 +399,7 @@ CREATE TABLE `character_template` (
 
 LOCK TABLES `character_template` WRITE;
 /*!40000 ALTER TABLE `character_template` DISABLE KEYS */;
-INSERT INTO `character_template` VALUES (0,0,'User Template',NULL,NULL,NULL,1,1800,5,1,0,0,0,0,50,50,1,2,1,1,1,1),(1,1,'A Test NPC',1,NULL,NULL,2,1800,10,1,0,0,5,5,5,5,1,2,1,1,1,1),(2,2,'Quest Giver',NULL,NULL,NULL,2,1800,5,1,0,0,0,0,50,50,1,1,1,1,1,1),(3,2,'Shopkeeper',NULL,0,NULL,2,1800,5,1,0,0,0,0,50,50,1,1,1,1,1,1),(4,2,'Potion Vendor',NULL,1,NULL,2,1800,5,1,0,0,0,0,50,50,1,1,1,1,1,1),(5,2,'Talking Guy',NULL,NULL,0,1,1800,5,1,0,0,0,0,50,50,1,1,1,1,1,1),(6,3,'Brawler',1,NULL,NULL,2,1800,10,1,0,0,8,8,5,5,1,3,1,1,1,1);
+INSERT INTO `character_template` VALUES (0,0,'User Template',NULL,NULL,NULL,1,1800,5,1,0,0,0,0,50,50,1,2,1,1,1,1),(1,1,'A Test NPC',1,NULL,NULL,2,1800,10,1,0,0,5,5,5,5,1,2,1,1,1,1),(2,2,'Quest Giver',NULL,NULL,NULL,2,1800,5,1,0,0,0,0,50,50,1,1,1,1,1,1),(4,2,'Potion Vendor',NULL,1,NULL,2,1800,5,1,0,0,0,0,50,50,1,1,1,1,1,1),(5,2,'Talking Guy',NULL,NULL,0,1,1800,5,1,0,0,0,0,50,50,1,1,1,1,1,1),(6,3,'Brawler',1,NULL,NULL,2,1800,10,1,0,0,8,8,5,5,1,3,1,1,1,1);
 /*!40000 ALTER TABLE `character_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -663,6 +665,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (24,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -766,7 +769,7 @@ CREATE TABLE `map_spawn` (
 
 LOCK TABLES `map_spawn` WRITE;
 /*!40000 ALTER TABLE `map_spawn` DISABLE KEYS */;
-INSERT INTO `map_spawn` VALUES (0,1,1,3,NULL,NULL,NULL,NULL),(1,1,2,1,190,278,64,64),(2,1,3,1,350,213,64,4),(3,1,4,1,545,151,64,64),(4,1,5,1,736,58,64,64),(5,2,6,25,NULL,NULL,NULL,NULL);
+INSERT INTO `map_spawn` VALUES (0,1,1,3,NULL,NULL,NULL,NULL),(1,1,2,1,190,278,64,64),(3,1,4,1,545,151,64,64),(4,1,5,1,736,58,64,64),(5,2,6,25,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `map_spawn` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1039,7 +1042,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-04-27 18:15:01');
+INSERT INTO `server_time` VALUES ('2010-05-09 12:25:30');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1091,7 +1094,6 @@ CREATE TABLE `shop_item` (
 
 LOCK TABLES `shop_item` WRITE;
 /*!40000 ALTER TABLE `shop_item` DISABLE KEYS */;
-INSERT INTO `shop_item` VALUES (0,3),(0,5),(0,6);
 /*!40000 ALTER TABLE `shop_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1134,6 +1136,169 @@ SET character_set_client = utf8;
   `stat_str` smallint(6)
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `world_stats_npc_kill_user`
+--
+
+DROP TABLE IF EXISTS `world_stats_npc_kill_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `world_stats_npc_kill_user` (
+  `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
+  `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
+  `user_level` tinyint(3) unsigned NOT NULL COMMENT 'The level of the user was when this event took place.',
+  `user_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
+  `user_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place.',
+  `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place.',
+  `time` datetime NOT NULL COMMENT 'When this event took place.',
+  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
+  KEY `user_id` (`user_id`),
+  KEY `npc_template_id` (`npc_template_id`),
+  KEY `map_id` (`map_id`),
+  CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `world_stats_npc_kill_user`
+--
+
+LOCK TABLES `world_stats_npc_kill_user` WRITE;
+/*!40000 ALTER TABLE `world_stats_npc_kill_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_npc_kill_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_user_consume_item`
+--
+
+DROP TABLE IF EXISTS `world_stats_user_consume_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `world_stats_user_consume_item` (
+  `user_id` int(11) NOT NULL COMMENT 'The user that this event is related to.',
+  `item_template_id` smallint(5) unsigned NOT NULL COMMENT 'The template ID of the item that was consumed. Only valid when the item has a set template ID.',
+  `when` datetime NOT NULL COMMENT 'When this event took place.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The map the user was on when this event took place.',
+  KEY `user_id` (`user_id`),
+  KEY `item_template_id` (`item_template_id`),
+  KEY `map_id` (`map_id`),
+  CONSTRAINT `world_stats_user_consume_item_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_user_consume_item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_user_consume_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `world_stats_user_consume_item`
+--
+
+LOCK TABLES `world_stats_user_consume_item` WRITE;
+/*!40000 ALTER TABLE `world_stats_user_consume_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_user_consume_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_user_kill_npc`
+--
+
+DROP TABLE IF EXISTS `world_stats_user_kill_npc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `world_stats_user_kill_npc` (
+  `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
+  `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
+  `user_level` tinyint(3) unsigned NOT NULL COMMENT 'The level of the user was when this event took place.',
+  `user_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
+  `user_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place.',
+  `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place.',
+  `time` datetime NOT NULL COMMENT 'When this event took place.',
+  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
+  KEY `user_id` (`user_id`),
+  KEY `npc_template_id` (`npc_template_id`),
+  KEY `map_id` (`map_id`),
+  CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `world_stats_user_kill_npc`
+--
+
+LOCK TABLES `world_stats_user_kill_npc` WRITE;
+/*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_user_level`
+--
+
+DROP TABLE IF EXISTS `world_stats_user_level`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `world_stats_user_level` (
+  `character_id` int(11) NOT NULL COMMENT 'The ID of the character that leveled up.',
+  `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
+  `when` datetime NOT NULL COMMENT 'When this event took place.'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `world_stats_user_level`
+--
+
+LOCK TABLES `world_stats_user_level` WRITE;
+/*!40000 ALTER TABLE `world_stats_user_level` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_user_level` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_user_shopping`
+--
+
+DROP TABLE IF EXISTS `world_stats_user_shopping`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `world_stats_user_shopping` (
+  `shop_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the shop the event took place at.',
+  `character_id` int(11) NOT NULL COMMENT 'The ID of the character that performed this transaction with the shop.',
+  `item_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the item template that the event relates to. Only valid when the item involved has a set item template ID.',
+  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map the event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map X coordinate of the shopper when this event took place.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map Y coordinate of the shopper when this event took place.',
+  `cost` int(11) NOT NULL COMMENT 'The amount of money that was involved in this transaction (how much the shopper sold the items for, or how much they bought the items for). ',
+  `amount` tinyint(3) unsigned NOT NULL COMMENT 'The number of items involved in the transaction. Should always be greater than 0, and should only be greater for 1 for items that can stack.',
+  `when` datetime NOT NULL COMMENT 'When this event took place.',
+  `sale_type` tinyint(4) NOT NULL COMMENT 'Whether the shop sold to the user, or vise versa. If 0, the shop sold an item to the shopper. If non-zero, the shopper sold an item to a shop.',
+  KEY `shop_id` (`shop_id`),
+  KEY `character_id` (`character_id`),
+  KEY `item_template_id` (`item_template_id`),
+  KEY `map_id` (`map_id`),
+  CONSTRAINT `world_stats_user_shopping_ibfk_4` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_user_shopping_ibfk_1` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_user_shopping_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_user_shopping_ibfk_3` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `world_stats_user_shopping`
+--
+
+LOCK TABLES `world_stats_user_shopping` WRITE;
+/*!40000 ALTER TABLE `world_stats_user_shopping` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_user_shopping` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'demogame'
@@ -1303,4 +1468,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-04 14:11:48
+-- Dump completed on 2010-05-09 23:09:24

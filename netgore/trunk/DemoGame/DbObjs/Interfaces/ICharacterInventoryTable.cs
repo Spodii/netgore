@@ -14,41 +14,48 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 4/21/2010 7:54:47 PM
+This file was generated on (UTC): 5/10/2010 6:05:01 AM
 ********************************************************************/
 
+using System;
 using System.Linq;
-using NetGore;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `character_inventory`.
-    /// </summary>
-    public interface ICharacterInventoryTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `character_id`.
-        /// </summary>
-        CharacterID CharacterID { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `character_inventory`.
+/// </summary>
+public interface ICharacterInventoryTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+ICharacterInventoryTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `item_id`.
-        /// </summary>
-        ItemID ItemID { get; }
+/// <summary>
+/// Gets the value of the database column `character_id`.
+/// </summary>
+DemoGame.CharacterID CharacterID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `item_id`.
+/// </summary>
+DemoGame.ItemID ItemID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `slot`.
+/// </summary>
+NetGore.InventorySlot Slot
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `slot`.
-        /// </summary>
-        InventorySlot Slot { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        ICharacterInventoryTable DeepCopy();
-    }
 }

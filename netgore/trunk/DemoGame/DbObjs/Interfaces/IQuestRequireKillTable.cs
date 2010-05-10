@@ -14,42 +14,48 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 4/21/2010 7:54:47 PM
+This file was generated on (UTC): 5/10/2010 6:05:02 AM
 ********************************************************************/
 
 using System;
 using System.Linq;
-using NetGore.Features.Quests;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `quest_require_kill`.
-    /// </summary>
-    public interface IQuestRequireKillTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `amount`.
-        /// </summary>
-        UInt16 Amount { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `quest_require_kill`.
+/// </summary>
+public interface IQuestRequireKillTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+IQuestRequireKillTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `character_template_id`.
-        /// </summary>
-        CharacterTemplateID CharacterTemplateID { get; }
+/// <summary>
+/// Gets the value of the database column `amount`.
+/// </summary>
+System.UInt16 Amount
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `character_template_id`.
+/// </summary>
+DemoGame.CharacterTemplateID CharacterTemplateID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `quest_id`.
+/// </summary>
+NetGore.Features.Quests.QuestID QuestID
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `quest_id`.
-        /// </summary>
-        QuestID QuestID { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IQuestRequireKillTable DeepCopy();
-    }
 }
