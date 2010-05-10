@@ -839,7 +839,7 @@ namespace DemoGame.Server
             HP = newHP;
 
             // Check if the character died
-            if (HP <= 0)
+            if (newHP <= 0)
             {
                 if (source != null)
                 {
