@@ -102,12 +102,14 @@
     <Compile Include="Groups\Event Handlers\IGroupManagerGroupEventHandler.cs" />
     <Compile Include="Groups\GroupMemberInfo.cs" />
     <Compile Include="Groups\IGroupManager.cs" />
+    <Compile Include="Guilds\DbClassGeneratorSettings.cs" />
     <Compile Include="Guilds\GuildBase.cs" />
     <Compile Include="Guilds\GuildInviteStatus.cs" />
     <Compile Include="Guilds\GuildManagerBase.cs" />
     <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\GuildMemberPerformerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quests\DbClassGeneratorSettings.cs" />
     <Compile Include="Quests\IQuest.cs" />
     <Compile Include="Quests\IQuestCollection.cs" />
     <Compile Include="Quests\IQuestPerformer.cs" />
@@ -127,11 +129,16 @@
     <Compile Include="Quests\QuestRequirementCollection.cs" />
     <Compile Include="Quests\QuestRewardCollection.cs" />
     <Compile Include="Shops\CharacterShoppingState.cs" />
+    <Compile Include="Shops\DbClassGeneratorSettings.cs" />
     <Compile Include="Shops\IShop.cs" />
     <Compile Include="Shops\IShopItem.cs" />
     <Compile Include="Shops\ShopBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.Db.ClassCreator\NetGore.Db.ClassCreator.csproj">
+      <Project>{927E889E-AC38-4549-A717-A4FFCA22ADB6}</Project>
+      <Name>NetGore.Db.ClassCreator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
       <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
       <Name>NetGore.Db</Name>

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db.ClassCreator;
-using NetGore.Features.Guilds;
-using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.NPCChat;
 using NetGore.Stats;
@@ -84,6 +84,11 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
 
             Console.WriteLine();
 
+            // Force the NetGore.Features.Server assembly to load up
+            #pragma warning disable 168
+            var x = new DbClassGeneratorSettings();
+            #pragma warning restore 168
+
             using (var generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
                 var baseStatColumns = GetStatColumnCollectionItems(generator.Formatter, StatCollectionType.Base);
@@ -136,14 +141,6 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
 
                 generator.AddCustomType(typeof(MapSpawnValuesID), "map_spawn", "id");
 
-                generator.AddCustomType(typeof(ShopID), "shop", "id");
-
-                generator.AddCustomType(typeof(GuildID), "guild", "id");
-
-                generator.AddCustomType(typeof(GuildRank), "guild_member", "rank");
-
-                generator.AddCustomType(typeof(QuestID), "quest", "id");
-
                 // Mass-added custom types
                 generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");
                 generator.AddCustomType(typeof(CharacterID), "*", "character_id", "target_character_id");
@@ -154,19 +151,13 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
                 generator.AddCustomType(typeof(ItemTemplateID), "*", "item_template_id");
                 generator.AddCustomType(typeof(BodyID), "*", "body_id");
                 generator.AddCustomType(typeof(SPValueType), "*", "hp", "mp");
-                generator.AddCustomType(typeof(ShopID), "*", "shop_id");
                 generator.AddCustomType(typeof(AIID), "*", "ai_id");
-                generator.AddCustomType(typeof(GuildID), "*", "guild_id");
-                generator.AddCustomType(typeof(QuestID), "*", "quest_id", "req_quest_id");
                 generator.AddCustomType(typeof(WeaponType), "*", "weapon_type");
                 generator.AddCustomType(typeof(NPCChatDialogID), "*", "chat_dialog");
 
                 // Renaming
                 var formatter = generator.Formatter;
                 formatter.AddAlias("alliance_id", "AllianceID");
-                formatter.AddAlias("shop_id", "ShopID");
-                formatter.AddAlias("quest_id", "QuestID");
-                formatter.AddAlias("req_quest_id", "ReqQuestID");
                 formatter.AddAlias("account_id", "AccountID");
                 formatter.AddAlias("attackable_id", "AttackableID");
                 formatter.AddAlias("hostile_id", "HostileID");
@@ -183,7 +174,6 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
                 formatter.AddAlias("give_cash", "GiveCash");
                 formatter.AddAlias("status_effect_id", "StatusEffect");
                 formatter.AddAlias("ai_id", "AIID");
-                formatter.AddAlias("guild_id", "GuildID");
                 formatter.AddAlias("event_id", "EventID");
                 formatter.AddAlias("target_character_id", "TargetCharacterID");
 
@@ -198,6 +188,9 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
                 formatter.AddAlias("MaxMP");
                 formatter.AddAlias("MinHit");
                 formatter.AddAlias("MaxHit");
+
+                // Custom settings defined elsewhere
+                generator.AddCustomSettings();
 
                 // Generate
                 var codeItems = generator.Generate(_tempNamespaceName, _tempNamespaceName);
