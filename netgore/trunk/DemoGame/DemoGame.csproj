@@ -149,6 +149,11 @@
     <Compile Include="DbObjs\Interfaces\IShopItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IShopTable.cs" />
     <Compile Include="DbObjs\Interfaces\IUserCharacterTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsNpcKillUserTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsUserConsumeItemTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsUserKillNpcTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsUserLevelTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsUserShoppingTable.cs" />
     <Compile Include="DbObjs\ItemTable.cs" />
     <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="IO\PropertySyncCharacterID.cs" />
