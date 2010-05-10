@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 6:05:02 AM
+This file was generated on (UTC): 5/10/2010 10:42:18 PM
 ********************************************************************/
 
 using System;
@@ -44,7 +44,10 @@ public static void CopyValues(this IWorldStatsUserLevelTable source, NetGore.Db.
 {
 paramValues["@character_id"] = (System.Int32)source.CharacterID;
 paramValues["@level"] = (System.Byte)source.Level;
+paramValues["@map_id"] = (System.Nullable<System.UInt16>)source.MapID;
 paramValues["@when"] = (System.DateTime)source.When;
+paramValues["@x"] = (System.UInt16)source.X;
+paramValues["@y"] = (System.UInt16)source.Y;
 }
 
 /// <summary>
@@ -66,9 +69,21 @@ i = dataReader.GetOrdinal("level");
 
 source.Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
 
+i = dataReader.GetOrdinal("map_id");
+
+source.MapID = (System.Nullable<NetGore.MapID>)(System.Nullable<NetGore.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+
 i = dataReader.GetOrdinal("when");
 
 source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+
+i = dataReader.GetOrdinal("x");
+
+source.X = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("y");
+
+source.Y = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 }
 
 /// <summary>
@@ -97,8 +112,23 @@ source.Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
 break;
 
 
+case "map_id":
+source.MapID = (System.Nullable<NetGore.MapID>)(System.Nullable<NetGore.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+break;
+
+
 case "when":
 source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+break;
+
+
+case "x":
+source.X = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+break;
+
+
+case "y":
+source.Y = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 break;
 
 
@@ -133,8 +163,23 @@ paramValues[i] = (System.Byte)source.Level;
 break;
 
 
+case "@map_id":
+paramValues[i] = (System.Nullable<System.UInt16>)source.MapID;
+break;
+
+
 case "@when":
 paramValues[i] = (System.DateTime)source.When;
+break;
+
+
+case "@x":
+paramValues[i] = (System.UInt16)source.X;
+break;
+
+
+case "@y":
+paramValues[i] = (System.UInt16)source.Y;
 break;
 
 
@@ -155,7 +200,10 @@ public static System.Boolean HasSameValues(this IWorldStatsUserLevelTable source
 {
 return Equals(source.CharacterID, otherItem.CharacterID) && 
 Equals(source.Level, otherItem.Level) && 
-Equals(source.When, otherItem.When);
+Equals(source.MapID, otherItem.MapID) && 
+Equals(source.When, otherItem.When) && 
+Equals(source.X, otherItem.X) && 
+Equals(source.Y, otherItem.Y);
 }
 
 }

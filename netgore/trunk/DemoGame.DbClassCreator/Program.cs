@@ -143,17 +143,18 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
 
                 // Mass-added custom types
                 generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");
-                generator.AddCustomType(typeof(CharacterID), "*", "character_id", "target_character_id");
+                generator.AddCustomType(typeof(CharacterID), "*", "character_id", "target_character_id", "user_id", "npc_id");
+                generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id", "user_template_id", "npc_template_id");
                 generator.AddCustomType(typeof(AccountID), "*", "account_id");
                 generator.AddCustomType(typeof(MapID), "*", "map_id", "respawn_map");
                 generator.AddCustomType(typeof(ItemID), "*", "item_id");
-                generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id");
                 generator.AddCustomType(typeof(ItemTemplateID), "*", "item_template_id");
                 generator.AddCustomType(typeof(BodyID), "*", "body_id");
                 generator.AddCustomType(typeof(SPValueType), "*", "hp", "mp");
                 generator.AddCustomType(typeof(AIID), "*", "ai_id");
                 generator.AddCustomType(typeof(WeaponType), "*", "weapon_type");
                 generator.AddCustomType(typeof(NPCChatDialogID), "*", "chat_dialog");
+                generator.AddCustomType(typeof(ShopID), "*", "shop_id");
 
                 // Renaming
                 var formatter = generator.Formatter;

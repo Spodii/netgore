@@ -242,6 +242,11 @@
     <Compile Include="Queries\Shop\DeleteShopQuery.cs" />
     <Compile Include="Queries\Shop\InsertShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\ReplaceShopItemQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsNPCKillUserQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsUserConsumeItemQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsUserKillNpcQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsUserLevelQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsUserShoppingQuery.cs" />
     <Compile Include="Quests\QuestPerformerKillCounter.cs" />
     <Compile Include="Quests\QuestPerformerStatusHelper.cs" />
     <Compile Include="Quests\Requirements\CompleteQuestQuestRequirement.cs" />
@@ -341,12 +346,12 @@
     <Compile Include="Queries\Misc\SelectServerSettingsQuery.cs" />
     <Compile Include="Queries\Misc\UpdateGameDataTableQuery.cs" />
     <Compile Include="Queries\Misc\UpdateServerTimeQuery.cs" />
-    <Compile Include="Queries\QueryAsserts.cs" />
     <Compile Include="Queries\ServerDbController.cs" />
     <Compile Include="Queries\Shop\SelectShopIDsQuery.cs" />
     <Compile Include="Queries\Shop\SelectShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\SelectShopItemsQuery.cs" />
     <Compile Include="Queries\User\UserExistsQuery.cs" />
+    <Compile Include="WorldStatsTracker.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIBase.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AIFactory.cs" />
     <Compile Include="World\Map\Entities\Characters\AI\AISettings.cs" />

@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 6:05:02 AM
+This file was generated on (UTC): 5/10/2010 10:42:18 PM
 ********************************************************************/
 
 using System;
@@ -70,7 +70,7 @@ source.MapID = (NetGore.MapID)(NetGore.MapID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("npc_template_id");
 
-source.NpcTemplateId = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 
 i = dataReader.GetOrdinal("npc_x");
 
@@ -86,7 +86,7 @@ source.Time = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 
 i = dataReader.GetOrdinal("user_id");
 
-source.UserId = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.UserId = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
 
 i = dataReader.GetOrdinal("user_level");
 
@@ -123,7 +123,7 @@ break;
 
 
 case "npc_template_id":
-source.NpcTemplateId = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+source.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)(System.Nullable<DemoGame.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 
@@ -143,7 +143,7 @@ break;
 
 
 case "user_id":
-source.UserId = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.UserId = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
 break;
 
 

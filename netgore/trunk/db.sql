@@ -1248,6 +1248,9 @@ DROP TABLE IF EXISTS `world_stats_user_level`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `world_stats_user_level` (
   `character_id` int(11) NOT NULL COMMENT 'The ID of the character that leveled up.',
+  `map_id` smallint(5) unsigned DEFAULT NULL,
+  `x` smallint(5) unsigned NOT NULL,
+  `y` smallint(5) unsigned NOT NULL,
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
   `when` datetime NOT NULL COMMENT 'When this event took place.'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1468,4 +1471,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-09 23:09:24
+-- Dump completed on 2010-05-10 15:50:18

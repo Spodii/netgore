@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 6:05:02 AM
+This file was generated on (UTC): 5/10/2010 10:42:18 PM
 ********************************************************************/
 
 using System;
@@ -149,11 +149,11 @@ this._mapID = (System.UInt16)value;
 /// </summary>
 [System.ComponentModel.Description("The user that this event is related to.")]
 [NetGore.SyncValueAttribute()]
-public System.Int32 UserId
+public DemoGame.CharacterID UserId
 {
 get
 {
-return (System.Int32)_userId;
+return (DemoGame.CharacterID)_userId;
 }
 set
 {
@@ -241,11 +241,11 @@ public WorldStatsUserConsumeItemTable()
 /// <param name="when">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public WorldStatsUserConsumeItemTable(DemoGame.ItemTemplateID @itemTemplateID, NetGore.MapID @mapID, System.Int32 @userId, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
+public WorldStatsUserConsumeItemTable(DemoGame.ItemTemplateID @itemTemplateID, NetGore.MapID @mapID, DemoGame.CharacterID @userId, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
 {
 this.ItemTemplateID = (DemoGame.ItemTemplateID)@itemTemplateID;
 this.MapID = (NetGore.MapID)@mapID;
-this.UserId = (System.Int32)@userId;
+this.UserId = (DemoGame.CharacterID)@userId;
 this.When = (System.DateTime)@when;
 this.X = (System.UInt16)@x;
 this.Y = (System.UInt16)@y;
@@ -279,7 +279,7 @@ public static void CopyValues(IWorldStatsUserConsumeItemTable source, System.Col
 {
 dic["@item_template_id"] = (DemoGame.ItemTemplateID)source.ItemTemplateID;
 dic["@map_id"] = (NetGore.MapID)source.MapID;
-dic["@user_id"] = (System.Int32)source.UserId;
+dic["@user_id"] = (DemoGame.CharacterID)source.UserId;
 dic["@when"] = (System.DateTime)source.When;
 dic["@x"] = (System.UInt16)source.X;
 dic["@y"] = (System.UInt16)source.Y;
@@ -293,7 +293,7 @@ public void CopyValuesFrom(IWorldStatsUserConsumeItemTable source)
 {
 this.ItemTemplateID = (DemoGame.ItemTemplateID)source.ItemTemplateID;
 this.MapID = (NetGore.MapID)source.MapID;
-this.UserId = (System.Int32)source.UserId;
+this.UserId = (DemoGame.CharacterID)source.UserId;
 this.When = (System.DateTime)source.When;
 this.X = (System.UInt16)source.X;
 this.Y = (System.UInt16)source.Y;
@@ -351,7 +351,7 @@ this.MapID = (NetGore.MapID)value;
 break;
 
 case "user_id":
-this.UserId = (System.Int32)value;
+this.UserId = (DemoGame.CharacterID)value;
 break;
 
 case "when":
