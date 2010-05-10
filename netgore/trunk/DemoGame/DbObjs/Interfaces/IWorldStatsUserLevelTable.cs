@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 6:05:02 AM
+This file was generated on (UTC): 5/10/2010 10:42:18 PM
 ********************************************************************/
 
 using System;
@@ -50,9 +50,30 @@ System.Byte Level
 get;
 }
 /// <summary>
+/// Gets the value of the database column `map_id`.
+/// </summary>
+System.Nullable<NetGore.MapID> MapID
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `when`.
 /// </summary>
 System.DateTime When
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `x`.
+/// </summary>
+System.UInt16 X
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `y`.
+/// </summary>
+System.UInt16 Y
 {
 get;
 }

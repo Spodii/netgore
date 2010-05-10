@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 6:05:02 AM
+This file was generated on (UTC): 5/10/2010 10:42:18 PM
 ********************************************************************/
 
 using System;
@@ -35,7 +35,7 @@ public class WorldStatsUserLevelTable : IWorldStatsUserLevelTable, NetGore.IO.IP
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"character_id", "level", "when" };
+ static  readonly System.String[] _dbColumns = new string[] {"character_id", "level", "map_id", "when", "x", "y" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -63,7 +63,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"character_id", "level", "when" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"character_id", "level", "map_id", "when", "x", "y" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -81,7 +81,7 @@ public const System.String TableName = "world_stats_user_level";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 3;
+public const System.Int32 ColumnCount = 6;
 /// <summary>
 /// The field that maps onto the database column `character_id`.
 /// </summary>
@@ -91,9 +91,21 @@ System.Int32 _characterID;
 /// </summary>
 System.Byte _level;
 /// <summary>
+/// The field that maps onto the database column `map_id`.
+/// </summary>
+System.Nullable<System.UInt16> _mapID;
+/// <summary>
 /// The field that maps onto the database column `when`.
 /// </summary>
 System.DateTime _when;
+/// <summary>
+/// The field that maps onto the database column `x`.
+/// </summary>
+System.UInt16 _x;
+/// <summary>
+/// The field that maps onto the database column `y`.
+/// </summary>
+System.UInt16 _y;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `character_id`.
 /// The underlying database type is `int(11)`. The database column contains the comment: 
@@ -131,6 +143,22 @@ this._level = (System.Byte)value;
 }
 }
 /// <summary>
+/// Gets or sets the value for the field that maps onto the database column `map_id`.
+/// The underlying database type is `smallint(5) unsigned`.
+/// </summary>
+[NetGore.SyncValueAttribute()]
+public System.Nullable<NetGore.MapID> MapID
+{
+get
+{
+return (System.Nullable<NetGore.MapID>)_mapID;
+}
+set
+{
+this._mapID = (System.Nullable<System.UInt16>)value;
+}
+}
+/// <summary>
 /// Gets or sets the value for the field that maps onto the database column `when`.
 /// The underlying database type is `datetime`. The database column contains the comment: 
 /// "When this event took place.".
@@ -146,6 +174,38 @@ return (System.DateTime)_when;
 set
 {
 this._when = (System.DateTime)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `x`.
+/// The underlying database type is `smallint(5) unsigned`.
+/// </summary>
+[NetGore.SyncValueAttribute()]
+public System.UInt16 X
+{
+get
+{
+return (System.UInt16)_x;
+}
+set
+{
+this._x = (System.UInt16)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `y`.
+/// The underlying database type is `smallint(5) unsigned`.
+/// </summary>
+[NetGore.SyncValueAttribute()]
+public System.UInt16 Y
+{
+get
+{
+return (System.UInt16)_y;
+}
+set
+{
+this._y = (System.UInt16)value;
 }
 }
 
@@ -171,12 +231,18 @@ public WorldStatsUserLevelTable()
 /// </summary>
 /// <param name="characterID">The initial value for the corresponding property.</param>
 /// <param name="level">The initial value for the corresponding property.</param>
+/// <param name="mapID">The initial value for the corresponding property.</param>
 /// <param name="when">The initial value for the corresponding property.</param>
-public WorldStatsUserLevelTable(DemoGame.CharacterID @characterID, System.Byte @level, System.DateTime @when)
+/// <param name="x">The initial value for the corresponding property.</param>
+/// <param name="y">The initial value for the corresponding property.</param>
+public WorldStatsUserLevelTable(DemoGame.CharacterID @characterID, System.Byte @level, System.Nullable<NetGore.MapID> @mapID, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
 {
 this.CharacterID = (DemoGame.CharacterID)@characterID;
 this.Level = (System.Byte)@level;
+this.MapID = (System.Nullable<NetGore.MapID>)@mapID;
 this.When = (System.DateTime)@when;
+this.X = (System.UInt16)@x;
+this.Y = (System.UInt16)@y;
 }
 /// <summary>
 /// WorldStatsUserLevelTable constructor.
@@ -207,7 +273,10 @@ public static void CopyValues(IWorldStatsUserLevelTable source, System.Collectio
 {
 dic["@character_id"] = (DemoGame.CharacterID)source.CharacterID;
 dic["@level"] = (System.Byte)source.Level;
+dic["@map_id"] = (System.Nullable<NetGore.MapID>)source.MapID;
 dic["@when"] = (System.DateTime)source.When;
+dic["@x"] = (System.UInt16)source.X;
+dic["@y"] = (System.UInt16)source.Y;
 }
 
 /// <summary>
@@ -218,7 +287,10 @@ public void CopyValuesFrom(IWorldStatsUserLevelTable source)
 {
 this.CharacterID = (DemoGame.CharacterID)source.CharacterID;
 this.Level = (System.Byte)source.Level;
+this.MapID = (System.Nullable<NetGore.MapID>)source.MapID;
 this.When = (System.DateTime)source.When;
+this.X = (System.UInt16)source.X;
+this.Y = (System.UInt16)source.Y;
 }
 
 /// <summary>
@@ -238,8 +310,17 @@ return CharacterID;
 case "level":
 return Level;
 
+case "map_id":
+return MapID;
+
 case "when":
 return When;
+
+case "x":
+return X;
+
+case "y":
+return Y;
 
 default:
 throw new ArgumentException("Field not found.","columnName");
@@ -263,8 +344,20 @@ case "level":
 this.Level = (System.Byte)value;
 break;
 
+case "map_id":
+this.MapID = (System.Nullable<NetGore.MapID>)value;
+break;
+
 case "when":
 this.When = (System.DateTime)value;
+break;
+
+case "x":
+this.X = (System.UInt16)value;
+break;
+
+case "y":
+this.Y = (System.UInt16)value;
 break;
 
 default:
@@ -289,8 +382,17 @@ return new ColumnMetadata("character_id", "The ID of the character that leveled 
 case "level":
 return new ColumnMetadata("level", "The level that the character leveled up to (their new level).", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
 
+case "map_id":
+return new ColumnMetadata("map_id", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, false);
+
 case "when":
 return new ColumnMetadata("when", "When this event took place.", "datetime", null, typeof(System.DateTime), false, false, false);
+
+case "x":
+return new ColumnMetadata("x", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+
+case "y":
+return new ColumnMetadata("y", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

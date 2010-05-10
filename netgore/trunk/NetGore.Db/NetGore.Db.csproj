@@ -124,6 +124,7 @@
     <Compile Include="MySql\MySqlDbConnectionPool.cs" />
     <Compile Include="MySql\MySqlDbController.cs" />
     <Compile Include="MySql\Special Queries\MySqlFindForeignKeysQuery.cs" />
+    <Compile Include="QueryAsserts.cs" />
     <Compile Include="Query\DbQueryBase.cs" />
     <Compile Include="Query\DbQueryNonReader.cs" />
     <Compile Include="Query\DbQueryReader.cs" />

@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 6:05:02 AM
+This file was generated on (UTC): 5/10/2010 10:42:18 PM
 ********************************************************************/
 
 using System;
@@ -52,7 +52,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `user_id`.
 /// </summary>
-System.Int32 UserId
+DemoGame.CharacterID UserId
 {
 get;
 }

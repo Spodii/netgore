@@ -133,6 +133,8 @@
     <Compile Include="Shops\IShop.cs" />
     <Compile Include="Shops\IShopItem.cs" />
     <Compile Include="Shops\ShopBase.cs" />
+    <Compile Include="WorldStats\IWorldStatsTracker.cs" />
+    <Compile Include="WorldStats\WorldStatsTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Db.ClassCreator\NetGore.Db.ClassCreator.csproj">

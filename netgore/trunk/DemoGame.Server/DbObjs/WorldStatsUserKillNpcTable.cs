@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 6:05:02 AM
+This file was generated on (UTC): 5/10/2010 10:42:18 PM
 ********************************************************************/
 
 using System;
@@ -143,11 +143,11 @@ this._mapID = (System.UInt16)value;
 /// </summary>
 [System.ComponentModel.Description("The template ID of the NPC. Only valid when the NPC has a template ID set.")]
 [NetGore.SyncValueAttribute()]
-public System.Nullable<System.UInt16> NpcTemplateId
+public System.Nullable<DemoGame.CharacterTemplateID> NpcTemplateId
 {
 get
 {
-return (System.Nullable<System.UInt16>)_npcTemplateId;
+return (System.Nullable<DemoGame.CharacterTemplateID>)_npcTemplateId;
 }
 set
 {
@@ -215,11 +215,11 @@ this._time = (System.DateTime)value;
 /// </summary>
 [System.ComponentModel.Description("The ID of the user.")]
 [NetGore.SyncValueAttribute()]
-public System.Int32 UserId
+public DemoGame.CharacterID UserId
 {
 get
 {
-return (System.Int32)_userId;
+return (DemoGame.CharacterID)_userId;
 }
 set
 {
@@ -310,14 +310,14 @@ public WorldStatsUserKillNpcTable()
 /// <param name="userLevel">The initial value for the corresponding property.</param>
 /// <param name="userX">The initial value for the corresponding property.</param>
 /// <param name="userY">The initial value for the corresponding property.</param>
-public WorldStatsUserKillNpcTable(NetGore.MapID @mapID, System.Nullable<System.UInt16> @npcTemplateId, System.UInt16 @npcX, System.UInt16 @npcY, System.DateTime @time, System.Int32 @userId, System.Byte @userLevel, System.UInt16 @userX, System.UInt16 @userY)
+public WorldStatsUserKillNpcTable(NetGore.MapID @mapID, System.Nullable<DemoGame.CharacterTemplateID> @npcTemplateId, System.UInt16 @npcX, System.UInt16 @npcY, System.DateTime @time, DemoGame.CharacterID @userId, System.Byte @userLevel, System.UInt16 @userX, System.UInt16 @userY)
 {
 this.MapID = (NetGore.MapID)@mapID;
-this.NpcTemplateId = (System.Nullable<System.UInt16>)@npcTemplateId;
+this.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)@npcTemplateId;
 this.NpcX = (System.UInt16)@npcX;
 this.NpcY = (System.UInt16)@npcY;
 this.Time = (System.DateTime)@time;
-this.UserId = (System.Int32)@userId;
+this.UserId = (DemoGame.CharacterID)@userId;
 this.UserLevel = (System.Byte)@userLevel;
 this.UserX = (System.UInt16)@userX;
 this.UserY = (System.UInt16)@userY;
@@ -350,11 +350,11 @@ CopyValues(this, dic);
 public static void CopyValues(IWorldStatsUserKillNpcTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@map_id"] = (NetGore.MapID)source.MapID;
-dic["@npc_template_id"] = (System.Nullable<System.UInt16>)source.NpcTemplateId;
+dic["@npc_template_id"] = (System.Nullable<DemoGame.CharacterTemplateID>)source.NpcTemplateId;
 dic["@npc_x"] = (System.UInt16)source.NpcX;
 dic["@npc_y"] = (System.UInt16)source.NpcY;
 dic["@time"] = (System.DateTime)source.Time;
-dic["@user_id"] = (System.Int32)source.UserId;
+dic["@user_id"] = (DemoGame.CharacterID)source.UserId;
 dic["@user_level"] = (System.Byte)source.UserLevel;
 dic["@user_x"] = (System.UInt16)source.UserX;
 dic["@user_y"] = (System.UInt16)source.UserY;
@@ -367,11 +367,11 @@ dic["@user_y"] = (System.UInt16)source.UserY;
 public void CopyValuesFrom(IWorldStatsUserKillNpcTable source)
 {
 this.MapID = (NetGore.MapID)source.MapID;
-this.NpcTemplateId = (System.Nullable<System.UInt16>)source.NpcTemplateId;
+this.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)source.NpcTemplateId;
 this.NpcX = (System.UInt16)source.NpcX;
 this.NpcY = (System.UInt16)source.NpcY;
 this.Time = (System.DateTime)source.Time;
-this.UserId = (System.Int32)source.UserId;
+this.UserId = (DemoGame.CharacterID)source.UserId;
 this.UserLevel = (System.Byte)source.UserLevel;
 this.UserX = (System.UInt16)source.UserX;
 this.UserY = (System.UInt16)source.UserY;
@@ -434,7 +434,7 @@ this.MapID = (NetGore.MapID)value;
 break;
 
 case "npc_template_id":
-this.NpcTemplateId = (System.Nullable<System.UInt16>)value;
+this.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)value;
 break;
 
 case "npc_x":
@@ -450,7 +450,7 @@ this.Time = (System.DateTime)value;
 break;
 
 case "user_id":
-this.UserId = (System.Int32)value;
+this.UserId = (DemoGame.CharacterID)value;
 break;
 
 case "user_level":

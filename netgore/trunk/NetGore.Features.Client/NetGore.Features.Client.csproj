@@ -132,6 +132,7 @@
     <Folder Include="GameTime\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
+    <Folder Include="WorldStats\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

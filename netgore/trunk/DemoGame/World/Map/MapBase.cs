@@ -1026,6 +1026,12 @@ namespace DemoGame
             if (Size == newSize)
                 return;
 
+            if (newSize.X <= 1 || newSize.Y <= 1)
+                throw new ArgumentOutOfRangeException("newSize", "Invalid map size.");
+
+            if (newSize.X > ushort.MaxValue || newSize.Y > ushort.MaxValue)
+                throw new ArgumentOutOfRangeException("newSize", "Map sizes larger than ushort.MaxValue are not supported by default.");
+
             // Remove any objects outside of the new dimensions
             if (Size.X > newSize.X || Size.Y > newSize.Y)
             {
