@@ -219,8 +219,6 @@ namespace NetGore.Network
                 // Send, making sure the EndSend is triggered even if it finishes non-async
                 if (!_socket.SendAsync(_sendEventArgs))
                     EndSend(this, _sendEventArgs);
-
-                _netStats.AddTCPSent(msgLength);
             }
             catch (Exception ex)
             {
@@ -231,6 +229,9 @@ namespace NetGore.Network
                 Dispose();
                 return;
             }
+
+            _netStats.AddTCPSent(msgLength);
+            _netStats.IncrementTCPSends();
 
             if (DataSent != null)
                 DataSent(this, msgLength);
@@ -291,6 +292,7 @@ namespace NetGore.Network
             _recvBufferPos += readLength;
 
             _netStats.AddTCPRecv(readLength);
+            _netStats.IncrementTCPReceives();
 
             // Since data was added to the receive buffer we will need to check for new complete messages
             ProcessRecvBuffer();
