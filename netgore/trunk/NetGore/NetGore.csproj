@@ -336,6 +336,7 @@
     <Compile Include="IO\PropertySync\Syncs\PropertySyncSpriteEffects.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncTextureAssetName.cs" />
     <Compile Include="Network\ExternalIPParsingRule.cs" />
+    <Compile Include="Network\NetStats.cs" />
     <Compile Include="Network\PacketTimeStampHelper.cs" />
     <Compile Include="Core\SafeRandom.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
