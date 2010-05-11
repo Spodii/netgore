@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
 using NetGore.Features.Shops;
 using NetGore.Features.WorldStats;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {
@@ -13,8 +15,14 @@ namespace DemoGame.Server
     /// </summary>
     public class WorldStatsTracker : WorldStatsTracker<User, NPC, ItemEntity>
     {
+        /// <summary>
+        /// How frequently to log the network stats.
+        /// </summary>
+        const int _logNetStatsRate = 1000 * 60 * 1; // 1 minute
+
         static readonly IWorldStatsTracker<User, NPC, ItemEntity> _instance;
 
+        readonly InsertWorldStatsNetworkQuery _networkQuery;
         readonly InsertWorldStatsNPCKillUserQuery _npcKillUserQuery;
         readonly InsertWorldStatsUserConsumeItemQuery _userConsumeItemQuery;
         readonly InsertWorldStatsUserKillNpcQuery _userKillNPCQuery;
@@ -33,7 +41,8 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="WorldStatsTracker"/> class.
         /// </summary>
         /// <param name="dbController">The db controller.</param>
-        WorldStatsTracker(IDbController dbController) : base(dbController)
+        /// <exception cref="ArgumentNullException"><paramref name="dbController"/> is null.</exception>
+        WorldStatsTracker(IDbController dbController) : base(_logNetStatsRate)
         {
             // Locally cache an instance of all the queries we will be using
             _npcKillUserQuery = dbController.GetQuery<InsertWorldStatsNPCKillUserQuery>();
@@ -41,6 +50,7 @@ namespace DemoGame.Server
             _userKillNPCQuery = dbController.GetQuery<InsertWorldStatsUserKillNpcQuery>();
             _userLevelQuery = dbController.GetQuery<InsertWorldStatsUserLevelQuery>();
             _userShoppingQuery = dbController.GetQuery<InsertWorldStatsUserShoppingQuery>();
+            _networkQuery = dbController.GetQuery<InsertWorldStatsNetworkQuery>();
         }
 
         /// <summary>
@@ -61,9 +71,10 @@ namespace DemoGame.Server
             if (npc.Map == null)
                 return;
 
-            var args = new WorldStatsNpcKillUserTable(npc.Map.ID, npc.CharacterTemplateID, (ushort)npc.Position.X,
-                                                      (ushort)npc.Position.Y, Now(), user.ID, user.Level, (ushort)user.Position.X,
-                                                      (ushort)user.Position.Y);
+            var args = new WorldStatsNpcKillUserTable(when: Now(), mapID: npc.Map.ID, npcTemplateId: npc.CharacterTemplateID,
+                                                      npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID,
+                                                      userLevel: user.Level, userX: (ushort)user.Position.X,
+                                                      userY: (ushort)user.Position.Y);
 
             _npcKillUserQuery.Execute(args);
         }
@@ -85,8 +96,8 @@ namespace DemoGame.Server
             if (!itemTemplate.HasValue)
                 return;
 
-            var args = new WorldStatsUserConsumeItemTable(itemTemplate.Value, user.Map.ID, user.ID, Now(), (ushort)user.Position.X,
-                                                          (ushort)user.Position.Y);
+            var args = new WorldStatsUserConsumeItemTable(when: Now(), itemTemplateID: itemTemplate.Value, mapID: user.Map.ID,
+                                                          userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
 
             _userConsumeItemQuery.Execute(args);
         }
@@ -101,9 +112,10 @@ namespace DemoGame.Server
             if (user.Map == null)
                 return;
 
-            var args = new WorldStatsUserKillNpcTable(user.Map.ID, npc.CharacterTemplateID, (ushort)npc.Position.X,
-                                                      (ushort)npc.Position.Y, Now(), user.ID, user.Level, (ushort)user.Position.X,
-                                                      (ushort)user.Position.Y);
+            var args = new WorldStatsUserKillNpcTable(when: Now(), mapID: user.Map.ID, npcTemplateId: npc.CharacterTemplateID,
+                                                      npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID,
+                                                      userLevel: user.Level, userX: (ushort)user.Position.X,
+                                                      userY: (ushort)user.Position.Y);
 
             _userKillNPCQuery.Execute(args);
         }
@@ -116,8 +128,8 @@ namespace DemoGame.Server
         {
             var map = user.Map != null ? user.Map.ID : (MapID?)null;
 
-            var args = new WorldStatsUserLevelTable(user.ID, user.Level, map, Now(), (ushort)user.Position.X,
-                                                    (ushort)user.Position.Y);
+            var args = new WorldStatsUserLevelTable(when: Now(), characterID: user.ID, level: user.Level, mapID: map,
+                                                    x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
 
             _userLevelQuery.Execute(args);
         }
@@ -136,8 +148,10 @@ namespace DemoGame.Server
             if (user.Map == null)
                 return;
 
-            var args = new WorldStatsUserShoppingTable(amount, user.ID, cost, (ItemTemplateID?)itemTemplateID, user.Map.ID, 0,
-                                                       shopID, Now(), (ushort)user.Position.X, (ushort)user.Position.Y);
+            var args = new WorldStatsUserShoppingTable(saleType: 0, amount: amount, characterID: user.ID, cost: cost,
+                                                       itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: user.Map.ID,
+                                                       shopID: shopID, when: Now(), x: (ushort)user.Position.X,
+                                                       y: (ushort)user.Position.Y);
 
             _userShoppingQuery.Execute(args);
         }
@@ -156,10 +170,28 @@ namespace DemoGame.Server
             if (user.Map == null)
                 return;
 
-            var args = new WorldStatsUserShoppingTable(amount, user.ID, cost, (ItemTemplateID?)itemTemplateID, user.Map.ID, 1,
-                                                       shopID, Now(), (ushort)user.Position.X, (ushort)user.Position.Y);
+            var args = new WorldStatsUserShoppingTable(saleType: 1, amount: amount, characterID: user.ID, cost: cost,
+                                                       itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: user.Map.ID,
+                                                       shopID: shopID, when: Now(), x: (ushort)user.Position.X,
+                                                       y: (ushort)user.Position.Y);
 
             _userShoppingQuery.Execute(args);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, logs the <see cref="NetStats"/> to the database.
+        /// </summary>
+        /// <param name="netStats">The <see cref="NetStats"/> containing the statistics to log. This contains the difference
+        /// in the <see cref="NetStats"/> from the last call.</param>
+        protected override void LogNetStats(NetStats netStats)
+        {
+            var args = new WorldStatsNetworkTable(when: Now(), connections: (uint)netStats.Connections,
+                                                  tcpRecv: (uint)netStats.TCPRecv, tcpRecvs: (uint)netStats.TCPReceives,
+                                                  tcpSends: (uint)netStats.TCPSends, tcpSent: (uint)netStats.TCPSent,
+                                                  udpRecv: (uint)netStats.UDPRecv, udpRecvs: (uint)netStats.UDPReceives,
+                                                  udpSends: (uint)netStats.UDPSends, udpSent: (uint)netStats.UDPSent);
+
+            _networkQuery.Execute(args);
         }
     }
 }

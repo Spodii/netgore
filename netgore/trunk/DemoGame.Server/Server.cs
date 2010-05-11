@@ -294,6 +294,8 @@ namespace DemoGame.Server
 
             _nextServerSaveTime = GetTime() + ServerSettings.RoutineServerSaveRate;
 
+            var worldStatsTracker = WorldStatsTracker.Instance;
+
             while (_isRunning)
             {
                 // Store the loop start time so we can calculate how long the loop took
@@ -315,50 +317,15 @@ namespace DemoGame.Server
                 // Update the time
                 serverTimeUpdater.Update(GetTime());
 
-                // Handle the queued commands
-                if (_consoleCommandQueue.Count > 0)
-                {
-                    string[] commandsToExecute = null;
-
-                    // Grab the commands to be executed into a local array so we can release the lock quickly
-                    lock (_consoleCommandSync)
-                    {
-                        if (_consoleCommandQueue.Count > 0)
-                        {
-                            commandsToExecute = _consoleCommandQueue.ToArray();
-                            _consoleCommandQueue.Clear();
-                        }
-                    }
-
-                    // Execute the commands
-                    if (commandsToExecute != null)
-                    {
-                        foreach (var cmd in commandsToExecute)
-                        {
-                            var ret = _consoleCommands.ExecuteCommand(cmd);
-
-                            if (ConsoleCommandExecuted != null)
-                                ConsoleCommandExecuted.Invoke(this, cmd, ret);
-                        }
-                    }
-                }
+                // Handle the queued console commands
+                ProcessConsoleCommands();
 
                 // Check if it is time to save the world
                 if (_nextServerSaveTime < loopStartTime)
-                {
-                    if (log.IsInfoEnabled)
-                        log.InfoFormat("Starting save of world state...");
-
-                    var saveStartTime = GetTime();
-
                     ServerSave();
-                    _nextServerSaveTime = (int)loopStartTime + ServerSettings.RoutineServerSaveRate;
 
-                    var saveEndTime = GetTime();
-
-                    if (log.IsInfoEnabled)
-                        log.InfoFormat("World state saved. Save took a total of `{0}` milliseconds.", saveEndTime - saveStartTime);
-                }
+                // Update the world stats
+                worldStatsTracker.Update();
 
                 // Check if we can afford sleeping the thread
                 var sleepTime = ServerSettings.ServerUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
@@ -368,7 +335,40 @@ namespace DemoGame.Server
                 ++_tick;
             }
 
+            // Update the world stats one last time
+            worldStatsTracker.Update();
+
             _gameTimer.Stop();
+        }
+
+        /// <summary>
+        /// Processes any queued console commands in the <see cref="_consoleCommandQueue"/>.
+        /// </summary>
+        void ProcessConsoleCommands()
+        {
+            string[] commandsToExecute = null;
+
+            // Grab the commands to be executed into a local array so we can release the lock quickly
+            lock (_consoleCommandSync)
+            {
+                if (_consoleCommandQueue.Count > 0)
+                {
+                    commandsToExecute = _consoleCommandQueue.ToArray();
+                    _consoleCommandQueue.Clear();
+                }
+            }
+
+            // Execute the commands
+            if (commandsToExecute != null)
+            {
+                foreach (var cmd in commandsToExecute)
+                {
+                    var ret = _consoleCommands.ExecuteCommand(cmd);
+
+                    if (ConsoleCommandExecuted != null)
+                        ConsoleCommandExecuted.Invoke(this, cmd, ret);
+                }
+            }
         }
 
         /// <summary>
@@ -613,7 +613,23 @@ namespace DemoGame.Server
         /// </summary>
         public void ServerSave()
         {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Starting save of world state...");
+
+            // Get the start time so we can log how long the save took
+            var saveStartTime = GetTime();
+
+            // Save
             _world.ServerSave();
+
+            // Get the end time and log the delta time
+            var saveEndTime = GetTime();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("World state saved. Save took a total of `{0}` milliseconds.", saveEndTime - saveStartTime);
+
+            // Update the next auto save time
+            _nextServerSaveTime = saveEndTime + ServerSettings.RoutineServerSaveRate;
         }
 
         #endregion

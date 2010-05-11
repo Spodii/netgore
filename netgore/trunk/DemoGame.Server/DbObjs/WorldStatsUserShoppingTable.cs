@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 10:42:18 PM
+This file was generated on (UTC): 5/11/2010 11:46:42 PM
 ********************************************************************/
 
 using System;
@@ -250,7 +250,7 @@ this._shopID = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `when`.
-/// The underlying database type is `datetime`. The database column contains the comment: 
+/// The underlying database type is `timestamp` with the default value of `CURRENT_TIMESTAMP`. The database column contains the comment: 
 /// "When this event took place.".
 /// </summary>
 [System.ComponentModel.Description("When this event took place.")]
@@ -536,7 +536,7 @@ case "shop_id":
 return new ColumnMetadata("shop_id", "The ID of the shop the event took place at.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
 
 case "when":
-return new ColumnMetadata("when", "When this event took place.", "datetime", null, typeof(System.DateTime), false, false, false);
+return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP", typeof(System.DateTime), false, false, false);
 
 case "x":
 return new ColumnMetadata("x", "The map X coordinate of the shopper when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);

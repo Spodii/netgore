@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 10:42:18 PM
+This file was generated on (UTC): 5/11/2010 11:46:42 PM
 ********************************************************************/
 
 using System;
@@ -46,11 +46,11 @@ paramValues["@map_id"] = (System.UInt16)source.MapID;
 paramValues["@npc_template_id"] = (System.Nullable<System.UInt16>)source.NpcTemplateId;
 paramValues["@npc_x"] = (System.UInt16)source.NpcX;
 paramValues["@npc_y"] = (System.UInt16)source.NpcY;
-paramValues["@time"] = (System.DateTime)source.Time;
 paramValues["@user_id"] = (System.Int32)source.UserId;
 paramValues["@user_level"] = (System.Byte)source.UserLevel;
 paramValues["@user_x"] = (System.UInt16)source.UserX;
 paramValues["@user_y"] = (System.UInt16)source.UserY;
+paramValues["@when"] = (System.DateTime)source.When;
 }
 
 /// <summary>
@@ -80,10 +80,6 @@ i = dataReader.GetOrdinal("npc_y");
 
 source.NpcY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 
-i = dataReader.GetOrdinal("time");
-
-source.Time = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
-
 i = dataReader.GetOrdinal("user_id");
 
 source.UserId = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
@@ -99,6 +95,10 @@ source.UserX = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 i = dataReader.GetOrdinal("user_y");
 
 source.UserY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("when");
+
+source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 }
 
 /// <summary>
@@ -137,11 +137,6 @@ source.NpcY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 break;
 
 
-case "time":
-source.Time = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
-break;
-
-
 case "user_id":
 source.UserId = (DemoGame.CharacterID)(DemoGame.CharacterID)dataReader.GetInt32(i);
 break;
@@ -159,6 +154,11 @@ break;
 
 case "user_y":
 source.UserY = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+break;
+
+
+case "when":
+source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 break;
 
 
@@ -203,11 +203,6 @@ paramValues[i] = (System.UInt16)source.NpcY;
 break;
 
 
-case "@time":
-paramValues[i] = (System.DateTime)source.Time;
-break;
-
-
 case "@user_id":
 paramValues[i] = (System.Int32)source.UserId;
 break;
@@ -225,6 +220,11 @@ break;
 
 case "@user_y":
 paramValues[i] = (System.UInt16)source.UserY;
+break;
+
+
+case "@when":
+paramValues[i] = (System.DateTime)source.When;
 break;
 
 
@@ -247,11 +247,11 @@ return Equals(source.MapID, otherItem.MapID) &&
 Equals(source.NpcTemplateId, otherItem.NpcTemplateId) && 
 Equals(source.NpcX, otherItem.NpcX) && 
 Equals(source.NpcY, otherItem.NpcY) && 
-Equals(source.Time, otherItem.Time) && 
 Equals(source.UserId, otherItem.UserId) && 
 Equals(source.UserLevel, otherItem.UserLevel) && 
 Equals(source.UserX, otherItem.UserX) && 
-Equals(source.UserY, otherItem.UserY);
+Equals(source.UserY, otherItem.UserY) && 
+Equals(source.When, otherItem.When);
 }
 
 }

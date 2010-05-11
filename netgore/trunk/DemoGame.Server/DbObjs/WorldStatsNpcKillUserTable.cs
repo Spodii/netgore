@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/10/2010 10:42:18 PM
+This file was generated on (UTC): 5/11/2010 11:46:42 PM
 ********************************************************************/
 
 using System;
@@ -35,7 +35,7 @@ public class WorldStatsNpcKillUserTable : IWorldStatsNpcKillUserTable, NetGore.I
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"map_id", "npc_template_id", "npc_x", "npc_y", "time", "user_id", "user_level", "user_x", "user_y" };
+ static  readonly System.String[] _dbColumns = new string[] {"map_id", "npc_template_id", "npc_x", "npc_y", "user_id", "user_level", "user_x", "user_y", "when" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -63,7 +63,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"map_id", "npc_template_id", "npc_x", "npc_y", "time", "user_id", "user_level", "user_x", "user_y" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"map_id", "npc_template_id", "npc_x", "npc_y", "user_id", "user_level", "user_x", "user_y", "when" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -99,10 +99,6 @@ System.UInt16 _npcX;
 /// </summary>
 System.UInt16 _npcY;
 /// <summary>
-/// The field that maps onto the database column `time`.
-/// </summary>
-System.DateTime _time;
-/// <summary>
 /// The field that maps onto the database column `user_id`.
 /// </summary>
 System.Int32 _userId;
@@ -118,6 +114,10 @@ System.UInt16 _userX;
 /// The field that maps onto the database column `user_y`.
 /// </summary>
 System.UInt16 _userY;
+/// <summary>
+/// The field that maps onto the database column `when`.
+/// </summary>
+System.DateTime _when;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `map_id`.
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
@@ -188,24 +188,6 @@ return (System.UInt16)_npcY;
 set
 {
 this._npcY = (System.UInt16)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `time`.
-/// The underlying database type is `datetime`. The database column contains the comment: 
-/// "When this event took place.".
-/// </summary>
-[System.ComponentModel.Description("When this event took place.")]
-[NetGore.SyncValueAttribute()]
-public System.DateTime Time
-{
-get
-{
-return (System.DateTime)_time;
-}
-set
-{
-this._time = (System.DateTime)value;
 }
 }
 /// <summary>
@@ -280,6 +262,24 @@ set
 this._userY = (System.UInt16)value;
 }
 }
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `when`.
+/// The underlying database type is `timestamp` with the default value of `CURRENT_TIMESTAMP`. The database column contains the comment: 
+/// "When this event took place.".
+/// </summary>
+[System.ComponentModel.Description("When this event took place.")]
+[NetGore.SyncValueAttribute()]
+public System.DateTime When
+{
+get
+{
+return (System.DateTime)_when;
+}
+set
+{
+this._when = (System.DateTime)value;
+}
+}
 
 /// <summary>
 /// Creates a deep copy of this table. All the values will be the same
@@ -305,22 +305,22 @@ public WorldStatsNpcKillUserTable()
 /// <param name="npcTemplateId">The initial value for the corresponding property.</param>
 /// <param name="npcX">The initial value for the corresponding property.</param>
 /// <param name="npcY">The initial value for the corresponding property.</param>
-/// <param name="time">The initial value for the corresponding property.</param>
 /// <param name="userId">The initial value for the corresponding property.</param>
 /// <param name="userLevel">The initial value for the corresponding property.</param>
 /// <param name="userX">The initial value for the corresponding property.</param>
 /// <param name="userY">The initial value for the corresponding property.</param>
-public WorldStatsNpcKillUserTable(NetGore.MapID @mapID, System.Nullable<DemoGame.CharacterTemplateID> @npcTemplateId, System.UInt16 @npcX, System.UInt16 @npcY, System.DateTime @time, DemoGame.CharacterID @userId, System.Byte @userLevel, System.UInt16 @userX, System.UInt16 @userY)
+/// <param name="when">The initial value for the corresponding property.</param>
+public WorldStatsNpcKillUserTable(NetGore.MapID @mapID, System.Nullable<DemoGame.CharacterTemplateID> @npcTemplateId, System.UInt16 @npcX, System.UInt16 @npcY, DemoGame.CharacterID @userId, System.Byte @userLevel, System.UInt16 @userX, System.UInt16 @userY, System.DateTime @when)
 {
 this.MapID = (NetGore.MapID)@mapID;
 this.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)@npcTemplateId;
 this.NpcX = (System.UInt16)@npcX;
 this.NpcY = (System.UInt16)@npcY;
-this.Time = (System.DateTime)@time;
 this.UserId = (DemoGame.CharacterID)@userId;
 this.UserLevel = (System.Byte)@userLevel;
 this.UserX = (System.UInt16)@userX;
 this.UserY = (System.UInt16)@userY;
+this.When = (System.DateTime)@when;
 }
 /// <summary>
 /// WorldStatsNpcKillUserTable constructor.
@@ -353,11 +353,11 @@ dic["@map_id"] = (NetGore.MapID)source.MapID;
 dic["@npc_template_id"] = (System.Nullable<DemoGame.CharacterTemplateID>)source.NpcTemplateId;
 dic["@npc_x"] = (System.UInt16)source.NpcX;
 dic["@npc_y"] = (System.UInt16)source.NpcY;
-dic["@time"] = (System.DateTime)source.Time;
 dic["@user_id"] = (DemoGame.CharacterID)source.UserId;
 dic["@user_level"] = (System.Byte)source.UserLevel;
 dic["@user_x"] = (System.UInt16)source.UserX;
 dic["@user_y"] = (System.UInt16)source.UserY;
+dic["@when"] = (System.DateTime)source.When;
 }
 
 /// <summary>
@@ -370,11 +370,11 @@ this.MapID = (NetGore.MapID)source.MapID;
 this.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)source.NpcTemplateId;
 this.NpcX = (System.UInt16)source.NpcX;
 this.NpcY = (System.UInt16)source.NpcY;
-this.Time = (System.DateTime)source.Time;
 this.UserId = (DemoGame.CharacterID)source.UserId;
 this.UserLevel = (System.Byte)source.UserLevel;
 this.UserX = (System.UInt16)source.UserX;
 this.UserY = (System.UInt16)source.UserY;
+this.When = (System.DateTime)source.When;
 }
 
 /// <summary>
@@ -400,9 +400,6 @@ return NpcX;
 case "npc_y":
 return NpcY;
 
-case "time":
-return Time;
-
 case "user_id":
 return UserId;
 
@@ -414,6 +411,9 @@ return UserX;
 
 case "user_y":
 return UserY;
+
+case "when":
+return When;
 
 default:
 throw new ArgumentException("Field not found.","columnName");
@@ -445,10 +445,6 @@ case "npc_y":
 this.NpcY = (System.UInt16)value;
 break;
 
-case "time":
-this.Time = (System.DateTime)value;
-break;
-
 case "user_id":
 this.UserId = (DemoGame.CharacterID)value;
 break;
@@ -463,6 +459,10 @@ break;
 
 case "user_y":
 this.UserY = (System.UInt16)value;
+break;
+
+case "when":
+this.When = (System.DateTime)value;
 break;
 
 default:
@@ -493,9 +493,6 @@ return new ColumnMetadata("npc_x", "The map x coordinate of the NPC when this ev
 case "npc_y":
 return new ColumnMetadata("npc_y", "The map y coordinate of the NPC when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
-case "time":
-return new ColumnMetadata("time", "When this event took place.", "datetime", null, typeof(System.DateTime), false, false, false);
-
 case "user_id":
 return new ColumnMetadata("user_id", "The ID of the user.", "int(11)", null, typeof(System.Int32), false, false, true);
 
@@ -507,6 +504,9 @@ return new ColumnMetadata("user_x", "The map x coordinate of the user when this 
 
 case "user_y":
 return new ColumnMetadata("user_y", "The map y coordinate of the user when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+
+case "when":
+return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP", typeof(System.DateTime), false, false, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

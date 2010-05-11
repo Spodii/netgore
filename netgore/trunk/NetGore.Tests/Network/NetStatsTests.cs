@@ -44,6 +44,27 @@ namespace NetGore.Tests.Network
             var r = l.DeepCopy();
 
             Assert.IsTrue(l.AreValuesEqual(r));
+            Assert.AreNotEqual(l, r);
+        }
+
+        [Test]
+        public void CopyValuesFromTest()
+        {
+            var l = new NetStats();
+
+            l.AddConnections(1);
+            l.AddTCPRecv(2);
+            l.AddTCPSends(3);
+            l.AddTCPSent(4);
+            l.AddUDPRecv(5);
+            l.AddUDPSends(6);
+            l.AddUDPSent(7);
+
+            var r = new NetStats();
+            r.CopyValuesFrom(l);
+
+            Assert.IsTrue(l.AreValuesEqual(r));
+            Assert.AreNotEqual(l, r);
         }
 
         [Test]

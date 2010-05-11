@@ -61,5 +61,10 @@ namespace NetGore.Features.WorldStats
         /// the cost of all the items together, not a single item. That is, the cost of the transaction as a whole.</param>
         /// <param name="shopID">The ID of the shop the transaction took place at.</param>
         void AddUserShopSellItem(TUser user, int? itemTemplateID, byte amount, int cost, ShopID shopID);
+
+        /// <summary>
+        /// Updates the statistics that are time-based.
+        /// </summary>
+        void Update();
     }
 }

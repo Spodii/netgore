@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using NetGore.Db;
-using NetGore.Db.ClassCreator;
 using NetGore.Features.Shops;
+using NetGore.Network;
 
 namespace NetGore.Features.WorldStats
 {
@@ -14,30 +14,57 @@ namespace NetGore.Features.WorldStats
     /// <typeparam name="TNPC">The type of NPC character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
     public abstract class WorldStatsTracker<TUser, TNPC, TItem> : IWorldStatsTracker<TUser, TNPC, TItem> where TUser : class
-                                                                                                             where TNPC : class
-                                                                                                             where TItem : class
+                                                                                                         where TNPC : class
+                                                                                                         where TItem : class
     {
-        readonly IDbController _dbController;
+        readonly int _logNetStatsRate;
+
+        NetStats _lastNetStatsValues = new NetStats();
+        int _nextLogNetStatsTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorldStatsTracker{TUser, TNPC, TItem}"/> class.
         /// </summary>
-        /// <param name="dbController">The <see cref="IDbController"/> used to grab the database query objects.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="dbController"/> is null.</exception>
-        protected WorldStatsTracker(IDbController dbController)
+        /// <param name="logNetStatsRate">The rate in milliseconds that the <see cref="NetStats"/> information is
+        /// logged to the database.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="logNetStatsRate"/> is less than
+        /// or equal to zero.</exception>
+        protected WorldStatsTracker(int logNetStatsRate)
         {
-            if (dbController == null)
-                throw new ArgumentNullException("dbController");
+            if (logNetStatsRate <= 0)
+                throw new ArgumentOutOfRangeException("logNetStatsRate", "logNetStatsRate must be greater than or equal to zero.");
 
-            _dbController = dbController;
+            _logNetStatsRate = logNetStatsRate;
+
+            _nextLogNetStatsTime = Environment.TickCount;
         }
 
         /// <summary>
-        /// Gets the <see cref="IDbController"/> used by this object instance to perform queries to the database.
+        /// Gets the rate in milliseconds that the <see cref="NetStats"/> information is logged to the database.
         /// </summary>
-        public virtual IDbController DbController
+        public int LogNetStatsRate
         {
-            get { return _dbController; }
+            get { return _logNetStatsRate; }
+        }
+
+        /// <summary>
+        /// Gets the time to use for the next update.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        /// <param name="lastUpdateTime">The time the last update happened.</param>
+        /// <param name="updateRate">The update rate.</param>
+        /// <returns>The time to use for the next update.</returns>
+        protected virtual int GetNextUpdateTime(int currentTime, int lastUpdateTime, int updateRate)
+        {
+            // Increment by the update rate
+            var nextTime = lastUpdateTime + updateRate;
+
+            // If there is a large gap between updates, do not let it result in a bunch of consecutive updates happening
+            // as we catch up
+            if (nextTime < currentTime)
+                nextTime = currentTime;
+
+            return nextTime;
         }
 
         /// <summary>
@@ -89,6 +116,39 @@ namespace NetGore.Features.WorldStats
         /// <param name="shopID">The ID of the shop the transaction took place at.</param>
         protected abstract void InternalAddUserShopSellItem(TUser user, int? itemTemplateID, byte amount, int cost, ShopID shopID);
 
+        /// <summary>
+        /// Updates the statistics.
+        /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        protected virtual void InternalUpdate(int currentTime)
+        {
+            // NetStats
+            if (_nextLogNetStatsTime < currentTime)
+            {
+                var statDiffs = NetStats.Global - _lastNetStatsValues;
+                _lastNetStatsValues = NetStats.Global;
+                LogNetStats(statDiffs);
+
+                _nextLogNetStatsTime = GetNextUpdateTime(currentTime, _nextLogNetStatsTime, LogNetStatsRate);
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, logs the <see cref="NetStats"/> to the database.
+        /// </summary>
+        /// <param name="netStats">The <see cref="NetStats"/> containing the statistics to log. This contains the difference
+        /// in the <see cref="NetStats"/> from the last call.</param>
+        protected abstract void LogNetStats(NetStats netStats);
+
+        /// <summary>
+        /// Gets the <see cref="DateTime"/> for the current time.
+        /// </summary>
+        /// <returns>The <see cref="DateTime"/> for the current time.</returns>
+        protected virtual DateTime Now()
+        {
+            return DateTime.Now;
+        }
+
         #region IWorldStatsTracker<TUser,TNPC,TItem> Members
 
         /// <summary>
@@ -119,15 +179,6 @@ namespace NetGore.Features.WorldStats
                 return;
 
             InternalAddUserConsumeItem(user, item);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="DateTime"/> for the current time.
-        /// </summary>
-        /// <returns>The <see cref="DateTime"/> for the current time.</returns>
-        protected virtual DateTime Now()
-        {
-            return DateTime.Now;
         }
 
         /// <summary>
@@ -193,6 +244,14 @@ namespace NetGore.Features.WorldStats
                 return;
 
             InternalAddUserLevel(user);
+        }
+
+        /// <summary>
+        /// Updates the statistics that are time-based.
+        /// </summary>
+        public void Update()
+        {
+            InternalUpdate(Environment.TickCount);
         }
 
         #endregion

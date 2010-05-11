@@ -22,9 +22,9 @@ using System.Linq;
 namespace DemoGame.DbObjs
 {
 /// <summary>
-/// Interface for a class that can be used to serialize values to the database table `character_quest_status_kills`.
+/// Interface for a class that can be used to serialize values to the database table `world_stats_network`.
 /// </summary>
-public interface ICharacterQuestStatusKillsTable
+public interface IWorldStatsNetworkTable
 {
 /// <summary>
 /// Creates a deep copy of this table. All the values will be the same
@@ -33,33 +33,75 @@ public interface ICharacterQuestStatusKillsTable
 /// <returns>
 /// A deep copy of this table.
 /// </returns>
-ICharacterQuestStatusKillsTable DeepCopy();
+IWorldStatsNetworkTable DeepCopy();
 
 /// <summary>
-/// Gets the value of the database column `character_id`.
+/// Gets the value of the database column `connections`.
 /// </summary>
-DemoGame.CharacterID CharacterID
+System.UInt32 Connections
 {
 get;
 }
 /// <summary>
-/// Gets the value of the database column `character_template_id`.
+/// Gets the value of the database column `tcp_recv`.
 /// </summary>
-DemoGame.CharacterTemplateID CharacterTemplateID
+System.UInt32 TcpRecv
 {
 get;
 }
 /// <summary>
-/// Gets the value of the database column `count`.
+/// Gets the value of the database column `tcp_recvs`.
 /// </summary>
-System.UInt16 Count
+System.UInt32 TcpRecvs
 {
 get;
 }
 /// <summary>
-/// Gets the value of the database column `quest_id`.
+/// Gets the value of the database column `tcp_sends`.
 /// </summary>
-NetGore.Features.Quests.QuestID QuestID
+System.UInt32 TcpSends
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `tcp_sent`.
+/// </summary>
+System.UInt32 TcpSent
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `udp_recv`.
+/// </summary>
+System.UInt32 UdpRecv
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `udp_recvs`.
+/// </summary>
+System.UInt32 UdpRecvs
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `udp_sends`.
+/// </summary>
+System.UInt32 UdpSends
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `udp_sent`.
+/// </summary>
+System.UInt32 UdpSent
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `when`.
+/// </summary>
+System.DateTime When
 {
 get;
 }

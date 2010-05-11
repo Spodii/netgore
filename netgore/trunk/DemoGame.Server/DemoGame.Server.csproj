@@ -169,6 +169,7 @@
     <Compile Include="DbObjs\DbExtensions\ShopItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\UserCharacterTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\WorldStatsNetworkTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsNpcKillUserTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsUserConsumeItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsUserKillNpcTableDbExtensions.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="DbObjs\ShopItemTable.cs" />
     <Compile Include="DbObjs\ShopTable.cs" />
     <Compile Include="DbObjs\UserCharacterTable.cs" />
+    <Compile Include="DbObjs\WorldStatsNetworkTable.cs" />
     <Compile Include="DbObjs\WorldStatsNpcKillUserTable.cs" />
     <Compile Include="DbObjs\WorldStatsUserConsumeItemTable.cs" />
     <Compile Include="DbObjs\WorldStatsUserKillNpcTable.cs" />
@@ -242,6 +244,7 @@
     <Compile Include="Queries\Shop\DeleteShopQuery.cs" />
     <Compile Include="Queries\Shop\InsertShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\ReplaceShopItemQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsNetworkQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsNPCKillUserQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsUserConsumeItemQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsUserKillNpcQuery.cs" />
