@@ -21,6 +21,11 @@ namespace NetGore.Network
     /// </summary>
     public class TCPSocket : ITCPSocket
     {
+        /// <summary>
+        /// Local cache of the global <see cref="NetStats"/> instance.
+        /// </summary>
+        static readonly NetStats _netStats = NetStats.Global;
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -214,6 +219,8 @@ namespace NetGore.Network
                 // Send, making sure the EndSend is triggered even if it finishes non-async
                 if (!_socket.SendAsync(_sendEventArgs))
                     EndSend(this, _sendEventArgs);
+
+                _netStats.AddTCPSent(msgLength);
             }
             catch (Exception ex)
             {
@@ -282,6 +289,8 @@ namespace NetGore.Network
             }
 
             _recvBufferPos += readLength;
+
+            _netStats.AddTCPRecv(readLength);
 
             // Since data was added to the receive buffer we will need to check for new complete messages
             ProcessRecvBuffer();
