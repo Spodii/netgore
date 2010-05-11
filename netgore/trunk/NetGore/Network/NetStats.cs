@@ -79,7 +79,7 @@ namespace NetGore.Network
         /// </summary>
         public long TCPRecv
         {
-            get { return _tcpRecv; }
+            get { return Interlocked.Read(ref _tcpRecv); }
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace NetGore.Network
         /// </summary>
         public long TCPSent
         {
-            get { return _tcpSent; }
+            get { return Interlocked.Read(ref _tcpSent); }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace NetGore.Network
         /// </summary>
         public long UDPRecv
         {
-            get { return _udpRecv; }
+            get { return Interlocked.Read(ref _udpRecv); }
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace NetGore.Network
         /// </summary>
         public long UDPSent
         {
-            get { return _udpSent; }
+            get { return Interlocked.Read(ref _udpSent); }
         }
 
         /// <summary>
