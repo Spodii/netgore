@@ -112,6 +112,14 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Increments the <see cref="NetStats.Connections"/> property value by one.
+        /// </summary>
+        public void IncrementConnections()
+        {
+            Interlocked.Increment(ref _conns);
+        }
+
+        /// <summary>
         /// Adds to the <see cref="NetStats.TCPRecv"/> property value.
         /// </summary>
         /// <param name="value">The amount to add.</param>
