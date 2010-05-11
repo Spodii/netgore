@@ -143,6 +143,16 @@
       <DependentUpon>ItemTemplateAndAmountListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UITypeEditors\ItemTemplateAndAmountEditor.cs" />
+    <Compile Include="UITypeEditors\ItemTemplateIDListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UITypeEditors\ItemTemplateIDListEditor.cs" />
+    <Compile Include="UITypeEditors\ItemTemplateIDListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UITypeEditors\ItemTemplateIDListForm.Designer.cs">
+      <DependentUpon>ItemTemplateIDListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UITypeEditors\QuestEditor.cs" />
     <Compile Include="UITypeEditors\QuestIDListBox.cs">
       <SubType>Component</SubType>
@@ -279,6 +289,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
