@@ -34,6 +34,7 @@ namespace DemoGame.EditorTools
         {
             _id = id;
 
+            // Grab the general shop information
             var table = dbController.GetQuery<SelectShopQuery>().Execute(id);
             if (table == null)
                 throw new ArgumentException(string.Format("No Shop with ID `{0}` exists.", id), "id");
@@ -42,6 +43,12 @@ namespace DemoGame.EditorTools
 
             Name = table.Name;
             CanBuy = table.CanBuy;
+
+            // Grab the items from the database and add them
+            var dbItems = dbController.GetQuery<SelectShopItemsQuery>().Execute(id);
+            _items = new List<ItemTemplateID>();
+            if (dbItems != null)
+                _items.AddRange(dbItems.Select(x => x.ItemTemplateID));
         }
 
         /// <summary>
