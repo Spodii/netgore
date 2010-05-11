@@ -38,7 +38,7 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// Gets or sets if the <see cref="ItemTemplateID"/>s must be distinct. Default value is true.
+        /// Gets or sets if the <see cref="QuestID"/>s must be distinct. Default value is true.
         /// </summary>
         public bool RequireDistinct { get; set; }
 
