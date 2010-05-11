@@ -11,8 +11,8 @@ namespace NetGore.Network
     public class NetStats
     {
         static readonly NetStats _global;
-        int _conns;
 
+        int _conns;
         long _tcpRecv;
         long _tcpSent;
         long _udpRecv;
