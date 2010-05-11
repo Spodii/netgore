@@ -43,17 +43,7 @@ namespace NetGore.Network
         /// <param name="source">The <see cref="NetStats"/> to copy the inital values from.</param>
         public NetStats(NetStats source)
         {
-            _tcpSent = source._tcpSent;
-            _tcpSends = source._tcpSends;
-            _tcpRecv = source._tcpRecv;
-            _tcpRecvs = source._tcpRecvs;
-
-            _udpSent = source._udpSent;
-            _udpSends = source._udpSends;
-            _udpRecv = source._udpRecv;
-            _udpRecvs = source._udpRecvs;
-
-            _conns = source._conns;
+            CopyValuesFrom(source);
         }
 
         /// <summary>
@@ -229,6 +219,25 @@ namespace NetGore.Network
             return TCPSent == o.TCPSent && TCPSends == o.TCPSends && TCPRecv == o.TCPRecv && TCPReceives == o.TCPReceives &&
                    UDPSent == o.UDPSent && UDPSends == o.UDPSends && UDPRecv == o.UDPRecv && UDPReceives == o.UDPReceives &&
                    Connections == o.Connections;
+        }
+
+        /// <summary>
+        /// Copies the values from another <see cref="NetStats"/> into this <see cref="NetStats"/> instance.
+        /// </summary>
+        /// <param name="source">The <see cref="NetStats"/> to copy the values from.</param>
+        public void CopyValuesFrom(NetStats source)
+        {
+            _tcpSent = source._tcpSent;
+            _tcpSends = source._tcpSends;
+            _tcpRecv = source._tcpRecv;
+            _tcpRecvs = source._tcpRecvs;
+
+            _udpSent = source._udpSent;
+            _udpSends = source._udpSends;
+            _udpRecv = source._udpRecv;
+            _udpRecvs = source._udpRecvs;
+
+            _conns = source._conns;
         }
 
         /// <summary>

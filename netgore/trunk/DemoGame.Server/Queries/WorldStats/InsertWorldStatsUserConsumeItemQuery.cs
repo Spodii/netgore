@@ -41,6 +41,9 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, IWorldStatsUserConsumeItemTable item)
         {
             item.CopyValues(p);
+
+            // Set the `when` field to null to ensure that the time is assigned by MySQL
+            p["@when"] = null;
         }
     }
 }
