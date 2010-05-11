@@ -97,26 +97,26 @@ namespace NetGore.Network
             byte[] received;
             EndPoint remoteEndPoint = new IPEndPoint(0, 0);
 
+            int bytesRead;
             try
             {
                 // Read the received data and put it into a temporary buffer
-                var bytesRead = _socket.EndReceiveFrom(result, ref remoteEndPoint);
+                bytesRead = _socket.EndReceiveFrom(result, ref remoteEndPoint);
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
-
-                _netStats.AddUDPRecv(bytesRead);
             }
             catch (ObjectDisposedException)
             {
-                received = null;
                 Dispose();
+                return;
             }
             catch (SocketException e)
             {
                 if (log.IsErrorEnabled)
                     log.Error(e);
-                received = null;
+
                 Dispose();
+                return;
             }
             finally
             {
@@ -125,13 +125,13 @@ namespace NetGore.Network
                     BeginReceiveFrom();
             }
 
+            _netStats.AddUDPRecv(bytesRead);
+            _netStats.IncrementUDPReceives();
+
             // Push the received data into the receive queue
-            if (received != null)
-            {
-                var addressedPacket = new AddressedPacket(received, remoteEndPoint);
-                lock (_receiveQueue)
-                    _receiveQueue.Enqueue(addressedPacket);
-            }
+            var addressedPacket = new AddressedPacket(received, remoteEndPoint);
+            lock (_receiveQueue)
+                _receiveQueue.Enqueue(addressedPacket);
         }
 
         #region IUDPSocket Members
@@ -320,8 +320,6 @@ namespace NetGore.Network
             try
             {
                 _socket.SendTo(data, totalLength, SocketFlags.None, endPoint);
-
-                _netStats.AddUDPSent(totalLength);
             }
             catch (ObjectDisposedException ex)
             {
@@ -329,6 +327,9 @@ namespace NetGore.Network
                 Dispose();
                 return;
             }
+
+            _netStats.AddUDPSent(totalLength);
+            _netStats.IncrementUDPSends();
         }
 
         /// <summary>
