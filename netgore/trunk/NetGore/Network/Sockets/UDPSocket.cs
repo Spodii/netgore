@@ -15,6 +15,11 @@ namespace NetGore.Network
     /// </summary>
     public class UDPSocket : IUDPSocket
     {
+        /// <summary>
+        /// Local cache of the global <see cref="NetStats"/> instance.
+        /// </summary>
+        static readonly NetStats _netStats = NetStats.Global;
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -98,6 +103,8 @@ namespace NetGore.Network
                 var bytesRead = _socket.EndReceiveFrom(result, ref remoteEndPoint);
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
+
+                _netStats.AddUDPRecv(bytesRead);
             }
             catch (ObjectDisposedException)
             {
@@ -170,7 +177,7 @@ namespace NetGore.Network
         /// </returns>
         public int Bind(int port)
         {
-            // NOTE: This will probably crash if Bind has already been called
+            // TODO: This will probably crash if Bind has already been called
 
             // Close down the old connection
             if (_socket.IsBound)
@@ -307,9 +314,14 @@ namespace NetGore.Network
             if (log.IsDebugEnabled)
                 log.DebugFormat("Send `{0}` bytes to `{1}`", data.Length, endPoint);
 
+            // Get the total length of the packet to send (message + header)
+            int totalLength = length + _headerSize;
+
             try
             {
-                _socket.SendTo(data, length + _headerSize, SocketFlags.None, endPoint);
+                _socket.SendTo(data, totalLength, SocketFlags.None, endPoint);
+
+                _netStats.AddUDPSent(totalLength);
             }
             catch (ObjectDisposedException ex)
             {

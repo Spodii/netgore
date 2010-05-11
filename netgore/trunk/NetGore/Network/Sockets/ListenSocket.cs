@@ -129,6 +129,8 @@ namespace NetGore.Network
             if (log.IsInfoEnabled)
                 log.InfoFormat("Connection request from {0}", sock.RemoteEndPoint);
 
+            _netStats.IncrementConnections();
+
             // Set up the new TCPSocket and send it to the accept event
             var conn = new TCPSocket();
             conn.SetSocket(sock);
@@ -142,6 +144,11 @@ namespace NetGore.Network
             if (ConnectionAccepted != null)
                 ConnectionAccepted(this, conn);
         }
+
+        /// <summary>
+        /// Local cache of the global <see cref="NetStats"/> instance.
+        /// </summary>
+        static readonly NetStats _netStats = NetStats.Global;
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling the corresponding event without
