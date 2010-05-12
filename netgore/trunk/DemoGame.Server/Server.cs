@@ -342,36 +342,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Processes any queued console commands in the <see cref="_consoleCommandQueue"/>.
-        /// </summary>
-        void ProcessConsoleCommands()
-        {
-            string[] commandsToExecute = null;
-
-            // Grab the commands to be executed into a local array so we can release the lock quickly
-            lock (_consoleCommandSync)
-            {
-                if (_consoleCommandQueue.Count > 0)
-                {
-                    commandsToExecute = _consoleCommandQueue.ToArray();
-                    _consoleCommandQueue.Clear();
-                }
-            }
-
-            // Execute the commands
-            if (commandsToExecute != null)
-            {
-                foreach (var cmd in commandsToExecute)
-                {
-                    var ret = _consoleCommands.ExecuteCommand(cmd);
-
-                    if (ConsoleCommandExecuted != null)
-                        ConsoleCommandExecuted.Invoke(this, cmd, ret);
-                }
-            }
-        }
-
-        /// <summary>
         /// Creates an <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.
         /// </summary>
         /// <returns>An <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.</returns>
@@ -507,6 +477,36 @@ namespace DemoGame.Server
 
             // Send the account characters
             userAccount.SendAccountCharacterInfos();
+        }
+
+        /// <summary>
+        /// Processes any queued console commands in the <see cref="_consoleCommandQueue"/>.
+        /// </summary>
+        void ProcessConsoleCommands()
+        {
+            string[] commandsToExecute = null;
+
+            // Grab the commands to be executed into a local array so we can release the lock quickly
+            lock (_consoleCommandSync)
+            {
+                if (_consoleCommandQueue.Count > 0)
+                {
+                    commandsToExecute = _consoleCommandQueue.ToArray();
+                    _consoleCommandQueue.Clear();
+                }
+            }
+
+            // Execute the commands
+            if (commandsToExecute != null)
+            {
+                foreach (var cmd in commandsToExecute)
+                {
+                    var ret = _consoleCommands.ExecuteCommand(cmd);
+
+                    if (ConsoleCommandExecuted != null)
+                        ConsoleCommandExecuted.Invoke(this, cmd, ret);
+                }
+            }
         }
 
         /// <summary>

@@ -21,11 +21,6 @@ namespace NetGore.Network
     /// </summary>
     public class TCPSocket : ITCPSocket
     {
-        /// <summary>
-        /// Local cache of the global <see cref="NetStats"/> instance.
-        /// </summary>
-        static readonly NetStats _netStats = NetStats.Global;
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -47,6 +42,11 @@ namespace NetGore.Network
         /// Initial size of the receive queue 
         /// </summary>
         const int RecvQueueStartSize = 4;
+
+        /// <summary>
+        /// Local cache of the global <see cref="NetStats"/> instance.
+        /// </summary>
+        static readonly NetStats _netStats = NetStats.Global;
 
         /// <summary>
         /// Object used to lock receives

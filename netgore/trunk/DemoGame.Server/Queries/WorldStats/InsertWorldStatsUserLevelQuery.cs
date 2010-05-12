@@ -17,8 +17,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="InsertWorldStatsUserLevelQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertWorldStatsUserLevelQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertWorldStatsUserLevelQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

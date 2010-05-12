@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.Db.ClassCreator;
 
 namespace NetGore.Features.Guilds
@@ -11,6 +8,8 @@ namespace NetGore.Features.Guilds
     /// </summary>
     public class DbClassGeneratorSettings : IDbClassGeneratorSettingsProvider
     {
+        #region IDbClassGeneratorSettingsProvider Members
+
         /// <summary>
         /// Applies the custom settings to the <see cref="DbClassGenerator"/>.
         /// </summary>
@@ -24,5 +23,7 @@ namespace NetGore.Features.Guilds
             gen.AddCustomType(typeof(GuildID), "*", "guild_id");
             gen.AddCustomType(typeof(GuildRank), "guild_member", "rank");
         }
+
+        #endregion
     }
 }

@@ -18,8 +18,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="ReplaceShopItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceShopItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public ReplaceShopItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

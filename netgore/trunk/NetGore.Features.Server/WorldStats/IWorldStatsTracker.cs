@@ -1,4 +1,5 @@
-﻿using NetGore.Features.Shops;
+﻿using System.Linq;
+using NetGore.Features.Shops;
 
 namespace NetGore.Features.WorldStats
 {
@@ -8,18 +9,8 @@ namespace NetGore.Features.WorldStats
     /// <typeparam name="TUser">The type of user character.</typeparam>
     /// <typeparam name="TNPC">The type of NPC character.</typeparam>
     /// <typeparam name="TItem">The type of item.</typeparam>
-    public interface IWorldStatsTracker<in TUser, in TNPC, in TItem>
-        where TUser : class
-        where TNPC : class
-        where TItem : class
+    public interface IWorldStatsTracker<in TUser, in TNPC, in TItem> where TUser : class where TNPC : class where TItem : class
     {
-        /// <summary>
-        /// Adds when a user kills a NPC.
-        /// </summary>
-        /// <param name="user">The user that killed the <paramref name="npc"/>.</param>
-        /// <param name="npc">The NPC that was killed by the <paramref name="user"/>.</param>
-        void AddUserKillNPC(TUser user, TNPC npc);
-
         /// <summary>
         /// Adds when a NPC kills a user.
         /// </summary>
@@ -33,6 +24,13 @@ namespace NetGore.Features.WorldStats
         /// <param name="user">The user that consumed the item.</param>
         /// <param name="item">The item that was consumed.</param>
         void AddUserConsumeItem(TUser user, TItem item);
+
+        /// <summary>
+        /// Adds when a user kills a NPC.
+        /// </summary>
+        /// <param name="user">The user that killed the <paramref name="npc"/>.</param>
+        /// <param name="npc">The NPC that was killed by the <paramref name="user"/>.</param>
+        void AddUserKillNPC(TUser user, TNPC npc);
 
         /// <summary>
         /// Adds when a user gains a level.

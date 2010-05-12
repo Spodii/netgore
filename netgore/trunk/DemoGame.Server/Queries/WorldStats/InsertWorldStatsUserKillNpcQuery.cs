@@ -17,8 +17,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="InsertWorldStatsUserKillNpcQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertWorldStatsUserKillNpcQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertWorldStatsUserKillNpcQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

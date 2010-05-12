@@ -17,6 +17,11 @@ namespace NetGore.Network
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// Local cache of the global <see cref="NetStats"/> instance.
+        /// </summary>
+        static readonly NetStats _netStats = NetStats.Global;
+
+        /// <summary>
         /// SocketAsyncEventArgs for the accept event.
         /// </summary>
         readonly SocketAsyncEventArgs _acceptEventArgs;
@@ -144,11 +149,6 @@ namespace NetGore.Network
             if (ConnectionAccepted != null)
                 ConnectionAccepted(this, conn);
         }
-
-        /// <summary>
-        /// Local cache of the global <see cref="NetStats"/> instance.
-        /// </summary>
-        static readonly NetStats _netStats = NetStats.Global;
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling the corresponding event without

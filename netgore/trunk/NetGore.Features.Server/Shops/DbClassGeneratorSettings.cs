@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.Db.ClassCreator;
 
 namespace NetGore.Features.Shops
@@ -11,6 +8,8 @@ namespace NetGore.Features.Shops
     /// </summary>
     public class DbClassGeneratorSettings : IDbClassGeneratorSettingsProvider
     {
+        #region IDbClassGeneratorSettingsProvider Members
+
         /// <summary>
         /// Applies the custom settings to the <see cref="DbClassGenerator"/>.
         /// </summary>
@@ -23,5 +22,7 @@ namespace NetGore.Features.Shops
 
             gen.AddCustomType(typeof(ShopID), "*", "shop_id");
         }
+
+        #endregion
     }
 }

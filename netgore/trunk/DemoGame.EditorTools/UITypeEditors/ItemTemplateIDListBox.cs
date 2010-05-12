@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
+using NetGore;
 using NetGore.EditorTools;
-using IEnumerableExtensions = NetGore.IEnumerableExtensions;
 
 namespace DemoGame.EditorTools
 {
@@ -70,7 +70,7 @@ namespace DemoGame.EditorTools
             if (DesignMode)
                 return;
 
-            var v = IEnumerableExtensions.ToImmutable<ItemTemplateID>(Items.Cast<ItemTemplateID>());
+            var v = IEnumerableExtensions.ToImmutable(Items.Cast<ItemTemplateID>());
             Items.Clear();
             Items.AddRange(v.Cast<object>().ToArray());
         }
