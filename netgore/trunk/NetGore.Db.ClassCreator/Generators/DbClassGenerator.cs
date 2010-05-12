@@ -15,6 +15,8 @@ namespace NetGore.Db.ClassCreator
 {
     public abstract class DbClassGenerator : IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Name of the class used to store the column metadata.
         /// </summary>
@@ -188,18 +190,6 @@ namespace NetGore.Db.ClassCreator
             _columnCollections.Add(columnCollection);
         }
 
-        public void AddCustomType(Type type, string table, params string[] columns)
-        {
-            AddCustomType(type, new string[] { table }, columns);
-        }
-
-        public void AddCustomType(string type, string table, params string[] columns)
-        {
-            AddCustomType(type, new string[] { table }, columns);
-        }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Applies the custom settings defined in classes that implement the <see cref="IDbClassGeneratorSettingsProvider"/>
         /// interface, using reflection to find the classes.
@@ -211,7 +201,7 @@ namespace NetGore.Db.ClassCreator
         public void AddCustomSettings(bool throwOnCreateError = true)
         {
             // Find the types
-            var typeFilter = new TypeFilterCreator()
+            var typeFilter = new TypeFilterCreator
             {
                 Interfaces = new Type[] { typeof(IDbClassGeneratorSettingsProvider) },
                 IsAbstract = false,
@@ -230,6 +220,16 @@ namespace NetGore.Db.ClassCreator
                 // Apply the settings
                 instance.ApplySettings(this);
             }
+        }
+
+        public void AddCustomType(Type type, string table, params string[] columns)
+        {
+            AddCustomType(type, new string[] { table }, columns);
+        }
+
+        public void AddCustomType(string type, string table, params string[] columns)
+        {
+            AddCustomType(type, new string[] { table }, columns);
         }
 
         public void AddCustomType(Type type, IEnumerable<string> tables, params string[] columns)

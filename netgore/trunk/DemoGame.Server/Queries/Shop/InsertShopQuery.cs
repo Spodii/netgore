@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -11,14 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertShopQuery : DbQueryNonReader<IShopTable>
     {
-        static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1}", ShopTable.TableName, FormatParametersIntoValuesString(ShopTable.DbColumns));
+        static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1}", ShopTable.TableName,
+                                                         FormatParametersIntoValuesString(ShopTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertShopQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertShopQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertShopQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

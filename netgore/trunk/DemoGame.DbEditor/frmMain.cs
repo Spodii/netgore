@@ -245,21 +245,6 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Gets and reserves the next free <see cref="ShopID"/>.
-        /// </summary>
-        /// <param name="dbController">The db controller.</param>
-        /// <returns>The next free <see cref="ShopID"/>.</returns>
-        public static ShopID ReserveFreeShopID(IDbController dbController)
-        {
-            var getUsedQuery = dbController.GetQuery<SelectShopIDsQuery>();
-            var selectQuery = dbController.GetQuery<SelectShopQuery>();
-            var insertByIDQuery = dbController.GetQuery<InsertShopQuery>();
-
-            return GetFreeID(dbController, true, t => new ShopID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
-                             x => insertByIDQuery.Execute(new ShopTable { ID = x, Name = string.Empty }));
-        }
-
-        /// <summary>
         /// Gets and reserves the next free <see cref="CharacterTemplateID"/>.
         /// </summary>
         /// <param name="dbController">The db controller.</param>
@@ -302,6 +287,21 @@ namespace DemoGame.DbEditor
 
             return GetFreeID(dbController, true, t => new QuestID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
                              x => insertByIDQuery.Execute(new QuestTable { ID = x }));
+        }
+
+        /// <summary>
+        /// Gets and reserves the next free <see cref="ShopID"/>.
+        /// </summary>
+        /// <param name="dbController">The db controller.</param>
+        /// <returns>The next free <see cref="ShopID"/>.</returns>
+        public static ShopID ReserveFreeShopID(IDbController dbController)
+        {
+            var getUsedQuery = dbController.GetQuery<SelectShopIDsQuery>();
+            var selectQuery = dbController.GetQuery<SelectShopQuery>();
+            var insertByIDQuery = dbController.GetQuery<InsertShopQuery>();
+
+            return GetFreeID(dbController, true, t => new ShopID(t), x => (int)x, getUsedQuery.Execute, selectQuery.Execute,
+                             x => insertByIDQuery.Execute(new ShopTable { ID = x, Name = string.Empty }));
         }
 
         /// <summary>
@@ -931,6 +931,91 @@ namespace DemoGame.DbEditor
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnShopDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnShopDelete_Click(object sender, EventArgs e)
+        {
+            var a = pgShop.SelectedObject as EditorShop;
+            if (a == null)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to delete the shop `{0}` [ID: {1}]?";
+            if (MessageBox.Show(string.Format(confirmMsg, a.Name, a.ID), "Delete?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            _dbController.GetQuery<DeleteShopQuery>().Execute(a.ID);
+
+            pgShop.SelectedObject = null;
+
+            MessageBox.Show(string.Format("Shop `{0}` [ID: {1}] successfully deleted!", a.Name, a.ID));
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnShopNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnShopNew_Click(object sender, EventArgs e)
+        {
+            const string confirmMsg = "Are you sure you wish to create a new shop?";
+            if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Get the next free ID
+            var id = ReserveFreeShopID(_dbController);
+
+            // Set the new shop
+            pgShop.SelectedObject = new EditorShop(id, _dbController);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnShopSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnShopSave_Click(object sender, EventArgs e)
+        {
+            var v = pgShop.SelectedObject as EditorShop;
+            if (v == null)
+                return;
+
+            // Main values
+            _dbController.GetQuery<DeleteShopQuery>().Execute(v.ID);
+            _dbController.GetQuery<InsertShopQuery>().Execute(v);
+
+            // Items
+            _dbController.GetQuery<ReplaceShopItemQuery>().Execute(v.ID, v.Items);
+
+            // Reload from the database
+            ShopManager.Instance.Reload(v.ID);
+
+            // Refresh the selected object
+            pgShop.SelectedObject = null;
+            pgShop.SelectedObject = v;
+
+            MessageBox.Show("Shop " + v.Name + " successfully saved!");
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnShops control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnShops_Click(object sender, EventArgs e)
+        {
+            using (var f = new ShopUITypeEditorForm(pgShop.SelectedObject))
+            {
+                if (f.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                var item = f.SelectedItem;
+                pgShop.SelectedObject = new EditorShop(item.ID, _dbController);
+            }
+        }
+
         void frmMain_Load(object sender, EventArgs e)
         {
         }
@@ -1042,6 +1127,20 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
+        /// Handles the SelectedObjectsChanged event of the pgShop control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void pgShop_SelectedObjectsChanged(object sender, EventArgs e)
+        {
+            var c = pgShop.SelectedObject as EditorShop;
+            if (c == null)
+                txtShop.Text = string.Empty;
+            else
+                txtShop.Text = string.Format("{0}. {1}", c.ID, c.Name);
+        }
+
+        /// <summary>
         /// Handles the KeyDown event of the txtSelectedMessage control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -1083,105 +1182,6 @@ namespace DemoGame.DbEditor
             lstMessages.Items[msgIndex] = new KeyValuePair<GameMessage, string>(original.Key, txtSelectedMessage.Text);
 
             lstMessages.SelectedIndex = oldSelectedIndex;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnShops control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnShops_Click(object sender, EventArgs e)
-        {
-            using (var f = new ShopUITypeEditorForm(pgShop.SelectedObject))
-            {
-                if (f.ShowDialog(this) != DialogResult.OK)
-                    return;
-
-                var item = f.SelectedItem;
-                pgShop.SelectedObject = new EditorShop(item.ID, _dbController);
-            }
-        }
-
-        /// <summary>
-        /// Handles the SelectedObjectsChanged event of the pgShop control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void pgShop_SelectedObjectsChanged(object sender, EventArgs e)
-        {
-            var c = pgShop.SelectedObject as EditorShop;
-            if (c == null)
-                txtShop.Text = string.Empty;
-            else
-                txtShop.Text = string.Format("{0}. {1}", c.ID, c.Name);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnShopSave control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnShopSave_Click(object sender, EventArgs e)
-        {
-            var v = pgShop.SelectedObject as EditorShop;
-            if (v == null)
-                return;
-
-            // Main values
-            _dbController.GetQuery<DeleteShopQuery>().Execute(v.ID);
-            _dbController.GetQuery<InsertShopQuery>().Execute(v);
-
-            // Items
-            _dbController.GetQuery<ReplaceShopItemQuery>().Execute(v.ID, v.Items);
-
-            // Reload from the database
-            ShopManager.Instance.Reload(v.ID);
-
-            // Refresh the selected object
-            pgShop.SelectedObject = null;
-            pgShop.SelectedObject = v;
-
-            MessageBox.Show("Shop " + v.Name + " successfully saved!");
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnShopDelete control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnShopDelete_Click(object sender, EventArgs e)
-        {
-            var a = pgShop.SelectedObject as EditorShop;
-            if (a == null)
-                return;
-
-            const string confirmMsg = "Are you sure you wish to delete the shop `{0}` [ID: {1}]?";
-            if (MessageBox.Show(string.Format(confirmMsg, a.Name, a.ID), "Delete?", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            _dbController.GetQuery<DeleteShopQuery>().Execute(a.ID);
-
-            pgShop.SelectedObject = null;
-
-            MessageBox.Show(string.Format("Shop `{0}` [ID: {1}] successfully deleted!", a.Name, a.ID));
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnShopNew control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnShopNew_Click(object sender, EventArgs e)
-        {
-            const string confirmMsg = "Are you sure you wish to create a new shop?";
-            if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            // Get the next free ID
-            var id = ReserveFreeShopID(_dbController);
-
-            // Set the new shop
-            pgShop.SelectedObject = new EditorShop(id, _dbController);
         }
     }
 }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db.ClassCreator;
@@ -85,9 +83,9 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
             Console.WriteLine();
 
             // Force the NetGore.Features.Server assembly to load up
-            #pragma warning disable 168
+#pragma warning disable 168
             var x = new DbClassGeneratorSettings();
-            #pragma warning restore 168
+#pragma warning restore 168
 
             using (var generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
@@ -144,7 +142,8 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
                 // Mass-added custom types
                 generator.AddCustomType(typeof(AllianceID), "*", "alliance_id", "attackable_id", "hostile_id");
                 generator.AddCustomType(typeof(CharacterID), "*", "character_id", "target_character_id", "user_id", "npc_id");
-                generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id", "user_template_id", "npc_template_id");
+                generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id", "user_template_id",
+                                        "npc_template_id");
                 generator.AddCustomType(typeof(AccountID), "*", "account_id");
                 generator.AddCustomType(typeof(MapID), "*", "map_id", "respawn_map");
                 generator.AddCustomType(typeof(ItemID), "*", "item_id");

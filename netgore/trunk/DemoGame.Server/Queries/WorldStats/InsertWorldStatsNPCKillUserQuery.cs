@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -13,14 +11,13 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsNPCKillUserQuery : DbQueryNonReader<IWorldStatsNpcKillUserTable>
     {
         static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1}", WorldStatsNpcKillUserTable.TableName,
-            FormatParametersIntoValuesString(WorldStatsNpcKillUserTable.DbColumns));
+                                                         FormatParametersIntoValuesString(WorldStatsNpcKillUserTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsNPCKillUserQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertWorldStatsNPCKillUserQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertWorldStatsNPCKillUserQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

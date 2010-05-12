@@ -17,8 +17,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="InsertWorldStatsUserShoppingQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertWorldStatsUserShoppingQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertWorldStatsUserShoppingQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

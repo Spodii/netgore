@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.Network;
 using NUnit.Framework;
 
@@ -10,140 +7,7 @@ namespace NetGore.Tests.Network
     [TestFixture]
     public class NetStatsTests
     {
-        [Test]
-        public void ResetTest()
-        {
-            var l = new NetStats();
-
-            l.AddConnections(1);
-            l.AddTCPRecv(2);
-            l.AddTCPSends(3);
-            l.AddTCPSent(4);
-            l.AddUDPRecv(5);
-            l.AddUDPSends(6);
-            l.AddUDPSent(7);
-
-            l.Reset();
-
-            Assert.IsTrue(l.AreValuesEqual(new NetStats()));
-        }
-
-        [Test]
-        public void DeepCopyTest()
-        {
-            var l = new NetStats();
-
-            l.AddConnections(1);
-            l.AddTCPRecv(2);
-            l.AddTCPSends(3);
-            l.AddTCPSent(4);
-            l.AddUDPRecv(5);
-            l.AddUDPSends(6);
-            l.AddUDPSent(7);
-
-            var r = l.DeepCopy();
-
-            Assert.IsTrue(l.AreValuesEqual(r));
-            Assert.AreNotEqual(l, r);
-        }
-
-        [Test]
-        public void CopyValuesFromTest()
-        {
-            var l = new NetStats();
-
-            l.AddConnections(1);
-            l.AddTCPRecv(2);
-            l.AddTCPSends(3);
-            l.AddTCPSent(4);
-            l.AddUDPRecv(5);
-            l.AddUDPSends(6);
-            l.AddUDPSent(7);
-
-            var r = new NetStats();
-            r.CopyValuesFrom(l);
-
-            Assert.IsTrue(l.AreValuesEqual(r));
-            Assert.AreNotEqual(l, r);
-        }
-
-        [Test]
-        public void ValuesEqualTest()
-        {
-            var l = new NetStats();
-            var r = new NetStats();
-
-            l.AddConnections(1);
-            Assert.IsFalse(l.AreValuesEqual(r));
-            r.AddConnections(1);
-            Assert.IsTrue(l.AreValuesEqual(r));
-
-            l.AddTCPRecv(2);
-            Assert.IsFalse(l.AreValuesEqual(r));
-            r.AddTCPRecv(2);
-            Assert.IsTrue(l.AreValuesEqual(r));
-
-            l.AddTCPSends(3);
-            Assert.IsFalse(l.AreValuesEqual(r));
-            r.AddTCPSends(3);
-            Assert.IsTrue(l.AreValuesEqual(r));
-
-            l.AddTCPSent(4);
-            Assert.IsFalse(l.AreValuesEqual(r));
-            r.AddTCPSent(4);
-            Assert.IsTrue(l.AreValuesEqual(r));
-
-            l.AddUDPRecv(5);
-            Assert.IsFalse(l.AreValuesEqual(r));
-            r.AddUDPRecv(5);
-            Assert.IsTrue(l.AreValuesEqual(r));
-
-            l.AddUDPSends(6);
-            Assert.IsFalse(l.AreValuesEqual(r));
-            r.AddUDPSends(6);
-            Assert.IsTrue(l.AreValuesEqual(r));
-
-            l.AddUDPSent(7);
-            Assert.IsFalse(l.AreValuesEqual(r));
-            r.AddUDPSent(7);
-            Assert.IsTrue(l.AreValuesEqual(r));
-        }
-
-        [Test]
-        public void IncrementMethodsTest()
-        {
-            var a = new NetStats();
-
-            Assert.AreEqual(a.Connections, 0);
-            a.IncrementConnections();
-            Assert.AreEqual(a.Connections, 1);
-            a.IncrementConnections();
-            Assert.AreEqual(a.Connections, 2);
-
-            Assert.AreEqual(a.TCPReceives, 0);
-            a.IncrementTCPReceives();
-            Assert.AreEqual(a.TCPReceives, 1);
-            a.IncrementTCPReceives();
-            Assert.AreEqual(a.TCPReceives, 2);
-
-            Assert.AreEqual(a.TCPSends, 0);
-            a.IncrementTCPSends();
-            Assert.AreEqual(a.TCPSends, 1);
-            a.IncrementTCPSends();
-            Assert.AreEqual(a.TCPSends, 2);
-
-            Assert.AreEqual(a.UDPReceives, 0);
-            a.IncrementUDPReceives();
-            Assert.AreEqual(a.UDPReceives, 1);
-            a.IncrementUDPReceives();
-            Assert.AreEqual(a.UDPReceives, 2);
-
-            Assert.AreEqual(a.UDPSends, 0);
-            a.IncrementUDPSends();
-            Assert.AreEqual(a.UDPSends, 1);
-            a.IncrementUDPSends();
-            Assert.AreEqual(a.UDPSends, 2);
-        }
+        #region Unit tests
 
         [Test]
         public void AddMethodsTest()
@@ -226,6 +90,98 @@ namespace NetGore.Tests.Network
             Assert.AreEqual(a.UDPSent, l.UDPSent + r.UDPSent);
         }
 
+        [Test]
+        public void CopyValuesFromTest()
+        {
+            var l = new NetStats();
+
+            l.AddConnections(1);
+            l.AddTCPRecv(2);
+            l.AddTCPSends(3);
+            l.AddTCPSent(4);
+            l.AddUDPRecv(5);
+            l.AddUDPSends(6);
+            l.AddUDPSent(7);
+
+            var r = new NetStats();
+            r.CopyValuesFrom(l);
+
+            Assert.IsTrue(l.AreValuesEqual(r));
+            Assert.AreNotEqual(l, r);
+        }
+
+        [Test]
+        public void DeepCopyTest()
+        {
+            var l = new NetStats();
+
+            l.AddConnections(1);
+            l.AddTCPRecv(2);
+            l.AddTCPSends(3);
+            l.AddTCPSent(4);
+            l.AddUDPRecv(5);
+            l.AddUDPSends(6);
+            l.AddUDPSent(7);
+
+            var r = l.DeepCopy();
+
+            Assert.IsTrue(l.AreValuesEqual(r));
+            Assert.AreNotEqual(l, r);
+        }
+
+        [Test]
+        public void IncrementMethodsTest()
+        {
+            var a = new NetStats();
+
+            Assert.AreEqual(a.Connections, 0);
+            a.IncrementConnections();
+            Assert.AreEqual(a.Connections, 1);
+            a.IncrementConnections();
+            Assert.AreEqual(a.Connections, 2);
+
+            Assert.AreEqual(a.TCPReceives, 0);
+            a.IncrementTCPReceives();
+            Assert.AreEqual(a.TCPReceives, 1);
+            a.IncrementTCPReceives();
+            Assert.AreEqual(a.TCPReceives, 2);
+
+            Assert.AreEqual(a.TCPSends, 0);
+            a.IncrementTCPSends();
+            Assert.AreEqual(a.TCPSends, 1);
+            a.IncrementTCPSends();
+            Assert.AreEqual(a.TCPSends, 2);
+
+            Assert.AreEqual(a.UDPReceives, 0);
+            a.IncrementUDPReceives();
+            Assert.AreEqual(a.UDPReceives, 1);
+            a.IncrementUDPReceives();
+            Assert.AreEqual(a.UDPReceives, 2);
+
+            Assert.AreEqual(a.UDPSends, 0);
+            a.IncrementUDPSends();
+            Assert.AreEqual(a.UDPSends, 1);
+            a.IncrementUDPSends();
+            Assert.AreEqual(a.UDPSends, 2);
+        }
+
+        [Test]
+        public void ResetTest()
+        {
+            var l = new NetStats();
+
+            l.AddConnections(1);
+            l.AddTCPRecv(2);
+            l.AddTCPSends(3);
+            l.AddTCPSent(4);
+            l.AddUDPRecv(5);
+            l.AddUDPSends(6);
+            l.AddUDPSent(7);
+
+            l.Reset();
+
+            Assert.IsTrue(l.AreValuesEqual(new NetStats()));
+        }
 
         [Test]
         public void SubtractNetStatsTest()
@@ -259,5 +215,49 @@ namespace NetGore.Tests.Network
             Assert.AreEqual(a.UDPSends, l.UDPSends - r.UDPSends);
             Assert.AreEqual(a.UDPSent, l.UDPSent - r.UDPSent);
         }
+
+        [Test]
+        public void ValuesEqualTest()
+        {
+            var l = new NetStats();
+            var r = new NetStats();
+
+            l.AddConnections(1);
+            Assert.IsFalse(l.AreValuesEqual(r));
+            r.AddConnections(1);
+            Assert.IsTrue(l.AreValuesEqual(r));
+
+            l.AddTCPRecv(2);
+            Assert.IsFalse(l.AreValuesEqual(r));
+            r.AddTCPRecv(2);
+            Assert.IsTrue(l.AreValuesEqual(r));
+
+            l.AddTCPSends(3);
+            Assert.IsFalse(l.AreValuesEqual(r));
+            r.AddTCPSends(3);
+            Assert.IsTrue(l.AreValuesEqual(r));
+
+            l.AddTCPSent(4);
+            Assert.IsFalse(l.AreValuesEqual(r));
+            r.AddTCPSent(4);
+            Assert.IsTrue(l.AreValuesEqual(r));
+
+            l.AddUDPRecv(5);
+            Assert.IsFalse(l.AreValuesEqual(r));
+            r.AddUDPRecv(5);
+            Assert.IsTrue(l.AreValuesEqual(r));
+
+            l.AddUDPSends(6);
+            Assert.IsFalse(l.AreValuesEqual(r));
+            r.AddUDPSends(6);
+            Assert.IsTrue(l.AreValuesEqual(r));
+
+            l.AddUDPSent(7);
+            Assert.IsFalse(l.AreValuesEqual(r));
+            r.AddUDPSent(7);
+            Assert.IsTrue(l.AreValuesEqual(r));
+        }
+
+        #endregion
     }
 }

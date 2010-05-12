@@ -16,7 +16,6 @@ using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
-using NetGore.Features.WorldStats;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
@@ -524,20 +523,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling of the
-        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
-        /// using the corresponding event when possible.
-        /// </summary>
-        /// <param name="item">The item that was used.</param>
-        protected override void OnUsedItem(ItemEntity item)
-        {
-            base.OnUsedItem(item);
-
-            if (item.Type == ItemType.UseOnce)
-                WorldStatsTracker.Instance.AddUserConsumeItem(this, item);
-        }
-
-        /// <summary>
         /// Allows for handling of the <see cref="User.QuestAccepted"/> event without creating an event hook.
         /// </summary>
         /// <param name="quest">The quest that was accepted.</param>
@@ -581,6 +566,20 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of the
+        /// <see cref="Character.KilledByCharacter"/> event. It is recommended you override this method instead of
+        /// using the corresponding event when possible.
+        /// </summary>
+        /// <param name="item">The item that was used.</param>
+        protected override void OnUsedItem(ItemEntity item)
+        {
+            base.OnUsedItem(item);
+
+            if (item.Type == ItemType.UseOnce)
+                WorldStatsTracker.Instance.AddUserConsumeItem(this, item);
         }
 
         /// <summary>
@@ -824,7 +823,10 @@ namespace DemoGame.Server
                 }
 
                 if (ShoppingState != null && ShoppingState.ShoppingAt != null)
-                    WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)itemEntity.ItemTemplateID, (byte)amountPurchased, chargeAmount, ShoppingState.ShoppingAt.ID);
+                {
+                    WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)itemEntity.ItemTemplateID, (byte)amountPurchased,
+                                                                  chargeAmount, ShoppingState.ShoppingAt.ID);
+                }
             }
 
             // Dispose of the item entity since when we gave it to the user, we gave them a deep copy
@@ -905,7 +907,10 @@ namespace DemoGame.Server
                 }
 
                 if (ShoppingState != null && ShoppingState.ShoppingAt != null)
-                    WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash, ShoppingState.ShoppingAt.ID);
+                {
+                    WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash,
+                                                                  ShoppingState.ShoppingAt.ID);
+                }
             }
 
             // Set the new item amount (or remove the item if the amount is 0)

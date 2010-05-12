@@ -24,12 +24,6 @@ namespace DemoGame
         public const float AnimationSpeedModifier = 0.13f;
 
         /// <summary>
-        /// The IP address to use by default when creating accounts when no IP can be specified, such as if the account
-        /// is created from the console.
-        /// </summary>
-        public const uint DefaultCreateAccountIP = 0;
-
-        /// <summary>
         /// The base (default) attack timeout value for all characters.
         /// </summary>
         public const int AttackTimeoutDefault = 500;
@@ -38,6 +32,12 @@ namespace DemoGame
         /// The minimum attack timeout value. The attack timeout may never be less than this value.
         /// </summary>
         public const int AttackTimeoutMin = 150;
+
+        /// <summary>
+        /// The IP address to use by default when creating accounts when no IP can be specified, such as if the account
+        /// is created from the console.
+        /// </summary>
+        public const uint DefaultCreateAccountIP = 0;
 
         /// <summary>
         /// Maximum number of characters allowed in a single account.

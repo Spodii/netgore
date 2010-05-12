@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 using NetGore.Features.Shops;
@@ -15,8 +16,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="DeleteShopQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public DeleteShopQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public DeleteShopQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

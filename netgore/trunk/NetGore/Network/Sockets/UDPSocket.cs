@@ -15,11 +15,6 @@ namespace NetGore.Network
     /// </summary>
     public class UDPSocket : IUDPSocket
     {
-        /// <summary>
-        /// Local cache of the global <see cref="NetStats"/> instance.
-        /// </summary>
-        static readonly NetStats _netStats = NetStats.Global;
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -33,6 +28,11 @@ namespace NetGore.Network
         const int _headerSize = 0;
 
         static readonly byte[] _defaultConnectData = new byte[] { 0 };
+
+        /// <summary>
+        /// Local cache of the global <see cref="NetStats"/> instance.
+        /// </summary>
+        static readonly NetStats _netStats = NetStats.Global;
 
         /// <summary>
         /// Buffer for receiving data.
@@ -315,7 +315,7 @@ namespace NetGore.Network
                 log.DebugFormat("Send `{0}` bytes to `{1}`", data.Length, endPoint);
 
             // Get the total length of the packet to send (message + header)
-            int totalLength = length + _headerSize;
+            var totalLength = length + _headerSize;
 
             try
             {
