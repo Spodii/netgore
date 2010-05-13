@@ -605,8 +605,9 @@ namespace DemoGame.MapEditor
                 return;
 
             // Cursor position
-            var cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - new Vector2(100, 30);
-            sb.DrawStringShaded(RenderFont, CursorPos.ToString(), cursorPosText, Color.White, Color.Black);
+            var cursorPosText = CursorPos.ToString();
+            var cursorPosTextPos = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height) - RenderFont.MeasureString(cursorPosText) - new Vector2(4);
+            sb.DrawStringShaded(RenderFont, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
 
             // End GUI rendering
             DrawingManager.EndDrawGUI();
