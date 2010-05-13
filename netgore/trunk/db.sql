@@ -3,16 +3,11 @@
 -- Host: localhost    Database: demogame
 -- ------------------------------------------------------
 -- Server version	5.1.38-community
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO,MYSQL40' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
@@ -20,8 +15,6 @@
 --
 
 DROP TABLE IF EXISTS `account`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account` (
   `id` int(11) NOT NULL COMMENT 'The account ID.',
   `name` varchar(30) NOT NULL COMMENT 'The account name.',
@@ -33,8 +26,7 @@ CREATE TABLE `account` (
   `current_ip` int(10) unsigned DEFAULT NULL COMMENT 'IP address currently logged in to the account, or null if nobody is logged in.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `account`
@@ -51,8 +43,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `account_ips`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account_ips` (
   `account_id` int(11) NOT NULL COMMENT 'The ID of the account.',
   `ip` int(10) unsigned NOT NULL COMMENT 'The IP that logged into the account.',
@@ -60,8 +50,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`account_id`,`time`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `account_ips`
@@ -78,14 +67,11 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `alliance`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alliance` (
   `id` tinyint(3) unsigned NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `alliance`
@@ -102,8 +88,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `alliance_attackable`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alliance_attackable` (
   `alliance_id` tinyint(3) unsigned NOT NULL,
   `attackable_id` tinyint(3) unsigned NOT NULL,
@@ -112,8 +96,7 @@ CREATE TABLE `alliance_attackable` (
   KEY `alliance_id` (`alliance_id`),
   CONSTRAINT `alliance_attackable_ibfk_3` FOREIGN KEY (`attackable_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `alliance_attackable_ibfk_4` FOREIGN KEY (`alliance_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `alliance_attackable`
@@ -130,8 +113,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `alliance_hostile`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alliance_hostile` (
   `alliance_id` tinyint(3) unsigned NOT NULL,
   `hostile_id` tinyint(3) unsigned NOT NULL,
@@ -140,8 +121,7 @@ CREATE TABLE `alliance_hostile` (
   KEY `alliance_id` (`alliance_id`),
   CONSTRAINT `alliance_hostile_ibfk_3` FOREIGN KEY (`hostile_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `alliance_hostile_ibfk_4` FOREIGN KEY (`alliance_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `alliance_hostile`
@@ -158,8 +138,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character` (
   `id` int(11) NOT NULL,
   `account_id` int(11) DEFAULT NULL,
@@ -195,7 +173,7 @@ CREATE TABLE `character` (
   KEY `template_id` (`character_template_id`),
   KEY `respawn_map` (`respawn_map`),
   KEY `character_ibfk_2` (`map_id`),
-  KEY `idx_name` (`name`) USING BTREE,
+  KEY `idx_name` (`name`),
   KEY `account_id` (`account_id`),
   KEY `shop_id` (`shop_id`),
   CONSTRAINT `character_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
@@ -203,8 +181,7 @@ CREATE TABLE `character` (
   CONSTRAINT `character_ibfk_4` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_5` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_6` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character`
@@ -221,8 +198,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_equipped`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_equipped` (
   `character_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
@@ -231,8 +206,7 @@ CREATE TABLE `character_equipped` (
   KEY `item_id` (`item_id`),
   CONSTRAINT `character_equipped_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_equipped_ibfk_4` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_equipped`
@@ -249,8 +223,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_inventory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_inventory` (
   `character_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
@@ -260,8 +232,7 @@ CREATE TABLE `character_inventory` (
   KEY `character_id` (`character_id`),
   CONSTRAINT `character_inventory_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_inventory_ibfk_4` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_inventory`
@@ -277,16 +248,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_quest_status`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_quest_status` (
   `character_id` int(11) NOT NULL,
   `quest_id` smallint(5) unsigned NOT NULL,
   `started_on` datetime NOT NULL,
   `completed_on` datetime DEFAULT NULL,
   PRIMARY KEY (`character_id`,`quest_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_quest_status`
@@ -302,8 +270,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_quest_status_kills`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_quest_status_kills` (
   `character_id` int(11) NOT NULL,
   `quest_id` smallint(5) unsigned NOT NULL,
@@ -315,8 +281,7 @@ CREATE TABLE `character_quest_status_kills` (
   CONSTRAINT `character_quest_status_kills_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_quest_status_kills_ibfk_2` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_quest_status_kills_ibfk_3` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_quest_status_kills`
@@ -332,8 +297,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_status_effect`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_status_effect` (
   `id` int(11) NOT NULL COMMENT 'Unique ID of the status effect instance.',
   `character_id` int(11) NOT NULL COMMENT 'ID of the Character that the status effect is on.',
@@ -343,8 +306,7 @@ CREATE TABLE `character_status_effect` (
   PRIMARY KEY (`id`),
   KEY `character_id` (`character_id`),
   CONSTRAINT `character_status_effect_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_status_effect`
@@ -360,8 +322,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_template`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_template` (
   `id` smallint(5) unsigned NOT NULL,
   `alliance_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -390,8 +350,7 @@ CREATE TABLE `character_template` (
   KEY `shop_id` (`shop_id`),
   CONSTRAINT `character_template_ibfk_2` FOREIGN KEY (`alliance_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_template_ibfk_3` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_template`
@@ -408,8 +367,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_template_equipped`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_template_equipped` (
   `id` int(11) NOT NULL,
   `character_template_id` smallint(5) unsigned NOT NULL,
@@ -420,8 +377,7 @@ CREATE TABLE `character_template_equipped` (
   KEY `character_id` (`character_template_id`),
   CONSTRAINT `character_template_equipped_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_template_equipped_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_template_equipped`
@@ -438,8 +394,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_template_inventory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_template_inventory` (
   `id` int(11) NOT NULL,
   `character_template_id` smallint(5) unsigned NOT NULL,
@@ -452,8 +406,7 @@ CREATE TABLE `character_template_inventory` (
   KEY `character_id` (`character_template_id`),
   CONSTRAINT `character_template_inventory_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_template_inventory_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_template_inventory`
@@ -470,8 +423,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `character_template_quest_provider`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_template_quest_provider` (
   `character_template_id` smallint(5) unsigned NOT NULL,
   `quest_id` smallint(5) unsigned NOT NULL,
@@ -479,8 +430,7 @@ CREATE TABLE `character_template_quest_provider` (
   KEY `quest_id` (`quest_id`),
   CONSTRAINT `character_template_quest_provider_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_template_quest_provider_ibfk_2` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `character_template_quest_provider`
@@ -497,8 +447,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `game_constant`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `game_constant` (
   `max_characters_per_account` tinyint(3) unsigned NOT NULL,
   `min_account_name_length` tinyint(3) unsigned NOT NULL,
@@ -516,8 +464,7 @@ CREATE TABLE `game_constant` (
   `server_tcp_port` smallint(5) unsigned NOT NULL,
   `server_ip` varchar(150) NOT NULL,
   `world_physics_update_rate` smallint(5) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `game_constant`
@@ -534,15 +481,12 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `guild`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `guild` (
   `id` smallint(5) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `tag` varchar(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `guild`
@@ -559,8 +503,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `guild_event`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `guild_event` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The ID of the event.',
   `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The guild the event took place on.',
@@ -578,8 +520,7 @@ CREATE TABLE `guild_event` (
   CONSTRAINT `guild_event_ibfk_1` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `guild_event_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `guild_event_ibfk_3` FOREIGN KEY (`target_character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `guild_event`
@@ -595,8 +536,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `guild_member`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `guild_member` (
   `character_id` int(11) NOT NULL COMMENT 'The character that is a member of the guild.',
   `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The guild the member is a part of.',
@@ -606,8 +545,7 @@ CREATE TABLE `guild_member` (
   KEY `guild_id` (`guild_id`),
   CONSTRAINT `guild_member_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `guild_member_ibfk_2` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `guild_member`
@@ -624,8 +562,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `item`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item` (
   `id` int(11) NOT NULL,
   `item_template_id` smallint(5) unsigned DEFAULT NULL,
@@ -656,8 +592,7 @@ CREATE TABLE `item` (
   PRIMARY KEY (`id`),
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `item_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `item`
@@ -674,8 +609,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `item_template`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item_template` (
   `id` smallint(5) unsigned NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -702,8 +635,7 @@ CREATE TABLE `item_template` (
   `stat_req_str` smallint(6) NOT NULL DEFAULT '0',
   `equipped_body` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `item_template`
@@ -720,14 +652,11 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `map`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `map` (
   `id` smallint(5) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `map`
@@ -744,8 +673,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `map_spawn`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `map_spawn` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `map_id` smallint(5) unsigned NOT NULL,
@@ -760,8 +687,7 @@ CREATE TABLE `map_spawn` (
   KEY `map_id` (`map_id`),
   CONSTRAINT `map_spawn_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `map_spawn_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB AUTO_INCREMENT=6;
 
 --
 -- Dumping data for table `map_spawn`
@@ -818,16 +744,13 @@ SET character_set_client = @saved_cs_client;
 --
 
 DROP TABLE IF EXISTS `quest`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest` (
   `id` smallint(5) unsigned NOT NULL,
   `repeatable` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `reward_cash` int(11) NOT NULL DEFAULT '0',
   `reward_exp` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `quest`
@@ -844,8 +767,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `quest_require_finish_item`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest_require_finish_item` (
   `quest_id` smallint(5) unsigned NOT NULL,
   `item_template_id` smallint(5) unsigned NOT NULL,
@@ -854,8 +775,7 @@ CREATE TABLE `quest_require_finish_item` (
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `quest_require_finish_item_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `quest_require_finish_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `quest_require_finish_item`
@@ -871,8 +791,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `quest_require_finish_quest`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest_require_finish_quest` (
   `quest_id` smallint(5) unsigned NOT NULL,
   `req_quest_id` smallint(5) unsigned NOT NULL,
@@ -880,8 +798,7 @@ CREATE TABLE `quest_require_finish_quest` (
   KEY `req_quest_id` (`req_quest_id`),
   CONSTRAINT `quest_require_finish_quest_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `quest_require_finish_quest_ibfk_2` FOREIGN KEY (`req_quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `quest_require_finish_quest`
@@ -897,8 +814,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `quest_require_kill`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest_require_kill` (
   `quest_id` smallint(5) unsigned NOT NULL,
   `character_template_id` smallint(5) unsigned NOT NULL,
@@ -907,8 +822,7 @@ CREATE TABLE `quest_require_kill` (
   KEY `character_template_id` (`character_template_id`),
   CONSTRAINT `quest_require_kill_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `quest_require_kill_ibfk_2` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `quest_require_kill`
@@ -925,8 +839,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `quest_require_start_item`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest_require_start_item` (
   `quest_id` smallint(5) unsigned NOT NULL,
   `item_template_id` smallint(5) unsigned NOT NULL,
@@ -935,8 +847,7 @@ CREATE TABLE `quest_require_start_item` (
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `quest_require_start_item_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `quest_require_start_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `quest_require_start_item`
@@ -952,8 +863,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `quest_require_start_quest`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest_require_start_quest` (
   `quest_id` smallint(5) unsigned NOT NULL,
   `req_quest_id` smallint(5) unsigned NOT NULL,
@@ -961,8 +870,7 @@ CREATE TABLE `quest_require_start_quest` (
   KEY `req_quest_id` (`req_quest_id`),
   CONSTRAINT `quest_require_start_quest_ibfk_1` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `quest_require_start_quest_ibfk_2` FOREIGN KEY (`req_quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `quest_require_start_quest`
@@ -978,8 +886,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `quest_reward_item`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quest_reward_item` (
   `quest_id` smallint(5) unsigned NOT NULL,
   `item_template_id` smallint(5) unsigned NOT NULL,
@@ -988,8 +894,7 @@ CREATE TABLE `quest_reward_item` (
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `quest_reward_item_ibfk_3` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `quest_reward_item_ibfk_4` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `quest_reward_item`
@@ -1006,12 +911,9 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `server_setting`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `server_setting` (
   `motd` varchar(250) NOT NULL DEFAULT '' COMMENT 'The message of the day.'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `server_setting`
@@ -1028,13 +930,10 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `server_time`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `server_time` (
   `server_time` datetime NOT NULL,
   PRIMARY KEY (`server_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `server_time`
@@ -1051,15 +950,12 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `shop`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `shop` (
   `id` smallint(5) unsigned NOT NULL,
   `name` varchar(60) NOT NULL,
   `can_buy` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `shop`
@@ -1076,8 +972,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `shop_item`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `shop_item` (
   `shop_id` smallint(5) unsigned NOT NULL,
   `item_template_id` smallint(5) unsigned NOT NULL,
@@ -1085,8 +979,7 @@ CREATE TABLE `shop_item` (
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `shop_item_ibfk_1` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `shop_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `shop_item`
@@ -1143,10 +1036,8 @@ SET character_set_client = @saved_cs_client;
 --
 
 DROP TABLE IF EXISTS `world_stats_network`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `world_stats_network` (
-  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When these network stats were logged. The values correspond to a time period defined in the WorldStatsTracker constructor. This timestamp marks the end of this period of time. So all stats correspond to the time frame range: [when - rate, when].',
+  `when` timestamp NOT NULL COMMENT 'When these network stats were logged. The values correspond to a time period defined in the WorldStatsTracker constructor. This timestamp marks the end of this period of time. So all stats correspond to the time frame range: [when - rate, when].',
   `tcp_recv` mediumint(8) unsigned NOT NULL COMMENT 'The number of bytes that have been received over the TCP channel.',
   `tcp_recvs` mediumint(8) unsigned NOT NULL COMMENT 'The number of messages that have been received over the TCP channel.',
   `tcp_sent` mediumint(8) unsigned NOT NULL COMMENT 'The number of bytes that have been sent over the TCP channel.',
@@ -1157,8 +1048,7 @@ CREATE TABLE `world_stats_network` (
   `udp_sends` mediumint(8) unsigned NOT NULL COMMENT 'The number of messages that have been sent over the UDP channel.',
   `connections` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`when`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=MyISAM;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1174,8 +1064,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `world_stats_npc_kill_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `world_stats_npc_kill_user` (
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
   `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
@@ -1185,15 +1073,14 @@ CREATE TABLE `world_stats_npc_kill_user` (
   `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place.',
   `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place.',
   `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
-  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When this event took place.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `npc_template_id` (`npc_template_id`),
   KEY `map_id` (`map_id`),
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_npc_kill_user`
@@ -1209,23 +1096,20 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `world_stats_user_consume_item`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `world_stats_user_consume_item` (
   `user_id` int(11) NOT NULL COMMENT 'The user that this event is related to.',
   `item_template_id` smallint(5) unsigned NOT NULL COMMENT 'The template ID of the item that was consumed. Only valid when the item has a set template ID.',
   `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
   `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
   `map_id` smallint(5) unsigned NOT NULL COMMENT 'The map the user was on when this event took place.',
-  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When this event took place.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `item_template_id` (`item_template_id`),
   KEY `map_id` (`map_id`),
   CONSTRAINT `world_stats_user_consume_item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_consume_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_consume_item_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_consume_item`
@@ -1241,8 +1125,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `world_stats_user_kill_npc`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `world_stats_user_kill_npc` (
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
   `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
@@ -1252,15 +1134,14 @@ CREATE TABLE `world_stats_user_kill_npc` (
   `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place.',
   `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place.',
   `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
-  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When this event took place.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `npc_template_id` (`npc_template_id`),
   KEY `map_id` (`map_id`),
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_kill_npc`
@@ -1276,17 +1157,14 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `world_stats_user_level`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `world_stats_user_level` (
   `character_id` int(11) NOT NULL COMMENT 'The ID of the character that leveled up.',
   `map_id` smallint(5) unsigned DEFAULT NULL,
   `x` smallint(5) unsigned NOT NULL,
   `y` smallint(5) unsigned NOT NULL,
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
-  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When this event took place.'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `when` timestamp NOT NULL COMMENT 'When this event took place.'
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_level`
@@ -1302,8 +1180,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `world_stats_user_shopping`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `world_stats_user_shopping` (
   `shop_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the shop the event took place at.',
   `character_id` int(11) NOT NULL COMMENT 'The ID of the character that performed this transaction with the shop.',
@@ -1314,7 +1190,7 @@ CREATE TABLE `world_stats_user_shopping` (
   `cost` int(11) NOT NULL COMMENT 'The amount of money that was involved in this transaction (how much the shopper sold the items for, or how much they bought the items for). ',
   `amount` tinyint(3) unsigned NOT NULL COMMENT 'The number of items involved in the transaction. Should always be greater than 0, and should only be greater for 1 for items that can stack.',
   `sale_type` tinyint(4) NOT NULL COMMENT 'Whether the shop sold to the user, or vise versa. If 0, the shop sold an item to the shopper. If non-zero, the shopper sold an item to a shop.',
-  `when` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When this event took place.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `shop_id` (`shop_id`),
   KEY `character_id` (`character_id`),
   KEY `item_template_id` (`item_template_id`),
@@ -1323,8 +1199,7 @@ CREATE TABLE `world_stats_user_shopping` (
   CONSTRAINT `world_stats_user_shopping_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_shopping_ibfk_3` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_shopping_ibfk_4` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_shopping`
@@ -1498,9 +1373,6 @@ DELIMITER ;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-11 16:46:05
+-- Dump completed on 2010-05-12 21:16:39
