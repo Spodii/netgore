@@ -15,6 +15,9 @@ namespace DemoGame.Client
     /// <param name="control">Control that raised the event.</param>
     delegate void ToolbarEventHandler(Toolbar toolbar, ToolbarItemType itemType, Control control);
 
+    /// <summary>
+    /// A <see cref="Form"/> containing buttons to toggle the visibility of the various forms.
+    /// </summary>
     class Toolbar : Form
     {
         /// <summary>

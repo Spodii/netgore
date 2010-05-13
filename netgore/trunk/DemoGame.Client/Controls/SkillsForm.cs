@@ -9,9 +9,16 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
-    public delegate void UseSkillHandler(SkillType skillType);
+    /// <summary>
+    /// Delegate for handling when a user wants to use a skill.
+    /// </summary>
+    /// <param name="skillType">The type of skill the user wants to use.</param>
+    delegate void UseSkillHandler(SkillType skillType);
 
-    public class SkillsForm : Form
+    /// <summary>
+    /// A <see cref="Form"/> that contains the skills a user can use.
+    /// </summary>
+    class SkillsForm : Form
     {
         static readonly Vector2 _iconSize = new Vector2(32, 32);
         readonly ISkillCooldownManager _cooldownManager;

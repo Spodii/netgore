@@ -11,10 +11,22 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// Delegate for handling when the user chooses a response on a <see cref="NPCChatDialogForm"/>.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="response">The response that the user chose.</param>
     delegate void ChatDialogSelectResponseHandler(NPCChatDialogForm sender, NPCChatResponseBase response);
 
+    /// <summary>
+    /// Delegate for handling when the <see cref="NPCChatDialogForm"/> wants to end the chatting.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
     delegate void ChatDialogRequestEndDialogHandler(NPCChatDialogForm sender);
 
+    /// <summary>
+    /// A <see cref="Form"/> that is used to interact with NPCs.
+    /// </summary>
     class NPCChatDialogForm : Form
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

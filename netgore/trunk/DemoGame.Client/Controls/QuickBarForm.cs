@@ -10,6 +10,10 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// A <see cref="Form"/> that contains multiple user-assignable slots for quickly accessing and using different items, spells,
+    /// skills, etc.
+    /// </summary>
     class QuickBarForm : Form
     {
         const int _numSlots = 10;

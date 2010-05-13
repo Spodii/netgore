@@ -4,12 +4,17 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
+using NetGore.Features.StatusEffects;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// A <see cref="Form"/> that contains the <see cref="StatusEffect{TStatType,TStatusEffectType}"/>s that are currently
+    /// applied on a character.
+    /// </summary>
     public class StatusEffectsForm : Form, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -25,6 +30,8 @@ namespace DemoGame.Client
         /// <param name="getTime">The get time.</param>
         public StatusEffectsForm(Control parent, Vector2 position, IGetTime getTime) : base(parent, position, _iconSize)
         {
+            IsCloseButtonVisible = false;
+
             _getTime = getTime;
 
             Border = null;
