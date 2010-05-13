@@ -16,6 +16,9 @@ namespace DemoGame.Client
     /// <param name="statType">Type of the stat requested to be raise.</param>
     delegate void RaiseStatHandler(StatsForm statsForm, StatType statType);
 
+    /// <summary>
+    /// A <see cref="Form"/> containing the stats for a user.
+    /// </summary>
     class StatsForm : Form
     {
         delegate string UserInfoLabelValueHandler(UserInfo userInfo);

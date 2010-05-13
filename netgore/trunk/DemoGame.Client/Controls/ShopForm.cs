@@ -11,8 +11,16 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// Delegate for handling when the user wants to purchase an item from a shop.
+    /// </summary>
+    /// <param name="shopForm">The sender.</param>
+    /// <param name="slot">The slot containing the item the user wants to purchase.</param>
     delegate void ShopFormPurchaseHandler(ShopForm shopForm, ShopItemIndex slot);
 
+    /// <summary>
+    /// A <see cref="Form"/> that displays the contents of a shop.
+    /// </summary>
     class ShopForm : Form, IDragDropProvider
     {
         /// <summary>

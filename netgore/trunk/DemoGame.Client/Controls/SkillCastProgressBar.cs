@@ -6,6 +6,10 @@ using SFML.Graphics;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// A <see cref="Control"/> that is used to display the casting progress of a skill the user is casting for skills that have a
+    /// casting/using delay.
+    /// </summary>
     public class SkillCastProgressBar : TextControl
     {
         int _castStartTime;
