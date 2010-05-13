@@ -6,8 +6,16 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// Delegate for handling when the user has entered text into the <see cref="ChatForm"/>.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="text">The text that was entered into the chat box.</param>
     delegate void ChatFormSayHandler(ChatForm sender, string text);
 
+    /// <summary>
+    /// A <see cref="Form"/> that displays the chat messages and allows the user to enter chat text.
+    /// </summary>
     class ChatForm : Form
     {
         readonly TextBox _input;
@@ -22,6 +30,8 @@ namespace DemoGame.Client
         /// <param name="pos">The pos.</param>
         public ChatForm(Control parent, Vector2 pos) : base(parent, pos, new Vector2(300, 150))
         {
+            IsCloseButtonVisible = false;
+
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
             // Create the input and output TextBoxes
