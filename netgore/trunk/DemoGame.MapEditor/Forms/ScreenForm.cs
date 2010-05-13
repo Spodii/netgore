@@ -495,7 +495,7 @@ namespace DemoGame.MapEditor
 
                     foreach (var wall in boundWalls)
                     {
-                        EntityDrawer.Draw(sb, wall, mg.Position);
+                        EntityDrawer.Draw(sb, Camera, wall, mg.Position);
                     }
                 }
             }

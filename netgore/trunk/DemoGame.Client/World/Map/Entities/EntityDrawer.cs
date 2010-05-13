@@ -44,17 +44,18 @@ namespace DemoGame.Client
         /// Draws an Entity.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> that describes the current view.</param>
         /// <param name="entity">Entity to draw.</param>
-        public static void Draw(ISpriteBatch sb, Entity entity)
+        public static void Draw(ISpriteBatch sb, ICamera2D camera, Entity entity)
         {
             WallEntityBase wallEntity;
             TeleportEntity teleportEntity;
 
             // Check for a different entity type
             if ((wallEntity = entity as WallEntityBase) != null)
-                Draw(sb, wallEntity);
+                Draw(sb, camera, wallEntity);
             else if ((teleportEntity = entity as TeleportEntity) != null)
-                Draw(sb, teleportEntity);
+                Draw(sb, camera, teleportEntity);
             else
             {
                 // Draw a normal entity using the CollisionBox
@@ -66,38 +67,44 @@ namespace DemoGame.Client
         /// Draws a TeleportEntity.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> that describes the current view.</param>
         /// <param name="tele">TeleportEntity to draw.</param>
-        public static void Draw(ISpriteBatch sb, TeleportEntity tele)
+        public static void Draw(ISpriteBatch sb, ICamera2D camera, TeleportEntityBase tele)
         {
-            // Source
+            // Draw the source rectangle
             Draw(sb, tele.ToRectangle(), _teleSourceColor);
 
-            // Dest
-            var destRect = new Rectangle((int)tele.Destination.X, (int)tele.Destination.Y, (int)tele.Size.X, (int)tele.Size.Y);
-            Draw(sb, destRect, _teleDestColor);
+            // Draw the destination rectangle and the arrow pointing to it only if the map is the same
+            if (camera.Map != null && camera.Map.ID == tele.DestinationMap)
+            {
+                var destRect = new Rectangle((int)tele.Destination.X, (int)tele.Destination.Y, (int)tele.Size.X, (int)tele.Size.Y);
+                Draw(sb, destRect, _teleDestColor);
 
-            // Arrow
-            var centerOffset = tele.Size / 2;
-            RenderArrow.Draw(sb, tele.Position + centerOffset, tele.Destination + centerOffset, _arrowColor);
+                // Arrow
+                var centerOffset = tele.Size / 2;
+                RenderArrow.Draw(sb, tele.Position + centerOffset, tele.Destination + centerOffset, _arrowColor);
+            }
         }
 
         /// <summary>
         /// Draws a WallEntity.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> that describes the current view.</param>
         /// <param name="wall">WallEntity to draw.</param>
-        public static void Draw(ISpriteBatch sb, WallEntityBase wall)
+        public static void Draw(ISpriteBatch sb, ICamera2D camera, WallEntityBase wall)
         {
-            Draw(sb, wall, Vector2.Zero);
+            Draw(sb, camera, wall, Vector2.Zero);
         }
 
         /// <summary>
         /// Draws a WallEntity
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw to</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> that describes the current view.</param>
         /// <param name="wall">WallEntity to draw</param>
         /// <param name="offset">Offset to draw the WallEntity at from the original position</param>
-        public static void Draw(ISpriteBatch sb, WallEntityBase wall, Vector2 offset)
+        public static void Draw(ISpriteBatch sb, ICamera2D camera, WallEntityBase wall, Vector2 offset)
         {
             // Find the positon to draw to
             var p = wall.Position + offset;
