@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using NetGore;
 using NetGore.Graphics;
@@ -20,11 +21,32 @@ namespace DemoGame.Client
             if (layer != MapRenderLayer.SpriteForeground)
                 return;
 
-            var visibleArea = map.Camera.GetViewArea();
-            var visibleNonWalls = map.Spatial.GetMany<Entity>(visibleArea, x => !(x is WallEntityBase));
-            foreach (var entity in visibleNonWalls)
+            if (map.Camera == null)
             {
-                EntityDrawer.Draw(spriteBatch, entity);
+                Debug.Fail("Expected the map's Camera to not be null.");
+                return;
+            }
+
+            // Get the visible area
+            var visibleArea = map.Camera.GetViewArea();
+
+            // Get and draw all entities except walls (they are drawn differently) and entities that can require drawing even when they
+            // are not in view (e.g. TeleportEntity)
+            var visibleEntities = map.Spatial.GetMany<Entity>(visibleArea, x => !(x is WallEntityBase || x is TeleportEntityBase));
+
+            foreach (var entity in visibleEntities)
+            {
+                EntityDrawer.Draw(spriteBatch, map.Camera, entity);
+            }
+
+            // Get and draw the TeleportEntities in view
+            var visibleTeleportEntities = map.Spatial.GetMany<TeleportEntityBase>();
+
+            foreach (var te in visibleTeleportEntities)
+            {
+                // If the source is in view, or if the destination is on the same map and in view, then draw
+                if (map.Camera.InView(te) || (te.DestinationMap == map.ID && map.Camera.InView(te.Destination, te.Size)))
+                    EntityDrawer.Draw(spriteBatch, map.Camera, te);
             }
         }
     }

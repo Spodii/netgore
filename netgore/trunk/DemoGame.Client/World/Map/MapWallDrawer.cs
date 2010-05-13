@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using NetGore;
 using NetGore.Graphics;
@@ -20,11 +21,17 @@ namespace DemoGame.Client
             if (layer != MapRenderLayer.SpriteForeground)
                 return;
 
+            if (map.Camera == null)
+            {
+                Debug.Fail("Expected the map's Camera to not be null.");
+                return;
+            }
+
             var visibleArea = map.Camera.GetViewArea();
             var visibleWalls = map.Spatial.GetMany<WallEntityBase>(visibleArea);
             foreach (var wall in visibleWalls)
             {
-                EntityDrawer.Draw(spriteBatch, wall);
+                EntityDrawer.Draw(spriteBatch, map.Camera, wall);
             }
         }
     }
