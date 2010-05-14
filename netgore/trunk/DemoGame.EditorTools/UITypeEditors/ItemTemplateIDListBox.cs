@@ -70,7 +70,7 @@ namespace DemoGame.EditorTools
             if (DesignMode)
                 return;
 
-            var v = IEnumerableExtensions.ToImmutable(Items.Cast<ItemTemplateID>());
+            var v = Items.Cast<ItemTemplateID>().ToImmutable();
             Items.Clear();
             Items.AddRange(v.Cast<object>().ToArray());
         }

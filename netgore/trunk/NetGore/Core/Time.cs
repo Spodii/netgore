@@ -8,6 +8,11 @@ namespace NetGore
     /// </summary>
     public struct TickCount
     {
+        /// <summary>
+        /// Stores the time that the application started. Or, more precisely, the time that this class was first called.
+        /// </summary>
+        static readonly int _startupTime = Environment.TickCount;
+
         readonly uint _value;
 
         /// <summary>
@@ -20,14 +25,37 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the smallest possible value for a <see cref="TickCount"/>.
-        /// </summary>
-        public static TickCount MinValue { get { return new TickCount(uint.MinValue); } }
-
-        /// <summary>
         /// Gets the largest possible value for a <see cref="TickCount"/>.
         /// </summary>
-        public static TickCount MaxValue { get { return new TickCount(uint.MaxValue); } }
+        public static TickCount MaxValue
+        {
+            get { return new TickCount(uint.MaxValue); }
+        }
+
+        /// <summary>
+        /// Gets the smallest possible value for a <see cref="TickCount"/>.
+        /// </summary>
+        public static TickCount MinValue
+        {
+            get { return new TickCount(uint.MinValue); }
+        }
+
+        /// <summary>
+        /// Gets the amount of time that has elapsed in milliseconds since this application has started. This value will initially
+        /// start at 0 when the application starts up. After approximately 49.71 days of application up-time, the tick count
+        /// will roll back over back to 0. This is intended to be used as a replacement to <see cref="Environment.TickCount"/> since it
+        /// guarantees rolling over only after approximately 49.71 days of application up-time, whereas <see cref="Environment.TickCount"/>
+        /// roll-over depends on how long the system has been running and can roll over at any time relative to when the application started.
+        /// </summary>
+        public static TickCount Now
+        {
+            get
+            {
+                // Instead of using TickCount.Now directly, we find the difference in the tick count compared to when the application
+                // started, which allows us to start at 0.
+                return (uint)(Environment.TickCount - _startupTime);
+            }
+        }
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="NetGore.TickCount"/> to <see cref="System.UInt32"/>.
@@ -87,28 +115,6 @@ namespace NetGore
         public static explicit operator TickCount(long value)
         {
             return new TickCount((uint)value);
-        }
-
-        /// <summary>
-        /// Stores the time that the application started. Or, more precisely, the time that this class was first called.
-        /// </summary>
-        static readonly int _startupTime = Environment.TickCount;
-
-        /// <summary>
-        /// Gets the amount of time that has elapsed in milliseconds since this application has started. This value will initially
-        /// start at 0 when the application starts up. After approximately 49.71 days of application up-time, the tick count
-        /// will roll back over back to 0. This is intended to be used as a replacement to <see cref="Environment.TickCount"/> since it
-        /// guarantees rolling over only after approximately 49.71 days of application up-time, whereas <see cref="Environment.TickCount"/>
-        /// roll-over depends on how long the system has been running and can roll over at any time relative to when the application started.
-        /// </summary>
-        public static TickCount Now
-        {
-            get
-            {
-                // Instead of using TickCount.Now directly, we find the difference in the tick count compared to when the application
-                // started, which allows us to start at 0.
-                return (uint)(Environment.TickCount - _startupTime);
-            }
         }
     }
 }
