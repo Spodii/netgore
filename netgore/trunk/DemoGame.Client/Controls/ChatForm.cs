@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 using SFML.Window;
@@ -200,7 +201,7 @@ namespace DemoGame.Client
         /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        protected override void UpdateControl(int currentTime)
+        protected override void UpdateControl(TickCount currentTime)
         {
             UpdateBufferOffset();
             base.UpdateControl(currentTime);

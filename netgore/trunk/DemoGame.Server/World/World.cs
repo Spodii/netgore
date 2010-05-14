@@ -36,12 +36,12 @@ namespace DemoGame.Server
         /// <summary>
         /// The time that <see cref="User.SynchronizeExtraUserInformation"/> will be called next.
         /// </summary>
-        int _syncExtraUserInfoTime = int.MinValue;
+        TickCount _syncExtraUserInfoTime = TickCount.MinValue;
 
         /// <summary>
         /// The time that that the <see cref="_respawnTaskList"/> will be processed next.
         /// </summary>
-        int _updateRespawnablesTime = int.MinValue;
+        TickCount _updateRespawnablesTime = TickCount.MinValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
@@ -221,7 +221,7 @@ namespace DemoGame.Server
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public override int GetTime()
+        public override TickCount GetTime()
         {
             return _server.GetTime();
         }
@@ -470,7 +470,7 @@ namespace DemoGame.Server
         {
             readonly IGetTime _getTime;
 
-            int _currentTime;
+            TickCount _currentTime;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="RespawnTaskList"/> class.

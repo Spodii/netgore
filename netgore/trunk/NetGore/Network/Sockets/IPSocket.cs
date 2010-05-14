@@ -166,9 +166,9 @@ namespace NetGore.Network
         public object Tag { get; set; }
 
         /// <summary>
-        /// Gets the time that this IIPSocket was created.
+        /// Gets the time that this <see cref="IIPSocket"/> was created.
         /// </summary>
-        public int TimeCreated
+        public TickCount TimeCreated
         {
             get { return _tcpSocket.TimeCreated; }
         }

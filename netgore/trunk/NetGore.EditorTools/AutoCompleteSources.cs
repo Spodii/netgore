@@ -30,7 +30,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// The tick count at which the <see cref="_categories"/> was last updated.
         /// </summary>
-        static int _categoriesLastUpdateTime = int.MinValue;
+        static TickCount _categoriesLastUpdateTime = TickCount.MinValue;
 
         /// <summary>
         /// Initializes the <see cref="AutoCompleteSources"/> class.
@@ -119,10 +119,10 @@ namespace NetGore.EditorTools
         /// </summary>
         static void UpdateCategories()
         {
-            if (_categoriesLastUpdateTime + _categoriesMaxUpdateRate > Environment.TickCount)
+            if (_categoriesLastUpdateTime + _categoriesMaxUpdateRate > TickCount.Now)
                 return;
 
-            _categoriesLastUpdateTime = Environment.TickCount;
+            _categoriesLastUpdateTime = TickCount.Now;
 
             // Grab the array first before clearing just so there is less time when the collection is empty
             var items = GrhInfo.GetCategories().Select(x => x.ToString()).ToArray();

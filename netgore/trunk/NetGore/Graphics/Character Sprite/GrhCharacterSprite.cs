@@ -43,7 +43,7 @@ namespace NetGore.Graphics
         /// </summary>
         string _currentSet = string.Empty;
 
-        int _currentTime;
+        TickCount _currentTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicGrhCharacterSprite"/> class.
@@ -228,7 +228,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="ICharacterSprite"/>.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             _currentTime = currentTime;
         }

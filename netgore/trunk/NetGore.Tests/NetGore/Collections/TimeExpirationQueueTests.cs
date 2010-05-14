@@ -107,7 +107,7 @@ namespace NetGore.Tests.NetGore.Collections
             /// When overridden in the derived class, gets the minimum amount of time in milliseconds that must elapsed
             /// between calls to Update. If this amount of time has not elapsed, calls to Update will just return 0.
             /// </summary>
-            protected override int UpdateRate
+            protected override TickCount UpdateRate
             {
                 get { return 0; }
             }

@@ -574,7 +574,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the <see cref="IGUIManager"/> and all of the <see cref="Control"/>s in it.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             // Update the controls
             foreach (var control in Controls.Reverse())

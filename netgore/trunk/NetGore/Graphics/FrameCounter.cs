@@ -25,7 +25,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Target time (will reset FPS count after hitting this value).
         /// </summary>
-        int _targetTime = int.MinValue;
+        TickCount _targetTime = TickCount.MinValue;
 
         /// <summary>
         /// Gets the last FPS. This value is updated once per second.
@@ -39,7 +39,7 @@ namespace NetGore.Graphics
         /// Updates the frame counter and the tick count.
         /// </summary>
         /// <param name="gameTime">The current time in milliseconds.</param>
-        public void Update(int gameTime)
+        public void Update(TickCount gameTime)
         {
             // Increases the frame count
             _frameCounter++;

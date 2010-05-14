@@ -59,7 +59,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         int _budget;
         EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
-        int _expirationTime = int.MaxValue;
+        TickCount _expirationTime = TickCount.MaxValue;
         bool _isDisposed = false;
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         int _lastAliveIndex = -1;
 
-        int _lastUpdateTime = int.MinValue;
-        int _nextReleaseTime;
+        TickCount _lastUpdateTime = TickCount.MinValue;
+        TickCount _nextReleaseTime;
         Vector2 _origin;
         ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
 
@@ -152,7 +152,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets the approximate current time.
         /// </summary>
         [Browsable(false)]
-        protected int CurrentTime
+        protected TickCount currentTime
         {
             get { return _lastUpdateTime; }
         }
@@ -348,7 +348,7 @@ namespace NetGore.Graphics.ParticleEngine
                 if (HasInfiniteLife)
                     return -1;
 
-                return Math.Max(0, _expirationTime - _lastUpdateTime);
+                return (int)Math.Max(0, _expirationTime - _lastUpdateTime);
             }
         }
 
@@ -472,7 +472,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         /// <param name="amount">The number of particles to release.</param>
-        void ReleaseParticles(int currentTime, int amount)
+        void ReleaseParticles(TickCount currentTime, int amount)
         {
             // Find how many we can actually release
             var lastIndex = Math.Min(Budget - 1, _lastAliveIndex + amount);
@@ -504,7 +504,7 @@ namespace NetGore.Graphics.ParticleEngine
                 // Set up the particle
                 particle.Momentum = Vector2.Zero;
                 particle.LifeStart = currentTime;
-                particle.LifeEnd = currentTime + Life.GetNext();
+                particle.LifeEnd = (TickCount)(currentTime + Life.GetNext());
                 particle.Rotation = ReleaseRotation.GetNext();
                 particle.Scale = ReleaseScale.GetNext();
                 ReleaseColor.GetNext(ref particle.Color);
@@ -534,12 +534,12 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="currentTime">The current time.</param>
         /// <param name="totalLife">The total life of the <see cref="ParticleEmitter"/> in milliseconds. If less
         /// than or equal to zero, the <see cref="ParticleEmitter"/> will never expire.</param>
-        public void SetEmitterLife(int currentTime, int totalLife)
+        public void SetEmitterLife(TickCount currentTime, int totalLife)
         {
             if (totalLife <= 0)
-                _expirationTime = int.MaxValue;
+                _expirationTime = TickCount.MaxValue;
             else
-                _expirationTime = currentTime + totalLife;
+                _expirationTime = (TickCount)(currentTime + totalLife);
         }
 
         /// <summary>
@@ -569,7 +569,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// Updates the <see cref="ParticleEmitter"/> and all <see cref="Particle"/>s it has created.
         /// </summary>
         /// <param name="currentTime">The current time.</param>>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             // Get the elapsed time
             // On the first update, just assume 10 ms have elapsed
@@ -581,7 +581,7 @@ namespace NetGore.Graphics.ParticleEngine
                 elapsedTime = 10;
             }
             else
-                elapsedTime = Math.Min(MaxDeltaTime, currentTime - _lastUpdateTime);
+                elapsedTime = (int)Math.Min(MaxDeltaTime, currentTime - _lastUpdateTime);
 
             _lastUpdateTime = currentTime;
 

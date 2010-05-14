@@ -259,7 +259,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// Updates the current time on all processors.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        internal void UpdateCurrentTime(int currentTime)
+        internal void UpdateCurrentTime(TickCount currentTime)
         {
             foreach (var modifier in this)
             {

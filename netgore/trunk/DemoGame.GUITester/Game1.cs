@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -46,10 +47,10 @@ namespace DemoGame.GUITester
                 // Update
                 DispatchEvents();
 
-                _screenManager.Update(Environment.TickCount);
+                _screenManager.Update(TickCount.Now);
 
                 // Draw
-                _screenManager.Draw(Environment.TickCount);
+                _screenManager.Draw(TickCount.Now);
 
                 // Present
                 Display();

@@ -22,7 +22,7 @@ namespace DemoGame.Client
         ICharacterSprite _characterSprite;
         bool _hasChatDialog;
         bool _hasShop;
-        int _lastDrawnTime;
+        TickCount _lastDrawnTime;
         Color _color = Color.White;
         bool _isVisible = true;
 
@@ -226,7 +226,7 @@ namespace DemoGame.Client
 #endif
 
             // Update the interpolation
-            _interpolator.Update(this, lastDrawnDelta);
+            _interpolator.Update(this, (int)lastDrawnDelta);
         }
 
         /// <summary>
@@ -416,7 +416,7 @@ namespace DemoGame.Client
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _map.GetTime();
         }

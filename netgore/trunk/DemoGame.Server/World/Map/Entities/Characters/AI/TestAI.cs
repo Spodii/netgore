@@ -15,7 +15,7 @@ namespace DemoGame.Server
         /// </summary>
         const int _targetUpdateRate = 2000;
 
-        int _lastTargetUpdateTime = int.MinValue;
+        TickCount _lastTargetUpdateTime = TickCount.MinValue;
         Character _target;
 
         /// <summary>

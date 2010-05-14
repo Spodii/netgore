@@ -39,7 +39,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// The current time must be greater than or equal to this value for the texture to allow retrying to reload.
         /// </summary>
-        int _nextLoadAttemptTime = int.MinValue;
+        TickCount _nextLoadAttemptTime = TickCount.MinValue;
 
         ushort _sourceHeight = 0;
         ushort _sourceWidth = 0;
@@ -456,7 +456,7 @@ namespace NetGore.Graphics
                 return;
 
             // Check that enough time has elapsed to try and load the texture
-            if (_failedLoadAttempts > 0 && _nextLoadAttemptTime > Environment.TickCount)
+            if (_failedLoadAttempts > 0 && _nextLoadAttemptTime > TickCount.Now)
                 return;
 
             // Try to load the texture
@@ -482,12 +482,12 @@ namespace NetGore.Graphics
             if (_texture != null)
             {
                 _failedLoadAttempts = 0;
-                _nextLoadAttemptTime = int.MinValue;
+                _nextLoadAttemptTime = TickCount.MinValue;
             }
             else
             {
                 _failedLoadAttempts++;
-                _nextLoadAttemptTime = Environment.TickCount + GetLoadTextureTimeout(_failedLoadAttempts);
+                _nextLoadAttemptTime = (TickCount)(TickCount.Now + GetLoadTextureTimeout(_failedLoadAttempts));
             }
 
             // If we were using an atlas, we'll have to remove it because the texture was reloaded
@@ -579,7 +579,7 @@ namespace NetGore.Graphics
 
             // Clear texture loading fail count
             _failedLoadAttempts = 0;
-            _nextLoadAttemptTime = int.MinValue;
+            _nextLoadAttemptTime = TickCount.MinValue;
         }
 
         #endregion

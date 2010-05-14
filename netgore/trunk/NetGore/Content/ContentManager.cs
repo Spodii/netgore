@@ -154,7 +154,7 @@ namespace NetGore.Content
         /// <param name="ignoreTime">If true, the last-used time will be ignored.</param>
         void DoUnload(ContentLevel level, bool ignoreTime)
         {
-            var currTime = Environment.TickCount;
+            var currTime = TickCount.Now;
 
             lock (_assetSync)
             {
@@ -617,9 +617,9 @@ namespace NetGore.Content
         interface IMyLazyAsset : IDisposable
         {
             /// <summary>
-            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// Gets the <see cref="TickCount.Now"/> that this asset was last used.
             /// </summary>
-            int LastUsedTime { get; }
+            TickCount LastUsedTime { get; }
         }
 
         /// <summary>
@@ -627,7 +627,7 @@ namespace NetGore.Content
         /// </summary>
         sealed class MyLazyFont : LazyFont, IMyLazyAsset
         {
-            int _lastUsed;
+            TickCount _lastUsed;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="T:SFML.Graphics.LazyFont"/> class.
@@ -635,7 +635,7 @@ namespace NetGore.Content
             /// <param name="filename">Font file to load</param><param name="charSize">Character size</param><exception cref="T:SFML.LoadingFailedException"/>
             public MyLazyFont(string filename, uint charSize) : base(filename, charSize)
             {
-                _lastUsed = Environment.TickCount;
+                _lastUsed = TickCount.Now;
             }
 
             /// <summary>
@@ -646,7 +646,7 @@ namespace NetGore.Content
             {
                 get
                 {
-                    _lastUsed = Environment.TickCount;
+                    _lastUsed = TickCount.Now;
                     return base.This;
                 }
             }
@@ -668,9 +668,9 @@ namespace NetGore.Content
             #region IMyLazyAsset Members
 
             /// <summary>
-            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// Gets the <see cref="TickCount.Now"/> that this asset was last used.
             /// </summary>
-            public int LastUsedTime
+            public TickCount LastUsedTime
             {
                 get { return _lastUsed; }
             }
@@ -683,7 +683,7 @@ namespace NetGore.Content
         /// </summary>
         sealed class MyLazyImage : LazyImage, IMyLazyAsset
         {
-            int _lastUsed;
+            TickCount _lastUsed;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="T:SFML.Graphics.LazyImage"/> class.
@@ -691,7 +691,7 @@ namespace NetGore.Content
             /// <param name="filename">The file name.</param>
             public MyLazyImage(string filename) : base(filename)
             {
-                _lastUsed = Environment.TickCount;
+                _lastUsed = TickCount.Now;
             }
 
             /// <summary>
@@ -702,7 +702,7 @@ namespace NetGore.Content
             {
                 get
                 {
-                    _lastUsed = Environment.TickCount;
+                    _lastUsed = TickCount.Now;
                     return base.This;
                 }
             }
@@ -733,9 +733,9 @@ namespace NetGore.Content
             #region IMyLazyAsset Members
 
             /// <summary>
-            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// Gets the <see cref="TickCount.Now"/> that this asset was last used.
             /// </summary>
-            public int LastUsedTime
+            public TickCount LastUsedTime
             {
                 get { return _lastUsed; }
             }
@@ -748,7 +748,7 @@ namespace NetGore.Content
         /// </summary>
         sealed class MyLazySoundBuffer : LazySoundBuffer, IMyLazyAsset
         {
-            int _lastUsed;
+            TickCount _lastUsed;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MyLazySoundBuffer"/> class.
@@ -756,7 +756,7 @@ namespace NetGore.Content
             /// <param name="filename">The file name.</param>
             public MyLazySoundBuffer(string filename) : base(filename)
             {
-                _lastUsed = Environment.TickCount;
+                _lastUsed = TickCount.Now;
             }
 
             /// <summary>
@@ -767,7 +767,7 @@ namespace NetGore.Content
             {
                 get
                 {
-                    _lastUsed = Environment.TickCount;
+                    _lastUsed = TickCount.Now;
                     return base.This;
                 }
             }
@@ -789,9 +789,9 @@ namespace NetGore.Content
             #region IMyLazyAsset Members
 
             /// <summary>
-            /// Gets the <see cref="Environment.TickCount"/> that this asset was last used.
+            /// Gets the <see cref="TickCount.Now"/> that this asset was last used.
             /// </summary>
-            public int LastUsedTime
+            public TickCount LastUsedTime
             {
                 get { return _lastUsed; }
             }

@@ -93,6 +93,6 @@ namespace NetGore.Graphics.GUI
         /// Updates the <see cref="ITooltip"/>.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        void Update(int currentTime);
+        void Update(TickCount currentTime);
     }
 }

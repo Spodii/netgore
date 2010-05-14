@@ -17,6 +17,9 @@ namespace DemoGame.Server
     public delegate void CharacterStatusEffectsAddRemoveHandler(
         CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect);
 
+    /// <summary>
+    /// A collection of <see cref="ActiveStatusEffect"/>s that are currently applied to a single <see cref="Character"/>.
+    /// </summary>
     public abstract class CharacterStatusEffects : IEnumerable<ActiveStatusEffect>, IGetTime, IModStatContainer<StatType>,
                                                    IDisposable
     {
@@ -36,17 +39,30 @@ namespace DemoGame.Server
         /// </summary>
         readonly StatCollection<StatType> _modStats = new StatCollection<StatType>(StatCollectionType.Modified);
 
-        int _lastUpdateTime;
+        TickCount _lastUpdateTime;
 
+        /// <summary>
+        /// Notifies listeners when an <see cref="ActiveStatusEffect"/> is added to this collection.
+        /// </summary>
         public event CharacterStatusEffectsAddRemoveHandler Added;
 
+        /// <summary>
+        /// Notifies listeners when an <see cref="ActiveStatusEffect"/> is removed from this collection.
+        /// </summary>
         public event CharacterStatusEffectsAddRemoveHandler Removed;
 
+        /// <summary>
+        /// Gets the <see cref="Character"/> that this collection belongs to.
+        /// </summary>
         public Character Character
         {
             get { return _character; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterStatusEffects"/> class.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> that this collection belongs to.</param>
         protected CharacterStatusEffects(Character character)
         {
             if (character == null)
@@ -55,6 +71,11 @@ namespace DemoGame.Server
             _character = character;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets if this collection contains a given <see cref="StatusEffectType"/>.
+        /// </summary>
+        /// <param name="statusEffectType">The <see cref="StatusEffectType"/> to check for.</param>
+        /// <returns>True if this collection contains the <paramref name="statusEffectType"/>; otherwise false.</returns>
         public abstract bool Contains(StatusEffectType statusEffectType);
 
         /// <summary>
@@ -107,7 +128,7 @@ namespace DemoGame.Server
         /// Finds all of the expired ActiveStatusEffects and uses HandleExpired to remove them.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        protected void RemoveExpired(int currentTime)
+        protected void RemoveExpired(TickCount currentTime)
         {
             Stack<ActiveStatusEffect> removeStack = null;
 
@@ -135,18 +156,48 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, tries to add an <see cref="IStatusEffect{StatType, StatusEffectType}"/> to
+        /// this collection.
+        /// </summary>
+        /// <param name="statusEffect">The status effect to add.</param>
+        /// <param name="power">The power of the status effect.</param>
+        /// <returns>True if the <paramref name="statusEffect"/> of the given <paramref name="power"/> was added
+        /// to this collection; otherwise false.</returns>
         public abstract bool TryAdd(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power);
 
+        /// <summary>
+        /// The <see cref="StatusEffectManager"/> instance.
+        /// </summary>
         static readonly StatusEffectManager _statusEffectManager = StatusEffectManager.Instance;
 
+        /// <summary>
+        /// Tries to add a <see cref="StatusEffectType"/> of a given power to this collection.
+        /// </summary>
+        /// <param name="statusEffectType">The <see cref="StatusEffectType"/> to add.</param>
+        /// <param name="power">The power of the <paramref name="statusEffectType"/>.</param>
+        /// <returns>True if the <paramref name="statusEffectType"/> of the given <paramref name="power"/> was added
+        /// to this collection; otherwise false.</returns>
         public bool TryAdd(StatusEffectType statusEffectType, ushort power)
         {
             var statusEffect = _statusEffectManager.Get(statusEffectType);
             return TryAdd(statusEffect, power);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, tries to get the <see cref="ActiveStatusEffect"/> for a <see cref="StatusEffectType"/>
+        /// in this collection.
+        /// </summary>
+        /// <param name="statusEffectType">The <see cref="StatusEffectType"/> to try to get the <see cref="ActiveStatusEffect"/> of.</param>
+        /// <param name="statusEffect">When this method returns true, contains the <see cref="ActiveStatusEffect"/> instance from
+        /// this collection for the given <paramref name="statusEffectType"/>.</param>
+        /// <returns>True if the <see cref="ActiveStatusEffect"/> of the <paramref name="statusEffectType"/> was found in
+        /// this collection; otherwise false.</returns>
         public abstract bool TryGetStatusEffect(StatusEffectType statusEffectType, out ActiveStatusEffect statusEffect);
 
+        /// <summary>
+        /// Updates the items in this collection.
+        /// </summary>
         public virtual void Update()
         {
             var currentTime = GetTime();
@@ -197,7 +248,7 @@ namespace DemoGame.Server
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _character.GetTime();
         }
@@ -206,6 +257,13 @@ namespace DemoGame.Server
 
         #region IModStatContainer Members
 
+        /// <summary>
+        /// Gets the modifier value for the given <paramref name="statType"/>, where a positive value adds to the
+        /// mod stat value, a negative value subtracts from the mod stat value, and a value of 0 does not modify
+        /// the mod stat value.
+        /// </summary>
+        /// <param name="statType">The <see cref="StatType"/> to get the modifier value for.</param>
+        /// <returns>The modifier value for the given <paramref name="statType"/>.</returns>
         public int GetStatModBonus(StatType statType)
         {
             return _modStats[statType];

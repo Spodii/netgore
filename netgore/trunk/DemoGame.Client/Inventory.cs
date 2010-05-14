@@ -89,7 +89,7 @@ namespace DemoGame.Client
         /// <param name="graphic">New graphic index</param>
         /// <param name="amount">New item amount</param>
         /// <param name="time">Current time</param>
-        public void Update(InventorySlot slot, GrhIndex graphic, byte amount, int time)
+        public void Update(InventorySlot slot, GrhIndex graphic, byte amount, TickCount time)
         {
             // If we get an amount of 0, just use UpdateEmpty()
             if (amount == 0)

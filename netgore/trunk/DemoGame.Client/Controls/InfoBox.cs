@@ -86,7 +86,7 @@ namespace DemoGame.Client
         {
             ThreadAsserts.IsMainThread();
 
-            var newItem = new InfoBoxItem(Environment.TickCount, message, color, _sf);
+            var newItem = new InfoBoxItem(TickCount.Now, message, color, _sf);
 
             // If we are full, remove the old messages until we have room
             while (_items.Count >= _maxItems)
@@ -107,7 +107,7 @@ namespace DemoGame.Client
             ThreadAsserts.IsMainThread();
 
             // Remove dead items
-            while (_items.Count > 0 && _items[0].CreatedTime + _messageLife < Environment.TickCount)
+            while (_items.Count > 0 && _items[0].CreatedTime + _messageLife < TickCount.Now)
             {
                 _items.RemoveAt(0);
             }
@@ -122,7 +122,7 @@ namespace DemoGame.Client
                 pos.X -= item.Width;
 
                 // Set the color
-                var lifeLeft = (item.CreatedTime + _messageLife) - Environment.TickCount;
+                var lifeLeft = (item.CreatedTime + _messageLife) - TickCount.Now;
                 var alpha = (byte)Math.Min(255, lifeLeft);
                 var color = new Color(item.Color.R, item.Color.G, item.Color.B, alpha);
 
@@ -144,7 +144,7 @@ namespace DemoGame.Client
             /// <summary>
             /// Time the item was created.
             /// </summary>
-            public readonly int CreatedTime;
+            public readonly TickCount CreatedTime;
 
             /// <summary>
             /// Item's text.
@@ -163,7 +163,7 @@ namespace DemoGame.Client
             /// <param name="msg">Message to display.</param>
             /// <param name="color">Color of the text.</param>
             /// <param name="sf">SpriteFont that will be used to calculate the Width.</param>
-            public InfoBoxItem(int time, string msg, Color color, Font sf)
+            public InfoBoxItem(TickCount time, string msg, Color color, Font sf)
             {
                 CreatedTime = time;
                 Message = msg;

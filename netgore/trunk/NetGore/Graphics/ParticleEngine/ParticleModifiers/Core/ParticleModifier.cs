@@ -19,7 +19,8 @@ namespace NetGore.Graphics.ParticleEngine
 
         readonly bool _processOnRelease;
         readonly bool _processOnUpdate;
-        int _currentTime;
+
+        TickCount _currentTime;
 
         /// <summary>
         /// Initializes the <see cref="ParticleModifier"/> class.
@@ -48,7 +49,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets the current game time.
         /// </summary>
         [Browsable(false)]
-        protected int CurrentTime
+        protected TickCount CurrentTime
         {
             get { return _currentTime; }
         }
@@ -155,7 +156,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// Updates the current time.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        internal void UpdateCurrentTime(int currentTime)
+        internal void UpdateCurrentTime(TickCount currentTime)
         {
             _currentTime = currentTime;
         }

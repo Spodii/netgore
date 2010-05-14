@@ -55,6 +55,6 @@ namespace NetGore.Graphics
         /// Updates the <see cref="ICharacterSprite"/>.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        void Update(int currentTime);
+        void Update(TickCount currentTime);
     }
 }

@@ -39,7 +39,7 @@ namespace NetGore
         /// <summary>
         /// Initializes a new instance of the <see cref="SafeRandom"/> class.
         /// </summary>
-        public SafeRandom() : this(Environment.TickCount)
+        public SafeRandom() : this((int)TickCount.Now)
         {
         }
 

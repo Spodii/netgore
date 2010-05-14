@@ -79,7 +79,7 @@ namespace DemoGame.Client
             Text = "Status Effects";
         }
 
-        protected override void UpdateControl(int currentTime)
+        protected override void UpdateControl(TickCount currentTime)
         {
             base.UpdateControl(currentTime);
 
@@ -92,7 +92,7 @@ namespace DemoGame.Client
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _getTime.GetTime();
         }
@@ -104,21 +104,21 @@ namespace DemoGame.Client
             const int _updateRate = 500;
             readonly List<StatusEffectCollectionItem> _statusEffects = new List<StatusEffectCollectionItem>();
 
-            int _lastUpdateTime;
+            TickCount _lastUpdateTime;
 
             public IEnumerable<StatusEffectCollectionItem> ActiveStatusEffects
             {
                 get { return _statusEffects; }
             }
 
-            public void Add(StatusEffectType statusEffectType, ushort power, ushort secsLeft, int currentTime)
+            public void Add(StatusEffectType statusEffectType, ushort power, ushort secsLeft, TickCount currentTime)
             {
                 Remove(statusEffectType);
 
                 var msLeft = secsLeft * 1000;
                 var life = msLeft + currentTime;
 
-                var ase = new StatusEffectCollectionItem(statusEffectType, power, life);
+                var ase = new StatusEffectCollectionItem(statusEffectType, power, (int)life);
                 _statusEffects.Add(ase);
             }
 
@@ -127,7 +127,7 @@ namespace DemoGame.Client
                 _statusEffects.RemoveAll(x => x.StatusEffectType == statusEffectType);
             }
 
-            public void Update(int currentTime)
+            public void Update(TickCount currentTime)
             {
                 if (currentTime - _lastUpdateTime <= _updateRate)
                     return;
@@ -180,13 +180,13 @@ namespace DemoGame.Client
                 get { return _statusEffectType; }
             }
 
-            public void Draw(ISpriteBatch sb, Vector2 position, int currentTime)
+            public void Draw(ISpriteBatch sb, Vector2 position, TickCount currentTime)
             {
                 _grh.Update(currentTime);
                 _grh.Draw(sb, position);
             }
 
-            public int GetSecsLeft(int currentTime)
+            public int GetSecsLeft(TickCount currentTime)
             {
                 var msRemaining = _disableTime - currentTime;
                 var secsRemaining = (int)Math.Round(msRemaining / 1000f);

@@ -36,7 +36,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="guiManager">The <see cref="IGUIManager"/> used to update the <see cref="GameControl"/>s.</param>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        public void Update(IGUIManager guiManager, int currentTime)
+        public void Update(IGUIManager guiManager, TickCount currentTime)
         {
             foreach (var gc in this)
             {

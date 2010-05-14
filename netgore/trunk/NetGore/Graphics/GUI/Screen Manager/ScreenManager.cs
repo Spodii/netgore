@@ -86,7 +86,7 @@ namespace NetGore.Graphics.GUI
         /// component-specific drawing code.
         /// </summary>
         /// <param name="gameTime">Time passed since the last call to Draw.</param>
-        public virtual void Draw(int gameTime)
+        public virtual void Draw(TickCount gameTime)
         {
             // Update the FPS
             _fps.Update(gameTime);
@@ -123,7 +123,7 @@ namespace NetGore.Graphics.GUI
         /// Called when the GameComponent needs to be updated. Override this method with component-specific update code.
         /// </summary>
         /// <param name="gameTime">Time elapsed since the last call to Update.</param>
-        public virtual void Update(int gameTime)
+        public virtual void Update(TickCount gameTime)
         {
             var currentTime = gameTime;
 

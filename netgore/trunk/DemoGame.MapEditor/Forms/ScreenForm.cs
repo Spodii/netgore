@@ -121,7 +121,7 @@ namespace DemoGame.MapEditor
         /// Current total time in milliseconds - used as the root of all timing
         /// in external classes through the GetTime method.
         /// </summary>
-        int _currentTime = 0;
+        TickCount _currentTime = 0;
 
         EditorCursorManager<ScreenForm> _cursorManager;
 
@@ -1270,7 +1270,7 @@ namespace DemoGame.MapEditor
             Cursor = Cursors.Default;
 
             // Update the time
-            var currTime = (int)_stopWatch.ElapsedMilliseconds;
+            var currTime = (TickCount)_stopWatch.ElapsedMilliseconds;
             var deltaTime = currTime - _currentTime;
             _currentTime = currTime;
 
@@ -1646,7 +1646,7 @@ namespace DemoGame.MapEditor
         /// Gets the current game time where time 0 is when the application started
         /// </summary>
         /// <returns>Current game time in milliseconds</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _currentTime;
         }

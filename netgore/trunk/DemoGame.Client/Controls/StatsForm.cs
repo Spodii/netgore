@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Stats;
@@ -128,7 +129,7 @@ namespace DemoGame.Client
             RequestRaiseStat(this, statPB.StatType);
         }
 
-        protected override void UpdateControl(int currentTime)
+        protected override void UpdateControl(TickCount currentTime)
         {
             base.UpdateControl(currentTime);
 
@@ -193,7 +194,7 @@ namespace DemoGame.Client
             /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
             /// </summary>
             /// <param name="currentTime">The current time in milliseconds.</param>
-            protected override void UpdateControl(int currentTime)
+            protected override void UpdateControl(TickCount currentTime)
             {
                 base.UpdateControl(currentTime);
 
@@ -213,7 +214,7 @@ namespace DemoGame.Client
 
             int _lastBaseValue = int.MinValue;
             int _lastModValue = int.MinValue;
-            int _lastUpdateTextTime = int.MinValue;
+            TickCount _lastUpdateTextTime = TickCount.MinValue;
 
             public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : base(statsForm, pos)
             {
@@ -228,7 +229,7 @@ namespace DemoGame.Client
             /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
             /// </summary>
             /// <param name="currentTime">The current time in milliseconds.</param>
-            protected override void UpdateControl(int currentTime)
+            protected override void UpdateControl(TickCount currentTime)
             {
                 base.UpdateControl(currentTime);
 
@@ -264,7 +265,7 @@ namespace DemoGame.Client
             readonly string _title;
             readonly UserInfoLabelValueHandler _valueHandler;
 
-            int _lastUpdateTextTime = int.MinValue;
+            TickCount _lastUpdateTextTime = TickCount.MinValue;
 
             public UserInfoLabel(StatsForm parent, Vector2 pos, string title, UserInfoLabelValueHandler valueHandler)
                 : base(parent, pos)
@@ -281,7 +282,7 @@ namespace DemoGame.Client
             /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
             /// </summary>
             /// <param name="currentTime">The current time in milliseconds.</param>
-            protected override void UpdateControl(int currentTime)
+            protected override void UpdateControl(TickCount currentTime)
             {
                 base.UpdateControl(currentTime);
 

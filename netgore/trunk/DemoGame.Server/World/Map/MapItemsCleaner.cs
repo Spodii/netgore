@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NetGore;
 using NetGore.Collections;
 
 namespace DemoGame.Server
@@ -13,7 +14,7 @@ namespace DemoGame.Server
         /// When overridden in the derived class, gets the minimum amount of time in milliseconds that must elapsed
         /// between calls to Update. If this amount of time has not elapsed, calls to Update will just return 0.
         /// </summary>
-        protected override int UpdateRate
+        protected override TickCount UpdateRate
         {
             get { return ServerSettings.MapItemExpirationUpdateRate; }
         }
@@ -24,7 +25,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="item">The item to add.</param>
         /// <param name="currentTime">The current time.</param>
-        public void Add(ItemEntityBase item, int currentTime)
+        public void Add(ItemEntityBase item, TickCount currentTime)
         {
             Add(item, currentTime, ServerSettings.DefaultMapItemLife);
         }

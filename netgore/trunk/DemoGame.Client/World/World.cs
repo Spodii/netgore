@@ -164,7 +164,7 @@ namespace DemoGame.Client
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public override int GetTime()
+        public override TickCount GetTime()
         {
             return _getTime.GetTime();
         }

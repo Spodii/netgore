@@ -54,7 +54,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="reader">The reader to read the values from.</param>
         /// <param name="currentTime">The current time.</param>
-        public MapGrh(IValueReader reader, int currentTime)
+        public MapGrh(IValueReader reader, TickCount currentTime)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
@@ -167,7 +167,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="MapGrh"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             _grh.Update(currentTime);
         }

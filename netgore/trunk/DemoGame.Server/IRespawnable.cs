@@ -19,7 +19,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         /// <returns>True if the IRespawnable is ready to respawn, else false.</returns>
-        bool ReadyToRespawn(int currentTime);
+        bool ReadyToRespawn(TickCount currentTime);
 
         /// <summary>
         /// Handles respawning the DynamicEntity. This must also take care of setting the Map.

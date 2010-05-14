@@ -127,7 +127,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="ICharacterSprite"/>.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             _skelAnim.Update(currentTime);
 
@@ -146,7 +146,7 @@ namespace NetGore.Graphics
         /// Gets the current time in milliseconds.
         /// </summary>
         /// <returns>The current time in milliseconds.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _getTime.GetTime();
         }

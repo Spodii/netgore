@@ -31,7 +31,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Tick count at which the Grh was last updated (only needed if animated)
         /// </summary>
-        int _lastUpdated = 0;
+        TickCount _lastUpdated = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Grh"/> class.
@@ -64,7 +64,7 @@ namespace NetGore.Graphics
         /// <param name="grhIndex">Index of the Grh.</param>
         /// <param name="anim">Animation type.</param>
         /// <param name="currentTime">Current time.</param>
-        public Grh(GrhIndex grhIndex, AnimType anim, int currentTime)
+        public Grh(GrhIndex grhIndex, AnimType anim, TickCount currentTime)
         {
             SetGrh(grhIndex, anim, currentTime);
         }
@@ -75,7 +75,7 @@ namespace NetGore.Graphics
         /// <param name="grhData">GrhData to create from.</param>
         /// <param name="anim">Animation type.</param>
         /// <param name="currentTime">Current time.</param>
-        public Grh(GrhData grhData, AnimType anim, int currentTime)
+        public Grh(GrhData grhData, AnimType anim, TickCount currentTime)
         {
             SetGrh(grhData, anim, currentTime);
         }
@@ -122,7 +122,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the tick count at which the Grh was last updated (only for animated Grhs).
         /// </summary>
-        public int LastUpdated
+        public TickCount LastUpdated
         {
             get { return _lastUpdated; }
         }
@@ -210,7 +210,7 @@ namespace NetGore.Graphics
         /// <param name="grhData">New GrhData to use for the Grh.</param>
         /// <param name="anim">Type of animation.</param>
         /// <param name="currentTime">Current time.</param>
-        public void SetGrh(GrhData grhData, AnimType anim, int currentTime)
+        public void SetGrh(GrhData grhData, AnimType anim, TickCount currentTime)
         {
             _grhData = grhData;
             _frame = 0;
@@ -236,7 +236,7 @@ namespace NetGore.Graphics
         /// <param name="grhIndex">New Grh index to use.</param>
         /// <param name="anim">Type of animation.</param>
         /// <param name="currentTime">Current time.</param>
-        public void SetGrh(GrhIndex grhIndex, AnimType anim, int currentTime)
+        public void SetGrh(GrhIndex grhIndex, AnimType anim, TickCount currentTime)
         {
             var grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null && grhIndex != 0)
@@ -266,7 +266,7 @@ namespace NetGore.Graphics
         /// Updates the current frame.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        void UpdateFrameIndex(int currentTime)
+        void UpdateFrameIndex(TickCount currentTime)
         {
             var elapsedTime = currentTime - _lastUpdated;
             Debug.Assert(elapsedTime >= 0, "How is the elapsed time negative? Did the computer fall into a wormhole?");
@@ -465,7 +465,7 @@ namespace NetGore.Graphics
         /// Updates the Grh if it is animated.
         /// </summary>
         /// <param name="currentTime">Current total real time in total milliseconds.</param>
-        public virtual void Update(int currentTime)
+        public virtual void Update(TickCount currentTime)
         {
             // We only need to update the frame if we are animating, have a valid GrhData, and if we have more
             // than one frame in the GrhData

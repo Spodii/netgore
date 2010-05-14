@@ -20,7 +20,7 @@ namespace DemoGame.Client
         IIPSocket _conn = null;
         bool _isConnecting = false;
         int _lastLatency;
-        int _lastPingTime;
+        TickCount _lastPingTime;
         LatencyTrackerClient _latencyTracker;
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace DemoGame.Client
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _packetHandler.GetTime();
         }

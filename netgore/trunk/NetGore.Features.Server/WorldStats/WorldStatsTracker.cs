@@ -16,10 +16,10 @@ namespace NetGore.Features.WorldStats
                                                                                                          where TNPC : class
                                                                                                          where TItem : class
     {
-        readonly int _logNetStatsRate;
+        readonly TickCount _logNetStatsRate;
 
         NetStats _lastNetStatsValues = new NetStats();
-        int _nextLogNetStatsTime;
+        TickCount _nextLogNetStatsTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorldStatsTracker{TUser, TNPC, TItem}"/> class.
@@ -28,20 +28,20 @@ namespace NetGore.Features.WorldStats
         /// logged to the database.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="logNetStatsRate"/> is less than
         /// or equal to zero.</exception>
-        protected WorldStatsTracker(int logNetStatsRate)
+        protected WorldStatsTracker(TickCount logNetStatsRate)
         {
             if (logNetStatsRate <= 0)
                 throw new ArgumentOutOfRangeException("logNetStatsRate", "logNetStatsRate must be greater than or equal to zero.");
 
             _logNetStatsRate = logNetStatsRate;
 
-            _nextLogNetStatsTime = Environment.TickCount;
+            _nextLogNetStatsTime = TickCount.Now;
         }
 
         /// <summary>
         /// Gets the rate in milliseconds that the <see cref="NetStats"/> information is logged to the database.
         /// </summary>
-        public int LogNetStatsRate
+        public TickCount LogNetStatsRate
         {
             get { return _logNetStatsRate; }
         }
@@ -53,7 +53,7 @@ namespace NetGore.Features.WorldStats
         /// <param name="lastUpdateTime">The time the last update happened.</param>
         /// <param name="updateRate">The update rate.</param>
         /// <returns>The time to use for the next update.</returns>
-        protected virtual int GetNextUpdateTime(int currentTime, int lastUpdateTime, int updateRate)
+        protected virtual TickCount GetNextUpdateTime(TickCount currentTime, TickCount lastUpdateTime, TickCount updateRate)
         {
             // Increment by the update rate
             var nextTime = lastUpdateTime + updateRate;
@@ -119,7 +119,7 @@ namespace NetGore.Features.WorldStats
         /// Updates the statistics.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        protected virtual void InternalUpdate(int currentTime)
+        protected virtual void InternalUpdate(TickCount currentTime)
         {
             // NetStats
             if (_nextLogNetStatsTime < currentTime)
@@ -250,7 +250,7 @@ namespace NetGore.Features.WorldStats
         /// </summary>
         public void Update()
         {
-            InternalUpdate(Environment.TickCount);
+            InternalUpdate(TickCount.Now);
         }
 
         #endregion

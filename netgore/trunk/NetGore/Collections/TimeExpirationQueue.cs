@@ -10,14 +10,14 @@ namespace NetGore.Collections
     /// <typeparam name="T">The type of collection item.</typeparam>
     public abstract class TimeExpirationQueue<T>
     {
-        readonly Dictionary<T, int> _items = new Dictionary<T, int>();
+        readonly Dictionary<T, TickCount> _items = new Dictionary<T, TickCount>();
 
-        int _lastUpdateTime = int.MinValue;
+        TickCount _lastUpdateTime = TickCount.MinValue;
 
         /// <summary>
         /// Gets a deep copy of the items in this collection and the time at which they will expire.
         /// </summary>
-        public IEnumerable<KeyValuePair<T, int>> Items
+        public IEnumerable<KeyValuePair<T, TickCount>> Items
         {
             get { return _items.ToImmutable(); }
         }
@@ -25,7 +25,7 @@ namespace NetGore.Collections
         /// <summary>
         /// Gets the time that this collection was last successfully updated.
         /// </summary>
-        public int LastUpdated
+        public TickCount LastUpdated
         {
             get { return _lastUpdateTime; }
         }
@@ -34,7 +34,7 @@ namespace NetGore.Collections
         /// When overridden in the derived class, gets the minimum amount of time in milliseconds that must elapsed
         /// between calls to Update. If this amount of time has not elapsed, calls to Update will just return 0.
         /// </summary>
-        protected abstract int UpdateRate { get; }
+        protected abstract TickCount UpdateRate { get; }
 
         /// <summary>
         /// Adds an item to start tracking. If the <paramref name="item"/> already exists in the collection, its
@@ -43,7 +43,7 @@ namespace NetGore.Collections
         /// <param name="item">The item to add.</param>
         /// <param name="currentTime">The current time.</param>
         /// <param name="life">How long the <paramref name="item"/> will live in the collection before expiring.</param>
-        public void Add(T item, int currentTime, int life)
+        public void Add(T item, TickCount currentTime, uint life)
         {
             var v = currentTime + life;
 
@@ -95,7 +95,7 @@ namespace NetGore.Collections
         /// <param name="currentTime">The current time.</param>
         /// <returns>The number of items that were removed. Will be zero if not enough time has elapsed since the last
         /// call to update, or if just no items were removed.</returns>
-        public int Update(int currentTime)
+        public int Update(TickCount currentTime)
         {
             // Check if enough time has elapsed to update
             if (_lastUpdateTime + UpdateRate > currentTime)

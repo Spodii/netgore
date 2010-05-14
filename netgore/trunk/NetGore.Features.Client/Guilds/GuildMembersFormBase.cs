@@ -28,9 +28,9 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// The time at which the cache will be updated.
         /// </summary>
-        int _cacheUpdateTime = int.MinValue;
+        TickCount _cacheUpdateTime = TickCount.MinValue;
 
-        int _currentTime;
+        TickCount _currentTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GuildMembersFormBase"/> class.
@@ -99,7 +99,7 @@ namespace NetGore.Features.Guilds
         /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        protected override void UpdateControl(int currentTime)
+        protected override void UpdateControl(TickCount currentTime)
         {
             _currentTime = currentTime;
 

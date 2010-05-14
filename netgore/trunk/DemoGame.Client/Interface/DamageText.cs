@@ -30,7 +30,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Time at which the text was last updated.
         /// </summary>
-        int _lastUpdate;
+        TickCount _lastUpdate;
 
         /// <summary>
         /// Current position of the text.
@@ -61,7 +61,7 @@ namespace DemoGame.Client
         /// <param name="damage">Damage value to display.</param>
         /// <param name="entity">Entity the damage was done to.</param>
         /// <param name="currTime">Current time.</param>
-        public void Activate(int damage, Entity entity, int currTime)
+        public void Activate(int damage, Entity entity, TickCount currTime)
         {
             if (entity == null)
             {
@@ -93,7 +93,7 @@ namespace DemoGame.Client
         /// Updates the DamageText.
         /// </summary>
         /// <param name="currTime">Current time.</param>
-        public void Update(int currTime)
+        public void Update(TickCount currTime)
         {
             // Get the delta time
             float delta = currTime - _lastUpdate;

@@ -5,6 +5,7 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using log4net.Filter;
+using NetGore;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -60,7 +61,7 @@ namespace DemoGame.Client
         /// active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        public override void Draw(int gameTime)
+        public override void Draw(TickCount gameTime)
         {
             var spriteBatch = DrawingManager.BeginDrawGUI();
             if (spriteBatch == null)

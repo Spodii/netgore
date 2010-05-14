@@ -178,7 +178,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        protected override void UpdateControl(int currentTime)
+        protected override void UpdateControl(TickCount currentTime)
         {
             base.UpdateControl(currentTime);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -108,7 +109,7 @@ namespace DemoGame.Client
         /// </summary>
         public virtual void Draw()
         {
-            _screenManager.Draw(Environment.TickCount);
+            _screenManager.Draw(TickCount.Now);
         }
 
         public void HandleFrame()
@@ -175,7 +176,7 @@ namespace DemoGame.Client
         /// </summary>
         public virtual void Update()
         {
-            _screenManager.Update(Environment.TickCount);
+            _screenManager.Update(TickCount.Now);
         }
     }
 }

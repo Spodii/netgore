@@ -27,7 +27,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// The ToolTipText will not be updated if the current time is less than this value.
         /// </summary>
-        int _nextUpdateToolTipTime = int.MinValue;
+        TickCount _nextUpdateToolTipTime = TickCount.MinValue;
 
         /// <summary>
         /// Initializes the <see cref="GrhTreeViewFolderNode"/> class.
@@ -208,7 +208,7 @@ namespace NetGore.EditorTools
         /// </summary>
         public void UpdateToolTip()
         {
-            var time = Environment.TickCount;
+            var time = TickCount.Now;
             if (_nextUpdateToolTipTime > time)
                 return;
 

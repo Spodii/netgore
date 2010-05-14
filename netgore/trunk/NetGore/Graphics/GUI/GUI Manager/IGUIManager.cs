@@ -200,6 +200,6 @@ namespace NetGore.Graphics.GUI
         /// Updates the <see cref="IGUIManager"/> and all of the <see cref="Control"/>s in it.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
-        void Update(int currentTime);
+        void Update(TickCount currentTime);
     }
 }

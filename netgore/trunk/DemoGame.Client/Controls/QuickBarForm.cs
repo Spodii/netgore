@@ -167,7 +167,7 @@ namespace DemoGame.Client
         {
             readonly Grh _grh = new Grh();
             readonly byte _slot;
-            int _currentTime;
+
             QuickBarItemType _quickBarItemType;
             int _quickBarItemValue;
 
@@ -297,7 +297,7 @@ namespace DemoGame.Client
 
                         _grh.Draw(spriteBatch, position.Value);
 
-                        if (isOnBar && CooldownManager.IsCoolingDown(_skillInfo.CooldownGroup, _currentTime))
+                        if (isOnBar && CooldownManager.IsCoolingDown(_skillInfo.CooldownGroup, TickCount.Now))
                             RenderRectangle.Draw(spriteBatch, GetScreenArea(), new Color(0, 0, 0, 150));
 
                         break;
@@ -360,7 +360,7 @@ namespace DemoGame.Client
                             return;
                         }
 
-                        _grh.SetGrh(_skillInfo.Icon, AnimType.Loop, _currentTime);
+                        _grh.SetGrh(_skillInfo.Icon, AnimType.Loop, TickCount.Now);
                         if (_grh.GrhData == null)
                         {
                             SetQuickBar(QuickBarItemType.None, 0);
@@ -375,10 +375,8 @@ namespace DemoGame.Client
             /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
             /// </summary>
             /// <param name="currentTime">The current time in milliseconds.</param>
-            protected override void UpdateControl(int currentTime)
+            protected override void UpdateControl(TickCount currentTime)
             {
-                _currentTime = currentTime;
-
                 // Make sure the quick bar item is valid
                 switch (QuickBarItemType)
                 {

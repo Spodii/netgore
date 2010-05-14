@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using SFML.Graphics;
@@ -117,7 +118,7 @@ namespace DemoGame.Client
         /// Updates the screen if it is currently the active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        public override void Update(int gameTime)
+        public override void Update(TickCount gameTime)
         {
             _btnLogin.IsEnabled = !(_sockets.IsConnecting || _sockets.IsConnected);
             base.Update(gameTime);

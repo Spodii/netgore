@@ -93,7 +93,7 @@ namespace NetGore.Graphics
         /// <param name="owner">The <see cref="Entity"/> to attach the <see cref="ChatBubble"/> to.</param>
         /// <param name="text">The text to display in the bubble.</param>
         /// <param name="currentTime">The current game time.</param>
-        public void Add(Entity owner, string text, int currentTime)
+        public void Add(Entity owner, string text, TickCount currentTime)
         {
             // Create the new chat bubble
             var bubble = new ChatBubble(this, owner, text, currentTime);
@@ -132,7 +132,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="ChatBubble"/>s in this <see cref="ChatBubbleManagerBase"/>.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             Debug.Assert(_bubblesToRemove.Count == 0, "The remove queue should NOT be used outside of Update()!");
 

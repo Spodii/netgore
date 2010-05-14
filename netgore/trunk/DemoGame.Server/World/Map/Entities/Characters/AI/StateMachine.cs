@@ -385,9 +385,10 @@ namespace DemoGame.Server
 
         const int _UpdateRate = 3000;
         const int _id = 2;
+
         State _characterState = State.Patrol;
         bool _hasTarget;
-        int _lastUpdateTime = int.MinValue;
+        TickCount _lastUpdateTime = TickCount.MinValue;
         float _lastX;
         Character _target;
 

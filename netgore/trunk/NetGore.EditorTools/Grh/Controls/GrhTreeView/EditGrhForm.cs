@@ -65,7 +65,7 @@ namespace NetGore.EditorTools
             _gd = gd;
             _mapGrhWalls = mapGrhWalls;
 
-            _grh = new Grh(gd, AnimType.Loop, (int)_stopwatch.ElapsedMilliseconds);
+            _grh = new Grh(gd, AnimType.Loop, (TickCount)_stopwatch.ElapsedMilliseconds);
 
             // Set up the camera
             Vector2 pos;
@@ -139,7 +139,7 @@ namespace NetGore.EditorTools
         public void Draw(ISpriteBatch sb)
         {
             // Update the Grh first
-            _grh.Update((int)_stopwatch.ElapsedMilliseconds);
+            _grh.Update((TickCount)_stopwatch.ElapsedMilliseconds);
 
             // Begin rendering
             sb.Begin(BlendMode.Alpha, Camera);

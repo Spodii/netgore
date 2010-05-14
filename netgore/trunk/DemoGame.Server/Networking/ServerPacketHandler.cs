@@ -893,7 +893,7 @@ namespace DemoGame.Server
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return Server.GetTime();
         }

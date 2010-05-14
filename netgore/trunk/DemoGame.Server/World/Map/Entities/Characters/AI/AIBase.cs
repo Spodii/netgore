@@ -35,12 +35,12 @@ namespace DemoGame.Server
         /// hostile towards. The key is the <see cref="Character"/> the <see cref="Actor"/> is hostile towards,
         /// and the value is the time at which this hostility will expire.
         /// </summary>
-        readonly Dictionary<Character, int> _explicitHostiles = new Dictionary<Character, int>();
+        readonly Dictionary<Character, TickCount> _explicitHostiles = new Dictionary<Character, TickCount>();
 
         /// <summary>
         /// The time that the <see cref="_explicitHostiles"/> collection will be checked to remove old values.
         /// </summary>
-        int _expireExplicitHostilesTime = int.MinValue;
+        TickCount _expireExplicitHostilesTime = TickCount.MinValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AIBase"/> class.
@@ -218,7 +218,7 @@ namespace DemoGame.Server
         /// used if the <paramref name="target"/> is already marked as being hostile towards, and the
         /// existing timeout is greater than the given <paramref name="timeout"/>. That is, the longer
         /// of the two timeouts will be used.</param>
-        public void SetHostileTowards(Character target, int timeout, bool increaseTimeOnly)
+        public void SetHostileTowards(Character target, TickCount timeout, bool increaseTimeOnly)
         {
             if (target == null)
             {
@@ -329,7 +329,7 @@ namespace DemoGame.Server
         /// Gets the current time in milliseconds.
         /// </summary>
         /// <returns>The current time in milliseconds.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             if (Actor != null)
                 return Actor.GetTime();

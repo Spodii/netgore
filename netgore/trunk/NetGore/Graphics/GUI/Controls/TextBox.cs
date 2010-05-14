@@ -26,12 +26,12 @@ namespace NetGore.Graphics.GUI
 
         int _bufferTruncateSize = 100;
 
-        int _currentTime;
+        TickCount _currentTime;
 
         /// <summary>
         /// Keeps track of the time at which the cursor started as visible.
         /// </summary>
-        int _cursorBlinkTimer;
+        TickCount _cursorBlinkTimer;
 
         int _cursorLinePosition = 0;
 
@@ -620,7 +620,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        protected override void UpdateControl(int currentTime)
+        protected override void UpdateControl(TickCount currentTime)
         {
             _currentTime = currentTime;
 

@@ -6,7 +6,7 @@ namespace DemoGame
     public abstract class WorldBase : IGetTime
     {
         bool _isFirstUpdate = true;
-        int _lastUpdateTime;
+        TickCount _lastUpdateTime;
 
         /// <summary>
         /// Updates the World.
@@ -30,7 +30,7 @@ namespace DemoGame
             while (currentTime > _lastUpdateTime + updateRate)
             {
                 UpdateMaps(updateRate);
-                _lastUpdateTime += updateRate;
+                _lastUpdateTime += (uint)updateRate;
             }
         }
 
@@ -46,7 +46,7 @@ namespace DemoGame
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public abstract int GetTime();
+        public abstract TickCount GetTime();
 
         #endregion
     }

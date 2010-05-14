@@ -291,7 +291,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="IDrawingManager"/> and all components inside of it.
         /// </summary>
         /// <param name="currentTime">The current game time in milliseconds.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             LightManager.Update(currentTime);
         }

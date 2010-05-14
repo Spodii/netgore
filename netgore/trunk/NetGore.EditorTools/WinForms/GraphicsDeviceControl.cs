@@ -36,7 +36,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// The last time a message was painted using PaintUsingSystemDrawing().
         /// </summary>
-        int _lastSystemPaintTime;
+        TickCount _lastSystemPaintTime;
 
         RenderWindow _rw;
         ISpriteBatch _spriteBatch;
@@ -249,7 +249,7 @@ namespace NetGore.EditorTools
                 return;
 
             // Ensure enough time has elapsed since last painting
-            var currentTime = Environment.TickCount;
+            var currentTime = TickCount.Now;
             if (_lastSystemPaintTime > currentTime - _minSystemPaintDelay)
                 return;
 

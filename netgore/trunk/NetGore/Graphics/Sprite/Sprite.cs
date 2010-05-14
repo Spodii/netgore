@@ -317,7 +317,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="ISprite"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             // Nothing to update... ever
         }

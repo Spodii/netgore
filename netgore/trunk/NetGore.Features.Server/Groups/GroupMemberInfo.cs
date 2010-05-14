@@ -14,7 +14,7 @@ namespace NetGore.Features.Groups
 
         IGroup _group;
         IGroup _inviteGroup;
-        int _inviteTime;
+        TickCount _inviteTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupMemberInfo&lt;T&gt;"/> class.
@@ -103,7 +103,7 @@ namespace NetGore.Features.Groups
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         /// <returns>The group that they joined, or null if there was no available groups to join.</returns>
-        public IGroup JoinGroup(int currentTime)
+        public IGroup JoinGroup(TickCount currentTime)
         {
             UpdateTime(currentTime);
 
@@ -186,7 +186,7 @@ namespace NetGore.Features.Groups
         /// <param name="currentTime">The current time.</param>
         /// <returns>The <see cref="IGroup"/> that the <see cref="GroupMemberInfo{T}.Owner"/> has an outstanding invite to,
         /// or null if they do not have any outstanding invites.</returns>
-        public IGroup OutstandingInviteGroup(int currentTime)
+        public IGroup OutstandingInviteGroup(TickCount currentTime)
         {
             UpdateTime(currentTime);
 
@@ -198,7 +198,7 @@ namespace NetGore.Features.Groups
         /// </summary>
         /// <param name="group">The group they were invited to.</param>
         /// <param name="currentTime">The current time.</param>
-        public void ReceiveInvite(IGroup group, int currentTime)
+        public void ReceiveInvite(IGroup group, TickCount currentTime)
         {
             // Don't place invites when they are already in a group
             if (Owner.Group == null)
@@ -233,7 +233,7 @@ namespace NetGore.Features.Groups
         /// Checks if the outstanding group invite has expired.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        void UpdateTime(int currentTime)
+        void UpdateTime(TickCount currentTime)
         {
             if (_inviteGroup != null)
             {

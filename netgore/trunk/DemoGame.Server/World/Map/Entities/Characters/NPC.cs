@@ -37,7 +37,7 @@ namespace DemoGame.Server
         /// <summary>
         /// The game time at which the NPC will respawn.
         /// </summary>
-        int _respawnTime = 0;
+        TickCount _respawnTime = 0;
 
         IShop<ShopItem> _shop;
 
@@ -185,7 +185,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         /// <returns>True if enough time has elapsed; otherwise false.</returns>
-        protected override bool CheckRespawnElapsedTime(int currentTime)
+        protected override bool CheckRespawnElapsedTime(TickCount currentTime)
         {
             return currentTime > _respawnTime;
         }
@@ -300,7 +300,7 @@ namespace DemoGame.Server
             {
                 // Start the respawn sequence
                 IsAlive = false;
-                _respawnTime = GetTime() + (RespawnSecs * 1000);
+                _respawnTime = (TickCount)(GetTime() + (RespawnSecs * 1000));
 
                 LoadSpawnItems();
 
