@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NetGore;
 using NetGore.Features.Skills;
 using SFML.Graphics;
 
@@ -13,7 +14,7 @@ namespace DemoGame.Server
         readonly ISkillCooldownManager _cooldownManager;
 
         Character _castingSkillTarget;
-        int _castingSkillUsageTime;
+        TickCount _castingSkillUsageTime;
         ISkill<SkillType, StatType, Character> _currentCastingSkill;
 
         /// <summary>

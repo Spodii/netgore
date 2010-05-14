@@ -31,7 +31,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
+        public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, uint timeLeft)
         {
             var secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
 
@@ -642,14 +642,14 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static void UpdateVelocityAndPosition(PacketWriter pw, DynamicEntity dynamicEntity, int currentTime)
+        public static void UpdateVelocityAndPosition(PacketWriter pw, DynamicEntity dynamicEntity, TickCount currentTime)
         {
             pw.Write(ServerPacketID.UpdateVelocityAndPosition);
             pw.Write(dynamicEntity.MapEntityIndex);
             dynamicEntity.SerializePositionAndVelocity(pw, currentTime);
         }
 
-        public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, int currentTime)
+        public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, TickCount currentTime)
         {
             var pw = GetWriter();
             UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);

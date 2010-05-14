@@ -1139,6 +1139,15 @@ namespace DemoGame
         /// Updates the map.
         /// </summary>
         /// <param name="deltaTime">The amount of time that elapsed since the last update.</param>
+        public void Update(uint deltaTime)
+        {
+            Update((int)deltaTime);
+        }
+
+        /// <summary>
+        /// Updates the map.
+        /// </summary>
+        /// <param name="deltaTime">The amount of time that elapsed since the last update.</param>
         public virtual void Update(int deltaTime)
         {
             // Update the Entities
@@ -1280,7 +1289,7 @@ namespace DemoGame
         /// Gets the current time in milliseconds.
         /// </summary>
         /// <returns>The current time in milliseconds.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _getTime.GetTime();
         }

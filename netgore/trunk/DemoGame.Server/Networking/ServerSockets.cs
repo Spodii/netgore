@@ -72,14 +72,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Removes all connections that have not been assigned a user
+        /// Removes all connections that have not been assigned a user.
         /// </summary>
-        /// <param name="timeOut">Minimum amount of time a connection has to be established</param>
-        public void RemoveInactiveConnections(int timeOut)
+        /// <param name="timeOut">Minimum amount of time a connection has to be established.</param>
+        public void RemoveInactiveConnections(uint timeOut)
         {
             ThreadAsserts.IsMainThread();
 
-            var currTime = Environment.TickCount;
+            var currTime = TickCount.Now;
             Remove(conn => (conn.Tag == null) && (currTime - conn.TimeCreated > timeOut));
 
             // FUTURE: Will also have to add in a check to remove any UserAccounts with no active user and have had no active user for a while

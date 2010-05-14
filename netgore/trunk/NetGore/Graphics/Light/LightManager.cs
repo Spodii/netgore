@@ -269,7 +269,7 @@ namespace NetGore.Graphics
         /// Updates all of the lights in this <see cref="ILightManager"/>, along with the <see cref="ILightManager"/> itself.
         /// </summary>
         /// <param name="currentTime">The current game time in milliseconds.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             foreach (var light in this)
             {

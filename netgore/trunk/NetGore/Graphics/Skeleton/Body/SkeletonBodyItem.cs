@@ -121,7 +121,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="SkeletonBodyItem"/>.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        internal void Update(int currentTime)
+        internal void Update(TickCount currentTime)
         {
             Grh.Update(currentTime);
         }

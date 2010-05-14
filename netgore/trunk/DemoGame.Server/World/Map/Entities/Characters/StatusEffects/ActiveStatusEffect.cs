@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.Features.StatusEffects;
 using NetGore.Stats;
 
@@ -12,7 +13,8 @@ namespace DemoGame.Server
     public class ActiveStatusEffect : IModStatContainer<StatType>
     {
         readonly IStatusEffect<StatType, StatusEffectType> _statusEffect;
-        int _disableTime;
+
+        TickCount _disableTime;
         ushort _power;
 
         /// <summary>
@@ -21,7 +23,7 @@ namespace DemoGame.Server
         /// <param name="statusEffect">The <see cref="IStatusEffect{TStatType, TSkillType}"/> to use.</param>
         /// <param name="power">The power of the StatusEffect.</param>
         /// <param name="disableTime">The game time at which this <see cref="ActiveStatusEffect"/> will be disabled.</param>
-        public ActiveStatusEffect(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power, int disableTime)
+        public ActiveStatusEffect(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power, TickCount disableTime)
         {
             _statusEffect = statusEffect;
             _power = power;
@@ -31,7 +33,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the game time at which this <see cref="ActiveStatusEffect"/> will be disabled.
         /// </summary>
-        public int DisableTime
+        public TickCount DisableTime
         {
             get { return _disableTime; }
         }
@@ -75,7 +77,7 @@ namespace DemoGame.Server
             return ret;
         }
 
-        public static int GetTimeRemaining(int gameTime, int disableTime)
+        public static TickCount GetTimeRemaining(TickCount gameTime, TickCount disableTime)
         {
             return disableTime - gameTime;
         }
@@ -85,7 +87,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
         /// <returns>The time remaining, in milliseconds, until this <see cref="ActiveStatusEffect"/> is disabled.</returns>
-        public int GetTimeRemaining(int gameTime)
+        public TickCount GetTimeRemaining(TickCount gameTime)
         {
             return DisableTime - gameTime;
         }
@@ -98,7 +100,7 @@ namespace DemoGame.Server
         /// <param name="disableTime">The disable time of the <see cref="ActiveStatusEffect"/> that is merging with
         /// this one.</param>
         /// <returns>True if the merge resulted in this <see cref="ActiveStatusEffect"/> changing; otherwise false.</returns>
-        public bool MergeWith(int currentTime, ushort power, int disableTime)
+        public bool MergeWith(TickCount currentTime, ushort power, TickCount disableTime)
         {
             int oldPower = _power;
             var oldDisableTime = _disableTime;

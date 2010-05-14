@@ -11,12 +11,25 @@ namespace NetGore.EditorTools
         /// </summary>
         const int _minSuggestUpdateRate = 500;
 
-        readonly int _startTime;
+        /// <summary>
+        /// The time the updating started.
+        /// </summary>
+        readonly TickCount _startTime;
+
+        /// <summary>
+        /// The total number of items.
+        /// </summary>
         readonly int _total;
 
+        /// <summary>
+        /// The current item.
+        /// </summary>
         int _current = 0;
 
-        int _lastUpdateTime = Environment.TickCount;
+        /// <summary>
+        /// The time the status was last updated.
+        /// </summary>
+        TickCount _lastUpdateTime = TickCount.Now;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhDataUpdaterProgressForm"/> class.
@@ -27,7 +40,7 @@ namespace NetGore.EditorTools
             InitializeComponent();
 
             _total = total;
-            _startTime = Environment.TickCount;
+            _startTime = TickCount.Now;
 
             progBar.Minimum = 0;
             progBar.Maximum = total;
@@ -40,7 +53,7 @@ namespace NetGore.EditorTools
         /// <param name="current">The current item count.</param>
         public void UpdateStatus(int current)
         {
-            var currTime = Environment.TickCount;
+            var currTime = TickCount.Now;
             var elapsed = currTime - _lastUpdateTime;
 
             if (elapsed < _minSuggestUpdateRate)
@@ -65,7 +78,7 @@ namespace NetGore.EditorTools
         /// </summary>
         void UpdateTimeRemaining()
         {
-            var currTime = Environment.TickCount;
+            var currTime = TickCount.Now;
             var elapsed = currTime - _startTime;
 
             if (elapsed <= 0 || _current <= 1 || _total < 1)

@@ -188,7 +188,7 @@ namespace DemoGame.Server
         /// The time at which the character will be allowed to attack again. That is, they cannot attack until the game time
         /// surpasses this time.
         /// </summary>
-        int _nextAttackTime;
+        TickCount _nextAttackTime;
 
         int _nextLevelExp;
 
@@ -630,7 +630,7 @@ namespace DemoGame.Server
             }
 
             // Update the last attack time to now
-            _nextAttackTime = currTime + _attackTimeout;
+            _nextAttackTime = (TickCount)(currTime + _attackTimeout);
         }
 
         /// <summary>
@@ -788,7 +788,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         /// <returns>True if enough time has elapsed; otherwise false.</returns>
-        protected abstract bool CheckRespawnElapsedTime(int currentTime);
+        protected abstract bool CheckRespawnElapsedTime(TickCount currentTime);
 
         /// <summary>
         /// When overridden in the derived class, creates the CharacterEquipped for this Character.
@@ -2405,7 +2405,7 @@ namespace DemoGame.Server
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return World.GetTime();
         }
@@ -2428,7 +2428,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         /// <returns>True if the IRespawnable is ready to respawn, else false.</returns>
-        bool IRespawnable.ReadyToRespawn(int currentTime)
+        bool IRespawnable.ReadyToRespawn(TickCount currentTime)
         {
             return IsAlive || CheckRespawnElapsedTime(currentTime);
         }

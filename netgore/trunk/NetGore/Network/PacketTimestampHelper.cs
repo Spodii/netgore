@@ -23,7 +23,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="currentTime">The time to get the time stamp for.</param>
         /// <returns>The time stamp for the given time.</returns>
-        public static ushort GetTimeStamp(int currentTime)
+        public static ushort GetTimeStamp(TickCount currentTime)
         {
             unchecked
             {
@@ -37,7 +37,7 @@ namespace NetGore.Network
         /// <returns>The time stamp for the current time.</returns>
         public static ushort GetTimeStamp()
         {
-            return GetTimeStamp(Environment.TickCount);
+            return GetTimeStamp(TickCount.Now);
         }
 
         /// <summary>

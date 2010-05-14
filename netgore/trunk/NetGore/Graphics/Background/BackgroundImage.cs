@@ -311,7 +311,7 @@ namespace NetGore.Graphics
         /// Updates the BackgroundImage.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
-        public virtual void Update(int currentTime)
+        public virtual void Update(TickCount currentTime)
         {
             if (!IsSpriteSet())
                 return;

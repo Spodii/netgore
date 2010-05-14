@@ -22,7 +22,7 @@ namespace NetGore.Features.Skills
         /// <param name="currentTime">The current game time in milliseconds.</param>
         /// <returns>True if the group is currently cooling down and cannot be used; false if the group is available
         /// for usage.</returns>
-        bool IsCoolingDown(byte group, int currentTime);
+        bool IsCoolingDown(byte group, TickCount currentTime);
 
         /// <summary>
         /// Sets the cooldown time for a group of skills.
@@ -30,6 +30,6 @@ namespace NetGore.Features.Skills
         /// <param name="group">The index of the skill group.</param>
         /// <param name="time">The cooldown time in milliseconds.</param>
         /// <param name="currentTime">The current game time in milliseconds.</param>
-        void SetCooldown(byte group, int time, int currentTime);
+        void SetCooldown(byte group, int time, TickCount currentTime);
     }
 }

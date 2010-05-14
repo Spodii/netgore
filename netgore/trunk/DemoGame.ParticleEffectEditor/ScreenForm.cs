@@ -202,9 +202,9 @@ namespace DemoGame.ParticleEffectEditor
         /// Gets the current time in milliseconds.
         /// </summary>
         /// <returns>The current time in milliseconds.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
-            return (int)_watch.ElapsedMilliseconds;
+            return (TickCount)_watch.ElapsedMilliseconds;
         }
 
         #endregion

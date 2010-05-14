@@ -9,7 +9,7 @@ namespace NetGore.Graphics
     /// </summary>
     public class ChatBubble
     {
-        readonly int _deathTime;
+        readonly TickCount _deathTime;
         readonly ChatBubbleManagerBase _manager;
         readonly Entity _owner;
         readonly string _text;
@@ -29,7 +29,7 @@ namespace NetGore.Graphics
         /// <param name="owner">The <see cref="Entity"/> the <see cref="ChatBubble"/> is attached to.</param>
         /// <param name="text">The text to display.</param>
         /// <param name="currentTime">The current game time.</param>
-        public ChatBubble(ChatBubbleManagerBase manager, Entity owner, string text, int currentTime)
+        public ChatBubble(ChatBubbleManagerBase manager, Entity owner, string text, TickCount currentTime)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -39,7 +39,7 @@ namespace NetGore.Graphics
             _manager = manager;
             _owner = owner;
             _text = text;
-            _deathTime = currentTime + manager.Lifespan;
+            _deathTime = (TickCount)(currentTime + manager.Lifespan);
 
             _textSize = CalculateSize();
 
@@ -117,7 +117,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="ChatBubble"/>.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             if (IsExpired)
                 return;

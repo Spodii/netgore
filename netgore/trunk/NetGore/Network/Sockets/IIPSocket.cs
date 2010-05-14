@@ -61,7 +61,7 @@ namespace NetGore.Network
         /// <summary>
         /// Gets the time that this <see cref="IIPSocket"/> was created.
         /// </summary>
-        int TimeCreated { get; }
+        TickCount TimeCreated { get; }
 
         /// <summary>
         /// Gets the queue of received data.

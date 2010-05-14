@@ -9,7 +9,7 @@ namespace NetGore.Features.Guilds
     public class GuildInviteStatus : IPoolable
     {
         IGuild _guild;
-        int _inviteTime;
+        TickCount _inviteTime;
 
         /// <summary>
         /// Gets the guild the invite is for.
@@ -22,7 +22,7 @@ namespace NetGore.Features.Guilds
         /// <summary>
         /// Gets when the invite to the guild was made.
         /// </summary>
-        public int InviteTime
+        public TickCount InviteTime
         {
             get { return _inviteTime; }
             internal set { _inviteTime = value; }
@@ -45,7 +45,7 @@ namespace NetGore.Features.Guilds
         /// </summary>
         /// <param name="guild">The guild.</param>
         /// <param name="inviteTime">The invite time.</param>
-        internal void Initialize(IGuild guild, int inviteTime)
+        internal void Initialize(IGuild guild, TickCount inviteTime)
         {
             _guild = guild;
             _inviteTime = inviteTime;
@@ -57,7 +57,7 @@ namespace NetGore.Features.Guilds
         internal void Reset()
         {
             _guild = null;
-            _inviteTime = int.MinValue;
+            _inviteTime = TickCount.MinValue;
         }
 
         #region IPoolable Members

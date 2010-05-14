@@ -205,7 +205,7 @@ namespace NetGore.EditorTools
                 return;
             }
 
-            _animationGrh = new Grh(grhData, AnimType.Loop, Environment.TickCount);
+            _animationGrh = new Grh(grhData, AnimType.Loop, TickCount.Now);
             _image = _grhImageList.GetImage(grhData.GetFrame(0));
         }
 
@@ -289,7 +289,7 @@ namespace NetGore.EditorTools
             var oldGrhData = current;
 
             // Update the Grh
-            _animationGrh.Update(Environment.TickCount);
+            _animationGrh.Update(TickCount.Now);
 
             // Check that the GrhIndex changed from the update
             if (oldGrhData != _animationGrh.CurrentGrhData)

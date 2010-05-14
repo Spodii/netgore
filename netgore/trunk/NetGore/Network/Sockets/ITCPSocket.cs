@@ -53,9 +53,9 @@ namespace NetGore.Network
         object Tag { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="Environment.TickCount"/> of when this <see cref="ITCPSocket"/> was created.
+        /// Gets the <see cref="TickCount.Now"/> of when this <see cref="ITCPSocket"/> was created.
         /// </summary>
-        int TimeCreated { get; }
+        TickCount TimeCreated { get; }
 
         /// <summary>
         /// Gets the queue of complete received data.

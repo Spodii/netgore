@@ -955,7 +955,7 @@ namespace DemoGame.Client
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return GameplayScreen.GetTime();
         }

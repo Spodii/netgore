@@ -273,7 +273,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="ILight"/>.
         /// </summary>
         /// <param name="currentTime">The current game time in milliseconds.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             if (Sprite != null)
                 Sprite.Update(currentTime);

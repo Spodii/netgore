@@ -181,7 +181,7 @@ namespace NetGore.Graphics.GUI
         /// active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        public virtual void Draw(int gameTime)
+        public virtual void Draw(TickCount gameTime)
         {
             var spriteBatch = DrawingManager.BeginDrawGUI();
             if (spriteBatch == null)
@@ -222,7 +222,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the screen if it is currently the active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        public virtual void Update(int gameTime)
+        public virtual void Update(TickCount gameTime)
         {
             GUIManager.Update(gameTime);
         }

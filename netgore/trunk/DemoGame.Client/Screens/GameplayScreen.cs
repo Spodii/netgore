@@ -41,7 +41,7 @@ namespace DemoGame.Client
         ChatBubbleManager _chatBubbleManager;
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
-        int _currentTime = 0;
+        TickCount _currentTime = 0;
         Font _damageFont;
         DragDropHandler _dragDropHandler;
         EquipmentInfoRequester _equipmentInfoRequester;
@@ -301,7 +301,7 @@ namespace DemoGame.Client
         /// active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        public override void Draw(int gameTime)
+        public override void Draw(TickCount gameTime)
         {
             if (UserChar == null)
                 return;
@@ -569,7 +569,7 @@ namespace DemoGame.Client
         /// Updates the screen if it is currently the active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        public override void Update(int gameTime)
+        public override void Update(TickCount gameTime)
         {
             ThreadAsserts.IsMainThread();
 
@@ -668,7 +668,7 @@ namespace DemoGame.Client
         /// Gets the current game time where time 0 is when the application started
         /// </summary>
         /// <returns>Current game time in milliseconds</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _currentTime;
         }

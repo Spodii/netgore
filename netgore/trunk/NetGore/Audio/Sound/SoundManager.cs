@@ -40,7 +40,7 @@ namespace NetGore.Audio
         /// <summary>
         /// The time at which sounds will next be updated.
         /// </summary>
-        int _nextUpdateTime = int.MinValue;
+        TickCount _nextUpdateTime = TickCount.MinValue;
 
         float _volume = 100;
 
@@ -465,7 +465,7 @@ namespace NetGore.Audio
         /// </summary>
         public void Update()
         {
-            var time = Environment.TickCount;
+            var time = TickCount.Now;
             if (_nextUpdateTime > time)
                 return;
 

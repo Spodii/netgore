@@ -193,7 +193,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         /// <returns>True if enough time has elapsed; otherwise false.</returns>
-        protected override bool CheckRespawnElapsedTime(int currentTime)
+        protected override bool CheckRespawnElapsedTime(TickCount currentTime)
         {
             // Users don't need to wait for nuttin'!
             return true;

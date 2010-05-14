@@ -25,12 +25,12 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// The time at which the <see cref="Particle"/> will die.
         /// </summary>
-        public int LifeEnd;
+        public TickCount LifeEnd;
 
         /// <summary>
         /// The time at which the <see cref="Particle"/> was created.
         /// </summary>
-        public int LifeStart;
+        public TickCount LifeStart;
 
         /// <summary>
         /// The direction the <see cref="Particle"/> is moving.
@@ -78,7 +78,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Gets the total number of milliseconds that this <see cref="Particle"/> will live, from start to finish.
         /// </summary>
-        public int LifeSpan
+        public TickCount LifeSpan
         {
             get { return LifeEnd - LifeStart; }
         }
@@ -125,7 +125,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         /// <returns>The age of the particle in milliseconds.</returns>
-        public int GetAge(int currentTime)
+        public TickCount GetAge(TickCount currentTime)
         {
             return currentTime - LifeStart;
         }
@@ -136,7 +136,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         /// <returns>The age of the particle as a percent.</returns>
-        public float GetAgePercent(int currentTime)
+        public float GetAgePercent(TickCount currentTime)
         {
             return (float)GetAge(currentTime) / LifeSpan;
         }

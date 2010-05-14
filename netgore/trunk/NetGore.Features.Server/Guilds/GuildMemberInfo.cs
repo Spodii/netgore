@@ -109,7 +109,7 @@ namespace NetGore.Features.Guilds
         /// <returns>
         /// True if this member successfully joined the <paramref name="guild"/>; otherwise false.
         /// </returns>
-        public bool AcceptInvite(IGuild guild, int currentTime)
+        public bool AcceptInvite(IGuild guild, TickCount currentTime)
         {
             if (Owner.Guild != null)
                 return false;
@@ -144,7 +144,7 @@ namespace NetGore.Features.Guilds
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         /// <returns>All of the current live invites the <see cref="GuildMemberInfo{T}.Owner"/> has</returns>
-        public IEnumerable<GuildInviteStatus> GetInvites(int currentTime)
+        public IEnumerable<GuildInviteStatus> GetInvites(TickCount currentTime)
         {
             UpdateInvites(currentTime);
             return _invites;
@@ -194,7 +194,7 @@ namespace NetGore.Features.Guilds
         /// </summary>
         /// <param name="guild">The guild they were invited to.</param>
         /// <param name="currentTime">The current time.</param>
-        public void ReceiveInvite(IGuild guild, int currentTime)
+        public void ReceiveInvite(IGuild guild, TickCount currentTime)
         {
             UpdateInvites(currentTime);
 
@@ -218,7 +218,7 @@ namespace NetGore.Features.Guilds
         /// Updates the invites, removing expired ones.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        void UpdateInvites(int currentTime)
+        void UpdateInvites(TickCount currentTime)
         {
             for (var i = 0; i < _invites.Count; i++)
             {

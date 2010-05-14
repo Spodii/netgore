@@ -19,7 +19,7 @@ namespace DemoGame.Client
         /// <param name="damage">Damage value</param>
         /// <param name="entity">Entity that was damaged</param>
         /// <param name="currTime">Current time</param>
-        public void Create(int damage, Entity entity, int currTime)
+        public void Create(int damage, Entity entity, TickCount currTime)
         {
             var obj = _pool.Acquire();
             obj.Activate(damage, entity, currTime);
@@ -39,7 +39,7 @@ namespace DemoGame.Client
         /// Updates all of the DamageTexts in the pool
         /// </summary>
         /// <param name="currentTime">Current time</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             var collectGarbage = false;
 

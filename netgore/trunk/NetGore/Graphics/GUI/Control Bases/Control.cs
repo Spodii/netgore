@@ -1769,7 +1769,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the Control and all the controls under it.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             if (IsDisposed)
                 return;
@@ -1806,7 +1806,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        protected virtual void UpdateControl(int currentTime)
+        protected virtual void UpdateControl(TickCount currentTime)
         {
             if (IsDisposed)
                 return;

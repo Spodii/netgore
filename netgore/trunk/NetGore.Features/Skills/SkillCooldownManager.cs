@@ -8,7 +8,7 @@ namespace NetGore.Features.Skills
     /// </summary>
     public class SkillCooldownManager : ISkillCooldownManager
     {
-        readonly Dictionary<byte, int> _cooldownGroups = new Dictionary<byte, int>();
+        readonly Dictionary<byte, TickCount> _cooldownGroups = new Dictionary<byte, TickCount>();
 
         #region ISkillCooldownManager Members
 
@@ -20,7 +20,7 @@ namespace NetGore.Features.Skills
         public int GetCooldownTime(byte group)
         {
             if (_cooldownGroups.ContainsKey(group))
-                return _cooldownGroups[group];
+                return (int)(uint)_cooldownGroups[group];
 
             return 0;
         }
@@ -32,7 +32,7 @@ namespace NetGore.Features.Skills
         /// <param name="currentTime">The current game time in milliseconds.</param>
         /// <returns>True if the group is currently cooling down and cannot be used; false if the group is available
         /// for usage.</returns>
-        public bool IsCoolingDown(byte group, int currentTime)
+        public bool IsCoolingDown(byte group, TickCount currentTime)
         {
             if (!_cooldownGroups.ContainsKey(group))
                 return false;
@@ -53,7 +53,7 @@ namespace NetGore.Features.Skills
         /// <param name="group">The index of the skill group.</param>
         /// <param name="time">The cooldown time in milliseconds.</param>
         /// <param name="currentTime">The current game time in milliseconds.</param>
-        public void SetCooldown(byte group, int time, int currentTime)
+        public void SetCooldown(byte group, int time, TickCount currentTime)
         {
             if (time <= 0)
             {
@@ -61,7 +61,7 @@ namespace NetGore.Features.Skills
                 return;
             }
 
-            var endTime = time + currentTime;
+            var endTime = (TickCount)(time + currentTime);
 
             if (_cooldownGroups.ContainsKey(group))
                 _cooldownGroups[group] = endTime;

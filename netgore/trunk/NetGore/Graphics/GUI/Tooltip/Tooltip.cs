@@ -24,7 +24,7 @@ namespace NetGore.Graphics.GUI
         Font _font;
         Color _fontColor = Color.White;
         bool _isVisible = true;
-        int _lastRefreshTime;
+        TickCount _lastRefreshTime;
         Control _lastUnderCursor;
         int _maxWidth = 150;
         int _retryDelay = 500;
@@ -32,7 +32,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// The time that the current control under the cursor started being hovered over.
         /// </summary>
-        int _startHoverTime;
+        TickCount _startHoverTime;
 
         int _timeout = 3000;
 
@@ -58,7 +58,7 @@ namespace NetGore.Graphics.GUI
         /// Refreshes the text of a tooltip.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
-        void RefreshText(int currentTime)
+        void RefreshText(TickCount currentTime)
         {
             // Request the tooltip text
             var tooltipTexts = _lastUnderCursor.Tooltip.Invoke(_lastUnderCursor, _args);
@@ -66,7 +66,7 @@ namespace NetGore.Graphics.GUI
 
             // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
             if (tooltipTexts == null)
-                _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
+                _startHoverTime = (TickCount)(currentTime - Delay + RetryGetTooltipDelay);
             else
             {
                 if (tooltipTexts.Count() > 0)
@@ -271,7 +271,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the <see cref="ITooltip"/>.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        public virtual void Update(int currentTime)
+        public virtual void Update(TickCount currentTime)
         {
             // Do nothing if not visible
             if (!IsVisible)

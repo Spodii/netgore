@@ -60,7 +60,7 @@ namespace NetGore.Features.Emoticons
         /// <param name="emoticon">The emoticon to display.</param>
         /// <param name="currentTime">The current game time.</param>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        public void Add(ISpatial entity, Emoticon emoticon, int currentTime)
+        public void Add(ISpatial entity, Emoticon emoticon, TickCount currentTime)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
@@ -118,7 +118,7 @@ namespace NetGore.Features.Emoticons
         /// Updates the emoticons in the <see cref="EmoticonDisplayManager"/>.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             var removeCount = 0;
 
@@ -154,8 +154,7 @@ namespace NetGore.Features.Emoticons
 
             readonly Grh _grh = new Grh();
 
-            int _initializeTime;
-
+            TickCount _initializeTime;
             bool _isAlive;
 
             /// <summary>
@@ -194,7 +193,7 @@ namespace NetGore.Features.Emoticons
             /// </summary>
             /// <param name="grhIndex">The <see cref="GrhIndex"/> of the emoticon.</param>
             /// <param name="currentTime">The current game time.</param>
-            public void Initialize(GrhIndex grhIndex, int currentTime)
+            public void Initialize(GrhIndex grhIndex, TickCount currentTime)
             {
                 _grh.SetGrh(grhIndex, AnimType.LoopOnce, currentTime);
                 _initializeTime = currentTime;
@@ -205,7 +204,7 @@ namespace NetGore.Features.Emoticons
             /// Updates the emoticon.
             /// </summary>
             /// <param name="currentTime">The current game time.</param>
-            public void Update(int currentTime)
+            public void Update(TickCount currentTime)
             {
                 // Check for a valid state
                 if (!IsValidStateToUse)

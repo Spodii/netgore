@@ -11,7 +11,7 @@ namespace NetGore.Graphics.GUI
         int _delay;
         GameControlKeys _gckeys;
         bool _isEnabled = true;
-        int _lastInvokeTime;
+        TickCount _lastInvokeTime;
         bool _needsReset = false;
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="guiManager">The <see cref="IGUIManager"/> to get the key states from.</param>
         /// <param name="currentTime">The current time in milliseconds.</param>
-        public void Update(IGUIManager guiManager, int currentTime)
+        public void Update(IGUIManager guiManager, TickCount currentTime)
         {
             // Ensure the object is enabled and there is an invoke handler before checking the key states
             if (!IsEnabled || Invoked == null)

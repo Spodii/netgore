@@ -25,7 +25,7 @@ namespace DemoGame.SkeletonEditor
 
         ICamera2D _camera;
         IContentManager _content;
-        int _currentTime = 0;
+        TickCount _currentTime;
 
         /// <summary>
         /// World position of the cursor for the game screen
@@ -334,7 +334,7 @@ namespace DemoGame.SkeletonEditor
         /// Gets the current game time where time 0 is when the application started
         /// </summary>
         /// <returns>Current game time in milliseconds</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
             return _currentTime;
         }
@@ -600,7 +600,7 @@ namespace DemoGame.SkeletonEditor
             if (!_watch.IsRunning)
                 return;
 
-            _currentTime = (int)_watch.ElapsedMilliseconds;
+            _currentTime = (TickCount)_watch.ElapsedMilliseconds;
             _skeletonAnim.Update(_currentTime);
         }
 
@@ -1216,7 +1216,7 @@ namespace DemoGame.SkeletonEditor
                     return;
                 }
 
-                SelectedDSI.Grh.SetGrh(grhData, AnimType.Loop, (int)_watch.ElapsedMilliseconds);
+                SelectedDSI.Grh.SetGrh(grhData, AnimType.Loop, (TickCount)_watch.ElapsedMilliseconds);
                 SelectedDSI.ItemInfo.GrhIndex = grhIndex;
 
                 txtGrhIndex.BackColor = EditorColors.Normal;

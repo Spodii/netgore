@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
@@ -12,9 +13,8 @@ namespace DemoGame.Client
     /// </summary>
     public class SkillCastProgressBar : TextControl
     {
-        int _castStartTime;
-        int _currentCastTime;
-        int _currentTime;
+        TickCount _castStartTime;
+        TickCount _currentCastTime;
         SkillType? _skillType;
         Vector2 _textOffset;
 
@@ -44,7 +44,7 @@ namespace DemoGame.Client
             base.DrawControl(spriteBatch);
 
             // Draw the progress bar
-            float elapsedTime = _currentTime - _castStartTime;
+            float elapsedTime = TickCount.Now - _castStartTime;
             var percent = elapsedTime / _currentCastTime;
             var startDrawPos = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
             var drawWidth = ClientSize.X * Math.Min(percent, 1);
@@ -64,10 +64,10 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="skillType">Type of the skill.</param>
         /// <param name="castTime">The time it will take for the skill to be casted.</param>
-        public void StartCasting(SkillType skillType, int castTime)
+        public void StartCasting(SkillType skillType, TickCount castTime)
         {
             _currentCastTime = castTime;
-            _castStartTime = _currentTime;
+            _castStartTime = TickCount.Now;
             _skillType = skillType;
 
             Text = "Casting " + skillType;
@@ -85,17 +85,6 @@ namespace DemoGame.Client
         {
             IsVisible = false;
             _skillType = null;
-        }
-
-        /// <summary>
-        /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
-        /// </summary>
-        /// <param name="currentTime">The current time in milliseconds.</param>
-        protected override void UpdateControl(int currentTime)
-        {
-            _currentTime = currentTime;
-
-            base.UpdateControl(currentTime);
         }
     }
 }

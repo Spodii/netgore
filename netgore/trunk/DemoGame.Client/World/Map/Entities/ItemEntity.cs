@@ -30,7 +30,7 @@ namespace DemoGame.Client
             _grh = new Grh(null);
         }
 
-        public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
+        public ItemEntity(GrhIndex graphicIndex, byte amount, TickCount currentTime) : base(Vector2.Zero, Vector2.Zero)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Amount = amount;
@@ -39,7 +39,7 @@ namespace DemoGame.Client
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
-        public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, int currentTime)
+        public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, TickCount currentTime)
             : base(pos, size)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor

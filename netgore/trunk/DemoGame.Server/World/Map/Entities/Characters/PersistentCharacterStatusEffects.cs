@@ -12,6 +12,10 @@ using NetGore.Features.StatusEffects;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// A <see cref="CharacterStatusEffects"/> for a <see cref="Character"/> that persists to the database.
+    /// Since the <see cref="Character"/> persists to the database, so must their status effects.
+    /// </summary>
     public class PersistentCharacterStatusEffects : CharacterStatusEffects
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -31,6 +35,9 @@ namespace DemoGame.Server
 
         readonly List<ASEWithID> _statusEffects = new List<ASEWithID>();
 
+        /// <summary>
+        /// Initializes the <see cref="PersistentCharacterStatusEffects"/> class.
+        /// </summary>
         static PersistentCharacterStatusEffects()
         {
             IDbController dbController = DbControllerBase.GetInstance();
@@ -39,22 +46,38 @@ namespace DemoGame.Server
             _deleteQuery = dbController.GetQuery<DeleteCharacterStatusEffectQuery>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersistentCharacterStatusEffects"/> class.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> that this collection belongs to.</param>
         public PersistentCharacterStatusEffects(Character character) : base(character)
         {
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets if this collection contains a given <see cref="StatusEffectType"/>.
+        /// </summary>
+        /// <param name="statusEffectType">The <see cref="StatusEffectType"/> to check for.</param>
+        /// <returns>True if this collection contains the <paramref name="statusEffectType"/>; otherwise false.</returns>
         public override bool Contains(StatusEffectType statusEffectType)
         {
             return
                 _statusEffects.Any(x => _statusEffectTypeComparer.Equals(x.Value.StatusEffect.StatusEffectType, statusEffectType));
         }
 
+        /// <summary>
+        /// Deletes an <see cref="ActiveStatusEffect"/> from the database using the <see cref="ActiveStatusEffectID"/>.
+        /// </summary>
+        /// <param name="id">The <see cref="ActiveStatusEffectID"/> to delete form the database.</param>
         static void DeleteFromDatabase(ActiveStatusEffectID id)
         {
             _deleteQuery.Execute(id);
             _idCreator.FreeID(id);
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             base.Dispose();
@@ -88,6 +111,10 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles removing an expired StatusEffect.
+        /// </summary>
+        /// <param name="activeStatusEffect">StatusEffect to be removed.</param>
         protected override void HandleExpired(ActiveStatusEffect activeStatusEffect)
         {
             for (var i = 0; i < _statusEffects.Count; i++)
@@ -105,6 +132,10 @@ namespace DemoGame.Server
             Debug.Fail("Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
         }
 
+        /// <summary>
+        /// Loads the status effects for the <see cref="CharacterStatusEffects.Character"/> that this collection belongs to from
+        /// the database.
+        /// </summary>
         public void Load()
         {
             Debug.Assert(_statusEffects.Count == 0, "Why is Load() being called while there are active effects here already?");
@@ -126,13 +157,21 @@ namespace DemoGame.Server
                     continue;
                 }
 
-                var ase = new ActiveStatusEffect(statusEffect, value.Power, value.TimeLeftSecs * 1000 + currentTime);
+                var ase = new ActiveStatusEffect(statusEffect, value.Power, (TickCount)(value.TimeLeftSecs * 1000 + currentTime));
                 var aseWithID = new ASEWithID(value.ID, ase);
                 _statusEffects.Add(aseWithID);
                 NotifyAdded(ase);
             }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, tries to add an <see cref="IStatusEffect{StatType, StatusEffectType}"/> to
+        /// this collection.
+        /// </summary>
+        /// <param name="statusEffect">The status effect to add.</param>
+        /// <param name="power">The power of the status effect.</param>
+        /// <returns>True if the <paramref name="statusEffect"/> of the given <paramref name="power"/> was added
+        /// to this collection; otherwise false.</returns>
         public override bool TryAdd(IStatusEffect<StatType, StatusEffectType> statusEffect, ushort power)
         {
             if (statusEffect == null)
@@ -142,7 +181,7 @@ namespace DemoGame.Server
             var alreadyExists = TryGetStatusEffect(statusEffect.StatusEffectType, out existingStatusEffect);
 
             var time = GetTime();
-            var disableTime = time + statusEffect.GetEffectTime(power);
+            var disableTime = (TickCount)(time + statusEffect.GetEffectTime(power));
 
             if (alreadyExists)
             {
@@ -165,6 +204,15 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, tries to get the <see cref="ActiveStatusEffect"/> for a <see cref="StatusEffectType"/>
+        /// in this collection.
+        /// </summary>
+        /// <param name="statusEffectType">The <see cref="StatusEffectType"/> to try to get the <see cref="ActiveStatusEffect"/> of.</param>
+        /// <param name="statusEffect">When this method returns true, contains the <see cref="ActiveStatusEffect"/> instance from
+        /// this collection for the given <paramref name="statusEffectType"/>.</param>
+        /// <returns>True if the <see cref="ActiveStatusEffect"/> of the <paramref name="statusEffectType"/> was found in
+        /// this collection; otherwise false.</returns>
         public override bool TryGetStatusEffect(StatusEffectType statusEffectType, out ActiveStatusEffect statusEffect)
         {
             foreach (var activeStatusEffect in this)
@@ -213,15 +261,33 @@ namespace DemoGame.Server
             _replaceQuery.Execute(values);
         }
 
+        /// <summary>
+        /// A struct of a <see cref="ActiveStatusEffect"/> and corresponding <see cref="ActiveStatusEffectID"/>.
+        /// </summary>
         public struct ASEWithID
         {
-            public readonly ActiveStatusEffectID ID;
-            public readonly ActiveStatusEffect Value;
+            readonly ActiveStatusEffectID _id;
+            readonly ActiveStatusEffect _value;
 
+            /// <summary>
+            /// Gets the <see cref="ActiveStatusEffectID"/>.
+            /// </summary>
+            public ActiveStatusEffectID ID { get { return _id; } }
+
+            /// <summary>
+            /// Gets the <see cref="ActiveStatusEffect"/>.
+            /// </summary>
+            public ActiveStatusEffect Value { get { return _value; } }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ASEWithID"/> struct.
+            /// </summary>
+            /// <param name="id">The <see cref="ActiveStatusEffectID"/>.</param>
+            /// <param name="value">The <see cref="ActiveStatusEffect"/>.</param>
             public ASEWithID(ActiveStatusEffectID id, ActiveStatusEffect value)
             {
-                ID = id;
-                Value = value;
+                _id = id;
+                _value = value;
             }
         }
     }

@@ -32,7 +32,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Time the skeleton was last updated.
         /// </summary>
-        int _lastTime = 0;
+        TickCount _lastTime = 0;
 
         /// <summary>
         /// Skeleton animation modifier.
@@ -73,16 +73,16 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonAnimation"/> class.
         /// </summary>
-        /// <param name="time">Current time.</param>
+        /// <param name="currentTime">The current time.</param>
         /// <param name="skeletonSet">SkeletonSet to use for the keyframes.</param>
-        public SkeletonAnimation(int time, SkeletonSet skeletonSet)
+        public SkeletonAnimation(TickCount currentTime, SkeletonSet skeletonSet)
         {
             if (skeletonSet == null)
                 throw new ArgumentNullException("skeletonSet");
             if (skeletonSet.KeyFrames.Length == 0)
                 throw new Exception("skeletonSet contains no KeyFrames.");
 
-            _lastTime = time;
+            _lastTime = currentTime;
             _skelSet = skeletonSet;
             _currFrame = _skelSet.KeyFrames[0];
             _nextFrame = _skelSet.KeyFrames.Length > 1 ? _skelSet.KeyFrames[1] : _skelSet.KeyFrames[0];
@@ -92,9 +92,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="SkeletonAnimation"/> class.
         /// </summary>
-        /// <param name="time">Current time.</param>
+        /// <param name="currentTime">Current time.</param>
         /// <param name="frame">Single frame to use for the keyframe.</param>
-        public SkeletonAnimation(int time, SkeletonFrame frame) : this(time, new SkeletonSet(new[] { frame }))
+        public SkeletonAnimation(TickCount currentTime, SkeletonFrame frame)
+            : this(currentTime, new SkeletonSet(new[] { frame }))
         {
         }
 
@@ -423,8 +424,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Sets the speed of the animation so that it finishes within a specified time limit.
         /// </summary>
-        /// <param name="time">The time in milliseconds.</param>
-        void SetTargetTime(int time)
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        void SetTargetTime(TickCount currentTime)
         {
             var totalTime = 0.0f;
 
@@ -435,14 +436,14 @@ namespace NetGore.Graphics
             }
 
             //Set the speed of the animation
-            _speed = totalTime / time;
+            _speed = totalTime / currentTime;
         }
 
         /// <summary>
         /// Updates the skeleton animation.
         /// </summary>
         /// <param name="currentTime">Current time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             // If theres no frames and no modifier, don't update
             if (_mod == null && (_skelSet.KeyFrames.Length == 1) && (CurrentFrame.Skeleton == _skelSet.KeyFrames[0].Skeleton))

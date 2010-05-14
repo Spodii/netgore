@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame.Client
@@ -28,7 +29,7 @@ namespace DemoGame.Client
         /// </summary>
         static readonly string _defaultProfilePath;
 
-        int _lastSaveTime = int.MinValue;
+        TickCount _lastSaveTime = TickCount.MinValue;
 
         /// <summary>
         /// Initializes the <see cref="GUISettings"/> class.
@@ -60,7 +61,7 @@ namespace DemoGame.Client
         /// Updates the GUISettings.
         /// </summary>
         /// <param name="currentTime">Current time.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             if (_lastSaveTime + _saveFrequency > currentTime)
                 return;

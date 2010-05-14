@@ -34,16 +34,15 @@ namespace DemoGame.Server
         readonly object _consoleCommandSync = new object();
         readonly ConsoleCommands _consoleCommands;
         readonly IDbController _dbController;
-        readonly Stopwatch _gameTimer = new Stopwatch();
         readonly GroupManager _groupManager;
         readonly List<string> _motd = new List<string>();
         readonly ServerSockets _sockets;
-        readonly int _startupTime = Environment.TickCount;
+        readonly TickCount _startupTime = TickCount.Now;
         readonly World _world;
 
         bool _disposed;
         bool _isRunning = true;
-        int _nextServerSaveTime;
+        TickCount _nextServerSaveTime;
         IServerSettingTable _serverSettings;
         int _tick;
 
@@ -150,7 +149,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the time that the server started.
         /// </summary>
-        public int StartupTime
+        public TickCount StartupTime
         {
             get { return _startupTime; }
         }
@@ -289,9 +288,6 @@ namespace DemoGame.Server
 
             long lastRemoveConnsTime = 0;
 
-            _gameTimer.Reset();
-            _gameTimer.Start();
-
             _nextServerSaveTime = GetTime() + ServerSettings.RoutineServerSaveRate;
 
             var worldStatsTracker = WorldStatsTracker.Instance;
@@ -299,12 +295,12 @@ namespace DemoGame.Server
             while (_isRunning)
             {
                 // Store the loop start time so we can calculate how long the loop took
-                var loopStartTime = _gameTimer.ElapsedMilliseconds;
+                var loopStartTime = GetTime();
 
                 // Check to remove inactive connections
-                if (_gameTimer.ElapsedMilliseconds - lastRemoveConnsTime > ServerSettings.RemoveInactiveConnectionsRate)
+                if (loopStartTime - lastRemoveConnsTime > ServerSettings.RemoveInactiveConnectionsRate)
                 {
-                    lastRemoveConnsTime = _gameTimer.ElapsedMilliseconds;
+                    lastRemoveConnsTime = loopStartTime;
                     ServerSockets.RemoveInactiveConnections(ServerSettings.InactiveConnectionTimeOut);
                 }
 
@@ -328,17 +324,17 @@ namespace DemoGame.Server
                 worldStatsTracker.Update();
 
                 // Check if we can afford sleeping the thread
-                var sleepTime = ServerSettings.ServerUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
+                var sleepTime = (long)ServerSettings.ServerUpdateRate - (GetTime() - loopStartTime);
                 if (sleepTime > 0)
                     Thread.Sleep((int)sleepTime);
 
                 ++_tick;
             }
 
-            // Update the world stats one last time
-            worldStatsTracker.Update();
+            // Once the thread reaches this point, it means it is closing since the main loop has stopped
 
-            _gameTimer.Stop();
+            // Update the world stats one last time before the server closes
+            worldStatsTracker.Update();
         }
 
         /// <summary>
@@ -599,9 +595,9 @@ namespace DemoGame.Server
         /// Gets the current time in milliseconds.
         /// </summary>
         /// <returns>The current time in milliseconds.</returns>
-        public int GetTime()
+        public TickCount GetTime()
         {
-            return (int)_gameTimer.ElapsedMilliseconds;
+            return TickCount.Now;
         }
 
         #endregion

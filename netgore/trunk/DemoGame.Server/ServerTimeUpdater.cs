@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -10,7 +11,8 @@ namespace DemoGame.Server
     public class ServerTimeUpdater
     {
         readonly DbQueryNonReader _updateQuery;
-        int _lastUpdateTime;
+
+        TickCount _lastUpdateTime;
         int _updateRate = 3000;
 
         public ServerTimeUpdater(DbQueryNonReader updateQuery)
@@ -35,7 +37,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="currentTime">The current game time. Used to determine if enough time has elapsed since
         /// the last update.</param>
-        public void Update(int currentTime)
+        public void Update(TickCount currentTime)
         {
             if (currentTime - _lastUpdateTime < UpdateRate)
                 return;

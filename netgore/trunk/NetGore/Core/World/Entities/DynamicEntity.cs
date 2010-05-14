@@ -96,7 +96,7 @@ namespace NetGore
         /// <summary>
         /// Game time that the Position and Velocity were last synchronized.
         /// </summary>
-        int _syncPnVLastTime;
+        TickCount _syncPnVLastTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicEntity"/> class.
@@ -244,7 +244,7 @@ namespace NetGore
         /// but the DynamicEntity is not in range of anyone to serialize the changes to.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
-        public void BypassPositionAndVelocitySync(int currentTime)
+        public void BypassPositionAndVelocitySync(TickCount currentTime)
         {
             _lastSentPosition = Position;
             _lastSentVelocity = Velocity;
@@ -374,7 +374,7 @@ namespace NetGore
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         /// <returns>True if the Position and Velocity need to be synchronized, else false.</returns>
-        public bool NeedSyncPositionAndVelocity(int currentTime)
+        public bool NeedSyncPositionAndVelocity(TickCount currentTime)
         {
             // Sync instantly when _syncPnVCount == _dupeSyncTimes
             if (_syncPnVDupeCounter >= _syncPnVDupeTimes)
@@ -459,7 +459,7 @@ namespace NetGore
         /// </summary>
         /// <param name="writer">IValueWriter to write the values to.</param>
         /// <param name="currentTime">Current game time.</param>
-        public void SerializePositionAndVelocity(IValueWriter writer, int currentTime)
+        public void SerializePositionAndVelocity(IValueWriter writer, TickCount currentTime)
         {
             if (_syncPnVDupeCounter > 0)
                 --_syncPnVDupeCounter;

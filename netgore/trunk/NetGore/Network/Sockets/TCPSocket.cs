@@ -60,7 +60,7 @@ namespace NetGore.Network
 
         readonly SocketSendQueue _sendQueue = new SocketSendQueue(MaxSendSize);
 
-        readonly int _timeCreated = Environment.TickCount;
+        readonly TickCount _timeCreated = TickCount.Now;
 
         /// <summary>
         /// Remote address the socket is connected to
@@ -545,9 +545,9 @@ namespace NetGore.Network
         public object Tag { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="Environment.TickCount"/> of when this <see cref="ITCPSocket"/> was created.
+        /// Gets the <see cref="TickCount.Now"/> of when this <see cref="ITCPSocket"/> was created.
         /// </summary>
-        public int TimeCreated
+        public TickCount TimeCreated
         {
             get { return _timeCreated; }
         }

@@ -71,7 +71,7 @@ namespace NetGore.Graphics.GUI
         /// active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        void Draw(int gameTime);
+        void Draw(TickCount gameTime);
 
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
@@ -98,6 +98,6 @@ namespace NetGore.Graphics.GUI
         /// Updates the screen if it is currently the active screen.
         /// </summary>
         /// <param name="gameTime">The current game time.</param>
-        void Update(int gameTime);
+        void Update(TickCount gameTime);
     }
 }
