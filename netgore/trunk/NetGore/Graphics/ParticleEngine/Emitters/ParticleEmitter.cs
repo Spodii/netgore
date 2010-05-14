@@ -149,15 +149,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets the approximate current time.
-        /// </summary>
-        [Browsable(false)]
-        protected TickCount currentTime
-        {
-            get { return _lastUpdateTime; }
-        }
-
-        /// <summary>
         /// Gets or sets the default budget to give to new <see cref="ParticleEmitter"/>s when no budget
         /// is explicitly given.
         /// </summary>
@@ -362,6 +353,15 @@ namespace NetGore.Graphics.ParticleEngine
         public Grh Sprite
         {
             get { return _sprite; }
+        }
+
+        /// <summary>
+        /// Gets the approximate current time.
+        /// </summary>
+        [Browsable(false)]
+        protected TickCount currentTime
+        {
+            get { return _lastUpdateTime; }
         }
 
         /// <summary>

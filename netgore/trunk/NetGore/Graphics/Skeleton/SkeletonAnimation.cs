@@ -94,8 +94,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="currentTime">Current time.</param>
         /// <param name="frame">Single frame to use for the keyframe.</param>
-        public SkeletonAnimation(TickCount currentTime, SkeletonFrame frame)
-            : this(currentTime, new SkeletonSet(new[] { frame }))
+        public SkeletonAnimation(TickCount currentTime, SkeletonFrame frame) : this(currentTime, new SkeletonSet(new[] { frame }))
         {
         }
 

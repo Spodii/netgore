@@ -270,16 +270,6 @@ namespace DemoGame.Server
             readonly ActiveStatusEffect _value;
 
             /// <summary>
-            /// Gets the <see cref="ActiveStatusEffectID"/>.
-            /// </summary>
-            public ActiveStatusEffectID ID { get { return _id; } }
-
-            /// <summary>
-            /// Gets the <see cref="ActiveStatusEffect"/>.
-            /// </summary>
-            public ActiveStatusEffect Value { get { return _value; } }
-
-            /// <summary>
             /// Initializes a new instance of the <see cref="ASEWithID"/> struct.
             /// </summary>
             /// <param name="id">The <see cref="ActiveStatusEffectID"/>.</param>
@@ -288,6 +278,22 @@ namespace DemoGame.Server
             {
                 _id = id;
                 _value = value;
+            }
+
+            /// <summary>
+            /// Gets the <see cref="ActiveStatusEffectID"/>.
+            /// </summary>
+            public ActiveStatusEffectID ID
+            {
+                get { return _id; }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="ActiveStatusEffect"/>.
+            /// </summary>
+            public ActiveStatusEffect Value
+            {
+                get { return _value; }
             }
         }
     }

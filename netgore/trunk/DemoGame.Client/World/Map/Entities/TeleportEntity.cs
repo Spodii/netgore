@@ -1,8 +1,5 @@
-using System.ComponentModel;
 using System.Linq;
 using NetGore;
-using NetGore.Graphics;
-using SFML.Graphics;
 
 namespace DemoGame.Client
 {
