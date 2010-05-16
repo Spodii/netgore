@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,8 @@ namespace DemoGame.Server.Guilds
         static readonly UpdateGuildNameQuery _updateGuildNameQuery;
         static readonly UpdateGuildQuery _updateGuildQuery;
         static readonly UpdateGuildTagQuery _updateGuildTagQuery;
+
+        readonly DateTime _created;
 
         /// <summary>
         /// Initializes the <see cref="Guild"/> class.
@@ -43,6 +46,7 @@ namespace DemoGame.Server.Guilds
         public Guild(IGuildManager guildManager, IGuildTable guildInfo)
             : base(guildManager, guildInfo.ID, guildInfo.Name, guildInfo.Tag)
         {
+            _created = guildInfo.Created;
         }
 
         /// <summary>
@@ -326,6 +330,14 @@ namespace DemoGame.Server.Guilds
         }
 
         #region IGuildTable Members
+
+        /// <summary>
+        /// Gets the value of the database column `created`.
+        /// </summary>
+        public DateTime Created
+        {
+            get { return _created; }
+        }
 
         /// <summary>
         /// Gets the value of the database column `id`.

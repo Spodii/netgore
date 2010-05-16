@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 6:43:47 PM
+This file was generated on (UTC): 5/16/2010 6:53:58 PM
 ********************************************************************/
 
 using System;
@@ -42,6 +42,7 @@ public static  class GuildTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this IGuildTable source, NetGore.Db.DbParameterValues paramValues)
 {
+paramValues["@created"] = (System.DateTime)source.Created;
 paramValues["@id"] = (System.UInt16)source.ID;
 paramValues["@name"] = (System.String)source.Name;
 paramValues["@tag"] = (System.String)source.Tag;
@@ -57,6 +58,10 @@ paramValues["@tag"] = (System.String)source.Tag;
 public static void ReadValues(this GuildTable source, System.Data.IDataReader dataReader)
 {
 System.Int32 i;
+
+i = dataReader.GetOrdinal("created");
+
+source.Created = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
 
 i = dataReader.GetOrdinal("id");
 
@@ -87,6 +92,11 @@ for (int i = 0; i < dataReader.FieldCount; i++)
 {
 switch (dataReader.GetName(i))
 {
+case "created":
+source.Created = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+break;
+
+
 case "id":
 source.ID = (NetGore.Features.Guilds.GuildID)(NetGore.Features.Guilds.GuildID)dataReader.GetUInt16(i);
 break;
@@ -123,6 +133,11 @@ for (int i = 0; i < paramValues.Count; i++)
 {
 switch (paramValues.GetParameterName(i))
 {
+case "@created":
+paramValues[i] = (System.DateTime)source.Created;
+break;
+
+
 case "@id":
 paramValues[i] = (System.UInt16)source.ID;
 break;
@@ -153,7 +168,8 @@ break;
 /// </returns>
 public static System.Boolean HasSameValues(this IGuildTable source, IGuildTable otherItem)
 {
-return Equals(source.ID, otherItem.ID) && 
+return Equals(source.Created, otherItem.Created) && 
+Equals(source.ID, otherItem.ID) && 
 Equals(source.Name, otherItem.Name) && 
 Equals(source.Tag, otherItem.Tag);
 }

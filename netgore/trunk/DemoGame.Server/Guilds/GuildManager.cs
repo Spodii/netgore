@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
@@ -117,7 +118,7 @@ namespace DemoGame.Server.Guilds
         {
             // We want to insert the guild into the database first since if that query fails, we know that
             // we can't create the guild with the given values for whatever reason
-            var values = new GuildTable(id, name, tag);
+            var values = new GuildTable(iD: id, name: name, tag: tag, created: DateTime.UtcNow);
             var rowsAffected = _insertGuildQuery.Execute(values);
 
             if (rowsAffected <= 0)

@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 6:43:47 PM
+This file was generated on (UTC): 5/16/2010 6:53:58 PM
 ********************************************************************/
 
 using System;
@@ -35,7 +35,7 @@ public class GuildTable : IGuildTable, NetGore.IO.IPersistable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"id", "name", "tag" };
+ static  readonly System.String[] _dbColumns = new string[] {"created", "id", "name", "tag" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -63,7 +63,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"name", "tag" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"created", "name", "tag" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -81,7 +81,11 @@ public const System.String TableName = "guild";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 3;
+public const System.Int32 ColumnCount = 4;
+/// <summary>
+/// The field that maps onto the database column `created`.
+/// </summary>
+System.DateTime _created;
 /// <summary>
 /// The field that maps onto the database column `id`.
 /// </summary>
@@ -94,6 +98,22 @@ System.String _name;
 /// The field that maps onto the database column `tag`.
 /// </summary>
 System.String _tag;
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `created`.
+/// The underlying database type is `timestamp` with the default value of `CURRENT_TIMESTAMP`.
+/// </summary>
+[NetGore.SyncValueAttribute()]
+public System.DateTime Created
+{
+get
+{
+return (System.DateTime)_created;
+}
+set
+{
+this._created = (System.DateTime)value;
+}
+}
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `id`.
 /// The underlying database type is `smallint(5) unsigned`.
@@ -163,11 +183,13 @@ public GuildTable()
 /// <summary>
 /// GuildTable constructor.
 /// </summary>
+/// <param name="created">The initial value for the corresponding property.</param>
 /// <param name="iD">The initial value for the corresponding property.</param>
 /// <param name="name">The initial value for the corresponding property.</param>
 /// <param name="tag">The initial value for the corresponding property.</param>
-public GuildTable(NetGore.Features.Guilds.GuildID @iD, System.String @name, System.String @tag)
+public GuildTable(System.DateTime @created, NetGore.Features.Guilds.GuildID @iD, System.String @name, System.String @tag)
 {
+this.Created = (System.DateTime)@created;
 this.ID = (NetGore.Features.Guilds.GuildID)@iD;
 this.Name = (System.String)@name;
 this.Tag = (System.String)@tag;
@@ -199,6 +221,7 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IGuildTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
+dic["@created"] = (System.DateTime)source.Created;
 dic["@id"] = (NetGore.Features.Guilds.GuildID)source.ID;
 dic["@name"] = (System.String)source.Name;
 dic["@tag"] = (System.String)source.Tag;
@@ -210,6 +233,7 @@ dic["@tag"] = (System.String)source.Tag;
 /// <param name="source">The IGuildTable to copy the values from.</param>
 public void CopyValuesFrom(IGuildTable source)
 {
+this.Created = (System.DateTime)source.Created;
 this.ID = (NetGore.Features.Guilds.GuildID)source.ID;
 this.Name = (System.String)source.Name;
 this.Tag = (System.String)source.Tag;
@@ -226,6 +250,9 @@ public System.Object GetValue(System.String columnName)
 {
 switch (columnName)
 {
+case "created":
+return Created;
+
 case "id":
 return ID;
 
@@ -249,6 +276,10 @@ public void SetValue(System.String columnName, System.Object value)
 {
 switch (columnName)
 {
+case "created":
+this.Created = (System.DateTime)value;
+break;
+
 case "id":
 this.ID = (NetGore.Features.Guilds.GuildID)value;
 break;
@@ -277,6 +308,9 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 {
 switch (columnName)
 {
+case "created":
+return new ColumnMetadata("created", "", "timestamp", "CURRENT_TIMESTAMP", typeof(System.DateTime), false, false, false);
+
 case "id":
 return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
 

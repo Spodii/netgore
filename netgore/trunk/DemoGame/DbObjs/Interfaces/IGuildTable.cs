@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 6:43:47 PM
+This file was generated on (UTC): 5/16/2010 6:53:58 PM
 ********************************************************************/
 
 using System;
@@ -35,6 +35,13 @@ public interface IGuildTable
 /// </returns>
 IGuildTable DeepCopy();
 
+/// <summary>
+/// Gets the value of the database column `created`.
+/// </summary>
+System.DateTime Created
+{
+get;
+}
 /// <summary>
 /// Gets the value of the database column `id`.
 /// </summary>
