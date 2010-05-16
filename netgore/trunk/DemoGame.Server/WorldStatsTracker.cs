@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+using System;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
@@ -31,13 +30,13 @@ namespace DemoGame.Server
         readonly InsertWorldStatsGuildUserChangeQuery _guildUserChangeQuery;
         readonly InsertWorldStatsNetworkQuery _networkQuery;
         readonly InsertWorldStatsNPCKillUserQuery _npcKillUserQuery;
+        readonly InsertWorldStatsQuestAcceptQuery _questAcceptQuery;
+        readonly InsertWorldStatsQuestCancelQuery _questCancelQuery;
+        readonly InsertWorldStatsQuestCompleteQuery _questCompleteQuery;
         readonly InsertWorldStatsUserConsumeItemQuery _userConsumeItemQuery;
         readonly InsertWorldStatsUserKillNpcQuery _userKillNPCQuery;
         readonly InsertWorldStatsUserLevelQuery _userLevelQuery;
         readonly InsertWorldStatsUserShoppingQuery _userShoppingQuery;
-        readonly InsertWorldStatsQuestAcceptQuery _questAcceptQuery;
-        readonly InsertWorldStatsQuestCancelQuery _questCancelQuery;
-        readonly InsertWorldStatsQuestCompleteQuery _questCompleteQuery;
 
         /// <summary>
         /// Initializes the <see cref="WorldStatsTracker"/> class.
@@ -90,6 +89,51 @@ namespace DemoGame.Server
                                                       userY: (ushort)user.Position.Y);
 
             _npcKillUserQuery.Execute(args);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user accepts a quest.
+        /// </summary>
+        /// <param name="user">The user that accepted a quest.</param>
+        /// <param name="questID">The ID of the quest that the user accepted.</param>
+        protected override void InternalAddQuestAccept(User user, QuestID questID)
+        {
+            var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
+
+            var args = new WorldStatsQuestAcceptTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
+                                                      x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+
+            _questAcceptQuery.Execute(args);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user cancels a quest.
+        /// </summary>
+        /// <param name="user">The user that canceled a quest.</param>
+        /// <param name="questID">The ID of the quest that the user canceled.</param>
+        protected override void InternalAddQuestCancel(User user, QuestID questID)
+        {
+            var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
+
+            var args = new WorldStatsQuestCancelTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
+                                                      x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+
+            _questCancelQuery.Execute(args);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user completes a quest.
+        /// </summary>
+        /// <param name="user">The user that completed a quest.</param>
+        /// <param name="questID">The ID of the quest that the user completed.</param>
+        protected override void InternalAddQuestComplete(User user, QuestID questID)
+        {
+            var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
+
+            var args = new WorldStatsQuestCompleteTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
+                                                        x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+
+            _questCompleteQuery.Execute(args);
         }
 
         /// <summary>
@@ -214,51 +258,6 @@ namespace DemoGame.Server
                                                   udpSends: (uint)netStats.UDPSends, udpSent: (uint)netStats.UDPSent);
 
             _networkQuery.Execute(args);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, adds when a user accepts a quest.
-        /// </summary>
-        /// <param name="user">The user that accepted a quest.</param>
-        /// <param name="questID">The ID of the quest that the user accepted.</param>
-        protected override void InternalAddQuestAccept(User user, QuestID questID)
-        {
-            var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
-
-            var args = new WorldStatsQuestAcceptTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
-
-            _questAcceptQuery.Execute(args);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, adds when a user cancels a quest.
-        /// </summary>
-        /// <param name="user">The user that canceled a quest.</param>
-        /// <param name="questID">The ID of the quest that the user canceled.</param>
-        protected override void InternalAddQuestCancel(User user, QuestID questID)
-        {
-            var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
-
-            var args = new WorldStatsQuestCancelTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
-
-            _questCancelQuery.Execute(args);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, adds when a user completes a quest.
-        /// </summary>
-        /// <param name="user">The user that completed a quest.</param>
-        /// <param name="questID">The ID of the quest that the user completed.</param>
-        protected override void InternalAddQuestComplete(User user, QuestID questID)
-        {
-            var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
-
-            var args = new WorldStatsQuestCompleteTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
-
-            _questCompleteQuery.Execute(args);
         }
     }
 }

@@ -19,50 +19,42 @@ This file was generated on (UTC): 5/16/2010 7:45:19 PM
 
 using System;
 using System.Linq;
+using NetGore.Features.Guilds;
+
 namespace DemoGame.DbObjs
 {
-/// <summary>
-/// Interface for a class that can be used to serialize values to the database table `guild`.
-/// </summary>
-public interface IGuildTable
-{
-/// <summary>
-/// Creates a deep copy of this table. All the values will be the same
-/// but they will be contained in a different object instance.
-/// </summary>
-/// <returns>
-/// A deep copy of this table.
-/// </returns>
-IGuildTable DeepCopy();
+    /// <summary>
+    /// Interface for a class that can be used to serialize values to the database table `guild`.
+    /// </summary>
+    public interface IGuildTable
+    {
+        /// <summary>
+        /// Gets the value of the database column `created`.
+        /// </summary>
+        DateTime Created { get; }
 
-/// <summary>
-/// Gets the value of the database column `created`.
-/// </summary>
-System.DateTime Created
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `id`.
-/// </summary>
-NetGore.Features.Guilds.GuildID ID
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `name`.
-/// </summary>
-System.String Name
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `tag`.
-/// </summary>
-System.String Tag
-{
-get;
-}
-}
+        /// <summary>
+        /// Gets the value of the database column `id`.
+        /// </summary>
+        GuildID ID { get; }
 
+        /// <summary>
+        /// Gets the value of the database column `name`.
+        /// </summary>
+        String Name { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `tag`.
+        /// </summary>
+        String Tag { get; }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IGuildTable DeepCopy();
+    }
 }

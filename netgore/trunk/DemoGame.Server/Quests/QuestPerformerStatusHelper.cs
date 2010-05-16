@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Server.Queries;
 using NetGore.Features.Quests;
@@ -9,6 +9,7 @@ namespace DemoGame.Server.Quests
     public class QuestPerformerStatusHelper : QuestPerformerStatusHelper<User>
     {
         static readonly QuestManager _questManager = QuestManager.Instance;
+        static readonly IWorldStatsTracker<User, NPC, ItemEntity> _worldStats = WorldStatsTracker.Instance;
 
         readonly QuestPerformerKillCounter _questKillCounter;
 
@@ -125,8 +126,6 @@ namespace DemoGame.Server.Quests
 
             _worldStats.AddQuestAccept(Owner, quest.QuestID);
         }
-
-        static readonly IWorldStatsTracker<User,NPC,ItemEntity> _worldStats = WorldStatsTracker.Instance;
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of the
