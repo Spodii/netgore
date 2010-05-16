@@ -151,7 +151,7 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner is demoted.
+        /// When overridden in the derived class, handles when the <see cref="GuildMemberInfo{T}.Owner"/> is demoted.
         /// </summary>
         /// <param name="rank">The new rank.</param>
         protected virtual void HandleDemotion(GuildRank rank)
@@ -159,7 +159,7 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner joins a guild.
+        /// When overridden in the derived class, handles when the <see cref="GuildMemberInfo{T}.Owner"/> joins a guild.
         /// </summary>
         /// <param name="guild">The guild that was joined.</param>
         protected virtual void HandleJoinGuild(IGuild guild)
@@ -167,7 +167,7 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner leaves a guild.
+        /// When overridden in the derived class, handles when the <see cref="GuildMemberInfo{T}.Owner"/> leaves a guild.
         /// </summary>
         /// <param name="guild">The guild that was left.</param>
         protected virtual void HandleLeaveGuild(IGuild guild)
@@ -175,7 +175,7 @@ namespace NetGore.Features.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner is promoted.
+        /// When overridden in the derived class, handles when the <see cref="GuildMemberInfo{T}.Owner"/> is promoted.
         /// </summary>
         /// <param name="rank">The new rank.</param>
         protected virtual void HandlePromotion(GuildRank rank)
