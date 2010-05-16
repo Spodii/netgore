@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NetGore.Features.Guilds;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 
 namespace NetGore.Features.WorldStats
@@ -57,6 +58,27 @@ namespace NetGore.Features.WorldStats
         /// the cost of all the items together, not a single item. That is, the cost of the transaction as a whole.</param>
         /// <param name="shopID">The ID of the shop the transaction took place at.</param>
         void AddUserShopBuyItem(TUser user, int? itemTemplateID, byte amount, int cost, ShopID shopID);
+
+        /// <summary>
+        /// Adds when a user accepts a quest.
+        /// </summary>
+        /// <param name="user">The user that accepted a quest.</param>
+        /// <param name="questID">The ID of the quest that the user accepted.</param>
+        void AddQuestAccept(TUser user, QuestID questID);
+
+        /// <summary>
+        /// Adds when a user cancels a quest.
+        /// </summary>
+        /// <param name="user">The user that canceled a quest.</param>
+        /// <param name="questID">The ID of the quest that the user canceled.</param>
+        void AddQuestCancel(TUser user, QuestID questID);
+
+        /// <summary>
+        /// Adds when a user completes a quest.
+        /// </summary>
+        /// <param name="user">The user that completed a quest.</param>
+        /// <param name="questID">The ID of the quest that the user completed.</param>
+        void AddQuestComplete(TUser user, QuestID questID);
 
         /// <summary>
         /// Adds when a user sells an item to a shop.

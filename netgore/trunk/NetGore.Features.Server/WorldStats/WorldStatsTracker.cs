@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NetGore.Features.Guilds;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Network;
 
@@ -247,6 +248,66 @@ namespace NetGore.Features.WorldStats
                 return;
 
             InternalAddUserLevel(user);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user accepts a quest.
+        /// </summary>
+        /// <param name="user">The user that accepted a quest.</param>
+        /// <param name="questID">The ID of the quest that the user accepted.</param>
+        protected abstract void InternalAddQuestAccept(TUser user, QuestID questID);
+
+        /// <summary>
+        /// Adds when a user accepts a quest.
+        /// </summary>
+        /// <param name="user">The user that accepted a quest.</param>
+        /// <param name="questID">The ID of the quest that the user accepted.</param>
+        public void AddQuestAccept(TUser user, QuestID questID)
+        {
+            if (user == null)
+                return;
+
+            InternalAddQuestAccept(user, questID);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user cancels a quest.
+        /// </summary>
+        /// <param name="user">The user that canceled a quest.</param>
+        /// <param name="questID">The ID of the quest that the user canceled.</param>
+        protected abstract void InternalAddQuestCancel(TUser user, QuestID questID);
+
+        /// <summary>
+        /// Adds when a user cancels a quest.
+        /// </summary>
+        /// <param name="user">The user that canceled a quest.</param>
+        /// <param name="questID">The ID of the quest that the user canceled.</param>
+        public void AddQuestCancel(TUser user, QuestID questID)
+        {
+            if (user == null)
+                return;
+
+            InternalAddQuestCancel(user, questID);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user completes a quest.
+        /// </summary>
+        /// <param name="user">The user that completed a quest.</param>
+        /// <param name="questID">The ID of the quest that the user completed.</param>
+        protected abstract void InternalAddQuestComplete(TUser user, QuestID questID);
+
+        /// <summary>
+        /// Adds when a user completes a quest.
+        /// </summary>
+        /// <param name="user">The user that completed a quest.</param>
+        /// <param name="questID">The ID of the quest that the user completed.</param>
+        public void AddQuestComplete(TUser user, QuestID questID)
+        {
+            if (user == null)
+                return;
+
+            InternalAddQuestComplete(user, questID);
         }
 
         /// <summary>

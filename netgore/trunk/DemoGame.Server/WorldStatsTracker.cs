@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
 using NetGore.Features.Guilds;
+using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Features.WorldStats;
 using NetGore.Network;
@@ -33,6 +35,9 @@ namespace DemoGame.Server
         readonly InsertWorldStatsUserKillNpcQuery _userKillNPCQuery;
         readonly InsertWorldStatsUserLevelQuery _userLevelQuery;
         readonly InsertWorldStatsUserShoppingQuery _userShoppingQuery;
+        readonly InsertWorldStatsQuestAcceptQuery _questAcceptQuery;
+        readonly InsertWorldStatsQuestCancelQuery _questCancelQuery;
+        readonly InsertWorldStatsQuestCompleteQuery _questCompleteQuery;
 
         /// <summary>
         /// Initializes the <see cref="WorldStatsTracker"/> class.
@@ -57,6 +62,9 @@ namespace DemoGame.Server
             _userShoppingQuery = dbController.GetQuery<InsertWorldStatsUserShoppingQuery>();
             _networkQuery = dbController.GetQuery<InsertWorldStatsNetworkQuery>();
             _guildUserChangeQuery = dbController.GetQuery<InsertWorldStatsGuildUserChangeQuery>();
+            _questCancelQuery = dbController.GetQuery<InsertWorldStatsQuestCancelQuery>();
+            _questCompleteQuery = dbController.GetQuery<InsertWorldStatsQuestCompleteQuery>();
+            _questAcceptQuery = dbController.GetQuery<InsertWorldStatsQuestAcceptQuery>();
         }
 
         /// <summary>
@@ -75,7 +83,10 @@ namespace DemoGame.Server
         protected override void InternalAddNPCKillUser(NPC npc, User user)
         {
             if (npc.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
                 return;
+            }
 
             var args = new WorldStatsNpcKillUserTable(when: Now(), mapID: npc.Map.ID, npcTemplateId: npc.CharacterTemplateID,
                                                       npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID,
@@ -93,7 +104,10 @@ namespace DemoGame.Server
         protected override void InternalAddUserConsumeItem(User user, ItemEntity item)
         {
             if (user.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
                 return;
+            }
 
             if (item.Type != ItemType.UseOnce)
                 return;
@@ -117,7 +131,10 @@ namespace DemoGame.Server
         protected override void InternalAddUserGuildChange(User user, GuildID? guildID)
         {
             if (user.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
                 return;
+            }
 
             var args = new WorldStatsGuildUserChangeTable(when: Now(), guildID: guildID, userId: user.ID);
 
@@ -132,7 +149,10 @@ namespace DemoGame.Server
         protected override void InternalAddUserKillNPC(User user, NPC npc)
         {
             if (user.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
                 return;
+            }
 
             var args = new WorldStatsUserKillNpcTable(when: Now(), mapID: user.Map.ID, npcTemplateId: npc.CharacterTemplateID,
                                                       npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID,
@@ -168,7 +188,10 @@ namespace DemoGame.Server
         protected override void InternalAddUserShopBuyItem(User user, int? itemTemplateID, byte amount, int cost, ShopID shopID)
         {
             if (user.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
                 return;
+            }
 
             var args = new WorldStatsUserShoppingTable(saleType: 0, amount: amount, characterID: user.ID, cost: cost,
                                                        itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: user.Map.ID,
@@ -190,7 +213,10 @@ namespace DemoGame.Server
         protected override void InternalAddUserShopSellItem(User user, int? itemTemplateID, byte amount, int cost, ShopID shopID)
         {
             if (user.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
                 return;
+            }
 
             var args = new WorldStatsUserShoppingTable(saleType: 1, amount: amount, characterID: user.ID, cost: cost,
                                                        itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: user.Map.ID,
@@ -214,6 +240,63 @@ namespace DemoGame.Server
                                                   udpSends: (uint)netStats.UDPSends, udpSent: (uint)netStats.UDPSent);
 
             _networkQuery.Execute(args);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user accepts a quest.
+        /// </summary>
+        /// <param name="user">The user that accepted a quest.</param>
+        /// <param name="questID">The ID of the quest that the user accepted.</param>
+        protected override void InternalAddQuestAccept(User user, QuestID questID)
+        {
+            if (user.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
+                return;
+            }
+
+            var args = new WorldStatsQuestAcceptTable(when: Now(), mapID: user.Map.ID, questID: questID, userId: user.ID,
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+
+            _questAcceptQuery.Execute(args);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user cancels a quest.
+        /// </summary>
+        /// <param name="user">The user that canceled a quest.</param>
+        /// <param name="questID">The ID of the quest that the user canceled.</param>
+        protected override void InternalAddQuestCancel(User user, QuestID questID)
+        {
+            if (user.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
+                return;
+            }
+
+            var args = new WorldStatsQuestCancelTable(when: Now(), mapID: user.Map.ID, questID: questID, userId: user.ID,
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+
+            _questCancelQuery.Execute(args);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user completes a quest.
+        /// </summary>
+        /// <param name="user">The user that completed a quest.</param>
+        /// <param name="questID">The ID of the quest that the user completed.</param>
+        protected override void InternalAddQuestComplete(User user, QuestID questID)
+        {
+            if (user.Map == null)
+            {
+                Debug.Fail("Map shouldn't be null...");
+                return;
+            }
+
+            var args = new WorldStatsQuestCompleteTable(when: Now(), mapID: user.Map.ID, questID: questID, userId: user.ID,
+                x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+
+            _questCompleteQuery.Execute(args);
         }
     }
 }
