@@ -58,7 +58,6 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (1,16777343,'2010-05-09 12:25:08'),(1,16777343,'2010-05-10 16:13:41'),(1,16777343,'2010-05-10 16:14:54'),(1,16777343,'2010-05-11 16:38:14'),(1,16777343,'2010-05-13 16:07:18'),(1,16777343,'2010-05-13 16:07:54'),(1,16777343,'2010-05-13 16:09:09'),(1,16777343,'2010-05-13 16:11:09'),(1,16777343,'2010-05-13 16:22:30'),(1,16777343,'2010-05-13 16:25:10'),(1,16777343,'2010-05-13 16:27:44'),(1,16777343,'2010-05-13 16:30:09'),(1,16777343,'2010-05-14 00:17:45');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +213,6 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
-INSERT INTO `character_equipped` VALUES (3,24,2);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,7 +238,6 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
-INSERT INTO `character_inventory` VALUES (1,31,0);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -602,7 +599,6 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(2,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(4,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(5,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(6,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(7,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(8,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(9,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(10,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(11,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(12,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(13,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(14,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(15,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(16,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(17,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(18,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(19,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(20,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(21,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(22,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(23,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(24,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(25,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(26,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(27,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(28,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(29,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(30,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(31,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(32,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(33,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(34,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(35,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(36,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(37,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(38,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(39,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(40,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(41,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(42,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(43,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(44,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(45,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(46,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(47,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(48,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(49,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(50,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(51,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(52,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(53,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(54,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(55,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(56,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(57,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(58,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(59,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(60,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(61,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(62,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(63,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(64,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(65,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(66,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(67,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(68,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(69,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(70,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(71,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(72,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(73,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(74,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(75,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet');
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1082,7 +1078,6 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
-INSERT INTO `world_stats_network` VALUES ('2010-05-13 23:07:09',0,0,0,0,0,0,0,0,0),('2010-05-13 23:07:52',0,0,0,0,0,0,0,0,0),('2010-05-13 23:09:09',0,0,0,0,0,0,0,0,0),('2010-05-13 23:11:08',0,0,0,0,0,0,0,0,0),('2010-05-13 23:22:28',0,0,0,0,0,0,0,0,0),('2010-05-13 23:23:28',0,0,0,0,0,0,0,0,0),('2010-05-13 23:24:28',0,0,0,0,0,0,0,0,0),('2010-05-13 23:25:04',0,0,0,0,0,0,0,0,0),('2010-05-13 23:26:04',0,0,0,0,0,0,0,0,0),('2010-05-13 23:27:04',0,0,0,0,0,0,0,0,0),('2010-05-13 23:27:43',0,0,0,0,0,0,0,0,0),('2010-05-13 23:30:08',0,0,0,0,0,0,0,0,0),('2010-05-14 07:16:17',0,0,0,0,0,0,0,0,0),('2010-05-14 07:17:44',0,0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1097,9 +1092,9 @@ CREATE TABLE `world_stats_npc_kill_user` (
   `user_level` tinyint(3) unsigned NOT NULL COMMENT 'The level of the user was when this event took place.',
   `user_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
   `user_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
-  `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place.',
-  `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place.',
-  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
+  `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.',
+  `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.',
+  `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `npc_template_id` (`npc_template_id`),
@@ -1126,9 +1121,9 @@ DROP TABLE IF EXISTS `world_stats_quest_accept`;
 CREATE TABLE `world_stats_quest_accept` (
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user that accepted the quest.',
   `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was accepted.',
-  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
-  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
-  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `quest_id` (`quest_id`),
@@ -1155,9 +1150,9 @@ DROP TABLE IF EXISTS `world_stats_quest_cancel`;
 CREATE TABLE `world_stats_quest_cancel` (
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user that canceled the quest.',
   `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was canceled.',
-  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
-  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
-  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `quest_id` (`quest_id`),
@@ -1184,9 +1179,9 @@ DROP TABLE IF EXISTS `world_stats_quest_complete`;
 CREATE TABLE `world_stats_quest_complete` (
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user that completed the quest.',
   `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was completed.',
-  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
-  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
-  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `quest_id` (`quest_id`),
@@ -1213,9 +1208,9 @@ DROP TABLE IF EXISTS `world_stats_user_consume_item`;
 CREATE TABLE `world_stats_user_consume_item` (
   `user_id` int(11) NOT NULL COMMENT 'The user that this event is related to.',
   `item_template_id` smallint(5) unsigned NOT NULL COMMENT 'The template ID of the item that was consumed. Only valid when the item has a set template ID.',
+  `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The map the user was on when this event took place.',
   `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
   `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
-  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The map the user was on when this event took place.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `item_template_id` (`item_template_id`),
@@ -1243,11 +1238,11 @@ CREATE TABLE `world_stats_user_kill_npc` (
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
   `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
   `user_level` tinyint(3) unsigned NOT NULL COMMENT 'The level of the user was when this event took place.',
-  `user_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
-  `user_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
-  `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place.',
-  `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place.',
-  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
+  `user_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
+  `user_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
+  `npc_x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.',
+  `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.',
+  `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   KEY `user_id` (`user_id`),
   KEY `npc_template_id` (`npc_template_id`),
@@ -1263,7 +1258,6 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
-INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,30,555,658,546,658,1,'2010-05-13 23:07:31'),(1,1,30,555,658,546,658,1,'2010-05-13 23:07:32');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1274,9 +1268,9 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `world_stats_user_level`;
 CREATE TABLE `world_stats_user_level` (
   `character_id` int(11) NOT NULL COMMENT 'The ID of the character that leveled up.',
-  `map_id` smallint(5) unsigned DEFAULT NULL,
-  `x` smallint(5) unsigned NOT NULL,
-  `y` smallint(5) unsigned NOT NULL,
+  `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
   `when` timestamp NOT NULL COMMENT 'When this event took place.'
 ) TYPE=InnoDB;
@@ -1299,9 +1293,9 @@ CREATE TABLE `world_stats_user_shopping` (
   `shop_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the shop the event took place at.',
   `character_id` int(11) NOT NULL COMMENT 'The ID of the character that performed this transaction with the shop.',
   `item_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the item template that the event relates to. Only valid when the item involved has a set item template ID.',
-  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map the event took place on.',
-  `x` smallint(5) unsigned NOT NULL COMMENT 'The map X coordinate of the shopper when this event took place.',
-  `y` smallint(5) unsigned NOT NULL COMMENT 'The map Y coordinate of the shopper when this event took place.',
+  `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map the event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map X coordinate of the shopper when this event took place. Only valid when the map_id is not null.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map Y coordinate of the shopper when this event took place. Only valid when the map_id is not null.',
   `cost` int(11) NOT NULL COMMENT 'The amount of money that was involved in this transaction (how much the shopper sold the items for, or how much they bought the items for). ',
   `amount` tinyint(3) unsigned NOT NULL COMMENT 'The number of items involved in the transaction. Should always be greater than 0, and should only be greater for 1 for items that can stack.',
   `sale_type` tinyint(4) NOT NULL COMMENT 'Whether the shop sold to the user, or vise versa. If 0, the shop sold an item to the shopper. If non-zero, the shopper sold an item to a shop.',
@@ -1490,4 +1484,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-16 12:27:36
+-- Dump completed on 2010-05-16 12:50:57

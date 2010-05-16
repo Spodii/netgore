@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 7:25:59 PM
+This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
@@ -43,7 +43,7 @@ public static  class WorldStatsUserConsumeItemTableDbExtensions
 public static void CopyValues(this IWorldStatsUserConsumeItemTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@item_template_id"] = (System.UInt16)source.ItemTemplateID;
-paramValues["@map_id"] = (System.UInt16)source.MapID;
+paramValues["@map_id"] = (System.Nullable<System.UInt16>)source.MapID;
 paramValues["@user_id"] = (System.Int32)source.UserId;
 paramValues["@when"] = (System.DateTime)source.When;
 paramValues["@x"] = (System.UInt16)source.X;
@@ -67,7 +67,7 @@ source.ItemTemplateID = (DemoGame.ItemTemplateID)(DemoGame.ItemTemplateID)dataRe
 
 i = dataReader.GetOrdinal("map_id");
 
-source.MapID = (NetGore.MapID)(NetGore.MapID)dataReader.GetUInt16(i);
+source.MapID = (System.Nullable<NetGore.MapID>)(System.Nullable<NetGore.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 
 i = dataReader.GetOrdinal("user_id");
 
@@ -108,7 +108,7 @@ break;
 
 
 case "map_id":
-source.MapID = (NetGore.MapID)(NetGore.MapID)dataReader.GetUInt16(i);
+source.MapID = (System.Nullable<NetGore.MapID>)(System.Nullable<NetGore.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 
@@ -159,7 +159,7 @@ break;
 
 
 case "@map_id":
-paramValues[i] = (System.UInt16)source.MapID;
+paramValues[i] = (System.Nullable<System.UInt16>)source.MapID;
 break;
 
 

@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 7:25:59 PM
+This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
@@ -101,7 +101,7 @@ System.Nullable<System.UInt16> _itemTemplateID;
 /// <summary>
 /// The field that maps onto the database column `map_id`.
 /// </summary>
-System.UInt16 _mapID;
+System.Nullable<System.UInt16> _mapID;
 /// <summary>
 /// The field that maps onto the database column `sale_type`.
 /// </summary>
@@ -201,15 +201,15 @@ this._itemTemplateID = (System.Nullable<System.UInt16>)value;
 /// </summary>
 [System.ComponentModel.Description("The ID of the map the event took place on.")]
 [NetGore.SyncValueAttribute()]
-public NetGore.MapID MapID
+public System.Nullable<NetGore.MapID> MapID
 {
 get
 {
-return (NetGore.MapID)_mapID;
+return (System.Nullable<NetGore.MapID>)_mapID;
 }
 set
 {
-this._mapID = (System.UInt16)value;
+this._mapID = (System.Nullable<System.UInt16>)value;
 }
 }
 /// <summary>
@@ -269,9 +269,9 @@ this._when = (System.DateTime)value;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `x`.
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
-/// "The map X coordinate of the shopper when this event took place.".
+/// "The map X coordinate of the shopper when this event took place. Only valid when the map_id is not null.".
 /// </summary>
-[System.ComponentModel.Description("The map X coordinate of the shopper when this event took place.")]
+[System.ComponentModel.Description("The map X coordinate of the shopper when this event took place. Only valid when the map_id is not null.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 X
 {
@@ -287,9 +287,9 @@ this._x = (System.UInt16)value;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `y`.
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
-/// "The map Y coordinate of the shopper when this event took place.".
+/// "The map Y coordinate of the shopper when this event took place. Only valid when the map_id is not null.".
 /// </summary>
-[System.ComponentModel.Description("The map Y coordinate of the shopper when this event took place.")]
+[System.ComponentModel.Description("The map Y coordinate of the shopper when this event took place. Only valid when the map_id is not null.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 Y
 {
@@ -333,13 +333,13 @@ public WorldStatsUserShoppingTable()
 /// <param name="when">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public WorldStatsUserShoppingTable(System.Byte @amount, DemoGame.CharacterID @characterID, System.Int32 @cost, System.Nullable<DemoGame.ItemTemplateID> @itemTemplateID, NetGore.MapID @mapID, System.SByte @saleType, NetGore.Features.Shops.ShopID @shopID, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
+public WorldStatsUserShoppingTable(System.Byte @amount, DemoGame.CharacterID @characterID, System.Int32 @cost, System.Nullable<DemoGame.ItemTemplateID> @itemTemplateID, System.Nullable<NetGore.MapID> @mapID, System.SByte @saleType, NetGore.Features.Shops.ShopID @shopID, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
 {
 this.Amount = (System.Byte)@amount;
 this.CharacterID = (DemoGame.CharacterID)@characterID;
 this.Cost = (System.Int32)@cost;
 this.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)@itemTemplateID;
-this.MapID = (NetGore.MapID)@mapID;
+this.MapID = (System.Nullable<NetGore.MapID>)@mapID;
 this.SaleType = (System.SByte)@saleType;
 this.ShopID = (NetGore.Features.Shops.ShopID)@shopID;
 this.When = (System.DateTime)@when;
@@ -377,7 +377,7 @@ dic["@amount"] = (System.Byte)source.Amount;
 dic["@character_id"] = (DemoGame.CharacterID)source.CharacterID;
 dic["@cost"] = (System.Int32)source.Cost;
 dic["@item_template_id"] = (System.Nullable<DemoGame.ItemTemplateID>)source.ItemTemplateID;
-dic["@map_id"] = (NetGore.MapID)source.MapID;
+dic["@map_id"] = (System.Nullable<NetGore.MapID>)source.MapID;
 dic["@sale_type"] = (System.SByte)source.SaleType;
 dic["@shop_id"] = (NetGore.Features.Shops.ShopID)source.ShopID;
 dic["@when"] = (System.DateTime)source.When;
@@ -395,7 +395,7 @@ this.Amount = (System.Byte)source.Amount;
 this.CharacterID = (DemoGame.CharacterID)source.CharacterID;
 this.Cost = (System.Int32)source.Cost;
 this.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)source.ItemTemplateID;
-this.MapID = (NetGore.MapID)source.MapID;
+this.MapID = (System.Nullable<NetGore.MapID>)source.MapID;
 this.SaleType = (System.SByte)source.SaleType;
 this.ShopID = (NetGore.Features.Shops.ShopID)source.ShopID;
 this.When = (System.DateTime)source.When;
@@ -475,7 +475,7 @@ this.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)value;
 break;
 
 case "map_id":
-this.MapID = (NetGore.MapID)value;
+this.MapID = (System.Nullable<NetGore.MapID>)value;
 break;
 
 case "sale_type":
@@ -527,7 +527,7 @@ case "item_template_id":
 return new ColumnMetadata("item_template_id", "The ID of the item template that the event relates to. Only valid when the item involved has a set item template ID.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "map_id":
-return new ColumnMetadata("map_id", "The ID of the map the event took place on.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+return new ColumnMetadata("map_id", "The ID of the map the event took place on.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "sale_type":
 return new ColumnMetadata("sale_type", "Whether the shop sold to the user, or vise versa. If 0, the shop sold an item to the shopper. If non-zero, the shopper sold an item to a shop.", "tinyint(4)", null, typeof(System.SByte), false, false, false);
@@ -539,10 +539,10 @@ case "when":
 return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP", typeof(System.DateTime), false, false, false);
 
 case "x":
-return new ColumnMetadata("x", "The map X coordinate of the shopper when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("x", "The map X coordinate of the shopper when this event took place. Only valid when the map_id is not null.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 case "y":
-return new ColumnMetadata("y", "The map Y coordinate of the shopper when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("y", "The map Y coordinate of the shopper when this event took place. Only valid when the map_id is not null.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

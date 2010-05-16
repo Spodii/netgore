@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 7:25:59 PM
+This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
@@ -46,7 +46,7 @@ paramValues["@amount"] = (System.Byte)source.Amount;
 paramValues["@character_id"] = (System.Int32)source.CharacterID;
 paramValues["@cost"] = (System.Int32)source.Cost;
 paramValues["@item_template_id"] = (System.Nullable<System.UInt16>)source.ItemTemplateID;
-paramValues["@map_id"] = (System.UInt16)source.MapID;
+paramValues["@map_id"] = (System.Nullable<System.UInt16>)source.MapID;
 paramValues["@sale_type"] = (System.SByte)source.SaleType;
 paramValues["@shop_id"] = (System.UInt16)source.ShopID;
 paramValues["@when"] = (System.DateTime)source.When;
@@ -83,7 +83,7 @@ source.ItemTemplateID = (System.Nullable<DemoGame.ItemTemplateID>)(System.Nullab
 
 i = dataReader.GetOrdinal("map_id");
 
-source.MapID = (NetGore.MapID)(NetGore.MapID)dataReader.GetUInt16(i);
+source.MapID = (System.Nullable<NetGore.MapID>)(System.Nullable<NetGore.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 
 i = dataReader.GetOrdinal("sale_type");
 
@@ -143,7 +143,7 @@ break;
 
 
 case "map_id":
-source.MapID = (NetGore.MapID)(NetGore.MapID)dataReader.GetUInt16(i);
+source.MapID = (System.Nullable<NetGore.MapID>)(System.Nullable<NetGore.MapID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 
@@ -214,7 +214,7 @@ break;
 
 
 case "@map_id":
-paramValues[i] = (System.UInt16)source.MapID;
+paramValues[i] = (System.Nullable<System.UInt16>)source.MapID;
 break;
 
 
