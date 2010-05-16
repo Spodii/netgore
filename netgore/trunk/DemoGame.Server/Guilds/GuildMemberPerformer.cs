@@ -9,6 +9,7 @@ namespace DemoGame.Server.Guilds
     public class GuildMemberPerformer : GuildMemberPerformerBase
     {
         static readonly GuildManager _guildManager = GuildManager.Instance;
+
         readonly Func<string, IGuildMember> _findGuildMember;
         readonly SelectGuildMemberByNameQuery _selectGuildMemberQuery;
 

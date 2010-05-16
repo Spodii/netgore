@@ -18,297 +18,293 @@ This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using DemoGame.DbObjs;
 using NetGore;
 using NetGore.IO;
-using System.Collections.Generic;
-using System.Collections;
-using NetGore.Db;
-using DemoGame.DbObjs;
+
 namespace DemoGame.Server.DbObjs
 {
-/// <summary>
-/// Provides a strongly-typed structure for the database table `character_equipped`.
-/// </summary>
-public class CharacterEquippedTable : ICharacterEquippedTable, NetGore.IO.IPersistable
-{
-/// <summary>
-/// Array of the database column names.
-/// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"character_id", "item_id", "slot" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
-}
-}
-/// <summary>
-/// Array of the database column names for columns that are primary keys.
-/// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] {"character_id", "slot" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
-}
-}
-/// <summary>
-/// Array of the database column names for columns that are not primary keys.
-/// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"item_id" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
-}
-}
-/// <summary>
-/// The name of the database table that this class represents.
-/// </summary>
-public const System.String TableName = "character_equipped";
-/// <summary>
-/// The number of columns in the database table that this class represents.
-/// </summary>
-public const System.Int32 ColumnCount = 3;
-/// <summary>
-/// The field that maps onto the database column `character_id`.
-/// </summary>
-System.Int32 _characterID;
-/// <summary>
-/// The field that maps onto the database column `item_id`.
-/// </summary>
-System.Int32 _itemID;
-/// <summary>
-/// The field that maps onto the database column `slot`.
-/// </summary>
-System.Byte _slot;
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `character_id`.
-/// The underlying database type is `int(11)`.
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public DemoGame.CharacterID CharacterID
-{
-get
-{
-return (DemoGame.CharacterID)_characterID;
-}
-set
-{
-this._characterID = (System.Int32)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `item_id`.
-/// The underlying database type is `int(11)`.
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public DemoGame.ItemID ItemID
-{
-get
-{
-return (DemoGame.ItemID)_itemID;
-}
-set
-{
-this._itemID = (System.Int32)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `slot`.
-/// The underlying database type is `tinyint(3) unsigned`.
-/// </summary>
-[NetGore.SyncValueAttribute()]
-public DemoGame.EquipmentSlot Slot
-{
-get
-{
-return (DemoGame.EquipmentSlot)_slot;
-}
-set
-{
-this._slot = (System.Byte)value;
-}
-}
+    /// <summary>
+    /// Provides a strongly-typed structure for the database table `character_equipped`.
+    /// </summary>
+    public class CharacterEquippedTable : ICharacterEquippedTable, IPersistable
+    {
+        /// <summary>
+        /// The number of columns in the database table that this class represents.
+        /// </summary>
+        public const Int32 ColumnCount = 3;
 
-/// <summary>
-/// Creates a deep copy of this table. All the values will be the same
-/// but they will be contained in a different object instance.
-/// </summary>
-/// <returns>
-/// A deep copy of this table.
-/// </returns>
-public ICharacterEquippedTable DeepCopy()
-{
-return new CharacterEquippedTable(this);
-}
-/// <summary>
-/// CharacterEquippedTable constructor.
-/// </summary>
-public CharacterEquippedTable()
-{
-}
-/// <summary>
-/// CharacterEquippedTable constructor.
-/// </summary>
-/// <param name="characterID">The initial value for the corresponding property.</param>
-/// <param name="itemID">The initial value for the corresponding property.</param>
-/// <param name="slot">The initial value for the corresponding property.</param>
-public CharacterEquippedTable(DemoGame.CharacterID @characterID, DemoGame.ItemID @itemID, DemoGame.EquipmentSlot @slot)
-{
-this.CharacterID = (DemoGame.CharacterID)@characterID;
-this.ItemID = (DemoGame.ItemID)@itemID;
-this.Slot = (DemoGame.EquipmentSlot)@slot;
-}
-/// <summary>
-/// CharacterEquippedTable constructor.
-/// </summary>
-/// <param name="source">ICharacterEquippedTable to copy the initial values from.</param>
-public CharacterEquippedTable(ICharacterEquippedTable source)
-{
-CopyValuesFrom(source);
-}
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-/// this method will not create them if they are missing.
-/// </summary>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public void CopyValues(System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-CopyValues(this, dic);
-}
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-/// this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(ICharacterEquippedTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-dic["@character_id"] = (DemoGame.CharacterID)source.CharacterID;
-dic["@item_id"] = (DemoGame.ItemID)source.ItemID;
-dic["@slot"] = (DemoGame.EquipmentSlot)source.Slot;
-}
+        /// <summary>
+        /// The name of the database table that this class represents.
+        /// </summary>
+        public const String TableName = "character_equipped";
 
-/// <summary>
-/// Copies the values from the given <paramref name="source"/> into this CharacterEquippedTable.
-/// </summary>
-/// <param name="source">The ICharacterEquippedTable to copy the values from.</param>
-public void CopyValuesFrom(ICharacterEquippedTable source)
-{
-this.CharacterID = (DemoGame.CharacterID)source.CharacterID;
-this.ItemID = (DemoGame.ItemID)source.ItemID;
-this.Slot = (DemoGame.EquipmentSlot)source.Slot;
-}
+        /// <summary>
+        /// Array of the database column names.
+        /// </summary>
+        static readonly String[] _dbColumns = new string[] { "character_id", "item_id", "slot" };
 
-/// <summary>
-/// Gets the value of a column by the database column's name.
-/// </summary>
-/// <param name="columnName">The database name of the column to get the value for.</param>
-/// <returns>
-/// The value of the column with the name <paramref name="columnName"/>.
-/// </returns>
-public System.Object GetValue(System.String columnName)
-{
-switch (columnName)
-{
-case "character_id":
-return CharacterID;
+        /// <summary>
+        /// Array of the database column names for columns that are primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsKeys = new string[] { "character_id", "slot" };
 
-case "item_id":
-return ItemID;
+        /// <summary>
+        /// Array of the database column names for columns that are not primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsNonKey = new string[] { "item_id" };
 
-case "slot":
-return Slot;
+        /// <summary>
+        /// The field that maps onto the database column `character_id`.
+        /// </summary>
+        Int32 _characterID;
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// The field that maps onto the database column `item_id`.
+        /// </summary>
+        Int32 _itemID;
 
-/// <summary>
-/// Sets the <paramref name="value"/> of a column by the database column's name.
-/// </summary>
-/// <param name="columnName">The database name of the column to get the <paramref name="value"/> for.</param>
-/// <param name="value">Value to assign to the column.</param>
-public void SetValue(System.String columnName, System.Object value)
-{
-switch (columnName)
-{
-case "character_id":
-this.CharacterID = (DemoGame.CharacterID)value;
-break;
+        /// <summary>
+        /// The field that maps onto the database column `slot`.
+        /// </summary>
+        Byte _slot;
 
-case "item_id":
-this.ItemID = (DemoGame.ItemID)value;
-break;
+        /// <summary>
+        /// CharacterEquippedTable constructor.
+        /// </summary>
+        public CharacterEquippedTable()
+        {
+        }
 
-case "slot":
-this.Slot = (DemoGame.EquipmentSlot)value;
-break;
+        /// <summary>
+        /// CharacterEquippedTable constructor.
+        /// </summary>
+        /// <param name="characterID">The initial value for the corresponding property.</param>
+        /// <param name="itemID">The initial value for the corresponding property.</param>
+        /// <param name="slot">The initial value for the corresponding property.</param>
+        public CharacterEquippedTable(CharacterID @characterID, ItemID @itemID, EquipmentSlot @slot)
+        {
+            CharacterID = @characterID;
+            ItemID = @itemID;
+            Slot = @slot;
+        }
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// CharacterEquippedTable constructor.
+        /// </summary>
+        /// <param name="source">ICharacterEquippedTable to copy the initial values from.</param>
+        public CharacterEquippedTable(ICharacterEquippedTable source)
+        {
+            CopyValuesFrom(source);
+        }
 
-/// <summary>
-/// Gets the data for the database column that this table represents.
-/// </summary>
-/// <param name="columnName">The database name of the column to get the data for.</param>
-/// <returns>
-/// The data for the database column with the name <paramref name="columnName"/>.
-/// </returns>
-public static ColumnMetadata GetColumnData(System.String columnName)
-{
-switch (columnName)
-{
-case "character_id":
-return new ColumnMetadata("character_id", "", "int(11)", null, typeof(System.Int32), false, true, false);
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
 
-case "item_id":
-return new ColumnMetadata("item_id", "", "int(11)", null, typeof(System.Int32), false, false, true);
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
 
-case "slot":
-return new ColumnMetadata("slot", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
+        }
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        /// this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public static void CopyValues(ICharacterEquippedTable source, IDictionary<String, Object> dic)
+        {
+            dic["@character_id"] = source.CharacterID;
+            dic["@item_id"] = source.ItemID;
+            dic["@slot"] = source.Slot;
+        }
 
-/// <summary>
-/// Reads the state of the object from an <see cref="IValueReader"/>.
-/// </summary>
-/// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-public void ReadState(NetGore.IO.IValueReader reader)
-{
-NetGore.IO.PersistableHelper.Read(this, reader);
-}
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        /// this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public void CopyValues(IDictionary<String, Object> dic)
+        {
+            CopyValues(this, dic);
+        }
 
-/// <summary>
-/// Writes the state of the object to an <see cref="IValueWriter"/>.
-/// </summary>
-/// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-public void WriteState(NetGore.IO.IValueWriter writer)
-{
-NetGore.IO.PersistableHelper.Write(this, writer);
-}
+        /// <summary>
+        /// Copies the values from the given <paramref name="source"/> into this CharacterEquippedTable.
+        /// </summary>
+        /// <param name="source">The ICharacterEquippedTable to copy the values from.</param>
+        public void CopyValuesFrom(ICharacterEquippedTable source)
+        {
+            CharacterID = source.CharacterID;
+            ItemID = source.ItemID;
+            Slot = source.Slot;
+        }
 
-}
+        /// <summary>
+        /// Gets the data for the database column that this table represents.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the data for.</param>
+        /// <returns>
+        /// The data for the database column with the name <paramref name="columnName"/>.
+        /// </returns>
+        public static ColumnMetadata GetColumnData(String columnName)
+        {
+            switch (columnName)
+            {
+                case "character_id":
+                    return new ColumnMetadata("character_id", "", "int(11)", null, typeof(Int32), false, true, false);
 
+                case "item_id":
+                    return new ColumnMetadata("item_id", "", "int(11)", null, typeof(Int32), false, false, true);
+
+                case "slot":
+                    return new ColumnMetadata("slot", "", "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of a column by the database column's name.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the value for.</param>
+        /// <returns>
+        /// The value of the column with the name <paramref name="columnName"/>.
+        /// </returns>
+        public Object GetValue(String columnName)
+        {
+            switch (columnName)
+            {
+                case "character_id":
+                    return CharacterID;
+
+                case "item_id":
+                    return ItemID;
+
+                case "slot":
+                    return Slot;
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        /// <summary>
+        /// Sets the <paramref name="value"/> of a column by the database column's name.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the <paramref name="value"/> for.</param>
+        /// <param name="value">Value to assign to the column.</param>
+        public void SetValue(String columnName, Object value)
+        {
+            switch (columnName)
+            {
+                case "character_id":
+                    CharacterID = (CharacterID)value;
+                    break;
+
+                case "item_id":
+                    ItemID = (ItemID)value;
+                    break;
+
+                case "slot":
+                    Slot = (EquipmentSlot)value;
+                    break;
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        #region ICharacterEquippedTable Members
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `character_id`.
+        /// The underlying database type is `int(11)`.
+        /// </summary>
+        [SyncValue]
+        public CharacterID CharacterID
+        {
+            get { return (CharacterID)_characterID; }
+            set { _characterID = (Int32)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `item_id`.
+        /// The underlying database type is `int(11)`.
+        /// </summary>
+        [SyncValue]
+        public ItemID ItemID
+        {
+            get { return (ItemID)_itemID; }
+            set { _itemID = (Int32)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `slot`.
+        /// The underlying database type is `tinyint(3) unsigned`.
+        /// </summary>
+        [SyncValue]
+        public EquipmentSlot Slot
+        {
+            get { return (EquipmentSlot)_slot; }
+            set { _slot = (Byte)value; }
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        public ICharacterEquippedTable DeepCopy()
+        {
+            return new CharacterEquippedTable(this);
+        }
+
+        #endregion
+
+        #region IPersistable Members
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            PersistableHelper.Read(this, reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
+        {
+            PersistableHelper.Write(this, writer);
+        }
+
+        #endregion
+    }
 }

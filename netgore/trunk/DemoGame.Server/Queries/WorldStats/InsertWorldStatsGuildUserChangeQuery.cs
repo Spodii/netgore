@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -17,8 +17,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="InsertWorldStatsGuildUserChangeQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertWorldStatsGuildUserChangeQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertWorldStatsGuildUserChangeQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
