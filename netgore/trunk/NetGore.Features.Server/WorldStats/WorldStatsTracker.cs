@@ -81,6 +81,14 @@ namespace NetGore.Features.WorldStats
         protected abstract void InternalAddUserConsumeItem(TUser user, TItem item);
 
         /// <summary>
+        /// When overridden in the derived class, adds when a user changes their guild.
+        /// </summary>
+        /// <param name="user">The user that changed their guild.</param>
+        /// <param name="guildID">The ID of the guild the user changed to. If this event is for when the user left a guild,
+        /// this value will be null.</param>
+        protected abstract void InternalAddUserGuildChange(TUser user, int? guildID);
+
+        /// <summary>
         /// When overridden in the derived class, adds when a user kills a NPC.
         /// </summary>
         /// <param name="user">The user that killed the <paramref name="npc"/>.</param>
@@ -178,6 +186,20 @@ namespace NetGore.Features.WorldStats
                 return;
 
             InternalAddUserConsumeItem(user, item);
+        }
+
+        /// <summary>
+        /// Adds when a user changes their guild.
+        /// </summary>
+        /// <param name="user">The user that changed their guild.</param>
+        /// <param name="guildID">The ID of the guild the user changed to. If this event is for when the user left a guild,
+        /// this value will be null.</param>
+        public void AddUserGuildChange(TUser user, int? guildID)
+        {
+            if (user == null)
+                return;
+
+            InternalAddUserGuildChange(user, guildID);
         }
 
         /// <summary>

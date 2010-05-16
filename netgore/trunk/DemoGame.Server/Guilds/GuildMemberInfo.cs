@@ -46,6 +46,8 @@ namespace DemoGame.Server.Guilds
                 return;
 
             Owner.Send(GameMessage.GuildJoin, guild.Name);
+
+            WorldStatsTracker.Instance.AddUserGuildChange(Owner, (int?)guild.ID);
         }
 
         /// <summary>
@@ -63,6 +65,8 @@ namespace DemoGame.Server.Guilds
                 return;
 
             Owner.Send(GameMessage.GuildLeave, guild.Name);
+
+            WorldStatsTracker.Instance.AddUserGuildChange(Owner, null);
         }
 
         /// <summary>

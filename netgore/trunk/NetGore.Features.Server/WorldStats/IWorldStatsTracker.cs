@@ -33,6 +33,14 @@ namespace NetGore.Features.WorldStats
         void AddUserKillNPC(TUser user, TNPC npc);
 
         /// <summary>
+        /// Adds when a user changes their guild.
+        /// </summary>
+        /// <param name="user">The user that changed their guild.</param>
+        /// <param name="guildID">The ID of the guild the user changed to. If this event is for when the user left a guild,
+        /// this value will be null.</param>
+        void AddUserGuildChange(TUser user, int? guildID);
+
+        /// <summary>
         /// Adds when a user gains a level.
         /// </summary>
         /// <param name="user">The user that leveled up.</param>
