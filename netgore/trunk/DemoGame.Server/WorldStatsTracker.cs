@@ -4,6 +4,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
+using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.Features.WorldStats;
 using NetGore.Network;
@@ -20,8 +21,12 @@ namespace DemoGame.Server
         /// </summary>
         const int _logNetStatsRate = 1000 * 60 * 1; // 1 minute
 
+        /// <summary>
+        /// The <see cref="WorldStatsTracker"/> instance.
+        /// </summary>
         static readonly IWorldStatsTracker<User, NPC, ItemEntity> _instance;
 
+        readonly InsertWorldStatsGuildUserChangeQuery _guildUserChangeQuery;
         readonly InsertWorldStatsNetworkQuery _networkQuery;
         readonly InsertWorldStatsNPCKillUserQuery _npcKillUserQuery;
         readonly InsertWorldStatsUserConsumeItemQuery _userConsumeItemQuery;
@@ -51,6 +56,7 @@ namespace DemoGame.Server
             _userLevelQuery = dbController.GetQuery<InsertWorldStatsUserLevelQuery>();
             _userShoppingQuery = dbController.GetQuery<InsertWorldStatsUserShoppingQuery>();
             _networkQuery = dbController.GetQuery<InsertWorldStatsNetworkQuery>();
+            _guildUserChangeQuery = dbController.GetQuery<InsertWorldStatsGuildUserChangeQuery>();
         }
 
         /// <summary>
@@ -100,6 +106,22 @@ namespace DemoGame.Server
                                                           userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
 
             _userConsumeItemQuery.Execute(args);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds when a user changes their guild.
+        /// </summary>
+        /// <param name="user">The user that changed their guild.</param>
+        /// <param name="guildID">The ID of the guild the user changed to. If this event is for when the user left a guild,
+        /// this value will be null.</param>
+        protected override void InternalAddUserGuildChange(User user, int? guildID)
+        {
+            if (user.Map == null)
+                return;
+
+            var args = new WorldStatsGuildUserChangeTable(when: Now(), guildID: (GuildID?)guildID, userId: user.ID);
+
+            _guildUserChangeQuery.Execute(args);
         }
 
         /// <summary>
