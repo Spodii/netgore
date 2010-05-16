@@ -169,6 +169,9 @@
     <Compile Include="DbObjs\DbExtensions\ShopItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\UserCharacterTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\WorldStatsGuildCreateTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\WorldStatsGuildDestroyTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\WorldStatsGuildUserChangeTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsNetworkTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsNpcKillUserTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsUserConsumeItemTableDbExtensions.cs" />
@@ -193,6 +196,9 @@
     <Compile Include="DbObjs\ShopItemTable.cs" />
     <Compile Include="DbObjs\ShopTable.cs" />
     <Compile Include="DbObjs\UserCharacterTable.cs" />
+    <Compile Include="DbObjs\WorldStatsGuildCreateTable.cs" />
+    <Compile Include="DbObjs\WorldStatsGuildDestroyTable.cs" />
+    <Compile Include="DbObjs\WorldStatsGuildUserChangeTable.cs" />
     <Compile Include="DbObjs\WorldStatsNetworkTable.cs" />
     <Compile Include="DbObjs\WorldStatsNpcKillUserTable.cs" />
     <Compile Include="DbObjs\WorldStatsUserConsumeItemTable.cs" />

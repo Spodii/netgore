@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-05-11 16:38:14',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-05-14 00:17:45',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (1,16777343,'2010-05-09 12:25:08'),(1,16777343,'2010-05-10 16:13:41'),(1,16777343,'2010-05-10 16:14:54'),(1,16777343,'2010-05-11 16:38:14');
+INSERT INTO `account_ips` VALUES (1,16777343,'2010-05-09 12:25:08'),(1,16777343,'2010-05-10 16:13:41'),(1,16777343,'2010-05-10 16:14:54'),(1,16777343,'2010-05-11 16:38:14'),(1,16777343,'2010-05-13 16:07:18'),(1,16777343,'2010-05-13 16:07:54'),(1,16777343,'2010-05-13 16:09:09'),(1,16777343,'2010-05-13 16:11:09'),(1,16777343,'2010-05-13 16:22:30'),(1,16777343,'2010-05-13 16:25:10'),(1,16777343,'2010-05-13 16:27:44'),(1,16777343,'2010-05-13 16:30:09'),(1,16777343,'2010-05-14 00:17:45');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,7 +189,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,0,NULL,'Test',0,1,NULL,NULL,NULL,391.6,244,NULL,50,50,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',0,1,NULL,NULL,NULL,500,658,1,500,200,1,1800,201375,30,870,145,80,100,100,100,1,1,1,1,1,1),(2,NULL,1,'Test A',0,2,NULL,NULL,1,800,250,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,2,NULL,NULL,1,506,250,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5);
+INSERT INTO `character` VALUES (0,0,NULL,'Test',0,1,NULL,NULL,NULL,391.6,244,NULL,50,50,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',0,1,NULL,NULL,NULL,576.6,180,1,500,200,1,1800,201385,30,880,145,100,100,100,100,1,1,1,1,1,1),(2,NULL,1,'Test A',0,2,NULL,NULL,1,800,250,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,2,NULL,NULL,1,506,250,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +214,7 @@ CREATE TABLE `character_equipped` (
 
 LOCK TABLES `character_equipped` WRITE;
 /*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
-INSERT INTO `character_equipped` VALUES (3,24,2),(1,25,2);
+INSERT INTO `character_equipped` VALUES (3,24,2);
 /*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,6 +240,7 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
+INSERT INTO `character_inventory` VALUES (1,31,0);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -600,7 +601,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(2,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(4,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(5,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(6,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(7,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(8,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(9,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(10,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(11,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(12,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(13,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(14,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(15,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(16,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(17,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(18,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(19,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(20,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(21,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(22,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(23,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(24,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(25,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(26,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(27,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL);
+INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(2,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(4,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(5,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(6,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(7,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(8,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(9,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(10,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(11,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(12,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(13,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(14,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(15,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(16,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(17,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(18,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(19,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(20,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(21,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(22,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(23,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(24,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(25,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(26,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(27,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(28,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(29,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(30,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(31,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(32,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(33,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(34,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(35,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(36,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(37,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(38,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(39,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(40,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(41,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(42,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(43,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(44,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(45,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(46,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(47,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(48,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(49,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(50,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(51,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(52,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(53,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(54,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(55,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(56,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(57,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(58,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(59,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(60,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(61,4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',1,99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(62,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(63,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(64,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(65,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(66,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(67,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',1,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL),(68,6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',1,177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(69,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(70,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(71,1,1,0,0,9,16,'Healing Potion','A healing potion',1,94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(72,2,1,0,0,9,16,'Mana Potion','A mana potion',1,95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(73,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(74,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(75,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet');
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -941,7 +942,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-05-11 16:40:30');
+INSERT INTO `server_time` VALUES ('2010-05-14 00:18:09');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1032,6 +1033,76 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `world_stats_guild_create`
+--
+
+DROP TABLE IF EXISTS `world_stats_guild_create`;
+CREATE TABLE `world_stats_guild_create` (
+  `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the guild that was created.',
+  `user_id` int(11) NOT NULL COMMENT 'The ID of the user that created the guild.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  KEY `guild_id` (`guild_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `world_stats_guild_create_ibfk_1` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_guild_create_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `world_stats_guild_create`
+--
+
+LOCK TABLES `world_stats_guild_create` WRITE;
+/*!40000 ALTER TABLE `world_stats_guild_create` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_guild_create` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_guild_destroy`
+--
+
+DROP TABLE IF EXISTS `world_stats_guild_destroy`;
+CREATE TABLE `world_stats_guild_destroy` (
+  `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the guild that was destroyed.',
+  `user_id` int(11) DEFAULT NULL COMMENT 'The ID of the user that destroyed the guild. If null, it was deleted by the system (empty guild, admin deleted, etc).',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  KEY `guild_id` (`guild_id`),
+  CONSTRAINT `world_stats_guild_destroy_ibfk_1` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `world_stats_guild_destroy`
+--
+
+LOCK TABLES `world_stats_guild_destroy` WRITE;
+/*!40000 ALTER TABLE `world_stats_guild_destroy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_guild_destroy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_guild_user_change`
+--
+
+DROP TABLE IF EXISTS `world_stats_guild_user_change`;
+CREATE TABLE `world_stats_guild_user_change` (
+  `user_id` int(11) NOT NULL COMMENT 'The ID of the user who changed the guild they are part of.',
+  `guild_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the guild, or null if the user left a guild.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  KEY `user_id` (`user_id`),
+  KEY `guild_id` (`guild_id`),
+  CONSTRAINT `world_stats_guild_user_change_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_guild_user_change_ibfk_2` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `world_stats_guild_user_change`
+--
+
+LOCK TABLES `world_stats_guild_user_change` WRITE;
+/*!40000 ALTER TABLE `world_stats_guild_user_change` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_guild_user_change` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `world_stats_network`
 --
 
@@ -1056,6 +1127,7 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
+INSERT INTO `world_stats_network` VALUES ('2010-05-13 23:07:09',0,0,0,0,0,0,0,0,0),('2010-05-13 23:07:52',0,0,0,0,0,0,0,0,0),('2010-05-13 23:09:09',0,0,0,0,0,0,0,0,0),('2010-05-13 23:11:08',0,0,0,0,0,0,0,0,0),('2010-05-13 23:22:28',0,0,0,0,0,0,0,0,0),('2010-05-13 23:23:28',0,0,0,0,0,0,0,0,0),('2010-05-13 23:24:28',0,0,0,0,0,0,0,0,0),('2010-05-13 23:25:04',0,0,0,0,0,0,0,0,0),('2010-05-13 23:26:04',0,0,0,0,0,0,0,0,0),('2010-05-13 23:27:04',0,0,0,0,0,0,0,0,0),('2010-05-13 23:27:43',0,0,0,0,0,0,0,0,0),('2010-05-13 23:30:08',0,0,0,0,0,0,0,0,0),('2010-05-14 07:16:17',0,0,0,0,0,0,0,0,0),('2010-05-14 07:17:44',0,0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1149,6 +1221,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
+INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,30,555,658,546,658,1,'2010-05-13 23:07:31'),(1,1,30,555,658,546,658,1,'2010-05-13 23:07:32');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1375,4 +1448,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-12 21:16:39
+-- Dump completed on 2010-05-16 11:45:26

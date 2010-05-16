@@ -149,6 +149,9 @@
     <Compile Include="DbObjs\Interfaces\IShopItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IShopTable.cs" />
     <Compile Include="DbObjs\Interfaces\IUserCharacterTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsGuildCreateTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsGuildDestroyTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsGuildUserChangeTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsNetworkTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsNpcKillUserTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsUserConsumeItemTable.cs" />
