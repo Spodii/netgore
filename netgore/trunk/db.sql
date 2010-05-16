@@ -486,6 +486,7 @@ CREATE TABLE `guild` (
   `id` smallint(5) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `tag` varchar(5) NOT NULL,
+  `created` timestamp NOT NULL,
   PRIMARY KEY (`id`)
 ) TYPE=InnoDB;
 
@@ -495,7 +496,7 @@ CREATE TABLE `guild` (
 
 LOCK TABLES `guild` WRITE;
 /*!40000 ALTER TABLE `guild` DISABLE KEYS */;
-INSERT INTO `guild` VALUES (0,'asdfasdf','tg');
+INSERT INTO `guild` VALUES (0,'asdfasdf','tg','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `guild` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1033,52 +1034,6 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
--- Table structure for table `world_stats_guild_create`
---
-
-DROP TABLE IF EXISTS `world_stats_guild_create`;
-CREATE TABLE `world_stats_guild_create` (
-  `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the guild that was created.',
-  `user_id` int(11) NOT NULL COMMENT 'The ID of the user that created the guild.',
-  `when` timestamp NOT NULL COMMENT 'When this event took place.',
-  KEY `guild_id` (`guild_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `world_stats_guild_create_ibfk_1` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `world_stats_guild_create_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB;
-
---
--- Dumping data for table `world_stats_guild_create`
---
-
-LOCK TABLES `world_stats_guild_create` WRITE;
-/*!40000 ALTER TABLE `world_stats_guild_create` DISABLE KEYS */;
-/*!40000 ALTER TABLE `world_stats_guild_create` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `world_stats_guild_destroy`
---
-
-DROP TABLE IF EXISTS `world_stats_guild_destroy`;
-CREATE TABLE `world_stats_guild_destroy` (
-  `guild_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the guild that was destroyed.',
-  `user_id` int(11) DEFAULT NULL COMMENT 'The ID of the user that destroyed the guild. If null, it was deleted by the system (empty guild, admin deleted, etc).',
-  `when` timestamp NOT NULL COMMENT 'When this event took place.',
-  KEY `guild_id` (`guild_id`),
-  CONSTRAINT `world_stats_guild_destroy_ibfk_1` FOREIGN KEY (`guild_id`) REFERENCES `guild` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB;
-
---
--- Dumping data for table `world_stats_guild_destroy`
---
-
-LOCK TABLES `world_stats_guild_destroy` WRITE;
-/*!40000 ALTER TABLE `world_stats_guild_destroy` DISABLE KEYS */;
-/*!40000 ALTER TABLE `world_stats_guild_destroy` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `world_stats_guild_user_change`
 --
 
@@ -1448,4 +1403,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-16 11:45:26
+-- Dump completed on 2010-05-16 11:54:30
