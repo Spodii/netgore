@@ -1119,6 +1119,93 @@ LOCK TABLES `world_stats_npc_kill_user` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `world_stats_quest_accept`
+--
+
+DROP TABLE IF EXISTS `world_stats_quest_accept`;
+CREATE TABLE `world_stats_quest_accept` (
+  `user_id` int(11) NOT NULL COMMENT 'The ID of the user that accepted the quest.',
+  `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was accepted.',
+  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  KEY `user_id` (`user_id`),
+  KEY `quest_id` (`quest_id`),
+  KEY `map_id` (`map_id`),
+  CONSTRAINT `world_stats_quest_accept_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_quest_accept_ibfk_2` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_quest_accept_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `world_stats_quest_accept`
+--
+
+LOCK TABLES `world_stats_quest_accept` WRITE;
+/*!40000 ALTER TABLE `world_stats_quest_accept` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_quest_accept` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_quest_cancel`
+--
+
+DROP TABLE IF EXISTS `world_stats_quest_cancel`;
+CREATE TABLE `world_stats_quest_cancel` (
+  `user_id` int(11) NOT NULL COMMENT 'The ID of the user that canceled the quest.',
+  `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was canceled.',
+  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  KEY `user_id` (`user_id`),
+  KEY `quest_id` (`quest_id`),
+  KEY `map_id` (`map_id`),
+  CONSTRAINT `world_stats_quest_cancel_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_quest_cancel_ibfk_2` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_quest_cancel_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `world_stats_quest_cancel`
+--
+
+LOCK TABLES `world_stats_quest_cancel` WRITE;
+/*!40000 ALTER TABLE `world_stats_quest_cancel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_quest_cancel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_quest_complete`
+--
+
+DROP TABLE IF EXISTS `world_stats_quest_complete`;
+CREATE TABLE `world_stats_quest_complete` (
+  `user_id` int(11) NOT NULL COMMENT 'The ID of the user that completed the quest.',
+  `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was completed.',
+  `map_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the map this event took place on.',
+  `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
+  `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  KEY `user_id` (`user_id`),
+  KEY `quest_id` (`quest_id`),
+  KEY `map_id` (`map_id`),
+  CONSTRAINT `world_stats_quest_complete_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_quest_complete_ibfk_2` FOREIGN KEY (`quest_id`) REFERENCES `quest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_quest_complete_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `world_stats_quest_complete`
+--
+
+LOCK TABLES `world_stats_quest_complete` WRITE;
+/*!40000 ALTER TABLE `world_stats_quest_complete` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_quest_complete` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `world_stats_user_consume_item`
 --
 
@@ -1403,4 +1490,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-16 11:54:30
+-- Dump completed on 2010-05-16 12:27:36

@@ -152,6 +152,9 @@
     <Compile Include="DbObjs\Interfaces\IWorldStatsGuildUserChangeTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsNetworkTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsNpcKillUserTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsQuestAcceptTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsQuestCancelTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IWorldStatsQuestCompleteTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsUserConsumeItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsUserKillNpcTable.cs" />
     <Compile Include="DbObjs\Interfaces\IWorldStatsUserLevelTable.cs" />
