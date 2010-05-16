@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 7:25:59 PM
+This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
@@ -85,7 +85,7 @@ public const System.Int32 ColumnCount = 9;
 /// <summary>
 /// The field that maps onto the database column `map_id`.
 /// </summary>
-System.UInt16 _mapID;
+System.Nullable<System.UInt16> _mapID;
 /// <summary>
 /// The field that maps onto the database column `npc_template_id`.
 /// </summary>
@@ -125,15 +125,15 @@ System.DateTime _when;
 /// </summary>
 [System.ComponentModel.Description("The ID of the map this event took place on.")]
 [NetGore.SyncValueAttribute()]
-public NetGore.MapID MapID
+public System.Nullable<NetGore.MapID> MapID
 {
 get
 {
-return (NetGore.MapID)_mapID;
+return (System.Nullable<NetGore.MapID>)_mapID;
 }
 set
 {
-this._mapID = (System.UInt16)value;
+this._mapID = (System.Nullable<System.UInt16>)value;
 }
 }
 /// <summary>
@@ -157,9 +157,9 @@ this._npcTemplateId = (System.Nullable<System.UInt16>)value;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `npc_x`.
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
-/// "The map x coordinate of the NPC when this event took place.".
+/// "The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.".
 /// </summary>
-[System.ComponentModel.Description("The map x coordinate of the NPC when this event took place.")]
+[System.ComponentModel.Description("The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 NpcX
 {
@@ -175,9 +175,9 @@ this._npcX = (System.UInt16)value;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `npc_y`.
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
-/// "The map y coordinate of the NPC when this event took place.".
+/// "The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.".
 /// </summary>
-[System.ComponentModel.Description("The map y coordinate of the NPC when this event took place.")]
+[System.ComponentModel.Description("The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 NpcY
 {
@@ -310,9 +310,9 @@ public WorldStatsNpcKillUserTable()
 /// <param name="userX">The initial value for the corresponding property.</param>
 /// <param name="userY">The initial value for the corresponding property.</param>
 /// <param name="when">The initial value for the corresponding property.</param>
-public WorldStatsNpcKillUserTable(NetGore.MapID @mapID, System.Nullable<DemoGame.CharacterTemplateID> @npcTemplateId, System.UInt16 @npcX, System.UInt16 @npcY, DemoGame.CharacterID @userId, System.Byte @userLevel, System.UInt16 @userX, System.UInt16 @userY, System.DateTime @when)
+public WorldStatsNpcKillUserTable(System.Nullable<NetGore.MapID> @mapID, System.Nullable<DemoGame.CharacterTemplateID> @npcTemplateId, System.UInt16 @npcX, System.UInt16 @npcY, DemoGame.CharacterID @userId, System.Byte @userLevel, System.UInt16 @userX, System.UInt16 @userY, System.DateTime @when)
 {
-this.MapID = (NetGore.MapID)@mapID;
+this.MapID = (System.Nullable<NetGore.MapID>)@mapID;
 this.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)@npcTemplateId;
 this.NpcX = (System.UInt16)@npcX;
 this.NpcY = (System.UInt16)@npcY;
@@ -349,7 +349,7 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IWorldStatsNpcKillUserTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@map_id"] = (NetGore.MapID)source.MapID;
+dic["@map_id"] = (System.Nullable<NetGore.MapID>)source.MapID;
 dic["@npc_template_id"] = (System.Nullable<DemoGame.CharacterTemplateID>)source.NpcTemplateId;
 dic["@npc_x"] = (System.UInt16)source.NpcX;
 dic["@npc_y"] = (System.UInt16)source.NpcY;
@@ -366,7 +366,7 @@ dic["@when"] = (System.DateTime)source.When;
 /// <param name="source">The IWorldStatsNpcKillUserTable to copy the values from.</param>
 public void CopyValuesFrom(IWorldStatsNpcKillUserTable source)
 {
-this.MapID = (NetGore.MapID)source.MapID;
+this.MapID = (System.Nullable<NetGore.MapID>)source.MapID;
 this.NpcTemplateId = (System.Nullable<DemoGame.CharacterTemplateID>)source.NpcTemplateId;
 this.NpcX = (System.UInt16)source.NpcX;
 this.NpcY = (System.UInt16)source.NpcY;
@@ -430,7 +430,7 @@ public void SetValue(System.String columnName, System.Object value)
 switch (columnName)
 {
 case "map_id":
-this.MapID = (NetGore.MapID)value;
+this.MapID = (System.Nullable<NetGore.MapID>)value;
 break;
 
 case "npc_template_id":
@@ -482,16 +482,16 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 switch (columnName)
 {
 case "map_id":
-return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "npc_template_id":
 return new ColumnMetadata("npc_template_id", "The template ID of the NPC. Only valid when the NPC has a template ID set.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "npc_x":
-return new ColumnMetadata("npc_x", "The map x coordinate of the NPC when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("npc_x", "The map x coordinate of the NPC when this event took place. Only valid when the map_id is not null.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 case "npc_y":
-return new ColumnMetadata("npc_y", "The map y coordinate of the NPC when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("npc_y", "The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 case "user_id":
 return new ColumnMetadata("user_id", "The ID of the user.", "int(11)", null, typeof(System.Int32), false, false, true);

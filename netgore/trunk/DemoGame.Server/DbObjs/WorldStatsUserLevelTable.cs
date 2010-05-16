@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 7:25:59 PM
+This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
@@ -144,8 +144,10 @@ this._level = (System.Byte)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `map_id`.
-/// The underlying database type is `smallint(5) unsigned`.
+/// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
+/// "The ID of the map this event took place on.".
 /// </summary>
+[System.ComponentModel.Description("The ID of the map this event took place on.")]
 [NetGore.SyncValueAttribute()]
 public System.Nullable<NetGore.MapID> MapID
 {
@@ -178,8 +180,10 @@ this._when = (System.DateTime)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `x`.
-/// The underlying database type is `smallint(5) unsigned`.
+/// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
+/// "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.".
 /// </summary>
+[System.ComponentModel.Description("The map x coordinate of the user when this event took place. Only valid when the map_id is not null.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 X
 {
@@ -194,8 +198,10 @@ this._x = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `y`.
-/// The underlying database type is `smallint(5) unsigned`.
+/// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
+/// "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.".
 /// </summary>
+[System.ComponentModel.Description("The map y coordinate of the user when this event took place. Only valid when the map_id is not null.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 Y
 {
@@ -383,16 +389,16 @@ case "level":
 return new ColumnMetadata("level", "The level that the character leveled up to (their new level).", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
 
 case "map_id":
-return new ColumnMetadata("map_id", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, false);
+return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, false);
 
 case "when":
 return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP", typeof(System.DateTime), false, false, false);
 
 case "x":
-return new ColumnMetadata("x", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("x", "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 case "y":
-return new ColumnMetadata("y", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("y", "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");

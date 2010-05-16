@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 7:25:59 PM
+This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
@@ -89,7 +89,7 @@ System.UInt16 _itemTemplateID;
 /// <summary>
 /// The field that maps onto the database column `map_id`.
 /// </summary>
-System.UInt16 _mapID;
+System.Nullable<System.UInt16> _mapID;
 /// <summary>
 /// The field that maps onto the database column `user_id`.
 /// </summary>
@@ -131,15 +131,15 @@ this._itemTemplateID = (System.UInt16)value;
 /// </summary>
 [System.ComponentModel.Description("The map the user was on when this event took place.")]
 [NetGore.SyncValueAttribute()]
-public NetGore.MapID MapID
+public System.Nullable<NetGore.MapID> MapID
 {
 get
 {
-return (NetGore.MapID)_mapID;
+return (System.Nullable<NetGore.MapID>)_mapID;
 }
 set
 {
-this._mapID = (System.UInt16)value;
+this._mapID = (System.Nullable<System.UInt16>)value;
 }
 }
 /// <summary>
@@ -241,10 +241,10 @@ public WorldStatsUserConsumeItemTable()
 /// <param name="when">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public WorldStatsUserConsumeItemTable(DemoGame.ItemTemplateID @itemTemplateID, NetGore.MapID @mapID, DemoGame.CharacterID @userId, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
+public WorldStatsUserConsumeItemTable(DemoGame.ItemTemplateID @itemTemplateID, System.Nullable<NetGore.MapID> @mapID, DemoGame.CharacterID @userId, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
 {
 this.ItemTemplateID = (DemoGame.ItemTemplateID)@itemTemplateID;
-this.MapID = (NetGore.MapID)@mapID;
+this.MapID = (System.Nullable<NetGore.MapID>)@mapID;
 this.UserId = (DemoGame.CharacterID)@userId;
 this.When = (System.DateTime)@when;
 this.X = (System.UInt16)@x;
@@ -278,7 +278,7 @@ CopyValues(this, dic);
 public static void CopyValues(IWorldStatsUserConsumeItemTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@item_template_id"] = (DemoGame.ItemTemplateID)source.ItemTemplateID;
-dic["@map_id"] = (NetGore.MapID)source.MapID;
+dic["@map_id"] = (System.Nullable<NetGore.MapID>)source.MapID;
 dic["@user_id"] = (DemoGame.CharacterID)source.UserId;
 dic["@when"] = (System.DateTime)source.When;
 dic["@x"] = (System.UInt16)source.X;
@@ -292,7 +292,7 @@ dic["@y"] = (System.UInt16)source.Y;
 public void CopyValuesFrom(IWorldStatsUserConsumeItemTable source)
 {
 this.ItemTemplateID = (DemoGame.ItemTemplateID)source.ItemTemplateID;
-this.MapID = (NetGore.MapID)source.MapID;
+this.MapID = (System.Nullable<NetGore.MapID>)source.MapID;
 this.UserId = (DemoGame.CharacterID)source.UserId;
 this.When = (System.DateTime)source.When;
 this.X = (System.UInt16)source.X;
@@ -347,7 +347,7 @@ this.ItemTemplateID = (DemoGame.ItemTemplateID)value;
 break;
 
 case "map_id":
-this.MapID = (NetGore.MapID)value;
+this.MapID = (System.Nullable<NetGore.MapID>)value;
 break;
 
 case "user_id":
@@ -386,7 +386,7 @@ case "item_template_id":
 return new ColumnMetadata("item_template_id", "The template ID of the item that was consumed. Only valid when the item has a set template ID.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
 
 case "map_id":
-return new ColumnMetadata("map_id", "The map the user was on when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+return new ColumnMetadata("map_id", "The map the user was on when this event took place.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "user_id":
 return new ColumnMetadata("user_id", "The user that this event is related to.", "int(11)", null, typeof(System.Int32), false, false, true);

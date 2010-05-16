@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 7:25:59 PM
+This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
@@ -38,7 +38,7 @@ IWorldStatsNpcKillUserTable DeepCopy();
 /// <summary>
 /// Gets the value of the database column `map_id`.
 /// </summary>
-NetGore.MapID MapID
+System.Nullable<NetGore.MapID> MapID
 {
 get;
 }

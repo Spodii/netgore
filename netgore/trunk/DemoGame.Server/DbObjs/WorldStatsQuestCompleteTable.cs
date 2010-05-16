@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 7:25:59 PM
+This file was generated on (UTC): 5/16/2010 7:45:19 PM
 ********************************************************************/
 
 using System;
@@ -85,7 +85,7 @@ public const System.Int32 ColumnCount = 6;
 /// <summary>
 /// The field that maps onto the database column `map_id`.
 /// </summary>
-System.UInt16 _mapID;
+System.Nullable<System.UInt16> _mapID;
 /// <summary>
 /// The field that maps onto the database column `quest_id`.
 /// </summary>
@@ -113,15 +113,15 @@ System.UInt16 _y;
 /// </summary>
 [System.ComponentModel.Description("The ID of the map this event took place on.")]
 [NetGore.SyncValueAttribute()]
-public NetGore.MapID MapID
+public System.Nullable<NetGore.MapID> MapID
 {
 get
 {
-return (NetGore.MapID)_mapID;
+return (System.Nullable<NetGore.MapID>)_mapID;
 }
 set
 {
-this._mapID = (System.UInt16)value;
+this._mapID = (System.Nullable<System.UInt16>)value;
 }
 }
 /// <summary>
@@ -181,9 +181,9 @@ this._when = (System.DateTime)value;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `x`.
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
-/// "The map x coordinate of the user when this event took place.".
+/// "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.".
 /// </summary>
-[System.ComponentModel.Description("The map x coordinate of the user when this event took place.")]
+[System.ComponentModel.Description("The map x coordinate of the user when this event took place. Only valid when the map_id is not null.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 X
 {
@@ -199,9 +199,9 @@ this._x = (System.UInt16)value;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `y`.
 /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
-/// "The map y coordinate of the user when this event took place.".
+/// "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.".
 /// </summary>
-[System.ComponentModel.Description("The map y coordinate of the user when this event took place.")]
+[System.ComponentModel.Description("The map y coordinate of the user when this event took place. Only valid when the map_id is not null.")]
 [NetGore.SyncValueAttribute()]
 public System.UInt16 Y
 {
@@ -241,9 +241,9 @@ public WorldStatsQuestCompleteTable()
 /// <param name="when">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public WorldStatsQuestCompleteTable(NetGore.MapID @mapID, NetGore.Features.Quests.QuestID @questID, DemoGame.CharacterID @userId, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
+public WorldStatsQuestCompleteTable(System.Nullable<NetGore.MapID> @mapID, NetGore.Features.Quests.QuestID @questID, DemoGame.CharacterID @userId, System.DateTime @when, System.UInt16 @x, System.UInt16 @y)
 {
-this.MapID = (NetGore.MapID)@mapID;
+this.MapID = (System.Nullable<NetGore.MapID>)@mapID;
 this.QuestID = (NetGore.Features.Quests.QuestID)@questID;
 this.UserId = (DemoGame.CharacterID)@userId;
 this.When = (System.DateTime)@when;
@@ -277,7 +277,7 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IWorldStatsQuestCompleteTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@map_id"] = (NetGore.MapID)source.MapID;
+dic["@map_id"] = (System.Nullable<NetGore.MapID>)source.MapID;
 dic["@quest_id"] = (NetGore.Features.Quests.QuestID)source.QuestID;
 dic["@user_id"] = (DemoGame.CharacterID)source.UserId;
 dic["@when"] = (System.DateTime)source.When;
@@ -291,7 +291,7 @@ dic["@y"] = (System.UInt16)source.Y;
 /// <param name="source">The IWorldStatsQuestCompleteTable to copy the values from.</param>
 public void CopyValuesFrom(IWorldStatsQuestCompleteTable source)
 {
-this.MapID = (NetGore.MapID)source.MapID;
+this.MapID = (System.Nullable<NetGore.MapID>)source.MapID;
 this.QuestID = (NetGore.Features.Quests.QuestID)source.QuestID;
 this.UserId = (DemoGame.CharacterID)source.UserId;
 this.When = (System.DateTime)source.When;
@@ -343,7 +343,7 @@ public void SetValue(System.String columnName, System.Object value)
 switch (columnName)
 {
 case "map_id":
-this.MapID = (NetGore.MapID)value;
+this.MapID = (System.Nullable<NetGore.MapID>)value;
 break;
 
 case "quest_id":
@@ -383,7 +383,7 @@ public static ColumnMetadata GetColumnData(System.String columnName)
 switch (columnName)
 {
 case "map_id":
-return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+return new ColumnMetadata("map_id", "The ID of the map this event took place on.", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "quest_id":
 return new ColumnMetadata("quest_id", "The quest that was completed.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
@@ -395,10 +395,10 @@ case "when":
 return new ColumnMetadata("when", "When this event took place.", "timestamp", "CURRENT_TIMESTAMP", typeof(System.DateTime), false, false, false);
 
 case "x":
-return new ColumnMetadata("x", "The map x coordinate of the user when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("x", "The map x coordinate of the user when this event took place. Only valid when the map_id is not null.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 case "y":
-return new ColumnMetadata("y", "The map y coordinate of the user when this event took place.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("y", "The map y coordinate of the user when this event took place. Only valid when the map_id is not null.", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
 
 default:
 throw new ArgumentException("Field not found.","columnName");
