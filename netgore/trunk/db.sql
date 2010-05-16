@@ -493,7 +493,7 @@ CREATE TABLE `guild` (
 
 LOCK TABLES `guild` WRITE;
 /*!40000 ALTER TABLE `guild` DISABLE KEYS */;
-INSERT INTO `guild` VALUES (0,'asdfasdf','tg','0000-00-00 00:00:00');
+INSERT INTO `guild` VALUES (0,'asdfasdf','tg','2010-05-16 19:58:00');
 /*!40000 ALTER TABLE `guild` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -939,7 +939,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-05-14 00:18:09');
+INSERT INTO `server_time` VALUES ('2010-05-16 12:58:23');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1078,6 +1078,7 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
+INSERT INTO `world_stats_network` VALUES ('2010-05-16 19:58:17',0,0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1484,4 +1485,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-16 12:50:57
+-- Dump completed on 2010-05-16 12:59:00
