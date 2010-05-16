@@ -2,6 +2,7 @@
 using System.Linq;
 using DemoGame.Server.Queries;
 using NetGore.Features.Quests;
+using NetGore.Features.WorldStats;
 
 namespace DemoGame.Server.Quests
 {
@@ -121,7 +122,11 @@ namespace DemoGame.Server.Quests
             }
 
             Owner.Send(GameMessage.QuestAccepted);
+
+            _worldStats.AddQuestAccept(Owner, quest.QuestID);
         }
+
+        static readonly IWorldStatsTracker<User,NPC,ItemEntity> _worldStats = WorldStatsTracker.Instance;
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling of the
@@ -138,6 +143,8 @@ namespace DemoGame.Server.Quests
             }
 
             Owner.Send(GameMessage.QuestCanceled);
+
+            _worldStats.AddQuestCancel(Owner, quest.QuestID);
         }
 
         /// <summary>
@@ -160,6 +167,8 @@ namespace DemoGame.Server.Quests
             }
 
             Owner.Send(GameMessage.QuestFinished);
+
+            _worldStats.AddQuestComplete(Owner, quest.QuestID);
         }
     }
 }
