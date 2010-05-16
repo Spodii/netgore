@@ -20,7 +20,7 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner is demoted.
+        /// When overridden in the derived class, handles when the <see cref="GuildMemberInfo{T}.Owner"/> is demoted.
         /// </summary>
         /// <param name="rank">The new rank.</param>
         protected override void HandleDemotion(GuildRank rank)
@@ -32,7 +32,7 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner joins a guild.
+        /// When overridden in the derived class, handles when the <see cref="GuildMemberInfo{T}.Owner"/> joins a guild.
         /// </summary>
         /// <param name="guild">The guild that was joined.</param>
         protected override void HandleJoinGuild(IGuild guild)
@@ -51,7 +51,7 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner leaves a guild.
+        /// When overridden in the derived class, handles when the <see cref="GuildMemberInfo{T}.Owner"/> leaves a guild.
         /// </summary>
         /// <param name="guild">The guild that was left.</param>
         protected override void HandleLeaveGuild(IGuild guild)
@@ -70,7 +70,7 @@ namespace DemoGame.Server.Guilds
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the owner is promoted.
+        /// When overridden in the derived class, handles when the <see cref="GuildMemberInfo{T}.Owner"/> is promoted.
         /// </summary>
         /// <param name="rank">The new rank.</param>
         protected override void HandlePromotion(GuildRank rank)
