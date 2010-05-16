@@ -47,7 +47,7 @@ namespace DemoGame.Server.Guilds
 
             Owner.Send(GameMessage.GuildJoin, guild.Name);
 
-            WorldStatsTracker.Instance.AddUserGuildChange(Owner, (int?)guild.ID);
+            WorldStatsTracker.Instance.AddUserGuildChange(Owner, guild.ID);
         }
 
         /// <summary>

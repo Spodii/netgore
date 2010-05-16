@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 
 namespace NetGore.Features.WorldStats
@@ -26,19 +27,19 @@ namespace NetGore.Features.WorldStats
         void AddUserConsumeItem(TUser user, TItem item);
 
         /// <summary>
-        /// Adds when a user kills a NPC.
-        /// </summary>
-        /// <param name="user">The user that killed the <paramref name="npc"/>.</param>
-        /// <param name="npc">The NPC that was killed by the <paramref name="user"/>.</param>
-        void AddUserKillNPC(TUser user, TNPC npc);
-
-        /// <summary>
         /// Adds when a user changes their guild.
         /// </summary>
         /// <param name="user">The user that changed their guild.</param>
         /// <param name="guildID">The ID of the guild the user changed to. If this event is for when the user left a guild,
         /// this value will be null.</param>
-        void AddUserGuildChange(TUser user, int? guildID);
+        void AddUserGuildChange(TUser user, GuildID? guildID);
+
+        /// <summary>
+        /// Adds when a user kills a NPC.
+        /// </summary>
+        /// <param name="user">The user that killed the <paramref name="npc"/>.</param>
+        /// <param name="npc">The NPC that was killed by the <paramref name="user"/>.</param>
+        void AddUserKillNPC(TUser user, TNPC npc);
 
         /// <summary>
         /// Adds when a user gains a level.

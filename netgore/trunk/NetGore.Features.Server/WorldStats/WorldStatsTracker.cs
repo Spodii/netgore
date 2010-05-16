@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NetGore.Features.Guilds;
 using NetGore.Features.Shops;
 using NetGore.Network;
 
@@ -86,7 +87,7 @@ namespace NetGore.Features.WorldStats
         /// <param name="user">The user that changed their guild.</param>
         /// <param name="guildID">The ID of the guild the user changed to. If this event is for when the user left a guild,
         /// this value will be null.</param>
-        protected abstract void InternalAddUserGuildChange(TUser user, int? guildID);
+        protected abstract void InternalAddUserGuildChange(TUser user, GuildID? guildID);
 
         /// <summary>
         /// When overridden in the derived class, adds when a user kills a NPC.
@@ -194,7 +195,7 @@ namespace NetGore.Features.WorldStats
         /// <param name="user">The user that changed their guild.</param>
         /// <param name="guildID">The ID of the guild the user changed to. If this event is for when the user left a guild,
         /// this value will be null.</param>
-        public void AddUserGuildChange(TUser user, int? guildID)
+        public void AddUserGuildChange(TUser user, GuildID? guildID)
         {
             if (user == null)
                 return;

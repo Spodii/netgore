@@ -114,12 +114,12 @@ namespace DemoGame.Server
         /// <param name="user">The user that changed their guild.</param>
         /// <param name="guildID">The ID of the guild the user changed to. If this event is for when the user left a guild,
         /// this value will be null.</param>
-        protected override void InternalAddUserGuildChange(User user, int? guildID)
+        protected override void InternalAddUserGuildChange(User user, GuildID? guildID)
         {
             if (user.Map == null)
                 return;
 
-            var args = new WorldStatsGuildUserChangeTable(when: Now(), guildID: (GuildID?)guildID, userId: user.ID);
+            var args = new WorldStatsGuildUserChangeTable(when: Now(), guildID: guildID, userId: user.ID);
 
             _guildUserChangeQuery.Execute(args);
         }
