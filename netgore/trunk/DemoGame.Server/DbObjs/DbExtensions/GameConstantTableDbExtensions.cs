@@ -14,7 +14,7 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/16/2010 6:53:58 PM
+This file was generated on (UTC): 5/16/2010 7:25:59 PM
 ********************************************************************/
 
 using System;
