@@ -255,6 +255,9 @@
     <Compile Include="Queries\WorldStats\InsertWorldStatsGuildUserChangeQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsNetworkQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsNPCKillUserQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsQuestAcceptQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsQuestCancelQuery.cs" />
+    <Compile Include="Queries\WorldStats\InsertWorldStatsQuestCompleteQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsUserConsumeItemQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsUserKillNpcQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsUserLevelQuery.cs" />
