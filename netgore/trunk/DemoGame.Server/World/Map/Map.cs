@@ -28,6 +28,18 @@ namespace DemoGame.Server
         const int _emptyMapNoUpdateDelay = 60000;
 
         /// <summary>
+        /// Gets if this is an instanced map. When true, the <see cref="Map.ID"/> is not to be considered valid.
+        /// </summary>
+        public bool IsInstanced
+        {
+            get
+            {
+                // TODO: !! Map instancing
+                return false;
+            }
+        }
+
+        /// <summary>
         /// If true, only the <see cref="DynamicEntity"/> objects should be checked when looking for objects
         /// that implement <see cref="IServerSaveable"/>. If false, we will have to check every <see cref="Entity"/>
         /// on the map. This value is determined at runtime through reflection, and will be false if there

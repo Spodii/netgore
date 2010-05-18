@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using NetGore;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {
@@ -18,6 +20,36 @@ namespace DemoGame.Server
         /// address of the machine hosting the server process in the network.
         /// </summary>
         public const bool AllowRemoteConnections = false;
+
+        /// <summary>
+        /// The map to use for a persistent <see cref="NPC"/> who does not have a valid <see cref="MapID"/> to use for their
+        /// loading position. This should point to an isolated region not accessible by players. Ideally, no NPC will ever
+        /// end up here.
+        /// </summary>
+        /// <seealso cref="InvalidPersistentNPCLoadPosition"/>
+        public static readonly MapID InvalidPersistentNPCLoadMap = new MapID(1);
+
+        /// <summary>
+        /// The position to use for a persistent <see cref="NPC"/> who does not have a valid <see cref="MapID"/> to use for their
+        /// loading position. This should point to an isolated region not accessible by players. Ideally, no NPC will ever
+        /// end up here.
+        /// </summary>
+        /// <seealso cref="InvalidPersistentNPCLoadMap"/>
+        public static readonly Vector2 InvalidPersistentNPCLoadPosition = new Vector2(10, 10);
+
+        /// <summary>
+        /// The map to use for a <see cref="User"/> who does not have a valid <see cref="MapID"/> or position to use for their
+        /// position position.
+        /// </summary>
+        /// <seealso cref="InvalidUserLoadPosition"/>
+        public static readonly MapID InvalidUserLoadMap = new MapID(1);
+
+        /// <summary>
+        /// The position to use for a <see cref="User"/> who does not have a valid <see cref="MapID"/> or position to use for their
+        /// position position.
+        /// </summary>
+        /// <seealso cref="InvalidUserLoadMap"/>
+        public static readonly Vector2 InvalidUserLoadPosition = new Vector2(765, 45);
 
         /// <summary>
         /// The amount of time an item may remain on the map before it is removed automatically.

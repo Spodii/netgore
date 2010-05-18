@@ -1233,7 +1233,7 @@ namespace DemoGame.Server
 
             BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
 
-            Teleport(new Vector2(v.X, v.Y));
+            Teleport(new Vector2(v.LoadX, v.LoadY));
             Resize(BodyInfo.Size);
 
             ((PersistentCharacterStatusEffects)StatusEffects).Load();
@@ -1244,7 +1244,7 @@ namespace DemoGame.Server
             _cash = v.Cash;
             _hp = new SPValueType(v.HP);
             _mp = new SPValueType(v.MP);
-            RespawnMapID = v.RespawnMap;
+            RespawnMapID = v.RespawnMapID;
             RespawnPosition = new Vector2(v.RespawnX, v.RespawnY);
             StatPoints = v.StatPoints;
 
@@ -1275,7 +1275,7 @@ namespace DemoGame.Server
             HandleAdditionalLoading(v);
 
             // Set the map
-            var m = World.GetMap(v.MapID);
+            var m = World.GetMap(v.LoadMapID);
             if (m != null)
                 ChangeMap(m);
             else
@@ -2243,7 +2243,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `map_id`.
         /// </summary>
-        MapID ICharacterTable.MapID
+        MapID ICharacterTable.LoadMapID
         {
             get { return Map.ID; }
         }
@@ -2292,7 +2292,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `respawn_map`.
         /// </summary>
-        MapID? ICharacterTable.RespawnMap
+        MapID? ICharacterTable.RespawnMapID
         {
             get { return RespawnMapID; }
         }
@@ -2359,17 +2359,37 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `x`.
         /// </summary>
-        float ICharacterTable.X
+        ushort ICharacterTable.LoadX
         {
-            get { return Position.X; }
+            get
+            {
+                return (ushort)GetLoadPosition().X;
+            }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the position that this <see cref="Character"/>
+        /// will use for when loading.
+        /// </summary>
+        /// <returns>The position to load this <see cref="Character"/> at.</returns>
+        protected abstract Vector2 GetLoadPosition();
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="MapID"/> that this <see cref="Character"/>
+        /// will use for when loading.
+        /// </summary>
+        /// <returns>The ID of the map to load this <see cref="Character"/> on.</returns>
+        protected abstract MapID GetLoadMap();
 
         /// <summary>
         /// Gets the value of the database column `y`.
         /// </summary>
-        float ICharacterTable.Y
+        ushort ICharacterTable.LoadY
         {
-            get { return Position.Y; }
+            get
+            {
+                return (ushort)GetLoadPosition().Y;
+            }
         }
 
         /// <summary>

@@ -145,7 +145,7 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
                 generator.AddCustomType(typeof(CharacterTemplateID), "*", "character_template_id", "user_template_id",
                                         "npc_template_id");
                 generator.AddCustomType(typeof(AccountID), "*", "account_id");
-                generator.AddCustomType(typeof(MapID), "*", "map_id", "respawn_map");
+                generator.AddCustomType(typeof(MapID), "*", "map_id", "respawn_map_id", "load_map_id");
                 generator.AddCustomType(typeof(ItemID), "*", "item_id");
                 generator.AddCustomType(typeof(ItemTemplateID), "*", "item_template_id");
                 generator.AddCustomType(typeof(BodyID), "*", "body_id");
@@ -166,8 +166,11 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
                 formatter.AddAlias("item_template_id", "ItemTemplateID");
                 formatter.AddAlias("item_id", "ItemID");
                 formatter.AddAlias("map_id", "MapID");
+                formatter.AddAlias("load_map_id", "LoadMapID");
+                formatter.AddAlias("load_x", "LoadX");
+                formatter.AddAlias("load_y", "LoadY");
                 formatter.AddAlias("body_id", "BodyID");
-                formatter.AddAlias("respawn_map", "RespawnMap");
+                formatter.AddAlias("respawn_map_id", "RespawnMapID");
                 formatter.AddAlias("respawn_x", "RespawnX");
                 formatter.AddAlias("respawn_y", "RespawnY");
                 formatter.AddAlias("give_exp", "GiveExp");

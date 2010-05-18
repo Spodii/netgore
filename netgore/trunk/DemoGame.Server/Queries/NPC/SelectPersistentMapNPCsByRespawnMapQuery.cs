@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
@@ -8,16 +7,16 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectPersistentMapNPCsQuery : DbQueryReader<MapID>
+    public class SelectPersistentMapNPCsByRespawnMapQuery : DbQueryReader<MapID>
     {
         static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `load_map_id`=@mapID",
                                                          NpcCharacterTable.TableName);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectPersistentMapNPCsQuery"/> class.
+        /// Initializes a new instance of the <see cref="SelectPersistentMapNPCsByRespawnMapQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectPersistentMapNPCsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectPersistentMapNPCsByRespawnMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(NpcCharacterTable.DbColumns, "id", "load_map_id");
         }
