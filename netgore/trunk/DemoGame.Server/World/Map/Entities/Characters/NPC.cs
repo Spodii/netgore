@@ -123,56 +123,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the position that this <see cref="Character"/>
-        /// will use for when loading.
-        /// </summary>
-        /// <returns>The position to load this <see cref="Character"/> at.</returns>
-        protected override Vector2 GetLoadPosition()
-        {
-            // Use the current position if a non-instanced map to resume where right where the NPC left off, or if an
-            // instanced or invalid map, use the respawn position
-            if (Map == null || Map.IsInstanced)
-            {
-                if (RespawnMapID.HasValue)
-                    return RespawnPosition;
-
-                const string errmsg = "NPC `{0}` could not get a valid load position. Using ServerSettings.InvalidPersistentNPCLoad... instead.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-
-                return ServerSettings.InvalidPersistentNPCLoadPosition;
-            }
-
-            return Position;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="MapID"/> that this <see cref="Character"/>
-        /// will use for when loading.
-        /// </summary>
-        /// <returns>The ID of the map to load this <see cref="Character"/> on.</returns>
-        protected override MapID GetLoadMap()
-        {
-            // Use the current position if a non-instanced map to resume where right where the NPC left off, or if an
-            // instanced or invalid map, use the respawn position
-            if (Map == null || Map.IsInstanced)
-            {
-                if (RespawnMapID.HasValue)
-                    return RespawnMapID.Value;
-
-                const string errmsg = "NPC `{0}` could not get a valid load position. Using ServerSettings.InvalidPersistentNPCLoad... instead.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-
-                return ServerSettings.InvalidPersistentNPCLoadMap;
-            }
-
-            return Map.ID;
-        }
-
-        /// <summary>
         /// Gets the amount of cash that the NPC gives upon being killed.
         /// </summary>
         public ushort GiveCash
@@ -272,6 +222,58 @@ namespace DemoGame.Server
         protected override StatCollection<StatType> CreateStats(StatCollectionType statCollectionType)
         {
             return new StatCollection<StatType>(statCollectionType);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="MapID"/> that this <see cref="Character"/>
+        /// will use for when loading.
+        /// </summary>
+        /// <returns>The ID of the map to load this <see cref="Character"/> on.</returns>
+        protected override MapID GetLoadMap()
+        {
+            // Use the current position if a non-instanced map to resume where right where the NPC left off, or if an
+            // instanced or invalid map, use the respawn position
+            if (Map == null || Map.IsInstanced)
+            {
+                if (RespawnMapID.HasValue)
+                    return RespawnMapID.Value;
+
+                const string errmsg =
+                    "NPC `{0}` could not get a valid load position. Using ServerSettings.InvalidPersistentNPCLoad... instead.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+
+                return ServerSettings.InvalidPersistentNPCLoadMap;
+            }
+
+            return Map.ID;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the position that this <see cref="Character"/>
+        /// will use for when loading.
+        /// </summary>
+        /// <returns>The position to load this <see cref="Character"/> at.</returns>
+        protected override Vector2 GetLoadPosition()
+        {
+            // Use the current position if a non-instanced map to resume where right where the NPC left off, or if an
+            // instanced or invalid map, use the respawn position
+            if (Map == null || Map.IsInstanced)
+            {
+                if (RespawnMapID.HasValue)
+                    return RespawnPosition;
+
+                const string errmsg =
+                    "NPC `{0}` could not get a valid load position. Using ServerSettings.InvalidPersistentNPCLoad... instead.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+
+                return ServerSettings.InvalidPersistentNPCLoadPosition;
+            }
+
+            return Position;
         }
 
         /// <summary>

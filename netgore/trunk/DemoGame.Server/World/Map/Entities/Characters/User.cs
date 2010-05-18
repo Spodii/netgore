@@ -304,6 +304,48 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the <see cref="MapID"/> that this <see cref="Character"/>
+        /// will use for when loading.
+        /// </summary>
+        /// <returns>The ID of the map to load this <see cref="Character"/> on.</returns>
+        protected override MapID GetLoadMap()
+        {
+            if (!RespawnMapID.HasValue)
+            {
+                const string errmsg =
+                    "Users are expected to have a valid respawn position at all times, but user `{0}` does not. Using ServerSettings.InvalidUserLoad... instead.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+
+                return ServerSettings.InvalidUserLoadMap;
+            }
+
+            return RespawnMapID.Value;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the position that this <see cref="Character"/>
+        /// will use for when loading.
+        /// </summary>
+        /// <returns>The position to load this <see cref="Character"/> at.</returns>
+        protected override Vector2 GetLoadPosition()
+        {
+            if (!RespawnMapID.HasValue)
+            {
+                const string errmsg =
+                    "Users are expected to have a valid respawn position at all times, but user `{0}` does not. Using ServerSettings.InvalidUserLoad... instead.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+
+                return ServerSettings.InvalidUserLoadPosition;
+            }
+
+            return RespawnPosition;
+        }
+
+        /// <summary>
         /// Gives the kill reward.
         /// </summary>
         /// <param name="exp">The exp.</param>
@@ -1118,46 +1160,6 @@ namespace DemoGame.Server
 
                 base.Name = value;
             }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the position that this <see cref="Character"/>
-        /// will use for when loading.
-        /// </summary>
-        /// <returns>The position to load this <see cref="Character"/> at.</returns>
-        protected override Vector2 GetLoadPosition()
-        {
-            if (!RespawnMapID.HasValue)
-            {
-                const string errmsg = "Users are expected to have a valid respawn position at all times, but user `{0}` does not. Using ServerSettings.InvalidUserLoad... instead.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-
-                return ServerSettings.InvalidUserLoadPosition;
-            }
-
-            return RespawnPosition;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="MapID"/> that this <see cref="Character"/>
-        /// will use for when loading.
-        /// </summary>
-        /// <returns>The ID of the map to load this <see cref="Character"/> on.</returns>
-        protected override MapID GetLoadMap()
-        {
-            if (!RespawnMapID.HasValue)
-            {
-                const string errmsg = "Users are expected to have a valid respawn position at all times, but user `{0}` does not. Using ServerSettings.InvalidUserLoad... instead.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-
-                return ServerSettings.InvalidUserLoadMap;
-            }
-
-            return RespawnMapID.Value;
         }
 
         /// <summary>
