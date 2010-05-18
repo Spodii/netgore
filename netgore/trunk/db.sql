@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-05-14 00:17:45',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-05-17 17:27:42',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,6 +58,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (1,16777343,'2010-05-17 17:24:58'),(1,16777343,'2010-05-17 17:25:17'),(1,16777343,'2010-05-17 17:27:23'),(1,16777343,'2010-05-17 17:27:42');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,13 +144,13 @@ CREATE TABLE `character` (
   `character_template_id` smallint(5) unsigned DEFAULT NULL,
   `name` varchar(30) NOT NULL,
   `permissions` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `map_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `shop_id` smallint(5) unsigned DEFAULT NULL,
   `chat_dialog` smallint(5) unsigned DEFAULT NULL,
   `ai_id` smallint(5) unsigned DEFAULT NULL,
-  `x` float NOT NULL DEFAULT '100',
-  `y` float NOT NULL DEFAULT '100',
-  `respawn_map` smallint(5) unsigned DEFAULT NULL,
+  `load_map_id` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `load_x` smallint(5) unsigned NOT NULL DEFAULT '100',
+  `load_y` smallint(5) unsigned NOT NULL DEFAULT '100',
+  `respawn_map_id` smallint(5) unsigned DEFAULT NULL,
   `respawn_x` float NOT NULL DEFAULT '50',
   `respawn_y` float NOT NULL DEFAULT '50',
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
@@ -170,16 +171,16 @@ CREATE TABLE `character` (
   `stat_str` smallint(6) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `template_id` (`character_template_id`),
-  KEY `respawn_map` (`respawn_map`),
-  KEY `character_ibfk_2` (`map_id`),
+  KEY `character_ibfk_2` (`load_map_id`),
   KEY `idx_name` (`name`),
   KEY `account_id` (`account_id`),
   KEY `shop_id` (`shop_id`),
-  CONSTRAINT `character_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_3` FOREIGN KEY (`respawn_map`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_4` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_5` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_6` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `character_ibfk_5` (`respawn_map_id`),
+  CONSTRAINT `character_ibfk_5` FOREIGN KEY (`respawn_map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_2` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_3` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_4` FOREIGN KEY (`load_map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) TYPE=InnoDB;
 
 --
@@ -188,7 +189,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,0,NULL,'Test',0,1,NULL,NULL,NULL,391.6,244,NULL,50,50,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',0,1,NULL,NULL,NULL,576.6,180,1,500,200,1,1800,201385,30,880,145,100,100,100,100,1,1,1,1,1,1),(2,NULL,1,'Test A',0,2,NULL,NULL,1,800,250,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,2,NULL,NULL,1,506,250,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5);
+INSERT INTO `character` VALUES (0,0,NULL,'Test',0,NULL,NULL,NULL,1,765,45,1,765,45,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',0,NULL,NULL,NULL,1,765,45,1,765,45,1,1800,201385,30,880,145,100,100,100,100,1,1,1,1,1,1),(2,NULL,1,'Test A',0,NULL,NULL,1,2,800,250,2,800,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,NULL,NULL,1,2,506,250,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -710,16 +711,18 @@ SET character_set_client = utf8;
   `account_id` int(11),
   `character_template_id` smallint(5) unsigned,
   `name` varchar(30),
-  `map_id` smallint(5) unsigned,
+  `permissions` tinyint(3) unsigned,
   `shop_id` smallint(5) unsigned,
   `chat_dialog` smallint(5) unsigned,
   `ai_id` smallint(5) unsigned,
-  `x` float,
-  `y` float,
-  `respawn_map` smallint(5) unsigned,
+  `load_map_id` smallint(5) unsigned,
+  `load_x` smallint(5) unsigned,
+  `load_y` smallint(5) unsigned,
+  `respawn_map_id` smallint(5) unsigned,
   `respawn_x` float,
   `respawn_y` float,
   `body_id` smallint(5) unsigned,
+  `move_speed` smallint(5) unsigned,
   `cash` int(11),
   `level` tinyint(3) unsigned,
   `exp` int(11),
@@ -939,7 +942,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-05-16 12:58:23');
+INSERT INTO `server_time` VALUES ('2010-05-17 17:27:43');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -990,46 +993,6 @@ INSERT INTO `shop_item` VALUES (0,1),(1,1),(0,2),(1,2),(0,3),(0,4),(0,5),(0,6),(
 UNLOCK TABLES;
 
 --
--- Temporary table structure for view `user_character`
---
-
-DROP TABLE IF EXISTS `user_character`;
-/*!50001 DROP VIEW IF EXISTS `user_character`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `user_character` (
-  `id` int(11),
-  `account_id` int(11),
-  `character_template_id` smallint(5) unsigned,
-  `name` varchar(30),
-  `map_id` smallint(5) unsigned,
-  `shop_id` smallint(5) unsigned,
-  `chat_dialog` smallint(5) unsigned,
-  `ai_id` smallint(5) unsigned,
-  `x` float,
-  `y` float,
-  `respawn_map` smallint(5) unsigned,
-  `respawn_x` float,
-  `respawn_y` float,
-  `body_id` smallint(5) unsigned,
-  `cash` int(11),
-  `level` tinyint(3) unsigned,
-  `exp` int(11),
-  `statpoints` int(11),
-  `hp` smallint(6),
-  `mp` smallint(6),
-  `stat_maxhp` smallint(6),
-  `stat_maxmp` smallint(6),
-  `stat_minhit` smallint(6),
-  `stat_maxhit` smallint(6),
-  `stat_defence` smallint(6),
-  `stat_agi` smallint(6),
-  `stat_int` smallint(6),
-  `stat_str` smallint(6)
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
-
---
 -- Table structure for table `world_stats_guild_user_change`
 --
 
@@ -1078,7 +1041,6 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
-INSERT INTO `world_stats_network` VALUES ('2010-05-16 19:58:17',0,0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1455,26 +1417,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `npc_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where isnull(`character`.`account_id`) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `user_character`
---
-
-/*!50001 DROP TABLE IF EXISTS `user_character`*/;
-/*!50001 DROP VIEW IF EXISTS `user_character`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = latin1 */;
-/*!50001 SET character_set_results     = latin1 */;
-/*!50001 SET collation_connection      = latin1_swedish_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `user_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where (`character`.`account_id` is not null) */;
+/*!50001 VIEW `npc_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`permissions` AS `permissions`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`load_map_id` AS `load_map_id`,`character`.`load_x` AS `load_x`,`character`.`load_y` AS `load_y`,`character`.`respawn_map_id` AS `respawn_map_id`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`move_speed` AS `move_speed`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where isnull(`character`.`account_id`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1485,4 +1428,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-16 12:59:00
+-- Dump completed on 2010-05-17 17:28:28
