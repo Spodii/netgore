@@ -2361,10 +2361,7 @@ namespace DemoGame.Server
         /// </summary>
         ushort ICharacterTable.LoadX
         {
-            get
-            {
-                return (ushort)GetLoadPosition().X;
-            }
+            get { return (ushort)GetLoadPosition().X; }
         }
 
         /// <summary>
@@ -2386,10 +2383,7 @@ namespace DemoGame.Server
         /// </summary>
         ushort ICharacterTable.LoadY
         {
-            get
-            {
-                return (ushort)GetLoadPosition().Y;
-            }
+            get { return (ushort)GetLoadPosition().Y; }
         }
 
         /// <summary>
