@@ -328,7 +328,7 @@ namespace SFML.Graphics
         /// <returns>The result of the conversion.</returns>
         public static explicit operator IntRect(Rectangle v)
         {
-            return new IntRect(v.Left, v.Top, v.Right, v.Bottom);
+            return new IntRect(v.Left, v.Top, v.Width, v.Height);
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace SFML.Graphics
         /// <returns>The result of the conversion.</returns>
         public static explicit operator FloatRect(Rectangle v)
         {
-            return new FloatRect(v.Left, v.Top, v.Right, v.Bottom);
+            return new FloatRect(v.Left, v.Top, v.Width, v.Height);
         }
 
         /// <summary>Compares two rectangles for inequality.</summary>
