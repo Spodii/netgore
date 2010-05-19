@@ -118,7 +118,7 @@ namespace DemoGame.Client
             {
                 // Set the position
                 var pos = _position;
-                pos.Y -= _sf.CharacterSize * (i++ + 1);
+                pos.Y -= _sf.GetLineSpacing() * (i++ + 1);
                 pos.X -= item.Width;
 
                 // Set the color

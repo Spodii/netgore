@@ -155,7 +155,7 @@ namespace NetGore.Graphics.GUI
                     }
                 }
 
-                pos.Y += (int)Font.CharacterSize;
+                pos.Y += Font.GetLineSpacing();
             }
         }
 

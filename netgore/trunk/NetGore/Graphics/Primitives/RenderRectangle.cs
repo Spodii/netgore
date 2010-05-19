@@ -18,9 +18,10 @@ namespace NetGore.Graphics
         /// <param name="borderThickness">The thickness of the border in pixels. Default is 1.</param>
         public static void Draw(ISpriteBatch sb, Rectangle dest, Color color, Color borderColor, float borderThickness = 1f)
         {
+            var fDest = new FloatRect(dest.Left, dest.Top, dest.Width, dest.Height);
+
             using (
-                var s = Shape.Rectangle(new Vector2(dest.X, dest.Y), new Vector2(dest.Right, dest.Bottom), color, borderThickness,
-                                        borderColor))
+                var s = Shape.Rectangle(fDest, color, borderThickness, borderColor))
             {
                 sb.Draw(s);
             }
@@ -34,7 +35,9 @@ namespace NetGore.Graphics
         /// <param name="color">Color of the rectangle.</param>
         public static void Draw(ISpriteBatch sb, Rectangle dest, Color color)
         {
-            using (var s = Shape.Rectangle(new Vector2(dest.X, dest.Y), new Vector2(dest.Right, dest.Bottom), color))
+            var fDest = new FloatRect(dest.Left, dest.Top, dest.Width, dest.Height);
+
+            using (var s = Shape.Rectangle(fDest, color))
             {
                 sb.Draw(s);
             }

@@ -12,7 +12,7 @@ namespace NetGore.Graphics
     {
         readonly RenderWindow _rw;
         readonly SFML.Graphics.Sprite _sprite = new SFML.Graphics.Sprite();
-        readonly String2D _str = new String2D();
+        readonly Text _str = new Text();
 
         bool _isDisposed;
 
@@ -84,11 +84,11 @@ namespace NetGore.Graphics
         /// and a global transform matrix.
         /// </summary>
         /// <param name="blendMode">Blending options to use when rendering.</param>
-        /// <param name="halfSize">The half-size of the view area.</param>
+        /// <param name="size">The half-size of the view area.</param>
         /// <param name="center">The position of the center of the view.</param>
-        public void Begin(BlendMode blendMode, Vector2 halfSize, Vector2 center)
+        public void Begin(BlendMode blendMode, Vector2 size, Vector2 center)
         {
-            _rw.CurrentView.HalfSize = halfSize;
+            _rw.CurrentView.Size = size;
             _rw.CurrentView.Center = center;
 
             _sprite.BlendMode = blendMode;
@@ -104,8 +104,7 @@ namespace NetGore.Graphics
         /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the world.</param>
         public virtual void Begin(BlendMode blendMode, ICamera2D camera)
         {
-            var v = camera.Size / 2f;
-            Begin(blendMode, v, v + camera.Min);
+            Begin(blendMode, camera.Size, camera.Min + (camera.Size / 2f));
         }
 
         /// <summary>
@@ -115,9 +114,9 @@ namespace NetGore.Graphics
         /// <param name="blendMode">Blending options to use when rendering.</param>
         public virtual void Begin(BlendMode blendMode)
         {
-            var v = new Vector2(_rw.Width, _rw.Height) / 2f;
-            _rw.CurrentView.HalfSize = v;
-            _rw.CurrentView.Center = v;
+            var v = new Vector2(_rw.Width, _rw.Height);
+            _rw.CurrentView.Size = v;
+            _rw.CurrentView.Center = v / 2f;
 
             _sprite.BlendMode = blendMode;
 
@@ -181,7 +180,7 @@ namespace NetGore.Graphics
                                   : new IntRect(0, 0, (int)_sprite.Image.Width, (int)_sprite.Image.Height);
             _sprite.Color = color;
             _sprite.Rotation = -MathHelper.ToDegrees(rotation);
-            _sprite.Center = origin;
+            _sprite.Origin = origin;
             _sprite.FlipX((effects & SpriteEffects.FlipHorizontally) != 0);
             _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);
             _sprite.Scale = new Vector2((float)destinationRectangle.Width / _sprite.SubRect.Width,
@@ -259,7 +258,7 @@ namespace NetGore.Graphics
                                   : new IntRect(0, 0, (int)_sprite.Image.Width, (int)_sprite.Image.Height);
             _sprite.Color = color;
             _sprite.Rotation = -MathHelper.ToDegrees(rotation);
-            _sprite.Center = origin;
+            _sprite.Origin = origin;
             _sprite.FlipX((effects & SpriteEffects.FlipHorizontally) != 0);
             _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);
             _sprite.Scale = scale;
@@ -328,7 +327,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         public virtual void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
-                                       Vector2 origin, Vector2 scale, String2D.Styles style)
+                                       Vector2 origin, Vector2 scale, Text.Styles style)
         {
             if (!IsAssetValid(spriteFont))
                 return;
@@ -349,20 +348,20 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         public virtual void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin,
-                                       Vector2 scale, String2D.Styles style)
+                                       Vector2 scale, Text.Styles style)
         {
             if (!IsAssetValid(spriteFont) || string.IsNullOrEmpty(text))
                 return;
 
             _str.Font = spriteFont;
-            _str.Text = text;
+            _str.DisplayedString = text;
             _str.Position = position;
             _str.Color = color;
             _str.Rotation = rotation;
-            _str.Center = origin;
+            _str.Origin = origin;
             _str.Scale = scale;
             _str.Style = style;
-            _str.Size = spriteFont.CharacterSize;
+            _str.Size = (uint)spriteFont.GetLineSpacing();
 
             _rw.Draw(_str);
         }
@@ -380,7 +379,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         public virtual void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
-                                       Vector2 origin, float scale, String2D.Styles style)
+                                       Vector2 origin, float scale, Text.Styles style)
         {
             if (!IsAssetValid(spriteFont))
                 return;
@@ -401,7 +400,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         public virtual void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin,
-                                       float scale, String2D.Styles style)
+                                       float scale, Text.Styles style)
         {
             if (!IsAssetValid(spriteFont))
                 return;
@@ -422,7 +421,7 @@ namespace NetGore.Graphics
             if (!IsAssetValid(spriteFont))
                 return;
 
-            DrawString(spriteFont, text.ToString(), position, color, 0f, Vector2.Zero, 1f, String2D.Styles.Regular);
+            DrawString(spriteFont, text.ToString(), position, color, 0f, Vector2.Zero, 1f, Text.Styles.Regular);
         }
 
         /// <summary>
@@ -438,7 +437,7 @@ namespace NetGore.Graphics
             if (!IsAssetValid(spriteFont))
                 return;
 
-            DrawString(spriteFont, text, position, color, 0f, Vector2.Zero, 1f, String2D.Styles.Regular);
+            DrawString(spriteFont, text, position, color, 0f, Vector2.Zero, 1f, Text.Styles.Regular);
         }
 
         /// <summary>

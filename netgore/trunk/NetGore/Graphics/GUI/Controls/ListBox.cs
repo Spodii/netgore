@@ -61,7 +61,7 @@ namespace NetGore.Graphics.GUI
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             if (Font != null)
-                ItemHeight = (int)Font.CharacterSize;
+                ItemHeight = Font.GetLineSpacing();
             else
                 ItemHeight = 12;
 
@@ -88,7 +88,7 @@ namespace NetGore.Graphics.GUI
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             if (Font != null)
-                ItemHeight = (int)Font.CharacterSize;
+                ItemHeight = Font.GetLineSpacing();
             else
                 ItemHeight = 12;
 
@@ -453,7 +453,7 @@ namespace NetGore.Graphics.GUI
             base.OnFontChanged();
 
             if (Font != null)
-                _itemHeight = (int)Font.CharacterSize;
+                _itemHeight = Font.GetLineSpacing();
         }
 
         /// <summary>

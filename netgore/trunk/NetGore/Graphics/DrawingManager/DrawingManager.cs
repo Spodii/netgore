@@ -34,7 +34,7 @@ namespace NetGore.Graphics
 
             // Set up the sprite used to draw the light map
             _lightMapSprite = new SFML.Graphics.Sprite
-            { BlendMode = BlendMode.Multiply, Color = Color.White, Rotation = 0, Scale = Vector2.One, Center = Vector2.Zero };
+            { BlendMode = BlendMode.Multiply, Color = Color.White, Rotation = 0, Scale = Vector2.One, Origin = Vector2.Zero };
 
             // NOTE: Not sure if this flipping is supposed to be done, but it seems to fix things...
             _lightMapSprite.FlipY(true);

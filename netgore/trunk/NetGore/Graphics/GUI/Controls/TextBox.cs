@@ -422,10 +422,10 @@ namespace NetGore.Graphics.GUI
                     Font.MeasureString(_lines.CurrentLine.LineText.Substring(LineCharBufferOffset, len - LineCharBufferOffset)).X;
             }
 
-            var visibleLineOffset = (_lines.CurrentLineIndex - LineBufferOffset) * (int)Font.CharacterSize;
+            var visibleLineOffset = (_lines.CurrentLineIndex - LineBufferOffset) * Font.GetLineSpacing();
 
             var p1 = textPos + new Vector2(offset, visibleLineOffset);
-            var p2 = p1 + new Vector2(0, (int)Font.CharacterSize);
+            var p2 = p1 + new Vector2(0, Font.GetLineSpacing());
 
             RenderLine.Draw(sb, p1, p2, Color.Black);
         }
@@ -478,7 +478,7 @@ namespace NetGore.Graphics.GUI
             // Get the line
             if (IsMultiLine)
             {
-                lineIndex = LineBufferOffset + (int)Math.Floor(point.Y / (int)Font.CharacterSize);
+                lineIndex = LineBufferOffset + (int)Math.Floor(point.Y / Font.GetLineSpacing());
                 if (lineIndex >= _lines.Count)
                     lineIndex = _lines.Count - 1;
             }
@@ -650,7 +650,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             if (IsMultiLine)
-                _maxVisibleLines = (int)Math.Floor(ClientSize.Y / (int)Font.CharacterSize);
+                _maxVisibleLines = (int)Math.Floor(ClientSize.Y / Font.GetLineSpacing());
         }
 
         #region IEditableText Members

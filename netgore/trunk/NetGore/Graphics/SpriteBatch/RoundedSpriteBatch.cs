@@ -112,7 +112,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         public override void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, float scale, String2D.Styles style)
+                                        Vector2 origin, float scale, Text.Styles style)
         {
             base.DrawString(spriteFont, text, position.Round(), color, rotation, origin, scale, style);
         }
@@ -130,7 +130,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         public override void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, Vector2 scale, String2D.Styles style)
+                                        Vector2 origin, Vector2 scale, Text.Styles style)
         {
             base.DrawString(spriteFont, text, position.Round(), color, rotation, origin, scale, style);
         }
@@ -161,7 +161,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         public override void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, float scale, String2D.Styles style)
+                                        Vector2 origin, float scale, Text.Styles style)
         {
             base.DrawString(spriteFont, text, position.Round(), color, rotation, origin, scale, style);
         }
@@ -179,7 +179,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         public override void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, Vector2 scale, String2D.Styles style)
+                                        Vector2 origin, Vector2 scale, Text.Styles style)
         {
             base.DrawString(spriteFont, text, position.Round(), color, rotation, origin, scale, style);
         }

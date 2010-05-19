@@ -84,7 +84,7 @@ namespace NetGore.Graphics.GUI
         protected virtual void UpdateBackground()
         {
             var maxWidth = _drawer.Texts.Max(x => x.Sum(y => y.GetWidth(Font)));
-            float height = _drawer.Texts.Count() * (int)Font.CharacterSize;
+            float height = _drawer.Texts.Count() * Font.GetLineSpacing();
             _borderSize = new Vector2(maxWidth, height);
         }
 

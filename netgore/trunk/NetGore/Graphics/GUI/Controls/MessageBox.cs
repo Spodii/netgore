@@ -223,7 +223,7 @@ namespace NetGore.Graphics.GUI
                 var concatLine = StyledText.ToString(line);
                 var lbl = new Label(this, new Vector2(_padding, yOffset)) { Text = concatLine };
                 _msgBoxChildren.Add(lbl);
-                yOffset += (int)Font.CharacterSize;
+                yOffset += Font.GetLineSpacing();
             }
 
             yOffset += _padding;

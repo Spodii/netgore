@@ -9,7 +9,7 @@ namespace NetGore.Graphics
     /// </summary>
     public static class FontExtensions
     {
-        static readonly String2D _s = new String2D();
+        static readonly Text _s = new Text();
 
         /// <summary>
         /// Measures the size of a string.
@@ -20,8 +20,8 @@ namespace NetGore.Graphics
         public static Vector2 MeasureString(this Font font, string str)
         {
             _s.Font = font;
-            _s.Size = font.CharacterSize;
-            _s.Text = str;
+            _s.Size = (uint)font.GetLineSpacing();
+            _s.DisplayedString = str;
 
             var r = _s.GetRect();
 

@@ -1,4 +1,4 @@
-using System.Linq;
+using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -17,6 +17,16 @@ namespace SFML
         public struct VideoMode
         {
             ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Construct the video mode with its width and height
+            /// </summary>
+            /// <param name="width">Video mode width</param>
+            /// <param name="height">Video mode height</param>
+            ////////////////////////////////////////////////////////////
+            public VideoMode(uint width, uint height) :
+                this(width, height, 32)
+            {
+            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -26,10 +36,10 @@ namespace SFML
             /// <param name="height">Video mode height</param>
             /// <param name="bpp">Video mode depth (bits per pixel)</param>
             ////////////////////////////////////////////////////////////
-            public VideoMode(uint width, uint height, uint bpp = 32u)
+            public VideoMode(uint width, uint height, uint bpp)
             {
-                Width = width;
-                Height = height;
+                Width        = width;
+                Height       = height;
                 BitsPerPixel = bpp;
             }
 
@@ -46,26 +56,24 @@ namespace SFML
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Get the number of valid video modes
+            /// Get the list of all the supported fullscreen video modes
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public static uint ModesCount
+            public static VideoMode[] FullscreenModes
             {
-                get { return sfVideoMode_GetModesCount(); }
-            }
+                get
+                {
+                    unsafe
+                    {
+                        uint Count;
+                        VideoMode* ModesPtr = sfVideoMode_GetFullscreenModes(out Count);
+                        VideoMode[] Modes = new VideoMode[Count];
+                        for (uint i = 0; i < Count; ++i)
+                            Modes[i] = ModesPtr[i];
 
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Get a valid video mode.
-            /// Index must be in range [0, ModesCount[.
-            /// Modes are sorted from best to worst
-            /// </summary>
-            /// <param name="index">Index of the video mode to get</param>
-            /// <returns>index-th video mode</returns>
-            ////////////////////////////////////////////////////////////
-            public static VideoMode GetMode(uint index)
-            {
-                return sfVideoMode_GetMode(index);
+                        return Modes;
+                    }
+                }
             }
 
             ////////////////////////////////////////////////////////////
@@ -75,7 +83,21 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public static VideoMode DesktopMode
             {
-                get { return sfVideoMode_GetDesktopMode(); }
+                get {return sfVideoMode_GetDesktopMode();}
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Provide a string describing the object
+            /// </summary>
+            /// <returns>String description of the object</returns>
+            ////////////////////////////////////////////////////////////
+            public override string ToString()
+            {
+                return "[VideoMode]" +
+                       " Width(" + Width + ")" +
+                       " Height(" + Height + ")" +
+                       " BitsPerPixel(" + BitsPerPixel + ")";
             }
 
             /// <summary>Video mode width, in pixels</summary>
@@ -88,23 +110,14 @@ namespace SFML
             public uint BitsPerPixel;
 
             #region Imports
-
-            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern VideoMode sfVideoMode_GetDesktopMode();
 
-            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern uint sfVideoMode_GetModesCount();
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            unsafe static extern VideoMode* sfVideoMode_GetFullscreenModes(out uint Count);
 
-            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern VideoMode sfVideoMode_GetMode(uint Index);
-
-            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-window", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern bool sfVideoMode_IsValid(VideoMode Mode);
-
             #endregion
         }
     }

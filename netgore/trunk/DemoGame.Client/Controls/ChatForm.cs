@@ -156,7 +156,7 @@ namespace DemoGame.Client
             if (_input == null || _output == null)
                 return;
 
-            var inputSize = new Vector2(ClientSize.X, Font.CharacterSize + _input.Border.Height);
+            var inputSize = new Vector2(ClientSize.X, Font.GetLineSpacing() + _input.Border.Height);
             var outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
 
             var inputPos = new Vector2(0, outputSize.Y);

@@ -1,4 +1,4 @@
-using System.Linq;
+using System;
 using System.Runtime.InteropServices;
 
 namespace SFML
@@ -47,28 +47,28 @@ namespace SFML
             Num6 = '6',
             Num7 = '7',
             Num8 = '8',
-            Num9 = '9',
+            Num9 = '9', 
             Escape = 256,
             LControl,
             LShift,
             LAlt,
-            LSystem, // OS specific key (left side) : windows (Win and Linux), apple (MacOS), ...
+            LSystem,      // OS specific key (left side) : windows (Win and Linux), apple (MacOS), ...
             RControl,
             RShift,
             RAlt,
-            RSystem, // OS specific key (right side) : windows (Win and Linux), apple (MacOS), ...
+            RSystem,      // OS specific key (right side) : windows (Win and Linux), apple (MacOS), ...
             Menu,
-            LBracket, // [
-            RBracket, // ]
-            SemiColon, // ;
-            Comma, // ,
-            Period, // .
-            Quote, // '
-            Slash, // /
+            LBracket,     // [
+            RBracket,     // ]
+            SemiColon,    // ;
+            Comma,        // ,
+            Period,       // .
+            Quote,        // '
+            Slash,        // /
             BackSlash,
-            Tilde, // ~
-            Equal, // =
-            Dash, // -
+            Tilde,        // ~
+            Equal,        // =
+            Dash,         // -
             Space,
             Return,
             Back,
@@ -79,14 +79,14 @@ namespace SFML
             Home,
             Insert,
             Delete,
-            Add, // +
-            Subtract, // -
-            Multiply, // *
-            Divide, // /
-            Left, // Left arrow
-            Right, // Right arrow
-            Up, // Up arrow
-            Down, // Down arrow
+            Add,          // +
+            Subtract,     // -
+            Multiply,     // *
+            Divide,       // /
+            Left,         // Left arrow
+            Right,        // Right arrow
+            Up,           // Up arrow
+            Down,         // Down arrow
             Numpad0,
             Numpad1,
             Numpad2,
@@ -230,17 +230,17 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public struct KeyEvent
         {
-            /// <summary>Is the Alt modifier pressed?</summary>
-            public bool Alt;
-
             /// <summary>Code of the key (see KeyCode enum)</summary>
             public KeyCode Code;
 
+            /// <summary>Is the Alt modifier pressed?</summary>
+            public int Alt;
+
             /// <summary>Is the Control modifier pressed?</summary>
-            public bool Control;
+            public int Control;
 
             /// <summary>Is the Shift modifier pressed?</summary>
-            public bool Shift;
+            public int Shift;
         }
 
         ////////////////////////////////////////////////////////////
@@ -294,6 +294,12 @@ namespace SFML
         {
             /// <summary>Scroll amount</summary>
             public int Delta;
+
+            /// <summary>X coordinate of the mouse cursor</summary>
+            public int X;
+
+            /// <summary>Y coordinate of the mouse cursor</summary>
+            public int Y;
         }
 
         ////////////////////////////////////////////////////////////
@@ -303,11 +309,11 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public struct JoyMoveEvent
         {
-            /// <summary>Joystick axis (see JoyAxis enum)</summary>
-            public JoyAxis Axis;
-
             /// <summary>Index of the joystick which triggered the event</summary>
             public uint JoystickId;
+
+            /// <summary>Joystick axis (see JoyAxis enum)</summary>
+            public JoyAxis Axis;
 
             /// <summary>Current position of the axis</summary>
             public float Position;
@@ -320,11 +326,11 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public struct JoyButtonEvent
         {
-            /// <summary>Index of the button</summary>
-            public uint Button;
-
             /// <summary>Index of the joystick which triggered the event</summary>
             public uint JoystickId;
+
+            /// <summary>Index of the button</summary>
+            public uint Button;
         }
 
         ////////////////////////////////////////////////////////////
@@ -334,11 +340,11 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public struct SizeEvent
         {
-            /// <summary>New height of the window</summary>
-            public uint Height;
-
             /// <summary>New width of the window</summary>
             public uint Width;
+
+            /// <summary>New height of the window</summary>
+            public uint Height;
         }
 
         ////////////////////////////////////////////////////////////

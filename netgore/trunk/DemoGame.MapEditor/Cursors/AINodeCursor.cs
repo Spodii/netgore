@@ -129,7 +129,7 @@ namespace DemoGame.MapEditor
         static Vector2 GetToolTipPos(Font font, string text, int cellSize, MemoryCell memoryCell)
         {
             var pos = new Vector2(memoryCell.MinX + cellSize, memoryCell.MinY);
-            pos -= new Vector2(5, (font.CharacterSize * text.Split('\n').Length) + 5);
+            pos -= new Vector2(5, (font.GetLineSpacing() * text.Split('\n').Length) + 5);
             return pos;
         }
 
