@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -17,10 +16,11 @@ namespace SFML
         {
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Create a default view (1000x1000, centered on origin)
+            /// Create a default view (1000x1000)
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public View() : base(sfView_Create())
+            public View() :
+                base(sfView_Create())
             {
             }
 
@@ -30,29 +30,33 @@ namespace SFML
             /// </summary>
             /// <param name="viewRect">Rectangle defining the position and size of the view</param>
             ////////////////////////////////////////////////////////////
-            public View(FloatRect viewRect) : base(sfView_CreateFromRect(viewRect))
+            public View(FloatRect viewRect) :
+                base(sfView_CreateFromRect(viewRect))
             {
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Construct the view from its center and half-size
+            /// Construct the view from its center and size
             /// </summary>
             /// <param name="center">Center of the view</param>
-            /// <param name="halfSize">Half-size of the view (from center to corner)</param>
+            /// <param name="size">Size of the view</param>
             ////////////////////////////////////////////////////////////
-            public View(Vector2 center, Vector2 halfSize) : base(sfView_Create())
+            public View(Vector2 center, Vector2 size) :
+                base(sfView_Create())
             {
-                Center = center;
-                HalfSize = halfSize;
+                this.Center = center;
+                this.Size   = size;
             }
 
-            /// <summary>
-            /// Internal constructor for other classes which need to manipulate raw views
-            /// </summary>
-            /// <param name="thisPtr">Direct pointer to the view object in the C library</param>
             ////////////////////////////////////////////////////////////
-            internal View(IntPtr thisPtr) : base(thisPtr)
+            /// <summary>
+            /// Construct the view from another view
+            /// </summary>
+            /// <param name="copy">View to copy</param>
+            ////////////////////////////////////////////////////////////
+            public View(View copy) :
+                base(sfView_Copy(copy.This))
             {
             }
 
@@ -63,8 +67,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Vector2 Center
             {
-                get { return new Vector2(sfView_GetCenterX(This), sfView_GetCenterY(This)); }
-                set { sfView_SetCenter(This, value.X, value.Y); }
+                get {return new Vector2(sfView_GetCenterX(This), sfView_GetCenterY(This));}
+                set {sfView_SetCenter(This, value.X, value.Y);}
             }
 
             ////////////////////////////////////////////////////////////
@@ -72,33 +76,44 @@ namespace SFML
             /// Half-size of the view
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public Vector2 HalfSize
+            public Vector2 Size
             {
-                get { return new Vector2(sfView_GetHalfSizeX(This), sfView_GetHalfSizeY(This)); }
-                set { sfView_SetHalfSize(This, value.X, value.Y); }
-            }
-
-            /// <summary>
-            /// Handle the destruction of the object
-            /// </summary>
-            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-            ////////////////////////////////////////////////////////////
-            protected override void Destroy(bool disposing)
-            {
-                sfView_Destroy(This);
+                get {return new Vector2(sfView_GetWidth(This), sfView_GetHeight(This));}
+                set {sfView_SetSize(This, value.X, value.Y);}
             }
 
             ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Rotation of the view, in degrees
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public float Rotation
+            {
+                get { return sfView_GetRotation(This); }
+                set { sfView_SetRotation(This, value); }
+            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Get the rectangle defining the view
+            /// Target viewport of the view, defined as a factor of the
+            /// size of the target to which the view is applied
             /// </summary>
-            /// <returns>Rectangle of the view</returns>
             ////////////////////////////////////////////////////////////
-            public FloatRect GetRect()
+            public FloatRect Viewport
             {
-                return sfView_GetRect(This);
+                get { return sfView_GetViewport(This); }
+                set { sfView_SetViewport(This, value); }
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Rebuild the view from a rectangle
+            /// </summary>
+            /// <param name="rectangle">Rectangle defining the position and size of the view</param>
+            ////////////////////////////////////////////////////////////
+            public void Reset(FloatRect rectangle)
+            {
+                sfView_Reset(This, rectangle);
             }
 
             ////////////////////////////////////////////////////////////
@@ -112,14 +127,15 @@ namespace SFML
                 sfView_Move(This, offset.X, offset.Y);
             }
 
-            /// <summary>
-            /// Rebuild the view from a rectangle
-            /// </summary>
-            /// <param name="viewRect">Rectangle defining the position and size of the view</param>
             ////////////////////////////////////////////////////////////
-            public void SetFromRect(FloatRect viewRect)
+            /// <summary>
+            /// Rotate the view
+            /// </summary>
+            /// <param name="angle">Angle of rotation, in degrees</param>
+            ////////////////////////////////////////////////////////////
+            public void Rotate(float angle)
             {
-                sfView_SetFromRect(This, viewRect);
+                sfView_Rotate(This, angle);
             }
 
             ////////////////////////////////////////////////////////////
@@ -133,63 +149,99 @@ namespace SFML
                 sfView_Zoom(This, factor);
             }
 
-            #region Imports
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Provide a string describing the object
+            /// </summary>
+            /// <returns>String description of the object</returns>
+            ////////////////////////////////////////////////////////////
+            public override string ToString()
+            {
+                return "[View]" +
+                       " Center(" + Center + ")" +
+                       " Size(" + Size + ")" +
+                       " Rotation(" + Rotation + ")" +
+                       " Viewport(" + Viewport + ")";
+            }
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Internal constructor for other classes which need to manipulate raw views
+            /// </summary>
+            /// <param name="thisPtr">Direct pointer to the view object in the C library</param>
+            ////////////////////////////////////////////////////////////
+            internal View(IntPtr thisPtr) :
+                base(thisPtr)
+            {
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Handle the destruction of the object
+            /// </summary>
+            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            ////////////////////////////////////////////////////////////
+            protected override void Destroy(bool disposing)
+            {
+                sfView_Destroy(This);
+            }
+
+            #region Imports
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfView_Create();
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfView_CreateFromRect(FloatRect Rect);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfView_Copy(IntPtr View);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern void sfView_Destroy(IntPtr View);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfView_GetCenterX(IntPtr View);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfView_GetCenterY(IntPtr View);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfView_GetHalfSizeX(IntPtr View);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern float sfView_GetHalfSizeY(IntPtr View);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern FloatRect sfView_GetRect(IntPtr View);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfView_Move(IntPtr View, float OffsetX, float OffsetY);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern void sfView_SetCenter(IntPtr View, float X, float Y);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfView_SetFromRect(IntPtr View, FloatRect ViewRect);
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfView_SetSize(IntPtr View, float Width, float Height);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
-            static extern void sfView_SetHalfSize(IntPtr View, float HalfWidth, float HalfHeight);
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfView_SetRotation(IntPtr View, float Angle);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
-            [SuppressUnmanagedCodeSecurity]
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfView_SetViewport(IntPtr View, FloatRect Viewport);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfView_Reset(IntPtr View, FloatRect Rectangle);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfView_GetCenterX(IntPtr View);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfView_GetCenterY(IntPtr View);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfView_GetWidth(IntPtr View);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfView_GetHeight(IntPtr View);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern float sfView_GetRotation(IntPtr View);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern FloatRect sfView_GetViewport(IntPtr View);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfView_Move(IntPtr View, float OffsetX, float OffsetY);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
+            static extern void sfView_Rotate(IntPtr View, float Angle);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
             static extern void sfView_Zoom(IntPtr View, float Factor);
 
             #endregion
-
-            ////////////////////////////////////////////////////////////
         }
     }
 }

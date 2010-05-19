@@ -333,7 +333,7 @@ namespace DemoGame.Client
             GUIManager.Draw(sb);
             sb.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
             sb.DrawString(_damageFont, string.Format("Game Time: {0}:{1:00}", GameDateTime.Now.Hour, GameDateTime.Now.Minute),
-                          new Vector2(0, _damageFont.CharacterSize + 1), Color.White);
+                          new Vector2(0, _damageFont.GetLineSpacing() + 1), Color.White);
             DrawingManager.EndDrawGUI();
         }
 

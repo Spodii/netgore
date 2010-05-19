@@ -8,44 +8,91 @@ namespace SFML
     {
         ////////////////////////////////////////////////////////////
         /// <summary>
-        /// This class defines a sprite : texture, transformations,
-        /// color, and draw on screen
+        /// This class defines a graphical 2D text, that can be drawn on screen
         /// </summary>
         ////////////////////////////////////////////////////////////
-        public class Sprite : Drawable
+        public class Text : Drawable
         {
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Enumerate the string drawing styles
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            [Flags]
+            public enum Styles
+            {
+                /// <summary>Regular characters, no style</summary>
+                Regular = 0,
+
+                /// <summary> Characters are bold</summary>
+                Bold = 1 << 0,
+
+                /// <summary>Characters are in italic</summary>
+                Italic = 1 << 1,
+
+                /// <summary>Characters are underlined</summary>
+                Underlined = 1 << 2
+            }
+
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Default constructor
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public Sprite() :
-                base(sfSprite_Create())
+            public Text() :
+                this("")
             {
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Construct the sprite from a source image
+            /// Construct the text from a string
             /// </summary>
-            /// <param name="image">Source image to assign to the sprite</param>
+            /// <param name="str">String to display</param>
             ////////////////////////////////////////////////////////////
-            public Sprite(Image image) :
-                base(sfSprite_Create())
+            public Text(string str) :
+                this(str, Font.DefaultFont)
             {
-                Image = image;
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Construct the sprite from another sprite
+            /// Construct the text from a string and a font
             /// </summary>
-            /// <param name="copy">Sprite to copy</param>
+            /// <param name="str">String to display</param>
+            /// <param name="font">Font to use</param>
             ////////////////////////////////////////////////////////////
-            public Sprite(Sprite copy) :
-                base(sfSprite_Copy(copy.This))
+            public Text(string str, Font font) :
+                this(str, font, 30)
             {
-                Image = copy.Image;
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Construct the text from a string, font and size
+            /// </summary>
+            /// <param name="str">String to display</param>
+            /// <param name="font">Font to use</param>
+            /// <param name="size">Base characters size</param>
+            ////////////////////////////////////////////////////////////
+            public Text(string str, Font font, uint size) :
+                base(sfText_Create())
+            {
+                DisplayedString = str;
+                Font = font;
+                Size = size;
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Construct the text from another text
+            /// </summary>
+            /// <param name="copy">Text to copy</param>
+            ////////////////////////////////////////////////////////////
+            public Text(Text copy) :
+                base(sfText_Copy(copy.This))
+            {
+                Font = copy.Font;
             }
 
             ////////////////////////////////////////////////////////////
@@ -55,8 +102,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override Vector2 Position
             {
-                get { return new Vector2(sfSprite_GetX(This), sfSprite_GetY(This)); }
-                set { sfSprite_SetPosition(This, value.X, value.Y); }
+                get { return new Vector2(sfText_GetX(This), sfText_GetY(This)); }
+                set { sfText_SetPosition(This, value.X, value.Y); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -66,8 +113,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override float Rotation
             {
-                get { return sfSprite_GetRotation(This); }
-                set { sfSprite_SetRotation(This, value); }
+                get { return sfText_GetRotation(This); }
+                set { sfText_SetRotation(This, value); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -77,8 +124,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override Vector2 Scale
             {
-                get { return new Vector2(sfSprite_GetScaleX(This), sfSprite_GetScaleY(This)); }
-                set { sfSprite_SetScale(This, value.X, value.Y); }
+                get { return new Vector2(sfText_GetScaleX(This), sfText_GetScaleY(This)); }
+                set { sfText_SetScale(This, value.X, value.Y); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -89,8 +136,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override Vector2 Origin
             {
-                get { return new Vector2(sfSprite_GetOriginX(This), sfSprite_GetOriginY(This)); }
-                set { sfSprite_SetOrigin(This, value.X, value.Y); }
+                get { return new Vector2(sfText_GetOriginX(This), sfText_GetOriginY(This)); }
+                set { sfText_SetOrigin(This, value.X, value.Y); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -100,8 +147,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override Color Color
             {
-                get { return sfSprite_GetColor(This); }
-                set { sfSprite_SetColor(This, value); }
+                get { return sfText_GetColor(This); }
+                set { sfText_SetColor(This, value); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -111,8 +158,8 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override BlendMode BlendMode
             {
-                get { return sfSprite_GetBlendMode(This); }
-                set { sfSprite_SetBlendMode(This, value); }
+                get { return sfText_GetBlendMode(This); }
+                set { sfText_SetBlendMode(This, value); }
             }
 
             ////////////////////////////////////////////////////////////
@@ -126,7 +173,7 @@ namespace SFML
             public override Vector2 TransformToLocal(Vector2 point)
             {
                 Vector2 Transformed;
-                sfSprite_TransformToLocal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
+                sfText_TransformToLocal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
 
                 return Transformed;
             }
@@ -142,89 +189,83 @@ namespace SFML
             public override Vector2 TransformToGlobal(Vector2 point)
             {
                 Vector2 Transformed;
-                sfSprite_TransformToGlobal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
+                sfText_TransformToGlobal(This, point.X, point.Y, out Transformed.X, out Transformed.Y);
 
                 return Transformed;
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Width of the sprite
+            /// String which is displayed
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public float Width
+            public string DisplayedString
             {
-                get { return sfSprite_GetWidth(This); }
-                set { sfSprite_Resize(This, value, Height); }
+                // TODO : use unicode functions
+                // (convert from UTF-16 to UTF-32, and find how to marshal System.String as sfUint32*...)
+                get {return sfText_GetString(This);}
+                set {sfText_SetString(This, value);}
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Height of the sprite
+            /// Font used to display the text
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public float Height
+            public Font Font
             {
-                get { return sfSprite_GetHeight(This); }
-                set { sfSprite_Resize(This, Width, value); }
+                get {return myFont;}
+                set {myFont = value; sfText_SetFont(This, value != null ? value.This : IntPtr.Zero);}
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Source images displayed by the sprite
+            /// Base size of characters
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public Image Image
+            public uint Size
             {
-                get { return myImage; }
-                set { myImage = value; sfSprite_SetImage(This, value != null ? value.This : IntPtr.Zero, false); }
+                get {return sfText_GetCharacterSize(This);}
+                set {sfText_SetCharacterSize(This, value);}
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Sub-rectangle of the source image displayed by the sprite
+            /// Style of the text (see Styles enum)
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public IntRect SubRect
+            public Styles Style
             {
-                get { return sfSprite_GetSubRect(This); }
-                set { sfSprite_SetSubRect(This, value); }
+                get {return sfText_GetStyle(This);}
+                set {sfText_SetStyle(This, value);}
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Flip the sprite horizontically
+            /// Get the text rectangle on screen
             /// </summary>
-            /// <param name="flipped">True to flip, false to canel flip</param>
+            /// <returns>Text rectangle in global coordinates (doesn't include rotation)</returns>
             ////////////////////////////////////////////////////////////
-            public void FlipX(bool flipped)
+            public FloatRect GetRect()
             {
-                sfSprite_FlipX(This, flipped);
+                return sfText_GetRect(This);
             }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Flip the sprite vertically
+            /// Return the visual position of the Index-th character of the text,
+            /// in coordinates relative to the text
+            /// (note : translation, origin, rotation and scale are not applied)
             /// </summary>
-            /// <param name="flipped">True to flip, false to canel flip</param>
+            /// <param name="index">Index of the character</param>
+            /// <returns>Position of the Index-th character (end of text if Index is out of range)</returns>
             ////////////////////////////////////////////////////////////
-            public void FlipY(bool flipped)
+            public Vector2 GetCharacterPos(uint index)
             {
-                sfSprite_FlipY(This, flipped);
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Get the color of a given pixel in the sprite
-            /// (point is in local coordinates)
-            /// </summary>
-            /// <param name="x">X coordinate of the pixel to get</param>
-            /// <param name="y">Y coordinate of the pixel to get</param>
-            /// <returns>Color of pixel (x, y)</returns>
-            ////////////////////////////////////////////////////////////
-            public Color GetPixel(uint x, uint y)
-            {
-                return sfSprite_GetPixel(This, x, y);
+                Vector2 Pos;
+                sfText_GetCharacterPos(This, index, out Pos.X, out Pos.Y);
+                
+                return Pos;
             }
 
             ////////////////////////////////////////////////////////////
@@ -235,17 +276,18 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override string ToString()
             {
-                return "[Sprite]" +
+                return "[Text]" +
                        " Position(" + Position + ")" +
                        " Rotation(" + Rotation + ")" +
                        " Scale(" + Scale + ")" +
                        " Origin(" + Origin + ")" +
                        " Color(" + Color + ")" +
                        " BlendMode(" + BlendMode + ")" +
-                       " Width(" + Width + ")" +
-                       " Height(" + Height + ")" +
-                       " SubRect(" + SubRect + ")" +
-                       " Image(" + Image + ")";
+                       " String(" + DisplayedString + ")" +
+                       " Font(" + Font + ")" +
+                       " Size(" + Size + ")" +
+                       " Style(" + Style + ")" +
+                       " Rectangle(" + GetRect() + ")";
             }
 
             ////////////////////////////////////////////////////////////
@@ -258,9 +300,9 @@ namespace SFML
             internal override void Render(RenderWindow target, Shader shader)
             {
                 if (shader == null)
-                    sfRenderWindow_DrawSprite(target.This, This);
+                    sfRenderWindow_DrawText(target.This, This);
                 else
-                    sfRenderWindow_DrawSpriteWithShader(target.This, This, shader.This);
+                    sfRenderWindow_DrawTextWithShader(target.This, This, shader.This);
             }
 
             ////////////////////////////////////////////////////////////
@@ -273,9 +315,9 @@ namespace SFML
             internal override void Render(RenderImage target, Shader shader)
             {
                 if (shader == null)
-                    sfRenderImage_DrawSprite(target.This, This);
+                    sfRenderImage_DrawText(target.This, This);
                 else
-                    sfRenderImage_DrawSpriteWithShader(target.This, This, shader.This);
+                    sfRenderImage_DrawTextWithShader(target.This, This, shader.This);
             }
 
             ////////////////////////////////////////////////////////////
@@ -286,110 +328,111 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             protected override void Destroy(bool disposing)
             {
-                sfSprite_Destroy(This);
+                sfText_Destroy(This);
             }
 
-            private Image myImage = null;
+            private Font myFont = Font.DefaultFont;
 
             #region Imports
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfSprite_Create();
+            static extern IntPtr sfText_Create();
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfSprite_Copy(IntPtr Sprite);
+            static extern IntPtr sfText_Copy(IntPtr Text);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_Destroy(IntPtr This);
+            static extern void sfText_Destroy(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetPosition(IntPtr This, float X, float Y);
+            static extern void sfText_SetPosition(IntPtr This, float X, float Y);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetX(IntPtr This);
+            static extern float sfText_GetX(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetY(IntPtr This);
+            static extern float sfText_GetY(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetRotation(IntPtr This, float Rotation);
+            static extern void sfText_SetRotation(IntPtr This, float Rotation);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetRotation(IntPtr This);
+            static extern float sfText_GetRotation(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetScale(IntPtr This, float X, float Y);
+            static extern void sfText_SetScale(IntPtr This, float X, float Y);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetScaleX(IntPtr This);
+            static extern float sfText_GetScaleX(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetScaleY(IntPtr This);
+            static extern float sfText_GetScaleY(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetOrigin(IntPtr This, float X, float Y);
+            static extern void sfText_SetOrigin(IntPtr This, float X, float Y);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetOriginX(IntPtr This);
+            static extern float sfText_GetOriginX(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetOriginY(IntPtr This);
+            static extern float sfText_GetOriginY(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetColor(IntPtr This, Color Color);
+            static extern void sfText_SetColor(IntPtr This, Color Color);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Color sfSprite_GetColor(IntPtr This);
+            static extern Color sfText_GetColor(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetBlendMode(IntPtr This, BlendMode Mode);
+            static extern void sfText_SetBlendMode(IntPtr This, BlendMode Mode);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern BlendMode sfSprite_GetBlendMode(IntPtr This);
+            static extern BlendMode sfText_GetBlendMode(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Vector2 sfSprite_TransformToLocal(IntPtr This, float PointX, float PointY, out float X, out float Y);
+            static extern Vector2 sfText_TransformToLocal(IntPtr This, float PointX, float PointY, out float X, out float Y);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Vector2 sfSprite_TransformToGlobal(IntPtr This, float PointX, float PointY, out float X, out float Y);
+            static extern Vector2 sfText_TransformToGlobal(IntPtr This, float PointX, float PointY, out float X, out float Y);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_DrawSprite(IntPtr This, IntPtr Sprite);
+            static extern void sfRenderWindow_DrawText(IntPtr This, IntPtr String);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderWindow_DrawSpriteWithShader(IntPtr This, IntPtr Sprite, IntPtr Shader);
+            static extern void sfRenderWindow_DrawTextWithShader(IntPtr This, IntPtr String, IntPtr Shader);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderImage_DrawSprite(IntPtr This, IntPtr Sprite);
+            static extern void sfRenderImage_DrawText(IntPtr This, IntPtr String);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfRenderImage_DrawSpriteWithShader(IntPtr This, IntPtr Sprite, IntPtr Shader);
+            static extern void sfRenderImage_DrawTextWithShader(IntPtr This, IntPtr String, IntPtr Shader);
+
+            [DllImport("csfml-graphics", CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity]
+            static extern void sfText_SetString(IntPtr This, string Text);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_Resize(IntPtr This, float Width, float Height);
+            static extern void sfText_SetFont(IntPtr This, IntPtr Font);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetWidth(IntPtr This);
+            static extern void sfText_SetCharacterSize(IntPtr This, uint Size);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern float sfSprite_GetHeight(IntPtr This);
+            static extern void sfText_SetStyle(IntPtr This, Styles Style);
+
+            [DllImport("csfml-graphics", CharSet = CharSet.Ansi), SuppressUnmanagedCodeSecurity]
+            static extern string sfText_GetString(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetImage(IntPtr This, IntPtr Image, bool AdjustToNewSize);
+            static extern uint sfText_GetCharacterSize(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_SetSubRect(IntPtr This, IntRect Rect);
+            static extern Styles sfText_GetStyle(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntRect sfSprite_GetSubRect(IntPtr This);
+            static extern FloatRect sfText_GetRect(IntPtr This);
 
             [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_FlipX(IntPtr This, bool Flipped);
+            static extern void sfText_GetCharacterPos(IntPtr This, uint Index, out float X, out float Y);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfSprite_FlipY(IntPtr This, bool Flipped);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Color sfSprite_GetPixel(IntPtr This, uint X, uint Y);
             #endregion
         }
     }

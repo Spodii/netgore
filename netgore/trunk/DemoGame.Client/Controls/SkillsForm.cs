@@ -38,7 +38,7 @@ namespace DemoGame.Client
             _cooldownManager = cooldownManager;
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            var fontLineSpacing = Font.CharacterSize;
+            var fontLineSpacing = Font.GetLineSpacing();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Find the spacing to use between lines

@@ -30,9 +30,9 @@ namespace NetGore.Graphics
         /// and a global transform matrix.
         /// </summary>
         /// <param name="blendMode">Blending options to use when rendering.</param>
-        /// <param name="halfSize">The half-size of the view area.</param>
+        /// <param name="size">The size of the view area.</param>
         /// <param name="center">The position of the center of the view.</param>
-        void Begin(BlendMode blendMode, Vector2 halfSize, Vector2 center);
+        void Begin(BlendMode blendMode, Vector2 size, Vector2 center);
 
         /// <summary>
         /// Prepares the graphics device for drawing sprites with specified blending, sorting, and render state options,
@@ -178,7 +178,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation, Vector2 origin,
-                        Vector2 scale, String2D.Styles style);
+                        Vector2 scale, Text.Styles style);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
@@ -193,7 +193,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale,
-                        String2D.Styles style);
+                        Text.Styles style);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
@@ -208,7 +208,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation, Vector2 origin,
-                        float scale, String2D.Styles style);
+                        float scale, Text.Styles style);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
@@ -223,7 +223,7 @@ namespace NetGore.Graphics
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
         void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale,
-                        String2D.Styles style);
+                        Text.Styles style);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,

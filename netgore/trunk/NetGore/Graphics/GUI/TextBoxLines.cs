@@ -180,7 +180,7 @@ namespace NetGore.Graphics.GUI
             {
                 var curr = _lines[i];
                 curr.Draw(sb, font, screenPos, defaultColor);
-                screenPos += new Vector2(0, (int)font.CharacterSize);
+                screenPos += new Vector2(0, font.GetLineSpacing());
             }
         }
 

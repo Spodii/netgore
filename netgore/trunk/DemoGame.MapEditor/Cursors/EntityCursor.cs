@@ -104,7 +104,7 @@ namespace DemoGame.MapEditor
         public static Vector2 GetToolTipPos(Font font, string text, ISpatial entity)
         {
             var pos = new Vector2(entity.Max.X, entity.Position.Y);
-            pos -= new Vector2(5, (font.CharacterSize * text.Split('\n').Length) + 5);
+            pos -= new Vector2(5, (font.GetLineSpacing() * text.Split('\n').Length) + 5);
             return pos;
         }
 

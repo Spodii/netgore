@@ -367,7 +367,9 @@
     <Compile Include="SFML\Audio\Listener.cs" />
     <Compile Include="SFML\Audio\Music.cs" />
     <Compile Include="SFML\Audio\Sound.cs" />
-    <Compile Include="SFML\Audio\NetGore\SoundBuffer.cs" />
+    <Compile Include="SFML\Audio\NetGore\SoundBuffer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SFML\Audio\SoundBufferRecorder.cs" />
     <Compile Include="SFML\Audio\SoundRecorder.cs" />
     <Compile Include="SFML\Audio\SoundStream.cs" />
@@ -378,8 +380,10 @@
     </Compile>
     <Compile Include="SFML\Graphics\Context.cs" />
     <Compile Include="SFML\Graphics\Drawable.cs" />
-    <Compile Include="SFML\Graphics\NetGore\Font.cs" />
+    <Compile Include="SFML\Graphics\FloatRect.cs" />
     <Compile Include="SFML\Graphics\NetGore\Image.cs" />
+    <Compile Include="SFML\Graphics\NetGore\Font.cs" />
+    <Compile Include="SFML\Graphics\Glyph.cs" />
     <Compile Include="SFML\Graphics\NetGore\LazyFont.cs" />
     <Compile Include="SFML\Graphics\NetGore\LazyImage.cs" />
     <Compile Include="SFML\Audio\NetGore\LazySoundBuffer.cs" />
@@ -417,12 +421,16 @@
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector3.cs" />
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector4.cs" />
     <Compile Include="SFML\Graphics\PostFx.cs" />
-    <Compile Include="SFML\Graphics\Rect.cs" />
+    <Compile Include="SFML\Graphics\IntRect.cs" />
+    <Compile Include="SFML\Graphics\RenderImage.cs" />
+    <Compile Include="SFML\Graphics\RenderTarget.cs" />
     <Compile Include="SFML\Graphics\RenderWindow.cs" />
+    <Compile Include="SFML\Graphics\Shader.cs" />
     <Compile Include="SFML\Graphics\Shape.cs" />
     <Compile Include="SFML\Graphics\Sprite.cs" />
-    <Compile Include="SFML\Graphics\String2D.cs" />
+    <Compile Include="SFML\Graphics\Text.cs" />
     <Compile Include="SFML\Graphics\View.cs" />
+    <Compile Include="SFML\Window\ContextSettings.cs" />
     <Compile Include="SFML\Window\Event.cs" />
     <Compile Include="SFML\Window\EventArgs.cs" />
     <Compile Include="SFML\Window\Input.cs" />

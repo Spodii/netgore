@@ -8,7 +8,6 @@ namespace SFML.Graphics
     /// </summary>
     public class LazyFont : Font
     {
-        readonly ushort _charSize;
         readonly string _filename;
 
         /// <summary>
@@ -23,15 +22,8 @@ namespace SFML.Graphics
                 throw new ArgumentOutOfRangeException("charSize");
 
             _filename = filename;
-            _charSize = (ushort)charSize;
-        }
 
-        /// <summary>
-        /// Gets the char size to use when loading.
-        /// </summary>
-        public uint CharSize
-        {
-            get { return _charSize; }
+            DefaultSize = charSize;
         }
 
         /// <summary>
@@ -61,7 +53,7 @@ namespace SFML.Graphics
         {
             get
             {
-                if (!EnsureLoaded(FileName, CharSize, string.Empty))
+                if (!EnsureLoaded(FileName))
                     OnReload();
 
                 return base.This;

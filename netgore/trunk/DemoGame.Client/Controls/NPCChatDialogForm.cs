@@ -52,7 +52,7 @@ namespace DemoGame.Client
             // NOTE: We want to use a scrollable textbox here... when we finally make one
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            float spacing = Font.CharacterSize;
+            float spacing = Font.GetLineSpacing();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             var responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);

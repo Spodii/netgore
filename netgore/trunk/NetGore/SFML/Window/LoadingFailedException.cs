@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.Serialization;
 
 namespace SFML
@@ -17,7 +16,8 @@ namespace SFML
         /// Default constructor (unknown error)
         /// </summary>
         ////////////////////////////////////////////////////////////
-        public LoadingFailedException() : base("Failed to load a resource")
+        public LoadingFailedException() :
+            base("Failed to load a resource")
         {
         }
 
@@ -27,7 +27,8 @@ namespace SFML
         /// </summary>
         /// <param name="resourceName">Name of the resource</param>
         ////////////////////////////////////////////////////////////
-        public LoadingFailedException(string resourceName) : base("Failed to load " + resourceName + " from memory")
+        public LoadingFailedException(string resourceName) :
+            base("Failed to load " + resourceName + " from memory")
         {
         }
 
@@ -38,8 +39,8 @@ namespace SFML
         /// <param name="resourceName">Name of the resource</param>
         /// <param name="innerException">Exception which is the cause ofthe current exception</param>
         ////////////////////////////////////////////////////////////
-        public LoadingFailedException(string resourceName, Exception innerException)
-            : base("Failed to load " + resourceName + " from memory", innerException)
+        public LoadingFailedException(string resourceName, Exception innerException) :
+            base("Failed to load " + resourceName + " from memory", innerException)
         {
         }
 
@@ -50,8 +51,8 @@ namespace SFML
         /// <param name="resourceName">Name of the resource</param>
         /// <param name="filename">Path of the file</param>
         ////////////////////////////////////////////////////////////
-        public LoadingFailedException(string resourceName, string filename)
-            : base("Failed to load " + resourceName + " from file " + filename)
+        public LoadingFailedException(string resourceName, string filename) :
+            base("Failed to load " + resourceName + " from file " + filename)
         {
         }
 
@@ -63,8 +64,8 @@ namespace SFML
         /// <param name="filename">Path of the file</param>
         /// <param name="innerException">Exception which is the cause ofthe current exception</param>
         ////////////////////////////////////////////////////////////
-        public LoadingFailedException(string resourceName, string filename, Exception innerException)
-            : base("Failed to load " + resourceName + " from file " + filename, innerException)
+        public LoadingFailedException(string resourceName, string filename, Exception innerException) :
+            base("Failed to load " + resourceName + " from file " + filename, innerException)
         {
         }
 
@@ -75,7 +76,8 @@ namespace SFML
         /// <param name="info">Serialized data</param>
         /// <param name="context">Contextual informations</param>
         ////////////////////////////////////////////////////////////
-        public LoadingFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public LoadingFailedException(SerializationInfo info, StreamingContext context) :
+            base(info, context)
         {
         }
     }

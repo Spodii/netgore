@@ -135,7 +135,7 @@ namespace NetGore.Audio
             set
             {
                 Listener.Position = new Vector3(value, -300);
-                Listener.Target = new Vector3(value, -300);
+                Listener.Direction = new Vector3(value, -300);
             }
         }
 

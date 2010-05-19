@@ -78,7 +78,7 @@ namespace DemoGame.Client
 
         void AddLine()
         {
-            _yOffset += Font.CharacterSize;
+            _yOffset += Font.GetLineSpacing();
         }
 
         void NewStatLabel(StatType statType)

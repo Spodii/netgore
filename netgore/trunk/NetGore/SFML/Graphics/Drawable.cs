@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SFML
 {
@@ -35,76 +35,51 @@ namespace SFML
         {
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Internal constructor, for derived classes
-            /// </summary>
-            /// <param name="thisPtr">Pointer to the object in C library</param>
-            ////////////////////////////////////////////////////////////
-            protected Drawable(IntPtr thisPtr) : base(thisPtr)
-            {
-            }
-
-            /// <summary>
-            /// Blending mode of the object
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public abstract BlendMode BlendMode { get; set; }
-
-            /// <summary>
-            /// Center of the transformation of the object
-            /// (center of translation, rotation and scale)
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public abstract Vector2 Center { get; set; }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Global color of the object
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public abstract Color Color { get; set; }
-
-            /// <summary>
             /// Position of the object on screen
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public abstract Vector2 Position { get; set; }
+            public abstract Vector2 Position {get; set;}
 
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Rotation of the object, defined in degrees
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public abstract float Rotation { get; set; }
+            public abstract float Rotation {get; set;}
 
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Vertical and horizontal scale of the object
             /// </summary>
             ////////////////////////////////////////////////////////////
-            public abstract Vector2 Scale { get; set; }
-
-            ////////////////////////////////////////////////////////////
+            public abstract Vector2 Scale {get; set;}
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Render the object into the given render window
+            /// Origin of the transformation of the object
+            /// (center of translation, rotation and scale)
             /// </summary>
-            /// <param name="window">Target window</param>
             ////////////////////////////////////////////////////////////
-            internal abstract void Render(RenderWindow window);
+            public abstract Vector2 Origin {get; set;}
 
+            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Transform a point from local coordinates into global coordinates
-            /// (ie it applies the object's center, translation, rotation and scale to the point)
+            /// Global color of the object
             /// </summary>
-            /// <param name="point">Point to transform</param>
-            /// <returns>Transformed point</returns>
             ////////////////////////////////////////////////////////////
-            public abstract Vector2 TransformToGlobal(Vector2 point);
+            public abstract Color Color {get; set;}
 
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Blending mode of the object
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public abstract BlendMode BlendMode {get; set;}
+
+            ////////////////////////////////////////////////////////////
             /// <summary>
             /// Transform a point from global coordinates into local coordinates
-            /// (ie it applies the inverse of object's center, translation, rotation and scale to the point)
+            /// (ie it applies the inverse of object's origin, translation, rotation and scale to the point)
             /// </summary>
             /// <param name="point">Point to transform</param>
             /// <returns>Transformed point</returns>
@@ -112,6 +87,43 @@ namespace SFML
             public abstract Vector2 TransformToLocal(Vector2 point);
 
             ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Transform a point from local coordinates into global coordinates
+            /// (ie it applies the object's origin, translation, rotation and scale to the point)
+            /// </summary>
+            /// <param name="point">Point to transform</param>
+            /// <returns>Transformed point</returns>
+            ////////////////////////////////////////////////////////////
+            public abstract Vector2 TransformToGlobal(Vector2 point);
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Render the object into the given render window
+            /// </summary>
+            /// <param name="target">Target render window</param>
+            /// <param name="shader">Shader to apply</param>
+            ////////////////////////////////////////////////////////////
+            internal abstract void Render(RenderWindow target, Shader shader);
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Render the object into the given render image
+            /// </summary>
+            /// <param name="target">Target render image</param>
+            /// <param name="shader">Shader to apply</param>
+            ////////////////////////////////////////////////////////////
+            internal abstract void Render(RenderImage target, Shader shader);
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Internal constructor, for derived classes
+            /// </summary>
+            /// <param name="thisPtr">Pointer to the object in C library</param>
+            ////////////////////////////////////////////////////////////
+            protected Drawable(IntPtr thisPtr) :
+                base(thisPtr)
+            {
+            }
         }
     }
 }
