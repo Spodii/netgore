@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -68,10 +69,26 @@ namespace DemoGame
             var missingKeys = EnumHelper<GameMessage>.Values.Except(this.Select(y => y.Key));
             if (missingKeys.Count() > 0)
             {
-                const string errmsg = "GameMessages `{0}` for language `{1}` did not contain all GameMessages. Missing keys: {2}";
-                var err = string.Format(errmsg, this, _language, missingKeys.Implode());
-                if (log.IsErrorEnabled)
-                    log.Error(err);
+                // One or more keys are missing
+                if (StringComparer.OrdinalIgnoreCase.Equals(_defaultLanguageName, language))
+                {
+                    // Key(s) are missing from the default language, which is very bad
+                    const string errmsg = "GameMessages `{0}` for language `{1}` did not contain all GameMessages." +
+                        " The default language needs all keys! Missing the following keys: {2}";
+                    var err = string.Format(errmsg, this, _language, missingKeys.Implode());
+                    if (log.IsErrorEnabled)
+                        log.Error(err);
+                    Debug.Fail(err);
+                }
+                else
+                {
+                    // Key(s) are missing from a non-default language, which isn't too bad since we can fall back on the default language
+                    const string errmsg = "GameMessages `{0}` for language `{1}` did not contain all GameMessages." +
+                        " Will have to use the text from the default language `{3}` instead. Missing the following keys: {2}";
+                    var err = string.Format(errmsg, this, _language, missingKeys.Implode(), _defaultLanguageName);
+                    if (log.IsErrorEnabled)
+                        log.Error(err);
+                }
             }
         }
 
