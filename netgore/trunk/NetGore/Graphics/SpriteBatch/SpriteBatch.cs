@@ -90,7 +90,8 @@ namespace NetGore.Graphics
         {
             _rw.CurrentView.Size = size;
             _rw.CurrentView.Center = center;
-
+            _rw.CurrentView = _rw.CurrentView;
+          
             _sprite.BlendMode = blendMode;
 
             ContentManager.DoNotUnload = true;
@@ -117,6 +118,7 @@ namespace NetGore.Graphics
             var v = new Vector2(_rw.Width, _rw.Height);
             _rw.CurrentView.Size = v;
             _rw.CurrentView.Center = v / 2f;
+            _rw.CurrentView = _rw.CurrentView;
 
             _sprite.BlendMode = blendMode;
 
