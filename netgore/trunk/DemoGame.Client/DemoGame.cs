@@ -22,8 +22,10 @@ namespace DemoGame.Client
         IEnumerable<TextureAtlas> _globalAtlases;
 
         /// <summary>
-        /// Sets up all the primary components of the game
+        /// Initializes a new instance of the <see cref="DemoGame"/> class.
         /// </summary>
+        /// <param name="p">The <see cref="IntPtr"/> to the handle to display the game on
+        /// (usually a <see cref="System.Windows.Forms.Control"/>).</param>
         public DemoGame(IntPtr p) : base(p)
         {
             EngineSettingsInitializer.Initialize();
@@ -83,12 +85,21 @@ namespace DemoGame.Client
             return ContentLevel.Global;
         }
 
+        /// <summary>
+        /// Handles the KeyPressed event of the DemoGame control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
         void DemoGame_KeyPressed(object sender, KeyEventArgs e)
         {
             if (e.Code == KeyCode.Tilde)
                 _screenManager.ShowConsole = !_screenManager.ShowConsole;
         }
 
+        /// <summary>
+        /// Handle the destruction of the object
+        /// </summary>
+        /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
         protected override void Destroy(bool disposing)
         {
             if (_globalAtlases != null)
@@ -112,6 +123,10 @@ namespace DemoGame.Client
             _screenManager.Draw(TickCount.Now);
         }
 
+        /// <summary>
+        /// Handles processing and drawing a single frame of the game. This needs to be called continually in a loop to keep a fluent
+        /// stream of updates.
+        /// </summary>
         public void HandleFrame()
         {
             // Process events
