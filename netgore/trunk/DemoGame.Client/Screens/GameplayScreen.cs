@@ -386,12 +386,15 @@ namespace DemoGame.Client
         /// </summary>
         void InitializeGUI()
         {
+            // Set up the fonts
             _guiFont = ScreenManager.Content.LoadFont("Font/Arial", 14, ContentLevel.Global);
             GUIManager.Font = _guiFont;
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
 
-            var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
+            var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = true };
+
+            // Set up all the forms used by this screen
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
@@ -434,13 +437,16 @@ namespace DemoGame.Client
             _availableQuestsForm.QuestAccepted += availableQuestsForm_QuestAccepted;
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
-
+        
             _skillCastProgressBar = new SkillCastProgressBar(cScreen);
 
             var toolbar = new Toolbar(cScreen, new Vector2(200, 200));
             toolbar.ItemClicked += Toolbar_ItemClicked;
 
-            // Apply the settings
+            var gameMenu = new GameMenuForm(cScreen);
+            gameMenu.ClickedQuit += gameMenu_ClickedQuit;
+
+            // Add the forms to the GUI settings manager (which also restores any existing settings)
             _guiSettings = new GUISettings("Default"); // FUTURE: Allow changing of the profile
             _guiSettings.Add("InventoryForm", _inventoryForm);
             _guiSettings.Add("EquippedForm", _equippedForm);
@@ -451,6 +457,23 @@ namespace DemoGame.Client
             _guiSettings.Add("StatusEffectsForm", _statusEffectsForm);
             _guiSettings.Add("SkillsForm", _skillsForm);
             _guiSettings.Add("QuickBarForm", _quickBarForm);
+
+            // Set the focus to the screen container
+            cScreen.SetFocus();
+        }
+
+        /// <summary>
+        /// Handles the ClickedQuit event of the gameMenu control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void gameMenu_ClickedQuit(object sender, EventArgs e)
+        {
+            // Change to the login screen
+            ScreenManager.SetScreen(LoginScreen.ScreenName);
+
+            // Disconnect the socket to close the connection
+            Socket.Disconnect();
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
