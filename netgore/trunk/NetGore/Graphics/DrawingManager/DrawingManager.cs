@@ -36,9 +36,6 @@ namespace NetGore.Graphics
             _lightMapSprite = new SFML.Graphics.Sprite
             { BlendMode = BlendMode.Multiply, Color = Color.White, Rotation = 0, Scale = Vector2.One, Origin = Vector2.Zero };
 
-            // NOTE: Not sure if this flipping is supposed to be done, but it seems to fix things...
-            _lightMapSprite.FlipY(true);
-
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _lightManager = CreateLightManager();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
