@@ -146,6 +146,11 @@ namespace NetGore.Graphics.GUI
                 Updated(this);
         }
 
+        /// <summary>
+        /// Handles the KeyPressed event of the _game control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
         void _game_KeyPressed(object sender, KeyEventArgs e)
         {
             var a = ActiveScreen;
@@ -153,6 +158,11 @@ namespace NetGore.Graphics.GUI
                 a.GUIManager.SendEventKeyPressed(e);
         }
 
+        /// <summary>
+        /// Handles the KeyReleased event of the _game control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
         void _game_KeyReleased(object sender, KeyEventArgs e)
         {
             var a = ActiveScreen;
@@ -160,6 +170,11 @@ namespace NetGore.Graphics.GUI
                 a.GUIManager.SendEventKeyReleased(e);
         }
 
+        /// <summary>
+        /// Handles the MouseButtonPressed event of the _game control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void _game_MouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             var a = ActiveScreen;
@@ -167,6 +182,11 @@ namespace NetGore.Graphics.GUI
                 a.GUIManager.SendEventMouseButtonPressed(e);
         }
 
+        /// <summary>
+        /// Handles the MouseButtonReleased event of the _game control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void _game_MouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             var a = ActiveScreen;
@@ -174,6 +194,11 @@ namespace NetGore.Graphics.GUI
                 a.GUIManager.SendEventMouseButtonReleased(e);
         }
 
+        /// <summary>
+        /// Handles the MouseMoved event of the _game control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseMoveEventArgs"/> instance containing the event data.</param>
         void _game_MouseMoved(object sender, MouseMoveEventArgs e)
         {
             var a = ActiveScreen;
@@ -181,6 +206,11 @@ namespace NetGore.Graphics.GUI
                 a.GUIManager.SendEventMouseMoved(e);
         }
 
+        /// <summary>
+        /// Handles the TextEntered event of the _game control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.TextEventArgs"/> instance containing the event data.</param>
         void _game_TextEntered(object sender, TextEventArgs e)
         {
             var a = ActiveScreen;

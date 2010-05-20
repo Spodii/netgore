@@ -30,11 +30,13 @@ namespace DemoGame.Client
 
             // Set up our form
             ClientSize = new Size((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y);
-
+          
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
 
             // Create the game
             _game = new DemoGame(Handle);
+
+            Focus();
         }
 
         /// <summary>
