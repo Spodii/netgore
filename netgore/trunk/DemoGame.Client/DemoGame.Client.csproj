@@ -246,6 +246,11 @@
     <None Include="app.config">
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GameForm.resx">
+      <DependentUpon>GameForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)DevContent\CopyContent.exe" "$(SolutionDir)DevContent" "$(TargetDir)Content"</PreBuildEvent>

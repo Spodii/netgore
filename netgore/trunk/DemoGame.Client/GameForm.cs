@@ -23,22 +23,13 @@ namespace DemoGame.Client
         /// </summary>
         public GameForm()
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-
             // Set up our form
-            StartPosition = FormStartPosition.CenterScreen;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            AutoScaleMode = AutoScaleMode.Font;
-            Text = "NetGore";
             ClientSize = new Size((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y);
-            MaximizeBox = false;
 
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
 
             // Create the game
             _game = new DemoGame(Handle);
-
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -127,15 +118,28 @@ namespace DemoGame.Client
         /// </returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            // Prevents the form menu from showing when pressing alt
-            if (keyData == (Keys.RButton | Keys.ShiftKey | Keys.Alt))
-                return true;
-
             // Prevents closing the form via alt+F4
             if (keyData == (Keys.Alt | Keys.F4))
                 return true;
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // GameForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.MaximizeBox = false;
+            this.Name = "GameForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "NetGore";
+            this.ResumeLayout(false);
+
         }
     }
 }
