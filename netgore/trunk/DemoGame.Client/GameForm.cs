@@ -23,6 +23,8 @@ namespace DemoGame.Client
         /// </summary>
         public GameForm()
         {
+            InitializeComponent();
+
             // Set up our form
             ClientSize = new Size((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y);
 
@@ -30,6 +32,22 @@ namespace DemoGame.Client
 
             // Create the game
             _game = new DemoGame(Handle);
+        }
+
+        void InitializeComponent()
+        {
+            SuspendLayout();
+            // 
+            // GameForm
+            // 
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(284, 262);
+            MaximizeBox = false;
+            Name = "GameForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "NetGore";
+            ResumeLayout(false);
         }
 
         /// <summary>
@@ -123,23 +141,6 @@ namespace DemoGame.Client
                 return true;
 
             return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // GameForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
-            this.MaximizeBox = false;
-            this.Name = "GameForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "NetGore";
-            this.ResumeLayout(false);
-
         }
     }
 }
