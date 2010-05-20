@@ -53,6 +53,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="DrawingManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~DrawingManager()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to
@@ -61,6 +70,8 @@ namespace NetGore.Graphics
         {
             if (!disposeManaged)
                 return;
+
+            GC.SuppressFinalize(this);
 
             if (_sb != null)
                 _sb.Dispose();
