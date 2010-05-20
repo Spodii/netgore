@@ -562,7 +562,16 @@ namespace NetGore.Graphics
             /// <param name="src">The source rectangle to draw from the <paramref name="srcImg"/>.</param>
             static void DrawToAtlas(Image destImg, Image srcImg, Vector2 dest, Rectangle src)
             {
-                destImg.Copy(srcImg, (uint)dest.X, (uint)dest.Y, (IntRect)src);
+                for (uint x = 0; x < src.Width; x++)
+                {
+                    for (uint y = 0; y < src.Height; y++)
+                    {
+                        destImg.SetPixel((uint)dest.X + x, (uint)dest.Y + y, srcImg.GetPixel((uint)src.X + x, (uint)src.Y + y));
+                    }
+                }
+
+                // NOTE: Have to use a hack to draw the atlas while Image.Copy is (seemingly) broken
+                // destImg.Copy(srcImg, (uint)dest.X, (uint)dest.Y, (IntRect)src);
             }
 
             /// <summary>
