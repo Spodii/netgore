@@ -67,6 +67,9 @@ namespace NetGore.Graphics
 
             if (_lightManager != null)
                 _lightManager.Dispose();
+
+            if (_lightMapSprite != null)
+                _lightMapSprite.Dispose();
         }
 
         #region IDrawingManager Members
