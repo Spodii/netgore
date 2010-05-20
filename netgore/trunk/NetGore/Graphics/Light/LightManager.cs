@@ -74,7 +74,8 @@ namespace NetGore.Graphics
             _sb.End();
 
             // Copy the screen buffer onto the light map image
-            _lightMap.CopyScreen(_rw);
+            if (!_lightMap.CopyScreen(_rw))
+                return null;
 
             return _lightMap;
         }
