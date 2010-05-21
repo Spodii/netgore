@@ -762,10 +762,7 @@ namespace DemoGame.Server
         public void ChangeMap(Map newMap)
         {
             if (Map == newMap)
-            {
-                Debug.Fail("Character is already on this map.");
                 return;
-            }
 
             // Remove the Character from the last map
             if (Map != null)

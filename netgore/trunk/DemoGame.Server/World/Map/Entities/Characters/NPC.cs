@@ -54,6 +54,8 @@ namespace DemoGame.Server
 
             Alliance = AllianceManager[new AllianceID(1)];
 
+            IsAlive = true;
+
             Load(characterID);
 
             if (log.IsInfoEnabled)
@@ -99,11 +101,10 @@ namespace DemoGame.Server
                 log.DebugFormat("Created NPC instance from template `{0}`.", template);
 
             // Spawn
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Teleport(position);
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-
             ChangeMap(map);
+
+            ((IRespawnable)this).Respawn();
         }
 
         /// <summary>
