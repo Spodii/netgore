@@ -148,9 +148,9 @@ CREATE TABLE `character` (
   `chat_dialog` smallint(5) unsigned DEFAULT NULL,
   `ai_id` smallint(5) unsigned DEFAULT NULL,
   `load_map_id` smallint(5) unsigned NOT NULL DEFAULT '1',
-  `load_x` smallint(5) unsigned NOT NULL DEFAULT '100',
-  `load_y` smallint(5) unsigned NOT NULL DEFAULT '100',
-  `respawn_map_id` smallint(5) unsigned DEFAULT NULL,
+  `load_x` smallint(5) unsigned NOT NULL DEFAULT '50',
+  `load_y` smallint(5) unsigned NOT NULL DEFAULT '50',
+  `respawn_map_id` smallint(5) unsigned DEFAULT '1',
   `respawn_x` float NOT NULL DEFAULT '50',
   `respawn_y` float NOT NULL DEFAULT '50',
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
@@ -1496,4 +1496,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-05-20 18:40:51
+-- Dump completed on 2010-05-20 18:47:25
