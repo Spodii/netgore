@@ -368,6 +368,9 @@ namespace DemoGame.Server
         {
             base.HandleAdditionalLoading(v);
 
+            // Permissions
+            Permissions = v.Permissions;
+
             // Load the guild information
             var guildInfo = _selectGuildMemberQuery.Execute(ID);
             if (guildInfo != null)
