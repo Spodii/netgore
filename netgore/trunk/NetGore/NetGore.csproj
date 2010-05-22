@@ -185,7 +185,7 @@
     <Compile Include="Graphics\Character Sprite\GrhCharacterSprite.cs" />
     <Compile Include="Graphics\Character Sprite\ICharacterSprite.cs" />
     <Compile Include="Graphics\Character Sprite\SkeletonCharacterSprite.cs" />
-    <Compile Include="Graphics\Chat Bubble\ChatBubble.cs" />
+    <Compile Include="Graphics\GUI\Controls\ChatBubble.cs" />
     <Compile Include="Content\ContentManager.cs" />
     <Compile Include="Graphics\Drawing Tools\EntityInterpolator.cs" />
     <Compile Include="Graphics\Drawing Tools\FocusedSpatialDrawer.cs" />
@@ -717,6 +717,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Graphics\Chat Bubble\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
