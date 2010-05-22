@@ -107,13 +107,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets if this is an instanced map. When true, the <see cref="Map.ID"/> is not to be considered valid.
+        /// Gets if this is an instanced map.
         /// </summary>
-        public bool IsInstanced
+        public virtual bool IsInstanced
         {
             get
             {
-                // TODO: !! Map instancing
                 return false;
             }
         }
@@ -127,7 +126,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets an IEnumerable of the NPCSpawners on this Map.
+        /// Gets all of the NPCSpawners on this Map.
         /// </summary>
         public IEnumerable<NPCSpawner> NPCSpawners
         {
@@ -135,7 +134,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets an IEnumerable of NPCs on the Map.
+        /// Gets all of the NPCs on the Map.
         /// </summary>
         public IEnumerable<NPC> NPCs
         {
@@ -143,7 +142,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the list of users on the Map.
+        /// Gets if this <see cref="Map"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed { get { return _disposed; } }
+
+        /// <summary>
+        /// Gets all of the users on the Map.
         /// </summary>
         public IEnumerable<User> Users
         {
@@ -603,6 +607,9 @@ namespace DemoGame.Server
         /// <param name="deltaTime">The amount of time that elapsed since the last update.</param>
         public override void Update(int deltaTime)
         {
+            if (IsDisposed)
+                return;
+
             // This assert will have to be removed once/if we add support for multithreaded World updates
             ThreadAsserts.IsMainThread();
 
@@ -628,13 +635,19 @@ namespace DemoGame.Server
         /// <summary>
         /// Disposes of the map and all of the Entities on it.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (_disposed)
             {
-                Debug.Fail("Map is already disposed.");
+                const string errmsg= "Tried to dispose of map `{0}`, but it is already disposed!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
                 return;
             }
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Disposing of `{0}`.", this);
 
             _disposed = true;
 

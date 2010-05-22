@@ -458,6 +458,7 @@
     <Compile Include="Server.cs" />
     <Compile Include="Networking\ServerSockets.cs" />
     <Compile Include="World\Map\Entities\Characters\User.cs" />
+    <Compile Include="World\Map\MapInstance.cs" />
     <Compile Include="World\Map\MapItemsCleaner.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnRect.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnRectEditor.cs" />
