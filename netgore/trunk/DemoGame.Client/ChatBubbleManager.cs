@@ -45,7 +45,7 @@ namespace DemoGame.Client
             p -= bubbleSize / 2f;
 
             // Move up a little to avoid covering their name
-            p.Y -= 20f;
+            p.Y -= 35f;
 
             return p.Floor();
         }
