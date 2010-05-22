@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -53,15 +53,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="DrawingManager"/> is reclaimed by garbage collection.
-        /// </summary>
-        ~DrawingManager()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to
@@ -81,6 +72,15 @@ namespace NetGore.Graphics
 
             if (_lightMapSprite != null)
                 _lightMapSprite.Dispose();
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="DrawingManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~DrawingManager()
+        {
+            Dispose(false);
         }
 
         #region IDrawingManager Members

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace DemoGame.Client
 {
@@ -30,17 +29,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the KeyPressed event of the parent control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
-        void parent_KeyPressed(object sender, SFML.Window.KeyEventArgs e)
-        {
-            if (e.Code == SFML.Window.KeyCode.Escape)
-                IsVisible = !IsVisible;
-        }
-
-        /// <summary>
         /// Notifies listeners that the Quit button has been clicked
         /// </summary>
         public event EventHandler ClickedQuit;
@@ -58,13 +46,24 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Handles the KeyPressed event of the parent control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
+        void parent_KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Code == KeyCode.Escape)
+                IsVisible = !IsVisible;
+        }
+
+        /// <summary>
         /// Handles the Clicked event of the quitLbl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
-        void quitLbl_Clicked(object sender, SFML.Window.MouseButtonEventArgs e)
+        void quitLbl_Clicked(object sender, MouseButtonEventArgs e)
         {
-            if (e.Button != SFML.Window.MouseButton.Left)
+            if (e.Button != MouseButton.Left)
                 return;
 
             if (ClickedQuit != null)

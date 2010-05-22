@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Text;
-using NetGore.Content;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -91,7 +90,7 @@ namespace NetGore.Graphics
             _rw.CurrentView.Size = size;
             _rw.CurrentView.Center = center;
             _rw.CurrentView = _rw.CurrentView;
-          
+
             _sprite.BlendMode = blendMode;
         }
 

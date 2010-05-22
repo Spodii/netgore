@@ -81,6 +81,22 @@ namespace DemoGame.Client
             _output.AppendLine(text);
         }
 
+        /// <summary>
+        /// Clears the input text.
+        /// </summary>
+        public void ClearInput()
+        {
+            _input.Clear();
+        }
+
+        /// <summary>
+        /// Clears the output text.
+        /// </summary>
+        public void ClearOutput()
+        {
+            _output.Clear();
+        }
+
         void Input_KeyPressed(object sender, KeyEventArgs e)
         {
             const int bufferScrollRate = 3;
@@ -146,22 +162,6 @@ namespace DemoGame.Client
             base.OnResized();
 
             RepositionTextBoxes();
-        }
-
-        /// <summary>
-        /// Clears the output text.
-        /// </summary>
-        public void ClearOutput()
-        {
-            _output.Clear();
-        }
-
-        /// <summary>
-        /// Clears the input text.
-        /// </summary>
-        public void ClearInput()
-        {
-            _input.Clear();
         }
 
         /// <summary>
