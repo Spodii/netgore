@@ -29,7 +29,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Notifies listeners that the Quit button has been clicked
+        /// Notifies listeners that the Log Out button has been clicked.
         /// </summary>
         public event EventHandler ClickedLogOut;
 
