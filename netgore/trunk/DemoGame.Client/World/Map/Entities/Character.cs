@@ -25,6 +25,7 @@ namespace DemoGame.Client
         TickCount _lastDrawnTime;
         Color _color = Color.White;
         bool _isVisible = true;
+        Vector2 _lastScreenPosition;
 
 #if !TOPDOWN
         CharacterState _lastState = CharacterState.Idle;
@@ -49,6 +50,16 @@ namespace DemoGame.Client
         public Vector2 DrawPosition
         {
             get { return _interpolator.DrawPosition; }
+        }
+
+        /// <summary>
+        /// Gets the last screen position used to draw this <see cref="Character"/>. This should be used instead of
+        /// using <see cref="DrawPosition"/> and offsetting it by the position of the <see cref="ICamera2D"/> since
+        /// the camera is mutable, and thus can be pointing to a different position than the last draw position.
+        /// </summary>
+        public Vector2 LastScreenPosition
+        {
+            get { return _lastScreenPosition; }
         }
 
         /// <summary>
@@ -347,10 +358,13 @@ namespace DemoGame.Client
             if (BeforeDraw != null)
                 BeforeDraw(this, sb);
 
+            var drawPos = DrawPosition;
+            _lastScreenPosition = drawPos - Parent.Camera.Min;
+
             if (IsVisible)
             {
                 // Draw the character body
-                _characterSprite.Draw(sb, DrawPosition, Heading, Color);
+                _characterSprite.Draw(sb, drawPos, Heading, Color);
 
                 // Draw the HP/MP
                 DrawSPBar(sb, HPPercent, 0, new Color(255, 0, 0, 175));

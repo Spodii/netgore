@@ -264,7 +264,7 @@ namespace DemoGame.Client
                     log.ErrorFormat(errmsg, mapEntityIndex, text);
             }
             else
-                GameplayScreen.ChatBubbleManager.Add(entity, text, GetTime());
+                GameplayScreen.AddChatBubble(entity, text);
         }
 
         [MessageHandler((byte)ServerPacketID.CreateAccount)]

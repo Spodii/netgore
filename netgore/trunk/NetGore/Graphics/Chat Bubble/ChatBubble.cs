@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
+using NetGore.Graphics.GUI;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -7,49 +12,68 @@ namespace NetGore.Graphics
     /// <summary>
     /// A bubble of text that appears near an <see cref="Entity"/> and is used to denote chatting text.
     /// </summary>
-    public class ChatBubble
+    public class ChatBubble : Form
     {
-        readonly TickCount _deathTime;
-        readonly ChatBubbleManagerBase _manager;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly Dictionary<Entity, ChatBubble> _chatBubbles = new Dictionary<Entity, ChatBubble>();
+        static readonly object _chatBubblesSync = new object();
+
         readonly Entity _owner;
-        readonly string _text;
-        readonly Vector2 _textSize;
+        readonly ChatBubbleText _textControl;
+
+        TickCount _deathTime;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChatBubble"/> class.
+        /// Initializes the <see cref="ChatBubble"/> class.
         /// </summary>
-        public ChatBubble()
+        static ChatBubble()
         {
+            Lifespan = 5000;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChatBubble"/> class.
         /// </summary>
-        /// <param name="manager">The <see cref="ChatBubble"/> manager.</param>
-        /// <param name="owner">The <see cref="Entity"/> the <see cref="ChatBubble"/> is attached to.</param>
-        /// <param name="text">The text to display.</param>
-        /// <param name="currentTime">The current game time.</param>
-        public ChatBubble(ChatBubbleManagerBase manager, Entity owner, string text, TickCount currentTime)
+        ChatBubble(Control parent, Entity owner, string text)
+            : base(parent, Vector2.Zero, Vector2.Zero)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
             if (string.IsNullOrEmpty(text))
                 throw new ArgumentNullException("text");
 
-            _manager = manager;
             _owner = owner;
-            _text = text;
-            _deathTime = (TickCount)(currentTime + manager.Lifespan);
+            _deathTime = (TickCount)(TickCount.Now + Lifespan);
+            _textControl = new ChatBubbleText(this, text);
 
-            _textSize = CalculateSize();
-
-            IsExpired = false;
+            _owner.Disposed += ChatBubble_Owner_Disposed;
         }
 
         /// <summary>
-        /// Gets if the <see cref="ChatBubble"/> has expired.
+        /// Gets the text displayed in this chat bubble.
         /// </summary>
-        public bool IsExpired { get; private set; }
+        public string ChatText
+        {
+            get { return _textControl.Text; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Func{T1,T2,T3,TResult}"/> used to create a <see cref="ChatBubble"/> instance. If null, the default
+        /// method will be used to create a <see cref="ChatBubble"/> instance. Can be manually set to create a derived class instance.
+        /// The arguments are 1. the parent control, 2. the owner entity and 3. the chat bubble text.
+        /// </summary>
+        public static Func<Control, Entity, string, ChatBubble> CreateChatBubbleInstance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Func{T,TResult}"/> used to find the screen position of the top-left corner of a <see cref="ISpatial"/>
+        /// for determining where to draw a <see cref="ChatBubble"/>.
+        /// </summary>
+        public static Func<ISpatial, Vector2> GetTopLeftCornerHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the lifespan for <see cref="ChatBubble"/>s in milliseconds. Default value is 5000 (5 seconds).
+        /// </summary>
+        public static int Lifespan { get; set; }
 
         /// <summary>
         /// Gets the <see cref="Entity"/> that this <see cref="ChatBubble"/> is attached to.
@@ -60,72 +84,189 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the size of the <see cref="ChatBubble"/>.
+        /// Disposes of the Control and all its resources.
         /// </summary>
-        public Vector2 Size
+        /// <param name="disposeManaged">If true, managed resources need to be disposed. If false,
+        /// this was raised by a destructor which means the managed resources are already disposed.</param>
+        protected override void Dispose(bool disposeManaged)
         {
-            get { return _textSize + _manager.Border.Size; }
+            // Remove the bubble from the dictionary
+            lock (_chatBubblesSync)
+            {
+                if (!_chatBubbles.Remove(Owner))
+                {
+                    const string errmsg =
+                        "Tried to remove ChatBubble `{0}` for entity `{1}`, but it was already gone from the collection...?";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, Owner);
+                    Debug.Fail(string.Format(errmsg, this, Owner));
+                }
+            }
+
+            base.Dispose(disposeManaged);
         }
 
         /// <summary>
-        /// Gets the text that is displayed in this <see cref="ChatBubble"/>.
+        /// Handles when the <see cref="Owner"/> of the <see cref="ChatBubble"/> is disposed.
         /// </summary>
-        public string Text
+        /// <param name="entity">The <see cref="Entity"/> that was disposed.</param>
+        void ChatBubble_Owner_Disposed(Entity entity)
         {
-            get { return _text; }
+            Debug.Assert(entity == Owner);
+
+            // When the owner is disposed, dispose of the chat bubble, too
+            Dispose();
         }
 
         /// <summary>
-        /// Calculates the size of the <see cref="ChatBubble"/>'s text (Border not included).
+        /// Creates a <see cref="ChatBubble"/> instance.
         /// </summary>
-        /// <returns>The size of the <see cref="ChatBubble"/>'s text (Border not included).</returns>
-        Vector2 CalculateSize()
+        /// <param name="parent">The parent.</param>
+        /// <param name="owner">The owner.</param>
+        /// <param name="text">The text.</param>
+        /// <returns>The <see cref="ChatBubble"/> instance.</returns>
+        public static ChatBubble Create(Control parent, Entity owner, string text)
         {
-            return _manager.Font.MeasureString(Text);
+            lock (_chatBubblesSync)
+            {
+                // If the ChatBubble already exists for the given Entity, reuse that one
+                ChatBubble c;
+                if (_chatBubbles.TryGetValue(owner, out c))
+                {
+                    c._textControl.Text = text;
+                    c._deathTime = (TickCount)(TickCount.Now + Lifespan);
+                    return c;
+                }
+
+                // Create a new ChatBubble
+                if (CreateChatBubbleInstance != null)
+                    c = CreateChatBubbleInstance(parent, owner, text);
+                else
+                    c = new ChatBubble(parent, owner, text);
+
+                _chatBubbles.Add(owner, c);
+
+                return c;
+            }
         }
 
         /// <summary>
-        /// Forces the <see cref="ChatBubble"/> to be destroyed immediately instead of waiting for it to expire.
+        /// Gets the position to use to draw the <see cref="ChatBubble"/>.
         /// </summary>
-        public void Destroy()
+        /// <returns>The position to use to draw the <see cref="ChatBubble"/>.</returns>
+        protected virtual Vector2 GetDrawOffset()
         {
-            IsExpired = true;
+            // Get the top-left corner (using the default implementation if needed)
+            Vector2 p;
+            if (GetTopLeftCornerHandler != null)
+                p = GetTopLeftCornerHandler(Owner);
+            else
+                p = GetTopLeftCorner(Owner);
+
+            // Move to the center of the Character
+            p.X += Owner.Size.X / 2f;
+            p -= Size / 2f;
+
+            // Move up a little to avoid covering their name
+            p.Y -= 20f;
+
+            return p.Floor();
         }
 
         /// <summary>
-        /// Draws the <see cref="ChatBubble"/>.
+        /// Gets the top-left corner to use for drawing for the given <paramref name="target"/>.
         /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        public void Draw(ISpriteBatch sb)
+        /// <param name="target">The <see cref="ISpatial"/> to attach the bubble to.</param>
+        /// <returns>The coordinate of the top-left corner of the <paramref name="target"/> to use for drawing.</returns>
+        static Vector2 GetTopLeftCorner(ISpatial target)
         {
-            if (IsExpired)
-                return;
-
-            var size = Size;
-            var drawPos = _manager.GetDrawOffset(Owner, size).Round();
-
-            // Draw the border
-            var borderArea = new Rectangle((int)drawPos.X, (int)drawPos.Y, (int)size.X, (int)size.Y);
-            _manager.Border.Draw(sb, borderArea);
-
-            // Draw the text
-            var textPos = drawPos + new Vector2(_manager.Border.LeftWidth, _manager.Border.TopHeight);
-            sb.DrawString(_manager.Font, Text, textPos, _manager.FontColor);
+            return target.Position;
         }
 
         /// <summary>
-        /// Updates the <see cref="ChatBubble"/>.
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
         /// </summary>
-        /// <param name="currentTime">The current game time.</param>
-        public void Update(TickCount currentTime)
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
         {
-            if (IsExpired)
+            Border = skinManager.GetBorder("Chat Bubble");
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            CanDrag = false;
+            CanFocus = false;
+            ResizeToChildren = true;
+            ResizeToChildrenPadding = 1;
+            IsCloseButtonVisible = false;
+            Text = string.Empty;
+            IsVisible = true;
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+        /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        protected override void UpdateControl(TickCount currentTime)
+        {
+            if (IsDisposed)
                 return;
 
             if (_deathTime <= currentTime)
             {
-                Destroy();
+                Dispose();
                 return;
+            }
+
+            Position = GetDrawOffset();
+
+            base.UpdateControl(currentTime);
+        }
+
+        /// <summary>
+        /// A control that displays the text area for a <see cref="ChatBubble"/>.
+        /// </summary>
+        sealed class ChatBubbleText : Label
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ChatBubbleText"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="text">The text.</param>
+            public ChatBubbleText(Control parent, string text) : base(parent, Vector2.Zero)
+            {
+                Text = text;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+            /// from the given <paramref name="skinManager"/>.
+            /// </summary>
+            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+            public override void LoadSkin(ISkinManager skinManager)
+            {
+                // Do not skin the ChatBubbleText
+            }
+
+            /// <summary>
+            /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+            /// base class's method to ensure that changes to settings are hierchical.
+            /// </summary>
+            protected override void SetDefaultValues()
+            {
+                base.SetDefaultValues();
+
+                Border = ControlBorder.Empty;
+                CanFocus = false;
+                CanDrag = false;
+                AutoResize = true;
             }
         }
     }
