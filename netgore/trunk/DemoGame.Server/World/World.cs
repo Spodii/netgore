@@ -30,6 +30,8 @@ namespace DemoGame.Server
         readonly Server _server;
         readonly ItemEntity _unarmedWeapon;
         readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
+        readonly List<MapInstance> _instancedMaps = new List<MapInstance>();
+        readonly object _instancedMapsSync = new object();
 
         bool _disposed;
 
@@ -42,6 +44,21 @@ namespace DemoGame.Server
         /// The time that that the <see cref="_respawnTaskList"/> will be processed next.
         /// </summary>
         TickCount _updateRespawnablesTime = TickCount.MinValue;
+
+        /// <summary>
+        /// Adds a <see cref="MapInstance"/> to this <see cref="World"/>. Should probably only ever be called from the <see cref="MapInstance"/>
+        /// constructor.
+        /// </summary>
+        /// <param name="instance">The <see cref="MapInstance"/> to add to this <see cref="World"/>.</param>
+        public void AddMapInstance(MapInstance instance)
+        {
+            lock (_instancedMapsSync)
+            {
+                Debug.Assert(!_instancedMaps.Contains(instance), string.Format("MapInstance `{0}` has already been added to the world `{1}`!", instance, this));
+
+                _instancedMaps.Add(instance);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
@@ -364,16 +381,19 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
+            // Process all of the stuff queued to be disposed
             ProcessDisposeStack();
 
             var currentTime = GetTime();
 
+            // If enough time has elapsed, update stuff to be respawned
             if (_updateRespawnablesTime < currentTime)
             {
                 _updateRespawnablesTime = currentTime + ServerSettings.RespawnablesUpdateRate;
                 _respawnTaskList.Process();
             }
 
+            // If enough time has elapsed, update the extra user information
             if (_syncExtraUserInfoTime < currentTime)
             {
                 _syncExtraUserInfoTime = currentTime + ServerSettings.SyncExtraUserInformationRate;
@@ -389,7 +409,7 @@ namespace DemoGame.Server
         /// <param name="deltaTime">Delta time to use for updating the maps.</param>
         protected override void UpdateMaps(int deltaTime)
         {
-            // Update every map
+            // Update non-instanced maps
             foreach (var map in Maps)
             {
                 // Make sure we do not have a null map somehow
@@ -405,6 +425,35 @@ namespace DemoGame.Server
                 // Update the map 
                 map.Update(deltaTime);
             }
+
+            // Update instanced maps
+            lock (_instancedMapsSync)
+            {
+                for (int i = 0; i < _instancedMaps.Count; i++)
+                {
+                    var map = _instancedMaps[i];
+
+                    // Make sure we do not have a null map somehow
+                    if (map == null)
+                    {
+                        const string errmsg = "Tried to update a null map. This should never be null.";
+                        if (log.IsWarnEnabled)
+                            log.Warn(errmsg);
+                        Debug.Fail(errmsg);
+                        continue;
+                    }
+
+                    // Update the map
+                    map.Update(deltaTime);
+
+                    // If the map has been disposed, remove it
+                    if (map.IsDisposed)
+                    {
+                        _instancedMaps.RemoveAt(i);
+                        --i;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -417,6 +466,11 @@ namespace DemoGame.Server
             _users.Remove(((User)entity).Name);
         }
 
+        /// <summary>
+        /// Gets the instanced maps.
+        /// </summary>
+        public IEnumerable<MapInstance> InstancedMaps { get { lock (_instancedMapsSync) { return _instancedMaps; } } }
+
         #region IDisposable Members
 
         /// <summary>
@@ -424,6 +478,9 @@ namespace DemoGame.Server
         /// </summary>
         public void Dispose()
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Disposing of `{0}`.", this);
+
             if (_disposed)
             {
                 Debug.Fail("World is already disposed.");
@@ -443,6 +500,14 @@ namespace DemoGame.Server
             foreach (var map in Maps)
             {
                 map.Dispose();
+            }
+
+            lock (_instancedMapsSync)
+            {
+                foreach (var map in InstancedMaps)
+                {
+                    map.Dispose();
+                }
             }
 
             // Process the dispose stack again, just in case disposing other stuff added to it
