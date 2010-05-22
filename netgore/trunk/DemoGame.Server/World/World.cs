@@ -96,27 +96,6 @@ namespace DemoGame.Server
 
             // Trim down the maps array under the assumption we won't be adding more maps
             _maps.Trim();
-
-#if true
-            // NOTE: Create some test items
-            var rand = new Random();
-            foreach (var m in Maps)
-            {
-                for (var i = 0; i < 10; i++)
-                {
-                    float x = rand.Next(128, (int)m.Width - 256);
-                    float y = rand.Next(128, (int)m.Height - 256);
-
-                    IItemTemplateTable template = null;
-                    while (template == null || template.ID == ServerSettings.UnarmedItemTemplateID)
-                    {
-                        template = _itemTemplateManager.GetRandomTemplate();
-                    }
-
-                    new ItemEntity(template, new Vector2(x, y), 1, m);
-                }
-            }
-#endif
         }
 
         /// <summary>
