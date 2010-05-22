@@ -103,6 +103,10 @@ namespace DemoGame.Client
             cScreen.SetFocus();
         }
 
+        /// <summary>
+        /// Handles the <see cref="TextBox.TextChanged"/> event of the <see cref="_cPasswordText"/> control.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
         void _cPasswordText_TextChanged(Control sender)
         {
             var c = sender as TextBox;
@@ -112,6 +116,10 @@ namespace DemoGame.Client
             _cPasswordText.Text = GameData.AccountPassword.AllowedChars.GetValidCharsOnly(_cPasswordText.Text);
         }
 
+        /// <summary>
+        /// Handles the <see cref="TextBox.TextChanged"/> event of the <see cref="_cNameText"/> control.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
         void _cNameText_TextChanged(Control sender)
         {
             var c = sender as TextBox;
