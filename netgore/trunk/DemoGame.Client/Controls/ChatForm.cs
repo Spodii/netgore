@@ -149,6 +149,22 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Clears the output text.
+        /// </summary>
+        public void ClearOutput()
+        {
+            _output.Clear();
+        }
+
+        /// <summary>
+        /// Clears the input text.
+        /// </summary>
+        public void ClearInput()
+        {
+            _input.Clear();
+        }
+
+        /// <summary>
         /// Repositions the input and output TextBoxes on the form.
         /// </summary>
         void RepositionTextBoxes()

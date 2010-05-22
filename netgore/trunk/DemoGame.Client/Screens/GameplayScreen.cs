@@ -199,7 +199,15 @@ namespace DemoGame.Client
         {
             base.Activate();
 
+            // Make sure to clear some stuff (text boxes, etc) that persists for the screen. Stuff that persists for the map only,
+            // such as effects, should not need to be cleared here since it should be cleared when the map is set or changes.
             SoundManager.Stop3D();
+            
+            if (_chatForm != null)
+            {
+                _chatForm.ClearOutput();
+                _chatForm.ClearInput();
+            }
         }
 
         /// <summary>
