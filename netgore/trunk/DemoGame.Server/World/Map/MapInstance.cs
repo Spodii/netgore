@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -42,8 +43,14 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="mapID">ID of the Map to create the instance of.</param>
         /// <param name="world">World that the <see cref="MapInstance"/> will be inside of.</param>
+        /// <exception cref="ArgumentException"><paramref name="mapID"/> returned false for <see cref="MapBase.IsMapIDValid"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="world"/> is null.</exception>
         public MapInstance(MapID mapID, World world) : base(mapID, world)
         {
+            Load();
+
+            world.AddMapInstance(this);
+
             _deleteTime = TickCount.Now + _initialDeleteTimeout;
         }
 

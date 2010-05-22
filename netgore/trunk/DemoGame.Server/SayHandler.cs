@@ -107,6 +107,71 @@ namespace DemoGame.Server
                 }
             }
 
+            #region Test/development commands
+
+            [SayCommand("LeaveMapInstance")]
+            public void LeaveMapInstance()
+            {
+                if (!RequirePermissionLevel(UserPermissions.Admin))
+                    return;
+
+                // Check for a valid map
+                if (User.Map == null || !User.Map.IsInstanced)
+                {
+                    using (var pw = ServerPacket.Chat("You must be on an instanced map to do that."))
+                        User.Send(pw);
+                    return;
+                }
+
+                // Get the map to respawn on
+                var mapID = User.RespawnMapID;
+                Map map = null;
+
+                if (mapID.HasValue)
+                    map =World.GetMap(mapID.Value);
+
+                if (map == null)
+                {
+                    using (var pw = ServerPacket.Chat("Could not teleport you to your respawn location - your respawn map is null for some reason..."))
+                        User.Send(pw);
+                    return;
+                }
+
+                // Teleport to respawn map/position
+                User.ChangeMap(map, User.RespawnPosition);
+            }
+
+            [SayCommand("CreateMapInstance")]
+            public void CreateMapInstance(MapID mapID)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Admin))
+                    return;
+
+                // Check for a valid map
+                if (!MapBase.IsMapIDValid(mapID))
+                {
+                    using (var pw = ServerPacket.Chat("Invalid map ID: " + mapID))
+                        User.Send(pw);
+                    return;
+                }
+
+                // Try to create the map
+                MapInstance instance = null;
+                try
+                {
+                    instance = new MapInstance(mapID, World);
+                }
+                catch (Exception ex)
+                {
+                    using (var pw = ServerPacket.Chat("Failed to create instance: " + ex))
+                        User.Send(pw);
+                    return;
+                }
+
+                // Add the user to the map
+                User.ChangeMap(instance, new SFML.Graphics.Vector2(50,50));
+            }
+
             [SayCommand("Suicide")]
             public void Suicide()
             {
@@ -115,6 +180,8 @@ namespace DemoGame.Server
 
                 User.Kill();
             }
+
+            #endregion
 
             [SayCommand("Tell")]
             [SayCommand("Whisper")]

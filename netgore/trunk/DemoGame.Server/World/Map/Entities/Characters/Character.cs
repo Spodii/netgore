@@ -759,7 +759,8 @@ namespace DemoGame.Server
         /// Changes the Character's map.
         /// </summary>
         /// <param name="newMap">New map to place the Character on.</param>
-        public void ChangeMap(Map newMap)
+        /// <param name="position">The position to place the Character.</param>
+        public void ChangeMap(Map newMap, Vector2 position)
         {
             if (Map == newMap)
                 return;
@@ -774,7 +775,7 @@ namespace DemoGame.Server
             if (newMap != null)
                 newMap.AddEntity(this);
 
-            Teleport(Position);
+            Teleport(position);
 
             _spSync.ForceSynchronize();
         }
@@ -1274,7 +1275,7 @@ namespace DemoGame.Server
             // Set the map
             var m = World.GetMap(v.LoadMapID);
             if (m != null)
-                ChangeMap(m);
+                ChangeMap(m, Position);
             else
                 ((IRespawnable)this).Respawn();
 
@@ -2486,7 +2487,7 @@ namespace DemoGame.Server
                 else
                 {
                     // Move the Character to their respawn map
-                    ChangeMap(respawnMap);
+                    ChangeMap(respawnMap, Position);
                 }
             }
         }

@@ -83,6 +83,8 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="mapID">ID of the Map.</param>
         /// <param name="world">World that the Map will be inside of.</param>
+        /// <exception cref="ArgumentException"><paramref name="mapID"/> returned false for <see cref="MapBase.IsMapIDValid"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="world"/> is null.</exception>
         public Map(MapID mapID, World world) : base(mapID, world)
         {
             _world = world;
@@ -405,7 +407,7 @@ namespace DemoGame.Server
                 return;
 
             _isLoaded = true;
-
+            
             Load(ContentPaths.Build, true, DynamicEntityFactory.Instance);
 
             _npcSpawners = NPCSpawner.LoadSpawners(this).ToCompact();
