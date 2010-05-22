@@ -17,7 +17,7 @@ namespace DemoGame
         /// </returns>
         public static bool IsSet(this UserPermissions p, UserPermissions level)
         {
-            return (p & level) != 0;
+            return (p & level) == level;
         }
     }
 }
