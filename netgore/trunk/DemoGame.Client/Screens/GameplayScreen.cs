@@ -202,7 +202,7 @@ namespace DemoGame.Client
             // Make sure to clear some stuff (text boxes, etc) that persists for the screen. Stuff that persists for the map only,
             // such as effects, should not need to be cleared here since it should be cleared when the map is set or changes.
             SoundManager.Stop3D();
-            
+
             if (_chatForm != null)
             {
                 _chatForm.ClearOutput();
@@ -445,7 +445,7 @@ namespace DemoGame.Client
             _availableQuestsForm.QuestAccepted += availableQuestsForm_QuestAccepted;
 
             _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
-        
+
             _skillCastProgressBar = new SkillCastProgressBar(cScreen);
 
             var toolbar = new Toolbar(cScreen, new Vector2(200, 200));
@@ -468,20 +468,6 @@ namespace DemoGame.Client
 
             // Set the focus to the screen container
             cScreen.SetFocus();
-        }
-
-        /// <summary>
-        /// Handles the ClickedQuit event of the gameMenu control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void gameMenu_ClickedQuit(object sender, EventArgs e)
-        {
-            // Change to the login screen
-            ScreenManager.SetScreen(LoginScreen.ScreenName);
-
-            // Disconnect the socket to close the connection
-            Socket.Disconnect();
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
@@ -691,6 +677,20 @@ namespace DemoGame.Client
             {
                 Socket.Send(pw);
             }
+        }
+
+        /// <summary>
+        /// Handles the ClickedQuit event of the gameMenu control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void gameMenu_ClickedQuit(object sender, EventArgs e)
+        {
+            // Change to the login screen
+            ScreenManager.SetScreen(LoginScreen.ScreenName);
+
+            // Disconnect the socket to close the connection
+            Socket.Disconnect();
         }
 
         #region IGetTime Members

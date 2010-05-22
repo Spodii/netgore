@@ -20,8 +20,7 @@ namespace NetGore.Graphics
         {
             var fDest = new FloatRect(dest.Left, dest.Top, dest.Width, dest.Height);
 
-            using (
-                var s = Shape.Rectangle(fDest, color, borderThickness, borderColor))
+            using (var s = Shape.Rectangle(fDest, color, borderThickness, borderColor))
             {
                 sb.Draw(s);
             }

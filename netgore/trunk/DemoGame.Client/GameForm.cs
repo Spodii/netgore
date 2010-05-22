@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 using log4net;
 
@@ -30,7 +27,7 @@ namespace DemoGame.Client
 
             // Set up our form
             ClientSize = new Size((int)GameData.ScreenSize.X, (int)GameData.ScreenSize.Y);
-          
+
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque, true);
 
             // Create the game

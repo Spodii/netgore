@@ -73,7 +73,8 @@ namespace DemoGame
                 if (StringComparer.OrdinalIgnoreCase.Equals(_defaultLanguageName, language))
                 {
                     // Key(s) are missing from the default language, which is very bad
-                    const string errmsg = "GameMessages `{0}` for language `{1}` did not contain all GameMessages." +
+                    const string errmsg =
+                        "GameMessages `{0}` for language `{1}` did not contain all GameMessages." +
                         " The default language needs all keys! Missing the following keys: {2}";
                     var err = string.Format(errmsg, this, _language, missingKeys.Implode());
                     if (log.IsErrorEnabled)
@@ -83,7 +84,8 @@ namespace DemoGame
                 else
                 {
                     // Key(s) are missing from a non-default language, which isn't too bad since we can fall back on the default language
-                    const string errmsg = "GameMessages `{0}` for language `{1}` did not contain all GameMessages." +
+                    const string errmsg =
+                        "GameMessages `{0}` for language `{1}` did not contain all GameMessages." +
                         " Will have to use the text from the default language `{3}` instead. Missing the following keys: {2}";
                     var err = string.Format(errmsg, this, _language, missingKeys.Implode(), _defaultLanguageName);
                     if (log.IsErrorEnabled)
