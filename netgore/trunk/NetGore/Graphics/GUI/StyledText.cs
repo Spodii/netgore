@@ -519,6 +519,8 @@ namespace NetGore.Graphics.GUI
 
                         splitAt -= (s.Length - current.Text.Length);
 
+                        // TODO: This will enter an infinite loop if the width is smaller than a single character. Need to fix that.
+
                         // Don't try to split farther back than the current styled text block
                         if (splitAt < -1)
                             splitAt = -1;
@@ -547,8 +549,11 @@ namespace NetGore.Graphics.GUI
                         }
 
                         // Add the line to the return list, create the new line buffer, and reset the line string
-                        ret.Add(retLine);
-                        retLine = new List<StyledText>();
+                        if (retLine.Count > 0)
+                        {
+                            ret.Add(retLine);
+                            retLine = new List<StyledText>();
+                        }
 
                         currentLineText.Length = 0;
                     }

@@ -29,6 +29,7 @@ namespace NetGore.Graphics
         static ChatBubble()
         {
             Lifespan = 5000;
+            MaxChatBubbleWidth = 128;
         }
 
         /// <summary>
@@ -231,18 +232,39 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the maximum width of a chat bubble in pixels. Default is 128.
+        /// </summary>
+        public static ushort MaxChatBubbleWidth { get; set; }
+
+        /// <summary>
         /// A control that displays the text area for a <see cref="ChatBubble"/>.
         /// </summary>
-        sealed class ChatBubbleText : Label
+        sealed class ChatBubbleText : TextBox
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="ChatBubbleText"/> class.
             /// </summary>
             /// <param name="parent">The parent.</param>
             /// <param name="text">The text.</param>
-            public ChatBubbleText(Control parent, string text) : base(parent, Vector2.Zero)
+            public ChatBubbleText(Control parent, string text) : base(parent, Vector2.Zero, new Vector2(MaxChatBubbleWidth,256))
             {
+                IsMultiLine = true;
+
                 Text = text;
+                ResizeToFitText(MaxChatBubbleWidth);
+            }
+
+            /// <summary>
+            /// Handles when the <see cref="TextControl.Text"/> has changed.
+            /// This is called immediately before <see cref="TextControl.TextChanged"/>.
+            /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
+            /// </summary>
+            protected override void OnTextChanged()
+            {
+                base.OnTextChanged();
+
+                // Make sure we resize the textbox to fit the text
+                ResizeToFitText(MaxChatBubbleWidth);
             }
 
             /// <summary>
@@ -263,10 +285,11 @@ namespace NetGore.Graphics
             {
                 base.SetDefaultValues();
 
+                IsBoundToParentArea = false;
+                IsMultiLine = true;
                 Border = ControlBorder.Empty;
                 CanFocus = false;
                 CanDrag = false;
-                AutoResize = true;
             }
         }
     }
