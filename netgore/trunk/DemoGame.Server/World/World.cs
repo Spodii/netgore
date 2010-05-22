@@ -126,7 +126,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets an IEnuermable of all the maps in the world.
+        /// Gets all the maps in this <see cref="World"/>.
         /// </summary>
         public IEnumerable<Map> Maps
         {
