@@ -55,6 +55,9 @@ namespace NetGore.Graphics.GUI
         /// <param name="color">The color.</param>
         public StyledText(string text, Color color)
         {
+            text = text.Replace("\r\n", "\n");
+            text = text.Replace("\r", "\n");
+
             _text = text;
             _color = color;
         }
@@ -66,6 +69,9 @@ namespace NetGore.Graphics.GUI
         /// <param name="sourceStyle">The StyledText to copy the style from.</param>
         public StyledText(string text, StyledText sourceStyle)
         {
+            text = text.Replace("\r\n", "\n");
+            text = text.Replace("\r", "\n");
+
             _text = text;
             _color = sourceStyle.Color;
         }
@@ -492,10 +498,9 @@ namespace NetGore.Graphics.GUI
                 currentLineText.Length = 0;
                 var retLine = new List<StyledText>();
 
+                // Add all the pieces in the line to the line parts stack
                 for (var i = line.Count - 1; i >= 0; i--)
-                {
                     linePartsStack.Push(line[i]);
-                }
 
                 while (linePartsStack.Count > 0)
                 {
@@ -537,6 +542,7 @@ namespace NetGore.Graphics.GUI
                             // Split like normal
                             if (left.Text.Length > 0)
                                 retLine.Add(left);
+
                             linePartsStack.Push(right);
                         }
 
@@ -586,8 +592,7 @@ namespace NetGore.Graphics.GUI
                     var split = t.Split('\n');
                     foreach (var s in split)
                     {
-                        var newS = new StyledText(s.Text.Replace('\r'.ToString(), string.Empty), s);
-                        ret.Add(new List<StyledText> { newS });
+                        ret.Add(new List<StyledText> { s });
                     }
                 }
             }
@@ -597,11 +602,13 @@ namespace NetGore.Graphics.GUI
                 foreach (var t in texts)
                 {
                     var split = t.Split('\n');
-                    line.Add(split[0]);
 
-                    if (split.Length > 1)
+                    if (split[0].Text.Length > 0)
+                        line.Add(split[0]);
+
+                    for (var i = 1; i < split.Length; i++)
                     {
-                        for (var i = 1; i < split.Length; i++)
+                        if (split[i].Text.Length > 0)
                         {
                             ret.Add(line);
                             line = new List<StyledText> { split[i] };
@@ -609,7 +616,8 @@ namespace NetGore.Graphics.GUI
                     }
                 }
 
-                ret.Add(line);
+                if (line.Count > 0)
+                    ret.Add(line);
             }
 
             return ret;
