@@ -38,7 +38,6 @@ namespace DemoGame.Client
 
         AvailableQuestsForm _availableQuestsForm;
         CharacterTargeter _characterTargeter;
-        ChatBubbleManager _chatBubbleManager;
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
         TickCount _currentTime = 0;
@@ -64,6 +63,11 @@ namespace DemoGame.Client
         ILight _userLight;
         World _world;
 
+        public void AddChatBubble(Entity owner, string text)
+        {
+            ChatBubble.Create(_cScreen, owner, text);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
         /// </summary>
@@ -75,14 +79,6 @@ namespace DemoGame.Client
         public AvailableQuestsForm AvailableQuestsForm
         {
             get { return _availableQuestsForm; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ChatBubbleManagerBase"/>.
-        /// </summary>
-        public ChatBubbleManagerBase ChatBubbleManager
-        {
-            get { return _chatBubbleManager; }
         }
 
         public NPCChatDialogForm ChatDialogForm
@@ -190,6 +186,23 @@ namespace DemoGame.Client
         {
             get { return _world; }
         }
+        
+        /// <summary>
+        /// Gets the top-left corner to use for drawing for the given <paramref name="target"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="ISpatial"/> to attach the bubble to.</param>
+        /// <returns>The coordinate of the top-left corner of the <paramref name="target"/> to use for drawing.</returns>
+        Vector2 GetTopLeftDrawCorner(ISpatial target)
+        {
+            Character asCharacter;
+
+            // Make use of the Character's DrawPosition, otherwise it will look like the bubble is moving all over
+            // the place since Characters like to interpolate all over the place
+            if ((asCharacter = target as Character) != null)
+                return asCharacter.LastScreenPosition;
+            else
+                return target.Position - World.Camera.Min;
+        }
 
         /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
@@ -208,6 +221,9 @@ namespace DemoGame.Client
                 _chatForm.ClearOutput();
                 _chatForm.ClearInput();
             }
+
+            // Set screen-specific globals
+            ChatBubble.GetTopLeftCornerHandler = GetTopLeftDrawCorner;
         }
 
         /// <summary>
@@ -331,7 +347,6 @@ namespace DemoGame.Client
                 return;
 
             World.Draw(sb);
-            _chatBubbleManager.Draw(sb);
             _damageTextPool.Draw(sb, _damageFont);
             DrawingManager.EndDrawWorld();
 
@@ -385,9 +400,9 @@ namespace DemoGame.Client
             // NOTE: Test lighting
             _userLight = new Light { Size = new Vector2(512), IsEnabled = false };
             DrawingManager.LightManager.Add(_userLight);
-
-            _chatBubbleManager = new ChatBubbleManager(GUIManager.SkinManager, _guiFont);
         }
+
+        Panel _cScreen;
 
         /// <summary>
         /// Initializes the GUI components.
@@ -400,58 +415,58 @@ namespace DemoGame.Client
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
 
-            var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = true };
+            _cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = true };
 
             // Set up all the forms used by this screen
-            _statsForm = new StatsForm(UserInfo, cScreen);
+            _statsForm = new StatsForm(UserInfo, _cScreen);
             _statsForm.RequestRaiseStat += StatsForm_RequestRaiseStat;
 
             _inventoryForm = new InventoryForm(_dragDropHandler, x => x == UserInfo.Inventory, InventoryInfoRequester,
-                                               new Vector2(250, 0), cScreen);
+                                               new Vector2(250, 0), _cScreen);
             _inventoryForm.RequestDropItem += InventoryForm_RequestDropItem;
             _inventoryForm.RequestUseItem += InventoryForm_RequestUseItem;
 
-            _shopForm = new ShopForm(_dragDropHandler, new Vector2(250, 0), cScreen);
+            _shopForm = new ShopForm(_dragDropHandler, new Vector2(250, 0), _cScreen);
             _shopForm.RequestPurchase += ShopForm_RequestPurchase;
 
-            _skillsForm = new SkillsForm(SkillCooldownManager, new Vector2(100, 0), cScreen);
+            _skillsForm = new SkillsForm(SkillCooldownManager, new Vector2(100, 0), _cScreen);
             _skillsForm.RequestUseSkill += SkillsForm_RequestUseSkill;
 
             _infoBox = new InfoBox(GameData.ScreenSize - new Vector2(5, 5), _guiFont);
 
-            _equippedForm = new EquippedForm(_dragDropHandler, EquipmentInfoRequester, new Vector2(500, 0), cScreen);
+            _equippedForm = new EquippedForm(_dragDropHandler, EquipmentInfoRequester, new Vector2(500, 0), _cScreen);
             _equippedForm.RequestUnequip += EquippedForm_RequestUnequip;
 
-            _chatForm = new ChatForm(cScreen, new Vector2(0, cScreen.Size.Y));
+            _chatForm = new ChatForm(_cScreen, new Vector2(0, _cScreen.Size.Y));
             _chatForm.Say += ChatForm_Say;
 
-            _chatDialogForm = new NPCChatDialogForm(new Vector2(50, 50), cScreen);
+            _chatDialogForm = new NPCChatDialogForm(new Vector2(50, 50), _cScreen);
             _chatDialogForm.SelectResponse += ChatDialogForm_SelectResponse;
             _chatDialogForm.RequestEndDialog += ChatDialogForm_RequestEndDialog;
 
-            _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
+            _statusEffectsForm = new StatusEffectsForm(_cScreen, new Vector2(_cScreen.Size.X, 0), this);
 
-            _quickBarForm = new QuickBarForm(this, cScreen, cScreen.Position);
+            _quickBarForm = new QuickBarForm(this, _cScreen, _cScreen.Position);
 
-            _guildForm = new GuildForm(cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo, IsVisible = false };
-            new GroupForm(cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
+            _guildForm = new GuildForm(_cScreen, new Vector2(100, 100)) { GuildInfo = UserInfo.GuildInfo, IsVisible = false };
+            new GroupForm(_cScreen, new Vector2(50, 350), new Vector2(150, 150)) { GroupInfo = UserInfo.GroupInfo };
 
             Func<QuestID, bool> questStartReqs = x => UserInfo.HasStartQuestRequirements.HasRequirements(x) ?? false;
             Func<QuestID, bool> questFinishReqs =
                 x =>
                 UserInfo.QuestInfo.ActiveQuests.Contains(x) && (UserInfo.HasFinishQuestRequirements.HasRequirements(x) ?? false);
-            _availableQuestsForm = new AvailableQuestsForm(cScreen, new Vector2(200), new Vector2(250, 350), questStartReqs,
+            _availableQuestsForm = new AvailableQuestsForm(_cScreen, new Vector2(200), new Vector2(250, 350), questStartReqs,
                                                            questFinishReqs);
             _availableQuestsForm.QuestAccepted += availableQuestsForm_QuestAccepted;
 
-            _latencyLabel = new Label(cScreen, cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
+            _latencyLabel = new Label(_cScreen, _cScreen.Size - new Vector2(75, 5)) { Text = string.Format(_latencyString, 0) };
 
-            _skillCastProgressBar = new SkillCastProgressBar(cScreen);
+            _skillCastProgressBar = new SkillCastProgressBar(_cScreen);
 
-            var toolbar = new Toolbar(cScreen, new Vector2(200, 200));
+            var toolbar = new Toolbar(_cScreen, new Vector2(200, 200));
             toolbar.ItemClicked += Toolbar_ItemClicked;
 
-            var gameMenu = new GameMenuForm(cScreen);
+            var gameMenu = new GameMenuForm(_cScreen);
             gameMenu.ClickedLogOut += GameMenuClickedLogOut;
 
             // Add the forms to the GUI settings manager (which also restores any existing settings)
@@ -467,7 +482,7 @@ namespace DemoGame.Client
             _guiSettings.Add("QuickBarForm", _quickBarForm);
 
             // Set the focus to the screen container
-            cScreen.SetFocus();
+            _cScreen.SetFocus();
         }
 
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
@@ -601,9 +616,6 @@ namespace DemoGame.Client
 
             ScreenManager.AudioManager.ListenerPosition = UserChar.Center;
 
-            _userLight.IsEnabled = true;
-            _userLight.Teleport(UserChar.Position);
-
             // HACK: What a stupid way to make sure the correct inventory and equipped is used...
             _inventoryForm.Inventory = UserInfo.Inventory;
             _equippedForm.UserEquipped = UserInfo.Equipped;
@@ -617,7 +629,6 @@ namespace DemoGame.Client
             World.Update();
             _damageTextPool.Update(_currentTime);
             _guiSettings.Update(_currentTime);
-            _chatBubbleManager.Update(_currentTime);
             _emoticonDisplayManager.Update(_currentTime);
 
             // Update targeting
@@ -629,6 +640,9 @@ namespace DemoGame.Client
 
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
+
+            _userLight.IsEnabled = true;
+            _userLight.Teleport(UserChar.Position);
 
             base.Update(gameTime);
         }

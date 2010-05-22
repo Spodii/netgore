@@ -186,7 +186,6 @@
     <Compile Include="Graphics\Character Sprite\ICharacterSprite.cs" />
     <Compile Include="Graphics\Character Sprite\SkeletonCharacterSprite.cs" />
     <Compile Include="Graphics\Chat Bubble\ChatBubble.cs" />
-    <Compile Include="Graphics\Chat Bubble\ChatBubbleManagerBase.cs" />
     <Compile Include="Content\ContentManager.cs" />
     <Compile Include="Graphics\Drawing Tools\EntityInterpolator.cs" />
     <Compile Include="Graphics\Drawing Tools\FocusedSpatialDrawer.cs" />

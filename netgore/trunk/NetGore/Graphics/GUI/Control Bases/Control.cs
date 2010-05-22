@@ -1792,10 +1792,16 @@ namespace NetGore.Graphics.GUI
             if (IsDisposed)
                 return;
 
-            // Update the children 
-            foreach (var child in Controls)
+            // Update the children in a way that allows us to support when the collection is modified
+            for (int i = 0; i < _controls.Count; i++)
             {
+                var child = _controls[i];
                 child.Update(currentTime);
+
+                // If the control at the given index is no longer the child, then the child control probably
+                // disposed itself, so decrement the counter by one to re-update the changed slot
+                if (i < _controls.Count && _controls[i] != child)
+                    --i;
             }
 
             // Update the control's position if it is being dragged
