@@ -399,6 +399,27 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles loading the persistent NPCs on the map.
+        /// </summary>
+        protected virtual void LoadPersistentNPCs()
+        {
+            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(ID);
+            foreach (var characterID in persistentNPCIDs)
+            {
+                new NPC(World, characterID);
+            }
+        }
+
+        /// <summary>
+        /// Handles loading the <see cref="NPCSpawner"/>s on the map.
+        /// </summary>
+        /// <returns>The <see cref="NPCSpawner"/>s on the map.</returns>
+        protected IEnumerable<NPCSpawner> LoadNPCSpawners()
+        {
+            return NPCSpawner.LoadSpawners(this).ToCompact();
+        }
+
+        /// <summary>
         /// Loads the map.
         /// </summary>
         public void Load()
@@ -408,16 +429,12 @@ namespace DemoGame.Server
 
             _isLoaded = true;
             
+            // Load the map
             Load(ContentPaths.Build, true, DynamicEntityFactory.Instance);
 
-            _npcSpawners = NPCSpawner.LoadSpawners(this).ToCompact();
-
-            // Spawn persistent NPCs
-            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(ID);
-            foreach (var characterID in persistentNPCIDs)
-            {
-                new NPC(World, characterID);
-            }
+            // NPCs
+            _npcSpawners = LoadNPCSpawners();
+            LoadPersistentNPCs();
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded Map `{0}`.", this);
