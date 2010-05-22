@@ -71,6 +71,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Disposes of the map and all of the Entities on it.
+        /// </summary>
+        public override void Dispose()
+        {
+            _deleteTime = null;
+
+            base.Dispose();
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional processing on Entities added to the map.
         /// This is called after the Entity has finished being added to the map.
         /// </summary>
