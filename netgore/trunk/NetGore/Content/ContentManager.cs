@@ -26,7 +26,6 @@ namespace NetGore.Content
 
         static readonly object _instanceSync = new object();
         static readonly StringComparer _stringComp = StringComparer.OrdinalIgnoreCase;
-        static bool _doNotUnload;
         static IContentManager _instance;
 
         readonly object _assetSync = new object();
@@ -35,8 +34,6 @@ namespace NetGore.Content
 
         bool _isDisposed = false;
         bool _isTrackingLoads = false;
-        bool _queuedUnloadIgnoreTime = false;
-        ContentLevel? _queuedUnloadLevel = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentManager"/> class.
@@ -52,34 +49,6 @@ namespace NetGore.Content
             for (var i = 0; i < _loadedAssets.Length; i++)
             {
                 _loadedAssets[i] = new Dictionary<string, IMyLazyAsset>(_stringComp);
-            }
-
-            DoNotUploadSetFalse += ContentManager_DoNotUploadSetFalse;
-        }
-
-        /// <summary>
-        /// Notifies listeners when <see cref="DoNotUnload"/> is set from true to false.
-        /// </summary>
-        static event EventHandler DoNotUploadSetFalse;
-
-        /// <summary>
-        /// Gets or sets if <see cref="ContentManager.Unload"/> must queue unload calls.
-        /// </summary>
-        internal static bool DoNotUnload
-        {
-            get { return _doNotUnload; }
-            set
-            {
-                if (_doNotUnload == value)
-                    return;
-
-                _doNotUnload = value;
-
-                if (!_doNotUnload)
-                {
-                    if (DoNotUploadSetFalse != null)
-                        DoNotUploadSetFalse(null, EventArgs.Empty);
-                }
             }
         }
 
@@ -115,17 +84,6 @@ namespace NetGore.Content
         }
 
         /// <summary>
-        /// Handles the DoNotUploadSetFalse event of the <see cref="ContentManager"/> object.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void ContentManager_DoNotUploadSetFalse(object sender, EventArgs e)
-        {
-            if (_queuedUnloadLevel != null)
-                DoUnload(_queuedUnloadLevel.Value, _queuedUnloadIgnoreTime);
-        }
-
-        /// <summary>
         /// Creates a <see cref="IContentManager"/>.
         /// </summary>
         /// <returns>The <see cref="IContentManager"/> instance.</returns>
@@ -143,7 +101,6 @@ namespace NetGore.Content
         /// <param name="disposeManaged">If false, this was called from the destructor.</param>
         protected virtual void Dispose(bool disposeManaged)
         {
-            DoNotUploadSetFalse -= ContentManager_DoNotUploadSetFalse;
             Unload();
         }
 
@@ -158,12 +115,6 @@ namespace NetGore.Content
 
             lock (_assetSync)
             {
-                // If the queued level is set, and it is a lower level, then use that as the level instead
-                if (_queuedUnloadLevel.HasValue && _queuedUnloadLevel.Value < level)
-                    level = _queuedUnloadLevel.Value;
-
-                _queuedUnloadLevel = null;
-
                 // Loop through the given level and all levels below it
                 for (var i = (int)level; i < _loadedAssets.Length; i++)
                 {
@@ -596,17 +547,7 @@ namespace NetGore.Content
             if (IsDisposed)
                 return;
 
-            if (DoNotUnload)
-            {
-                // Store the parameter information to process the unloading later
-                _queuedUnloadLevel = level;
-                _queuedUnloadIgnoreTime = ignoreTime;
-            }
-            else
-            {
-                // Unload immediately
-                DoUnload(level, ignoreTime);
-            }
+            DoUnload(level, ignoreTime);
         }
 
         #endregion
