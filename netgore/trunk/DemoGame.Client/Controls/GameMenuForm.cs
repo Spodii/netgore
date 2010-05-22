@@ -17,8 +17,8 @@ namespace DemoGame.Client
         /// <param name="parent">The parent.</param>
         public GameMenuForm(Control parent) : base(parent, Vector2.Zero, new Vector2(32))
         {
-            var quitLbl = new Label(this, new Vector2(3, 3)) { Text = "Quit" };
-            quitLbl.Clicked += quitLbl_Clicked;
+            var logOutLbl = new Label(this, new Vector2(3, 3)) { Text = "Log Out" };
+            logOutLbl.Clicked += logOutLbl_Clicked;
 
             // Center on the parent
             Position = (Parent.ClientSize / 2f) - (Size / 2f);
@@ -31,7 +31,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners that the Quit button has been clicked
         /// </summary>
-        public event EventHandler ClickedQuit;
+        public event EventHandler ClickedLogOut;
 
         /// <summary>
         /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
@@ -57,17 +57,17 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the Clicked event of the quitLbl control.
+        /// Handles the Clicked event of the logOutLbl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
-        void quitLbl_Clicked(object sender, MouseButtonEventArgs e)
+        void logOutLbl_Clicked(object sender, MouseButtonEventArgs e)
         {
             if (e.Button != MouseButton.Left)
                 return;
 
-            if (ClickedQuit != null)
-                ClickedQuit(this, EventArgs.Empty);
+            if (ClickedLogOut != null)
+                ClickedLogOut(this, EventArgs.Empty);
         }
     }
 }
