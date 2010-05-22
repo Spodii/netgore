@@ -24,19 +24,24 @@ namespace DemoGame.Server
             Idle
         }
 
-        Character _target;
         const int _id = 2;
-        const int _UpdateRate = 3000;
+        const int _updateRate = 3000;
+
+        Character _target;
         State _characterState = State.Patrol;
         bool _isAttackingTarget;
-        int _lastUpdateTime = int.MinValue;
+        TickCount _lastUpdateTime = TickCount.MinValue;
         float _lastX;
 
-            
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StateMachine"/> class.
+        /// </summary>
+        /// <param name="actor">Character for this AI module to control.</param>
         public StateMachine(Character actor) : base(actor)
         {
             //Adds an event handler so we know when the actor has been attacked.
-            Actor.AttackedByCharacter += new Character.CharacterAttackCharacterEventHandler(Actor_AttackedByCharacter);
+            Actor.AttackedByCharacter += Actor_AttackedByCharacter;
         }
 
         /// <summary>
@@ -316,13 +321,15 @@ namespace DemoGame.Server
             }
         }
 
-
+        /// <summary>
+        /// Handles the real updating of the AI.
+        /// </summary>
         protected override void DoUpdate()
         {
             //Updates a few variables that don't need to be updated every frame
             //and calls the EvaluateState method
-            int time = GetTime();
-            if (_lastUpdateTime + _UpdateRate < time)
+            var time = GetTime();
+            if (_lastUpdateTime + _updateRate < time)
             {
                 _lastUpdateTime = time;
                 _lastX = Actor.Position.X;
