@@ -135,6 +135,7 @@ namespace DemoGame.Client
             if (e.Code == KeyCode.Tab)
             {
                 _cPasswordText.SetFocus();
+                _cPasswordText.Text = _cPasswordText.Text.Trim();
                 _cPasswordText.CursorLinePosition = _cPasswordText.Text.Length;
             }
         }
@@ -150,6 +151,7 @@ namespace DemoGame.Client
             if (e.Code == KeyCode.Tab)
             {
                 _cNameText.SetFocus();
+                _cNameText.Text = _cNameText.Text.Trim();
                 _cNameText.CursorLinePosition = _cNameText.Text.Length;
             }
         }

@@ -168,7 +168,7 @@ namespace NetGore.Graphics
             p -= Size / 2f;
 
             // Move up a little to avoid covering their name
-            p.Y -= 20f;
+            p.Y -= 35f;
 
             return p.Floor();
         }
