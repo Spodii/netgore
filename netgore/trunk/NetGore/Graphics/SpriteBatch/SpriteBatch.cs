@@ -93,8 +93,6 @@ namespace NetGore.Graphics
             _rw.CurrentView = _rw.CurrentView;
           
             _sprite.BlendMode = blendMode;
-
-            ContentManager.DoNotUnload = true;
         }
 
         /// <summary>
@@ -121,8 +119,6 @@ namespace NetGore.Graphics
             _rw.CurrentView = _rw.CurrentView;
 
             _sprite.BlendMode = blendMode;
-
-            ContentManager.DoNotUnload = true;
         }
 
         /// <summary>
@@ -447,7 +443,6 @@ namespace NetGore.Graphics
         /// </summary>
         public virtual void End()
         {
-            ContentManager.DoNotUnload = false;
         }
 
         #endregion
