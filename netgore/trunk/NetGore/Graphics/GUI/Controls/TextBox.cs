@@ -320,6 +320,49 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Resizes the <see cref="TextBox"/> to the minimum size needed to fit all of the text.
+        /// </summary>
+        /// <param name="maxWidth">If greater than 0, the width of the <see cref="TextBox"/> will not exceed this value.</param>
+        /// <param name="maxHeight">If greater than 0, the height of the <see cref="TextBox"/> will not exceed this value.</param>
+        public void ResizeToFitText(int maxWidth = 0, int maxHeight = 0)
+        {
+            int reqWidth = 2;
+            int reqHeight = 2;
+
+            // Reset the view to the first line
+            CursorLinePosition = 0;
+            LineBufferOffset = 0;
+            LineCharBufferOffset = 0;
+
+
+            // Get the required width
+            for (int i = 0; i < LineCount; i++)
+            {
+                var line = _lines[i];
+                int width = line.GetWidth(Font);
+
+                if (width > reqWidth)
+                    reqWidth = width;
+            }
+
+            if (LineCount > 0)
+            {
+                // Find the required height by using the number of lines and the spacing between lines
+                reqHeight = LineCount * Font.GetLineSpacing();
+            }
+
+            // Keep in bounds of the max sizes
+            if (maxWidth > 0 && reqWidth > maxWidth)
+                reqWidth = maxWidth;
+
+            if (maxHeight > 0 && reqHeight > maxHeight)
+                reqHeight = maxHeight;
+
+            // Resize
+            ClientSize = new Vector2(reqWidth, reqHeight);
+        }
+
+        /// <summary>
         /// Appends the <paramref name="text"/> to the <see cref="TextBox"/> at the end, then inserts a line break.
         /// </summary>
         /// <param name="text">The text to append.</param>
