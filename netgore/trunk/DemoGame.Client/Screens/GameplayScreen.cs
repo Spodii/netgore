@@ -452,7 +452,7 @@ namespace DemoGame.Client
             toolbar.ItemClicked += Toolbar_ItemClicked;
 
             var gameMenu = new GameMenuForm(cScreen);
-            gameMenu.ClickedQuit += gameMenu_ClickedQuit;
+            gameMenu.ClickedLogOut += GameMenuClickedLogOut;
 
             // Add the forms to the GUI settings manager (which also restores any existing settings)
             _guiSettings = new GUISettings("Default"); // FUTURE: Allow changing of the profile
@@ -684,7 +684,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void gameMenu_ClickedQuit(object sender, EventArgs e)
+        void GameMenuClickedLogOut(object sender, EventArgs e)
         {
             // Change to the login screen
             ScreenManager.SetScreen(LoginScreen.ScreenName);
