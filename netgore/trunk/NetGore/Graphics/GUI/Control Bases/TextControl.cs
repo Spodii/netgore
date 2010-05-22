@@ -405,7 +405,7 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeTextChanged()
+        protected void InvokeTextChanged()
         {
             OnTextChanged();
             var handler = Events[_eventTextChanged] as ControlEventHandler;

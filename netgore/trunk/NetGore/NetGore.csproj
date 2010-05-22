@@ -170,6 +170,7 @@
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\Extensions\Vector3Extensions.cs" />
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
+    <Compile Include="Core\Strings\CharTypeExtensions.cs" />
     <Compile Include="Core\Time.cs" />
     <Compile Include="Graphics\Atlas\AtlasNode.cs" />
     <Compile Include="Graphics\Atlas\AtlasTreeNode.cs" />

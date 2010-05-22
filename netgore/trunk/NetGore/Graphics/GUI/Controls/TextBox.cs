@@ -586,6 +586,18 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets a <see cref="Func{T,U}"/> used to determine if certain keys should be ignored when entering text into
+        /// this <see cref="TextBox"/>. If null, the default keys will be ignored. Default is null.
+        /// </summary>
+        public Func<KeyEventArgs, bool> IgnoreKeysHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets a <see cref="Func{T,U}"/> used to determine if only certain keys should be accepted when entering
+        /// text into this <see cref="TextBox"/>. If null, all of the default keys will be accepted. Default is null.
+        /// </summary>
+        public Func<KeyEventArgs, bool> AllowKeysHandler { get; set; }
+
+        /// <summary>
         /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
         /// This is called immediately before <see cref="Control.KeyPressed"/>.
         /// Override this method instead of using an event hook on <see cref="Control.KeyPressed"/> when possible.
@@ -593,6 +605,12 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected override void OnKeyPressed(KeyEventArgs e)
         {
+            if (IgnoreKeysHandler != null && IgnoreKeysHandler(e))
+                return;
+
+            if (AllowKeysHandler != null && !AllowKeysHandler(e))
+                return;
+
             _editableTextHandler.HandleKey(e);
 
             base.OnKeyPressed(e);
@@ -713,6 +731,8 @@ namespace NetGore.Graphics.GUI
                 CursorLinePosition = 0;
 
             ResetCursorBlink();
+
+            InvokeTextChanged();
         }
 
         /// <summary>
@@ -747,6 +767,8 @@ namespace NetGore.Graphics.GUI
             _numCharsToDraw.Invalidate();
 
             ResetCursorBlink();
+
+            InvokeTextChanged();
         }
 
         /// <summary>
@@ -778,6 +800,8 @@ namespace NetGore.Graphics.GUI
             _numCharsToDraw.Invalidate();
 
             ResetCursorBlink();
+
+            InvokeTextChanged();
         }
 
         /// <summary>
