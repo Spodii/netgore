@@ -70,7 +70,7 @@ namespace DemoGame.Server
                             log.ErrorFormat(errmsg, c, this);
                         return false;
                     }
-                    c.ChangeMap(newMap);
+                    c.ChangeMap(newMap, Position);
                 }
             }
 

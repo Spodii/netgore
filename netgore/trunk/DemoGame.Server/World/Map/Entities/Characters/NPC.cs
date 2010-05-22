@@ -101,8 +101,7 @@ namespace DemoGame.Server
                 log.DebugFormat("Created NPC instance from template `{0}`.", template);
 
             // Spawn
-            Teleport(position);
-            ChangeMap(map);
+            ChangeMap(map, position);
 
             ((IRespawnable)this).Respawn();
         }
@@ -357,7 +356,7 @@ namespace DemoGame.Server
 
                 LoadSpawnItems();
 
-                ChangeMap(null);
+                ChangeMap(null, Vector2.Zero);
                 World.AddToRespawn(this);
             }
             else
