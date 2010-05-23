@@ -99,8 +99,37 @@ namespace NetGore.Features.Emoticons
         {
             foreach (var kvp in _activeEmoticons)
             {
-                var drawPos = GetDrawPosition(kvp.Key);
+                Vector2 drawPos;
+                if (GetDrawPositionHandler != null)
+                    drawPos = GetDrawPositionHandler(kvp.Key);
+                else
+                    drawPos = DefaultGetDrawPosition(kvp.Key);
+
                 kvp.Value.Draw(spriteBatch, drawPos);
+            }
+        }
+
+        static Func<ISpatial, Vector2> _getDrawPositionHandler;
+
+        /// <summary>
+        /// Gets or sets the <see cref="Func{T,U}"/> used to get the world position to draw an emoticon at for the given
+        /// <see cref="ISpatial"/>. If set to null, the default handler will be used.
+        /// </summary>
+        public static Func<ISpatial, Vector2> GetDrawPositionHandler
+        {
+            get
+            {
+                return _getDrawPositionHandler;
+            }
+            set
+            {
+                if (value == null)
+                    value = DefaultGetDrawPosition;
+
+                if (_getDrawPositionHandler == value)
+                    return;
+
+                _getDrawPositionHandler = value;
             }
         }
 
@@ -109,7 +138,7 @@ namespace NetGore.Features.Emoticons
         /// </summary>
         /// <param name="spatial">The <see cref="ISpatial"/> to get the draw position for.</param>
         /// <returns>The position to draw the emoticon at.</returns>
-        static Vector2 GetDrawPosition(ISpatial spatial)
+        static Vector2 DefaultGetDrawPosition(ISpatial spatial)
         {
             return (spatial.Position + (spatial.Size / 2f)) - new Vector2(6);
         }
