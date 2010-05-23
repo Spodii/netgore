@@ -950,20 +950,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Finds the Control's root Control.
-        /// </summary>
-        /// <returns>Root Control for this Control.</returns>
-        Control GetRootControl()
-        {
-            var root = this;
-            while (root.Parent != null)
-            {
-                root = root.Parent;
-            }
-            return root;
-        }
-
-        /// <summary>
         /// Gets a <see cref="Rectangle"/> that represents the area occupied by this <see cref="Control"/> where the
         /// position is the absolute screen position (that is, same position as <see cref="Control.ScreenPosition"/>).
         /// </summary>
