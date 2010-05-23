@@ -113,7 +113,9 @@ namespace DemoGame.Client
             if (c == null)
                 return;
 
+            var clp = _cPasswordText.CursorLinePosition;
             _cPasswordText.Text = GameData.AccountPassword.AllowedChars.GetValidCharsOnly(_cPasswordText.Text);
+            _cPasswordText.CursorLinePosition = clp;
         }
 
         /// <summary>
@@ -126,7 +128,9 @@ namespace DemoGame.Client
             if (c == null)
                 return;
 
+            var clp = _cNameText.CursorLinePosition;
             _cNameText.Text = GameData.AccountName.AllowedChars.GetValidCharsOnly(_cNameText.Text);
+            _cNameText.CursorLinePosition = clp;
         }
 
         /// <summary>

@@ -94,7 +94,7 @@ namespace NetGore.Graphics.GUI
             get { return _text; }
             set
             {
-                if (_text == value)
+                if (StringComparer.Ordinal.Equals(value, _text))
                     return;
 
                 _text = value;
