@@ -84,13 +84,13 @@ namespace DemoGame.Client
             new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
             _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "Spodi" };
             _cNameText.KeyPressed += cNameText_KeyPressed;
-            _cNameText.TextChanged += _cNameText_TextChanged;
+            _cNameText.TextChanged += cNameText_TextChanged;
 
             new Label(cScreen, new Vector2(60, 320)) { Text = "Password:" };
             _cPasswordText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
             { IsMultiLine = false, Text = "qwerty123" };
             _cPasswordText.KeyPressed += cPasswordText_KeyPressed;
-            _cPasswordText.TextChanged += _cPasswordText_TextChanged;
+            _cPasswordText.TextChanged += cPasswordText_TextChanged;
 
             _cError = new Label(cScreen, new Vector2(60, 500)) { ForeColor = Color.Red };
 
@@ -101,36 +101,6 @@ namespace DemoGame.Client
             menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
             cScreen.SetFocus();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="TextBox.TextChanged"/> event of the <see cref="_cPasswordText"/> control.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void _cPasswordText_TextChanged(Control sender)
-        {
-            var c = sender as TextBox;
-            if (c == null)
-                return;
-
-            var clp = _cPasswordText.CursorLinePosition;
-            _cPasswordText.Text = GameData.AccountPassword.AllowedChars.GetValidCharsOnly(_cPasswordText.Text);
-            _cPasswordText.CursorLinePosition = clp;
-        }
-
-        /// <summary>
-        /// Handles the <see cref="TextBox.TextChanged"/> event of the <see cref="_cNameText"/> control.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void _cNameText_TextChanged(Control sender)
-        {
-            var c = sender as TextBox;
-            if (c == null)
-                return;
-
-            var clp = _cNameText.CursorLinePosition;
-            _cNameText.Text = GameData.AccountName.AllowedChars.GetValidCharsOnly(_cNameText.Text);
-            _cNameText.CursorLinePosition = clp;
         }
 
         /// <summary>
@@ -172,6 +142,21 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Handles the <see cref="TextBox.TextChanged"/> event of the <see cref="_cNameText"/> control.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void cNameText_TextChanged(Control sender)
+        {
+            var c = sender as TextBox;
+            if (c == null)
+                return;
+
+            var clp = _cNameText.CursorLinePosition;
+            _cNameText.Text = GameData.AccountName.AllowedChars.GetValidCharsOnly(_cNameText.Text);
+            _cNameText.CursorLinePosition = clp;
+        }
+
+        /// <summary>
         /// Handles the KeyPressed event of the _cPasswordText control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -184,6 +169,21 @@ namespace DemoGame.Client
                 _cNameText.SetFocus();
                 _cNameText.CursorLinePosition = _cNameText.Text.Length;
             }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="TextBox.TextChanged"/> event of the <see cref="_cPasswordText"/> control.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void cPasswordText_TextChanged(Control sender)
+        {
+            var c = sender as TextBox;
+            if (c == null)
+                return;
+
+            var clp = _cPasswordText.CursorLinePosition;
+            _cPasswordText.Text = GameData.AccountPassword.AllowedChars.GetValidCharsOnly(_cPasswordText.Text);
+            _cPasswordText.CursorLinePosition = clp;
         }
 
         void sockets_ConnectFailed(SocketManager sender)
@@ -207,6 +207,8 @@ namespace DemoGame.Client
         void sockets_ReceivedLoginUnsuccessful(ClientPacketHandler sender, IIPSocket conn, string message)
         {
             SetError(message);
+
+            _sockets.Disconnect();
         }
     }
 }
