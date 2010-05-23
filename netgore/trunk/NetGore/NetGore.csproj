@@ -216,6 +216,7 @@
     <Compile Include="Graphics\GUI\Controls\Form.cs" />
     <Compile Include="Graphics\GUI\Controls\Label.cs" />
     <Compile Include="Graphics\GUI\Controls\ListBox.cs" />
+    <Compile Include="Graphics\GUI\Controls\MaskedTextBox.cs" />
     <Compile Include="Graphics\GUI\Controls\MessageBox.cs" />
     <Compile Include="Graphics\GUI\Controls\MessageBoxButton.cs" />
     <Compile Include="Graphics\GUI\Controls\Panel.cs" />

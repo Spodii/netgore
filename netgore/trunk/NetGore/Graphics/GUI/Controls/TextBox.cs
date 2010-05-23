@@ -8,6 +8,9 @@ using SFML.Window;
 
 namespace NetGore.Graphics.GUI
 {
+    /// <summary>
+    /// A box of text.
+    /// </summary>
     public class TextBox : TextControl, IEditableText
     {
         /// <summary>
@@ -17,12 +20,12 @@ namespace NetGore.Graphics.GUI
 
         readonly EditableTextHandler _editableTextHandler;
         readonly TextBoxLines _lines = new TextBoxLines();
+        readonly NumCharsToDrawCache _numCharsToDraw;
 
         /// <summary>
-        /// The number of characters to draw in a row. Only used if <see cref="IsMultiLine"/> is false, since otherwise
-        /// we just use word wrapping.
+        /// Gets the lines in the <see cref="TextBox"/>.
         /// </summary>
-        readonly NumCharsToDrawCache _numCharsToDraw;
+        protected TextBoxLines Lines { get { return _lines; } }
 
         int _bufferTruncateSize = 100;
 
@@ -146,7 +149,7 @@ namespace NetGore.Graphics.GUI
         /// a single line, all line breaks will be forever lost and replaced with a space instead.
         /// </summary>
         [SyncValue]
-        public bool IsMultiLine
+        public virtual bool IsMultiLine
         {
             get { return _isMultiLine; }
             set
@@ -195,7 +198,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Gets or sets the index of the first character in the line to draw.
         /// </summary>
-        int LineCharBufferOffset
+        protected int LineCharBufferOffset
         {
             get { return _lineCharBufferOffset; }
             set
@@ -423,6 +426,25 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Draws the text to display for the <see cref="TextBox"/>.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="offset">The offset to draw the text at.</param>
+        protected virtual void DrawControlText(ISpriteBatch spriteBatch, Vector2 offset)
+        {
+            if (IsMultiLine)
+                _lines.Draw(spriteBatch, Font, LineBufferOffset, MaxVisibleLines, offset, ForeColor);
+            else
+                _lines.FirstLine.Draw(spriteBatch, Font, offset, ForeColor, LineCharBufferOffset, _numCharsToDraw);
+        }
+
+        /// <summary>
+        /// Gets the number of characters to draw in a row. Only used if <see cref="IsMultiLine"/> is false, since otherwise
+        /// we just use word wrapping.
+        /// </summary>
+        protected int NumCharsToDraw { get { return _numCharsToDraw; } }
+
+        /// <summary>
         /// Draws the Control.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
@@ -434,13 +456,23 @@ namespace NetGore.Graphics.GUI
             var textDrawOffset = ScreenPosition + new Vector2(Border.LeftWidth, Border.TopHeight);
 
             // Draw the text
-            if (IsMultiLine)
-                _lines.Draw(spriteBatch, Font, LineBufferOffset, MaxVisibleLines, textDrawOffset, ForeColor);
-            else
-                _lines.FirstLine.Draw(spriteBatch, Font, textDrawOffset, ForeColor, LineCharBufferOffset, _numCharsToDraw);
+            DrawControlText(spriteBatch, textDrawOffset);
 
             // Draw the text cursor
             DrawCursor(spriteBatch, textDrawOffset);
+        }
+
+        /// <summary>
+        /// Gets the offset for the text cursor for the given text. This is usually just the length of the text.
+        /// </summary>
+        /// <param name="text">The text to get the offset for.</param>
+        /// <returns>The X offset for the cursor.</returns>
+        protected virtual int GetTextCursorOffset(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return 0;
+
+            return (int)Font.MeasureString(text).X;
         }
 
         /// <summary>
@@ -460,9 +492,7 @@ namespace NetGore.Graphics.GUI
             if (CursorLinePosition > 0)
             {
                 var len = Math.Min(CursorLinePosition, _lines.CurrentLine.LineText.Length);
-                offset =
-                    (int)
-                    Font.MeasureString(_lines.CurrentLine.LineText.Substring(LineCharBufferOffset, len - LineCharBufferOffset)).X;
+                offset = GetTextCursorOffset(_lines.CurrentLine.LineText.Substring(LineCharBufferOffset, len - LineCharBufferOffset));
             }
 
             var visibleLineOffset = (_lines.CurrentLineIndex - LineBufferOffset) * Font.GetLineSpacing();
