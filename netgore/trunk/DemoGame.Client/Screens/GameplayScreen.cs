@@ -186,6 +186,34 @@ namespace DemoGame.Client
         {
             get { return _world; }
         }
+
+        /// <summary>
+        /// Handles applying global transformations to all <see cref="ControlBorder"/>s drawn.
+        /// </summary>
+        /// <param name="control">The <see cref="Control"/> the border being drawn is for.</param>
+        /// <param name="c">The <see cref="Color"/> being used to draw the <see cref="ControlBorder"/>.</param>
+        /// <returns>The <see cref="Color"/> to use to draw the <see cref="ControlBorder"/>.</returns>
+        Color GlobalControlBorderTransformer(Control control, Color c)
+        {
+            // Only handle stuff for this screen
+            if (control.GUIManager != GUIManager)
+                return c;
+
+            if (control is Form)
+            {
+                // Force forms to have an alpha value no greater than 150
+                if (c.A > 150)
+                    c.A = 150;
+            }
+            else if (!(control is Label))
+            {
+                // Every other control, except labels, must have an alpha <= 200
+                if (c.A > 200)
+                    c.A = 200;
+            }
+
+            return c;
+        }
         
         /// <summary>
         /// Gets the top-left corner to use for drawing for the given <paramref name="target"/>.
@@ -224,6 +252,7 @@ namespace DemoGame.Client
 
             // Set screen-specific globals
             ChatBubble.GetTopLeftCornerHandler = GetTopLeftDrawCorner;
+            ControlBorder.AddGlobalColorTransformation(GlobalControlBorderTransformer);
         }
 
         /// <summary>
@@ -293,6 +322,7 @@ namespace DemoGame.Client
             base.Deactivate();
 
             SoundManager.Stop3D();
+            ControlBorder.RemoveGlobalColorTransformation(GlobalControlBorderTransformer);
         }
 
         /// <summary>

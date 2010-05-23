@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using SFML.Graphics;
 
@@ -9,6 +11,8 @@ namespace NetGore.Graphics.GUI
     public class ControlBorder
     {
         static readonly ControlBorder _empty;
+        static readonly List<Func<Control, Color, Color>> _globalColorTransformations = new List<Func<Control, Color, Color>>();
+        static readonly object _globalColorTransformationsSync = new object();
 
         /// <summary>
         /// Bottom border
@@ -312,6 +316,20 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Adds a <see cref="Func{T,U}"/> that can be used to apply a transformation on the <see cref="Color"/> of a
+        /// <see cref="ControlBorder"/> for a <see cref="Control"/> for every <see cref="ControlBorder"/> being drawn.
+        /// </summary>
+        /// <param name="transformer">The transformation.</param>
+        public static void AddGlobalColorTransformation(Func<Control, Color, Color> transformer)
+        {
+            lock (_globalColorTransformationsSync)
+            {
+                if (!_globalColorTransformations.Contains(transformer))
+                    _globalColorTransformations.Add(transformer);
+            }
+        }
+
+        /// <summary>
         /// Draws the <see cref="ControlBorder"/> to the specified region.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> to draw with.</param>
@@ -401,9 +419,36 @@ namespace NetGore.Graphics.GUI
             if (!_canDraw)
                 return;
 
+            var color = c.BorderColor;
+
+            // Apply the color transformations (if they exist)
+            if (_globalColorTransformations.Count > 0)
+            {
+                lock (_globalColorTransformationsSync)
+                {
+                    foreach (var t in _globalColorTransformations)
+                    {
+                        color = t(c, color);
+                    }
+                }
+            }
+
             var sp = c.ScreenPosition;
             var region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
-            Draw(sb, region, c.BorderColor);
+            Draw(sb, region, color);
+        }
+
+        /// <summary>
+        /// Removes a <see cref="Func{T,U}"/> that can be used to apply a transformation on the <see cref="Color"/> of a
+        /// <see cref="ControlBorder"/> for a <see cref="Control"/> for every <see cref="ControlBorder"/> being drawn.
+        /// </summary>
+        /// <param name="transformer">The transformation.</param>
+        public static void RemoveGlobalColorTransformation(Func<Control, Color, Color> transformer)
+        {
+            lock (_globalColorTransformationsSync)
+            {
+                _globalColorTransformations.Remove(transformer);
+            }
         }
 
         /// <summary>

@@ -35,10 +35,10 @@ namespace DemoGame.Client
 
             // Create the input and output TextBoxes
             _input = new TextBox(this, Vector2.Zero, new Vector2(32, 32))
-            { IsMultiLine = false, IsEnabled = true, Font = Font, MaxInputTextLength = GameData.MaxClientSayLength };
+            { IsMultiLine = false, IsEnabled = true, Font = Font, MaxInputTextLength = GameData.MaxClientSayLength, BorderColor = new Color(255,255,255,100) };
             _input.KeyPressed += Input_KeyPressed;
 
-            _output = new TextBox(this, Vector2.Zero, new Vector2(32, 32)) { IsMultiLine = true, IsEnabled = false, Font = Font };
+            _output = new TextBox(this, Vector2.Zero, new Vector2(32, 32)) { IsMultiLine = true, IsEnabled = false, Font = Font, BorderColor = new Color(255, 255, 255, 100) };
 
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
@@ -193,7 +193,6 @@ namespace DemoGame.Client
 
             Text = "Chat";
             IsCloseButtonVisible = false;
-            BorderColor = new Color(255, 255, 255, 150);
         }
 
         void UpdateBufferOffset()
