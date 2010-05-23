@@ -9,7 +9,7 @@ namespace NetGore.Graphics.GUI
     /// <summary>
     /// A single line for a <see cref="TextBox"/>-style <see cref="Control"/>.
     /// </summary>
-    class TextBoxLine
+    public class TextBoxLine
     {
         readonly List<StyledText> _texts;
         readonly bool _wasAutoBroken;

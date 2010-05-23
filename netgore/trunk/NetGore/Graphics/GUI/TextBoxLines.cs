@@ -12,7 +12,7 @@ namespace NetGore.Graphics.GUI
     /// <summary>
     /// A collection of <see cref="TextBoxLine"/>s.
     /// </summary>
-    class TextBoxLines
+    public class TextBoxLines
     {
         readonly List<TextBoxLine> _lines = new List<TextBoxLine>();
 

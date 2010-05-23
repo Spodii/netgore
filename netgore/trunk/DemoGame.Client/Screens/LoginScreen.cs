@@ -16,7 +16,7 @@ namespace DemoGame.Client
         Button _btnLogin;
         Label _cError;
         TextBox _cNameText;
-        TextBox _cPasswordText;
+        MaskedTextBox _cPasswordText;
         GameplayScreen _gpScreen = null;
         ClientSockets _sockets = null;
 
@@ -87,7 +87,7 @@ namespace DemoGame.Client
             _cNameText.TextChanged += cNameText_TextChanged;
 
             new Label(cScreen, new Vector2(60, 320)) { Text = "Password:" };
-            _cPasswordText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
+            _cPasswordText = new MaskedTextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
             { IsMultiLine = false, Text = "qwerty123" };
             _cPasswordText.KeyPressed += cPasswordText_KeyPressed;
             _cPasswordText.TextChanged += cPasswordText_TextChanged;
