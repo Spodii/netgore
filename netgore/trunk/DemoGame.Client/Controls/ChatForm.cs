@@ -31,8 +31,6 @@ namespace DemoGame.Client
         /// <param name="pos">The pos.</param>
         public ChatForm(Control parent, Vector2 pos) : base(parent, pos, new Vector2(300, 150))
         {
-            IsCloseButtonVisible = false;
-
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
             // Create the input and output TextBoxes
@@ -194,6 +192,8 @@ namespace DemoGame.Client
             base.SetDefaultValues();
 
             Text = "Chat";
+            IsCloseButtonVisible = false;
+            BorderColor = new Color(255, 255, 255, 150);
         }
 
         void UpdateBufferOffset()

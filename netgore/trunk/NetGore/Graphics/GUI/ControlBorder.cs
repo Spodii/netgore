@@ -37,11 +37,6 @@ namespace NetGore.Graphics.GUI
         bool _canDraw = false;
 
         /// <summary>
-        /// Color to draw the ISprites with
-        /// </summary>
-        Color _color = Color.White;
-
-        /// <summary>
         /// Left border
         /// </summary>
         ISprite _l = null;
@@ -123,19 +118,6 @@ namespace NetGore.Graphics.GUI
                     return 0;
 
                 return _b.Source.Height;
-            }
-        }
-
-        /// <summary>
-        /// Gets the color to draw with
-        /// </summary>
-        public Color Color
-        {
-            get { return _color; }
-            set
-            {
-                _color = value;
-                UpdateCanDraw();
             }
         }
 
@@ -337,6 +319,18 @@ namespace NetGore.Graphics.GUI
         /// the absolute screen position.</param>
         public void Draw(ISpriteBatch sb, Rectangle region)
         {
+            Draw(sb, region, Color.White);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ControlBorder"/> to the specified region.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> to draw with.</param>
+        /// <param name="region">Region to draw the <see cref="ControlBorder"/> to. These values represent
+        /// the absolute screen position.</param>
+        /// <param name="color">The <see cref="Color"/> to use to draw the <see cref="ControlBorder"/>.</param>
+        public void Draw(ISpriteBatch sb, Rectangle region, Color color)
+        {
             if (!_canDraw)
                 return;
 
@@ -361,40 +355,40 @@ namespace NetGore.Graphics.GUI
             if (_bg != null)
             {
                 r = new Rectangle(cX + lSrc.Width, cY + tSrc.Height, cW - lSrc.Width - rSrc.Width, cH - tSrc.Height - bSrc.Height);
-                _bg.Draw(sb, r, _color);
+                _bg.Draw(sb, r, color);
             }
 
             // Top side
             r = new Rectangle(cX + tlSrc.Width, cY, cW - tlSrc.Width - trSrc.Width, tSrc.Height);
-            _t.Draw(sb, r, _color);
+            _t.Draw(sb, r, color);
 
             // Left side
             r = new Rectangle(cX, cY + tlSrc.Height, lSrc.Width, cH - tlSrc.Height - blSrc.Height);
-            _l.Draw(sb, r, _color);
+            _l.Draw(sb, r, color);
 
             // Right side
             r = new Rectangle(cX + cW - rSrc.Width, cY + trSrc.Height, rSrc.Width, cH - trSrc.Height - brSrc.Height);
-            _r.Draw(sb, r, _color);
+            _r.Draw(sb, r, color);
 
             // Bottom side
             r = new Rectangle(cX + _bl.Source.Width, cY + cH - bSrc.Height, cW - blSrc.Width - brSrc.Width, bSrc.Height);
-            _b.Draw(sb, r, _color);
+            _b.Draw(sb, r, color);
 
             // Top-left corner
             r = new Rectangle(cX, cY, tlSrc.Width, tlSrc.Height);
-            _tl.Draw(sb, r, _color);
+            _tl.Draw(sb, r, color);
 
             // Top-right corner
             r = new Rectangle(cX + cW - trSrc.Width, cY, trSrc.Width, trSrc.Height);
-            _tr.Draw(sb, r, _color);
+            _tr.Draw(sb, r, color);
 
             // Bottom-left corner
             r = new Rectangle(cX, cY + cH - blSrc.Height, blSrc.Width, blSrc.Height);
-            _bl.Draw(sb, r, _color);
+            _bl.Draw(sb, r, color);
 
             // Bottom-right corner
             r = new Rectangle(cX + cW - brSrc.Width, cY + cH - brSrc.Height, brSrc.Width, brSrc.Height);
-            _br.Draw(sb, r, _color);
+            _br.Draw(sb, r, color);
         }
 
         /// <summary>
@@ -409,7 +403,7 @@ namespace NetGore.Graphics.GUI
 
             var sp = c.ScreenPosition;
             var region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
-            Draw(sb, region);
+            Draw(sb, region, c.BorderColor);
         }
 
         /// <summary>
@@ -418,7 +412,7 @@ namespace NetGore.Graphics.GUI
         void UpdateCanDraw()
         {
             _canDraw = (_t != null && _tl != null && _tr != null && _l != null && _r != null && _b != null && _bl != null &&
-                        _br != null && Color.A > 0);
+                        _br != null);
         }
     }
 }

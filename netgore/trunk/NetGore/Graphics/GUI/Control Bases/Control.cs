@@ -42,6 +42,7 @@ namespace NetGore.Graphics.GUI
         static readonly object _eventTextEntered = new object();
         static readonly object _eventTooltipChanged = new object();
         static readonly object _eventVisibleChanged = new object();
+        static readonly object _eventBorderColorChanged = new object();
 
         readonly List<Control> _controls = new List<Control>(1);
         readonly EventHandlerList _eventHandlerList = new EventHandlerList();
@@ -65,6 +66,7 @@ namespace NetGore.Graphics.GUI
         Queue<Control> _setTopMostQueue = null;
         Vector2 _size;
         TooltipHandler _toolTip;
+        Color _borderColor = Color.White;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -160,6 +162,15 @@ namespace NetGore.Graphics.GUI
         {
             add { Events.AddHandler(_eventBorderChanged, value); }
             remove { Events.RemoveHandler(_eventBorderChanged, value); }
+        }
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control.BorderColor"/> has changed.
+        /// </summary>
+        public event ControlEventHandler BorderColorChanged
+        {
+            add { Events.AddHandler(_eventBorderColorChanged, value); }
+            remove { Events.RemoveHandler(_eventBorderColorChanged, value); }
         }
 
         /// <summary>
@@ -567,6 +578,24 @@ namespace NetGore.Graphics.GUI
         public bool IsRoot
         {
             get { return Parent == null; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use when drawing the <see cref="Border"/>.
+        /// </summary>
+        [SyncValue]
+        public Color BorderColor
+        {
+            get { return _borderColor; }
+            set
+            {
+                if (_borderColor == value)
+                    return;
+
+                _borderColor = value;
+
+                InvokeBorderColorChanged();
+            }
         }
 
         /// <summary>
@@ -1031,6 +1060,18 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
+        void InvokeBorderColorChanged()
+        {
+            OnBorderColorChanged();
+            var handler = Events[_eventBorderColorChanged] as ControlEventHandler;
+            if (handler != null)
+                handler(this);
+        }
+
+        /// <summary>
+        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
+        /// the virtual method and event directly to ensure that the event is invoked correctly.
+        /// </summary>
         void InvokeCanDragChanged()
         {
             OnCanDragChanged();
@@ -1360,6 +1401,15 @@ namespace NetGore.Graphics.GUI
         /// Override this method instead of using an event hook on <see cref="Control.BorderChanged"/> when possible.
         /// </summary>
         protected virtual void OnBorderChanged()
+        {
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.BorderColor"/> has changed.
+        /// This is called immediately before <see cref="Control.BorderColorChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.BorderColorChanged"/> when possible.
+        /// </summary>
+        protected virtual void OnBorderColorChanged()
         {
         }
 
