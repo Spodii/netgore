@@ -16,6 +16,9 @@ namespace InstallationValidator
         /// <returns>The path of the found file, or null if the file was not found.</returns>
         public static string Find(string fileName, string root)
         {
+            if (string.IsNullOrEmpty(root))
+                return null;
+
             if (!Directory.Exists(root))
                 return null;
 
