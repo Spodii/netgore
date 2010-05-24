@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace SFML
@@ -47,28 +47,28 @@ namespace SFML
             Num6 = '6',
             Num7 = '7',
             Num8 = '8',
-            Num9 = '9', 
+            Num9 = '9',
             Escape = 256,
             LControl,
             LShift,
             LAlt,
-            LSystem,      // OS specific key (left side) : windows (Win and Linux), apple (MacOS), ...
+            LSystem, // OS specific key (left side) : windows (Win and Linux), apple (MacOS), ...
             RControl,
             RShift,
             RAlt,
-            RSystem,      // OS specific key (right side) : windows (Win and Linux), apple (MacOS), ...
+            RSystem, // OS specific key (right side) : windows (Win and Linux), apple (MacOS), ...
             Menu,
-            LBracket,     // [
-            RBracket,     // ]
-            SemiColon,    // ;
-            Comma,        // ,
-            Period,       // .
-            Quote,        // '
-            Slash,        // /
+            LBracket, // [
+            RBracket, // ]
+            SemiColon, // ;
+            Comma, // ,
+            Period, // .
+            Quote, // '
+            Slash, // /
             BackSlash,
-            Tilde,        // ~
-            Equal,        // =
-            Dash,         // -
+            Tilde, // ~
+            Equal, // =
+            Dash, // -
             Space,
             Return,
             Back,
@@ -79,14 +79,14 @@ namespace SFML
             Home,
             Insert,
             Delete,
-            Add,          // +
-            Subtract,     // -
-            Multiply,     // *
-            Divide,       // /
-            Left,         // Left arrow
-            Right,        // Right arrow
-            Up,           // Up arrow
-            Down,         // Down arrow
+            Add, // +
+            Subtract, // -
+            Multiply, // *
+            Divide, // /
+            Left, // Left arrow
+            Right, // Right arrow
+            Up, // Up arrow
+            Down, // Down arrow
             Numpad0,
             Numpad1,
             Numpad2,

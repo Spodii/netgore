@@ -1,4 +1,6 @@
-﻿namespace NetGore
+﻿using System.Linq;
+
+namespace NetGore
 {
     /// <summary>
     /// Extension methods for the <see cref="CharType"/> enum.
@@ -16,9 +18,9 @@
             if (string.IsNullOrEmpty(inStr))
                 return inStr;
 
-            string output = inStr;
+            var output = inStr;
 
-            for (int i = 0; i < output.Length; i++)
+            for (var i = 0; i < output.Length; i++)
             {
                 var c = inStr[i];
 

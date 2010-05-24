@@ -15,6 +15,7 @@ namespace NetGore.Features.Emoticons
     {
         static readonly EmoticonInfoManager _emoticonInfoManager;
         static readonly EmoticonDisplayManager _instance;
+        static Func<ISpatial, Vector2> _getDrawPositionHandler;
 
         /// <summary>
         /// A dictionary of the active emoticons.
@@ -43,6 +44,25 @@ namespace NetGore.Features.Emoticons
         /// </summary>
         EmoticonDisplayManager()
         {
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Func{T,U}"/> used to get the world position to draw an emoticon at for the given
+        /// <see cref="ISpatial"/>. If set to null, the default handler will be used.
+        /// </summary>
+        public static Func<ISpatial, Vector2> GetDrawPositionHandler
+        {
+            get { return _getDrawPositionHandler; }
+            set
+            {
+                if (value == null)
+                    value = DefaultGetDrawPosition;
+
+                if (_getDrawPositionHandler == value)
+                    return;
+
+                _getDrawPositionHandler = value;
+            }
         }
 
         /// <summary>
@@ -92,6 +112,16 @@ namespace NetGore.Features.Emoticons
         }
 
         /// <summary>
+        /// Gets the position to draw the emoticon at.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to get the draw position for.</param>
+        /// <returns>The position to draw the emoticon at.</returns>
+        static Vector2 DefaultGetDrawPosition(ISpatial spatial)
+        {
+            return (spatial.Position + (spatial.Size / 2f)) - new Vector2(6);
+        }
+
+        /// <summary>
         /// Draws the emoticons in the <see cref="EmoticonDisplayManager"/>.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
@@ -107,40 +137,6 @@ namespace NetGore.Features.Emoticons
 
                 kvp.Value.Draw(spriteBatch, drawPos);
             }
-        }
-
-        static Func<ISpatial, Vector2> _getDrawPositionHandler;
-
-        /// <summary>
-        /// Gets or sets the <see cref="Func{T,U}"/> used to get the world position to draw an emoticon at for the given
-        /// <see cref="ISpatial"/>. If set to null, the default handler will be used.
-        /// </summary>
-        public static Func<ISpatial, Vector2> GetDrawPositionHandler
-        {
-            get
-            {
-                return _getDrawPositionHandler;
-            }
-            set
-            {
-                if (value == null)
-                    value = DefaultGetDrawPosition;
-
-                if (_getDrawPositionHandler == value)
-                    return;
-
-                _getDrawPositionHandler = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the position to draw the emoticon at.
-        /// </summary>
-        /// <param name="spatial">The <see cref="ISpatial"/> to get the draw position for.</param>
-        /// <returns>The position to draw the emoticon at.</returns>
-        static Vector2 DefaultGetDrawPosition(ISpatial spatial)
-        {
-            return (spatial.Position + (spatial.Size / 2f)) - new Vector2(6);
         }
 
         /// <summary>

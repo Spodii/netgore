@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
@@ -33,8 +34,18 @@ namespace NetGore.Graphics.GUI
         /// <param name="guiManager">The GUI manager.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
-        public MaskedTextBox(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
+        public MaskedTextBox(IGUIManager guiManager, Vector2 position, Vector2 clientSize)
+            : base(guiManager, position, clientSize)
         {
+        }
+
+        /// <summary>
+        /// Is always false for a <see cref="MaskedTextBox"/>.
+        /// </summary>
+        public override bool IsMultiLine
+        {
+            get { return base.IsMultiLine; }
+            set { base.IsMultiLine = false; }
         }
 
         /// <summary>
@@ -43,7 +54,8 @@ namespace NetGore.Graphics.GUI
         public char MaskChar
         {
             get { return _maskChar; }
-            set {
+            set
+            {
                 if (_maskChar == value)
                     return;
 
@@ -53,15 +65,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
+        /// Draws the text to display for the <see cref="TextBox"/>.
         /// </summary>
-        protected override void OnFontChanged()
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="offset">The offset to draw the text at.</param>
+        protected override void DrawControlText(ISpriteBatch spriteBatch, Vector2 offset)
         {
-            base.OnFontChanged();
-
-            _charLen = 0;
+            var numChars = NumCharsToDraw - LineCharBufferOffset;
+            if (numChars > 0)
+                spriteBatch.DrawString(Font, new string(MaskChar, numChars), offset, ForeColor);
         }
 
         /// <summary>
@@ -78,6 +90,18 @@ namespace NetGore.Graphics.GUI
                 _charLen = (byte)Font.MeasureString(MaskChar.ToString()).X;
 
             return (int)((float)_charLen * text.Length);
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
+        /// </summary>
+        protected override void OnFontChanged()
+        {
+            base.OnFontChanged();
+
+            _charLen = 0;
         }
 
         /// <summary>
@@ -107,33 +131,6 @@ namespace NetGore.Graphics.GUI
                 CursorLinePosition = 0;
             else
                 CursorLinePosition = Text.Length;
-        }
-
-        /// <summary>
-        /// Draws the text to display for the <see cref="TextBox"/>.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="offset">The offset to draw the text at.</param>
-        protected override void DrawControlText(ISpriteBatch spriteBatch, Vector2 offset)
-        {
-            var numChars = NumCharsToDraw - LineCharBufferOffset;
-            if (numChars > 0)
-                spriteBatch.DrawString(Font, new string(MaskChar, numChars), offset, ForeColor);
-        }
-
-        /// <summary>
-        /// Is always false for a <see cref="MaskedTextBox"/>.
-        /// </summary>
-        public override bool IsMultiLine
-        {
-            get
-            {
-                return base.IsMultiLine;
-            }
-            set
-            {
-                base.IsMultiLine = false;
-            }
         }
     }
 }

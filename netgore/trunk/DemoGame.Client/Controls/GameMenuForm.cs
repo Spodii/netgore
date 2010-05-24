@@ -46,17 +46,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the KeyPressed event of the parent control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
-        void parent_KeyPressed(object sender, KeyEventArgs e)
-        {
-            if (e.Code == KeyCode.Escape)
-                IsVisible = !IsVisible;
-        }
-
-        /// <summary>
         /// Handles the Clicked event of the logOutLbl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -68,6 +57,17 @@ namespace DemoGame.Client
 
             if (ClickedLogOut != null)
                 ClickedLogOut(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Handles the KeyPressed event of the parent control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.KeyEventArgs"/> instance containing the event data.</param>
+        void parent_KeyPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Code == KeyCode.Escape)
+                IsVisible = !IsVisible;
         }
     }
 }

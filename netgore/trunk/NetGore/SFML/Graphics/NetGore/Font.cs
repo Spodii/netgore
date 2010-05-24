@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.IO;
 
 namespace SFML
 {
@@ -20,31 +21,60 @@ namespace SFML
         public class Font : ObjectBase
         {
             ////////////////////////////////////////////////////////////
+
+            static Font ourDefaultFont = null;
+            readonly Dictionary<uint, Image> myImages = new Dictionary<uint, Image>();
+            uint _defaultSize = 30;
+
+            #region Imports
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfFont_Copy(IntPtr Font);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfFont_CreateFromFile(string Filename);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern unsafe IntPtr sfFont_CreateFromMemory(char* Data, uint SizeInBytes);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfFont_Destroy(IntPtr This);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfFont_GetDefaultFont();
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern Glyph sfFont_GetGlyph(IntPtr This, uint codePoint, uint characterSize, bool bold);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfFont_GetImage(IntPtr This, uint characterSize);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern int sfFont_GetKerning(IntPtr This, uint first, uint second, uint characterSize);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern int sfFont_GetLineSpacing(IntPtr This, uint characterSize);
+
+            #endregion
+
             /// <summary>
             /// Construct the font from a file
             /// </summary>
             /// <param name="filename">Font file to load</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(string filename) :
-                base(IntPtr.Zero)
+            public Font(string filename) : base(IntPtr.Zero)
             {
                 EnsureLoaded(filename);
-            }
-
-            uint _defaultSize = 30;
-
-            /// <summary>
-            /// Gets or sets the default size used for this <see cref="Font"/>.
-            /// </summary>
-            public uint DefaultSize { get { return _defaultSize; } set { _defaultSize = value; } }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="Font"/> class.
-            /// </summary>
-            protected internal Font()
-                : base(IntPtr.Zero)
-            {
             }
 
             ////////////////////////////////////////////////////////////
@@ -54,14 +84,13 @@ namespace SFML
             /// <param name="stream">Stream containing the file contents</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Font(Stream stream) :
-                base(IntPtr.Zero)
+            public Font(Stream stream) : base(IntPtr.Zero)
             {
                 unsafe
                 {
                     stream.Position = 0;
-                    byte[] StreamData = new byte[stream.Length];
-                    uint Read = (uint)stream.Read(StreamData, 0, StreamData.Length);
+                    var StreamData = new byte[stream.Length];
+                    var Read = (uint)stream.Read(StreamData, 0, StreamData.Length);
                     fixed (byte* dataPtr = StreamData)
                     {
                         SetThis(sfFont_CreateFromMemory((char*)dataPtr, Read));
@@ -78,9 +107,95 @@ namespace SFML
             /// </summary>
             /// <param name="copy">Font to copy</param>
             ////////////////////////////////////////////////////////////
-            public Font(Font copy) :
-                base(sfFont_Copy(copy.This))
+            public Font(Font copy) : base(sfFont_Copy(copy.This))
             {
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Font"/> class.
+            /// </summary>
+            protected internal Font() : base(IntPtr.Zero)
+            {
+            }
+
+            /// <summary>
+            /// Internal constructor
+            /// </summary>
+            /// <param name="thisPtr">Pointer to the object in C library</param>
+            ////////////////////////////////////////////////////////////
+            Font(IntPtr thisPtr) : base(thisPtr)
+            {
+            }
+
+            /// <summary>
+            /// Default built-in font
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public static Font DefaultFont
+            {
+                get
+                {
+                    if (ourDefaultFont == null)
+                        ourDefaultFont = new Font(sfFont_GetDefaultFont());
+
+                    return ourDefaultFont;
+                }
+            }
+
+            /// <summary>
+            /// Gets or sets the default size used for this <see cref="Font"/>.
+            /// </summary>
+            public uint DefaultSize
+            {
+                get { return _defaultSize; }
+                set { _defaultSize = value; }
+            }
+
+            /// <summary>
+            /// Handle the destruction of the object
+            /// </summary>
+            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            ////////////////////////////////////////////////////////////
+            protected override void Destroy(bool disposing)
+            {
+                if (this != ourDefaultFont)
+                {
+                    if (!disposing)
+                        Context.Global.SetActive(true);
+
+                    sfFont_Destroy(This);
+
+                    if (disposing)
+                    {
+                        foreach (var image in myImages.Values)
+                        {
+                            image.Dispose();
+                        }
+                    }
+
+                    if (!disposing)
+                        Context.Global.SetActive(false);
+                }
+            }
+
+            /// <summary>
+            /// Reloads the asset from file if it is not loaded.
+            /// </summary>
+            /// <param name="filename">Font file to load</param>
+            /// <returns>True if already loaded; false if it had to reload.</returns>
+            /// <exception cref="LoadingFailedException"/>
+            protected internal bool EnsureLoaded(string filename)
+            {
+                if (ThisRaw != IntPtr.Zero)
+                    return true;
+
+                var ptr = sfFont_CreateFromFile(filename);
+                SetThis(ptr);
+
+                if (ThisRaw == IntPtr.Zero)
+                    throw new LoadingFailedException("font", filename);
+
+                return false;
             }
 
             ////////////////////////////////////////////////////////////
@@ -108,6 +223,29 @@ namespace SFML
             public Glyph GetGlyph(uint codePoint, bool bold)
             {
                 return GetGlyph(codePoint, DefaultSize, bold);
+            }
+
+            /// <summary>
+            /// Get the image containing the glyphs of a given size
+            /// </summary>
+            /// <param name="characterSize">Character size</param>
+            /// <returns>Image storing the glyphs for the given size</returns>
+            ////////////////////////////////////////////////////////////
+            public Image GetImage(uint characterSize)
+            {
+                myImages[characterSize] = new Image(sfFont_GetImage(This, characterSize));
+                return myImages[characterSize];
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Get the image containing the glyphs of a given size
+            /// </summary>
+            /// <returns>Image storing the glyphs for the given size</returns>
+            ////////////////////////////////////////////////////////////
+            public Image GetImage()
+            {
+                return GetImage(DefaultSize);
             }
 
             ////////////////////////////////////////////////////////////
@@ -161,44 +299,6 @@ namespace SFML
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Get the image containing the glyphs of a given size
-            /// </summary>
-            /// <param name="characterSize">Character size</param>
-            /// <returns>Image storing the glyphs for the given size</returns>
-            ////////////////////////////////////////////////////////////
-            public Image GetImage(uint characterSize)
-            {
-                myImages[characterSize] = new Image(sfFont_GetImage(This, characterSize));
-                return myImages[characterSize];
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Get the image containing the glyphs of a given size
-            /// </summary>
-            /// <returns>Image storing the glyphs for the given size</returns>
-            ////////////////////////////////////////////////////////////
-            public Image GetImage()
-            {
-                return GetImage(DefaultSize);
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Default built-in font
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public static Font DefaultFont
-            {
-                get
-                {
-                    if (ourDefaultFont == null)
-                        ourDefaultFont = new Font(sfFont_GetDefaultFont());
-
-                    return ourDefaultFont;
-                }
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -212,94 +312,6 @@ namespace SFML
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Handle the destruction of the object
-            /// </summary>
-            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
-            ////////////////////////////////////////////////////////////
-            protected override void Destroy(bool disposing)
-            {
-                if (this != ourDefaultFont)
-                {
-                    if (!disposing)
-                        Context.Global.SetActive(true);
-
-                    sfFont_Destroy(This);
-
-                    if (disposing)
-                    {
-                        foreach (Image image in myImages.Values)
-                            image.Dispose();
-                    }
-
-                    if (!disposing)
-                        Context.Global.SetActive(false);
-                }
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Internal constructor
-            /// </summary>
-            /// <param name="thisPtr">Pointer to the object in C library</param>
-            ////////////////////////////////////////////////////////////
-            private Font(IntPtr thisPtr) :
-                base(thisPtr)
-            {
-            }
-
-            private readonly Dictionary<uint, Image> myImages = new Dictionary<uint, Image>();
-
-            private static Font ourDefaultFont = null;
-
-            #region Imports
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfFont_CreateFromFile(string Filename);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            unsafe static extern IntPtr sfFont_CreateFromMemory(char* Data, uint SizeInBytes);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfFont_Copy(IntPtr Font);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfFont_Destroy(IntPtr This);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern Glyph sfFont_GetGlyph(IntPtr This, uint codePoint, uint characterSize, bool bold);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern int sfFont_GetKerning(IntPtr This, uint first, uint second, uint characterSize);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern int sfFont_GetLineSpacing(IntPtr This, uint characterSize);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfFont_GetImage(IntPtr This, uint characterSize);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfFont_GetDefaultFont();
-            #endregion
-
-            /// <summary>
-            /// Reloads the asset from file if it is not loaded.
-            /// </summary>
-            /// <param name="filename">Font file to load</param>
-            /// <returns>True if already loaded; false if it had to reload.</returns>
-            /// <exception cref="LoadingFailedException"/>
-            protected internal bool EnsureLoaded(string filename)
-            {
-                if (ThisRaw != IntPtr.Zero)
-                    return true;
-
-                var ptr = sfFont_CreateFromFile(filename);
-                SetThis(ptr);
-
-                if (ThisRaw == IntPtr.Zero)
-                    throw new LoadingFailedException("font", filename);
-
-                return false;
-            }
         }
     }
 }

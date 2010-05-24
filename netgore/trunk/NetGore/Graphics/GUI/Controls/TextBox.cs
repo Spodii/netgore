@@ -22,11 +22,6 @@ namespace NetGore.Graphics.GUI
         readonly TextBoxLines _lines = new TextBoxLines();
         readonly NumCharsToDrawCache _numCharsToDraw;
 
-        /// <summary>
-        /// Gets the lines in the <see cref="TextBox"/>.
-        /// </summary>
-        protected TextBoxLines Lines { get { return _lines; } }
-
         int _bufferTruncateSize = 100;
 
         TickCount _currentTime;
@@ -88,6 +83,12 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets a <see cref="Func{T,U}"/> used to determine if only certain keys should be accepted when entering
+        /// text into this <see cref="TextBox"/>. If null, all of the default keys will be accepted. Default is null.
+        /// </summary>
+        public Func<KeyEventArgs, bool> AllowKeysHandler { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of lines to trim the buffer down to when the number of lines in this
         /// <see cref="TextBox"/> has exceeded the <see cref="TextBox.MaxBufferSize"/>. For best performance, this
         /// value should be at least 20% less than the <see cref="TextBox.MaxBufferSize"/> since truncating has nearly
@@ -143,6 +144,12 @@ namespace NetGore.Graphics.GUI
                 UpdateMaxLineLength();
             }
         }
+
+        /// <summary>
+        /// Gets or sets a <see cref="Func{T,U}"/> used to determine if certain keys should be ignored when entering text into
+        /// this <see cref="TextBox"/>. If null, the default keys will be ignored. Default is null.
+        /// </summary>
+        public Func<KeyEventArgs, bool> IgnoreKeysHandler { get; set; }
 
         /// <summary>
         /// Gets or sets if this <see cref="TextBox"/> supports multiple lines. When changing from multiple lines to
@@ -218,6 +225,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the lines in the <see cref="TextBox"/>.
+        /// </summary>
+        protected TextBoxLines Lines
+        {
+            get { return _lines; }
+        }
+
+        /// <summary>
         /// Gets or sets the maximum line buffer of a multi-line <see cref="TextBox"/>. Once this value has been reached,
         /// the number of lines in the <see cref="TextBox"/> will be reduced to <see cref="TextBox.BufferTruncateSize"/>.
         /// If less than or equal to zero, truncating will not be performed.
@@ -252,6 +267,15 @@ namespace NetGore.Graphics.GUI
         public int MaxVisibleLines
         {
             get { return _maxVisibleLines; }
+        }
+
+        /// <summary>
+        /// Gets the number of characters to draw in a row. Only used if <see cref="IsMultiLine"/> is false, since otherwise
+        /// we just use word wrapping.
+        /// </summary>
+        protected int NumCharsToDraw
+        {
+            get { return _numCharsToDraw; }
         }
 
         /// <summary>
@@ -323,49 +347,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Resizes the <see cref="TextBox"/> to the minimum size needed to fit all of the text.
-        /// </summary>
-        /// <param name="maxWidth">If greater than 0, the width of the <see cref="TextBox"/> will not exceed this value.</param>
-        /// <param name="maxHeight">If greater than 0, the height of the <see cref="TextBox"/> will not exceed this value.</param>
-        public void ResizeToFitText(int maxWidth = 0, int maxHeight = 0)
-        {
-            int reqWidth = 2;
-            int reqHeight = 2;
-
-            // Reset the view to the first line
-            CursorLinePosition = 0;
-            LineBufferOffset = 0;
-            LineCharBufferOffset = 0;
-
-
-            // Get the required width
-            for (int i = 0; i < LineCount; i++)
-            {
-                var line = _lines[i];
-                int width = line.GetWidth(Font);
-
-                if (width > reqWidth)
-                    reqWidth = width;
-            }
-
-            if (LineCount > 0)
-            {
-                // Find the required height by using the number of lines and the spacing between lines
-                reqHeight = LineCount * Font.GetLineSpacing();
-            }
-
-            // Keep in bounds of the max sizes
-            if (maxWidth > 0 && reqWidth > maxWidth)
-                reqWidth = maxWidth;
-
-            if (maxHeight > 0 && reqHeight > maxHeight)
-                reqHeight = maxHeight;
-
-            // Resize
-            ClientSize = new Vector2(reqWidth, reqHeight);
-        }
-
-        /// <summary>
         /// Appends the <paramref name="text"/> to the <see cref="TextBox"/> at the end, then inserts a line break.
         /// </summary>
         /// <param name="text">The text to append.</param>
@@ -426,25 +407,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draws the text to display for the <see cref="TextBox"/>.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="offset">The offset to draw the text at.</param>
-        protected virtual void DrawControlText(ISpriteBatch spriteBatch, Vector2 offset)
-        {
-            if (IsMultiLine)
-                _lines.Draw(spriteBatch, Font, LineBufferOffset, MaxVisibleLines, offset, ForeColor);
-            else
-                _lines.FirstLine.Draw(spriteBatch, Font, offset, ForeColor, LineCharBufferOffset, _numCharsToDraw);
-        }
-
-        /// <summary>
-        /// Gets the number of characters to draw in a row. Only used if <see cref="IsMultiLine"/> is false, since otherwise
-        /// we just use word wrapping.
-        /// </summary>
-        protected int NumCharsToDraw { get { return _numCharsToDraw; } }
-
-        /// <summary>
         /// Draws the Control.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
@@ -463,16 +425,16 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the offset for the text cursor for the given text. This is usually just the length of the text.
+        /// Draws the text to display for the <see cref="TextBox"/>.
         /// </summary>
-        /// <param name="text">The text to get the offset for.</param>
-        /// <returns>The X offset for the cursor.</returns>
-        protected virtual int GetTextCursorOffset(string text)
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="offset">The offset to draw the text at.</param>
+        protected virtual void DrawControlText(ISpriteBatch spriteBatch, Vector2 offset)
         {
-            if (string.IsNullOrEmpty(text))
-                return 0;
-
-            return (int)Font.MeasureString(text).X;
+            if (IsMultiLine)
+                _lines.Draw(spriteBatch, Font, LineBufferOffset, MaxVisibleLines, offset, ForeColor);
+            else
+                _lines.FirstLine.Draw(spriteBatch, Font, offset, ForeColor, LineCharBufferOffset, _numCharsToDraw);
         }
 
         /// <summary>
@@ -492,7 +454,8 @@ namespace NetGore.Graphics.GUI
             if (CursorLinePosition > 0)
             {
                 var len = Math.Min(CursorLinePosition, _lines.CurrentLine.LineText.Length);
-                offset = GetTextCursorOffset(_lines.CurrentLine.LineText.Substring(LineCharBufferOffset, len - LineCharBufferOffset));
+                offset =
+                    GetTextCursorOffset(_lines.CurrentLine.LineText.Substring(LineCharBufferOffset, len - LineCharBufferOffset));
             }
 
             var visibleLineOffset = (_lines.CurrentLineIndex - LineBufferOffset) * Font.GetLineSpacing();
@@ -573,6 +536,19 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the offset for the text cursor for the given text. This is usually just the length of the text.
+        /// </summary>
+        /// <param name="text">The text to get the offset for.</param>
+        /// <returns>The X offset for the cursor.</returns>
+        protected virtual int GetTextCursorOffset(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return 0;
+
+            return (int)Font.MeasureString(text).X;
+        }
+
+        /// <summary>
         /// Inserts the <paramref name="text"/> into the <see cref="TextBox"/> at the current cursor position.
         /// </summary>
         /// <param name="text">The text to insert.</param>
@@ -614,18 +590,6 @@ namespace NetGore.Graphics.GUI
             _lines.MoveTo(lineIndex);
             CursorLinePosition = lineCharIndex;
         }
-
-        /// <summary>
-        /// Gets or sets a <see cref="Func{T,U}"/> used to determine if certain keys should be ignored when entering text into
-        /// this <see cref="TextBox"/>. If null, the default keys will be ignored. Default is null.
-        /// </summary>
-        public Func<KeyEventArgs, bool> IgnoreKeysHandler { get; set; }
-
-        /// <summary>
-        /// Gets or sets a <see cref="Func{T,U}"/> used to determine if only certain keys should be accepted when entering
-        /// text into this <see cref="TextBox"/>. If null, all of the default keys will be accepted. Default is null.
-        /// </summary>
-        public Func<KeyEventArgs, bool> AllowKeysHandler { get; set; }
 
         /// <summary>
         /// Handles when a key is being pressed while the <see cref="Control"/> has focus.
@@ -680,6 +644,48 @@ namespace NetGore.Graphics.GUI
         void ResetCursorBlink()
         {
             _cursorBlinkTimer = _currentTime;
+        }
+
+        /// <summary>
+        /// Resizes the <see cref="TextBox"/> to the minimum size needed to fit all of the text.
+        /// </summary>
+        /// <param name="maxWidth">If greater than 0, the width of the <see cref="TextBox"/> will not exceed this value.</param>
+        /// <param name="maxHeight">If greater than 0, the height of the <see cref="TextBox"/> will not exceed this value.</param>
+        public void ResizeToFitText(int maxWidth = 0, int maxHeight = 0)
+        {
+            var reqWidth = 2;
+            var reqHeight = 2;
+
+            // Reset the view to the first line
+            CursorLinePosition = 0;
+            LineBufferOffset = 0;
+            LineCharBufferOffset = 0;
+
+            // Get the required width
+            for (var i = 0; i < LineCount; i++)
+            {
+                var line = _lines[i];
+                var width = line.GetWidth(Font);
+
+                if (width > reqWidth)
+                    reqWidth = width;
+            }
+
+            if (LineCount > 0)
+            {
+                // Find the required height by using the number of lines and the spacing between lines
+                reqHeight = LineCount * Font.GetLineSpacing();
+            }
+
+            // Keep in bounds of the max sizes
+            if (maxWidth > 0 && reqWidth > maxWidth)
+                reqWidth = maxWidth;
+
+            if (maxHeight > 0 && reqHeight > maxHeight)
+                reqHeight = maxHeight;
+
+            // Resize
+            ClientSize = new Vector2(reqWidth, reqHeight);
         }
 
         /// <summary>

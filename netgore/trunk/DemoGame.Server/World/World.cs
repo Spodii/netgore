@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.DbObjs;
 using DemoGame.Server.Guilds;
 using log4net;
 using NetGore;
@@ -11,7 +10,6 @@ using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
 using NetGore.Network;
-using SFML.Graphics;
 
 namespace DemoGame.Server
 {
@@ -25,13 +23,13 @@ namespace DemoGame.Server
 
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
         readonly GuildMemberPerformer _guildMemberPerformer;
+        readonly List<MapInstance> _instancedMaps = new List<MapInstance>();
+        readonly object _instancedMapsSync = new object();
         readonly DArray<Map> _maps;
         readonly RespawnTaskList _respawnTaskList;
         readonly Server _server;
         readonly ItemEntity _unarmedWeapon;
         readonly IDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
-        readonly List<MapInstance> _instancedMaps = new List<MapInstance>();
-        readonly object _instancedMapsSync = new object();
 
         bool _disposed;
 
@@ -44,21 +42,6 @@ namespace DemoGame.Server
         /// The time that that the <see cref="_respawnTaskList"/> will be processed next.
         /// </summary>
         TickCount _updateRespawnablesTime = TickCount.MinValue;
-
-        /// <summary>
-        /// Adds a <see cref="MapInstance"/> to this <see cref="World"/>. Should probably only ever be called from the <see cref="MapInstance"/>
-        /// constructor.
-        /// </summary>
-        /// <param name="instance">The <see cref="MapInstance"/> to add to this <see cref="World"/>.</param>
-        public void AddMapInstance(MapInstance instance)
-        {
-            lock (_instancedMapsSync)
-            {
-                Debug.Assert(!_instancedMaps.Contains(instance), string.Format("MapInstance `{0}` has already been added to the world `{1}`!", instance, this));
-
-                _instancedMaps.Add(instance);
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="World"/> class.
@@ -122,6 +105,20 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the instanced maps.
+        /// </summary>
+        public IEnumerable<MapInstance> InstancedMaps
+        {
+            get
+            {
+                lock (_instancedMapsSync)
+                {
+                    return _instancedMaps;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets all the maps in this <see cref="World"/>.
         /// </summary>
         public IEnumerable<Map> Maps
@@ -144,6 +141,22 @@ namespace DemoGame.Server
         public ItemEntity UnarmedWeapon
         {
             get { return _unarmedWeapon; }
+        }
+
+        /// <summary>
+        /// Adds a <see cref="MapInstance"/> to this <see cref="World"/>. Should probably only ever be called from the <see cref="MapInstance"/>
+        /// constructor.
+        /// </summary>
+        /// <param name="instance">The <see cref="MapInstance"/> to add to this <see cref="World"/>.</param>
+        public void AddMapInstance(MapInstance instance)
+        {
+            lock (_instancedMapsSync)
+            {
+                Debug.Assert(!_instancedMaps.Contains(instance),
+                             string.Format("MapInstance `{0}` has already been added to the world `{1}`!", instance, this));
+
+                _instancedMaps.Add(instance);
+            }
         }
 
         /// <summary>
@@ -408,7 +421,7 @@ namespace DemoGame.Server
             // Update instanced maps
             lock (_instancedMapsSync)
             {
-                for (int i = 0; i < _instancedMaps.Count; i++)
+                for (var i = 0; i < _instancedMaps.Count; i++)
                 {
                     var map = _instancedMaps[i];
 
@@ -444,11 +457,6 @@ namespace DemoGame.Server
             // Remove the User from the list of Users
             _users.Remove(((User)entity).Name);
         }
-
-        /// <summary>
-        /// Gets the instanced maps.
-        /// </summary>
-        public IEnumerable<MapInstance> InstancedMaps { get { lock (_instancedMapsSync) { return _instancedMaps; } } }
 
         #region IDisposable Members
 

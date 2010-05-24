@@ -1,7 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Security;
-using SFML.Window;
+using System.Linq;
 
 namespace SFML
 {
@@ -15,43 +12,49 @@ namespace SFML
         public interface RenderTarget
         {
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Width of the rendering region of the window
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            uint Width {get;}
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Height of the rendering region of the window
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            uint Height {get;}
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Default view of the window
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            View DefaultView {get;}
 
             ////////////////////////////////////////////////////////////
             /// <summary>
             /// Current view active in the window
             /// </summary>
             ////////////////////////////////////////////////////////////
-            View CurrentView {get;}
+            View CurrentView { get; }
+
+            /// <summary>
+            /// Default view of the window
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            View DefaultView { get; }
+
+            /// <summary>
+            /// Height of the rendering region of the window
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            uint Height { get; }
+
+            /// <summary>
+            /// Width of the rendering region of the window
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            uint Width { get; }
+
+            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Get the viewport of a view applied to this target
+            /// Clear the entire window with black color
             /// </summary>
-            /// <param name="view">Target view</param>
-            /// <returns>Viewport rectangle, expressed in pixels in the current target</returns>
             ////////////////////////////////////////////////////////////
-            IntRect GetViewport(View view);
+            void Clear();
 
             ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Clear the entire window with a single color
+            /// </summary>
+            /// <param name="color">Color to use to clear the window</param>
+            ////////////////////////////////////////////////////////////
+            void Clear(Color color);
+
             /// <summary>
             /// Convert a point in target coordinates into view coordinates
             /// This version uses the current view of the window
@@ -76,21 +79,6 @@ namespace SFML
 
             ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Clear the entire window with black color
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            void Clear();
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Clear the entire window with a single color
-            /// </summary>
-            /// <param name="color">Color to use to clear the window</param>
-            ////////////////////////////////////////////////////////////
-            void Clear(Color color);
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
             /// Draw something into the window
             /// </summary>
             /// <param name="objectToDraw">Object to draw</param>
@@ -106,12 +94,15 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             void Draw(Drawable objectToDraw, Shader shader);
 
-            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Save the current OpenGL render states and matrices
+            /// Get the viewport of a view applied to this target
             /// </summary>
+            /// <param name="view">Target view</param>
+            /// <returns>Viewport rectangle, expressed in pixels in the current target</returns>
             ////////////////////////////////////////////////////////////
-            void SaveGLStates();
+            IntRect GetViewport(View view);
+
+            ////////////////////////////////////////////////////////////
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -119,6 +110,12 @@ namespace SFML
             /// </summary>
             ////////////////////////////////////////////////////////////
             void RestoreGLStates();
+
+            /// <summary>
+            /// Save the current OpenGL render states and matrices
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            void SaveGLStates();
         }
     }
 }

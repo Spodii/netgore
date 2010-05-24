@@ -1,6 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using NetGore.Graphics.GUI;
 using NUnit.Framework;
 using SFML.Graphics;
@@ -11,24 +11,6 @@ namespace NetGore.Tests.Graphics.GUI
     public class StyledTextTests
     {
         #region Unit tests
-
-        [Test]
-        public void ToMultiLineTest()
-        {
-            var s1 = new StyledText("abcd", Color.Black);
-            var s2 = new StyledText("\r123", Color.Black);
-            var s3 = new StyledText("\nxyz", Color.Black);
-            var s4 = new StyledText("\r\nqwe", Color.Black);
-
-            var lines = new List<StyledText> { s1, s2, s3, s4 };
-
-            var r = StyledText.ToMultiline(lines, false,Font.DefaultFont, 400);
-
-            Assert.AreEqual("abcd", r[0][0].Text);
-            Assert.AreEqual("123", r[1][0].Text);
-            Assert.AreEqual("xyz", r[2][0].Text);
-            Assert.AreEqual("qwe", r[3][0].Text);
-        }
 
         [Test]
         public void ConcastTestA()
@@ -344,6 +326,24 @@ namespace NetGore.Tests.Graphics.GUI
 
             Assert.AreEqual(originalString.Substring(5, 4), s2.Text);
             Assert.AreEqual(Color.Black, s2.Color);
+        }
+
+        [Test]
+        public void ToMultiLineTest()
+        {
+            var s1 = new StyledText("abcd", Color.Black);
+            var s2 = new StyledText("\r123", Color.Black);
+            var s3 = new StyledText("\nxyz", Color.Black);
+            var s4 = new StyledText("\r\nqwe", Color.Black);
+
+            var lines = new List<StyledText> { s1, s2, s3, s4 };
+
+            var r = StyledText.ToMultiline(lines, false, Font.DefaultFont, 400);
+
+            Assert.AreEqual("abcd", r[0][0].Text);
+            Assert.AreEqual("123", r[1][0].Text);
+            Assert.AreEqual("xyz", r[2][0].Text);
+            Assert.AreEqual("qwe", r[3][0].Text);
         }
 
         [Test]
