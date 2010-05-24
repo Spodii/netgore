@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Collections.Generic;
 
 namespace SFML
 {
@@ -15,13 +16,70 @@ namespace SFML
         public class Shader : ObjectBase
         {
             ////////////////////////////////////////////////////////////
+            readonly Dictionary<string, Image> myTextures = new Dictionary<string, Image>();
+
+            #region Imports
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_Bind(IntPtr Shader);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfShader_Copy(IntPtr Shader);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfShader_Create();
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfShader_CreateFromFile(string Filename);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern IntPtr sfShader_CreateFromMemory(string Shader);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_Destroy(IntPtr Shader);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern bool sfShader_IsAvailable();
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_SetParameter1(IntPtr Shader, string Name, float X);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_SetParameter2(IntPtr Shader, string Name, float X, float Y);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_SetParameter3(IntPtr Shader, string Name, float X, float Y, float Z);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_SetParameter4(IntPtr Shader, string Name, float X, float Y, float Z, float W);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_SetTexture(IntPtr Shader, string Name, IntPtr Texture);
+
+            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [SuppressUnmanagedCodeSecurity]
+            static extern void sfShader_Unbind(IntPtr Shader);
+
+            #endregion
+
             /// <summary>
             /// Default constructor (invalid shader)
             /// </summary>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Shader() :
-                base(sfShader_Create())
+            public Shader() : base(sfShader_Create())
             {
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("shader");
@@ -34,8 +92,7 @@ namespace SFML
             /// <param name="filename">Path of the shader file to load</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            public Shader(string filename) :
-                base(sfShader_CreateFromFile(filename))
+            public Shader(string filename) : base(sfShader_CreateFromFile(filename))
             {
                 if (This == IntPtr.Zero)
                     throw new LoadingFailedException("shader", filename);
@@ -47,11 +104,56 @@ namespace SFML
             /// </summary>
             /// <param name="copy">Shader to copy</param>
             ////////////////////////////////////////////////////////////
-            public Shader(Shader copy) :
-                base(sfShader_Copy(copy.This))
+            public Shader(Shader copy) : base(sfShader_Copy(copy.This))
             {
-                foreach (KeyValuePair<string, Image> pair in copy.myTextures)
+                foreach (var pair in copy.myTextures)
+                {
                     myTextures[pair.Key] = copy.myTextures[pair.Key];
+                }
+            }
+
+            /// <summary>
+            /// Special image representing the texture used by the object being drawn
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public static Image CurrentTexture
+            {
+                get { return null; }
+            }
+
+            /// <summary>
+            /// Tell whether or not the system supports shaders
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public static bool IsAvailable
+            {
+                get { return sfShader_IsAvailable(); }
+            }
+
+            /// <summary>
+            /// Bind the shader for rendering
+            /// </summary>
+            ////////////////////////////////////////////////////////////
+            public void Bind()
+            {
+                sfShader_Bind(This);
+            }
+
+            /// <summary>
+            /// Handle the destruction of the object
+            /// </summary>
+            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
+            ////////////////////////////////////////////////////////////
+            protected override void Destroy(bool disposing)
+            {
+                if (!disposing)
+                    Context.Global.SetActive(true);
+
+                myTextures.Clear();
+                sfShader_Destroy(This);
+
+                if (!disposing)
+                    Context.Global.SetActive(false);
             }
 
             ////////////////////////////////////////////////////////////
@@ -149,44 +251,6 @@ namespace SFML
             }
 
             ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Bind the shader for rendering
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public void Bind()
-            {
-                sfShader_Bind(This);
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Unbind the shader
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public void Unbind()
-            {
-                sfShader_Unbind(This);
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Tell whether or not the system supports shaders
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public static bool IsAvailable
-            {
-                get {return sfShader_IsAvailable();}
-            }
-
-            ////////////////////////////////////////////////////////////
-            /// <summary>
-            /// Special image representing the texture used by the object being drawn
-            /// </summary>
-            ////////////////////////////////////////////////////////////
-            public static Image CurrentTexture
-            {
-                get {return null;}
-            }
 
             ////////////////////////////////////////////////////////////
             /// <summary>
@@ -199,67 +263,16 @@ namespace SFML
                 return "[Shader]";
             }
 
-            ////////////////////////////////////////////////////////////
             /// <summary>
-            /// Handle the destruction of the object
+            /// Unbind the shader
             /// </summary>
-            /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
             ////////////////////////////////////////////////////////////
-            protected override void Destroy(bool disposing)
+            public void Unbind()
             {
-                if (!disposing)
-                    Context.Global.SetActive(true);
-
-                myTextures.Clear();
-                sfShader_Destroy(This);
-
-                if (!disposing)
-                    Context.Global.SetActive(false);
+                sfShader_Unbind(This);
             }
 
-            Dictionary<string, Image> myTextures = new Dictionary<string, Image>();
-
-            #region Imports
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfShader_Create();
-            
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfShader_CreateFromFile(string Filename);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfShader_CreateFromMemory(string Shader);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern IntPtr sfShader_Copy(IntPtr Shader);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_Destroy(IntPtr Shader);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetParameter1(IntPtr Shader, string Name, float X);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetParameter2(IntPtr Shader, string Name, float X, float Y);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetParameter3(IntPtr Shader, string Name, float X, float Y, float Z);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetParameter4(IntPtr Shader, string Name, float X, float Y, float Z, float W);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_SetTexture(IntPtr Shader, string Name, IntPtr Texture);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_Bind(IntPtr Shader);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern void sfShader_Unbind(IntPtr Shader);
-
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-            static extern bool sfShader_IsAvailable();
-
-            #endregion
+            ////////////////////////////////////////////////////////////
         }
     }
 }

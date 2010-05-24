@@ -35,8 +35,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="ChatBubble"/> class.
         /// </summary>
-        ChatBubble(Control parent, Entity owner, string text)
-            : base(parent, Vector2.Zero, Vector2.Zero)
+        ChatBubble(Control parent, Entity owner, string text) : base(parent, Vector2.Zero, Vector2.Zero)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -77,34 +76,16 @@ namespace NetGore.Graphics
         public static int Lifespan { get; set; }
 
         /// <summary>
+        /// Gets or sets the maximum width of a chat bubble in pixels. Default is 128.
+        /// </summary>
+        public static ushort MaxChatBubbleWidth { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="Entity"/> that this <see cref="ChatBubble"/> is attached to.
         /// </summary>
         public Entity Owner
         {
             get { return _owner; }
-        }
-
-        /// <summary>
-        /// Disposes of the Control and all its resources.
-        /// </summary>
-        /// <param name="disposeManaged">If true, managed resources need to be disposed. If false,
-        /// this was raised by a destructor which means the managed resources are already disposed.</param>
-        protected override void Dispose(bool disposeManaged)
-        {
-            // Remove the bubble from the dictionary
-            lock (_chatBubblesSync)
-            {
-                if (!_chatBubbles.Remove(Owner))
-                {
-                    const string errmsg =
-                        "Tried to remove ChatBubble `{0}` for entity `{1}`, but it was already gone from the collection...?";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, this, Owner);
-                    Debug.Fail(string.Format(errmsg, this, Owner));
-                }
-            }
-
-            base.Dispose(disposeManaged);
         }
 
         /// <summary>
@@ -149,6 +130,29 @@ namespace NetGore.Graphics
 
                 return c;
             }
+        }
+
+        /// <summary>
+        /// Disposes of the Control and all its resources.
+        /// </summary>
+        /// <param name="disposeManaged">If true, managed resources need to be disposed. If false,
+        /// this was raised by a destructor which means the managed resources are already disposed.</param>
+        protected override void Dispose(bool disposeManaged)
+        {
+            // Remove the bubble from the dictionary
+            lock (_chatBubblesSync)
+            {
+                if (!_chatBubbles.Remove(Owner))
+                {
+                    const string errmsg =
+                        "Tried to remove ChatBubble `{0}` for entity `{1}`, but it was already gone from the collection...?";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, Owner);
+                    Debug.Fail(string.Format(errmsg, this, Owner));
+                }
+            }
+
+            base.Dispose(disposeManaged);
         }
 
         /// <summary>
@@ -232,11 +236,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the maximum width of a chat bubble in pixels. Default is 128.
-        /// </summary>
-        public static ushort MaxChatBubbleWidth { get; set; }
-
-        /// <summary>
         /// A control that displays the text area for a <see cref="ChatBubble"/>.
         /// </summary>
         sealed class ChatBubbleText : TextBox
@@ -246,12 +245,22 @@ namespace NetGore.Graphics
             /// </summary>
             /// <param name="parent">The parent.</param>
             /// <param name="text">The text.</param>
-            public ChatBubbleText(Control parent, string text) : base(parent, Vector2.Zero, new Vector2(MaxChatBubbleWidth,256))
+            public ChatBubbleText(Control parent, string text) : base(parent, Vector2.Zero, new Vector2(MaxChatBubbleWidth, 256))
             {
                 IsMultiLine = true;
 
                 Text = text;
                 ResizeToFitText(MaxChatBubbleWidth);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+            /// from the given <paramref name="skinManager"/>.
+            /// </summary>
+            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+            public override void LoadSkin(ISkinManager skinManager)
+            {
+                // Do not skin the ChatBubbleText
             }
 
             /// <summary>
@@ -265,16 +274,6 @@ namespace NetGore.Graphics
 
                 // Make sure we resize the textbox to fit the text
                 ResizeToFitText(MaxChatBubbleWidth);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-            /// from the given <paramref name="skinManager"/>.
-            /// </summary>
-            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-            public override void LoadSkin(ISkinManager skinManager)
-            {
-                // Do not skin the ChatBubbleText
             }
 
             /// <summary>

@@ -37,6 +37,7 @@ namespace DemoGame.Client
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
 
         AvailableQuestsForm _availableQuestsForm;
+        Panel _cScreen;
         CharacterTargeter _characterTargeter;
         NPCChatDialogForm _chatDialogForm;
         ChatForm _chatForm;
@@ -62,11 +63,6 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         ILight _userLight;
         World _world;
-
-        public void AddChatBubble(Entity owner, string text)
-        {
-            ChatBubble.Create(_cScreen, owner, text);
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -188,51 +184,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles applying global transformations to all <see cref="ControlBorder"/>s drawn.
-        /// </summary>
-        /// <param name="control">The <see cref="Control"/> the border being drawn is for.</param>
-        /// <param name="c">The <see cref="Color"/> being used to draw the <see cref="ControlBorder"/>.</param>
-        /// <returns>The <see cref="Color"/> to use to draw the <see cref="ControlBorder"/>.</returns>
-        Color GlobalControlBorderTransformer(Control control, Color c)
-        {
-            // Only handle stuff for this screen
-            if (control.GUIManager != GUIManager)
-                return c;
-
-            if (control is Form)
-            {
-                // Force forms to have an alpha value no greater than 150
-                if (c.A > 150)
-                    c.A = 150;
-            }
-            else if (!(control is Label))
-            {
-                // Every other control, except labels, must have an alpha <= 200
-                if (c.A > 200)
-                    c.A = 200;
-            }
-
-            return c;
-        }
-        
-        /// <summary>
-        /// Gets the top-left corner to use for drawing for the given <paramref name="target"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="ISpatial"/> to attach the bubble to.</param>
-        /// <returns>The coordinate of the top-left corner of the <paramref name="target"/> to use for drawing.</returns>
-        Vector2 GetTopLeftDrawCorner(ISpatial target)
-        {
-            Character asCharacter;
-
-            // Make use of the Character's DrawPosition, otherwise it will look like the bubble is moving all over
-            // the place since Characters like to interpolate all over the place
-            if ((asCharacter = target as Character) != null)
-                return asCharacter.LastScreenPosition;
-            else
-                return target.Position - World.Camera.Min;
-        }
-
-        /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
         /// active screen. Objects in here often will want to be destroyed on <see cref="GameScreen.Deactivate"/>().
         /// </summary>
@@ -253,6 +204,11 @@ namespace DemoGame.Client
             // Set screen-specific globals
             ChatBubble.GetTopLeftCornerHandler = GetTopLeftDrawCorner;
             ControlBorder.AddGlobalColorTransformation(GlobalControlBorderTransformer);
+        }
+
+        public void AddChatBubble(Entity owner, string text)
+        {
+            ChatBubble.Create(_cScreen, owner, text);
         }
 
         /// <summary>
@@ -400,6 +356,65 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Handles the ClickedQuit event of the gameMenu control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void GameMenuClickedLogOut(object sender, EventArgs e)
+        {
+            // Change to the login screen
+            ScreenManager.SetScreen(LoginScreen.ScreenName);
+
+            // Disconnect the socket to close the connection
+            Socket.Disconnect();
+        }
+
+        /// <summary>
+        /// Gets the top-left corner to use for drawing for the given <paramref name="target"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="ISpatial"/> to attach the bubble to.</param>
+        /// <returns>The coordinate of the top-left corner of the <paramref name="target"/> to use for drawing.</returns>
+        Vector2 GetTopLeftDrawCorner(ISpatial target)
+        {
+            Character asCharacter;
+
+            // Make use of the Character's DrawPosition, otherwise it will look like the bubble is moving all over
+            // the place since Characters like to interpolate all over the place
+            if ((asCharacter = target as Character) != null)
+                return asCharacter.LastScreenPosition;
+            else
+                return target.Position - World.Camera.Min;
+        }
+
+        /// <summary>
+        /// Handles applying global transformations to all <see cref="ControlBorder"/>s drawn.
+        /// </summary>
+        /// <param name="control">The <see cref="Control"/> the border being drawn is for.</param>
+        /// <param name="c">The <see cref="Color"/> being used to draw the <see cref="ControlBorder"/>.</param>
+        /// <returns>The <see cref="Color"/> to use to draw the <see cref="ControlBorder"/>.</returns>
+        Color GlobalControlBorderTransformer(Control control, Color c)
+        {
+            // Only handle stuff for this screen
+            if (control.GUIManager != GUIManager)
+                return c;
+
+            if (control is Form)
+            {
+                // Force forms to have an alpha value no greater than 150
+                if (c.A > 150)
+                    c.A = 150;
+            }
+            else if (!(control is Label))
+            {
+                // Every other control, except labels, must have an alpha <= 200
+                if (c.A > 200)
+                    c.A = 200;
+            }
+
+            return c;
+        }
+
+        /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
         /// use this instead of the constructor. This is invoked only once.
@@ -431,8 +446,6 @@ namespace DemoGame.Client
             _userLight = new Light { Size = new Vector2(512), IsEnabled = false };
             DrawingManager.LightManager.Add(_userLight);
         }
-
-        Panel _cScreen;
 
         /// <summary>
         /// Initializes the GUI components.
@@ -721,20 +734,6 @@ namespace DemoGame.Client
             {
                 Socket.Send(pw);
             }
-        }
-
-        /// <summary>
-        /// Handles the ClickedQuit event of the gameMenu control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void GameMenuClickedLogOut(object sender, EventArgs e)
-        {
-            // Change to the login screen
-            ScreenManager.SetScreen(LoginScreen.ScreenName);
-
-            // Disconnect the socket to close the connection
-            Socket.Disconnect();
         }
 
         #region IGetTime Members

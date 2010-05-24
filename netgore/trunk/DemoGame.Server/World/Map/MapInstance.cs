@@ -39,14 +39,6 @@ namespace DemoGame.Server
         TickCount? _deleteTime;
 
         /// <summary>
-        /// Handles loading the persistent NPCs on the map.
-        /// </summary>
-        protected override void LoadPersistentNPCs()
-        {
-            // Do NOT load persistent anything on instanced maps!
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MapInstance"/> class.
         /// </summary>
         /// <param name="mapID">ID of the Map to create the instance of.</param>
@@ -111,6 +103,14 @@ namespace DemoGame.Server
                 else
                     _deleteTime = null;
             }
+        }
+
+        /// <summary>
+        /// Handles loading the persistent NPCs on the map.
+        /// </summary>
+        protected override void LoadPersistentNPCs()
+        {
+            // Do NOT load persistent anything on instanced maps!
         }
 
         /// <summary>

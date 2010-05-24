@@ -101,6 +101,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets if this <see cref="Map"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
+        }
+
+        /// <summary>
         /// Gets if the Map is currently inactive.
         /// </summary>
         bool IsInactive
@@ -113,10 +121,7 @@ namespace DemoGame.Server
         /// </summary>
         public virtual bool IsInstanced
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         /// <summary>
@@ -142,11 +147,6 @@ namespace DemoGame.Server
         {
             get { return _npcs; }
         }
-
-        /// <summary>
-        /// Gets if this <see cref="Map"/> has been disposed.
-        /// </summary>
-        public bool IsDisposed { get { return _disposed; } }
 
         /// <summary>
         /// Gets all of the users on the Map.
@@ -399,15 +399,24 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles loading the persistent NPCs on the map.
+        /// Loads the map.
         /// </summary>
-        protected virtual void LoadPersistentNPCs()
+        public void Load()
         {
-            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(ID);
-            foreach (var characterID in persistentNPCIDs)
-            {
-                new NPC(World, characterID);
-            }
+            if (_isLoaded)
+                return;
+
+            _isLoaded = true;
+
+            // Load the map
+            Load(ContentPaths.Build, true, DynamicEntityFactory.Instance);
+
+            // NPCs
+            _npcSpawners = LoadNPCSpawners();
+            LoadPersistentNPCs();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loaded Map `{0}`.", this);
         }
 
         /// <summary>
@@ -420,24 +429,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Loads the map.
+        /// Handles loading the persistent NPCs on the map.
         /// </summary>
-        public void Load()
+        protected virtual void LoadPersistentNPCs()
         {
-            if (_isLoaded)
-                return;
-
-            _isLoaded = true;
-            
-            // Load the map
-            Load(ContentPaths.Build, true, DynamicEntityFactory.Instance);
-
-            // NPCs
-            _npcSpawners = LoadNPCSpawners();
-            LoadPersistentNPCs();
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Loaded Map `{0}`.", this);
+            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(ID);
+            foreach (var characterID in persistentNPCIDs)
+            {
+                new NPC(World, characterID);
+            }
         }
 
         /// <summary>
@@ -658,7 +658,7 @@ namespace DemoGame.Server
         {
             if (_disposed)
             {
-                const string errmsg= "Tried to dispose of map `{0}`, but it is already disposed!";
+                const string errmsg = "Tried to dispose of map `{0}`, but it is already disposed!";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));

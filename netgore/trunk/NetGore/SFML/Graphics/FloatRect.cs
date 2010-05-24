@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace SFML.Graphics
@@ -22,9 +23,9 @@ namespace SFML.Graphics
         ////////////////////////////////////////////////////////////
         public FloatRect(float left, float top, float width, float height)
         {
-            Left   = left;
-            Top    = top;
-            Width  = width;
+            Left = left;
+            Top = top;
+            Width = width;
             Height = height;
         }
 
@@ -51,11 +52,11 @@ namespace SFML.Graphics
         public bool Intersects(FloatRect rect)
         {
             // Compute the intersection boundaries
-            float left   = Math.Max(Left,         rect.Left);
-            float top    = Math.Max(Top,          rect.Top);
-            float right  = Math.Min(Left + Width, rect.Left + rect.Width);
-            float bottom = Math.Min(Top + Height, rect.Top + rect.Height);
-            
+            var left = Math.Max(Left, rect.Left);
+            var top = Math.Max(Top, rect.Top);
+            var right = Math.Min(Left + Width, rect.Left + rect.Width);
+            var bottom = Math.Min(Top + Height, rect.Top + rect.Height);
+
             return (left < right) && (top < bottom);
         }
 
@@ -70,25 +71,25 @@ namespace SFML.Graphics
         public bool Intersects(FloatRect rect, out FloatRect overlap)
         {
             // Compute the intersection boundaries
-            float left   = Math.Max(Left,         rect.Left);
-            float top    = Math.Max(Top,          rect.Top);
-            float right  = Math.Min(Left + Width, rect.Left + rect.Width);
-            float bottom = Math.Min(Top + Height, rect.Top + rect.Height);
+            var left = Math.Max(Left, rect.Left);
+            var top = Math.Max(Top, rect.Top);
+            var right = Math.Min(Left + Width, rect.Left + rect.Width);
+            var bottom = Math.Min(Top + Height, rect.Top + rect.Height);
 
             // If the intersection is valid (positive non zero area), then there is an intersection
             if ((left < right) && (top < bottom))
             {
-                overlap.Left   = left;
-                overlap.Top    = top;
-                overlap.Width  = right - left;
+                overlap.Left = left;
+                overlap.Top = top;
+                overlap.Width = right - left;
                 overlap.Height = bottom - top;
                 return true;
             }
             else
             {
-                overlap.Left   = 0;
-                overlap.Top    = 0;
-                overlap.Width  = 0;
+                overlap.Left = 0;
+                overlap.Top = 0;
+                overlap.Width = 0;
                 overlap.Height = 0;
                 return false;
             }
@@ -102,11 +103,8 @@ namespace SFML.Graphics
         ////////////////////////////////////////////////////////////
         public override string ToString()
         {
-            return "[FloatRect]" +
-                   " Left(" + Left + ")" +
-                   " Top(" + Top + ")" +
-                   " Width(" + Width + ")" +
-                   " Height(" + Height + ")";
+            return "[FloatRect]" + " Left(" + Left + ")" + " Top(" + Top + ")" + " Width(" + Width + ")" + " Height(" + Height +
+                   ")";
         }
 
         /// <summary>Left coordinate of the rectangle</summary>

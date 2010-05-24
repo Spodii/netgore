@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace SFML
@@ -20,8 +20,7 @@ namespace SFML
             /// <param name="depthBits">Depth buffer bits</param>
             /// <param name="stencilBits">Stencil buffer bits</param>
             ////////////////////////////////////////////////////////////
-            public ContextSettings(uint depthBits, uint stencilBits) :
-                this(depthBits, stencilBits, 0)
+            public ContextSettings(uint depthBits, uint stencilBits) : this(depthBits, stencilBits, 0)
             {
             }
 
@@ -33,8 +32,8 @@ namespace SFML
             /// <param name="stencilBits">Stencil buffer bits</param>
             /// <param name="antialiasingLevel">Antialiasing level</param>
             ////////////////////////////////////////////////////////////
-            public ContextSettings(uint depthBits, uint stencilBits, uint antialiasingLevel) :
-                this(depthBits, stencilBits, antialiasingLevel, 2, 0)
+            public ContextSettings(uint depthBits, uint stencilBits, uint antialiasingLevel)
+                : this(depthBits, stencilBits, antialiasingLevel, 2, 0)
             {
             }
 
@@ -50,11 +49,11 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public ContextSettings(uint depthBits, uint stencilBits, uint antialiasingLevel, uint majorVersion, uint minorVersion)
             {
-                DepthBits         = depthBits;
-                StencilBits       = stencilBits;
+                DepthBits = depthBits;
+                StencilBits = stencilBits;
                 AntialiasingLevel = antialiasingLevel;
-                MajorVersion      = majorVersion;
-                MinorVersion      = minorVersion;
+                MajorVersion = majorVersion;
+                MinorVersion = minorVersion;
             }
 
             ////////////////////////////////////////////////////////////
@@ -65,12 +64,9 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public override string ToString()
             {
-                return "[ContextSettings]" +
-                       " DepthBits(" + DepthBits + ")" +
-                       " StencilBits(" + StencilBits + ")" +
-                       " AntialiasingLevel(" + AntialiasingLevel + ")" +
-                       " MajorVersion(" + MajorVersion + ")" +
-                       " MinorVersion(" + MinorVersion + ")";
+                return "[ContextSettings]" + " DepthBits(" + DepthBits + ")" + " StencilBits(" + StencilBits + ")" +
+                       " AntialiasingLevel(" + AntialiasingLevel + ")" + " MajorVersion(" + MajorVersion + ")" + " MinorVersion(" +
+                       MinorVersion + ")";
             }
 
             /// <summary>Depth buffer bits (0 is disabled)</summary>

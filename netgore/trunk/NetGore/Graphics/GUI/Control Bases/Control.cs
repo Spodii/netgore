@@ -19,6 +19,7 @@ namespace NetGore.Graphics.GUI
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly object _eventBeginDrag = new object();
         static readonly object _eventBorderChanged = new object();
+        static readonly object _eventBorderColorChanged = new object();
         static readonly object _eventCanDragChanged = new object();
         static readonly object _eventCanFocusChanged = new object();
         static readonly object _eventClicked = new object();
@@ -42,7 +43,6 @@ namespace NetGore.Graphics.GUI
         static readonly object _eventTextEntered = new object();
         static readonly object _eventTooltipChanged = new object();
         static readonly object _eventVisibleChanged = new object();
-        static readonly object _eventBorderColorChanged = new object();
 
         readonly List<Control> _controls = new List<Control>(1);
         readonly EventHandlerList _eventHandlerList = new EventHandlerList();
@@ -51,6 +51,7 @@ namespace NetGore.Graphics.GUI
         readonly Control _root;
 
         ControlBorder _border;
+        Color _borderColor = Color.White;
         bool _canDrag = true;
         bool _canFocus = true;
         Vector2 _dragOffset;
@@ -66,7 +67,6 @@ namespace NetGore.Graphics.GUI
         Queue<Control> _setTopMostQueue = null;
         Vector2 _size;
         TooltipHandler _toolTip;
-        Color _borderColor = Color.White;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -419,6 +419,24 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use when drawing the <see cref="Border"/>.
+        /// </summary>
+        [SyncValue]
+        public Color BorderColor
+        {
+            get { return _borderColor; }
+            set
+            {
+                if (_borderColor == value)
+                    return;
+
+                _borderColor = value;
+
+                InvokeBorderColorChanged();
+            }
+        }
+
+        /// <summary>
         /// Gets or sets if the Control supports movement by dragging with the mouse
         /// </summary>
         [SyncValue]
@@ -578,24 +596,6 @@ namespace NetGore.Graphics.GUI
         public bool IsRoot
         {
             get { return Parent == null; }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Color"/> to use when drawing the <see cref="Border"/>.
-        /// </summary>
-        [SyncValue]
-        public Color BorderColor
-        {
-            get { return _borderColor; }
-            set
-            {
-                if (_borderColor == value)
-                    return;
-
-                _borderColor = value;
-
-                InvokeBorderColorChanged();
-            }
         }
 
         /// <summary>
@@ -1829,7 +1829,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Update the children in a way that allows us to support when the collection is modified
-            for (int i = 0; i < _controls.Count; i++)
+            for (var i = 0; i < _controls.Count; i++)
             {
                 var child = _controls[i];
                 child.Update(currentTime);

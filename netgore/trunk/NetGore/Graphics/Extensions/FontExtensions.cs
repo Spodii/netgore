@@ -13,8 +13,8 @@ namespace NetGore.Graphics
     public static class FontExtensions
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly object _textSync = new object();
         static readonly Text _text = new Text();
+        static readonly object _textSync = new object();
 
         /// <summary>
         /// Measures the size of a string.

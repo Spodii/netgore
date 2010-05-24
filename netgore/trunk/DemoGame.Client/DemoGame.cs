@@ -30,7 +30,7 @@ namespace DemoGame.Client
         public DemoGame(IntPtr p) : base(p)
         {
             EngineSettingsInitializer.Initialize();
-            
+
             // Set some globals
             EmoticonDisplayManager.GetDrawPositionHandler = EmoticonDrawPositionHandler;
 
@@ -64,28 +64,6 @@ namespace DemoGame.Client
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             KeyPressed += DemoGame_KeyPressed;
-        }
-
-        /// <summary>
-        /// The handler for finding the position to draw an emoticon.
-        /// </summary>
-        /// <param name="spatial">The <see cref="ISpatial"/> to get the draw position for.</param>
-        /// <returns>The world position to draw the emoticon for the given <paramref name="spatial"/>.</returns>
-        static Vector2 EmoticonDrawPositionHandler(ISpatial spatial)
-        {
-            Vector2 pos;
-
-            // Get the draw offset
-            Character character;
-            if ((character = spatial as Character) != null)
-                pos = character.DrawPosition;
-            else
-                pos = spatial.Position;
-
-            // Move the emoticon a bit up and to the right
-            pos += new Vector2(5, -24);
-
-            return pos;
         }
 
         /// <summary>
@@ -147,6 +125,28 @@ namespace DemoGame.Client
         public virtual void Draw()
         {
             _screenManager.Draw(TickCount.Now);
+        }
+
+        /// <summary>
+        /// The handler for finding the position to draw an emoticon.
+        /// </summary>
+        /// <param name="spatial">The <see cref="ISpatial"/> to get the draw position for.</param>
+        /// <returns>The world position to draw the emoticon for the given <paramref name="spatial"/>.</returns>
+        static Vector2 EmoticonDrawPositionHandler(ISpatial spatial)
+        {
+            Vector2 pos;
+
+            // Get the draw offset
+            Character character;
+            if ((character = spatial as Character) != null)
+                pos = character.DrawPosition;
+            else
+                pos = spatial.Position;
+
+            // Move the emoticon a bit up and to the right
+            pos += new Vector2(5, -24);
+
+            return pos;
         }
 
         /// <summary>

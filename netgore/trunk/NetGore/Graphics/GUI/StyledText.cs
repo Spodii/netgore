@@ -500,7 +500,9 @@ namespace NetGore.Graphics.GUI
 
                 // Add all the pieces in the line to the line parts stack
                 for (var i = line.Count - 1; i >= 0; i--)
+                {
                     linePartsStack.Push(line[i]);
+                }
 
                 while (linePartsStack.Count > 0)
                 {
