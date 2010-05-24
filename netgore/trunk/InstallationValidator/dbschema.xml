@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DbSchema>
   <Tables>
-    <Count>36</Count>
+    <Count>46</Count>
     <Item0>
       <TableName>account</TableName>
       <Columns>
@@ -1004,7 +1004,7 @@
     <Item5>
       <TableName>character</TableName>
       <Columns>
-        <Count>29</Count>
+        <Count>30</Count>
         <Item0>
           <Values>
             <Count>13</Count>
@@ -1250,23 +1250,23 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>1</Value>
+              <Value>0</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
-              <Value>MUL</Value>
+              <Value />
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>map_id</Value>
+              <Value>permissions</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>smallint(5) unsigned</Value>
+              <Value>tinyint(3) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
+              <Value>tinyint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -1278,7 +1278,7 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
+              <Value>3</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
@@ -1478,23 +1478,23 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>100</Value>
+              <Value>1</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
-              <Value />
+              <Value>MUL</Value>
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>x</Value>
+              <Value>load_map_id</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint(5) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -1506,11 +1506,11 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>12</Value>
+              <Value>5</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
-              <Value />
+              <Value>0</Value>
             </Item11>
             <Item12>
               <Key>TABLE_NAME</Key>
@@ -1535,7 +1535,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>100</Value>
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -1543,15 +1543,15 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>y</Value>
+              <Value>load_x</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint(5) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -1563,11 +1563,11 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>12</Value>
+              <Value>5</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
-              <Value />
+              <Value>0</Value>
             </Item11>
             <Item12>
               <Key>TABLE_NAME</Key>
@@ -1592,7 +1592,64 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
+              <Value>50</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
               <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>load_y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>character</Value>
+            </Item12>
+          </Values>
+        </Item10>
+        <Item11>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -1600,7 +1657,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>respawn_map</Value>
+              <Value>respawn_map_id</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -1631,8 +1688,8 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item10>
-        <Item11>
+        </Item11>
+        <Item12>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -1688,8 +1745,8 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item11>
-        <Item12>
+        </Item12>
+        <Item13>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -1745,8 +1802,8 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item12>
-        <Item13>
+        </Item13>
+        <Item14>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -1802,8 +1859,8 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item13>
-        <Item14>
+        </Item14>
+        <Item15>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -1859,8 +1916,8 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item14>
-        <Item15>
+        </Item15>
+        <Item16>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -1916,8 +1973,8 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item15>
-        <Item16>
+        </Item16>
+        <Item17>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -1973,8 +2030,8 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item16>
-        <Item17>
+        </Item17>
+        <Item18>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -2030,8 +2087,8 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item17>
-        <Item18>
+        </Item18>
+        <Item19>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -2087,63 +2144,6 @@
               <Value>character</Value>
             </Item12>
           </Values>
-        </Item18>
-        <Item19>
-          <Values>
-            <Count>13</Count>
-            <Item0>
-              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
-              <Value />
-            </Item0>
-            <Item1>
-              <Key>CHARACTER_OCTET_LENGTH</Key>
-              <Value />
-            </Item1>
-            <Item2>
-              <Key>CHARACTER_SET_NAME</Key>
-              <Value />
-            </Item2>
-            <Item3>
-              <Key>COLUMN_DEFAULT</Key>
-              <Value>50</Value>
-            </Item3>
-            <Item4>
-              <Key>COLUMN_KEY</Key>
-              <Value />
-            </Item4>
-            <Item5>
-              <Key>COLUMN_NAME</Key>
-              <Value>hp</Value>
-            </Item5>
-            <Item6>
-              <Key>COLUMN_TYPE</Key>
-              <Value>smallint(6)</Value>
-            </Item6>
-            <Item7>
-              <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
-            </Item7>
-            <Item8>
-              <Key>EXTRA</Key>
-              <Value />
-            </Item8>
-            <Item9>
-              <Key>IS_NULLABLE</Key>
-              <Value>NO</Value>
-            </Item9>
-            <Item10>
-              <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
-            </Item10>
-            <Item11>
-              <Key>NUMERIC_SCALE</Key>
-              <Value>0</Value>
-            </Item11>
-            <Item12>
-              <Key>TABLE_NAME</Key>
-              <Value>character</Value>
-            </Item12>
-          </Values>
         </Item19>
         <Item20>
           <Values>
@@ -2170,7 +2170,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>mp</Value>
+              <Value>hp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2227,7 +2227,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxhp</Value>
+              <Value>mp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2284,7 +2284,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxmp</Value>
+              <Value>stat_maxhp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2333,7 +2333,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>1</Value>
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -2341,7 +2341,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_minhit</Value>
+              <Value>stat_maxmp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2398,7 +2398,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxhit</Value>
+              <Value>stat_minhit</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2455,7 +2455,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_defence</Value>
+              <Value>stat_maxhit</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2512,7 +2512,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_agi</Value>
+              <Value>stat_defence</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2569,7 +2569,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_int</Value>
+              <Value>stat_agi</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2626,7 +2626,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_str</Value>
+              <Value>stat_int</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -2658,6 +2658,63 @@
             </Item12>
           </Values>
         </Item28>
+        <Item29>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>stat_str</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(6)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>character</Value>
+            </Item12>
+          </Values>
+        </Item29>
       </Columns>
     </Item5>
     <Item6>
@@ -6656,7 +6713,7 @@
     <Item16>
       <TableName>guild</TableName>
       <Columns>
-        <Count>3</Count>
+        <Count>4</Count>
         <Item0>
           <Values>
             <Count>13</Count>
@@ -6828,6 +6885,63 @@
             </Item12>
           </Values>
         </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>created</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>guild</Value>
+            </Item12>
+          </Values>
+        </Item3>
       </Columns>
     </Item16>
     <Item17>
@@ -11030,7 +11144,7 @@
     <Item23>
       <TableName>npc_character</TableName>
       <Columns>
-        <Count>28</Count>
+        <Count>30</Count>
         <Item0>
           <Values>
             <Count>13</Count>
@@ -11276,7 +11390,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>1</Value>
+              <Value>0</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -11284,15 +11398,15 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>map_id</Value>
+              <Value>permissions</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>smallint(5) unsigned</Value>
+              <Value>tinyint(3) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
+              <Value>tinyint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -11304,7 +11418,7 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
+              <Value>3</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
@@ -11504,7 +11618,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>100</Value>
+              <Value>1</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -11512,15 +11626,15 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>x</Value>
+              <Value>load_map_id</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint(5) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -11532,11 +11646,11 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>12</Value>
+              <Value>5</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
-              <Value />
+              <Value>0</Value>
             </Item11>
             <Item12>
               <Key>TABLE_NAME</Key>
@@ -11561,7 +11675,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>100</Value>
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -11569,15 +11683,15 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>y</Value>
+              <Value>load_x</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint(5) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -11589,11 +11703,11 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>12</Value>
+              <Value>5</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
-              <Value />
+              <Value>0</Value>
             </Item11>
             <Item12>
               <Key>TABLE_NAME</Key>
@@ -11618,7 +11732,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value />
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -11626,7 +11740,64 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>respawn_map</Value>
+              <Value>load_y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>npc_character</Value>
+            </Item12>
+          </Values>
+        </Item10>
+        <Item11>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>respawn_map_id</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -11657,8 +11828,8 @@
               <Value>npc_character</Value>
             </Item12>
           </Values>
-        </Item10>
-        <Item11>
+        </Item11>
+        <Item12>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -11714,8 +11885,8 @@
               <Value>npc_character</Value>
             </Item12>
           </Values>
-        </Item11>
-        <Item12>
+        </Item12>
+        <Item13>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -11771,8 +11942,8 @@
               <Value>npc_character</Value>
             </Item12>
           </Values>
-        </Item12>
-        <Item13>
+        </Item13>
+        <Item14>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -11828,8 +11999,65 @@
               <Value>npc_character</Value>
             </Item12>
           </Values>
-        </Item13>
-        <Item14>
+        </Item14>
+        <Item15>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1800</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>move_speed</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>npc_character</Value>
+            </Item12>
+          </Values>
+        </Item15>
+        <Item16>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -11885,8 +12113,8 @@
               <Value>npc_character</Value>
             </Item12>
           </Values>
-        </Item14>
-        <Item15>
+        </Item16>
+        <Item17>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -11942,8 +12170,8 @@
               <Value>npc_character</Value>
             </Item12>
           </Values>
-        </Item15>
-        <Item16>
+        </Item17>
+        <Item18>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -11999,8 +12227,8 @@
               <Value>npc_character</Value>
             </Item12>
           </Values>
-        </Item16>
-        <Item17>
+        </Item18>
+        <Item19>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -12056,120 +12284,6 @@
               <Value>npc_character</Value>
             </Item12>
           </Values>
-        </Item17>
-        <Item18>
-          <Values>
-            <Count>13</Count>
-            <Item0>
-              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
-              <Value />
-            </Item0>
-            <Item1>
-              <Key>CHARACTER_OCTET_LENGTH</Key>
-              <Value />
-            </Item1>
-            <Item2>
-              <Key>CHARACTER_SET_NAME</Key>
-              <Value />
-            </Item2>
-            <Item3>
-              <Key>COLUMN_DEFAULT</Key>
-              <Value>50</Value>
-            </Item3>
-            <Item4>
-              <Key>COLUMN_KEY</Key>
-              <Value />
-            </Item4>
-            <Item5>
-              <Key>COLUMN_NAME</Key>
-              <Value>hp</Value>
-            </Item5>
-            <Item6>
-              <Key>COLUMN_TYPE</Key>
-              <Value>smallint(6)</Value>
-            </Item6>
-            <Item7>
-              <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
-            </Item7>
-            <Item8>
-              <Key>EXTRA</Key>
-              <Value />
-            </Item8>
-            <Item9>
-              <Key>IS_NULLABLE</Key>
-              <Value>NO</Value>
-            </Item9>
-            <Item10>
-              <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
-            </Item10>
-            <Item11>
-              <Key>NUMERIC_SCALE</Key>
-              <Value>0</Value>
-            </Item11>
-            <Item12>
-              <Key>TABLE_NAME</Key>
-              <Value>npc_character</Value>
-            </Item12>
-          </Values>
-        </Item18>
-        <Item19>
-          <Values>
-            <Count>13</Count>
-            <Item0>
-              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
-              <Value />
-            </Item0>
-            <Item1>
-              <Key>CHARACTER_OCTET_LENGTH</Key>
-              <Value />
-            </Item1>
-            <Item2>
-              <Key>CHARACTER_SET_NAME</Key>
-              <Value />
-            </Item2>
-            <Item3>
-              <Key>COLUMN_DEFAULT</Key>
-              <Value>50</Value>
-            </Item3>
-            <Item4>
-              <Key>COLUMN_KEY</Key>
-              <Value />
-            </Item4>
-            <Item5>
-              <Key>COLUMN_NAME</Key>
-              <Value>mp</Value>
-            </Item5>
-            <Item6>
-              <Key>COLUMN_TYPE</Key>
-              <Value>smallint(6)</Value>
-            </Item6>
-            <Item7>
-              <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
-            </Item7>
-            <Item8>
-              <Key>EXTRA</Key>
-              <Value />
-            </Item8>
-            <Item9>
-              <Key>IS_NULLABLE</Key>
-              <Value>NO</Value>
-            </Item9>
-            <Item10>
-              <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
-            </Item10>
-            <Item11>
-              <Key>NUMERIC_SCALE</Key>
-              <Value>0</Value>
-            </Item11>
-            <Item12>
-              <Key>TABLE_NAME</Key>
-              <Value>npc_character</Value>
-            </Item12>
-          </Values>
         </Item19>
         <Item20>
           <Values>
@@ -12196,7 +12310,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxhp</Value>
+              <Value>hp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -12253,7 +12367,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxmp</Value>
+              <Value>mp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -12302,7 +12416,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>1</Value>
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -12310,7 +12424,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_minhit</Value>
+              <Value>stat_maxhp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -12359,7 +12473,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>1</Value>
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -12367,7 +12481,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxhit</Value>
+              <Value>stat_maxmp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -12424,7 +12538,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_defence</Value>
+              <Value>stat_minhit</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -12481,7 +12595,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_agi</Value>
+              <Value>stat_maxhit</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -12538,7 +12652,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_int</Value>
+              <Value>stat_defence</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -12595,7 +12709,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_str</Value>
+              <Value>stat_agi</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -12627,6 +12741,120 @@
             </Item12>
           </Values>
         </Item27>
+        <Item28>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>stat_int</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(6)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>npc_character</Value>
+            </Item12>
+          </Values>
+        </Item28>
+        <Item29>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>stat_str</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(6)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>npc_character</Value>
+            </Item12>
+          </Values>
+        </Item29>
       </Columns>
     </Item23>
     <Item24>
@@ -14237,7 +14465,7 @@
     <Item35>
       <TableName>user_character</TableName>
       <Columns>
-        <Count>28</Count>
+        <Count>30</Count>
         <Item0>
           <Values>
             <Count>13</Count>
@@ -14483,7 +14711,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>1</Value>
+              <Value>0</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -14491,15 +14719,15 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>map_id</Value>
+              <Value>permissions</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>smallint(5) unsigned</Value>
+              <Value>tinyint(3) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
+              <Value>tinyint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -14511,7 +14739,7 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
+              <Value>3</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
@@ -14711,7 +14939,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>100</Value>
+              <Value>1</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -14719,15 +14947,15 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>x</Value>
+              <Value>load_map_id</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint(5) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -14739,11 +14967,11 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>12</Value>
+              <Value>5</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
-              <Value />
+              <Value>0</Value>
             </Item11>
             <Item12>
               <Key>TABLE_NAME</Key>
@@ -14768,7 +14996,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>100</Value>
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -14776,15 +15004,15 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>y</Value>
+              <Value>load_x</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint(5) unsigned</Value>
             </Item6>
             <Item7>
               <Key>DATA_TYPE</Key>
-              <Value>float</Value>
+              <Value>smallint</Value>
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
@@ -14796,11 +15024,11 @@
             </Item9>
             <Item10>
               <Key>NUMERIC_PRECISION</Key>
-              <Value>12</Value>
+              <Value>5</Value>
             </Item10>
             <Item11>
               <Key>NUMERIC_SCALE</Key>
-              <Value />
+              <Value>0</Value>
             </Item11>
             <Item12>
               <Key>TABLE_NAME</Key>
@@ -14825,7 +15053,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value />
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -14833,7 +15061,64 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>respawn_map</Value>
+              <Value>load_y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>user_character</Value>
+            </Item12>
+          </Values>
+        </Item10>
+        <Item11>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>respawn_map_id</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -14864,8 +15149,8 @@
               <Value>user_character</Value>
             </Item12>
           </Values>
-        </Item10>
-        <Item11>
+        </Item11>
+        <Item12>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -14921,8 +15206,8 @@
               <Value>user_character</Value>
             </Item12>
           </Values>
-        </Item11>
-        <Item12>
+        </Item12>
+        <Item13>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -14978,8 +15263,8 @@
               <Value>user_character</Value>
             </Item12>
           </Values>
-        </Item12>
-        <Item13>
+        </Item13>
+        <Item14>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -15035,8 +15320,65 @@
               <Value>user_character</Value>
             </Item12>
           </Values>
-        </Item13>
-        <Item14>
+        </Item14>
+        <Item15>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1800</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>move_speed</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>user_character</Value>
+            </Item12>
+          </Values>
+        </Item15>
+        <Item16>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -15092,8 +15434,8 @@
               <Value>user_character</Value>
             </Item12>
           </Values>
-        </Item14>
-        <Item15>
+        </Item16>
+        <Item17>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -15149,8 +15491,8 @@
               <Value>user_character</Value>
             </Item12>
           </Values>
-        </Item15>
-        <Item16>
+        </Item17>
+        <Item18>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -15206,8 +15548,8 @@
               <Value>user_character</Value>
             </Item12>
           </Values>
-        </Item16>
-        <Item17>
+        </Item18>
+        <Item19>
           <Values>
             <Count>13</Count>
             <Item0>
@@ -15263,120 +15605,6 @@
               <Value>user_character</Value>
             </Item12>
           </Values>
-        </Item17>
-        <Item18>
-          <Values>
-            <Count>13</Count>
-            <Item0>
-              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
-              <Value />
-            </Item0>
-            <Item1>
-              <Key>CHARACTER_OCTET_LENGTH</Key>
-              <Value />
-            </Item1>
-            <Item2>
-              <Key>CHARACTER_SET_NAME</Key>
-              <Value />
-            </Item2>
-            <Item3>
-              <Key>COLUMN_DEFAULT</Key>
-              <Value>50</Value>
-            </Item3>
-            <Item4>
-              <Key>COLUMN_KEY</Key>
-              <Value />
-            </Item4>
-            <Item5>
-              <Key>COLUMN_NAME</Key>
-              <Value>hp</Value>
-            </Item5>
-            <Item6>
-              <Key>COLUMN_TYPE</Key>
-              <Value>smallint(6)</Value>
-            </Item6>
-            <Item7>
-              <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
-            </Item7>
-            <Item8>
-              <Key>EXTRA</Key>
-              <Value />
-            </Item8>
-            <Item9>
-              <Key>IS_NULLABLE</Key>
-              <Value>NO</Value>
-            </Item9>
-            <Item10>
-              <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
-            </Item10>
-            <Item11>
-              <Key>NUMERIC_SCALE</Key>
-              <Value>0</Value>
-            </Item11>
-            <Item12>
-              <Key>TABLE_NAME</Key>
-              <Value>user_character</Value>
-            </Item12>
-          </Values>
-        </Item18>
-        <Item19>
-          <Values>
-            <Count>13</Count>
-            <Item0>
-              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
-              <Value />
-            </Item0>
-            <Item1>
-              <Key>CHARACTER_OCTET_LENGTH</Key>
-              <Value />
-            </Item1>
-            <Item2>
-              <Key>CHARACTER_SET_NAME</Key>
-              <Value />
-            </Item2>
-            <Item3>
-              <Key>COLUMN_DEFAULT</Key>
-              <Value>50</Value>
-            </Item3>
-            <Item4>
-              <Key>COLUMN_KEY</Key>
-              <Value />
-            </Item4>
-            <Item5>
-              <Key>COLUMN_NAME</Key>
-              <Value>mp</Value>
-            </Item5>
-            <Item6>
-              <Key>COLUMN_TYPE</Key>
-              <Value>smallint(6)</Value>
-            </Item6>
-            <Item7>
-              <Key>DATA_TYPE</Key>
-              <Value>smallint</Value>
-            </Item7>
-            <Item8>
-              <Key>EXTRA</Key>
-              <Value />
-            </Item8>
-            <Item9>
-              <Key>IS_NULLABLE</Key>
-              <Value>NO</Value>
-            </Item9>
-            <Item10>
-              <Key>NUMERIC_PRECISION</Key>
-              <Value>5</Value>
-            </Item10>
-            <Item11>
-              <Key>NUMERIC_SCALE</Key>
-              <Value>0</Value>
-            </Item11>
-            <Item12>
-              <Key>TABLE_NAME</Key>
-              <Value>user_character</Value>
-            </Item12>
-          </Values>
         </Item19>
         <Item20>
           <Values>
@@ -15403,7 +15631,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxhp</Value>
+              <Value>hp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -15460,7 +15688,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxmp</Value>
+              <Value>mp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -15509,7 +15737,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>1</Value>
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -15517,7 +15745,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_minhit</Value>
+              <Value>stat_maxhp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -15566,7 +15794,7 @@
             </Item2>
             <Item3>
               <Key>COLUMN_DEFAULT</Key>
-              <Value>1</Value>
+              <Value>50</Value>
             </Item3>
             <Item4>
               <Key>COLUMN_KEY</Key>
@@ -15574,7 +15802,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_maxhit</Value>
+              <Value>stat_maxmp</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -15631,7 +15859,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_defence</Value>
+              <Value>stat_minhit</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -15688,7 +15916,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_agi</Value>
+              <Value>stat_maxhit</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -15745,7 +15973,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_int</Value>
+              <Value>stat_defence</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -15802,7 +16030,7 @@
             </Item4>
             <Item5>
               <Key>COLUMN_NAME</Key>
-              <Value>stat_str</Value>
+              <Value>stat_agi</Value>
             </Item5>
             <Item6>
               <Key>COLUMN_TYPE</Key>
@@ -15834,7 +16062,4228 @@
             </Item12>
           </Values>
         </Item27>
+        <Item28>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>stat_int</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(6)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>user_character</Value>
+            </Item12>
+          </Values>
+        </Item28>
+        <Item29>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>1</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>stat_str</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(6)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>user_character</Value>
+            </Item12>
+          </Values>
+        </Item29>
       </Columns>
     </Item35>
+    <Item36>
+      <TableName>world_stats_guild_user_change</TableName>
+      <Columns>
+        <Count>3</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_guild_user_change</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>guild_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_guild_user_change</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_guild_user_change</Value>
+            </Item12>
+          </Values>
+        </Item2>
+      </Columns>
+    </Item36>
+    <Item37>
+      <TableName>world_stats_network</TableName>
+      <Columns>
+        <Count>10</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>PRI</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>tcp_recv</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>tcp_recvs</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>tcp_sent</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>tcp_sends</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>udp_recv</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item5>
+        <Item6>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>udp_recvs</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item6>
+        <Item7>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>udp_sent</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item7>
+        <Item8>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>udp_sends</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item8>
+        <Item9>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>connections</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>mediumint(8) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>mediumint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>7</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_network</Value>
+            </Item12>
+          </Values>
+        </Item9>
+      </Columns>
+    </Item37>
+    <Item38>
+      <TableName>world_stats_npc_kill_user</TableName>
+      <Columns>
+        <Count>9</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>npc_template_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_level</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>tinyint(3) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>tinyint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>3</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>npc_x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item5>
+        <Item6>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>npc_y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item6>
+        <Item7>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>map_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item7>
+        <Item8>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_npc_kill_user</Value>
+            </Item12>
+          </Values>
+        </Item8>
+      </Columns>
+    </Item38>
+    <Item39>
+      <TableName>world_stats_quest_accept</TableName>
+      <Columns>
+        <Count>6</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_accept</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>quest_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_accept</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>map_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_accept</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_accept</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_accept</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_accept</Value>
+            </Item12>
+          </Values>
+        </Item5>
+      </Columns>
+    </Item39>
+    <Item40>
+      <TableName>world_stats_quest_cancel</TableName>
+      <Columns>
+        <Count>6</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_cancel</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>quest_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_cancel</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>map_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_cancel</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_cancel</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_cancel</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_cancel</Value>
+            </Item12>
+          </Values>
+        </Item5>
+      </Columns>
+    </Item40>
+    <Item41>
+      <TableName>world_stats_quest_complete</TableName>
+      <Columns>
+        <Count>6</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_complete</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>quest_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_complete</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>map_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_complete</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_complete</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_complete</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_quest_complete</Value>
+            </Item12>
+          </Values>
+        </Item5>
+      </Columns>
+    </Item41>
+    <Item42>
+      <TableName>world_stats_user_consume_item</TableName>
+      <Columns>
+        <Count>6</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_consume_item</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>item_template_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_consume_item</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>map_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_consume_item</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_consume_item</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_consume_item</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_consume_item</Value>
+            </Item12>
+          </Values>
+        </Item5>
+      </Columns>
+    </Item42>
+    <Item43>
+      <TableName>world_stats_user_kill_npc</TableName>
+      <Columns>
+        <Count>9</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>npc_template_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_level</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>tinyint(3) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>tinyint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>3</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>user_y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>npc_x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item5>
+        <Item6>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>npc_y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item6>
+        <Item7>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>map_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item7>
+        <Item8>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_kill_npc</Value>
+            </Item12>
+          </Values>
+        </Item8>
+      </Columns>
+    </Item43>
+    <Item44>
+      <TableName>world_stats_user_level</TableName>
+      <Columns>
+        <Count>6</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>character_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_level</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>map_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_level</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_level</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_level</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>level</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>tinyint(3) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>tinyint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>3</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_level</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_level</Value>
+            </Item12>
+          </Values>
+        </Item5>
+      </Columns>
+    </Item44>
+    <Item45>
+      <TableName>world_stats_user_shopping</TableName>
+      <Columns>
+        <Count>10</Count>
+        <Item0>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>shop_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item0>
+        <Item1>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>character_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item1>
+        <Item2>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>item_template_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item2>
+        <Item3>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value>MUL</Value>
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>map_id</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>YES</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item3>
+        <Item4>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>x</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item4>
+        <Item5>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>y</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>smallint(5) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>smallint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>5</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item5>
+        <Item6>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>cost</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>int(11)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>int</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>10</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item6>
+        <Item7>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>amount</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>tinyint(3) unsigned</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>tinyint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>3</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item7>
+        <Item8>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value />
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>sale_type</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>tinyint(4)</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>tinyint</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value>3</Value>
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value>0</Value>
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item8>
+        <Item9>
+          <Values>
+            <Count>13</Count>
+            <Item0>
+              <Key>CHARACTER_MAXIMUM_LENGTH</Key>
+              <Value />
+            </Item0>
+            <Item1>
+              <Key>CHARACTER_OCTET_LENGTH</Key>
+              <Value />
+            </Item1>
+            <Item2>
+              <Key>CHARACTER_SET_NAME</Key>
+              <Value />
+            </Item2>
+            <Item3>
+              <Key>COLUMN_DEFAULT</Key>
+              <Value>CURRENT_TIMESTAMP</Value>
+            </Item3>
+            <Item4>
+              <Key>COLUMN_KEY</Key>
+              <Value />
+            </Item4>
+            <Item5>
+              <Key>COLUMN_NAME</Key>
+              <Value>when</Value>
+            </Item5>
+            <Item6>
+              <Key>COLUMN_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item6>
+            <Item7>
+              <Key>DATA_TYPE</Key>
+              <Value>timestamp</Value>
+            </Item7>
+            <Item8>
+              <Key>EXTRA</Key>
+              <Value />
+            </Item8>
+            <Item9>
+              <Key>IS_NULLABLE</Key>
+              <Value>NO</Value>
+            </Item9>
+            <Item10>
+              <Key>NUMERIC_PRECISION</Key>
+              <Value />
+            </Item10>
+            <Item11>
+              <Key>NUMERIC_SCALE</Key>
+              <Value />
+            </Item11>
+            <Item12>
+              <Key>TABLE_NAME</Key>
+              <Value>world_stats_user_shopping</Value>
+            </Item12>
+          </Values>
+        </Item9>
+      </Columns>
+    </Item45>
   </Tables>
 </DbSchema>
