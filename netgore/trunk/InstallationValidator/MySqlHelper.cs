@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using NetGore.Db;
 
 namespace InstallationValidator
@@ -67,6 +68,31 @@ namespace InstallationValidator
             ImportDatabaseContents();
         }
 
+        static string TryGetMySqlPathFromRegistry()
+        {
+            try
+            {
+                var software = Registry.LocalMachine.OpenSubKey("Software");
+                if (software == null)
+                    return null;
+
+                var mysqlab = software.OpenSubKey("MYSQL AB");
+                if (mysqlab == null) return null;
+
+                var mysql51 = mysqlab.OpenSubKey("MySql Server 5.1");
+                if (mysql51 == null)
+                    return null;
+
+                return mysql51.GetValue("Location").ToString();
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+
+                return null;
+            }
+        }
+
         /// <summary>
         /// Finds the path to a MySql file.
         /// </summary>
@@ -74,13 +100,14 @@ namespace InstallationValidator
         /// <returns>The path to the MySql file.</returns>
         public static string FindMySqlFile(string fileName)
         {
-            var path1 = Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "xMySql";
-            var path2 = Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "xMySql";
+            var regPath = TryGetMySqlPathFromRegistry();
+            var path1 = Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "MySql";
+            var path2 = Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "MySql";
 
             if (path1 == path2)
                 path1 = path2.Replace(" (x86)", string.Empty);
 
-            var filePath = FileFinder.Find(fileName, path1) ?? FileFinder.Find(fileName, path2);
+            var filePath = FileFinder.Find(fileName, regPath) ?? FileFinder.Find(fileName, path1) ?? FileFinder.Find(fileName, path2);
 
              return filePath;
         }
