@@ -358,7 +358,7 @@ namespace NetGore.Graphics
             _str.Origin = origin;
             _str.Scale = scale;
             _str.Style = style;
-            _str.Size = (uint)spriteFont.GetLineSpacing();
+            _str.Size = spriteFont.DefaultSize;
 
             _rw.Draw(_str);
         }

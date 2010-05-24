@@ -440,7 +440,7 @@ namespace DemoGame.Client
         void InitializeGUI()
         {
             // Set up the fonts
-            _guiFont = ScreenManager.Content.LoadFont("Font/Arial", 12, ContentLevel.Global);
+            _guiFont = ScreenManager.Content.LoadFont("Font/Arial", 14, ContentLevel.Global);
             GUIManager.Font = _guiFont;
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
