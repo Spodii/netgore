@@ -293,8 +293,14 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Parser for the console commands. The actual handling is done in the <see cref="ConsoleCommands"/> class.
+        /// </summary>
         class ConsoleCommandParser : StringCommandParser<ConsoleCommandAttribute>
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ConsoleCommandParser"/> class.
+            /// </summary>
             public ConsoleCommandParser() : base(typeof(ConsoleCommands))
             {
             }
