@@ -41,6 +41,20 @@ namespace DemoGame.Client
         NPCChatResponseBase[] _responses;
 
         /// <summary>
+        /// Handles when the Close button on the form is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected override void CloseButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            // Since we have to let the server know what our chat state is, we can't just close the window. Instead,
+            // make a request to the server that we want to end the chat dialog. If the server allows it, then it
+            // will eventually close.
+            if (RequestEndDialog != null)
+                RequestEndDialog(this);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogForm"/> class.
         /// </summary>
         /// <param name="position">The position.</param>

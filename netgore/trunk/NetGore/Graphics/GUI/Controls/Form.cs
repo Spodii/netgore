@@ -66,7 +66,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
-        protected virtual void CloseButton_Clicked(object sender, MouseButtonEventArgs e)
+        protected virtual void CloseButtonClicked(object sender, MouseButtonEventArgs e)
         {
             IsVisible = false;
         }
@@ -104,7 +104,7 @@ namespace NetGore.Graphics.GUI
             if (_closeButton == null)
             {
                 _closeButton = new FormButton(this, "Close") { IsVisible = IsCloseButtonVisible };
-                _closeButton.Clicked += CloseButton_Clicked;
+                _closeButton.Clicked += CloseButtonClicked;
             }
 
             // Load the border

@@ -48,6 +48,7 @@ namespace DemoGame.Client
             new CharacterSelectionScreen(_screenManager);
             new CreateCharacterScreen(_screenManager);
             new NewAccountScreen(_screenManager);
+
             _screenManager.ConsoleScreen = new ConsoleScreen(_screenManager);
             _screenManager.SetScreen(MainMenuScreen.ScreenName);
 
