@@ -99,12 +99,12 @@ namespace NetGore.Graphics.GUI
         {
             base.DrawControl(spriteBatch);
 
-            // Check for a valid texture
-            if (_sprite == null || _sprite.Texture == null)
+            // Check for a valid sprite
+            if (Sprite == null || Sprite.Texture == null)
                 return;
 
-            if (Sprite != null)
-                Sprite.Update(TickCount.Now);
+            // Update the sprite before drawing it
+            Sprite.Update(TickCount.Now);
 
             var sp = ScreenPosition;
             var min = sp + new Vector2(Border.LeftWidth, Border.TopHeight);
