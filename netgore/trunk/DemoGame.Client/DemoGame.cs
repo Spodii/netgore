@@ -58,10 +58,8 @@ namespace DemoGame.Client
 
             _sockets = ClientSockets.Instance;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ShowMouseCursor(true);
             UseVerticalSync(true);
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             KeyPressed += DemoGame_KeyPressed;
         }

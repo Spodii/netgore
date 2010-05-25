@@ -1825,6 +1825,9 @@ namespace NetGore.Graphics.GUI
         /// <param name="currentTime">The current time in milliseconds.</param>
         public void Update(TickCount currentTime)
         {
+            // This method just handles the recursive updating. The real updating logic is done in UpdateControl.
+
+            // Do not update disposed controls
             if (IsDisposed)
                 return;
 
@@ -1839,6 +1842,23 @@ namespace NetGore.Graphics.GUI
                 if (i < _controls.Count && _controls[i] != child)
                     --i;
             }
+
+            // Perform the updating
+            UpdateControl(currentTime);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
+        /// not visible.
+        /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        protected virtual void UpdateControl(TickCount currentTime)
+        {
+            if (IsDisposed)
+                return;
+
+            // Set the top-most controls if needed
+            ProcessTopMostQueue();
 
             // Update the control's position if it is being dragged
             if (_isDragging)
@@ -1857,28 +1877,6 @@ namespace NetGore.Graphics.GUI
                     Position = GUIManager.CursorPosition - _dragOffset;
                 }
             }
-
-            // Perform misc updating
-            UpdateControl(currentTime);
-        }
-
-        /// <summary>
-        /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
-        /// </summary>
-        /// <param name="currentTime">The current time in milliseconds.</param>
-        protected virtual void UpdateControl(TickCount currentTime)
-        {
-            if (IsDisposed)
-                return;
-
-            // Update all the child controls
-            for (var i = 0; i < _controls.Count; i++)
-            {
-                _controls[i].UpdateControl(currentTime);
-            }
-
-            // Set the top-most controls if needed
-            ProcessTopMostQueue();
 
             // Auto-resize if needed
             if (ResizeToChildren)
