@@ -1662,7 +1662,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         void ProcessTopMostQueue()
         {
-            if (_setTopMostQueue == null || _setTopMostQueue.Count == 0)
+            if (_setTopMostQueue == null)
                 return;
 
             // Loop through all the controls in the queue
