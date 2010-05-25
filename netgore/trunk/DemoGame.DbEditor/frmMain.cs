@@ -1016,10 +1016,6 @@ namespace DemoGame.DbEditor
             }
         }
 
-        void frmMain_Load(object sender, EventArgs e)
-        {
-        }
-
         /// <summary>
         /// Handles the SelectedIndexChanged event of the lstMessages control.
         /// </summary>
