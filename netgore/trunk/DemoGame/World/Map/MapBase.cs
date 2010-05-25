@@ -1317,14 +1317,6 @@ namespace DemoGame
         #region IMapTable Members
 
         /// <summary>
-        /// Gets the value of the database column `id`.
-        /// </summary>
-        MapID IMapTable.ID
-        {
-            get { return ID; }
-        }
-
-        /// <summary>
         /// Gets or sets the name of the map.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
