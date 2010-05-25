@@ -964,11 +964,41 @@ namespace DemoGame.DbEditor
             if (MessageBox.Show(confirmMsg, "Create new?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
+            // Ask if they want to clone the selected object
+            var clone = false;
+            if (pgShop.SelectedObject != null)
+            {
+                const string cloneMsg = "Do you wish to copy the values from the currently selected shop?";
+                clone = MessageBox.Show(cloneMsg, "Clone?", MessageBoxButtons.YesNo) == DialogResult.Yes;
+            }
+
             // Get the next free ID
             var id = ReserveFreeShopID(_dbController);
 
+            // Create the template
+            EditorShop newShop;
+            if (clone)
+            {
+                // Clone from existing template
+                try
+                {
+                    newShop = new EditorShop(id, (EditorShop)pgShop.SelectedObject);
+                }
+                catch (Exception)
+                {
+                    // If cloning fails, make sure we delete the ID we reserved before returning the exception
+                    _dbController.GetQuery<DeleteShopQuery>().Execute(id);
+                    throw;
+                }
+            }
+            else
+            {
+                // Create new template using the default table values (the row already exists since we reserved it)
+                newShop = new EditorShop(id, _dbController);
+            }
+
             // Set the new shop
-            pgShop.SelectedObject = new EditorShop(id, _dbController);
+            pgShop.SelectedObject = newShop;
         }
 
         /// <summary>
