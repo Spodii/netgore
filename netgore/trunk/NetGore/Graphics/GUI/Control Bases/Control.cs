@@ -1677,81 +1677,136 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendFocusedEvent(MouseButtonEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeFocused();
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendKeyPressedEvent(KeyEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeKeyPressed(e);
         }
 
+        /// <summary>
+        /// Gets of this <see cref="Control"/> is in a valid state to be receiving input events.
+        /// </summary>
+        bool CanReceiveInputEvent { get { return IsVisible && IsEnabled && !IsDisposed; } }
+
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendKeyReleasedEvent(KeyEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeKeyReleased(e);
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendLostFocusEvent(MouseButtonEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeLostFocus();
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendMouseButtonPressedEvent(MouseButtonEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeMouseDown(e);
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendMouseButtonReleasedEvent(MouseButtonEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeMouseUp(e);
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendMouseEnterEvent(MouseMoveEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeMouseEnter(e);
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendMouseLeaveEvent(MouseMoveEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeMouseLeave(e);
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendMouseMoveEvent(MouseMoveEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeMouseMoved(e);
         }
 
+        /// <summary>
+        /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the
+        /// <see cref="IGUIManager"/> that manages this <see cref="Control"/> instance.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
         internal void SendTextEnteredEvent(TextEventArgs e)
         {
-            if (IsDisposed || !IsEnabled || !IsVisible)
+            if (!CanReceiveInputEvent)
                 return;
 
             InvokeTextEntered(e);
