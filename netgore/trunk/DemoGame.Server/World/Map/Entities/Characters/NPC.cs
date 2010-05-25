@@ -89,8 +89,17 @@ namespace DemoGame.Server
             _chatDialog = v.ChatDialog.HasValue ? _npcChatManager[v.ChatDialog.Value] : null;
             SetShopFromID(v.ShopID);
 
-            RespawnMapID = map.ID;
-            RespawnPosition = position;
+            // Set the respawn positions only if the map we set them on is not instanced
+            if (!map.IsInstanced)
+            {
+                RespawnMapID = map.ID;
+                RespawnPosition = position;
+            }
+            else
+            {
+                RespawnMapID = null;
+                RespawnPosition = Vector2.Zero;
+            }
 
             LoadSpawnItems();
 

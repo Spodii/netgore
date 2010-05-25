@@ -140,37 +140,39 @@ namespace DemoGame.Server
                 return string.Format("Item `{0}` found at unknown source `{1}`.", item, source);
         }
 
+        /// <summary>
+        /// Finds an item in the world.
+        /// </summary>
+        /// <param name="id">The ID of the item to find.</param>
+        /// <param name="source">When this method returns a non-null value, contains the object that was holding the item.</param>
+        /// <returns>The <see cref="ItemEntity"/> for the given <paramref name="id"/>; otherwise null.</returns>
         public ItemEntity FindItem(ItemID id, out object source)
         {
+            // Search all maps in the world
             foreach (var map in Server.World.Maps)
             {
-                foreach (var item in map.DynamicEntities.OfType<ItemEntity>())
+                // Check if the item is on the map itself
+                foreach (var item in map.DynamicEntities.OfType<ItemEntity>().Where(item => item.ID == id))
                 {
-                    if (item.ID == id)
-                    {
-                        source = map;
-                        return item;
-                    }
+                    source = map;
+                    return item;
                 }
 
+                // Check for the item in the inventory of characters
                 foreach (var character in map.DynamicEntities.OfType<Character>())
                 {
-                    foreach (var item in character.Equipped.Select(x => x.Value))
+                    // Check the equipment
+                    foreach (var item in character.Equipped.Select(x => x.Value).Where(item => item.ID == id))
                     {
-                        if (item.ID == id)
-                        {
-                            source = character.Equipped;
-                            return item;
-                        }
+                        source = character.Equipped;
+                        return item;
                     }
 
-                    foreach (var item in character.Inventory.Select(x => x.Value))
+                    // Check the inventory
+                    foreach (var item in character.Inventory.Select(x => x.Value).Where(item => item.ID == id))
                     {
-                        if (item.ID == id)
-                        {
-                            source = character.Inventory;
-                            return item;
-                        }
+                        source = character.Inventory;
+                        return item;
                     }
                 }
             }
@@ -192,20 +194,35 @@ namespace DemoGame.Server
                 return string.Format("Account {0} has the ID {1}.", accountName, accountID);
         }
 
+        /// <summary>
+        /// Gets the basic spatial information for a <see cref="Character"/>.
+        /// </summary>
+        /// <param name="c">The <see cref="Character"/>.</param>
+        /// <returns>The information for the <paramref name="c"/> as a string.</returns>
         static string GetCharacterInfoShort(Character c)
         {
-            var s = c.ToString();
-            s += "\t Map: ";
-            if (c.Map != null)
-                s += c.Map.ID;
-            else
-                s += "null";
+            StringBuilder sb = new StringBuilder();
 
-            s += " @ ";
-            s += c.Position;
-            return s;
+            sb.Append(c.ToString());
+            sb.Append("\t Map: ");
+
+            if (c.Map != null)
+                sb.Append(c.Map);
+            else
+                sb.Append("[null]");
+
+            sb.Append(" @ ");
+            sb.Append(c.Position);
+
+            return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the header string for a command.
+        /// </summary>
+        /// <param name="header">The header.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The string to display.</returns>
         static string GetCommandHeader(string header, params object[] args)
         {
             return _separator + _newLine + string.Format(header, args) + _newLine + _separator + _newLine;
