@@ -71,6 +71,21 @@ namespace DemoGame.EditorTools
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorShop"/> class.
+        /// </summary>
+        /// <param name="id">The <see cref="ShopID"/>.</param>
+        /// <param name="existing">The <see cref="EditorShop"/> to copy the values from.</param>
+        public EditorShop(ShopID id, EditorShop existing)
+        {
+            _id = id;
+
+            Name = existing.Name;
+            CanBuy = existing.CanBuy;
+
+            _items = new List<ItemTemplateID>(existing._items);
+        }
+
         #region IShopTable Members
 
         /// <summary>
