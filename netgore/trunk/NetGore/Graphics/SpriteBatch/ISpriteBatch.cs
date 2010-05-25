@@ -32,7 +32,8 @@ namespace NetGore.Graphics
         /// <param name="blendMode">Blending options to use when rendering.</param>
         /// <param name="size">The size of the view area.</param>
         /// <param name="center">The position of the center of the view.</param>
-        void Begin(BlendMode blendMode, Vector2 size, Vector2 center);
+        /// <param name="rotation">The amount to rotation the view in degrees.</param>
+        void Begin(BlendMode blendMode, Vector2 size, Vector2 center, float rotation);
 
         /// <summary>
         /// Prepares the graphics device for drawing sprites with specified blending, sorting, and render state options,

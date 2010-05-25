@@ -85,10 +85,12 @@ namespace NetGore.Graphics
         /// <param name="blendMode">Blending options to use when rendering.</param>
         /// <param name="size">The half-size of the view area.</param>
         /// <param name="center">The position of the center of the view.</param>
-        public void Begin(BlendMode blendMode, Vector2 size, Vector2 center)
+        /// <param name="rotation">The amount to rotation the view in degrees.</param>
+        public void Begin(BlendMode blendMode, Vector2 size, Vector2 center, float rotation)
         {
             _rw.CurrentView.Size = size;
             _rw.CurrentView.Center = center;
+            _rw.CurrentView.Rotation = rotation;
             _rw.CurrentView = _rw.CurrentView;
 
             _sprite.BlendMode = blendMode;
@@ -102,7 +104,7 @@ namespace NetGore.Graphics
         /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the world.</param>
         public virtual void Begin(BlendMode blendMode, ICamera2D camera)
         {
-            Begin(blendMode, camera.Size, camera.Min + (camera.Size / 2f));
+            Begin(blendMode, camera.Size, camera.Min + (camera.Size / 2f), camera.Rotation);
         }
 
         /// <summary>
