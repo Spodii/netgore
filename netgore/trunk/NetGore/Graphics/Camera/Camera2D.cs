@@ -12,6 +12,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class Camera2D : ICamera2D
     {
+        // NOTE: The internal Matrix is an artifact left over form the XNA implementation. This is not used (currently) for SFML since SFML does not let you set the transformation matrix. So right now, its just a waste.
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         bool _keepInMap = true;
