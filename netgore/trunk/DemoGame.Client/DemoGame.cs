@@ -60,7 +60,6 @@ namespace DemoGame.Client
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ShowMouseCursor(true);
             UseVerticalSync(true);
-            SetFramerateLimit(60);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             KeyPressed += DemoGame_KeyPressed;
