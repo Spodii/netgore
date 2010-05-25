@@ -103,6 +103,9 @@ namespace NetGore.Graphics.GUI
             if (_sprite == null || _sprite.Texture == null)
                 return;
 
+            if (Sprite != null)
+                Sprite.Update(TickCount.Now);
+
             var sp = ScreenPosition;
             var min = sp + new Vector2(Border.LeftWidth, Border.TopHeight);
 
@@ -172,19 +175,6 @@ namespace NetGore.Graphics.GUI
             base.SetDefaultValues();
 
             CanDrag = false;
-        }
-
-        /// <summary>
-        /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
-        /// not visible.
-        /// </summary>
-        /// <param name="currentTime">The current time in milliseconds.</param>
-        protected override void UpdateControl(TickCount currentTime)
-        {
-            base.UpdateControl(currentTime);
-
-            if (Sprite != null)
-                Sprite.Update(currentTime);
         }
     }
 }
