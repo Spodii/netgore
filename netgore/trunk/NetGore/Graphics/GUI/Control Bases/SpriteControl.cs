@@ -175,7 +175,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
+        /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
+        /// not visible.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
         protected override void UpdateControl(TickCount currentTime)

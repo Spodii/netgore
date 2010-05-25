@@ -157,10 +157,6 @@ namespace DemoGame.Client
                 Size = _iconSize;
             }
 
-            /// <summary>
-            /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
-            /// </summary>
-            /// <param name="currentTime">The current time in milliseconds.</param>
             protected override void UpdateControl(TickCount currentTime)
             {
                 _isCoolingDown = _cooldownManager.IsCoolingDown(SkillInfo.CooldownGroup, currentTime);
