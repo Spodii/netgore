@@ -218,6 +218,10 @@ namespace DemoGame.NPCChatEditor
             OnResize(new EventArgs());
         }
 
+        /// <summary>
+        /// Handles when the form refreshes.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -228,7 +232,7 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.Width = ClientSize.Width - (npcChatDialogView.Left * 2);
             npcChatDialogView.Height = gbSelectedNode.Top - npcChatDialogView.Top - 6;
 
-            button1.Left = ClientSize.Width - button1.Width - 3;
+            btnRefresh.Left = ClientSize.Width - btnRefresh.Width - 3;
         }
 
         /// <summary>
@@ -320,6 +324,9 @@ namespace DemoGame.NPCChatEditor
             _doNotUpdateObj = false;
         }
 
+        /// <summary>
+        /// Updates the actions list.
+        /// </summary>
         void UpdateActionsList()
         {
             if (EditingObjAsResponse == null)
@@ -331,6 +338,11 @@ namespace DemoGame.NPCChatEditor
             lstActions.SynchronizeItemList(EditingObjAsResponse.Actions);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnAddAction control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAddAction_Click(object sender, EventArgs e)
         {
             if (EditingObjAsResponse == null)
