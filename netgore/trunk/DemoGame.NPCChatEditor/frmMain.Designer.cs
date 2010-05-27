@@ -32,19 +32,18 @@ namespace DemoGame.NPCChatEditor
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.npcChatDialogView = new NetGore.EditorTools.NPCChat.NPCChatDialogView();
-            this.gbSelectedNode = new System.Windows.Forms.GroupBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChat.NPCChatDialogComboBox();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.npcChatDialogView = new NetGore.EditorTools.NPCChat.NPCChatDialogView();
+            this.gbSelectedNode = new System.Windows.Forms.GroupBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
-            this.gbConditionals = new System.Windows.Forms.GroupBox();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -73,29 +72,29 @@ namespace DemoGame.NPCChatEditor
             this.btnDeleteRedirect = new System.Windows.Forms.Button();
             this.txtRedirectID = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.gbConditionals = new System.Windows.Forms.GroupBox();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.lstConditionals = new NetGore.EditorTools.NPCChat.NPCChatConditionalsListBox();
+            this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btnAddConditional = new System.Windows.Forms.Button();
             this.btnDeleteConditional = new System.Windows.Forms.Button();
-            this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
-            this.lstConditionals = new NetGore.EditorTools.NPCChat.NPCChatConditionalsListBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            this.gbSelectedNode.SuspendLayout();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            this.gbSelectedNode.SuspendLayout();
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
-            this.gbConditionals.SuspendLayout();
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
@@ -104,6 +103,7 @@ namespace DemoGame.NPCChatEditor
             this.tpResponse.SuspendLayout();
             this.gbActions.SuspendLayout();
             this.tpRedirect.SuspendLayout();
+            this.gbConditionals.SuspendLayout();
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.Panel2.SuspendLayout();
             this.splitContainer7.SuspendLayout();
@@ -126,6 +126,105 @@ namespace DemoGame.NPCChatEditor
             this.splitContainer1.Size = new System.Drawing.Size(930, 623);
             this.splitContainer1.SplitterDistance = 25;
             this.splitContainer1.TabIndex = 12;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.cmbSelectedDialog);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
+            this.splitContainer3.Size = new System.Drawing.Size(930, 25);
+            this.splitContainer3.SplitterDistance = 397;
+            this.splitContainer3.TabIndex = 19;
+            // 
+            // cmbSelectedDialog
+            // 
+            this.cmbSelectedDialog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbSelectedDialog.FormattingEnabled = true;
+            this.cmbSelectedDialog.Location = new System.Drawing.Point(0, 0);
+            this.cmbSelectedDialog.Name = "cmbSelectedDialog";
+            this.cmbSelectedDialog.Size = new System.Drawing.Size(397, 21);
+            this.cmbSelectedDialog.TabIndex = 13;
+            this.cmbSelectedDialog.SelectedDialogChanged += new NetGore.EditorTools.NPCChat.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_SelectedDialogChanged);
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer4.IsSplitterFixed = true;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.txtDialogTitle);
+            this.splitContainer4.Panel1.Controls.Add(this.label6);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.btnRefresh);
+            this.splitContainer4.Panel2.Controls.Add(this.btnSave);
+            this.splitContainer4.Panel2.Controls.Add(this.btnNew);
+            this.splitContainer4.Size = new System.Drawing.Size(529, 25);
+            this.splitContainer4.SplitterDistance = 351;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // txtDialogTitle
+            // 
+            this.txtDialogTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDialogTitle.Location = new System.Drawing.Point(30, 0);
+            this.txtDialogTitle.Name = "txtDialogTitle";
+            this.txtDialogTitle.Size = new System.Drawing.Size(321, 20);
+            this.txtDialogTitle.TabIndex = 16;
+            this.txtDialogTitle.TextChanged += new System.EventHandler(this.txtDialogTitle_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label6.Location = new System.Drawing.Point(0, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(30, 13);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Title:";
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnRefresh.Location = new System.Drawing.Point(116, 0);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(58, 25);
+            this.btnRefresh.TabIndex = 21;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnSave.Location = new System.Drawing.Point(58, 0);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(58, 25);
+            this.btnSave.TabIndex = 20;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            // 
+            // btnNew
+            // 
+            this.btnNew.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnNew.Location = new System.Drawing.Point(0, 0);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(58, 25);
+            this.btnNew.TabIndex = 19;
+            this.btnNew.Text = "New";
+            this.btnNew.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
             // 
@@ -159,6 +258,7 @@ namespace DemoGame.NPCChatEditor
             this.npcChatDialogView.NPCChatDialog = null;
             this.npcChatDialogView.Size = new System.Drawing.Size(930, 345);
             this.npcChatDialogView.TabIndex = 1;
+            this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
             // 
             // gbSelectedNode
             // 
@@ -170,102 +270,6 @@ namespace DemoGame.NPCChatEditor
             this.gbSelectedNode.TabIndex = 3;
             this.gbSelectedNode.TabStop = false;
             this.gbSelectedNode.Text = "Selected Node";
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.cmbSelectedDialog);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(930, 25);
-            this.splitContainer3.SplitterDistance = 397;
-            this.splitContainer3.TabIndex = 19;
-            // 
-            // splitContainer4
-            // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer4.IsSplitterFixed = true;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.txtDialogTitle);
-            this.splitContainer4.Panel1.Controls.Add(this.label6);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.btnRefresh);
-            this.splitContainer4.Panel2.Controls.Add(this.btnSave);
-            this.splitContainer4.Panel2.Controls.Add(this.btnNew);
-            this.splitContainer4.Size = new System.Drawing.Size(529, 25);
-            this.splitContainer4.SplitterDistance = 351;
-            this.splitContainer4.TabIndex = 0;
-            // 
-            // cmbSelectedDialog
-            // 
-            this.cmbSelectedDialog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbSelectedDialog.FormattingEnabled = true;
-            this.cmbSelectedDialog.Location = new System.Drawing.Point(0, 0);
-            this.cmbSelectedDialog.Name = "cmbSelectedDialog";
-            this.cmbSelectedDialog.Size = new System.Drawing.Size(397, 21);
-            this.cmbSelectedDialog.TabIndex = 13;
-            // 
-            // txtDialogTitle
-            // 
-            this.txtDialogTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDialogTitle.Location = new System.Drawing.Point(30, 0);
-            this.txtDialogTitle.Name = "txtDialogTitle";
-            this.txtDialogTitle.Size = new System.Drawing.Size(321, 20);
-            this.txtDialogTitle.TabIndex = 16;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label6.Location = new System.Drawing.Point(0, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(30, 13);
-            this.label6.TabIndex = 15;
-            this.label6.Text = "Title:";
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnRefresh.Location = new System.Drawing.Point(116, 0);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(58, 25);
-            this.btnRefresh.TabIndex = 21;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            // 
-            // btnSave
-            // 
-            this.btnSave.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnSave.Location = new System.Drawing.Point(58, 0);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(58, 25);
-            this.btnSave.TabIndex = 20;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            // 
-            // btnNew
-            // 
-            this.btnNew.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnNew.Location = new System.Drawing.Point(0, 0);
-            this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(58, 25);
-            this.btnNew.TabIndex = 19;
-            this.btnNew.Text = "New";
-            this.btnNew.UseVisualStyleBackColor = true;
             // 
             // splitContainer5
             // 
@@ -283,17 +287,6 @@ namespace DemoGame.NPCChatEditor
             this.splitContainer5.Size = new System.Drawing.Size(924, 226);
             this.splitContainer5.SplitterDistance = 466;
             this.splitContainer5.TabIndex = 16;
-            // 
-            // gbConditionals
-            // 
-            this.gbConditionals.Controls.Add(this.splitContainer7);
-            this.gbConditionals.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbConditionals.Location = new System.Drawing.Point(0, 0);
-            this.gbConditionals.Name = "gbConditionals";
-            this.gbConditionals.Size = new System.Drawing.Size(454, 226);
-            this.gbConditionals.TabIndex = 16;
-            this.gbConditionals.TabStop = false;
-            this.gbConditionals.Text = "Conditionals";
             // 
             // splitContainer6
             // 
@@ -324,6 +317,7 @@ namespace DemoGame.NPCChatEditor
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.Size = new System.Drawing.Size(436, 20);
             this.txtTitle.TabIndex = 7;
+            this.txtTitle.TextChanged += new System.EventHandler(this.txtTitle_TextChanged);
             // 
             // label1
             // 
@@ -373,6 +367,7 @@ namespace DemoGame.NPCChatEditor
             this.chkIsBranch.TabIndex = 9;
             this.chkIsBranch.Text = "Is Branch";
             this.chkIsBranch.UseVisualStyleBackColor = true;
+            this.chkIsBranch.CheckedChanged += new System.EventHandler(this.chkIsBranch_CheckedChanged);
             // 
             // btnDeleteDialog
             // 
@@ -409,6 +404,7 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogText.Name = "txtDialogText";
             this.txtDialogText.Size = new System.Drawing.Size(413, 111);
             this.txtDialogText.TabIndex = 1;
+            this.txtDialogText.TextChanged += new System.EventHandler(this.txtDialogText_TextChanged);
             // 
             // label5
             // 
@@ -483,6 +479,7 @@ namespace DemoGame.NPCChatEditor
             this.lstActions.Name = "lstActions";
             this.lstActions.Size = new System.Drawing.Size(186, 108);
             this.lstActions.TabIndex = 0;
+            this.lstActions.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstActions_KeyDown);
             // 
             // btnAddRedirect
             // 
@@ -537,6 +534,7 @@ namespace DemoGame.NPCChatEditor
             this.btnDeleteResponse.TabIndex = 7;
             this.btnDeleteResponse.Text = "Delete";
             this.btnDeleteResponse.UseVisualStyleBackColor = true;
+            this.btnDeleteResponse.Click += new System.EventHandler(this.btnDeleteResponse_Click);
             // 
             // label2
             // 
@@ -554,7 +552,7 @@ namespace DemoGame.NPCChatEditor
             this.tpRedirect.Controls.Add(this.label4);
             this.tpRedirect.Location = new System.Drawing.Point(4, 22);
             this.tpRedirect.Name = "tpRedirect";
-            this.tpRedirect.Size = new System.Drawing.Size(425, 169);
+            this.tpRedirect.Size = new System.Drawing.Size(458, 171);
             this.tpRedirect.TabIndex = 2;
             this.tpRedirect.Text = "Redirect";
             this.tpRedirect.UseVisualStyleBackColor = true;
@@ -567,6 +565,7 @@ namespace DemoGame.NPCChatEditor
             this.btnDeleteRedirect.TabIndex = 10;
             this.btnDeleteRedirect.Text = "Delete";
             this.btnDeleteRedirect.UseVisualStyleBackColor = true;
+            this.btnDeleteRedirect.Click += new System.EventHandler(this.btnDeleteRedirect_Click);
             // 
             // txtRedirectID
             // 
@@ -574,6 +573,8 @@ namespace DemoGame.NPCChatEditor
             this.txtRedirectID.Name = "txtRedirectID";
             this.txtRedirectID.Size = new System.Drawing.Size(48, 20);
             this.txtRedirectID.TabIndex = 6;
+            this.txtRedirectID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtRedirectID_KeyDown);
+            this.txtRedirectID.Leave += new System.EventHandler(this.txtRedirectID_Leave);
             // 
             // label4
             // 
@@ -583,6 +584,17 @@ namespace DemoGame.NPCChatEditor
             this.label4.Size = new System.Drawing.Size(36, 13);
             this.label4.TabIndex = 5;
             this.label4.Text = "Index:";
+            // 
+            // gbConditionals
+            // 
+            this.gbConditionals.Controls.Add(this.splitContainer7);
+            this.gbConditionals.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbConditionals.Location = new System.Drawing.Point(0, 0);
+            this.gbConditionals.Name = "gbConditionals";
+            this.gbConditionals.Size = new System.Drawing.Size(454, 226);
+            this.gbConditionals.TabIndex = 16;
+            this.gbConditionals.TabStop = false;
+            this.gbConditionals.Text = "Conditionals";
             // 
             // splitContainer7
             // 
@@ -607,6 +619,27 @@ namespace DemoGame.NPCChatEditor
             this.splitContainer7.SplitterDistance = 177;
             this.splitContainer7.TabIndex = 9;
             // 
+            // lstConditionals
+            // 
+            this.lstConditionals.ConditionalCollection = null;
+            this.lstConditionals.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstConditionals.EvaluationTypeComboBox = null;
+            this.lstConditionals.FormattingEnabled = true;
+            this.lstConditionals.Location = new System.Drawing.Point(0, 0);
+            this.lstConditionals.Name = "lstConditionals";
+            this.lstConditionals.Size = new System.Drawing.Size(448, 177);
+            this.lstConditionals.TabIndex = 9;
+            this.lstConditionals.DoubleClick += new System.EventHandler(this.lstConditionals_DoubleClick);
+            // 
+            // cmbEvaluateType
+            // 
+            this.cmbEvaluateType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbEvaluateType.FormattingEnabled = true;
+            this.cmbEvaluateType.Location = new System.Drawing.Point(87, 0);
+            this.cmbEvaluateType.Name = "cmbEvaluateType";
+            this.cmbEvaluateType.Size = new System.Drawing.Size(257, 21);
+            this.cmbEvaluateType.TabIndex = 28;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -626,6 +659,7 @@ namespace DemoGame.NPCChatEditor
             this.btnAddConditional.TabIndex = 25;
             this.btnAddConditional.Text = "Add";
             this.btnAddConditional.UseVisualStyleBackColor = true;
+            this.btnAddConditional.Click += new System.EventHandler(this.btnAddConditional_Click);
             // 
             // btnDeleteConditional
             // 
@@ -637,26 +671,6 @@ namespace DemoGame.NPCChatEditor
             this.btnDeleteConditional.Text = "Delete";
             this.btnDeleteConditional.UseVisualStyleBackColor = true;
             this.btnDeleteConditional.Click += new System.EventHandler(this.btnDeleteConditional_Click);
-            // 
-            // cmbEvaluateType
-            // 
-            this.cmbEvaluateType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbEvaluateType.FormattingEnabled = true;
-            this.cmbEvaluateType.Location = new System.Drawing.Point(87, 0);
-            this.cmbEvaluateType.Name = "cmbEvaluateType";
-            this.cmbEvaluateType.Size = new System.Drawing.Size(257, 21);
-            this.cmbEvaluateType.TabIndex = 28;
-            // 
-            // lstConditionals
-            // 
-            this.lstConditionals.ConditionalCollection = null;
-            this.lstConditionals.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstConditionals.EvaluationTypeComboBox = null;
-            this.lstConditionals.FormattingEnabled = true;
-            this.lstConditionals.Location = new System.Drawing.Point(0, 0);
-            this.lstConditionals.Name = "lstConditionals";
-            this.lstConditionals.Size = new System.Drawing.Size(448, 177);
-            this.lstConditionals.TabIndex = 9;
             // 
             // frmMain
             // 
@@ -671,10 +685,6 @@ namespace DemoGame.NPCChatEditor
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.ResumeLayout(false);
-            this.gbSelectedNode.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             this.splitContainer3.ResumeLayout(false);
@@ -682,10 +692,13 @@ namespace DemoGame.NPCChatEditor
             this.splitContainer4.Panel1.PerformLayout();
             this.splitContainer4.Panel2.ResumeLayout(false);
             this.splitContainer4.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
+            this.gbSelectedNode.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
             this.splitContainer5.ResumeLayout(false);
-            this.gbConditionals.ResumeLayout(false);
             this.splitContainer6.Panel1.ResumeLayout(false);
             this.splitContainer6.Panel1.PerformLayout();
             this.splitContainer6.Panel2.ResumeLayout(false);
@@ -698,6 +711,7 @@ namespace DemoGame.NPCChatEditor
             this.gbActions.ResumeLayout(false);
             this.tpRedirect.ResumeLayout(false);
             this.tpRedirect.PerformLayout();
+            this.gbConditionals.ResumeLayout(false);
             this.splitContainer7.Panel1.ResumeLayout(false);
             this.splitContainer7.Panel2.ResumeLayout(false);
             this.splitContainer7.Panel2.PerformLayout();
