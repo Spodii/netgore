@@ -425,7 +425,7 @@ namespace DemoGame.NPCChatEditor
             EditingObjAsResponse.SetPage(new NPCChatDialogItemID(0));
 
             // TODO: Properly update the tree
-            button1_Click(null, null);
+            btnRefresh_Click(null, null);
 
             // TODO: Select the new dialog characterID in the tree
         }
@@ -536,7 +536,7 @@ namespace DemoGame.NPCChatEditor
             }
 
             // TODO: Refresh correctly instead of refreshing the whole thing
-            button1_Click(null, null);
+            btnRefresh_Click(null, null);
         }
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace DemoGame.NPCChatEditor
             parent.SetPage(NPCChatResponseBase.EndConversationPage);
 
             // TODO: Properly update the view
-            button1_Click(null, null);
+            btnRefresh_Click(null, null);
         }
 
         /// <summary>
@@ -590,11 +590,11 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Handles the Click event of the button1 control.
+        /// Handles the Click event of the btnRefresh control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void button1_Click(object sender, EventArgs e)
+        void btnRefresh_Click(object sender, EventArgs e)
         {
             // This button is just here for debugging purposes. Ideally, we won't even actually "need" it.
             var dialog = CurrentDialog;
@@ -603,6 +603,11 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.ExpandAll();
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event of the chkIsBranch control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void chkIsBranch_CheckedChanged(object sender, EventArgs e)
         {
             if (_doNotUpdateObj)
@@ -659,15 +664,10 @@ namespace DemoGame.NPCChatEditor
             }
 
             // TODO: Proper updating
-            button1_Click(this, null);
+            btnRefresh_Click(this, null);
         }
 
-        /// <summary>
-        /// CMBs the selected dialog_ on change dialog.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="dialog">The dialog.</param>
-        void cmbSelectedDialog_OnChangeDialog(NPCChatDialogComboBox sender, NPCChatDialogBase dialog)
+        void cmbSelectedDialog_SelectedDialogChanged(NPCChatDialogComboBox sender, NPCChatDialogBase dialog)
         {
             var initialDoNotUpdateValue = _doNotUpdateObj;
             _doNotUpdateObj = false;
@@ -682,6 +682,11 @@ namespace DemoGame.NPCChatEditor
             _doNotUpdateObj = initialDoNotUpdateValue;
         }
 
+        /// <summary>
+        /// Handles the KeyDown event of the lstActions control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
         void lstActions_KeyDown(object sender, KeyEventArgs e)
         {
             if (_doNotUpdateObj)
@@ -753,10 +758,10 @@ namespace DemoGame.NPCChatEditor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
-        void txtRedirectIndex_KeyDown(object sender, KeyEventArgs e)
+        void txtRedirectID_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Return)
-                txtRedirectIndex_Leave(this, e);
+                txtRedirectID_Leave(this, e);
         }
 
         /// <summary>
@@ -764,7 +769,7 @@ namespace DemoGame.NPCChatEditor
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void txtRedirectIndex_Leave(object sender, EventArgs e)
+        void txtRedirectID_Leave(object sender, EventArgs e)
         {
             if (EditingObjAsTreeNode == null || npcChatDialogView.SelectedNode == null ||
                 npcChatDialogView.SelectedNode.Tag != _editingObj)
@@ -802,7 +807,7 @@ namespace DemoGame.NPCChatEditor
             response.SetPage(new NPCChatDialogItemID(newIndex));
 
             // TODO: Properly update the view
-            button1_Click(null, null);
+            btnRefresh_Click(null, null);
         }
 
         /// <summary>
