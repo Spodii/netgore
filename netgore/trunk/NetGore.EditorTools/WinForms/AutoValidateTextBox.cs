@@ -112,6 +112,9 @@ namespace NetGore.EditorTools
         {
             base.OnTextChanged(e);
 
+            if (DesignMode)
+                return;
+
             if (Text == null)
             {
                 IsValid = false;

@@ -170,6 +170,9 @@ namespace DemoGame.NPCChatEditor
         /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            if (DesignMode)
+                return;
+
             EditorNPCChatManager.SaveDialogs();
 
             base.OnFormClosing(e);
@@ -182,6 +185,9 @@ namespace DemoGame.NPCChatEditor
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            if (DesignMode)
+                return;
 
             CustomUITypeEditors.AddEditors();
 
@@ -213,26 +219,6 @@ namespace DemoGame.NPCChatEditor
             var actionTypes = NPCChatResponseActionBase.Conditionals.OrderBy(x => x.Name);
             cmbAddAction.Items.Clear();
             cmbAddAction.Items.AddRange(actionTypes.Select(x => (object)x).ToArray());
-
-            // Perform the initial resize
-            OnResize(new EventArgs());
-        }
-
-        /// <summary>
-        /// Handles when the form refreshes.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-
-            gbSelectedNode.Top = ClientSize.Height - gbSelectedNode.Height - gbSelectedNode.Left;
-            gbSelectedNode.Width = ClientSize.Width - (gbSelectedNode.Left * 2);
-
-            npcChatDialogView.Width = ClientSize.Width - (npcChatDialogView.Left * 2);
-            npcChatDialogView.Height = gbSelectedNode.Top - npcChatDialogView.Top - 6;
-
-            btnRefresh.Left = ClientSize.Width - btnRefresh.Width - 3;
         }
 
         /// <summary>

@@ -60,6 +60,9 @@ namespace NetGore.EditorTools
         {
             base.OnTypedSelectedItemChanged(item);
 
+            if (DesignMode)
+                return;
+
             if (SelectedEmitterChanged == null)
                 return;
 

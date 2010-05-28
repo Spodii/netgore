@@ -112,21 +112,24 @@ namespace NetGore.EditorTools
         /// <param name="disposing">If true, disposes of managed resources</param>
         protected override void Dispose(bool disposing)
         {
-            if (_rw != null)
+            if (!DesignMode)
             {
-                try
+                if (_rw != null)
                 {
-                    _rw.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    const string errmsg = "Failed to dispose RenderWindow: {0}";
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, ex);
-                    Debug.Fail(string.Format(errmsg, ex));
-                }
+                    try
+                    {
+                        _rw.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose RenderWindow: {0}";
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg, ex);
+                        Debug.Fail(string.Format(errmsg, ex));
+                    }
 
-                _rw = null;
+                    _rw = null;
+                }
             }
 
             base.Dispose(disposing);
@@ -186,7 +189,9 @@ namespace NetGore.EditorTools
         /// <param name="e">Event args.</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            Focus();
+            if (!DesignMode)
+                Focus();
+
             base.OnMouseDown(e);
         }
 
