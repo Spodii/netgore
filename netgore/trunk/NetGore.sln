@@ -146,7 +146,6 @@ Global
 		{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}.Release|x86.ActiveCfg = Release|x86
 		{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}.Release|x86.Build.0 = Release|x86
 		{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}.ReleaseClient|x86.ActiveCfg = Release|x86
-		{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}.ReleaseClient|x86.Build.0 = Release|x86
 		{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
 		{E35B4F33-9ECB-448B-8D6F-EA1CC4FC87B9}.Debug|x86.ActiveCfg = Debug|x86
