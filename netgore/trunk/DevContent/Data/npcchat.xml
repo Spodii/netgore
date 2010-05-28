@@ -138,11 +138,22 @@
         </Item4>
         <Item5>
           <ID>5</ID>
-          <Title />
+          <Title>Don't need it.</Title>
           <Text>Well fine, screw you. Not like you needed it, anyways. Stop wasting my time!</Text>
           <IsBranch>False</IsBranch>
           <Responses>
-            <Count>0</Count>
+            <Count>1</Count>
+            <Item0>
+              <Value>0</Value>
+              <Page>65535</Page>
+              <Text>&lt;New Response&gt;</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
+            </Item0>
           </Responses>
         </Item5>
         <Item6>
