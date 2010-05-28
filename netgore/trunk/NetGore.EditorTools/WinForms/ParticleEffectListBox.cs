@@ -48,6 +48,9 @@ namespace NetGore.EditorTools
         {
             base.OnDoubleClick(e);
 
+            if (DesignMode)
+                return;
+
             var name = TypedSelectedItem;
             if (!string.IsNullOrEmpty(name))
             {

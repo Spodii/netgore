@@ -42,6 +42,7 @@ namespace NetGore.EditorTools
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
+
             if (!disposing)
                 return;
 
@@ -60,17 +61,23 @@ namespace NetGore.EditorTools
         protected abstract IEnumerable<TItem> GetItems();
 
         /// <summary>
-        /// Called after the control has been added to another container.
+        /// Raises the <see cref="M:System.Windows.Forms.Control.CreateControl"/> method.
         /// </summary>
-        protected override void InitLayout()
+        protected override void OnCreateControl()
         {
-            base.InitLayout();
+            base.OnCreateControl();
+
+            if (DesignMode)
+                return;
 
             // Create the update timer
-            _updateTimer = new Timer();
-            _updateTimer.Tick += UpdateTimer_Tick;
-            _updateTimer.Interval = 1000;
-            _updateTimer.Start();
+            if (_updateTimer == null)
+            {
+                _updateTimer = new Timer();
+                _updateTimer.Tick += UpdateTimer_Tick;
+                _updateTimer.Interval = 1000;
+                _updateTimer.Start();
+            }
         }
 
         /// <summary>
