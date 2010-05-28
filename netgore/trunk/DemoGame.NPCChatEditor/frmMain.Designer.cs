@@ -142,7 +142,7 @@ namespace DemoGame.NPCChatEditor
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
             this.splitContainer3.Size = new System.Drawing.Size(930, 25);
-            this.splitContainer3.SplitterDistance = 397;
+            this.splitContainer3.SplitterDistance = 371;
             this.splitContainer3.TabIndex = 19;
             // 
             // splitContainer4
@@ -164,8 +164,8 @@ namespace DemoGame.NPCChatEditor
             this.splitContainer4.Panel2.Controls.Add(this.btnSave);
             this.splitContainer4.Panel2.Controls.Add(this.btnDelete);
             this.splitContainer4.Panel2.Controls.Add(this.btnNew);
-            this.splitContainer4.Size = new System.Drawing.Size(529, 25);
-            this.splitContainer4.SplitterDistance = 293;
+            this.splitContainer4.Size = new System.Drawing.Size(555, 25);
+            this.splitContainer4.SplitterDistance = 319;
             this.splitContainer4.TabIndex = 0;
             // 
             // txtDialogTitle
@@ -173,7 +173,7 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtDialogTitle.Location = new System.Drawing.Point(30, 0);
             this.txtDialogTitle.Name = "txtDialogTitle";
-            this.txtDialogTitle.Size = new System.Drawing.Size(263, 20);
+            this.txtDialogTitle.Size = new System.Drawing.Size(289, 20);
             this.txtDialogTitle.TabIndex = 16;
             this.txtDialogTitle.TextChanged += new System.EventHandler(this.txtDialogTitle_TextChanged);
             // 
@@ -627,7 +627,7 @@ namespace DemoGame.NPCChatEditor
             this.cmbSelectedDialog.FormattingEnabled = true;
             this.cmbSelectedDialog.Location = new System.Drawing.Point(0, 0);
             this.cmbSelectedDialog.Name = "cmbSelectedDialog";
-            this.cmbSelectedDialog.Size = new System.Drawing.Size(397, 21);
+            this.cmbSelectedDialog.Size = new System.Drawing.Size(371, 21);
             this.cmbSelectedDialog.TabIndex = 13;
             this.cmbSelectedDialog.SelectedValueChanged += new System.EventHandler(this.cmbSelectedDialog_SelectedValueChanged);
             // 
@@ -677,6 +677,7 @@ namespace DemoGame.NPCChatEditor
             this.btnSave.TabIndex = 24;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnRefresh
             // 
@@ -687,6 +688,7 @@ namespace DemoGame.NPCChatEditor
             this.btnRefresh.TabIndex = 25;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // frmMain
             // 

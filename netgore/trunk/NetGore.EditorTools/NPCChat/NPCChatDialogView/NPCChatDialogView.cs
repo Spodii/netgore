@@ -43,7 +43,7 @@ namespace NetGore.EditorTools.NPCChat
                 Nodes.Clear();
                 _objToTreeNode.Clear();
 
-                if (_npcChatDialog != null)
+                if (_npcChatDialog != null && _npcChatDialog.GetInitialDialogItem() != null)
                     new NPCChatDialogViewNode(this, _npcChatDialog.GetInitialDialogItem());
             }
         }
