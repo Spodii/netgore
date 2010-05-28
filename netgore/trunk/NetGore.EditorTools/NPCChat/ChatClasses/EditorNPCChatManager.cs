@@ -25,6 +25,20 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
+        /// Deletes a <see cref="EditorNPCChatDialog"/>.
+        /// </summary>
+        /// <param name="dialog">The <see cref="EditorNPCChatDialog"/> to delete.</param>
+        public static void DeleteDialog(EditorNPCChatDialog dialog)
+        {
+            _instance.Reorganize();
+
+            if (GetDialog(dialog.ID) != dialog)
+                return;
+
+            _instance[dialog.ID] = null;
+        }
+
+        /// <summary>
         /// Adds a EditorNPCChatDialog.
         /// </summary>
         /// <param name="dialog">The EditorNPCChatDialog to add.</param>
@@ -57,7 +71,7 @@ namespace NetGore.EditorTools.NPCChat
 
             // Find the first free index
             int i = 0;
-            while (_instance[(NPCChatDialogID)i] != null)
+            while (_instance.DialogExists((NPCChatDialogID)i))
             {
                 ++i;
             }
@@ -65,6 +79,11 @@ namespace NetGore.EditorTools.NPCChat
             // Create the new instance
             var dialog = new EditorNPCChatDialog();
             dialog.SetID(new NPCChatDialogID(i));
+
+            // Create the initial dialog item
+            var dialogItem = new EditorNPCChatDialogItem(dialog.GetFreeDialogItemID(), "New dialog");
+            dialogItem.SetText("<Enter the initial text to display>");
+            dialog.Add(dialogItem);
 
             // Add to the collection
             AddDialog(dialog);
@@ -79,6 +98,13 @@ namespace NetGore.EditorTools.NPCChat
         /// <returns>The EditorNPCChatDialog at the specified <paramref name="id"/>.</returns>
         public static EditorNPCChatDialog GetDialog(NPCChatDialogID id)
         {
+            if (!_instance.DialogExists(id))
+            {
+                _instance.Reorganize();
+                if (!_instance.DialogExists(id))
+                    return null;
+            }
+
             var ret = _instance[id];
 
             // If we grabbed the wrong one, or nothing, try reorganizing

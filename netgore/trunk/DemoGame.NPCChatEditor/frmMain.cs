@@ -184,7 +184,7 @@ namespace DemoGame.NPCChatEditor
         void UpdateSelectedDialogList()
         {
             // Remove itemsthat need to be removed
-            foreach (var dialog in cmbSelectedDialog.Items.OfType<NPCChatDialogBase>())
+            foreach (var dialog in cmbSelectedDialog.Items.OfType<NPCChatDialogBase>().ToImmutable())
             {
                 var fromManager = EditorNPCChatManager.GetDialog(dialog.ID);
                 if (fromManager == null || fromManager != dialog)
@@ -868,8 +868,6 @@ namespace DemoGame.NPCChatEditor
             var initialDoNotUpdateValue = _doNotUpdateObj;
             _doNotUpdateObj = false;
 
-            EditorNPCChatManager.SaveDialogs();
-
             npcChatDialogView.NPCChatDialog = dialog;
             npcChatDialogView.ExpandAll();
 
@@ -885,8 +883,30 @@ namespace DemoGame.NPCChatEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            // TODO: !! ...
-            MessageBox.Show("Not implemented...");
+            // Check for a valid dialog
+            if (CurrentDialog == null)
+            {
+                const string msg = "You must first select a chat dialog to delete it.";
+                MessageBox.Show(msg, "Delete chat", MessageBoxButtons.OK);
+                return;
+            }
+
+            if (CurrentDialog != EditorNPCChatManager.GetDialog(CurrentDialog.ID))
+            {
+                const string msg = "The selected dialog ({0}) seems to be invalid. Cannot delete.";
+                MessageBox.Show(msg, "Delete chat", MessageBoxButtons.OK);
+                return;
+            }
+                
+            // Confirm deletion
+            const string deleteMsg = "Are you sure you wish to delete the NPC chat dialog `{0}`?";
+            if (MessageBox.Show(string.Format(deleteMsg, CurrentDialog), "Delete chat", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Delete
+            EditorNPCChatManager.DeleteDialog(CurrentDialog);
+
+            UpdateSelectedDialogList();
         }
     }
 }
