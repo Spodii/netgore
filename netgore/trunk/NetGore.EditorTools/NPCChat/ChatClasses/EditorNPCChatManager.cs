@@ -48,6 +48,31 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
+        /// Creates a new <see cref="EditorNPCChatDialog"/> and adds it to this collection.
+        /// </summary>
+        /// <returns>The new <see cref="EditorNPCChatDialog"/>.</returns>
+        public static EditorNPCChatDialog CreateNewDialog()
+        {
+            _instance.Reorganize();
+
+            // Find the first free index
+            int i = 0;
+            while (_instance[(NPCChatDialogID)i] != null)
+            {
+                ++i;
+            }
+
+            // Create the new instance
+            var dialog = new EditorNPCChatDialog();
+            dialog.SetID(new NPCChatDialogID(i));
+
+            // Add to the collection
+            AddDialog(dialog);
+
+            return dialog;
+        }
+
+        /// <summary>
         /// Gets the EditorNPCChatDialog at the specified <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The ID of the EditorNPCChatDialog to get.</param>

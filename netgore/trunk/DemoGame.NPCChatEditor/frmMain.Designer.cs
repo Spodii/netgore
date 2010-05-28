@@ -152,7 +152,7 @@ namespace DemoGame.NPCChatEditor
             this.cmbSelectedDialog.Name = "cmbSelectedDialog";
             this.cmbSelectedDialog.Size = new System.Drawing.Size(397, 21);
             this.cmbSelectedDialog.TabIndex = 13;
-            this.cmbSelectedDialog.SelectedDialogChanged += new NetGore.EditorTools.NPCChat.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_SelectedDialogChanged);
+            this.cmbSelectedDialog.SelectedValueChanged += new System.EventHandler(this.cmbSelectedDialog_SelectedValueChanged);
             // 
             // splitContainer4
             // 
@@ -191,7 +191,8 @@ namespace DemoGame.NPCChatEditor
             this.label6.Dock = System.Windows.Forms.DockStyle.Left;
             this.label6.Location = new System.Drawing.Point(0, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(30, 13);
+            this.label6.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label6.Size = new System.Drawing.Size(30, 16);
             this.label6.TabIndex = 15;
             this.label6.Text = "Title:";
             // 
@@ -215,6 +216,7 @@ namespace DemoGame.NPCChatEditor
             this.btnSave.TabIndex = 20;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnNew
             // 
@@ -225,6 +227,7 @@ namespace DemoGame.NPCChatEditor
             this.btnNew.TabIndex = 19;
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // splitContainer2
             // 

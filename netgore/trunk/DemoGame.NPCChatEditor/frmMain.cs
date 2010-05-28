@@ -173,9 +173,30 @@ namespace DemoGame.NPCChatEditor
             if (DesignMode)
                 return;
 
-            EditorNPCChatManager.SaveDialogs();
+            btnSave_Click(this, EventArgs.Empty);
 
             base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="cmbSelectedDialog"/> while retaining the selected item.
+        /// </summary>
+        void UpdateSelectedDialogList()
+        {
+            // Remove itemsthat need to be removed
+            foreach (var dialog in cmbSelectedDialog.Items.OfType<NPCChatDialogBase>())
+            {
+                var fromManager = EditorNPCChatManager.GetDialog(dialog.ID);
+                if (fromManager == null || fromManager != dialog)
+                    cmbSelectedDialog.Items.Remove(dialog);
+            }
+
+            // Re-add the dialogs to make sure none are missing
+            foreach (var dialog in EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>())
+            {
+                if (!cmbSelectedDialog.Items.Contains(dialog))
+                    cmbSelectedDialog.Items.Add(dialog);
+            }
         }
 
         /// <summary>
@@ -204,7 +225,7 @@ namespace DemoGame.NPCChatEditor
 
             // Add the dialogs
             cmbSelectedDialog.Items.Clear();
-            cmbSelectedDialog.AddDialog(EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>());
+            UpdateSelectedDialogList();
 
             // Select the first one
             if (cmbSelectedDialog.Items.Count > 0)
@@ -653,21 +674,6 @@ namespace DemoGame.NPCChatEditor
             btnRefresh_Click(this, null);
         }
 
-        void cmbSelectedDialog_SelectedDialogChanged(NPCChatDialogComboBox sender, NPCChatDialogBase dialog)
-        {
-            var initialDoNotUpdateValue = _doNotUpdateObj;
-            _doNotUpdateObj = false;
-
-            EditorNPCChatManager.SaveDialogs();
-
-            npcChatDialogView.NPCChatDialog = (EditorNPCChatDialog)dialog;
-            npcChatDialogView.ExpandAll();
-
-            txtDialogTitle.Text = CurrentDialog.Title;
-
-            _doNotUpdateObj = initialDoNotUpdateValue;
-        }
-
         /// <summary>
         /// Handles the KeyDown event of the lstActions control.
         /// </summary>
@@ -810,6 +816,66 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            const string msg = "Save changes to the NPC chat dialogs? This will save all dialogs, not just the currently visible one.";
+
+            if (MessageBox.Show(msg, "Save changes", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            EditorNPCChatManager.SaveDialogs();
+
+            MessageBox.Show("NPC chat dialogs saved.", "Saved", MessageBoxButtons.OK);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            const string msg = "Do you wish to create a new NPC chat dialog?";
+
+            if (MessageBox.Show(msg, "Create new dialog", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            var dialog = EditorNPCChatManager.CreateNewDialog();
+
+            UpdateSelectedDialogList();
+
+            cmbSelectedDialog.SelectedItem = dialog;
+        }
+
+        /// <summary>
+        /// Handles the SelectedValueChanged event of the cmbSelectedDialog control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void cmbSelectedDialog_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var dialog = cmbSelectedDialog.SelectedItem as EditorNPCChatDialog;
+            if (dialog == null)
+                return;
+
+            var initialDoNotUpdateValue = _doNotUpdateObj;
+            _doNotUpdateObj = false;
+
+            EditorNPCChatManager.SaveDialogs();
+
+            npcChatDialogView.NPCChatDialog = dialog;
+            npcChatDialogView.ExpandAll();
+
+            txtDialogTitle.Text = CurrentDialog.Title;
+
+            _doNotUpdateObj = initialDoNotUpdateValue;
         }
     }
 }
