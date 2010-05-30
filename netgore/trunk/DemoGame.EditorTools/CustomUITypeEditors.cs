@@ -133,6 +133,12 @@ namespace DemoGame.EditorTools
             TypeDescriptor.AddAttributes(typeof(IEnumerable<MutablePair<ItemTemplateID, byte>>),
                                          new TypeConverterAttribute(typeof(ItemTemplateAndAmountListTypeConverter)));
 
+            TypeDescriptor.AddAttributes(typeof(IEnumerable<CharacterTemplateEquippedItem>),
+                                         new TypeConverterAttribute(typeof(CharacterTemplateEquippedItemListTypeConverter)));
+
+            TypeDescriptor.AddAttributes(typeof(IEnumerable<CharacterTemplateInventoryItem>),
+                                         new TypeConverterAttribute(typeof(CharacterTemplateInventoryItemListTypeConverter)));
+
             TypeDescriptor.AddAttributes(typeof(IEnumerable<QuestID>),
                                          new TypeConverterAttribute(typeof(QuestIDListTypeConverter)));
 
@@ -163,6 +169,8 @@ namespace DemoGame.EditorTools
             AdvancedPropertyDescriptor.SetExtraTextProvider<ShopID>(ExtraTextProvider_ShopID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<ItemTemplateID>(ExtraTextProvider_ItemTemplateID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateID>(ExtraTextProvider_CharacterTemplateID);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateEquippedItem>(ExtraTextProvider_CharacterTemplateEquippedItem);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateInventoryItem>(ExtraTextProvider_CharacterTemplateInventoryItem);
         }
 
         /// <summary>
@@ -277,6 +285,40 @@ namespace DemoGame.EditorTools
                 return null;
 
             return item.Name;
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="CharacterTemplateEquippedItem"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_CharacterTemplateEquippedItem(CharacterTemplateEquippedItem v)
+        {
+            var item = ItemTemplateManager.Instance[v.ID];
+            if (item == null)
+                return null;
+
+            string chance = Math.Round(v.Chance.Percentage * 100f, 0) + "%";
+
+            return "[" + chance + "] " + item.Name;
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="CharacterTemplateEquippedItem"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_CharacterTemplateInventoryItem(CharacterTemplateInventoryItem v)
+        {
+            var item = ItemTemplateManager.Instance[v.ID];
+            if (item == null)
+                return null;
+
+            string chance = Math.Round(v.Chance.Percentage * 100f, 0) + "%";
+
+            return "[" + chance + "] " + item.Name;
         }
 
         /// <summary>

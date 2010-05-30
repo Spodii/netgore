@@ -111,6 +111,8 @@
     <Compile Include="TypeConverters\AllianceIDListTypeConverter.cs" />
     <Compile Include="TypeConverters\CharacterTemplateAndAmountListTypeConverter.cs" />
     <Compile Include="EditorQuest.cs" />
+    <Compile Include="TypeConverters\CharacterTemplateEquippedItemListTypeConverter.cs" />
+    <Compile Include="TypeConverters\CharacterTemplateInventoryItemListTypeConverter.cs" />
     <Compile Include="TypeConverters\ItemTemplateAndAmountListTypeConverter.cs" />
     <Compile Include="TypeConverters\QuestIDListTypeConverter.cs" />
     <Compile Include="UITypeEditors\AllianceIDListBox.cs">
