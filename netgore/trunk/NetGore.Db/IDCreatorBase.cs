@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -153,7 +154,7 @@ namespace NetGore.Db
             var lastValue = -1;
 
             // Execute the reader
-            using (var r = ((IDbQueryReader)_selectIDQuery).ExecuteReader())
+            using (var r = _selectIDQuery.Execute())
             {
                 // Read until we run out of rows
                 while (r.Read())
@@ -252,7 +253,7 @@ namespace NetGore.Db
         /// </summary>
         public void Dispose()
         {
-            // NOTE: I do not believe this is being disposed of ever
+            // NOTE: I do not believe this is being disposed of... ever
             Debug.Fail(
                 "If you see this message, that means this is being disposed of and you can delete this line and the NOTE above.");
 
@@ -262,13 +263,32 @@ namespace NetGore.Db
 
         #endregion
 
+
+        /// <summary>
+        /// The query used to select the IDs from a table.
+        /// </summary>
         class SelectIDQuery : DbQueryReader
         {
             const string _queryString = "SELECT `{0}` FROM `{1}` ORDER BY `{0}` ASC";
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SelectIDQuery"/> class.
+            /// </summary>
+            /// <param name="connectionPool">The connection pool.</param>
+            /// <param name="table">The table.</param>
+            /// <param name="column">The column.</param>
             public SelectIDQuery(DbConnectionPool connectionPool, string table, string column)
                 : base(connectionPool, string.Format(_queryString, column, table))
             {
+            }
+
+            /// <summary>
+            /// Executes the query.
+            /// </summary>
+            /// <returns>The <see cref="IDataReader"/> to use to read the query.</returns>
+            public IDataReader Execute()
+            {
+                return ExecuteReader();
             }
         }
     }

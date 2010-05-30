@@ -18,7 +18,7 @@ namespace DemoGame.Server.Queries
         public CharacterIDCreator(DbConnectionPool connectionPool)
             : base(connectionPool, CharacterTable.TableName, "id", 2048, 128)
         {
-            QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
+            QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
         }
 
         /// <summary>

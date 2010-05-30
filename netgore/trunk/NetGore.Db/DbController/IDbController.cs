@@ -28,6 +28,11 @@ namespace NetGore.Db
         T GetQuery<T>();
 
         /// <summary>
+        /// Gets the <see cref="DbConnectionPool"/> used by this <see cref="IDbController"/>.
+        /// </summary>
+        DbConnectionPool ConnectionPool { get; }
+
+        /// <summary>
         /// Finds all of the column names in the given <paramref name="table"/>.
         /// </summary>
         /// <param name="table">The table.</param>
