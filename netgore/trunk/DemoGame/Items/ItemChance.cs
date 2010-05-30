@@ -17,7 +17,26 @@ namespace DemoGame
     {
         #region Non-Templated Code
 
+        static readonly ItemChance _percent100 = new ItemChance(MaxValue);
+        static readonly ItemChance _percent50 = new ItemChance(MaxValue / 2);
+        static readonly ItemChance _percent0 = new ItemChance(0);
+
         static readonly SafeRandom _random = new SafeRandom();
+
+        /// <summary>
+        /// Gets an <see cref="ItemChance"/> with a 100% chance.
+        /// </summary>
+        public static ItemChance Percent100 { get { return _percent100; } }
+
+        /// <summary>
+        /// Gets an <see cref="ItemChance"/> with a 50% chance.
+        /// </summary>
+        public static ItemChance Percent50 { get { return _percent50; } }
+
+        /// <summary>
+        /// Gets an <see cref="ItemChance"/> with a 0% chance.
+        /// </summary>
+        public static ItemChance Percent0 { get { return _percent0; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemChance"/> struct.

@@ -11,9 +11,9 @@ using NetGore;
 
 namespace DemoGame.EditorTools
 {
-    public partial class CharacterTemplateEquippedItemListForm : Form
+    public partial class CharacterTemplateInventoryItemListForm : Form
     {
-        readonly List<CharacterTemplateEquippedItem> _list;
+        readonly List<CharacterTemplateInventoryItem> _list;
 
         ItemTemplateID? _selectedItem;
 
@@ -22,7 +22,7 @@ namespace DemoGame.EditorTools
         /// </summary>
         /// <param name="list">The list of <see cref="CharacterTemplateID"/>s and amounts.</param>
         /// <exception cref="ArgumentNullException"><paramref name="list"/> is null.</exception>
-        public CharacterTemplateEquippedItemListForm(List<CharacterTemplateEquippedItem> list)
+        public CharacterTemplateInventoryItemListForm(List<CharacterTemplateInventoryItem> list)
         {
             if (DesignMode)
                 return;
@@ -54,7 +54,7 @@ namespace DemoGame.EditorTools
                 return;
 
             _list.Clear();
-            _list.AddRange(lstItems.Items.OfType<CharacterTemplateEquippedItem>());
+            _list.AddRange(lstItems.Items.OfType<CharacterTemplateInventoryItem>());
 
             base.OnClosing(e);
         }
@@ -75,7 +75,7 @@ namespace DemoGame.EditorTools
 
             if (RequireDistinct)
             {
-                if (lstItems.Items.Cast<CharacterTemplateEquippedItem>().Any(x => x.ID == _selectedItem.Value))
+                if (lstItems.Items.Cast<CharacterTemplateInventoryItem>().Any(x => x.ID == _selectedItem.Value))
                 {
                     MessageBox.Show("That item is already in the list.");
                     _selectedItem = null;
@@ -84,7 +84,7 @@ namespace DemoGame.EditorTools
             }
 
             // Add
-            var newItem = new CharacterTemplateEquippedItem(_selectedItem.Value, ItemChance.Percent100);
+            var newItem = new CharacterTemplateInventoryItem(_selectedItem.Value, ItemChance.Percent100, 1, 1);
             lstItems.Items.Add(newItem);
 
             if (RequireDistinct)
@@ -109,7 +109,7 @@ namespace DemoGame.EditorTools
                 // If we require distinct, skip items we already have in the list
                 if (RequireDistinct)
                 {
-                    var listItems = lstItems.Items.OfType<CharacterTemplateEquippedItem>().ToImmutable();
+                    var listItems = lstItems.Items.OfType<CharacterTemplateInventoryItem>().ToImmutable();
                     f.SkipItems = (x => listItems.Any(y => y.ID == x.ID));
                 }
 
@@ -144,15 +144,17 @@ namespace DemoGame.EditorTools
                 return;
 
             // Get the selected item
-            if (!(lstItems.SelectedItem is CharacterTemplateEquippedItem))
+            if (!(lstItems.SelectedItem is CharacterTemplateInventoryItem))
             {
-                Debug.Fail("Was expecting type " + typeof(CharacterTemplateEquippedItem));
+                Debug.Fail("Was expecting type " + typeof(CharacterTemplateInventoryItem));
                 return;
             }
 
-            var sel = (CharacterTemplateEquippedItem)lstItems.SelectedItem;
+            var sel = (CharacterTemplateInventoryItem)lstItems.SelectedItem;
 
             txtChance.Text = sel.Chance.GetRawValue().ToString();
+            txtMin.Text = sel.Min.ToString();
+            txtMax.Text = sel.Max.ToString();
         }
 
         /// <summary>
@@ -166,13 +168,13 @@ namespace DemoGame.EditorTools
                 return;
 
             // Get the selected item
-            if (!(lstItems.SelectedItem is CharacterTemplateEquippedItem))
+            if (!(lstItems.SelectedItem is CharacterTemplateInventoryItem))
             {
-                Debug.Fail("Was expecting type " + typeof(CharacterTemplateEquippedItem));
+                Debug.Fail("Was expecting type " + typeof(CharacterTemplateInventoryItem));
                 return;
             }
 
-            var sel = (CharacterTemplateEquippedItem)lstItems.SelectedItem;
+            var sel = (CharacterTemplateInventoryItem)lstItems.SelectedItem;
 
             // Parse the new amount
             ushort chance;
@@ -185,6 +187,76 @@ namespace DemoGame.EditorTools
 
             // Set the new amount
             sel.Chance = new ItemChance(chance);
+
+            // Force the text to refresh
+            lstItems.Items[lstItems.SelectedIndex] = sel;
+        }
+
+        /// <summary>
+        /// Handles the Leave event of the txtMin control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void txtMin_Leave(object sender, EventArgs e)
+        {
+            if (lstItems.SelectedItem == null)
+                return;
+
+            // Get the selected item
+            if (!(lstItems.SelectedItem is CharacterTemplateInventoryItem))
+            {
+                Debug.Fail("Was expecting type " + typeof(CharacterTemplateInventoryItem));
+                return;
+            }
+
+            var sel = (CharacterTemplateInventoryItem)lstItems.SelectedItem;
+
+            // Parse the new amount
+            ushort v;
+            if (!ushort.TryParse(txtMin.Text, out v))
+                return;
+
+            // Check that the amount changed
+            if (sel.Chance == v)
+                return;
+
+            // Set the new amount
+            sel.Min = v;
+
+            // Force the text to refresh
+            lstItems.Items[lstItems.SelectedIndex] = sel;
+        }
+
+        /// <summary>
+        /// Handles the Leave event of the txtMax control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void txtMax_Leave(object sender, EventArgs e)
+        {
+            if (lstItems.SelectedItem == null)
+                return;
+
+            // Get the selected item
+            if (!(lstItems.SelectedItem is CharacterTemplateInventoryItem))
+            {
+                Debug.Fail("Was expecting type " + typeof(CharacterTemplateInventoryItem));
+                return;
+            }
+
+            var sel = (CharacterTemplateInventoryItem)lstItems.SelectedItem;
+
+            // Parse the new amount
+            ushort v;
+            if (!ushort.TryParse(txtMax.Text, out v))
+                return;
+
+            // Check that the amount changed
+            if (sel.Chance == v)
+                return;
+
+            // Set the new amount
+            sel.Max = v;
 
             // Force the text to refresh
             lstItems.Items[lstItems.SelectedIndex] = sel;

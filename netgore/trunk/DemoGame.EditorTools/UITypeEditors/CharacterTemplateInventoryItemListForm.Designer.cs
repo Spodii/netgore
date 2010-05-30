@@ -1,6 +1,6 @@
 ﻿namespace DemoGame.EditorTools
 {
-    partial class CharacterTemplateEquippedItemListForm
+    partial class CharacterTemplateInventoryItemListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lstItems = new DemoGame.EditorTools.CharacterTemplateEquippedItemListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.txtItem = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
@@ -38,6 +37,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtChance = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtMin = new System.Windows.Forms.TextBox();
+            this.txtMax = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lstItems = new DemoGame.EditorTools.CharacterTemplateInventoryItemListBox();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -66,19 +70,6 @@
             this.splitContainer1.SplitterDistance = 295;
             this.splitContainer1.TabIndex = 0;
             // 
-            // lstItems
-            // 
-            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstItems.FormattingEnabled = true;
-            this.lstItems.Location = new System.Drawing.Point(0, 0);
-            this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(382, 295);
-            this.lstItems.Sorted = true;
-            this.lstItems.TabIndex = 0;
-            this.lstItems.SelectedIndexChanged += new System.EventHandler(this.lstItems_SelectedIndexChanged);
-            this.lstItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstItems_KeyDown);
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -96,6 +87,10 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.txtMax);
+            this.splitContainer2.Panel2.Controls.Add(this.label4);
+            this.splitContainer2.Panel2.Controls.Add(this.txtMin);
+            this.splitContainer2.Panel2.Controls.Add(this.label3);
             this.splitContainer2.Panel2.Controls.Add(this.txtChance);
             this.splitContainer2.Panel2.Controls.Add(this.label2);
             this.splitContainer2.Size = new System.Drawing.Size(382, 54);
@@ -167,7 +162,60 @@
             this.label2.TabIndex = 16;
             this.label2.Text = "Chance:";
             // 
-            // CharacterTemplateEquippedItemListForm
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label3.Location = new System.Drawing.Point(106, 0);
+            this.label3.Name = "label3";
+            this.label3.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label3.Size = new System.Drawing.Size(27, 16);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Min:";
+            // 
+            // txtMin
+            // 
+            this.txtMin.Dock = System.Windows.Forms.DockStyle.Left;
+            this.txtMin.Location = new System.Drawing.Point(133, 0);
+            this.txtMin.Name = "txtMin";
+            this.txtMin.Size = new System.Drawing.Size(43, 20);
+            this.txtMin.TabIndex = 19;
+            this.txtMin.Leave += new System.EventHandler(this.txtMin_Leave);
+            // 
+            // txtMax
+            // 
+            this.txtMax.Dock = System.Windows.Forms.DockStyle.Left;
+            this.txtMax.Location = new System.Drawing.Point(206, 0);
+            this.txtMax.Name = "txtMax";
+            this.txtMax.Size = new System.Drawing.Size(43, 20);
+            this.txtMax.TabIndex = 21;
+            this.txtMax.Leave += new System.EventHandler(this.txtMax_Leave);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label4.Location = new System.Drawing.Point(176, 0);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label4.Size = new System.Drawing.Size(30, 16);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Max:";
+            // 
+            // lstItems
+            // 
+            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstItems.FormattingEnabled = true;
+            this.lstItems.Location = new System.Drawing.Point(0, 0);
+            this.lstItems.Name = "lstItems";
+            this.lstItems.Size = new System.Drawing.Size(382, 295);
+            this.lstItems.Sorted = true;
+            this.lstItems.TabIndex = 0;
+            this.lstItems.SelectedIndexChanged += new System.EventHandler(this.lstItems_SelectedIndexChanged);
+            this.lstItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstItems_KeyDown);
+            // 
+            // CharacterTemplateInventoryItemListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -175,9 +223,9 @@
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.KeyPreview = true;
-            this.Name = "CharacterTemplateEquippedItemListForm";
+            this.Name = "CharacterTemplateInventoryItemListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Character template equipped items";
+            this.Text = "Character template inventory items";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
@@ -194,13 +242,17 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private CharacterTemplateEquippedItemListBox lstItems;
+        private CharacterTemplateInventoryItemListBox lstItems;
         private System.Windows.Forms.TextBox txtItem;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtChance;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtMax;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtMin;
+        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolTip tt;
     }
 }
