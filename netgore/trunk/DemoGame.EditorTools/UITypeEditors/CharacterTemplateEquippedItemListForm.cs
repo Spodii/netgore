@@ -83,15 +83,8 @@ namespace DemoGame.EditorTools
                 }
             }
 
-            ushort chance;
-            if (!ushort.TryParse(txtChance.Text, out chance))
-            {
-                MessageBox.Show("Invalid chance specified.");
-                return;
-            }
-
             // Add
-            var newItem = new CharacterTemplateEquippedItem(_selectedItem.Value, new ItemChance(chance));
+            var newItem = new CharacterTemplateEquippedItem(_selectedItem.Value, ItemChance.Percent100);
             lstItems.Items.Add(newItem);
 
             if (RequireDistinct)

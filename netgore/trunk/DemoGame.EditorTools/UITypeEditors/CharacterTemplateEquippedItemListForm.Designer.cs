@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.lstItems = new DemoGame.EditorTools.CharacterTemplateEquippedItemListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -37,6 +38,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtChance = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -150,6 +152,8 @@
             this.txtChance.Name = "txtChance";
             this.txtChance.Size = new System.Drawing.Size(59, 20);
             this.txtChance.TabIndex = 17;
+            this.tt.SetToolTip(this.txtChance, "The chance of the item to drop. The percent is equal to the value over 65535 (ush" +
+                    "ort.MaxValue).");
             this.txtChance.Leave += new System.EventHandler(this.txtChance_Leave);
             // 
             // label2
@@ -197,5 +201,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtChance;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ToolTip tt;
     }
 }

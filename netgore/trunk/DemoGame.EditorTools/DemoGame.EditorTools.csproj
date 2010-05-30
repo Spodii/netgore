@@ -143,6 +143,16 @@
     <Compile Include="UITypeEditors\CharacterTemplateEquippedItemListForm.Designer.cs">
       <DependentUpon>CharacterTemplateEquippedItemListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UITypeEditors\CharacterTemplateInventoryItemEditor.cs" />
+    <Compile Include="UITypeEditors\CharacterTemplateInventoryItemListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UITypeEditors\CharacterTemplateInventoryItemListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UITypeEditors\CharacterTemplateInventoryItemListForm.Designer.cs">
+      <DependentUpon>CharacterTemplateInventoryItemListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UITypeEditors\GameMessageCollectionLanguageEditorUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -279,6 +289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UITypeEditors\CharacterTemplateEquippedItemListForm.resx">
       <DependentUpon>CharacterTemplateEquippedItemListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UITypeEditors\CharacterTemplateInventoryItemListForm.resx">
+      <DependentUpon>CharacterTemplateInventoryItemListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UITypeEditors\ItemTemplateAndAmountListForm.resx">
       <DependentUpon>ItemTemplateAndAmountListForm.cs</DependentUpon>
