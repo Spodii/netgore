@@ -115,6 +115,7 @@ namespace DemoGame.EditorTools
                 new EditorTypes(typeof(List<AllianceID>), typeof(AllianceIDListEditor)),
                 new EditorTypes(typeof(List<ItemTemplateID>), typeof(ItemTemplateIDListEditor)),
                 new EditorTypes(typeof(List<MutablePair<CharacterTemplateID, ushort>>), typeof(CharacterTemplateAndAmountEditor)),
+                new EditorTypes(typeof(List<CharacterTemplateEquippedItem>), typeof(CharacterTemplateEquippedItemEditor)),
                 new EditorTypes(typeof(StatTypeConstDictionary), typeof(StatTypeConstDictionaryEditor)));
 
             // Add a TypeConverter for the type:

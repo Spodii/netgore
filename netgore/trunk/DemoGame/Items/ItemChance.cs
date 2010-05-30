@@ -49,6 +49,11 @@ namespace DemoGame
         #endregion
 
         /// <summary>
+        /// Gets the chance of this <see cref="ItemChance"/> as a percent in the range of 0.0f to 1.0f.
+        /// </summary>
+        public float Percentage { get { return (float)_value / MaxValue; } }
+
+        /// <summary>
         /// Represents the largest possible value of ItemChance. This field is constant.
         /// </summary>
         public const int MaxValue = ushort.MaxValue;
