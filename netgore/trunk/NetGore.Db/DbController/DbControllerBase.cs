@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using NetGore.Collections;
 
@@ -16,9 +17,12 @@ namespace NetGore.Db
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly List<DbControllerBase> _instances = new List<DbControllerBase>();
+
         readonly DbConnectionPool _connectionPool;
         readonly Dictionary<Type, object> _queryObjects = new Dictionary<Type, object>();
+
         bool _disposed;
+        bool _isLoading = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbControllerBase"/> class.
@@ -47,14 +51,29 @@ namespace NetGore.Db
             // Test the connection
             TestConnectionPool(connectionString, _connectionPool);
 
-            // Create the query objects
-            PopulateQueryObjects();
+            // Create the query objects (in a separate thread)
+            ThreadPool.QueueUserWorkItem(ThreadPoolCallback);
 
             // Add this connection to the list of instances
             lock (_instances)
                 _instances.Add(this);
         }
 
+        /// <summary>
+        /// The callback for the call to the <see cref="ThreadPool"/>.
+        /// </summary>
+        /// <param name="dummy">Dummy parameter.</param>
+        void ThreadPoolCallback(object dummy)
+        {
+            PopulateQueryObjects();
+        }
+
+        /// <summary>
+        /// Creates the <see cref="DatabaseConnectionException"/> for when the connection fails.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="innerException">The inner exception.</param>
+        /// <returns>The <see cref="DatabaseConnectionException"/> for when the connection fails.</returns>
         static DatabaseConnectionException CreateConnectionException(string connectionString, Exception innerException)
         {
             const string errmsg = "Failed to create connection to database: {0}{1}{0}{0}Connection string:{0}{2}";
@@ -111,35 +130,42 @@ namespace NetGore.Db
         /// </summary>
         void PopulateQueryObjects()
         {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Creating query objects for database connection.");
-
-            // Find the classes marked with our attribute
-            var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
-            var types = TypeHelper.FindTypesWithAttribute(typeof(DbControllerQueryAttribute), requiredConstructorParams);
-
-            // Create an instance of each of the types
-            foreach (var type in types)
+            try
             {
-                var instance = Activator.CreateInstance(type, _connectionPool);
-                if (instance == null)
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Creating query objects for database connection.");
+
+                // Find the classes marked with our attribute
+                var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
+                var types = TypeHelper.FindTypesWithAttribute(typeof(DbControllerQueryAttribute), requiredConstructorParams);
+
+                // Create an instance of each of the types
+                foreach (var type in types)
                 {
-                    const string errmsg = "Failed to create instance of Type `{0}`.";
-                    if (log.IsFatalEnabled)
-                        log.Fatal(string.Format(errmsg, type));
-                    Debug.Fail(string.Format(errmsg, type));
-                    throw new InstantiateTypeException(type);
+                    var instance = Activator.CreateInstance(type, _connectionPool);
+                    if (instance == null)
+                    {
+                        const string errmsg = "Failed to create instance of Type `{0}`.";
+                        if (log.IsFatalEnabled)
+                            log.Fatal(string.Format(errmsg, type));
+                        Debug.Fail(string.Format(errmsg, type));
+                        throw new InstantiateTypeException(type);
+                    }
+
+                    // Add the instance to the collection
+                    _queryObjects.Add(type, instance);
+
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Created instance of query class Type `{0}`.", type.Name);
                 }
 
-                // Add the instance to the collection
-                _queryObjects.Add(type, instance);
-
-                if (log.IsDebugEnabled)
-                    log.DebugFormat("Created instance of query class Type `{0}`.", type.Name);
+                if (log.IsInfoEnabled)
+                    log.Info("DbController successfully initialized all queries.");
             }
-
-            if (log.IsInfoEnabled)
-                log.Info("DbController successfully initialized all queries.");
+            finally
+            {
+                _isLoading = false;
+            }
         }
 
         /// <summary>
@@ -171,8 +197,14 @@ namespace NetGore.Db
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
+            // If still loading, make sure to wait until loading finishes
+            while (_isLoading)
+            {
+                Thread.Sleep(1);
+            }
+
             if (_disposed)
                 return;
 
@@ -198,6 +230,12 @@ namespace NetGore.Db
         /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
         public IEnumerable<TableColumnPair> GetPrimaryKeyReferences(string database, string table, string column)
         {
+            // If still loading, make sure to wait until loading finishes
+            while (_isLoading)
+            {
+                Thread.Sleep(1);
+            }
+
             var query = GetFindForeignKeysQuery(_connectionPool);
             var results = query.Execute(database, table, column);
             return results;
@@ -211,6 +249,12 @@ namespace NetGore.Db
         /// <exception cref="ArgumentException">Type <typeparamref name="T"/> was not found in the query cache.</exception>
         public T GetQuery<T>()
         {
+            // If still loading, make sure to wait until loading finishes
+            while (_isLoading)
+            {
+                Thread.Sleep(1);
+            }
+
             object value;
             if (!_queryObjects.TryGetValue(typeof(T), out value))
             {
@@ -226,12 +270,26 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets the <see cref="DbConnectionPool"/> used by this <see cref="IDbController"/>.
+        /// </summary>
+        public DbConnectionPool ConnectionPool
+        {
+            get { return _connectionPool; }
+        }
+
+        /// <summary>
         /// Finds all of the column names in the given <paramref name="table"/>.
         /// </summary>
         /// <param name="table">The table.</param>
         /// <returns>All of the column names in the given <paramref name="table"/>.</returns>
         public IEnumerable<string> GetTableColumns(string table)
         {
+            // If still loading, make sure to wait until loading finishes
+            while (_isLoading)
+            {
+                Thread.Sleep(1);
+            }
+
             var ret = new List<string>();
 
             using (var conn = _connectionPool.Acquire())

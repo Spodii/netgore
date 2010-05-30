@@ -1,10 +1,9 @@
 using System.Linq;
 using DemoGame.Server.DbObjs;
-using DemoGame.Server.Queries;
 using NetGore.Db;
 using NetGore.Features.Guilds;
 
-namespace DemoGame.Server.Guilds
+namespace DemoGame.Server.Queries
 {
     /// <summary>
     /// A thread-safe collection of available IDs for accounts.

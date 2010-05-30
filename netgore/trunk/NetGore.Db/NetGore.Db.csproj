@@ -120,6 +120,7 @@
     <Compile Include="DbTableDataManager\DbTableDataManager.cs" />
     <Compile Include="IDataReaderExtensions.cs" />
     <Compile Include="IDCreatorBase.cs" />
+    <Compile Include="IDCreatorHelper.cs" />
     <Compile Include="MySql\DbConnectionSettingsExtensions.cs" />
     <Compile Include="MySql\MySqlDbConnectionPool.cs" />
     <Compile Include="MySql\MySqlDbController.cs" />

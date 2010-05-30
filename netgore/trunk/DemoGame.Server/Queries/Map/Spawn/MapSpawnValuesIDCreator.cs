@@ -1,9 +1,8 @@
 using System.Linq;
 using DemoGame.Server.DbObjs;
-using DemoGame.Server.Queries;
 using NetGore.Db;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
     public class MapSpawnValuesIDCreator : IDCreatorBase<MapSpawnValuesID>

@@ -102,7 +102,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharacterTemplateEquippedItem.cs" />
+    <Compile Include="CharacterTemplateInventoryItem.cs" />
     <Compile Include="EditorAlliance.cs" />
+    <Compile Include="EditorCharacterTemplate.cs" />
     <Compile Include="EditorMapSpawnValues.cs" />
     <Compile Include="EditorShop.cs" />
     <Compile Include="TypeConverters\AllianceIDListTypeConverter.cs" />

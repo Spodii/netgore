@@ -25,13 +25,8 @@ namespace DemoGame.DbEditor
 {
     public partial class frmMain : Form
     {
-        const string _continueLoadLoseChangesMsg =
-            "Changes made to the current object will be lost. Continue loading the new object and lose changes to the current object?";
-
         IDbController _dbController;
         GameMessage? _editingGameMessage;
-        ICharacterTemplateTable _originalCharacterTemplateValues = null;
-        IItemTemplateTable _originalItemTemplateValues = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="frmMain"/> class.
@@ -134,46 +129,19 @@ namespace DemoGame.DbEditor
         }
 
         /// <summary>
-        /// Gets if the character template being edited has any unsaved changes.
-        /// </summary>
-        /// <returns>True if there are any unsaved changes; otherwise false.</returns>
-        bool IsCharacterTemplateDirty()
-        {
-            var v = pgCharacterTemplate.SelectedObject as ICharacterTemplateTable;
-            if (_originalCharacterTemplateValues == null || v == null)
-                return false;
-
-            return !_originalCharacterTemplateValues.HasSameValues(v);
-        }
-
-        /// <summary>
-        /// Gets if the item template being edited has any unsaved changes.
-        /// </summary>
-        /// <returns>True if there are any unsaved changes; otherwise false.</returns>
-        bool IsItemTemplateDirty()
-        {
-            var v = pgItemTemplate.SelectedObject as IItemTemplateTable;
-            if (_originalItemTemplateValues == null || v == null)
-                return false;
-
-            return !_originalItemTemplateValues.HasSameValues(v);
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
         /// </summary>
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (IsCharacterTemplateDirty() || IsItemTemplateDirty())
+            string quitMsg =
+                "If you quit without saving, changes will be lost. Are you sure you wish to quit?" + Environment.NewLine +
+                " Press No if you wish to go back and save anything that needs to be saved.";
+            
+            if (MessageBox.Show(quitMsg, "Quit?", MessageBoxButtons.YesNo) == DialogResult.No)
             {
-                const string quitMsg =
-                    "One or more open items have changes that have not been saved. If you quit without saving, these changes will be lost. Are you sure you wish to quit?";
-                if (MessageBox.Show(quitMsg, "Quit?", MessageBoxButtons.YesNo) == DialogResult.No)
-                {
-                    e.Cancel = true;
-                    return;
-                }
+                e.Cancel = true;
+                return;
             }
 
             base.OnClosing(e);
@@ -482,7 +450,7 @@ namespace DemoGame.DbEditor
             }
 
             // Select the new item
-            pgCharacterTemplate.SelectedObject = newItem;
+            pgCharacterTemplate.SelectedObject = new EditorCharacterTemplate(newItem, _dbController);
         }
 
         /// <summary>
@@ -493,13 +461,35 @@ namespace DemoGame.DbEditor
         void btnCharacterTemplateSave_Click(object sender, EventArgs e)
         {
             // Check for a valid object being edited
-            var v = pgCharacterTemplate.SelectedObject as ICharacterTemplateTable;
+            var v = pgCharacterTemplate.SelectedObject as EditorCharacterTemplate;
             if (v == null)
                 return;
 
             // Save
             _dbController.GetQuery<ReplaceCharacterTemplateQuery>().Execute(v);
-            _originalCharacterTemplateValues = v.DeepCopy();
+
+            var equippedQuery = _dbController.GetQuery<ReplaceCharacterTemplateEquippedQuery>();
+            foreach (var item in v.Equipped)
+            {
+                var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool, CharacterTemplateEquippedTable.TableName, "id");
+                var queryArg = item.ToTableRow(v.ID, freeRow);
+                equippedQuery.Execute(queryArg);
+            }
+
+            var inventoryQuery = _dbController.GetQuery<ReplaceCharacterTemplateInventoryQuery>();
+            foreach (var item in v.Inventory)
+            {
+                var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool, CharacterTemplateInventoryTable.TableName, "id");
+                var queryArg = item.ToTableRow(v.ID, freeRow);
+                inventoryQuery.Execute(queryArg);
+            }
+
+            var questQuery = _dbController.GetQuery<ReplaceCharacterTemplateQuestProviderQuery>();
+            foreach (var item in v.GiveQuests)
+            {
+                var queryArg = new CharacterTemplateQuestProviderTable(characterTemplateID: v.ID, questID: item);
+                questQuery.Execute(queryArg);
+            }
 
             // Reload from the database
             CharacterTemplateManager.Instance.Reload(v.ID);
@@ -523,15 +513,8 @@ namespace DemoGame.DbEditor
                 if (f.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                if (IsCharacterTemplateDirty())
-                {
-                    if (MessageBox.Show(_continueLoadLoseChangesMsg, "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
-                        return;
-                }
-
                 var item = f.SelectedItem;
-                pgCharacterTemplate.SelectedObject = item;
-                _originalCharacterTemplateValues = item.DeepCopy();
+                pgCharacterTemplate.SelectedObject = new EditorCharacterTemplate(item, _dbController);
             }
         }
 
@@ -622,7 +605,6 @@ namespace DemoGame.DbEditor
 
             // Save
             _dbController.GetQuery<ReplaceItemTemplateQuery>().Execute(v);
-            _originalItemTemplateValues = v.DeepCopy();
 
             // Reload from the database
             ItemTemplateManager.Instance.Reload(v.ID);
@@ -646,15 +628,8 @@ namespace DemoGame.DbEditor
                 if (f.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                if (IsItemTemplateDirty())
-                {
-                    if (MessageBox.Show(_continueLoadLoseChangesMsg, "Continue?", MessageBoxButtons.YesNo) == DialogResult.No)
-                        return;
-                }
-
                 var item = f.SelectedItem;
                 pgItemTemplate.SelectedObject = item;
-                _originalItemTemplateValues = item.DeepCopy();
             }
         }
 

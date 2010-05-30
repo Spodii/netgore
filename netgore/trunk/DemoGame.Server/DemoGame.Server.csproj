@@ -117,7 +117,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\AccountIDCreator.cs" />
+    <Compile Include="Queries\Account\AccountIDCreator.cs" />
     <Compile Include="DbObjs\AccountIpsTable.cs" />
     <Compile Include="DbObjs\AccountTable.cs" />
     <Compile Include="DbObjs\AllianceAttackableTable.cs" />
@@ -212,6 +212,9 @@
     <Compile Include="Groups\GroupMemberInfo.cs" />
     <Compile Include="IServerSaveable.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuery.cs" />
+    <Compile Include="Queries\Character\Template\ReplaceCharacterTemplateEquippedQuery.cs" />
+    <Compile Include="Queries\Character\Template\ReplaceCharacterTemplateInventoryQuery.cs" />
+    <Compile Include="Queries\Character\Template\ReplaceCharacterTemplateQuestProviderQuery.cs" />
     <Compile Include="Queries\Item\Template\DeleteItemTemplateQuery.cs" />
     <Compile Include="Queries\Character\Template\ReplaceCharacterTemplateQuery.cs" />
     <Compile Include="Queries\Character\Template\InsertCharacterTemplateIDOnlyQuery.cs" />
@@ -284,7 +287,7 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Guilds\Guild.cs" />
-    <Compile Include="Guilds\GuildIDCreator.cs" />
+    <Compile Include="Queries\Guild\GuildIDCreator.cs" />
     <Compile Include="Guilds\GuildManager.cs" />
     <Compile Include="Guilds\GuildMemberInfo.cs" />
     <Compile Include="Guilds\GuildMemberPerformer.cs" />
@@ -378,7 +381,7 @@
     <Compile Include="World\Map\Entities\Characters\Character.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="World\Map\Entities\Characters\CharacterIDCreator.cs" />
+    <Compile Include="Queries\Character\CharacterIDCreator.cs" />
     <Compile Include="World\Map\Entities\Characters\IClientCommunicator.cs" />
     <Compile Include="World\Map\Entities\Characters\Skills\CharacterSkillCaster.cs" />
     <Compile Include="World\Map\Entities\Characters\CharacterStatusEffects.cs" />
@@ -405,7 +408,7 @@
     <Compile Include="World\Map\Entities\Items\Inventory\CharacterInventory.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeInfo.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeTracker.cs" />
-    <Compile Include="World\Map\Entities\Items\ItemIDCreator.cs" />
+    <Compile Include="Queries\Character\Items\ItemIDCreator.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateComparer.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateManager.cs" />
     <Compile Include="World\Map\Entities\Items\ItemValueTracker.cs" />
@@ -463,7 +466,7 @@
     <Compile Include="World\Map\MapSpawn\MapSpawnRect.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnRectEditor.cs" />
     <Compile Include="World\Map\MapSpawn\MapSpawnValues.cs" />
-    <Compile Include="World\Map\MapSpawn\MapSpawnValuesIDCreator.cs" />
+    <Compile Include="Queries\Map\Spawn\MapSpawnValuesIDCreator.cs" />
     <Compile Include="World\Map\NPCSpawner.cs" />
     <Compile Include="World\Map\Entities\TeleportEntity.cs" />
     <Compile Include="World\Map\Shop\Shop.cs" />
