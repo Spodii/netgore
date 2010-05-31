@@ -53,11 +53,12 @@ namespace NetGore.Db.ClassCreator
         /// <returns>True if null; otherwise false.</returns>
         static bool GetColumnInfoNull(string value)
         {
-            value = value.ToUpper();
-            if (value == "YES")
+            if (StringComparer.OrdinalIgnoreCase.Equals(value, "YES"))
                 return true;
-            if (value == "NO")
+
+            if (StringComparer.OrdinalIgnoreCase.Equals(value, "NO"))
                 return false;
+
             throw new ArgumentException("Unexpected argument value.");
         }
 
