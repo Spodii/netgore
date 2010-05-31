@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace NetGore.Db.ClassCreator
 {
+    /// <summary>
+    /// Describes multiple database columns that are to be treated as a single property and accessed through a getter and setter
+    /// instead of accessing each column directly by name.
+    /// </summary>
     public class ColumnCollection
     {
         static readonly char[] _vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
