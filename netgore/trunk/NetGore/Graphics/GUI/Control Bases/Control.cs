@@ -473,6 +473,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets of this <see cref="Control"/> is in a valid state to be receiving input events.
+        /// </summary>
+        bool CanReceiveInputEvent
+        {
+            get { return IsVisible && IsEnabled && !IsDisposed; }
+        }
+
+        /// <summary>
         /// Gets the size of the client area (internal area, not including the borders) of the Control.
         /// Can only be set if <see cref="Control.ResizeToChildren"/> is not set.
         /// </summary>
@@ -1702,11 +1710,6 @@ namespace NetGore.Graphics.GUI
 
             InvokeKeyPressed(e);
         }
-
-        /// <summary>
-        /// Gets of this <see cref="Control"/> is in a valid state to be receiving input events.
-        /// </summary>
-        bool CanReceiveInputEvent { get { return IsVisible && IsEnabled && !IsDisposed; } }
 
         /// <summary>
         /// Notifies this <see cref="Control"/> about an event that took place on it. These events should usually come from the

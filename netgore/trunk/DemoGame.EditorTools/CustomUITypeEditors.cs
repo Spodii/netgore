@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -172,8 +172,10 @@ namespace DemoGame.EditorTools
             AdvancedPropertyDescriptor.SetExtraTextProvider<ShopID>(ExtraTextProvider_ShopID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<ItemTemplateID>(ExtraTextProvider_ItemTemplateID);
             AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateID>(ExtraTextProvider_CharacterTemplateID);
-            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateEquippedItem>(ExtraTextProvider_CharacterTemplateEquippedItem);
-            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateInventoryItem>(ExtraTextProvider_CharacterTemplateInventoryItem);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateEquippedItem>(
+                ExtraTextProvider_CharacterTemplateEquippedItem);
+            AdvancedPropertyDescriptor.SetExtraTextProvider<CharacterTemplateInventoryItem>(
+                ExtraTextProvider_CharacterTemplateInventoryItem);
         }
 
         /// <summary>
@@ -233,6 +235,23 @@ namespace DemoGame.EditorTools
 
         /// <summary>
         /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="CharacterTemplateEquippedItem"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_CharacterTemplateEquippedItem(CharacterTemplateEquippedItem v)
+        {
+            var item = ItemTemplateManager.Instance[v.ID];
+            if (item == null)
+                return null;
+
+            var chance = Math.Round(v.Chance.Percentage * 100f, 0) + "%";
+
+            return "[" + chance + "] " + item.Name;
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
         /// <see cref="CharacterTemplateID"/>.
         /// </summary>
         /// <param name="v">The value.</param>
@@ -244,6 +263,23 @@ namespace DemoGame.EditorTools
                 return null;
 
             return character.TemplateTable.Name;
+        }
+
+        /// <summary>
+        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
+        /// <see cref="CharacterTemplateEquippedItem"/>.
+        /// </summary>
+        /// <param name="v">The value.</param>
+        /// <returns>The extra text to display.</returns>
+        static string ExtraTextProvider_CharacterTemplateInventoryItem(CharacterTemplateInventoryItem v)
+        {
+            var item = ItemTemplateManager.Instance[v.ID];
+            if (item == null)
+                return null;
+
+            var chance = Math.Round(v.Chance.Percentage * 100f, 0) + "%";
+
+            return "[" + chance + "] " + item.Name;
         }
 
         /// <summary>
@@ -288,40 +324,6 @@ namespace DemoGame.EditorTools
                 return null;
 
             return item.Name;
-        }
-
-        /// <summary>
-        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
-        /// <see cref="CharacterTemplateEquippedItem"/>.
-        /// </summary>
-        /// <param name="v">The value.</param>
-        /// <returns>The extra text to display.</returns>
-        static string ExtraTextProvider_CharacterTemplateEquippedItem(CharacterTemplateEquippedItem v)
-        {
-            var item = ItemTemplateManager.Instance[v.ID];
-            if (item == null)
-                return null;
-
-            string chance = Math.Round(v.Chance.Percentage * 100f, 0) + "%";
-
-            return "[" + chance + "] " + item.Name;
-        }
-
-        /// <summary>
-        /// Provides the extra text for the <see cref="AdvancedPropertyDescriptor"/> for a
-        /// <see cref="CharacterTemplateEquippedItem"/>.
-        /// </summary>
-        /// <param name="v">The value.</param>
-        /// <returns>The extra text to display.</returns>
-        static string ExtraTextProvider_CharacterTemplateInventoryItem(CharacterTemplateInventoryItem v)
-        {
-            var item = ItemTemplateManager.Instance[v.ID];
-            if (item == null)
-                return null;
-
-            string chance = Math.Round(v.Chance.Percentage * 100f, 0) + "%";
-
-            return "[" + chance + "] " + item.Name;
         }
 
         /// <summary>

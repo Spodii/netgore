@@ -60,15 +60,6 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// The callback for the call to the <see cref="ThreadPool"/>.
-        /// </summary>
-        /// <param name="dummy">Dummy parameter.</param>
-        void ThreadPoolCallback(object dummy)
-        {
-            PopulateQueryObjects();
-        }
-
-        /// <summary>
         /// Creates the <see cref="DatabaseConnectionException"/> for when the connection fails.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
@@ -192,7 +183,24 @@ namespace NetGore.Db
             }
         }
 
+        /// <summary>
+        /// The callback for the call to the <see cref="ThreadPool"/>.
+        /// </summary>
+        /// <param name="dummy">Dummy parameter.</param>
+        void ThreadPoolCallback(object dummy)
+        {
+            PopulateQueryObjects();
+        }
+
         #region IDbController Members
+
+        /// <summary>
+        /// Gets the <see cref="DbConnectionPool"/> used by this <see cref="IDbController"/>.
+        /// </summary>
+        public DbConnectionPool ConnectionPool
+        {
+            get { return _connectionPool; }
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -267,14 +275,6 @@ namespace NetGore.Db
             }
 
             return (T)value;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="DbConnectionPool"/> used by this <see cref="IDbController"/>.
-        /// </summary>
-        public DbConnectionPool ConnectionPool
-        {
-            get { return _connectionPool; }
         }
 
         /// <summary>

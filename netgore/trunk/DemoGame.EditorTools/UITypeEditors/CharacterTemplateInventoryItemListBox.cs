@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
+using NetGore;
 using NetGore.EditorTools;
-using IEnumerableExtensions = NetGore.IEnumerableExtensions;
 
 namespace DemoGame.EditorTools
 {
@@ -38,7 +38,7 @@ namespace DemoGame.EditorTools
             else
                 item = t.ID + ". " + t.Name;
 
-            string chance = string.Format("[{0:#,000.00}%] [{1} - {2}]", Math.Round(x.Chance.Percentage * 100, 2), x.Min, x.Max);
+            var chance = string.Format("[{0:#,000.00}%] [{1} - {2}]", Math.Round(x.Chance.Percentage * 100, 2), x.Min, x.Max);
 
             return chance + " " + item;
         }
@@ -76,7 +76,8 @@ namespace DemoGame.EditorTools
             if (DesignMode)
                 return;
 
-            var v = IEnumerableExtensions.ToImmutable(Items.Cast<CharacterTemplateInventoryItem>().OrderByDescending(x => x.Chance));
+            var v =
+                IEnumerableExtensions.ToImmutable(Items.Cast<CharacterTemplateInventoryItem>().OrderByDescending(x => x.Chance));
             Items.Clear();
             Items.AddRange(v.Cast<object>().ToArray());
         }

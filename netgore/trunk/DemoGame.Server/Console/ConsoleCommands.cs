@@ -201,7 +201,7 @@ namespace DemoGame.Server
         /// <returns>The information for the <paramref name="c"/> as a string.</returns>
         static string GetCharacterInfoShort(Character c)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append(c.ToString());
             sb.Append("\t Map: ");

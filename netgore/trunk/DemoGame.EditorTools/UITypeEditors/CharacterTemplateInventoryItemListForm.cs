@@ -1,11 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore;
 
@@ -193,46 +190,11 @@ namespace DemoGame.EditorTools
         }
 
         /// <summary>
-        /// Handles the Leave event of the txtMin control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void txtMin_Leave(object sender, EventArgs e)
-        {
-            if (lstItems.SelectedItem == null)
-                return;
-
-            // Get the selected item
-            if (!(lstItems.SelectedItem is CharacterTemplateInventoryItem))
-            {
-                Debug.Fail("Was expecting type " + typeof(CharacterTemplateInventoryItem));
-                return;
-            }
-
-            var sel = (CharacterTemplateInventoryItem)lstItems.SelectedItem;
-
-            // Parse the new amount
-            ushort v;
-            if (!ushort.TryParse(txtMin.Text, out v))
-                return;
-
-            // Check that the amount changed
-            if (sel.Chance == v)
-                return;
-
-            // Set the new amount
-            sel.Min = v;
-
-            // Force the text to refresh
-            lstItems.Items[lstItems.SelectedIndex] = sel;
-        }
-
-        /// <summary>
         /// Handles the Leave event of the txtMax control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void txtMax_Leave(object sender, EventArgs e)
+        void txtMax_Leave(object sender, EventArgs e)
         {
             if (lstItems.SelectedItem == null)
                 return;
@@ -257,6 +219,41 @@ namespace DemoGame.EditorTools
 
             // Set the new amount
             sel.Max = v;
+
+            // Force the text to refresh
+            lstItems.Items[lstItems.SelectedIndex] = sel;
+        }
+
+        /// <summary>
+        /// Handles the Leave event of the txtMin control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void txtMin_Leave(object sender, EventArgs e)
+        {
+            if (lstItems.SelectedItem == null)
+                return;
+
+            // Get the selected item
+            if (!(lstItems.SelectedItem is CharacterTemplateInventoryItem))
+            {
+                Debug.Fail("Was expecting type " + typeof(CharacterTemplateInventoryItem));
+                return;
+            }
+
+            var sel = (CharacterTemplateInventoryItem)lstItems.SelectedItem;
+
+            // Parse the new amount
+            ushort v;
+            if (!ushort.TryParse(txtMin.Text, out v))
+                return;
+
+            // Check that the amount changed
+            if (sel.Chance == v)
+                return;
+
+            // Set the new amount
+            sel.Min = v;
 
             // Force the text to refresh
             lstItems.Items[lstItems.SelectedIndex] = sel;

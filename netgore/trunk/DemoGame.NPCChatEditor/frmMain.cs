@@ -179,27 +179,6 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Updates the <see cref="cmbSelectedDialog"/> while retaining the selected item.
-        /// </summary>
-        void UpdateSelectedDialogList()
-        {
-            // Remove itemsthat need to be removed
-            foreach (var dialog in cmbSelectedDialog.Items.OfType<NPCChatDialogBase>().ToImmutable())
-            {
-                var fromManager = EditorNPCChatManager.GetDialog(dialog.ID);
-                if (fromManager == null || fromManager != dialog)
-                    cmbSelectedDialog.Items.Remove(dialog);
-            }
-
-            // Re-add the dialogs to make sure none are missing
-            foreach (var dialog in EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>())
-            {
-                if (!cmbSelectedDialog.Items.Contains(dialog))
-                    cmbSelectedDialog.Items.Add(dialog);
-            }
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -343,6 +322,27 @@ namespace DemoGame.NPCChatEditor
             }
 
             lstActions.SynchronizeItemList(EditingObjAsResponse.Actions);
+        }
+
+        /// <summary>
+        /// Updates the <see cref="cmbSelectedDialog"/> while retaining the selected item.
+        /// </summary>
+        void UpdateSelectedDialogList()
+        {
+            // Remove itemsthat need to be removed
+            foreach (var dialog in cmbSelectedDialog.Items.OfType<NPCChatDialogBase>().ToImmutable())
+            {
+                var fromManager = EditorNPCChatManager.GetDialog(dialog.ID);
+                if (fromManager == null || fromManager != dialog)
+                    cmbSelectedDialog.Items.Remove(dialog);
+            }
+
+            // Re-add the dialogs to make sure none are missing
+            foreach (var dialog in EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>())
+            {
+                if (!cmbSelectedDialog.Items.Contains(dialog))
+                    cmbSelectedDialog.Items.Add(dialog);
+            }
         }
 
         /// <summary>
@@ -597,6 +597,59 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
+        /// Handles the Click event of the btnDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnDelete_Click(object sender, EventArgs e)
+        {
+            // Check for a valid dialog
+            if (CurrentDialog == null)
+            {
+                const string msg = "You must first select a chat dialog to delete it.";
+                MessageBox.Show(msg, "Delete chat", MessageBoxButtons.OK);
+                return;
+            }
+
+            if (CurrentDialog != EditorNPCChatManager.GetDialog(CurrentDialog.ID))
+            {
+                const string msg = "The selected dialog ({0}) seems to be invalid. Cannot delete.";
+                MessageBox.Show(msg, "Delete chat", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Confirm deletion
+            const string deleteMsg = "Are you sure you wish to delete the NPC chat dialog `{0}`?";
+            if (MessageBox.Show(string.Format(deleteMsg, CurrentDialog), "Delete chat", MessageBoxButtons.YesNo) ==
+                DialogResult.No)
+                return;
+
+            // Delete
+            EditorNPCChatManager.DeleteDialog(CurrentDialog);
+
+            UpdateSelectedDialogList();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnNew_Click(object sender, EventArgs e)
+        {
+            const string msg = "Do you wish to create a new NPC chat dialog?";
+
+            if (MessageBox.Show(msg, "Create new dialog", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            var dialog = EditorNPCChatManager.CreateNewDialog();
+
+            UpdateSelectedDialogList();
+
+            cmbSelectedDialog.SelectedItem = dialog;
+        }
+
+        /// <summary>
         /// Handles the Click event of the btnRefresh control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -608,6 +661,24 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.NPCChatDialog = null;
             npcChatDialogView.NPCChatDialog = dialog;
             npcChatDialogView.ExpandAll();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnSave control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void btnSave_Click(object sender, EventArgs e)
+        {
+            const string msg =
+                "Save changes to the NPC chat dialogs? This will save all dialogs, not just the currently visible one.";
+
+            if (MessageBox.Show(msg, "Save changes", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            EditorNPCChatManager.SaveDialogs();
+
+            MessageBox.Show("NPC chat dialogs saved.", "Saved", MessageBoxButtons.OK);
         }
 
         /// <summary>
@@ -672,6 +743,28 @@ namespace DemoGame.NPCChatEditor
 
             // TODO: Proper updating
             btnRefresh_Click(this, null);
+        }
+
+        /// <summary>
+        /// Handles the SelectedValueChanged event of the cmbSelectedDialog control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void cmbSelectedDialog_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var dialog = cmbSelectedDialog.SelectedItem as EditorNPCChatDialog;
+            if (dialog == null)
+                return;
+
+            var initialDoNotUpdateValue = _doNotUpdateObj;
+            _doNotUpdateObj = false;
+
+            npcChatDialogView.NPCChatDialog = dialog;
+            npcChatDialogView.ExpandAll();
+
+            txtDialogTitle.Text = CurrentDialog.Title;
+
+            _doNotUpdateObj = initialDoNotUpdateValue;
         }
 
         /// <summary>
@@ -816,97 +909,6 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnSave control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            const string msg = "Save changes to the NPC chat dialogs? This will save all dialogs, not just the currently visible one.";
-
-            if (MessageBox.Show(msg, "Save changes", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            EditorNPCChatManager.SaveDialogs();
-
-            MessageBox.Show("NPC chat dialogs saved.", "Saved", MessageBoxButtons.OK);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnNew control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            const string msg = "Do you wish to create a new NPC chat dialog?";
-
-            if (MessageBox.Show(msg, "Create new dialog", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            var dialog = EditorNPCChatManager.CreateNewDialog();
-
-            UpdateSelectedDialogList();
-
-            cmbSelectedDialog.SelectedItem = dialog;
-        }
-
-        /// <summary>
-        /// Handles the SelectedValueChanged event of the cmbSelectedDialog control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void cmbSelectedDialog_SelectedValueChanged(object sender, EventArgs e)
-        {
-            var dialog = cmbSelectedDialog.SelectedItem as EditorNPCChatDialog;
-            if (dialog == null)
-                return;
-
-            var initialDoNotUpdateValue = _doNotUpdateObj;
-            _doNotUpdateObj = false;
-
-            npcChatDialogView.NPCChatDialog = dialog;
-            npcChatDialogView.ExpandAll();
-
-            txtDialogTitle.Text = CurrentDialog.Title;
-
-            _doNotUpdateObj = initialDoNotUpdateValue;
-        }
-
-        /// <summary>
-        /// Handles the Click event of the btnDelete control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            // Check for a valid dialog
-            if (CurrentDialog == null)
-            {
-                const string msg = "You must first select a chat dialog to delete it.";
-                MessageBox.Show(msg, "Delete chat", MessageBoxButtons.OK);
-                return;
-            }
-
-            if (CurrentDialog != EditorNPCChatManager.GetDialog(CurrentDialog.ID))
-            {
-                const string msg = "The selected dialog ({0}) seems to be invalid. Cannot delete.";
-                MessageBox.Show(msg, "Delete chat", MessageBoxButtons.OK);
-                return;
-            }
-                
-            // Confirm deletion
-            const string deleteMsg = "Are you sure you wish to delete the NPC chat dialog `{0}`?";
-            if (MessageBox.Show(string.Format(deleteMsg, CurrentDialog), "Delete chat", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            // Delete
-            EditorNPCChatManager.DeleteDialog(CurrentDialog);
-
-            UpdateSelectedDialogList();
         }
     }
 }
