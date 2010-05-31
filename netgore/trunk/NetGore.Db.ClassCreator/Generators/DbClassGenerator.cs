@@ -13,6 +13,9 @@ using NetGore.IO;
 
 namespace NetGore.Db.ClassCreator
 {
+    /// <summary>
+    /// Base class for a class that generates the code to use to represent and perform queries with a database table.
+    /// </summary>
     public abstract class DbClassGenerator : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -222,38 +225,74 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        /// <summary>
+        /// Adds a custom type to the generated code for specific column(s) on specific table(s).
+        /// If no custom type is specified, the default system type for the database column will be used.
+        /// The custom type must be able to be explicitly typed to and from the internal system type.
+        /// </summary>
+        /// <param name="type">The type to generate.</param>
+        /// <param name="table">The table that contains the column or columns to use the <paramref name="type"/> for.</param>
+        /// <param name="columns">The column or columns to use the custom <paramref name="type"/> on.</param>
         public void AddCustomType(Type type, string table, params string[] columns)
         {
             AddCustomType(type, new string[] { table }, columns);
         }
 
+        /// <summary>
+        /// Adds a custom type to the generated code for specific column(s) on specific table(s).
+        /// If no custom type is specified, the default system type for the database column will be used.
+        /// The custom type must be able to be explicitly typed to and from the internal system type.
+        /// </summary>
+        /// <param name="type">The name of the type to generate. The name needs to be included, too
+        /// (e.g. <see cref="System.String"/> instead of just <see cref="String"/>).</param>
+        /// <param name="table">The table that contains the column or columns to use the <paramref name="type"/> for.</param>
+        /// <param name="columns">The column or columns to use the custom <paramref name="type"/> on.</param>
         public void AddCustomType(string type, string table, params string[] columns)
         {
             AddCustomType(type, new string[] { table }, columns);
         }
 
+        /// <summary>
+        /// Adds a custom type to the generated code for specific column(s) on specific table(s).
+        /// If no custom type is specified, the default system type for the database column will be used.
+        /// The custom type must be able to be explicitly typed to and from the internal system type.
+        /// </summary>
+        /// <param name="type">The type to generate.</param>
+        /// <param name="tables">The tables that contains the column or columns to use the <paramref name="type"/> for.</param>
+        /// <param name="columns">The column or columns to use the custom <paramref name="type"/> on.</param>
         public void AddCustomType(Type type, IEnumerable<string> tables, params string[] columns)
         {
             AddCustomType(Formatter.GetTypeString(type), tables, columns);
         }
 
+        /// <summary>
+        /// Adds a custom type to the generated code for specific column(s) on specific table(s).
+        /// If no custom type is specified, the default system type for the database column will be used.
+        /// The custom type must be able to be explicitly typed to and from the internal system type.
+        /// </summary>
+        /// <param name="type">The name of the type to generate. The name needs to be included, too
+        /// (e.g. <see cref="System.String"/> instead of just <see cref="String"/>).</param>
+        /// <param name="tables">The tables that contains the column or columns to use the <paramref name="type"/> for.</param>
+        /// <param name="columns">The column or columns to use the custom <paramref name="type"/> on.</param>
         public void AddCustomType(string type, IEnumerable<string> tables, params string[] columns)
         {
             _customTypes.Add(new CustomTypeMapping(tables, columns, type));
         }
 
         /// <summary>
-        /// Adds a Using directive to the generated code.
+        /// Adds a Using directive to the generated code. This will be applied to all generated code files and added
+        /// at the top of the generated code with the default Using directives.
         /// </summary>
         /// <param name="namespaceName">Namespace to use.</param>
         public void AddUsing(string namespaceName)
         {
-            if (!_usings.Contains(namespaceName, StringComparer.OrdinalIgnoreCase))
+            if (!_usings.Contains(namespaceName, StringComparer.Ordinal))
                 _usings.Add(namespaceName);
         }
 
         /// <summary>
-        /// Adds a Using directive to the generated code.
+        /// Adds a Using directive to the generated code. This will be applied to all generated code files and added
+        /// at the top of the generated code with the default Using directives.
         /// </summary>
         /// <param name="namespaceNames">Namespaces to use.</param>
         public void AddUsing(IEnumerable<string> namespaceNames)
@@ -264,6 +303,14 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        /// <summary>
+        /// Creates all of the code files needed for a table.
+        /// </summary>
+        /// <param name="tableName">The name of the table to generate the code for.</param>
+        /// <param name="columns">The columns in the table.</param>
+        /// <param name="classNamespace">The namespace to use for the class.</param>
+        /// <param name="interfaceNamespace">The namespace to use for the interface.</param>
+        /// <returns>The generated code files for the table.</returns>
         protected virtual IEnumerable<GeneratedTableCode> CreateCode(string tableName, IEnumerable<DbColumnInfo> columns,
                                                                      string classNamespace, string interfaceNamespace)
         {
@@ -292,6 +339,9 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The code for the class.</returns>
         protected virtual string CreateCodeForClass(DbClassData cd)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating class code for class `{0}` (Table: `{1}`).", cd.ClassName, cd.TableName);
+
             var sb = new StringBuilder(8192);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ClassSummary, cd.TableName)));
@@ -301,6 +351,9 @@ namespace NetGore.Db.ClassCreator
             {
                 // Other Fields/Properties
                 {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Creating fields and properties.");
+
                     // All fields
                     var fieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Select(x => x.Name));
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnArrayField));
@@ -313,6 +366,9 @@ namespace NetGore.Db.ClassCreator
                 }
 
                 {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Creating key fields.");
+
                     // Key fields
                     var keyFieldNamesCode =
                         Formatter.GetStringArrayCode(
@@ -327,6 +383,9 @@ namespace NetGore.Db.ClassCreator
                 }
 
                 {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Creating non-key fields.");
+
                     // Non-key fields
                     var nonKeyFieldNamesCode =
                         Formatter.GetStringArrayCode(
@@ -342,6 +401,9 @@ namespace NetGore.Db.ClassCreator
                 }
 
                 {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Creating fields for collections.");
+
                     // Collection fields
                     foreach (var coll in cd.ColumnCollections)
                     {
@@ -387,20 +449,32 @@ namespace NetGore.Db.ClassCreator
                 // Properties for the interface implementation
                 sb.AppendLine(CreateFields(cd));
 
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Creating method: DeepCopy()");
+
                 // DeepCopy implementation
                 sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.DeepCopySummary, Comments.CreateCode.DeepCopyReturn));
-                sb.AppendLine(Formatter.GetMethodHeader("DeepCopy", MemberVisibilityLevel.Public, null, cd.InterfaceName, false,
+                sb.AppendLine(Formatter.GetMethodHeader("DeepCopy", MemberVisibilityLevel.Public, null, cd.InterfaceName, true,
                                                         false));
                 sb.AppendLine(
                     Formatter.GetMethodBody("return new " + cd.ClassName + Formatter.OpenParameterString + "this" +
                                             Formatter.CloseParameterString + Formatter.EndOfLine));
 
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Creating method: .ctor()");
+
                 // Constructor (empty)
                 sb.AppendLine(CreateConstructor(cd, string.Empty, false));
+
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Creating method: .ctor(...)");
 
                 // Constructor (full)
                 var fullConstructorBody = FullConstructorMemberBody(cd);
                 sb.AppendLine(CreateConstructor(cd, fullConstructorBody, true));
+
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Creating method: .ctor([class interface])");
 
                 // Constructor (self-referencing interface)
                 var sriConstructorParams = new MethodParameter[] { new MethodParameter("source", cd.InterfaceName) };
@@ -427,6 +501,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Creates the class for the class that holds the column metadata.
+        /// </summary>
+        /// <param name="codeNamespace">The namespace to use for the generated code.</param>
+        /// <returns>The generated code.</returns>
         protected virtual GeneratedTableCode CreateCodeForColumnMetadata(string codeNamespace)
         {
             var code = Resources.ColumnMetadataCode;
@@ -445,6 +524,12 @@ namespace NetGore.Db.ClassCreator
                                           GeneratedCodeType.ColumnMetadata);
         }
 
+        /// <summary>
+        /// Creates the code files for the const dictionaries, which are look-up tables for enums used to reference
+        /// database columns by keys instead of each individual column explicitly.
+        /// </summary>
+        /// <param name="interfaceNamespace">The namespace to use.</param>
+        /// <returns>The generated code.</returns>
         protected virtual IEnumerable<GeneratedTableCode> CreateCodeForConstDictionaries(string interfaceNamespace)
         {
             // ConstEnumDictionary class
@@ -457,8 +542,16 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        /// <summary>
+        /// Creates the code for the class containing the extension methods for each class for the database tables.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateCodeForExtensions(DbClassData cd)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating class code for extension class `{0}` (Table: `{1}`).", cd.ClassName, cd.TableName);
+
             var sb = new StringBuilder(8192);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ExtensionClassSummary, cd.ClassName)));
@@ -480,10 +573,13 @@ namespace NetGore.Db.ClassCreator
         /// <summary>
         /// Creates the code for the interface.
         /// </summary>
-        /// <param name="cd">Class data.</param>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
         /// <returns>The class code for the interface.</returns>
         protected virtual string CreateCodeForInterface(DbClassData cd)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating class code for interface `{0}` (Table: `{1}`).", cd.ClassName, cd.TableName);
+
             var sb = new StringBuilder(2048);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceSummary, cd.TableName)));
@@ -538,29 +634,44 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Creates the code for a constructor.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <param name="code">The code to include in the constructor body.</param>
+        /// <param name="addParameters">The constructor parameters.</param>
+        /// <returns>The generated block of code.</returns>
         protected virtual string CreateConstructor(DbClassData cd, string code, bool addParameters)
         {
+            // Get the parameters
             MethodParameter[] parameters;
             if (addParameters)
                 parameters = GetConstructorParameters(cd);
             else
                 parameters = MethodParameter.Empty;
 
+            // Turn parameters into a KeyValuePair
             var cParams = new List<KeyValuePair<string, string>>(Math.Max(1, parameters.Length));
-            foreach (var p in parameters)
-            {
-                var kvp = new KeyValuePair<string, string>(p.Name, Comments.CreateConstructor.Parameter);
-                cParams.Add(kvp);
-            }
-
+            cParams.AddRange(parameters.Select(p => new KeyValuePair<string, string>(p.Name, Comments.CreateConstructor.Parameter)));
+            
+            // Generate the code
             var sb = new StringBuilder(2048);
+
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ConstructorSummary, cd.ClassName), null,
                                                   cParams.ToArray()));
+
             sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, parameters));
+
             sb.Append(Formatter.GetMethodBody(code));
+
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the fields.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateFields(DbClassData cd)
         {
             var sb = new StringBuilder(2048);
@@ -668,8 +779,16 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the CopyValuesFrom method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodCopyValuesFrom(DbClassData cd)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating method: {0}()", CopyValuesFromMethodName);
+
             const string sourceName = "source";
 
             var parameters = new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) };
@@ -696,6 +815,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the CopyValuesTo method with a DbParameterValues parameter.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodCopyValuesToDbParameterValues(DbClassData cd)
         {
             const string parameterName = "paramValues";
@@ -730,8 +854,16 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the CopyValuesTo method with a dictionary parameter.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodCopyValuesToDict(DbClassData cd)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating method: {0}()", CopyValuesMethodName);
+
             const string parameterName = "dic";
             const string sourceName = "source";
 
@@ -776,10 +908,18 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the GetColumnData method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodGetColumnData(DbClassData cd)
         {
             const string methodName = "GetColumnData";
             const string parameterName = "columnName";
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating method: {0}()", methodName);
 
             var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
 
@@ -802,6 +942,14 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        
+        /// <summary>
+        /// Generates the code for a single column in the GetMethodData method, which contains the construction and
+        /// return of an ColumnMetadataClass instance. To be used by <see cref="CreateMethodGetColumnData"/>.
+        /// </summary>
+        /// <param name="column">The column to create the line for.</param>
+        /// <returns>The generated code.</returns>
+        /// <seealso cref="CreateMethodGetColumnData"/>
         protected string CreateMethodGetColumnDataReturnString(DbColumnInfo column)
         {
             var sb = new StringBuilder(256);
@@ -832,10 +980,18 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the GetValue method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodGetValue(DbClassData cd)
         {
             const string parameterName = "columnName";
             const string methodName = "GetValue";
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating method: {0}()", methodName);
 
             var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
 
@@ -861,6 +1017,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the HasSameValues method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodHasSameValues(DbClassData cd)
         {
             const string otherName = "otherItem";
@@ -915,9 +1076,17 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the ReadState method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodReadState(DbClassData cd)
         {
             const string parameterName = "reader";
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating method: {0}()", ReadStateMethodName);
 
             var sb = new StringBuilder(2048);
 
@@ -928,7 +1097,7 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetMethodHeader(ReadStateMethodName, MemberVisibilityLevel.Public,
                                                     new MethodParameter[]
                                                     { new MethodParameter(parameterName, typeof(IValueReader), cd.Formatter) },
-                                                    typeof(void), false, false));
+                                                    typeof(void), true, false));
 
             // Body
             var bodySB = new StringBuilder(2048);
@@ -949,6 +1118,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the ReadValues method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodReadValues(DbClassData cd)
         {
             var sb = new StringBuilder(2048);
@@ -986,11 +1160,19 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the SetValue method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodSetValue(DbClassData cd)
         {
             const string parameterName = "columnName";
             const string valueName = "value";
             const string methodName = "SetValue";
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating method: {0}()", methodName);
 
             var parameters = new MethodParameter[]
             {
@@ -1021,6 +1203,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the TryCopyValues method with a DbParameterValues as the parameter.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodTryCopyValuesToDbParameterValues(DbClassData cd)
         {
             const string parameterName = "paramValues";
@@ -1045,7 +1232,7 @@ namespace NetGore.Db.ClassCreator
 
             // Body
             var bodySB = new StringBuilder(2048);
-            bodySB.AppendLine("for (int i = 0; i < " + parameterName + ".Count; i++)"); // NOTE: Language specific code
+            bodySB.AppendLine("for (int i = 0; i < " + parameterName + ".Count; i++)");
             bodySB.AppendLine(Formatter.OpenBrace);
             {
                 bodySB.AppendLine(Formatter.GetSwitch(parameterName + ".GetParameterName(i)",
@@ -1062,6 +1249,15 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for getting the values for a single column. To be used by
+        /// <see cref="CreateMethodTryCopyValuesToDbParameterValues"/>.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <param name="column">The column.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <returns>The generated code.</returns>
+        /// <seealso cref="CreateMethodTryCopyValuesToDbParameterValues"/>
         protected string CreateMethodTryCopyValuesToDbParameterValuesSwitchString(DbClassData cd, DbColumnInfo column,
                                                                                   string parameterName)
         {
@@ -1073,6 +1269,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the TryReadValues method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodTryReadValues(DbClassData cd)
         {
             var sb = new StringBuilder(2048);
@@ -1093,7 +1294,7 @@ namespace NetGore.Db.ClassCreator
 
             // Body
             var bodySB = new StringBuilder(2048);
-            bodySB.AppendLine("for (int i = 0; i < " + DataReaderName + ".FieldCount; i++)"); // NOTE: Hardcoded language code
+            bodySB.AppendLine("for (int i = 0; i < " + DataReaderName + ".FieldCount; i++)");
             bodySB.AppendLine(Formatter.OpenBrace);
             {
                 bodySB.AppendLine(Formatter.GetSwitch(DataReaderName + ".GetName(i)",
@@ -1110,6 +1311,12 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Creates the method for reading a value of a column. To be used by <see cref="CreateMethodTryReadValues"/>.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <param name="column">The <see cref="DbColumnInfo"/>.</param>
+        /// <returns>The generated code.</returns>
         protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
         {
             var sb = new StringBuilder();
@@ -1118,9 +1325,17 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the WriteState method.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string CreateMethodWriteState(DbClassData cd)
         {
             const string parameterName = "writer";
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating method: {0}()", WriteStateMethodName);
 
             var sb = new StringBuilder(2048);
 
@@ -1131,7 +1346,7 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetMethodHeader(WriteStateMethodName, MemberVisibilityLevel.Public,
                                                     new MethodParameter[]
                                                     { new MethodParameter(parameterName, typeof(IValueWriter), cd.Formatter) },
-                                                    typeof(void), false, false));
+                                                    typeof(void), true, false));
 
             // Body
             var bodySB = new StringBuilder(2048);
@@ -1153,6 +1368,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Generates the code for the body of the constructor containing all of the parameters.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The generated code.</returns>
         protected virtual string FullConstructorMemberBody(DbClassData cd)
         {
             var sb = new StringBuilder(1024);
@@ -1164,6 +1384,13 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Starts the code generation.
+        /// </summary>
+        /// <param name="classNamespace">The class namespace to use.</param>
+        /// <param name="interfaceNamespace">The interface namespace to use.</param>
+        /// <param name="classOutputDir">The output directory for class files.</param>
+        /// <param name="interfaceOutputDir">The output directory for interface files.</param>
         public virtual void Generate(string classNamespace, string interfaceNamespace, string classOutputDir,
                                      string interfaceOutputDir)
         {
@@ -1195,6 +1422,12 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        /// <summary>
+        /// Starts the code generation.
+        /// </summary>
+        /// <param name="classNamespace">The class namespace to use.</param>
+        /// <param name="interfaceNamespace">The interface namespace to use.</param>
+        /// <returns>The generated code files.</returns>
         public virtual IEnumerable<GeneratedTableCode> Generate(string classNamespace, string interfaceNamespace)
         {
             LoadDbContent();
@@ -1229,6 +1462,11 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The <see cref="DbColumnInfo"/>s for the given <paramref name="table"/>.</returns>
         protected abstract IEnumerable<DbColumnInfo> GetColumns(string table);
 
+        /// <summary>
+        /// Creates a ConstDictionary for an enum.
+        /// </summary>
+        /// <param name="columnCollection">The <see cref="ColumnCollection"/> that this ConstDictionary being created is for.</param>
+        /// <returns>The generated code.</returns>
         protected string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
         {
             var sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
@@ -1241,11 +1479,21 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the name to use for a ConstDictionary for an enum.
+        /// </summary>
+        /// <param name="columnCollection">The <see cref="ColumnCollection"/> for the ConstDictionary to get the name of.</param>
+        /// <returns>The name of the ConstDictionary for the <paramref name="columnCollection"/>.</returns>
         protected static string GetConstEnumDictonaryName(ColumnCollection columnCollection)
         {
             return columnCollection.KeyType.Name + "ConstDictionary";
         }
 
+        /// <summary>
+        /// Gets the parameters to use for the constructor containing all parameters.
+        /// </summary>
+        /// <param name="cd">The <see cref="DbClassData"/>.</param>
+        /// <returns>The parameters.</returns>
         protected virtual MethodParameter[] GetConstructorParameters(DbClassData cd)
         {
             var columnsArray = cd.Columns.ToArray();
@@ -1266,6 +1514,11 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The name of the tables in the database.</returns>
         protected abstract IEnumerable<string> GetTables();
 
+        /// <summary>
+        /// Gets the name of a method to use for a ValueReader to read a certain type.
+        /// </summary>
+        /// <param name="type">The type to read.</param>
+        /// <returns>The ValueReader method to use to read the <paramref name="type"/>.</returns>
         protected string GetValueReaderReadMethodName(Type type)
         {
             string ret;
@@ -1312,6 +1565,10 @@ namespace NetGore.Db.ClassCreator
                 _dataReaderReadMethods.Add(type, methodName);
         }
 
+        /// <summary>
+        /// Sets the database connection.
+        /// </summary>
+        /// <param name="dbConnection">The database connection.</param>
         protected void SetDbConnection(DbConnection dbConnection)
         {
             if (_dbConnction != null)
@@ -1320,6 +1577,13 @@ namespace NetGore.Db.ClassCreator
             _dbConnction = dbConnection;
         }
 
+        /// <summary>
+        /// Wraps a code file with the using directives and namespace.
+        /// </summary>
+        /// <param name="code">The body of code for the file.</param>
+        /// <param name="namespaceName">The namespace.</param>
+        /// <param name="isInterface">If the file is for an interface.</param>
+        /// <returns>The generated code.</returns>
         string WrapCodeFile(string code, string namespaceName, bool isInterface)
         {
             var sb = new StringBuilder(code.Length + 512);
