@@ -115,6 +115,11 @@ namespace DemoGame.Client
             Text = "Stats";
         }
 
+        /// <summary>
+        /// Handles the Clicked event of the StatPB control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void StatPB_Clicked(object sender, MouseButtonEventArgs e)
         {
             var statPB = (RaiseStatPB)sender;
@@ -129,6 +134,11 @@ namespace DemoGame.Client
             RequestRaiseStat(this, statPB.StatType);
         }
 
+        /// <summary>
+        /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
+        /// not visible.
+        /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
         protected override void UpdateControl(TickCount currentTime)
         {
             base.UpdateControl(currentTime);
@@ -143,11 +153,21 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// The <see cref="PictureBox"/> for the button to raise a stat.
+        /// </summary>
         class RaiseStatPB : PictureBox
         {
             readonly StatType _statType;
             readonly StatsForm _statsForm;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RaiseStatPB"/> class.
+            /// </summary>
+            /// <param name="position">The position.</param>
+            /// <param name="sprite">The sprite.</param>
+            /// <param name="parent">The parent.</param>
+            /// <param name="statType">Type of the stat.</param>
             public RaiseStatPB(Vector2 position, ISprite sprite, StatsForm parent, StatType statType)
                 : base(parent, position, sprite.Size)
             {
@@ -203,6 +223,9 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// A <see cref="Label"/> for displaying the name, base value, and mod values of a stat.
+        /// </summary>
         class StatLabel : Label
         {
             /// <summary>
@@ -217,6 +240,12 @@ namespace DemoGame.Client
             int _lastModValue = int.MinValue;
             TickCount _lastUpdateTextTime = TickCount.MinValue;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="StatLabel"/> class.
+            /// </summary>
+            /// <param name="statsForm">The stats form.</param>
+            /// <param name="statType">Type of the stat.</param>
+            /// <param name="pos">The position.</param>
             public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : base(statsForm, pos)
             {
                 if (statsForm == null)
@@ -256,6 +285,9 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// A <see cref="Label"/> used to display misc information that is regularly grabbed from a delegate.
+        /// </summary>
         class UserInfoLabel : Label
         {
             /// <summary>
@@ -269,6 +301,13 @@ namespace DemoGame.Client
 
             TickCount _lastUpdateTextTime = TickCount.MinValue;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserInfoLabel"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="pos">The position.</param>
+            /// <param name="title">The title.</param>
+            /// <param name="valueHandler">The <see cref="UserInfoLabelValueHandler"/> describing what value to grab and how to grab it.</param>
             public UserInfoLabel(StatsForm parent, Vector2 pos, string title, UserInfoLabelValueHandler valueHandler)
                 : base(parent, pos)
             {
