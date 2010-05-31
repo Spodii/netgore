@@ -25,7 +25,8 @@ namespace DemoGame.Client
         delegate string UserInfoLabelValueHandler(UserInfo userInfo);
 
         const float _xOffset = 21;
-        readonly Grh _addStatGrh = new Grh(GrhInfo.GetData("GUI", "AddStat"));
+
+        readonly Grh _addStatGrh;
         readonly UserInfo _userInfo;
 
         float _yOffset = 0;
@@ -39,6 +40,8 @@ namespace DemoGame.Client
         {
             if (userInfo == null)
                 throw new ArgumentNullException("userInfo");
+
+            _addStatGrh = new Grh(GrhInfo.GetData("GUI", "AddStat"));
 
             _userInfo = userInfo;
 
@@ -175,6 +178,8 @@ namespace DemoGame.Client
                     throw new ArgumentNullException("parent");
                 if (sprite == null)
                     throw new ArgumentNullException("sprite");
+
+                Sprite = sprite;
 
                 _statsForm = parent;
                 _statType = statType;
