@@ -73,7 +73,7 @@ namespace DemoGame.Server.DbObjs
         String _name;
 
         /// <summary>
-        /// ShopTable constructor.
+        /// Initializes a new instance of the <see cref="ShopTable"/> class.
         /// </summary>
         public ShopTable()
         {
