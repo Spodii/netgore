@@ -74,16 +74,26 @@ namespace DemoGame.Client
         /// </summary>
         public event RaiseStatHandler RequestRaiseStat;
 
+        /// <summary>
+        /// Gets the <see cref="UserInfo"/> that the <see cref="StatsForm"/> is displaying the information for.
+        /// </summary>
         public UserInfo UserInfo
         {
             get { return _userInfo; }
         }
 
+        /// <summary>
+        /// Adds a line break to the label positioning offset.
+        /// </summary>
         void AddLine()
         {
             _yOffset += Font.GetLineSpacing();
         }
 
+        /// <summary>
+        /// Creates a label (along with a stat raising button when applicable) for a <see cref="StatType"/>.
+        /// </summary>
+        /// <param name="statType">The <see cref="StatType"/>.</param>
         void NewStatLabel(StatType statType)
         {
             AddLine();
@@ -100,6 +110,11 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Adds a <see cref="UserInfoLabel"/>.
+        /// </summary>
+        /// <param name="title">The label's title.</param>
+        /// <param name="valueHandler">The <see cref="UserInfoLabelValueHandler"/> for getting the value to display for the label.</param>
         void NewUserInfoLabel(string title, UserInfoLabelValueHandler valueHandler)
         {
             AddLine();
@@ -185,31 +200,49 @@ namespace DemoGame.Client
                 _statType = statType;
             }
 
+            /// <summary>
+            /// Gets if this stat can be raised.
+            /// </summary>
             public bool CanRaiseStat
             {
                 get { return Points >= StatCost; }
             }
 
+            /// <summary>
+            /// Gets the number of points the user has available to spend.
+            /// </summary>
             int Points
             {
                 get { return _statsForm.UserInfo.StatPoints; }
             }
 
+            /// <summary>
+            /// Gets the cost of raising this stat.
+            /// </summary>
             int StatCost
             {
                 get { return GameData.StatCost(StatLevel); }
             }
 
+            /// <summary>
+            /// Gets the current level of this stat.
+            /// </summary>
             int StatLevel
             {
                 get { return Stats[_statType]; }
             }
 
+            /// <summary>
+            /// Gets the <see cref="StatType"/> that this <see cref="RaiseStatPB"/> is for raising.
+            /// </summary>
             public StatType StatType
             {
                 get { return _statType; }
             }
 
+            /// <summary>
+            /// Gets the collection of the user's base stats.
+            /// </summary>
             StatCollection<StatType> Stats
             {
                 get { return _statsForm.UserInfo.BaseStats; }
