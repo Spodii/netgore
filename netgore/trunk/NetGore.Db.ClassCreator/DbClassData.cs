@@ -10,13 +10,13 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     public class DbClassData
     {
-        public readonly string ClassName;
-        public readonly IEnumerable<ColumnCollection> ColumnCollections;
-        public readonly IEnumerable<DbColumnInfo> Columns;
-        public readonly string ExtensionClassName;
-        public readonly CodeFormatter Formatter;
-        public readonly string InterfaceName;
-        public readonly string TableName;
+        readonly string _className;
+        readonly IEnumerable<ColumnCollection> _columnCollections;
+        readonly IEnumerable<DbColumnInfo> _columns;
+        readonly string _extensionClassName;
+        readonly CodeFormatter _formatter;
+        readonly string _interfaceName;
+        readonly string _tableName;
 
         readonly IEnumerable<CustomTypeMapping> _customTypes;
         readonly Dictionary<Type, string> _dataReaderReadMethods;
@@ -24,6 +24,41 @@ namespace NetGore.Db.ClassCreator
         readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
+
+        /// <summary>
+        /// Gets the name of the class.
+        /// </summary>
+        public string ClassName { get { return _className; } }
+
+        /// <summary>
+        /// Gets the column collections.
+        /// </summary>
+        public IEnumerable<ColumnCollection> ColumnCollections { get { return _columnCollections; } }
+
+        /// <summary>
+        /// Gets the columns.
+        /// </summary>
+        public IEnumerable<DbColumnInfo> Columns { get { return _columns; } }
+
+        /// <summary>
+        /// Gets the name of the extension class.
+        /// </summary>
+        public string ExtensionClassName { get { return _extensionClassName; } }
+
+        /// <summary>
+        /// Gets the code formatter.
+        /// </summary>
+        public CodeFormatter Formatter { get { return _formatter; } }
+
+        /// <summary>
+        /// Gets the name of the interface.
+        /// </summary>
+        public string InterfaceName { get { return _interfaceName; } }
+
+        /// <summary>
+        /// Gets the name of the database table.
+        /// </summary>
+        public string TableName { get { return _tableName; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbClassData"/> class.
@@ -40,14 +75,14 @@ namespace NetGore.Db.ClassCreator
         {
             const string tableNameWildcard = "*";
 
-            TableName = tableName;
-            Columns = columns.OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase);
-            Formatter = formatter;
+            _tableName = tableName;
+            _columns = columns.OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase);
+            _formatter = formatter;
             _dataReaderReadMethods = dataReaderReadMethods;
 
-            ClassName = formatter.GetClassName(tableName);
-            InterfaceName = formatter.GetInterfaceName(tableName);
-            ExtensionClassName = ClassName + "DbExtensions";
+            _className = formatter.GetClassName(tableName);
+            _interfaceName = formatter.GetInterfaceName(tableName);
+            _extensionClassName = ClassName + "DbExtensions";
 
             // Custom types filter
             _customTypes =
@@ -58,7 +93,7 @@ namespace NetGore.Db.ClassCreator
                     ToCompact();
 
             // Column collections filter
-            ColumnCollections =
+            _columnCollections =
                 columnCollections.Where(
                     x =>
                     x.Columns.Count() > 0 &&
@@ -352,6 +387,11 @@ namespace NetGore.Db.ClassCreator
             return _privateNames[dbColumn];
         }
 
+        /// <summary>
+        /// Gets the private name for a DbColumnInfo.
+        /// </summary>
+        /// <param name="columnCollection">The <see cref="ColumnCollection"/> to get the name of.</param>
+        /// <returns>The private name for the DbColumnInfo.</returns>
         public string GetPrivateName(ColumnCollection columnCollection)
         {
             return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Private, columnCollection.ExternalType);
@@ -367,6 +407,11 @@ namespace NetGore.Db.ClassCreator
             return _publicNames[dbColumn];
         }
 
+        /// <summary>
+        /// Gets the public name for a DbColumnInfo.
+        /// </summary>
+        /// <param name="columnCollection">The <see cref="ColumnCollection"/> to get the name of.</param>
+        /// <returns>The public name for the DbColumnInfo.</returns>
         public string GetPublicName(ColumnCollection columnCollection)
         {
             if (columnCollection.Name != "Stat")
