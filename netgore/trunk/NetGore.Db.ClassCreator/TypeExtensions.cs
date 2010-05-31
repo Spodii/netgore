@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace NetGore.Db.ClassCreator
 {
+    /// <summary>
+    /// Extension methods for the <see cref="Type"/> class.
+    /// </summary>
     public static class TypeExtensions
     {
         /// <summary>

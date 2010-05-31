@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace NetGore.Db.ClassCreator
 {
+    /// <summary>
+    /// Describes a single database column.
+    /// </summary>
     public class DbColumnInfo
     {
         /// <summary>
