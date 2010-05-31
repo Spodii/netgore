@@ -7,28 +7,33 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     public sealed class GeneratedTableCode
     {
-        /// <summary>
-        /// The name of the class or interface that was generated.
-        /// </summary>
-        public readonly string ClassName;
+        readonly string _className;
+        readonly string _code;
+        readonly GeneratedCodeType _codeType;
+        readonly string _table;
 
         /// <summary>
-        /// The generated code.
+        /// Gets the name of the class or interface that was generated.
         /// </summary>
-        public readonly string Code;
+        public string ClassName { get { return _className; } }
 
         /// <summary>
-        /// The type of code that this is for.
+        /// Gets the generated code.
         /// </summary>
-        public readonly GeneratedCodeType CodeType;
+        public string Code { get { return _code; } }
 
         /// <summary>
-        /// The table that the code was generated for.
+        /// Gets the type of code that this is for.
         /// </summary>
-        public readonly string Table;
+        public GeneratedCodeType CodeType { get { return _codeType; } }
 
         /// <summary>
-        /// GeneratedTableCode constructor.
+        /// Gets the table that the code was generated for.
+        /// </summary>
+        public string Table { get { return _table; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeneratedTableCode"/> class.
         /// </summary>
         /// <param name="table">The table that the code was generated for.</param>
         /// <param name="className">The name of the class or interface that was generated.</param>
@@ -36,10 +41,10 @@ namespace NetGore.Db.ClassCreator
         /// <param name="codeType">The type of code that this is for.</param>
         public GeneratedTableCode(string table, string className, string code, GeneratedCodeType codeType)
         {
-            Table = table;
-            ClassName = className;
-            Code = code;
-            CodeType = codeType;
+            _table = table;
+            _className = className;
+            _code = code;
+            _codeType = codeType;
         }
     }
 }

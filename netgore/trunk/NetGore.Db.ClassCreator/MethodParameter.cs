@@ -3,11 +3,24 @@ using System.Linq;
 
 namespace NetGore.Db.ClassCreator
 {
+    /// <summary>
+    /// Describes a parameter on a method.
+    /// </summary>
     public struct MethodParameter
     {
+        /// <summary>
+        /// An empty collection of <see cref="MethodParameter"/>s.
+        /// </summary>
         public static readonly MethodParameter[] Empty = new MethodParameter[0];
 
+        /// <summary>
+        /// The parameter name.
+        /// </summary>
         public readonly string Name;
+
+        /// <summary>
+        /// The parameter type.
+        /// </summary>
         public readonly string Type;
 
         /// <summary>
