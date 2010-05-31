@@ -6,6 +6,9 @@ using MySql.Data.MySqlClient;
 
 namespace NetGore.Db.ClassCreator
 {
+    /// <summary>
+    /// A <see cref="DbClassGenerator"/> for a MySQL database.
+    /// </summary>
     public class MySqlClassGenerator : DbClassGenerator
     {
         readonly MySqlConnection _conn;
@@ -43,6 +46,11 @@ namespace NetGore.Db.ClassCreator
                 _conn.Dispose();
         }
 
+        /// <summary>
+        /// Gets if a column is null.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <returns>True if null; otherwise false.</returns>
         static bool GetColumnInfoNull(string value)
         {
             value = value.ToUpper();
@@ -53,15 +61,34 @@ namespace NetGore.Db.ClassCreator
             throw new ArgumentException("Unexpected argument value.");
         }
 
+        /// <summary>
+        /// Get the type of key a database column has.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <returns>The <see cref="DbColumnKeyType"/>.</returns>
         static DbColumnKeyType GetColumnKeyType(string value)
         {
+            if (!string.IsNullOrEmpty(value))
+                value = value.Trim();
+
+            // Empty means there is no key
             if (string.IsNullOrEmpty(value))
                 return DbColumnKeyType.None;
-            if (value.ToUpper() == "PRI")
+
+            // Starting with "PRI" means its a primary key
+            if (value.StartsWith("PRI", StringComparison.OrdinalIgnoreCase))
                 return DbColumnKeyType.Primary;
+
+            // Anything else must be a foreign key
             return DbColumnKeyType.Foreign;
         }
 
+        /// <summary>
+        /// Gets the database column type.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="column">The column.</param>
+        /// <returns>The Type.</returns>
         Type GetColumnType(string table, DbColumnInfo column)
         {
             Type ret;
