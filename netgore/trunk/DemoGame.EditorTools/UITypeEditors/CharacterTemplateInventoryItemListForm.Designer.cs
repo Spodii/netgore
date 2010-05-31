@@ -30,18 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lstItems = new DemoGame.EditorTools.CharacterTemplateInventoryItemListBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.txtItem = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtChance = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtMin = new System.Windows.Forms.TextBox();
             this.txtMax = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.lstItems = new DemoGame.EditorTools.CharacterTemplateInventoryItemListBox();
+            this.txtMin = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtChance = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -69,6 +69,19 @@
             this.splitContainer1.Size = new System.Drawing.Size(382, 353);
             this.splitContainer1.SplitterDistance = 295;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // lstItems
+            // 
+            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lstItems.FormattingEnabled = true;
+            this.lstItems.Location = new System.Drawing.Point(0, 0);
+            this.lstItems.Name = "lstItems";
+            this.lstItems.Size = new System.Drawing.Size(382, 295);
+            this.lstItems.Sorted = true;
+            this.lstItems.TabIndex = 0;
+            this.lstItems.SelectedIndexChanged += new System.EventHandler(this.lstItems_SelectedIndexChanged);
+            this.lstItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstItems_KeyDown);
             // 
             // splitContainer2
             // 
@@ -140,6 +153,46 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Item:";
             // 
+            // txtMax
+            // 
+            this.txtMax.Dock = System.Windows.Forms.DockStyle.Left;
+            this.txtMax.Location = new System.Drawing.Point(206, 0);
+            this.txtMax.Name = "txtMax";
+            this.txtMax.Size = new System.Drawing.Size(43, 20);
+            this.txtMax.TabIndex = 21;
+            this.txtMax.Leave += new System.EventHandler(this.txtMax_Leave);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label4.Location = new System.Drawing.Point(176, 0);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label4.Size = new System.Drawing.Size(30, 16);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Max:";
+            // 
+            // txtMin
+            // 
+            this.txtMin.Dock = System.Windows.Forms.DockStyle.Left;
+            this.txtMin.Location = new System.Drawing.Point(133, 0);
+            this.txtMin.Name = "txtMin";
+            this.txtMin.Size = new System.Drawing.Size(43, 20);
+            this.txtMin.TabIndex = 19;
+            this.txtMin.Leave += new System.EventHandler(this.txtMin_Leave);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label3.Location = new System.Drawing.Point(106, 0);
+            this.label3.Name = "label3";
+            this.label3.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.label3.Size = new System.Drawing.Size(27, 16);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Min:";
+            // 
             // txtChance
             // 
             this.txtChance.Dock = System.Windows.Forms.DockStyle.Left;
@@ -161,59 +214,6 @@
             this.label2.Size = new System.Drawing.Size(47, 16);
             this.label2.TabIndex = 16;
             this.label2.Text = "Chance:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label3.Location = new System.Drawing.Point(106, 0);
-            this.label3.Name = "label3";
-            this.label3.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.label3.Size = new System.Drawing.Size(27, 16);
-            this.label3.TabIndex = 18;
-            this.label3.Text = "Min:";
-            // 
-            // txtMin
-            // 
-            this.txtMin.Dock = System.Windows.Forms.DockStyle.Left;
-            this.txtMin.Location = new System.Drawing.Point(133, 0);
-            this.txtMin.Name = "txtMin";
-            this.txtMin.Size = new System.Drawing.Size(43, 20);
-            this.txtMin.TabIndex = 19;
-            this.txtMin.Leave += new System.EventHandler(this.txtMin_Leave);
-            // 
-            // txtMax
-            // 
-            this.txtMax.Dock = System.Windows.Forms.DockStyle.Left;
-            this.txtMax.Location = new System.Drawing.Point(206, 0);
-            this.txtMax.Name = "txtMax";
-            this.txtMax.Size = new System.Drawing.Size(43, 20);
-            this.txtMax.TabIndex = 21;
-            this.txtMax.Leave += new System.EventHandler(this.txtMax_Leave);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label4.Location = new System.Drawing.Point(176, 0);
-            this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.label4.Size = new System.Drawing.Size(30, 16);
-            this.label4.TabIndex = 20;
-            this.label4.Text = "Max:";
-            // 
-            // lstItems
-            // 
-            this.lstItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lstItems.FormattingEnabled = true;
-            this.lstItems.Location = new System.Drawing.Point(0, 0);
-            this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(382, 295);
-            this.lstItems.Sorted = true;
-            this.lstItems.TabIndex = 0;
-            this.lstItems.SelectedIndexChanged += new System.EventHandler(this.lstItems_SelectedIndexChanged);
-            this.lstItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstItems_KeyDown);
             // 
             // CharacterTemplateInventoryItemListForm
             // 

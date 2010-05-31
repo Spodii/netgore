@@ -133,6 +133,9 @@ namespace DemoGame.EditorTools
             TypeDescriptor.AddAttributes(typeof(IEnumerable<MutablePair<ItemTemplateID, byte>>),
                                          new TypeConverterAttribute(typeof(ItemTemplateAndAmountListTypeConverter)));
 
+            TypeDescriptor.AddAttributes(typeof(IEnumerable<ItemTemplateID>),
+                                         new TypeConverterAttribute(typeof(ItemTemplateListTypeConverter)));
+
             TypeDescriptor.AddAttributes(typeof(IEnumerable<CharacterTemplateEquippedItem>),
                                          new TypeConverterAttribute(typeof(CharacterTemplateEquippedItemListTypeConverter)));
 
