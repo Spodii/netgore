@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -134,10 +134,9 @@ namespace DemoGame.DbEditor
         /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
         protected override void OnClosing(CancelEventArgs e)
         {
-            string quitMsg =
-                "If you quit without saving, changes will be lost. Are you sure you wish to quit?" + Environment.NewLine +
-                " Press No if you wish to go back and save anything that needs to be saved.";
-            
+            var quitMsg = "If you quit without saving, changes will be lost. Are you sure you wish to quit?" + Environment.NewLine +
+                          " Press No if you wish to go back and save anything that needs to be saved.";
+
             if (MessageBox.Show(quitMsg, "Quit?", MessageBoxButtons.YesNo) == DialogResult.No)
             {
                 e.Cancel = true;
@@ -471,7 +470,8 @@ namespace DemoGame.DbEditor
             var equippedQuery = _dbController.GetQuery<ReplaceCharacterTemplateEquippedQuery>();
             foreach (var item in v.Equipped)
             {
-                var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool, CharacterTemplateEquippedTable.TableName, "id");
+                var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool, CharacterTemplateEquippedTable.TableName,
+                                                            "id");
                 var queryArg = item.ToTableRow(v.ID, freeRow);
                 equippedQuery.Execute(queryArg);
             }
@@ -479,7 +479,8 @@ namespace DemoGame.DbEditor
             var inventoryQuery = _dbController.GetQuery<ReplaceCharacterTemplateInventoryQuery>();
             foreach (var item in v.Inventory)
             {
-                var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool, CharacterTemplateInventoryTable.TableName, "id");
+                var freeRow = IDCreatorHelper.GetNextFreeID(_dbController.ConnectionPool,
+                                                            CharacterTemplateInventoryTable.TableName, "id");
                 var queryArg = item.ToTableRow(v.ID, freeRow);
                 inventoryQuery.Execute(queryArg);
             }

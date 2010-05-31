@@ -263,7 +263,6 @@ namespace NetGore.Db
 
         #endregion
 
-
         /// <summary>
         /// The query used to select the IDs from a table.
         /// </summary>

@@ -379,7 +379,6 @@ namespace NetGore.Db.ClassCreator
                 "Checks if this <see cref=\"{0}\"/> contains the same values as another <see cref=\"{0}\"/>.";
         }
 
-
         public static class ReadState
         {
             /// <summary>

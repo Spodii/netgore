@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -10,15 +10,15 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceCharacterTemplateInventoryQuery : DbQueryNonReader<ICharacterTemplateInventoryTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}",
-                                                         CharacterTemplateInventoryTable.TableName, FormatParametersIntoValuesString(CharacterTemplateInventoryTable.DbColumns));
+        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", CharacterTemplateInventoryTable.TableName,
+                                                         FormatParametersIntoValuesString(
+                                                             CharacterTemplateInventoryTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateInventoryQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceCharacterTemplateInventoryQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public ReplaceCharacterTemplateInventoryQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

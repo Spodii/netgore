@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -40,11 +38,11 @@ namespace NetGore.EditorTools.NPCChat
             }
 
             e.DrawBackground();
-            e.Graphics.DrawString(string.Format("{0}: {1}", dialog.ID, dialog.Title), e.Font, new SolidBrush(e.ForeColor), e.Bounds);
+            e.Graphics.DrawString(string.Format("{0}: {1}", dialog.ID, dialog.Title), e.Font, new SolidBrush(e.ForeColor),
+                                  e.Bounds);
             e.DrawFocusRectangle();
 
             // TODO: Fix the display for the selected item; do not let the text be edited
         }
-
     }
 }

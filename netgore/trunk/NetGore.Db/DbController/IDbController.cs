@@ -11,6 +11,11 @@ namespace NetGore.Db
     public interface IDbController : IDisposable
     {
         /// <summary>
+        /// Gets the <see cref="DbConnectionPool"/> used by this <see cref="IDbController"/>.
+        /// </summary>
+        DbConnectionPool ConnectionPool { get; }
+
+        /// <summary>
         /// Gets the name of the table and column that reference a the given primary key.
         /// </summary>
         /// <param name="database">Database of the <paramref name="table"/>.</param>
@@ -26,11 +31,6 @@ namespace NetGore.Db
         /// <returns>The query instance of type <typeparamref name="T"/>.</returns>
         /// <exception cref="ArgumentException">Type <typeparamref name="T"/> was not found in the query cache.</exception>
         T GetQuery<T>();
-
-        /// <summary>
-        /// Gets the <see cref="DbConnectionPool"/> used by this <see cref="IDbController"/>.
-        /// </summary>
-        DbConnectionPool ConnectionPool { get; }
 
         /// <summary>
         /// Finds all of the column names in the given <paramref name="table"/>.

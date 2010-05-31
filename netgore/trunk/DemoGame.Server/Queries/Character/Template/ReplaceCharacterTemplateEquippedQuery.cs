@@ -1,8 +1,6 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -12,15 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceCharacterTemplateEquippedQuery : DbQueryNonReader<ICharacterTemplateEquippedTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}",
-            CharacterTemplateEquippedTable.TableName, FormatParametersIntoValuesString(CharacterTemplateEquippedTable.DbColumns));
+        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", CharacterTemplateEquippedTable.TableName,
+                                                         FormatParametersIntoValuesString(CharacterTemplateEquippedTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateEquippedQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceCharacterTemplateEquippedQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public ReplaceCharacterTemplateEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

@@ -25,20 +25,6 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// Deletes a <see cref="EditorNPCChatDialog"/>.
-        /// </summary>
-        /// <param name="dialog">The <see cref="EditorNPCChatDialog"/> to delete.</param>
-        public static void DeleteDialog(EditorNPCChatDialog dialog)
-        {
-            _instance.Reorganize();
-
-            if (GetDialog(dialog.ID) != dialog)
-                return;
-
-            _instance[dialog.ID] = null;
-        }
-
-        /// <summary>
         /// Adds a EditorNPCChatDialog.
         /// </summary>
         /// <param name="dialog">The EditorNPCChatDialog to add.</param>
@@ -70,7 +56,7 @@ namespace NetGore.EditorTools.NPCChat
             _instance.Reorganize();
 
             // Find the first free index
-            int i = 0;
+            var i = 0;
             while (_instance.DialogExists((NPCChatDialogID)i))
             {
                 ++i;
@@ -89,6 +75,20 @@ namespace NetGore.EditorTools.NPCChat
             AddDialog(dialog);
 
             return dialog;
+        }
+
+        /// <summary>
+        /// Deletes a <see cref="EditorNPCChatDialog"/>.
+        /// </summary>
+        /// <param name="dialog">The <see cref="EditorNPCChatDialog"/> to delete.</param>
+        public static void DeleteDialog(EditorNPCChatDialog dialog)
+        {
+            _instance.Reorganize();
+
+            if (GetDialog(dialog.ID) != dialog)
+                return;
+
+            _instance[dialog.ID] = null;
         }
 
         /// <summary>

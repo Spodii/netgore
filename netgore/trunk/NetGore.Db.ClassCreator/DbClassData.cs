@@ -13,52 +13,17 @@ namespace NetGore.Db.ClassCreator
         readonly string _className;
         readonly IEnumerable<ColumnCollection> _columnCollections;
         readonly IEnumerable<DbColumnInfo> _columns;
-        readonly string _extensionClassName;
-        readonly CodeFormatter _formatter;
-        readonly string _interfaceName;
-        readonly string _tableName;
 
         readonly IEnumerable<CustomTypeMapping> _customTypes;
         readonly Dictionary<Type, string> _dataReaderReadMethods;
+        readonly string _extensionClassName;
         readonly IDictionary<DbColumnInfo, string> _externalTypes = new Dictionary<DbColumnInfo, string>();
+        readonly CodeFormatter _formatter;
+        readonly string _interfaceName;
         readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
-
-        /// <summary>
-        /// Gets the name of the class.
-        /// </summary>
-        public string ClassName { get { return _className; } }
-
-        /// <summary>
-        /// Gets the column collections.
-        /// </summary>
-        public IEnumerable<ColumnCollection> ColumnCollections { get { return _columnCollections; } }
-
-        /// <summary>
-        /// Gets the columns.
-        /// </summary>
-        public IEnumerable<DbColumnInfo> Columns { get { return _columns; } }
-
-        /// <summary>
-        /// Gets the name of the extension class.
-        /// </summary>
-        public string ExtensionClassName { get { return _extensionClassName; } }
-
-        /// <summary>
-        /// Gets the code formatter.
-        /// </summary>
-        public CodeFormatter Formatter { get { return _formatter; } }
-
-        /// <summary>
-        /// Gets the name of the interface.
-        /// </summary>
-        public string InterfaceName { get { return _interfaceName; } }
-
-        /// <summary>
-        /// Gets the name of the database table.
-        /// </summary>
-        public string TableName { get { return _tableName; } }
+        readonly string _tableName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbClassData"/> class.
@@ -123,6 +88,62 @@ namespace NetGore.Db.ClassCreator
                                  formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
                 _parameterNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
             }
+        }
+
+        /// <summary>
+        /// Gets the name of the class.
+        /// </summary>
+        public string ClassName
+        {
+            get { return _className; }
+        }
+
+        /// <summary>
+        /// Gets the column collections.
+        /// </summary>
+        public IEnumerable<ColumnCollection> ColumnCollections
+        {
+            get { return _columnCollections; }
+        }
+
+        /// <summary>
+        /// Gets the columns.
+        /// </summary>
+        public IEnumerable<DbColumnInfo> Columns
+        {
+            get { return _columns; }
+        }
+
+        /// <summary>
+        /// Gets the name of the extension class.
+        /// </summary>
+        public string ExtensionClassName
+        {
+            get { return _extensionClassName; }
+        }
+
+        /// <summary>
+        /// Gets the code formatter.
+        /// </summary>
+        public CodeFormatter Formatter
+        {
+            get { return _formatter; }
+        }
+
+        /// <summary>
+        /// Gets the name of the interface.
+        /// </summary>
+        public string InterfaceName
+        {
+            get { return _interfaceName; }
+        }
+
+        /// <summary>
+        /// Gets the name of the database table.
+        /// </summary>
+        public string TableName
+        {
+            get { return _tableName; }
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server;
@@ -24,7 +24,8 @@ namespace DemoGame.EditorTools
         /// <returns>The <see cref="ICharacterTemplateInventoryTable"/></returns>
         public ICharacterTemplateInventoryTable ToTableRow(CharacterTemplateID charID, int rowID)
         {
-            return new CharacterTemplateInventoryTable(iD: rowID, chance: Chance, characterTemplateID: charID, itemTemplateID: ID, min: (byte)Min, max: (byte)Max);
+            return new CharacterTemplateInventoryTable(iD: rowID, chance: Chance, characterTemplateID: charID, itemTemplateID: ID,
+                                                       min: (byte)Min, max: (byte)Max);
         }
 
         /// <summary>

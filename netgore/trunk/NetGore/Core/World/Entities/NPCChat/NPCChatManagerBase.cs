@@ -32,19 +32,6 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Gets if a chat dialog exists at the given ID.
-        /// </summary>
-        /// <param name="id">The ID to check if contains a dialog.</param>
-        /// <returns>True if a dialog exists at the given <paramref name="id"/>; otherwise false.</returns>
-        public bool DialogExists(NPCChatDialogID id)
-        {
-            if (!_npcChatDialogs.CanGet((int)id))
-                return false;
-
-            return _npcChatDialogs[(int)id] != null;
-        }
-
-        /// <summary>
         /// Gets the NPCChatDialogBase at the specified index.
         /// </summary>
         /// <param name="id">Index of the NPCChatDialogBase.</param>
@@ -97,6 +84,19 @@ namespace NetGore.NPCChat
         protected static MethodAccessException CreateReadonlyException()
         {
             return new MethodAccessException("Cannot access this method when the NPCChatManagerBase is set to Read-Only.");
+        }
+
+        /// <summary>
+        /// Gets if a chat dialog exists at the given ID.
+        /// </summary>
+        /// <param name="id">The ID to check if contains a dialog.</param>
+        /// <returns>True if a dialog exists at the given <paramref name="id"/>; otherwise false.</returns>
+        public bool DialogExists(NPCChatDialogID id)
+        {
+            if (!_npcChatDialogs.CanGet((int)id))
+                return false;
+
+            return _npcChatDialogs[(int)id] != null;
         }
 
         /// <summary>

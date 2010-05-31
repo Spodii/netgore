@@ -1,4 +1,6 @@
-﻿namespace NetGore.Db
+using System.Linq;
+
+namespace NetGore.Db
 {
     /// <summary>
     /// Helper methods for creating IDs in a database.
@@ -33,7 +35,8 @@
             /// <param name="column">The column.</param>
             /// <param name="stackSize">Size of the stack.</param>
             /// <param name="criticalSize">Size of the critical.</param>
-            public IntIDCreator(DbConnectionPool connectionPool, string table, string column, int stackSize, int criticalSize) : base(connectionPool, table, column, stackSize, criticalSize)
+            public IntIDCreator(DbConnectionPool connectionPool, string table, string column, int stackSize, int criticalSize)
+                : base(connectionPool, table, column, stackSize, criticalSize)
             {
             }
 

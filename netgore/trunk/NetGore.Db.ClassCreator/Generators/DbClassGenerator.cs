@@ -653,7 +653,7 @@ namespace NetGore.Db.ClassCreator
             // Turn parameters into a KeyValuePair
             var cParams = new List<KeyValuePair<string, string>>(Math.Max(1, parameters.Length));
             cParams.AddRange(parameters.Select(p => new KeyValuePair<string, string>(p.Name, Comments.CreateConstructor.Parameter)));
-            
+
             // Generate the code
             var sb = new StringBuilder(2048);
 
@@ -942,7 +942,6 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        
         /// <summary>
         /// Generates the code for a single column in the GetMethodData method, which contains the construction and
         /// return of an ColumnMetadataClass instance. To be used by <see cref="CreateMethodGetColumnData"/>.

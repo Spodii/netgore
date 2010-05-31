@@ -26,17 +26,26 @@ namespace DemoGame
         /// <summary>
         /// Gets an <see cref="ItemChance"/> with a 100% chance.
         /// </summary>
-        public static ItemChance Percent100 { get { return _percent100; } }
+        public static ItemChance Percent100
+        {
+            get { return _percent100; }
+        }
 
         /// <summary>
         /// Gets an <see cref="ItemChance"/> with a 50% chance.
         /// </summary>
-        public static ItemChance Percent50 { get { return _percent50; } }
+        public static ItemChance Percent50
+        {
+            get { return _percent50; }
+        }
 
         /// <summary>
         /// Gets an <see cref="ItemChance"/> with a 0% chance.
         /// </summary>
-        public static ItemChance Percent0 { get { return _percent0; } }
+        public static ItemChance Percent0
+        {
+            get { return _percent0; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemChance"/> struct.
@@ -70,7 +79,10 @@ namespace DemoGame
         /// <summary>
         /// Gets the chance of this <see cref="ItemChance"/> as a percent in the range of 0.0f to 1.0f.
         /// </summary>
-        public float Percentage { get { return (float)_value / MaxValue; } }
+        public float Percentage
+        {
+            get { return (float)_value / MaxValue; }
+        }
 
         /// <summary>
         /// Represents the largest possible value of ItemChance. This field is constant.
