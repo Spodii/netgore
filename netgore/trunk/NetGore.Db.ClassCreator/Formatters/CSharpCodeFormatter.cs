@@ -155,7 +155,7 @@ namespace NetGore.Db.ClassCreator
         /// <param name="memberName">Name of the member.</param>
         /// <param name="type">The type.</param>
         /// <param name="visibility">The visibility.</param>
-        /// <param name="value">The value.</param>
+        /// <param name="code">The code.</param>
         /// <param name="isReadonly">If this field is readonly.</param>
         /// <param name="isStatic">If this field is static.</param>
         /// <returns>The code.</returns>
