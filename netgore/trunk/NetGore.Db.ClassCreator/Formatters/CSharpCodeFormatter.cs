@@ -5,43 +5,73 @@ using System.Text;
 
 namespace NetGore.Db.ClassCreator
 {
+    /// <summary>
+    /// A <see cref="CodeFormatter"/> for CSharp.
+    /// </summary>
     public class CSharpCodeFormatter : CodeFormatter
     {
+        /// <summary>
+        /// Gets the closing char for a brace.
+        /// </summary>
         public override string CloseBrace
         {
             get { return "}"; }
         }
 
+        /// <summary>
+        /// Gets the closing char for an indexer.
+        /// </summary>
         public override string CloseIndexer
         {
             get { return "]"; }
         }
 
+        /// <summary>
+        /// Gets the char for an end of a line.
+        /// </summary>
         public override string EndOfLine
         {
             get { return ";"; }
         }
 
+        /// <summary>
+        /// Gets the file name suffix.
+        /// </summary>
         public override string FilenameSuffix
         {
             get { return "cs"; }
         }
 
+        /// <summary>
+        /// Gets the opening char for a brace.
+        /// </summary>
         public override string OpenBrace
         {
             get { return "{"; }
         }
 
+        /// <summary>
+        /// Gets the opening char for an indexer.
+        /// </summary>
         public override string OpenIndexer
         {
             get { return "["; }
         }
 
+        /// <summary>
+        /// Gets the char to use to separate parameters.
+        /// </summary>
         public override string ParameterSpacer
         {
             get { return ", "; }
         }
 
+        /// <summary>
+        /// Gets the code for an attribute.
+        /// </summary>
+        /// <param name="attributeType">The attribute type</param>
+        /// <param name="args">The attribute arguments.</param>
+        /// <returns>The code.</returns>
         public override string GetAttribute(string attributeType, params string[] args)
         {
             var sb = new StringBuilder();
@@ -65,6 +95,14 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the code for a class.
+        /// </summary>
+        /// <param name="className">Name of the class.</param>
+        /// <param name="visibility">The visibility.</param>
+        /// <param name="isStatic">Whether or not it is a static class.</param>
+        /// <param name="interfaces">The interfaces.</param>
+        /// <returns>The code.</returns>
         public override string GetClass(string className, MemberVisibilityLevel visibility, bool isStatic,
                                         IEnumerable<string> interfaces)
         {
@@ -89,6 +127,14 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the code for a constant field.
+        /// </summary>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="visibility">The visibility.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The code.</returns>
         public override string GetConstField(string fieldName, Type type, MemberVisibilityLevel visibility, string value)
         {
             var sb = new StringBuilder();
@@ -103,6 +149,16 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the code for a field.
+        /// </summary>
+        /// <param name="memberName">Name of the member.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="visibility">The visibility.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="isReadonly">If this field is readonly.</param>
+        /// <param name="isStatic">If this field is static.</param>
+        /// <returns>The code.</returns>
         public override string GetField(string memberName, string type, MemberVisibilityLevel visibility, string code,
                                         bool isReadonly, bool isStatic)
         {
@@ -135,11 +191,24 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the code for an interface.
+        /// </summary>
+        /// <param name="interfaceName">The interface name.</param>
+        /// <param name="visibility">The visibility.</param>
+        /// <returns>The code.</returns>
         public override string GetInterface(string interfaceName, MemberVisibilityLevel visibility)
         {
             return GetVisibilityLevel(visibility) + " interface " + interfaceName;
         }
 
+        /// <summary>
+        /// Gets the code for a local field.
+        /// </summary>
+        /// <param name="memberName">Name of the member.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The code.</returns>
         public override string GetLocalField(string memberName, string type, string value)
         {
             var sb = new StringBuilder();
@@ -157,6 +226,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the code for a namespace.
+        /// </summary>
+        /// <param name="namespaceName">Name of the namespace.</param>
+        /// <returns>The code.</returns>
         public override string GetNamespace(string namespaceName)
         {
             return "namespace " + namespaceName;
@@ -190,6 +264,14 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// When overridden in the derived class, generates the code for a switch.
+        /// </summary>
+        /// <param name="switchOn">The code to switch on.</param>
+        /// <param name="switches">The switches to use, where the key is the switch's value, and the value is the
+        /// code used for the switch.</param>
+        /// <param name="defaultCode">The code to use on a default. If null, no default switch will be made.</param>
+        /// <returns>The code for a switch.</returns>
         public override string GetSwitch(string switchOn, IEnumerable<KeyValuePair<string, string>> switches, string defaultCode)
         {
             var sb = new StringBuilder(512);
@@ -221,11 +303,21 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the code for a using namespace directive.
+        /// </summary>
+        /// <param name="namespaceName">Name of the namespace.</param>
+        /// <returns>The code.</returns>
         public override string GetUsing(string namespaceName)
         {
             return "using " + namespaceName + EndOfLine;
         }
 
+        /// <summary>
+        /// Gets the code to represent a visibility level.
+        /// </summary>
+        /// <param name="visibility">The visibility level.</param>
+        /// <returns>The code.</returns>
         public override string GetVisibilityLevel(MemberVisibilityLevel visibility)
         {
             switch (visibility)
