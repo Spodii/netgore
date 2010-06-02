@@ -46,7 +46,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(AllianceHostileTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(AllianceHostileTable.DbColumns);
         }
 
         /// <summary>

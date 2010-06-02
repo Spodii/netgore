@@ -4,7 +4,9 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 
 namespace NetGore.Db
 {
@@ -13,6 +15,8 @@ namespace NetGore.Db
     /// </summary>
     public abstract class DbQueryBase : IDbQueryHandler
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The prefix character for database query parameters.
         /// </summary>
@@ -94,26 +98,36 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Creates a DbParameter that can be used with this DbQueryBase.
+        /// Creates a <see cref="DbParameter"/> that can be used with this <see cref="DbQueryBase"/>.
         /// </summary>
-        /// <param name="parameterName">Name of the parameter to create.</param>
+        /// <param name="parameterName">Name of the parameter to create.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
         /// <returns>DbParameter that can be used with this DbQueryBase.</returns>
         DbParameter CreateParameter(string parameterName)
         {
             if (!parameterName.StartsWith(ParameterPrefix))
             {
-                const string errmsg = "Parameter named `{0}` had an invalid or no prefix specified.";
-                Debug.Fail(string.Format(errmsg, parameterName));
+                // Append the parameter prefix
                 parameterName = ParameterPrefix + parameterName;
+            }
+            else
+            {
+                // Prefix already existed
+                const string errmsg =
+                    "Parameter `{0}` already contained the ParameterPrefix ({1}). It is recommended to create parameters without specify the prefix explicitly.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, parameterName, ParameterPrefix);
+                Debug.Fail(string.Format(errmsg, parameterName, ParameterPrefix));
             }
 
             return ConnectionPool.CreateParameter(parameterName);
         }
 
         /// <summary>
-        /// Helps creates multiple DbParameters easily.
+        /// Helps creates multiple <see cref="DbParameter"/>s easily.
         /// </summary>
-        /// <param name="param1">Name of the first parameter.</param>
+        /// <param name="param1">Name of the first parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
         /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
         protected IEnumerable<DbParameter> CreateParameters(string param1)
         {
@@ -123,8 +137,10 @@ namespace NetGore.Db
         /// <summary>
         /// Helps creates multiple DbParameters easily.
         /// </summary>
-        /// <param name="param1">Name of the first parameter.</param>
-        /// <param name="param2">Name of the second parameter.</param>
+        /// <param name="param1">Name of the first parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
+        /// <param name="param2">Name of the second parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
         /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
         protected IEnumerable<DbParameter> CreateParameters(string param1, string param2)
         {
@@ -134,9 +150,12 @@ namespace NetGore.Db
         /// <summary>
         /// Helps creates multiple DbParameters easily.
         /// </summary>
-        /// <param name="param1">Name of the first parameter.</param>
-        /// <param name="param2">Name of the second parameter.</param>
-        /// <param name="param3">Name of the third parameter.</param>
+        /// <param name="param1">Name of the first parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
+        /// <param name="param2">Name of the second parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
+        /// <param name="param3">Name of the third parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
         /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
         protected IEnumerable<DbParameter> CreateParameters(string param1, string param2, string param3)
         {
@@ -146,10 +165,14 @@ namespace NetGore.Db
         /// <summary>
         /// Helps creates multiple DbParameters easily.
         /// </summary>
-        /// <param name="param1">Name of the first parameter.</param>
-        /// <param name="param2">Name of the second parameter.</param>
-        /// <param name="param3">Name of the third parameter.</param>
-        /// <param name="param4">Name of the fourth parameter.</param>
+        /// <param name="param1">Name of the first parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
+        /// <param name="param2">Name of the second parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
+        /// <param name="param3">Name of the third parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
+        /// <param name="param4">Name of the fourth parameter.
+        /// Should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
         /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
         protected IEnumerable<DbParameter> CreateParameters(string param1, string param2, string param3, string param4)
         {
@@ -160,7 +183,8 @@ namespace NetGore.Db
         /// <summary>
         /// Helps creates multiple DbParameters easily.
         /// </summary>
-        /// <param name="parameterNames">Array of ParameterNames to create.</param>
+        /// <param name="parameterNames">Array of parameter names to create.
+        /// The names should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
         /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
         protected IEnumerable<DbParameter> CreateParameters(params string[] parameterNames)
         {
@@ -170,7 +194,8 @@ namespace NetGore.Db
         /// <summary>
         /// Helps creates multiple DbParameters easily.
         /// </summary>
-        /// <param name="parameterNames">IEnumerable of ParameterNames to create.</param>
+        /// <param name="parameterNames">IEnumerable of parameter names to create.
+        /// The names should not be explicitly prefixed with the <see cref="ParameterPrefix"/>.</param>
         /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
         protected IEnumerable<DbParameter> CreateParameters(IEnumerable<string> parameterNames)
         {
@@ -226,7 +251,7 @@ namespace NetGore.Db
         /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
         public static string FormatParametersIntoString(IEnumerable<string> fields)
         {
-            var sb = new StringBuilder(512);
+            var sb = new StringBuilder(128);
 
             foreach (var field in fields)
             {
@@ -249,7 +274,7 @@ namespace NetGore.Db
         /// <returns>A comma-delimited string of all fields in the format of: (`a`,`b`,...) VALUES (@a,@b,...).</returns>
         public static string FormatParametersIntoValuesString(IEnumerable<string> fields)
         {
-            var sb = new StringBuilder(512);
+            var sb = new StringBuilder(128);
 
             // Turn the IEnumerable into an array so we can ensure that both iterations are the EXACT same since
             // IEnumerable iterators do not guarentee two iterations to return the same set in the same order

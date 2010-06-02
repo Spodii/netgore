@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@accountName", "@userName", "@characterID");
+            return CreateParameters("accountName", "userName", "characterID");
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@accountName"] = item.AccountName;
-            p["@userName"] = item.UserName;
-            p["@characterID"] = (int)item.CharacterID;
+            p["accountName"] = item.AccountName;
+            p["userName"] = item.UserName;
+            p["characterID"] = (int)item.CharacterID;
         }
 
         public bool TryExecute(string accountName, CharacterID characterID, string userName, out string errorMsg)

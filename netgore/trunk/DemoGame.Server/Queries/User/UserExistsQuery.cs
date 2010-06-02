@@ -50,7 +50,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@name");
+            return CreateParameters("name");
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace DemoGame.Server.Queries
         /// <param name="userName">The value used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, string userName)
         {
-            p["@name"] = userName;
+            p["name"] = userName;
         }
     }
 }

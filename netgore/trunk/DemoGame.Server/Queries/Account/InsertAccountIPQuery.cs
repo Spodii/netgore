@@ -35,7 +35,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@accountID", "@ip");
+            return CreateParameters("accountID", "ip");
         }
 
         /// <summary>
@@ -46,8 +46,8 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@accountID"] = (int)item.AccountID;
-            p["@ip"] = item.IP;
+            p["accountID"] = (int)item.AccountID;
+            p["ip"] = item.IP;
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(QuestRequireKillTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(QuestRequireKillTable.DbColumns);
         }
 
         /// <summary>

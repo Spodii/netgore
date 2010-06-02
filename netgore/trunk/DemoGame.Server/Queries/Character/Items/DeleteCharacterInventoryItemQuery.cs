@@ -38,7 +38,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(CharacterInventoryTable.DbKeyColumns.Select(x => "@" + x));
+            return CreateParameters(CharacterInventoryTable.DbKeyColumns);
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
         {
             item.TryCopyValues(p);
-            Debug.Assert(Convert.ToInt32(p["@slot"]) == (int)item.Slot);
-            Debug.Assert(Convert.ToInt32(p["@character_id"]) == (int)item.CharacterID);
+            Debug.Assert(Convert.ToInt32(p["slot"]) == (int)item.Slot);
+            Debug.Assert(Convert.ToInt32(p["character_id"]) == (int)item.CharacterID);
         }
     }
 }

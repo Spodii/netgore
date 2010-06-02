@@ -28,7 +28,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(WorldStatsUserConsumeItemTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(WorldStatsUserConsumeItemTable.DbColumns);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace DemoGame.Server.Queries
             item.CopyValues(p);
 
             // Set the `when` field to null to ensure that the time is assigned by MySQL
-            p["@when"] = null;
+            p["when"] = null;
         }
     }
 }

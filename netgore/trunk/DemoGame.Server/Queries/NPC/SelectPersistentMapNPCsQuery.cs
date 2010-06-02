@@ -45,7 +45,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@mapID");
+            return CreateParameters("mapID");
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, MapID item)
         {
-            p["@mapID"] = (int)item;
+            p["mapID"] = (int)item;
         }
     }
 }

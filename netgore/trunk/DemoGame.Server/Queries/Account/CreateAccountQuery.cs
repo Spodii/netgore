@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@id", "@name", "@password", "@email", "@ip");
+            return CreateParameters("id", "name", "password", "email", "ip");
         }
 
         /// <summary>
@@ -48,11 +48,11 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@id"] = (int)item.AccountID;
-            p["@name"] = item.Name;
-            p["@password"] = item.Password;
-            p["@email"] = item.Email;
-            p["@ip"] = item.IP;
+            p["id"] = (int)item.AccountID;
+            p["name"] = item.Name;
+            p["password"] = item.Password;
+            p["email"] = item.Email;
+            p["ip"] = item.IP;
         }
 
         /// <summary>

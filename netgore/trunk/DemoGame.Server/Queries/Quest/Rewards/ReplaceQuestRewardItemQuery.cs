@@ -47,7 +47,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(QuestRewardItemTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(QuestRewardItemTable.DbColumns);
         }
 
         /// <summary>

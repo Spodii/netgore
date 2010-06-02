@@ -121,7 +121,7 @@ namespace NetGore.Tests.Db.MySql
             /// no parameters will be used.</returns>
             protected override IEnumerable<DbParameter> InitializeParameters()
             {
-                return CreateParameters("@a", "@b", "@c");
+                return CreateParameters("a", "b", "c");
             }
 
             /// <summary>
@@ -131,9 +131,9 @@ namespace NetGore.Tests.Db.MySql
             /// <param name="item">Item used to execute the query.</param>
             protected override void SetParameters(DbParameterValues p, QueryTestValues item)
             {
-                p["@a"] = item.A;
-                p["@b"] = item.B;
-                p["@c"] = item.C;
+                p["a"] = item.A;
+                p["b"] = item.B;
+                p["c"] = item.C;
             }
         }
     }

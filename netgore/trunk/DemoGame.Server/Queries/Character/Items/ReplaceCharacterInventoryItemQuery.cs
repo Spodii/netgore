@@ -34,7 +34,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(CharacterInventoryTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(CharacterInventoryTable.DbColumns);
         }
 
         /// <summary>

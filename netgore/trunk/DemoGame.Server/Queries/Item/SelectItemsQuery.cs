@@ -48,7 +48,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@low", "@high");
+            return CreateParameters("low", "high");
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryValues item)
         {
-            p["@low"] = (int)item.Low;
-            p["@high"] = (int)item.High;
+            p["low"] = (int)item.Low;
+            p["high"] = (int)item.High;
         }
 
         /// <summary>

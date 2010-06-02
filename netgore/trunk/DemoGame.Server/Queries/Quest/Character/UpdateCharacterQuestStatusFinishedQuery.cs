@@ -42,7 +42,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@charID", "@questID");
+            return CreateParameters("charID", "questID");
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@charID"] = (int)item.CharacterID;
-            p["@questID"] = (int)item.QuestID;
+            p["charID"] = (int)item.CharacterID;
+            p["questID"] = (int)item.QuestID;
         }
 
         /// <summary>
