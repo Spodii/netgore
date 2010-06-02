@@ -43,7 +43,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@id");
+            return CreateParameters("id");
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, CharacterTemplateID item)
         {
-            p["@id"] = (int)item;
+            p["id"] = (int)item;
         }
     }
 
@@ -97,7 +97,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@characterTemplateID");
+            return CreateParameters("characterTemplateID");
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace DemoGame.Server.Queries
         /// <param name="id">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, CharacterTemplateID id)
         {
-            p["@characterTemplateID"] = (int)id;
+            p["characterTemplateID"] = (int)id;
         }
     }
 }

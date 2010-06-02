@@ -13,17 +13,17 @@ namespace NetGore.Db
         /// <summary>
         /// The name of the parameter for the column name.
         /// </summary>
-        protected const string ColumnParameterName = "@column";
+        protected const string ColumnParameterName = "column";
 
         /// <summary>
         /// The name of the parameter for the database name.
         /// </summary>
-        protected const string DbParameterName = "@db";
+        protected const string DbParameterName = "db";
 
         /// <summary>
         /// The name of the parameter for the table name.
         /// </summary>
-        protected const string TableParameterName = "@table";
+        protected const string TableParameterName = "table";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FindForeignKeysQuery"/> class.

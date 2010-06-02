@@ -28,7 +28,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(WorldStatsUserShoppingTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(WorldStatsUserShoppingTable.DbColumns);
         }
 
         /// <summary>

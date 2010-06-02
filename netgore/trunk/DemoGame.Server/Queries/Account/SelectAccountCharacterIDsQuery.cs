@@ -48,7 +48,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@accountID");
+            return CreateParameters("accountID");
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace DemoGame.Server.Queries
         /// <param name="accountID">The account ID.</param>
         protected override void SetParameters(DbParameterValues p, AccountID accountID)
         {
-            p["@accountID"] = (int)accountID;
+            p["accountID"] = (int)accountID;
         }
     }
 }

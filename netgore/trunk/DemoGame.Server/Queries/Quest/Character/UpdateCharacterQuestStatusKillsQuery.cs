@@ -45,7 +45,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(CharacterQuestStatusKillsTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(CharacterQuestStatusKillsTable.DbColumns);
         }
 
         /// <summary>

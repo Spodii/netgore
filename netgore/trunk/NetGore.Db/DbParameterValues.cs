@@ -46,8 +46,17 @@ namespace NetGore.Db
         /// <returns>Value of the parameter with the given <paramref name="parameterName"/>.</returns>
         public object this[string parameterName]
         {
-            get { return _collection[parameterName].Value; }
-            set { _collection[parameterName].Value = value; }
+            get
+            {
+                if (!parameterName.StartsWith(DbQueryBase.ParameterPrefix))
+                    parameterName = DbQueryBase.ParameterPrefix + parameterName;
+
+                return _collection[parameterName].Value; }
+            set {
+                if (!parameterName.StartsWith(DbQueryBase.ParameterPrefix))
+                    parameterName = DbQueryBase.ParameterPrefix + parameterName;
+
+                _collection[parameterName].Value = value; }
         }
 
         /// <summary>

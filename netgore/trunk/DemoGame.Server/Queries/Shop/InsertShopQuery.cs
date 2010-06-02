@@ -30,7 +30,7 @@ namespace DemoGame.Server.Queries
         /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(ShopTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(ShopTable.DbColumns);
         }
 
         /// <summary>

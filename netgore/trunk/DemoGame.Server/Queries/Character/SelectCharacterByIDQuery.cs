@@ -49,7 +49,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@id");
+            return CreateParameters("id");
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace DemoGame.Server.Queries
         /// <param name="characterID">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, CharacterID characterID)
         {
-            p["@id"] = (int)characterID;
+            p["id"] = (int)characterID;
         }
     }
 }
