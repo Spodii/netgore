@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertGuildQuery : DbQueryNonReader<IGuildTable>
     {
-        static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1}", GuildTable.TableName,
+        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", GuildTable.TableName,
                                                          FormatParametersIntoValuesString(GuildTable.DbColumns));
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertWorldStatsQuestAcceptQuery : DbQueryNonReader<IWorldStatsQuestAcceptTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", WorldStatsQuestAcceptTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", WorldStatsQuestAcceptTable.TableName,
                                                          FormatParametersIntoValuesString(WorldStatsQuestAcceptTable.DbColumns));
 
         /// <summary>

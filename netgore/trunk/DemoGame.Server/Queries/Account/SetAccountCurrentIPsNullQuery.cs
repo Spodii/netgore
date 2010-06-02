@@ -7,7 +7,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SetAccountCurrentIPsNullQuery : DbQueryNonReader
     {
-        static readonly string _queryStr = string.Format("UPDATE `{0}` SET `current_ip` = NULL", AccountTable.TableName);
+        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `current_ip` = NULL", AccountTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SetAccountCurrentIPsNullQuery"/> class.

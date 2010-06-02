@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectQuestQuery : DbQueryReader<QuestID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", QuestTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id", QuestTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectQuestQuery"/> class.

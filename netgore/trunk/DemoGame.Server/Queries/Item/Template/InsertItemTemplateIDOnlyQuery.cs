@@ -9,7 +9,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertItemTemplateIDOnlyQuery : DbQueryNonReader<ItemTemplateID>
     {
-        static readonly string _queryStr = string.Format("INSERT INTO `{0}` SET `id`=@id", ItemTemplateTable.TableName);
+        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` SET `id`=@id", ItemTemplateTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertItemTemplateIDOnlyQuery"/> class.

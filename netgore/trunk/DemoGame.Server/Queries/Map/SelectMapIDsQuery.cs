@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectMapQuery : DbQueryReader<MapID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", MapTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id", MapTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectMapQuery"/> class.
@@ -62,7 +62,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectMapIDsQuery : DbQueryReader
     {
-        static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}`", MapTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT `id` FROM `{0}`", MapTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectMapIDsQuery"/> class.

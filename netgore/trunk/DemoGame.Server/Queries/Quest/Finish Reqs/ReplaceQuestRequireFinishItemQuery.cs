@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceQuestRequireFinishItemQuery : DbQueryNonReader<IQuestRequireFinishItemTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", QuestRequireFinishItemTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestRequireFinishItemTable.TableName,
                                                          FormatParametersIntoValuesString(QuestRequireFinishItemTable.DbColumns));
 
         /// <summary>

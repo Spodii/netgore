@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertWorldStatsGuildUserChangeQuery : DbQueryNonReader<IWorldStatsGuildUserChangeTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", WorldStatsGuildUserChangeTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", WorldStatsGuildUserChangeTable.TableName,
                                                          FormatParametersIntoValuesString(WorldStatsGuildUserChangeTable.DbColumns));
 
         /// <summary>

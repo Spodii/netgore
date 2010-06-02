@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectShopQuery : DbQueryReader<ShopID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", ShopTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id", ShopTable.TableName);
 
         /// <summary>
         /// DbQueryReader constructor.

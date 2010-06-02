@@ -22,6 +22,34 @@ namespace NetGore.Db
         /// </summary>
         public const string ParameterPrefix = "@";
 
+        /// <summary>
+        /// The prefix character for database query parameters.
+        /// </summary>
+        public const char ParameterPrefixChar = '@';
+
+        /// <summary>
+        /// Formats a string into a query string.
+        /// </summary>
+        /// <param name="queryString">The query string. Follows the same rules as String.Format(), but each parameter in the
+        /// query is identified by the character @. If you want to use the @ in the literal query, you can escape the character
+        /// by prefixing it with another @. So two @'s (@@) will not be replaced by the parameter prefix.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The formatted query string.</returns>
+        public static string FormatQueryString(string queryString, params object[] args)
+        {
+            if (args != null && args.Length > 0)
+                queryString = string.Format(queryString, args);
+
+            // If the ParameterPrefix is not @, then replace @ in the input string with the ParameterPrefix. This should never actually
+            // happen since the ParameterPrefix has no reason to be anything other than @, but is provided for completeness.
+#pragma warning disable 162
+            if (ParameterPrefix != "@")
+                throw new NotImplementedException("No support for ParameterPrefix not being '@' at this time since its not needed...");
+#pragma warning restore 162
+
+            return queryString;
+        }
+
         const string _disposedErrorMessage = "Can not access methods on a disposed object.";
         const int _initialStackSize = 2;
 
@@ -376,7 +404,7 @@ namespace NetGore.Db
             switch (parameterName[0])
             {
                 case '?':
-                case '@':
+                case ParameterPrefixChar:
                     // Remove the prefix
                     if (parameterName.Length == 1)
                         throw new ArgumentException("Invalid parameter name.");

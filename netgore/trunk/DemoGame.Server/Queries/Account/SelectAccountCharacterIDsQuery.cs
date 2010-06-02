@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectAccountCharacterIDsQuery : DbQueryReader<AccountID>
     {
-        static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `account_id`=@accountID",
+        static readonly string _queryStr = FormatQueryString("SELECT `id` FROM `{0}` WHERE `account_id`=@accountID",
                                                          CharacterTable.TableName);
 
         /// <summary>

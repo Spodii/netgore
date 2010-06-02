@@ -8,7 +8,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectItemTemplateIDsQuery : DbQueryReader
     {
-        static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}`", ItemTemplateTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT `id` FROM `{0}`", ItemTemplateTable.TableName);
 
         /// <summary>
         /// DbQueryReader constructor.

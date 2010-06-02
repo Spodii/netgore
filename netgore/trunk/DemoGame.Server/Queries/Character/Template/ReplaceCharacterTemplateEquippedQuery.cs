@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceCharacterTemplateEquippedQuery : DbQueryNonReader<ICharacterTemplateEquippedTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", CharacterTemplateEquippedTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", CharacterTemplateEquippedTable.TableName,
                                                          FormatParametersIntoValuesString(CharacterTemplateEquippedTable.DbColumns));
 
         /// <summary>

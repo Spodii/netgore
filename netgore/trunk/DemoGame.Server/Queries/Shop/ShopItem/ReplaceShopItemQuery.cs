@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceShopItemQuery : DbQueryNonReader<IShopItemTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", ShopItemTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", ShopItemTable.TableName,
                                                          FormatParametersIntoValuesString(ShopItemTable.DbColumns));
 
         /// <summary>

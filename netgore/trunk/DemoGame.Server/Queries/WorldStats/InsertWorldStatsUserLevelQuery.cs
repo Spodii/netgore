@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertWorldStatsUserLevelQuery : DbQueryNonReader<IWorldStatsUserLevelTable>
     {
-        static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1}", WorldStatsUserLevelTable.TableName,
+        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", WorldStatsUserLevelTable.TableName,
                                                          FormatParametersIntoValuesString(WorldStatsUserLevelTable.DbColumns));
 
         /// <summary>

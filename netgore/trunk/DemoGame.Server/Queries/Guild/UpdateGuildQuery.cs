@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateGuildQuery : DbQueryNonReader<IGuildTable>
     {
-        static readonly string _queryStr = string.Format("UPDATE `{0}` SET `name`=@name, `tag`=@tag WHERE `id`=@id",
+        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `name`=@name, `tag`=@tag WHERE `id`=@id",
                                                          GuildTable.TableName);
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceQuestQuery : DbQueryNonReader<IQuestTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", QuestTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestTable.TableName,
                                                          FormatParametersIntoValuesString(QuestTable.DbColumns));
 
         /// <summary>
