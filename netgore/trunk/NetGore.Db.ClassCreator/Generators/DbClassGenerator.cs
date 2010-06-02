@@ -844,7 +844,7 @@ namespace NetGore.Db.ClassCreator
             var bodySB = new StringBuilder(2048);
             foreach (var column in cd.Columns)
             {
-                var left = parameterName + "[\"@" + column.Name + "\"]";
+                var left = parameterName + "[\"" + column.Name + "\"]";
                 var right = _extensionParamName + "." + cd.GetColumnValueAccessor(column);
                 var line = Formatter.GetSetValue(left, right, false, false, cd.GetInternalType(column));
                 bodySB.AppendLine(line);
@@ -898,7 +898,7 @@ namespace NetGore.Db.ClassCreator
             var bodySB = new StringBuilder(2048);
             foreach (var column in cd.Columns)
             {
-                var left = parameterName + "[\"@" + column.Name + "\"]";
+                var left = parameterName + "[\"" + column.Name + "\"]";
                 var right = sourceName + "." + cd.GetColumnValueAccessor(column);
                 var line = Formatter.GetSetValue(left, right, false, false, cd.GetExternalType(column));
                 bodySB.AppendLine(line);
@@ -1237,7 +1237,7 @@ namespace NetGore.Db.ClassCreator
                 bodySB.AppendLine(Formatter.GetSwitch(parameterName + ".GetParameterName(i)",
                                                       cd.Columns.Select(
                                                           x =>
-                                                          new KeyValuePair<string, string>("\"@" + x.Name + "\"",
+                                                          new KeyValuePair<string, string>("\"" + x.Name + "\"",
                                                                                            CreateMethodTryCopyValuesToDbParameterValuesSwitchString
                                                                                                (cd, x, parameterName))), null));
             }
