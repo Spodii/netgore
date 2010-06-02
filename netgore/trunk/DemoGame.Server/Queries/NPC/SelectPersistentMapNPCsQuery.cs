@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectPersistentMapNPCsQuery : DbQueryReader<MapID>
     {
-        static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `load_map_id`=@mapID",
+        static readonly string _queryStr = FormatQueryString("SELECT `id` FROM `{0}` WHERE `load_map_id`=@mapID",
                                                          NpcCharacterTable.TableName);
 
         /// <summary>

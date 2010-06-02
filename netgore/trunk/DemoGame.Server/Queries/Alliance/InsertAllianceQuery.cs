@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertAllianceQuery : DbQueryNonReader<IAllianceTable>
     {
-        static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1}", AllianceTable.TableName,
+        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", AllianceTable.TableName,
                                                          FormatParametersIntoValuesString(AllianceTable.DbColumns));
 
         /// <summary>

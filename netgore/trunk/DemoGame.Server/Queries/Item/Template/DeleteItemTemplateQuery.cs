@@ -9,7 +9,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteItemTemplateQuery : DbQueryNonReader<ItemTemplateID>
     {
-        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `id`=@id", ItemTemplateTable.TableName);
+        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `id`=@id", ItemTemplateTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteItemTemplateQuery"/> class.

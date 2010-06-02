@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectGuildMemberQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@character_id",
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `character_id`=@character_id",
                                                          GuildMemberTable.TableName);
 
         /// <summary>

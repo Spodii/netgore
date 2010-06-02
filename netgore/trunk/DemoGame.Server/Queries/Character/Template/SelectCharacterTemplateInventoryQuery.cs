@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterTemplateQuestsQuery : DbQueryReader<CharacterTemplateID>
     {
-        static readonly string _queryStr = string.Format("SELECT `quest_id` FROM `{0}` WHERE `character_template_id`=@id",
+        static readonly string _queryStr = FormatQueryString("SELECT `quest_id` FROM `{0}` WHERE `character_template_id`=@id",
                                                          CharacterTemplateQuestProviderTable.TableName);
 
         /// <summary>

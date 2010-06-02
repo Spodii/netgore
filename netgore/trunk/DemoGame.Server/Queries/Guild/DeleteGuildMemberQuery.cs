@@ -9,7 +9,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteGuildMemberQuery : DbQueryNonReader<CharacterID>
     {
-        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `character_id`=@id", GuildMemberTable.TableName);
+        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `character_id`=@id", GuildMemberTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteGuildMemberQuery"/> class.

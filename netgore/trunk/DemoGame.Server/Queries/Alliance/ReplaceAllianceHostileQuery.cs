@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceAllianceHostileQuery : DbQueryNonReader<IAllianceHostileTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", AllianceHostileTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", AllianceHostileTable.TableName,
                                                          FormatParametersIntoValuesString(AllianceHostileTable.DbColumns));
 
         /// <summary>

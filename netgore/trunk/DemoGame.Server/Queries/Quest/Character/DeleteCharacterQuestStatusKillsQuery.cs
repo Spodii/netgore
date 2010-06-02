@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteCharacterQuestStatusKillsQuery : DbQueryNonReader<DeleteCharacterQuestStatusKillsQuery.QueryArgs>
     {
-        static readonly string _queryStr = string.Format(
+        static readonly string _queryStr = FormatQueryString(
             "DELETE FROM `{0}` WHERE `character_id`=@charID AND `quest_id`=@questID", CharacterQuestStatusKillsTable.TableName);
 
         /// <summary>

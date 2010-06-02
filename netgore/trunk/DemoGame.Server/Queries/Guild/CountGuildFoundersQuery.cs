@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class CountGuildFoundersQuery : DbQueryReader<GuildID>
     {
-        static readonly string _queryStr = string.Format("SELECT COUNT(*) FROM `{0}` WHERE `guild_id` = @guildID",
+        static readonly string _queryStr = FormatQueryString("SELECT COUNT(*) FROM `{0}` WHERE `guild_id` = @guildID",
                                                          GuildMemberTable.TableName);
 
         /// <summary>

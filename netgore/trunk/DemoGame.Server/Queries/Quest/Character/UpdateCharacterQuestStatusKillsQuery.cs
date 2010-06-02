@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateCharacterQuestStatusKillsQuery : DbQueryNonReader<ICharacterQuestStatusKillsTable>
     {
-        static readonly string _queryStr = string.Format("INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE `count`=@count",
+        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE `count`=@count",
                                                          CharacterQuestStatusKillsTable.TableName,
                                                          FormatParametersIntoValuesString(CharacterQuestStatusKillsTable.DbColumns));
 

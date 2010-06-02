@@ -8,7 +8,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectServerSettingsQuery : DbQueryReader
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM {0}", ServerSettingTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM {0}", ServerSettingTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectServerSettingsQuery"/> class.

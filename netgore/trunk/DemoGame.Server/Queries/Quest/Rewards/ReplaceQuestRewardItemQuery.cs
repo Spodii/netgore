@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceQuestRewardItemQuery : DbQueryNonReader<IQuestRewardItemTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", QuestRewardItemTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestRewardItemTable.TableName,
                                                          FormatParametersIntoValuesString(QuestRewardItemTable.DbColumns));
 
         /// <summary>

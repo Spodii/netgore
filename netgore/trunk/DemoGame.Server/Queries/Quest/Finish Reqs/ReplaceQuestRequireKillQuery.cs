@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceQuestRequireKillQuery : DbQueryNonReader<IQuestRequireKillTable>
     {
-        static readonly string _queryStr = string.Format("REPLACE INTO `{0}` {1}", QuestRequireKillTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestRequireKillTable.TableName,
                                                          FormatParametersIntoValuesString(QuestRequireKillTable.DbColumns));
 
         /// <summary>

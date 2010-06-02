@@ -7,7 +7,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateServerTimeQuery : DbQueryNonReader
     {
-        static readonly string _queryStr = string.Format("UPDATE `{0}` SET `server_time`=NOW()", ServerTimeTable.TableName);
+        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `server_time`=NOW()", ServerTimeTable.TableName);
 
         /// <summary>
         /// DbQueryNonReader constructor.

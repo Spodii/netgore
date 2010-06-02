@@ -9,7 +9,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectGuildsQuery : DbQueryReader
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}`", GuildTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}`", GuildTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryReader"/> class.

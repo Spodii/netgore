@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectGuildByTagQuery : DbQueryReader<string>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `tag`=@tag", GuildTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `tag`=@tag", GuildTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildByTagQuery"/> class.

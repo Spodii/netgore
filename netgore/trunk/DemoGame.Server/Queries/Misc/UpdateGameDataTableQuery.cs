@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateGameConstantTableQuery : DbQueryNonReader<IGameConstantTable>
     {
-        static readonly string _queryStr = string.Format("UPDATE `{0}` SET {1}", GameConstantTable.TableName,
+        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET {1}", GameConstantTable.TableName,
                                                          FormatParametersIntoString(GameConstantTable.DbColumns));
 
         /// <summary>

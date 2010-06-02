@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteShopQuery : DbQueryNonReader<ShopID>
     {
-        static readonly string _queryStr = string.Format("DELETE FROM `{0}` WHERE `id`=@id", ShopTable.TableName);
+        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `id`=@id", ShopTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteShopQuery"/> class.

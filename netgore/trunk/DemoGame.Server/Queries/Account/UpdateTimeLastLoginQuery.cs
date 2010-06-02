@@ -9,7 +9,7 @@ namespace DemoGame.Server.Queries.Account
     [DbControllerQuery]
     public class UpdateTimeLastLoginQuery : DbQueryNonReader<AccountID>
     {
-        static readonly string _queryStr = string.Format("UPDATE `{0}` SET `time_last_login` = NOW() WHERE `id`=@id",
+        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `time_last_login` = NOW() WHERE `id`=@id",
                                                          AccountTable.TableName);
 
         /// <summary>
