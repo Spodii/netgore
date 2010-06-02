@@ -14,57 +14,69 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/31/2010 6:31:05 PM
+This file was generated on (UTC): 6/2/2010 10:29:24 PM
 ********************************************************************/
 
 using System;
 using System.Linq;
-using NetGore;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `world_stats_user_level`.
-    /// </summary>
-    public interface IWorldStatsUserLevelTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `character_id`.
-        /// </summary>
-        CharacterID CharacterID { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `world_stats_user_level`.
+/// </summary>
+public interface IWorldStatsUserLevelTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+IWorldStatsUserLevelTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `level`.
-        /// </summary>
-        Byte Level { get; }
+/// <summary>
+/// Gets the value of the database column `character_id`.
+/// </summary>
+DemoGame.CharacterID CharacterID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `level`.
+/// </summary>
+System.Byte Level
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `map_id`.
+/// </summary>
+System.Nullable<NetGore.MapID> MapID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `when`.
+/// </summary>
+System.DateTime When
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `x`.
+/// </summary>
+System.UInt16 X
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `y`.
+/// </summary>
+System.UInt16 Y
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `map_id`.
-        /// </summary>
-        MapID? MapID { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `when`.
-        /// </summary>
-        DateTime When { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `x`.
-        /// </summary>
-        UInt16 X { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `y`.
-        /// </summary>
-        UInt16 Y { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IWorldStatsUserLevelTable DeepCopy();
-    }
 }

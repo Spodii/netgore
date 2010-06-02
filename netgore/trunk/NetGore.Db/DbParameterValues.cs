@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace NetGore.Db
 {
@@ -39,6 +42,8 @@ namespace NetGore.Db
             set { _collection[index].Value = value; }
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Gets or sets the parameter's value.
         /// </summary>
@@ -48,15 +53,38 @@ namespace NetGore.Db
         {
             get
             {
-                if (!parameterName.StartsWith(DbQueryBase.ParameterPrefix))
-                    parameterName = DbQueryBase.ParameterPrefix + parameterName;
+                parameterName = AddParameterPrefixIfNeeded(parameterName);
+                return _collection[parameterName].Value;
+            }
+            set
+            {
+                parameterName = AddParameterPrefixIfNeeded(parameterName);
+                _collection[parameterName].Value = value;
+            }
+        }
 
-                return _collection[parameterName].Value; }
-            set {
-                if (!parameterName.StartsWith(DbQueryBase.ParameterPrefix))
-                    parameterName = DbQueryBase.ParameterPrefix + parameterName;
+        /// <summary>
+        /// Adds the <see cref="DbQueryBase.ParameterPrefix"/> to the <paramref name="parameterName"/> if needed.
+        /// </summary>
+        /// <param name="parameterName">The name of the parameter to add the prefix to.</param>
+        /// <returns>The <paramref name="parameterName"/> with the <see cref="DbQueryBase.ParameterPrefix"/>.</returns>
+        static string AddParameterPrefixIfNeeded(string parameterName)
+        {
+            if (!parameterName.StartsWith(DbQueryBase.ParameterPrefix))
+            {
+                // Add the parameter prefix
+                parameterName = DbQueryBase.ParameterPrefix + parameterName;
+            }
+            else
+            {
+                // Parameter prefix was already on the string
+                const string errmsg = "Parameter `{0}` explicitly specified the parameter prefix ({1}). It is recommended to not explicitly include the prefix.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, parameterName, DbQueryBase.ParameterPrefix);
+                Debug.Fail(string.Format(errmsg, parameterName, DbQueryBase.ParameterPrefix));
+            }
 
-                _collection[parameterName].Value = value; }
+            return parameterName;
         }
 
         /// <summary>
@@ -74,6 +102,7 @@ namespace NetGore.Db
         /// <returns>True if the <paramref name="parameterName"/> exists in this collection.</returns>
         public bool Contains(string parameterName)
         {
+            parameterName = AddParameterPrefixIfNeeded(parameterName);
             return _collection.Contains(parameterName);
         }
 
@@ -105,7 +134,13 @@ namespace NetGore.Db
         {
             foreach (DbParameter parameter in _collection)
             {
-                yield return new KeyValuePair<string, object>(parameter.ParameterName, parameter.Value);
+                Debug.Assert(parameter.ParameterName.StartsWith(DbQueryBase.ParameterPrefix));
+
+                var nameWithoutPrefix = parameter.ParameterName.Substring(1);
+
+                Debug.Assert(!nameWithoutPrefix.StartsWith(DbQueryBase.ParameterPrefix));
+
+                yield return new KeyValuePair<string, object>(nameWithoutPrefix, parameter.Value);
             }
         }
 

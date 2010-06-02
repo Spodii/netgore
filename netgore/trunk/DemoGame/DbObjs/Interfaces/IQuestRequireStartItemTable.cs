@@ -14,42 +14,48 @@ game's database.
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
 
-This file was generated on (UTC): 5/31/2010 6:31:05 PM
+This file was generated on (UTC): 6/2/2010 10:29:24 PM
 ********************************************************************/
 
 using System;
 using System.Linq;
-using NetGore.Features.Quests;
-
 namespace DemoGame.DbObjs
 {
-    /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `quest_require_start_item`.
-    /// </summary>
-    public interface IQuestRequireStartItemTable
-    {
-        /// <summary>
-        /// Gets the value of the database column `amount`.
-        /// </summary>
-        Byte Amount { get; }
+/// <summary>
+/// Interface for a class that can be used to serialize values to the database table `quest_require_start_item`.
+/// </summary>
+public interface IQuestRequireStartItemTable
+{
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+IQuestRequireStartItemTable DeepCopy();
 
-        /// <summary>
-        /// Gets the value of the database column `item_template_id`.
-        /// </summary>
-        ItemTemplateID ItemTemplateID { get; }
+/// <summary>
+/// Gets the value of the database column `amount`.
+/// </summary>
+System.Byte Amount
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `item_template_id`.
+/// </summary>
+DemoGame.ItemTemplateID ItemTemplateID
+{
+get;
+}
+/// <summary>
+/// Gets the value of the database column `quest_id`.
+/// </summary>
+NetGore.Features.Quests.QuestID QuestID
+{
+get;
+}
+}
 
-        /// <summary>
-        /// Gets the value of the database column `quest_id`.
-        /// </summary>
-        QuestID QuestID { get; }
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IQuestRequireStartItemTable DeepCopy();
-    }
 }
