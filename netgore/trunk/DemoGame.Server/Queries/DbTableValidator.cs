@@ -11,10 +11,20 @@ using NetGore.Stats;
 
 namespace DemoGame.Server.Queries
 {
+    /// <summary>
+    /// Provides ways to perform runtime validation checks on database tables to ensure they are
+    /// structured and named in ways that the code expects them to be.
+    /// </summary>
     public static class DbTableValidator
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// Ensures that the given columns exist.
+        /// </summary>
+        /// <param name="db">The <see cref="IDbController"/>.</param>
+        /// <param name="dbTable">The name of the table to check.</param>
+        /// <param name="columns">The columns to check that exist in the given <paramref name="dbTable"/>.</param>
         static void EnsureColumnsExist(IDbController db, string dbTable, IEnumerable<string> columns)
         {
             var dbColumns = db.GetTableColumns(dbTable);
@@ -25,12 +35,24 @@ namespace DemoGame.Server.Queries
             }
         }
 
+        /// <summary>
+        /// Ensures that the columns needed for <see cref="StatType"/>s exist in a table.
+        /// </summary>
+        /// <param name="db">The <see cref="IDbController"/>.</param>
+        /// <param name="dbTable">The name of the table to check.</param>
+        /// <param name="columns">The <see cref="StatType"/>s to ensure exist.</param>
+        /// <param name="statCollectionType">The <see cref="StatCollectionType"/> to use for checking.</param>
         static void EnsureStatColumnsExist(IDbController db, string dbTable, IEnumerable<StatType> columns,
                                            StatCollectionType statCollectionType)
         {
             EnsureColumnsExist(db, dbTable, columns.Select(x => x.GetDatabaseField(statCollectionType)));
         }
 
+        /// <summary>
+        /// Raises an error. Used by the assertion methods in this class.
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        /// <param name="parameters">The parameters.</param>
         static void Error(string message, params object[] parameters)
         {
             if (log.IsFatalEnabled)
