@@ -152,6 +152,8 @@ namespace NetGore.EditorTools
                 }
                 catch (LoadingFailedException)
                 {
+                    // A LoadingFailedException is generally fine here since it probably means the graphic file was invalid
+                    // or does not exist
                 }
 
                 // Draw the walls
