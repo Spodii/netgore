@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsNetworkQuery : DbQueryNonReader<IWorldStatsNetworkTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", WorldStatsNetworkTable.TableName,
-                                                         FormatParametersIntoValuesString(WorldStatsNetworkTable.DbColumns));
+                                                             FormatParametersIntoValuesString(WorldStatsNetworkTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsNetworkQuery"/> class.

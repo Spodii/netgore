@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class InsertQuestQuery : DbQueryNonReader<IQuestTable>
     {
         static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", QuestTable.TableName,
-                                                         FormatParametersIntoValuesString(QuestTable.DbColumns));
+                                                             FormatParametersIntoValuesString(QuestTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertQuestQuery"/> class.

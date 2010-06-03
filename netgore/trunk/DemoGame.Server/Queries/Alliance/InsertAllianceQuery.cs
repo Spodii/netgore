@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class InsertAllianceQuery : DbQueryNonReader<IAllianceTable>
     {
         static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", AllianceTable.TableName,
-                                                         FormatParametersIntoValuesString(AllianceTable.DbColumns));
+                                                             FormatParametersIntoValuesString(AllianceTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertAllianceQuery"/> class.

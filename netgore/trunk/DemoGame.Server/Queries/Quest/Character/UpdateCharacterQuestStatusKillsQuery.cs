@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -12,8 +12,9 @@ namespace DemoGame.Server.Queries
     public class UpdateCharacterQuestStatusKillsQuery : DbQueryNonReader<ICharacterQuestStatusKillsTable>
     {
         static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1} ON DUPLICATE KEY UPDATE `count`=@count",
-                                                         CharacterQuestStatusKillsTable.TableName,
-                                                         FormatParametersIntoValuesString(CharacterQuestStatusKillsTable.DbColumns));
+                                                             CharacterQuestStatusKillsTable.TableName,
+                                                             FormatParametersIntoValuesString(
+                                                                 CharacterQuestStatusKillsTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateCharacterQuestStatusKillsQuery"/> class.

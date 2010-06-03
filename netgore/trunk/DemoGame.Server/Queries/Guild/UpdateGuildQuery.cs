@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class UpdateGuildQuery : DbQueryNonReader<IGuildTable>
     {
         static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `name`=@name, `tag`=@tag WHERE `id`=@id",
-                                                         GuildTable.TableName);
+                                                             GuildTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryNonReader"/> class.

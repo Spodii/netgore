@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class CountGuildFoundersQuery : DbQueryReader<GuildID>
     {
         static readonly string _queryStr = FormatQueryString("SELECT COUNT(*) FROM `{0}` WHERE `guild_id` = @guildID",
-                                                         GuildMemberTable.TableName);
+                                                             GuildMemberTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountGuildFoundersQuery"/> class.

@@ -11,7 +11,8 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsGuildUserChangeQuery : DbQueryNonReader<IWorldStatsGuildUserChangeTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", WorldStatsGuildUserChangeTable.TableName,
-                                                         FormatParametersIntoValuesString(WorldStatsGuildUserChangeTable.DbColumns));
+                                                             FormatParametersIntoValuesString(
+                                                                 WorldStatsGuildUserChangeTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsGuildUserChangeQuery"/> class.

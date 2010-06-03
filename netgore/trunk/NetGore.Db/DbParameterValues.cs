@@ -14,6 +14,8 @@ namespace NetGore.Db
     /// </summary>
     public sealed class DbParameterValues : IEnumerable<KeyValuePair<string, object>>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// DbParameterCollection that this DbParameterValues exposes the values of.
         /// </summary>
@@ -42,8 +44,6 @@ namespace NetGore.Db
             set { _collection[index].Value = value; }
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Gets or sets the parameter's value.
         /// </summary>
@@ -64,6 +64,14 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets the number of parameters in this collection.
+        /// </summary>
+        public int Count
+        {
+            get { return _collection.Count; }
+        }
+
+        /// <summary>
         /// Adds the <see cref="DbQueryBase.ParameterPrefix"/> to the <paramref name="parameterName"/> if needed.
         /// </summary>
         /// <param name="parameterName">The name of the parameter to add the prefix to.</param>
@@ -78,21 +86,14 @@ namespace NetGore.Db
             else
             {
                 // Parameter prefix was already on the string
-                const string errmsg = "Parameter `{0}` explicitly specified the parameter prefix ({1}). It is recommended to not explicitly include the prefix.";
+                const string errmsg =
+                    "Parameter `{0}` explicitly specified the parameter prefix ({1}). It is recommended to not explicitly include the prefix.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, parameterName, DbQueryBase.ParameterPrefix);
                 Debug.Fail(string.Format(errmsg, parameterName, DbQueryBase.ParameterPrefix));
             }
 
             return parameterName;
-        }
-
-        /// <summary>
-        /// Gets the number of parameters in this collection.
-        /// </summary>
-        public int Count
-        {
-            get { return _collection.Count; }
         }
 
         /// <summary>

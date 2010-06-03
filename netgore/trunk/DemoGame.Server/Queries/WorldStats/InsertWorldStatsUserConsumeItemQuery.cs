@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -11,7 +11,8 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsUserConsumeItemQuery : DbQueryNonReader<IWorldStatsUserConsumeItemTable>
     {
         static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", WorldStatsUserConsumeItemTable.TableName,
-                                                         FormatParametersIntoValuesString(WorldStatsUserConsumeItemTable.DbColumns));
+                                                             FormatParametersIntoValuesString(
+                                                                 WorldStatsUserConsumeItemTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsUserConsumeItemQuery"/> class.

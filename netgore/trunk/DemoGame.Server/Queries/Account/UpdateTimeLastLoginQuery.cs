@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries.Account
     public class UpdateTimeLastLoginQuery : DbQueryNonReader<AccountID>
     {
         static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET `time_last_login` = NOW() WHERE `id`=@id",
-                                                         AccountTable.TableName);
+                                                             AccountTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateTimeLastLoginQuery"/> class.

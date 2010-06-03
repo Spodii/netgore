@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class SelectAccountCharacterInfoQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryStr = FormatQueryString("SELECT `name`,`body_id` FROM `{0}` WHERE `id`=@id",
-                                                         CharacterTable.TableName);
+                                                             CharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectAccountCharacterInfoQuery"/> class.

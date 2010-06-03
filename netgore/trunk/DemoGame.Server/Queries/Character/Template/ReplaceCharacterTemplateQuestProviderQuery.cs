@@ -10,9 +10,10 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceCharacterTemplateQuestProviderQuery : DbQueryNonReader<ICharacterTemplateQuestProviderTable>
     {
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", CharacterTemplateQuestProviderTable.TableName,
-                                                         FormatParametersIntoValuesString(
-                                                             CharacterTemplateQuestProviderTable.DbColumns));
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}",
+                                                             CharacterTemplateQuestProviderTable.TableName,
+                                                             FormatParametersIntoValuesString(
+                                                                 CharacterTemplateQuestProviderTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateQuestProviderQuery"/> class.

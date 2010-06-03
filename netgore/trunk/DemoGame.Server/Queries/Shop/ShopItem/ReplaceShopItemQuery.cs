@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceShopItemQuery : DbQueryNonReader<IShopItemTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", ShopItemTable.TableName,
-                                                         FormatParametersIntoValuesString(ShopItemTable.DbColumns));
+                                                             FormatParametersIntoValuesString(ShopItemTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceShopItemQuery"/> class.

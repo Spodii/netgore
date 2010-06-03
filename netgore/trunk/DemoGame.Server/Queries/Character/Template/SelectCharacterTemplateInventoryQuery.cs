@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterTemplateQuestsQuery : DbQueryReader<CharacterTemplateID>
     {
         static readonly string _queryStr = FormatQueryString("SELECT `quest_id` FROM `{0}` WHERE `character_template_id`=@id",
-                                                         CharacterTemplateQuestProviderTable.TableName);
+                                                             CharacterTemplateQuestProviderTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateQuestsQuery"/> class.

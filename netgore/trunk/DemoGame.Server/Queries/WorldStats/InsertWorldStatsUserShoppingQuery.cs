@@ -11,7 +11,8 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsUserShoppingQuery : DbQueryNonReader<IWorldStatsUserShoppingTable>
     {
         static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", WorldStatsUserShoppingTable.TableName,
-                                                         FormatParametersIntoValuesString(WorldStatsUserShoppingTable.DbColumns));
+                                                             FormatParametersIntoValuesString(
+                                                                 WorldStatsUserShoppingTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsUserShoppingQuery"/> class.
