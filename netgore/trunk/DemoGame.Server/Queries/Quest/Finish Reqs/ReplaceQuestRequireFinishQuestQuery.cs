@@ -12,7 +12,8 @@ namespace DemoGame.Server.Queries
     public class ReplaceQuestRequireFinishQuestQuery : DbQueryNonReader<IQuestRequireFinishQuestTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestRequireFinishQuestTable.TableName,
-                                                         FormatParametersIntoValuesString(QuestRequireFinishQuestTable.DbColumns));
+                                                             FormatParametersIntoValuesString(
+                                                                 QuestRequireFinishQuestTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceQuestRequireFinishQuestQuery"/> class.

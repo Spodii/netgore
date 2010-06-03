@@ -11,7 +11,8 @@ namespace DemoGame.Server.Queries
     public class ReplaceCharacterTemplateEquippedQuery : DbQueryNonReader<ICharacterTemplateEquippedTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", CharacterTemplateEquippedTable.TableName,
-                                                         FormatParametersIntoValuesString(CharacterTemplateEquippedTable.DbColumns));
+                                                             FormatParametersIntoValuesString(
+                                                                 CharacterTemplateEquippedTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceCharacterTemplateEquippedQuery"/> class.

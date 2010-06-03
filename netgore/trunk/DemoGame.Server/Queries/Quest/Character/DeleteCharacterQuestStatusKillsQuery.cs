@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -10,8 +10,9 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteCharacterQuestStatusKillsQuery : DbQueryNonReader<DeleteCharacterQuestStatusKillsQuery.QueryArgs>
     {
-        static readonly string _queryStr = FormatQueryString(
-            "DELETE FROM `{0}` WHERE `character_id`=@charID AND `quest_id`=@questID", CharacterQuestStatusKillsTable.TableName);
+        static readonly string _queryStr =
+            FormatQueryString("DELETE FROM `{0}` WHERE `character_id`=@charID AND `quest_id`=@questID",
+                              CharacterQuestStatusKillsTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCharacterQuestStatusKillsQuery"/> class.

@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class CountAccountCharactersByIDQuery : DbQueryReader<AccountID>
     {
         static readonly string _queryStr = FormatQueryString("SELECT COUNT(*) FROM `{0}` WHERE `account_id`=@accountID;",
-                                                         CharacterTable.TableName);
+                                                             CharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountAccountCharactersByIDQuery"/> class.

@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceQuestRequireStartItemQuery : DbQueryNonReader<IQuestRequireStartItemTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestRequireStartItemTable.TableName,
-                                                         FormatParametersIntoValuesString(QuestRequireStartItemTable.DbColumns));
+                                                             FormatParametersIntoValuesString(QuestRequireStartItemTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceQuestRequireStartItemQuery"/> class.

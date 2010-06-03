@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class SelectGuildMemberQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `character_id`=@character_id",
-                                                         GuildMemberTable.TableName);
+                                                             GuildMemberTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectGuildMemberQuery"/> class.

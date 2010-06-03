@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceAllianceAttackableQuery : DbQueryNonReader<IAllianceAttackableTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", AllianceAttackableTable.TableName,
-                                                         FormatParametersIntoValuesString(AllianceAttackableTable.DbColumns));
+                                                             FormatParametersIntoValuesString(AllianceAttackableTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceAllianceAttackableQuery"/> class.

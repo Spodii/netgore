@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceQuestRequireKillQuery : DbQueryNonReader<IQuestRequireKillTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestRequireKillTable.TableName,
-                                                         FormatParametersIntoValuesString(QuestRequireKillTable.DbColumns));
+                                                             FormatParametersIntoValuesString(QuestRequireKillTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceQuestRequireKillQuery"/> class.

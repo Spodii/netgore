@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -9,7 +9,8 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteGuildMemberQuery : DbQueryNonReader<CharacterID>
     {
-        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `character_id`=@id", GuildMemberTable.TableName);
+        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `character_id`=@id",
+                                                             GuildMemberTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteGuildMemberQuery"/> class.

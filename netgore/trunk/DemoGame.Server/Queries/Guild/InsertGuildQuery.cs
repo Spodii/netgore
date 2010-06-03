@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class InsertGuildQuery : DbQueryNonReader<IGuildTable>
     {
         static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", GuildTable.TableName,
-                                                         FormatParametersIntoValuesString(GuildTable.DbColumns));
+                                                             FormatParametersIntoValuesString(GuildTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertGuildQuery"/> class.

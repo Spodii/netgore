@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceQuestRewardItemQuery : DbQueryNonReader<IQuestRewardItemTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", QuestRewardItemTable.TableName,
-                                                         FormatParametersIntoValuesString(QuestRewardItemTable.DbColumns));
+                                                             FormatParametersIntoValuesString(QuestRewardItemTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceQuestRewardItemQuery"/> class.

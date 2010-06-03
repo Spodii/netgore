@@ -76,8 +76,7 @@ namespace DemoGame.EditorTools
             if (DesignMode)
                 return;
 
-            var v =
-                IEnumerableExtensions.ToImmutable(Items.Cast<CharacterTemplateInventoryItem>().OrderByDescending(x => x.Chance));
+            var v = Items.Cast<CharacterTemplateInventoryItem>().OrderByDescending(x => x.Chance).ToImmutable();
             Items.Clear();
             Items.AddRange(v.Cast<object>().ToArray());
         }

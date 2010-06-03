@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class InsertWorldStatsQuestAcceptQuery : DbQueryNonReader<IWorldStatsQuestAcceptTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", WorldStatsQuestAcceptTable.TableName,
-                                                         FormatParametersIntoValuesString(WorldStatsQuestAcceptTable.DbColumns));
+                                                             FormatParametersIntoValuesString(WorldStatsQuestAcceptTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsQuestAcceptQuery"/> class.
