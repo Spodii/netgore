@@ -146,7 +146,13 @@ namespace NetGore.EditorTools
 
             try
             {
-                _grh.Draw(sb, Vector2.Zero);
+                try
+                {
+                    _grh.Draw(sb, Vector2.Zero);
+                }
+                catch (LoadingFailedException)
+                {
+                }
 
                 // Draw the walls
                 foreach (var wall in BoundWalls)
