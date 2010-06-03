@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using log4net;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
+using SFML;
 
 // FUTURE: Unload images that have not been used for an extended period of time
 
@@ -168,6 +169,10 @@ namespace NetGore.EditorTools
                         img = ErrorImage;
                     else
                         img = tex.ToBitmap(gd.OriginalSourceRect, ImageWidth, ImageHeight);
+                }
+                catch (LoadingFailedException)
+                {
+                    // A LoadingFailedException is generally fine since it probably means the file did not exist
                 }
                 catch (Exception ex)
                 {
