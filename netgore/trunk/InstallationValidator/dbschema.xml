@@ -6922,7 +6922,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -16333,7 +16333,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -16396,7 +16396,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -17428,7 +17428,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -17776,7 +17776,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -18124,7 +18124,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -18472,7 +18472,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -18820,7 +18820,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -19339,7 +19339,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -19687,7 +19687,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
@@ -20263,7 +20263,7 @@
             </Item7>
             <Item8>
               <Key>EXTRA</Key>
-              <Value>on update CURRENT_TIMESTAMP</Value>
+              <Value />
             </Item8>
             <Item9>
               <Key>IS_NULLABLE</Key>
