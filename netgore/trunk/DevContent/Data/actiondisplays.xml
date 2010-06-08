@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ActionDisplayCollection>
+  <ActionDisplays>
+    <Count>1</Count>
+    <Item0>
+      <ID>0</ID>
+      <HasSound>False</HasSound>
+      <SoundID>0</SoundID>
+      <Script>Projectile</Script>
+      <GrhIndex>182</GrhIndex>
+      <ParticleEffect />
+    </Item0>
+  </ActionDisplays>
+</ActionDisplayCollection>

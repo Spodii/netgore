@@ -15,6 +15,12 @@ namespace NetGore
         IEnumerable<Entity> Entities { get; }
 
         /// <summary>
+        /// Adds a <see cref="IDelayedMapEvent"/> to the map.
+        /// </summary>
+        /// <param name="e">The <see cref="IDelayedMapEvent"/> to add.</param>
+        void AddDelayedEvent(IDelayedMapEvent e);
+
+        /// <summary>
         /// Gets the height of the map in pixels.
         /// </summary>
         float Height { get; }
@@ -28,6 +34,11 @@ namespace NetGore
         /// Gets the size of the map in pixels.
         /// </summary>
         Vector2 Size { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IDelayedMapEvent"/>s on the map.
+        /// </summary>
+        IEnumerable<IDelayedMapEvent> DelayedEvents { get; }
 
         /// <summary>
         /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.

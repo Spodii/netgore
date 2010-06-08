@@ -158,6 +158,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DisplayAction\" />
     <Folder Include="Emoticons\" />
     <Folder Include="GameTime\" />
     <Folder Include="Skills\" />

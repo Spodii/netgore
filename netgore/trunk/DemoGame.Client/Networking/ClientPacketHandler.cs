@@ -9,6 +9,7 @@ using log4net;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Content;
+using NetGore.Features.DisplayAction;
 using NetGore.Features.Emoticons;
 using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
@@ -216,14 +217,40 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CharAttack)]
         void RecvCharAttack(IIPSocket conn, BitStream r)
         {
-            var mapCharIndex = r.ReadMapEntityIndex();
+            // Read the values
+            var attackerID = r.ReadMapEntityIndex();
 
-            var chr = Map.GetDynamicEntity<Character>(mapCharIndex);
-            if (chr == null)
+            MapEntityIndex? attackedID;
+            if (r.ReadBool())
+                attackedID = r.ReadMapEntityIndex();
+            else
+                attackedID = null;
+
+            ActionDisplayID? ActionDisplayID;
+            if (r.ReadBool())
+                ActionDisplayID = r.ReadActionDisplayID();
+            else
+                ActionDisplayID = null;
+
+            // Get the object references using the IDs provided
+            var attacker = Map.GetDynamicEntity<Character>(attackerID);
+            if (attacker == null)
                 return;
 
-            SoundManager.Play("punch", chr);
-            chr.Attack();
+            DynamicEntity attacked;
+            if (attackedID.HasValue)
+                attacked = Map.GetDynamicEntity(attackedID.Value);
+            else
+                attacked = null;
+
+            // TODO: !! Get the DisplayAction
+
+            var actionDisplay = ActionDisplayScripts.ActionDisplays[new ActionDisplayID(0)];
+            actionDisplay.Execute(Map, attacker, attacked);
+
+            // Display the attack
+            SoundManager.Play("punch", attacker);
+            attacker.Attack();
         }
 
         [MessageHandler((byte)ServerPacketID.CharDamage)]

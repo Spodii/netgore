@@ -30,6 +30,12 @@ namespace NetGore.Graphics
         bool DrawParticles { get; set; }
 
         /// <summary>
+        /// Adds a <see cref="ITemporaryMapEffect"/> to the map.
+        /// </summary>
+        /// <param name="e">The <see cref="ITemporaryMapEffect"/> to add.</param>
+        void AddTemporaryMapEffect(ITemporaryMapEffect e);
+
+        /// <summary>
         /// Draws the map.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw with.</param>

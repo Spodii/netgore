@@ -36,9 +36,20 @@ namespace DemoGame.Client
         readonly List<ILight> _lights = new List<ILight>();
 
         /// <summary>
+        /// Adds a <see cref="ITemporaryMapEffect"/> to the map.
+        /// </summary>
+        /// <param name="e">The <see cref="ITemporaryMapEffect"/> to add.</param>
+        public void AddTemporaryMapEffect(ITemporaryMapEffect e)
+        {
+            _mapEffects.Add(e);
+        }
+
+        /// <summary>
         /// List of map grhs on the map
         /// </summary>
         readonly List<MapGrh> _mapGrhs = new List<MapGrh>(128);
+
+        readonly List<ITemporaryMapEffect> _mapEffects = new List<ITemporaryMapEffect>(32);
 
         readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
         Color _ambientLight = Color.White;
@@ -102,6 +113,15 @@ namespace DemoGame.Client
         public IEnumerable<MapGrh> MapGrhs
         {
             get { return _mapGrhs; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the <see cref="ITemporaryMapEffect"/>s.
+        /// </summary>
+        [Browsable(false)]
+        public IEnumerable<ITemporaryMapEffect> MapEffects
+        {
+            get { return _mapEffects; }
         }
 
         /// <summary>
@@ -449,6 +469,24 @@ namespace DemoGame.Client
             {
                 if (Camera.InView(g.Grh, g.Position))
                     g.Update(currentTime);
+            }
+
+            // Update the temporary map effects
+            for (int i = 0; i < _mapEffects.Count; i++)
+            {
+                var e = _mapEffects[i];
+                e.Update(currentTime);
+
+                // Remove dead elements by swapping them with the last element in the list, then removing the last element
+                // This allows us to remove elements without shifting down the whole list
+                if (!e.IsAlive)
+                {
+                    // Swap with last element
+                    _mapEffects[i] = _mapEffects[_mapEffects.Count - 1];
+
+                    // Remove last element in the list
+                    _mapEffects.RemoveAt(_mapEffects.Count - 1);
+                }
             }
 
             // Update the background images
