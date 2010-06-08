@@ -1189,6 +1189,36 @@ namespace DemoGame
                 if (i < _updateableEntities.Count && current == _updateableEntities[i])
                     i++;
             }
+
+            // Update the delayed events
+            UpdateDelayedEvents();
+        }
+
+        /// <summary>
+        /// Updates the <see cref="IDelayedMapEvent"/>s.
+        /// </summary>
+        void UpdateDelayedEvents()
+        {
+            var currentTime = TickCount.Now;
+
+            for (int i = 0; i < _delayedEvents.Count; i++)
+            {
+                var e = _delayedEvents[i];
+
+                // Remove dead elements by swapping them with the last element in the list, then removing the last element
+                // This allows us to remove elements without shifting down the whole list
+                if (e.IsReady(currentTime))
+                {
+                    // Swap with last element
+                    _delayedEvents[i] = _delayedEvents[_delayedEvents.Count - 1];
+
+                    // Remove last element in the list
+                    _delayedEvents.RemoveAt(_delayedEvents.Count - 1);
+
+                    // Finally, execute the event
+                    e.Execute();
+                }
+            }
         }
 
         #region IMap Members
@@ -1229,6 +1259,28 @@ namespace DemoGame
         public Vector2 Size
         {
             get { return _size; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDelayedMapEvent"/>s on the map.
+        /// </summary>
+        public IEnumerable<IDelayedMapEvent> DelayedEvents
+        {
+            get { return _delayedEvents; }
+        }
+
+        readonly List<IDelayedMapEvent> _delayedEvents = new List<IDelayedMapEvent>();
+
+        /// <summary>
+        /// Adds a <see cref="IDelayedMapEvent"/>.
+        /// </summary>
+        /// <param name="e">The <see cref="IDelayedMapEvent"/>.</param>
+        public void AddDelayedEvent(IDelayedMapEvent e)
+        {
+            if (e == null)
+                return;
+
+            _delayedEvents.Add(e);
         }
 
         /// <summary>

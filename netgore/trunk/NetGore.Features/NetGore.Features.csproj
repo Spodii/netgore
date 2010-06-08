@@ -93,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisplayAction\DisplayActionID.cs" />
     <Compile Include="Emoticons\Emoticon.cs" />
     <Compile Include="Emoticons\EmoticonInfoAttribute.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />

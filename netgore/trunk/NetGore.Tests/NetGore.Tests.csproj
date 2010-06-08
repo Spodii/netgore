@@ -127,6 +127,7 @@
     <Compile Include="NetGore\Collections\TaskListTests.cs" />
     <Compile Include="NetGore\Collections\TimeExpirationQueueTests.cs" />
     <Compile Include="NetGore\DirectionHelperTests.cs" />
+    <Compile Include="NetGore\Features\DisplayAction\ActionDisplayScriptTests.cs" />
     <Compile Include="NetGore\Features\Guilds\GuildMemberNameRankTests.cs" />
     <Compile Include="NetGore\GameDateTimeTests.cs" />
     <Compile Include="NetGore\GrhIndexTests.cs" />

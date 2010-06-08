@@ -61,7 +61,11 @@ namespace NetGore.Network
                     // Get all of the MessageAttributes for the method (should only be one)
                     var atbs = (MessageHandlerAttribute[])method.GetCustomAttributes(atbType, true);
                     if (atbs.Length > 1)
-                        throw new Exception(string.Format("Multiple MessageAttributes found for method `{0}`.", method.Name));
+                    {
+                        const string errmsg = "Multiple MessageAttributes found for method `{0}`.";
+                        Debug.Fail(string.Format(errmsg, method.Name));
+                        throw new Exception(string.Format(errmsg, method.Name));
+                    }
 
                     // Create the message processor for the method
                     foreach (var atb in atbs)

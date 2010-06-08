@@ -5,6 +5,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Audio;
+using NetGore.Features.DisplayAction;
 using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
@@ -42,10 +43,20 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter CharAttack(MapEntityIndex mapEntityIndex)
+        public static PacketWriter CharAttack(MapEntityIndex attacker, MapEntityIndex? attacked = null, ActionDisplayID? displayAction = null)
         {
+            // TODO: !! Pass the attacked and displayAction values when possible
             var pw = GetWriter(ServerPacketID.CharAttack);
-            pw.Write(mapEntityIndex);
+            pw.Write(attacker);
+
+            pw.Write(attacked.HasValue);
+            if (attacked.HasValue)
+                pw.Write(attacked.Value);
+
+            pw.Write(displayAction.HasValue);
+            if (displayAction.HasValue)
+                pw.Write(displayAction.Value);
+
             return pw;
         }
 

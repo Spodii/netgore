@@ -167,7 +167,7 @@ namespace NetGore.Graphics
         /// Updates the <see cref="MapGrh"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
-        public void Update(TickCount currentTime)
+        public virtual void Update(TickCount currentTime)
         {
             _grh.Update(currentTime);
         }
@@ -289,6 +289,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Handles the actual drawing of the <see cref="MapGrh"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
+        protected virtual void HandleDrawing(ISpriteBatch sb)
+        {
+            _grh.Draw(sb, Position, Color, SpriteEffects, Rotation, Origin, Scale);
+        }
+
+        /// <summary>
         /// Makes the object draw itself.
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
@@ -298,7 +307,7 @@ namespace NetGore.Graphics
                 BeforeDraw(this, sb);
 
             if (IsVisible)
-                _grh.Draw(sb, Position, Color, SpriteEffects, Rotation, Origin, Scale);
+                HandleDrawing(sb);
 
             if (AfterDraw != null)
                 AfterDraw(this, sb);
@@ -325,7 +334,7 @@ namespace NetGore.Graphics
         /// same order as they were written.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
-        public void ReadState(IValueReader reader)
+        public virtual void ReadState(IValueReader reader)
         {
             var grhIndex = reader.ReadGrhIndex(_grhIndexKeyName);
 
@@ -339,7 +348,7 @@ namespace NetGore.Graphics
         /// Writes the state of the object to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
-        public void WriteState(IValueWriter writer)
+        public virtual void WriteState(IValueWriter writer)
         {
             writer.Write(_grhIndexKeyName, Grh.GrhData != null ? Grh.GrhData.GrhIndex : GrhIndex.Invalid);
 
