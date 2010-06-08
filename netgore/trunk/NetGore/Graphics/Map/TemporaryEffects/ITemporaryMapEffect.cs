@@ -3,7 +3,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Interface for an effect that is displayed on the map for a short period of time.
     /// </summary>
-    public interface ITemporaryMapEffect
+    public interface ITemporaryMapEffect : ISpatial, IDrawable
     {
         /// <summary>
         /// Updates the map effect.
