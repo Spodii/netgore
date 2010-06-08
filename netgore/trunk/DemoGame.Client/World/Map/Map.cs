@@ -36,15 +36,6 @@ namespace DemoGame.Client
         readonly List<ILight> _lights = new List<ILight>();
 
         /// <summary>
-        /// Adds a <see cref="ITemporaryMapEffect"/> to the map.
-        /// </summary>
-        /// <param name="e">The <see cref="ITemporaryMapEffect"/> to add.</param>
-        public void AddTemporaryMapEffect(ITemporaryMapEffect e)
-        {
-            _mapEffects.Add(e);
-        }
-
-        /// <summary>
         /// List of map grhs on the map
         /// </summary>
         readonly List<MapGrh> _mapGrhs = new List<MapGrh>(128);
@@ -164,6 +155,26 @@ namespace DemoGame.Client
         {
             if (!_lights.Contains(light))
                 _lights.Add(light);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="ITemporaryMapEffect"/> to the map.
+        /// </summary>
+        /// <param name="e">The <see cref="ITemporaryMapEffect"/> to add.</param>
+        public void AddTemporaryMapEffect(ITemporaryMapEffect e)
+        {
+            if (e == null)
+            {
+                Debug.Fail("e is null.");
+                return;
+            }
+
+            // When in debug mode, ensure there are no duplicates
+            Debug.Assert(!_mapEffects.Contains(e), "e is already in the MapEffects list.");
+
+            // Add to the MapEffects list and the spatial
+            _mapEffects.Add(e);
+            Spatial.Add(e);
         }
 
         /// <summary>
@@ -456,22 +467,12 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Updates the map
+        /// Updates the <see cref="ITemporaryMapEffect"/>s.
         /// </summary>
-        public override void Update(int deltaTime)
+        /// <param name="currentTime">The current time.</param>
+        void UpdateTempMapEffects(TickCount currentTime)
         {
-            base.Update(deltaTime);
-
-            var currentTime = GetTime();
-
-            // Update the map Grhs
-            foreach (var g in _mapGrhs)
-            {
-                if (Camera.InView(g.Grh, g.Position))
-                    g.Update(currentTime);
-            }
-
-            // Update the temporary map effects
+            // Loop through all the live effects
             for (int i = 0; i < _mapEffects.Count; i++)
             {
                 var e = _mapEffects[i];
@@ -486,8 +487,32 @@ namespace DemoGame.Client
 
                     // Remove last element in the list
                     _mapEffects.RemoveAt(_mapEffects.Count - 1);
+
+                    // Remove from the spatial collection
+                    Spatial.Remove(e);
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the map
+        /// </summary>
+        /// <param name="deltaTime">The elapsed time since the last update.</param>
+        public override void Update(int deltaTime)
+        {
+            base.Update(deltaTime);
+
+            var currentTime = GetTime();
+
+            // Update the map Grhs
+            foreach (var g in _mapGrhs)
+            {
+                if (Camera.InView(g.Grh, g.Position))
+                    g.Update(currentTime);
+            }
+
+            // Update the temporary map effects
+            UpdateTempMapEffects(currentTime);
 
             // Update the background images
             foreach (var bgImage in _backgroundImages)
