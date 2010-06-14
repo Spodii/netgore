@@ -151,7 +151,7 @@ namespace DemoGame
             var file = GetLanguageFile(language);
             var jsFile = GetLanguageJScriptFile(file);
 
-            // Delete the anguage messages file
+            // Delete the language messages file
             try
             {
                 if (File.Exists(file))
