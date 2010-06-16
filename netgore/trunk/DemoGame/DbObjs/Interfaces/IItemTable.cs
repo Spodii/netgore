@@ -13,14 +13,13 @@ game's database.
 
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
-
-This file was generated on (UTC): 6/2/2010 10:29:24 PM
 ********************************************************************/
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
+using NetGore.Features.DisplayAction;
 
 namespace DemoGame.DbObjs
 {
@@ -29,6 +28,11 @@ namespace DemoGame.DbObjs
     /// </summary>
     public interface IItemTable
     {
+        /// <summary>
+        /// Gets the value of the database column `action_display_id`.
+        /// </summary>
+        ActionDisplayID? ActionDisplayID { get; }
+
         /// <summary>
         /// Gets the value of the database column `amount`.
         /// </summary>

@@ -17,17 +17,17 @@ namespace NetGore.Features.DisplayAction
         /// <summary>
         /// Represents the largest possible value of <see cref="ActionDisplayID"/>. This field is constant.
         /// </summary>
-        public const int MaxValue = byte.MaxValue;
+        public const int MaxValue = ushort.MaxValue;
 
         /// <summary>
         /// Represents the smallest possible value of <see cref="ActionDisplayID"/>. This field is constant.
         /// </summary>
-        public const int MinValue = byte.MinValue;
+        public const int MinValue = ushort.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly byte _value;
+        readonly ushort _value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionDisplayID"/> struct.
@@ -38,7 +38,7 @@ namespace NetGore.Features.DisplayAction
             if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
-            _value = (byte)value;
+            _value = (ushort)value;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace NetGore.Features.DisplayAction
         /// Gets the raw internal value of this <see cref="ActionDisplayID"/>.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public byte GetRawValue()
+        public ushort GetRawValue()
         {
             return _value;
         }
@@ -97,7 +97,7 @@ namespace NetGore.Features.DisplayAction
         /// <returns>The <see cref="ActionDisplayID"/> read from the IValueReader.</returns>
         public static ActionDisplayID Read(IValueReader reader, string name)
         {
-            byte value = reader.ReadByte(name);
+            ushort value = reader.ReadUShort(name);
             return new ActionDisplayID(value);
         }
 
@@ -110,10 +110,10 @@ namespace NetGore.Features.DisplayAction
         public static ActionDisplayID Read(IDataRecord reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is byte)
-                return new ActionDisplayID((byte)value);
+            if (value is ushort)
+                return new ActionDisplayID((ushort)value);
 
-            byte convertedValue = Convert.ToByte(value);
+            ushort convertedValue = Convert.ToUInt16(value);
             return new ActionDisplayID(convertedValue);
         }
 
@@ -135,7 +135,7 @@ namespace NetGore.Features.DisplayAction
         /// <returns>The <see cref="ActionDisplayID"/> read from the <see cref="BitStream"/>.</returns>
         public static ActionDisplayID Read(BitStream bitStream)
         {
-            byte value = bitStream.ReadByte();
+            ushort value = bitStream.ReadUShort();
             return new ActionDisplayID(value);
         }
 
@@ -480,7 +480,7 @@ namespace NetGore.Features.DisplayAction
         }
 
         #endregion
-
+        
         /// <summary>
         /// Implements operator ++.
         /// </summary>
@@ -490,7 +490,7 @@ namespace NetGore.Features.DisplayAction
         {
             return new ActionDisplayID(l._value + 1);
         }
-
+        
         /// <summary>
         /// Implements operator --.
         /// </summary>
@@ -756,7 +756,7 @@ namespace NetGore.Features.DisplayAction
     /// </summary>
     public static class ActionDisplayIDReadWriteExtensions
     {
-        /// <summary>
+		/// <summary>
         /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as a
         /// <see cref="ActionDisplayID"/>.
         /// </summary>
@@ -792,7 +792,7 @@ namespace NetGore.Features.DisplayAction
 
             return parsed;
         }
-
+        
         /// <summary>
         /// Parses the <see cref="ActionDisplayID"/> from a string.
         /// </summary>
@@ -801,10 +801,10 @@ namespace NetGore.Features.DisplayAction
         /// <returns>The <see cref="ActionDisplayID"/> parsed from the string.</returns>
         public static ActionDisplayID ParseActionDisplayID(this Parser parser, string value)
         {
-            return new ActionDisplayID(parser.ParseByte(value));
+            return new ActionDisplayID(parser.ParseUShort(value));
         }
-
-        /// <summary>
+        
+		/// <summary>
         /// Tries to parse the <see cref="ActionDisplayID"/> from a string.
         /// </summary>
         /// <param name="parser">The <see cref="Parser"/> to use.</param>
@@ -813,12 +813,12 @@ namespace NetGore.Features.DisplayAction
         /// <returns>True if the parsing was successfully; otherwise false.</returns>
         public static bool TryParse(this Parser parser, string value, out ActionDisplayID outValue)
         {
-            byte tmp;
+            ushort tmp;
             bool ret = parser.TryParse(value, out tmp);
             outValue = new ActionDisplayID(tmp);
             return ret;
         }
-
+        
         /// <summary>
         /// Reads the <see cref="ActionDisplayID"/> from a <see cref="BitStream"/>.
         /// </summary>

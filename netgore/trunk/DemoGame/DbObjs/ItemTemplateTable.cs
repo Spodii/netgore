@@ -13,14 +13,14 @@ game's database.
 
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
-
-This file was generated on (UTC): 6/2/2010 10:29:24 PM
 ********************************************************************/
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using NetGore;
+using NetGore.Features.DisplayAction;
 using NetGore.IO;
 
 namespace DemoGame.DbObjs
@@ -33,7 +33,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// The number of columns in the database table that this class represents.
         /// </summary>
-        public const Int32 ColumnCount = 24;
+        public const Int32 ColumnCount = 25;
 
         /// <summary>
         /// The name of the database table that this class represents.
@@ -45,9 +45,9 @@ namespace DemoGame.DbObjs
         /// </summary>
         static readonly String[] _dbColumns = new string[]
         {
-            "description", "equipped_body", "graphic", "height", "hp", "id", "mp", "name", "range", "stat_agi", "stat_defence",
-            "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str",
-            "stat_str", "type", "value", "weapon_type", "width"
+            "action_display_id", "description", "equipped_body", "graphic", "height", "hp", "id", "mp", "name", "range", "stat_agi",
+            "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int",
+            "stat_req_str", "stat_str", "type", "value", "weapon_type", "width"
         };
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace DemoGame.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         {
-            "description", "equipped_body", "graphic", "height", "hp", "mp", "name", "range", "stat_agi", "stat_defence", "stat_int"
-            , "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str"
-            , "type", "value", "weapon_type", "width"
+            "action_display_id", "description", "equipped_body", "graphic", "height", "hp", "mp", "name", "range", "stat_agi",
+            "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int",
+            "stat_req_str", "stat_str", "type", "value", "weapon_type", "width"
         };
 
         /// <summary>
@@ -85,6 +85,11 @@ namespace DemoGame.DbObjs
         /// Dictionary containing the values for the column collection `Stat`.
         /// </summary>
         readonly StatTypeConstDictionary _stat = new StatTypeConstDictionary();
+
+        /// <summary>
+        /// The field that maps onto the database column `action_display_id`.
+        /// </summary>
+        ushort? _actionDisplayID;
 
         /// <summary>
         /// The field that maps onto the database column `description`.
@@ -161,6 +166,7 @@ namespace DemoGame.DbObjs
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemTemplateTable"/> class.
         /// </summary>
+        /// <param name="actionDisplayID">The initial value for the corresponding property.</param>
         /// <param name="description">The initial value for the corresponding property.</param>
         /// <param name="equippedBody">The initial value for the corresponding property.</param>
         /// <param name="graphic">The initial value for the corresponding property.</param>
@@ -185,12 +191,13 @@ namespace DemoGame.DbObjs
         /// <param name="value">The initial value for the corresponding property.</param>
         /// <param name="weaponType">The initial value for the corresponding property.</param>
         /// <param name="width">The initial value for the corresponding property.</param>
-        public ItemTemplateTable(String @description, String @equippedBody, GrhIndex @graphic, Byte @height, SPValueType @hP,
-                                 ItemTemplateID @iD, SPValueType @mP, String @name, UInt16 @range, Int16 @statAgi,
-                                 Int16 @statDefence, Int16 @statInt, Int16 @statMaxhit, Int16 @statMaxhp, Int16 @statMaxmp,
-                                 Int16 @statMinhit, Int16 @statReqAgi, Int16 @statReqInt, Int16 @statReqStr, Int16 @statStr,
-                                 ItemType @type, Int32 @value, WeaponType @weaponType, Byte @width)
+        public ItemTemplateTable(ActionDisplayID? @actionDisplayID, String @description, String @equippedBody, GrhIndex @graphic,
+                                 Byte @height, SPValueType @hP, ItemTemplateID @iD, SPValueType @mP, String @name, UInt16 @range,
+                                 Int16 @statAgi, Int16 @statDefence, Int16 @statInt, Int16 @statMaxhit, Int16 @statMaxhp,
+                                 Int16 @statMaxmp, Int16 @statMinhit, Int16 @statReqAgi, Int16 @statReqInt, Int16 @statReqStr,
+                                 Int16 @statStr, ItemType @type, Int32 @value, WeaponType @weaponType, Byte @width)
         {
+            ActionDisplayID = @actionDisplayID;
             Description = @description;
             EquippedBody = @equippedBody;
             Graphic = @graphic;
@@ -277,6 +284,7 @@ namespace DemoGame.DbObjs
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(IItemTemplateTable source, IDictionary<String, Object> dic)
         {
+            dic["action_display_id"] = source.ActionDisplayID;
             dic["description"] = source.Description;
             dic["equipped_body"] = source.EquippedBody;
             dic["graphic"] = source.Graphic;
@@ -320,6 +328,7 @@ namespace DemoGame.DbObjs
         /// <param name="source">The IItemTemplateTable to copy the values from.</param>
         public void CopyValuesFrom(IItemTemplateTable source)
         {
+            ActionDisplayID = source.ActionDisplayID;
             Description = source.Description;
             EquippedBody = source.EquippedBody;
             Graphic = source.Graphic;
@@ -357,6 +366,10 @@ namespace DemoGame.DbObjs
         {
             switch (columnName)
             {
+                case "action_display_id":
+                    return new ColumnMetadata("action_display_id", "The ActionDisplayID to use when using this item.",
+                                              "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
+
                 case "description":
                     return new ColumnMetadata("description", "", "varchar(255)", " ", typeof(String), false, false, false);
 
@@ -445,6 +458,9 @@ namespace DemoGame.DbObjs
         {
             switch (columnName)
             {
+                case "action_display_id":
+                    return ActionDisplayID;
+
                 case "description":
                     return Description;
 
@@ -551,6 +567,10 @@ namespace DemoGame.DbObjs
         {
             switch (columnName)
             {
+                case "action_display_id":
+                    ActionDisplayID = (ActionDisplayID?)value;
+                    break;
+
                 case "description":
                     Description = (String)value;
                     break;
@@ -653,6 +673,19 @@ namespace DemoGame.DbObjs
         }
 
         #region IItemTemplateTable Members
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `action_display_id`.
+        /// The underlying database type is `smallint(5) unsigned`. The database column contains the comment: 
+        /// "The ActionDisplayID to use when using this item.".
+        /// </summary>
+        [Description("The ActionDisplayID to use when using this item.")]
+        [SyncValue]
+        public ActionDisplayID? ActionDisplayID
+        {
+            get { return (Nullable<ActionDisplayID>)_actionDisplayID; }
+            set { _actionDisplayID = (ushort?)value; }
+        }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `description`.

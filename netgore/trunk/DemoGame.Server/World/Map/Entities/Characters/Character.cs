@@ -659,14 +659,14 @@ namespace DemoGame.Server
         /// <summary>
         /// Handles attacking with a melee weapon.
         /// </summary>
-        /// <param name="weapon">The weapon to attack with.</param>
+        /// <param name="weapon">The weapon to attack with. Cannot be null.</param>
         /// <param name="target">The target to attack. Can be null.</param>
         void AttackMelee(IItemTable weapon, Character target)
         {
-            // We will show the melee attack animation no matter what, so just send it now
-            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex))
+            if (weapon == null)
             {
-                Map.SendToArea(this, charAttack);
+                Debug.Fail("Weapon should not be null...");
+                return;
             }
 
             OnAttacked();
@@ -680,6 +680,13 @@ namespace DemoGame.Server
                 target = Map.Spatial.Get<Character>(hitArea, x => x != this && x.IsAlive && Alliance.CanAttack(x.Alliance));
             }
 
+            // Display the attack
+            var targetID = (target != null ? target.MapEntityIndex : (MapEntityIndex?)null);
+            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, targetID, weapon.ActionDisplayID)) 
+            {
+                Map.SendToArea(this, charAttack);
+            }
+
             // Check that we managed to find a target
             if (target == null)
                 return;
@@ -691,10 +698,16 @@ namespace DemoGame.Server
         /// <summary>
         /// Handles attacking with a ranged weapon.
         /// </summary>
-        /// <param name="weapon">The weapon to attack with.</param>
+        /// <param name="weapon">The weapon to attack with. Cannot be null.</param>
         /// <param name="target">The target to attack. Can be null.</param>
         void AttackRanged(ItemEntity weapon, Character target)
         {
+            if (weapon==null)
+            {
+                Debug.Fail("Weapon should not be null...");
+                return;
+            }
+
             // We can't do anything with ranged attacks if no target is given
             if (target == null)
             {
@@ -728,7 +741,7 @@ namespace DemoGame.Server
                 return;
 
             // Attack
-            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex))
+            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, target.MapEntityIndex, weapon.ActionDisplayID))
             {
                 Map.SendToArea(this, charAttack);
             }

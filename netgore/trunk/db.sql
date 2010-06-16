@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-06-03 22:38:18',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-06-15 19:05:29',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,6 +58,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (1,16777343,'2010-06-03 22:51:10'),(1,16777343,'2010-06-07 17:58:12'),(1,16777343,'2010-06-07 18:30:03'),(1,16777343,'2010-06-07 18:32:47'),(1,16777343,'2010-06-07 18:37:03'),(1,16777343,'2010-06-07 18:38:14'),(1,16777343,'2010-06-07 18:39:30'),(1,16777343,'2010-06-07 18:41:12'),(1,16777343,'2010-06-07 18:44:11'),(1,16777343,'2010-06-11 02:14:30'),(1,16777343,'2010-06-15 19:02:11'),(1,16777343,'2010-06-15 19:03:40'),(1,16777343,'2010-06-15 19:05:29');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,6 +239,7 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
+INSERT INTO `character_inventory` VALUES (1,26,0);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,7 +414,7 @@ CREATE TABLE `character_template_inventory` (
 
 LOCK TABLES `character_template_inventory` WRITE;
 /*!40000 ALTER TABLE `character_template_inventory` DISABLE KEYS */;
-INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(2,1,3,1,1,5000);
+INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(1,1,7,1,10,65535),(2,1,3,1,1,5000);
 /*!40000 ALTER TABLE `character_template_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -588,6 +590,7 @@ CREATE TABLE `item` (
   `stat_req_int` smallint(6) NOT NULL DEFAULT '0',
   `stat_req_str` smallint(6) NOT NULL DEFAULT '0',
   `equipped_body` varchar(255) DEFAULT NULL,
+  `action_display_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ActionDisplayID to use when using this item.',
   PRIMARY KEY (`id`),
   KEY `item_template_id` (`item_template_id`),
   CONSTRAINT `item_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
@@ -599,6 +602,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(2,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(4,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(5,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(6,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(7,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(8,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(9,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(10,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(11,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(12,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(13,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(14,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(15,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(16,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(26,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',17,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -632,6 +636,7 @@ CREATE TABLE `item_template` (
   `stat_req_int` smallint(6) NOT NULL DEFAULT '0',
   `stat_req_str` smallint(6) NOT NULL DEFAULT '0',
   `equipped_body` varchar(255) DEFAULT NULL,
+  `action_display_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ActionDisplayID to use when using this item.',
   PRIMARY KEY (`id`)
 ) TYPE=InnoDB;
 
@@ -641,7 +646,7 @@ CREATE TABLE `item_template` (
 
 LOCK TABLES `item_template` WRITE;
 /*!40000 ALTER TABLE `item_template` DISABLE KEYS */;
-INSERT INTO `item_template` VALUES (0,2,1,10,16,16,'Unarmed','Unarmed',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(1,1,0,0,9,16,'Healing Potion','A healing potion',94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL),(2,1,0,0,9,16,'Mana Potion','A mana potion',95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL),(3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL),(4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body'),(5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet'),(6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL),(7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL);
+INSERT INTO `item_template` VALUES (0,2,1,10,16,16,'Unarmed','Unarmed',1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(1,1,0,0,9,16,'Healing Potion','A healing potion',94,15,25,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(2,1,0,0,9,16,'Mana Potion','A mana potion',95,10,0,25,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(4,4,0,0,22,22,'Crystal Armor','Body armor made out of crystal',99,50,0,0,0,0,0,0,0,0,0,5,0,0,0,'crystal body',NULL),(5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(6,2,2,500,16,16,'Pistol','A pistol that goes BANG BANG SUCKA!',177,500,0,0,0,0,0,25,50,0,0,0,3,3,1,NULL,NULL),(7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,NULL);
 /*!40000 ALTER TABLE `item_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -941,7 +946,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-06-03 22:38:27');
+INSERT INTO `server_time` VALUES ('2010-06-15 19:05:57');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1082,6 +1087,7 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
+INSERT INTO `world_stats_network` VALUES ('2010-06-04 05:50:54',0,0,0,0,0,0,0,0,0),('2010-06-08 00:58:08',0,0,0,0,0,0,0,0,0),('2010-06-08 01:30:03',0,0,0,0,0,0,0,0,0),('2010-06-08 01:32:45',0,0,0,0,0,0,0,0,0),('2010-06-08 01:35:53',0,0,0,0,0,0,0,0,0),('2010-06-08 01:37:03',0,0,0,0,0,0,0,0,0),('2010-06-08 01:38:14',0,0,0,0,0,0,0,0,0),('2010-06-08 01:39:29',0,0,0,0,0,0,0,0,0),('2010-06-08 01:41:10',0,0,0,0,0,0,0,0,0),('2010-06-08 01:42:10',0,0,0,0,0,0,0,0,0),('2010-06-08 01:44:11',0,0,0,0,0,0,0,0,0),('2010-06-08 01:45:11',0,0,0,0,0,0,0,0,0),('2010-06-08 01:46:11',0,0,0,0,0,0,0,0,0),('2010-06-11 09:14:26',0,0,0,0,0,0,0,0,0),('2010-06-11 09:15:26',0,0,0,0,0,0,0,0,0),('2010-06-16 02:01:10',0,0,0,0,0,0,0,0,0),('2010-06-16 02:02:09',0,0,0,0,0,0,0,0,0),('2010-06-16 02:03:37',0,0,0,0,0,0,0,0,0),('2010-06-16 02:04:37',0,0,0,0,0,0,0,0,0),('2010-06-16 02:05:26',0,0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1114,6 +1120,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
 
 LOCK TABLES `world_stats_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` DISABLE KEYS */;
+INSERT INTO `world_stats_npc_kill_user` VALUES (1,1,31,765,45,833,658,1,'2010-06-08 01:42:21');
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1262,6 +1269,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
+INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,30,392,658,0,0,1,'2010-06-08 01:41:37'),(1,1,30,446,658,0,0,1,'2010-06-08 01:41:43'),(1,1,30,417,658,0,0,1,'2010-06-08 01:42:10'),(1,1,30,824,658,0,0,1,'2010-06-08 01:42:17'),(1,1,30,689,658,0,0,1,'2010-06-08 01:44:23'),(1,1,30,235,658,0,0,1,'2010-06-08 01:44:26'),(1,1,30,246,500,0,0,1,'2010-06-08 01:44:52'),(1,1,30,246,500,0,0,1,'2010-06-08 01:45:11'),(1,1,31,219,500,0,0,1,'2010-06-08 01:45:42'),(1,1,31,219,500,0,0,1,'2010-06-08 01:45:47');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1285,6 +1293,7 @@ CREATE TABLE `world_stats_user_level` (
 
 LOCK TABLES `world_stats_user_level` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_level` DISABLE KEYS */;
+INSERT INTO `world_stats_user_level` VALUES (1,1,824,658,31,'2010-06-08 01:42:17'),(1,1,246,500,31,'2010-06-08 01:45:11');
 /*!40000 ALTER TABLE `world_stats_user_level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1492,4 +1501,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-03 22:39:26
+-- Dump completed on 2010-06-15 19:07:20

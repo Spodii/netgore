@@ -13,8 +13,6 @@ game's database.
 
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
-
-This file was generated on (UTC): 6/2/2010 10:29:24 PM
 ********************************************************************/
 
 using System;
@@ -23,6 +21,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Db;
+using NetGore.Features.DisplayAction;
 
 namespace DemoGame.Server.DbObjs
 {
@@ -41,6 +40,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void CopyValues(this IItemTemplateTable source, DbParameterValues paramValues)
         {
+            paramValues["action_display_id"] = (ushort?)source.ActionDisplayID;
             paramValues["description"] = source.Description;
             paramValues["equipped_body"] = source.EquippedBody;
             paramValues["graphic"] = (UInt16)source.Graphic;
@@ -77,10 +77,10 @@ namespace DemoGame.Server.DbObjs
         /// </returns>
         public static Boolean HasSameValues(this IItemTemplateTable source, IItemTemplateTable otherItem)
         {
-            return Equals(source.Description, otherItem.Description) && Equals(source.EquippedBody, otherItem.EquippedBody) &&
-                   Equals(source.Graphic, otherItem.Graphic) && Equals(source.Height, otherItem.Height) &&
-                   Equals(source.HP, otherItem.HP) && Equals(source.ID, otherItem.ID) && Equals(source.MP, otherItem.MP) &&
-                   Equals(source.Name, otherItem.Name) && Equals(source.Range, otherItem.Range) &&
+            return Equals(source.ActionDisplayID, otherItem.ActionDisplayID) && Equals(source.Description, otherItem.Description) &&
+                   Equals(source.EquippedBody, otherItem.EquippedBody) && Equals(source.Graphic, otherItem.Graphic) &&
+                   Equals(source.Height, otherItem.Height) && Equals(source.HP, otherItem.HP) && Equals(source.ID, otherItem.ID) &&
+                   Equals(source.MP, otherItem.MP) && Equals(source.Name, otherItem.Name) && Equals(source.Range, otherItem.Range) &&
                    Equals(source.GetStat(StatType.Agi), otherItem.GetStat(StatType.Agi)) &&
                    Equals(source.GetStat(StatType.Defence), otherItem.GetStat(StatType.Defence)) &&
                    Equals(source.GetStat(StatType.Int), otherItem.GetStat(StatType.Int)) &&
@@ -106,6 +106,10 @@ namespace DemoGame.Server.DbObjs
         public static void ReadValues(this ItemTemplateTable source, IDataReader dataReader)
         {
             Int32 i;
+
+            i = dataReader.GetOrdinal("action_display_id");
+
+            source.ActionDisplayID = (Nullable<ActionDisplayID>)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("description");
 
@@ -220,6 +224,10 @@ namespace DemoGame.Server.DbObjs
             {
                 switch (paramValues.GetParameterName(i))
                 {
+                    case "action_display_id":
+                        paramValues[i] = (ushort?)source.ActionDisplayID;
+                        break;
+
                     case "description":
                         paramValues[i] = source.Description;
                         break;
@@ -335,6 +343,11 @@ namespace DemoGame.Server.DbObjs
             {
                 switch (dataReader.GetName(i))
                 {
+                    case "action_display_id":
+                        source.ActionDisplayID =
+                            (Nullable<ActionDisplayID>)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        break;
+
                     case "description":
                         source.Description = dataReader.GetString(i);
                         break;

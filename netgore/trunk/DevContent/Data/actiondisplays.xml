@@ -4,8 +4,8 @@
     <Count>1</Count>
     <Item0>
       <ID>0</ID>
-      <HasSound>False</HasSound>
-      <SoundID>0</SoundID>
+      <HasSound>True</HasSound>
+      <SoundID>1</SoundID>
       <Script>Projectile</Script>
       <GrhIndex>182</GrhIndex>
       <ParticleEffect />

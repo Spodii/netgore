@@ -1,5 +1,6 @@
 using System.Linq;
 using NetGore;
+using NetGore.Features.DisplayAction;
 using SFML.Graphics;
 
 namespace DemoGame
@@ -22,6 +23,11 @@ namespace DemoGame
         /// moves proportionate to the rate their animation is moving.
         /// </summary>
         public const float AnimationSpeedModifier = 0.13f;
+
+        /// <summary>
+        /// The default <see cref="ActionDisplayID"/> to use when none is specified.
+        /// </summary>
+        public static readonly ActionDisplayID DefaultActionDisplayID = new ActionDisplayID(0);
 
         /// <summary>
         /// The base (default) attack timeout value for all characters.
