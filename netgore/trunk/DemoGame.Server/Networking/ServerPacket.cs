@@ -45,7 +45,6 @@ namespace DemoGame.Server
 
         public static PacketWriter CharAttack(MapEntityIndex attacker, MapEntityIndex? attacked = null, ActionDisplayID? displayAction = null)
         {
-            // TODO: !! Pass the attacked and displayAction values when possible
             var pw = GetWriter(ServerPacketID.CharAttack);
             pw.Write(attacker);
 

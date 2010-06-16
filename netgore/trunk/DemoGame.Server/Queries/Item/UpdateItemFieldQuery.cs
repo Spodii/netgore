@@ -12,8 +12,8 @@ namespace DemoGame.Server.Queries
     public class UpdateItemFieldQuery : IDisposable
     {
         const string _queryString = "UPDATE `" + ItemTable.TableName + "` SET `{0}`=@value WHERE `id`=@itemID";
-        readonly DbConnectionPool _connectionPool;
 
+        readonly DbConnectionPool _connectionPool;
         readonly ICache<string, InternalUpdateItemFieldQuery> _fieldQueryCache;
 
         bool _disposed;

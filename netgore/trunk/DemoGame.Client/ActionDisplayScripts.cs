@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Content;
@@ -20,13 +18,8 @@ namespace DemoGame.Client
     {
         static readonly ActionDisplayCollection _actionDisplays;
 
-        /// <summary>
-        /// Gets the <see cref="ActionDisplayCollection"/> instance.
-        /// </summary>
-        public static ActionDisplayCollection ActionDisplays { get { return _actionDisplays; } }
-
-        static readonly IContentManager _contentManager;
         static readonly IAudioManager _audioManager;
+        static readonly IContentManager _contentManager;
 
         /// <summary>
         /// Initializes the <see cref="ActionDisplayScripts"/> class.
@@ -40,31 +33,25 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Plays the sound for an <see cref="ActionDisplay"/> in a very basic way.
-        /// This is intended to be called by the scripts for playing sound instead of handling sound manually.
+        /// Gets the <see cref="ActionDisplayCollection"/> instance.
         /// </summary>
-        /// <param name="actionDisplay">The <see cref="ActionDisplay"/>.</param>
-        /// <param name="source">The source of the sound.</param>
-        static void PlaySoundSimple(ActionDisplay actionDisplay, Entity source)
+        public static ActionDisplayCollection ActionDisplays
         {
-            if (actionDisplay.Sound.HasValue)
-            {
-                var attackerAsAudioEmitter = source as IAudioEmitter;
-
-                if (attackerAsAudioEmitter != null)
-                    _audioManager.SoundManager.Play(actionDisplay.Sound.Value, attackerAsAudioEmitter);
-            }
+            get { return _actionDisplays; }
         }
 
         [ActionDisplayScript("Projectile")]
-        public static void Basic(ActionDisplay actionDisplay, IMap map, Entity attacker, Entity attacked)
+        public static void ADProjectile(ActionDisplay actionDisplay, IMap map, Entity attacker, Entity attacked)
         {
             var drawableMap = map as IDrawableMap;
-
-            // TODO: !! Send the ActionDisplayID and attacked character ID when attacking
+            var attackerAsCharacter = attacker as Character;
 
             // Play the sound
             PlaySoundSimple(actionDisplay, attacker);
+
+            // Show the attack animation on the attacker
+            if (attackerAsCharacter != null)
+                attackerAsCharacter.Attack();
 
             // Show the graphic going from the attacker to attacked
             if (drawableMap != null && attacked != null && attacker != attacked && actionDisplay.GrhIndex != GrhIndex.Invalid)
@@ -72,14 +59,46 @@ namespace DemoGame.Client
                 var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
                 if (gd != null)
                 {
-                var effect = new MapGrhEffectSeekSpatial(new Grh(gd, AnimType.Loop, TickCount.Now), attacker.Center,
-                    true, attacked, 1f);
+                    var effect = new MapGrhEffectSeekSpatial(new Grh(gd, AnimType.Loop, TickCount.Now), attacker.Center, true,
+                                                             attacked, 1f);
 
-                drawableMap.AddTemporaryMapEffect(effect);
+                    drawableMap.AddTemporaryMapEffect(effect);
                 }
             }
 
             // TODO: !! Display particle effect
+        }
+
+        /// <summary>
+        /// Plays the sound for an <see cref="ActionDisplay"/> in a very basic way.
+        /// This is intended to be called by the scripts for playing sound instead of handling sound manually.
+        /// </summary>
+        /// <param name="actionDisplay">The <see cref="ActionDisplay"/>.</param>
+        /// <param name="source">The source of the sound.</param>
+        static void PlaySoundSimple(ActionDisplay actionDisplay, Entity source)
+        {
+            // Check for valid parameters
+            if (actionDisplay == null)
+            {
+                Debug.Fail("actionDisplay must not be null.");
+                return;
+            }
+            if (source == null)
+            {
+                Debug.Fail("source must not be null.");
+                return;
+            }
+
+            // Make sure there is a valid sound
+            if (!actionDisplay.Sound.HasValue)
+                return;
+
+            // When possible, attach the sound to the source. Otherwise, just play it where the source is currently at
+            var attackerAsAudioEmitter = source as IAudioEmitter;
+            if (attackerAsAudioEmitter != null)
+                _audioManager.SoundManager.Play(actionDisplay.Sound.Value, attackerAsAudioEmitter);
+            else
+                _audioManager.SoundManager.Play(actionDisplay.Sound.Value, source.Center);
         }
     }
 }

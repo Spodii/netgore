@@ -5,6 +5,7 @@ using System.Linq;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db.ClassCreator;
+using NetGore.Features.DisplayAction;
 using NetGore.Features.Shops;
 using NetGore.NPCChat;
 using NetGore.Stats;
@@ -32,8 +33,6 @@ game's database.
 
 For more information on the DbClassCreator, please see:
     http://www.netgore.com/wiki/dbclasscreator.html
-
-This file was generated on (UTC): [INSERT_DATE_HERE]
 ********************************************************************/";
 
         const string _tempNamespaceName = "[TEMPNAMESPACENAME]";
@@ -154,6 +153,7 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
                 generator.AddCustomType(typeof(WeaponType), "*", "weapon_type");
                 generator.AddCustomType(typeof(NPCChatDialogID), "*", "chat_dialog");
                 generator.AddCustomType(typeof(ShopID), "*", "shop_id");
+                generator.AddCustomType(typeof(ActionDisplayID), "*", "action_display_id");
 
                 // Renaming
                 var formatter = generator.Formatter;
@@ -179,6 +179,7 @@ This file was generated on (UTC): [INSERT_DATE_HERE]
                 formatter.AddAlias("ai_id", "AIID");
                 formatter.AddAlias("event_id", "EventID");
                 formatter.AddAlias("target_character_id", "TargetCharacterID");
+                formatter.AddAlias("action_display_id", "ActionDisplayID");
 
                 formatter.AddAlias("Name");
                 formatter.AddAlias("ID");

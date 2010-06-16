@@ -226,11 +226,11 @@ namespace DemoGame.Client
             else
                 attackedID = null;
 
-            ActionDisplayID? ActionDisplayID;
+            ActionDisplayID? actionDisplayIDNullable;
             if (r.ReadBool())
-                ActionDisplayID = r.ReadActionDisplayID();
+                actionDisplayIDNullable = r.ReadActionDisplayID();
             else
-                ActionDisplayID = null;
+                actionDisplayIDNullable = null;
 
             // Get the object references using the IDs provided
             var attacker = Map.GetDynamicEntity<Character>(attackerID);
@@ -243,14 +243,17 @@ namespace DemoGame.Client
             else
                 attacked = null;
 
-            // TODO: !! Get the DisplayAction
+            // Use the default ActionDisplayID if we were provided with a null value
+            ActionDisplayID actionDisplayID;
+            if (!actionDisplayIDNullable.HasValue)
+                actionDisplayID = GameData.DefaultActionDisplayID;
+            else
+                actionDisplayID = actionDisplayIDNullable.Value;
 
-            var actionDisplay = ActionDisplayScripts.ActionDisplays[new ActionDisplayID(0)];
-            actionDisplay.Execute(Map, attacker, attacked);
-
-            // Display the attack
-            SoundManager.Play("punch", attacker);
-            attacker.Attack();
+            // Get the ActionDisplay to use and, if valid, execute it
+            var actionDisplay = ActionDisplayScripts.ActionDisplays[actionDisplayID];
+            if (actionDisplay != null)
+                actionDisplay.Execute(Map, attacker, attacked);
         }
 
         [MessageHandler((byte)ServerPacketID.CharDamage)]
