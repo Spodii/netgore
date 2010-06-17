@@ -27,6 +27,8 @@ namespace NetGore.Graphics
         public MapGrhEffectSeekPosition(Grh grh, Vector2 position, bool isForeground, Vector2 target, float speed)
             : base(grh, position, isForeground)
         {
+            speed = speed / 1000f;
+
             _startTime = TickCount.Now;
             _startPosition = position;
             _targetPosition = target;
@@ -40,7 +42,7 @@ namespace NetGore.Graphics
 
             // Multiply the normalized direction vector (the cos and sine values) by the speed to get the velocity
             // to use for each elapsed millisecond
-            _velocity = new Vector2((float)(cos * speed), (float)(sin * speed));
+            _velocity = -new Vector2((float)(cos * speed), (float)(sin * speed));
 
             // Precalculate the amount of time it will take to hit the target. This way, we can check if we have reached
             // the destination simply by checking the current time.
@@ -59,7 +61,7 @@ namespace NetGore.Graphics
         protected override void UpdateEffect(TickCount currentTime)
         {
             // Check if enough time has elapsed for us to reach the target position
-            if (_endTime >= currentTime)
+            if (currentTime >= _endTime)
             {
                 Position = _targetPosition;
                 Kill();

@@ -3,7 +3,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Interface for an effect that is displayed on the map for a short period of time.
     /// </summary>
-    public interface ITemporaryMapEffect : ISpatial, IDrawable
+    public interface ITemporaryMapEffect
     {
         /// <summary>
         /// Updates the map effect.
@@ -16,6 +16,19 @@ namespace NetGore.Graphics
         /// value will remain false.
         /// </summary>
         bool IsAlive { get; }
+
+        /// <summary>
+        /// Gets if the <see cref="ITemporaryMapEffect"/> is in the foreground. If true, it will be drawn after the
+        /// <see cref="MapRenderLayer.SpriteForeground"/> layer. If false, it will be drawn after the
+        /// <see cref="MapRenderLayer.SpriteBackground"/> layer.
+        /// </summary>
+        bool IsForeground { get; }
+
+        /// <summary>
+        /// Makes the object draw itself.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
+        void Draw(ISpriteBatch sb);
 
         /// <summary>
         /// Notifies listeners when this <see cref="ITemporaryMapEffect"/> has died. This is only raised once per
