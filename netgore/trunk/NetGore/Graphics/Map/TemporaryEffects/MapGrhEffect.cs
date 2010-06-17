@@ -13,6 +13,20 @@ namespace NetGore.Graphics
         bool _isAlive = true;
 
         /// <summary>
+        /// Initializes the <see cref="MapGrhEffect"/> class.
+        /// </summary>
+        static MapGrhEffect()
+        {
+            // Some random, high value
+            DefaultEffectLayerDepth = 10000;
+        }
+
+        /// <summary>
+        /// Gets or sets the default <see cref="IDrawable.LayerDepth"/> to give <see cref="MapGrhEffect"/>s.
+        /// </summary>
+        public static int DefaultEffectLayerDepth { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MapGrhEffect"/> class.
         /// </summary>
         /// <param name="grh">Grh to draw.</param>
@@ -21,6 +35,7 @@ namespace NetGore.Graphics
         /// it will be drawn in the background layer.</param>
         protected MapGrhEffect(Grh grh, Vector2 position, bool isForeground) : base(grh, position, isForeground)
         {
+            LayerDepth = DefaultEffectLayerDepth;
         }
 
         /// <summary>
