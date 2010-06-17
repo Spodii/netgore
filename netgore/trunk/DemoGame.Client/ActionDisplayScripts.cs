@@ -41,7 +41,7 @@ namespace DemoGame.Client
         }
 
         [ActionDisplayScript("Projectile")]
-        public static void ADProjectile(ActionDisplay actionDisplay, IMap map, Entity attacker, Entity attacked)
+        public static void AD_Projectile(ActionDisplay actionDisplay, IMap map, Entity attacker, Entity attacked)
         {
             var drawableMap = map as IDrawableMap;
             var attackerAsCharacter = attacker as Character;
@@ -59,8 +59,8 @@ namespace DemoGame.Client
                 var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
                 if (gd != null)
                 {
-                    var effect = new MapGrhEffectSeekSpatial(new Grh(gd, AnimType.Loop, TickCount.Now), attacker.Center, true,
-                                                             attacked, 1f);
+                    var effect = new MapGrhEffectSeekPosition(new Grh(gd, AnimType.Loop, TickCount.Now), attacker.Center, true,
+                                                             attacked.Center, 25f);
 
                     drawableMap.AddTemporaryMapEffect(effect);
                 }

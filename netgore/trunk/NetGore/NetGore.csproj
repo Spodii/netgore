@@ -281,6 +281,7 @@
     <Compile Include="Graphics\Map\TemporaryEffects\MapGrhEffectLoopOnce.cs" />
     <Compile Include="Graphics\Map\TemporaryEffects\MapGrhEffectSeekSpatial.cs" />
     <Compile Include="Graphics\Map\TemporaryEffects\MapGrhEffectTimed.cs" />
+    <Compile Include="Graphics\Map\TemporaryEffects\TemporaryMapEffectDiedHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifier.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifierCollection.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifierFactory.cs" />

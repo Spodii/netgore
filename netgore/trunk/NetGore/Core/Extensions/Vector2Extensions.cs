@@ -143,6 +143,89 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Calculates the <see cref="Vector2"/> position to use to make the <paramref name="source"/> travel towards
+        /// the <paramref name="target"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="Vector2"/> that will be moving.</param>
+        /// <param name="target">The <see cref="Vector2"/> containing the position to move towards.</param>
+        /// <param name="distance">The total number of units to move. When moving objects based on elapsed time, this will typically
+        /// contain the number of pixels to move per millisecond (speed * elapsedTime).</param>
+        /// <returns>The new <see cref="Vector2"/> position to give the <paramref name="source"/>.</returns>
+        public static Vector2 MoveTowards(this Vector2 source, Vector2 target, float distance)
+        {
+            // Get the difference between the source and target
+            var diff = source - target;
+
+            // Find the angle to travel
+            var angle = Math.Atan2(diff.Y, diff.X);
+
+            // Get the offset vector
+            var cos = Math.Cos(angle);
+            var sin = Math.Sin(angle);
+            var offset = new Vector2((float)(cos * distance), (float)(sin * distance));
+
+            return source - offset;
+        }
+
+        /// <summary>
+        /// Calculates the <see cref="Vector2"/> position to use to make the <paramref name="source"/> travel towards
+        /// the <paramref name="target"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="Vector2"/> that will be moving.</param>
+        /// <param name="target">The <see cref="Vector2"/> containing the position to move towards.</param>
+        /// <param name="distance">The total number of units to move. When moving objects based on elapsed time, this will typically
+        /// contain the number of pixels to move per millisecond (speed * elapsedTime).</param>
+        /// <param name="doNotPass">If true, the <paramref name="source"/> will stop at the <paramref name="target"/> when it has
+        /// been reached instead of going past it.</param>
+        /// <returns>
+        /// The new <see cref="Vector2"/> position to give the <paramref name="source"/>.
+        /// </returns>
+        public static Vector2 MoveTowards(this Vector2 source, Vector2 target, float distance, bool doNotPass = true)
+        {
+            // Get the difference between the source and target
+            var diff = source - target;
+
+            // Find the angle to travel
+            var angle = Math.Atan2(diff.Y, diff.X);
+
+            // Get the offset vector
+            var cos = Math.Cos(angle);
+            var sin = Math.Sin(angle);
+            var offset = new Vector2((float)(cos * distance), (float)(sin * distance));
+
+            // Apply the offset to get the new position
+            var newPos = source - offset;
+
+            // Make sure we do not overshoot
+            if (doNotPass)
+            {
+                if (offset.X > float.Epsilon)
+                {
+                    if (newPos.X > target.X)
+                        newPos.X = target.X;
+                }
+                else if (offset.X < -float.Epsilon)
+                {
+                    if (newPos.X < target.X)
+                        newPos.X = target.X;
+                }
+
+                if (offset.Y > float.Epsilon)
+                {
+                    if (newPos.Y > target.Y)
+                        newPos.Y = target.Y;
+                }
+                else if (offset.Y < -float.Epsilon)
+                {
+                    if (newPos.Y < target.Y)
+                        newPos.Y = target.Y;
+                }
+            }
+
+            return newPos;
+        }
+
+        /// <summary>
         /// Gets a <see cref="Vector2"/> with the X and Y components rounded.
         /// </summary>
         /// <param name="source"><see cref="Vector2"/> to round.</param>
