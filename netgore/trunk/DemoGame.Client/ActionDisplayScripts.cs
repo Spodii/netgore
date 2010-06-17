@@ -40,28 +40,35 @@ namespace DemoGame.Client
             get { return _actionDisplays; }
         }
 
+        /// <summary>
+        /// A basic <see cref="ActionDisplay"/> script for projectiles.
+        /// </summary>
+        /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
+        /// <param name="map">The map that the entities are on.</param>
+        /// <param name="source">The <see cref="Entity"/> that this action came from (the invoker of the action).</param>
+        /// <param name="target">The <see cref="Entity"/> that this action is targeting. It is possible that this will be
+        /// equal to the <paramref name="source"/> or be null.</param>
         [ActionDisplayScript("Projectile")]
-        public static void AD_Projectile(ActionDisplay actionDisplay, IMap map, Entity attacker, Entity attacked)
+        public static void AD_Projectile(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
         {
             var drawableMap = map as IDrawableMap;
-            var attackerAsCharacter = attacker as Character;
+            var sourceAsCharacter = source as Character;
 
             // Play the sound
-            PlaySoundSimple(actionDisplay, attacker);
+            PlaySoundSimple(actionDisplay, source);
 
             // Show the attack animation on the attacker
-            if (attackerAsCharacter != null)
-                attackerAsCharacter.Attack();
+            if (sourceAsCharacter != null)
+                sourceAsCharacter.Attack();
 
             // Show the graphic going from the attacker to attacked
-            if (drawableMap != null && attacked != null && attacker != attacked && actionDisplay.GrhIndex != GrhIndex.Invalid)
+            if (drawableMap != null && target != null && source != target && actionDisplay.GrhIndex != GrhIndex.Invalid)
             {
                 var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
                 if (gd != null)
                 {
-                    var effect = new MapGrhEffectSeekPosition(new Grh(gd, AnimType.Loop, TickCount.Now), attacker.Center, true,
-                                                             attacked.Center, 25f);
-
+                    var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
+                    var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 25f);
                     drawableMap.AddTemporaryMapEffect(effect);
                 }
             }

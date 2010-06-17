@@ -84,9 +84,7 @@ namespace NetGore.Features.ActionDisplays
             _sound = (hasSound ? soundID : (SoundID?)null);
 
             _script = reader.ReadString(_keyScript);
-
             _grhIndex = reader.ReadGrhIndex(_keyGrhIndex);
-
             _particleEffect = reader.ReadString(_keyParticleEffect);
         }
 
@@ -102,9 +100,7 @@ namespace NetGore.Features.ActionDisplays
             writer.Write(_keySoundID, (Sound.HasValue ? Sound.Value : new SoundID(0)));
 
             writer.Write(_keyScript, Script);
-
             writer.Write(_keyGrhIndex, GrhIndex);
-
             writer.Write(_keyParticleEffect, ParticleEffect);
         }
 
