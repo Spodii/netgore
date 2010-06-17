@@ -61,19 +61,24 @@ namespace DemoGame.Client
             if (sourceAsCharacter != null)
                 sourceAsCharacter.Attack();
 
-            // Show the graphic going from the attacker to attacked
-            if (drawableMap != null && target != null && source != target && actionDisplay.GrhIndex != GrhIndex.Invalid)
+            // Check if we can properly display the effect
+            if (drawableMap != null && target != null && source != target)
             {
-                var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
-                if (gd != null)
+                // Show the graphic going from the attacker to attacked
+                if (actionDisplay.GrhIndex != GrhIndex.Invalid)
                 {
-                    var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                    var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 25f);
-                    drawableMap.AddTemporaryMapEffect(effect);
+                    var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
+                    if (gd != null)
+                    {
+                        var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
+                        var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 100f);
+                        drawableMap.AddTemporaryMapEffect(effect);
+                    }
                 }
-            }
 
-            // TODO: !! Display particle effect
+                // Show the particle effect
+
+            }
         }
 
         /// <summary>
