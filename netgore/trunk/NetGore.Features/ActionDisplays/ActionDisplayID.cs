@@ -6,7 +6,7 @@ using System.IO;
 using NetGore;
 using NetGore.IO;
 
-namespace NetGore.Features.DisplayAction
+namespace NetGore.Features.ActionDisplays
 {
     /// <summary>
     /// Represents the ID of the action to display.

@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using NetGore;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 using NetGore.IO;
 
 namespace DemoGame.DbObjs

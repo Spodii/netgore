@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using NetGore.Collections;
 
-namespace NetGore.Features.DisplayAction
+namespace NetGore.Features.ActionDisplays
 {
     /// <summary>
     /// Contains all of the <see cref="ActionDisplayScriptHandler"/> delegate instances for methods that properly implement

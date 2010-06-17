@@ -1,6 +1,6 @@
 using System.Linq;
 using NetGore;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 using SFML.Graphics;
 
 namespace DemoGame

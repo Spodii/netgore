@@ -21,7 +21,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Db;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 
 namespace DemoGame.Server.DbObjs
 {

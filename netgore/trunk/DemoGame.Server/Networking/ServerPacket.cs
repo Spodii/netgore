@@ -5,7 +5,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Audio;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;

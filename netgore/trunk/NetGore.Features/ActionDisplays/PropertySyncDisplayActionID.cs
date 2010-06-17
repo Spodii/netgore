@@ -5,7 +5,7 @@ using System.Text;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
 
-namespace NetGore.Features.DisplayAction
+namespace NetGore.Features.ActionDisplays
 {
     /// <summary>
     /// Implementation of a <see cref="PropertySyncBase{T}"/> that handles synchronizing a <see cref="ActionDisplayID"/>.

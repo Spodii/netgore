@@ -95,12 +95,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DisplayAction\ActionDisplay.cs" />
-    <Compile Include="DisplayAction\ActionDisplayCollection.cs" />
-    <Compile Include="DisplayAction\ActionDisplayScriptAttribute.cs" />
-    <Compile Include="DisplayAction\ActionDisplayScriptCollectionAttribute.cs" />
-    <Compile Include="DisplayAction\ActionDisplayScriptHandler.cs" />
-    <Compile Include="DisplayAction\ActionDisplayScriptManager.cs" />
+    <Compile Include="ActionDisplays\ActionDisplay.cs" />
+    <Compile Include="ActionDisplays\ActionDisplayCollection.cs" />
+    <Compile Include="ActionDisplays\ActionDisplayScriptAttribute.cs" />
+    <Compile Include="ActionDisplays\ActionDisplayScriptCollectionAttribute.cs" />
+    <Compile Include="ActionDisplays\ActionDisplayScriptHandler.cs" />
+    <Compile Include="ActionDisplays\ActionDisplayScriptManager.cs" />
     <Compile Include="Emoticons\EmoticonDisplayManager.cs" />
     <Compile Include="Emoticons\EmoticonMapDrawingExtension.cs" />
     <Compile Include="Groups\GroupForm.cs" />

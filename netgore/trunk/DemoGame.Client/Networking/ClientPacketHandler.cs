@@ -9,7 +9,7 @@ using log4net;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Content;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 using NetGore.Features.Emoticons;
 using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
