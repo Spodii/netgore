@@ -71,12 +71,12 @@ namespace DemoGame.Client
                     if (gd != null)
                     {
                         var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                        var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 100f);
+                        var effect = new MapGrhEffectSeekPosition(grh, source.Center, true, target.Center, 750f);
                         drawableMap.AddTemporaryMapEffect(effect);
                     }
                 }
 
-                // Show the particle effect
+                // // TODO: !! Show the particle effect
 
             }
         }

@@ -174,7 +174,6 @@ namespace DemoGame.Client
 
             // Add to the MapEffects list and the spatial
             _mapEffects.Add(e);
-            Spatial.Add(e);
         }
 
         /// <summary>
@@ -487,9 +486,6 @@ namespace DemoGame.Client
 
                     // Remove last element in the list
                     _mapEffects.RemoveAt(_mapEffects.Count - 1);
-
-                    // Remove from the spatial collection
-                    Spatial.Remove(e);
                 }
             }
         }
@@ -619,14 +615,36 @@ namespace DemoGame.Client
             // Sort all the items, then start drawing them layer-by-layer, item-by-item
             foreach (var layer in _drawableSorter.GetSorted(drawableInView))
             {
+                // Notify the layer has started drawing
                 if (BeginDrawLayer != null)
                     BeginDrawLayer(this, layer.Key, sb);
 
+                // Draw the normal map objects
                 foreach (var drawable in layer.Value)
-                {
                     drawable.Draw(sb);
+
+                // Get the effects to draw, then draw them (if possible)
+                IEnumerable<ITemporaryMapEffect> tempMapEffects;
+                switch (layer.Key)
+                {
+                    case MapRenderLayer.SpriteBackground:
+                        tempMapEffects = _mapEffects.Where(x => !x.IsForeground);
+                        break;
+                    case MapRenderLayer.SpriteForeground:
+                        tempMapEffects = _mapEffects.Where(x => x.IsForeground);
+                        break;
+                    default:
+                        tempMapEffects = null;
+                        break;
                 }
 
+                if (tempMapEffects != null)
+                {
+                    foreach (var mapEffect in tempMapEffects)
+                        mapEffect.Draw(sb);
+                }
+
+                // Notify the layer has finished drawing
                 if (EndDrawLayer != null)
                     EndDrawLayer(this, layer.Key, sb);
             }
