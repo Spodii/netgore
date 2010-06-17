@@ -20,11 +20,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets if this map effect is still alive. When false, it will be removed from the map.
+        /// When overridden in the derived class, performs the additional updating that this <see cref="MapGrhEffect"/>
+        /// needs to do such as checking if it is time to kill the effect. This method should be overridden instead of
+        /// <see cref="MapGrh.Update"/>. This method will not be called after the effect has been killed.
         /// </summary>
-        public override bool IsAlive
+        /// <param name="currentTime">Current game time.</param>
+        protected override void UpdateEffect(TickCount currentTime)
         {
-            get { return Grh == null || Grh.AnimType != AnimType.Loop; }
+            if (Grh == null || Grh.AnimType != AnimType.Loop)
+                Kill();
         }
     }
 }
