@@ -1,4 +1,4 @@
-namespace NetGore.Features.DisplayAction
+namespace NetGore.Features.ActionDisplays
 {
     /// <summary>
     /// Delegate for calling a method that implements the <see cref="ActionDisplayScriptAttribute"/>.

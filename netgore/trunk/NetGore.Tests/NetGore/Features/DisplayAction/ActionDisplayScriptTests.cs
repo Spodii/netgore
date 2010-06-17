@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 using NUnit.Framework;
 
-namespace NetGore.Tests.NetGore.Features.DisplayAction
+namespace NetGore.Tests.NetGore.Features.ActionDisplays
 {
     [TestFixture]
     public class ActionDisplayScriptTests

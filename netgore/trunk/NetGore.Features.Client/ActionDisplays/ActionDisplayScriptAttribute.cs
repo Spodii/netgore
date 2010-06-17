@@ -1,6 +1,6 @@
 using System;
 
-namespace NetGore.Features.DisplayAction
+namespace NetGore.Features.ActionDisplays
 {
     /// <summary>
     /// Attribute used to denote a method used to handle how to display a <see cref="ActionDisplay"/>.

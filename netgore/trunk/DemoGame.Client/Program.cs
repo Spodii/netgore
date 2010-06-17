@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using log4net;
 using NetGore;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 using NetGore.IO;
 
 namespace DemoGame.Client

@@ -6,7 +6,7 @@ using System.Linq;
 using NetGore.Collections;
 using NetGore.IO;
 
-namespace NetGore.Features.DisplayAction
+namespace NetGore.Features.ActionDisplays
 {
     public class ActionDisplayCollection : IEnumerable<ActionDisplay>, IPersistable
     {

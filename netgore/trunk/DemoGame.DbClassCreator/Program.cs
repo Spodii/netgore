@@ -5,7 +5,7 @@ using System.Linq;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db.ClassCreator;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 using NetGore.Features.Shops;
 using NetGore.NPCChat;
 using NetGore.Stats;

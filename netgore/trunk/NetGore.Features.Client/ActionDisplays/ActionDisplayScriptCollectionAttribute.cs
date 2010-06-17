@@ -1,6 +1,6 @@
 using System;
 
-namespace NetGore.Features.DisplayAction
+namespace NetGore.Features.ActionDisplays
 {
     /// <summary>
     /// Attribute used to denote a class that contains <see cref="ActionDisplayScriptAttribute"/>s. A class must

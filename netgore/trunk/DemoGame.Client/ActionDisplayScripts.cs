@@ -3,7 +3,7 @@ using System.Linq;
 using NetGore;
 using NetGore.Audio;
 using NetGore.Content;
-using NetGore.Features.DisplayAction;
+using NetGore.Features.ActionDisplays;
 using NetGore.Graphics;
 using NetGore.IO;
 

@@ -4,7 +4,7 @@ using System.Text;
 using NetGore.Audio;
 using NetGore.IO;
 
-namespace NetGore.Features.DisplayAction
+namespace NetGore.Features.ActionDisplays
 {
     /// <summary>
     /// Describes how to display an action.
