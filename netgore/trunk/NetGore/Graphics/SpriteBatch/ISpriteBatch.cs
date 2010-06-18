@@ -44,6 +44,11 @@ namespace NetGore.Graphics
         void Begin(BlendMode blendMode, ICamera2D camera);
 
         /// <summary>
+        /// Gets or sets the <see cref="BlendMode"/> currently being used.
+        /// </summary>
+        BlendMode BlendMode { get; set; }
+
+        /// <summary>
         /// Prepares the graphics device for drawing sprites with specified blending, sorting, and render state options,
         /// and a global transform matrix.
         /// </summary>

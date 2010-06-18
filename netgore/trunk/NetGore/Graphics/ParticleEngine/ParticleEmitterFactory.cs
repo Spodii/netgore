@@ -113,23 +113,37 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Checks if a <see cref="ParticleEmitter"/> exists.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
+        /// <param name="emitterName">The name of the <see cref="ParticleEmitter"/>.</param>
+        /// <returns>True if the <see cref="ParticleEmitter"/> exists; false is it does not exist or any
+        /// of the parameters are invalid.</returns>
+        public static bool EmitterExists(ContentPaths contentPath, string emitterName)
+        {
+            if (contentPath == null || string.IsNullOrEmpty(emitterName))
+                return false;
+
+            var filePath = GetFilePath(contentPath, emitterName);
+            return File.Exists(filePath);
+        }
+
+        /// <summary>
         /// Loads a <see cref="ParticleEmitter"/> from file.
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to load from.</param>
         /// <param name="emitterName">The unique name of the <see cref="ParticleEmitter"/>.</param>
-        /// <returns>The loaded <see cref="ParticleEmitter"/>.</returns>
-        /// <exception cref="ParticleEmitterNotFoundException">No emitter found with the given
-        /// <paramref name="emitterName"/>.</exception>
+        /// <returns>The loaded <see cref="ParticleEmitter"/>, or null if the emitter does not exist or was not valid.</returns>
         public static ParticleEmitter LoadEmitter(ContentPaths contentPath, string emitterName)
         {
             var filePath = GetFilePath(contentPath, emitterName);
 
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Loading ParticleEmitter `{0}` from `{1}`.", emitterName, filePath);
-
             // Ensure the file exists
             if (!File.Exists(filePath))
-                throw new ParticleEmitterNotFoundException(emitterName);
+                return null;
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loading ParticleEmitter `{0}` from `{1}`.", emitterName, filePath);
 
             // Get the reader and read the emitter
             var reader = new XmlValueReader(filePath, _rootNodeName);

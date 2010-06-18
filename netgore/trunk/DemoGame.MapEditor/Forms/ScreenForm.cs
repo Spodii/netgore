@@ -152,11 +152,6 @@ namespace DemoGame.MapEditor
         Vector2 _moveCamera;
 
         /// <summary>
-        /// The <see cref="IParticleRenderer"/> used when drawing the <see cref="ParticleEmitter"/> only.
-        /// </summary>
-        SpriteBatchParticleRenderer _particleEmitterRenderer;
-
-        /// <summary>
         /// Currently selected transformation box
         /// </summary>
         TransBox _selTransBox = null;
@@ -621,18 +616,13 @@ namespace DemoGame.MapEditor
         /// <param name="emitter">The <see cref="ParticleEmitter"/> to draw.</param>
         void DrawParticleEmitterOnly(ISpriteBatch sb, ParticleEmitter emitter)
         {
-            // Set up the particle renderer
-            if (_particleEmitterRenderer == null)
-                _particleEmitterRenderer = new SpriteBatchParticleRenderer();
-
-            _particleEmitterRenderer.SpriteBatch = sb;
-
             // Start drawing
             sb.Begin(BlendMode.Alpha, Camera);
 
             try
             {
-                _particleEmitterRenderer.Draw(Camera, new ParticleEmitter[] { _emitterSelectionForm.SelectedItem });
+                if (_emitterSelectionForm.SelectedItem != null)
+                    _emitterSelectionForm.SelectedItem.Draw(sb);
             }
             finally
             {
@@ -1408,7 +1398,7 @@ namespace DemoGame.MapEditor
 
             // Set up the new emitter and add it to the map
             newEmitter.Origin = Camera.Center;
-            newEmitter.SetEmitterLife(GetTime(), 0);
+            newEmitter.SetEmitterLife(-1);
             newEmitter.Update(GetTime());
             Map.ParticleEffects.Add(newEmitter);
         }

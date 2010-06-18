@@ -5,6 +5,7 @@ using NetGore.Audio;
 using NetGore.Content;
 using NetGore.Features.ActionDisplays;
 using NetGore.Graphics;
+using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 
 namespace DemoGame.Client
@@ -76,8 +77,14 @@ namespace DemoGame.Client
                     }
                 }
 
-                // // TODO: !! Show the particle effect
-
+                // Show the particle effect
+                var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
+                if (emitter != null)
+                {
+                    emitter.Origin = source.Center;
+                    var effect = new MapParticleEffectSeekPosition(emitter, true, target.Center, 100);
+                    drawableMap.AddTemporaryMapEffect(effect);
+                }
             }
         }
 

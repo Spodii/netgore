@@ -37,7 +37,7 @@ namespace NetGore.EditorTools
                 try
                 {
                     var pe = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, name);
-                    pe.SetEmitterLife(0, 0);
+                    pe.SetEmitterLife(-1);
                     ret.Add(pe);
                 }
                 catch (ParticleEmitterNotFoundException ex)
