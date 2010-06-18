@@ -25,7 +25,6 @@ namespace DemoGame.Client
         const string _usedIndiciesNodeName = "UsedIndicies";
 
         static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
-        static readonly SpriteBatchParticleRenderer _particleEffectRenderer = new SpriteBatchParticleRenderer();
 
         /// <summary>
         /// List of BackgroundImages on this map.
@@ -652,8 +651,8 @@ namespace DemoGame.Client
             // Draw the particle effects
             if (DrawParticles)
             {
-                _particleEffectRenderer.SpriteBatch = sb;
-                _particleEffectRenderer.Draw(Camera, ParticleEffects);
+                foreach (var pe in ParticleEffects)
+                    pe.Draw(sb);
             }
         }
 

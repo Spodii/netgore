@@ -23,7 +23,6 @@ namespace DemoGame.ParticleEffectEditor
         IContentManager _content;
         ParticleEmitter _emitter;
         string _lastEmitterName = string.Empty;
-        IParticleRenderer _renderer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -85,13 +84,10 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="spriteBatch">The sprite batch.</param>
         public void DrawGame(ISpriteBatch spriteBatch)
         {
-            if (_renderer == null)
-                _renderer = new SpriteBatchParticleRenderer { SpriteBatch = spriteBatch };
-
             // Clear the background
             RenderWindow.Clear(Color.Black);
             spriteBatch.Begin();
-            _renderer.Draw(_camera, new ParticleEmitter[] { Emitter });
+            Emitter.Draw(spriteBatch);
             spriteBatch.End();
         }
 

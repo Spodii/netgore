@@ -189,7 +189,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Browsable(false)]
         public bool HasInfiniteLife
         {
-            get { return _expirationTime == int.MaxValue; }
+            get { return _expirationTime == TickCount.MaxValue; }
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         /// <summary>
         /// Gets the amount of time remaining for the <see cref="ParticleEmitter"/> before it is
-        /// automatically terminated.
+        /// automatically terminated. If -1, it will never be terminated automatically.
         /// </summary>
         /// <returns>The number of milliseconds remaining in the <see cref="ParticleEmitter"/>'s life, or
         /// zero if the emitter has already expired, or -1 if the emitter does not expire.</returns>
@@ -339,7 +339,7 @@ namespace NetGore.Graphics.ParticleEngine
                 if (HasInfiniteLife)
                     return -1;
 
-                return (int)Math.Max(0, _expirationTime - _lastUpdateTime);
+                return Math.Max(0, (int)_expirationTime - (int)TickCount.Now);
             }
         }
 
@@ -359,7 +359,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets the approximate current time.
         /// </summary>
         [Browsable(false)]
-        protected TickCount currentTime
+        protected TickCount LastUpdateTime
         {
             get { return _lastUpdateTime; }
         }
@@ -527,19 +527,57 @@ namespace NetGore.Graphics.ParticleEngine
             // Increase the index of the last active particle
             _lastAliveIndex = lastIndex;
         }
+        
+        /// <summary>
+        /// Kills the <see cref="ParticleEmitter"/>, which stops it from emitting any more particles but keeps any
+        /// existing particles alive.
+        /// </summary>
+        public void Kill()
+        {
+            _expirationTime = TickCount.Now;
+        }
 
         /// <summary>
         /// Sets the life of the <see cref="ParticleEmitter"/>.
         /// </summary>
-        /// <param name="currentTime">The current time.</param>
         /// <param name="totalLife">The total life of the <see cref="ParticleEmitter"/> in milliseconds. If less
         /// than or equal to zero, the <see cref="ParticleEmitter"/> will never expire.</param>
-        public void SetEmitterLife(TickCount currentTime, int totalLife)
+        public void SetEmitterLife(int totalLife)
         {
             if (totalLife <= 0)
                 _expirationTime = TickCount.MaxValue;
             else
-                _expirationTime = (TickCount)(currentTime + totalLife);
+                _expirationTime = (TickCount)(TickCount.Now + totalLife);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public void Draw(ISpriteBatch sb)
+        {
+            // Check if we can even draw anything
+            if (Sprite == null || ActiveParticles <= 0)
+                return;
+
+            // Keep track of what the blend mode was originally so we can restore it when done
+            var originalBlendMode = sb.BlendMode;
+
+            // Set the blend mode
+            sb.BlendMode = BlendMode;
+
+            // Get the origin to use for the particles
+            var origin = Sprite.Size / 2f;
+
+            // Draw the live particles
+            for (var i = 0; i < ActiveParticles; i++)
+            {
+                var p = particles[i];
+                Sprite.Draw(sb, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
+            }
+
+            // Restore the blend mode
+            sb.BlendMode = originalBlendMode;
         }
 
         /// <summary>
@@ -602,7 +640,7 @@ namespace NetGore.Graphics.ParticleEngine
             Sprite.Update(currentTime);
 
             // Check to spawn more particles
-            if (RemainingLife != 0)
+            if (RemainingLife != 0 && ReleaseAmount.Max > 0 && ReleaseRate.Max > 0)
             {
                 // Do not allow the releasing catch-up time to exceed the _maxDeltaTime
                 if (_nextReleaseTime < currentTime - MaxDeltaTime)
@@ -619,6 +657,12 @@ namespace NetGore.Graphics.ParticleEngine
                 // Release the particles, if there are any
                 if (amountToRelease > 0)
                     ReleaseParticles(currentTime, amountToRelease);
+            }
+            else
+            {
+                // Set the next release time to now so that if the emitter starts releasing, it won't release a ton
+                // as it catches back up
+                _nextReleaseTime = currentTime - MaxDeltaTime;
             }
 
             // Update the particles

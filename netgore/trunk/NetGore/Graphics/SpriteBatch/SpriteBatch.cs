@@ -108,6 +108,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="BlendMode"/> currently being used.
+        /// </summary>
+        public BlendMode BlendMode { get { return _sprite.BlendMode; } set { _sprite.BlendMode = value; } }
+
+        /// <summary>
         /// Prepares the graphics device for drawing sprites with specified blending, sorting, and render state options,
         /// and a global transform matrix.
         /// </summary>
