@@ -42,6 +42,55 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// A basic <see cref="ActionDisplay"/> script for melee attacks.
+        /// </summary>
+        /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
+        /// <param name="map">The map that the entities are on.</param>
+        /// <param name="source">The <see cref="Entity"/> that this action came from (the invoker of the action).</param>
+        /// <param name="target">The <see cref="Entity"/> that this action is targeting. It is possible that this will be
+        /// equal to the <paramref name="source"/> or be null.</param>
+        [ActionDisplayScript("Melee")]
+        public static void AD_Melee(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
+        {
+            var drawableMap = map as IDrawableMap;
+            var sourceAsCharacter = source as Character;
+
+            // Play the sound
+            PlaySoundSimple(actionDisplay, source);
+
+            // Show the attack animation on the attacker
+            if (sourceAsCharacter != null)
+                sourceAsCharacter.Attack();
+
+            // Check if we can properly display the effect
+            if (drawableMap != null && target != null && source != target)
+            {
+                // Show the graphic going from the attacker to attacked
+                if (actionDisplay.GrhIndex != GrhIndex.Invalid)
+                {
+                    var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
+                    if (gd != null)
+                    {
+                        var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
+                        var effect = new MapGrhEffectLoopOnce(grh, source.Center, true);
+                        drawableMap.AddTemporaryMapEffect(effect);
+                    }
+                }
+
+                // Show the particle effect
+                var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
+                if (emitter != null)
+                {
+                    // Effect that just takes place on the target and dies very quickly
+                    emitter.Origin = target.Center;
+                    emitter.SetEmitterLife(100);
+                    var effect = new MapParticleEffect(emitter, true);
+                    drawableMap.AddTemporaryMapEffect(effect);
+                }
+            }
+        }
+
+        /// <summary>
         /// A basic <see cref="ActionDisplay"/> script for projectiles.
         /// </summary>
         /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
@@ -81,8 +130,17 @@ namespace DemoGame.Client
                 var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
                 if (emitter != null)
                 {
+                    /* 
+                    // Effect that seeks out the target
                     emitter.Origin = source.Center;
                     var effect = new MapParticleEffectSeekPosition(emitter, true, target.Center, 100);
+                    drawableMap.AddTemporaryMapEffect(effect);
+                    */
+
+                    // Effect that just takes place on the target and dies very quickly
+                    emitter.Origin = target.Center;
+                    emitter.SetEmitterLife(100);
+                    var effect = new MapParticleEffect(emitter, true);
                     drawableMap.AddTemporaryMapEffect(effect);
                 }
             }
