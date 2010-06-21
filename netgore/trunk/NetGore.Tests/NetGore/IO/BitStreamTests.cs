@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using NetGore.IO;
 using NUnit.Framework;
@@ -14,19 +15,10 @@ namespace NetGore.Tests.IO
     [TestFixture]
     public class BitStreamTests
     {
-        delegate T BitStreamReadHandler<out T>();
-
-        delegate void BitStreamWriteHandler<in T>(T value);
-
         /// <summary>
         /// Maximum number of iterations to use for I/O tests.
         /// </summary>
         const long _maxRangeIterations = 100000;
-
-        static readonly IEnumerable<MethodInfo> _bitStreamReaderHandlerMethods =
-            typeof(BitStream).GetMethods().Where(
-                x =>
-                x.Name.StartsWith("Read") && x.Name != "Read" && !x.Name.StartsWith("ReadBit") && x.GetParameters().Count() == 0);
 
         static void AreBitsEqual(int a, int b, int bits)
         {
@@ -44,19 +36,16 @@ namespace NetGore.Tests.IO
             Assert.AreEqual(ba, bb);
         }
 
-        static void BatchIOTester<T>(IEnumerable<T> values)
+        static void BatchIOTester<T>(IEnumerable<T> values, Func<BitStream, T> readHandler, Action<BitStream, T> writeHandler)
         {
             var bs = new BitStream(BitStreamMode.Write, 655360);
-            var writeHandler = GetWriteHandler<T>(bs);
-            var readHandler = GetReadHandler<T>(bs);
-
             var valueQueue = new Queue<T>(values.Count());
 
             bs.Mode = BitStreamMode.Write;
 
             foreach (var value in values)
             {
-                writeHandler(value);
+                writeHandler(bs, value);
                 valueQueue.Enqueue(value);
             }
 
@@ -65,7 +54,7 @@ namespace NetGore.Tests.IO
             while (valueQueue.Count > 0)
             {
                 var expected = valueQueue.Dequeue();
-                var value = readHandler();
+                var value = readHandler(bs);
                 try
                 {
                     Assert.AreEqual(expected, value);
@@ -88,24 +77,6 @@ namespace NetGore.Tests.IO
             var fieldInfo = typeof(T).GetField(fieldName);
             var value = fieldInfo.GetValue(null);
             return Convert.ToInt64(value);
-        }
-
-        static BitStreamReadHandler<T> GetReadHandler<T>(BitStream bitStream)
-        {
-            MethodInfo methodInfo = null;
-            foreach (var mi in _bitStreamReaderHandlerMethods)
-            {
-                if (mi.ReturnType != typeof(T))
-                    continue;
-
-                methodInfo = mi;
-                break;
-            }
-
-            if (methodInfo == null)
-                throw new Exception();
-
-            return (BitStreamReadHandler<T>)Delegate.CreateDelegate(typeof(BitStreamReadHandler<T>), bitStream, methodInfo);
         }
 
         static int GetSignedPartialBitValue(int value, int bits, int maxBits)
@@ -139,12 +110,6 @@ namespace NetGore.Tests.IO
         {
             var bitMask = (1 << bits) - 1;
             return (uint)((int)value & bitMask);
-        }
-
-        static BitStreamWriteHandler<T> GetWriteHandler<T>(BitStream bitStream)
-        {
-            var methodInfo = typeof(BitStream).GetMethod("Write", new Type[] { typeof(T) });
-            return (BitStreamWriteHandler<T>)Delegate.CreateDelegate(typeof(BitStreamWriteHandler<T>), bitStream, methodInfo);
         }
 
         static IEnumerable<long> Range(long min, long max, long maxIterations)
@@ -293,7 +258,7 @@ namespace NetGore.Tests.IO
         public void ByteIO()
         {
             BatchIOTester(from value in TRange<byte>()
-                          select (byte)value);
+                          select (byte)value, x => x.ReadByte(), (x,v) => x.Write(v));
         }
 
         [Test]
@@ -465,7 +430,7 @@ namespace NetGore.Tests.IO
         public void IntIO()
         {
             BatchIOTester(from value in TRange<int>()
-                          select (int)value);
+                          select (int)value, x => x.ReadInt(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -928,7 +893,7 @@ namespace NetGore.Tests.IO
         public void SByteIO()
         {
             BatchIOTester(from value in TRange<sbyte>()
-                          select (sbyte)value);
+                          select (sbyte)value, x => x.ReadSByte(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -1036,7 +1001,7 @@ namespace NetGore.Tests.IO
         public void ShortIO()
         {
             BatchIOTester(from value in TRange<short>()
-                          select (short)value);
+                          select (short)value, x => x.ReadShort(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -1269,7 +1234,7 @@ namespace NetGore.Tests.IO
         public void UIntIO()
         {
             BatchIOTester(from value in TRange<uint>()
-                          select (uint)value);
+                          select (uint)value, x => x.ReadUInt(), (x, v) => x.Write(v));
         }
 
         [Test]
@@ -1341,7 +1306,7 @@ namespace NetGore.Tests.IO
         public void UShortIO()
         {
             BatchIOTester(from value in TRange<ushort>()
-                          select (ushort)value);
+                          select (ushort)value, x => x.ReadUShort(), (x, v) => x.Write(v));
         }
 
         [Test]
