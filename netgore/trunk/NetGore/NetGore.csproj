@@ -347,6 +347,9 @@
     <Compile Include="IO\PropertySync\Syncs\PropertySyncContentAssetName.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncSpriteEffects.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncTextureAssetName.cs" />
+    <Compile Include="IO\ValueReaderWriter\Generic\GenericValueIOFormat.cs" />
+    <Compile Include="IO\ValueReaderWriter\Generic\GenericValueReader.cs" />
+    <Compile Include="IO\ValueReaderWriter\Generic\GenericValueWriter.cs" />
     <Compile Include="Network\ExternalIPParsingRule.cs" />
     <Compile Include="Network\NetStats.cs" />
     <Compile Include="Network\PacketTimeStampHelper.cs" />
