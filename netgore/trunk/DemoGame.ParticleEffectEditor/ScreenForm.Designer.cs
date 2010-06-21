@@ -87,6 +87,7 @@ namespace DemoGame.ParticleEffectEditor
             // 
             // cmbEmitter
             // 
+            this.cmbEmitter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbEmitter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEmitter.FormattingEnabled = true;
             this.cmbEmitter.Location = new System.Drawing.Point(54, 19);
@@ -142,8 +143,8 @@ namespace DemoGame.ParticleEffectEditor
             this.GameScreen.Size = new System.Drawing.Size(727, 551);
             this.GameScreen.TabIndex = 0;
             this.GameScreen.Text = "gameScreenControl1";
-            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
+            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             // 
             // ScreenForm
             // 
