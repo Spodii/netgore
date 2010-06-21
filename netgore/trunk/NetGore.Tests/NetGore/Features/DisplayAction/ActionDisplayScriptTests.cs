@@ -25,12 +25,12 @@ namespace NetGore.Tests.NetGore.Features.ActionDisplays
         }
 
         [ActionDisplayScriptCollection]
-        public static class TestClass
+        static class TestClass
         {
             public static int i = 0;
 
             [ActionDisplayScript("__UNITTEST_TEST")]
-            public static void Test(ActionDisplay actionDisplay, Entity source, Entity target)
+            public static void Test(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
             {
                 i = 50;
             }
