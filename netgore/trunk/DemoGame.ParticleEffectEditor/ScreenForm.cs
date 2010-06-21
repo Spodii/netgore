@@ -172,6 +172,16 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnSave_Click(object sender, EventArgs e)
         {
+            if (Emitter == null)
+                return;
+
+            if (StringComparer.Ordinal.Equals(ParticleEmitter.DefaultName, Emitter.Name))
+            {
+                MessageBox.Show("You should change the particle emitter's name from the default name before saving." + Environment.NewLine +
+                    " To do so, change the Name property of the emitter.", "Change emitter name");
+                return;
+            }
+
             ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter);
 
             MessageBox.Show("Saved!", "Saved", MessageBoxButtons.OK);
