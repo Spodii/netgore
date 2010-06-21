@@ -4,7 +4,11 @@ using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    public abstract class MapParticleEffect : ITemporaryMapEffect
+    /// <summary>
+    /// A <see cref="ITemporaryMapEffect"/> for a <see cref="ParticleEmitter"/>. Simply displays a <see cref="ParticleEmitter"/> at
+    /// for a brief amount of time. Derived classes can override some methods to provide more advanced operations.
+    /// </summary>
+    public class MapParticleEffect : ITemporaryMapEffect
     {
         readonly ParticleEmitter _emitter;
         readonly bool _isForeground;
@@ -17,7 +21,7 @@ namespace NetGore.Graphics
         /// <param name="emitter">The <see cref="ParticleEmitter"/>.</param>
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
-        protected MapParticleEffect(ParticleEmitter emitter, bool isForeground) 
+        public MapParticleEffect(ParticleEmitter emitter, bool isForeground) 
         {
             _isForeground = isForeground;
             _emitter = emitter;
@@ -28,7 +32,9 @@ namespace NetGore.Graphics
         /// needs to do such as checking if it is time to kill the effect. This method will not be called after the effect has been killed.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
-        protected abstract void UpdateEffect(TickCount currentTime);
+        protected virtual void UpdateEffect(TickCount currentTime)
+        {
+        }
 
         /// <summary>
         /// Kills this <see cref="MapParticleEffect"/>. This should happen once and only once for every <see cref="MapParticleEffect"/>.

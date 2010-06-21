@@ -2,13 +2,21 @@
 <ActionDisplayCollection>
   <ActionDisplays>
     <Count>1</Count>
-    <Item0>
+	<Item0>
       <ID>0</ID>
+      <HasSound>True</HasSound>
+      <SoundID>1</SoundID>
+      <Script>Melee</Script>
+      <GrhIndex>0</GrhIndex>
+      <ParticleEffect>blood</ParticleEffect>
+    </Item0>
+    <Item1>
+      <ID>1</ID>
       <HasSound>True</HasSound>
       <SoundID>1</SoundID>
       <Script>Projectile</Script>
       <GrhIndex>182</GrhIndex>
-      <ParticleEffect />
-    </Item0>
+      <ParticleEffect>blood</ParticleEffect>
+    </Item1>
   </ActionDisplays>
 </ActionDisplayCollection>

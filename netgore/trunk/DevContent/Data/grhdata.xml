@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>193</Count>
+    <Count>194</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -1650,6 +1650,15 @@
       </Texture>
     </Item182>
     <Item183>
+      <Index>62</Index>
+      <Categorization>Particle.Sprite.blood</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/Sprite/blood</Name>
+        <Source>0,0,8,8</Source>
+      </Texture>
+    </Item183>
+    <Item184>
       <Index>76</Index>
       <Categorization>Particle.star</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1657,8 +1666,8 @@
         <Name>Grh/Particle/star</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item183>
-    <Item184>
+    </Item184>
+    <Item185>
       <Index>75</Index>
       <Categorization>Particle.star sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1666,8 +1675,8 @@
         <Name>Grh/Particle/star sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item184>
-    <Item185>
+    </Item185>
+    <Item186>
       <Index>77</Index>
       <Categorization>Particle.sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1675,8 +1684,8 @@
         <Name>Grh/Particle/sword</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item185>
-    <Item186>
+    </Item186>
+    <Item187>
       <Index>183</Index>
       <Categorization>Quest.can start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1684,8 +1693,8 @@
         <Name>Grh/Quest/can start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item186>
-    <Item187>
+    </Item187>
+    <Item188>
       <Index>186</Index>
       <Categorization>Quest.cannot start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1693,8 +1702,8 @@
         <Name>Grh/Quest/cannot start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item187>
-    <Item188>
+    </Item188>
+    <Item189>
       <Index>184</Index>
       <Categorization>Quest.started</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1702,8 +1711,8 @@
         <Name>Grh/Quest/started</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item188>
-    <Item189>
+    </Item189>
+    <Item190>
       <Index>185</Index>
       <Categorization>Quest.turnin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1711,8 +1720,8 @@
         <Name>Grh/Quest/turnin</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item189>
-    <Item190>
+    </Item190>
+    <Item191>
       <Index>140</Index>
       <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1720,8 +1729,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item190>
-    <Item191>
+    </Item191>
+    <Item192>
       <Index>142</Index>
       <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1729,8 +1738,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item191>
-    <Item192>
+    </Item192>
+    <Item193>
       <Index>141</Index>
       <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -1738,7 +1747,7 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item192>
+    </Item193>
   </Stationary>
   <Animated>
     <Count>0</Count>
