@@ -18,7 +18,6 @@ namespace DemoGame.Client
     public static class ActionDisplayScripts
     {
         static readonly ActionDisplayCollection _actionDisplays;
-
         static readonly IAudioManager _audioManager;
         static readonly IContentManager _contentManager;
 
