@@ -16,7 +16,6 @@ namespace DemoGame.ParticleEffectEditor
     {
         const string _defaultCategory = "Particle";
 
-        readonly ICamera2D _camera;
         readonly string _defaultTitle;
         readonly Stopwatch _watch = new Stopwatch();
 
@@ -34,8 +33,6 @@ namespace DemoGame.ParticleEffectEditor
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _defaultTitle = Text;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
-
-            _camera = new Camera2D(new Vector2(GameScreen.Width, GameScreen.Height));
 
             _watch.Start();
         }
@@ -175,16 +172,31 @@ namespace DemoGame.ParticleEffectEditor
             if (Emitter == null)
                 return;
 
+            // Check if using the default name
             if (StringComparer.Ordinal.Equals(ParticleEmitter.DefaultName, Emitter.Name))
             {
-                MessageBox.Show("You should change the particle emitter's name from the default name before saving." + Environment.NewLine +
-                    " To do so, change the Name property of the emitter.", "Change emitter name");
+                const string changeNameMsg = "You should change the particle emitter's name from the default name before saving.{0}To do so, change the Name property of the emitter.";
+                MessageBox.Show(string.Format(changeNameMsg, Environment.NewLine), "Change emitter name");
                 return;
             }
 
+            // Check if the emitter already exists
+            if (ParticleEmitterFactory.EmitterExists(ContentPaths.Dev, Emitter.Name))
+            {
+                const string overwriteMsg = "An emitter named `{0}` already exists. Do you wish to overwrite?";
+                if (MessageBox.Show(string.Format(overwriteMsg, Emitter.Name), "Overwrite?", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    const string savingAbortedMsg = "Saving aborted. No files were altered.";
+                    MessageBox.Show(savingAbortedMsg);
+                    return;
+                }
+            }
+
+            // Save
             ParticleEmitterFactory.SaveEmitter(ContentPaths.Dev, Emitter);
 
-            MessageBox.Show("Saved!", "Saved", MessageBoxButtons.OK);
+            const string savedMsg = "The particle emitter `{0}` was successfully saved.";
+            MessageBox.Show(string.Format(savedMsg, Emitter.Name), "Saved", MessageBoxButtons.OK);
         }
 
         void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
