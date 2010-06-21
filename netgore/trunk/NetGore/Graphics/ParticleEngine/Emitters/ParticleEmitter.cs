@@ -20,12 +20,16 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         public const int MaxDeltaTime = 200;
 
+        /// <summary>
+        /// The default name given to a <see cref="ParticleEmitter"/>.
+        /// </summary>
+        public const string DefaultName = "Unnamed";
+
         const string _blendModeKeyName = "BlendMode";
         const string _budgetKeyName = "Budget";
         const string _customValuesNodeName = "CustomValues";
         const BlendMode _defaultBlendMode = BlendMode.Add;
         const int _defaultBudget = 5000;
-        const string _defaultName = "Unnamed";
         const string _emitterCategoryName = "Emitter";
         const string _emitterModifiersNodeName = "EmitterModifiers";
         const string _grhIndexKeyName = "Grh";
@@ -89,7 +93,7 @@ namespace NetGore.Graphics.ParticleEngine
             particles = new Particle[_initialParticleArraySize];
 
             // Set some default values
-            Name = _defaultName;
+            Name = DefaultName;
             BlendMode = _defaultBlendMode;
             Life = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
@@ -236,7 +240,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Category(_emitterCategoryName)]
         [Description("The unique name of the particle effect.")]
         [DisplayName("Name")]
-        [DefaultValue(_defaultName)]
+        [DefaultValue(DefaultName)]
         public string Name { get; set; }
 
         /// <summary>
