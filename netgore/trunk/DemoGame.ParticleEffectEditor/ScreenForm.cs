@@ -21,6 +21,10 @@ namespace DemoGame.ParticleEffectEditor
 
         IContentManager _content;
         ParticleEmitter _emitter;
+
+        /// <summary>
+        /// Keeps track of the last emitter name. Used to update the form's title.
+        /// </summary>
         string _lastEmitterName = string.Empty;
 
         /// <summary>
