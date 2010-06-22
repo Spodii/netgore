@@ -164,6 +164,12 @@ namespace DemoGame.DbEditor
             // Load the engine settings
             EngineSettingsInitializer.Initialize();
 
+            // Create the database connection
+            var settings = new DbConnectionSettings();
+            _dbController =
+                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
+                                                                 x => settings.PromptEditFileMessageBox(x));
+
             // If the GrhDatas have no been loaded, we will have to load them. Otherwise, we won't get our
             // pretty little pictures. :(
             if (!GrhInfo.IsLoaded)
@@ -171,12 +177,6 @@ namespace DemoGame.DbEditor
                 var cm = ContentManager.Create();
                 GrhInfo.Load(ContentPaths.Dev, cm);
             }
-
-            // Create the database connection
-            var settings = new DbConnectionSettings();
-            _dbController =
-                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                                                                 x => settings.PromptEditFileMessageBox(x));
 
             if (_dbController == null)
             {

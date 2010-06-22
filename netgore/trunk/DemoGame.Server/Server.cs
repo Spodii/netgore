@@ -71,21 +71,21 @@ namespace DemoGame.Server
             if (_dbController == null)
                 return;
 
-            // Validate the database
-            DbTableValidator.ValidateTables(_dbController);
-            ValidateDbControllerQueryAttributes();
+            // Load the server settings
+            LoadSettings();
 
             // Load the game data and such
             InitializeScripts();
+
+            // Validate the database
+            DbTableValidator.ValidateTables(_dbController);
+            ValidateDbControllerQueryAttributes();
 
             // Update the GameData table
             var gameDataValues = GetGameConstantTableValues();
             DbController.GetQuery<UpdateGameConstantTableQuery>().Execute(gameDataValues);
             if (log.IsInfoEnabled)
                 log.Info("Updated the GameData table with the current values.");
-
-            // Load the server settings
-            LoadSettings();
 
             // Create some objects
             _consoleCommands = new ConsoleCommands(this);
