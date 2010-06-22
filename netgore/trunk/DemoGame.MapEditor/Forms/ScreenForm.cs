@@ -925,6 +925,12 @@ namespace DemoGame.MapEditor
 
             _camera = new Camera2D(GameScreenSize);
 
+            // Create the database connection
+            var settings = new DbConnectionSettings();
+            _dbController =
+                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
+                                                                 x => settings.PromptEditFileMessageBox(x));
+
             // Set up the object manager
             _selectedObjectsManager = new SelectedObjectsManager<object>(pgSelected, lstSelected);
             SelectedObjs.SelectedChanged += SelectedObjectsManager_SelectedChanged;
@@ -962,12 +968,6 @@ namespace DemoGame.MapEditor
             // Grab the audio manager instances, which will ensure that they are property initialized
             // before something that can't pass it an ContentManager (such as the UITypeEditor) tries to get an instance.
             AudioManager.GetInstance(_content);
-
-            // Create the database connection
-            var settings = new DbConnectionSettings();
-            _dbController =
-                settings.CreateDbControllerPromptEditWhenInvalid(x => new ServerDbController(x.GetMySqlConnectionString()),
-                                                                 x => settings.PromptEditFileMessageBox(x));
 
             if (_dbController == null)
             {
