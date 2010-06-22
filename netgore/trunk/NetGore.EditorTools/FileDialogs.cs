@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -220,8 +220,7 @@ namespace NetGore.EditorTools
 
             try
             {
-                filePath = GenericOpenFile("Particle Effect", EngineSettings.DataFileSuffix,
-                                           ContentPaths.Dev.ParticleEffects,
+                filePath = GenericOpenFile("Particle Effect", EngineSettings.DataFileSuffix, ContentPaths.Dev.ParticleEffects,
                                            x =>
                                            ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev,
                                                                               ParticleEmitterFactory.GetEffectNameFromPath(x)),
@@ -251,8 +250,7 @@ namespace NetGore.EditorTools
 
             try
             {
-                filePath = GenericSaveFile("Particle Effect", ContentPaths.Dev.ParticleEffects,
-                                           EngineSettings.DataFileSuffix);
+                filePath = GenericSaveFile("Particle Effect", ContentPaths.Dev.ParticleEffects, EngineSettings.DataFileSuffix);
                 if (filePath == null)
                     return false;
 

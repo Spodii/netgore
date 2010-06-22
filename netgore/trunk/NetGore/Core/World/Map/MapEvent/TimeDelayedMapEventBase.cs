@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace NetGore
 {
     /// <summary>
@@ -17,13 +19,11 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets if this <see cref="IDelayedMapEvent"/> is ready to be executed.
+        /// When overridden in the derived class, handles executing the event.
         /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        public virtual bool IsReady(TickCount currentTime)
-        {
-            return _readyTime <= currentTime;
-        }
+        protected abstract void Execute();
+
+        #region IDelayedMapEvent Members
 
         /// <summary>
         /// Executes the event.
@@ -34,8 +34,14 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles executing the event.
+        /// Gets if this <see cref="IDelayedMapEvent"/> is ready to be executed.
         /// </summary>
-        protected abstract void Execute();
+        /// <param name="currentTime">The current time.</param>
+        public virtual bool IsReady(TickCount currentTime)
+        {
+            return _readyTime <= currentTime;
+        }
+
+        #endregion
     }
 }

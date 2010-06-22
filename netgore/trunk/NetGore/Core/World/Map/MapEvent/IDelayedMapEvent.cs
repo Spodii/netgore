@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -10,14 +8,14 @@ namespace NetGore
     public interface IDelayedMapEvent
     {
         /// <summary>
+        /// Executes the event.
+        /// </summary>
+        void Execute();
+
+        /// <summary>
         /// Gets if this <see cref="IDelayedMapEvent"/> is ready to be executed.
         /// </summary>
         /// <param name="currentTime">The current time.</param>
         bool IsReady(TickCount currentTime);
-
-        /// <summary>
-        /// Executes the event.
-        /// </summary>
-        void Execute();
     }
 }

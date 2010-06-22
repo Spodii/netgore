@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
 
@@ -17,8 +14,7 @@ namespace NetGore.Features.ActionDisplays
         /// Initializes a new instance of the <see cref="PropertySyncActionDisplayID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncActionDisplayID(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncActionDisplayID(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

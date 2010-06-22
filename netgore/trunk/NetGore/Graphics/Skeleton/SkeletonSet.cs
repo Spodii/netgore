@@ -54,6 +54,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Gets the keyframes used by the set
         /// </summary>
         public SkeletonFrame[] KeyFrames
@@ -110,14 +118,6 @@ namespace NetGore.Graphics
         {
             writer.WriteManyNodes(_framesNodeName, KeyFrames, ((w, item) => item.Write(w)));
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is null.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Saves the SkeletonSet to a file.

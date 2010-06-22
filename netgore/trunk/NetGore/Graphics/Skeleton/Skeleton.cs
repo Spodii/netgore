@@ -53,6 +53,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Gets or sets the root node of the skeleton
         /// </summary>
         public SkeletonNode RootNode
@@ -310,14 +318,6 @@ namespace NetGore.Graphics
 
             return node;
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is null.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         public void Write(string filePath)
         {

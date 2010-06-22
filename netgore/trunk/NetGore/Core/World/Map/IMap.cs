@@ -10,15 +10,14 @@ namespace NetGore
     public interface IMap : IGetTime
     {
         /// <summary>
+        /// Gets the <see cref="IDelayedMapEvent"/>s on the map.
+        /// </summary>
+        IEnumerable<IDelayedMapEvent> DelayedEvents { get; }
+
+        /// <summary>
         /// Gets an IEnumerable of all the Entities on the map.
         /// </summary>
         IEnumerable<Entity> Entities { get; }
-
-        /// <summary>
-        /// Adds a <see cref="IDelayedMapEvent"/> to the map.
-        /// </summary>
-        /// <param name="e">The <see cref="IDelayedMapEvent"/> to add.</param>
-        void AddDelayedEvent(IDelayedMapEvent e);
 
         /// <summary>
         /// Gets the height of the map in pixels.
@@ -36,11 +35,6 @@ namespace NetGore
         Vector2 Size { get; }
 
         /// <summary>
-        /// Gets the <see cref="IDelayedMapEvent"/>s on the map.
-        /// </summary>
-        IEnumerable<IDelayedMapEvent> DelayedEvents { get; }
-
-        /// <summary>
         /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
         /// </summary>
         ISpatialCollection Spatial { get; }
@@ -49,6 +43,12 @@ namespace NetGore
         /// Gets the width of the map in pixels.
         /// </summary>
         float Width { get; }
+
+        /// <summary>
+        /// Adds a <see cref="IDelayedMapEvent"/> to the map.
+        /// </summary>
+        /// <param name="e">The <see cref="IDelayedMapEvent"/> to add.</param>
+        void AddDelayedEvent(IDelayedMapEvent e);
 
         /// <summary>
         /// Checks if an Entity collides with any other entities. For each collision, <paramref name="entity"/>

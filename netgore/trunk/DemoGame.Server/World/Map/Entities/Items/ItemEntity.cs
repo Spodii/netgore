@@ -53,6 +53,7 @@ namespace DemoGame.Server
         readonly StatCollection<StatType> _baseStats;
         readonly ItemID _id;
         readonly StatCollection<StatType> _reqStats;
+        ActionDisplayID? _actionDisplayID;
 
         byte _amount = 1;
         string _description;
@@ -174,8 +175,8 @@ namespace DemoGame.Server
         /// <param name="reqStats">The req stats.</param>
         ItemEntity(Vector2 pos, Vector2 size, ItemTemplateID? templateID, string name, string desc, ItemType type,
                    WeaponType weaponType, ushort range, GrhIndex graphic, int value, byte amount, SPValueType hp, SPValueType mp,
-                   string equippedBody, ActionDisplayID? actionDisplayID, IEnumerable<Stat<StatType>> baseStats, IEnumerable<Stat<StatType>> reqStats)
-            : base(pos, size)
+                   string equippedBody, ActionDisplayID? actionDisplayID, IEnumerable<Stat<StatType>> baseStats,
+                   IEnumerable<Stat<StatType>> reqStats) : base(pos, size)
         {
             _id = _queryIDCreator.GetNext();
 
@@ -331,25 +332,6 @@ namespace DemoGame.Server
         public override ItemEntityBase DeepCopy()
         {
             return new ItemEntity(this);
-        }
-
-        ActionDisplayID? _actionDisplayID;
-
-        /// <summary>
-        /// Gets or sets the <see cref="ActionDisplayID"/> to use when using this item.
-        /// </summary>
-        public ActionDisplayID? ActionDisplayID
-        {
-            get { return _actionDisplayID; }
-            set
-            {
-                if (_actionDisplayID == value)
-                    return;
-
-                _actionDisplayID = value;
-
-                SynchronizeField("action_display_id", _actionDisplayID);
-            }
         }
 
         /// <summary>
@@ -567,6 +549,23 @@ namespace DemoGame.Server
         }
 
         #region IItemTable Members
+
+        /// <summary>
+        /// Gets or sets the <see cref="ActionDisplayID"/> to use when using this item.
+        /// </summary>
+        public ActionDisplayID? ActionDisplayID
+        {
+            get { return _actionDisplayID; }
+            set
+            {
+                if (_actionDisplayID == value)
+                    return;
+
+                _actionDisplayID = value;
+
+                SynchronizeField("action_display_id", _actionDisplayID);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the size of this ItemEntity cluster (1 for a single ItemEntity).

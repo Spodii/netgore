@@ -17,6 +17,8 @@ namespace NetGore.NPCChat
     public abstract class NPCChatManagerBase : IEnumerable<NPCChatDialogBase>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const string _chatDialogsNodeName = "ChatDialogs";
+        const string _rootNodeName = "NPCChatManager";
 
         readonly bool _isReadonly;
         readonly DArray<NPCChatDialogBase> _npcChatDialogs = new DArray<NPCChatDialogBase>(32);
@@ -60,6 +62,14 @@ namespace NetGore.NPCChat
                 _npcChatDialogs[(int)id] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Gets if this manager is read-only.
@@ -109,9 +119,6 @@ namespace NetGore.NPCChat
             return contentPath.Data.Join("npcchat" + EngineSettings.DataFileSuffix);
         }
 
-        const string _rootNodeName = "NPCChatManager";
-        const string _chatDialogsNodeName = "ChatDialogs";
-
         /// <summary>
         /// Loads the data from file.
         /// </summary>
@@ -154,14 +161,6 @@ namespace NetGore.NPCChat
                 _npcChatDialogs[(int)dialog.ID] = dialog;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is null.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Saves the <see cref="NPCChatDialogBase"/>s in this <see cref="NPCChatManagerBase"/> to file.

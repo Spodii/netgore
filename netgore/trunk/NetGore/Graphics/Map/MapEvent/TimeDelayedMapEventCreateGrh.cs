@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -20,8 +16,7 @@ namespace NetGore.Graphics
         /// <param name="map">The <see cref="IDrawableMap"/> to add the <paramref name="mapGrhEffect"/> to.</param>
         /// <param name="mapGrhEffect">The <see cref="MapGrhEffect"/> to add when the time elapses.</param>
         /// <param name="delay">The delay in milliseconds before the <paramref name="mapGrhEffect"/> is added to the map.</param>
-        public TimeDelayedMapGrhEffect(IDrawableMap map, MapGrhEffect mapGrhEffect, int delay)
-            : base(delay)
+        public TimeDelayedMapGrhEffect(IDrawableMap map, MapGrhEffect mapGrhEffect, int delay) : base(delay)
         {
             _map = map;
             _effect = mapGrhEffect;

@@ -60,7 +60,8 @@ namespace DemoGame
         /// <param name="language">Name of the language to load.</param>
         /// <param name="rawMessagesOnly">If true, only the raw messages will be loaded, and invoking the messages
         /// will not be supported.</param>
-        GameMessageCollection(string language, bool rawMessagesOnly) : base(GetLanguageFile(ContentPaths.Build, language), _defaultMessages)
+        GameMessageCollection(string language, bool rawMessagesOnly)
+            : base(GetLanguageFile(ContentPaths.Build, language), _defaultMessages)
         {
             _rawMessagesOnly = rawMessagesOnly;
             _language = language;

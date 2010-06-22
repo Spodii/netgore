@@ -57,7 +57,7 @@ namespace DemoGame.Client
 
             if (ClickedLogOut != null)
                 ClickedLogOut(this, EventArgs.Empty);
-                IsVisible = !IsVisible;
+            IsVisible = !IsVisible;
         }
 
         /// <summary>

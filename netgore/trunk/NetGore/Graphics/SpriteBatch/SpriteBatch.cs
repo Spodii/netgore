@@ -61,6 +61,15 @@ namespace NetGore.Graphics
         #region ISpriteBatch Members
 
         /// <summary>
+        /// Gets or sets the <see cref="BlendMode"/> currently being used.
+        /// </summary>
+        public BlendMode BlendMode
+        {
+            get { return _sprite.BlendMode; }
+            set { _sprite.BlendMode = value; }
+        }
+
+        /// <summary>
         /// Gets a value that indicates whether the object is disposed.
         /// </summary>
         public bool IsDisposed
@@ -106,11 +115,6 @@ namespace NetGore.Graphics
         {
             Begin(blendMode, camera.Size, camera.Min + (camera.Size / 2f), camera.Rotation);
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="BlendMode"/> currently being used.
-        /// </summary>
-        public BlendMode BlendMode { get { return _sprite.BlendMode; } set { _sprite.BlendMode = value; } }
 
         /// <summary>
         /// Prepares the graphics device for drawing sprites with specified blending, sorting, and render state options,

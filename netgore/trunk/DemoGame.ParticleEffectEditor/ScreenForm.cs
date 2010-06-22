@@ -179,7 +179,8 @@ namespace DemoGame.ParticleEffectEditor
             // Check if using the default name
             if (StringComparer.Ordinal.Equals(ParticleEmitter.DefaultName, Emitter.Name))
             {
-                const string changeNameMsg = "You should change the particle emitter's name from the default name before saving.{0}To do so, change the Name property of the emitter.";
+                const string changeNameMsg =
+                    "You should change the particle emitter's name from the default name before saving.{0}To do so, change the Name property of the emitter.";
                 MessageBox.Show(string.Format(changeNameMsg, Environment.NewLine), "Change emitter name");
                 return;
             }
@@ -188,7 +189,8 @@ namespace DemoGame.ParticleEffectEditor
             if (ParticleEmitterFactory.EmitterExists(ContentPaths.Dev, Emitter.Name))
             {
                 const string overwriteMsg = "An emitter named `{0}` already exists. Do you wish to overwrite?";
-                if (MessageBox.Show(string.Format(overwriteMsg, Emitter.Name), "Overwrite?", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (MessageBox.Show(string.Format(overwriteMsg, Emitter.Name), "Overwrite?", MessageBoxButtons.YesNo) ==
+                    DialogResult.No)
                 {
                     const string savingAbortedMsg = "Saving aborted. No files were altered.";
                     MessageBox.Show(savingAbortedMsg);

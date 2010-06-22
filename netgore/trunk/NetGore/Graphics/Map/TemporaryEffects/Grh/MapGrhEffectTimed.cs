@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -21,8 +21,7 @@ namespace NetGore.Graphics
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
         /// <param name="life">How long the effect will last in milliseconds.</param>
-        public MapGrhEffectTimed(Grh grh, Vector2 position, bool isForeground, int life)
-            : base(grh, position, isForeground)
+        public MapGrhEffectTimed(Grh grh, Vector2 position, bool isForeground, int life) : base(grh, position, isForeground)
         {
             _expireTime = (TickCount)(TickCount.Now + life);
         }

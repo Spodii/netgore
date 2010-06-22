@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace NetGore.IO
 {
@@ -16,12 +17,6 @@ namespace NetGore.IO
     public class GenericValueWriter : IValueWriter
     {
         readonly IValueWriter _writer;
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for writing. By default, this value is equal to
-        /// <see cref="GenericValueIOFormat.Xml"/>.
-        /// </summary>
-        public static GenericValueIOFormat DefaultFormat { get; set; }
 
         /// <summary>
         /// Initializes the <see cref="GenericValueWriter"/> class.
@@ -42,7 +37,8 @@ namespace NetGore.IO
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueWriter"/> will be used.</param>
         /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="format"/> contains an invalid value.</exception>
-        public GenericValueWriter(string filePath, string rootNodeName, GenericValueIOFormat? format = null, bool? useEnumNames = null)
+        public GenericValueWriter(string filePath, string rootNodeName, GenericValueIOFormat? format = null,
+                                  bool? useEnumNames = null)
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
@@ -81,12 +77,12 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for writing. By default, this value is equal to
+        /// <see cref="GenericValueIOFormat.Xml"/>.
         /// </summary>
-        public void Dispose()
-        {
-            _writer.Dispose();
-        }
+        public static GenericValueIOFormat DefaultFormat { get; set; }
+
+        #region IValueWriter Members
 
         /// <summary>
         /// Gets if this <see cref="IValueWriter"/> supports using the name field to look up values. If false,
@@ -114,6 +110,14 @@ namespace NetGore.IO
         public bool UseEnumNames
         {
             get { return _writer.UseEnumNames; }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            _writer.Dispose();
         }
 
         /// <summary>
@@ -382,5 +386,7 @@ namespace NetGore.IO
         {
             _writer.WriteStartNode(name);
         }
+
+        #endregion
     }
 }

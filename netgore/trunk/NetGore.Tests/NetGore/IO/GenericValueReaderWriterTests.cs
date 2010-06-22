@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 using NUnit.Framework;
 
@@ -11,28 +8,7 @@ namespace NetGore.Tests.NetGore.IO
     [TestFixture]
     public class GenericValueReaderWriterTests
     {
-        [Test]
-        public void XmlTest()
-        {
-            var filePath = Path.GetTempFileName();
-
-            try
-            {
-                using (var writer = new GenericValueWriter(format: GenericValueIOFormat.Xml, filePath: filePath, rootNodeName: "Root"))
-                {
-                    writer.Write("Test", "asdf");
-                }
-
-                var reader = new GenericValueReader(filePath, "Root");
-                string s = reader.ReadString("Test");
-                Assert.AreEqual("asdf", s);
-            }
-            finally
-            {
-                if (File.Exists(filePath))
-                    File.Delete(filePath);
-            }
-        }
+        #region Unit tests
 
         [Test]
         public void BinaryTest()
@@ -41,13 +17,15 @@ namespace NetGore.Tests.NetGore.IO
 
             try
             {
-                using (var writer = new GenericValueWriter(format: GenericValueIOFormat.Binary, filePath: filePath, rootNodeName: "Root"))
+                using (
+                    var writer = new GenericValueWriter(format: GenericValueIOFormat.Binary, filePath: filePath,
+                                                        rootNodeName: "Root"))
                 {
                     writer.Write("Test", "asdf");
                 }
 
                 var reader = new GenericValueReader(filePath, "Root");
-                string s = reader.ReadString("Test");
+                var s = reader.ReadString("Test");
                 Assert.AreEqual("asdf", s);
             }
             finally
@@ -56,5 +34,32 @@ namespace NetGore.Tests.NetGore.IO
                     File.Delete(filePath);
             }
         }
+
+        [Test]
+        public void XmlTest()
+        {
+            var filePath = Path.GetTempFileName();
+
+            try
+            {
+                using (
+                    var writer = new GenericValueWriter(format: GenericValueIOFormat.Xml, filePath: filePath, rootNodeName: "Root")
+                    )
+                {
+                    writer.Write("Test", "asdf");
+                }
+
+                var reader = new GenericValueReader(filePath, "Root");
+                var s = reader.ReadString("Test");
+                Assert.AreEqual("asdf", s);
+            }
+            finally
+            {
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
+        }
+
+        #endregion
     }
 }

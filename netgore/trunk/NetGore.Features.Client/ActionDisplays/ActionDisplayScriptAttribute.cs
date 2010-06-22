@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace NetGore.Features.ActionDisplays
 {
@@ -13,17 +14,20 @@ namespace NetGore.Features.ActionDisplays
         readonly string _name;
 
         /// <summary>
-        /// Gets the name of the script.
-        /// </summary>
-        public string Name { get { return _name; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ActionDisplayScriptAttribute"/> class.
         /// </summary>
         /// <param name="name">The name of the script.</param>
         public ActionDisplayScriptAttribute(string name)
         {
             _name = name;
+        }
+
+        /// <summary>
+        /// Gets the name of the script.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
         }
     }
 }

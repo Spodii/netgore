@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.IO
 {
@@ -26,7 +25,7 @@ namespace NetGore.IO
         /// <summary>
         /// Contains the bytes used to recognize an Xml header.
         /// </summary>
-        static readonly char[] _xmlHeader = new char[] { '<','?','x','m','l',' ' };
+        static readonly char[] _xmlHeader = new char[] { '<', '?', 'x', 'm', 'l', ' ' };
 
         readonly IValueReader _reader;
 
@@ -37,50 +36,6 @@ namespace NetGore.IO
         {
             // Make sure header identifiers are a valid length
             Debug.Assert(_xmlHeader.Length <= _maxHeaderLength);
-        }
-
-        /// <summary>
-        /// Checks if the header bytes are equal to the expected bytes.
-        /// </summary>
-        /// <param name="header">The read header bytes.</param>
-        /// <param name="headerLength">The actual length of the header.</param>
-        /// <param name="expected">The expected bytes for the header.</param>
-        /// <returns>True if the <paramref name="header"/> matches the <paramref name="expected"/>; otherwise false.</returns>
-        static bool CheckFormatHeader(char[] header, int headerLength, char[] expected)
-        {
-            if (headerLength < expected.Length)
-                return false;
-
-            for (int i = 0; i < expected.Length; i++)
-            {
-                if (header[i] != expected[i])
-                    return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Peeks into a file to figure out what format it uses.
-        /// </summary>
-        /// <param name="filePath">The path to the file to check.</param>
-        /// <returns>The <see cref="GenericValueIOFormat"/> being used for the <paramref name="filePath"/>.</returns>
-        public static GenericValueIOFormat FindFileFormat(string filePath)
-        {
-            // Grab enough characters from the file to determine the format
-            char[] header = new char[_maxHeaderLength];
-            int headerLength;
-            using (var fs = new StreamReader(filePath, true))
-            {
-                headerLength = fs.Read(header, 0, header.Length);
-            }
-
-            // Check for Xml
-            if (CheckFormatHeader(header, headerLength, _xmlHeader))
-                return GenericValueIOFormat.Xml;
-
-            // Assume everything else is binary
-            return GenericValueIOFormat.Binary;
         }
 
         /// <summary>
@@ -122,6 +77,52 @@ namespace NetGore.IO
 
             Debug.Assert(_reader != null);
         }
+
+        /// <summary>
+        /// Checks if the header bytes are equal to the expected bytes.
+        /// </summary>
+        /// <param name="header">The read header bytes.</param>
+        /// <param name="headerLength">The actual length of the header.</param>
+        /// <param name="expected">The expected bytes for the header.</param>
+        /// <returns>True if the <paramref name="header"/> matches the <paramref name="expected"/>; otherwise false.</returns>
+        static bool CheckFormatHeader(char[] header, int headerLength, char[] expected)
+        {
+            if (headerLength < expected.Length)
+                return false;
+
+            for (var i = 0; i < expected.Length; i++)
+            {
+                if (header[i] != expected[i])
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Peeks into a file to figure out what format it uses.
+        /// </summary>
+        /// <param name="filePath">The path to the file to check.</param>
+        /// <returns>The <see cref="GenericValueIOFormat"/> being used for the <paramref name="filePath"/>.</returns>
+        public static GenericValueIOFormat FindFileFormat(string filePath)
+        {
+            // Grab enough characters from the file to determine the format
+            var header = new char[_maxHeaderLength];
+            int headerLength;
+            using (var fs = new StreamReader(filePath, true))
+            {
+                headerLength = fs.Read(header, 0, header.Length);
+            }
+
+            // Check for Xml
+            if (CheckFormatHeader(header, headerLength, _xmlHeader))
+                return GenericValueIOFormat.Xml;
+
+            // Assume everything else is binary
+            return GenericValueIOFormat.Binary;
+        }
+
+        #region IValueReader Members
 
         /// <summary>
         /// Gets if this <see cref="IValueReader"/> supports using the name field to look up values. If false,
@@ -397,5 +398,7 @@ namespace NetGore.IO
         {
             return _reader.ReadUShort(name);
         }
+
+        #endregion
     }
 }

@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using NetGore.IO;
 using NUnit.Framework;
 
@@ -258,7 +256,7 @@ namespace NetGore.Tests.IO
         public void ByteIO()
         {
             BatchIOTester(from value in TRange<byte>()
-                          select (byte)value, x => x.ReadByte(), (x,v) => x.Write(v));
+                          select (byte)value, x => x.ReadByte(), (x, v) => x.Write(v));
         }
 
         [Test]

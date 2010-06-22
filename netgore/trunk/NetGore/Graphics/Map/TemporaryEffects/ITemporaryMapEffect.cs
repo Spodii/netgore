@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace NetGore.Graphics
 {
     /// <summary>
@@ -6,10 +8,10 @@ namespace NetGore.Graphics
     public interface ITemporaryMapEffect
     {
         /// <summary>
-        /// Updates the map effect.
+        /// Notifies listeners when this <see cref="ITemporaryMapEffect"/> has died. This is only raised once per
+        /// <see cref="ITemporaryMapEffect"/>, and is raised when <see cref="ITemporaryMapEffect.IsAlive"/> is set to false.
         /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        void Update(TickCount currentTime);
+        event TemporaryMapEffectDiedHandler Died;
 
         /// <summary>
         /// Gets if this map effect is still alive. When false, it will be removed from the map. Once set to false, this
@@ -31,9 +33,9 @@ namespace NetGore.Graphics
         void Draw(ISpriteBatch sb);
 
         /// <summary>
-        /// Notifies listeners when this <see cref="ITemporaryMapEffect"/> has died. This is only raised once per
-        /// <see cref="ITemporaryMapEffect"/>, and is raised when <see cref="ITemporaryMapEffect.IsAlive"/> is set to false.
+        /// Updates the map effect.
         /// </summary>
-        event TemporaryMapEffectDiedHandler Died;
+        /// <param name="currentTime">The current time.</param>
+        void Update(TickCount currentTime);
     }
 }

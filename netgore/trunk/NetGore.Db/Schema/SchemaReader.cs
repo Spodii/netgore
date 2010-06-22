@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -26,6 +26,14 @@ namespace NetGore.Db.Schema
         readonly IEnumerable<TableSchema> _tableSchemas;
 
         /// <summary>
+        /// Initializes the <see cref="SchemaReader"/> class.
+        /// </summary>
+        static SchemaReader()
+        {
+            EncodingFormat = GenericValueIOFormat.Binary;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SchemaReader"/> class.
         /// </summary>
         /// <param name="dbSettings">The <see cref="DbConnectionSettings"/> for connecting to the database to read
@@ -38,14 +46,6 @@ namespace NetGore.Db.Schema
         }
 
         /// <summary>
-        /// Initializes the <see cref="SchemaReader"/> class.
-        /// </summary>
-        static SchemaReader()
-        {
-            EncodingFormat = GenericValueIOFormat.Binary;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SchemaReader"/> class.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
@@ -53,6 +53,14 @@ namespace NetGore.Db.Schema
         {
             _tableSchemas = reader.ReadManyNodes(_tablesNodeName, r => new TableSchema(r)).ToCompact();
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is <see cref="GenericValueIOFormat.Binary"/>.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Gets the schema for the database tables.
@@ -150,14 +158,6 @@ namespace NetGore.Db.Schema
 
             return conn;
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is <see cref="GenericValueIOFormat.Binary"/>.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Saves the values to the specified file path.

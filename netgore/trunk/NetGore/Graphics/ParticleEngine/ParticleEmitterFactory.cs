@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -60,11 +60,35 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="ParticleEmitterFactory"/> instance.
         /// </summary>
         public static ParticleEmitterFactory Instance
         {
             get { return _instance; }
+        }
+
+        /// <summary>
+        /// Checks if a <see cref="ParticleEmitter"/> exists.
+        /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
+        /// <param name="emitterName">The name of the <see cref="ParticleEmitter"/>.</param>
+        /// <returns>True if the <see cref="ParticleEmitter"/> exists; false is it does not exist or any
+        /// of the parameters are invalid.</returns>
+        public static bool EmitterExists(ContentPaths contentPath, string emitterName)
+        {
+            if (contentPath == null || string.IsNullOrEmpty(emitterName))
+                return false;
+
+            var filePath = GetFilePath(contentPath, emitterName);
+            return File.Exists(filePath);
         }
 
         /// <summary>
@@ -91,7 +115,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>The name of all the <see cref="ParticleEmitter"/> files in the <paramref name="contentPath"/>.</returns>
         public static IEnumerable<string> GetEffectsInPath(ContentPaths contentPath)
         {
-            var files = Directory.GetFiles(contentPath.ParticleEffects, "*" + EngineSettings.DataFileSuffix, SearchOption.TopDirectoryOnly);
+            var files = Directory.GetFiles(contentPath.ParticleEffects, "*" + EngineSettings.DataFileSuffix,
+                                           SearchOption.TopDirectoryOnly);
             var names = files.Select(GetEffectNameFromPath);
             return names.ToImmutable();
         }
@@ -105,22 +130,6 @@ namespace NetGore.Graphics.ParticleEngine
         static string GetFilePath(ContentPaths contentPath, string emitterName)
         {
             return contentPath.ParticleEffects.Join(emitterName + EngineSettings.DataFileSuffix);
-        }
-
-        /// <summary>
-        /// Checks if a <see cref="ParticleEmitter"/> exists.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
-        /// <param name="emitterName">The name of the <see cref="ParticleEmitter"/>.</param>
-        /// <returns>True if the <see cref="ParticleEmitter"/> exists; false is it does not exist or any
-        /// of the parameters are invalid.</returns>
-        public static bool EmitterExists(ContentPaths contentPath, string emitterName)
-        {
-            if (contentPath == null || string.IsNullOrEmpty(emitterName))
-                return false;
-
-            var filePath = GetFilePath(contentPath, emitterName);
-            return File.Exists(filePath);
         }
 
         /// <summary>
@@ -176,14 +185,6 @@ namespace NetGore.Graphics.ParticleEngine
 
             return emitter;
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is null.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Saves a <see cref="ParticleEmitter"/> to file.

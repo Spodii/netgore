@@ -84,6 +84,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Gets an IEnumerable of all of the <see cref="GrhData"/>s.
         /// </summary>
         public static IEnumerable<GrhData> GrhDatas
@@ -716,14 +724,6 @@ namespace NetGore.Graphics
 
             return newGD;
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is null.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Saves all of the GrhData information to the specified file.

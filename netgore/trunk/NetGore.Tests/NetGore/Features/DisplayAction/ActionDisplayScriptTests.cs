@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.Features.ActionDisplays;
 using NUnit.Framework;
 
@@ -11,6 +7,8 @@ namespace NetGore.Tests.NetGore.Features.ActionDisplays
     [TestFixture]
     public class ActionDisplayScriptTests
     {
+        #region Unit tests
+
         [Test]
         public void CallScriptTest()
         {
@@ -23,6 +21,8 @@ namespace NetGore.Tests.NetGore.Features.ActionDisplays
 
             Assert.AreEqual(50, TestClass.i);
         }
+
+        #endregion
 
         [ActionDisplayScriptCollection]
         static class TestClass

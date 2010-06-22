@@ -53,6 +53,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Gets an array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
         /// </summary>
         internal SkeletonBodyItemInfo[] Items
@@ -86,14 +94,6 @@ namespace NetGore.Graphics
         {
             _items = reader.ReadManyNodes(_itemsNodeName, x => new SkeletonBodyItemInfo(x));
         }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is null.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         public void Save(string filePath)
         {

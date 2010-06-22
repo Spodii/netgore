@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+using System;
 using System.Linq;
 using SFML.Graphics;
 
@@ -20,12 +19,14 @@ namespace NetGore
 
         readonly Vector2 _maxVelocity;
 
-
         /// <summary>
         /// Gets the suffix given to general data files. Includes the prefixed period, if one is used. Can be empty, but cannot
         /// be null.
         /// </summary>
-        public static string DataFileSuffix { get { return _dataFileSuffix; } }
+        public static string DataFileSuffix
+        {
+            get { return _dataFileSuffix; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineSettings"/> class.

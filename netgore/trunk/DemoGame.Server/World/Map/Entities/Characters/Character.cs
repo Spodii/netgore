@@ -682,7 +682,7 @@ namespace DemoGame.Server
 
             // Display the attack
             var targetID = (target != null ? target.MapEntityIndex : (MapEntityIndex?)null);
-            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, targetID, weapon.ActionDisplayID)) 
+            using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, targetID, weapon.ActionDisplayID))
             {
                 Map.SendToArea(this, charAttack);
             }
@@ -702,7 +702,7 @@ namespace DemoGame.Server
         /// <param name="target">The target to attack. Can be null.</param>
         void AttackRanged(ItemEntity weapon, Character target)
         {
-            if (weapon==null)
+            if (weapon == null)
             {
                 Debug.Fail("Weapon should not be null...");
                 return;

@@ -34,12 +34,12 @@ namespace DemoGame.Client
         readonly DrawableSorter _drawableSorter = new DrawableSorter();
         readonly List<ILight> _lights = new List<ILight>();
 
+        readonly List<ITemporaryMapEffect> _mapEffects = new List<ITemporaryMapEffect>(32);
+
         /// <summary>
         /// List of map grhs on the map
         /// </summary>
         readonly List<MapGrh> _mapGrhs = new List<MapGrh>(128);
-
-        readonly List<ITemporaryMapEffect> _mapEffects = new List<ITemporaryMapEffect>(32);
 
         readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
         Color _ambientLight = Color.White;
@@ -97,21 +97,21 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the MapGrhs on the Map.
-        /// </summary>
-        [Browsable(false)]
-        public IEnumerable<MapGrh> MapGrhs
-        {
-            get { return _mapGrhs; }
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of all the <see cref="ITemporaryMapEffect"/>s.
         /// </summary>
         [Browsable(false)]
         public IEnumerable<ITemporaryMapEffect> MapEffects
         {
             get { return _mapEffects; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the MapGrhs on the Map.
+        /// </summary>
+        [Browsable(false)]
+        public IEnumerable<MapGrh> MapGrhs
+        {
+            get { return _mapGrhs; }
         }
 
         /// <summary>
@@ -154,25 +154,6 @@ namespace DemoGame.Client
         {
             if (!_lights.Contains(light))
                 _lights.Add(light);
-        }
-
-        /// <summary>
-        /// Adds a <see cref="ITemporaryMapEffect"/> to the map.
-        /// </summary>
-        /// <param name="e">The <see cref="ITemporaryMapEffect"/> to add.</param>
-        public void AddTemporaryMapEffect(ITemporaryMapEffect e)
-        {
-            if (e == null)
-            {
-                Debug.Fail("e is null.");
-                return;
-            }
-
-            // When in debug mode, ensure there are no duplicates
-            Debug.Assert(!_mapEffects.Contains(e), "e is already in the MapEffects list.");
-
-            // Add to the MapEffects list and the spatial
-            _mapEffects.Add(e);
         }
 
         /// <summary>
@@ -465,31 +446,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Updates the <see cref="ITemporaryMapEffect"/>s.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        void UpdateTempMapEffects(TickCount currentTime)
-        {
-            // Loop through all the live effects
-            for (int i = 0; i < _mapEffects.Count; i++)
-            {
-                var e = _mapEffects[i];
-                e.Update(currentTime);
-
-                // Remove dead elements by swapping them with the last element in the list, then removing the last element
-                // This allows us to remove elements without shifting down the whole list
-                if (!e.IsAlive)
-                {
-                    // Swap with last element
-                    _mapEffects[i] = _mapEffects[_mapEffects.Count - 1];
-
-                    // Remove last element in the list
-                    _mapEffects.RemoveAt(_mapEffects.Count - 1);
-                }
-            }
-        }
-
-        /// <summary>
         /// Updates the map
         /// </summary>
         /// <param name="deltaTime">The elapsed time since the last update.</param>
@@ -519,6 +475,31 @@ namespace DemoGame.Client
             foreach (var p in ParticleEffects)
             {
                 p.Update(currentTime);
+            }
+        }
+
+        /// <summary>
+        /// Updates the <see cref="ITemporaryMapEffect"/>s.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        void UpdateTempMapEffects(TickCount currentTime)
+        {
+            // Loop through all the live effects
+            for (var i = 0; i < _mapEffects.Count; i++)
+            {
+                var e = _mapEffects[i];
+                e.Update(currentTime);
+
+                // Remove dead elements by swapping them with the last element in the list, then removing the last element
+                // This allows us to remove elements without shifting down the whole list
+                if (!e.IsAlive)
+                {
+                    // Swap with last element
+                    _mapEffects[i] = _mapEffects[_mapEffects.Count - 1];
+
+                    // Remove last element in the list
+                    _mapEffects.RemoveAt(_mapEffects.Count - 1);
+                }
             }
         }
 
@@ -586,6 +567,25 @@ namespace DemoGame.Client
         public bool DrawParticles { get; set; }
 
         /// <summary>
+        /// Adds a <see cref="ITemporaryMapEffect"/> to the map.
+        /// </summary>
+        /// <param name="e">The <see cref="ITemporaryMapEffect"/> to add.</param>
+        public void AddTemporaryMapEffect(ITemporaryMapEffect e)
+        {
+            if (e == null)
+            {
+                Debug.Fail("e is null.");
+                return;
+            }
+
+            // When in debug mode, ensure there are no duplicates
+            Debug.Assert(!_mapEffects.Contains(e), "e is already in the MapEffects list.");
+
+            // Add to the MapEffects list and the spatial
+            _mapEffects.Add(e);
+        }
+
+        /// <summary>
         /// Draws the map.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
@@ -620,7 +620,9 @@ namespace DemoGame.Client
 
                 // Draw the normal map objects
                 foreach (var drawable in layer.Value)
+                {
                     drawable.Draw(sb);
+                }
 
                 // Get the effects to draw, then draw them (if possible)
                 IEnumerable<ITemporaryMapEffect> tempMapEffects;
@@ -640,7 +642,9 @@ namespace DemoGame.Client
                 if (tempMapEffects != null)
                 {
                     foreach (var mapEffect in tempMapEffects)
+                    {
                         mapEffect.Draw(sb);
+                    }
                 }
 
                 // Notify the layer has finished drawing
@@ -652,7 +656,9 @@ namespace DemoGame.Client
             if (DrawParticles)
             {
                 foreach (var pe in ParticleEffects)
+                {
                     pe.Draw(sb);
+                }
             }
         }
 

@@ -25,11 +25,6 @@ namespace DemoGame
         public const float AnimationSpeedModifier = 0.13f;
 
         /// <summary>
-        /// The default <see cref="ActionDisplayID"/> to use when none is specified.
-        /// </summary>
-        public static readonly ActionDisplayID DefaultActionDisplayID = new ActionDisplayID(0);
-
-        /// <summary>
         /// The base (default) attack timeout value for all characters.
         /// </summary>
         public const int AttackTimeoutDefault = 500;
@@ -115,6 +110,11 @@ namespace DemoGame
         /// </summary>
         public static readonly StringRules CharacterName = new StringRules(1, 30,
                                                                            CharType.Alpha | CharType.Numeric | CharType.Whitespace);
+
+        /// <summary>
+        /// The default <see cref="ActionDisplayID"/> to use when none is specified.
+        /// </summary>
+        public static readonly ActionDisplayID DefaultActionDisplayID = new ActionDisplayID(0);
 
         /// <summary>
         /// The rules for the user names.

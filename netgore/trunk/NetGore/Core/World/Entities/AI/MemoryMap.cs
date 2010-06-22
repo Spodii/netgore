@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using NetGore.IO;
@@ -10,6 +10,7 @@ namespace NetGore.AI
         // Array holding data for each MemoryCell.
 
         //Holds some information about the list.
+        const string _rootNodeName = "MemoryMap";
         ushort _cellSize;
         ushort _cellsX;
         ushort _cellsY;
@@ -17,6 +18,14 @@ namespace NetGore.AI
         ushort _maxX;
         MemoryCell[,] _memoryCells;
         ushort _minY;
+
+        /// <summary>
+        /// Initializes the <see cref="MemoryMap"/> class.
+        /// </summary>
+        static MemoryMap()
+        {
+            EncodingFormat = GenericValueIOFormat.Binary;
+        }
 
         /// <summary>
         /// Constructor for a MemoryMap, uses default value of 32 for MemoryCell dimensions.
@@ -50,9 +59,22 @@ namespace NetGore.AI
             get { return _cellsY; }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is <see cref="GenericValueIOFormat.Binary"/>.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
         public MemoryCell[,] MemoryCells
         {
             get { return _memoryCells; }
+        }
+
+        static PathString GetFilePath(ContentPaths contentPath, int ID)
+        {
+            return contentPath.Maps.Join("AIMap" + ID + EngineSettings.DataFileSuffix);
         }
 
         /// <summary>
@@ -84,11 +106,6 @@ namespace NetGore.AI
                     _memoryCells[X, Y] = new MemoryCell((ushort)(X * _cellSize), (ushort)(Y * _cellSize));
                 }
             }
-        }
-
-        static PathString GetFilePath(ContentPaths contentPath, int ID)
-        {
-            return contentPath.Maps.Join("AIMap" + ID + EngineSettings.DataFileSuffix);
         }
 
         public void LoadMemoryMap(ContentPaths contentPath, int ID)
@@ -133,24 +150,6 @@ namespace NetGore.AI
                 }
             }
             return total;
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is <see cref="GenericValueIOFormat.Binary"/>.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
-
-        const string _rootNodeName = "MemoryMap";
-
-        /// <summary>
-        /// Initializes the <see cref="MemoryMap"/> class.
-        /// </summary>
-        static MemoryMap()
-        {
-            EncodingFormat = GenericValueIOFormat.Binary;
         }
 
         public void SaveMemoryMap(ContentPaths contentPath, int ID)
