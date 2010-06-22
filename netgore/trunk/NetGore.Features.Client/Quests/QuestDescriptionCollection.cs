@@ -47,7 +47,7 @@ namespace NetGore.Features.Quests
         /// <returns>The file path for the quest descriptions file.</returns>
         public static string GetFilePath(ContentPaths contentPath)
         {
-            return contentPath.Data.Join("questdata.xml");
+            return contentPath.Data.Join("questdata" + EngineSettings.Instance.DataFileSuffix);
         }
 
         /// <summary>

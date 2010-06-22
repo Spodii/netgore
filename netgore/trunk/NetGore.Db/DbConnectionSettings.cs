@@ -17,9 +17,9 @@ namespace NetGore.Db
         const string _rootNodeName = "DbConnectionSettings";
 
         /// <summary>
-        /// The name and suffix of the settings file.
+        /// The default name of the DbSettings file (no suffix).
         /// </summary>
-        const string _settingsFileName = "DbSettings.xml";
+        const string _dbSettingsFileName = "DbSettings";
 
         readonly string _filePath;
 
@@ -66,7 +66,8 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
         /// </summary>
-        public DbConnectionSettings() : this(_settingsFileName, false)
+        public DbConnectionSettings()
+            : this(_dbSettingsFileName + EngineSettings.Instance.DataFileSuffix, false)
         {
         }
 
@@ -81,7 +82,7 @@ namespace NetGore.Db
         /// </summary>
         public static string DefaultFilePath
         {
-            get { return ContentPaths.Build.Settings.Join(_settingsFileName); }
+            get { return ContentPaths.Build.Settings.Join(_dbSettingsFileName + EngineSettings.Instance.DataFileSuffix); }
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace NetGore.EditorTools
         /// </summary>
         public TextureHashCollection()
         {
-            _dataFile = ContentPaths.Build.Data.Join("grhhashes.xml");
+            _dataFile = ContentPaths.Build.Data.Join("grhhashes"+EngineSettings.Instance.DataFileSuffix);
             _rootTextureDir = ContentPaths.Build.Grhs;
 
             if (!_rootTextureDir.EndsWith(Path.DirectorySeparatorChar.ToString()))

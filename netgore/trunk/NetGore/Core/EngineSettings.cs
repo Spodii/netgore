@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using SFML.Graphics;
 
@@ -17,19 +18,39 @@ namespace NetGore
 #endif
 
         readonly Vector2 _maxVelocity;
+        readonly string _dataFileSuffix;
+
+        /// <summary>
+        /// Gets the suffix given to general data files. Includes the prefixed period, if one is used. Can be empty, but cannot
+        /// be null.
+        /// </summary>
+        public string DataFileSuffix { get { return _dataFileSuffix; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineSettings"/> class.
         /// </summary>
         /// <param name="gravity">The world gravity. Only valid if not using a top-down perspective.</param>
         /// <param name="maxVelocity">The max velocity for an <see cref="Entity"/>.</param>
-        public EngineSettings(Vector2 gravity, Vector2 maxVelocity)
+        /// <param name="dataFileSuffix">The suffix given to general data files. If null, the default value will be used.
+        /// Cannot contain any characters found in <see cref="Path.GetInvalidFileNameChars"/>.</param>
+        /// <exception cref="ArgumentException"><paramref name="dataFileSuffix"/> contains one or more characters
+        /// found in <see cref="Path.GetInvalidFileNameChars"/>.</exception>
+        public EngineSettings(Vector2 gravity, Vector2 maxVelocity, string dataFileSuffix = null)
         {
 #if !TOPDOWN
             _gravity = gravity;
 #endif
 
             _maxVelocity = maxVelocity.Abs();
+
+            if (dataFileSuffix == null)
+                dataFileSuffix = ".dat";
+
+            _dataFileSuffix = dataFileSuffix;
+
+            var invalidFileNameChars = Path.GetInvalidFileNameChars();
+            if (_dataFileSuffix.ToCharArray().Any(x => invalidFileNameChars.Contains(x)))
+                throw new ArgumentException("The dataFileSuffix argument contains one or more characters that are invalid for a file name.", "dataFileSuffix");
         }
 
         /// <summary>

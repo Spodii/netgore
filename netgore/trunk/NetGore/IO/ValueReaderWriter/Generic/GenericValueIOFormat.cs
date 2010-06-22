@@ -7,13 +7,14 @@ namespace NetGore.IO
     {
         /// <summary>
         /// Uses Xml format through the <see cref="XmlValueReader"/> and <see cref="XmlValueWriter"/>.
-        /// Files of this type end with the .xml suffix.
+        /// Xml is very verbose and bulky, but is very stable, human-editable, and can recover from
+        /// corruption much more easily.
         /// </summary>
         Xml,
 
         /// <summary>
         /// Uses binary format through the <see cref="BinaryValueReader"/> and <see cref="BinaryValueWriter"/>.
-        /// Files of this type end with the .bin suffix.
+        /// Binary is very compact and fast but is incredibly difficult to read or edit.
         /// </summary>
         Binary
     }

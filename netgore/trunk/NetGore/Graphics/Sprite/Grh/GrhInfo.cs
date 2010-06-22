@@ -420,7 +420,7 @@ namespace NetGore.Graphics
         /// <returns>The absolute file path to the GrhData file.</returns>
         public static string GetGrhDataFilePath(ContentPaths contentPath)
         {
-            return contentPath.Data.Join("grhdata.xml");
+            return contentPath.Data.Join("grhdata" + EngineSettings.Instance.DataFileSuffix);
         }
 
         /// <summary>
@@ -559,7 +559,7 @@ namespace NetGore.Graphics
         static void LoadGrhDatas<T>(IValueReader reader, string nodeName, ReadManyNodesHandler<T> loader) where T : GrhData
         {
             const string errmsgFailedLoads =
-                "Failed to load the following indices from the GrhData file (grhdata.xml) for GrhData type `{2}`:{0}{1}{0}" +
+                "Failed to load the following indices from the GrhData file (\\DevContent\\Data\\grhdata.dat) for GrhData type `{2}`:{0}{1}{0}" +
                 "Note that these indices are NOT the GrhIndex, but the index of the Xml node." +
                 " Often times, this error means that you manually deleted one or more GrhDatas from this file," +
                 "in which case you can ignore it.";

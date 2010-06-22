@@ -45,7 +45,7 @@ namespace NetGore.EditorTools
                     ofd.Multiselect = false;
                     ofd.RestoreDirectory = true;
                     ofd.Title = "Open " + contentType;
-                    ofd.Filter = string.Format("{0} (*.{1})|*.{1}", contentType, fileFilterSuffix);
+                    ofd.Filter = string.Format("{0} (*{1})|*{1}", contentType, fileFilterSuffix);
                     ofd.InitialDirectory = initialDirectory;
                     var ofdResult = ofd.ShowDialog();
                     if (ofdResult != DialogResult.OK)
@@ -111,7 +111,7 @@ namespace NetGore.EditorTools
                     sfd.OverwritePrompt = true;
                     sfd.RestoreDirectory = true;
                     sfd.ValidateNames = true;
-                    sfd.Filter = string.Format("{0} (*.{1})|*.{1}", contentType, fileFilterSuffix);
+                    sfd.Filter = string.Format("{0} (*{1})|*{1}", contentType, fileFilterSuffix);
                     sfd.Title = "Save " + contentType;
 
                     var sfdResult = sfd.ShowDialog();
@@ -184,14 +184,14 @@ namespace NetGore.EditorTools
             return true;
         }
 
-        public static bool TryOpenMap(Func<string, IMap> createMap, string mapFileSuffix, out string filePath, out IMap map)
+        public static bool TryOpenMap(Func<string, IMap> createMap, out string filePath, out IMap map)
         {
             filePath = null;
             map = null;
 
             try
             {
-                filePath = GenericOpenFile("Map", mapFileSuffix, ContentPaths.Dev.Maps, createMap, out map);
+                filePath = GenericOpenFile("Map", EngineSettings.Instance.DataFileSuffix, ContentPaths.Dev.Maps, createMap, out map);
 
                 if (filePath == null)
                     return false;
@@ -220,7 +220,7 @@ namespace NetGore.EditorTools
 
             try
             {
-                filePath = GenericOpenFile("Particle Effect", ParticleEmitterFactory.EmitterFileSuffix,
+                filePath = GenericOpenFile("Particle Effect", EngineSettings.Instance.DataFileSuffix,
                                            ContentPaths.Dev.ParticleEffects,
                                            x =>
                                            ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev,
@@ -252,7 +252,7 @@ namespace NetGore.EditorTools
             try
             {
                 filePath = GenericSaveFile("Particle Effect", ContentPaths.Dev.ParticleEffects,
-                                           ParticleEmitterFactory.EmitterFileSuffix);
+                                           EngineSettings.Instance.DataFileSuffix);
                 if (filePath == null)
                     return false;
 

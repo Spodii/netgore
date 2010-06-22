@@ -110,7 +110,7 @@ namespace NetGore.EditorTools
 
         public static string GetFilePath(ContentPaths contentPath)
         {
-            return contentPath.Data.Join("grhdatawalls.xml");
+            return contentPath.Data.Join("grhdatawalls" + EngineSettings.Instance.DataFileSuffix);
         }
 
         public void Load(ContentPaths contentPath, CreateWallEntityFromReaderHandler createWall)
