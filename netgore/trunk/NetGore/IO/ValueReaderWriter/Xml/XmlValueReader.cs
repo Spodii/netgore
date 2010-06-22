@@ -106,11 +106,11 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Creates a new XmlValueReader from a string of a child Xml node.
+        /// Creates a new <see cref="XmlValueReader"/> from a string of a child Xml node.
         /// </summary>
         /// <param name="name">The name of the root node.</param>
         /// <param name="s">The node contents.</param>
-        /// <returns>A new XmlValueReader from a string of a child Xml node.</returns>
+        /// <returns>A new <see cref="XmlValueReader"/> from a string of a child Xml node.</returns>
         XmlValueReader GetXmlValueReaderFromNodeString(string name, string s)
         {
             var trimmed = s.Trim();

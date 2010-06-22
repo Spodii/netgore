@@ -141,7 +141,7 @@ namespace NetGore.Graphics.ParticleEngine
                 log.InfoFormat("Loading ParticleEmitter `{0}` from `{1}`.", emitterName, filePath);
 
             // Get the reader and read the emitter
-            var reader = new XmlValueReader(filePath, _rootNodeName);
+            var reader = new GenericValueReader(filePath, _rootNodeName);
             var emitter = Read(reader);
 
             Debug.Assert(emitter.Name.Equals(emitterName, StringComparison.OrdinalIgnoreCase));
@@ -178,6 +178,14 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Saves a <see cref="ParticleEmitter"/> to file.
         /// </summary>
         /// <param name="contentPath">The <see cref="ContentPaths"/> to save to.</param>
@@ -190,7 +198,7 @@ namespace NetGore.Graphics.ParticleEngine
                 log.InfoFormat("Saving ParticleEmitter `{0}` to `{1}`.", emitter, filePath);
 
             // Create the writer and begin writing
-            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
             {
                 Write(writer, emitter);
             }

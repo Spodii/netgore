@@ -54,8 +54,8 @@ namespace NetGore.IO
 
         readonly string _rootNode;
         readonly object _saveLock = new object();
-        Timer _autoSaveTimer;
 
+        Timer _autoSaveTimer;
         bool _disposed = false;
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace NetGore.IO
 
             try
             {
-                IValueReader reader = new XmlValueReader(path, _rootNode);
+                IValueReader reader = new GenericValueReader(path, _rootNode);
 
                 reader = reader.ReadNode(_itemsNodeName);
                 var count = reader.ReadInt(_countValueName);
@@ -329,6 +329,14 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Saves the settings for all the tracked <see cref="IPersistable"/> objects.
         /// </summary>
         public void Save()
@@ -338,7 +346,7 @@ namespace NetGore.IO
             // Lock to ensure we never try to save from multiple threads at once
             lock (_saveLock)
             {
-                using (IValueWriter w = new XmlValueWriter(_filePath, _rootNode))
+                using (var w = new GenericValueWriter(_filePath, _rootNode, EncodingFormat))
                 {
                     w.WriteStartNode(_itemsNodeName);
                     {

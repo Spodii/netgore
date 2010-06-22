@@ -12,7 +12,7 @@ namespace NetGore.Graphics
     public class SkeletonBodyInfo
     {
         /// <summary>
-        /// The file suffix used for the SkeletonBody.
+        /// The file suffix used for the <see cref="SkeletonBodyInfo"/> when writing to file.
         /// </summary>
         public const string FileSuffix = ".skelb";
 
@@ -39,7 +39,7 @@ namespace NetGore.Graphics
         /// <param name="skeletonBodyName">Name of the skeleton body.</param>
         /// <param name="contentPath">The content path.</param>
         public SkeletonBodyInfo(string skeletonBodyName, ContentPaths contentPath)
-            : this(new XmlValueReader(GetFilePath(skeletonBodyName, contentPath), _rootNodeName))
+            : this(new GenericValueReader(GetFilePath(skeletonBodyName, contentPath), _rootNodeName))
         {
         }
 
@@ -66,9 +66,9 @@ namespace NetGore.Graphics
         /// <param name="contentPath">The <see cref="ContentPaths"/> to search.</param>
         public static IEnumerable<string> GetBodyNames(ContentPaths contentPath)
         {
-            return
-                Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(
-                    Path.GetFileNameWithoutExtension);
+            var allFiles = Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories);
+            var withoutExtensions = allFiles.Select(Path.GetFileNameWithoutExtension);
+            return withoutExtensions;
         }
 
         /// <summary>
@@ -87,9 +87,17 @@ namespace NetGore.Graphics
             _items = reader.ReadManyNodes(_itemsNodeName, x => new SkeletonBodyItemInfo(x));
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
         public void Save(string filePath)
         {
-            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
             {
                 Write(writer);
             }

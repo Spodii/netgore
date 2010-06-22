@@ -109,6 +109,9 @@ namespace NetGore.NPCChat
             return contentPath.Data.Join("npcchat" + EngineSettings.Instance.DataFileSuffix);
         }
 
+        const string _rootNodeName = "NPCChatManager";
+        const string _chatDialogsNodeName = "ChatDialogs";
+
         /// <summary>
         /// Loads the data from file.
         /// </summary>
@@ -125,8 +128,8 @@ namespace NetGore.NPCChat
                 return;
             }
 
-            var reader = new XmlValueReader(filePath, "ChatDialogs");
-            var items = reader.ReadManyNodes("ChatDialogs", CreateDialog);
+            var reader = new GenericValueReader(filePath, _rootNodeName);
+            var items = reader.ReadManyNodes(_chatDialogsNodeName, CreateDialog);
 
             for (var i = 0; i < items.Length; i++)
             {
@@ -153,6 +156,14 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Saves the <see cref="NPCChatDialogBase"/>s in this <see cref="NPCChatManagerBase"/> to file.
         /// </summary>
         /// <param name="contentPath">The content path.</param>
@@ -162,9 +173,9 @@ namespace NetGore.NPCChat
 
             // Write
             var filePath = GetFilePath(contentPath);
-            using (var writer = new XmlValueWriter(filePath, "ChatDialogs"))
+            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
             {
-                writer.WriteManyNodes("ChatDialogs", dialogs, ((w, item) => item.Write(w)));
+                writer.WriteManyNodes(_chatDialogsNodeName, dialogs, ((w, item) => item.Write(w)));
             }
         }
 

@@ -18,22 +18,44 @@ namespace NetGore.IO
         readonly IValueWriter _writer;
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for writing. By default, this value is equal to
+        /// <see cref="GenericValueIOFormat.Xml"/>.
+        /// </summary>
+        public static GenericValueIOFormat DefaultFormat { get; set; }
+
+        /// <summary>
+        /// Initializes the <see cref="GenericValueWriter"/> class.
+        /// </summary>
+        static GenericValueWriter()
+        {
+            DefaultFormat = GenericValueIOFormat.Xml;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GenericValueReader"/> class.
         /// </summary>
         /// <param name="filePath">The path to the file to load.</param>
         /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
-        /// <param name="format">The <see cref="GenericValueIOFormat"/> that defines what file format to use.</param>
+        /// <param name="format">The <see cref="GenericValueIOFormat"/> that defines what output format to use. If null,
+        /// <see cref="GenericValueWriter.DefaultFormat"/> will be used.</param>
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueWriter"/> will be used.</param>
         /// <exception cref="ArgumentNullException"><paramref name="filePath"/> is null or empty.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="format"/> contains an invalid value.</exception>
-        public GenericValueWriter(string filePath, string rootNodeName, GenericValueIOFormat format = GenericValueIOFormat.Xml, bool? useEnumNames = null)
+        public GenericValueWriter(string filePath, string rootNodeName, GenericValueIOFormat? format = null, bool? useEnumNames = null)
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
 
+            // Get the encoding format to use
+            GenericValueIOFormat formatToUse;
+            if (!format.HasValue)
+                formatToUse = DefaultFormat;
+            else
+                formatToUse = format.Value;
+
             // Create the IValueWriter of the needed type
-            switch (format)
+            switch (formatToUse)
             {
                 case GenericValueIOFormat.Binary:
                     if (useEnumNames.HasValue)
@@ -61,7 +83,6 @@ namespace NetGore.IO
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             _writer.Dispose();
