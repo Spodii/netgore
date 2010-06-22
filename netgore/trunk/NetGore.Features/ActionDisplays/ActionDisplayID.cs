@@ -1,9 +1,7 @@
-﻿using System;
-using System.Data;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using NetGore;
+using System.Data;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Features.ActionDisplays
@@ -97,7 +95,7 @@ namespace NetGore.Features.ActionDisplays
         /// <returns>The <see cref="ActionDisplayID"/> read from the IValueReader.</returns>
         public static ActionDisplayID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new ActionDisplayID(value);
         }
 
@@ -109,11 +107,11 @@ namespace NetGore.Features.ActionDisplays
         /// <returns>The <see cref="ActionDisplayID"/> read from the <see cref="IDataReader"/>.</returns>
         public static ActionDisplayID Read(IDataRecord reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new ActionDisplayID((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new ActionDisplayID(convertedValue);
         }
 
@@ -135,7 +133,7 @@ namespace NetGore.Features.ActionDisplays
         /// <returns>The <see cref="ActionDisplayID"/> read from the <see cref="BitStream"/>.</returns>
         public static ActionDisplayID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new ActionDisplayID(value);
         }
 
@@ -480,7 +478,7 @@ namespace NetGore.Features.ActionDisplays
         }
 
         #endregion
-        
+
         /// <summary>
         /// Implements operator ++.
         /// </summary>
@@ -490,7 +488,7 @@ namespace NetGore.Features.ActionDisplays
         {
             return new ActionDisplayID(l._value + 1);
         }
-        
+
         /// <summary>
         /// Implements operator --.
         /// </summary>
@@ -756,7 +754,7 @@ namespace NetGore.Features.ActionDisplays
     /// </summary>
     public static class ActionDisplayIDReadWriteExtensions
     {
-		/// <summary>
+        /// <summary>
         /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as a
         /// <see cref="ActionDisplayID"/>.
         /// </summary>
@@ -792,42 +790,6 @@ namespace NetGore.Features.ActionDisplays
 
             return parsed;
         }
-        
-        /// <summary>
-        /// Parses the <see cref="ActionDisplayID"/> from a string.
-        /// </summary>
-        /// <param name="parser">The <see cref="Parser"/> to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The <see cref="ActionDisplayID"/> parsed from the string.</returns>
-        public static ActionDisplayID ParseActionDisplayID(this Parser parser, string value)
-        {
-            return new ActionDisplayID(parser.ParseUShort(value));
-        }
-        
-		/// <summary>
-        /// Tries to parse the <see cref="ActionDisplayID"/> from a string.
-        /// </summary>
-        /// <param name="parser">The <see cref="Parser"/> to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed <see cref="ActionDisplayID"/>.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out ActionDisplayID outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new ActionDisplayID(tmp);
-            return ret;
-        }
-        
-        /// <summary>
-        /// Reads the <see cref="ActionDisplayID"/> from a <see cref="BitStream"/>.
-        /// </summary>
-        /// <param name="bitStream"><see cref="BitStream"/> to read the <see cref="ActionDisplayID"/> from.</param>
-        /// <returns>The <see cref="ActionDisplayID"/> read from the <see cref="BitStream"/>.</returns>
-        public static ActionDisplayID ReadActionDisplayID(this BitStream bitStream)
-        {
-            return ActionDisplayID.Read(bitStream);
-        }
 
         /// <summary>
         /// Reads the <see cref="ActionDisplayID"/> from an <see cref="IDataRecord"/>.
@@ -852,6 +814,27 @@ namespace NetGore.Features.ActionDisplays
         }
 
         /// <summary>
+        /// Parses the <see cref="ActionDisplayID"/> from a string.
+        /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The <see cref="ActionDisplayID"/> parsed from the string.</returns>
+        public static ActionDisplayID ParseActionDisplayID(this Parser parser, string value)
+        {
+            return new ActionDisplayID(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the <see cref="ActionDisplayID"/> from a <see cref="BitStream"/>.
+        /// </summary>
+        /// <param name="bitStream"><see cref="BitStream"/> to read the <see cref="ActionDisplayID"/> from.</param>
+        /// <returns>The <see cref="ActionDisplayID"/> read from the <see cref="BitStream"/>.</returns>
+        public static ActionDisplayID ReadActionDisplayID(this BitStream bitStream)
+        {
+            return ActionDisplayID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the <see cref="ActionDisplayID"/> from an IValueReader.
         /// </summary>
         /// <param name="valueReader"><see cref="IValueReader"/> to read the <see cref="ActionDisplayID"/> from.</param>
@@ -860,6 +843,21 @@ namespace NetGore.Features.ActionDisplays
         public static ActionDisplayID ReadActionDisplayID(this IValueReader valueReader, string name)
         {
             return ActionDisplayID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the <see cref="ActionDisplayID"/> from a string.
+        /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed <see cref="ActionDisplayID"/>.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out ActionDisplayID outValue)
+        {
+            ushort tmp;
+            var ret = parser.TryParse(value, out tmp);
+            outValue = new ActionDisplayID(tmp);
+            return ret;
         }
 
         /// <summary>

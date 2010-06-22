@@ -11,6 +11,11 @@ namespace NetGore.Graphics
     public interface ISpriteBatch : IDisposable
     {
         /// <summary>
+        /// Gets or sets the <see cref="BlendMode"/> currently being used.
+        /// </summary>
+        BlendMode BlendMode { get; set; }
+
+        /// <summary>
         /// Gets a value that indicates whether the object is disposed.
         /// </summary>
         bool IsDisposed { get; }
@@ -42,11 +47,6 @@ namespace NetGore.Graphics
         /// <param name="blendMode">Blending options to use when rendering.</param>
         /// <param name="camera">The <see cref="ICamera2D"/> that describes the view of the world.</param>
         void Begin(BlendMode blendMode, ICamera2D camera);
-
-        /// <summary>
-        /// Gets or sets the <see cref="BlendMode"/> currently being used.
-        /// </summary>
-        BlendMode BlendMode { get; set; }
 
         /// <summary>
         /// Prepares the graphics device for drawing sprites with specified blending, sorting, and render state options,

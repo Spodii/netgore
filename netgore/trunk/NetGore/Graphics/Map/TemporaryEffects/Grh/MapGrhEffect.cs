@@ -24,26 +24,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the <see cref="MapGrh"/>.
-        /// </summary>
-        /// <param name="currentTime">Current game time.</param>
-        public override void Update(TickCount currentTime)
-        {
-            base.Update(currentTime);
-
-            if (IsAlive)
-                UpdateEffect(currentTime);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, performs the additional updating that this <see cref="MapGrhEffect"/>
-        /// needs to do such as checking if it is time to kill the effect. This method should be overridden instead of
-        /// <see cref="MapGrh.Update"/>. This method will not be called after the effect has been killed.
-        /// </summary>
-        /// <param name="currentTime">Current game time.</param>
-        protected abstract void UpdateEffect(TickCount currentTime);
-
-        /// <summary>
         /// Kills this <see cref="MapGrhEffect"/>. This should happen once and only once for every <see cref="MapGrhEffect"/>.
         /// </summary>
         protected void Kill()
@@ -61,19 +41,42 @@ namespace NetGore.Graphics
                 Died(this);
         }
 
-        #region ITemporaryMapEffect Members
-
         /// <summary>
-        /// Gets if this map effect is still alive. When false, it will be removed from the map. Once set to false, this
-        /// value will remain false.
+        /// When overridden in the derived class, performs the additional updating that this <see cref="MapGrhEffect"/>
+        /// needs to do such as checking if it is time to kill the effect. This method should be overridden instead of
+        /// <see cref="MapGrh.Update"/>. This method will not be called after the effect has been killed.
         /// </summary>
-        public bool IsAlive { get { return _isAlive; } }
+        /// <param name="currentTime">Current game time.</param>
+        protected abstract void UpdateEffect(TickCount currentTime);
+
+        #region ITemporaryMapEffect Members
 
         /// <summary>
         /// Notifies listeners when this <see cref="ITemporaryMapEffect"/> has died. This is only raised once per
         /// <see cref="ITemporaryMapEffect"/>, and is raised when <see cref="ITemporaryMapEffect.IsAlive"/> is set to false.
         /// </summary>
         public event TemporaryMapEffectDiedHandler Died;
+
+        /// <summary>
+        /// Gets if this map effect is still alive. When false, it will be removed from the map. Once set to false, this
+        /// value will remain false.
+        /// </summary>
+        public bool IsAlive
+        {
+            get { return _isAlive; }
+        }
+
+        /// <summary>
+        /// Updates the <see cref="MapGrh"/>.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        public override void Update(TickCount currentTime)
+        {
+            base.Update(currentTime);
+
+            if (IsAlive)
+                UpdateEffect(currentTime);
+        }
 
         #endregion
     }

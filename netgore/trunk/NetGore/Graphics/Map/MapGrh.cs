@@ -164,6 +164,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Handles the actual drawing of the <see cref="MapGrh"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
+        protected virtual void HandleDrawing(ISpriteBatch sb)
+        {
+            _grh.Draw(sb, Position, Color, SpriteEffects, Rotation, Origin, Scale);
+        }
+
+        /// <summary>
         /// Updates the <see cref="MapGrh"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
@@ -286,15 +295,6 @@ namespace NetGore.Graphics
                 else
                     return MapRenderLayer.SpriteBackground;
             }
-        }
-
-        /// <summary>
-        /// Handles the actual drawing of the <see cref="MapGrh"/>.
-        /// </summary>
-        /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
-        protected virtual void HandleDrawing(ISpriteBatch sb)
-        {
-            _grh.Draw(sb, Position, Color, SpriteEffects, Rotation, Origin, Scale);
         }
 
         /// <summary>

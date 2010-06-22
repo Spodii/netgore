@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+using System.Linq;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -9,8 +9,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class MapGrhEffectSeekSpatial : MapGrhEffect
     {
-        readonly ISpatial _target;
         readonly float _speed;
+        readonly ISpatial _target;
 
         TickCount _lastUpdate;
 

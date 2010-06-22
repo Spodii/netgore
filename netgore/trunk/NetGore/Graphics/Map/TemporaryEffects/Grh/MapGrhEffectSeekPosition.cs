@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using SFML.Graphics;
 
 namespace NetGore.Graphics
@@ -8,11 +9,11 @@ namespace NetGore.Graphics
     /// </summary>
     public class MapGrhEffectSeekPosition : MapGrhEffect
     {
+        readonly TickCount _endTime;
         readonly Vector2 _startPosition;
+        readonly TickCount _startTime;
         readonly Vector2 _targetPosition;
         readonly Vector2 _velocity;
-        readonly TickCount _startTime;
-        readonly TickCount _endTime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrhEffectSeekPosition"/> class.
@@ -33,11 +34,11 @@ namespace NetGore.Graphics
             _targetPosition = target;
 
             // Calculate the angle between the position and target
-            Vector2 diff = position - target;
-            double angle = Math.Atan2(diff.Y, diff.X);
+            var diff = position - target;
+            var angle = Math.Atan2(diff.Y, diff.X);
 
-            double cos = Math.Cos(angle);
-            double sin = Math.Sin(angle);
+            var cos = Math.Cos(angle);
+            var sin = Math.Sin(angle);
 
             // Multiply the normalized direction vector (the cos and sine values) by the speed to get the velocity
             // to use for each elapsed millisecond
@@ -46,7 +47,7 @@ namespace NetGore.Graphics
             // Precalculate the amount of time it will take to hit the target. This way, we can check if we have reached
             // the destination simply by checking the current time.
             var dist = Vector2.Distance(position, target);
-            int reqTime = (int)Math.Ceiling(dist / speed);
+            var reqTime = (int)Math.Ceiling(dist / speed);
 
             _endTime = (TickCount)(_startTime + reqTime);
         }

@@ -1,6 +1,6 @@
 using System.Diagnostics;
+using System.Linq;
 using NetGore.Graphics.ParticleEngine;
-using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -21,19 +21,24 @@ namespace NetGore.Graphics
         /// <param name="emitter">The <see cref="ParticleEmitter"/>.</param>
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
-        public MapParticleEffect(ParticleEmitter emitter, bool isForeground) 
+        public MapParticleEffect(ParticleEmitter emitter, bool isForeground)
         {
             _isForeground = isForeground;
             _emitter = emitter;
         }
 
         /// <summary>
-        /// When overridden in the derived class, performs the additional updating that this <see cref="MapParticleEffect"/>
-        /// needs to do such as checking if it is time to kill the effect. This method will not be called after the effect has been killed.
+        /// Gets or sets if the effect will be killed automatically if the <see cref="Emitter"/> runs out of live particles.
+        /// Default value is false.
         /// </summary>
-        /// <param name="currentTime">Current game time.</param>
-        protected virtual void UpdateEffect(TickCount currentTime)
+        protected bool AutoKillWhenNoParticles { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="ParticleEmitter"/> used by this <see cref="MapParticleEffect"/>.
+        /// </summary>
+        protected ParticleEmitter Emitter
         {
+            get { return _emitter; }
         }
 
         /// <summary>
@@ -57,38 +62,30 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets if the effect will be killed automatically if the <see cref="Emitter"/> runs out of live particles.
-        /// Default value is false.
+        /// When overridden in the derived class, performs the additional updating that this <see cref="MapParticleEffect"/>
+        /// needs to do such as checking if it is time to kill the effect. This method will not be called after the effect has been killed.
         /// </summary>
-        protected bool AutoKillWhenNoParticles { get; set; }
-
-        /// <summary>
-        /// Gets the <see cref="ParticleEmitter"/> used by this <see cref="MapParticleEffect"/>.
-        /// </summary>
-        protected ParticleEmitter Emitter { get { return _emitter; } }
+        /// <param name="currentTime">Current game time.</param>
+        protected virtual void UpdateEffect(TickCount currentTime)
+        {
+        }
 
         #region ITemporaryMapEffect Members
 
         /// <summary>
-        /// Updates the map effect.
+        /// Notifies listeners when this <see cref="ITemporaryMapEffect"/> has died. This is only raised once per
+        /// <see cref="ITemporaryMapEffect"/>, and is raised when <see cref="ITemporaryMapEffect.IsAlive"/> is set to false.
         /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        public void Update(TickCount currentTime)
-        {
-            if (!IsAlive)
-                return;
-
-            _emitter.Update(currentTime);
-
-            if (!_killed)
-                UpdateEffect(currentTime);
-        }
+        public event TemporaryMapEffectDiedHandler Died;
 
         /// <summary>
         /// Gets if this map effect is still alive. When false, it will be removed from the map. Once set to false, this
         /// value will remain false.
         /// </summary>
-        public bool IsAlive { get { return !_killed || _emitter.ActiveParticles > 0; } }
+        public bool IsAlive
+        {
+            get { return !_killed || _emitter.ActiveParticles > 0; }
+        }
 
         /// <summary>
         /// Gets if the <see cref="ITemporaryMapEffect"/> is in the foreground. If true, it will be drawn after the
@@ -110,10 +107,19 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Notifies listeners when this <see cref="ITemporaryMapEffect"/> has died. This is only raised once per
-        /// <see cref="ITemporaryMapEffect"/>, and is raised when <see cref="ITemporaryMapEffect.IsAlive"/> is set to false.
+        /// Updates the map effect.
         /// </summary>
-        public event TemporaryMapEffectDiedHandler Died;
+        /// <param name="currentTime">The current time.</param>
+        public void Update(TickCount currentTime)
+        {
+            if (!IsAlive)
+                return;
+
+            _emitter.Update(currentTime);
+
+            if (!_killed)
+                UpdateEffect(currentTime);
+        }
 
         #endregion
     }

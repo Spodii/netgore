@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,12 +14,12 @@ namespace NetGore.Db
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        const string _rootNodeName = "DbConnectionSettings";
-
         /// <summary>
         /// The default name of the DbSettings file (no suffix).
         /// </summary>
         const string _dbSettingsFileName = "DbSettings";
+
+        const string _rootNodeName = "DbConnectionSettings";
 
         readonly string _filePath;
 
@@ -72,18 +72,9 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is <see cref="GenericValueIOFormat.Xml"/>.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
         /// </summary>
-        public DbConnectionSettings()
-            : this(_dbSettingsFileName + EngineSettings.DataFileSuffix, false)
+        public DbConnectionSettings() : this(_dbSettingsFileName + EngineSettings.DataFileSuffix, false)
         {
         }
 
@@ -100,6 +91,14 @@ namespace NetGore.Db
         {
             get { return ContentPaths.Build.Settings.Join(_dbSettingsFileName + EngineSettings.DataFileSuffix); }
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is <see cref="GenericValueIOFormat.Xml"/>.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Gets the path to the file that these settings were loaded from and will be saved to by default.

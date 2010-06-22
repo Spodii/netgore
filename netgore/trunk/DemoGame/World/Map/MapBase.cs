@@ -47,6 +47,7 @@ namespace DemoGame
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
         const string _wallsNodeName = "Walls";
+        readonly List<IDelayedMapEvent> _delayedEvents = new List<IDelayedMapEvent>();
 
         /// <summary>
         /// Collection of DynamicEntities on this map.
@@ -1197,7 +1198,7 @@ namespace DemoGame
         {
             var currentTime = TickCount.Now;
 
-            for (int i = 0; i < _delayedEvents.Count; i++)
+            for (var i = 0; i < _delayedEvents.Count; i++)
             {
                 var e = _delayedEvents[i];
 
@@ -1218,6 +1219,14 @@ namespace DemoGame
         }
 
         #region IMap Members
+
+        /// <summary>
+        /// Gets the <see cref="IDelayedMapEvent"/>s on the map.
+        /// </summary>
+        public IEnumerable<IDelayedMapEvent> DelayedEvents
+        {
+            get { return _delayedEvents; }
+        }
 
         /// <summary>
         /// Gets an IEnumerable of all the Entities on the Map.
@@ -1258,28 +1267,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the <see cref="IDelayedMapEvent"/>s on the map.
-        /// </summary>
-        public IEnumerable<IDelayedMapEvent> DelayedEvents
-        {
-            get { return _delayedEvents; }
-        }
-
-        readonly List<IDelayedMapEvent> _delayedEvents = new List<IDelayedMapEvent>();
-
-        /// <summary>
-        /// Adds a <see cref="IDelayedMapEvent"/>.
-        /// </summary>
-        /// <param name="e">The <see cref="IDelayedMapEvent"/>.</param>
-        public void AddDelayedEvent(IDelayedMapEvent e)
-        {
-            if (e == null)
-                return;
-
-            _delayedEvents.Add(e);
-        }
-
-        /// <summary>
         /// Gets the <see cref="ISpatialCollection"/> for all the spatial objects on the map.
         /// </summary>
         [Browsable(false)]
@@ -1295,6 +1282,18 @@ namespace DemoGame
         public float Width
         {
             get { return Size.X; }
+        }
+
+        /// <summary>
+        /// Adds a <see cref="IDelayedMapEvent"/>.
+        /// </summary>
+        /// <param name="e">The <see cref="IDelayedMapEvent"/>.</param>
+        public void AddDelayedEvent(IDelayedMapEvent e)
+        {
+            if (e == null)
+                return;
+
+            _delayedEvents.Add(e);
         }
 
         /// <summary>

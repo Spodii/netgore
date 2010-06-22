@@ -43,7 +43,8 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter CharAttack(MapEntityIndex attacker, MapEntityIndex? attacked = null, ActionDisplayID? displayAction = null)
+        public static PacketWriter CharAttack(MapEntityIndex attacker, MapEntityIndex? attacked = null,
+                                              ActionDisplayID? displayAction = null)
         {
             var pw = GetWriter(ServerPacketID.CharAttack);
             pw.Write(attacker);

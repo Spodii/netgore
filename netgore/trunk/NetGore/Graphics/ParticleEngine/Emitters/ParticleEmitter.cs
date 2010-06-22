@@ -14,16 +14,16 @@ namespace NetGore.Graphics.ParticleEngine
     public abstract class ParticleEmitter : IDisposable
     {
         /// <summary>
+        /// The default name given to a <see cref="ParticleEmitter"/>.
+        /// </summary>
+        public const string DefaultName = "Unnamed";
+
+        /// <summary>
         /// The maximum value allowed for the delta time for updating particles and emitters. If the real delta
         /// time is greater than this value, is will be reduced to this value. This is to prevent ugly side-effects
         /// from emitters trying to play too much catch-up. Recommended to keep this at the default value.
         /// </summary>
         public const int MaxDeltaTime = 200;
-
-        /// <summary>
-        /// The default name given to a <see cref="ParticleEmitter"/>.
-        /// </summary>
-        public const string DefaultName = "Unnamed";
 
         const string _blendModeKeyName = "BlendMode";
         const string _budgetKeyName = "Budget";
@@ -226,6 +226,15 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Gets the approximate current time.
+        /// </summary>
+        [Browsable(false)]
+        protected TickCount LastUpdateTime
+        {
+            get { return _lastUpdateTime; }
+        }
+
+        /// <summary>
         /// Gets or sets the life of each <see cref="Particle"/> emitted.
         /// </summary>
         [Category(_particleCategoryName)]
@@ -360,15 +369,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets the approximate current time.
-        /// </summary>
-        [Browsable(false)]
-        protected TickCount LastUpdateTime
-        {
-            get { return _lastUpdateTime; }
-        }
-
-        /// <summary>
         /// Copies the values in this <see cref="ParticleEmitter"/> to another.
         /// </summary>
         /// <param name="destination">The <see cref="ParticleEmitter"/> to copy the values to.</param>
@@ -386,6 +386,36 @@ namespace NetGore.Graphics.ParticleEngine
             destination.ReleaseSpeed = ReleaseSpeed;
             destination.Sprite.SetGrh(Sprite.GrhData, Sprite.AnimType, Sprite.LastUpdated);
             destination.ParticleModifiers = ParticleModifiers.DeepCopy();
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        public void Draw(ISpriteBatch sb)
+        {
+            // Check if we can even draw anything
+            if (Sprite == null || ActiveParticles <= 0)
+                return;
+
+            // Keep track of what the blend mode was originally so we can restore it when done
+            var originalBlendMode = sb.BlendMode;
+
+            // Set the blend mode
+            sb.BlendMode = BlendMode;
+
+            // Get the origin to use for the particles
+            var origin = Sprite.Size / 2f;
+
+            // Draw the live particles
+            for (var i = 0; i < ActiveParticles; i++)
+            {
+                var p = particles[i];
+                Sprite.Draw(sb, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
+            }
+
+            // Restore the blend mode
+            sb.BlendMode = originalBlendMode;
         }
 
         /// <summary>
@@ -434,6 +464,15 @@ namespace NetGore.Graphics.ParticleEngine
         public Particle[] GetParticlesArray()
         {
             return particles;
+        }
+
+        /// <summary>
+        /// Kills the <see cref="ParticleEmitter"/>, which stops it from emitting any more particles but keeps any
+        /// existing particles alive.
+        /// </summary>
+        public void Kill()
+        {
+            _expirationTime = TickCount.Now;
         }
 
         /// <summary>
@@ -531,15 +570,6 @@ namespace NetGore.Graphics.ParticleEngine
             // Increase the index of the last active particle
             _lastAliveIndex = lastIndex;
         }
-        
-        /// <summary>
-        /// Kills the <see cref="ParticleEmitter"/>, which stops it from emitting any more particles but keeps any
-        /// existing particles alive.
-        /// </summary>
-        public void Kill()
-        {
-            _expirationTime = TickCount.Now;
-        }
 
         /// <summary>
         /// Sets the life of the <see cref="ParticleEmitter"/>.
@@ -552,36 +582,6 @@ namespace NetGore.Graphics.ParticleEngine
                 _expirationTime = TickCount.MaxValue;
             else
                 _expirationTime = (TickCount)(TickCount.Now + totalLife);
-        }
-
-        /// <summary>
-        /// Draws the <see cref="ParticleEmitter"/>.
-        /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        public void Draw(ISpriteBatch sb)
-        {
-            // Check if we can even draw anything
-            if (Sprite == null || ActiveParticles <= 0)
-                return;
-
-            // Keep track of what the blend mode was originally so we can restore it when done
-            var originalBlendMode = sb.BlendMode;
-
-            // Set the blend mode
-            sb.BlendMode = BlendMode;
-
-            // Get the origin to use for the particles
-            var origin = Sprite.Size / 2f;
-
-            // Draw the live particles
-            for (var i = 0; i < ActiveParticles; i++)
-            {
-                var p = particles[i];
-                Sprite.Draw(sb, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
-            }
-
-            // Restore the blend mode
-            sb.BlendMode = originalBlendMode;
         }
 
         /// <summary>
