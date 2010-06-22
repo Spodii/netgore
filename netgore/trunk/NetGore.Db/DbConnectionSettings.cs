@@ -24,6 +24,14 @@ namespace NetGore.Db
         readonly string _filePath;
 
         /// <summary>
+        /// Initializes the <see cref="DbConnectionSettings"/> class.
+        /// </summary>
+        static DbConnectionSettings()
+        {
+            EncodingFormat = GenericValueIOFormat.Xml;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
         /// </summary>
         /// <param name="fileName">The name of the settings file.</param>
@@ -59,15 +67,23 @@ namespace NetGore.Db
             }
 
             // Read the values
-            var reader = new XmlValueReader(destSettingsFile, _rootNodeName);
+            var reader = new GenericValueReader(destSettingsFile, _rootNodeName);
             ((IPersistable)this).ReadState(reader);
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is <see cref="GenericValueIOFormat.Xml"/>.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbConnectionSettings"/> class.
         /// </summary>
         public DbConnectionSettings()
-            : this(_dbSettingsFileName + EngineSettings.Instance.DataFileSuffix, false)
+            : this(_dbSettingsFileName + EngineSettings.DataFileSuffix, false)
         {
         }
 
@@ -82,7 +98,7 @@ namespace NetGore.Db
         /// </summary>
         public static string DefaultFilePath
         {
-            get { return ContentPaths.Build.Settings.Join(_dbSettingsFileName + EngineSettings.Instance.DataFileSuffix); }
+            get { return ContentPaths.Build.Settings.Join(_dbSettingsFileName + EngineSettings.DataFileSuffix); }
         }
 
         /// <summary>
@@ -144,7 +160,7 @@ namespace NetGore.Db
         /// </summary>
         public void Reload()
         {
-            var reader = new XmlValueReader(FilePath, _rootNodeName);
+            var reader = new GenericValueReader(FilePath, _rootNodeName);
             ((IPersistable)this).ReadState(reader);
         }
 
@@ -153,7 +169,7 @@ namespace NetGore.Db
         /// </summary>
         public void Save()
         {
-            using (var writer = new XmlValueWriter(FilePath, _rootNodeName))
+            using (var writer = new GenericValueWriter(FilePath, _rootNodeName, EncodingFormat))
             {
                 ((IPersistable)this).WriteState(writer);
             }

@@ -135,7 +135,7 @@ namespace InstallationValidator
             {
                 MessageBox.Show(
                     string.Format(
-                        "Error: Could not find the DbSettings.xml file at the expected location:{0}{0}{1}{0}{0}If you have moved this file, please move it back.",
+                        "Error: Could not find the DbSettings.dat file at the expected location:{0}{0}{1}{0}{0}If you have moved this file, please move it back.",
                         Environment.NewLine, MySqlHelper.DbSettingsFile));
                 return;
             }

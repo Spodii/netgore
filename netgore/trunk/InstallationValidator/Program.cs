@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore;
+using SFML.Graphics;
 
 namespace InstallationValidator
 {

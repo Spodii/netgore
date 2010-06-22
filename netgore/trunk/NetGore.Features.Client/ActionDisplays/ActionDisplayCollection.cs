@@ -133,7 +133,7 @@ namespace NetGore.Features.ActionDisplays
         /// <returns>The path to the default <see cref="ActionDisplayCollection"/> file.</returns>
         public static string DefaultFilePath(ContentPaths path)
         {
-            return path.Data.Join("actiondisplays" + EngineSettings.Instance.DataFileSuffix);
+            return path.Data.Join("actiondisplays" + EngineSettings.DataFileSuffix);
         }
 
         /// <summary>

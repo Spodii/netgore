@@ -54,7 +54,7 @@ namespace DemoGame.Client
         /// <returns>The file path for the given profile.</returns>
         static string GetPath(string profile)
         {
-            return ContentPaths.Build.Settings.Join(profile).Join("gui" + EngineSettings.Instance.DataFileSuffix);
+            return ContentPaths.Build.Settings.Join(profile).Join("gui" + EngineSettings.DataFileSuffix);
         }
 
         /// <summary>

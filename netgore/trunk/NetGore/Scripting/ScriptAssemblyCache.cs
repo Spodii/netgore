@@ -92,7 +92,7 @@ namespace NetGore.Scripting
         /// </summary>
         protected string CacheDataFilePath
         {
-            get { return CacheDirectory + "cacheentries" + EngineSettings.Instance.DataFileSuffix; }
+            get { return CacheDirectory + "cacheentries" + EngineSettings.DataFileSuffix; }
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using NetGore;
 using NetGore.Db;
 
 namespace InstallationValidator
@@ -22,14 +23,14 @@ namespace InstallationValidator
         /// <summary>
         /// The relative path to the database schema file.
         /// </summary>
-        public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema.xml",
-                                                                   Path.DirectorySeparatorChar);
+        public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema{1}",
+                                                                   Path.DirectorySeparatorChar, EngineSettings.DataFileSuffix);
 
         /// <summary>
         /// The relative path to the database settings file.
         /// </summary>
-        public static readonly string DbSettingsFile = string.Format("DemoGame.Server{0}DbSettings.xml",
-                                                                     Path.DirectorySeparatorChar);
+        public static readonly string DbSettingsFile = string.Format("DemoGame.Server{0}DbSettings{1}",
+                                                                     Path.DirectorySeparatorChar, EngineSettings.DataFileSuffix);
 
         /// <summary>
         /// The database connection settings.

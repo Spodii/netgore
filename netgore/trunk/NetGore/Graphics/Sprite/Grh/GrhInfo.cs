@@ -420,7 +420,7 @@ namespace NetGore.Graphics
         /// <returns>The absolute file path to the GrhData file.</returns>
         public static string GetGrhDataFilePath(ContentPaths contentPath)
         {
-            return contentPath.Data.Join("grhdata" + EngineSettings.Instance.DataFileSuffix);
+            return contentPath.Data.Join("grhdata" + EngineSettings.DataFileSuffix);
         }
 
         /// <summary>
