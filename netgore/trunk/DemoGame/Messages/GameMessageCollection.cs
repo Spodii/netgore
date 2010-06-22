@@ -60,7 +60,7 @@ namespace DemoGame
         /// <param name="language">Name of the language to load.</param>
         /// <param name="rawMessagesOnly">If true, only the raw messages will be loaded, and invoking the messages
         /// will not be supported.</param>
-        GameMessageCollection(string language, bool rawMessagesOnly) : base(GetLanguageFile(language), _defaultMessages)
+        GameMessageCollection(string language, bool rawMessagesOnly) : base(GetLanguageFile(ContentPaths.Build, language), _defaultMessages)
         {
             _rawMessagesOnly = rawMessagesOnly;
             _language = language;
@@ -148,7 +148,7 @@ namespace DemoGame
         /// <param name="language">The language to delete the files for.</param>
         public static void DeleteLanguageFiles(string language)
         {
-            var file = GetLanguageFile(language);
+            var file = GetLanguageFile(ContentPaths.Dev, language);
             var jsFile = GetLanguageJScriptFile(file);
 
             // Delete the language messages file
@@ -192,11 +192,12 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="GameMessageCollection"/> file for a certain language.
         /// </summary>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to get the path for.</param>
         /// <param name="language">The language to get the file for.</param>
         /// <returns>The <see cref="GameMessageCollection"/> file for the <paramref name="language"/>.</returns>
-        public static string GetLanguageFile(string language)
+        public static string GetLanguageFile(ContentPaths contentPath, string language)
         {
-            return ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix);
+            return contentPath.Languages.Join(language.ToLower() + _languageFileSuffix);
         }
 
         /// <summary>
@@ -272,7 +273,7 @@ namespace DemoGame
                 sb.AppendLine(msg.Key + ": " + msg.Value);
             }
 
-            File.WriteAllText(GetLanguageFile(language), sb.ToString());
+            File.WriteAllText(GetLanguageFile(ContentPaths.Dev, language), sb.ToString());
         }
 
         /// <summary>
@@ -372,7 +373,7 @@ namespace DemoGame
             }
             finally
             {
-                var langFile = GetLanguageFile(_tempLanguageName);
+                var langFile = GetLanguageFile(ContentPaths.Dev, _tempLanguageName);
                 if (File.Exists(langFile))
                     File.Delete(langFile);
 

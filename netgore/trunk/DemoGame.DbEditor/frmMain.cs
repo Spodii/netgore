@@ -709,7 +709,7 @@ namespace DemoGame.DbEditor
             }
 
             // Create the new language files, and select it
-            var langFile = GameMessageCollection.GetLanguageFile(name);
+            var langFile = GameMessageCollection.GetLanguageFile(ContentPaths.Dev, name);
             if (!File.Exists(langFile))
                 File.WriteAllText(langFile, string.Empty);
 
