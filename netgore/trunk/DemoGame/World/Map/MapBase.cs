@@ -29,11 +29,6 @@ namespace DemoGame
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// The suffix used for map files. Does not include the period prefix.
-        /// </summary>
-        public const string MapFileSuffix = "xml";
-
         const string _dynamicEntitiesNodeName = "DynamicEntities";
 
         /// <summary>
@@ -455,7 +450,7 @@ namespace DemoGame
         /// <returns>The path to the map file.</returns>
         public static string GetMapFilePath(ContentPaths contentPath, MapID id)
         {
-            return contentPath.Maps.Join(id + "." + MapFileSuffix);
+            return contentPath.Maps.Join(id + EngineSettings.Instance.DataFileSuffix);
         }
 
         /// <summary>
@@ -614,7 +609,8 @@ namespace DemoGame
                 return false;
 
             // Check the suffix
-            if (!filePath.EndsWith("." + MapFileSuffix, StringComparison.OrdinalIgnoreCase))
+            var expectedSuffix = EngineSettings.Instance.DataFileSuffix;
+            if (expectedSuffix.Length > 0 && !filePath.EndsWith(expectedSuffix, StringComparison.OrdinalIgnoreCase))
                 return false;
 
             // Check if the file is named properly
@@ -953,7 +949,7 @@ namespace DemoGame
         /// <see cref="DynamicEntity"/>s.</param>
         public void Save(MapID mapID, ContentPaths contentPath, IDynamicEntityFactory dynamicEntityFactory)
         {
-            var path = contentPath.Maps.Join(mapID + "." + MapFileSuffix);
+            var path = contentPath.Maps.Join(mapID + EngineSettings.Instance.DataFileSuffix);
             Save(path, dynamicEntityFactory);
 
             _memoryMap.SaveMemoryMap(contentPath, mapID.GetRawValue());
