@@ -450,7 +450,7 @@ namespace DemoGame
         /// <returns>The path to the map file.</returns>
         public static string GetMapFilePath(ContentPaths contentPath, MapID id)
         {
-            return contentPath.Maps.Join(id + EngineSettings.Instance.DataFileSuffix);
+            return contentPath.Maps.Join(id + EngineSettings.DataFileSuffix);
         }
 
         /// <summary>
@@ -609,7 +609,7 @@ namespace DemoGame
                 return false;
 
             // Check the suffix
-            var expectedSuffix = EngineSettings.Instance.DataFileSuffix;
+            var expectedSuffix = EngineSettings.DataFileSuffix;
             if (expectedSuffix.Length > 0 && !filePath.EndsWith(expectedSuffix, StringComparison.OrdinalIgnoreCase))
                 return false;
 
@@ -949,7 +949,7 @@ namespace DemoGame
         /// <see cref="DynamicEntity"/>s.</param>
         public void Save(MapID mapID, ContentPaths contentPath, IDynamicEntityFactory dynamicEntityFactory)
         {
-            var path = contentPath.Maps.Join(mapID + EngineSettings.Instance.DataFileSuffix);
+            var path = contentPath.Maps.Join(mapID + EngineSettings.DataFileSuffix);
             Save(path, dynamicEntityFactory);
 
             _memoryMap.SaveMemoryMap(contentPath, mapID.GetRawValue());

@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using InstallationValidator;
+using NetGore;
+using SFML.Graphics;
 
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 #pragma warning disable 162

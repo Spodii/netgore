@@ -91,7 +91,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>The name of all the <see cref="ParticleEmitter"/> files in the <paramref name="contentPath"/>.</returns>
         public static IEnumerable<string> GetEffectsInPath(ContentPaths contentPath)
         {
-            var files = Directory.GetFiles(contentPath.ParticleEffects, "*" + EngineSettings.Instance.DataFileSuffix, SearchOption.TopDirectoryOnly);
+            var files = Directory.GetFiles(contentPath.ParticleEffects, "*" + EngineSettings.DataFileSuffix, SearchOption.TopDirectoryOnly);
             var names = files.Select(GetEffectNameFromPath);
             return names.ToImmutable();
         }
@@ -104,7 +104,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <returns>The path for the <see cref="ParticleEmitter"/>.</returns>
         static string GetFilePath(ContentPaths contentPath, string emitterName)
         {
-            return contentPath.ParticleEffects.Join(emitterName + EngineSettings.Instance.DataFileSuffix);
+            return contentPath.ParticleEffects.Join(emitterName + EngineSettings.DataFileSuffix);
         }
 
         /// <summary>

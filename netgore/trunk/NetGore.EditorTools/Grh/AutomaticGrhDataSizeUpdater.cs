@@ -55,7 +55,7 @@ namespace NetGore.EditorTools
         /// </summary>
         protected virtual string CacheFile
         {
-            get { return ContentPaths.Dev.Data.Join("GrhDataAutoSizeCache" + EngineSettings.Instance.DataFileSuffix); }
+            get { return ContentPaths.Dev.Data.Join("GrhDataAutoSizeCache" + EngineSettings.DataFileSuffix); }
         }
 
         /// <summary>

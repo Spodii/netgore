@@ -88,7 +88,7 @@ namespace NetGore.AI
 
         static PathString GetFilePath(ContentPaths contentPath, int ID)
         {
-            return contentPath.Maps.Join("AIMap" + ID + EngineSettings.Instance.DataFileSuffix);
+            return contentPath.Maps.Join("AIMap" + ID + EngineSettings.DataFileSuffix);
         }
 
         public void LoadMemoryMap(ContentPaths contentPath, int ID)

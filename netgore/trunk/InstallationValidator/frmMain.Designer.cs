@@ -242,8 +242,8 @@
             this.btnDbSettings.Name = "btnDbSettings";
             this.btnDbSettings.Size = new System.Drawing.Size(91, 27);
             this.btnDbSettings.TabIndex = 3;
-            this.btnDbSettings.Text = "DbSettings.xml";
-            this.tt.SetToolTip(this.btnDbSettings, "Opens the DbSettings.xml file, which contains the database connection information" +
+            this.btnDbSettings.Text = "DbSettings.dat";
+            this.tt.SetToolTip(this.btnDbSettings, "Opens the DbSettings.dat file, which contains the database connection information" +
                     ".");
             this.btnDbSettings.UseVisualStyleBackColor = true;
             this.btnDbSettings.Click += new System.EventHandler(this.btnDbSettings_Click);

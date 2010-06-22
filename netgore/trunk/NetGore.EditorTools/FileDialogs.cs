@@ -191,7 +191,7 @@ namespace NetGore.EditorTools
 
             try
             {
-                filePath = GenericOpenFile("Map", EngineSettings.Instance.DataFileSuffix, ContentPaths.Dev.Maps, createMap, out map);
+                filePath = GenericOpenFile("Map", EngineSettings.DataFileSuffix, ContentPaths.Dev.Maps, createMap, out map);
 
                 if (filePath == null)
                     return false;
@@ -220,7 +220,7 @@ namespace NetGore.EditorTools
 
             try
             {
-                filePath = GenericOpenFile("Particle Effect", EngineSettings.Instance.DataFileSuffix,
+                filePath = GenericOpenFile("Particle Effect", EngineSettings.DataFileSuffix,
                                            ContentPaths.Dev.ParticleEffects,
                                            x =>
                                            ParticleEmitterFactory.LoadEmitter(ContentPaths.Dev,
@@ -252,7 +252,7 @@ namespace NetGore.EditorTools
             try
             {
                 filePath = GenericSaveFile("Particle Effect", ContentPaths.Dev.ParticleEffects,
-                                           EngineSettings.Instance.DataFileSuffix);
+                                           EngineSettings.DataFileSuffix);
                 if (filePath == null)
                     return false;
 

@@ -76,7 +76,7 @@ namespace DemoGame
             if (contentPath == null)
                 throw new ArgumentNullException("contentPath");
 
-            return contentPath.Data.Join("bodies" + EngineSettings.Instance.DataFileSuffix);
+            return contentPath.Data.Join("bodies" + EngineSettings.DataFileSuffix);
         }
 
         /// <summary>

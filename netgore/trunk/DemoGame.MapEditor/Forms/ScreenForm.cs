@@ -87,7 +87,7 @@ namespace DemoGame.MapEditor
         readonly Grh _selectedGrh = new Grh(null, AnimType.Loop, 0);
 
         readonly SettingsManager _settingsManager = new SettingsManager("MapEditor",
-                                                                        ContentPaths.Build.Settings.Join("MapEditor" + EngineSettings.Instance.DataFileSuffix));
+                                                                        ContentPaths.Build.Settings.Join("MapEditor" + EngineSettings.DataFileSuffix));
 
         /// <summary>
         /// Stopwatch used for calculating the game time.

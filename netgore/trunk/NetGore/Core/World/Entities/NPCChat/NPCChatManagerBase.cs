@@ -106,7 +106,7 @@ namespace NetGore.NPCChat
         /// <returns>The path for the data file.</returns>
         protected static string GetFilePath(ContentPaths contentPath)
         {
-            return contentPath.Data.Join("npcchat" + EngineSettings.Instance.DataFileSuffix);
+            return contentPath.Data.Join("npcchat" + EngineSettings.DataFileSuffix);
         }
 
         const string _rootNodeName = "NPCChatManager";
