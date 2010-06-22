@@ -86,16 +86,21 @@ namespace NetGore.AI
             }
         }
 
+        static PathString GetFilePath(ContentPaths contentPath, int ID)
+        {
+            return contentPath.Maps.Join("AIMap" + ID + EngineSettings.Instance.DataFileSuffix);
+        }
+
         public void LoadMemoryMap(ContentPaths contentPath, int ID)
         {
-            var path = contentPath.Maps.Join("\\AIMap" + ID + ".bin");
+            var path = GetFilePath(contentPath, ID);
             if (!File.Exists(path))
             {
                 Initialize(1024, 1024);
                 return;
             }
 
-            var read = new BinaryValueReader(path);
+            var read = new GenericValueReader(path, _rootNodeName);
 
             Initialize(1024, 1024);
 
@@ -130,11 +135,29 @@ namespace NetGore.AI
             return total;
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is <see cref="GenericValueIOFormat.Binary"/>.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        const string _rootNodeName = "MemoryMap";
+
+        /// <summary>
+        /// Initializes the <see cref="MemoryMap"/> class.
+        /// </summary>
+        static MemoryMap()
+        {
+            EncodingFormat = GenericValueIOFormat.Binary;
+        }
+
         public void SaveMemoryMap(ContentPaths contentPath, int ID)
         {
-            var path = contentPath.Maps.Join("\\AIMap" + ID + ".bin");
+            var path = GetFilePath(contentPath, ID);
 
-            using (var writer = new BinaryValueWriter(path))
+            using (var writer = new GenericValueWriter(path, _rootNodeName, EncodingFormat))
             {
                 writer.Write("CellSize", _cellSize);
 

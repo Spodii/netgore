@@ -344,7 +344,7 @@ namespace NetGore.Scripting
                 if (!File.Exists(CacheDataFilePath))
                     return;
 
-                var r = new XmlValueReader(CacheDataFilePath, _rootNodeName);
+                var r = new GenericValueReader(CacheDataFilePath, _rootNodeName);
                 var items = r.ReadManyNodes(_cacheItemNodeName, x => new CacheItem(x));
 
                 foreach (var item in items)
@@ -415,6 +415,14 @@ namespace NetGore.Scripting
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Saves the cache data.
         /// </summary>
         void Save()
@@ -425,7 +433,7 @@ namespace NetGore.Scripting
                     return;
 
                 var items = _cache.Values.ToArray();
-                using (var w = new XmlValueWriter(CacheDataFilePath, _rootNodeName))
+                using (var w = new GenericValueWriter(CacheDataFilePath, _rootNodeName, EncodingFormat))
                 {
                     w.WriteManyNodes(_cacheItemNodeName, items, (x, y) => y.Write(x));
                 }

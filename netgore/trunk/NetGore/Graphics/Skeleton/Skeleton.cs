@@ -12,7 +12,7 @@ namespace NetGore.Graphics
     public class Skeleton
     {
         /// <summary>
-        /// The file suffix used for the Skeleton.
+        /// The file suffix used for the <see cref="Skeleton"/> when writing to file.
         /// </summary>
         public const string FileSuffix = ".skel";
 
@@ -24,17 +24,29 @@ namespace NetGore.Graphics
         /// </summary>
         SkeletonNode _rootNode = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Skeleton"/> class.
+        /// </summary>
         public Skeleton()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Skeleton"/> class.
+        /// </summary>
+        /// <param name="skeletonName">Name of the skeleton.</param>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to load from.</param>
         public Skeleton(string skeletonName, ContentPaths contentPath)
         {
             var filePath = GetFilePath(skeletonName, contentPath);
-            var reader = new XmlValueReader(filePath, _rootNodeName);
+            var reader = new GenericValueReader(filePath, _rootNodeName);
             Read(reader);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Skeleton"/> class.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to use to load.</param>
         public Skeleton(IValueReader reader)
         {
             Read(reader);
@@ -299,6 +311,14 @@ namespace NetGore.Graphics
             return node;
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
         public void Write(string filePath)
         {
             if (filePath == null)
@@ -309,7 +329,7 @@ namespace NetGore.Graphics
                 throw new Exception("Skeleton returned false for IsValid() - unable to save!");
 
             // Write the file
-            using (var writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
             {
                 Write(writer);
             }

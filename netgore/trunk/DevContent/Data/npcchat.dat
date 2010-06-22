@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ChatDialogs>
+<NPCChatManager>
   <ChatDialogs>
     <Count>1</Count>
     <Item0>
@@ -304,4 +304,4 @@
       </Items>
     </Item0>
   </ChatDialogs>
-</ChatDialogs>
+</NPCChatManager>

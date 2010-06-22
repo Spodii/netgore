@@ -33,13 +33,23 @@ namespace NetGore.Graphics
             _keyFrames = keyFrames;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonSet"/> class.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the data from.</param>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to use to load other data.</param>
         public SkeletonSet(IValueReader reader, ContentPaths contentPath)
         {
             Read(reader, contentPath);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonSet"/> class.
+        /// </summary>
+        /// <param name="skeletonSetName">Name of the <see cref="SkeletonSet"/>.</param>
+        /// <param name="contentPath">The <see cref="ContentPaths"/> to load from.</param>
         public SkeletonSet(string skeletonSetName, ContentPaths contentPath)
-            : this(new XmlValueReader(GetFilePath(skeletonSetName, contentPath), _rootNodeName), contentPath)
+            : this(new GenericValueReader(GetFilePath(skeletonSetName, contentPath), _rootNodeName), contentPath)
         {
         }
 
@@ -85,9 +95,9 @@ namespace NetGore.Graphics
         /// <param name="contentPath">The <see cref="ContentPaths"/> to search.</param>
         public static IEnumerable<string> GetSetNames(ContentPaths contentPath)
         {
-            return
-                Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories).Select(
-                    Path.GetFileNameWithoutExtension);
+            var allFiles = Directory.GetFiles(contentPath.Skeletons, "*" + FileSuffix, SearchOption.AllDirectories);
+            var withoutExtensions = allFiles.Select(Path.GetFileNameWithoutExtension);
+            return withoutExtensions;
         }
 
         public void Read(IValueReader reader, ContentPaths contentPath)
@@ -102,12 +112,20 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Saves the SkeletonSet to a file.
         /// </summary>
         /// <param name="filePath">File to save to.</param>
         public void Write(string filePath)
         {
-            using (IValueWriter writer = new XmlValueWriter(filePath, _rootNodeName))
+            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
             {
                 Write(writer);
             }

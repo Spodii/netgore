@@ -532,7 +532,7 @@ namespace NetGore.Graphics
                 _grhDatas.ItemRemoved += RemoveHandler;
 
                 // Read and add the GrhDatas in order by their type
-                var reader = new XmlValueReader(path, _rootNodeName);
+                var reader = new GenericValueReader(path, _rootNodeName);
 
                 LoadGrhDatas(reader, _nonAnimatedGrhDatasNodeName, x => StationaryGrhData.Read(x, cm));
                 LoadGrhDatas(reader, _animatedGrhDatasNodeName, AnimatedGrhData.Read);
@@ -718,6 +718,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is null.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
         /// Saves all of the GrhData information to the specified file.
         /// </summary>
         /// <param name="contentPath">ContentPath to save the GrhData to.</param>
@@ -731,7 +739,7 @@ namespace NetGore.Graphics
 
             // Write
             var path = GetGrhDataFilePath(contentPath);
-            using (IValueWriter writer = new XmlValueWriter(path, _rootNodeName))
+            using (IValueWriter writer = new GenericValueWriter(path, _rootNodeName, EncodingFormat))
             {
                 writer.WriteManyNodes(_nonAnimatedGrhDatasNodeName, stationaryGrhDatas, ((w, item) => item.Write(w)));
                 writer.WriteManyNodes(_animatedGrhDatasNodeName, animatedGrhDatas, ((w, item) => item.Write(w)));

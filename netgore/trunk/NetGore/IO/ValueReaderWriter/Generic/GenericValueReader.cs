@@ -19,31 +19,14 @@ namespace NetGore.IO
     public class GenericValueReader : IValueReader
     {
         /// <summary>
-        /// The maximum length in bytes of any of the headers. All formats must be identified using no more than this many bytes.
+        /// The maximum length in chars of any of the headers. All formats must be identified using no more than this many chars.
         /// </summary>
-        const int _maxHeaderLength = 10;
+        const int _maxHeaderLength = 8;
 
         /// <summary>
-        /// Contains the bytes used to recognize an Xml header encoded using <see cref="UTF8Encoding"/>.
+        /// Contains the bytes used to recognize an Xml header.
         /// </summary>
-        static readonly byte[] _xmlHeaderBytesUtf8 = new byte[] { 239,
-187,
-191,
-60,
-63,
-120,
-109,
-108,
-32};
-
-        /// <summary>
-        /// Contains the bytes used to recognize an Xml header encoded using <see cref="UTF32Encoding"/>.
-        /// </summary>
-        static readonly byte[] _xmlHeaderBytesUtf32 = new byte[] { 255, 254, 0, 0, 60, 0, 0, 0, 63, 0 };
-        /// <summary>
-        /// Contains the bytes used to recognize an Xml header encoded using <see cref="UTF7Encoding"/>.
-        /// </summary>
-        static readonly byte[] _xmlHeaderBytesUtf7 = new byte[] { 43, 65, 68, 119, 45, 63, 120, 109, 108, 32 };
+        static readonly char[] _xmlHeader = new char[] { '<','?','x','m','l',' ' };
 
         readonly IValueReader _reader;
 
@@ -53,7 +36,7 @@ namespace NetGore.IO
         static GenericValueReader()
         {
             // Make sure header identifiers are a valid length
-            Debug.Assert(_xmlHeaderBytesUtf8.Length <= _maxHeaderLength);
+            Debug.Assert(_xmlHeader.Length <= _maxHeaderLength);
         }
 
         /// <summary>
@@ -63,7 +46,7 @@ namespace NetGore.IO
         /// <param name="headerLength">The actual length of the header.</param>
         /// <param name="expected">The expected bytes for the header.</param>
         /// <returns>True if the <paramref name="header"/> matches the <paramref name="expected"/>; otherwise false.</returns>
-        static bool CheckFormatHeader(byte[] header, int headerLength, byte[] expected)
+        static bool CheckFormatHeader(char[] header, int headerLength, char[] expected)
         {
             if (headerLength < expected.Length)
                 return false;
@@ -81,32 +64,21 @@ namespace NetGore.IO
         /// Peeks into a file to figure out what format it uses.
         /// </summary>
         /// <param name="filePath">The path to the file to check.</param>
-        /// <returns>The <see cref="GenericValueIOFormat"/> being used.</returns>
-        static GenericValueIOFormat FindFileFormat(string filePath)
+        /// <returns>The <see cref="GenericValueIOFormat"/> being used for the <paramref name="filePath"/>.</returns>
+        public static GenericValueIOFormat FindFileFormat(string filePath)
         {
             // Grab enough characters from the file to determine the format
-            byte[] header = new byte[_maxHeaderLength];
+            char[] header = new char[_maxHeaderLength];
             int headerLength;
-            using (var fs = File.OpenRead(filePath))
+            using (var fs = new StreamReader(filePath, true))
             {
                 headerLength = fs.Read(header, 0, header.Length);
             }
 
-            // Check for Xml, starting with Utf8 since that is the most commonly used encoding (at least in our case)
-            if (CheckFormatHeader(header, headerLength, _xmlHeaderBytesUtf8))
-                return GenericValueIOFormat.Xml;
-            if (CheckFormatHeader(header, headerLength, _xmlHeaderBytesUtf7))
-                return GenericValueIOFormat.Xml;
-            if (CheckFormatHeader(header, headerLength, _xmlHeaderBytesUtf32))
+            // Check for Xml
+            if (CheckFormatHeader(header, headerLength, _xmlHeader))
                 return GenericValueIOFormat.Xml;
 
-            /*
-            // The same check using the conversion to string
-            string headerStr = Encoding.UTF8.GetString(header, 0, 8);
-            if (StringComparer.Ordinal.Equals(headerStr, "<?xml"))
-                return GenericValueIOFormat.Xml;
-            */
-        
             // Assume everything else is binary
             return GenericValueIOFormat.Binary;
         }
@@ -118,13 +90,9 @@ namespace NetGore.IO
         /// <param name="rootNodeName">The name of the root node. Not used by all formats, but should always be included anyways.</param>
         /// <param name="useEnumNames">Whether or not enum names should be used. If true, enum names will always be used. If false, the
         /// enum values will be used instead. If null, the default value for the underlying <see cref="IValueReader"/> will be used.</param>
-        /// <exception cref="FileNotFoundException"><paramref name="filePath"/> does not exist.</exception>
         /// <exception cref="FileLoadException"><paramref name="filePath"/> contains an unsupported format.</exception>
         public GenericValueReader(string filePath, string rootNodeName, bool? useEnumNames = null)
         {
-            if (!File.Exists(filePath))
-                throw new FileNotFoundException(filePath);
-
             // Discover the format
             var format = FindFileFormat(filePath);
             Debug.Assert(EnumHelper<GenericValueIOFormat>.IsDefined(format));
