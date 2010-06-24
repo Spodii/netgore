@@ -63,7 +63,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryStr =
             FormatQueryString("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
-                          CharacterTemplateInventoryTable.TableName);
+                              CharacterTemplateInventoryTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateInventoryQuery"/> class.

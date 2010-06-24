@@ -13,7 +13,7 @@ namespace DemoGame.Server.Queries
     public class UserExistsQuery : DbQueryReader<string>
     {
         static readonly string _queryStr = FormatQueryString("SELECT COUNT(*) FROM `{0}` WHERE `name`=@name",
-                                                            CharacterTable.TableName);
+                                                             CharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserExistsQuery"/> class.

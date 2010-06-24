@@ -34,6 +34,13 @@ namespace DemoGame.Server.Queries
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
 
+        public void Execute(ItemID itemID, string field, object value)
+        {
+            var values = new QueryArgs(itemID, value);
+            var fieldQuery = _fieldQueryCache[field];
+            fieldQuery.Execute(values);
+        }
+
         /// <summary>
         /// Gets the query string to use for a field.
         /// </summary>
@@ -44,13 +51,6 @@ namespace DemoGame.Server.Queries
             const string baseQueryStr = "UPDATE `" + ItemTable.TableName + "` SET `{0}`=@value WHERE `id`=@itemID";
 
             return string.Format(baseQueryStr, fieldName);
-        }
-
-        public void Execute(ItemID itemID, string field, object value)
-        {
-            var values = new QueryArgs(itemID, value);
-            var fieldQuery = _fieldQueryCache[field];
-            fieldQuery.Execute(values);
         }
 
         #region IDisposable Members

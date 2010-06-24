@@ -10,7 +10,8 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterTemplateQuery : DbQueryReader<CharacterTemplateID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id", CharacterTemplateTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id",
+                                                             CharacterTemplateTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateQuery"/> class.
