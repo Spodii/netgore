@@ -10,14 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceMapQuery : DbQueryNonReader<IMapTable>
     {
-        static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", MapTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", MapTable.TableName,
                                                             FormatParametersIntoValuesString(MapTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceMapQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public ReplaceMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

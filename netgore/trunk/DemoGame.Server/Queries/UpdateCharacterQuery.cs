@@ -10,14 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateCharacterQuery : DbQueryNonReader<ICharacterTable>
     {
-        static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName,
+        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName,
                                                             FormatParametersIntoString(CharacterTable.DbNonKeyColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateCharacterQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

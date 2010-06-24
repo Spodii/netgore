@@ -10,14 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertMapSpawnQuery : DbQueryNonReader<IMapSpawnTable>
     {
-        static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapSpawnTable.TableName,
+        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", MapSpawnTable.TableName,
                                                             FormatParametersIntoValuesString(MapSpawnTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertMapSpawnQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public InsertMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public InsertMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

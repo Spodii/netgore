@@ -9,13 +9,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteItemQuery : DbQueryNonReader<ItemID>
     {
-        static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `id`=@id LIMIT 1", ItemTable.TableName);
+        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `id`=@id LIMIT 1", ItemTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteItemQuery"/> class.
         /// </summary>
         /// <param name="conn">The conn.</param>
-        public DeleteItemQuery(DbConnectionPool conn) : base(conn, _queryString)
+        public DeleteItemQuery(DbConnectionPool conn) : base(conn, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }

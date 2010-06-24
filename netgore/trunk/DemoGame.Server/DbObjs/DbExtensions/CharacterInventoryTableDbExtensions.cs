@@ -17,6 +17,7 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
@@ -108,6 +109,10 @@ namespace DemoGame.Server.DbObjs
 
                     case "slot":
                         paramValues[i] = (Byte)source.Slot;
+                        break;
+
+                    default:
+                        Debug.Fail(paramValues.GetParameterName(i));
                         break;
                 }
             }

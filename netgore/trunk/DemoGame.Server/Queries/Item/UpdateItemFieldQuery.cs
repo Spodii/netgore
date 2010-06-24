@@ -11,8 +11,6 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateItemFieldQuery : IDisposable
     {
-        const string _queryString = "UPDATE `" + ItemTable.TableName + "` SET `{0}`=@value WHERE `id`=@itemID";
-
         readonly DbConnectionPool _connectionPool;
         readonly ICache<string, InternalUpdateItemFieldQuery> _fieldQueryCache;
 
@@ -31,9 +29,21 @@ namespace DemoGame.Server.Queries
 
             _fieldQueryCache =
                 new HashCache<string, InternalUpdateItemFieldQuery>(
-                    x => new InternalUpdateItemFieldQuery(_connectionPool, string.Format(_queryString, x)));
+                    x => new InternalUpdateItemFieldQuery(_connectionPool, GetFieldQueryString(x)));
 
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
+        }
+
+        /// <summary>
+        /// Gets the query string to use for a field.
+        /// </summary>
+        /// <param name="fieldName">The name of the field.</param>
+        /// <returns>The query string to use for the <paramref name="fieldName"/>.</returns>
+        static string GetFieldQueryString(string fieldName)
+        {
+            const string baseQueryStr = "UPDATE `" + ItemTable.TableName + "` SET `{0}`=@value WHERE `id`=@itemID";
+
+            return string.Format(baseQueryStr, fieldName);
         }
 
         public void Execute(ItemID itemID, string field, object value)

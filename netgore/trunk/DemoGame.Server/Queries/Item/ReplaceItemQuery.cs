@@ -10,14 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceItemQuery : DbQueryNonReader<IItemTable>
     {
-        static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", ItemTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", ItemTable.TableName,
                                                             FormatParametersIntoValuesString(ItemTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

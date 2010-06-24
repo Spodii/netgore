@@ -10,13 +10,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectMapSpawnQuery : DbQueryReader<MapSpawnValuesID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", MapSpawnTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id", MapSpawnTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectMapSpawnQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }

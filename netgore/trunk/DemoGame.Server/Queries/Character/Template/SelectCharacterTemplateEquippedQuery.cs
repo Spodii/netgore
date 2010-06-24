@@ -9,15 +9,15 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterTemplateEquippedQuery : DbQueryReader<CharacterTemplateID>
     {
-        static readonly string _queryString =
-            string.Format("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
+        static readonly string _queryStr =
+            FormatQueryString("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
                           CharacterTemplateEquippedTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateEquippedQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterTemplateEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectCharacterTemplateEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

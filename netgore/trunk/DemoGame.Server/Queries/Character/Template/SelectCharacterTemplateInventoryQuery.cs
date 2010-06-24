@@ -61,15 +61,15 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterTemplateInventoryQuery : DbQueryReader<CharacterTemplateID>
     {
-        static readonly string _queryString =
-            string.Format("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
+        static readonly string _queryStr =
+            FormatQueryString("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
                           CharacterTemplateInventoryTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateInventoryQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterTemplateInventoryQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectCharacterTemplateInventoryQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

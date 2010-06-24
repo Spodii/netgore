@@ -9,7 +9,7 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectAllianceAttackableQuery : DbQueryReader<AllianceID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `alliance_id`=@id",
+        static readonly string _queryString = FormatQueryString("SELECT * FROM `{0}` WHERE `alliance_id`=@id",
                                                             AllianceAttackableTable.TableName);
 
         /// <summary>

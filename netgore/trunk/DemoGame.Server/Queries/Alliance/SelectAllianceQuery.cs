@@ -9,13 +9,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectAllianceQuery : DbQueryReader<AllianceID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", AllianceTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id", AllianceTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectAllianceQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectAllianceQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectAllianceQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(AllianceTable.DbKeyColumns, "id");
         }
