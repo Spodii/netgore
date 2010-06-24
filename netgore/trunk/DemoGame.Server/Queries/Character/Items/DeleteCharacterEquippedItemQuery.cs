@@ -10,7 +10,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class DeleteCharacterEquippedItemQuery : DbQueryNonReader<ICharacterEquippedTable>
+    public class DeleteCharacterEquippedItemQuery : DbQueryNonReader<DeleteCharacterEquippedItemQuery.QueryArgs>
     {
         static readonly string _queryStr =
             FormatQueryString("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
@@ -27,7 +27,7 @@ namespace DemoGame.Server.Queries
 
         public void Execute(CharacterID characterID, EquipmentSlot slot)
         {
-            Execute(new CharacterEquippedTable(characterID, default(ItemID), slot));
+            Execute(new QueryArgs(characterID, slot));
         }
 
         /// <summary>
@@ -45,12 +45,43 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, ICharacterEquippedTable item)
+        protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            item.TryCopyValues(p);
+            p["slot"] = (int)item.Slot;
+            p["character_id"] = (int)item.CharacterID;
 
             Debug.Assert(Convert.ToInt32(p["slot"]) == (int)item.Slot);
             Debug.Assert(Convert.ToInt32(p["character_id"]) == (int)item.CharacterID);
+        }
+
+        /// <summary>
+        /// Arguments for the <see cref="DeleteCharacterEquippedItemQuery"/> query.
+        /// </summary>
+        public struct QueryArgs
+        {
+            readonly CharacterID _characterID;
+            readonly EquipmentSlot _equipmentSlot;
+
+            /// <summary>
+            /// Gets the <see cref="CharacterID"/>.
+            /// </summary>
+            public CharacterID CharacterID { get { return _characterID; } }
+
+            /// <summary>
+            /// Gets the <see cref="EquipmentSlot"/>.
+            /// </summary>
+            public EquipmentSlot Slot { get { return _equipmentSlot; } }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
+            /// </summary>
+            /// <param name="characterID">The <see cref="CharacterID"/>.</param>
+            /// <param name="equipmentSlot">The equipment slot.</param>
+            public QueryArgs(CharacterID characterID, EquipmentSlot equipmentSlot)
+            {
+                _characterID = characterID;
+                _equipmentSlot = equipmentSlot;
+            }
         }
     }
 }
