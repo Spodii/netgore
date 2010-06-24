@@ -42,6 +42,10 @@ namespace CopyContent
         /// <returns>True if to skip the copying; otherwise false.</returns>
         static bool CanSkipFileCopy(FileInfo srcFileInfo, string destFile)
         {
+            // Do not copy binaries
+            if (StringComparer.OrdinalIgnoreCase.Equals(srcFileInfo.Extension, ".exe"))
+                return true;
+
             // Destination file does not exist
             if (!File.Exists(destFile))
                 return false;
@@ -167,7 +171,7 @@ namespace CopyContent
 
             var rootSrc = args[0];
             var rootDest = args[1];
-
+            
             // Validate the params
             if (string.IsNullOrEmpty(rootSrc) || string.IsNullOrEmpty(rootDest))
             {
