@@ -11,14 +11,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class ReplaceCharacterInventoryItemQuery : DbQueryNonReader<ICharacterInventoryTable>
     {
-        static readonly string _queryString = FormatQueryString("REPLACE INTO `{0}` SET {1}", CharacterInventoryTable.TableName,
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` SET {1}", CharacterInventoryTable.TableName,
                                                             FormatParametersIntoString(CharacterInventoryTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceCharacterInventoryItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public ReplaceCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public ReplaceCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

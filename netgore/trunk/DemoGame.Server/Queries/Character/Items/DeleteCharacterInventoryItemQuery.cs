@@ -13,15 +13,15 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteCharacterInventoryItemQuery : DbQueryNonReader<ICharacterInventoryTable>
     {
-        static readonly string _queryString =
-            string.Format("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
+        static readonly string _queryStr =
+            FormatQueryString("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
                           CharacterInventoryTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCharacterInventoryItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public DeleteCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public DeleteCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(CharacterInventoryTable.DbKeyColumns, "character_id", "slot");
         }
@@ -48,7 +48,9 @@ namespace DemoGame.Server.Queries
         /// <param name="item">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
         {
-            item.CopyValues(p);
+            p["character_id"] = (int)item.CharacterID;
+            p["slot"] = (int)item.Slot;
+
             Debug.Assert(Convert.ToInt32(p["slot"]) == (int)item.Slot);
             Debug.Assert(Convert.ToInt32(p["character_id"]) == (int)item.CharacterID);
         }
