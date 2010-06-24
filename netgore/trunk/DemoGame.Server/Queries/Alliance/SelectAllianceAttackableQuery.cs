@@ -9,14 +9,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectAllianceAttackableQuery : DbQueryReader<AllianceID>
     {
-        static readonly string _queryString = FormatQueryString("SELECT * FROM `{0}` WHERE `alliance_id`=@id",
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `alliance_id`=@id",
                                                             AllianceAttackableTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectAllianceAttackableQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectAllianceAttackableQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectAllianceAttackableQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

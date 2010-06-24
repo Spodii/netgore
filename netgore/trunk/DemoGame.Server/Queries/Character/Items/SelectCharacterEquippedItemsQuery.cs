@@ -10,8 +10,8 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterEquippedItemsQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryString =
-            string.Format(
+        static readonly string _queryStr =
+            FormatQueryString(
                 "SELECT {0}.*,{1}.slot FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
                 ItemTable.TableName, CharacterEquippedTable.TableName);
 
@@ -19,7 +19,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="SelectCharacterEquippedItemsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterEquippedItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectCharacterEquippedItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
