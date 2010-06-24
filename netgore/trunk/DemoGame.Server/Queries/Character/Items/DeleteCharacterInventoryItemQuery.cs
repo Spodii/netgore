@@ -48,7 +48,7 @@ namespace DemoGame.Server.Queries
         /// <param name="item">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
         {
-            item.TryCopyValues(p);
+            item.CopyValues(p);
             Debug.Assert(Convert.ToInt32(p["slot"]) == (int)item.Slot);
             Debug.Assert(Convert.ToInt32(p["character_id"]) == (int)item.CharacterID);
         }

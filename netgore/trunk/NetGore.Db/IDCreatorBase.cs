@@ -268,7 +268,7 @@ namespace NetGore.Db
         /// </summary>
         class SelectIDQuery : DbQueryReader
         {
-            const string _queryString = "SELECT `{0}` FROM `{1}` ORDER BY `{0}` ASC";
+            const string _queryStr = "SELECT `{0}` FROM `{1}` ORDER BY `{0}` ASC";
 
             /// <summary>
             /// Initializes a new instance of the <see cref="SelectIDQuery"/> class.
@@ -277,7 +277,7 @@ namespace NetGore.Db
             /// <param name="table">The table.</param>
             /// <param name="column">The column.</param>
             public SelectIDQuery(DbConnectionPool connectionPool, string table, string column)
-                : base(connectionPool, string.Format(_queryString, column, table))
+                : base(connectionPool, string.Format(_queryStr, column, table))
             {
             }
 

@@ -12,14 +12,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UserExistsQuery : DbQueryReader<string>
     {
-        static readonly string _queryString = string.Format("SELECT COUNT(*) FROM `{0}` WHERE `name`=@name",
+        static readonly string _queryStr = FormatQueryString("SELECT COUNT(*) FROM `{0}` WHERE `name`=@name",
                                                             CharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserExistsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public UserExistsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public UserExistsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

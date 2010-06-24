@@ -10,13 +10,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterByIDQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", CharacterTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `id`=@id", CharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterByIDQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectCharacterByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
         }

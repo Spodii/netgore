@@ -10,13 +10,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectCharacterQuery : DbQueryReader<string>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `name`=@name", CharacterTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `name`=@name", CharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

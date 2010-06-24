@@ -9,13 +9,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class DeleteMapSpawnQuery : DbQueryNonReader<MapSpawnValuesID>
     {
-        static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `id`=@id LIMIT 1", MapSpawnTable.TableName);
+        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `id`=@id LIMIT 1", MapSpawnTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteMapSpawnQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public DeleteMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public DeleteMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }

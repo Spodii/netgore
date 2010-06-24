@@ -10,10 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateMapQuery : DbQueryNonReader<IMapTable>
     {
-        static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", MapTable.TableName,
+        static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET {1} WHERE `id`=@id", MapTable.TableName,
                                                             FormatParametersIntoString(MapTable.DbNonKeyColumns));
 
-        public UpdateMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateMapQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
+        public UpdateMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(MapTable.DbKeyColumns, "id");
         }
