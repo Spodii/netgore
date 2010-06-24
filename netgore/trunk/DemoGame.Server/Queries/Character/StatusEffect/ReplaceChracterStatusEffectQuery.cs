@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceCharacterStatusEffectQuery : DbQueryNonReader<ICharacterStatusEffectTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", CharacterStatusEffectTable.TableName,
-                                                            FormatParametersIntoValuesString(CharacterStatusEffectTable.DbColumns));
+                                                             FormatParametersIntoValuesString(CharacterStatusEffectTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceCharacterStatusEffectQuery"/> class.

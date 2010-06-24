@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class InsertMapSpawnQuery : DbQueryNonReader<IMapSpawnTable>
     {
         static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` {1}", MapSpawnTable.TableName,
-                                                            FormatParametersIntoValuesString(MapSpawnTable.DbColumns));
+                                                             FormatParametersIntoValuesString(MapSpawnTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertMapSpawnQuery"/> class.

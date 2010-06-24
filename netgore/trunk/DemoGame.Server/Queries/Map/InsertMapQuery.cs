@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceMapQuery : DbQueryNonReader<IMapTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", MapTable.TableName,
-                                                            FormatParametersIntoValuesString(MapTable.DbColumns));
+                                                             FormatParametersIntoValuesString(MapTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceMapQuery"/> class.

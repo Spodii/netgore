@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class UpdateCharacterQuery : DbQueryNonReader<ICharacterTable>
     {
         static readonly string _queryStr = FormatQueryString("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName,
-                                                            FormatParametersIntoString(CharacterTable.DbNonKeyColumns));
+                                                             FormatParametersIntoString(CharacterTable.DbNonKeyColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateCharacterQuery"/> class.

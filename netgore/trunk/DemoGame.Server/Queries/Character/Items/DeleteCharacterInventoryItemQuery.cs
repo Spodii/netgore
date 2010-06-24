@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
-using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
@@ -15,7 +14,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryStr =
             FormatQueryString("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
-                          CharacterInventoryTable.TableName);
+                              CharacterInventoryTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCharacterInventoryItemQuery"/> class.
@@ -66,12 +65,18 @@ namespace DemoGame.Server.Queries
             /// <summary>
             /// Gets the <see cref="CharacterID"/>.
             /// </summary>
-            public CharacterID CharacterID { get { return _characterID; } }
+            public CharacterID CharacterID
+            {
+                get { return _characterID; }
+            }
 
             /// <summary>
             /// Gets the <see cref="InventorySlot"/>.
             /// </summary>
-            public InventorySlot Slot { get { return _inventorySlot; } }
+            public InventorySlot Slot
+            {
+                get { return _inventorySlot; }
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="QueryArgs"/> struct.

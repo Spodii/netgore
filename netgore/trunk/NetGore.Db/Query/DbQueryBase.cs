@@ -70,23 +70,6 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Performs pedantic validation of <see cref="DbParameter"/>s to make sure they are set up correctly.
-        /// Used in debug builds only.
-        /// </summary>
-        /// <param name="parameters">The <see cref="DbParameter"/>s.</param>
-        [Conditional("DEBUG")]
-        static void ValidateParameters(IEnumerable<DbParameter> parameters)
-        {
-            foreach (var p in parameters)
-            {
-                var n = p.ParameterName;
-                Debug.Assert(n.Length >= 2, "Parameters should always be 2 or more characters (one for the prefix, one or more for the name).");
-                Debug.Assert(n[0] == ParameterPrefixChar, "Parameters should begin with the ParameterPrefix.");
-                Debug.Assert(n[1] != ParameterPrefixChar, "The second character should not be the ParameterPrefix.");
-            }
-        }
-
-        /// <summary>
         /// Gets if this DbQueryBase contains a query that has any parameters.
         /// </summary>
         public bool HasParameters
@@ -467,6 +450,24 @@ namespace NetGore.Db
 
             lock (_commandsLock)
                 _commands.Push(cmd);
+        }
+
+        /// <summary>
+        /// Performs pedantic validation of <see cref="DbParameter"/>s to make sure they are set up correctly.
+        /// Used in debug builds only.
+        /// </summary>
+        /// <param name="parameters">The <see cref="DbParameter"/>s.</param>
+        [Conditional("DEBUG")]
+        static void ValidateParameters(IEnumerable<DbParameter> parameters)
+        {
+            foreach (var p in parameters)
+            {
+                var n = p.ParameterName;
+                Debug.Assert(n.Length >= 2,
+                             "Parameters should always be 2 or more characters (one for the prefix, one or more for the name).");
+                Debug.Assert(n[0] == ParameterPrefixChar, "Parameters should begin with the ParameterPrefix.");
+                Debug.Assert(n[1] != ParameterPrefixChar, "The second character should not be the ParameterPrefix.");
+            }
         }
 
         #region IDbQueryHandler Members

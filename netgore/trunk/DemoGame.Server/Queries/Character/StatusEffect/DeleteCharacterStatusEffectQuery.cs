@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class DeleteCharacterStatusEffectQuery : DbQueryNonReader<ActiveStatusEffectID>
     {
         static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `id`=@id",
-                                                            CharacterStatusEffectTable.TableName);
+                                                             CharacterStatusEffectTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCharacterStatusEffectQuery"/> class.

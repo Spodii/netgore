@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceCharacterEquippedItemQuery : DbQueryNonReader<CharacterEquippedTable>
     {
         static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` SET {1}", CharacterEquippedTable.TableName,
-                                                            FormatParametersIntoString(CharacterEquippedTable.DbColumns));
+                                                             FormatParametersIntoString(CharacterEquippedTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceCharacterEquippedItemQuery"/> class.

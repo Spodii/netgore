@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryStr =
             FormatQueryString("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
-                          CharacterTemplateEquippedTable.TableName);
+                              CharacterTemplateEquippedTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterTemplateEquippedQuery"/> class.

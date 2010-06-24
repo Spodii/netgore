@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterStatusEffectsQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `character_id`=@character_id",
-                                                            CharacterStatusEffectTable.TableName);
+                                                             CharacterStatusEffectTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectCharacterStatusEffectsQuery"/> class.
