@@ -631,7 +631,7 @@ namespace DemoGame.Server
                 }
 
                 // Try to create the map
-                MapInstance instance = null;
+                MapInstance instance;
                 try
                 {
                     instance = new MapInstance(mapID, World);
