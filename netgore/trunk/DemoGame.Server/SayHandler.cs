@@ -99,6 +99,10 @@ namespace DemoGame.Server
                 get { return Server.World; }
             }
 
+            /// <summary>
+            /// Sends a message to everyone online.
+            /// </summary>
+            /// <param name="message">The message to send.</param>
             [SayCommand("Shout")]
             public void Shout(string message)
             {
@@ -108,6 +112,11 @@ namespace DemoGame.Server
                 }
             }
 
+            /// <summary>
+            /// Sends a message to a single user.
+            /// </summary>
+            /// <param name="userName">The name of the user to whisper to.</param>
+            /// <param name="message">The message to send to the user.</param>
             [SayCommand("Tell")]
             [SayCommand("Whisper")]
             public void Tell(string userName, string message)
@@ -192,6 +201,11 @@ namespace DemoGame.Server
                 }
             }
 
+            /// <summary>
+            /// Handles kicking someone out of a guild.
+            /// </summary>
+            /// <param name="target">The <see cref="IGuildMember"/> being kicked out of the guild.</param>
+            /// <param name="userName">The name of the <paramref name="target"/>.</param>
             void GuildMemberPerformer_GuildKick(IGuildMember target, string userName)
             {
                 if (target == null)
@@ -307,6 +321,9 @@ namespace DemoGame.Server
 
             #region Groups
 
+            /// <summary>
+            /// Creates a new group.
+            /// </summary>
             [SayCommand("CreateGroup")]
             public void CreateGroup()
             {
@@ -321,6 +338,10 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GroupCreated);
             }
 
+            /// <summary>
+            /// Sends an invite to another user to join the group.
+            /// </summary>
+            /// <param name="userName">The name of the user to invite to the group.</param>
             [SayCommand("GroupInvite")]
             public void GroupInvite(string userName)
             {
@@ -362,6 +383,9 @@ namespace DemoGame.Server
                 }
             }
 
+            /// <summary>
+            /// Accepts an invitation to join a group.
+            /// </summary>
             [SayCommand("JoinGroup")]
             public void JoinGroup()
             {
@@ -371,6 +395,9 @@ namespace DemoGame.Server
                 User.TryJoinGroup();
             }
 
+            /// <summary>
+            /// Leaves the current group.
+            /// </summary>
             [SayCommand("LeaveGroup")]
             public void LeaveGroup()
             {
@@ -384,6 +411,11 @@ namespace DemoGame.Server
 
             #region Guilds
 
+            /// <summary>
+            /// Creates a new guild.
+            /// </summary>
+            /// <param name="name">The name of the guild.</param>
+            /// <param name="tag">The guild tag.</param>
             [SayCommand("CreateGuild")]
             public void CreateGuild(string name, string tag)
             {
@@ -424,6 +456,10 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildCreationSuccessful, name, tag);
             }
 
+            /// <summary>
+            /// Demotes the guild rank of another member in the guild.
+            /// </summary>
+            /// <param name="userName">The name of the fellow guild member to demote.</param>
             [SayCommand("Demote")]
             public void Demote(string userName)
             {
@@ -439,6 +475,9 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildDemoteFailed, userName);
             }
 
+            /// <summary>
+            /// Displays the guild commands.
+            /// </summary>
             [SayCommand("GuildHelp")]
             public void GuildHelp()
             {
@@ -461,6 +500,10 @@ namespace DemoGame.Server
                 UserChat(sb.ToString());
             }
 
+            /// <summary>
+            /// Invites a user to join the guild.
+            /// </summary>
+            /// <param name="toInvite">The name of the user to invite into the guild.</param>
             [SayCommand("GuildInvite")]
             public void GuildInvite(string toInvite)
             {
@@ -494,6 +537,10 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildInviteSuccess, invitee.Name);
             }
 
+            /// <summary>
+            /// Kicks a fellow guild member out of the guild.
+            /// </summary>
+            /// <param name="userName">The name of the user to kick out of the guild.</param>
             [SayCommand("GuildKick")]
             public void GuildKick(string userName)
             {
@@ -503,6 +550,9 @@ namespace DemoGame.Server
                 World.GuildMemberPerformer.Perform(userName, x => GuildMemberPerformer_GuildKick(x, userName));
             }
 
+            /// <summary>
+            /// Displays the latest entries of the guild log.
+            /// </summary>
             [SayCommand("GuildLog")]
             public void GuildLog()
             {
@@ -512,6 +562,9 @@ namespace DemoGame.Server
                 User.Guild.TryViewEventLog(User);
             }
 
+            /// <summary>
+            /// Displays all of the guild members.
+            /// </summary>
             [SayCommand("GuildMembers")]
             public void GuildMembers()
             {
@@ -521,6 +574,9 @@ namespace DemoGame.Server
                 User.Guild.TryViewMembers(User);
             }
 
+            /// <summary>
+            /// Displays the guild members that are currently online.
+            /// </summary>
             [SayCommand("GuildOnline")]
             public void GuildOnline()
             {
@@ -530,6 +586,10 @@ namespace DemoGame.Server
                 User.Guild.TryViewOnlineMembers(User);
             }
 
+            /// <summary>
+            /// Sends a message to all online fellow guild members.
+            /// </summary>
+            /// <param name="message">The message to send.</param>
             [SayCommand("GuildSay")]
             public void GuildSay(string message)
             {
@@ -542,6 +602,10 @@ namespace DemoGame.Server
                 }
             }
 
+            /// <summary>
+            /// Accepts an invitation to join a guild.
+            /// </summary>
+            /// <param name="guildName">The name of the guild to join.</param>
             [SayCommand("JoinGuild")]
             public void JoinGuild(string guildName)
             {
@@ -552,6 +616,9 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildJoinFailedInvalidOrNoInvite, guildName);
             }
 
+            /// <summary>
+            /// Leaves the current guild.
+            /// </summary>
             [SayCommand("LeaveGuild")]
             public void LeaveGuild()
             {
@@ -561,6 +628,10 @@ namespace DemoGame.Server
                 User.Guild = null;
             }
 
+            /// <summary>
+            /// Promotes the guild rank of another member in the guild.
+            /// </summary>
+            /// <param name="userName">The name of the fellow guild member to promote.</param>
             [SayCommand("Promote")]
             public void Promote(string userName)
             {
@@ -576,6 +647,10 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildPromoteFailed, userName);
             }
 
+            /// <summary>
+            /// Changes the name of the guild.
+            /// </summary>
+            /// <param name="newName">The new guild name.</param>
             [SayCommand("RenameGuild")]
             public void RenameGuild(string newName)
             {
@@ -598,6 +673,10 @@ namespace DemoGame.Server
                     User.Send(GameMessage.GuildRenameFailedUnknownReason, newName);
             }
 
+            /// <summary>
+            /// Changes the tag of the guild.
+            /// </summary>
+            /// <param name="newTag">The new guild tag.</param>
             [SayCommand("RetagGuild")]
             public void RetagGuild(string newTag)
             {
@@ -624,6 +703,10 @@ namespace DemoGame.Server
 
             #region Test/development commands
 
+            /// <summary>
+            /// Creates a new map instance and places the user on that map.
+            /// </summary>
+            /// <param name="mapID">The ID of the map to create the instance of.</param>
             [SayCommand("CreateMapInstance")]
             public void CreateMapInstance(MapID mapID)
             {
@@ -653,6 +736,10 @@ namespace DemoGame.Server
                 User.ChangeMap(instance, new Vector2(50, 50));
             }
 
+            /// <summary>
+            /// Leaves an instanced map if the map the user is on is for an instanced map. The user is warped
+            /// to their respawn position.
+            /// </summary>
             [SayCommand("LeaveMapInstance")]
             public void LeaveMapInstance()
             {
@@ -683,7 +770,11 @@ namespace DemoGame.Server
                 User.ChangeMap(map, User.RespawnPosition);
             }
 
+            /// <summary>
+            /// Causes you to kill yourself.
+            /// </summary>
             [SayCommand("Suicide")]
+            [SayCommand("Seppuku")]
             public void Suicide()
             {
                 if (!RequirePermissionLevel(UserPermissions.Moderator))
@@ -696,6 +787,12 @@ namespace DemoGame.Server
 
             #region Lesser Admin commands
 
+            /// <summary>
+            /// Creates an instance of an item from a template and adds it to your inventory. Any items that cannot
+            /// fit into the caller's inventory are destroyed.
+            /// </summary>
+            /// <param name="id">The ID of the item template to use.</param>
+            /// <param name="amount">The number of items to create.</param>
             [SayCommand("CreateItem")]
             public void CreateItem(ItemTemplateID id, byte amount)
             {
