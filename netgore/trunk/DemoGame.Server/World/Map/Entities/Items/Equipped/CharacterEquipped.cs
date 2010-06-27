@@ -221,13 +221,13 @@ namespace DemoGame.Server
             if (_isPersistent)
                 DbController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(Character.ID, slot);
 
+            SendSlotUpdate(slot, null);
+
             // Do not try working with a disposed ItemEntity! Instead, just let it die off.
             if (item.IsDisposed)
                 return;
 
             var remainder = Character.Inventory.Add(item);
-
-            SendSlotUpdate(slot, null);
 
             if (remainder != null)
             {
