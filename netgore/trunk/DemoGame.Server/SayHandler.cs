@@ -179,6 +179,19 @@ namespace DemoGame.Server
                 return true;
             }
 
+            /// <summary>
+            /// Sends a chat message to the <see cref="User"/>. This is provided purely for convenience since it can
+            /// become quite redundant having to constantly create the <see cref="ServerPacket.Chat"/> calls.
+            /// </summary>
+            /// <param name="message">The message to send.</param>
+            void UserChat(string message)
+            {
+                using (var pw = ServerPacket.Chat(message))
+                {
+                    User.Send(pw);
+                }
+            }
+
             void GuildMemberPerformer_GuildKick(IGuildMember target, string userName)
             {
                 if (target == null)
@@ -445,10 +458,7 @@ namespace DemoGame.Server
                 sb.AppendLine("/GuildLog");
                 sb.AppendLine("/GuildSay [message]");
 
-                using (var pw = ServerPacket.Chat(sb.ToString()))
-                {
-                    User.Send(pw);
-                }
+                UserChat(sb.ToString());
             }
 
             [SayCommand("GuildInvite")]
@@ -623,10 +633,7 @@ namespace DemoGame.Server
                 // Check for a valid map
                 if (!MapBase.IsMapIDValid(mapID))
                 {
-                    using (var pw = ServerPacket.Chat("Invalid map ID: " + mapID))
-                    {
-                        User.Send(pw);
-                    }
+                    UserChat("Invalid map ID: " + mapID);
                     return;
                 }
 
@@ -638,10 +645,7 @@ namespace DemoGame.Server
                 }
                 catch (Exception ex)
                 {
-                    using (var pw = ServerPacket.Chat("Failed to create instance: " + ex))
-                    {
-                        User.Send(pw);
-                    }
+                    UserChat("Failed to create instance: " + ex);
                     return;
                 }
 
@@ -658,10 +662,7 @@ namespace DemoGame.Server
                 // Check for a valid map
                 if (User.Map == null || !User.Map.IsInstanced)
                 {
-                    using (var pw = ServerPacket.Chat("You must be on an instanced map to do that."))
-                    {
-                        User.Send(pw);
-                    }
+                    UserChat("You must be on an instanced map to do that.");
                     return;
                 }
 
@@ -674,13 +675,7 @@ namespace DemoGame.Server
 
                 if (map == null)
                 {
-                    using (
-                        var pw =
-                            ServerPacket.Chat(
-                                "Could not teleport you to your respawn location - your respawn map is null for some reason..."))
-                    {
-                        User.Send(pw);
-                    }
+                    UserChat("Could not teleport you to your respawn location - your respawn map is null for some reason...");
                     return;
                 }
 
@@ -695,6 +690,38 @@ namespace DemoGame.Server
                     return;
 
                 User.Kill();
+            }
+
+            #endregion
+
+            #region Lesser Admin commands
+
+            [SayCommand("CreateItem")]
+            public void CreateItem(ItemTemplateID id, byte amount)
+            {
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                    return;
+
+                // Get the item template
+                var template = ItemTemplateManager.Instance[id];
+                if (template == null)
+                {
+                    UserChat("Invalid item template ID: " + id);
+                    return;
+                }
+
+                // Create the item
+                var item = new ItemEntity(template, amount);
+
+                // Give to user
+                var remainder = User.Inventory.Add(item);
+
+                // Delete any that failed to be added
+                if (remainder != null)
+                {
+                    UserChat(remainder.Amount + " units could not be added to your inventory.");
+                    remainder.Dispose();
+                }
             }
 
             #endregion
