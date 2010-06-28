@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -9,6 +10,28 @@ namespace NetGore.Network
     public interface IMessageProcessorStatistics
     {
         /// <summary>
+        /// Gets if file output is currently enabled.
+        /// </summary>
+        bool IsFileOutputEnabled { get; }
+
+        /// <summary>
+        /// Turns off automatic file output for the statistics.
+        /// </summary>
+        void DisableFileOutput();
+
+        /// <summary>
+        /// Turns on file output for the statistics.
+        /// </summary>
+        /// <param name="filePath">The output file path.</param>
+        /// <param name="dumpRate">The frequency, in milliseconds, of writing the output. Default value is 10 seconds.</param>
+        void EnableFileOutput(string filePath, int dumpRate = 10000);
+
+        /// <summary>
+        /// Gets all of the <see cref="IMessageProcessorStats"/> paired with their corresponding <see cref="IMessageProcessor"/> ID.
+        /// </summary>
+        IEnumerable<KeyValuePair<byte, IMessageProcessorStats>> GetAllStats();
+
+        /// <summary>
         /// Gets the <see cref="IMessageProcessorStats"/> for a <see cref="IMessageProcessor"/> identified by the ID.
         /// </summary>
         /// <param name="msgID">The ID of the <see cref="IMessageProcessor"/> to get the stats for.</param>
@@ -17,37 +40,15 @@ namespace NetGore.Network
         IMessageProcessorStats GetStats(byte msgID);
 
         /// <summary>
-        /// Gets all of the <see cref="IMessageProcessorStats"/> paired with their corresponding <see cref="IMessageProcessor"/> ID.
-        /// </summary>
-        IEnumerable<KeyValuePair<byte, IMessageProcessorStats>> GetAllStats();
-
-        /// <summary>
         /// Writes the statistics to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         void Write(IValueWriter writer);
 
         /// <summary>
-        /// Turns off automatic file output for the statistics.
-        /// </summary>
-        void DisableFileOutput();
-
-        /// <summary>
         /// Writes the stats to a file.
         /// </summary>
         /// <param name="filePath">The file path to write to.</param>
         void Write(string filePath);
-        
-        /// <summary>
-        /// Gets if file output is currently enabled.
-        /// </summary>
-        bool IsFileOutputEnabled {get;}
-
-        /// <summary>
-        /// Turns on file output for the statistics.
-        /// </summary>
-        /// <param name="filePath">The output file path.</param>
-        /// <param name="dumpRate">The frequency, in milliseconds, of writing the output. Default value is 10 seconds.</param>
-        void EnableFileOutput(string filePath, int dumpRate = 10000);
     }
 }

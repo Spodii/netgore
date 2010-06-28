@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,6 +32,11 @@ namespace DemoGame.Server
         /// delay is plenty long just in case the server is bogged down. Definitely don't want to end up adding users to a disposed map!
         /// </summary>
         const int _initialDeleteTimeout = 30000; // 30 seconds
+
+        /// <summary>
+        /// A cached empty <see cref="IEnumerable{T}"/> of <see cref="NPC"/>s.
+        /// </summary>
+        static readonly IEnumerable<NPC> _emptyNPCs = Enumerable.Empty<NPC>();
 
         /// <summary>
         /// When this <see cref="MapInstance"/> will be deleted. If null, then we simply will not be checking to delete the map.
@@ -105,11 +110,6 @@ namespace DemoGame.Server
                     _deleteTime = null;
             }
         }
-
-        /// <summary>
-        /// A cached empty <see cref="IEnumerable{T}"/> of <see cref="NPC"/>s.
-        /// </summary>
-        static readonly IEnumerable<NPC> _emptyNPCs = Enumerable.Empty<NPC>();
 
         /// <summary>
         /// Handles loading the persistent NPCs on the map.

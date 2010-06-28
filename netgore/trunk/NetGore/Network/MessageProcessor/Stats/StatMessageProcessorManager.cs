@@ -1,4 +1,4 @@
-using System.IO;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -10,11 +10,6 @@ namespace NetGore.Network
     public class StatMessageProcessorManager : MessageProcessorManager
     {
         readonly MessageProcessorStatistics _stats;
-
-        /// <summary>
-        /// Gets the <see cref="IMessageProcessorStatistics"/> instance.
-        /// </summary>
-        public IMessageProcessorStatistics Stats { get { return _stats; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StatMessageProcessorManager"/> class.
@@ -29,6 +24,14 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Gets the <see cref="IMessageProcessorStatistics"/> instance.
+        /// </summary>
+        public IMessageProcessorStatistics Stats
+        {
+            get { return _stats; }
+        }
+
+        /// <summary>
         /// Invokes the <see cref="IMessageProcessor"/> for handle processing a message block.
         /// </summary>
         /// <param name="socket">The <see cref="IIPSocket"/> that the data came from.</param>
@@ -37,11 +40,11 @@ namespace NetGore.Network
         protected override void InvokeProcessor(IIPSocket socket, IMessageProcessor processor, BitStream reader)
         {
             // Invoke the processor as normal, but keeping track of the bit position before and after invoking
-            int startBits = reader.PositionBits;
+            var startBits = reader.PositionBits;
 
             base.InvokeProcessor(socket, processor, reader);
 
-            int endBits = reader.PositionBits;
+            var endBits = reader.PositionBits;
 
             // Update the stats
             _stats.HandleProcessorInvoked(processor.MsgID, endBits - startBits);

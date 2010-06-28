@@ -8,7 +8,7 @@ namespace NetGore.Network
     /// Holds information allowing the ability to call a message processor class
     /// for a message of a specified ID just from using attribute tags
     /// </summary>
-    public class MessageProcessor  : IMessageProcessor
+    public class MessageProcessor : IMessageProcessor
     {
         /// <summary>
         /// The maximum valid message processor ID.
@@ -44,6 +44,8 @@ namespace NetGore.Network
             _call = methodDelegate;
         }
 
+        #region IMessageProcessor Members
+
         /// <summary>
         /// Gets the <see cref="MessageProcessorHandler"/> used to process the message.
         /// </summary>
@@ -59,5 +61,7 @@ namespace NetGore.Network
         {
             get { return _msgID; }
         }
+
+        #endregion
     }
 }

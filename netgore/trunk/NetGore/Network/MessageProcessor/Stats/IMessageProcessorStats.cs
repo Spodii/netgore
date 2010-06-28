@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -9,19 +9,14 @@ namespace NetGore.Network
     public interface IMessageProcessorStats
     {
         /// <summary>
-        /// Gets the ID of the <see cref="IMessageProcessor"/> that these stats are for.
-        /// </summary>
-        byte ProcessorID { get; }
-
-        /// <summary>
         /// Gets the number of calls that have been made to this processor.
         /// </summary>
         uint Calls { get; }
 
         /// <summary>
-        /// Gets the total bits read by this processor.
+        /// Gets the length of the longest message read by this processor.
         /// </summary>
-        uint TotalBits { get; }
+        ushort Max { get; }
 
         /// <summary>
         /// Gets length of the shortest message read by this processor.
@@ -29,9 +24,14 @@ namespace NetGore.Network
         ushort Min { get; }
 
         /// <summary>
-        /// Gets the length of the longest message read by this processor.
+        /// Gets the ID of the <see cref="IMessageProcessor"/> that these stats are for.
         /// </summary>
-        ushort Max { get; }
+        byte ProcessorID { get; }
+
+        /// <summary>
+        /// Gets the total bits read by this processor.
+        /// </summary>
+        uint TotalBits { get; }
 
         /// <summary>
         /// Writes the <see cref="IMessageProcessorStats"/> to an <see cref="IValueWriter"/>.
