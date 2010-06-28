@@ -71,7 +71,15 @@ namespace DemoGame.Client
             _dynamicEntityFactory = dynamicEntityFactory;
             _socketSender = socketSender;
             _gameplayScreen = gameplayScreen;
+
+            // When debugging, use the StatMessageProcessorManager instead (same thing as the other, but provides network statistics)
+#if DEBUG
+            var m = new StatMessageProcessorManager(this, EnumHelper<ServerPacketID>.BitsRequired);
+            m.Stats.EnableFileOutput(ContentPaths.Build.Root.Join("netstats_in" + EngineSettings.DataFileSuffix));
+            _ppManager = m;
+#else
             _ppManager = new MessageProcessorManager(this, EnumHelper<ServerPacketID>.BitsRequired);
+#endif
         }
 
         /// <summary>
