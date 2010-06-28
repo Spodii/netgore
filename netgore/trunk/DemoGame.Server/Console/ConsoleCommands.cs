@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using DemoGame.AI;
 using DemoGame.Server.Queries;
+using log4net;
 using NetGore;
 using NetGore.Db;
 
@@ -28,39 +30,27 @@ namespace DemoGame.Server
             _server = server;
         }
 
+        /// <summary>
+        /// Gets the <see cref="IDbController"/> instance.
+        /// </summary>
         public IDbController DbController
         {
             get { return Server.DbController; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="Server"/> instance.
+        /// </summary>
         public Server Server
         {
             get { return _server; }
         }
 
-        [ConsoleCommand("AddUser")]
-        public string AddUser(string userName, string accountName)
-        {
-            string errorMsg;
-            var success = UserAccount.TryAddCharacter(DbController, accountName, userName, out errorMsg);
-
-            if (!success)
-                return "User creation failed: " + errorMsg;
-            else
-                return "User creation successful.";
-        }
-
-        static string BuildString(IEnumerable<string> strings, string delimiter)
-        {
-            var sb = new StringBuilder();
-            foreach (var s in strings)
-            {
-                sb.Append(s);
-                sb.Append(delimiter);
-            }
-            return sb.ToString();
-        }
-
+        /// <summary>
+        /// Counts the number of characters in an account.
+        /// </summary>
+        /// <param name="accountName">The name of the account.</param>
+        /// <returns>The number of characters in the account.</returns>
         [ConsoleCommand("CountAccountCharacters")]
         public string CountAccountCharacters(string accountName)
         {
@@ -71,7 +61,12 @@ namespace DemoGame.Server
 
             return string.Format("There are {0} characters in account {1}.", result, accountName);
         }
-
+        
+        /// <summary>
+        /// Counts the number of characters in an account.
+        /// </summary>
+        /// <param name="id">The ID of the account.</param>
+        /// <returns>The number of characters in the account.</returns>
         [ConsoleCommand("CountAccountCharacters")]
         public string CountAccountCharacters(int id)
         {
@@ -82,6 +77,13 @@ namespace DemoGame.Server
             return string.Format("There are {0} characters in account ID {1}.", result, accountID);
         }
 
+        /// <summary>
+        /// Creates a new account.
+        /// </summary>
+        /// <param name="accountName">The account name.</param>
+        /// <param name="accountPassword">The account password.</param>
+        /// <param name="email">The account email address.</param>
+        /// <returns>The results of the operation.</returns>
         [ConsoleCommand("CreateAccount")]
         public string CreateAccount(string accountName, string accountPassword, string email)
         {
@@ -96,6 +98,12 @@ namespace DemoGame.Server
                 return "Failed to create new account: " + errorMessage;
         }
 
+        /// <summary>
+        /// Creates a user on an account.
+        /// </summary>
+        /// <param name="accountName">The account to add the user to.</param>
+        /// <param name="userName">The name of the user to create.</param>
+        /// <returns>The results of the operation.</returns>
         [ConsoleCommand("CreateAccountUser")]
         public string CreateAccountUser(string accountName, string userName)
         {
@@ -106,16 +114,33 @@ namespace DemoGame.Server
             return "Character successfully added to account.";
         }
 
+        /// <summary>
+        /// Tries to execute a command.
+        /// </summary>
+        /// <param name="commandString">The command string to execute.</param>
+        /// <returns>The </returns>
         public string ExecuteCommand(string commandString)
         {
             ThreadAsserts.IsMainThread();
 
             string result;
-            _parser.TryParse(this, commandString, out result);
+            if (!_parser.TryParse(this, commandString, out result))
+            {
+                if (string.IsNullOrEmpty(result))
+                {
+                    const string errmsg = "Failed to execute command string: {0}";
+                    result = string.Format(errmsg, commandString);
+                }
+            }
 
             return result;
         }
 
+        /// <summary>
+        /// Finds where a live item resides.
+        /// </summary>
+        /// <param name="itemID">The ID of the item to search for.</param>
+        /// <returns>The location of the live item, or null if not found.</returns>
         [ConsoleCommand("FindItem")]
         public string FindItem(string itemID)
         {
@@ -181,6 +206,11 @@ namespace DemoGame.Server
             return null;
         }
 
+        /// <summary>
+        /// Gets the ID of an account.
+        /// </summary>
+        /// <param name="accountName">The name of the account.</param>
+        /// <returns>The ID of the account.</returns>
         [ConsoleCommand("GetAccountID")]
         public string GetAccountID(string accountName)
         {
@@ -228,6 +258,10 @@ namespace DemoGame.Server
             return _separator + _newLine + string.Format(header, args) + _newLine + _separator + _newLine;
         }
 
+        /// <summary>
+        /// Displays the console command help.
+        /// </summary>
+        /// <returns>The console command help.</returns>
         [ConsoleCommand("Help")]
         public string Help()
         {
@@ -262,6 +296,10 @@ namespace DemoGame.Server
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Terminates the server.
+        /// </summary>
+        /// <returns>The results of the operation.</returns>
         [ConsoleCommand("Quit")]
         public string Quit()
         {
@@ -269,15 +307,23 @@ namespace DemoGame.Server
             return "Server shutting down";
         }
 
+        /// <summary>
+        /// Shows all of the users that are currently online.
+        /// </summary>
+        /// <returns>All of the online users.</returns>
         [ConsoleCommand("ShowUsers")]
         public string ShowUsers()
         {
             var users = Server.World.GetUsers();
-            var userInfo = BuildString(users.Select(GetCharacterInfoShort), Environment.NewLine);
+            var userInfo = users.Select(GetCharacterInfoShort).Implode(Environment.NewLine);
 
             return GetCommandHeader("Total Users: {0}", users.Count()) + userInfo;
         }
 
+        /// <summary>
+        /// Toggles the AI.
+        /// </summary>
+        /// <returns>The results of the operation.</returns>
         [ConsoleCommand("ToggleAI")]
         public string ToggleAI()
         {

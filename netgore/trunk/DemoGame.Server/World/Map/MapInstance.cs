@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -106,11 +107,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// A cached empty <see cref="IEnumerable{T}"/> of <see cref="NPC"/>s.
+        /// </summary>
+        static readonly IEnumerable<NPC> _emptyNPCs = Enumerable.Empty<NPC>();
+
+        /// <summary>
         /// Handles loading the persistent NPCs on the map.
         /// </summary>
-        protected override void LoadPersistentNPCs()
+        protected override IEnumerable<NPC> LoadPersistentNPCs()
         {
             // Do NOT load persistent anything on instanced maps!
+            return _emptyNPCs;
         }
 
         /// <summary>
