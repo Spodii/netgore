@@ -14,59 +14,14 @@ namespace NetGore.Network
     public class MessageProcessorStatistics : IMessageProcessorStatistics
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const string _rootNodeName = "MessageProcessorStats";
 
         readonly IMessageProcessorManager _mpm;
         readonly ProcStats[] _stats = new ProcStats[MessageProcessor.MaxProcessorID + 1];
 
-        string _outFilePath;
         TickCount _nextDumpTime;
         int _outDumpRate;
-
-        /// <summary>
-        /// Turns off automatic file output for the statistics.
-        /// </summary>
-        public void DisableFileOutput()
-        {
-            _outFilePath = null;
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is <see cref="GenericValueIOFormat.Xml"/>.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
-
-        /// <summary>
-        /// Gets if file output is currently enabled.
-        /// </summary>
-        public bool IsFileOutputEnabled { get { return _outFilePath != null; } }
-
-        /// <summary>
-        /// Turns on file output for the statistics.
-        /// </summary>
-        /// <param name="filePath">The output file path.</param>
-        /// <param name="dumpRate">The frequency, in milliseconds, of writing the output. Default value is 10 seconds.</param>
-        public void EnableFileOutput(string filePath, int dumpRate = 10000)
-        {
-            _outFilePath = filePath;
-            _outDumpRate = dumpRate;
-
-            _nextDumpTime = TickCount.Now;
-        }
-
-        /// <summary>
-        /// Writes the stats to a file.
-        /// </summary>
-        /// <param name="filePath">The file path to write to.</param>
-        public void Write(string filePath)
-        {
-            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
-            {
-                Write(writer);
-            }
-        }
+        string _outFilePath;
 
         /// <summary>
         /// Initializes the <see cref="StatMessageProcessorManager"/> class.
@@ -74,26 +29,6 @@ namespace NetGore.Network
         static MessageProcessorStatistics()
         {
             EncodingFormat = GenericValueIOFormat.Xml;
-        }
-
-        const string _rootNodeName = "MessageProcessorStats";
-
-        /// <summary>
-        /// Writes the statistics to an <see cref="IValueWriter"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        public void Write(IValueWriter writer)
-        {
-            foreach (var stat in GetAllStats())
-            {
-                var nodeName = "ID" + stat.Key;
-
-                writer.WriteStartNode(nodeName);
-
-                stat.Value.Write(writer);
-
-                writer.WriteEndNode(nodeName);
-            }
         }
 
         /// <summary>
@@ -104,6 +39,14 @@ namespace NetGore.Network
         {
             _mpm = mpm;
         }
+
+        /// <summary>
+        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
+        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
+        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
+        /// Default value is <see cref="GenericValueIOFormat.Xml"/>.
+        /// </summary>
+        public static GenericValueIOFormat? EncodingFormat { get; set; }
 
         /// <summary>
         /// Gets the <see cref="IMessageProcessorManager"/> that these statistics are for.
@@ -164,6 +107,35 @@ namespace NetGore.Network
         #region IMessageProcessorStatistics Members
 
         /// <summary>
+        /// Gets if file output is currently enabled.
+        /// </summary>
+        public bool IsFileOutputEnabled
+        {
+            get { return _outFilePath != null; }
+        }
+
+        /// <summary>
+        /// Turns off automatic file output for the statistics.
+        /// </summary>
+        public void DisableFileOutput()
+        {
+            _outFilePath = null;
+        }
+
+        /// <summary>
+        /// Turns on file output for the statistics.
+        /// </summary>
+        /// <param name="filePath">The output file path.</param>
+        /// <param name="dumpRate">The frequency, in milliseconds, of writing the output. Default value is 10 seconds.</param>
+        public void EnableFileOutput(string filePath, int dumpRate = 10000)
+        {
+            _outFilePath = filePath;
+            _outDumpRate = dumpRate;
+
+            _nextDumpTime = TickCount.Now;
+        }
+
+        /// <summary>
         /// Gets all of the <see cref="IMessageProcessorStats"/> paired with their corresponding <see cref="IMessageProcessor"/> ID.
         /// </summary>
         public IEnumerable<KeyValuePair<byte, IMessageProcessorStats>> GetAllStats()
@@ -186,6 +158,36 @@ namespace NetGore.Network
         public IMessageProcessorStats GetStats(byte msgID)
         {
             return _stats[msgID];
+        }
+
+        /// <summary>
+        /// Writes the stats to a file.
+        /// </summary>
+        /// <param name="filePath">The file path to write to.</param>
+        public void Write(string filePath)
+        {
+            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
+            {
+                Write(writer);
+            }
+        }
+
+        /// <summary>
+        /// Writes the statistics to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        public void Write(IValueWriter writer)
+        {
+            foreach (var stat in GetAllStats())
+            {
+                var nodeName = "ID" + stat.Key;
+
+                writer.WriteStartNode(nodeName);
+
+                stat.Value.Write(writer);
+
+                writer.WriteEndNode(nodeName);
+            }
         }
 
         #endregion

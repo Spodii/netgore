@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using DemoGame.AI;
 using DemoGame.Server.Queries;
-using log4net;
 using NetGore;
 using NetGore.Db;
 
@@ -61,7 +58,7 @@ namespace DemoGame.Server
 
             return string.Format("There are {0} characters in account {1}.", result, accountName);
         }
-        
+
         /// <summary>
         /// Counts the number of characters in an account.
         /// </summary>

@@ -1000,7 +1000,7 @@ namespace DemoGame.Client
 
         #endregion
 
-        #region IMessageProcessor Members
+        #region ISocketReceiveDataProcessor Members
 
         /// <summary>
         /// Handles a list of received data and forwards it to the corresponding MessageProcessors.

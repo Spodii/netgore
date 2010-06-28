@@ -69,7 +69,8 @@ namespace NetGore.Network
                     {
                         if (_processors[atb.MsgID] != null)
                         {
-                            const string errmsg = "A MessageHandlerAttribute with ID `{0}` already exists. Methods in question: {1} and {2}";
+                            const string errmsg =
+                                "A MessageHandlerAttribute with ID `{0}` already exists. Methods in question: {1} and {2}";
                             Debug.Fail(string.Format(errmsg, atb.MsgID, _processors[atb.MsgID].Call.Method, method));
                             throw new Exception(string.Format(errmsg, atb.MsgID, _processors[atb.MsgID].Call.Method, method));
                         }
@@ -94,6 +95,80 @@ namespace NetGore.Network
         {
             return new MessageProcessor(atb.MsgID, handler);
         }
+
+        /// <summary>
+        /// Creates the <see cref="BitStream"/> to read the data.
+        /// </summary>
+        /// <param name="data">The data to read.</param>
+        /// <returns>The <see cref="BitStream"/> to read the <paramref name="data"/>.</returns> 
+        protected virtual BitStream CreateReader(byte[] data)
+        {
+            return new BitStream(data);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IMessageProcessor"/> with the given ID. This will only ever return the <see cref="IMessageProcessor"/>
+        /// for the method that was specified using a <see cref="MessageHandlerAttribute"/>. Is intended to only be used by
+        /// <see cref="MessageProcessorManager.GetMessageProcessor"/> to allow for access of the <see cref="IMessageProcessor"/>s loaded
+        /// through the attribute.
+        /// </summary>
+        /// <param name="msgID">The ID of the message.</param>
+        /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
+        protected IMessageProcessor GetInternalMessageProcessor(byte msgID)
+        {
+            return _processors[msgID];
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IMessageProcessor"/> for the corresponding message ID. Can be overridden by the derived class to allow
+        /// for using a <see cref="IMessageProcessor"/> other than what is acquired by
+        /// <see cref="MessageProcessorManager.GetInternalMessageProcessor"/>.
+        /// </summary>
+        /// <param name="msgID">The ID of the message.</param>
+        /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
+        protected virtual IMessageProcessor GetMessageProcessor(byte msgID)
+        {
+            return GetInternalMessageProcessor(msgID);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="IMessageProcessor"/> for handle processing a message block.
+        /// </summary>
+        /// <param name="socket">The <see cref="IIPSocket"/> that the data came from.</param>
+        /// <param name="processor">The <see cref="IMessageProcessor"/> to invoke.</param>
+        /// <param name="reader">The <see cref="BitStream"/> containing the data to process.</param>
+        protected virtual void InvokeProcessor(IIPSocket socket, IMessageProcessor processor, BitStream reader)
+        {
+            processor.Call(socket, reader);
+        }
+
+        /// <summary>
+        /// Reads the next message ID.
+        /// </summary>
+        /// <param name="reader">The <see cref="BitStream"/> to read the ID from.</param>
+        /// <returns>The next message ID.</returns>
+        protected virtual byte ReadMessageID(BitStream reader)
+        {
+            return reader.ReadByte(_messageIDBitLength);
+        }
+
+        /// <summary>
+        /// Checks that the rest of the <paramref name="bitStream"/> contains only unset bits.
+        /// </summary>
+        /// <param name="bitStream"><see cref="BitStream"/> to check.</param>
+        /// <returns>True if all of the bits in the <paramref name="bitStream"/> are unset; otherwise false.</returns>
+        static bool RestOfStreamIsZero(BitStream bitStream)
+        {
+            while (bitStream.PositionBits < bitStream.LengthBits)
+            {
+                if (bitStream.ReadBool())
+                    return false;
+            }
+
+            return true;
+        }
+
+        #region IMessageProcessorManager Members
 
         /// <summary>
         /// Gets the <see cref="IMessageProcessor"/>s handled by this <see cref="IMessageProcessorManager"/>.
@@ -126,26 +201,6 @@ namespace NetGore.Network
             {
                 Process(rec.Socket, data);
             }
-        }
-
-        /// <summary>
-        /// Creates the <see cref="BitStream"/> to read the data.
-        /// </summary>
-        /// <param name="data">The data to read.</param>
-        /// <returns>The <see cref="BitStream"/> to read the <paramref name="data"/>.</returns> 
-        protected virtual BitStream CreateReader(byte[] data)
-        {
-            return new BitStream(data);
-        }
-
-        /// <summary>
-        /// Reads the next message ID.
-        /// </summary>
-        /// <param name="reader">The <see cref="BitStream"/> to read the ID from.</param>
-        /// <returns>The next message ID.</returns>
-        protected virtual byte ReadMessageID(BitStream reader)
-        {
-            return reader.ReadByte(_messageIDBitLength);
         }
 
         /// <summary>
@@ -232,42 +287,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Invokes the <see cref="IMessageProcessor"/> for handle processing a message block.
-        /// </summary>
-        /// <param name="socket">The <see cref="IIPSocket"/> that the data came from.</param>
-        /// <param name="processor">The <see cref="IMessageProcessor"/> to invoke.</param>
-        /// <param name="reader">The <see cref="BitStream"/> containing the data to process.</param>
-        protected virtual void InvokeProcessor(IIPSocket socket, IMessageProcessor processor, BitStream reader)
-        {
-            processor.Call(socket, reader);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IMessageProcessor"/> with the given ID. This will only ever return the <see cref="IMessageProcessor"/>
-        /// for the method that was specified using a <see cref="MessageHandlerAttribute"/>. Is intended to only be used by
-        /// <see cref="MessageProcessorManager.GetMessageProcessor"/> to allow for access of the <see cref="IMessageProcessor"/>s loaded
-        /// through the attribute.
-        /// </summary>
-        /// <param name="msgID">The ID of the message.</param>
-        /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
-        protected IMessageProcessor GetInternalMessageProcessor(byte msgID)
-        {
-            return _processors[msgID];
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IMessageProcessor"/> for the corresponding message ID. Can be overridden by the derived class to allow
-        /// for using a <see cref="IMessageProcessor"/> other than what is acquired by
-        /// <see cref="MessageProcessorManager.GetInternalMessageProcessor"/>.
-        /// </summary>
-        /// <param name="msgID">The ID of the message.</param>
-        /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
-        protected virtual IMessageProcessor GetMessageProcessor(byte msgID)
-        {
-            return GetInternalMessageProcessor(msgID);
-        }
-
-        /// <summary>
         /// Handles a list of received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
         /// </summary>
         /// <param name="recvData">IEnumerable of <see cref="SocketReceiveData"/>s to process.</param>
@@ -283,20 +302,6 @@ namespace NetGore.Network
             }
         }
 
-        /// <summary>
-        /// Checks that the rest of the <paramref name="bitStream"/> contains only unset bits.
-        /// </summary>
-        /// <param name="bitStream"><see cref="BitStream"/> to check.</param>
-        /// <returns>True if all of the bits in the <paramref name="bitStream"/> are unset; otherwise false.</returns>
-        static bool RestOfStreamIsZero(BitStream bitStream)
-        {
-            while (bitStream.PositionBits < bitStream.LengthBits)
-            {
-                if (bitStream.ReadBool())
-                    return false;
-            }
-
-            return true;
-        }
+        #endregion
     }
 }

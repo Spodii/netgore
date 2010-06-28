@@ -189,19 +189,6 @@ namespace DemoGame.Server
             }
 
             /// <summary>
-            /// Sends a chat message to the <see cref="User"/>. This is provided purely for convenience since it can
-            /// become quite redundant having to constantly create the <see cref="ServerPacket.Chat"/> calls.
-            /// </summary>
-            /// <param name="message">The message to send.</param>
-            void UserChat(string message)
-            {
-                using (var pw = ServerPacket.Chat(message))
-                {
-                    User.Send(pw);
-                }
-            }
-
-            /// <summary>
             /// Handles kicking someone out of a guild.
             /// </summary>
             /// <param name="target">The <see cref="IGuildMember"/> being kicked out of the guild.</param>
@@ -315,6 +302,19 @@ namespace DemoGame.Server
                 }
 
                 return true;
+            }
+
+            /// <summary>
+            /// Sends a chat message to the <see cref="User"/>. This is provided purely for convenience since it can
+            /// become quite redundant having to constantly create the <see cref="ServerPacket.Chat"/> calls.
+            /// </summary>
+            /// <param name="message">The message to send.</param>
+            void UserChat(string message)
+            {
+                using (var pw = ServerPacket.Chat(message))
+                {
+                    User.Send(pw);
+                }
             }
 
             #endregion
