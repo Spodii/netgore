@@ -29,7 +29,7 @@ using SFML.Graphics;
 
 namespace DemoGame.Client
 {
-    class ClientPacketHandler : IMessageProcessor, IGetTime
+    class ClientPacketHandler : ISocketReceiveDataProcessor, IGetTime
     {
         /// <summary>
         /// Handles when a CreateAccount message is received.
@@ -48,7 +48,7 @@ namespace DemoGame.Client
         readonly GameMessageCollection _gameMessages = GameMessageCollection.Create();
         readonly GameplayScreen _gameplayScreen;
         readonly Stopwatch _pingWatch = new Stopwatch();
-        readonly MessageProcessorManager _ppManager;
+        readonly IMessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
 
         /// <summary>

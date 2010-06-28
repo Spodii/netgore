@@ -12,13 +12,13 @@ namespace NetGore.Network
     /// Manages a group of message processing methods, each identified by the attribute
     /// <see cref="MessageHandlerAttribute"/>.
     /// </summary>
-    public class MessageProcessorManager
+    public class MessageProcessorManager : IMessageProcessorManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly int _messageIDBitLength;
-        readonly MessageProcessor[] _processors;
-      
+        readonly IMessageProcessor[] _processors = new IMessageProcessor[MessageProcessor.MaxProcessorID + 1];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessorManager"/> class.
         /// </summary>
@@ -39,9 +39,6 @@ namespace NetGore.Network
             var mpdType = typeof(MessageProcessorHandler);
             var atbType = typeof(MessageHandlerAttribute);
             var voidType = typeof(void);
-
-            // Create the processors array
-            _processors = new MessageProcessor[256];
 
             // Search through all types in the Assembly
             var assemb = Assembly.GetAssembly(source.GetType());
@@ -79,22 +76,35 @@ namespace NetGore.Network
 
                         var del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);
                         Debug.Assert(del != null);
-                        _processors[atb.MsgID] = new MessageProcessor(atb.MsgID, del);
+                        _processors[atb.MsgID] = CreateMessageProcessor(atb, del);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the MessageProcessors handled by this MessageProcessorManager.
+        /// Creates a <see cref="IMessageProcessor"/>. Can be overridden in the derived classes to provide a different
+        /// <see cref="IMessageProcessor"/> implementation. 
         /// </summary>
-        public IEnumerable<MessageProcessor> Processors
+        /// <param name="atb">The <see cref="MessageHandlerAttribute"/> that was attached to the method that the
+        /// <see cref="IMessageProcessor"/> is being created for.</param>
+        /// <param name="handler">The <see cref="MessageProcessorHandler"/> for invoking the method.</param>
+        /// <returns>The <see cref="IMessageProcessor"/> instance.</returns>
+        protected virtual IMessageProcessor CreateMessageProcessor(MessageHandlerAttribute atb, MessageProcessorHandler handler)
+        {
+            return new MessageProcessor(atb.MsgID, handler);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IMessageProcessor"/>s handled by this <see cref="IMessageProcessorManager"/>.
+        /// </summary>
+        public IEnumerable<IMessageProcessor> Processors
         {
             get { return _processors; }
         }
 
         /// <summary>
-        /// Handles received data and forwards it to the corresponding <see cref="MessageProcessor"/>.
+        /// Handles received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
         /// </summary>
         /// <param name="rec"><see cref="SocketReceiveData"/> to process.</param>
         public void Process(SocketReceiveData rec)
@@ -139,7 +149,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Handles received data and forwards it to the corresponding <see cref="MessageProcessor"/>.
+        /// Handles received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
         /// </summary>
         /// <param name="socket"><see cref="IIPSocket"/> the data came from.</param>
         /// <param name="data">Data to process.</param>
@@ -222,43 +232,43 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Invokes the <see cref="MessageProcessor"/> for handle processing a message block.
+        /// Invokes the <see cref="IMessageProcessor"/> for handle processing a message block.
         /// </summary>
         /// <param name="socket">The <see cref="IIPSocket"/> that the data came from.</param>
-        /// <param name="processor">The <see cref="MessageProcessor"/> to invoke.</param>
+        /// <param name="processor">The <see cref="IMessageProcessor"/> to invoke.</param>
         /// <param name="reader">The <see cref="BitStream"/> containing the data to process.</param>
-        protected virtual void InvokeProcessor(IIPSocket socket, MessageProcessor processor, BitStream reader)
+        protected virtual void InvokeProcessor(IIPSocket socket, IMessageProcessor processor, BitStream reader)
         {
             processor.Call(socket, reader);
         }
 
         /// <summary>
-        /// Gets the <see cref="MessageProcessor"/> with the given ID. This will only ever return the <see cref="MessageProcessor"/>
+        /// Gets the <see cref="IMessageProcessor"/> with the given ID. This will only ever return the <see cref="IMessageProcessor"/>
         /// for the method that was specified using a <see cref="MessageHandlerAttribute"/>. Is intended to only be used by
-        /// <see cref="MessageProcessorManager.GetMessageProcessor"/> to allow for access of the <see cref="MessageProcessor"/>s loaded
+        /// <see cref="MessageProcessorManager.GetMessageProcessor"/> to allow for access of the <see cref="IMessageProcessor"/>s loaded
         /// through the attribute.
         /// </summary>
         /// <param name="msgID">The ID of the message.</param>
-        /// <returns>The <see cref="MessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
-        protected MessageProcessor GetInternalMessageProcessor(byte msgID)
+        /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
+        protected IMessageProcessor GetInternalMessageProcessor(byte msgID)
         {
             return _processors[msgID];
         }
 
         /// <summary>
-        /// Gets the <see cref="MessageProcessor"/> for the corresponding message ID. Can be overridden by the derived class to allow
-        /// for using a <see cref="MessageProcessor"/> other than what is acquired by
+        /// Gets the <see cref="IMessageProcessor"/> for the corresponding message ID. Can be overridden by the derived class to allow
+        /// for using a <see cref="IMessageProcessor"/> other than what is acquired by
         /// <see cref="MessageProcessorManager.GetInternalMessageProcessor"/>.
         /// </summary>
         /// <param name="msgID">The ID of the message.</param>
-        /// <returns>The <see cref="MessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
-        protected virtual MessageProcessor GetMessageProcessor(byte msgID)
+        /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
+        protected virtual IMessageProcessor GetMessageProcessor(byte msgID)
         {
             return GetInternalMessageProcessor(msgID);
         }
 
         /// <summary>
-        /// Handles a list of received data and forwards it to the corresponding <see cref="MessageProcessor"/>.
+        /// Handles a list of received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
         /// </summary>
         /// <param name="recvData">IEnumerable of <see cref="SocketReceiveData"/>s to process.</param>
         public void Process(IEnumerable<SocketReceiveData> recvData)

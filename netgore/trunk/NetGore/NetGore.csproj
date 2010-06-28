@@ -351,6 +351,12 @@
     <Compile Include="IO\ValueReaderWriter\Generic\GenericValueReader.cs" />
     <Compile Include="IO\ValueReaderWriter\Generic\GenericValueWriter.cs" />
     <Compile Include="Network\ExternalIPParsingRule.cs" />
+    <Compile Include="Network\MessageProcessor\IMessageProcessorManager.cs" />
+    <Compile Include="Network\MessageProcessor\ISocketReceiveDataProcessor.cs" />
+    <Compile Include="Network\MessageProcessor\Stats\IMessageProcessorStatistics.cs" />
+    <Compile Include="Network\MessageProcessor\Stats\IMessageProcessorStats.cs" />
+    <Compile Include="Network\MessageProcessor\Stats\MessageProcessorStatistics.cs" />
+    <Compile Include="Network\MessageProcessor\Stats\StatMessageProcessorManager.cs" />
     <Compile Include="Network\NetStats.cs" />
     <Compile Include="Network\PacketTimeStampHelper.cs" />
     <Compile Include="Core\SafeRandom.cs" />

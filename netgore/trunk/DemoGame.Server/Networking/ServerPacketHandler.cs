@@ -17,13 +17,13 @@ using NetGore.Network;
 
 namespace DemoGame.Server
 {
-    class ServerPacketHandler : IMessageProcessor, IGetTime
+    class ServerPacketHandler : ISocketReceiveDataProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly QuestManager _questManager = QuestManager.Instance;
 
         readonly Queue<IIPSocket> _disconnectedSockets = new Queue<IIPSocket>();
-        readonly MessageProcessorManager _ppManager;
+        readonly IMessageProcessorManager _ppManager;
         readonly SayHandler _sayHandler;
         readonly Server _server;
         readonly ServerSockets _serverSockets;
@@ -46,7 +46,14 @@ namespace DemoGame.Server
 
             _sayHandler = new SayHandler(server);
 
+            // When debugging, use the StatMessageProcessorManager instead (same thing as the other, but provides network statistics)
+#if DEBUG
+            var m = new StatMessageProcessorManager(this, EnumHelper<ClientPacketID>.BitsRequired);
+            m.Stats.EnableFileOutput(ContentPaths.Build.Root.Join("netstats_in" + EngineSettings.DataFileSuffix));
+            _ppManager = m;
+#else
             _ppManager = new MessageProcessorManager(this, EnumHelper<ClientPacketID>.BitsRequired);
+#endif
         }
 
         public IDbController DbController
