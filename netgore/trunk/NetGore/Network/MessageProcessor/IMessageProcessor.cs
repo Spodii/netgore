@@ -1,17 +1,21 @@
-using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.Network
 {
     /// <summary>
-    /// Interface for an object that can process messages received from a socket.
+    /// Interface for an object that contains a <see cref="MessageProcessorHandler"/> and the message ID used to recognize the
+    /// corresponding <see cref="MessageProcessorHandler"/>.
     /// </summary>
     public interface IMessageProcessor
     {
         /// <summary>
-        /// Handles a list of received data and forwards it to the corresponding MessageProcessors.
+        /// Gets the <see cref="MessageProcessorHandler"/> used to process the message.
         /// </summary>
-        /// <param name="recvData">List of SocketReceiveData to process.</param>
-        void Process(IEnumerable<SocketReceiveData> recvData);
+        MessageProcessorHandler Call { get; }
+
+        /// <summary>
+        /// Gets the message ID that <see cref="IMessageProcessor"/> processes.
+        /// </summary>
+        byte MsgID { get; }
     }
 }

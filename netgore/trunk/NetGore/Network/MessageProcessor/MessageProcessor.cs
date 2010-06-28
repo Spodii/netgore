@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NetGore.Network
@@ -7,8 +8,13 @@ namespace NetGore.Network
     /// Holds information allowing the ability to call a message processor class
     /// for a message of a specified ID just from using attribute tags
     /// </summary>
-    public class MessageProcessor
+    public class MessageProcessor  : IMessageProcessor
     {
+        /// <summary>
+        /// The maximum valid message processor ID.
+        /// </summary>
+        public const int MaxProcessorID = byte.MaxValue;
+
         /// <summary>
         /// Delegate to the processing method
         /// </summary>
@@ -26,6 +32,8 @@ namespace NetGore.Network
         /// <param name="methodDelegate">Delegate to the processing method.</param>
         public MessageProcessor(byte msgID, MessageProcessorHandler methodDelegate)
         {
+            Debug.Assert(msgID <= MaxProcessorID);
+
             if (methodDelegate == null)
                 throw new ArgumentNullException("methodDelegate");
 
@@ -37,7 +45,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the delegate to the processing method.
+        /// Gets the <see cref="MessageProcessorHandler"/> used to process the message.
         /// </summary>
         public MessageProcessorHandler Call
         {
@@ -45,7 +53,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the ID of the message the delegate processes.
+        /// Gets the message ID that <see cref="IMessageProcessor"/> processes.
         /// </summary>
         public byte MsgID
         {
