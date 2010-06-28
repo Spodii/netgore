@@ -18,7 +18,7 @@ namespace NetGore.Network
 
         readonly int _messageIDBitLength;
         readonly MessageProcessor[] _processors;
-
+      
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessorManager"/> class.
         /// </summary>
@@ -62,7 +62,7 @@ namespace NetGore.Network
                     var atbs = (MessageHandlerAttribute[])method.GetCustomAttributes(atbType, true);
                     if (atbs.Length > 1)
                     {
-                        const string errmsg = "Multiple MessageAttributes found for method `{0}`.";
+                        const string errmsg = "Multiple MessageHandlerAttributes found for method `{0}`.";
                         Debug.Fail(string.Format(errmsg, method.Name));
                         throw new Exception(string.Format(errmsg, method.Name));
                     }
@@ -70,7 +70,15 @@ namespace NetGore.Network
                     // Create the message processor for the method
                     foreach (var atb in atbs)
                     {
+                        if (_processors[atb.MsgID] != null)
+                        {
+                            const string errmsg = "A MessageHandlerAttribute with ID `{0}` already exists. Methods in question: {1} and {2}";
+                            Debug.Fail(string.Format(errmsg, atb.MsgID, _processors[atb.MsgID].Call.Method, method));
+                            throw new Exception(string.Format(errmsg, atb.MsgID, _processors[atb.MsgID].Call.Method, method));
+                        }
+
                         var del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);
+                        Debug.Assert(del != null);
                         _processors[atb.MsgID] = new MessageProcessor(atb.MsgID, del);
                     }
                 }
@@ -111,12 +119,33 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Creates the <see cref="BitStream"/> to read the data.
+        /// </summary>
+        /// <param name="data">The data to read.</param>
+        /// <returns>The <see cref="BitStream"/> to read the <paramref name="data"/>.</returns> 
+        protected virtual BitStream CreateReader(byte[] data)
+        {
+            return new BitStream(data);
+        }
+
+        /// <summary>
+        /// Reads the next message ID.
+        /// </summary>
+        /// <param name="reader">The <see cref="BitStream"/> to read the ID from.</param>
+        /// <returns>The next message ID.</returns>
+        protected virtual byte ReadMessageID(BitStream reader)
+        {
+            return reader.ReadByte(_messageIDBitLength);
+        }
+
+        /// <summary>
         /// Handles received data and forwards it to the corresponding <see cref="MessageProcessor"/>.
         /// </summary>
         /// <param name="socket"><see cref="IIPSocket"/> the data came from.</param>
         /// <param name="data">Data to process.</param>
         public void Process(IIPSocket socket, byte[] data)
         {
+            // Validate the arguments
             if (socket == null)
             {
                 const string errmsg = "socket is null.";
@@ -125,6 +154,7 @@ namespace NetGore.Network
                     log.Error(errmsg);
                 return;
             }
+
             if (data == null)
             {
                 const string errmsg = "data is null.";
@@ -133,6 +163,7 @@ namespace NetGore.Network
                     log.Error(errmsg);
                 return;
             }
+
             if (data.Length == 0)
             {
                 const string errmsg = "data array is empty.";
@@ -143,13 +174,13 @@ namespace NetGore.Network
             }
 
             // Create a BitStream to read the data
-            var recvReader = new BitStream(data);
+            var recvReader = CreateReader(data);
 
             // Loop through the data until it is emptied
             while (recvReader.PositionBytes < data.Length)
             {
                 // Get the ID of the message
-                var msgID = recvReader.ReadByte(_messageIDBitLength);
+                var msgID = ReadMessageID(recvReader);
 
                 if (log.IsDebugEnabled)
                     log.DebugFormat("Parsing message ID `{0}`. Stream now at bit position `{1}`.", msgID, recvReader.PositionBits);
@@ -163,7 +194,7 @@ namespace NetGore.Network
                 }
 
                 // Find the corresponding processor and call it
-                var processor = _processors[msgID];
+                var processor = GetMessageProcessor(msgID);
 
                 // Ensure the processor exists
                 if (processor == null)
@@ -186,8 +217,44 @@ namespace NetGore.Network
                 }
 
                 // Call the processor
-                processor.Call(socket, recvReader);
+                InvokeProcessor(socket, processor, recvReader);
             }
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="MessageProcessor"/> for handle processing a message block.
+        /// </summary>
+        /// <param name="socket">The <see cref="IIPSocket"/> that the data came from.</param>
+        /// <param name="processor">The <see cref="MessageProcessor"/> to invoke.</param>
+        /// <param name="reader">The <see cref="BitStream"/> containing the data to process.</param>
+        protected virtual void InvokeProcessor(IIPSocket socket, MessageProcessor processor, BitStream reader)
+        {
+            processor.Call(socket, reader);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MessageProcessor"/> with the given ID. This will only ever return the <see cref="MessageProcessor"/>
+        /// for the method that was specified using a <see cref="MessageHandlerAttribute"/>. Is intended to only be used by
+        /// <see cref="MessageProcessorManager.GetMessageProcessor"/> to allow for access of the <see cref="MessageProcessor"/>s loaded
+        /// through the attribute.
+        /// </summary>
+        /// <param name="msgID">The ID of the message.</param>
+        /// <returns>The <see cref="MessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
+        protected MessageProcessor GetInternalMessageProcessor(byte msgID)
+        {
+            return _processors[msgID];
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MessageProcessor"/> for the corresponding message ID. Can be overridden by the derived class to allow
+        /// for using a <see cref="MessageProcessor"/> other than what is acquired by
+        /// <see cref="MessageProcessorManager.GetInternalMessageProcessor"/>.
+        /// </summary>
+        /// <param name="msgID">The ID of the message.</param>
+        /// <returns>The <see cref="MessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
+        protected virtual MessageProcessor GetMessageProcessor(byte msgID)
+        {
+            return GetInternalMessageProcessor(msgID);
         }
 
         /// <summary>
