@@ -98,8 +98,6 @@ namespace DemoGame
         /// <exception cref="ArgumentNullException"><paramref name="getTime"/> is null.</exception>
         protected MapBase(MapID mapID, IGetTime getTime)
         {
-            if (!IsMapIDValid(mapID))
-                throw new ArgumentException("mapID");
             if (getTime == null)
                 throw new ArgumentNullException("getTime");
 
