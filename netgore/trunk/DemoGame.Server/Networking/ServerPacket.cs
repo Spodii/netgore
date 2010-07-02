@@ -44,7 +44,7 @@ namespace DemoGame.Server
         }
 
         public static PacketWriter CharAttack(MapEntityIndex attacker, MapEntityIndex? attacked = null,
-                                              ActionDisplayID? displayAction = null)
+                                              ActionDisplayID? actionDisplay = null)
         {
             var pw = GetWriter(ServerPacketID.CharAttack);
             pw.Write(attacker);
@@ -53,9 +53,9 @@ namespace DemoGame.Server
             if (attacked.HasValue)
                 pw.Write(attacked.Value);
 
-            pw.Write(displayAction.HasValue);
-            if (displayAction.HasValue)
-                pw.Write(displayAction.Value);
+            pw.Write(actionDisplay.HasValue);
+            if (actionDisplay.HasValue)
+                pw.Write(actionDisplay.Value);
 
             return pw;
         }
