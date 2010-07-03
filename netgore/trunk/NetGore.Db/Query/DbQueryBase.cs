@@ -11,7 +11,7 @@ using log4net;
 namespace NetGore.Db
 {
     /// <summary>
-    /// Base class for all database query classes.
+    /// Base class for all database query classes. This class is thread-safe, and all derived classes should be thread-safe as well.
     /// </summary>
     public abstract class DbQueryBase : IDbQueryHandler
     {
