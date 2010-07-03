@@ -86,7 +86,7 @@ namespace DemoGame.Server
             var args = new WorldStatsNpcKillUserTable(when: Now(), mapID: mapID, npcTemplateId: npc.CharacterTemplateID,
                                                       npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID,
                                                       userLevel: user.Level, userX: (ushort)user.Position.X,
-                                                      userY: (ushort)user.Position.Y);
+                                                      userY: (ushort)user.Position.Y, iD: 0);
 
             _npcKillUserQuery.Execute(args);
         }
@@ -101,7 +101,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsQuestAcceptTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                                                      x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+                                                      x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questAcceptQuery.Execute(args);
         }
@@ -116,7 +116,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsQuestCancelTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                                                      x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+                                                      x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questCancelQuery.Execute(args);
         }
@@ -131,7 +131,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsQuestCompleteTable(when: Now(), mapID: mapID, questID: questID, userId: user.ID,
-                                                        x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+                                                        x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _questCompleteQuery.Execute(args);
         }
@@ -153,7 +153,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserConsumeItemTable(when: Now(), itemTemplateID: itemTemplate.Value, mapID: mapID,
-                                                          userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+                                                          userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _userConsumeItemQuery.Execute(args);
         }
@@ -166,7 +166,7 @@ namespace DemoGame.Server
         /// this value will be null.</param>
         protected override void InternalAddUserGuildChange(User user, GuildID? guildID)
         {
-            var args = new WorldStatsGuildUserChangeTable(when: Now(), guildID: guildID, userId: user.ID);
+            var args = new WorldStatsGuildUserChangeTable(when: Now(), guildID: guildID, userId: user.ID, iD: 0);
 
             _guildUserChangeQuery.Execute(args);
         }
@@ -183,7 +183,7 @@ namespace DemoGame.Server
             var args = new WorldStatsUserKillNpcTable(when: Now(), mapID: mapID, npcTemplateId: npc.CharacterTemplateID,
                                                       npcX: (ushort)npc.Position.X, npcY: (ushort)npc.Position.Y, userId: user.ID,
                                                       userLevel: user.Level, userX: (ushort)user.Position.X,
-                                                      userY: (ushort)user.Position.Y);
+                                                      userY: (ushort)user.Position.Y, iD: 0);
 
             _userKillNPCQuery.Execute(args);
         }
@@ -197,7 +197,7 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserLevelTable(when: Now(), characterID: user.ID, level: user.Level, mapID: mapID,
-                                                    x: (ushort)user.Position.X, y: (ushort)user.Position.Y);
+                                                    x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
 
             _userLevelQuery.Execute(args);
         }
@@ -218,7 +218,7 @@ namespace DemoGame.Server
             var args = new WorldStatsUserShoppingTable(saleType: 0, amount: amount, characterID: user.ID, cost: cost,
                                                        itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: mapID,
                                                        shopID: shopID, when: Now(), x: (ushort)user.Position.X,
-                                                       y: (ushort)user.Position.Y);
+                                                       y: (ushort)user.Position.Y, iD: 0);
 
             _userShoppingQuery.Execute(args);
         }
@@ -239,7 +239,7 @@ namespace DemoGame.Server
             var args = new WorldStatsUserShoppingTable(saleType: 1, amount: amount, characterID: user.ID, cost: cost,
                                                        itemTemplateID: (ItemTemplateID?)itemTemplateID, mapID: mapID,
                                                        shopID: shopID, when: Now(), x: (ushort)user.Position.X,
-                                                       y: (ushort)user.Position.Y);
+                                                       y: (ushort)user.Position.Y, iD: 0);
 
             _userShoppingQuery.Execute(args);
         }
@@ -255,7 +255,7 @@ namespace DemoGame.Server
                                                   tcpRecv: (uint)netStats.TCPRecv, tcpRecvs: (uint)netStats.TCPReceives,
                                                   tcpSends: (uint)netStats.TCPSends, tcpSent: (uint)netStats.TCPSent,
                                                   udpRecv: (uint)netStats.UDPRecv, udpRecvs: (uint)netStats.UDPReceives,
-                                                  udpSends: (uint)netStats.UDPSends, udpSent: (uint)netStats.UDPSent);
+                                                  udpSends: (uint)netStats.UDPSends, udpSent: (uint)netStats.UDPSent, iD: 0);
 
             _networkQuery.Execute(args);
         }
