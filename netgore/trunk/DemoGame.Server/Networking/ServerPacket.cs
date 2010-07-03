@@ -106,7 +106,7 @@ namespace DemoGame.Server
         {
             pw.Write(ServerPacketID.CreateDynamicEntity);
             pw.Write(dynamicEntity.MapEntityIndex);
-            DynamicEntityFactory.Instance.Write(pw, dynamicEntity);
+            DynamicEntityFactory.Instance.Write(pw, dynamicEntity, true);
         }
 
         public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
