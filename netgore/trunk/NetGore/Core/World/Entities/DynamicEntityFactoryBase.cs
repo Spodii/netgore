@@ -13,7 +13,11 @@ namespace NetGore
     public abstract class DynamicEntityFactoryBase : IDynamicEntityFactory
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        public const string TypeNameStringKey = "DynamicEntityType";
+
+        /// <summary>
+        /// The key for holding the DynamicEntity type value.
+        /// </summary>
+        const string _typeStringKey = "DynamicEntityType";
 
         readonly TypeFactory _typeCollection;
 
@@ -66,7 +70,7 @@ namespace NetGore
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            var typeName = reader.ReadString(TypeNameStringKey);
+            var typeName = reader.ReadString(_typeStringKey);
 
             var dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
 
@@ -96,12 +100,11 @@ namespace NetGore
 
             if (typeName == null)
             {
-                throw new ArgumentException(
-                    string.Format("Failed to write. The specified DynamicEntity `{0}` is not of a supported type ({1}).", dEntity,
-                                  dEntity.GetType()));
+                const string errmsg = "Failed to write. The specified DynamicEntity `{0}` is not of a supported type ({1}).";
+                throw new ArgumentException(string.Format(errmsg, dEntity, dEntity.GetType()));
             }
 
-            writer.Write(TypeNameStringKey, typeName);
+            writer.Write(_typeStringKey, typeName);
             dEntity.WriteAll(writer);
         }
 
