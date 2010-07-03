@@ -50,6 +50,8 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
         /// <param name="commandText">The command text.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="commandText"/> is null or empty.</exception>
         protected DbQueryBase(DbConnectionPool connectionPool, string commandText)
         {
             if (connectionPool == null)
