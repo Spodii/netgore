@@ -62,13 +62,21 @@ namespace NetGore.Db
             _connectionPool = connectionPool;
             _commandText = commandText;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            _parameters = InitializeParameters() ?? _emptyDbParameters;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // Grab the parameters
+            var p = InitializeParameters();
+            if (p == null)
+            {
+                // No parameters specified - use the empty list
+                _parameters = _emptyDbParameters;
+            }
+            else
+            {
+                // Use the given parameters, compacted since it is readonly
+                _parameters = p.ToCompact();
 
-            _parameters = _parameters.ToCompact();
-
-            ValidateParameters(_parameters);
+                // Validate the supplied parameters
+                ValidateParameters(_parameters);
+            }
         }
 
         /// <summary>
