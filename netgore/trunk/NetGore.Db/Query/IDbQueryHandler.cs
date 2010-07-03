@@ -11,18 +11,18 @@ namespace NetGore.Db
     public interface IDbQueryHandler : IDisposable
     {
         /// <summary>
-        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this IDbQueryHandler
-        /// will use this CommandText.
+        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this <see cref="IDbQueryHandler"/>
+        /// will use this same CommandText.
         /// </summary>
         string CommandText { get; }
 
         /// <summary>
-        /// Gets the DbConnectionPool used to manage the database connections.
+        /// Gets the <see cref="DbConnectionPool"/> used to manage the database connections.
         /// </summary>
         DbConnectionPool ConnectionPool { get; }
 
         /// <summary>
-        /// Gets an IEnumerable of all of the parameters used in this IDbQueryHandler.
+        /// Gets the parameters used in this <see cref="IDbQueryHandler"/>.
         /// </summary>
         IEnumerable<DbParameter> Parameters { get; }
     }
