@@ -771,7 +771,7 @@ namespace DemoGame
 
         void LoadDynamicEntities(IValueReader r, bool loadDynamicEntities, IDynamicEntityFactory dynamicEntityFactory)
         {
-            var loadedDynamicEntities = r.ReadManyNodes(_dynamicEntitiesNodeName, dynamicEntityFactory.Read);
+            var loadedDynamicEntities = r.ReadManyNodes(_dynamicEntitiesNodeName, x => dynamicEntityFactory.Read(x, true));
 
             // Add the loaded DynamicEntities to the map
             if (loadDynamicEntities)
@@ -985,7 +985,7 @@ namespace DemoGame
 
         void SaveDynamicEntities(IValueWriter w, IDynamicEntityFactory dynamicEntityFactory)
         {
-            w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, dynamicEntityFactory.Write);
+            w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, (x, v) => dynamicEntityFactory.Write(x, v));
         }
 
         /// <summary>
