@@ -276,7 +276,7 @@ namespace NetGore
                 propertySync.ReadValue(this, reader);
 
                 // Allow for additional post-deserializtion processing
-                DeserializeProprety(reader, propertySync);
+                OnDeserializeProprety(reader, propertySync);
 
                 // Store this property index as the last written index
                 lastIndex = propIndex;
@@ -327,9 +327,7 @@ namespace NetGore
         /// </summary>
         /// <param name="reader">IValueReader that the property value is being deserialized from.</param>
         /// <param name="propertySync">PropertySyncBase for the property that is being deserialized.</param>
-        // ReSharper disable UnusedParameter.Global
-        protected virtual void DeserializeProprety(IValueReader reader, IPropertySync propertySync)
-            // ReSharper restore UnusedParameter.Global
+        protected virtual void OnDeserializeProprety(IValueReader reader, IPropertySync propertySync)
         {
         }
 
@@ -443,7 +441,7 @@ namespace NetGore
                 propertySync.WriteValue(this, writer);
 
                 // Allow for additonal handling
-                SerializeProperty(writer, propertySync);
+                OnSerializeProperty(writer, propertySync);
 
                 // Store this property index as the last written index
                 lastIndex = propIndex;
@@ -479,9 +477,7 @@ namespace NetGore
         /// </summary>
         /// <param name="writer">IValueWriter that the property value is being serialized to.</param>
         /// <param name="propertySync">PropertySyncBase for the property that is being serialized.</param>
-        // ReSharper disable UnusedParameter.Global
-        protected virtual void SerializeProperty(IValueWriter writer, IPropertySync propertySync)
-            // ReSharper restore UnusedParameter.Global
+        protected virtual void OnSerializeProperty(IValueWriter writer, IPropertySync propertySync)
         {
         }
 
