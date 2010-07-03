@@ -42,6 +42,26 @@ namespace DemoGame
 
         #endregion
 
+        #region NullableActionDisplayID
+
+        public static void WriteNullableActionDisplayID(BitStream bs, ActionDisplayID? value)
+        {
+            bs.Write(value.HasValue);
+            if (value.HasValue)
+                WriteActionDisplayID(bs, value.Value);
+        }
+
+        public static ActionDisplayID? ReadNullableActionDisplayID(BitStream bs)
+        {
+            bool hasValue = bs.ReadBool();
+            if (!hasValue)
+                return null;
+
+            return ReadActionDisplayID(bs);
+        }
+
+        #endregion
+
         #region Damage
 
         public static void WriteDamage(BitStream bs, int value)
@@ -102,22 +122,6 @@ namespace DemoGame
         {
             // NOTE: Placeholder
             return bs.ReadVector2();
-        }
-
-        #endregion
-
-        #region DynamicEntityWeight
-
-        public static void WriteDynamicEntityWeight(BitStream bs, float value)
-        {
-            // NOTE: Placeholder
-            bs.Write(value);
-        }
-
-        public static float ReadDynamicEntityWeight(BitStream bs)
-        {
-            // NOTE: Placeholder
-            return bs.ReadFloat();
         }
 
         #endregion
