@@ -352,10 +352,10 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets and sets up an available DbCommand.
+        /// Gets and sets up an available <see cref="DbCommand"/> that can be used to execute this query.
         /// </summary>
-        /// <param name="conn">DbConnection to assign the DbCommand to.</param>
-        /// <returns>A DbCommand that that is set up for the DbConnection <paramref name="conn"/>, but has not
+        /// <param name="conn">The <see cref="DbConnection"/> to assign the <see cref="DbCommand"/> to.</param>
+        /// <returns>A <see cref="DbCommand"/> that that is set up for the <paramref name="conn"/>, but has not
         /// had it's parameter values set.</returns>
         protected DbCommand GetCommand(DbConnection conn)
         {
