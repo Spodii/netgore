@@ -113,6 +113,7 @@
     <Compile Include="Account\AccountCharacterInfoExtensions.cs" />
     <Compile Include="Account\AccountIDTypeConverter.cs" />
     <Compile Include="Body\BodyIDTypeConverter.cs" />
+    <Compile Include="IO\CompactTypeIO.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountIpsTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceAttackableTable.cs" />
