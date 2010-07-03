@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-06-21 12:43:22',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-07-02 19:59:38',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -44,13 +44,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `account_ips`;
 CREATE TABLE `account_ips` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL COMMENT 'The ID of the account.',
   `ip` int(10) unsigned NOT NULL COMMENT 'The IP that logged into the account.',
   `time` datetime NOT NULL COMMENT 'When this IP last logged into this account.',
-  PRIMARY KEY (`account_id`,`time`),
+  PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB;
+) TYPE=InnoDB AUTO_INCREMENT=75;
 
 --
 -- Dumping data for table `account_ips`
@@ -58,7 +59,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (1,16777343,'2010-06-03 22:51:10'),(1,16777343,'2010-06-07 17:58:12'),(1,16777343,'2010-06-07 18:30:03'),(1,16777343,'2010-06-07 18:32:47'),(1,16777343,'2010-06-07 18:37:03'),(1,16777343,'2010-06-07 18:38:14'),(1,16777343,'2010-06-07 18:39:30'),(1,16777343,'2010-06-07 18:41:12'),(1,16777343,'2010-06-07 18:44:11'),(1,16777343,'2010-06-11 02:14:30'),(1,16777343,'2010-06-15 19:02:11'),(1,16777343,'2010-06-15 19:03:40'),(1,16777343,'2010-06-15 19:05:29'),(1,16777343,'2010-06-17 11:45:48'),(1,16777343,'2010-06-17 11:58:09'),(1,16777343,'2010-06-17 12:11:10'),(1,16777343,'2010-06-17 12:13:11'),(1,16777343,'2010-06-17 12:20:52'),(1,16777343,'2010-06-17 12:28:01'),(1,16777343,'2010-06-17 12:32:53'),(1,16777343,'2010-06-17 13:35:27'),(1,16777343,'2010-06-17 15:39:12'),(1,16777343,'2010-06-17 15:48:20'),(1,16777343,'2010-06-17 20:19:56'),(1,16777343,'2010-06-17 20:27:06'),(1,16777343,'2010-06-17 20:33:18'),(1,16777343,'2010-06-17 20:34:19'),(1,16777343,'2010-06-17 20:50:20'),(1,16777343,'2010-06-17 20:54:21'),(1,16777343,'2010-06-17 20:56:32'),(1,16777343,'2010-06-17 20:56:43'),(1,16777343,'2010-06-17 21:01:03'),(1,16777343,'2010-06-21 11:47:41'),(1,16777343,'2010-06-21 12:34:41'),(1,16777343,'2010-06-21 12:37:15'),(1,16777343,'2010-06-21 12:43:22');
+INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-06-03 22:51:10'),(2,1,16777343,'2010-06-07 17:58:12'),(3,1,16777343,'2010-06-07 18:30:03'),(4,1,16777343,'2010-06-07 18:32:47'),(5,1,16777343,'2010-06-07 18:37:03'),(6,1,16777343,'2010-06-07 18:38:14'),(7,1,16777343,'2010-06-07 18:39:30'),(8,1,16777343,'2010-06-07 18:41:12'),(9,1,16777343,'2010-06-07 18:44:11'),(10,1,16777343,'2010-06-11 02:14:30'),(11,1,16777343,'2010-06-15 19:02:11'),(12,1,16777343,'2010-06-15 19:03:40'),(13,1,16777343,'2010-06-15 19:05:29'),(14,1,16777343,'2010-06-17 11:45:48'),(15,1,16777343,'2010-06-17 11:58:09'),(16,1,16777343,'2010-06-17 12:11:10'),(17,1,16777343,'2010-06-17 12:13:11'),(18,1,16777343,'2010-06-17 12:20:52'),(19,1,16777343,'2010-06-17 12:28:01'),(20,1,16777343,'2010-06-17 12:32:53'),(21,1,16777343,'2010-06-17 13:35:27'),(22,1,16777343,'2010-06-17 15:39:12'),(23,1,16777343,'2010-06-17 15:48:20'),(24,1,16777343,'2010-06-17 20:19:56'),(25,1,16777343,'2010-06-17 20:27:06'),(26,1,16777343,'2010-06-17 20:33:18'),(27,1,16777343,'2010-06-17 20:34:19'),(28,1,16777343,'2010-06-17 20:50:20'),(29,1,16777343,'2010-06-17 20:54:21'),(30,1,16777343,'2010-06-17 20:56:32'),(31,1,16777343,'2010-06-17 20:56:43'),(32,1,16777343,'2010-06-17 21:01:03'),(33,1,16777343,'2010-06-21 11:47:41'),(34,1,16777343,'2010-06-21 12:34:41'),(35,1,16777343,'2010-06-21 12:37:15'),(36,1,16777343,'2010-06-21 12:43:22'),(37,1,16777343,'2010-06-21 20:26:42'),(38,1,16777343,'2010-06-21 20:32:18'),(39,1,16777343,'2010-06-21 20:43:18'),(40,1,16777343,'2010-06-21 21:47:07'),(41,1,16777343,'2010-06-24 11:21:15'),(42,1,16777343,'2010-06-24 11:21:35'),(43,1,16777343,'2010-06-24 11:21:53'),(44,1,16777343,'2010-06-24 11:22:19'),(45,1,16777343,'2010-06-24 11:22:56'),(46,1,16777343,'2010-06-24 11:28:40'),(47,1,16777343,'2010-06-24 11:48:17'),(48,1,16777343,'2010-06-24 12:07:31'),(49,1,16777343,'2010-06-24 12:07:35'),(50,1,16777343,'2010-06-24 12:11:49'),(51,1,16777343,'2010-06-24 12:16:28'),(52,1,16777343,'2010-06-27 09:00:03'),(53,1,16777343,'2010-06-27 09:00:42'),(54,1,16777343,'2010-06-27 09:01:47'),(55,1,16777343,'2010-06-27 09:02:12'),(56,1,16777343,'2010-06-27 09:02:15'),(57,1,16777343,'2010-06-27 09:19:03'),(58,1,16777343,'2010-06-27 09:38:29'),(59,1,16777343,'2010-06-27 09:40:30'),(60,1,16777343,'2010-06-27 09:42:41'),(61,1,16777343,'2010-06-27 09:55:35'),(62,1,16777343,'2010-06-27 10:11:28'),(63,1,16777343,'2010-06-27 10:12:20'),(64,1,16777343,'2010-06-27 10:14:12'),(65,1,16777343,'2010-06-28 12:56:23'),(66,1,16777343,'2010-06-28 13:12:30'),(67,1,16777343,'2010-06-28 15:08:31'),(68,1,16777343,'2010-06-28 15:32:27'),(69,1,16777343,'2010-06-28 15:33:04'),(70,1,16777343,'2010-07-01 19:35:37'),(71,1,16777343,'2010-07-01 20:08:10'),(72,1,16777343,'2010-07-01 20:09:15'),(73,1,16777343,'2010-07-01 20:10:04'),(74,1,16777343,'2010-07-02 19:59:38');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,6 +240,7 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
+INSERT INTO `character_inventory` VALUES (1,39,0);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -601,6 +603,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(1,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(2,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(3,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',6,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(4,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(5,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(6,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(7,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',2,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(8,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(9,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(10,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(11,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(12,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(13,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(14,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(15,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(16,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(17,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(18,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(19,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(20,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(21,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(22,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(23,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(24,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(25,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(26,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(27,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(28,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(29,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(30,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(31,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(32,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(33,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(34,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(35,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',6,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(36,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(37,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(38,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',6,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(39,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',17,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(40,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(41,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(42,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(43,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -944,7 +947,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-06-21 12:43:56');
+INSERT INTO `server_time` VALUES ('2010-07-02 20:01:30');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1042,9 +1045,11 @@ SET character_set_client = @saved_cs_client;
 
 DROP TABLE IF EXISTS `world_stats_guild_user_change`;
 CREATE TABLE `world_stats_guild_user_change` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user who changed the guild they are part of.',
   `guild_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the guild, or null if the user left a guild.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `guild_id` (`guild_id`),
   CONSTRAINT `world_stats_guild_user_change_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1066,6 +1071,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_network`;
 CREATE TABLE `world_stats_network` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `when` timestamp NOT NULL COMMENT 'When these network stats were logged. The values correspond to a time period defined in the WorldStatsTracker constructor. This timestamp marks the end of this period of time. So all stats correspond to the time frame range: [when - rate, when].',
   `tcp_recv` mediumint(8) unsigned NOT NULL COMMENT 'The number of bytes that have been received over the TCP channel.',
   `tcp_recvs` mediumint(8) unsigned NOT NULL COMMENT 'The number of messages that have been received over the TCP channel.',
@@ -1076,8 +1082,8 @@ CREATE TABLE `world_stats_network` (
   `udp_sent` mediumint(8) unsigned NOT NULL COMMENT 'The number of bytes that have been sent over the UDP channel.',
   `udp_sends` mediumint(8) unsigned NOT NULL COMMENT 'The number of messages that have been sent over the UDP channel.',
   `connections` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY (`when`)
-) TYPE=MyISAM;
+  PRIMARY KEY (`id`)
+) TYPE=MyISAM AUTO_INCREMENT=167;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1085,7 +1091,6 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
-INSERT INTO `world_stats_network` VALUES ('2010-06-04 05:50:54',0,0,0,0,0,0,0,0,0),('2010-06-08 00:58:08',0,0,0,0,0,0,0,0,0),('2010-06-08 01:30:03',0,0,0,0,0,0,0,0,0),('2010-06-08 01:32:45',0,0,0,0,0,0,0,0,0),('2010-06-08 01:35:53',0,0,0,0,0,0,0,0,0),('2010-06-08 01:37:03',0,0,0,0,0,0,0,0,0),('2010-06-08 01:38:14',0,0,0,0,0,0,0,0,0),('2010-06-08 01:39:29',0,0,0,0,0,0,0,0,0),('2010-06-08 01:41:10',0,0,0,0,0,0,0,0,0),('2010-06-08 01:42:10',0,0,0,0,0,0,0,0,0),('2010-06-08 01:44:11',0,0,0,0,0,0,0,0,0),('2010-06-08 01:45:11',0,0,0,0,0,0,0,0,0),('2010-06-08 01:46:11',0,0,0,0,0,0,0,0,0),('2010-06-11 09:14:26',0,0,0,0,0,0,0,0,0),('2010-06-11 09:15:26',0,0,0,0,0,0,0,0,0),('2010-06-16 02:01:10',0,0,0,0,0,0,0,0,0),('2010-06-16 02:02:09',0,0,0,0,0,0,0,0,0),('2010-06-16 02:03:37',0,0,0,0,0,0,0,0,0),('2010-06-16 02:04:37',0,0,0,0,0,0,0,0,0),('2010-06-16 02:05:26',0,0,0,0,0,0,0,0,0),('2010-06-17 18:45:16',0,0,0,0,0,0,0,0,0),('2010-06-17 18:46:16',0,0,0,0,0,0,0,0,0),('2010-06-17 18:58:08',0,0,0,0,0,0,0,0,0),('2010-06-17 18:59:08',0,0,0,0,0,0,0,0,0),('2010-06-17 19:00:08',0,0,0,0,0,0,0,0,0),('2010-06-17 19:01:08',0,0,0,0,0,0,0,0,0),('2010-06-17 19:02:08',0,0,0,0,0,0,0,0,0),('2010-06-17 19:03:08',0,0,0,0,0,0,0,0,0),('2010-06-17 19:04:16',0,0,0,0,0,0,0,0,0),('2010-06-17 19:05:24',0,0,0,0,0,0,0,0,0),('2010-06-17 19:06:08',0,0,0,0,0,0,0,0,0),('2010-06-17 19:07:08',0,0,0,0,0,0,0,0,0),('2010-06-17 19:10:46',0,0,0,0,0,0,0,0,0),('2010-06-17 19:11:08',0,0,0,0,0,0,0,0,0),('2010-06-17 19:12:10',0,0,0,0,0,0,0,0,0),('2010-06-17 19:13:10',0,0,0,0,0,0,0,0,0),('2010-06-17 19:14:10',0,0,0,0,0,0,0,0,0),('2010-06-17 19:20:50',0,0,0,0,0,0,0,0,0),('2010-06-17 19:21:50',0,0,0,0,0,0,0,0,0),('2010-06-17 19:22:50',0,0,0,0,0,0,0,0,0),('2010-06-17 19:23:50',0,0,0,0,0,0,0,0,0),('2010-06-17 19:28:00',0,0,0,0,0,0,0,0,0),('2010-06-17 19:32:51',0,0,0,0,0,0,0,0,0),('2010-06-17 19:33:51',0,0,0,0,0,0,0,0,0),('2010-06-17 19:34:53',0,0,0,0,0,0,0,0,0),('2010-06-17 19:35:51',0,0,0,0,0,0,0,0,0),('2010-06-17 19:36:51',0,0,0,0,0,0,0,0,0),('2010-06-17 19:37:51',0,0,0,0,0,0,0,0,0),('2010-06-17 19:38:51',0,0,0,0,0,0,0,0,0),('2010-06-17 19:39:51',0,0,0,0,0,0,0,0,0),('2010-06-17 20:35:24',0,0,0,0,0,0,0,0,0),('2010-06-17 20:36:24',0,0,0,0,0,0,0,0,0),('2010-06-17 22:39:09',0,0,0,0,0,0,0,0,0),('2010-06-17 22:40:09',0,0,0,0,0,0,0,0,0),('2010-06-17 22:41:13',0,0,0,0,0,0,0,0,0),('2010-06-17 22:42:09',0,0,0,0,0,0,0,0,0),('2010-06-17 22:43:09',0,0,0,0,0,0,0,0,0),('2010-06-17 22:44:09',0,0,0,0,0,0,0,0,0),('2010-06-17 22:45:09',0,0,0,0,0,0,0,0,0),('2010-06-17 22:46:09',0,0,0,0,0,0,0,0,0),('2010-06-17 22:47:09',0,0,0,0,0,0,0,0,0),('2010-06-17 22:48:07',0,0,0,0,0,0,0,0,0),('2010-06-17 22:49:07',0,0,0,0,0,0,0,0,0),('2010-06-17 22:50:07',0,0,0,0,0,0,0,0,0),('2010-06-18 03:19:44',0,0,0,0,0,0,0,0,0),('2010-06-18 03:25:46',0,0,0,0,0,0,0,0,0),('2010-06-18 03:26:46',0,0,0,0,0,0,0,0,0),('2010-06-18 03:33:17',0,0,0,0,0,0,0,0,0),('2010-06-18 03:34:19',0,0,0,0,0,0,0,0,0),('2010-06-18 03:35:23',0,0,0,0,0,0,0,0,0),('2010-06-18 03:50:20',0,0,0,0,0,0,0,0,0),('2010-06-18 03:51:53',0,0,0,0,0,0,0,0,0),('2010-06-18 03:52:09',0,0,0,0,0,0,0,0,0),('2010-06-18 03:53:09',0,0,0,0,0,0,0,0,0),('2010-06-18 03:54:09',0,0,0,0,0,0,0,0,0),('2010-06-18 03:56:32',0,0,0,0,0,0,0,0,0),('2010-06-18 04:01:02',0,0,0,0,0,0,0,0,0),('2010-06-21 18:47:40',0,0,0,0,0,0,0,0,0),('2010-06-21 19:31:46',0,0,0,0,0,0,0,0,0),('2010-06-21 19:34:40',0,0,0,0,0,0,0,0,0),('2010-06-21 19:37:15',0,0,0,0,0,0,0,0,0),('2010-06-21 19:38:15',0,0,0,0,0,0,0,0,0),('2010-06-21 19:43:22',0,0,0,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1095,6 +1100,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_npc_kill_user`;
 CREATE TABLE `world_stats_npc_kill_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
   `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
   `user_level` tinyint(3) unsigned NOT NULL COMMENT 'The level of the user was when this event took place.',
@@ -1104,6 +1110,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.',
   `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `npc_template_id` (`npc_template_id`),
   KEY `map_id` (`map_id`),
@@ -1118,7 +1125,6 @@ CREATE TABLE `world_stats_npc_kill_user` (
 
 LOCK TABLES `world_stats_npc_kill_user` WRITE;
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` DISABLE KEYS */;
-INSERT INTO `world_stats_npc_kill_user` VALUES (1,1,31,765,45,833,658,1,'2010-06-08 01:42:21'),(1,1,30,765,45,285,658,1,'2010-06-21 19:43:45');
 /*!40000 ALTER TABLE `world_stats_npc_kill_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1128,12 +1134,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_quest_accept`;
 CREATE TABLE `world_stats_quest_accept` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user that accepted the quest.',
   `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was accepted.',
   `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `quest_id` (`quest_id`),
   KEY `map_id` (`map_id`),
@@ -1157,12 +1165,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_quest_cancel`;
 CREATE TABLE `world_stats_quest_cancel` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user that canceled the quest.',
   `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was canceled.',
   `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `quest_id` (`quest_id`),
   KEY `map_id` (`map_id`),
@@ -1186,12 +1196,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_quest_complete`;
 CREATE TABLE `world_stats_quest_complete` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user that completed the quest.',
   `quest_id` smallint(5) unsigned NOT NULL COMMENT 'The quest that was completed.',
   `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `quest_id` (`quest_id`),
   KEY `map_id` (`map_id`),
@@ -1215,12 +1227,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_user_consume_item`;
 CREATE TABLE `world_stats_user_consume_item` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The user that this event is related to.',
   `item_template_id` smallint(5) unsigned NOT NULL COMMENT 'The template ID of the item that was consumed. Only valid when the item has a set template ID.',
   `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The map the user was on when this event took place.',
   `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place.',
   `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `item_template_id` (`item_template_id`),
   KEY `map_id` (`map_id`),
@@ -1244,6 +1258,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_user_kill_npc`;
 CREATE TABLE `world_stats_user_kill_npc` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'The ID of the user.',
   `npc_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The template ID of the NPC. Only valid when the NPC has a template ID set.',
   `user_level` tinyint(3) unsigned NOT NULL COMMENT 'The level of the user was when this event took place.',
@@ -1253,6 +1268,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   `npc_y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the NPC when this event took place. Only valid when the map_id is not null.',
   `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `npc_template_id` (`npc_template_id`),
   KEY `map_id` (`map_id`),
@@ -1267,7 +1283,6 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
-INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,30,392,658,0,0,1,'2010-06-08 01:41:37'),(1,1,30,446,658,0,0,1,'2010-06-08 01:41:43'),(1,1,30,417,658,0,0,1,'2010-06-08 01:42:10'),(1,1,30,824,658,0,0,1,'2010-06-08 01:42:17'),(1,1,30,689,658,0,0,1,'2010-06-08 01:44:23'),(1,1,30,235,658,0,0,1,'2010-06-08 01:44:26'),(1,1,30,246,500,0,0,1,'2010-06-08 01:44:52'),(1,1,30,246,500,0,0,1,'2010-06-08 01:45:11'),(1,1,31,219,500,0,0,1,'2010-06-08 01:45:42'),(1,1,31,219,500,0,0,1,'2010-06-08 01:45:47'),(1,1,30,212,500,0,0,1,'2010-06-17 18:58:42'),(1,1,30,212,500,0,0,1,'2010-06-17 18:58:44'),(1,1,30,212,500,0,0,1,'2010-06-17 19:01:00'),(1,1,30,212,500,0,0,1,'2010-06-17 19:01:17'),(1,1,31,212,500,0,0,1,'2010-06-17 19:04:21'),(1,1,31,212,500,0,0,1,'2010-06-17 19:04:39'),(1,1,30,205,500,0,0,1,'2010-06-17 19:11:44'),(1,1,30,238,500,0,0,1,'2010-06-17 19:12:10'),(1,1,30,707,658,0,0,1,'2010-06-17 19:33:02'),(1,1,30,534,658,0,0,1,'2010-06-17 19:33:06'),(1,1,30,135,658,0,0,1,'2010-06-17 19:33:12'),(1,1,30,218,500,0,0,1,'2010-06-17 19:33:31'),(1,1,31,225,500,0,0,1,'2010-06-17 19:35:16'),(1,1,31,225,500,0,0,1,'2010-06-17 19:36:10'),(1,1,31,225,500,0,0,1,'2010-06-17 19:36:14'),(1,1,31,225,500,0,0,1,'2010-06-17 19:36:23'),(1,1,31,223,500,0,0,1,'2010-06-17 19:37:17'),(1,1,31,223,500,0,0,1,'2010-06-17 19:38:12'),(1,1,32,223,500,0,0,1,'2010-06-17 19:38:37'),(1,1,32,223,500,0,0,1,'2010-06-17 19:38:40'),(1,1,30,210,500,0,0,1,'2010-06-17 20:36:24'),(1,1,30,397,539,0,0,1,'2010-06-17 22:39:23'),(1,1,30,204,500,0,0,1,'2010-06-17 22:39:30'),(1,1,30,204,500,0,0,1,'2010-06-17 22:41:13'),(1,1,30,204,500,0,0,1,'2010-06-17 22:41:32'),(1,1,31,204,500,0,0,1,'2010-06-17 22:41:43'),(1,1,31,247,500,0,0,1,'2010-06-17 22:41:56'),(1,1,31,1294,532,0,0,1,'2010-06-17 22:44:17'),(1,1,31,1294,532,0,0,1,'2010-06-17 22:44:31'),(1,1,31,1294,532,0,0,1,'2010-06-17 22:44:35'),(1,1,31,1320,532,0,0,1,'2010-06-17 22:45:03'),(1,1,32,1320,532,0,0,1,'2010-06-17 22:45:09'),(1,1,32,1320,532,0,0,1,'2010-06-17 22:46:52'),(1,1,32,1320,532,0,0,1,'2010-06-17 22:47:04'),(1,1,32,1320,532,0,0,1,'2010-06-17 22:47:08'),(1,1,30,218,500,0,0,1,'2010-06-17 22:48:53'),(1,1,30,218,500,0,0,1,'2010-06-17 22:48:55'),(1,1,30,218,500,0,0,1,'2010-06-17 22:49:00'),(1,1,30,218,500,0,0,1,'2010-06-17 22:49:07'),(1,1,31,218,500,0,0,1,'2010-06-17 22:49:09'),(1,1,31,1298,532,0,0,1,'2010-06-17 22:49:20'),(1,1,31,1298,532,0,0,1,'2010-06-17 22:49:23'),(1,1,30,473,658,0,0,1,'2010-06-18 03:33:24'),(1,1,30,107,543,0,0,1,'2010-06-18 03:35:31'),(1,1,30,234,500,0,0,1,'2010-06-18 03:36:00'),(1,1,30,73,534,0,0,1,'2010-06-21 19:34:53'),(1,1,30,369,658,0,0,1,'2010-06-21 19:37:23'),(1,1,30,473,658,0,0,1,'2010-06-21 19:43:40'),(1,1,30,480,658,0,0,1,'2010-06-21 19:43:52');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1277,13 +1292,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_user_level`;
 CREATE TABLE `world_stats_user_level` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `character_id` int(11) NOT NULL COMMENT 'The ID of the character that leveled up.',
   `map_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the map this event took place on.',
   `x` smallint(5) unsigned NOT NULL COMMENT 'The map x coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `y` smallint(5) unsigned NOT NULL COMMENT 'The map y coordinate of the user when this event took place. Only valid when the map_id is not null.',
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
-  `when` timestamp NOT NULL COMMENT 'When this event took place.'
-) TYPE=InnoDB;
+  `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`)
+) TYPE=InnoDB AUTO_INCREMENT=8;
 
 --
 -- Dumping data for table `world_stats_user_level`
@@ -1291,7 +1308,6 @@ CREATE TABLE `world_stats_user_level` (
 
 LOCK TABLES `world_stats_user_level` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_level` DISABLE KEYS */;
-INSERT INTO `world_stats_user_level` VALUES (1,1,824,658,31,'2010-06-08 01:42:17'),(1,1,246,500,31,'2010-06-08 01:45:11'),(1,1,212,500,31,'2010-06-17 19:01:17'),(1,1,218,500,31,'2010-06-17 19:33:31'),(1,1,223,500,32,'2010-06-17 19:38:12'),(1,1,204,500,31,'2010-06-17 22:41:32'),(1,1,1320,532,32,'2010-06-17 22:45:03'),(1,1,218,500,31,'2010-06-17 22:49:07');
 /*!40000 ALTER TABLE `world_stats_user_level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1301,6 +1317,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `world_stats_user_shopping`;
 CREATE TABLE `world_stats_user_shopping` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `shop_id` smallint(5) unsigned NOT NULL COMMENT 'The ID of the shop the event took place at.',
   `character_id` int(11) NOT NULL COMMENT 'The ID of the character that performed this transaction with the shop.',
   `item_template_id` smallint(5) unsigned DEFAULT NULL COMMENT 'The ID of the item template that the event relates to. Only valid when the item involved has a set item template ID.',
@@ -1311,6 +1328,7 @@ CREATE TABLE `world_stats_user_shopping` (
   `amount` tinyint(3) unsigned NOT NULL COMMENT 'The number of items involved in the transaction. Should always be greater than 0, and should only be greater for 1 for items that can stack.',
   `sale_type` tinyint(4) NOT NULL COMMENT 'Whether the shop sold to the user, or vise versa. If 0, the shop sold an item to the shopper. If non-zero, the shopper sold an item to a shop.',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
+  PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `character_id` (`character_id`),
   KEY `item_template_id` (`item_template_id`),
@@ -1499,4 +1517,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-21 12:47:26
+-- Dump completed on 2010-07-03 15:28:42
