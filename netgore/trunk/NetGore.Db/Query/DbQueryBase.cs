@@ -356,7 +356,9 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="conn">The <see cref="DbConnection"/> to assign the <see cref="DbCommand"/> to.</param>
         /// <returns>A <see cref="DbCommand"/> that that is set up for the <paramref name="conn"/>, but has not
-        /// had it's parameter values set.</returns>
+        /// had it's parameter values set. The returned <see cref="DbCommand"/> should not be exposed. Instead, return
+        /// it back to the pool by calling <see cref="DbQueryBase.ReleaseCommand"/>.</returns>
+        /// <seealso cref="DbQueryBase.ReleaseCommand"/>
         protected DbCommand GetCommand(DbConnection conn)
         {
             if (_disposed)
@@ -394,20 +396,20 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets the name of a DbParameter minus the single-character ampersand or question-mark prefix.
+        /// Gets the name of a <see cref="DbParameter"/> minus the single-character ampersand or question-mark prefix.
         /// </summary>
-        /// <param name="parameter">DbParameter to get the name of.</param>
-        /// <returns>The name of a DbParameter minus the single-character prefix.</returns>
+        /// <param name="parameter"><see cref="DbParameter"/> to get the name of.</param>
+        /// <returns>The name of a <see cref="DbParameter"/> minus the single-character prefix.</returns>
         public static string GetParameterNameWithoutPrefix(DbParameter parameter)
         {
             return GetParameterNameWithoutPrefix(parameter.ParameterName);
         }
 
         /// <summary>
-        /// Gets the name of a DbParameter minus the single-character ampersand or question-mark prefix.
+        /// Gets the name of a <see cref="DbParameter"/> minus the single-character ampersand or question-mark prefix.
         /// </summary>
         /// <param name="parameterName">ParameterName to get the trimmed name of.</param>
-        /// <returns>The name of a DbParameter minus the single-character prefix.</returns>
+        /// <returns>The name of a <see cref="DbParameter"/> minus the single-character prefix.</returns>
         public static string GetParameterNameWithoutPrefix(string parameterName)
         {
             if (string.IsNullOrEmpty(parameterName))
@@ -430,9 +432,9 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets an available IPoolableDbConnection from the ConnectionPool.
+        /// Gets an available <see cref="IPoolableDbConnection"/> from the <see cref="IDbQueryHandler.ConnectionPool"/>.
         /// </summary>
-        /// <returns>A free IPoolableDbConnection.</returns>
+        /// <returns>A free <see cref="IPoolableDbConnection"/>.</returns>
         protected IPoolableDbConnection GetPoolableConnection()
         {
             if (_disposed)
@@ -444,22 +446,46 @@ namespace NetGore.Db
         /// <summary>
         /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
         /// </summary>
-        /// <returns>IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// <returns>The <see cref="DbParameter"/>s needed for this class to perform database queries.
         /// If null, no parameters will be used.</returns>
         protected abstract IEnumerable<DbParameter> InitializeParameters();
 
         /// <summary>
-        /// Releases a DbCommand after it has been used. This must be called on every DbCommand once it is
-        /// done being used to ensure it can be reused! Use this in place of disposing the DbCommand.
+        /// Releases a <see cref="DbCommand"/> after it has been used. This must be called on every <see cref="DbCommand"/> once it is
+        /// done being used to ensure it can be reused! Use this in place of disposing the <see cref="DbCommand"/>. Only
+        /// <see cref="DbCommand"/>s from this <see cref="DbQueryBase"/>'s <see cref="GetCommand"/> method should be passed as the
+        /// parameter.
         /// </summary>
-        /// <param name="cmd">DbCommand to release.</param>
+        /// <param name="cmd"><see cref="DbCommand"/> to release.</param>
+        /// <seealso cref="DbQueryBase.GetCommand"/>
         protected internal void ReleaseCommand(DbCommand cmd)
         {
             if (_disposed)
                 throw new MethodAccessException(_disposedErrorMessage);
 
+            AssertValidReleasedCommand(cmd);
+
             lock (_commandsLock)
                 _commands.Push(cmd);
+        }
+
+        /// <summary>
+        /// Makes sure that a <see cref="DbCommand"/> returned to this <see cref="DbQueryBase"/>'s pool from <see cref="ReleaseCommand"/>
+        /// was a <see cref="DbCommand"/> that came from this instance.
+        /// </summary>
+        /// <param name="cmd">The <see cref="DbCommand"/> to check.</param>
+        /// <remarks>The checking is not perfect since <see cref="DbCommand"/> does not store what <see cref="DbQueryBase"/> it originated
+        /// from or any other definitive checks we can use. So instead, we have to just make some guesses based on the values available to
+        /// us.</remarks>
+        [Conditional("DEBUG")]
+        private void AssertValidReleasedCommand(DbCommand cmd)
+        {
+            const string errmsg = "DbCommand `{0}` was returned to this DbQueryBase `{1}` through ReleaseCommand(), but it does not seem to be" + 
+                " a DbCommand that belongs to this DbQueryBase! This will almost definitely result in database corruption and query execution" +
+                " failure. If this is a false positive, ensure the reason for the false positive is resolved.";
+
+            Debug.Assert(StringComparer.Ordinal.Equals(cmd.CommandText, CommandText), string.Format(errmsg, cmd, this));
+            Debug.Assert(cmd.Parameters.Count == _parameters.Count(), string.Format(errmsg, cmd, this));
         }
 
         /// <summary>
@@ -483,9 +509,10 @@ namespace NetGore.Db
         #region IDbQueryHandler Members
 
         /// <summary>
-        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this IDbQueryHandler
-        /// will use this CommandText.
+        /// Gets the CommandText used by this IDbQueryHandler. All commands executed by this <see cref="IDbQueryHandler"/>
+        /// will use this same CommandText.
         /// </summary>
+        /// <value></value>
         public string CommandText
         {
             get
@@ -498,8 +525,9 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets the DbConnectionPool used by this DbQueryBase.
+        /// Gets the <see cref="DbConnectionPool"/> used to manage the database connections.
         /// </summary>
+        /// <value></value>
         public DbConnectionPool ConnectionPool
         {
             get
@@ -512,8 +540,9 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all of the DbParameters used in executing queries in this DbQueryBase.
+        /// Gets the parameters used in this <see cref="IDbQueryHandler"/>.
         /// </summary>
+        /// <value></value>
         public IEnumerable<DbParameter> Parameters
         {
             get
