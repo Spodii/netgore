@@ -322,16 +322,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling of a property that is
-        /// being deserialized, immediately after the value has been read from the <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader">IValueReader that the property value is being deserialized from.</param>
-        /// <param name="propertySync">PropertySyncBase for the property that is being deserialized.</param>
-        protected virtual void OnDeserializeProprety(IValueReader reader, IPropertySync propertySync)
-        {
-        }
-
-        /// <summary>
         /// Reads the Position and Velocity from the specified IValueReader without the need of a valid DynamicEntity.
         /// The data is not actually used in any way, it just progresses the reader like the values were read.
         /// </summary>
@@ -387,6 +377,26 @@ namespace NetGore
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of a property that is
+        /// being deserialized, immediately after the value has been read from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">IValueReader that the property value is being deserialized from.</param>
+        /// <param name="propertySync">PropertySyncBase for the property that is being deserialized.</param>
+        protected virtual void OnDeserializeProprety(IValueReader reader, IPropertySync propertySync)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of a property that is
+        /// being serialized, immediately after the value has been written to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">IValueWriter that the property value is being serialized to.</param>
+        /// <param name="propertySync">PropertySyncBase for the property that is being serialized.</param>
+        protected virtual void OnSerializeProperty(IValueWriter writer, IPropertySync propertySync)
+        {
         }
 
         /// <summary>
@@ -469,16 +479,6 @@ namespace NetGore
             _lastSentPosition = Position;
             _lastSentVelocity = Velocity;
             _syncPnVLastTime = currentTime;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of a property that is
-        /// being serialized, immediately after the value has been written to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">IValueWriter that the property value is being serialized to.</param>
-        /// <param name="propertySync">PropertySyncBase for the property that is being serialized.</param>
-        protected virtual void OnSerializeProperty(IValueWriter writer, IPropertySync propertySync)
-        {
         }
 
         /// <summary>

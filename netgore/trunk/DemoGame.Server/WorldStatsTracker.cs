@@ -153,7 +153,8 @@ namespace DemoGame.Server
             var mapID = (user.Map == null ? (MapID?)null : user.Map.ID);
 
             var args = new WorldStatsUserConsumeItemTable(when: Now(), itemTemplateID: itemTemplate.Value, mapID: mapID,
-                                                          userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y, iD: 0);
+                                                          userId: user.ID, x: (ushort)user.Position.X, y: (ushort)user.Position.Y,
+                                                          iD: 0);
 
             _userConsumeItemQuery.Execute(args);
         }
