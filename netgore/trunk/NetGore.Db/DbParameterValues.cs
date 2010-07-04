@@ -10,27 +10,54 @@ using log4net;
 namespace NetGore.Db
 {
     /// <summary>
-    /// Class that wraps around a DbParameterCollection, exposing only the DbParameter's value. 
+    /// Class that wraps around a <see cref="DbParameterCollection"/>, exposing only the <see cref="DbParameter"/>'s value
+    /// and providing a more consistent and safe way of referring to items in the collection.
     /// </summary>
-    public sealed class DbParameterValues : IEnumerable<KeyValuePair<string, object>>
+    public sealed class DbParameterValues : IEnumerable<KeyValuePair<string, object>>, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly Stack<DbParameterValues> _pool = new Stack<DbParameterValues>();
+        static readonly object _poolLock = new object();
 
         /// <summary>
-        /// DbParameterCollection that this DbParameterValues exposes the values of.
+        /// The <see cref="DbParameterCollection"/> that this <see cref="DbParameterValues"/> exposes the values of.
         /// </summary>
-        readonly DbParameterCollection _collection;
+        DbParameterCollection _collection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbParameterValues"/> class.
         /// </summary>
-        /// <param name="dbParameterCollection">DbParameterCollection to wrap around.</param>
-        public DbParameterValues(DbParameterCollection dbParameterCollection)
+        DbParameterValues()
+        {
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DbParameterValues"/> for a <see cref="DbParameterCollection"/>.
+        /// </summary>
+        /// <param name="dbParameterCollection">The <see cref="DbParameterCollection"/>.</param>
+        /// <returns>The <see cref="DbParameterValues"/> instance.</returns>
+        public static DbParameterValues Create(DbParameterCollection dbParameterCollection)
         {
             if (dbParameterCollection == null)
                 throw new ArgumentNullException("dbParameterCollection");
 
-            _collection = dbParameterCollection;
+            // Grab from the pool first
+            DbParameterValues ret;
+            lock (_poolLock)
+            {
+                ret = _pool.Pop();
+            }
+
+            // Only create a new instance if we have to (nothing came from the pool)
+            if (ret == null)
+                ret = new DbParameterValues();
+
+            Debug.Assert(ret._collection == null, "Since Dispose() sets the _collection to null, how did this happen?");
+
+            // Set the internal collection
+            ret._collection = dbParameterCollection;
+
+            return ret;
         }
 
         /// <summary>
@@ -151,5 +178,22 @@ namespace NetGore.Db
         }
 
         #endregion
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_collection == null)
+            {
+                Debug.Fail("Object already disposed!");
+                return;
+            }
+
+            _collection = null;
+
+            lock (_poolLock)
+                _pool.Push(this);
+        }
     }
 }
