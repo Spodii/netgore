@@ -42,10 +42,11 @@ namespace NetGore.Db
                 throw new ArgumentNullException("dbParameterCollection");
 
             // Grab from the pool first
-            DbParameterValues ret;
+            DbParameterValues ret = null;
             lock (_poolLock)
             {
-                ret = _pool.Pop();
+                if (_pool.Count > 0)
+                    ret = _pool.Pop();
             }
 
             // Only create a new instance if we have to (nothing came from the pool)
