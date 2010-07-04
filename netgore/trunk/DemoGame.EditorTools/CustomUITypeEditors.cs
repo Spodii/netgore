@@ -19,7 +19,8 @@ using NetGore.NPCChat;
 namespace DemoGame.EditorTools
 {
     /// <summary>
-    /// Helper methods for the custom <see cref="UITypeEditor"/>s.
+    /// Helper methods for the custom <see cref="UITypeEditor"/>s. Call <see cref="CustomUITypeEditors.AddEditors"/> once at the
+    /// start of a project to add all of the custom <see cref="UITypeEditor"/>s.
     /// </summary>
     public static class CustomUITypeEditors
     {
@@ -34,9 +35,6 @@ namespace DemoGame.EditorTools
             get { return _dbController; }
         }
 
-        /// <summary>
-        /// Adds the advanced class type converters and sets 
-        /// </summary>
         static void AddAdvancedClassTypeConverters()
         {
             // Add the types we want to have use the AdvancedClassTypeConverter. This is purely just for
