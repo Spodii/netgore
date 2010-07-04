@@ -115,7 +115,12 @@ namespace NetGore.Db
             // Get and set up the command
             var cmd = GetCommand(conn);
             if (HasParameters)
-                SetParameters(new DbParameterValues(cmd.Parameters), item);
+            {
+                using (var p = DbParameterValues.Create(cmd.Parameters))
+                {
+                    SetParameters(p, item);
+                }
+            }
 
             // Execute the query
             var retReader = cmd.ExecuteReader();
