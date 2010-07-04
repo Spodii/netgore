@@ -3,15 +3,13 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 
-// ReSharper disable SuggestBaseTypeForParameter
-
 namespace NetGore.Db
 {
     /// <summary>
     /// Container for the DbQueryReader that will allow us to safely and properly dispose of the reader and poolable
     /// connection by just calling Dispose() on it.
     /// </summary>
-    class DbQueryReaderDataReaderContainer : DataReaderContainer
+    internal sealed class DbQueryReaderDataReaderContainer : DataReaderContainer
     {
         readonly DbQueryBase _dbQueryBase;
         readonly IPoolableDbConnection _poolableConn;
@@ -37,12 +35,12 @@ namespace NetGore.Db
         /// <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManaged)
         {
-            if (disposeManaged)
-            {
-                DataReader.Dispose();
-                _dbQueryBase.ReleaseCommand((DbCommand)Command);
-                _poolableConn.Dispose();
-            }
+            if (!disposeManaged)
+                return;
+
+            DataReader.Dispose();
+            _dbQueryBase.ReleaseCommand((DbCommand)Command);
+            _poolableConn.Dispose();
         }
     }
 }
