@@ -11,6 +11,7 @@ using NetGore.IO;
 using SFML;
 using SFML.Graphics;
 using Point = System.Drawing.Point;
+using NetGore.World;
 
 namespace NetGore.EditorTools
 {

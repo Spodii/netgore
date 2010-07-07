@@ -22,6 +22,7 @@ using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Db;
 using NetGore.Features.Shops;
+using NetGore.World;
 
 namespace DemoGame.Server.DbObjs
 {

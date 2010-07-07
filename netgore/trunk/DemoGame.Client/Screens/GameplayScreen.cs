@@ -19,6 +19,7 @@ using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Client
 {

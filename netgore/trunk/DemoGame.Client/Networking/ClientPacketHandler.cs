@@ -22,6 +22,7 @@ using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
 using SFML.Graphics;
+using NetGore.World;
 
 #pragma warning disable 168
 // ReSharper disable UnusedMember.Local

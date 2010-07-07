@@ -20,6 +20,7 @@ using System.Data;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
+using NetGore.World;
 using NetGore.Db;
 using NetGore.Features.Quests;
 

@@ -21,6 +21,7 @@ using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Server
 {

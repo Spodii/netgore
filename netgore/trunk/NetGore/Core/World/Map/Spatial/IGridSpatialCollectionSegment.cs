@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Interface for a segment of the <see cref="GridSpatialCollectionBase"/>.

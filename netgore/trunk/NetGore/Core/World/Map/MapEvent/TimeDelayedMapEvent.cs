@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// A basic <see cref="IDelayedMapEvent"/> that executes an <see cref="Action"/> after an amount of time has elapsed.

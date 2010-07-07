@@ -6,6 +6,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
 using SFML.Window;
+using NetGore.World;
 
 namespace NetGore.Features.Quests
 {

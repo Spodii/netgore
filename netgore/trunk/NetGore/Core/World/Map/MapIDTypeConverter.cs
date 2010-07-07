@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// A <see cref="TypeConverter"/> for the <see cref="MapID"/> type.

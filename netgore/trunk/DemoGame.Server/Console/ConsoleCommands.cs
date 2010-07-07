@@ -5,6 +5,7 @@ using DemoGame.AI;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
+using NetGore.World;
 
 namespace DemoGame.Server
 {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// An implementation of <see cref="ISpatialCollection"/> that uses a grid internally to reduce the test

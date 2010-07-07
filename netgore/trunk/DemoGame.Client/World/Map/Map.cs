@@ -9,6 +9,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Client
 {

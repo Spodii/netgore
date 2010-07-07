@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore;
+using NetGore.World;
 
 namespace DemoGame.EditorTools
 {

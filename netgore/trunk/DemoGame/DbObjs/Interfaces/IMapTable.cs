@@ -18,6 +18,7 @@ For more information on the DbClassCreator, please see:
 using System;
 using System.Linq;
 using NetGore;
+using NetGore.World;
 
 namespace DemoGame.DbObjs
 {

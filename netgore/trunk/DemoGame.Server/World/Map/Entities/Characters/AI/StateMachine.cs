@@ -3,6 +3,7 @@ using System.Linq;
 using DemoGame.AI;
 using NetGore;
 using NetGore.AI;
+using NetGore.World;
 
 namespace DemoGame.Server
 {

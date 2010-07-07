@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.World;
 
 namespace NetGore.Features.Shops
 {

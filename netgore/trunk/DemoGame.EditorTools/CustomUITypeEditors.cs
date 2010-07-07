@@ -15,6 +15,7 @@ using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Graphics;
 using NetGore.NPCChat;
+using NetGore.World;
 
 namespace DemoGame.EditorTools
 {

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// An interface for an event that takes place on an <see cref="IMap"/> but has a delay.

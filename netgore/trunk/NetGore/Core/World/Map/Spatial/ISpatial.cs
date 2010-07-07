@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Interface for an object that occupies space in the world.

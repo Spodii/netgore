@@ -5,6 +5,7 @@ using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
 using SFML.Graphics;
+using NetGore.World;
 
 // ReSharper disable MemberCanBePrivate.Local
 

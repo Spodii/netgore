@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 using NetGore.IO;
+using NetGore.World;
 
 namespace DemoGame.DbObjs
 {

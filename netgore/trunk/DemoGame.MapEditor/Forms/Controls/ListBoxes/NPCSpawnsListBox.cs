@@ -6,6 +6,7 @@ using DemoGame.Server;
 using NetGore;
 using NetGore.Db;
 using NetGore.EditorTools;
+using NetGore.World;
 
 namespace DemoGame.MapEditor
 {

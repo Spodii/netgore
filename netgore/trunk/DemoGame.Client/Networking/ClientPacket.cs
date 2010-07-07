@@ -4,6 +4,7 @@ using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Network;
+using NetGore.World;
 
 namespace DemoGame.Client
 {

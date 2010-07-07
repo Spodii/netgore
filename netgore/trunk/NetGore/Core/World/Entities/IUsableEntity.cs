@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Interface for a DynamicEntity that can be used by a DynamicEntity.

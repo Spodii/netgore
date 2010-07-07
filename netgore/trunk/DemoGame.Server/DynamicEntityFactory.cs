@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NetGore;
 using NetGore.Collections;
+using NetGore.World;
 
 namespace DemoGame.Server
 {

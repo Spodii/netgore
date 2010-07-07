@@ -4,6 +4,7 @@ using System.Linq;
 using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
+using NetGore.World;
 
 namespace NetGore.EditorTools
 {

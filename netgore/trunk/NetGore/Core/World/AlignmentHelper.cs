@@ -2,7 +2,7 @@
 using System.Linq;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Helper methods for the <see cref="Alignment"/> enum.
