@@ -5,6 +5,8 @@ namespace NetGore.AI
 {
     public struct MemoryCell
     {
+        // TODO: Documentation
+
         byte _debugStatus;
         ushort _minX;
         ushort _minY;

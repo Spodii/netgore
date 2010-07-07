@@ -6,8 +6,10 @@ namespace NetGore.AI
 {
     public interface IPathFinder
     {
+        // TODO: Documentation
+
         Heuristics HeuristicFormula { get; set; }
 
-        IEnumerable<Node> FindPath(Vector2 Start, Vector2 End);
+        IEnumerable<AINode> FindPath(Vector2 Start, Vector2 End);
     }
 }

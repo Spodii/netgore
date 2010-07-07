@@ -172,6 +172,7 @@
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
     <Compile Include="Core\Strings\CharTypeExtensions.cs" />
     <Compile Include="Core\Time.cs" />
+    <Compile Include="Core\World\Entities\AI\AINode.cs" />
     <Compile Include="Core\World\Map\MapEvent\IDelayedMapEvent.cs" />
     <Compile Include="Core\World\Map\MapEvent\TimeDelayedMapEvent.cs" />
     <Compile Include="Core\World\Map\MapEvent\TimeDelayedMapEventBase.cs" />

@@ -5,6 +5,8 @@ namespace NetGore.AI
 {
     public struct AIGrid
     {
+        // TODO: Documentation
+
         public readonly byte[,] _grid;
 
         public AIGrid(byte[,] Grid)

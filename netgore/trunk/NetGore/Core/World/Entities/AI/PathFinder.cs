@@ -6,21 +6,11 @@ using SFML.Graphics;
 
 namespace NetGore.AI
 {
-    public struct Node
-    {
-        public int F;
-        public int G;
-        public int H;
-        public ushort PX;
-        public ushort PY;
-        public byte Status;
-        public int X;
-        public int Y;
-    }
-
     public class PathFinder : IPathFinder
     {
-        readonly List<Node> _close;
+        // TODO: Documentation
+
+        readonly List<AINode> _close;
 
 #if TOPDOWN
         const bool topDown = true;
@@ -32,7 +22,7 @@ namespace NetGore.AI
         { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 }, { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
 
         readonly AIGrid _grid;
-        readonly Node[] _nodeGrid;
+        readonly AINode[] _nodeGrid;
         readonly PriorityQueue<int> _open;
         int _closeNodeCounter;
         byte _closeNodeValue = 2;
@@ -58,10 +48,10 @@ namespace NetGore.AI
         public PathFinder(AIGrid Grid)
         {
             _grid = Grid;
-            _nodeGrid = new Node[_grid.GridX * _grid.GridY];
+            _nodeGrid = new AINode[_grid.GridX * _grid.GridY];
 
             _open = new PriorityQueue<int>(new CompareNodes(_nodeGrid));
-            _close = new List<Node>();
+            _close = new List<AINode>();
         }
 
         public int SearchLimit
@@ -83,7 +73,7 @@ namespace NetGore.AI
             set { _heuristicFormula = value; }
         }
 
-        public IEnumerable<Node> FindPath(Vector2 Start, Vector2 End)
+        public IEnumerable<AINode> FindPath(Vector2 Start, Vector2 End)
         {
             lock (this)
             {
@@ -198,7 +188,7 @@ namespace NetGore.AI
                     _close.Clear();
 
                     var _tmpNode = _nodeGrid[((int)End.Y << (int)_grid.Log2GridY) + (int)End.X];
-                    var _node = new Node
+                    var _node = new AINode
                     { F = _tmpNode.F, G = _tmpNode.G, PX = _tmpNode.PX, PY = _tmpNode.PY, X = (int)End.X, Y = (int)End.Y, H = 0 };
 
                     while (_node.X != _node.PX || _node.Y != _node.PY)
@@ -231,9 +221,9 @@ namespace NetGore.AI
 
         internal class CompareNodes : IComparer<int>
         {
-            readonly Node[] _nodeGrid;
+            readonly AINode[] _nodeGrid;
 
-            public CompareNodes(Node[] Nodes)
+            public CompareNodes(AINode[] Nodes)
             {
                 _nodeGrid = Nodes;
             }
