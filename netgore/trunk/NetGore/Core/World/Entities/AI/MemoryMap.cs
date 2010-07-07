@@ -7,6 +7,8 @@ namespace NetGore.AI
 {
     public class MemoryMap
     {
+        // TODO: Documentation
+
         // Array holding data for each MemoryCell.
 
         //Holds some information about the list.
