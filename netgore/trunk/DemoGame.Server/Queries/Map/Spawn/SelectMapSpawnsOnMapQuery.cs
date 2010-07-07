@@ -5,6 +5,7 @@ using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
+using NetGore.World;
 
 namespace DemoGame.Server.Queries
 {

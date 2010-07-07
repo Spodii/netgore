@@ -13,6 +13,7 @@ using NetGore.Audio;
 using NetGore.Collections;
 using NetGore.IO;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace DemoGame
 {

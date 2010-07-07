@@ -1,5 +1,6 @@
 using System.Linq;
 using NetGore.IO;
+using NetGore.World;
 
 namespace NetGore.EditorTools
 {

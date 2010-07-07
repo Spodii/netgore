@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
+using NetGore.World;
 
 namespace DemoGame.Server
 {

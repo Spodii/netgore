@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Creates an aggregate of multiple <see cref="ISpatialCollection"/>s so that many spatials can be treated

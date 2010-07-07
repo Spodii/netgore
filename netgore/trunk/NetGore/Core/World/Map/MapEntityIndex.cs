@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Represents the integral value of the index of a <see cref="DynamicEntity"/> in respect to the

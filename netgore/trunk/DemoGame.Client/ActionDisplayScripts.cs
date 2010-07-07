@@ -7,6 +7,7 @@ using NetGore.Features.ActionDisplays;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using NetGore.World;
 
 namespace DemoGame.Client
 {

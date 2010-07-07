@@ -3,7 +3,7 @@ using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Base of all entities in the world which are not passable by other solid entities. WallEntities also do

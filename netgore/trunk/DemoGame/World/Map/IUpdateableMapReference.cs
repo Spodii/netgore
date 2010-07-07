@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NetGore;
+using NetGore.World;
 
 namespace DemoGame
 {

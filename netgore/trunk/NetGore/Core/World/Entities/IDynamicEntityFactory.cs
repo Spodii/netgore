@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Interface for a class that can be used to serialize a <see cref="DynamicEntity"/> to and from

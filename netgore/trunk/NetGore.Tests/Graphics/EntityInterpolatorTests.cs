@@ -3,6 +3,7 @@ using System.Linq;
 using NetGore.Graphics;
 using NUnit.Framework;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace NetGore.Tests.Graphics
 {

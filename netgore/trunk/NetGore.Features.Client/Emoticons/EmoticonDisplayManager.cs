@@ -5,6 +5,7 @@ using System.Linq;
 using NetGore.Collections;
 using NetGore.Graphics;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace NetGore.Features.Emoticons
 {

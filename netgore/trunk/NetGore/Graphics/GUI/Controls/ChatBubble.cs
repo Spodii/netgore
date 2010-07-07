@@ -6,6 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace NetGore.Graphics
 {

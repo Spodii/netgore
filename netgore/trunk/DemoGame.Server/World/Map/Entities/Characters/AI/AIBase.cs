@@ -7,6 +7,7 @@ using log4net;
 using NetGore;
 using NetGore.AI;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Server
 {

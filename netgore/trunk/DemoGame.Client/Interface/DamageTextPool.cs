@@ -3,6 +3,7 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Client
 {

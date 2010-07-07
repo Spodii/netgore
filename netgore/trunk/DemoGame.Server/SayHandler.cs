@@ -6,6 +6,7 @@ using NetGore;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using SFML.Graphics;
+using NetGore.World;
 
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable UnusedMember.Local

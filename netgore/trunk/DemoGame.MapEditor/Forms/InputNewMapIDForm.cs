@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.IO;
+using NetGore.World;
 
 namespace DemoGame.MapEditor
 {

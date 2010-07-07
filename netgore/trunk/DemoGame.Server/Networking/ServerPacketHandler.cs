@@ -11,6 +11,7 @@ using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
 using NetGore.IO;
 using NetGore.Network;
+using NetGore.World;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedParameter.Local

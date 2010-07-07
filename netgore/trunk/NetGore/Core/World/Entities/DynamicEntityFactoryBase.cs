@@ -5,7 +5,7 @@ using log4net;
 using NetGore.Collections;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Factory for <see cref="DynamicEntity"/> creation and serialization.

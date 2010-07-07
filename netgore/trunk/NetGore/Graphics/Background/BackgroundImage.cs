@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace NetGore.Graphics
 {

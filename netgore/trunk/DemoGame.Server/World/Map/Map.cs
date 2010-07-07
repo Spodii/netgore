@@ -11,6 +11,7 @@ using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Server
 {

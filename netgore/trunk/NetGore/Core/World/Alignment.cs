@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Describes how something is aligned to the target.

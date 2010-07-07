@@ -4,6 +4,7 @@ using NetGore.IO;
 using NetGore.IO.PropertySync;
 using NUnit.Framework;
 using SFML.Graphics;
+using NetGore.World;
 
 // ReSharper disable UnusedMember.Local
 

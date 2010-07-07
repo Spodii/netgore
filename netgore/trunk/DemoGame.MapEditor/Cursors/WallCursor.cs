@@ -9,6 +9,7 @@ using NetGore.Graphics;
 using SFML.Graphics;
 using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
+using NetGore.World;
 
 namespace DemoGame.MapEditor
 {

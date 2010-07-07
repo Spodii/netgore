@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics.ParticleEngine;
+using NetGore.World;
 
 namespace NetGore.EditorTools
 {

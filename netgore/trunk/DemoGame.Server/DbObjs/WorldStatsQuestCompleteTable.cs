@@ -23,6 +23,7 @@ using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Features.Quests;
 using NetGore.IO;
+using NetGore.World;
 
 namespace DemoGame.Server.DbObjs
 {

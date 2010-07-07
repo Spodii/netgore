@@ -2,7 +2,7 @@ using System.Linq;
 using NetGore.Extensions;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Extension methods for the <see cref="ISpatial"/> interface.

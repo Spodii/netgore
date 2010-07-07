@@ -4,7 +4,7 @@ using System.Linq;
 using NetGore.Audio;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// The base class of all entities, which are physical objects that reside in the virtual world, and can interact

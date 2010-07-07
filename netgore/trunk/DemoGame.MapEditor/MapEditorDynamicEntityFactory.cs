@@ -3,6 +3,7 @@ using System.Reflection;
 using DemoGame.Client;
 using NetGore;
 using NetGore.Collections;
+using NetGore.World;
 
 namespace DemoGame.MapEditor
 {

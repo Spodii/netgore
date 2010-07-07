@@ -9,6 +9,7 @@ using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Features.WorldStats;
 using NetGore.Network;
+using NetGore.World;
 
 namespace DemoGame.Server
 {

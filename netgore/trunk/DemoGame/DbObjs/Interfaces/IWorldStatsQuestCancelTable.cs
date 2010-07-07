@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using NetGore;
 using NetGore.Features.Quests;
+using NetGore.World;
 
 namespace DemoGame.DbObjs
 {

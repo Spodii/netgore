@@ -7,6 +7,7 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML.Graphics;
 using Image = System.Drawing.Image;
+using NetGore.World;
 
 namespace DemoGame.MapEditor
 {

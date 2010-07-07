@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
+using NetGore.World;
 
 namespace NetGore.Graphics
 {

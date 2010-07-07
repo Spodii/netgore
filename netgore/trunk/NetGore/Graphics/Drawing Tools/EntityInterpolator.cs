@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace NetGore.Graphics
 {

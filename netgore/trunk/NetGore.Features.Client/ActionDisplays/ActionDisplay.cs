@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using NetGore.Audio;
 using NetGore.IO;
+using NetGore.World;
 
 namespace NetGore.Features.ActionDisplays
 {

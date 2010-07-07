@@ -2,6 +2,7 @@ using System.Linq;
 using NetGore;
 using NetGore.Graphics;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Client
 {

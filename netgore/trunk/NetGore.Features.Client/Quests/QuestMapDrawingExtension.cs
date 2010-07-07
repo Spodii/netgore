@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore.Graphics;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace NetGore.Features.Quests
 {

@@ -9,6 +9,7 @@ using NetGore.Features.ActionDisplays;
 using NetGore.Features.Shops;
 using NetGore.NPCChat;
 using NetGore.Stats;
+using NetGore.World;
 
 namespace DemoGame.DbClassCreator
 {

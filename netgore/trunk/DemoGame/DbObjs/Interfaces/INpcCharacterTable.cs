@@ -21,6 +21,7 @@ using NetGore;
 using NetGore.AI;
 using NetGore.Features.Shops;
 using NetGore.NPCChat;
+using NetGore.World;
 
 namespace DemoGame.DbObjs
 {

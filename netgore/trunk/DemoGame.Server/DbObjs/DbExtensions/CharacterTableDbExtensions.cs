@@ -24,6 +24,7 @@ using NetGore.AI;
 using NetGore.Db;
 using NetGore.Features.Shops;
 using NetGore.NPCChat;
+using NetGore.World;
 
 namespace DemoGame.Server.DbObjs
 {

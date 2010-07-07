@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
+using NetGore.World;
 
 namespace NetGore.EditorTools
 {
@@ -29,6 +30,10 @@ namespace NetGore.EditorTools
                                  item.IsPlatform ? " - Platform" : string.Empty);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.ListBox.DrawItem"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
             if (DesignMode || !ControlHelper.DrawListItem<WallEntityBase>(Items, e, x => GetDrawString(x)))

@@ -24,7 +24,7 @@ using SFML.Graphics;
  * --------------------------------------------------------------------------------------------------------------
  */
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Base class for any Entity that must be synchronized between both the Client and Server. This

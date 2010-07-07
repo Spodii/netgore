@@ -21,6 +21,7 @@ using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Db;
+using NetGore.World;
 
 namespace DemoGame.Server.DbObjs
 {

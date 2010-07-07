@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// An implementation of the <see cref="GridSpatialCollectionBase"/> that is optimized for <see cref="ISpatial"/>s

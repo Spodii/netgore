@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// Delegate for handling <see cref="Entity"/> events.

@@ -1,6 +1,7 @@
 using System.Linq;
 using NUnit.Framework;
 using SFML.Graphics;
+using NetGore.World;
 
 namespace NetGore.Tests.NetGore
 {

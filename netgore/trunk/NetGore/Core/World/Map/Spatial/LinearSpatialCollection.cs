@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SFML.Graphics;
 
-namespace NetGore
+namespace NetGore.World
 {
     /// <summary>
     /// A very basic, primitive <see cref="ISpatialCollection"/> that contains all objects in a single linear collection.
