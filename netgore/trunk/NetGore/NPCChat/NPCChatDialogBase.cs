@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
 
+// TODO: Move NPCChat into NetGore.Features after the editors are revamped
+
 namespace NetGore.NPCChat
 {
     /// <summary>
