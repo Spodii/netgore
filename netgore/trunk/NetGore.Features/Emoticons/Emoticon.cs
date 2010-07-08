@@ -2,6 +2,8 @@
 
 namespace NetGore.Features.Emoticons
 {
+    // TODO: This enum should NOT be defined in NetGore.Features directly. Otherwise, nobody can edit it!
+
     /// <summary>
     /// The different emoticons that can be used.
     /// </summary>

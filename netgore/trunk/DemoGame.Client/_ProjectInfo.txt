@@ -4,11 +4,10 @@
  / /_//|  __/| | | | | || (_) |/ /_\\| (_| || | | | | ||  __/ _ / /___ | || ||  __/| | | || |_ 
 /___,'  \___||_| |_| |_| \___/ \____/ \__,_||_| |_| |_| \___|(_)\____/ |_||_| \___||_| |_| \__|
 
-------------------------------------------------------------------------------------------
-This file contains information about this project in general. One is provided for each
-project in NetGore, and it is recommended you read them all to get a basic understanding
-of NetGore's code structure.
-------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+This file contains information about this project in general. One is provided for each project in NetGore, and it is recommended you read them
+all to get a basic understanding of NetGore's code structure.
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 DemoGame.Client is where all the client-specific goodies are. This will not be referenced by any other projects
 except for maybe some editors that edit things highly specific to the client (like the map editor). This is the

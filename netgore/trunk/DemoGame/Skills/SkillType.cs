@@ -2,6 +2,8 @@ using System.Linq;
 
 namespace DemoGame
 {
+    // TODO: Define the skill information in files, not via SkillInfoAttribute
+
     /// <summary>
     /// Contains the unique name of each individual Skill.
     /// </summary>

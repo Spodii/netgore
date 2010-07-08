@@ -4,11 +4,10 @@
  / /_//|  __/| | | | | || (_) |/ /_\\| (_| || | | | | ||  __/ _ / /_\\ \ \_/ //\/ /_   / /  |  __/\__ \| |_|  __/| |   
 /___,'  \___||_| |_| |_| \___/ \____/ \__,_||_| |_| |_| \___|(_)\____/  \___/ \____/   \/    \___||___/ \__|\___||_|   
 
-------------------------------------------------------------------------------------------
-This file contains information about this project in general. One is provided for each
-project in NetGore, and it is recommended you read them all to get a basic understanding
-of NetGore's code structure.
-------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+This file contains information about this project in general. One is provided for each project in NetGore, and it is recommended you read them
+all to get a basic understanding of NetGore's code structure.
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 DemoGame.GUITester is a very simple project provided just for testing out the GUI. Its not an editor since it doesn't
 let you modify anything, nor does it really produce any output. It just generates a sample GUI and lets you test it out.
