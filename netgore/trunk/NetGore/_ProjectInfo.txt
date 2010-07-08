@@ -29,6 +29,7 @@ with the exception of Core. The reason for this is that there is just so much in
 but without the annoyance of having a ton of extra projects.
 
 The following is a description of each of these folders:
+ * AI: All of the base components of the artificial intelligence, along with AI-related concepts such as pathfinding.
  * Audio: Contains everything related to playing and managing sound effects and music.
  * Collections: All the publicly-exposed collections of various purposes, such as object pools, caches, and specialized lists, stacks,
 		and queues. All parts of NetGore and the DemoGame use these collections for various purposes.
@@ -61,3 +62,6 @@ The following is a description of each of these folders:
 		updates since the process of updating is quite specific and SFML updates are quite infrequent.
  * Stats: Everything related to stats for characters in games. This has nothing to do with statistics for stuff like the network or
 		resource usage. This is the actual game stats, like strength, agility, intelligence, etc.
+ * World: Everything related to the actual virtual world, including the world itself, maps (the individual parts that make up a world), and
+		entities (the individual objects that reside on maps and occupy space). Also contains classes related to handling these entities, such
+		as the spatial manager.
