@@ -32,7 +32,7 @@ namespace DemoGame.Client
             _getTime = getTime;
             _camera = camera;
 
-            MapDrawingExtensions.Add(new EmoticonMapDrawingExtension(_emoticonDisplayManager));
+            MapDrawingExtensions.Add(new EmoticonMapDrawingExtension<Emoticon, EmoticonInfo<Emoticon>>(_emoticonDisplayManager));
 
             if (userInfo != null)
             {

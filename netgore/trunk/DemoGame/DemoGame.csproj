@@ -161,6 +161,9 @@
     <Compile Include="DbObjs\Interfaces\IWorldStatsUserShoppingTable.cs" />
     <Compile Include="DbObjs\ItemTable.cs" />
     <Compile Include="DbObjs\ItemTemplateTable.cs" />
+    <Compile Include="Emoticons\Emoticon.cs" />
+    <Compile Include="Emoticons\EmoticonInfoManager.cs" />
+    <Compile Include="IO\PropertySyncEmoticon.cs" />
     <Compile Include="IO\PropertySyncCharacterID.cs" />
     <Compile Include="IO\PropertySyncCharacterTemplateID.cs" />
     <Compile Include="IO\PropertySyncItemID.cs" />

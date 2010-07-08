@@ -10,13 +10,15 @@ using NetGore.World;
 namespace NetGore.Features.Emoticons
 {
     /// <summary>
-    /// Handles displaying <see cref="Emoticon"/>s.
+    /// Handles displaying the individual emoticon instances.
     /// </summary>
-    public class EmoticonDisplayManager
+    /// <typeparam name="TKey">The emoticon key.</typeparam>
+    /// <typeparam name="TValue">The emoticon information.</typeparam>
+    public class EmoticonDisplayManager<TKey, TValue> where TValue : EmoticonInfo<TKey>
     {
-        static readonly EmoticonInfoManager _emoticonInfoManager;
-        static readonly EmoticonDisplayManager _instance;
-        static Func<ISpatial, Vector2> _getDrawPositionHandler;
+        Func<ISpatial, Vector2> _getDrawPositionHandler;
+
+        readonly EmoticonInfoManagerBase<TKey, TValue> _emoticonInfoManager;
 
         /// <summary>
         /// A dictionary of the active emoticons.
@@ -30,28 +32,20 @@ namespace NetGore.Features.Emoticons
             x => new EmoticonDisplayInfo(), false);
 
         /// <summary>
-        /// Initializes the <see cref="EmoticonDisplayManager"/> class.
+        /// Initializes a new instance of the <see cref="EmoticonDisplayManager{TKey, TValue}"/> class.
         /// </summary>
-        static EmoticonDisplayManager()
+        /// <param name="emoticonInfoManager">The <see cref="EmoticonInfoManagerBase{TKey, TValue}"/> to use to look up the information
+        /// for emoticons.</param>
+        public EmoticonDisplayManager(EmoticonInfoManagerBase<TKey, TValue> emoticonInfoManager)
         {
-            _instance = new EmoticonDisplayManager();
-            _emoticonInfoManager = EmoticonInfoManager.Instance;
-
-            Debug.Assert(_emoticonInfoManager != null);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EmoticonDisplayManager"/> class.
-        /// </summary>
-        EmoticonDisplayManager()
-        {
+            _emoticonInfoManager = emoticonInfoManager;
         }
 
         /// <summary>
         /// Gets or sets the <see cref="Func{T,U}"/> used to get the world position to draw an emoticon at for the given
         /// <see cref="ISpatial"/>. If set to null, the default handler will be used.
         /// </summary>
-        public static Func<ISpatial, Vector2> GetDrawPositionHandler
+        public Func<ISpatial, Vector2> GetDrawPositionHandler
         {
             get { return _getDrawPositionHandler; }
             set
@@ -67,26 +61,20 @@ namespace NetGore.Features.Emoticons
         }
 
         /// <summary>
-        /// Gets the <see cref="EmoticonDisplayManager"/> instance.
-        /// </summary>
-        public static EmoticonDisplayManager Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
-        /// Adds an <see cref="Emoticon"/> display.
+        /// Adds an emoticon display.
         /// </summary>
         /// <param name="entity">The entity that emoted.</param>
         /// <param name="emoticon">The emoticon to display.</param>
         /// <param name="currentTime">The current game time.</param>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        public void Add(ISpatial entity, Emoticon emoticon, TickCount currentTime)
+        /// <exception cref="ArgumentNullException"><paramref name="emoticon"/> is null</exception>
+        /// <exception cref="KeyNotFoundException">The <paramref name="emoticon"/>'s info could not be found.</exception>
+        public void Add(ISpatial entity, TKey emoticon, TickCount currentTime)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            var emoticonInfo = _emoticonInfoManager.GetAttribute(emoticon);
+            var emoticonInfo = _emoticonInfoManager[emoticon];
             EmoticonDisplayInfo obj;
             bool keyExists;
 
@@ -123,7 +111,7 @@ namespace NetGore.Features.Emoticons
         }
 
         /// <summary>
-        /// Draws the emoticons in the <see cref="EmoticonDisplayManager"/>.
+        /// Draws all of the emoticons in this collection.
         /// </summary>
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
         public void Draw(ISpriteBatch spriteBatch)
@@ -141,7 +129,7 @@ namespace NetGore.Features.Emoticons
         }
 
         /// <summary>
-        /// Updates the emoticons in the <see cref="EmoticonDisplayManager"/>.
+        /// Updates all of the emoticons in this collection.
         /// </summary>
         /// <param name="currentTime">The current game time.</param>
         public void Update(TickCount currentTime)
@@ -169,7 +157,7 @@ namespace NetGore.Features.Emoticons
         }
 
         /// <summary>
-        /// Contains the information for a single display of an <see cref="Emoticon"/>.
+        /// Contains the information for a single display of an emoticon.
         /// </summary>
         class EmoticonDisplayInfo : IPoolable
         {

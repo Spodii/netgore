@@ -95,8 +95,7 @@
   <ItemGroup>
     <Compile Include="ActionDisplays\ActionDisplayID.cs" />
     <Compile Include="ActionDisplays\PropertySyncDisplayActionID.cs" />
-    <Compile Include="Emoticons\Emoticon.cs" />
-    <Compile Include="Emoticons\EmoticonInfoAttribute.cs" />
+    <Compile Include="Emoticons\EmoticonInfo.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
     <Compile Include="GameTime\GameDateTime.cs" />
     <Compile Include="GameTime\GameTimeSettings.cs" />
