@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetGore.Features.Editor</RootNamespace>
+    <AssemblyName>NetGore.Features.Editor</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
+      <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
+      <Name>NetGore.Db</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
+      <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
+      <Name>NetGore.EditorTools</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features.Client\NetGore.Features.Client.csproj">
+      <Project>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</Project>
+      <Name>NetGore.Features.Client</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features.Server\NetGore.Features.Server.csproj">
+      <Project>{431BC2DD-0DDD-47FC-827C-9182A361B4E8}</Project>
+      <Name>NetGore.Features.Server</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">
+      <Project>{21CBF812-F3DE-4CCD-BE43-4D28EC611272}</Project>
+      <Name>NetGore.Features</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>NetGore</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ActionDisplays\" />
+    <Folder Include="Emoticons\" />
+    <Folder Include="GameTime\" />
+    <Folder Include="Groups\" />
+    <Folder Include="Guilds\" />
+    <Folder Include="Quests\" />
+    <Folder Include="Shops\" />
+    <Folder Include="Skills\" />
+    <Folder Include="StatusEffects\" />
+    <Folder Include="WorldStats\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="_ProjectInfo.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

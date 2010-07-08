@@ -180,6 +180,10 @@
       <Project>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</Project>
       <Name>NetGore.Features.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features.Editor\NetGore.Features.Editor.csproj">
+      <Project>{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}</Project>
+      <Name>NetGore.Features.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Features.Server\NetGore.Features.Server.csproj">
       <Project>{431BC2DD-0DDD-47FC-827C-9182A361B4E8}</Project>
       <Name>NetGore.Features.Server</Name>

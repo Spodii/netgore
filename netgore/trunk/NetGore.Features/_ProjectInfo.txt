@@ -10,7 +10,7 @@ project in NetGore, and it is recommended you read them all to get a basic under
 of NetGore's code structure.
 ------------------------------------------------------------------------------------------
 
-NetGore.Features seems a bit strange at first, but starts to make sense as you use it. It is composed of three parts:
+NetGore.Features seems a bit strange at first, but starts to make sense as you use it. It is composed of three major parts:
 NetGore.Features, NetGore.Features.Client, and NetGore.Features.Server. This structure is pretty much synonymous with how
 it works for DemoGame with the client and server. NetGore.Features provides something shared by both the client and server, while
 the other two are specific to their respective part. That is, the server uses NetGore.Features.Server, the client uses
@@ -24,6 +24,11 @@ Each folder in NetGore.Features represents a unique feature. For the most part, 
 any other feature, though there can be cases where features will expand other features. Each feature always has the namespace of
 "NetGore.Features.XXXX", where XXXX is the unique namespace for the feature. Doesn't matter if the code is in the server or client
 projects - the same namespace is used for all parts of the feature.
+
+NetGore.Features.Editor is a sort of special-case project. It contains stuff for features in NetGore.Features that is specific to
+editors. This is similar to how NetGore.EditorTools behaves. This project only appears in editor projects, and never in the client
+or server. The purpose of this project is to allow developers of features to provide classes that can be used to help edit features.
+It also allows you to have features that are purely focused on the editors.
 
 The idea behind this structure is the following:
  * Separation of features: There are minimal, if any, dependencies of features upon one another. If you do not want a certain feature
