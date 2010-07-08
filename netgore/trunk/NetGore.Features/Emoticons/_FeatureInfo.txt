@@ -9,12 +9,12 @@ This file contains information about this feature in general. One is provided fo
 folder in the NetGore.Features project.
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
-// TODO: Document the Emoticons feature
-
+The emoticons feature is quite a simple one. All it does is allow Characters to display an emoticon near them. Though there is quite a lot
+of code provided to make the implementation and usage as simple as possible.
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 DATABASE TABLES:
  * [None]
 
 CONTENT FILES:
- * [None]
+ * \Data\emoticons.dat
