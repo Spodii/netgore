@@ -226,6 +226,10 @@
       <Name>NetGore.EditorTools</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Features.Editor\NetGore.Features.Editor.csproj">
+      <Project>{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}</Project>
+      <Name>NetGore.Features.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>
