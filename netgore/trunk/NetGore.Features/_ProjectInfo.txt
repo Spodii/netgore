@@ -4,11 +4,10 @@
 / /\  /|  __/| |_ / /_\\| (_) || |  |  __/ _ / /  |  __/| (_| || |_ | |_| || |  |  __/\__ \
 \_\ \/  \___| \__|\____/ \___/ |_|   \___|(_)\/    \___| \__,_| \__| \__,_||_|   \___||___/
 
-------------------------------------------------------------------------------------------
-This file contains information about this project in general. One is provided for each
-project in NetGore, and it is recommended you read them all to get a basic understanding
-of NetGore's code structure.
-------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+This file contains information about this project in general. One is provided for each project in NetGore, and it is recommended you read them
+all to get a basic understanding of NetGore's code structure.
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 NetGore.Features seems a bit strange at first, but starts to make sense as you use it. It is composed of three major parts:
 NetGore.Features, NetGore.Features.Client, and NetGore.Features.Server. This structure is pretty much synonymous with how
@@ -48,3 +47,7 @@ are actually required by any core parts of the engine. This makes adding and rem
 All components in NetGore.Features demand the same quality as being part of the core engine. That is, it needs to be flexible, useful,
 stable, well-documented, and well-designed. This is also the place that we hope a lot of high-quality user contributions will end up. Its
 an easy way to add to the engine without much fear of breaking anything in the engine.
+
+Inside of each feature folder (in NetGore.Features only), there is a file named _FeatureInfo.txt containing a description of the feature.
+Its purpose is the exact same as the _ProjectInfo.txt files, but for explaining the feature. The stylized text used as headers is generated
+using the TAAG project: http://patorjk.com/software/taag/. Just select the "Ogre" style and untick "Smush Letters Together".

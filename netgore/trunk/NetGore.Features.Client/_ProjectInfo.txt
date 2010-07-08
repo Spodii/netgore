@@ -4,11 +4,10 @@
 / /\  /|  __/| |_ / /_\\| (_) || |  |  __/ _ / /  |  __/| (_| || |_ | |_| || |  |  __/\__ \ _ / /___ | || ||  __/| | | || |_ 
 \_\ \/  \___| \__|\____/ \___/ |_|   \___|(_)\/    \___| \__,_| \__| \__,_||_|   \___||___/(_)\____/ |_||_| \___||_| |_| \__|
 
-------------------------------------------------------------------------------------------
-This file contains information about this project in general. One is provided for each
-project in NetGore, and it is recommended you read them all to get a basic understanding
-of NetGore's code structure.
-------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------
+This file contains information about this project in general. One is provided for each project in NetGore, and it is recommended you read them
+all to get a basic understanding of NetGore's code structure.
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 This is part of the NetGore.Features project, but contains code specific to the client.
 Please see NetGore.Features intead.
