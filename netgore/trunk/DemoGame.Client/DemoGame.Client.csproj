@@ -152,6 +152,7 @@
     <Compile Include="Controls\ToolbarItemType.cs" />
     <Compile Include="DragDropHandler.cs" />
     <Compile Include="DynamicEntityFactory.cs" />
+    <Compile Include="EmoticonDisplayManager.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
