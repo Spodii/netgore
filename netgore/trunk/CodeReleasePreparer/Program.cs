@@ -6,9 +6,6 @@ using InstallationValidator;
 using NetGore;
 using SFML.Graphics;
 
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
-#pragma warning disable 162
-
 namespace CodeReleasePreparer
 {
     /// <summary>
@@ -159,12 +156,16 @@ namespace CodeReleasePreparer
                 return;
             }
 
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+#pragma warning disable 162
             if (_buildSchemaOnly)
             {
                 Console.WriteLine("_buildSchemaOnly is set - will not progress any farther.");
                 Console.WriteLine("Done!");
                 return;
             }
+#pragma warning enable 162
+            // ReSharper enable ConditionIsAlwaysTrueOrFalse
 
             // Clean out the items table in the database
             Console.WriteLine("Cleaning out `item` table...");
