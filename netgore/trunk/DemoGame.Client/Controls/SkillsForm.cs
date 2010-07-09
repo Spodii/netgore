@@ -65,7 +65,7 @@ namespace DemoGame.Client
 
         void CreateSkillEntry(Vector2 position, SkillType skillType)
         {
-            var skillInfo = SkillInfoManager.Instance.GetAttribute(skillType);
+            var skillInfo = SkillInfoManager.Instance[skillType];
 
             PictureBox pb = new SkillPictureBox(this, skillInfo, position);
             pb.Clicked += SkillPicture_Clicked;
@@ -105,13 +105,14 @@ namespace DemoGame.Client
 
         sealed class SkillLabel : Label
         {
-            public SkillLabel(Control parent, SkillInfoAttribute skillInfo, Vector2 position) : base(parent, position)
+            public SkillLabel(Control parent, SkillInfo<SkillType> skillInfo, Vector2 position)
+                : base(parent, position)
             {
                 SkillInfo = skillInfo;
                 Text = SkillInfo.DisplayName;
             }
 
-            public SkillInfoAttribute SkillInfo { get; private set; }
+            public SkillInfo<SkillType> SkillInfo { get; private set; }
         }
 
         public sealed class SkillPictureBox : PictureBox, IDragDropProvider, IQuickBarItemProvider
@@ -120,7 +121,7 @@ namespace DemoGame.Client
 
             bool _isCoolingDown = false;
 
-            public SkillPictureBox(SkillsForm parent, SkillInfoAttribute skillInfo, Vector2 position)
+            public SkillPictureBox(SkillsForm parent, SkillInfo<SkillType> skillInfo, Vector2 position)
                 : base(parent, position, _iconSize)
             {
                 SkillInfo = skillInfo;
@@ -129,9 +130,9 @@ namespace DemoGame.Client
             }
 
             /// <summary>
-            /// Gets the <see cref="SkillInfoAttribute"/> for the skill represented by this control.
+            /// Gets the <see cref="SkillInfo{T}"/> for the skill represented by this control.
             /// </summary>
-            public SkillInfoAttribute SkillInfo { get; private set; }
+            public SkillInfo<SkillType> SkillInfo { get; private set; }
 
             /// <summary>
             /// Draws the <see cref="Control"/>.

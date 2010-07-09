@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Collections;
 using NetGore.Graphics;
 using SFML.Graphics;
@@ -60,6 +62,8 @@ namespace NetGore.Features.Emoticons
             }
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Adds an emoticon display.
         /// </summary>
@@ -67,14 +71,23 @@ namespace NetGore.Features.Emoticons
         /// <param name="emoticon">The emoticon to display.</param>
         /// <param name="currentTime">The current game time.</param>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="emoticon"/> is null</exception>
-        /// <exception cref="KeyNotFoundException">The <paramref name="emoticon"/>'s info could not be found.</exception>
+        /// <exception cref="ArgumentException"><paramref name="emoticon"/> is invalid.</exception>
         public void Add(ISpatial entity, TKey emoticon, TickCount currentTime)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
             var emoticonInfo = _emoticonInfoManager[emoticon];
+            if (emoticonInfo == null)
+            {
+                const string errmsg = "No EmoticonInfo associated with the emoticon `{0}`.";
+                string err = string.Format(errmsg, emoticon);
+                if (log.IsErrorEnabled)
+                    log.Error(err);
+                Debug.Fail(err);
+                throw new ArgumentException(err, "emoticon");
+            }
+
             EmoticonDisplayInfo obj;
             bool keyExists;
 

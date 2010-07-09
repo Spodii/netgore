@@ -172,9 +172,9 @@ namespace DemoGame.Client
             int _quickBarItemValue;
 
             /// <summary>
-            /// The <see cref="SkillInfoAttribute"/> for when the quick bar item is a skill.
+            /// The <see cref="SkillInfo{T}"/> for when the quick bar item is a skill.
             /// </summary>
-            SkillInfoAttribute _skillInfo;
+            SkillInfo<SkillType> _skillInfo;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Control"/> class.
@@ -353,7 +353,7 @@ namespace DemoGame.Client
                 switch (type)
                 {
                     case QuickBarItemType.Skill:
-                        _skillInfo = SkillInfoManager.Instance.GetAttribute((SkillType)QuickBarItemValue);
+                        _skillInfo = SkillInfoManager.Instance[(SkillType)QuickBarItemValue];
                         if (_skillInfo == null)
                         {
                             SetQuickBar(QuickBarItemType.None, 0);

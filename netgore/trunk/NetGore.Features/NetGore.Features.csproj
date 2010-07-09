@@ -138,6 +138,8 @@
     <Compile Include="Skills\ISkillCooldownManager.cs" />
     <Compile Include="Skills\SkillBase.cs" />
     <Compile Include="Skills\SkillCooldownManager.cs" />
+    <Compile Include="Skills\SkillInfo.cs" />
+    <Compile Include="Skills\SkillInfoManager.cs" />
     <Compile Include="Skills\SkillManager.cs" />
     <Compile Include="StatusEffects\IStatusEffect.cs" />
     <Compile Include="StatusEffects\StatusEffect.cs" />

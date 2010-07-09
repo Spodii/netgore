@@ -37,12 +37,17 @@ namespace NetGore.Features.Emoticons
         /// Gets the emoticon information based off of the given key.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <returns>The emoticon information.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="key"/> is null</exception>
-        /// <exception cref="KeyNotFoundException">The key does not exist in the collection.</exception>
+        /// <returns>The emoticon information, or null if the key does not exist.</returns>
         public TValue this[TKey key]
         {
-            get { return _dict[key]; }
+            get
+            {
+                TValue ret;
+                if (!_dict.TryGetValue(key, out ret))
+                    return null;
+
+                return ret;
+            }
         }
 
         /// <summary>
