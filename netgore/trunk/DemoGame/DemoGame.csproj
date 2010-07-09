@@ -169,6 +169,7 @@
     <Compile Include="IO\PropertySyncItemID.cs" />
     <Compile Include="IO\PropertySyncItemTemplateID.cs" />
     <Compile Include="IO\PropertySyncQuestID.cs" />
+    <Compile Include="IO\PropertySyncSkillType.cs" />
     <Compile Include="IO\PropertySyncSPValueType.cs" />
     <Compile Include="IO\PropertySyncWeaponType.cs" />
     <Compile Include="Items\EquippedEventHandler.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Items\ItemTemplateIDTypeConverter.cs" />
     <Compile Include="Items\WeaponType.cs" />
     <Compile Include="LogLevelExtensions.cs" />
+    <Compile Include="Skills\SkillInfoManager.cs" />
     <Compile Include="Stats\SPValueTypeConverter.cs" />
     <Compile Include="Stats\SPValueTypeReadWriteExtensions.cs" />
     <Compile Include="StatusEffect\ActiveStatusEffectID.cs" />
@@ -197,8 +199,6 @@
     <Compile Include="Items\ItemTemplateID.cs" />
     <Compile Include="World\Map\Entities\CharacterTemplateIDTypeConverter.cs" />
     <Compile Include="World\Map\MapSpawnValuesID.cs" />
-    <Compile Include="Skills\SkillInfoAttribute.cs" />
-    <Compile Include="Skills\SkillInfoManager.cs" />
     <Compile Include="StatusEffect\StatusEffectInfoAttribute.cs" />
     <Compile Include="StatusEffect\StatusEffectInfoManager.cs" />
     <Compile Include="World\Map\IMapEntityCollectionExtensions.cs" />

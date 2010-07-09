@@ -1,62 +1,61 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 
-namespace NetGore.Features.Emoticons
+namespace NetGore.Features.Skills
 {
     /// <summary>
-    /// Contains the <see cref="EmoticonInfo{TKey}"/>s for each corresponding key.
+    /// Contains the <see cref="SkillInfo{TKey}"/>s for each corresponding key.
     /// </summary>
-    /// <typeparam name="TKey">The emoticon key.</typeparam>
-    /// <typeparam name="TValue">The emoticon information.</typeparam>
-    public abstract class EmoticonInfoManagerBase<TKey, TValue> where TValue : EmoticonInfo<TKey>
+    /// <typeparam name="TKey">The Skill key.</typeparam>
+    /// <typeparam name="TValue">The Skill information.</typeparam>
+    public abstract class SkillInfoManagerBase<TKey, TValue> where TValue : SkillInfo<TKey>
     {
-        const string _rootNodeName = "EmoticonInfos";
+        const string _rootNodeName = "SkillInfos";
 
         readonly Dictionary<TKey, TValue> _dict;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmoticonInfoManagerBase{TKey, TValue}"/> class.
+        /// Initializes a new instance of the <see cref="SkillInfoManagerBase{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="equalityComparer">The equality comparer.</param>
-        protected EmoticonInfoManagerBase(IEqualityComparer<TKey> equalityComparer)
+        protected SkillInfoManagerBase(IEqualityComparer<TKey> equalityComparer)
         {
             _dict = new Dictionary<TKey, TValue>(equalityComparer);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmoticonInfoManagerBase{TKey, TValue}"/> class.
+        /// Initializes a new instance of the <see cref="SkillInfoManagerBase{TKey, TValue}"/> class.
         /// </summary>
-        protected EmoticonInfoManagerBase()
+        protected SkillInfoManagerBase()
         {
             _dict = new Dictionary<TKey, TValue>();
         }
 
         /// <summary>
-        /// Gets the emoticon information based off of the given key.
+        /// Gets the skill information based off of the given key.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <returns>The emoticon information, or null if the key does not exist.</returns>
+        /// <returns>The skill information, or null if the key does not exist.</returns>
         public TValue this[TKey key]
         {
-            get
-            {
+            get { 
                 TValue ret;
                 if (!_dict.TryGetValue(key, out ret))
                     return null;
 
-                return ret;
-            }
+                return ret; }
         }
 
         /// <summary>
-        /// Creates a new <see cref="EmoticonInfo{TKey}"/> instance.
+        /// Creates a new <see cref="SkillInfo{TKey}"/> instance.
         /// </summary>
-        /// <returns>A new <see cref="EmoticonInfo{TKey}"/> instance.</returns>
-        protected virtual TValue CreateEmoticonInfo()
+        /// <returns>A new <see cref="SkillInfo{TKey}"/> instance.</returns>
+        protected virtual TValue CreateSkillInfo()
         {
-            return (TValue)new EmoticonInfo<TKey>();
+            return (TValue)new SkillInfo<TKey>();
         }
 
         /// <summary>
@@ -82,14 +81,14 @@ namespace NetGore.Features.Emoticons
         /// <returns>The read <typeparamref name="TValue"/>.</returns>
         TValue ReadHandler(IValueReader r)
         {
-            var ret = CreateEmoticonInfo();
+            var ret = CreateSkillInfo();
             ret.ReadState(r);
             ReadExtra(r);
             return ret;
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional writing of the <see cref="EmoticonInfoManagerBase{TKey,TValue}"/>
+        /// When overridden in the derived class, allows for additional writing of the <see cref="SkillInfoManagerBase{TKey,TValue}"/>
         /// values. This allows you to read and write values defined in a derived class.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
@@ -97,7 +96,7 @@ namespace NetGore.Features.Emoticons
         {
         }
         /// <summary>
-        /// When overridden in the derived class, allows for additional reading of the <see cref="EmoticonInfoManagerBase{TKey,TValue}"/>
+        /// When overridden in the derived class, allows for additional reading of the <see cref="SkillInfoManagerBase{TKey,TValue}"/>
         /// values. This allows you to read and write values defined in a derived class.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
