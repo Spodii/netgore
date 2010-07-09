@@ -158,6 +158,11 @@ namespace DemoGame.Client
                 Size = _iconSize;
             }
 
+            /// <summary>
+            /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
+            /// not visible.
+            /// </summary>
+            /// <param name="currentTime">The current time in milliseconds.</param>
             protected override void UpdateControl(TickCount currentTime)
             {
                 _isCoolingDown = _cooldownManager.IsCoolingDown(SkillInfo.CooldownGroup, currentTime);
