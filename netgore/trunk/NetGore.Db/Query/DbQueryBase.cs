@@ -387,10 +387,16 @@ namespace NetGore.Db
                 cmd.Parameters.AddRange(clonedParameters);
 
                 Debug.Assert(cmd.Parameters.Count == _parameters.Count());
-            }
 
-            // Set the connection
-            cmd.Connection = conn;
+                cmd.Connection = conn;
+                // NOTE: The command can be prepared here for better performance, but MySQL crashes right now when we try on some queries
+                // cmd.Prepare();
+            }
+            else
+            {
+                // Set the connection
+                cmd.Connection = conn;
+            }
 
             return cmd;
         }
