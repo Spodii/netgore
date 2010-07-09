@@ -21,6 +21,7 @@ namespace DemoGame.Client
     class SkillsForm : Form
     {
         static readonly Vector2 _iconSize = new Vector2(32, 32);
+
         readonly ISkillCooldownManager _cooldownManager;
         readonly int _lineSpacing;
 
