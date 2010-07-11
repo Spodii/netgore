@@ -55,7 +55,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseTopDown|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TOPDOWN</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -77,6 +77,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugTopDown|x86' ">
     <OutputPath>..\bin\</OutputPath>
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>DEBUG;TRACE;TOPDOWN</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
