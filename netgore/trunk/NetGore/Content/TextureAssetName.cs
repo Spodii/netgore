@@ -38,16 +38,13 @@ namespace NetGore.Content
         /// </returns>
         public override string ToString()
         {
-            if (_rootDir.Equals("Grh/"))
-            {
-                var s = Value.Substring(_rootDir.Length - 1);
-                return s;
-            }
-            else
-            {
-                var s = Value.Substring(_rootDir.Length);
-                return s;
-            }
+            if (string.IsNullOrEmpty(Value))
+                return string.Empty;
+
+            if (Value.Length > _rootDir.Length)
+                return Value.Substring(_rootDir.Length);
+
+            return Value;
         }
 
         /// <summary>
