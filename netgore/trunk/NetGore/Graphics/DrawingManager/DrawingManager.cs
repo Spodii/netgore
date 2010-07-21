@@ -278,8 +278,8 @@ namespace NetGore.Graphics
                 {
                     // Draw the light map onto the screen
                     _lightMapSprite.Image = _lightMap;
-                    _lightMapSprite.Width = _lightMap.Width;
-                    _lightMapSprite.Height = _lightMap.Height;
+                    _lightMapSprite.Width = _rw.CurrentView.Size.X;
+                    _lightMapSprite.Height = _rw.CurrentView.Size.Y;
                     _lightMapSprite.Position = _rw.ConvertCoords(0, 0).Round();
 
                     _sb.Draw(_lightMapSprite);
