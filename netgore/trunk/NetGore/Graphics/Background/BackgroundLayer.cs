@@ -37,6 +37,16 @@ namespace NetGore.Graphics
         public BackgroundLayer(ICamera2DProvider cameraProvider, IMap map, IValueReader reader)
             : base(cameraProvider, map, reader)
         {
+        }
+
+        /// <summary>
+        /// Reads the <see cref="BackgroundImage"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        protected override void Read(IValueReader reader)
+        {
+            base.Read(reader);
+
             HorizontalLayout = reader.ReadEnum<BackgroundLayerLayout>(_horizontalLayoutKey);
             VerticalLayout = reader.ReadEnum<BackgroundLayerLayout>(_verticalLayoutKey);
         }
@@ -73,7 +83,7 @@ namespace NetGore.Graphics
             switch (HorizontalLayout)
             {
                 case BackgroundLayerLayout.Stretched:
-                    spriteSize.X = GetStretchedSize(Camera.Size.X, Map.Size.X, Depth);
+                    spriteSize.X = GetStretchedSize(Camera.Size.X * Camera.Scale, Map.Size.X, Depth);
                     break;
 
                 case BackgroundLayerLayout.Tiled:
@@ -84,7 +94,7 @@ namespace NetGore.Graphics
             switch (VerticalLayout)
             {
                 case BackgroundLayerLayout.Stretched:
-                    spriteSize.Y = GetStretchedSize(Camera.Size.Y, Map.Size.Y, Depth);
+                    spriteSize.Y = GetStretchedSize(Camera.Size.Y * Camera.Scale, Map.Size.Y, Depth);
                     break;
 
                 case BackgroundLayerLayout.Tiled:
@@ -97,15 +107,21 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the size to use for a BackgroundLayer sprite to stretch it across the whole map.
         /// </summary>
-        /// <param name="cameraSize">Size of the camera for the given axis.</param>
+        /// <param name="normalCameraSize">The unscaled size of the camera for the given axis. This will always make the layer
+        /// spread across the whole map exactly only for that zoom level. Zooming in will make it so the whole image cannot be shown
+        /// while zooming out will show past the image.</param>
         /// <param name="targetSize">Target sprite size for the given axis.</param>
         /// <param name="depth">Depth of the BackgroundImage.</param>
         /// <returns>The size to use for a BackgroundLayer sprite to stretch it across the whole map.</returns>
-        protected static float GetStretchedSize(float cameraSize, float targetSize, float depth)
+        protected static float GetStretchedSize(float normalCameraSize, float targetSize, float depth)
         {
-            return cameraSize + ((targetSize - cameraSize) / depth);
+            return normalCameraSize + ((targetSize - normalCameraSize) / depth);
         }
 
+        /// <summary>
+        /// Writes the <see cref="BackgroundImage"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         public override void Write(IValueWriter writer)
         {
             base.Write(writer);

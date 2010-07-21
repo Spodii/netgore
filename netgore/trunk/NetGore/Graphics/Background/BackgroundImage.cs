@@ -22,8 +22,8 @@ namespace NetGore.Graphics
 
         readonly ICamera2DProvider _cameraProvider;
         readonly IMap _map;
-        readonly Grh _sprite;
 
+        Grh _sprite;
         Color _color = Color.White;
         float _depth;
         bool _isVisible = true;
@@ -67,6 +67,15 @@ namespace NetGore.Graphics
             _cameraProvider = cameraProvider;
             _map = map;
 
+            Read(reader);
+        }
+
+        /// <summary>
+        /// Reads the <see cref="BackgroundImage"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        protected virtual void Read(IValueReader reader)
+        {
             Name = reader.ReadString(_valueKeyName);
             Alignment = reader.ReadEnum<Alignment>(_valueKeyAlignment);
             Color = reader.ReadColor(_valueKeyColor);
@@ -74,7 +83,7 @@ namespace NetGore.Graphics
             Offset = reader.ReadVector2(_valueKeyOffset);
             var grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
 
-            _sprite = new Grh(grhIndex, AnimType.Loop, map.GetTime());
+            _sprite = new Grh(grhIndex, AnimType.Loop, Map.GetTime());
         }
 
         /// <summary>
@@ -309,7 +318,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the BackgroundImage.
+        /// Updates the <see cref="BackgroundImage"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         public virtual void Update(TickCount currentTime)
@@ -320,6 +329,10 @@ namespace NetGore.Graphics
             Sprite.Update(currentTime);
         }
 
+        /// <summary>
+        /// Writes the <see cref="BackgroundImage"/> to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
         public virtual void Write(IValueWriter writer)
         {
             writer.Write(_valueKeyName, Name);
