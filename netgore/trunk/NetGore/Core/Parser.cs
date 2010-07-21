@@ -23,6 +23,7 @@ namespace NetGore
         const NumberStyles _nsUInt = NumberStyles.Integer;
         const NumberStyles _nsULong = NumberStyles.Integer;
         const NumberStyles _nsUShort = NumberStyles.Integer;
+
         static readonly Parser _parserCurrent;
         static readonly Parser _parserInvariant;
 
