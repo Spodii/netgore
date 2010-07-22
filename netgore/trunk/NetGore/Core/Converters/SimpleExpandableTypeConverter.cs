@@ -16,14 +16,6 @@ namespace NetGore
                                                          RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         /// <summary>
-        /// Gets the <see cref="Parser"/> to use for parsing strings in this class.
-        /// </summary>
-        protected Parser Parser
-        {
-            get { return Parser.Current; }
-        }
-
-        /// <summary>
         /// Returns whether this converter can convert an object of the given type to the type of this converter,
         /// using the specified context.
         /// </summary>
@@ -99,29 +91,11 @@ namespace NetGore
                     value = new string[0];
 
                 // Convert
-                bool wasConverted;
-                var converted = default(T);
-                try
-                {
-                    converted = ConvertFromString(values, out wasConverted);
-                }
-                catch (FormatException)
-                {
-                    wasConverted = false;
-                }
-                catch (ArgumentNullException)
-                {
-                    wasConverted = false;
-                }
-                catch (ArgumentException)
-                {
-                    wasConverted = false;
-                }
-                catch (OverflowException)
-                {
-                    wasConverted = false;
-                }
+                var parser = Parser.FromCulture(culture);
 
+                bool wasConverted;
+                var converted = ConvertFromString(parser, values, out wasConverted);
+     
                 if (wasConverted)
                     return converted;
             }
@@ -133,11 +107,12 @@ namespace NetGore
         /// When overridden in the derived class, converts the <paramref name="values"/> to the output
         /// type.
         /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use to parse the <paramref name="values"/>.</param>
         /// <param name="values">An array of strings containing the values to parse.</param>
         /// <param name="wasConverted">Contains true if the parsing was successful, or false if the
         /// parsing failed.</param>
         /// <returns>The object parsed from the <paramref name="values"/>.</returns>
-        protected abstract T ConvertFromString(string[] values, out bool wasConverted);
+        protected abstract T ConvertFromString(Parser parser, string[] values, out bool wasConverted);
 
         /// <summary>
         /// Converts the given value object to the specified type, using the specified context and culture

@@ -8,11 +8,12 @@ namespace NetGore.IO
         /// When overridden in the derived class, converts the <paramref name="values"/> to the output
         /// type.
         /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use to parse the <paramref name="values"/>.</param>
         /// <param name="values">An array of strings containing the values to parse.</param>
         /// <param name="wasConverted">Contains true if the parsing was successful, or false if the
         /// parsing failed.</param>
         /// <returns>The object parsed from the <paramref name="values"/>.</returns>
-        protected override SpriteCategorization ConvertFromString(string[] values, out bool wasConverted)
+        protected override SpriteCategorization ConvertFromString(Parser parser, string[] values, out bool wasConverted)
         {
             wasConverted = true;
 
