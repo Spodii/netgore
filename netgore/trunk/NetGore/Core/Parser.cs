@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using NetGore.Collections;
 
 // ReSharper disable MemberCanBeMadeStatic.Global
 
@@ -23,6 +24,12 @@ namespace NetGore
         const NumberStyles _nsUInt = NumberStyles.Integer;
         const NumberStyles _nsULong = NumberStyles.Integer;
         const NumberStyles _nsUShort = NumberStyles.Integer;
+
+        /// <summary>
+        /// The cache of <see cref="Parser"/>s for <see cref="CultureInfo"/>s.
+        /// </summary>
+        static readonly ICache<CultureInfo, Parser> _parserCache =
+            new ThreadSafeHashCache<CultureInfo, Parser>(x => new Parser(x, x.NumberFormat, x.DateTimeFormat));
 
         static readonly Parser _parserCurrent;
         static readonly Parser _parserInvariant;
@@ -91,6 +98,23 @@ namespace NetGore
         public NumberFormatInfo NumberFormatInfo
         {
             get { return _info; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Parser"/> for a given <see cref="CultureInfo"/>.
+        /// </summary>
+        /// <param name="ci">The <see cref="CultureInfo"/> to get the <see cref="Parser"/> for.</param>
+        /// <returns>A <see cref="Parser"/> for the given <paramref name="ci"/>. If the <paramref name="ci"/> is null, returns the
+        /// <see cref="Parser"/> for the invariant culture.</returns>
+        public static Parser FromCulture(CultureInfo ci)
+        {
+            if (ci == null || ci == CultureInfo.InvariantCulture)
+                return Invariant;
+
+            if (ci == CultureInfo.CurrentCulture)
+                return Current;
+
+            return _parserCache[ci];
         }
 
         public bool ParseBool(string s)

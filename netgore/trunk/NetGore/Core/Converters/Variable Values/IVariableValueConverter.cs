@@ -12,11 +12,12 @@ namespace NetGore
         /// When overridden in the derived class, converts the <paramref name="values"/> to the output
         /// type.
         /// </summary>
+        /// <param name="parser">The <see cref="Parser"/> to use to parse the <paramref name="values"/>.</param>
         /// <param name="values">An array of strings containing the values to parse.</param>
         /// <param name="wasConverted">Contains true if the parsing was successful, or false if the
         /// parsing failed.</param>
         /// <returns>The object parsed from the <paramref name="values"/>.</returns>
-        protected override IVariableValue<T> ConvertFromString(string[] values, out bool wasConverted)
+        protected override IVariableValue<T> ConvertFromString(Parser parser, string[] values, out bool wasConverted)
         {
             wasConverted = true;
 
@@ -24,7 +25,7 @@ namespace NetGore
             {
                 case 1:
                     T value;
-                    if (TryParse(Parser, values[0], out value))
+                    if (TryParse(parser, values[0], out value))
                         return Create(value);
 
                     break;
@@ -33,7 +34,7 @@ namespace NetGore
                     T min;
                     T max;
 
-                    if (TryParse(Parser, values[0], out min) && TryParse(Parser, values[1], out max))
+                    if (TryParse(parser, values[0], out min) && TryParse(parser, values[1], out max))
                         return Create(min, max);
 
                     break;
