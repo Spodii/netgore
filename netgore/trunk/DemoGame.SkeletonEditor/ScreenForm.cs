@@ -481,12 +481,20 @@ namespace DemoGame.SkeletonEditor
                     _camera.Zoom(_camera.Min + ((_camera.Size / 2) / _camera.Scale), _camera.Size, _camera.Scale - ScaleRate);
                     break;
                 case Keys.Delete:
-                    if (chkCanAlter.Checked && SelectedNode != null)
+                    if (!chkCanAlter.Checked)
                     {
-                        var removeNode = SelectedNode;
-                        SelectedNode = SelectedNode.Parent;
-                        removeNode.Remove();
+                        MessageBox.Show("Node adding and removing locked. Enable node add/remove in the settings panel.", "Invalid operation", MessageBoxButtons.OK);
+                        return;
                     }
+
+                    var removeNode = SelectedNode;
+
+                    if (removeNode == null)
+                        return;
+
+                    SelectedNode = removeNode.Parent;
+                    removeNode.Remove();
+
                     break;
             }
         }
