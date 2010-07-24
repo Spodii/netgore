@@ -530,10 +530,21 @@ namespace DemoGame.SkeletonEditor
 
             HandleSwitches(_switches);
 
-            // Zoom in and start animation
-            radioAnimate.Checked = true;
-            chkDrawSkel.Checked = false;
             _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
+
+            GameScreen.MouseWheel += new MouseEventHandler(GameScreen_MouseWheel);
+        }
+
+        /// <summary>
+        /// Handles the MouseWheel event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
+        {
+            var center = _camera.Center;
+            _camera.Scale += e.Delta / 1000f;
+            _camera.CenterOn(center);
         }
 
         void RecursiveHookInput(Control rootC)

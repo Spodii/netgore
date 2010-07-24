@@ -166,8 +166,8 @@ namespace DemoGame.SkeletonEditor
             this.GameScreen.Size = new System.Drawing.Size(800, 575);
             this.GameScreen.TabIndex = 2;
             this.GameScreen.Text = "Game Screen";
-            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
+            this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
             // tcMenu
@@ -652,7 +652,7 @@ namespace DemoGame.SkeletonEditor
             this.lstBodies.FormattingEnabled = true;
             this.lstBodies.Location = new System.Drawing.Point(0, 0);
             this.lstBodies.Name = "lstBodies";
-            this.lstBodies.Size = new System.Drawing.Size(196, 186);
+            this.lstBodies.Size = new System.Drawing.Size(196, 189);
             this.lstBodies.TabIndex = 35;
             this.lstBodies.SelectedIndexChanged += new System.EventHandler(this.lstBodies_SelectedIndexChanged);
             // 
@@ -954,7 +954,7 @@ namespace DemoGame.SkeletonEditor
             this.lstHistory.FormattingEnabled = true;
             this.lstHistory.Location = new System.Drawing.Point(3, 16);
             this.lstHistory.Name = "lstHistory";
-            this.lstHistory.Size = new System.Drawing.Size(196, 381);
+            this.lstHistory.Size = new System.Drawing.Size(196, 382);
             this.lstHistory.TabIndex = 0;
             // 
             // chkCanAlter
@@ -996,8 +996,6 @@ namespace DemoGame.SkeletonEditor
             // chkDrawBody
             // 
             this.chkDrawBody.AutoSize = true;
-            this.chkDrawBody.Checked = true;
-            this.chkDrawBody.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDrawBody.Location = new System.Drawing.Point(23, 88);
             this.chkDrawBody.Name = "chkDrawBody";
             this.chkDrawBody.Size = new System.Drawing.Size(78, 17);
@@ -1008,8 +1006,6 @@ namespace DemoGame.SkeletonEditor
             // chkDrawSkel
             // 
             this.chkDrawSkel.AutoSize = true;
-            this.chkDrawSkel.Checked = true;
-            this.chkDrawSkel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDrawSkel.Location = new System.Drawing.Point(23, 65);
             this.chkDrawSkel.Name = "chkDrawSkel";
             this.chkDrawSkel.Size = new System.Drawing.Size(96, 17);
