@@ -390,33 +390,33 @@ namespace NetGore.Graphics
             {
                 // This is a modifier so check for inheriting node values
                 dest.SetLength(srcP.GetLength());
-                if (srcP.IsModifier && srcP.Parent != null)
+                if (!srcP.IsModifier && srcP.Parent != null)
                     dest.SetAngle(srcP.GetAngle());
             }
 
             // Update the child nodes (if there is any)
-            for (var i = 0; i < srcA.Nodes.Count; i++)
+            for (var i = 0; i < srcA.internalNodes.Count; i++)
             {
-                var nextSrcP = (srcP == null ? null : srcP.Nodes[i]);
-                RecursiveUpdate(srcA.Nodes[i], srcB.Nodes[i], nextSrcP, dest.Nodes[i], framePercent);
+                var nextSrcP = (srcP == null ? null : srcP.internalNodes[i]);
+                RecursiveUpdate(srcA.internalNodes[i], srcB.internalNodes[i], nextSrcP, dest.internalNodes[i], framePercent);
             }
         }
 
         /// <summary>
-        /// Updates the parent SkeletonAnimation that this modifier modifies.
+        /// Updates the parent <see cref="SkeletonAnimation"/> that this modifier modifies.
         /// </summary>
-        /// <param name="src">Source root SkeletonNode.</param>
-        /// <param name="dest">Destination root SkeletonNode.</param>
+        /// <param name="src">Source root <see cref="SkeletonNode"/>.</param>
+        /// <param name="dest">Destination root <see cref="SkeletonNode"/>.</param>
         static void RecursiveUpdateParent(SkeletonNode src, SkeletonNode dest)
         {
             // Update modified values
-            if (!src.IsModifier && dest.Parent != null)
+            if (src.IsModifier && dest.Parent != null)
                 dest.SetAngle(src.GetAngle());
 
             // Update the child nodes (if there is any)
-            for (var i = 0; i < src.Nodes.Count; i++)
+            for (var i = 0; i < src.internalNodes.Count; i++)
             {
-                RecursiveUpdateParent(src.Nodes[i], dest.Nodes[i]);
+                RecursiveUpdateParent(src.internalNodes[i], dest.internalNodes[i]);
             }
         }
 
