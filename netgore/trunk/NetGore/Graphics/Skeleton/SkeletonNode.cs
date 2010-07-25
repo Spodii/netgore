@@ -39,30 +39,38 @@ namespace NetGore.Graphics
         readonly List<SkeletonNode> _nodes = new List<SkeletonNode>();
 
         /// <summary>
+        /// Gets the internal list of child <see cref="SkeletonNode"/>s in this <see cref="SkeletonNode"/>.
+        /// </summary>
+        internal List<SkeletonNode> internalNodes { get { return _nodes; } }
+
+        /// <summary>
         /// Name of the node. The node name must be unique throughout the whole skeleton.
         /// </summary>
         string _name = "New node";
 
-        /// <summary>
-        /// Node that this node is attached to (null if none)
-        /// </summary>
         SkeletonNode _parent;
-
-        /// <summary>
-        /// Absolute position of the node
-        /// </summary>
         Vector2 _position;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonNode"/> class.
+        /// </summary>
+        /// <param name="position">The position of the node relative to the <see cref="Skeleton"/>.</param>
         public SkeletonNode(Vector2 position)
         {
             _parent = null;
             _position = position;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonNode"/> class.
+        /// </summary>
+        /// <param name="parent">The parent <see cref="SkeletonNode"/>. If null, this will be treated as the root node in the
+        /// <see cref="Skeleton"/>.</param>
+        /// <param name="position">The position of the node relative to the <see cref="Skeleton"/>.</param>
         public SkeletonNode(SkeletonNode parent, Vector2 position)
         {
             _parent = parent;
-            _parent.Nodes.Add(this);
+            _parent._nodes.Add(this);
             _position = position;
         }
 
@@ -78,7 +86,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets if the node is used when the node is part of a skeleton treated as an animation modifier
+        /// Gets or sets if the node is used when the node is part of a <see cref="Skeleton"/> treated as an animation modifier.
+        /// When this is true and the node is used as a modifier of another <see cref="Skeleton"/>, this node will be used
+        /// instead of the corresponding node in the base <see cref="Skeleton"/>. If false, the node will be ignored.
         /// </summary>
         public bool IsModifier { get; set; }
 
@@ -94,13 +104,14 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the nodes that belong to this node
         /// </summary>
-        public List<SkeletonNode> Nodes
+        public IEnumerable<SkeletonNode> Nodes
         {
             get { return _nodes; }
         }
 
         /// <summary>
-        /// Gets or sets the node that this node is attached to (null if none)
+        /// Gets or sets the node that this node is attached to. When this is the root node in the <see cref="Skeleton"/>, this
+        /// value will be null.
         /// </summary>
         public SkeletonNode Parent
         {
@@ -109,7 +120,8 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the absolute position of the node
+        /// Gets or sets the position of this <see cref="SkeletonNode"/> relative to the <see cref="Skeleton"/> that the node
+        /// is part of.
         /// </summary>
         public Vector2 Position
         {
@@ -118,7 +130,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the X position of the node (equal to Position.X)
+        /// Gets or sets the X position of the node.
         /// </summary>
         public float X
         {
@@ -127,7 +139,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the Y position of the node (equal to Position.Y)
+        /// Gets or sets the Y position of the node.
         /// </summary>
         public float Y
         {
@@ -180,7 +192,7 @@ namespace NetGore.Graphics
                 newChild.Parent = ret;
                 newChild.Name = node.Name;
                 newChild.IsModifier = node.IsModifier;
-                ret.Nodes.Add(newChild);
+                ret._nodes.Add(newChild);
             }
             return ret;
         }
@@ -359,7 +371,7 @@ namespace NetGore.Graphics
         {
             if (Parent != null)
             {
-                Parent.Nodes.Remove(this);
+                Parent._nodes.Remove(this);
                 Parent = null;
             }
         }

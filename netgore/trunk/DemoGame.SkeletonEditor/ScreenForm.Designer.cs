@@ -31,6 +31,7 @@ namespace DemoGame.SkeletonEditor
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.GameScreen = new DemoGame.SkeletonEditor.GameScreenControl();
             this.tcMenu = new System.Windows.Forms.TabControl();
@@ -113,6 +114,7 @@ namespace DemoGame.SkeletonEditor
             this.chkDrawSkel = new System.Windows.Forms.CheckBox();
             this.radioAnimate = new System.Windows.Forms.RadioButton();
             this.radioEdit = new System.Windows.Forms.RadioButton();
+            this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
@@ -301,6 +303,7 @@ namespace DemoGame.SkeletonEditor
             this.txtAngle.Name = "txtAngle";
             this.txtAngle.Size = new System.Drawing.Size(131, 20);
             this.txtAngle.TabIndex = 20;
+            this.tt.SetToolTip(this.txtAngle, "Angle of the node in relation to the parent node");
             this.txtAngle.TextChanged += new System.EventHandler(this.txtAngle_TextChanged);
             // 
             // label5
@@ -318,6 +321,7 @@ namespace DemoGame.SkeletonEditor
             this.txtLength.Name = "txtLength";
             this.txtLength.Size = new System.Drawing.Size(131, 20);
             this.txtLength.TabIndex = 18;
+            this.tt.SetToolTip(this.txtLength, "Length of the bone from this node to its parent, in pixels");
             this.txtLength.TextChanged += new System.EventHandler(this.txtLength_TextChanged);
             // 
             // label4
@@ -335,6 +339,7 @@ namespace DemoGame.SkeletonEditor
             this.txtY.Name = "txtY";
             this.txtY.Size = new System.Drawing.Size(47, 20);
             this.txtY.TabIndex = 16;
+            this.tt.SetToolTip(this.txtY, "Y coordinate of the node (relative to the skeleton, not parent)");
             this.txtY.TextChanged += new System.EventHandler(this.txtY_TextChanged);
             // 
             // label3
@@ -352,6 +357,7 @@ namespace DemoGame.SkeletonEditor
             this.txtX.Name = "txtX";
             this.txtX.Size = new System.Drawing.Size(47, 20);
             this.txtX.TabIndex = 14;
+            this.tt.SetToolTip(this.txtX, "X coordinate of the node (relative to the skeleton, not parent)");
             this.txtX.TextChanged += new System.EventHandler(this.txtX_TextChanged);
             // 
             // label2
@@ -369,6 +375,7 @@ namespace DemoGame.SkeletonEditor
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(131, 20);
             this.txtName.TabIndex = 12;
+            this.tt.SetToolTip(this.txtName, "The unique name of the node");
             this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
             // label1
@@ -391,6 +398,7 @@ namespace DemoGame.SkeletonEditor
             this.cmbSkeletonNodes.Size = new System.Drawing.Size(196, 21);
             this.cmbSkeletonNodes.Sorted = true;
             this.cmbSkeletonNodes.TabIndex = 48;
+            this.tt.SetToolTip(this.cmbSkeletonNodes, "The currently selected skeleton node (joint)");
             this.cmbSkeletonNodes.SelectedIndexChanged += new System.EventHandler(this.cmbSkeletonNodes_SelectedIndexChanged);
             // 
             // gbSkeletonIO
@@ -1159,6 +1167,7 @@ namespace DemoGame.SkeletonEditor
         private System.Windows.Forms.ListBox lstHistory;
         private System.Windows.Forms.CheckBox chkCanAlter;
         private System.Windows.Forms.CheckBox chkCanTransform;
+        private System.Windows.Forms.ToolTip tt;
     }
 }
 

@@ -91,6 +91,7 @@ namespace NetGore.Graphics
                 Debug.Fail("src is null.");
                 return;
             }
+
             if (dest == null)
             {
                 Debug.Fail("dest is null.");
@@ -98,9 +99,9 @@ namespace NetGore.Graphics
             }
 
             dest.IsModifier = src.IsModifier;
-            for (var i = 0; i < src.Nodes.Count; i++)
+            for (var i = 0; i < src.Nodes.Count(); i++)
             {
-                CopyIsModifier(src.Nodes[i], dest.Nodes[i]);
+                CopyIsModifier(src.Nodes.ElementAt(i), dest.Nodes.ElementAt(i));
             }
         }
 
@@ -144,9 +145,9 @@ namespace NetGore.Graphics
             }
 
             dest.SetLength(src.GetLength());
-            for (var i = 0; i < src.Nodes.Count; i++)
+            for (var i = 0; i < src.Nodes.Count(); i++)
             {
-                CopyIsModifier(src.Nodes[i], dest.Nodes[i]);
+                CopyLength(src.Nodes.ElementAt(i), dest.Nodes.ElementAt(i));
             }
         }
 
@@ -300,7 +301,7 @@ namespace NetGore.Graphics
                 }
 
                 node.Parent = parentNode;
-                parentNode.Nodes.Add(node);
+                parentNode.internalNodes.Add(node);
             }
         }
 

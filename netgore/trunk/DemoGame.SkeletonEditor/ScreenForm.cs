@@ -208,6 +208,13 @@ namespace DemoGame.SkeletonEditor
                 }
                 else if (e.Button == MouseButtons.Right)
                 {
+                    // Add new node
+                    if (!chkCanAlter.Checked)
+                    {
+                        MessageBox.Show("Node adding and removing locked. Enable node add/remove in the settings panel.", "Invalid operation", MessageBoxButtons.OK);
+                        return;
+                    }
+
                     if (_skeleton.RootNode == null)
                     {
                         // Create the root node
@@ -365,6 +372,10 @@ namespace DemoGame.SkeletonEditor
             }
         }
 
+        /// <summary>
+        /// Handles the command-line switches.
+        /// </summary>
+        /// <param name="switches">The command-line switches.</param>
         void HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
             if (switches == null || switches.Count() == 0)

@@ -17,7 +17,6 @@ namespace DemoGame.SkeletonEditor
 #if DEBUG
             WinFormExceptionHelper.AddUnhandledExceptionHooks();
 #endif
-
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
 
             Application.EnableVisualStyles();
