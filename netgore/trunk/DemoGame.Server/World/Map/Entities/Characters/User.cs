@@ -440,25 +440,22 @@ namespace DemoGame.Server
         {
             base.Kill();
 
-            /*
-            if (!RespawnMapID.HasValue)
-            {
-                // TODO: Have a global User respawn map/position that can be defined, then use that here
-                return;
-            }
+            // Respawn the user
+            MapID rMapID;
+            Vector2 rPos;
+            ServerGameData.GetUserRespawnPosition(this, out rMapID, out rPos);
 
-            var spawnMap = World.GetMap(RespawnMapID.Value);
-            Teleport(spawnMap, RespawnPosition);
-            */
-
-            IsAlive = false;
-
+            var rMap = World.GetMap(rMapID);
+            Teleport(rMap, rPos);
+            
+            // Restore the stats
             UpdateModStats();
 
             HP = (int)ModStats[StatType.MaxHP];
             MP = (int)ModStats[StatType.MaxMP];
 
-            //IsAlive = true;
+            // Bring them back to life instantly
+            IsAlive = true;
         }
 
         /// <summary>
