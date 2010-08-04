@@ -846,6 +846,14 @@ namespace DemoGame.Server
         /// from defense or any other kind of damage alterations since these are calculated here.</param>
         public virtual void Damage(Entity source, int damage)
         {
+            if (!IsAlive)
+            {
+                const string errmsg = "`{0}` tried to damage dead character `{1}` (for {2} damage).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, source, this, damage);
+                return;
+            }
+
             // Apply damage
             using (var pw = ServerPacket.CharDamage(MapEntityIndex, damage))
             {
@@ -897,6 +905,14 @@ namespace DemoGame.Server
         /// <param name="item">ItemEntity to drop.</param>
         public void DropItem(ItemEntity item)
         {
+            if (!IsAlive)
+            {
+                const string errmsg = "`{0}` tried to drop item `{1}` while dead.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this, item);
+                return;
+            }
+
             var dropPos = GetDropPos();
             item.Position = dropPos;
 
@@ -946,6 +962,14 @@ namespace DemoGame.Server
         /// <returns>True if the item was successfully equipped, else false.</returns>
         public bool Equip(InventorySlot inventorySlot)
         {
+            if (!IsAlive)
+            {
+                const string errmsg = "`{0}` tried to equip inventory slot `{1}` but they are dead.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this, inventorySlot);
+                return false;
+            }
+
             // Get the item from the inventory
             var item = Inventory[inventorySlot];
 
@@ -1184,6 +1208,14 @@ namespace DemoGame.Server
         /// </summary>
         public virtual void Kill()
         {
+            if (!IsAlive)
+            {
+                const string errmsg = "Tried to kill `{0}` but they are already dead.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                return;
+            }
+
             // Ensure movement has stopped
             StopMoving();
 
@@ -1598,6 +1630,9 @@ namespace DemoGame.Server
         /// <param name="st">StatType of the stat to raise.</param>
         public void RaiseStat(StatType st)
         {
+            if (!IsAlive)
+                return;
+
             var cost = GameData.StatCost(BaseStats[st]);
 
             if (StatPoints < cost)
@@ -2032,6 +2067,9 @@ namespace DemoGame.Server
         /// </summary>
         public void Jump()
         {
+            if (!IsAlive)
+                return;
+
             if (!CanJump)
                 return;
 
