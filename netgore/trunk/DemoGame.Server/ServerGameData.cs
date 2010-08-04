@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {
@@ -30,6 +32,18 @@ namespace DemoGame.Server
         public static int GetItemSellValue(ItemEntity item)
         {
             return Math.Max(item.Value / 2, 1);
+        }
+
+        /// <summary>
+        /// Gets the map and position to spawn a <see cref="User"/> after they have been killed.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> to respawn.</param>
+        /// <param name="mapID">The ID of the map to spawn the <paramref name="user"/> on.</param>
+        /// <param name="position">The position to spawn the <paramref name="user"/> at.</param>
+        public static void GetUserRespawnPosition(User user, out MapID mapID, out Vector2 position)
+        {
+            mapID = new MapID(1);
+            position = new Vector2(765, 45);
         }
     }
 }
