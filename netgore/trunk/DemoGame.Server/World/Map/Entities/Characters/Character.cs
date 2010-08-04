@@ -554,6 +554,14 @@ namespace DemoGame.Server
         /// <param name="weapon">The weapon to use for attacking. If null, will be treated as an unarmed melee attack.</param>
         public void Attack(Character target, ItemEntity weapon)
         {
+            if (!IsAlive)
+            {
+                const string errmsg = "`{0}` tried to attack `{1}` with weapon `{2}` while dead.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, target, weapon);
+                return;
+            }
+
             var currTime = GetTime();
 
             // Don't allow attacking while casting a skill
@@ -1176,7 +1184,12 @@ namespace DemoGame.Server
         /// </summary>
         public virtual void Kill()
         {
+            // Ensure movement has stopped
+            StopMoving();
+
+            // Raise the kill events
             OnKilled();
+
             if (Killed != null)
                 Killed(this);
         }
@@ -1338,6 +1351,9 @@ namespace DemoGame.Server
         /// </summary>
         public void MoveLeft()
         {
+            if (!IsAlive)
+                return;
+
             if (IsMovingLeft)
                 return;
 
@@ -1352,6 +1368,9 @@ namespace DemoGame.Server
         /// </summary>
         public void MoveRight()
         {
+            if (!IsAlive)
+                return;
+
             if (IsMovingRight)
                 return;
 
@@ -1863,13 +1882,21 @@ namespace DemoGame.Server
         /// <returns>True if the item was successfully used, else false.</returns>
         public bool UseItem(ItemEntity item, InventorySlot? inventorySlot)
         {
+            if (!IsAlive)
+            {
+                const string errmsg = "`{0}` tried to use item `{1}` while dead.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, item);
+                return false;
+            }
+
             // Check for a valid amount
             if (item.Amount <= 0)
             {
-                const string errmsg = "Attempted to use item `{0}`, but the amount was invalid.";
-                Debug.Fail(string.Format(errmsg, item));
+                const string errmsg = "`{0}` attempted to use item `{1}`, but the amount was invalid.";
+                Debug.Fail(string.Format(errmsg, this, item));
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, item);
+                    log.ErrorFormat(errmsg, this, item);
                 return false;
             }
 
@@ -1893,10 +1920,10 @@ namespace DemoGame.Server
 
                 default:
                     // Unhandled item type
-                    const string errmsg = "Attempted to use item `{0}`, but it contains invalid or unhandled ItemType `{1}`.";
-                    Debug.Fail(string.Format(errmsg, item, item.Type));
+                    const string errmsg = "`{0}` attempted to use item `{1}`, but it contains invalid or unhandled ItemType `{2}`.";
+                    Debug.Fail(string.Format(errmsg, this, item, item.Type));
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, item, item.Type);
+                        log.ErrorFormat(errmsg, this, item, item.Type);
 
                     wasUsed = false;
                     break;
@@ -2022,6 +2049,9 @@ namespace DemoGame.Server
     /// </summary>
         public void MoveDown()
         {
+            if (!IsAlive)
+                return;
+
             if (IsMovingDown)
                 return;
 
@@ -2040,6 +2070,9 @@ namespace DemoGame.Server
     /// </summary>
         public void MoveUp()
         {
+            if (!IsAlive)
+                return;
+
             if (IsMovingUp)
                 return;
 

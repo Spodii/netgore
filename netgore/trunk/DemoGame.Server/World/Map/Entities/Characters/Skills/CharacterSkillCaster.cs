@@ -56,6 +56,9 @@ namespace DemoGame.Server
         /// attempted to be used still needs to cool down.</returns>
         public bool TryStartCastingSkill(ISkill<SkillType, StatType, Character> skill, Character target)
         {
+            if (!_character.IsAlive)
+                return false;
+
             // Don't interrupt a skill that the character is already casting
             if (IsCastingSkill)
                 return false;
