@@ -744,6 +744,14 @@ namespace DemoGame.Server
             if (!TryGetMap(conn, out user, out map))
                 return;
 
+            if (!user.IsAlive)
+            {
+                const string errmsg = "User `{0}` tried to use world entity while dead.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, user);
+                return;
+            }
+
             // Grab the DynamicEntity to use
             var useEntity = map.GetDynamicEntity(useEntityIndex);
             if (useEntity == null)
