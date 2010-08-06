@@ -255,21 +255,23 @@ namespace NetGore.Network
                     {
                         foreach (var v in udpData)
                         {
+                            // Read the challenge value
                             var challenge = BitConverter.ToInt32(v.Data, 0);
+
+                            // Grab the IPEndPoint and get the numeric value of the IP address
                             var ipEP = ((IPEndPoint)v.RemoteEndPoint);
                             var ipAsUInt = IPAddressHelper.IPv4AddressToUInt(ipEP.Address.GetAddressBytes(), 0);
 
-                            var c = Connections.FirstOrDefault(x => x.TCPSocket.IP == ipAsUInt);
-                            if (c == null)
-                                continue;
-
-                            if (c.GetHashCode() == challenge)
-                                c.SetRemoteUnreliablePort(ipEP.Port);
-                            else
+                            // Find all connections from the given IP
+                            var connsFromIP = Connections.Where(x => x.TCPSocket.IP == ipAsUInt).ToImmutable();
+                            foreach (var c in connsFromIP)
                             {
-                                const string errmsg = "Address `{0}` failed hash challenge to set UDP port for connection.";
-                                if (log.IsWarnEnabled)
-                                    log.WarnFormat(errmsg, ipEP.Address);
+                                // Check which connection from the given IP has a hash that matches the received challenge hash
+                                if (c.GetHashCode() == challenge)
+                                {
+                                    c.SetRemoteUnreliablePort(ipEP.Port);
+                                    break;
+                                }
                             }
                         }
                     }
