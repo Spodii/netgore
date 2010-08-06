@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.Features.Skills
@@ -41,12 +39,14 @@ namespace NetGore.Features.Skills
         /// <returns>The skill information, or null if the key does not exist.</returns>
         public TValue this[TKey key]
         {
-            get { 
+            get
+            {
                 TValue ret;
                 if (!_dict.TryGetValue(key, out ret))
                     return null;
 
-                return ret; }
+                return ret;
+            }
         }
 
         /// <summary>
@@ -75,6 +75,15 @@ namespace NetGore.Features.Skills
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional reading of the <see cref="SkillInfoManagerBase{TKey,TValue}"/>
+        /// values. This allows you to read and write values defined in a derived class.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        protected virtual void ReadExtra(IValueReader reader)
+        {
+        }
+
+        /// <summary>
         /// Handles reading a <typeparamref name="TValue"/>.
         /// </summary>
         /// <param name="r">The <see cref="IValueReader"/>.</param>
@@ -88,23 +97,6 @@ namespace NetGore.Features.Skills
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional writing of the <see cref="SkillInfoManagerBase{TKey,TValue}"/>
-        /// values. This allows you to read and write values defined in a derived class.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        protected virtual void WriteExtra(IValueWriter writer)
-        {
-        }
-        /// <summary>
-        /// When overridden in the derived class, allows for additional reading of the <see cref="SkillInfoManagerBase{TKey,TValue}"/>
-        /// values. This allows you to read and write values defined in a derived class.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        protected virtual void ReadExtra(IValueReader reader)
-        {
-        }
-
-        /// <summary>
         /// Writes the values in this collection to an <see cref="IValueWriter"/>.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
@@ -112,6 +104,15 @@ namespace NetGore.Features.Skills
         {
             writer.WriteManyNodes(_rootNodeName, _dict.Values, (w, x) => x.WriteState(w));
             WriteExtra(writer);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional writing of the <see cref="SkillInfoManagerBase{TKey,TValue}"/>
+        /// values. This allows you to read and write values defined in a derived class.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
+        protected virtual void WriteExtra(IValueWriter writer)
+        {
         }
     }
 }

@@ -10,13 +10,12 @@ using log4net;
 using NetGore;
 using NetGore.AI;
 using NetGore.Db;
-using NetGore.Features.Emoticons;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
 using NetGore.NPCChat;
 using NetGore.Stats;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {
@@ -1955,7 +1954,8 @@ namespace DemoGame.Server
 
                 default:
                     // Unhandled item type
-                    const string errmsg = "`{0}` attempted to use item `{1}`, but it contains invalid or unhandled ItemType `{2}`.";
+                    const string errmsg =
+                        "`{0}` attempted to use item `{1}`, but it contains invalid or unhandled ItemType `{2}`.";
                     Debug.Fail(string.Format(errmsg, this, item, item.Type));
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, this, item, item.Type);

@@ -17,9 +17,9 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
+using NetGore.World;
 using SFML.Graphics;
 using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
-using NetGore.World;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable UnusedParameter.Local

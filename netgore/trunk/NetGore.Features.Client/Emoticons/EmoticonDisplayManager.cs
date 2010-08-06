@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,8 +6,8 @@ using System.Reflection;
 using log4net;
 using NetGore.Collections;
 using NetGore.Graphics;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace NetGore.Features.Emoticons
 {
@@ -18,20 +18,22 @@ namespace NetGore.Features.Emoticons
     /// <typeparam name="TValue">The emoticon information.</typeparam>
     public class EmoticonDisplayManager<TKey, TValue> where TValue : EmoticonInfo<TKey>
     {
-        Func<ISpatial, Vector2> _getDrawPositionHandler;
-
-        readonly EmoticonInfoManagerBase<TKey, TValue> _emoticonInfoManager;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// A dictionary of the active emoticons.
         /// </summary>
         readonly Dictionary<ISpatial, EmoticonDisplayInfo> _activeEmoticons = new Dictionary<ISpatial, EmoticonDisplayInfo>();
 
+        readonly EmoticonInfoManagerBase<TKey, TValue> _emoticonInfoManager;
+
         /// <summary>
         /// Object pool used to spawn <see cref="EmoticonDisplayInfo"/> instances.
         /// </summary>
         readonly ObjectPool<EmoticonDisplayInfo> _objectPool = new ObjectPool<EmoticonDisplayInfo>(
             x => new EmoticonDisplayInfo(), false);
+
+        Func<ISpatial, Vector2> _getDrawPositionHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmoticonDisplayManager{TKey, TValue}"/> class.
@@ -62,8 +64,6 @@ namespace NetGore.Features.Emoticons
             }
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Adds an emoticon display.
         /// </summary>
@@ -81,7 +81,7 @@ namespace NetGore.Features.Emoticons
             if (emoticonInfo == null)
             {
                 const string errmsg = "No EmoticonInfo associated with the emoticon `{0}`.";
-                string err = string.Format(errmsg, emoticon);
+                var err = string.Format(errmsg, emoticon);
                 if (log.IsErrorEnabled)
                     log.Error(err);
                 Debug.Fail(err);

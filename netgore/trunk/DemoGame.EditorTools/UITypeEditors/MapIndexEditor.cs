@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using DemoGame.Server;
 using log4net;
-using NetGore;
 using NetGore.World;
 
 namespace DemoGame.EditorTools

@@ -6,6 +6,7 @@ using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.Groups;
 using DemoGame.Server.Guilds;
+using DemoGame.Server.PeerTrading;
 using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
 using log4net;
@@ -21,8 +22,8 @@ using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {
@@ -51,6 +52,7 @@ namespace DemoGame.Server
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
+        IPeerTradeSession<User, ItemEntity> _peerTradeSession;
 
         /// <summary>
         /// Initializes the <see cref="User"/> class.
@@ -151,6 +153,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the peer trade session that this <see cref="User"/> is currently participating in, or null if they
+        /// are not currently trading.
+        /// </summary>
+        public IPeerTradeSession<User, ItemEntity> PeerTradeSession
+        {
+            get { return _peerTradeSession; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="User"/>'s quest information.
         /// </summary>
         public QuestPerformerStatusHelper QuestInfo
@@ -172,49 +183,6 @@ namespace DemoGame.Server
         public UserShoppingState ShoppingState
         {
             get { return _shoppingState; }
-        }
-
-        /// <summary>
-        /// Tries to start a peer trade with another <see cref="Character"/>.
-        /// </summary>
-        /// <param name="target">The <see cref="Character"/> to trade with.</param>
-        /// <returns>True if the peer was successfully started; otherwise false.</returns>
-        public bool TryStartPeerTrade(User target)
-        {
-            // Make sure we can start the trade
-            if (target == null)
-                return false;
-
-            if (target == this)
-                return false;
-
-            if (!IsAlive || ShoppingState != null)
-                return false;
-
-            if (!target.IsAlive || target.ShoppingState != null)
-                return false;
-
-            // Trading must happen for characters close to one another
-            if (target.Map != Map || this.GetDistance(target) > PeerTradingSettings.Instance.MaxDistance)
-                return false;
-
-            // Start the trade
-            var ts = new DemoGame.Server.PeerTrading.PeerTradeSession(this, target);
-            _peerTradeSession = ts;
-            target._peerTradeSession = ts;
-
-            return true;
-        }
-
-        IPeerTradeSession<User, ItemEntity> _peerTradeSession;
-
-        /// <summary>
-        /// Gets the peer trade session that this <see cref="User"/> is currently participating in, or null if they
-        /// are not currently trading.
-        /// </summary>
-        public IPeerTradeSession<User, ItemEntity> PeerTradeSession
-        {
-            get { return _peerTradeSession; }
         }
 
         /// <summary>
@@ -491,7 +459,7 @@ namespace DemoGame.Server
 
             var rMap = World.GetMap(rMapID);
             Teleport(rMap, rPos);
-            
+
             // Restore the stats
             UpdateModStats();
 
@@ -1009,6 +977,38 @@ namespace DemoGame.Server
                 Inventory.RemoveAt(slot, true);
             else
                 invItem.Amount = (byte)newItemAmount;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to start a peer trade with another <see cref="Character"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="Character"/> to trade with.</param>
+        /// <returns>True if the peer was successfully started; otherwise false.</returns>
+        public bool TryStartPeerTrade(User target)
+        {
+            // Make sure we can start the trade
+            if (target == null)
+                return false;
+
+            if (target == this)
+                return false;
+
+            if (!IsAlive || ShoppingState != null)
+                return false;
+
+            if (!target.IsAlive || target.ShoppingState != null)
+                return false;
+
+            // Trading must happen for characters close to one another
+            if (target.Map != Map || this.GetDistance(target) > PeerTradingSettings.Instance.MaxDistance)
+                return false;
+
+            // Start the trade
+            var ts = new PeerTradeSession(this, target);
+            _peerTradeSession = ts;
+            target._peerTradeSession = ts;
 
             return true;
         }

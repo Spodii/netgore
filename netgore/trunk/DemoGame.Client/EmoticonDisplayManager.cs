@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DemoGame.Client;
 using NetGore.Features.Emoticons;
 using NetGore.World;
@@ -17,13 +14,30 @@ namespace DemoGame
         static readonly EmoticonDisplayManager _instance;
 
         /// <summary>
+        /// Initializes the <see cref="EmoticonDisplayManager"/> class.
+        /// </summary>
+        static EmoticonDisplayManager()
+        {
+            _instance = new EmoticonDisplayManager(EmoticonInfoManager.Instance);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EmoticonDisplayManager{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="emoticonInfoManager">The <see cref="EmoticonInfoManagerBase{TKey, TValue}"/> to use to look up the information
         /// for emoticons.</param>
-        public EmoticonDisplayManager(EmoticonInfoManagerBase<Emoticon, EmoticonInfo<Emoticon>> emoticonInfoManager) : base(emoticonInfoManager)
+        public EmoticonDisplayManager(EmoticonInfoManagerBase<Emoticon, EmoticonInfo<Emoticon>> emoticonInfoManager)
+            : base(emoticonInfoManager)
         {
             GetDrawPositionHandler = EmoticonDrawPositionHandler;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="EmoticonDisplayManager"/> instance.
+        /// </summary>
+        public static EmoticonDisplayManager Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>
@@ -46,19 +60,6 @@ namespace DemoGame
             pos += new Vector2(5, -24);
 
             return pos;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="EmoticonDisplayManager"/> instance.
-        /// </summary>
-        public static EmoticonDisplayManager Instance { get { return _instance; } }
-
-        /// <summary>
-        /// Initializes the <see cref="EmoticonDisplayManager"/> class.
-        /// </summary>
-        static EmoticonDisplayManager()
-        {
-            _instance = new EmoticonDisplayManager(EmoticonInfoManager.Instance);
         }
     }
 }

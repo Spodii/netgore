@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Features.PeerTrading;
@@ -16,16 +13,19 @@ namespace DemoGame.Server.PeerTrading
         static readonly ServerPeerTradeInfoHandler _instance;
 
         /// <summary>
-        /// Gets the <see cref="ServerPeerTradeInfoHandler"/> instance.
-        /// </summary>
-        public static ServerPeerTradeInfoHandler Instance { get { return _instance; } }
-
-        /// <summary>
         /// Initializes the <see cref="ServerPeerTradeInfoHandler"/> class.
         /// </summary>
         static ServerPeerTradeInfoHandler()
         {
             _instance = new ServerPeerTradeInfoHandler();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ServerPeerTradeInfoHandler"/> instance.
+        /// </summary>
+        public static ServerPeerTradeInfoHandler Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>
@@ -35,12 +35,12 @@ namespace DemoGame.Server.PeerTrading
         /// <returns>True if <paramref name="receiver"/> can have data sent to it; otherwise false.</returns>
         protected override bool CanSendDataTo(User receiver)
         {
-            #pragma warning disable 183
+#pragma warning disable 183
 
             // Anything that implements IClientCommunicator can be communicated with
             return (receiver is IClientCommunicator);
 
-            #pragma warning restore 183
+#pragma warning restore 183
         }
 
         /// <summary>
@@ -128,12 +128,13 @@ namespace DemoGame.Server.PeerTrading
             var asPersistable = itemInfo as IPersistable;
 
             if (asPersistable != null)
-            {
                 asPersistable.WriteState(writer);
-            }
             else
             {
-                Debug.Fail(string.Format("Temporary ItemTable had to be created since the `{0}` does not implement IPersistable. Implement IPersistable to reduce overhead.", itemInfo));
+                Debug.Fail(
+                    string.Format(
+                        "Temporary ItemTable had to be created since the `{0}` does not implement IPersistable. Implement IPersistable to reduce overhead.",
+                        itemInfo));
                 var itemTable = new ItemTable(itemInfo);
                 itemTable.WriteState(writer);
             }

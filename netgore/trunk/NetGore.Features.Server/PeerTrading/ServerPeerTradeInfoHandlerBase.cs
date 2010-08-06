@@ -233,38 +233,6 @@ namespace NetGore.Features.PeerTrading
         protected abstract void WriteItemInfo(IValueWriter writer, TItemInfo itemInfo);
 
         /// <summary>
-        /// Handles writing the information for starting a trade session.
-        /// </summary>
-        /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
-        public void WriteTradeOpened(IPeerTradeSession<TChar, TItem> peerTradeSession)
-        {
-            // Check who can receive the data
-            var sendToSource = CanSendDataTo(peerTradeSession.CharSource);
-            var sendToTarget = CanSendDataTo(peerTradeSession.CharTarget);
-
-            // Construct and send the data
-            if (sendToSource)
-            {
-                using (var pw = CreateWriter(PeerTradeInfoServerMessage.Open))
-                {
-                    pw.Write(true);
-
-                    SendDataTo(peerTradeSession.CharSource, pw);
-                }
-            }
-
-            if (sendToTarget)
-            {
-                using (var pw = CreateWriter(PeerTradeInfoServerMessage.Open))
-                {
-                    pw.Write(false);
-
-                    SendDataTo(peerTradeSession.CharTarget, pw);
-                }
-            }
-        }
-
-        /// <summary>
         /// Handles writing the information about a trade being closed.
         /// </summary>
         /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
@@ -340,13 +308,46 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Handles writing the information for starting a trade session.
+        /// </summary>
+        /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
+        public void WriteTradeOpened(IPeerTradeSession<TChar, TItem> peerTradeSession)
+        {
+            // Check who can receive the data
+            var sendToSource = CanSendDataTo(peerTradeSession.CharSource);
+            var sendToTarget = CanSendDataTo(peerTradeSession.CharTarget);
+
+            // Construct and send the data
+            if (sendToSource)
+            {
+                using (var pw = CreateWriter(PeerTradeInfoServerMessage.Open))
+                {
+                    pw.Write(true);
+
+                    SendDataTo(peerTradeSession.CharSource, pw);
+                }
+            }
+
+            if (sendToTarget)
+            {
+                using (var pw = CreateWriter(PeerTradeInfoServerMessage.Open))
+                {
+                    pw.Write(false);
+
+                    SendDataTo(peerTradeSession.CharTarget, pw);
+                }
+            }
+        }
+
+        /// <summary>
         /// Handles writing the information about a table slot changing.
         /// </summary>
         /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
         /// <param name="c">The character that owns the side of the trade table that changed.</param>
         /// <param name="slot">The slot that changed.</param>
         /// <param name="item">The item that currently occupies the slot.</param>
-        public void WriteTradeTableSlotChanged(IPeerTradeSession<TChar, TItem> peerTradeSession, TChar c, InventorySlot slot, TItem item)
+        public void WriteTradeTableSlotChanged(IPeerTradeSession<TChar, TItem> peerTradeSession, TChar c, InventorySlot slot,
+                                               TItem item)
         {
             Debug.Assert(c == peerTradeSession.CharSource || c == peerTradeSession.CharTarget,
                          "`c` needs to be either the source or target...");

@@ -2,11 +2,10 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.MapEditor
 {

@@ -6,8 +6,8 @@ using System.Reflection;
 using log4net;
 using NetGore;
 using NetGore.Graphics;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {

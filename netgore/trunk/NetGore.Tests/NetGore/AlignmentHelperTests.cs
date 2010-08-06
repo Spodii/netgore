@@ -1,7 +1,7 @@
-﻿using System.Linq;
+using System.Linq;
+using NetGore.World;
 using NUnit.Framework;
 using SFML.Graphics;
-using NetGore.World;
 
 namespace NetGore.Tests.NetGore
 {

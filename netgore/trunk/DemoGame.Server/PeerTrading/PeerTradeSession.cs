@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;
@@ -13,6 +14,10 @@ namespace DemoGame.Server.PeerTrading
     /// </summary>
     public class PeerTradeSession : PeerTradeSessionBase<User, ItemEntity>
     {
+        static readonly PeerTradingSettings _settings = PeerTradingSettings.Instance;
+
+        static readonly ServerPeerTradeInfoHandler _tradeInfoHandler = ServerPeerTradeInfoHandler.Instance;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradeSession"/> class.
         /// </summary>
@@ -20,34 +25,9 @@ namespace DemoGame.Server.PeerTrading
         /// This is the character that started the trade.</param>
         /// <param name="charTarget">The second character in the trade session.
         /// This is the character that was requested to be traded with.</param>
-        public PeerTradeSession(User charSource, User charTarget)
-            : base(charSource, charTarget)
+        public PeerTradeSession(User charSource, User charTarget) : base(charSource, charTarget)
         {
         }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when there are too many items in the trade table to give them all to
-        /// a character. The derived class should provide some sort of notification to the character (if a player-controlled character)
-        /// that the items cannot fit. No action actually needs to take place to resolve this problem.
-        /// </summary>
-        /// <param name="character">The character who cannot accept all of the items being given to them.</param>
-        protected override void OnCannotFitItems(User character)
-        {
-            character.Send(GameMessage.PeerTradingNotEnoughSpaceInInventory);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when the trade has finished. This can be due to both canceling and
-        /// accepting the trade. However, this method will not be invoked by the base class when it is not cleanly cleaned up.
-        /// That is, it will not be called if the object reference is lost and is garbage collected. All clean-up of trades
-        /// should be done in here.
-        /// </summary>
-        protected override void OnTradeClosed()
-        {
-            _tradeInfoHandler.WriteTradeClosed(this);
-        }
-
-        static readonly PeerTradingSettings _settings = PeerTradingSettings.Instance;
 
         /// <summary>
         /// When overridden in the derived class, gets if the state of the characters in this trading session are still valid.
@@ -62,25 +42,6 @@ namespace DemoGame.Server.PeerTrading
                 return false;
 
             return base.AreCharacterStatesValid();
-        }
-
-        static readonly ServerPeerTradeInfoHandler _tradeInfoHandler = ServerPeerTradeInfoHandler.Instance;
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when a trade has been successfully completed.
-        /// </summary>
-        protected override void OnTradeCompleted()
-        {
-            _tradeInfoHandler.WriteTradeCompleted(this);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when a trade session has been opened. This is only called
-        /// once and is called after the trade session is fully set up.
-        /// </summary>
-        protected override void OnTradeOpened()
-        {
-            _tradeInfoHandler.WriteTradeOpened(this);
         }
 
         /// <summary>
@@ -110,27 +71,6 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles when the status for a character accepting the trade has changed.
-        /// </summary>
-        /// <param name="c">The character who's accept status has changed.</param>
-        /// <param name="accepted"><paramref name="c"/>'s trade acceptance status.</param>
-        protected override void OnCharAcceptedStatusChanged(User c, bool accepted)
-        {
-            _tradeInfoHandler.WriteAcceptStatusChanged(this, c, accepted);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when a trade table slot has been changed.
-        /// </summary>
-        /// <param name="slotOwner">The owner of the slot that has changed. That is, who's side of the trade table has changed.</param>
-        /// <param name="slot">The slot that has changed.</param>
-        /// <param name="item">The item that currently occupies the <paramref name="slot"/>.</param>
-        protected override void OnTradeTableSlotChanged(User slotOwner, InventorySlot slot, ItemEntity item)
-        {
-            _tradeInfoHandler.WriteTradeTableSlotChanged(this, slotOwner, slot, item);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gives the <paramref name="character"/> an <paramref name="item"/>. It should not
         /// matter where the <paramref name="item"/> is coming from, or why it is being given to the <paramref name="character"/>.
         /// </summary>
@@ -156,12 +96,72 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles when there are too many items in the trade table to give them all to
+        /// a character. The derived class should provide some sort of notification to the character (if a player-controlled character)
+        /// that the items cannot fit. No action actually needs to take place to resolve this problem.
+        /// </summary>
+        /// <param name="character">The character who cannot accept all of the items being given to them.</param>
+        protected override void OnCannotFitItems(User character)
+        {
+            character.Send(GameMessage.PeerTradingNotEnoughSpaceInInventory);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the status for a character accepting the trade has changed.
+        /// </summary>
+        /// <param name="c">The character who's accept status has changed.</param>
+        /// <param name="accepted"><paramref name="c"/>'s trade acceptance status.</param>
+        protected override void OnCharAcceptedStatusChanged(User c, bool accepted)
+        {
+            _tradeInfoHandler.WriteAcceptStatusChanged(this, c, accepted);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when a trade has been canceled.
         /// </summary>
         /// <param name="canceler">The character that canceled the trade.</param>
         protected override void OnTradeCanceled(User canceler)
         {
             _tradeInfoHandler.WriteTradeCanceled(this, canceler);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when the trade has finished. This can be due to both canceling and
+        /// accepting the trade. However, this method will not be invoked by the base class when it is not cleanly cleaned up.
+        /// That is, it will not be called if the object reference is lost and is garbage collected. All clean-up of trades
+        /// should be done in here.
+        /// </summary>
+        protected override void OnTradeClosed()
+        {
+            _tradeInfoHandler.WriteTradeClosed(this);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when a trade has been successfully completed.
+        /// </summary>
+        protected override void OnTradeCompleted()
+        {
+            _tradeInfoHandler.WriteTradeCompleted(this);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when a trade session has been opened. This is only called
+        /// once and is called after the trade session is fully set up.
+        /// </summary>
+        protected override void OnTradeOpened()
+        {
+            _tradeInfoHandler.WriteTradeOpened(this);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when a trade table slot has been changed.
+        /// </summary>
+        /// <param name="slotOwner">The owner of the slot that has changed. That is, who's side of the trade table has changed.</param>
+        /// <param name="slot">The slot that has changed.</param>
+        /// <param name="item">The item that currently occupies the <paramref name="slot"/>.</param>
+        protected override void OnTradeTableSlotChanged(User slotOwner, InventorySlot slot, ItemEntity item)
+        {
+            _tradeInfoHandler.WriteTradeTableSlotChanged(this, slotOwner, slot, item);
         }
 
         /// <summary>
@@ -192,8 +192,7 @@ namespace DemoGame.Server.PeerTrading
             /// <param name="owner">The owner of this object.</param>
             /// <param name="slots">The number of slots in the inventory.</param>
             /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
-            public TradeSessionInventory(Character owner, int slots)
-                : base(slots)
+            public TradeSessionInventory(Character owner, int slots) : base(slots)
             {
                 if (owner == null)
                     throw new ArgumentNullException("owner");

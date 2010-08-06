@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {

@@ -41,6 +41,206 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Completely removes the item in a given slot, including optionally disposing it.
+        /// </summary>
+        /// <param name="slot">Slot of the item to remove.</param>
+        /// <param name="dispose">If true, the item in the slot will also be disposed. If false, the item
+        /// will be removed from the Inventory, but not disposed.</param>
+        protected void ClearSlot(InventorySlot slot, bool dispose)
+        {
+            // Get the item at the slot
+            var item = this[slot];
+
+            // Check for a valid item
+            if (item == null)
+            {
+                const string errmsg = "Slot `{0}` already contains no item.";
+                Debug.Fail(string.Format("Slot `{0}` already contains no item.", slot));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                return;
+            }
+
+            // Remove the item reference
+            this[slot] = null;
+
+            // Dispose of the item
+            if (dispose)
+                item.Dispose();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, performs additional processing to handle an Inventory slot
+        /// changing. This is only called when the object references changes, not when any part of the object
+        /// (such as the Item's amount) changes. It is guarenteed that if <paramref name="newItem"/> is null,
+        /// <paramref name="oldItem"/> will not be, and vise versa. Both will never be null or non-null.
+        /// </summary>
+        /// <param name="slot">Slot that the change took place in.</param>
+        /// <param name="newItem">The item that was added to the <paramref name="slot"/>, or null if the slot changed to empty.</param>
+        /// <param name="oldItem">The item that used to be in the <paramref name="slot"/>,
+        /// or null if the slot used to be empty.</param>
+        protected virtual void HandleSlotChanged(InventorySlot slot, T newItem, T oldItem)
+        {
+        }
+
+        /// <summary>
+        /// Internal handler for handling adding items.
+        /// </summary>
+        /// <param name="item">Item that will be added to the Inventory.</param>
+        /// <param name="changedSlots">A <see cref="ICollection{InventorySlot}"/> to use to build up the list of slots that
+        /// were changed to add the <paramref name="item"/>. If null, changed slots will not be tracked, so its up to
+        /// the caller to supply the empty list.</param>
+        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
+        /// item was added.</returns>
+        T InternalAdd(T item, ICollection<InventorySlot> changedSlots)
+        {
+            Debug.Assert(changedSlots == null || changedSlots.IsEmpty());
+
+            // Try to stack the item in as many slots as possible until it runs out or we run out of slots
+            InventorySlot slot;
+            while (TryFindStackableSlot(item, out slot))
+            {
+                var invItem = this[slot];
+                if (invItem == null)
+                {
+                    const string errmsg = "This should never be a null item. If it is, TryFindStackableSlot() may be broken.";
+                    Debug.Fail(errmsg);
+                    if (log.IsErrorEnabled)
+                        log.Error(errmsg);
+                }
+                else
+                {
+                    // Stack as much of the item into the existing inventory item
+                    var stackAmount = (byte)Math.Min(ItemEntityBase.MaxStackSize - invItem.Amount, item.Amount);
+                    invItem.Amount += stackAmount;
+                    item.Amount -= stackAmount;
+
+                    if (changedSlots != null && !changedSlots.Contains(slot))
+                        changedSlots.Add(slot);
+
+                    // If we stacked all of the item, we're done
+                    if (item.Amount == 0)
+                        return null;
+                }
+            }
+
+            // Could not stack, or only some of the item was stacked, so add item to empty slots
+            while (TryFindEmptySlot(out slot))
+            {
+                // Deep-copy the item and set it in the inventory
+                var copy = (T)item.DeepCopy();
+                this[slot] = copy;
+
+                // Reduce the amount of the item by the amount we took
+                var amountTaken = Math.Min(ItemEntityBase.MaxStackSize, item.Amount);
+                copy.Amount = amountTaken;
+                item.Amount -= amountTaken;
+
+                if (changedSlots != null && !changedSlots.Contains(slot))
+                    changedSlots.Add(slot);
+
+                // If we took all of the item, we are done
+                if (item.Amount == 0)
+                {
+                    item.Dispose();
+                    return null;
+                }
+            }
+
+            // Failed to add all of the item
+            return item;
+        }
+
+        /// <summary>
+        /// Handles when an item is disposed while still in the Inventory.
+        /// </summary>
+        /// <param name="entity">Entity that was disposed.</param>
+        void ItemDisposeHandler(Entity entity)
+        {
+            var item = (T)entity;
+
+            // Try to get the slot
+            InventorySlot slot;
+            try
+            {
+                slot = GetSlot(item);
+            }
+            catch (ArgumentException)
+            {
+                const string errmsg = "Inventory item `{0}` was disposed, but was not be found in the Inventory.";
+                Debug.Fail(string.Format(errmsg, item));
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, item);
+                return;
+            }
+
+            // Remove the item from the Inventory (don't dispose since it was already disposed)
+            RemoveAt(slot, false);
+        }
+
+        /// <summary>
+        /// Gets the index of the first unused Inventory slot.
+        /// </summary>
+        /// <param name="emptySlot">If function returns true, contains the index of the first unused Inventory slot.</param>
+        /// <returns>True if an empty slot was found, otherwise false.</returns>
+        protected bool TryFindEmptySlot(out InventorySlot emptySlot)
+        {
+            // Iterate through each slot
+            for (var i = 0; i < _buffer.Length; i++)
+            {
+                // Return on the first null item
+                if (this[i] == null)
+                {
+                    emptySlot = new InventorySlot(i);
+                    return true;
+                }
+            }
+
+            // All slots are in use
+            emptySlot = new InventorySlot(0);
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the first slot that the given <paramref name="item"/> can be stacked on.
+        /// </summary>
+        /// <param name="item">Item that will try to stack on existing items.</param>
+        /// <param name="stackableSlot">If function returns true, contains the index of the first slot that
+        /// the <paramref name="item"/> can be stacked on. This slot is not guaranteed to be able to hold 
+        /// all of the item, but it does guarantee to be able to hold at least one unit of the item.</param>
+        /// <returns>True if a stackable slot was found, otherwise false.</returns>
+        protected bool TryFindStackableSlot(T item, out InventorySlot stackableSlot)
+        {
+            // Iterate through each slot
+            for (var i = 0; i < _buffer.Length; i++)
+            {
+                var invItem = this[i];
+
+                // Skip empty slots
+                if (invItem == null)
+                    continue;
+
+                // Make sure the item isn't already at the stacking limit
+                if (invItem.Amount >= ItemEntityBase.MaxStackSize)
+                    continue;
+
+                // Check if the item can stack with our item
+                if (!invItem.CanStack(item))
+                    continue;
+
+                // Stackable slot found
+                stackableSlot = new InventorySlot(i);
+                return true;
+            }
+
+            // No stackable slot found
+            stackableSlot = new InventorySlot(0);
+            return false;
+        }
+
+        #region IInventory<T> Members
+
+        /// <summary>
         /// Gets or sets (protected) the item in the Inventory at the given <paramref name="slot"/>.
         /// </summary>
         /// <param name="slot">Index of the slot to get the Item from.</param>
@@ -183,74 +383,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Internal handler for handling adding items.
-        /// </summary>
-        /// <param name="item">Item that will be added to the Inventory.</param>
-        /// <param name="changedSlots">A <see cref="ICollection{InventorySlot}"/> to use to build up the list of slots that
-        /// were changed to add the <paramref name="item"/>. If null, changed slots will not be tracked, so its up to
-        /// the caller to supply the empty list.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
-        T InternalAdd(T item, ICollection<InventorySlot> changedSlots)
-        {
-            Debug.Assert(changedSlots == null || changedSlots.IsEmpty());
-
-            // Try to stack the item in as many slots as possible until it runs out or we run out of slots
-            InventorySlot slot;
-            while (TryFindStackableSlot(item, out slot))
-            {
-                var invItem = this[slot];
-                if (invItem == null)
-                {
-                    const string errmsg = "This should never be a null item. If it is, TryFindStackableSlot() may be broken.";
-                    Debug.Fail(errmsg);
-                    if (log.IsErrorEnabled)
-                        log.Error(errmsg);
-                }
-                else
-                {
-                    // Stack as much of the item into the existing inventory item
-                    var stackAmount = (byte)Math.Min(ItemEntityBase.MaxStackSize - invItem.Amount, item.Amount);
-                    invItem.Amount += stackAmount;
-                    item.Amount -= stackAmount;
-
-                    if (changedSlots != null && !changedSlots.Contains(slot))
-                        changedSlots.Add(slot);
-
-                    // If we stacked all of the item, we're done
-                    if (item.Amount == 0)
-                        return null;
-                }
-            }
-
-            // Could not stack, or only some of the item was stacked, so add item to empty slots
-            while (TryFindEmptySlot(out slot))
-            {
-                // Deep-copy the item and set it in the inventory
-                var copy = (T)item.DeepCopy();
-                this[slot] = copy;
-
-                // Reduce the amount of the item by the amount we took
-                var amountTaken = Math.Min(ItemEntityBase.MaxStackSize, item.Amount);
-                copy.Amount = amountTaken;
-                item.Amount -= amountTaken;
-
-                if (changedSlots != null && !changedSlots.Contains(slot))
-                    changedSlots.Add(slot);
-
-                // If we took all of the item, we are done
-                if (item.Amount == 0)
-                {
-                    item.Dispose();
-                    return null;
-                }
-            }
-
-            // Failed to add all of the item
-            return item;
-        }
-
-        /// <summary>
         /// Checks if the specified <paramref name="item"/> can be added to the inventory completely
         /// and successfully, but does not actually add the item.
         /// </summary>
@@ -307,32 +439,30 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Completely removes the item in a given slot, including optionally disposing it.
+        /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        /// <param name="slot">Slot of the item to remove.</param>
-        /// <param name="dispose">If true, the item in the slot will also be disposed. If false, the item
-        /// will be removed from the Inventory, but not disposed.</param>
-        protected void ClearSlot(InventorySlot slot, bool dispose)
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<KeyValuePair<InventorySlot, T>> GetEnumerator()
         {
-            // Get the item at the slot
-            var item = this[slot];
-
-            // Check for a valid item
-            if (item == null)
+            for (var i = new InventorySlot(0); i < _buffer.Length; i++)
             {
-                const string errmsg = "Slot `{0}` already contains no item.";
-                Debug.Fail(string.Format("Slot `{0}` already contains no item.", slot));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                return;
+                var item = this[i];
+                if (item != null)
+                    yield return new KeyValuePair<InventorySlot, T>(i, item);
             }
+        }
 
-            // Remove the item reference
-            this[slot] = null;
-
-            // Dispose of the item
-            if (dispose)
-                item.Dispose();
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -357,74 +487,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the slot for the specified <paramref name="item"/>.
-        /// </summary>
-        /// <param name="item">Item to find the slot for.</param>
-        /// <returns>Slot for the specified <paramref name="item"/>, or null if the <paramref name="item"/> is invalid or not in
-        /// the inventory.</returns>
-        public InventorySlot? TryGetSlot(T item)
-        {
-            if (item == null)
-                return null;
-
-            for (var i = 0; i < _buffer.Length; i++)
-            {
-                if (this[i] == item)
-                    return new InventorySlot(i);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, performs additional processing to handle an Inventory slot
-        /// changing. This is only called when the object references changes, not when any part of the object
-        /// (such as the Item's amount) changes. It is guarenteed that if <paramref name="newItem"/> is null,
-        /// <paramref name="oldItem"/> will not be, and vise versa. Both will never be null or non-null.
-        /// </summary>
-        /// <param name="slot">Slot that the change took place in.</param>
-        /// <param name="newItem">The item that was added to the <paramref name="slot"/>, or null if the slot changed to empty.</param>
-        /// <param name="oldItem">The item that used to be in the <paramref name="slot"/>,
-        /// or null if the slot used to be empty.</param>
-        protected virtual void HandleSlotChanged(InventorySlot slot, T newItem, T oldItem)
-        {
-        }
-
-        /// <summary>
-        /// Handles when an item is disposed while still in the Inventory.
-        /// </summary>
-        /// <param name="entity">Entity that was disposed.</param>
-        void ItemDisposeHandler(Entity entity)
-        {
-            var item = (T)entity;
-
-            // Try to get the slot
-            InventorySlot slot;
-            try
-            {
-                slot = GetSlot(item);
-            }
-            catch (ArgumentException)
-            {
-                const string errmsg = "Inventory item `{0}` was disposed, but was not be found in the Inventory.";
-                Debug.Fail(string.Format(errmsg, item));
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, item);
-                return;
-            }
-
-            // Remove the item from the Inventory (don't dispose since it was already disposed)
-            RemoveAt(slot, false);
-        }
-
-        /// <summary>
         /// Removes all items from the inventory.
         /// </summary>
         /// <param name="dispose">If true, then all of the items in the InventoryBase will be disposed of. If false,
         /// they will only be removed from the InventoryBase, but could still referenced by other objects.</param>
         public void RemoveAll(bool dispose)
         {
-            for (int i = 0; i < _buffer.Length; i++)
+            for (var i = 0; i < _buffer.Length; i++)
             {
                 if (this[i] != null)
                     ClearSlot(new InventorySlot(i), dispose);
@@ -483,92 +552,23 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the index of the first unused Inventory slot.
+        /// Gets the slot for the specified <paramref name="item"/>.
         /// </summary>
-        /// <param name="emptySlot">If function returns true, contains the index of the first unused Inventory slot.</param>
-        /// <returns>True if an empty slot was found, otherwise false.</returns>
-        protected bool TryFindEmptySlot(out InventorySlot emptySlot)
+        /// <param name="item">Item to find the slot for.</param>
+        /// <returns>Slot for the specified <paramref name="item"/>, or null if the <paramref name="item"/> is invalid or not in
+        /// the inventory.</returns>
+        public InventorySlot? TryGetSlot(T item)
         {
-            // Iterate through each slot
+            if (item == null)
+                return null;
+
             for (var i = 0; i < _buffer.Length; i++)
             {
-                // Return on the first null item
-                if (this[i] == null)
-                {
-                    emptySlot = new InventorySlot(i);
-                    return true;
-                }
+                if (this[i] == item)
+                    return new InventorySlot(i);
             }
 
-            // All slots are in use
-            emptySlot = new InventorySlot(0);
-            return false;
-        }
-
-        /// <summary>
-        /// Gets the first slot that the given <paramref name="item"/> can be stacked on.
-        /// </summary>
-        /// <param name="item">Item that will try to stack on existing items.</param>
-        /// <param name="stackableSlot">If function returns true, contains the index of the first slot that
-        /// the <paramref name="item"/> can be stacked on. This slot is not guaranteed to be able to hold 
-        /// all of the item, but it does guarantee to be able to hold at least one unit of the item.</param>
-        /// <returns>True if a stackable slot was found, otherwise false.</returns>
-        protected bool TryFindStackableSlot(T item, out InventorySlot stackableSlot)
-        {
-            // Iterate through each slot
-            for (var i = 0; i < _buffer.Length; i++)
-            {
-                var invItem = this[i];
-
-                // Skip empty slots
-                if (invItem == null)
-                    continue;
-
-                // Make sure the item isn't already at the stacking limit
-                if (invItem.Amount >= ItemEntityBase.MaxStackSize)
-                    continue;
-
-                // Check if the item can stack with our item
-                if (!invItem.CanStack(item))
-                    continue;
-
-                // Stackable slot found
-                stackableSlot = new InventorySlot(i);
-                return true;
-            }
-
-            // No stackable slot found
-            stackableSlot = new InventorySlot(0);
-            return false;
-        }
-
-        #region IEnumerable<KeyValuePair<InventorySlot,T>> Members
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator<KeyValuePair<InventorySlot, T>> GetEnumerator()
-        {
-            for (var i = new InventorySlot(0); i < _buffer.Length; i++)
-            {
-                var item = this[i];
-                if (item != null)
-                    yield return new KeyValuePair<InventorySlot, T>(i, item);
-            }
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            return null;
         }
 
         #endregion

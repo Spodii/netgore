@@ -10,7 +10,6 @@ using NetGore;
 using NetGore.Audio;
 using NetGore.Content;
 using NetGore.Features.ActionDisplays;
-using NetGore.Features.Emoticons;
 using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
@@ -21,8 +20,8 @@ using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 #pragma warning disable 168
 // ReSharper disable UnusedMember.Local
@@ -48,15 +47,10 @@ namespace DemoGame.Client
         readonly IDynamicEntityFactory _dynamicEntityFactory;
         readonly GameMessageCollection _gameMessages = GameMessageCollection.Create();
         readonly GameplayScreen _gameplayScreen;
+        readonly ClientPeerTradeInfoHandler _peerTradeInfoHandler;
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly IMessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
-        readonly ClientPeerTradeInfoHandler _peerTradeInfoHandler;
-
-        /// <summary>
-        /// Gets the <see cref="ClientPeerTradeInfoHandler"/> instance.
-        /// </summary>
-        public ClientPeerTradeInfoHandler PeerTradeInfoHandler { get { return _peerTradeInfoHandler; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
@@ -139,6 +133,14 @@ namespace DemoGame.Client
         public Map Map
         {
             get { return GameplayScreen.World.Map; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ClientPeerTradeInfoHandler"/> instance.
+        /// </summary>
+        public ClientPeerTradeInfoHandler PeerTradeInfoHandler
+        {
+            get { return _peerTradeInfoHandler; }
         }
 
         public UserQuestInformation QuestInfo

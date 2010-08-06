@@ -1,3 +1,4 @@
+using System.Linq;
 using NetGore.IO;
 using NetGore.IO.PropertySync;
 
@@ -13,8 +14,7 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="PropertySyncSkillType"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncSkillType(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncSkillType(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

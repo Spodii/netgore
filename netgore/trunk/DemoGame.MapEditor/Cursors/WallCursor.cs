@@ -6,10 +6,10 @@ using DemoGame.MapEditor.Properties;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using NetGore.World;
 using SFML.Graphics;
 using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
-using NetGore.World;
 
 namespace DemoGame.MapEditor
 {

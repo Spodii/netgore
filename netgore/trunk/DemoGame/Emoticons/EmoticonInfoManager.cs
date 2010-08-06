@@ -1,3 +1,4 @@
+using System.Linq;
 using NetGore;
 using NetGore.Features.Emoticons;
 using NetGore.IO;
@@ -22,16 +23,19 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the <see cref="EmoticonInfoManager"/> instance for <see cref="ContentPaths.Build"/>.
-        /// </summary>
-        public static EmoticonInfoManager Instance { get { return _instance; } }
-
-        /// <summary>
         /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
         /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
         /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
         /// </summary>
         public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="EmoticonInfoManager"/> instance for <see cref="ContentPaths.Build"/>.
+        /// </summary>
+        public static EmoticonInfoManager Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Loads the <see cref="EmoticonInfoManager"/> from file.

@@ -12,8 +12,8 @@ using NetGore.AI;
 using NetGore.Audio;
 using NetGore.Collections;
 using NetGore.IO;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame
 {

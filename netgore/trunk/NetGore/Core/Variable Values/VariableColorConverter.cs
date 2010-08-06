@@ -52,7 +52,7 @@ namespace NetGore
         /// </returns>
         protected override bool TryParse(Parser parser, string valueString, out Color value)
         {
-            value = (Color)_colorConverter.ConvertFromString(null, parser.CultureInfo,valueString);
+            value = (Color)_colorConverter.ConvertFromString(null, parser.CultureInfo, valueString);
             return true;
         }
     }

@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Linq;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.World;
 

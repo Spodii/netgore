@@ -1,12 +1,10 @@
+using System.Linq;
 using NetGore.World;
 
 namespace NetGore.Features.PeerTrading
 {
-    public interface IPeerTradeSession<TChar, TItem>
-        where TChar : Entity
-        where TItem : Entity
+    public interface IPeerTradeSession<TChar, TItem> where TChar : Entity where TItem : Entity
     {
-
         /// <summary>
         /// Gets the first character in the trade session. This is the character that started the trade.
         /// </summary>
@@ -28,11 +26,23 @@ namespace NetGore.Features.PeerTrading
         bool HasCharTargetAccepted { get; }
 
         /// <summary>
+        /// Gets if this trade session has been closed. If true, this trade session should not be used anymore and should
+        /// be treated as if it were disposed.
+        /// </summary>
+        bool IsClosed { get; }
+
+        /// <summary>
         /// Marks a character on one side of the trade as accepting the trade. Both characters have to accept the trade for the
         /// trade to actually finalize.
         /// </summary>
         /// <param name="c">The character that is accepting the trade.</param>
         void AcceptTrade(TChar c);
+
+        /// <summary>
+        /// Cancels the trade.
+        /// </summary>
+        /// <param name="canceler">The character that is canceling the trade.</param>
+        void Cancel(TChar canceler);
 
         /// <summary>
         /// Attempts to add an item to a character's side of the trade table.
@@ -51,17 +61,5 @@ namespace NetGore.Features.PeerTrading
         /// <returns>True if the item was successfully removed; false if the item could not be removed for some reason or if the
         /// slot was empty.</returns>
         bool TryRemoveItem(TChar c, InventorySlot slot);
-
-        /// <summary>
-        /// Gets if this trade session has been closed. If true, this trade session should not be used anymore and should
-        /// be treated as if it were disposed.
-        /// </summary>
-        bool IsClosed { get; }
-
-        /// <summary>
-        /// Cancels the trade.
-        /// </summary>
-        /// <param name="canceler">The character that is canceling the trade.</param>
-        void Cancel(TChar canceler);
     }
 }

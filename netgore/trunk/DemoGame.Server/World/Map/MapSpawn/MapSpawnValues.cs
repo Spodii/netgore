@@ -8,7 +8,6 @@ using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
-using NetGore;
 using NetGore.Db;
 using NetGore.World;
 

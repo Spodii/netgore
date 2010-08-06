@@ -6,7 +6,6 @@ using System.Reflection;
 using log4net;
 using NetGore;
 using NetGore.Content;
-using NetGore.Features.Emoticons;
 using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
@@ -18,8 +17,8 @@ using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {

@@ -32,36 +32,6 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Creates a <see cref="DbParameterValues"/> for a <see cref="DbParameterCollection"/>.
-        /// </summary>
-        /// <param name="dbParameterCollection">The <see cref="DbParameterCollection"/>.</param>
-        /// <returns>The <see cref="DbParameterValues"/> instance.</returns>
-        public static DbParameterValues Create(DbParameterCollection dbParameterCollection)
-        {
-            if (dbParameterCollection == null)
-                throw new ArgumentNullException("dbParameterCollection");
-
-            // Grab from the pool first
-            DbParameterValues ret = null;
-            lock (_poolLock)
-            {
-                if (_pool.Count > 0)
-                    ret = _pool.Pop();
-            }
-
-            // Only create a new instance if we have to (nothing came from the pool)
-            if (ret == null)
-                ret = new DbParameterValues();
-
-            Debug.Assert(ret._collection == null, "Since Dispose() sets the _collection to null, how did this happen?");
-
-            // Set the internal collection
-            ret._collection = dbParameterCollection;
-
-            return ret;
-        }
-
-        /// <summary>
         /// Gets or sets the parameter's value.
         /// </summary>
         /// <param name="index">The zero-based index of the parameter.</param>
@@ -136,6 +106,36 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Creates a <see cref="DbParameterValues"/> for a <see cref="DbParameterCollection"/>.
+        /// </summary>
+        /// <param name="dbParameterCollection">The <see cref="DbParameterCollection"/>.</param>
+        /// <returns>The <see cref="DbParameterValues"/> instance.</returns>
+        public static DbParameterValues Create(DbParameterCollection dbParameterCollection)
+        {
+            if (dbParameterCollection == null)
+                throw new ArgumentNullException("dbParameterCollection");
+
+            // Grab from the pool first
+            DbParameterValues ret = null;
+            lock (_poolLock)
+            {
+                if (_pool.Count > 0)
+                    ret = _pool.Pop();
+            }
+
+            // Only create a new instance if we have to (nothing came from the pool)
+            if (ret == null)
+                ret = new DbParameterValues();
+
+            Debug.Assert(ret._collection == null, "Since Dispose() sets the _collection to null, how did this happen?");
+
+            // Set the internal collection
+            ret._collection = dbParameterCollection;
+
+            return ret;
+        }
+
+        /// <summary>
         /// Gets the name of the parameter at the given index.
         /// </summary>
         /// <param name="index">Index of the parameter to get the name of.</param>
@@ -144,6 +144,27 @@ namespace NetGore.Db
         {
             return _collection[index].ParameterName;
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_collection == null)
+            {
+                Debug.Fail("Object already disposed!");
+                return;
+            }
+
+            _collection = null;
+
+            lock (_poolLock)
+                _pool.Push(this);
+        }
+
+        #endregion
 
         #region IEnumerable<KeyValuePair<string,object>> Members
 
@@ -179,22 +200,5 @@ namespace NetGore.Db
         }
 
         #endregion
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_collection == null)
-            {
-                Debug.Fail("Object already disposed!");
-                return;
-            }
-
-            _collection = null;
-
-            lock (_poolLock)
-                _pool.Push(this);
-        }
     }
 }

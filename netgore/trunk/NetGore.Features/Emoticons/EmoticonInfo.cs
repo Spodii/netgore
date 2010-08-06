@@ -1,4 +1,3 @@
-﻿using System;
 using System.Linq;
 using NetGore.IO;
 
@@ -21,6 +20,8 @@ namespace NetGore.Features.Emoticons
         [SyncValue]
         public T Value { get; protected set; }
 
+        #region IPersistable Members
+
         /// <summary>
         /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
         /// same order as they were written.
@@ -39,5 +40,7 @@ namespace NetGore.Features.Emoticons
         {
             PersistableHelper.Write(this, writer);
         }
+
+        #endregion
     }
 }

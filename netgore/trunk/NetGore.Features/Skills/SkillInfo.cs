@@ -1,6 +1,4 @@
-﻿using System;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.Features.Skills
@@ -40,6 +38,8 @@ namespace NetGore.Features.Skills
         [SyncValue]
         public T Value { get; protected set; }
 
+        #region IPersistable Members
+
         /// <summary>
         /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
         /// same order as they were written.
@@ -58,5 +58,7 @@ namespace NetGore.Features.Skills
         {
             PersistableHelper.Write(this, writer);
         }
+
+        #endregion
     }
 }

@@ -1,8 +1,8 @@
 using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -24,18 +24,6 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="DbParameter"/>s needed for this class to perform database queries.
-        /// If null, no parameters will be used.
-        /// </returns>
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return CreateParameters(ActiveTradeItemTable.DbColumns);
-        }
-
-        /// <summary>
         /// Executes the query on the database using the specified item.
         /// </summary>
         /// <param name="characterID">The character ID.</param>
@@ -45,6 +33,18 @@ namespace DemoGame.Server.Queries
         public int Execute(ItemID itemID, CharacterID characterID)
         {
             return Execute(new QueryArgs(itemID, characterID));
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.
+        /// </returns>
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return CreateParameters(ActiveTradeItemTable.DbColumns);
         }
 
         /// <summary>

@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {

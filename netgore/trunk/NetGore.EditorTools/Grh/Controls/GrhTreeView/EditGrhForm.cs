@@ -8,10 +8,10 @@ using System.Windows.Forms;
 using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.IO;
+using NetGore.World;
 using SFML;
 using SFML.Graphics;
 using Point = System.Drawing.Point;
-using NetGore.World;
 
 namespace NetGore.EditorTools
 {

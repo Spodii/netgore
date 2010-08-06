@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace NetGore.Features.PeerTrading
@@ -13,8 +13,8 @@ namespace NetGore.Features.PeerTrading
         /// </summary>
         static PeerTradingSettings _instance;
 
-        readonly byte _maxTradeSlots;
         readonly int _maxDistance;
+        readonly byte _maxTradeSlots;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingSettings"/> class.
@@ -39,7 +39,10 @@ namespace NetGore.Features.PeerTrading
         /// <summary>
         /// Gets the maximum distance two characters may be from one another to be able to trade.
         /// </summary>
-        public int MaxDistance { get { return _maxDistance; } }
+        public int MaxDistance
+        {
+            get { return _maxDistance; }
+        }
 
         /// <summary>
         /// Gets the max number of items able to be traded in a single transaction.

@@ -96,6 +96,26 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Makes sure that a <see cref="DbCommand"/> returned to this <see cref="DbQueryBase"/>'s pool from <see cref="ReleaseCommand"/>
+        /// was a <see cref="DbCommand"/> that came from this instance.
+        /// </summary>
+        /// <param name="cmd">The <see cref="DbCommand"/> to check.</param>
+        /// <remarks>The checking is not perfect since <see cref="DbCommand"/> does not store what <see cref="DbQueryBase"/> it originated
+        /// from or any other definitive checks we can use. So instead, we have to just make some guesses based on the values available to
+        /// us.</remarks>
+        [Conditional("DEBUG")]
+        void AssertValidReleasedCommand(DbCommand cmd)
+        {
+            const string errmsg =
+                "DbCommand `{0}` was returned to this DbQueryBase `{1}` through ReleaseCommand(), but it does not seem to be" +
+                " a DbCommand that belongs to this DbQueryBase! This will almost definitely result in database corruption and query execution" +
+                " failure. If this is a false positive, ensure the reason for the false positive is resolved.";
+
+            Debug.Assert(StringComparer.Ordinal.Equals(cmd.CommandText, CommandText), string.Format(errmsg, cmd, this));
+            Debug.Assert(cmd.Parameters.Count == _parameters.Count(), string.Format(errmsg, cmd, this));
+        }
+
+        /// <summary>
         /// Creates a new DbParameter object from the given source DbParameter.
         /// </summary>
         /// <param name="source">DbParameter to clone.</param>
@@ -473,25 +493,6 @@ namespace NetGore.Db
 
             lock (_commandsLock)
                 _commands.Push(cmd);
-        }
-
-        /// <summary>
-        /// Makes sure that a <see cref="DbCommand"/> returned to this <see cref="DbQueryBase"/>'s pool from <see cref="ReleaseCommand"/>
-        /// was a <see cref="DbCommand"/> that came from this instance.
-        /// </summary>
-        /// <param name="cmd">The <see cref="DbCommand"/> to check.</param>
-        /// <remarks>The checking is not perfect since <see cref="DbCommand"/> does not store what <see cref="DbQueryBase"/> it originated
-        /// from or any other definitive checks we can use. So instead, we have to just make some guesses based on the values available to
-        /// us.</remarks>
-        [Conditional("DEBUG")]
-        private void AssertValidReleasedCommand(DbCommand cmd)
-        {
-            const string errmsg = "DbCommand `{0}` was returned to this DbQueryBase `{1}` through ReleaseCommand(), but it does not seem to be" + 
-                " a DbCommand that belongs to this DbQueryBase! This will almost definitely result in database corruption and query execution" +
-                " failure. If this is a false positive, ensure the reason for the false positive is resolved.";
-
-            Debug.Assert(StringComparer.Ordinal.Equals(cmd.CommandText, CommandText), string.Format(errmsg, cmd, this));
-            Debug.Assert(cmd.Parameters.Count == _parameters.Count(), string.Format(errmsg, cmd, this));
         }
 
         /// <summary>

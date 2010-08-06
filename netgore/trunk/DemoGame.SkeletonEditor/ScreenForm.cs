@@ -211,7 +211,8 @@ namespace DemoGame.SkeletonEditor
                     // Add new node
                     if (!chkCanAlter.Checked)
                     {
-                        MessageBox.Show("Node adding and removing locked. Enable node add/remove in the settings panel.", "Invalid operation", MessageBoxButtons.OK);
+                        MessageBox.Show("Node adding and removing locked. Enable node add/remove in the settings panel.",
+                                        "Invalid operation", MessageBoxButtons.OK);
                         return;
                     }
 
@@ -287,6 +288,18 @@ namespace DemoGame.SkeletonEditor
         {
             if (e.Button == MouseButtons.Left)
                 _moveSelectedNode = false;
+        }
+
+        /// <summary>
+        /// Handles the MouseWheel event of the GameScreen control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
+        {
+            var center = _camera.Center;
+            _camera.Scale += e.Delta / 1000f;
+            _camera.CenterOn(center);
         }
 
         static string GetLoadSkeletonDialogResult(string filter)
@@ -494,7 +507,8 @@ namespace DemoGame.SkeletonEditor
                 case Keys.Delete:
                     if (!chkCanAlter.Checked)
                     {
-                        MessageBox.Show("Node adding and removing locked. Enable node add/remove in the settings panel.", "Invalid operation", MessageBoxButtons.OK);
+                        MessageBox.Show("Node adding and removing locked. Enable node add/remove in the settings panel.",
+                                        "Invalid operation", MessageBoxButtons.OK);
                         return;
                     }
 
@@ -551,19 +565,7 @@ namespace DemoGame.SkeletonEditor
 
             _camera.Zoom(new Vector2(0, -25), _camera.Size, 3f);
 
-            GameScreen.MouseWheel += new MouseEventHandler(GameScreen_MouseWheel);
-        }
-
-        /// <summary>
-        /// Handles the MouseWheel event of the GameScreen control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
-        void GameScreen_MouseWheel(object sender, MouseEventArgs e)
-        {
-            var center = _camera.Center;
-            _camera.Scale += e.Delta / 1000f;
-            _camera.CenterOn(center);
+            GameScreen.MouseWheel += GameScreen_MouseWheel;
         }
 
         void RecursiveHookInput(Control rootC)
