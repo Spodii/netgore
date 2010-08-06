@@ -24,6 +24,42 @@ namespace DemoGame.Client
             SocketSender = socketSender;
         }
 
+        protected override void OnTradeCanceled(bool sourceCanceled)
+        {
+            // TODO: !!
+            base.OnTradeCanceled(sourceCanceled);
+        }
+
+        protected override void OnAcceptStatusChanged(bool isSourceSide, bool hasAccepted)
+        {
+            // TODO: !!
+            base.OnAcceptStatusChanged(isSourceSide, hasAccepted);
+        }
+
+        protected override void OnSlotUpdated(NetGore.InventorySlot slot, bool isSourceSide)
+        {
+            // TODO: !!
+            base.OnSlotUpdated(slot, isSourceSide);
+        }
+
+        protected override void OnTradeClosed()
+        {
+            // TODO: !!
+            base.OnTradeClosed();
+        }
+
+        protected override void OnTradeCompleted()
+        {
+            // TODO: !!
+            base.OnTradeCompleted();
+        }
+
+        protected override void OnTradeOpened()
+        {
+            // TODO: !!
+            base.OnTradeOpened();
+        }
+
         /// <summary>
         /// Gets or sets the <see cref="ISocketSender"/> used to communicate with the server.
         /// </summary>

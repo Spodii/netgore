@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NetGore.Features.Shops
@@ -29,7 +30,11 @@ namespace NetGore.Features.Shops
         /// </summary>
         public static ShopSettings Instance
         {
-            get { return _instance; }
+            get
+            {
+                Debug.Assert(_instance != null, "The settings instance should not be null!"); 
+                return _instance;
+            }
         }
 
         /// <summary>

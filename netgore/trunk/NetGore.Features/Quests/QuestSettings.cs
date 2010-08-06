@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NetGore.Features.Quests
@@ -25,7 +26,11 @@ namespace NetGore.Features.Quests
         /// </summary>
         public static QuestSettings Instance
         {
-            get { return _instance; }
+            get
+            {
+                Debug.Assert(_instance != null, "The settings instance should not be null!"); 
+                return _instance;
+            }
         }
 
         /// <summary>

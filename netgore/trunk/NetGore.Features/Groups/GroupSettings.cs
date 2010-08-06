@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NetGore.Features.Groups
@@ -50,7 +51,11 @@ namespace NetGore.Features.Groups
         /// </summary>
         public static GroupSettings Instance
         {
-            get { return _instance; }
+            get
+            {
+                Debug.Assert(_instance != null, "The settings instance should not be null!"); 
+                return _instance;
+            }
         }
 
         /// <summary>

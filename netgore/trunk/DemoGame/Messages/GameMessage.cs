@@ -6,7 +6,7 @@ namespace DemoGame
     /// Enum containing all of the different in-game messages, including messages sent from the Server
     /// to the Client.
     /// </summary>
-    public enum GameMessage : byte
+    public enum GameMessage : ushort
     {
         CannotAttackWithWeapon,
         CannotAttackTooFarAway,
@@ -192,6 +192,10 @@ namespace DemoGame
         #region PeerTrading
 
         PeerTradingNotEnoughSpaceInInventory,
+        PeerTradingInvalidTarget,
+        PeerTradingTooFarAway,
+        PeerTradingCannotStartTrade,
+        PeerTradingTargetCannotStartTrade,
 
         #endregion
 

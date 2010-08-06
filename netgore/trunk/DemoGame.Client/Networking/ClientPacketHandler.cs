@@ -274,6 +274,12 @@ namespace DemoGame.Client
                 actionDisplay.Execute(Map, attacker, attacked);
         }
 
+        [MessageHandler((byte)ServerPacketID.PeerTradeEvent)]
+        void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
+        {
+            PeerTradeInfoHandler.Read(r);
+        }
+
         [MessageHandler((byte)ServerPacketID.CharDamage)]
         void RecvCharDamage(IIPSocket conn, BitStream r)
         {

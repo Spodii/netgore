@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.PeerTrading;
 using DemoGame.Server.Quests;
 using log4net;
 using NetGore;
@@ -274,6 +275,16 @@ namespace DemoGame.Server
             {
                 user.Send(pw);
             }
+        }
+
+        [MessageHandler((byte)ClientPacketID.PeerTradeEvent)]
+        void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if ((user = TryGetUser(conn)) == null)
+                return;
+
+            ServerPeerTradeInfoHandler.Instance.Read(user, r);
         }
 
         [MessageHandler((byte)ClientPacketID.HasQuestFinishRequirements)]

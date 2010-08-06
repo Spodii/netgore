@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NetGore.Features.Guilds
@@ -83,7 +84,11 @@ namespace NetGore.Features.Guilds
         /// </summary>
         public static GuildSettings Instance
         {
-            get { return _instance; }
+            get
+            {
+                Debug.Assert(_instance != null, "The settings instance should not be null!"); 
+                return _instance;
+            }
         }
 
         /// <summary>

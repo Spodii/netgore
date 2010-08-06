@@ -99,6 +99,23 @@ namespace DemoGame.Server
             {
                 get { return Server.World; }
             }
+            
+            /// <summary>
+            /// Starts a trade with another user.
+            /// </summary>
+            /// <param name="userName">The name of the user to trade with.</param>
+            [SayCommand("Trade")]
+            public void Trade(string userName)
+            {
+                var target = World.FindUser(userName);
+                if (target == null)
+                {
+                    User.Send(GameMessage.PeerTradingInvalidTarget);
+                    return;
+                }
+
+                User.TryStartPeerTrade(target);
+            }
 
             /// <summary>
             /// Sends a message to everyone online.
@@ -126,10 +143,7 @@ namespace DemoGame.Server
                 if (string.IsNullOrEmpty(userName))
                 {
                     // Invalid message
-                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellNoName))
-                    {
-                        User.Send(pw);
-                    }
+                    User.Send(GameMessage.CommandTellNoName);
                     return;
                 }
 
@@ -137,10 +151,7 @@ namespace DemoGame.Server
                 if (string.IsNullOrEmpty(message))
                 {
                     // No or invalid message
-                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellNoMessage))
-                    {
-                        User.Send(pw);
-                    }
+                    User.Send(GameMessage.CommandTellNoMessage);
                     return;
                 }
 
@@ -150,24 +161,15 @@ namespace DemoGame.Server
                 if (target != null)
                 {
                     // Message to sender ("You tell...")
-                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellSender, target.Name, message))
-                    {
-                        User.Send(pw);
-                    }
+                    User.Send(GameMessage.CommandTellSender, target.Name, message);
 
                     // Message to receivd ("X tells you...")
-                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellReceiver, User.Name, message))
-                    {
-                        target.Send(pw);
-                    }
+                    target.Send(GameMessage.CommandTellReceiver, User.Name, message);
                 }
                 else
                 {
                     // User not found
-                    using (var pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, userName))
-                    {
-                        User.Send(pw);
-                    }
+                    User.Send(GameMessage.CommandTellInvalidUser, userName);
                 }
             }
 
@@ -275,11 +277,7 @@ namespace DemoGame.Server
             {
                 if (User.Guild == null)
                 {
-                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustBeInGuild))
-                    {
-                        User.Send(pw);
-                    }
-
+                    User.Send(GameMessage.InvalidCommandMustBeInGuild);
                     return false;
                 }
 
@@ -294,11 +292,7 @@ namespace DemoGame.Server
             {
                 if (User.Guild != null)
                 {
-                    using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommandMustNotBeInGuild))
-                    {
-                        User.Send(pw);
-                    }
-
+                    User.Send(GameMessage.InvalidCommandMustNotBeInGuild);
                     return false;
                 }
 

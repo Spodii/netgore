@@ -91,6 +91,10 @@ GuildLeave: "You have left guild \"$0\"."
 GuildSay: "[Guild] $0 says: \"$1\""
 
 PeerTradingNotEnoughSpaceInInventory: "Unable to trade - you do not have enough room in your inventory!"
+PeerTradingInvalidTarget: "Cannot trade with that user - they are either not online or do not exist."
+PeerTradingTooFarAway: "You are too far away to trade with that user. Try getting closer to them."
+PeerTradingCannotStartTrade: "You cannot start a new trade session at this moment."
+PeerTradingTargetCannotStartTrade: "That user is unable to trade at this moment."
 
 QuestAccepted: "You have accepted a new quest!"
 QuestAcceptFailedAlreadyCompleted: "You cannot accept that quest since you have already completed it."

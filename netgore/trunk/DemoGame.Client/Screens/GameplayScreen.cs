@@ -63,6 +63,7 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         ILight _userLight;
         World _world;
+        PeerTradeForm _peerTradeForm;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -512,6 +513,8 @@ namespace DemoGame.Client
             var gameMenu = new GameMenuForm(_cScreen);
             gameMenu.ClickedLogOut += GameMenuClickedLogOut;
 
+            _peerTradeForm = new PeerTradeForm(_cScreen, new Vector2(200)) { PeerTradeInfoHandler = Socket.PacketHandler.PeerTradeInfoHandler };
+
             // Add the forms to the GUI settings manager (which also restores any existing settings)
             _guiSettings = new GUISettings("Default"); // FUTURE: Allow changing of the profile
             _guiSettings.Add("InventoryForm", _inventoryForm);
@@ -523,6 +526,7 @@ namespace DemoGame.Client
             _guiSettings.Add("StatusEffectsForm", _statusEffectsForm);
             _guiSettings.Add("SkillsForm", _skillsForm);
             _guiSettings.Add("QuickBarForm", _quickBarForm);
+            _guiSettings.Add("PeerTradeForm", _peerTradeForm);
 
             // Set the focus to the screen container
             _cScreen.SetFocus();
