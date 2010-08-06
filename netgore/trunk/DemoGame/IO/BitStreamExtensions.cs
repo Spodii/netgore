@@ -21,6 +21,7 @@ namespace DemoGame
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly int _clientPacketIDBits;
         static readonly int _serverPacketIDBits;
+        static readonly int _gameMessageIDBits;
 
         /// <summary>
         /// Initializes the <see cref="BitStreamExtensions"/> class.
@@ -29,6 +30,7 @@ namespace DemoGame
         {
             _clientPacketIDBits = EnumHelper<ClientPacketID>.BitsRequired;
             _serverPacketIDBits = EnumHelper<ServerPacketID>.BitsRequired;
+            _gameMessageIDBits = EnumHelper<GameMessage>.BitsRequired;
 
             if (_clientPacketIDBits <= 0)
                 throw new Exception("Invalid required bit amount on ClientPacketIDBits: " + _clientPacketIDBits);
@@ -47,7 +49,7 @@ namespace DemoGame
             if (gameMessages == null)
                 throw new ArgumentNullException("gameMessages");
 
-            var messageID = bitStream.ReadByte();
+            var messageID = bitStream.ReadUInt(_gameMessageIDBits);
             var paramCount = bitStream.ReadByte();
 
             // Parse the parameters
@@ -122,7 +124,7 @@ namespace DemoGame
         /// <param name="gameMessage">GameMessage to write.</param>
         public static void Write(this BitStream bitStream, GameMessage gameMessage)
         {
-            bitStream.Write((byte)gameMessage);
+            bitStream.Write((uint)gameMessage, _gameMessageIDBits);
             bitStream.Write((byte)0);
         }
 
@@ -135,7 +137,7 @@ namespace DemoGame
         public static void Write(this BitStream bitStream, GameMessage gameMessage, params object[] args)
         {
             // Write the message ID
-            bitStream.Write((byte)gameMessage);
+            bitStream.Write((uint)gameMessage, _gameMessageIDBits);
 
             // Write the parameter count and all of the parameters
             if (args == null || args.Length < 1)

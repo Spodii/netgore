@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using SFML.Graphics;
 
@@ -74,7 +75,11 @@ namespace NetGore.Features.GameTime
         /// </summary>
         public static GameTimeSettings Instance
         {
-            get { return _instance; }
+            get
+            {
+                Debug.Assert(_instance != null, "The settings instance should not be null!"); 
+                return _instance;
+            }
         }
 
         /// <summary>

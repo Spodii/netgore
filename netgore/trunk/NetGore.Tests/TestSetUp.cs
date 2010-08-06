@@ -3,6 +3,7 @@ using System.Linq;
 using NetGore.Features.GameTime;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
+using NetGore.Features.PeerTrading;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Features.StatusEffects;
@@ -30,6 +31,7 @@ namespace NetGore.Tests
             GroupSettings.Initialize(new GroupSettings(10, 1000 * 60, (x, y) => true));
             QuestSettings.Initialize(new QuestSettings(20));
             GameTimeSettings.Initialize(new GameTimeSettings(19, 6, -0.5f, 50, new DateTime(2010, 1, 1), 1000f));
+            PeerTradingSettings.Initialize(new PeerTradingSettings(20, 128));
 
             var rankNames = new string[] { "Recruit", "Member", "VIP", "Founder" };
             var nameRules = new StringRules(3, 50, CharType.All);

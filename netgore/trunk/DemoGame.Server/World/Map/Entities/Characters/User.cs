@@ -995,15 +995,24 @@ namespace DemoGame.Server
             if (target == this)
                 return false;
 
-            if (!IsAlive || ShoppingState != null)
+            if (!IsAlive || PeerTradeSession != null)
+            {
+                Send(GameMessage.PeerTradingCannotStartTrade);
                 return false;
+            }
 
-            if (!target.IsAlive || target.ShoppingState != null)
+            if (!target.IsAlive || target.PeerTradeSession != null)
+            {
+                Send(GameMessage.PeerTradingTargetCannotStartTrade);
                 return false;
+            }
 
             // Trading must happen for characters close to one another
             if (target.Map != Map || this.GetDistance(target) > PeerTradingSettings.Instance.MaxDistance)
+            {
+                Send(GameMessage.PeerTradingTooFarAway);
                 return false;
+            }
 
             // Start the trade
             var ts = new PeerTradeSession(this, target);

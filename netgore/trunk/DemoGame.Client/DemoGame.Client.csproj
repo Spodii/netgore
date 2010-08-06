@@ -144,6 +144,7 @@
     <Compile Include="Controls\GameMenuForm.cs" />
     <Compile Include="Controls\IQuickBarItemProvider.cs" />
     <Compile Include="Controls\NPCChatDialogForm.cs" />
+    <Compile Include="Controls\PeerTradeForm.cs" />
     <Compile Include="Controls\QuickBarForm.cs" />
     <Compile Include="Controls\QuickBarItemType.cs" />
     <Compile Include="Controls\ShopForm.cs" />

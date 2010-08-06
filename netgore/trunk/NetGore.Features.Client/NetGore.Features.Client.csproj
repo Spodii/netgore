@@ -112,6 +112,7 @@
     <Compile Include="Guilds\GuildMembersForm.cs" />
     <Compile Include="Guilds\GuildMembersFormBase.cs" />
     <Compile Include="Guilds\GuildOnlineMembersForm.cs" />
+    <Compile Include="PeerTrading\PeerTradeForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quests\HasQuestRequirementsTracker.cs" />
     <Compile Include="Quests\IQuestDescription.cs" />
