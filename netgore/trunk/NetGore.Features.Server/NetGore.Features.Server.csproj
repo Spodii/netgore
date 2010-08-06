@@ -8,7 +8,7 @@
     <ProjectGuid>{431BC2DD-0DDD-47FC-827C-9182A361B4E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetGore.Features.Server</RootNamespace>
+    <RootNamespace>NetGore.Features</RootNamespace>
     <AssemblyName>NetGore.Features.Server</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -135,6 +135,9 @@
     <Compile Include="Shops\IShop.cs" />
     <Compile Include="Shops\IShopItem.cs" />
     <Compile Include="Shops\ShopBase.cs" />
+    <Compile Include="PeerTrading\IPeerTradeSession.cs" />
+    <Compile Include="PeerTrading\ServerPeerTradeInfoHandlerBase.cs" />
+    <Compile Include="PeerTrading\PeerTradeSessionBase.cs" />
     <Compile Include="WorldStats\IWorldStatsTracker.cs" />
     <Compile Include="WorldStats\WorldStatsTracker.cs" />
   </ItemGroup>

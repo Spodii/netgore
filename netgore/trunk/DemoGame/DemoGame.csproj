@@ -115,6 +115,7 @@
     <Compile Include="Body\BodyIDTypeConverter.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountIpsTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IActiveTradeItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceAttackableTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceHostileTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceTable.cs" />

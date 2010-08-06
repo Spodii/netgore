@@ -87,7 +87,23 @@ namespace DemoGame.Client
             return pw;
         }
 
-        static PacketWriter GetWriter(ClientPacketID id)
+        /// <summary>
+        /// Gets a <see cref="PacketWriter"/> to use from the internal pool. It is important that this
+        /// <see cref="PacketWriter"/> is disposed of properly when done.
+        /// </summary>
+        /// <returns>The <see cref="PacketWriter"/> to use.</returns>
+        public static PacketWriter GetWriter()
+        {
+            return _writerPool.Acquire();
+        }
+
+        /// <summary>
+        /// Gets a <see cref="PacketWriter"/> to use from the internal pool. It is important that this
+        /// <see cref="PacketWriter"/> is disposed of properly when done.
+        /// </summary>
+        /// <param name="id">The <see cref="ClientPacketID"/> that this <see cref="PacketWriter"/> will be writing.</param>
+        /// <returns>The <see cref="PacketWriter"/> to use.</returns>
+        public static PacketWriter GetWriter(ClientPacketID id)
         {
             var pw = _writerPool.Acquire();
             pw.Write(id);

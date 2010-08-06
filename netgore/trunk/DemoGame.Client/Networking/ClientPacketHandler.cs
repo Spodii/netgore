@@ -51,6 +51,12 @@ namespace DemoGame.Client
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly IMessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
+        readonly ClientPeerTradeInfoHandler _peerTradeInfoHandler;
+
+        /// <summary>
+        /// Gets the <see cref="ClientPeerTradeInfoHandler"/> instance.
+        /// </summary>
+        public ClientPeerTradeInfoHandler PeerTradeInfoHandler { get { return _peerTradeInfoHandler; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
@@ -72,6 +78,7 @@ namespace DemoGame.Client
             _dynamicEntityFactory = dynamicEntityFactory;
             _socketSender = socketSender;
             _gameplayScreen = gameplayScreen;
+            _peerTradeInfoHandler = new ClientPeerTradeInfoHandler(socketSender);
 
             // When debugging, use the StatMessageProcessorManager instead (same thing as the other, but provides network statistics)
 #if DEBUG

@@ -77,11 +77,11 @@ namespace DemoGame.Server
         /// <returns>True if the item can be properly removed, else false.</returns>
         protected override bool CanRemove(EquipmentSlot slot)
         {
-            ItemEntityBase item = this[slot];
+            var item = this[slot];
             if (item == null)
                 return true;
 
-            return Character.Inventory.CanAdd((ItemEntity)item);
+            return Character.Inventory.CanAdd(item);
         }
 
         /// <summary>

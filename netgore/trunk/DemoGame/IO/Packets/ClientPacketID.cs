@@ -30,6 +30,7 @@ namespace DemoGame
         MoveLeft,
         MoveRight,
         MoveStop,
+        PeerTradeEvent,
         PickupItem,
         Ping,
         RaiseStat,

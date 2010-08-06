@@ -131,22 +131,22 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets a PacketWriter to use from the internal pool. It is important that this
-        /// PacketWriter is disposed of properly when done.
+        /// Gets a <see cref="PacketWriter"/> to use from the internal pool. It is important that this
+        /// <see cref="PacketWriter"/> is disposed of properly when done.
         /// </summary>
-        /// <returns>PacketWriter to use.</returns>
+        /// <returns>The <see cref="PacketWriter"/> to use.</returns>
         public static PacketWriter GetWriter()
         {
             return _writerPool.Acquire();
         }
 
         /// <summary>
-        /// Gets a PacketWriter to use from the internal pool. It is important that this
-        /// PacketWriter is disposed of properly when done.
+        /// Gets a <see cref="PacketWriter"/> to use from the internal pool. It is important that this
+        /// <see cref="PacketWriter"/> is disposed of properly when done.
         /// </summary>
-        /// <param name="id">ServerPacketID that this PacketWriter will be writing.</param>
-        /// <returns>PacketWriter to use.</returns>
-        static PacketWriter GetWriter(ServerPacketID id)
+        /// <param name="id">The <see cref="ServerPacketID"/> that this <see cref="PacketWriter"/> will be writing.</param>
+        /// <returns>The <see cref="PacketWriter"/> to use.</returns>
+        public static PacketWriter GetWriter(ServerPacketID id)
         {
             var pw = _writerPool.Acquire();
             pw.Write(id);
