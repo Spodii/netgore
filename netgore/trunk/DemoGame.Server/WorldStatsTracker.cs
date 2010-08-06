@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-using NetGore;
 using NetGore.Db;
 using NetGore.Features.Guilds;
 using NetGore.Features.Quests;

@@ -106,8 +106,7 @@ namespace DemoGame.Client
 
         sealed class SkillLabel : Label
         {
-            public SkillLabel(Control parent, SkillInfo<SkillType> skillInfo, Vector2 position)
-                : base(parent, position)
+            public SkillLabel(Control parent, SkillInfo<SkillType> skillInfo, Vector2 position) : base(parent, position)
             {
                 SkillInfo = skillInfo;
                 Text = SkillInfo.DisplayName;

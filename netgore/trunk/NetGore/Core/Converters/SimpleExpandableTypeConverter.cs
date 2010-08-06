@@ -95,7 +95,7 @@ namespace NetGore
 
                 bool wasConverted;
                 var converted = ConvertFromString(parser, values, out wasConverted);
-     
+
                 if (wasConverted)
                     return converted;
             }

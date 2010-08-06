@@ -39,11 +39,6 @@ namespace NetGore.Graphics
         readonly List<SkeletonNode> _nodes = new List<SkeletonNode>();
 
         /// <summary>
-        /// Gets the internal list of child <see cref="SkeletonNode"/>s in this <see cref="SkeletonNode"/>.
-        /// </summary>
-        internal List<SkeletonNode> internalNodes { get { return _nodes; } }
-
-        /// <summary>
         /// Name of the node. The node name must be unique throughout the whole skeleton.
         /// </summary>
         string _name = "New node";
@@ -145,6 +140,14 @@ namespace NetGore.Graphics
         {
             get { return _position.Y; }
             set { _position.Y = value; }
+        }
+
+        /// <summary>
+        /// Gets the internal list of child <see cref="SkeletonNode"/>s in this <see cref="SkeletonNode"/>.
+        /// </summary>
+        internal List<SkeletonNode> internalNodes
+        {
+            get { return _nodes; }
         }
 
         /// <summary>

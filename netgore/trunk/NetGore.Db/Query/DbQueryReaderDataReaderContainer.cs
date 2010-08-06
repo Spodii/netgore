@@ -9,7 +9,7 @@ namespace NetGore.Db
     /// Container for the DbQueryReader that will allow us to safely and properly dispose of the reader and poolable
     /// connection by just calling Dispose() on it.
     /// </summary>
-    internal sealed class DbQueryReaderDataReaderContainer : DataReaderContainer
+    sealed class DbQueryReaderDataReaderContainer : DataReaderContainer
     {
         readonly DbQueryBase _dbQueryBase;
         readonly IPoolableDbConnection _poolableConn;

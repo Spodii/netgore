@@ -1,4 +1,6 @@
-﻿namespace NetGore.AI
+using System.Linq;
+
+namespace NetGore.AI
 {
     public struct AINode
     {

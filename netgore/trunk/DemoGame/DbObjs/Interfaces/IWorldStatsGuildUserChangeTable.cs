@@ -17,50 +17,42 @@ For more information on the DbClassCreator, please see:
 
 using System;
 using System.Linq;
+using NetGore.Features.Guilds;
+
 namespace DemoGame.DbObjs
 {
-/// <summary>
-/// Interface for a class that can be used to serialize values to the database table `world_stats_guild_user_change`.
-/// </summary>
-public interface IWorldStatsGuildUserChangeTable
-{
-/// <summary>
-/// Creates a deep copy of this table. All the values will be the same
-/// but they will be contained in a different object instance.
-/// </summary>
-/// <returns>
-/// A deep copy of this table.
-/// </returns>
-IWorldStatsGuildUserChangeTable DeepCopy();
+    /// <summary>
+    /// Interface for a class that can be used to serialize values to the database table `world_stats_guild_user_change`.
+    /// </summary>
+    public interface IWorldStatsGuildUserChangeTable
+    {
+        /// <summary>
+        /// Gets the value of the database column `guild_id`.
+        /// </summary>
+        GuildID? GuildID { get; }
 
-/// <summary>
-/// Gets the value of the database column `guild_id`.
-/// </summary>
-System.Nullable<NetGore.Features.Guilds.GuildID> GuildID
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `id`.
-/// </summary>
-System.UInt32 ID
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `user_id`.
-/// </summary>
-DemoGame.CharacterID UserId
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `when`.
-/// </summary>
-System.DateTime When
-{
-get;
-}
-}
+        /// <summary>
+        /// Gets the value of the database column `id`.
+        /// </summary>
+        UInt32 ID { get; }
 
+        /// <summary>
+        /// Gets the value of the database column `user_id`.
+        /// </summary>
+        CharacterID UserId { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `when`.
+        /// </summary>
+        DateTime When { get; }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IWorldStatsGuildUserChangeTable DeepCopy();
+    }
 }

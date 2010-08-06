@@ -1,7 +1,7 @@
 using System.Linq;
 using NetGore.Features.ActionDisplays;
-using NUnit.Framework;
 using NetGore.World;
+using NUnit.Framework;
 
 namespace NetGore.Tests.NetGore.Features.ActionDisplays
 {

@@ -2,8 +2,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using NetGore;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame
 {

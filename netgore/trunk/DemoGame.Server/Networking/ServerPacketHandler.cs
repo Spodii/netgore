@@ -7,7 +7,6 @@ using DemoGame.Server.Quests;
 using log4net;
 using NetGore;
 using NetGore.Db;
-using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
 using NetGore.IO;
 using NetGore.Network;

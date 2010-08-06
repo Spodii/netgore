@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
 using DemoGame.DbObjs;
 using NetGore.Features.PeerTrading;
 using NetGore.IO;
@@ -12,6 +10,19 @@ namespace DemoGame.Client
     public class ClientPeerTradeInfoHandler : ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable>
     {
         ISocketSender _socketSender;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientPeerTradeInfoHandler"/> class.
+        /// </summary>
+        /// <param name="socketSender">The <see cref="ISocketSender"/> used to communicate with the server.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="socketSender"/> is null.</exception>
+        public ClientPeerTradeInfoHandler(ISocketSender socketSender)
+        {
+            if (socketSender == null)
+                throw new ArgumentNullException("socketSender");
+
+            SocketSender = socketSender;
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="ISocketSender"/> used to communicate with the server.
@@ -29,19 +40,6 @@ namespace DemoGame.Client
 
                 _socketSender = value;
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientPeerTradeInfoHandler"/> class.
-        /// </summary>
-        /// <param name="socketSender">The <see cref="ISocketSender"/> used to communicate with the server.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="socketSender"/> is null.</exception>
-        public ClientPeerTradeInfoHandler(ISocketSender socketSender)
-        {
-            if (socketSender == null)
-                throw new ArgumentNullException("socketSender");
-
-            SocketSender = socketSender;
         }
 
         /// <summary>

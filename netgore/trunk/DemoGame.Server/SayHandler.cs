@@ -5,8 +5,8 @@ using DemoGame.Server.Guilds;
 using NetGore;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable UnusedMember.Local

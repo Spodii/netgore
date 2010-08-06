@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
@@ -23,11 +23,11 @@ namespace NetGore.Graphics
         readonly ICamera2DProvider _cameraProvider;
         readonly IMap _map;
 
-        Grh _sprite;
         Color _color = Color.White;
         float _depth;
         bool _isVisible = true;
         string _name;
+        Grh _sprite;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundImage"/> class.
@@ -68,22 +68,6 @@ namespace NetGore.Graphics
             _map = map;
 
             Read(reader);
-        }
-
-        /// <summary>
-        /// Reads the <see cref="BackgroundImage"/> from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        protected virtual void Read(IValueReader reader)
-        {
-            Name = reader.ReadString(_valueKeyName);
-            Alignment = reader.ReadEnum<Alignment>(_valueKeyAlignment);
-            Color = reader.ReadColor(_valueKeyColor);
-            Depth = reader.ReadFloat(_valueKeyDepth);
-            Offset = reader.ReadVector2(_valueKeyOffset);
-            var grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
-
-            _sprite = new Grh(grhIndex, AnimType.Loop, Map.GetTime());
         }
 
         /// <summary>
@@ -298,6 +282,22 @@ namespace NetGore.Graphics
         public static float LayerDepthToImageDepth(int layerDepth)
         {
             return layerDepth * -0.01f;
+        }
+
+        /// <summary>
+        /// Reads the <see cref="BackgroundImage"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        protected virtual void Read(IValueReader reader)
+        {
+            Name = reader.ReadString(_valueKeyName);
+            Alignment = reader.ReadEnum<Alignment>(_valueKeyAlignment);
+            Color = reader.ReadColor(_valueKeyColor);
+            Depth = reader.ReadFloat(_valueKeyDepth);
+            Offset = reader.ReadVector2(_valueKeyOffset);
+            var grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
+
+            _sprite = new Grh(grhIndex, AnimType.Loop, Map.GetTime());
         }
 
         /// <summary>

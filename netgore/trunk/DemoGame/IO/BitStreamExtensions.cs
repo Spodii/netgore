@@ -8,8 +8,8 @@ using NetGore;
 using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Stats;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame
 {

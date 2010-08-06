@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Db;
 using NetGore.World;
 

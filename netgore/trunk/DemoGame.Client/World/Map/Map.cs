@@ -8,8 +8,8 @@ using NetGore.Features.GameTime;
 using NetGore.Graphics;
 using NetGore.Graphics.ParticleEngine;
 using NetGore.IO;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {

@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using NetGore;
-using SFML.Graphics;
+using System.Linq;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {

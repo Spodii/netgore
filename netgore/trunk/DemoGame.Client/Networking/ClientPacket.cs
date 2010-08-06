@@ -1,6 +1,5 @@
 using System.Linq;
 using NetGore;
-using NetGore.Features.Emoticons;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.Network;

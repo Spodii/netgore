@@ -5,8 +5,8 @@ using System.Linq;
 using NetGore;
 using NetGore.Features.Quests;
 using NetGore.Graphics;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Client
 {

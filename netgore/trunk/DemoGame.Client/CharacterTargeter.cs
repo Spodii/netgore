@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
-using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.World;
 using SFML.Graphics;
 using SFML.Window;
-using NetGore.World;
 
 namespace DemoGame.Client
 {

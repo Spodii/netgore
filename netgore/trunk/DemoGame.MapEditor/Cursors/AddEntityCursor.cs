@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.MapEditor.Properties;
-using NetGore;
 using NetGore.EditorTools;
+using NetGore.World;
 using SFML.Graphics;
 using Image = System.Drawing.Image;
-using NetGore.World;
 
 namespace DemoGame.MapEditor
 {

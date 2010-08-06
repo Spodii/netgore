@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.World;
 using SFML.Graphics;
 using SFML.Window;
-using NetGore.World;
 
 namespace NetGore.Features.Quests
 {

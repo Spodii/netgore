@@ -6,8 +6,8 @@ using System.Reflection;
 using log4net;
 using NetGore;
 using NetGore.AI;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {
@@ -89,7 +89,8 @@ namespace DemoGame.Server
             var center = Actor.Center;
 
             // Get the characters that we are even hostile towards and are in view
-            var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea, x =>  IsValidTarget(x) && IsHostileTowards(x) && x != Actor);
+            var possibleChars = Actor.Map.Spatial.GetMany<Character>(visibleArea,
+                                                                     x => IsValidTarget(x) && IsHostileTowards(x) && x != Actor);
             var closest = possibleChars.MinElementOrDefault(x => center.QuickDistance(x.Center));
 
             return closest;

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 using NetGore.Graphics;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.MapEditor
 {

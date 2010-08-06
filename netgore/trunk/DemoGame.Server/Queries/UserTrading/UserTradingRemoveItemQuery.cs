@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -8,15 +9,15 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class PeerTradingRemoveItemQuery : DbQueryNonReader<ItemID>
     {
-        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `item_id` = @itemID", ActiveTradeItemTable.TableName);
+        static readonly string _queryStr = FormatQueryString("DELETE FROM `{0}` WHERE `item_id` = @itemID",
+                                                             ActiveTradeItemTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingRemoveItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
         /// execute the query on.</param>
-        public PeerTradingRemoveItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public PeerTradingRemoveItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(ActiveTradeItemTable.DbKeyColumns, "item_id");
         }

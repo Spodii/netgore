@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using NetGore.World;
 using NUnit.Framework;
 using SFML.Graphics;
-using NetGore.World;
 
 namespace NetGore.Tests.NetGore
 {

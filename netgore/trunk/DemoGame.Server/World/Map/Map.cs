@@ -10,8 +10,8 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {

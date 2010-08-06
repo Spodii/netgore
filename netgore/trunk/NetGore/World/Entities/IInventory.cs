@@ -26,7 +26,7 @@ namespace NetGore.World
         /// Gets the number of inventory slots that are currently occupied (contains an item).
         /// </summary>
         int OccupiedSlots { get; }
-        
+
         /// <summary>
         /// Gets the total number of slots in this inventory (both free and occupied slots).
         /// </summary>
@@ -92,14 +92,6 @@ namespace NetGore.World
         InventorySlot GetSlot(T item);
 
         /// <summary>
-        /// Gets the slot for the specified <paramref name="item"/>.
-        /// </summary>
-        /// <param name="item">Item to find the slot for.</param>
-        /// <returns>Slot for the specified <paramref name="item"/>, or null if the <paramref name="item"/> is invalid or not in
-        /// the inventory.</returns>
-        InventorySlot? TryGetSlot(T item);
-
-        /// <summary>
         /// Removes all items from the inventory.
         /// </summary>
         /// <param name="dispose">If true, then all of the items in the inventory will be disposed of. If false,
@@ -124,5 +116,13 @@ namespace NetGore.World
         /// <returns>True if the swapping was successful; false if either of the <see cref="InventorySlot"/>s contained
         /// an invalid value or if the slots were the same slot.</returns>
         bool SwapSlots(InventorySlot a, InventorySlot b);
+
+        /// <summary>
+        /// Gets the slot for the specified <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">Item to find the slot for.</param>
+        /// <returns>Slot for the specified <paramref name="item"/>, or null if the <paramref name="item"/> is invalid or not in
+        /// the inventory.</returns>
+        InventorySlot? TryGetSlot(T item);
     }
 }

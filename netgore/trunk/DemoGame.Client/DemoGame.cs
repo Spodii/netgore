@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 using NetGore.Content;
-using NetGore.Features.Emoticons;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 using SFML.Graphics;
 using SFML.Window;
-using NetGore.World;
 
 namespace DemoGame.Client
 {

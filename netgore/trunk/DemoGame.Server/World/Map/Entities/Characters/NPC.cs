@@ -8,15 +8,14 @@ using DemoGame.Server.NPCChat;
 using log4net;
 using NetGore;
 using NetGore.AI;
-using NetGore.Features.PeerTrading;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
-using SFML.Graphics;
 using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Server
 {

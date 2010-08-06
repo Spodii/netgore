@@ -40,18 +40,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Reads the <see cref="BackgroundImage"/> from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        protected override void Read(IValueReader reader)
-        {
-            base.Read(reader);
-
-            HorizontalLayout = reader.ReadEnum<BackgroundLayerLayout>(_horizontalLayoutKey);
-            VerticalLayout = reader.ReadEnum<BackgroundLayerLayout>(_verticalLayoutKey);
-        }
-
-        /// <summary>
         /// Gets or sets how the image is drawn on the horizontal axis. Default is Stretched.
         /// </summary>
         [Category("Display")]
@@ -116,6 +104,18 @@ namespace NetGore.Graphics
         protected static float GetStretchedSize(float normalCameraSize, float targetSize, float depth)
         {
             return normalCameraSize + ((targetSize - normalCameraSize) / depth);
+        }
+
+        /// <summary>
+        /// Reads the <see cref="BackgroundImage"/> from an <see cref="IValueReader"/>.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
+        protected override void Read(IValueReader reader)
+        {
+            base.Read(reader);
+
+            HorizontalLayout = reader.ReadEnum<BackgroundLayerLayout>(_horizontalLayoutKey);
+            VerticalLayout = reader.ReadEnum<BackgroundLayerLayout>(_verticalLayoutKey);
         }
 
         /// <summary>
