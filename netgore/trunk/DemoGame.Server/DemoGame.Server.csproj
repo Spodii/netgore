@@ -117,6 +117,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbObjs\ActiveTradeItemTable.cs" />
+    <Compile Include="DbObjs\DbExtensions\ActiveTradeItemTableDbExtensions.cs" />
+    <Compile Include="PeerTrading\ServerPeerTradeInfoHandler.cs" />
     <Compile Include="Queries\Account\AccountIDCreator.cs" />
     <Compile Include="DbObjs\AccountIpsTable.cs" />
     <Compile Include="DbObjs\AccountTable.cs" />
@@ -256,6 +259,8 @@
     <Compile Include="Queries\Shop\DeleteShopQuery.cs" />
     <Compile Include="Queries\Shop\InsertShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\ReplaceShopItemQuery.cs" />
+    <Compile Include="Queries\UserTrading\UserTradingInsertItemQuery.cs" />
+    <Compile Include="Queries\UserTrading\UserTradingRemoveItemQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsGuildUserChangeQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsNetworkQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsNPCKillUserQuery.cs" />
@@ -409,6 +414,7 @@
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeInfo.cs" />
     <Compile Include="World\Map\Entities\Items\Inventory\InventoryChangeTracker.cs" />
     <Compile Include="Queries\Character\Items\ItemIDCreator.cs" />
+    <Compile Include="PeerTrading\PeerTradeSession.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateComparer.cs" />
     <Compile Include="World\Map\Entities\Items\ItemTemplateManager.cs" />
     <Compile Include="World\Map\Entities\Items\ItemValueTracker.cs" />
@@ -545,6 +551,7 @@
   <ItemGroup>
     <Content Include="_ProjectInfo.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

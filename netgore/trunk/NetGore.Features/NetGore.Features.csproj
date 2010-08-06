@@ -148,6 +148,9 @@
     <Compile Include="StatusEffects\StatusEffectManager.cs" />
     <Compile Include="StatusEffects\StatusEffectMergeType.cs" />
     <Compile Include="StatusEffects\StatusEffectSettings.cs" />
+    <Compile Include="PeerTrading\PeerTradeInfoClientMessage.cs" />
+    <Compile Include="PeerTrading\PeerTradeInfoServerMessage.cs" />
+    <Compile Include="PeerTrading\PeerTradingSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
@@ -184,6 +187,7 @@
     <Content Include="Shops\_FeatureInfo.txt" />
     <Content Include="Skills\_FeatureInfo.txt" />
     <Content Include="StatusEffects\_FeatureInfo.txt" />
+    <Content Include="PeerTrading\_FeatureInfo.txt" />
     <Content Include="WorldStats\_FeatureInfo.txt" />
     <Content Include="_ProjectInfo.txt" />
   </ItemGroup>

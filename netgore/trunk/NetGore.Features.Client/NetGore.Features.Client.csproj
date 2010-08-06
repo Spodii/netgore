@@ -8,7 +8,7 @@
     <ProjectGuid>{8F5B9178-799E-4A9E-8BAD-23A68CF8F06E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetGore.Features.Client</RootNamespace>
+    <RootNamespace>NetGore.Features</RootNamespace>
     <AssemblyName>NetGore.Features.Client</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -122,6 +122,7 @@
     <Compile Include="Quests\QuestDescriptionListBox.cs" />
     <Compile Include="Quests\QuestMapDrawingExtension.cs" />
     <Compile Include="Shops\ShopInfo.cs" />
+    <Compile Include="PeerTrading\ClientPeerTradeInfoHandlerBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Features\NetGore.Features.csproj">

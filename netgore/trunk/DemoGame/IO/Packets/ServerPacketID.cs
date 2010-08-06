@@ -34,6 +34,7 @@ namespace DemoGame
         NotifyExpCash,
         NotifyLevel,
         NotifyGetItem,
+        PeerTradeEvent,
         Ping,
         PlaySound,
         PlaySoundAt,

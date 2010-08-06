@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="AccountCharacterInfos.cs" />
     <Compile Include="ActionDisplayScripts.cs" />
+    <Compile Include="ClientPeerTradeInfoHandler.cs" />
     <Compile Include="Controls\GameMenuForm.cs" />
     <Compile Include="Controls\IQuickBarItemProvider.cs" />
     <Compile Include="Controls\NPCChatDialogForm.cs" />

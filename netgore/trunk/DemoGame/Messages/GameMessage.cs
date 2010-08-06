@@ -189,6 +189,12 @@ namespace DemoGame
 
         #endregion
 
+        #region PeerTrading
+
+        PeerTradingNotEnoughSpaceInInventory,
+
+        #endregion
+
         #region Quests
 
         QuestAccepted,

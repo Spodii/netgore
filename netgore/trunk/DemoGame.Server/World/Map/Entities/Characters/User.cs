@@ -14,6 +14,7 @@ using NetGore.AI;
 using NetGore.Db;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
+using NetGore.Features.PeerTrading;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.IO;
@@ -171,6 +172,49 @@ namespace DemoGame.Server
         public UserShoppingState ShoppingState
         {
             get { return _shoppingState; }
+        }
+
+        /// <summary>
+        /// Tries to start a peer trade with another <see cref="Character"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="Character"/> to trade with.</param>
+        /// <returns>True if the peer was successfully started; otherwise false.</returns>
+        public bool TryStartPeerTrade(User target)
+        {
+            // Make sure we can start the trade
+            if (target == null)
+                return false;
+
+            if (target == this)
+                return false;
+
+            if (!IsAlive || ShoppingState != null)
+                return false;
+
+            if (!target.IsAlive || target.ShoppingState != null)
+                return false;
+
+            // Trading must happen for characters close to one another
+            if (target.Map != Map || this.GetDistance(target) > PeerTradingSettings.Instance.MaxDistance)
+                return false;
+
+            // Start the trade
+            var ts = new DemoGame.Server.PeerTrading.PeerTradeSession(this, target);
+            _peerTradeSession = ts;
+            target._peerTradeSession = ts;
+
+            return true;
+        }
+
+        IPeerTradeSession<User, ItemEntity> _peerTradeSession;
+
+        /// <summary>
+        /// Gets the peer trade session that this <see cref="User"/> is currently participating in, or null if they
+        /// are not currently trading.
+        /// </summary>
+        public IPeerTradeSession<User, ItemEntity> PeerTradeSession
+        {
+            get { return _peerTradeSession; }
         }
 
         /// <summary>

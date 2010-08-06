@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-07-02 19:59:38',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-08-03 23:40:11',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,7 +51,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=75;
+) TYPE=InnoDB AUTO_INCREMENT=88;
 
 --
 -- Dumping data for table `account_ips`
@@ -59,8 +59,30 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-06-03 22:51:10'),(2,1,16777343,'2010-06-07 17:58:12'),(3,1,16777343,'2010-06-07 18:30:03'),(4,1,16777343,'2010-06-07 18:32:47'),(5,1,16777343,'2010-06-07 18:37:03'),(6,1,16777343,'2010-06-07 18:38:14'),(7,1,16777343,'2010-06-07 18:39:30'),(8,1,16777343,'2010-06-07 18:41:12'),(9,1,16777343,'2010-06-07 18:44:11'),(10,1,16777343,'2010-06-11 02:14:30'),(11,1,16777343,'2010-06-15 19:02:11'),(12,1,16777343,'2010-06-15 19:03:40'),(13,1,16777343,'2010-06-15 19:05:29'),(14,1,16777343,'2010-06-17 11:45:48'),(15,1,16777343,'2010-06-17 11:58:09'),(16,1,16777343,'2010-06-17 12:11:10'),(17,1,16777343,'2010-06-17 12:13:11'),(18,1,16777343,'2010-06-17 12:20:52'),(19,1,16777343,'2010-06-17 12:28:01'),(20,1,16777343,'2010-06-17 12:32:53'),(21,1,16777343,'2010-06-17 13:35:27'),(22,1,16777343,'2010-06-17 15:39:12'),(23,1,16777343,'2010-06-17 15:48:20'),(24,1,16777343,'2010-06-17 20:19:56'),(25,1,16777343,'2010-06-17 20:27:06'),(26,1,16777343,'2010-06-17 20:33:18'),(27,1,16777343,'2010-06-17 20:34:19'),(28,1,16777343,'2010-06-17 20:50:20'),(29,1,16777343,'2010-06-17 20:54:21'),(30,1,16777343,'2010-06-17 20:56:32'),(31,1,16777343,'2010-06-17 20:56:43'),(32,1,16777343,'2010-06-17 21:01:03'),(33,1,16777343,'2010-06-21 11:47:41'),(34,1,16777343,'2010-06-21 12:34:41'),(35,1,16777343,'2010-06-21 12:37:15'),(36,1,16777343,'2010-06-21 12:43:22'),(37,1,16777343,'2010-06-21 20:26:42'),(38,1,16777343,'2010-06-21 20:32:18'),(39,1,16777343,'2010-06-21 20:43:18'),(40,1,16777343,'2010-06-21 21:47:07'),(41,1,16777343,'2010-06-24 11:21:15'),(42,1,16777343,'2010-06-24 11:21:35'),(43,1,16777343,'2010-06-24 11:21:53'),(44,1,16777343,'2010-06-24 11:22:19'),(45,1,16777343,'2010-06-24 11:22:56'),(46,1,16777343,'2010-06-24 11:28:40'),(47,1,16777343,'2010-06-24 11:48:17'),(48,1,16777343,'2010-06-24 12:07:31'),(49,1,16777343,'2010-06-24 12:07:35'),(50,1,16777343,'2010-06-24 12:11:49'),(51,1,16777343,'2010-06-24 12:16:28'),(52,1,16777343,'2010-06-27 09:00:03'),(53,1,16777343,'2010-06-27 09:00:42'),(54,1,16777343,'2010-06-27 09:01:47'),(55,1,16777343,'2010-06-27 09:02:12'),(56,1,16777343,'2010-06-27 09:02:15'),(57,1,16777343,'2010-06-27 09:19:03'),(58,1,16777343,'2010-06-27 09:38:29'),(59,1,16777343,'2010-06-27 09:40:30'),(60,1,16777343,'2010-06-27 09:42:41'),(61,1,16777343,'2010-06-27 09:55:35'),(62,1,16777343,'2010-06-27 10:11:28'),(63,1,16777343,'2010-06-27 10:12:20'),(64,1,16777343,'2010-06-27 10:14:12'),(65,1,16777343,'2010-06-28 12:56:23'),(66,1,16777343,'2010-06-28 13:12:30'),(67,1,16777343,'2010-06-28 15:08:31'),(68,1,16777343,'2010-06-28 15:32:27'),(69,1,16777343,'2010-06-28 15:33:04'),(70,1,16777343,'2010-07-01 19:35:37'),(71,1,16777343,'2010-07-01 20:08:10'),(72,1,16777343,'2010-07-01 20:09:15'),(73,1,16777343,'2010-07-01 20:10:04'),(74,1,16777343,'2010-07-02 19:59:38');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `active_trade_item`
+--
+
+DROP TABLE IF EXISTS `active_trade_item`;
+CREATE TABLE `active_trade_item` (
+  `item_id` int(11) NOT NULL COMMENT 'The unique ID of the row.',
+  `character_id` int(11) NOT NULL COMMENT 'The ID of the character that added the item.',
+  PRIMARY KEY (`item_id`),
+  KEY `character_id` (`character_id`),
+  CONSTRAINT `active_trade_item_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `active_trade_item_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `active_trade_item`
+--
+
+LOCK TABLES `active_trade_item` WRITE;
+/*!40000 ALTER TABLE `active_trade_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `active_trade_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -240,7 +262,6 @@ CREATE TABLE `character_inventory` (
 
 LOCK TABLES `character_inventory` WRITE;
 /*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
-INSERT INTO `character_inventory` VALUES (1,39,0);
 /*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -603,7 +624,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(1,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(2,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(3,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',6,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(4,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(5,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(6,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(7,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',2,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(8,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',2,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(9,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(10,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(11,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(12,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(13,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(14,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(15,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(16,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(17,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(18,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(19,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(20,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(21,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(22,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(23,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(24,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(25,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(26,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(27,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(28,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(29,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(30,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(31,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(32,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(33,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(34,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(35,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',6,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(36,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(37,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(38,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',6,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(39,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',17,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(40,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(41,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(42,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(43,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL);
+INSERT INTO `item` VALUES (0,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(4,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(5,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(6,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(7,0,2,1,10,16,16,'Unarmed','Unarmed',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,NULL),(8,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(9,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(10,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(11,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(12,5,3,0,0,11,16,'Crystal Helmet','A helmet made out of crystal',1,97,50,0,0,0,0,0,0,0,0,0,2,0,0,0,'crystal helmet',NULL),(13,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(14,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -947,7 +968,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-07-02 20:01:30');
+INSERT INTO `server_time` VALUES ('2010-08-03 23:41:18');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1083,7 +1104,7 @@ CREATE TABLE `world_stats_network` (
   `udp_sends` mediumint(8) unsigned NOT NULL COMMENT 'The number of messages that have been sent over the UDP channel.',
   `connections` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=167;
+) TYPE=MyISAM AUTO_INCREMENT=198;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1300,7 +1321,7 @@ CREATE TABLE `world_stats_user_level` (
   `level` tinyint(3) unsigned NOT NULL COMMENT 'The level that the character leveled up to (their new level).',
   `when` timestamp NOT NULL COMMENT 'When this event took place.',
   PRIMARY KEY (`id`)
-) TYPE=InnoDB AUTO_INCREMENT=8;
+) TYPE=InnoDB;
 
 --
 -- Dumping data for table `world_stats_user_level`
@@ -1517,4 +1538,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-07-03 15:28:42
+-- Dump completed on 2010-08-05 23:27:27

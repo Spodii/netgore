@@ -155,6 +155,7 @@
     <Folder Include="Shops\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />
+    <Folder Include="UserTrading\" />
     <Folder Include="WorldStats\" />
   </ItemGroup>
   <ItemGroup>

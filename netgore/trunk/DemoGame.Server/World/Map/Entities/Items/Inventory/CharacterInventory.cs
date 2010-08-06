@@ -9,6 +9,9 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// Base class for an inventory for a <see cref="Character"/>.
+    /// </summary>
     public abstract class CharacterInventory : InventoryBase<ItemEntity>, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -23,7 +26,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="CharacterInventory"/> class.
         /// </summary>
         /// <param name="character">The <see cref="Character"/> the inventory belongs to.</param>
-        protected CharacterInventory(Character character)
+        protected CharacterInventory(Character character) : base(GameData.MaxInventorySize)
         {
             if (character == null)
                 throw new ArgumentNullException("character");

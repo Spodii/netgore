@@ -8,6 +8,7 @@ using DemoGame.Server.NPCChat;
 using log4net;
 using NetGore;
 using NetGore.AI;
+using NetGore.Features.PeerTrading;
 using NetGore.Features.Quests;
 using NetGore.Features.Shops;
 using NetGore.IO;
