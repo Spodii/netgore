@@ -992,9 +992,8 @@ namespace DemoGame.Server
             if (target == null)
                 return false;
 
-            if (target == this)
-                return false;
-
+            // Perform some initial checks so we can give more detailed error messages as to why the peer trade failed
+            // All of these checks should already be performed by PeerTradingSession.Create()
             if (!IsAlive || PeerTradeSession != null)
             {
                 Send(GameMessage.PeerTradingCannotStartTrade);
@@ -1007,15 +1006,23 @@ namespace DemoGame.Server
                 return false;
             }
 
-            // Trading must happen for characters close to one another
             if (target.Map != Map || this.GetDistance(target) > PeerTradingSettings.Instance.MaxDistance)
             {
                 Send(GameMessage.PeerTradingTooFarAway);
                 return false;
             }
 
-            // Start the trade
-            var ts = new PeerTradeSession(this, target);
+            // Try to start the trade
+            var ts = PeerTrading.PeerTradeSession.Create(this, target);
+
+            // Check if the trade could not be started
+            if (ts == null)
+            {
+                Send(GameMessage.PeerTradingCannotStartTrade);
+                return false;
+            }
+
+            // Set the trade session references onto the characters in the trade
             _peerTradeSession = ts;
             target._peerTradeSession = ts;
 

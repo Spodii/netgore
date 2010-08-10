@@ -58,9 +58,6 @@ namespace NetGore.Features.PeerTrading
             if (charTarget == null)
                 throw new ArgumentNullException("charTarget");
 
-            if (charSource == charTarget)
-                throw new ArgumentException("Cannot make a character trade with their self.", "charSource");
-
             _charSource = charSource;
             _charTarget = charTarget;
 

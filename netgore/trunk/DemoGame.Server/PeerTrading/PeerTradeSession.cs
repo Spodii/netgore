@@ -15,7 +15,6 @@ namespace DemoGame.Server.PeerTrading
     public class PeerTradeSession : PeerTradeSessionBase<User, ItemEntity>
     {
         static readonly PeerTradingSettings _settings = PeerTradingSettings.Instance;
-
         static readonly ServerPeerTradeInfoHandler _tradeInfoHandler = ServerPeerTradeInfoHandler.Instance;
 
         /// <summary>
@@ -25,8 +24,58 @@ namespace DemoGame.Server.PeerTrading
         /// This is the character that started the trade.</param>
         /// <param name="charTarget">The second character in the trade session.
         /// This is the character that was requested to be traded with.</param>
-        public PeerTradeSession(User charSource, User charTarget) : base(charSource, charTarget)
+        PeerTradeSession(User charSource, User charTarget) : base(charSource, charTarget)
         {
+        }
+
+        /// <summary>
+        /// Creates a <see cref="PeerTradeSession"/>.
+        /// </summary>
+        /// <param name="charSource">The first character in the trade session.
+        /// This is the character that started the trade.</param>
+        /// <param name="charTarget">The second character in the trade session.
+        /// This is the character that was requested to be traded with.</param>
+        /// <returns>The <see cref="PeerTradeSession"/> for the <paramref name="charSource"/> and <paramref name="charTarget"/>, or
+        /// null if the trade cannot be started between the two characters.</returns>
+        public static PeerTradeSession Create(User charSource, User charTarget)
+        {
+            // Perform creation-only tests (these tests only happen once, before the trade)
+            if (charSource == null || charTarget == null)
+                return null;
+
+            if (charSource.PeerTradeSession != null || charTarget.PeerTradeSession != null)
+                return null;
+
+            // TODO: !! Temp check removal...
+            //if (charSource == charTarget)
+            //    return null;
+
+            // Perform the periodic tests (these tests happen all throughout the trade session)
+            if (!AreCharacterStatesValidInternal(charSource, charTarget))
+                return null;
+
+            // Tests passed - create the session
+            return new PeerTradeSession(charSource, charTarget);
+        }
+
+        /// <summary>
+        /// Performs the actual checking of if a <see cref="PeerTradeSession"/>'s characters are valid.
+        /// This method is checked both before trades have started, and periodically during the trade.
+        /// </summary>
+        /// <param name="charSource">The first character in the trade session.
+        /// This is the character that started the trade.</param>
+        /// <param name="charTarget">The second character in the trade session.
+        /// This is the character that was requested to be traded with.</param>
+        /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
+        static bool AreCharacterStatesValidInternal(User charSource, User charTarget)
+        {
+            if (charSource.Map != charTarget.Map || charSource.GetDistance(charTarget) > _settings.MaxDistance)
+                return false;
+
+            if (!charSource.IsAlive || !charTarget.IsAlive)
+                return false;
+
+            return true;
         }
 
         /// <summary>
@@ -35,13 +84,7 @@ namespace DemoGame.Server.PeerTrading
         /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
         protected override bool AreCharacterStatesValid()
         {
-            if (CharSource.Map != CharTarget.Map || CharSource.GetDistance(CharTarget) > _settings.MaxDistance)
-                return false;
-
-            if (!CharSource.IsAlive || !CharTarget.IsAlive)
-                return false;
-
-            return base.AreCharacterStatesValid();
+            return AreCharacterStatesValidInternal(CharSource, CharTarget);
         }
 
         /// <summary>
