@@ -49,6 +49,8 @@ namespace NetGore.Features.PeerTrading
         /// This is the character that started the trade.</param>
         /// <param name="charTarget">The second character in the trade session.
         /// This is the character that was requested to be traded with.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="charSource"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="charTarget"/> is null.</exception>
         protected PeerTradeSessionBase(TChar charSource, TChar charTarget)
         {
             if (charSource == null)
@@ -59,13 +61,6 @@ namespace NetGore.Features.PeerTrading
             if (charSource == charTarget)
                 throw new ArgumentException("Cannot make a character trade with their self.", "charSource");
 
-            const string errmsgInvalidTradeChar = "Could not start trade - `{0}` returned false on IsValidTradeCharacter().";
-
-            if (!IsValidTradeCharacter(charSource))
-                throw new ArgumentException(string.Format(errmsgInvalidTradeChar, charSource), "charSource");
-            if (!IsValidTradeCharacter(charTarget))
-                throw new ArgumentException(string.Format(errmsgInvalidTradeChar, charTarget), "charTarget");
-
             _charSource = charSource;
             _charTarget = charTarget;
 
@@ -73,10 +68,15 @@ namespace NetGore.Features.PeerTrading
             _ttTarget = CreateTradeTable(charTarget, _settings.MaxTradeSlots);
 
             OnTradeOpened();
+
+            // Ensure the character states are valid
+            CloseIfCharacterStatesInvalid();
         }
 
         /// <summary>
         /// When overridden in the derived class, gets if the state of the characters in this trading session are still valid.
+        /// This is checked periodically by the base class. If it ever returns false, the trade is forced to be aborted by
+        /// the system.
         /// </summary>
         /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
         protected virtual bool AreCharacterStatesValid()
@@ -181,17 +181,6 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
-        /// Gets if the the <paramref name="character"/> is a valid character and in a valid state to trade.
-        /// Can be overridden in the derived class to perform additional validation checks.
-        /// </summary>
-        /// <param name="character">The character to check if allowed to trade.</param>
-        /// <returns>True if the <paramref name="character"/> is able to trade; otherwise false.</returns>
-        protected virtual bool IsValidTradeCharacter(TChar character)
-        {
-            return !character.IsDisposed;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles when there are too many items in the trade table to give them all to
         /// a character. The derived class should provide some sort of notification to the character (if a player-controlled character)
         /// that the items cannot fit. No action actually needs to take place to resolve this problem.
@@ -254,6 +243,22 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Closes the trading if the character states are invalid.
+        /// </summary>
+        /// <returns>True if the trade was closed; otherwise false.</returns>
+        bool CloseIfCharacterStatesInvalid()
+        {
+            if (!AreCharacterStatesValid())
+                return false;
+
+            const string errmsg = "Peer trade `{0}` with `{1}` and `{2}` closed because AreCharacterStatesValid() returned false.";
+            if (log.IsInfoEnabled)
+                log.InfoFormat(errmsg, this, CharSource, CharTarget);
+
+            return true;
+        }
+
+        /// <summary>
         /// Checks if the trade is ready to be finalized and, if so, finalizes it. Both characters have to have already
         /// accepted the trade and both characters must be able to fit the needed items in their inventories.
         /// </summary>
@@ -262,6 +267,10 @@ namespace NetGore.Features.PeerTrading
         {
             // Check that the characters have accepted the trade
             if (!HasCharSourceAccepted || !HasCharTargetAccepted)
+                return;
+
+            // Make sure the character states are valid
+            if (CloseIfCharacterStatesInvalid())
                 return;
 
             // Check if they can fit the items in their inventories. Check both characters before returning so we can notify them
@@ -390,6 +399,10 @@ namespace NetGore.Features.PeerTrading
                 return;
             }
 
+            // Make sure the character states are valid
+            if (CloseIfCharacterStatesInvalid())
+                return;
+
             // Try to finalize the trade
             TryFinalize();
         }
@@ -454,6 +467,10 @@ namespace NetGore.Features.PeerTrading
                 return item;
             }
 
+            // Make sure the character states are valid
+            if (CloseIfCharacterStatesInvalid())
+                return item;
+
             // Try to add the item
             IEnumerable<InventorySlot> changedSlots;
             var remaining = tradeTable.Add(item, out changedSlots);
@@ -512,6 +529,10 @@ namespace NetGore.Features.PeerTrading
                 Debug.Fail(errmsg);
                 return false;
             }
+
+            // Make sure the character states are valid
+            if (CloseIfCharacterStatesInvalid())
+                return false;
 
             // Get the item to remove
             var item = tradeTable[slot];
