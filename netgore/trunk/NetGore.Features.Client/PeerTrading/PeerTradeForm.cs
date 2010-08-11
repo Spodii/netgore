@@ -34,8 +34,84 @@ namespace NetGore.Features.PeerTrading
         protected PeerTradeFormBase(Control parent, Vector2 position)
             : base(parent, position, Vector2.One)
         {
-            _sourceSide = new PeerTradeSidePanel(this, Vector2.Zero, true);
-            _targetSide = new PeerTradeSidePanel(this, new Vector2(_sourceSide.Size.X, 0), false);
+            _acceptButton = new Button(this, Vector2.Zero, new Vector2(4, 4));
+            _acceptButton.TextChanged += AcceptButton_TextChanged;
+            _acceptButton.Text = "Accept";
+
+            var pad = new Vector2(ResizeToChildrenPadding);
+            _sourceSide = new PeerTradeSidePanel(this, pad, true);
+            _targetSide = new PeerTradeSidePanel(this, pad + new Vector2(SourceSide.Size.X + SourceSide.Border.Width + 2, 0), false);
+
+            AcceptButton.Position = ClientSize - new Vector2(AcceptButton.Size.X, 0);
+            AcceptButton.Clicked += AcceptButton_Clicked;
+
+            SetControlPositions();
+        }
+
+        /// <summary>
+        /// Handles the TextChanged event of the AcceptButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        static void AcceptButton_TextChanged(Control sender)
+        {
+            var button = sender as Button;
+            if (button == null)
+                return;
+
+            var measureText = string.IsNullOrEmpty(button.Text) ? " " : button.Text;
+            button.ClientSize = button.Font.MeasureString(measureText);
+        }
+
+        /// <summary>
+        /// Handles the Clicked event of the AcceptButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+        void AcceptButton_Clicked(object sender, SFML.Window.MouseButtonEventArgs e)
+        {
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null)
+                return;
+
+            if (!ptih.HasUserAccepted)
+                ptih.WriteAccept();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the default child control positions.
+        /// </summary>
+        protected virtual void SetControlPositions()
+        {
+            var pad = new Vector2(ResizeToChildrenPadding);
+            SourceSide.Position = pad;
+            TargetSide.Position = pad + new Vector2(SourceSide.Size.X + pad.X + 2, 0);
+            AcceptButton.Position = TargetSide.Position + TargetSide.Size - new Vector2(AcceptButton.Size.X, -pad.Y);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+        /// from the given <paramref name="skinManager"/>.
+        /// </summary>
+        /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+        public override void LoadSkin(ISkinManager skinManager)
+        {
+            base.LoadSkin(skinManager);
+
+            if (SourceSide != null && TargetSide != null && AcceptButton != null)
+                SetControlPositions();
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="Control.Size"/> of this <see cref="Control"/> has changed.
+        /// This is called immediately before <see cref="Control.Resized"/>.
+        /// Override this method instead of using an event hook on <see cref="Control.Resized"/> when possible.
+        /// </summary>
+        protected override void OnResized()
+        {
+            base.OnResized();
+
+            if (SourceSide != null && TargetSide != null && AcceptButton != null)
+                SetControlPositions();
         }
 
         /// <summary>
@@ -64,6 +140,25 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
+        /// not visible.
+        /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        protected override void UpdateControl(TickCount currentTime)
+        {
+            base.UpdateControl(currentTime);
+
+            if (!IsVisible)
+                return;
+
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null)
+                return;
+
+            AcceptButton.IsEnabled = !ptih.HasUserAccepted;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for handling of the <see cref="ItemSlotClicked"/> event.
         /// </summary>
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
@@ -87,10 +182,37 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Handles when the Close button on the form is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+        protected override void CloseButtonClicked(object sender, SFML.Window.MouseButtonEventArgs e)
+        {
+            // Instead of closing when clicked, make a request to the server to cancel the trade
+            PeerTradeInfoHandler.WriteCancel();
+        }
+
+        readonly Button _acceptButton;
+
+        /// <summary>
+        /// Gets the <see cref="Button"/> used to accept the trade.
+        /// </summary>
+        public Button AcceptButton { get { return _acceptButton; } }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional handling of setting up the control for an item slot.
         /// </summary>
         /// <param name="slot">The <see cref="PeerTradeSidePanel.PeerTradeItemsCollectionSlot"/> to set up.</param>
         protected virtual void SetupItemSlotControl(PeerTradeSidePanel.PeerTradeItemsCollectionSlot slot)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of setting up the control that holds all the
+        /// controls for one side of a peer trade.
+        /// </summary>
+        /// <param name="tradePanel">The <see cref="PeerTradeSidePanel"/> to set up.</param>
+        protected virtual void SetupTradePanelControl(PeerTradeSidePanel tradePanel)
         {
         }
 
@@ -171,6 +293,42 @@ namespace NetGore.Features.PeerTrading
                 ItemSlotPadding = new Vector2(2);
             }
 
+            readonly Label _title;
+            readonly Label _acceptedLabel;
+
+            bool _acceptLabelStatus = false;
+
+            /// <summary>
+            /// Changes the status displayed by the accept label.
+            /// </summary>
+            /// <param name="status">The trade acceptance status.</param>
+            void ChangeAcceptLabelStatus(bool status)
+            {
+                if (status == _acceptLabelStatus)
+                    return;
+
+                _acceptLabelStatus = status;
+
+                if (status)
+                {
+                    _acceptedLabel.Text = "Accepted";
+                }
+                else
+                {
+                    _acceptedLabel.Text = "Not Accepted";
+                }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="Label"/> used to display the trade acceptance status.
+            /// </summary>
+            public Label AcceptedLabel { get { return _acceptedLabel; } }
+
+            /// <summary>
+            /// Gets the <see cref="Label"/> control used to display the title.
+            /// </summary>
+            public Label Title { get { return _title; } }
+
             /// <summary>
             /// Initializes a new instance of the <see cref="PeerTradeSidePanel"/> class.
             /// </summary>
@@ -184,9 +342,15 @@ namespace NetGore.Features.PeerTrading
                 _isSourceSide = isSourceSide;
                 _peerTradeForm = parent;
 
+                ResizeToChildren = true;
+
+                // Create the title label
+                _title = new Label(this, Vector2.Zero) { Text = (isSourceSide ? "Source" : "Target"), AutoResize = false };
+                _title.ClientSize = new Vector2(_title.ClientSize.X, _title.Font.DefaultSize);
+
                 // Create the slots
                 Vector2 slotSize = Vector2.Zero;
-                Vector2 slotOffset = Vector2.Zero;
+                Vector2 slotOffset = new Vector2(0, Title.Size.Y + 4);
 
                 for (int i = 0; i < PeerTradingSettings.Instance.MaxTradeSlots; i++)
                 {
@@ -197,7 +361,7 @@ namespace NetGore.Features.PeerTrading
                         slotSize = slotControl.Size;
 
                     // Update the slot offset, resetting the row to the start
-                    if (i > 0 && i % ItemSlotColumns == 0)
+                    if ((i > 0) && ((i + 1) % ItemSlotColumns == 0))
                     {
                         // Start new row below
                         slotOffset.X = 0;
@@ -209,6 +373,12 @@ namespace NetGore.Features.PeerTrading
                         slotOffset.X += slotSize.X + ItemSlotPadding.X;
                     }
                 }
+                
+                // Create the accept label
+                _acceptedLabel = new Label(this, new Vector2(0, ClientSize.Y)) { Text = "Not Accepted", AutoResize = false };
+                AcceptedLabel.ClientSize = new Vector2(AcceptedLabel.ClientSize.X, AcceptedLabel.Font.DefaultSize);
+
+                PeerTradeForm.SetupTradePanelControl(this);
             }
 
             /// <summary>
@@ -219,7 +389,7 @@ namespace NetGore.Features.PeerTrading
             {
                 base.SetDefaultValues();
 
-                ResizeToChildren = true;
+                ResizeToChildren = true; 
             }
 
             /// <summary>
@@ -242,9 +412,16 @@ namespace NetGore.Features.PeerTrading
             protected override void UpdateControl(TickCount currentTime)
             {
                 base.UpdateControl(currentTime);
+                
+                if (!IsVisible)
+                    return;
 
                 if (_grh.GrhData != null)
                     _grh.Update(currentTime);
+
+                var ptih = PeerTradeForm.PeerTradeInfoHandler;
+                if (ptih != null)
+                    ChangeAcceptLabelStatus(IsSourceSide ? ptih.HasTargetAccepted : ptih.HasSourceAccepted);
             }
 
             /// <summary>
@@ -341,6 +518,9 @@ namespace NetGore.Features.PeerTrading
                 /// <param name="currentTime">The current time in milliseconds.</param>
                 protected override void UpdateControl(TickCount currentTime)
                 {
+                    if (!IsVisible)
+                        return;
+
                     // Get the current item info
                     var currItemInfo = ItemsCollection.GetItemInfo(Slot);
 

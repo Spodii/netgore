@@ -148,6 +148,7 @@ namespace DemoGame.Server
         public static PacketWriter GetWriter(ServerPacketID id)
         {
             var pw = _writerPool.Acquire();
+            Debug.Assert(pw.LengthBits == 0);
             pw.Write(id);
             return pw;
         }

@@ -55,7 +55,13 @@ namespace DemoGame.Server.PeerTrading
                 return null;
 
             // Tests passed - create the session
-            return new PeerTradeSession(charSource, charTarget);
+            var ts = new PeerTradeSession(charSource, charTarget);
+
+            // Set the trade session references onto the characters in the trade
+            charSource.PeerTradeSession = ts;
+            charTarget.PeerTradeSession = ts;
+
+            return ts;
         }
 
         /// <summary>
@@ -177,6 +183,9 @@ namespace DemoGame.Server.PeerTrading
         protected override void OnTradeClosed()
         {
             _tradeInfoHandler.WriteTradeClosed(this);
+
+            CharSource.PeerTradeSession = null;
+            CharTarget.PeerTradeSession = null;
         }
 
         /// <summary>

@@ -153,12 +153,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the peer trade session that this <see cref="User"/> is currently participating in, or null if they
-        /// are not currently trading.
+        /// Gets or sets the peer trade session that this <see cref="User"/> is currently participating in, or null if they
+        /// are not currently trading. This should only be set by the <see cref="PeerTradeSession"/> class!
         /// </summary>
         public IPeerTradeSession<User, ItemEntity> PeerTradeSession
         {
             get { return _peerTradeSession; }
+            set { _peerTradeSession = value; }
         }
 
         /// <summary>
@@ -178,7 +179,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the <see cref="User"/>'s shopping state.
+        /// Gets or sets the <see cref="User"/>'s shopping state.
         /// </summary>
         public UserShoppingState ShoppingState
         {
@@ -1021,12 +1022,10 @@ namespace DemoGame.Server
                 Send(GameMessage.PeerTradingCannotStartTrade);
                 return false;
             }
-
-            // Set the trade session references onto the characters in the trade
-            _peerTradeSession = ts;
-            target._peerTradeSession = ts;
-
-            return true;
+            else
+            {
+                return true;
+            }
         }
 
         public void UseInventoryItem(InventorySlot slot)
