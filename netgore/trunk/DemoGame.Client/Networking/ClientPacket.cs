@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using NetGore;
 using NetGore.Features.Quests;
@@ -105,6 +106,7 @@ namespace DemoGame.Client
         public static PacketWriter GetWriter(ClientPacketID id)
         {
             var pw = _writerPool.Acquire();
+            Debug.Assert(pw.LengthBits == 0);
             pw.Write(id);
             return pw;
         }

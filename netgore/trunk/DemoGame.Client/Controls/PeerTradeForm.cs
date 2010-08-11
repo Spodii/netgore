@@ -22,6 +22,18 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of setting up the control that holds all the
+        /// controls for one side of a peer trade.
+        /// </summary>
+        /// <param name="tradePanel">The <see cref="PeerTradeFormBase{TChar,TItem,TItemInfo}.PeerTradeSidePanel"/> to set up.</param>
+        protected override void SetupTradePanelControl(PeerTradeSidePanel tradePanel)
+        {
+            base.SetupTradePanelControl(tradePanel);
+
+            tradePanel.Border = GUIManager.SkinManager.GetBorder("TextBox");
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional handling of setting up the control for an item slot.
         /// </summary>
         /// <param name="slot">The <see cref="PeerTradeFormBase{TChar,TItem,TItemInfo}.PeerTradeSidePanel.PeerTradeItemsCollectionSlot"/> to set up.</param>
@@ -43,9 +55,16 @@ namespace DemoGame.Client
             base.UpdateControl(currentTime);
 
             var ptih = PeerTradeInfoHandler;
+            if (ptih == null)
+                return;
 
             // Always show when a trade is active
-            IsVisible = ptih != null && ptih.IsTradeOpen;
+            IsVisible = ptih.IsTradeOpen;
+
+            if (!IsVisible)
+                return;
+
+            // TODO: !! Display the character names instead of "Source" and "Target"
         }
 
         /// <summary>

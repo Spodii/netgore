@@ -249,7 +249,8 @@ namespace NetGore.Features.PeerTrading
             // Construct and send the data
             using (var pw = CreateWriter(PeerTradeInfoServerMessage.Canceled))
             {
-                pw.Write(c == peerTradeSession.CharSource);
+                bool sourceClosed = (c == peerTradeSession.CharSource);
+                pw.Write(sourceClosed);
 
                 if (sendToSource)
                     SendDataTo(peerTradeSession.CharSource, pw);
