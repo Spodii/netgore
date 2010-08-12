@@ -17,8 +17,13 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         const string _controlSkinName = "Form";
 
-        FormButton _closeButton;
+        Control _closeButton;
         bool _isCloseButtonVisible = true;
+
+        /// <summary>
+        /// Gets the <see cref="Control"/> for showing the close button on this <see cref="Form"/>.
+        /// </summary>
+        public Control CloseButton { get { return _closeButton; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Form"/> class.
@@ -103,7 +108,8 @@ namespace NetGore.Graphics.GUI
             // Create the toolbar buttons for the form, if needed
             if (_closeButton == null)
             {
-                _closeButton = new FormButton(this, "Close") { IsVisible = IsCloseButtonVisible };
+                _closeButton = CreateCloseButton("Close");
+                _closeButton.IsVisible = IsCloseButtonVisible;
                 _closeButton.Clicked += CloseButtonClicked;
             }
 
@@ -150,6 +156,16 @@ namespace NetGore.Graphics.GUI
                 return;
 
             _closeButton.Position = GetToolbarButtonPosition(_closeButton, 0f);
+        }
+
+        /// <summary>
+        /// Creates the <see cref="Control"/> for showing the close button for this <see cref="Form"/>.
+        /// </summary>
+        /// <param name="spriteName">The default name of the sprite to display.</param>
+        /// <returns>The <see cref="Control"/> for the close button.</returns>
+        protected virtual Control CreateCloseButton(string spriteName)
+        {
+            return new FormButton(this, spriteName);
         }
 
         /// <summary>
