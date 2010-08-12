@@ -6,6 +6,20 @@ using System.Reflection;
 using log4net;
 using NetGore.World;
 
+// TODO: !! Other character's name does not come up
+// TODO: !!    * Doesn't look like the name is being sent correctly, or not being read properly since it doesn't show up anywhere
+// TODO: !! Trade item click handling doesn't use the correct side (click the other user's side to remove)
+// TODO: !!    * Seems to be because the user's side always ends up on the right side
+// TODO: !! Drag & drop breaks if you drag an inventory item but it goes nowhere
+// TODO: !! Drag & drop from inv -> trade works only when dropped on the form, not individual slots
+// TODO: !! Need to add a way to cancel accepting
+// TODO: !! Inventory items display blown-up
+// TODO: !! Keep getting System.ArgumentException in DemoGame.dll when adding to trade, but it seems to be getting swallowed
+// TODO: !! Still cannot move after both parties accept the trade
+// TODO: !! The items traded are lost after the trade (not on ground, not in anyone's inventory)
+// TODO: !!    * Lots of "failed to get inventory slot of ..." messages in server
+// TODO: !!      - Probably using the wrong approach of moving the trade items from the table to the user
+
 // TODO: !! Add support for adding money to the trade
 
 namespace NetGore.Features.PeerTrading
