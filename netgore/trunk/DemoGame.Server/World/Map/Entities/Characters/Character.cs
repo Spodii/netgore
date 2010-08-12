@@ -1159,6 +1159,9 @@ namespace DemoGame.Server
         /// </summary>
         protected override void HandleDispose()
         {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Disposing character `{0}`.", this);
+
             // Make sure the Character was saved
             Save();
 

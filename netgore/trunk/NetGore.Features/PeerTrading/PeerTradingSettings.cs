@@ -2,8 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-// TODO: !! Display message when trying to trade with someone too far away.
-
 namespace NetGore.Features.PeerTrading
 {
     /// <summary>

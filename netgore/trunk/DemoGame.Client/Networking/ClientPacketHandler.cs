@@ -72,7 +72,9 @@ namespace DemoGame.Client
             _dynamicEntityFactory = dynamicEntityFactory;
             _socketSender = socketSender;
             _gameplayScreen = gameplayScreen;
+
             _peerTradeInfoHandler = new ClientPeerTradeInfoHandler(socketSender);
+            _peerTradeInfoHandler.GameMessageCallback += PeerTradeInfoHandler_GameMessageCallback;
 
             // When debugging, use the StatMessageProcessorManager instead (same thing as the other, but provides network statistics)
 #if DEBUG
@@ -82,6 +84,22 @@ namespace DemoGame.Client
 #else
             _ppManager = new MessageProcessorManager(this, EnumHelper<ServerPacketID>.BitsRequired);
 #endif
+        }
+
+        /// <summary>
+        /// Handles the <see cref="ClientPeerTradeInfoHandler.GameMessageCallback"/> event from the <see cref="ClientPeerTradeInfoHandler"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="gameMessage">The game message.</param>
+        /// <param name="args">The message arguments.</param>
+        void PeerTradeInfoHandler_GameMessageCallback(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args)
+        {
+            // Parse the GameMessage
+            var msg = _gameMessages.GetMessage(gameMessage, args);
+
+            // Display
+            if (!string.IsNullOrEmpty(msg))
+                GameplayScreen.AppendToChatOutput(msg);
         }
 
         /// <summary>

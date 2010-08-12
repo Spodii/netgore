@@ -95,6 +95,10 @@ PeerTradingInvalidTarget: "Cannot trade with that user - they are either not onl
 PeerTradingTooFarAway: "You are too far away to trade with that user. Try getting closer to them."
 PeerTradingCannotStartTrade: "You cannot start a new trade session at this moment."
 PeerTradingTargetCannotStartTrade: "That user is unable to trade at this moment."
+PeerTradingTradeCanceledByYou: "You have canceled the trade with $0."
+PeerTradingTradeCanceledByOther: "$0 has canceled the trade with you."
+PeerTradingTradeComplete: "You have successfully completed your trade with $0."
+PeerTradingTradeOpened: "You have started a trade with $0."
 
 QuestAccepted: "You have accepted a new quest!"
 QuestAcceptFailedAlreadyCompleted: "You cannot accept that quest since you have already completed it."

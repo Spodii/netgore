@@ -196,6 +196,10 @@ namespace DemoGame
         PeerTradingTooFarAway,
         PeerTradingCannotStartTrade,
         PeerTradingTargetCannotStartTrade,
+        PeerTradingTradeCanceledByYou,
+        PeerTradingTradeCanceledByOther,
+        PeerTradingTradeComplete,
+        PeerTradingTradeOpened,
 
         #endregion
 
