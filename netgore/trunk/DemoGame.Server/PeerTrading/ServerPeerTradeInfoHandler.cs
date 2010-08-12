@@ -13,6 +13,16 @@ namespace DemoGame.Server.PeerTrading
         static readonly ServerPeerTradeInfoHandler _instance;
 
         /// <summary>
+        /// When overridden in the derived class, gets the name for a character that will be displayed for the trade.
+        /// </summary>
+        /// <param name="character">The character to get the display name of.</param>
+        /// <returns>The display name of the <paramref name="character"/>.</returns>
+        protected override string GetCharDisplayName(User character)
+        {
+            return character.Name;
+        }
+
+        /// <summary>
         /// Initializes the <see cref="ServerPeerTradeInfoHandler"/> class.
         /// </summary>
         static ServerPeerTradeInfoHandler()

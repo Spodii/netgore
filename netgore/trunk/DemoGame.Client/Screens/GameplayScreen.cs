@@ -124,6 +124,8 @@ namespace DemoGame.Client
             get { return _quickBarForm; }
         }
 
+        public PeerTradeForm PeerTradeForm { get { return _peerTradeForm; } }
+
         public ShopForm ShopForm
         {
             get { return _shopForm; }
@@ -532,13 +534,28 @@ namespace DemoGame.Client
             _cScreen.SetFocus();
         }
 
+        /// <summary>
+        /// Handles the <see cref="InventoryForm.RequestDropItem"/> event.
+        /// </summary>
+        /// <param name="inventoryForm">The sender.</param>
+        /// <param name="slot">The slot containing the item requested to be dropped.</param>
         void InventoryForm_RequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
         {
+            // Make sure the event came from the user's inventory
             if (inventoryForm.Inventory != UserInfo.Inventory)
                 return;
 
-            if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
+            // Depending on what screens are open, see if it makes sense to not just drop the item onto the ground
+            if (PeerTradeForm.IsTradeActive)
             {
+                // If we are doing a peer trade, add the item into the trade instead
+                var ptih = PeerTradeForm.PeerTradeInfoHandler;
+                if (ptih != null)
+                    ptih.WriteAddInventoryItem(slot);
+            }
+            else if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
+            {
+                // If we are currently shopping, try to sell the item instead
                 if (ShopForm.ShopInfo.CanBuy)
                 {
                     using (var pw = ClientPacket.SellInventoryToShop(slot, 1))
@@ -548,14 +565,24 @@ namespace DemoGame.Client
                 }
             }
             else
+            {
+                // Drop the item onto the ground
                 UserInfo.Inventory.Drop(slot);
+            }
         }
 
+        /// <summary>
+        /// Handles the <see cref="InventoryForm.RequestUseItem"/> event.
+        /// </summary>
+        /// <param name="inventoryForm">The sender.</param>
+        /// <param name="slot">The slot containing the item requested to be used.</param>
         void InventoryForm_RequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
         {
+            // Make sure the event came from the user's inventory
             if (inventoryForm.Inventory != UserInfo.Inventory)
                 return;
 
+            // Send a request to use the item to the server
             UserInfo.Inventory.Use(slot);
         }
 

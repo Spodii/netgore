@@ -253,8 +253,15 @@ namespace NetGore.Network
                 // If we get a message ID of 0, we have likely hit the end
                 if (msgID == 0)
                 {
+#if DEBUG
                     const string errmsg = "Encountered msgID = 0, but there was set bits remaining in the stream.";
-                    Debug.Assert(RestOfStreamIsZero(recvReader), errmsg);
+                    if (!RestOfStreamIsZero(recvReader))
+                    {
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg);
+                        Debug.Fail(errmsg);
+                    }
+#endif
                     return;
                 }
 

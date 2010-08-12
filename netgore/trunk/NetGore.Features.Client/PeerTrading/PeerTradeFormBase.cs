@@ -9,6 +9,12 @@ using SFML.Graphics;
 
 namespace NetGore.Features.PeerTrading
 {
+    /// <summary>
+    /// The base class for a <see cref="Form"/> control that displays an active peer-to-peer trade session.
+    /// </summary>
+    /// <typeparam name="TChar">The type of character.</typeparam>
+    /// <typeparam name="TItem">The type of item.</typeparam>
+    /// <typeparam name="TItemInfo">The type describing item information.</typeparam>
     public abstract class PeerTradeFormBase<TChar, TItem, TItemInfo> : Form where TChar : Entity where TItem : Entity
                                                                                   where TItemInfo : class
     {
@@ -39,13 +45,26 @@ namespace NetGore.Features.PeerTrading
             _acceptButton.Text = "Accept";
 
             var pad = new Vector2(ResizeToChildrenPadding);
-            _sourceSide = new PeerTradeSidePanel(this, pad, true);
-            _targetSide = new PeerTradeSidePanel(this, pad + new Vector2(SourceSide.Size.X + SourceSide.Border.Width + 2, 0), false);
+            _sourceSide = CreateTradeSidePanel(this, pad, true);
+            _targetSide = CreateTradeSidePanel(this, pad + new Vector2(SourceSide.Size.X + SourceSide.Border.Width + 2, 0), false);
 
             AcceptButton.Position = ClientSize - new Vector2(AcceptButton.Size.X, 0);
             AcceptButton.Clicked += AcceptButton_Clicked;
 
             SetControlPositions();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="PeerTradeSidePanel"/> instance.
+        /// </summary>
+        /// <param name="parent">The parent control.</param>
+        /// <param name="position">The position to place the control.</param>
+        /// <param name="isSourceSide">If this panel is for the source trade character side.</param>
+        /// <returns>The <see cref="PeerTradeSidePanel"/> instance.</returns>
+        protected virtual PeerTradeSidePanel CreateTradeSidePanel(PeerTradeFormBase<TChar, TItem, TItemInfo> parent,
+            Vector2 position, bool isSourceSide)
+        {
+            return new PeerTradeSidePanel(parent, position, isSourceSide);
         }
 
         /// <summary>
@@ -228,10 +247,56 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles when the PeerTradeInfoHandler property's value changes.
+        /// </summary>
+        /// <param name="oldHandler">The old (last) peer trade information handler. Can be null.</param>
+        /// <param name="newHandler">The new (current) peer trade information handler. Can be null.</param>
+        protected virtual void OnPeerTradeInfoHandlerChanged(ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> oldHandler,
+            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> newHandler)
+        {
+        }
+
+        ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> _peerTradeInfoHandler;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="PeerTradeInfoHandler"/> property has changed.
+        /// </summary>
+        public event PeerTradeInfoHandlerChangedEventHandler PeerTradeInfoHandlerChanged;
+
+        /// <summary>
+        /// Delegate for handling the <see cref="PeerTradeInfoHandlerChanged"/> event.
+        /// </summary>
+        /// <param name="sender">The <see cref="PeerTradeFormBase{TChar, TItem, TItemInfo}"/> that this event came from.</param>
+        /// <param name="oldHandler">The old (last) peer trade information handler. Can be null.</param>
+        /// <param name="newHandler">The new (current) peer trade information handler. Can be null.</param>
+        public delegate void PeerTradeInfoHandlerChangedEventHandler(PeerTradeFormBase<TChar, TItem, TItemInfo> sender,
+            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> oldHandler,
+            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> newHandler);
+
+        /// <summary>
         /// Gets or sets the trade information handler that will be used to display the current trade state. If null, an empty
         /// trade will be shown.
         /// </summary>
-        public ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> PeerTradeInfoHandler {get; set;}
+        public ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> PeerTradeInfoHandler
+        {
+            get
+            {
+                return _peerTradeInfoHandler;
+            }
+            set
+            {
+                if (_peerTradeInfoHandler == value)
+                    return;
+
+                var oldValue = _peerTradeInfoHandler;
+                _peerTradeInfoHandler = value;
+
+                // Raise the event
+                OnPeerTradeInfoHandlerChanged(oldValue, value);
+                if (PeerTradeInfoHandlerChanged != null)
+                    PeerTradeInfoHandlerChanged(this, oldValue, value);
+            }
+        }
 
         /// <summary>
         /// When overridden in the derived class, initializes a <see cref="Grh"/> to display the information for an item.
@@ -399,7 +464,7 @@ namespace NetGore.Features.PeerTrading
             /// <param name="clientSize">The client size of the control.</param>
             /// <param name="slot">The slot that the created control will be handling.</param>
             /// <returns>A <see cref="Control"/> for displaying a single item slot in this side of the peer trade table.</returns>
-            PeerTradeItemsCollectionSlot CreateItemSlotControl(Vector2 position, Vector2 clientSize, InventorySlot slot)
+            protected virtual PeerTradeItemsCollectionSlot CreateItemSlotControl(Vector2 position, Vector2 clientSize, InventorySlot slot)
             {
                 return new PeerTradeItemsCollectionSlot(this, position, clientSize, slot);
             }
