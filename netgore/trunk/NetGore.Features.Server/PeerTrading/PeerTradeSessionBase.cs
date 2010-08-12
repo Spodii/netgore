@@ -78,7 +78,10 @@ namespace NetGore.Features.PeerTrading
         /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
         protected virtual bool AreCharacterStatesValid()
         {
-            return !CharSource.IsDisposed && !CharTarget.IsDisposed;
+            if (CharSource.IsDisposed || CharTarget.IsDisposed)
+                return false;
+
+            return true;
         }
 
         /// <summary>
@@ -246,13 +249,17 @@ namespace NetGore.Features.PeerTrading
         bool CloseIfCharacterStatesInvalid()
         {
             if (!AreCharacterStatesValid())
-                return false;
+            {
+                // State is not valid
+                const string errmsg = "Peer trade `{0}` with `{1}` and `{2}` closed because AreCharacterStatesValid() returned false.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, CharSource, CharTarget);
 
-            const string errmsg = "Peer trade `{0}` with `{1}` and `{2}` closed because AreCharacterStatesValid() returned false.";
-            if (log.IsInfoEnabled)
-                log.InfoFormat(errmsg, this, CharSource, CharTarget);
+                return true;
+            }
 
-            return true;
+            // State was valid
+            return false;
         }
 
         /// <summary>
