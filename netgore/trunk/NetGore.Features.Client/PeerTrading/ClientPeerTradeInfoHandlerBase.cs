@@ -385,6 +385,14 @@ namespace NetGore.Features.PeerTrading
         /// <returns>The read item information.</returns>
         protected abstract TItemInfo ReadItemInfo(IValueReader reader);
 
+        string _otherCharName = string.Empty;
+
+        /// <summary>
+        /// Gets the name of the character that the client is trading with. This is always the name of the other character in the
+        /// trade, never the name of the client's character.
+        /// </summary>
+        public string OtherCharName { get { return _otherCharName; } }
+
         /// <summary>
         /// Reads a <see cref="PeerTradeInfoServerMessage.Open"/>.
         /// </summary>
@@ -394,6 +402,7 @@ namespace NetGore.Features.PeerTrading
             Debug.Assert(!IsTradeOpen, "Why is the trade table already open...?");
 
             _userIsSource = reader.ReadBool();
+            _otherCharName = reader.ReadString();
 
             // Clean out old values
             ResetValues();
@@ -459,6 +468,7 @@ namespace NetGore.Features.PeerTrading
         {
             _isTradeOpen = false;
             _userIsSource = false;
+            _otherCharName = string.Empty;
 
             Array.Clear(_sourceSlots, 0, _sourceSlots.Length);
             Array.Clear(_targetSlots, 0, _targetSlots.Length);
