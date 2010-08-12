@@ -129,6 +129,17 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
+        /// A cached <see cref="ItemTable"/> instanced for being able to use <see cref="IPersistable"/> with an
+        /// <see cref="IItemTable"/>.
+        /// </summary>
+        readonly ItemTable _itemTableInfoCache = new ItemTable();
+
+        /// <summary>
+        /// The locking object for the <see cref="_itemTableInfoCache"/>.
+        /// </summary>
+        readonly object _itemTableInfoCacheSync = new object();
+
+        /// <summary>
         /// When overridden in the derived class, writes the information for an item.
         /// </summary>
         /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
@@ -138,15 +149,22 @@ namespace DemoGame.Server.PeerTrading
             var asPersistable = itemInfo as IPersistable;
 
             if (asPersistable != null)
+            {
+                // Implements IPersistable, so can easily write the state
                 asPersistable.WriteState(writer);
+            }
             else
             {
-                Debug.Fail(
-                    string.Format(
-                        "Temporary ItemTable had to be created since the `{0}` does not implement IPersistable. Implement IPersistable to reduce overhead.",
-                        itemInfo));
-                var itemTable = new ItemTable(itemInfo);
-                itemTable.WriteState(writer);
+                // Doesn't implement IPersistable, so we have to create an ItemTable which is able to load the values from an IItemTable
+                // and does implement IPersistable. To avoid creating garbage, we cache an ItemTable to use instead of creating
+                // a new instance every time. Of course, this also means we need thread safety.
+                // This operation is quite fast (just lots of copying values around) so it would probably be of greater cost to try
+                // and allow parallization by using multiple ItemTable caches.
+                lock (_itemTableInfoCacheSync)
+                {
+                    _itemTableInfoCache.CopyValuesFrom(itemInfo);
+                    _itemTableInfoCache.WriteState(writer);
+                }
             }
         }
     }

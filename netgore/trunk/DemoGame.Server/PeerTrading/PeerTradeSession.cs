@@ -270,13 +270,19 @@ namespace DemoGame.Server.PeerTrading
                 if (newItem == oldItem)
                     return;
 
-                // Remove the old item from the database (after making sure it isn't in the inventory still)
-                if (!TryGetSlot(oldItem).HasValue)
-                    _removeItemQuery.Execute(oldItem.ID);
+                if (oldItem != null)
+                {
+                    // Remove the old item from the database (after making sure it isn't in the inventory still)
+                    if (!TryGetSlot(oldItem).HasValue)
+                        _removeItemQuery.Execute(oldItem.ID);
+                }
 
-                // Add the new item to the database
-                Debug.Assert(TryGetSlot(newItem).HasValue, "How is the new item not in the database?!");
-                _insertItemQuery.Execute(newItem.ID, _owner.ID);
+                if (newItem != null)
+                {
+                    // Add the new item to the database
+                    Debug.Assert(TryGetSlot(newItem).HasValue, "How is the new item not in the database?!");
+                    _insertItemQuery.Execute(newItem.ID, _owner.ID);
+                }
             }
         }
     }
