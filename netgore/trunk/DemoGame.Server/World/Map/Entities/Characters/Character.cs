@@ -904,6 +904,22 @@ namespace DemoGame.Server
         /// <param name="item">ItemEntity to drop.</param>
         public void DropItem(ItemEntity item)
         {
+            if (item == null)
+            {
+                const string errmsg = "`{0}` tried to drop a null item.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                return;
+            }
+
+            if (item.IsDisposed)
+            {
+                const string errmsg = "`{0}` tried to drop disposed item `{1}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this, item);
+                return;
+            }
+
             if (!IsAlive)
             {
                 const string errmsg = "`{0}` tried to drop item `{1}` while dead.";
@@ -932,6 +948,14 @@ namespace DemoGame.Server
         /// <param name="amount">Amount of the item to drop.</param>
         protected void DropItem(IItemTemplateTable itemTemplate, byte amount)
         {
+            if (itemTemplate == null)
+            {
+                const string errmsg = "`{0}` tried to drop null item template.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                return;
+            }
+
             var dropPos = GetDropPos();
 
             // Create the item on the map
