@@ -130,6 +130,9 @@ namespace DemoGame.Server
             if ((user = TryGetUser(conn)) == null || user.Map == null)
                 return;
 
+            if (user.IsPeerTrading)
+                return;
+
             // Get the provider
             var npc = user.Map.GetDynamicEntity<Character>(providerIndex);
             var provider = npc as IQuestProvider<User>;
@@ -182,7 +185,12 @@ namespace DemoGame.Server
                 targetIndex = r.ReadMapEntityIndex();
 
             if ((user = TryGetUser(conn)) != null)
+            {
+                if (user.IsPeerTrading)
+                    return;
+
                 user.Attack(GetTargetCharacter(user, targetIndex));
+            }
         }
 
         [MessageHandler((byte)ClientPacketID.BuyFromShop)]
@@ -193,6 +201,9 @@ namespace DemoGame.Server
 
             User user;
             if ((user = TryGetUser(conn)) == null)
+                return;
+
+            if (user.IsPeerTrading)
                 return;
 
             user.ShoppingState.TryPurchase(slot, amount);
@@ -225,6 +236,9 @@ namespace DemoGame.Server
 
             User user;
             if ((user = TryGetUser(conn)) == null)
+                return;
+
+            if (user.IsPeerTrading)
                 return;
 
             user.Inventory.Drop(slot);
@@ -330,7 +344,12 @@ namespace DemoGame.Server
         {
             User user;
             if (((user = TryGetUser(conn)) != null) && user.CanJump)
+            {
+                if (user.IsPeerTrading)
+                    return;
+
                 user.Jump();
+            }
         }
 #endif
 
@@ -414,7 +433,12 @@ namespace DemoGame.Server
         {
             User user;
             if (((user = TryGetUser(conn)) != null) && !user.IsMovingLeft)
+            {
+                if (user.IsPeerTrading)
+                    return;
+
                 user.MoveLeft();
+            }
         }
 
         [MessageHandler((byte)ClientPacketID.MoveRight)]
@@ -422,7 +446,12 @@ namespace DemoGame.Server
         {
             User user;
             if (((user = TryGetUser(conn)) != null) && !user.IsMovingRight)
+            {
+                if (user.IsPeerTrading)
+                    return;
+
                 user.MoveRight();
+            }
         }
 
         [MessageHandler((byte)ClientPacketID.MoveStop)]
@@ -439,7 +468,11 @@ namespace DemoGame.Server
         {
             User user;
             if ((user = TryGetUser(conn)) != null && (user.IsMovingLeft || user.IsMovingRight))
+            {
+                if (user.IsPeerTrading)
+                    return;
                 user.StopMovingHorizontal();
+            }
         }
 #endif
 
@@ -449,7 +482,12 @@ namespace DemoGame.Server
         {
             User user;
             if ((user = TryGetUser(conn)) != null && (user.IsMovingUp || user.IsMovingDown))
+            {
+                if (user.IsPeerTrading)
+                    return;
+
                 user.StopMovingVertical();
+            }
         }
 #endif
 
@@ -459,7 +497,12 @@ namespace DemoGame.Server
         {
             User user;
             if ((user = TryGetUser(conn)) != null && !user.IsMovingUp)
+            {
+                if (user.IsPeerTrading)
+                    return;
+
                 user.MoveUp();
+            }
         }
 #endif
 
@@ -632,6 +675,9 @@ namespace DemoGame.Server
             if (!TryGetMap(conn, out user, out map))
                 return;
 
+            if (user.IsPeerTrading)
+                return;
+
             var npc = map.GetDynamicEntity<NPC>(npcIndex);
             if (npc == null)
                 return;
@@ -685,6 +731,9 @@ namespace DemoGame.Server
             User user;
             Map map;
             if (!TryGetMap(conn, out user, out map))
+                return;
+
+            if (user.IsPeerTrading)
                 return;
 
             var shopkeeper = map.GetDynamicEntity<Character>(entityIndex);
@@ -752,6 +801,9 @@ namespace DemoGame.Server
             User user;
             Map map;
             if (!TryGetMap(conn, out user, out map))
+                return;
+
+            if (user.IsPeerTrading)
                 return;
 
             if (!user.IsAlive)

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Features.PeerTrading;
@@ -9,7 +10,7 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
-    public class PeerTradeForm : PeerTradeFormBase<Character, ItemEntity, IItemTable>
+    public class PeerTradeForm : PeerTradeFormBase<Character, ItemEntity, IItemTable>, IDragDropProvider
     {
         public PeerTradeForm(Control parent, Vector2 position) : base(parent, position)
         {
@@ -77,7 +78,22 @@ namespace DemoGame.Client
         {
             base.OnItemSlotClicked(e, isSourceSide, slot);
 
-            // TODO: !!
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null || !ptih.IsTradeOpen)
+                return;
+
+            // Check if the slot clicked was a slot on our side
+            var clickWasOnOurSide = (isSourceSide && ptih.UserIsSource) || !(!isSourceSide && !ptih.UserIsSource);
+
+            // If the slot clicked was a slot on our side, and it contains an item, remove the item
+            if (clickWasOnOurSide)
+            {
+                if (ptih.GetUserItemInfo(slot) != null)
+                {
+                    ptih.WriteRemoveItem(slot);
+                    return;
+                }
+            }
         }
 
         /// <summary>
@@ -135,8 +151,40 @@ namespace DemoGame.Client
         {
             base.SetupItemSlotControl(slot);
 
-            // TODO: !! Set up the tooltip
             slot.Sprite = GUIManager.SkinManager.GetSprite("item_slot");
+            slot.Tooltip = SlotTooltipCallback;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="TooltipHandler"/> callback for an item slot in the trade form.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="TooltipArgs"/>.</param>
+        /// <returns>The text to display for the tooltip.</returns>
+        StyledText[] SlotTooltipCallback(Control sender, TooltipArgs args)
+        {
+            // Cast the sender to the needed type
+            var asItemSlot = sender as PeerTradeSidePanel.PeerTradeItemsCollectionSlot;
+            if (asItemSlot == null)
+                return null;
+            
+            // Ensure a valid trade state
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null || !ptih.IsTradeOpen)
+                return null;
+
+            // Get the item info for the slot
+            IItemTable itemInfo;
+            if (asItemSlot.ItemsCollection.IsSourceSide)
+                itemInfo= ptih.GetSourceItemInfo(asItemSlot.Slot);
+            else
+                itemInfo = ptih.GetTargetItemInfo(asItemSlot.Slot);
+
+            if (itemInfo == null)
+                return null;
+
+            // Get and return the tooltip text
+            return ItemInfoHelper.GetStyledText(itemInfo);
         }
 
         /// <summary>
@@ -198,5 +246,80 @@ namespace DemoGame.Client
                 }
             }
         }
+
+        #region Implementation of IDragDropProvider
+
+        /// <summary>
+        /// Gets if this <see cref="IDragDropProvider"/> can be dragged. In the case of something that only
+        /// supports having items dropped on it but not dragging, this will always return false. For items that can be
+        /// dragged, this will return false if there is currently nothing to drag (such as an empty inventory slot) or
+        /// there is some other reason that this item cannot currently be dragged.
+        /// </summary>
+        bool IDragDropProvider.CanDragContents
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="IDragDropProvider"/> to check if can be dropped on this
+        /// <see cref="IDragDropProvider"/>. This value will never be null.</param>
+        /// <returns>True if the <paramref name="source"/> can be dropped on this <see cref="IDragDropProvider"/>;
+        /// otherwise false.</returns>
+        bool IDragDropProvider.CanDrop(IDragDropProvider source)
+        {
+            // Only allow drag-and-drop when trading
+            if (!IsTradeActive)
+                return false;
+
+            // Only allow drag-and-drop from an inventory item control
+            if (!(source is InventoryForm.InventoryItemPB))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Draws the item that this <see cref="IDragDropProvider"/> contains for when this item
+        /// is being dragged.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        /// <param name="position">The position to draw the sprite at.</param>
+        /// <param name="color">The color to use when drawing the item.</param>
+        void IDragDropProvider.DrawDraggedItem(ISpriteBatch spriteBatch, Vector2 position, Color color)
+        {
+            // Nothing to implement since this control doesn't support dragging from
+        }
+
+        /// <summary>
+        /// Draws a visual highlighting on this <see cref="IDragDropProvider"/> for when an item is being
+        /// dragged onto it but not yet dropped.
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
+        void IDragDropProvider.DrawDropHighlight(ISpriteBatch spriteBatch)
+        {
+        }
+
+        /// <summary>
+        /// Handles when the specified <see cref="IDragDropProvider"/> is dropped on this <see cref="IDragDropProvider"/>.
+        /// </summary>
+        /// <param name="source">The <see cref="IDragDropProvider"/> that is being dropped on this
+        /// <see cref="IDragDropProvider"/>.</param>
+        void IDragDropProvider.Drop(IDragDropProvider source)
+        {
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null)
+                return;
+
+            // Handle an inventory item control
+            var asInvItem = source as InventoryForm.InventoryItemPB;
+            if (asInvItem != null)
+            {
+                ptih.WriteAddInventoryItem(asInvItem.Slot);
+            }
+        }
+
+        #endregion
     }
 }

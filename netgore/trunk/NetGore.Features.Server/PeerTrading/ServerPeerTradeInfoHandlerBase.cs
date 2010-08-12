@@ -387,7 +387,7 @@ namespace NetGore.Features.PeerTrading
                 // Build
                 pw.Write(isSourceSide);
                 pw.Write(slot);
-                pw.Write(itemInfo != null);
+                pw.Write(itemInfo == null);
 
                 if (itemInfo != null)
                     WriteItemInfo(pw, itemInfo);

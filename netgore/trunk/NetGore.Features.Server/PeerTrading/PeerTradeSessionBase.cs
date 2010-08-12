@@ -6,11 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore.World;
 
-// TODO: !! Create the user interface for the trade stuff
 // TODO: !! Add support for adding money to the trade
-// TODO: !! Restrict the user's activities while they are trading (cannot: equip, unequip, use items, move items, pick up items, move, etc)
-// TODO: !! Clear trade accept status when changing the contents
-// TODO: !! If a user is being closed while they are trading, be sure to cancel the trade first
 
 namespace NetGore.Features.PeerTrading
 {
@@ -170,7 +166,8 @@ namespace NetGore.Features.PeerTrading
             // One-by-one, take out the items from the trade table and give it to the appropriate character. We give the item
             // first before removing it from the trade table to ensure that, as long as the inventory implementations persist
             // to the database, recovery from a crash during the trade is possible.
-            foreach (var kvp in _ttSource.ToImmutable())
+            var validItemsAndSlot = _ttSource.Where(x => x.Value != null && !x.Value.IsDisposed).ToImmutable();
+            foreach (var kvp in validItemsAndSlot)
             {
                 // Give the item
                 GiveItemToCharacter(character, kvp.Value);
@@ -475,6 +472,9 @@ namespace NetGore.Features.PeerTrading
             if (CloseIfCharacterStatesInvalid())
                 return item;
 
+            // Clear the accept status since the table will be changing
+            ClearAcceptStatus();
+
             // Try to add the item
             IEnumerable<InventorySlot> changedSlots;
             var remaining = tradeTable.Add(item, out changedSlots);
@@ -486,6 +486,16 @@ namespace NetGore.Features.PeerTrading
             }
 
             return remaining;
+        }
+
+        /// <summary>
+        /// Clears the trade acceptance status for both characters in the trade, setting them back to not accepting the trade.
+        /// This should be called whenever the table's contents change.
+        /// </summary>
+        protected void ClearAcceptStatus()
+        {
+            HasCharSourceAccepted = false;
+            HasCharTargetAccepted = false;
         }
 
         /// <summary>
@@ -542,6 +552,9 @@ namespace NetGore.Features.PeerTrading
             var item = tradeTable[slot];
             if (item == null)
                 return false;
+
+            // Clear the accept status since the table will be changing
+            ClearAcceptStatus();
 
             // Remove the item from the table
             tradeTable.RemoveAt(slot, false);

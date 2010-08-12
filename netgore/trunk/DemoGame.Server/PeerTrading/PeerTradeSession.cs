@@ -46,9 +46,8 @@ namespace DemoGame.Server.PeerTrading
             if (charSource.PeerTradeSession != null || charTarget.PeerTradeSession != null)
                 return null;
 
-            // TODO: !! Temp check removal...
-            //if (charSource == charTarget)
-            //    return null;
+            if (charSource == charTarget)
+                return null;
 
             // Perform the periodic tests (these tests happen all throughout the trade session)
             if (!AreCharacterStatesValidInternal(charSource, charTarget))

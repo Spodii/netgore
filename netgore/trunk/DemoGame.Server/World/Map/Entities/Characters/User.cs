@@ -161,6 +161,11 @@ namespace DemoGame.Server
             get { return _peerTradeSession; }
             set { _peerTradeSession = value; }
         }
+        
+        /// <summary>
+        /// Gets if this character is currently involved in a peer trade session.
+        /// </summary>
+        public bool IsPeerTrading { get { return PeerTradeSession != null; } }
 
         /// <summary>
         /// Gets the <see cref="User"/>'s quest information.
@@ -405,8 +410,7 @@ namespace DemoGame.Server
         /// </summary>
         protected override void HandleDispose()
         {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Disposing User `{0}`.", this);
+            CancelPeerTradeIfTrading();
 
             base.HandleDispose();
 
@@ -447,10 +451,25 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// If this <see cref="User"/> is involved in a peer trade, forces them to cancel it. Does nothing if the <see cref="User"/>
+        /// is not involved in any peer trade.
+        /// </summary>
+        public void CancelPeerTradeIfTrading()
+        {
+            var pts = PeerTradeSession;
+            if (pts == null)
+                return;
+
+            pts.Cancel(this);
+        }
+
+        /// <summary>
         /// Kills the user
         /// </summary>
         public override void Kill()
         {
+            CancelPeerTradeIfTrading();
+
             base.Kill();
 
             // Respawn the user
@@ -563,6 +582,29 @@ namespace DemoGame.Server
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Teleports the character to a new position and informs clients in the area of
+        /// interest that the character has teleported.
+        /// </summary>
+        /// <param name="position">Position to teleport to.</param>
+        public override void Teleport(Vector2 position)
+        {
+            CancelPeerTradeIfTrading();
+
+            base.Teleport(position);
+        }
+
+        /// <summary>
+        /// Translates the entity from its current position.
+        /// </summary>
+        /// <param name="adjustment">Amount to move.</param>
+        public override void Move(Vector2 adjustment)
+        {
+            CancelPeerTradeIfTrading();
+
+            base.Move(adjustment);
         }
 
         /// <summary>
@@ -914,6 +956,16 @@ namespace DemoGame.Server
             return _guildMemberInfo.AcceptInvite(guild, GetTime());
         }
 
+        /// <summary>
+        /// Tries to sell an item from the <see cref="User"/>'s inventory to a shop.
+        /// </summary>
+        /// <param name="slot">The slot of the <see cref="User"/>'s inventory containing the item to sell.</param>
+        /// <param name="amount">The number of items in the <paramref name="slot"/> to sell. If this value is greater than the
+        /// number of items the <see cref="User"/> has in the given <paramref name="slot"/>, then all of the items in the
+        /// <paramref name="slot"/> will be sold.</param>
+        /// <param name="shop">The shop to sell the inventory item to.</param>
+        /// <returns>True if the item in the <see cref="User"/>'s invetory at the given <paramref name="slot"/> was sold
+        /// to the <paramref name="shop"/>; otherwise false.</returns>
         public bool TrySellInventoryItem(InventorySlot slot, byte amount, IShop<ShopItem> shop)
         {
             if (amount <= 0 || !slot.IsLegalValue() || shop == null || !shop.CanBuy)
@@ -1012,6 +1064,10 @@ namespace DemoGame.Server
                 Send(GameMessage.PeerTradingTooFarAway);
                 return false;
             }
+
+            // Make sure they are not moving
+            StopMoving();
+            target.StopMoving();
 
             // Try to start the trade
             var ts = PeerTrading.PeerTradeSession.Create(this, target);

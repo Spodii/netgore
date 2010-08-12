@@ -12,6 +12,19 @@ namespace DemoGame.Client
         ISocketSender _socketSender;
 
         /// <summary>
+        /// Delegate for handling the <see cref="GameMessageCallback"/> event.
+        /// </summary>
+        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandler"/> this event came from.</param>
+        /// <param name="gameMessage">The <see cref="GameMessage"/>.</param>
+        /// <param name="args">The arguments for the message.</param>
+        public delegate void GameMessageCallbackHandler(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args);
+
+        /// <summary>
+        /// Notifies listeners when this object has generated a <see cref="GameMessage"/> that needs to be displayed.
+        /// </summary>
+        public event GameMessageCallbackHandler GameMessageCallback;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ClientPeerTradeInfoHandler"/> class.
         /// </summary>
         /// <param name="socketSender">The <see cref="ISocketSender"/> used to communicate with the server.</param>
@@ -24,40 +37,51 @@ namespace DemoGame.Client
             SocketSender = socketSender;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}.TradeCanceled"/> event.
+        /// </summary>
+        /// <param name="sourceCanceled">If it was the source character who canceled the trade.</param>
         protected override void OnTradeCanceled(bool sourceCanceled)
         {
-            // TODO: !!
             base.OnTradeCanceled(sourceCanceled);
+
+            // Display the cancel message, using the appropriate one for if we were the one to cancel the trade
+            if ((sourceCanceled && UserIsSource) || (!sourceCanceled && !UserIsSource))
+            {
+                // We canceled
+                if (GameMessageCallback != null)
+                    GameMessageCallback(this, GameMessage.PeerTradingTradeCanceledByYou, new string[] { OtherCharName });
+            }
+            else
+            {
+                // They canceled
+                if (GameMessageCallback != null)
+                    GameMessageCallback(this, GameMessage.PeerTradingTradeCanceledByOther, new string[] { OtherCharName });
+            }
         }
 
-        protected override void OnAcceptStatusChanged(bool isSourceSide, bool hasAccepted)
-        {
-            // TODO: !!
-            base.OnAcceptStatusChanged(isSourceSide, hasAccepted);
-        }
-
-        protected override void OnSlotUpdated(NetGore.InventorySlot slot, bool isSourceSide)
-        {
-            // TODO: !!
-            base.OnSlotUpdated(slot, isSourceSide);
-        }
-
-        protected override void OnTradeClosed()
-        {
-            // TODO: !!
-            base.OnTradeClosed();
-        }
-
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the
+        /// <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}.TradeCompleted"/> event.
+        /// </summary>
         protected override void OnTradeCompleted()
         {
-            // TODO: !!
             base.OnTradeCompleted();
+
+            if (GameMessageCallback != null)
+                GameMessageCallback(this, GameMessage.PeerTradingTradeComplete, new string[] { OtherCharName });
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the
+        /// <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}.TradeOpened"/> event.
+        /// </summary>
         protected override void OnTradeOpened()
         {
-            // TODO: !!
             base.OnTradeOpened();
+
+            if (GameMessageCallback != null)
+                GameMessageCallback(this, GameMessage.PeerTradingTradeOpened, new string[] { OtherCharName });
         }
 
         /// <summary>
