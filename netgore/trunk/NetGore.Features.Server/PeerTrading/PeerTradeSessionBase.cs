@@ -6,8 +6,6 @@ using System.Reflection;
 using log4net;
 using NetGore.World;
 
-// TODO: !! Other character's name does not come up
-// TODO: !!    * Doesn't look like the name is being sent correctly, or not being read properly since it doesn't show up anywhere
 // TODO: !! Trade item click handling doesn't use the correct side (click the other user's side to remove)
 // TODO: !!    * Seems to be because the user's side always ends up on the right side
 // TODO: !! Drag & drop breaks if you drag an inventory item but it goes nowhere

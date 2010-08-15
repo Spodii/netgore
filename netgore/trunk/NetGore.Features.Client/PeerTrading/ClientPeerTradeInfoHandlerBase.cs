@@ -401,11 +401,12 @@ namespace NetGore.Features.PeerTrading
         {
             Debug.Assert(!IsTradeOpen, "Why is the trade table already open...?");
 
-            _userIsSource = reader.ReadBool();
-            _otherCharName = reader.ReadString();
-
             // Clean out old values
             ResetValues();
+
+            // Read in the new values and start the trade
+            _userIsSource = reader.ReadBool();
+            _otherCharName = reader.ReadString();
 
             _isTradeOpen = true;
 
