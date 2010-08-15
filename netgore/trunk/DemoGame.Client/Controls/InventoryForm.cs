@@ -36,8 +36,17 @@ namespace DemoGame.Client
         /// </summary>
         static readonly Vector2 _padding = new Vector2(2, 2);
 
-        readonly DragDropHandler _dragDropHandler;
+        /// <summary>
+        /// The foreground color to use for drawing the item amount.
+        /// </summary>
+        public static Color ItemAmountForeColor = Color.White;
 
+        /// <summary>
+        /// The background to use for drawing the item amount.
+        /// </summary>
+        public static Color ItemAmountBackColor = Color.Black;
+
+        readonly DragDropHandler _dragDropHandler;
         readonly ItemInfoRequesterBase<InventorySlot> _infoRequester;
         readonly Func<Inventory, bool> _isUserInv;
 
@@ -305,7 +314,7 @@ namespace DemoGame.Client
 
                 // Draw the amount
                 if (item.Amount > 1)
-                    spriteBatch.DrawStringShaded(GUIManager.Font, item.Amount.ToString(), ScreenPosition, Color.White, Color.Black);
+                    spriteBatch.DrawStringShaded(GUIManager.Font, item.Amount.ToString(), ScreenPosition, ItemAmountForeColor, ItemAmountBackColor);
             }
 
             /// <summary>

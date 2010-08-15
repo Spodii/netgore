@@ -97,6 +97,16 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the item quantity value from the item information.
+        /// </summary>
+        /// <param name="itemInfo">The item information to get the quantity value for.</param>
+        /// <returns>The quantity value for the <paramref name="itemInfo"/>.</returns>
+        protected override int GetItemAmount(IItemTable itemInfo)
+        {
+            return itemInfo.Amount;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when the PeerTradeInfoHandler property's value changes.
         /// </summary>
         /// <param name="oldHandler">The old (last) peer trade information handler. Can be null.</param>
@@ -243,6 +253,33 @@ namespace DemoGame.Client
                 public CustomSidePanelSlot(PeerTradeSidePanel parent, Vector2 position, Vector2 clientSize, InventorySlot slot)
                     : base(parent, position, clientSize, slot)
                 {
+                }
+
+                /// <summary>
+                /// Gets the <see cref="Font"/> to use for drawing the item amount.
+                /// </summary>
+                /// <returns>The <see cref="Font"/> to use for drawing the item amount.</returns>
+                protected override Font GetItemAmountFont()
+                {
+                    return GUIManager.Font;
+                }
+
+                /// <summary>
+                /// Gets the foreground color to use for drawing the item amount text.
+                /// </summary>
+                /// <returns>The foreground color to use for drawing the item amount text.</returns>
+                protected override Color GetItemAmountFontForeColor()
+                {
+                    return InventoryForm.ItemAmountForeColor;
+                }
+
+                /// <summary>
+                /// Gets the shadow color to use for drawing the item amount text.
+                /// </summary>
+                /// <returns>The shadow color to use for drawing the item amount text.</returns>
+                protected override Color GetItemAmountFontShadowColor()
+                {
+                    return InventoryForm.ItemAmountBackColor;
                 }
             }
         }
