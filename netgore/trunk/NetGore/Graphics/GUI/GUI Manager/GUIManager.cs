@@ -471,17 +471,17 @@ namespace NetGore.Graphics.GUI
                     // Tell the old control it lost focus
                     if (lastFocused != null)
                         lastFocused.SendLostFocusEvent(e);
+                }
 
-                    // Tell the new control is acquired focus
-                    if (FocusedControl != null)
-                    {
-                        FocusedControl.SendFocusedEvent(e);
+                // Tell the new control is acquired focus
+                if (FocusedControl != null)
+                {
+                    FocusedControl.SendFocusedEvent(e);
 
-                        // Check if the new focused control supports drag-and-drop
-                        var ddp = _underCursor as IDragDropProvider;
-                        if (ddp != null && ddp.CanDragContents && !_underCursor.CanDrag)
-                            _draggedDragDropProvider = ddp;
-                    }
+                    // Check if the new focused control supports drag-and-drop
+                    var ddp = _underCursor as IDragDropProvider;
+                    if (ddp != null && ddp.CanDragContents && !_underCursor.CanDrag)
+                        _draggedDragDropProvider = ddp;
                 }
             }
 
