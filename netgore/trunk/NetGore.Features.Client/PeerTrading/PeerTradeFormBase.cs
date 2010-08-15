@@ -493,7 +493,7 @@ namespace NetGore.Features.PeerTrading
 
                 var ptih = PeerTradeForm.PeerTradeInfoHandler;
                 if (ptih != null)
-                    ChangeAcceptLabelStatus(IsSourceSide ? ptih.HasTargetAccepted : ptih.HasSourceAccepted);
+                    ChangeAcceptLabelStatus(IsSourceSide ? ptih.HasSourceAccepted : ptih.HasTargetAccepted);
             }
 
             /// <summary>
