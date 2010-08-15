@@ -6,8 +6,6 @@ using System.Reflection;
 using log4net;
 using NetGore.World;
 
-// TODO: !! Trade item click handling doesn't use the correct side (click the other user's side to remove)
-// TODO: !!    * Seems to be because the user's side always ends up on the right side
 // TODO: !! Keep getting System.ArgumentException in DemoGame.dll when adding to trade, but it seems to be getting swallowed
 // TODO: !! Still cannot move after both parties accept the trade
 // TODO: !! The items traded are lost after the trade (not on ground, not in anyone's inventory)

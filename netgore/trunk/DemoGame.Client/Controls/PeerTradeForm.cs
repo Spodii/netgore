@@ -83,7 +83,7 @@ namespace DemoGame.Client
                 return;
 
             // Check if the slot clicked was a slot on our side
-            var clickWasOnOurSide = (isSourceSide && ptih.UserIsSource) || !(!isSourceSide && !ptih.UserIsSource);
+            var clickWasOnOurSide = (isSourceSide && ptih.UserIsSource) || (!isSourceSide && !ptih.UserIsSource);
 
             // If the slot clicked was a slot on our side, and it contains an item, remove the item
             if (clickWasOnOurSide)
