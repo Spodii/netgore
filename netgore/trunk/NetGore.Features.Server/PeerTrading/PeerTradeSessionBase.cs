@@ -16,6 +16,7 @@ using NetGore.World;
 // TODO: !! The items traded are lost after the trade (not on ground, not in anyone's inventory)
 // TODO: !!    * Lots of "failed to get inventory slot of ..." messages in server
 // TODO: !!      - Probably using the wrong approach of moving the trade items from the table to the user
+// TODO: !! Seems to be issues with synchronizing the display of items when removed from and added to the trade table or inventory sometimes
 
 // TODO: !! Add support for adding money to the trade
 
