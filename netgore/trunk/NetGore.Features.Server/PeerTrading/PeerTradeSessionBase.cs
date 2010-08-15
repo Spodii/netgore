@@ -11,7 +11,6 @@ using NetGore.World;
 // TODO: !! Drag & drop breaks if you drag an inventory item but it goes nowhere
 // TODO: !! Drag & drop from inv -> trade works only when dropped on the form, not individual slots
 // TODO: !! Need to add a way to cancel accepting
-// TODO: !! Inventory items display blown-up
 // TODO: !! Keep getting System.ArgumentException in DemoGame.dll when adding to trade, but it seems to be getting swallowed
 // TODO: !! Still cannot move after both parties accept the trade
 // TODO: !! The items traded are lost after the trade (not on ground, not in anyone's inventory)

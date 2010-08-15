@@ -247,6 +247,13 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the item quantity value from the item information.
+        /// </summary>
+        /// <param name="itemInfo">The item information to get the quantity value for.</param>
+        /// <returns>The quantity value for the <paramref name="itemInfo"/>.</returns>
+        protected abstract int GetItemAmount(TItemInfo itemInfo);
+
+        /// <summary>
         /// When overridden in the derived class, handles when the PeerTradeInfoHandler property's value changes.
         /// </summary>
         /// <param name="oldHandler">The old (last) peer trade information handler. Can be null.</param>
@@ -566,14 +573,93 @@ namespace NetGore.Features.PeerTrading
                 protected override void DrawControl(ISpriteBatch spriteBatch)
                 {
                     base.DrawControl(spriteBatch);
+                    DrawItem(spriteBatch, _sprite);
+                }
 
-                    // Draw the item
-                    if (_sprite.GrhData != null)
-                    {
-                        var sp = ScreenPosition;
-                        var cs = ClientSize;
-                        _sprite.Draw(spriteBatch, new Rectangle((int)sp.X, (int)sp.Y, (int)cs.X, (int)cs.Y));
-                    }
+                /// <summary>
+                /// Draws the item in this slot. This method is always called, even when the slot is empty.
+                /// </summary>
+                /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+                /// <param name="itemSprite">The <see cref="Grh"/> to draw. Will never be null, but can contain
+                /// an invalid or empty sprite.</param>
+                protected virtual void DrawItem(ISpriteBatch spriteBatch, Grh itemSprite)
+                {
+                    if (itemSprite.GrhData == null)
+                        return;
+
+                    // Grab the screen position and client size
+                    var sp = ScreenPosition;
+                    var cs = ClientSize;
+
+                    // Get the size to use for drawing (never exceeding the size of the control)
+                    Vector2 drawSize = Vector2.Min(cs, itemSprite.Size);
+
+                    // Get the draw position (centering on the control)
+                    Vector2 drawPos = sp + ((cs - drawSize) / 2f);
+
+                    // Draw
+                    var spriteDestRect = new Rectangle((int)drawPos.X, (int)drawPos.Y, (int)drawSize.X, (int)drawSize.Y);
+                    _sprite.Draw(spriteBatch, spriteDestRect);
+
+                    // Draw the amount
+                    var itemInfo = GetSlotItemInfo();
+                    if (itemInfo == null)
+                        return;
+
+                    var amount = ItemsCollection.PeerTradeForm.GetItemAmount(itemInfo);
+                    DrawItemAmount(spriteBatch, amount);
+                }
+
+                /// <summary>
+                /// Gets the <see cref="Font"/> to use for drawing the item amount.
+                /// </summary>
+                /// <returns>The <see cref="Font"/> to use for drawing the item amount.</returns>
+                protected virtual Font GetItemAmountFont()
+                {
+                    return ItemsCollection.PeerTradeForm.Font;
+                }
+
+                /// <summary>
+                /// Gets the foreground color to use for drawing the item amount text.
+                /// </summary>
+                /// <returns>The foreground color to use for drawing the item amount text.</returns>
+                protected virtual Color GetItemAmountFontForeColor()
+                {
+                    return Color.White;
+                }
+
+                /// <summary>
+                /// Gets the shadow color to use for drawing the item amount text.
+                /// </summary>
+                /// <returns>The shadow color to use for drawing the item amount text.</returns>
+                protected virtual Color GetItemAmountFontShadowColor()
+                {
+                    return Color.Black;
+                }
+
+                /// <summary>
+                /// Draws the item amount string for this slot.
+                /// </summary>
+                /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw to.</param>
+                /// <param name="amount">The amount value to draw.</param>
+                protected virtual void DrawItemAmount(ISpriteBatch spriteBatch, int amount)
+                {
+                    if (amount <= 1)
+                        return;
+
+                    var font = GetItemAmountFont();
+                    var foreColor = GetItemAmountFontForeColor();
+                    var backColor = GetItemAmountFontShadowColor();
+                    spriteBatch.DrawStringShaded(font, amount.ToString(), ScreenPosition, foreColor, backColor);
+                }
+
+                /// <summary>
+                /// Gets the item information for the item in this slot.
+                /// </summary>
+                /// <returns>The item information for the item in this slot, or null if the slot is empty.</returns>
+                protected TItemInfo GetSlotItemInfo()
+                {
+                    return ItemsCollection.GetItemInfo(Slot);
                 }
 
                 /// <summary>
