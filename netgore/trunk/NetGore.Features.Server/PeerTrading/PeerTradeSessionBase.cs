@@ -6,7 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore.World;
 
-// TODO: !! Keep getting System.ArgumentException in DemoGame.dll when adding to trade, but it seems to be getting swallowed
+// TODO: !! Support for only adding some items from a set to the trade (same probably needs to be done for dropping and selling to shops)
 // TODO: !! Add support for adding money to the trade
 
 namespace NetGore.Features.PeerTrading
