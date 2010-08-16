@@ -54,6 +54,7 @@ namespace DemoGame.Client
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
         Label _latencyLabel;
+        PeerTradeForm _peerTradeForm;
         QuickBarForm _quickBarForm;
         ShopForm _shopForm;
         SkillCastProgressBar _skillCastProgressBar;
@@ -63,7 +64,6 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         ILight _userLight;
         World _world;
-        PeerTradeForm _peerTradeForm;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameplayScreen"/> class.
@@ -119,12 +119,15 @@ namespace DemoGame.Client
             get { return World.Map; }
         }
 
+        public PeerTradeForm PeerTradeForm
+        {
+            get { return _peerTradeForm; }
+        }
+
         public QuickBarForm QuickBarForm
         {
             get { return _quickBarForm; }
         }
-
-        public PeerTradeForm PeerTradeForm { get { return _peerTradeForm; } }
 
         public ShopForm ShopForm
         {
@@ -515,7 +518,8 @@ namespace DemoGame.Client
             var gameMenu = new GameMenuForm(_cScreen);
             gameMenu.ClickedLogOut += GameMenuClickedLogOut;
 
-            _peerTradeForm = new PeerTradeForm(_cScreen, new Vector2(200)) { PeerTradeInfoHandler = Socket.PacketHandler.PeerTradeInfoHandler };
+            _peerTradeForm = new PeerTradeForm(_cScreen, new Vector2(200))
+            { PeerTradeInfoHandler = Socket.PacketHandler.PeerTradeInfoHandler };
 
             // Add the forms to the GUI settings manager (which also restores any existing settings)
             _guiSettings = new GUISettings("Default"); // FUTURE: Allow changing of the profile

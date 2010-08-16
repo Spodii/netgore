@@ -62,6 +62,7 @@ namespace NetGore.Features.PeerTrading
         bool _hasSourceAccepted;
         bool _hasTargetAccepted;
         bool _isTradeOpen;
+        string _otherCharName = string.Empty;
         bool _userIsSource;
 
         /// <summary>
@@ -158,6 +159,15 @@ namespace NetGore.Features.PeerTrading
         public bool IsTradeOpen
         {
             get { return _isTradeOpen; }
+        }
+
+        /// <summary>
+        /// Gets the name of the character that the client is trading with. This is always the name of the other character in the
+        /// trade, never the name of the client's character.
+        /// </summary>
+        public string OtherCharName
+        {
+            get { return _otherCharName; }
         }
 
         /// <summary>
@@ -384,14 +394,6 @@ namespace NetGore.Features.PeerTrading
         /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
         /// <returns>The read item information.</returns>
         protected abstract TItemInfo ReadItemInfo(IValueReader reader);
-
-        string _otherCharName = string.Empty;
-
-        /// <summary>
-        /// Gets the name of the character that the client is trading with. This is always the name of the other character in the
-        /// trade, never the name of the client's character.
-        /// </summary>
-        public string OtherCharName { get { return _otherCharName; } }
 
         /// <summary>
         /// Reads a <see cref="PeerTradeInfoServerMessage.Open"/>.

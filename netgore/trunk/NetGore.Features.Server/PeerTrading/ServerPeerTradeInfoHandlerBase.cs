@@ -49,6 +49,13 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the name for a character that will be displayed for the trade.
+        /// </summary>
+        /// <param name="character">The character to get the display name of.</param>
+        /// <returns>The display name of the <paramref name="character"/>.</returns>
+        protected abstract string GetCharDisplayName(TChar character);
+
+        /// <summary>
         /// When overridden in the derived class, gets the information for an item.
         /// </summary>
         /// <param name="item">The item to get the information for.</param>
@@ -249,7 +256,7 @@ namespace NetGore.Features.PeerTrading
             // Construct and send the data
             using (var pw = CreateWriter(PeerTradeInfoServerMessage.Canceled))
             {
-                bool sourceClosed = (c == peerTradeSession.CharSource);
+                var sourceClosed = (c == peerTradeSession.CharSource);
                 pw.Write(sourceClosed);
 
                 if (sendToSource)
@@ -309,13 +316,6 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the name for a character that will be displayed for the trade.
-        /// </summary>
-        /// <param name="character">The character to get the display name of.</param>
-        /// <returns>The display name of the <paramref name="character"/>.</returns>
-        protected abstract string GetCharDisplayName(TChar character);
-
-        /// <summary>
         /// Handles writing the information for starting a trade session.
         /// </summary>
         /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
@@ -331,7 +331,7 @@ namespace NetGore.Features.PeerTrading
                 using (var pw = CreateWriter(PeerTradeInfoServerMessage.Open))
                 {
                     const bool isClientSource = true;
-                    string otherCharDisplayName = GetCharDisplayName(peerTradeSession.CharTarget);
+                    var otherCharDisplayName = GetCharDisplayName(peerTradeSession.CharTarget);
 
                     pw.Write(isClientSource);
                     pw.Write(otherCharDisplayName);
@@ -345,7 +345,7 @@ namespace NetGore.Features.PeerTrading
                 using (var pw = CreateWriter(PeerTradeInfoServerMessage.Open))
                 {
                     const bool isClientSource = false;
-                    string otherCharDisplayName = GetCharDisplayName(peerTradeSession.CharSource);
+                    var otherCharDisplayName = GetCharDisplayName(peerTradeSession.CharSource);
 
                     pw.Write(isClientSource);
                     pw.Write(otherCharDisplayName);

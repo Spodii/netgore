@@ -5,7 +5,6 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
-using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.PeerTrading
@@ -15,6 +14,8 @@ namespace DemoGame.Server.PeerTrading
     /// </summary>
     public static class PeerTradingHelper
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The <see cref="PeerTradingGetLostItemsQuery"/> instance to use.
         /// </summary>
@@ -41,8 +42,6 @@ namespace DemoGame.Server.PeerTrading
             _insertItemQuery = dbController.GetQuery<PeerTradingInsertItemQuery>();
             _removeItemQuery = dbController.GetQuery<PeerTradingRemoveItemQuery>();
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Recovers items from the <see cref="ActiveTradeItemTable"/> for a character, and gives them to the character. Items can

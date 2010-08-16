@@ -21,11 +21,6 @@ namespace NetGore.Graphics.GUI
         bool _isCloseButtonVisible = true;
 
         /// <summary>
-        /// Gets the <see cref="Control"/> for showing the close button on this <see cref="Form"/>.
-        /// </summary>
-        public Control CloseButton { get { return _closeButton; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Form"/> class.
         /// </summary>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
@@ -45,6 +40,14 @@ namespace NetGore.Graphics.GUI
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
         public Form(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Control"/> for showing the close button on this <see cref="Form"/>.
+        /// </summary>
+        public Control CloseButton
+        {
+            get { return _closeButton; }
         }
 
         /// <summary>
@@ -74,6 +77,16 @@ namespace NetGore.Graphics.GUI
         protected virtual void CloseButtonClicked(object sender, MouseButtonEventArgs e)
         {
             IsVisible = false;
+        }
+
+        /// <summary>
+        /// Creates the <see cref="Control"/> for showing the close button for this <see cref="Form"/>.
+        /// </summary>
+        /// <param name="spriteName">The default name of the sprite to display.</param>
+        /// <returns>The <see cref="Control"/> for the close button.</returns>
+        protected virtual Control CreateCloseButton(string spriteName)
+        {
+            return new FormButton(this, spriteName);
         }
 
         /// <summary>
@@ -156,16 +169,6 @@ namespace NetGore.Graphics.GUI
                 return;
 
             _closeButton.Position = GetToolbarButtonPosition(_closeButton, 0f);
-        }
-
-        /// <summary>
-        /// Creates the <see cref="Control"/> for showing the close button for this <see cref="Form"/>.
-        /// </summary>
-        /// <param name="spriteName">The default name of the sprite to display.</param>
-        /// <returns>The <see cref="Control"/> for the close button.</returns>
-        protected virtual Control CreateCloseButton(string spriteName)
-        {
-            return new FormButton(this, spriteName);
         }
 
         /// <summary>

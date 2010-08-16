@@ -99,6 +99,37 @@ namespace NetGore.Features.PeerTrading
         protected abstract bool CanFitItemsInInventory(TChar character, IInventory<TItem> items);
 
         /// <summary>
+        /// Clears the trade acceptance status for both characters in the trade, setting them back to not accepting the trade.
+        /// This should be called whenever the table's contents change.
+        /// </summary>
+        protected void ClearAcceptStatus()
+        {
+            HasCharSourceAccepted = false;
+            HasCharTargetAccepted = false;
+        }
+
+        /// <summary>
+        /// Closes the trading if the character states are invalid.
+        /// </summary>
+        /// <returns>True if the trade was closed; otherwise false.</returns>
+        bool CloseIfCharacterStatesInvalid()
+        {
+            if (!AreCharacterStatesValid())
+            {
+                // State is not valid
+                const string errmsg =
+                    "Peer trade `{0}` with `{1}` and `{2}` closed because AreCharacterStatesValid() returned false.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, CharSource, CharTarget);
+
+                return true;
+            }
+
+            // State was valid
+            return false;
+        }
+
+        /// <summary>
         /// Closes the trade session.
         /// </summary>
         /// <param name="canceler">If the trade was canceled, contains the character who canceled it. Use null for when the trade
@@ -244,26 +275,6 @@ namespace NetGore.Features.PeerTrading
         /// <param name="item">The item that currently occupies the <paramref name="slot"/>.</param>
         protected virtual void OnTradeTableSlotChanged(TChar slotOwner, InventorySlot slot, TItem item)
         {
-        }
-
-        /// <summary>
-        /// Closes the trading if the character states are invalid.
-        /// </summary>
-        /// <returns>True if the trade was closed; otherwise false.</returns>
-        bool CloseIfCharacterStatesInvalid()
-        {
-            if (!AreCharacterStatesValid())
-            {
-                // State is not valid
-                const string errmsg = "Peer trade `{0}` with `{1}` and `{2}` closed because AreCharacterStatesValid() returned false.";
-                if (log.IsInfoEnabled)
-                    log.InfoFormat(errmsg, this, CharSource, CharTarget);
-
-                return true;
-            }
-
-            // State was valid
-            return false;
         }
 
         /// <summary>
@@ -493,16 +504,6 @@ namespace NetGore.Features.PeerTrading
             }
 
             return remaining;
-        }
-
-        /// <summary>
-        /// Clears the trade acceptance status for both characters in the trade, setting them back to not accepting the trade.
-        /// This should be called whenever the table's contents change.
-        /// </summary>
-        protected void ClearAcceptStatus()
-        {
-            HasCharSourceAccepted = false;
-            HasCharTargetAccepted = false;
         }
 
         /// <summary>

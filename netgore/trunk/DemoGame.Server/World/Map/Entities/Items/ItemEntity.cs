@@ -47,14 +47,14 @@ namespace DemoGame.Server
         static readonly ReplaceItemQuery _queryReplaceItem;
 
         /// <summary>
-        /// The <see cref="UpdateItemFieldQuery"/> instance to use.
-        /// </summary>
-        static readonly UpdateItemFieldQuery _queryUpdateItemField;
-
-        /// <summary>
         /// The <see cref="SelectItemQuery"/> instance to use.
         /// </summary>
         static readonly SelectItemQuery _querySelectItem;
+
+        /// <summary>
+        /// The <see cref="UpdateItemFieldQuery"/> instance to use.
+        /// </summary>
+        static readonly UpdateItemFieldQuery _queryUpdateItemField;
 
         readonly StatCollection<StatType> _baseStats;
         readonly ItemID _id;
@@ -133,22 +133,6 @@ namespace DemoGame.Server
         public ItemEntity() : base(Vector2.Zero, Vector2.Zero)
         {
             _id = _queryIDCreator.GetNext();
-        }
-
-        /// <summary>
-        /// Loads an <see cref="ItemEntity"/> instance from the databas.e
-        /// </summary>
-        /// <param name="id">The <see cref="ItemID"/> of the item to load.</param>
-        /// <returns>The loaded <see cref="ItemEntity"/>, or null if the <paramref name="id"/> was invalid or no item with that
-        /// id exists.</returns>
-        public static ItemEntity LoadFromDatabase(ItemID id)
-        {
-            // Get the item information from the database
-            var itemInfo = _querySelectItem.Execute(id);
-            if (itemInfo == null)
-                return null;
-
-            return new ItemEntity(itemInfo);
         }
 
         /// <summary>
@@ -402,6 +386,22 @@ namespace DemoGame.Server
 
             if (oldHeight != height)
                 SynchronizeField("height", height);
+        }
+
+        /// <summary>
+        /// Loads an <see cref="ItemEntity"/> instance from the databas.e
+        /// </summary>
+        /// <param name="id">The <see cref="ItemID"/> of the item to load.</param>
+        /// <returns>The loaded <see cref="ItemEntity"/>, or null if the <paramref name="id"/> was invalid or no item with that
+        /// id exists.</returns>
+        public static ItemEntity LoadFromDatabase(ItemID id)
+        {
+            // Get the item information from the database
+            var itemInfo = _querySelectItem.Execute(id);
+            if (itemInfo == null)
+                return null;
+
+            return new ItemEntity(itemInfo);
         }
 
         /// <summary>

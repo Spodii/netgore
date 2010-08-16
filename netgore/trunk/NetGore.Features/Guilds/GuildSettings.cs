@@ -86,7 +86,7 @@ namespace NetGore.Features.Guilds
         {
             get
             {
-                Debug.Assert(_instance != null, "The settings instance should not be null!"); 
+                Debug.Assert(_instance != null, "The settings instance should not be null!");
                 return _instance;
             }
         }

@@ -20,8 +20,8 @@ namespace DemoGame
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly int _clientPacketIDBits;
-        static readonly int _serverPacketIDBits;
         static readonly int _gameMessageIDBits;
+        static readonly int _serverPacketIDBits;
 
         /// <summary>
         /// Initializes the <see cref="BitStreamExtensions"/> class.

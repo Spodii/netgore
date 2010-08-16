@@ -9,21 +9,6 @@ namespace NetGore.Graphics
     public static class DragDropProviderHelper
     {
         /// <summary>
-        /// Gets or sets the <see cref="Color"/> to use for inside of a highlighted area. Usually is an invisible color.
-        /// </summary>
-        public static Color HighlightInnerColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Color"/> to use for outside of a highlighted area.
-        /// </summary>
-        public static Color HighlightOuterColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the thickness of the highlighting border.
-        /// </summary>
-        public static int HighlightBorderThickness { get; set; }
-
-        /// <summary>
         /// Initializes the <see cref="DragDropProviderHelper"/> class.
         /// </summary>
         static DragDropProviderHelper()
@@ -32,6 +17,21 @@ namespace NetGore.Graphics
             HighlightOuterColor = new Color(0, 255, 0, 150);
             HighlightBorderThickness = 4;
         }
+
+        /// <summary>
+        /// Gets or sets the thickness of the highlighting border.
+        /// </summary>
+        public static int HighlightBorderThickness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use for inside of a highlighted area. Usually is an invisible color.
+        /// </summary>
+        public static Color HighlightInnerColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to use for outside of a highlighted area.
+        /// </summary>
+        public static Color HighlightOuterColor { get; set; }
 
         /// <summary>
         /// Draws a highlighted rectangle around the target area.

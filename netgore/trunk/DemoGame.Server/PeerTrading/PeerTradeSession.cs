@@ -29,6 +29,49 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets if the state of the characters in this trading session are still valid.
+        /// </summary>
+        /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
+        protected override bool AreCharacterStatesValid()
+        {
+            return AreCharacterStatesValidInternal(CharSource, CharTarget);
+        }
+
+        /// <summary>
+        /// Performs the actual checking of if a <see cref="PeerTradeSession"/>'s characters are valid.
+        /// This method is checked both before trades have started, and periodically during the trade.
+        /// </summary>
+        /// <param name="charSource">The first character in the trade session.
+        /// This is the character that started the trade.</param>
+        /// <param name="charTarget">The second character in the trade session.
+        /// This is the character that was requested to be traded with.</param>
+        /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
+        static bool AreCharacterStatesValidInternal(User charSource, User charTarget)
+        {
+            if (charSource.Map != charTarget.Map || charSource.GetDistance(charTarget) > _settings.MaxDistance)
+                return false;
+
+            if (!charSource.IsAlive || !charTarget.IsAlive)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, checks if a character can fit a set of items (presented as an <see cref="IInventory{TItem}"/>)
+        /// into their inventory, or wherever else they wish to store the items they will be acquiring from the trade. No items should
+        /// actually be added to the inventory.
+        /// </summary>
+        /// <param name="character">The character that will be given the items.</param>
+        /// <param name="items">The items to be added to the <paramref name="character"/>'s inventory.</param>
+        /// <returns>True if the <paramref name="character"/> can fit all of the <paramref name="items"/> into their inventory;
+        /// otherwise false.</returns>
+        protected override bool CanFitItemsInInventory(User character, IInventory<ItemEntity> items)
+        {
+            return character.Inventory.CanAdd(items);
+        }
+
+        /// <summary>
         /// Creates a <see cref="PeerTradeSession"/>.
         /// </summary>
         /// <param name="charSource">The first character in the trade session.
@@ -61,49 +104,6 @@ namespace DemoGame.Server.PeerTrading
             charTarget.PeerTradeSession = ts;
 
             return ts;
-        }
-
-        /// <summary>
-        /// Performs the actual checking of if a <see cref="PeerTradeSession"/>'s characters are valid.
-        /// This method is checked both before trades have started, and periodically during the trade.
-        /// </summary>
-        /// <param name="charSource">The first character in the trade session.
-        /// This is the character that started the trade.</param>
-        /// <param name="charTarget">The second character in the trade session.
-        /// This is the character that was requested to be traded with.</param>
-        /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
-        static bool AreCharacterStatesValidInternal(User charSource, User charTarget)
-        {
-            if (charSource.Map != charTarget.Map || charSource.GetDistance(charTarget) > _settings.MaxDistance)
-                return false;
-
-            if (!charSource.IsAlive || !charTarget.IsAlive)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if the state of the characters in this trading session are still valid.
-        /// </summary>
-        /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
-        protected override bool AreCharacterStatesValid()
-        {
-            return AreCharacterStatesValidInternal(CharSource, CharTarget);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, checks if a character can fit a set of items (presented as an <see cref="IInventory{TItem}"/>)
-        /// into their inventory, or wherever else they wish to store the items they will be acquiring from the trade. No items should
-        /// actually be added to the inventory.
-        /// </summary>
-        /// <param name="character">The character that will be given the items.</param>
-        /// <param name="items">The items to be added to the <paramref name="character"/>'s inventory.</param>
-        /// <returns>True if the <paramref name="character"/> can fit all of the <paramref name="items"/> into their inventory;
-        /// otherwise false.</returns>
-        protected override bool CanFitItemsInInventory(User character, IInventory<ItemEntity> items)
-        {
-            return character.Inventory.CanAdd(items);
         }
 
         /// <summary>
