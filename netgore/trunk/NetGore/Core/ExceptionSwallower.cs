@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using log4net;
@@ -15,28 +16,12 @@ namespace NetGore
     /// </summary>
     public class ExceptionSwallower
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        static int _exceptionsSwallowed = 0;
         static ExceptionSwallower _instance;
 
-        /// <summary>
-        /// Gets the global <see cref="ExceptionSwallower"/> instance.
-        /// </summary>
-        public static ExceptionSwallower Instance { get { return _instance; } }
-
-        /// <summary>
-        /// Attempts to change the <see cref="ExceptionSwallower"/> instance.
-        /// </summary>
-        /// <param name="newInstance">The new <see cref="ExceptionSwallower"/> instance.</param>
-        /// <returns>True if the <paramref name="newInstance"/> was set as the new global <see cref="ExceptionSwallower"/>
-        /// instance; otherwise false.</returns>
-        public static bool TrySetInstance(ExceptionSwallower newInstance)
-        {
-            if (newInstance == null)
-                return false;
-
-            _instance = newInstance;
-
-            return true;
-        }
+        readonly bool _rethrow;
 
         /// <summary>
         /// Initializes the <see cref="ExceptionSwallower"/> class.
@@ -45,6 +30,31 @@ namespace NetGore
         {
             // Set the default ExceptionSwallower instance
             _instance = new ExceptionSwallower();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionSwallower"/> class.
+        /// </summary>
+        /// <param name="rethrow">If <see cref="Exception"/>s should be rethrown. Default and recommended value is false.</param>
+        public ExceptionSwallower(bool rethrow = false)
+        {
+            _rethrow = rethrow;
+        }
+
+        /// <summary>
+        /// Gets the total number of <see cref="Exception"/>s that have been swallowed since this application has been running.
+        /// </summary>
+        public static int ExceptionsSwallowed
+        {
+            get { return _exceptionsSwallowed; }
+        }
+
+        /// <summary>
+        /// Gets the global <see cref="ExceptionSwallower"/> instance.
+        /// </summary>
+        public static ExceptionSwallower Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>
@@ -60,27 +70,10 @@ namespace NetGore
         ///         throw;
         /// }
         /// </example>
-        public bool Rethrow { get { return _rethrow; } }
-
-        readonly bool _rethrow;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionSwallower"/> class.
-        /// </summary>
-        /// <param name="rethrow">If <see cref="Exception"/>s should be rethrown. Default and recommended value is false.</param>
-        public ExceptionSwallower(bool rethrow = false)
+        public bool Rethrow
         {
-            _rethrow = rethrow;
+            get { return _rethrow; }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        static int _exceptionsSwallowed = 0;
-
-        /// <summary>
-        /// Gets the total number of <see cref="Exception"/>s that have been swallowed since this application has been running.
-        /// </summary>
-        public static int ExceptionsSwallowed { get { return _exceptionsSwallowed; } }
 
         /// <summary>
         /// Allows for general handling of an unhandled <see cref="Exception"/>. The passed <see cref="Exception"/> will not be treated
@@ -108,6 +101,22 @@ namespace NetGore
                 log.FatalFormat(errmsg, this, ex);
 
             Debug.Fail(string.Format(errmsg, this, ex));
+        }
+
+        /// <summary>
+        /// Attempts to change the <see cref="ExceptionSwallower"/> instance.
+        /// </summary>
+        /// <param name="newInstance">The new <see cref="ExceptionSwallower"/> instance.</param>
+        /// <returns>True if the <paramref name="newInstance"/> was set as the new global <see cref="ExceptionSwallower"/>
+        /// instance; otherwise false.</returns>
+        public static bool TrySetInstance(ExceptionSwallower newInstance)
+        {
+            if (newInstance == null)
+                return false;
+
+            _instance = newInstance;
+
+            return true;
         }
     }
 }

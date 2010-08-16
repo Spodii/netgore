@@ -141,15 +141,11 @@ namespace DemoGame.Server
 
             // Stop listening for changes on the item that was removed
             if (oldItem != null)
-            {
                 oldItem.GraphicOrAmountChanged -= ItemGraphicOrAmountChangeHandler;
-            }
 
             // Listen to the item for changes on the item that was added
             if (newItem != null)
-            {
                 newItem.GraphicOrAmountChanged += ItemGraphicOrAmountChangeHandler;
-            }
 
             // Update the inventory slot in the database
             if (newItem == null)
