@@ -143,10 +143,31 @@ namespace DemoGame.GUITester
 
         void b_Clicked(object sender, MouseButtonEventArgs e)
         {
-            if (topForm.Border == ControlBorder.Empty)
-                topForm.Border = _topBorder;
-            else
-                topForm.Border = ControlBorder.Empty;
+            var msgBox = new MessageBox(GUIManager, ":o", "You clicked the magical button!", MessageBoxButton.YesNoCancel);
+            msgBox.OptionSelected += msgBox_OptionSelected;
+        }
+
+        static void msgBox_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            switch (args)
+            {
+                case MessageBoxButton.Yes:
+                    new MessageBox(sender.GUIManager, ":|", "Yes? What do you mean yes? I didn't even ask you a question!", MessageBoxButton.Ok);
+                    break;
+
+                case MessageBoxButton.No:
+                    string message;
+
+                    var senderAsMsgBox = sender as MessageBox;
+                    if (senderAsMsgBox != null && senderAsMsgBox.Message.StartsWith("NO!"))
+                        message = senderAsMsgBox.Message + "!!!";
+                    else
+                        message = "NO!";
+
+                    var msgBox = new MessageBox(sender.GUIManager, "No", message, MessageBoxButton.YesNo);
+                    msgBox.OptionSelected += msgBox_OptionSelected;
+                    break;
+            }
         }
 
         void testLabelF4_Clicked(object sender, MouseButtonEventArgs e)
