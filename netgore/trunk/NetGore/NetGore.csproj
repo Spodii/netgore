@@ -173,6 +173,7 @@
     <Compile Include="Core\Strings\CharTypeExtensions.cs" />
     <Compile Include="Core\Time.cs" />
     <Compile Include="AI\AINode.cs" />
+    <Compile Include="Core\ExceptionSwallower.cs" />
     <Compile Include="World\Entities\IInventory.cs" />
     <Compile Include="World\Map\MapEvent\IDelayedMapEvent.cs" />
     <Compile Include="World\Map\MapEvent\TimeDelayedMapEvent.cs" />

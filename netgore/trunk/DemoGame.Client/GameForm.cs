@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using log4net;
+using NetGore;
 
 namespace DemoGame.Client
 {
@@ -83,30 +84,39 @@ namespace DemoGame.Client
         /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            // Check if the game is running
-            bool isOpened;
             try
             {
-                isOpened = _game.IsOpened();
-            }
-            catch (AccessViolationException)
-            {
-                // SFML likes to throw an AccessViolationException when the game is disposed
-                isOpened = false;
-            }
+                // Check if the game is running
+                bool isOpened;
+                try
+                {
+                    isOpened = _game.IsOpened();
+                }
+                catch (AccessViolationException)
+                {
+                    // SFML likes to throw an AccessViolationException when the game is disposed
+                    isOpened = false;
+                }
 
-            try
-            {
-                // If the game is running, handle the next frame. Otherwise, close the form.
-                if (isOpened)
-                    _game.HandleFrame();
-                else
-                    Close();
+                try
+                {
+                    // If the game is running, handle the next frame. Otherwise, close the form.
+                    if (isOpened)
+                        _game.HandleFrame();
+                    else
+                        Close();
+                }
+                finally
+                {
+                    // Invalidate the whole screen so that it will be fully redrawn as soon as possible
+                    Invalidate();
+                }
             }
-            finally
+            catch (Exception ex)
             {
-                // Invalidate the whole screen so that it will be fully redrawn as soon as possible
-                Invalidate();
+                ExceptionSwallower.Instance.Swallow(ex);
+                if (ExceptionSwallower.Instance.Rethrow)
+                    throw;
             }
         }
 
@@ -122,11 +132,22 @@ namespace DemoGame.Client
         /// </returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            // Prevents closing the form via alt+F4
-            if (keyData == (Keys.Alt | Keys.F4))
-                return true;
+            try
+            {
+                // Prevents closing the form via alt+F4
+                if (keyData == (Keys.Alt | Keys.F4))
+                    return true;
 
-            return base.ProcessCmdKey(ref msg, keyData);
+                return base.ProcessCmdKey(ref msg, keyData);
+            }
+            catch (Exception ex)
+            {
+                ExceptionSwallower.Instance.Swallow(ex);
+                if (ExceptionSwallower.Instance.Rethrow)
+                    throw;
+            }
+
+            return false;
         }
     }
 }
