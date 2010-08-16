@@ -131,32 +131,36 @@ namespace DemoGame.Server
         /// or null if the slot used to be empty.</param>
         protected override void HandleSlotChanged(InventorySlot slot, ItemEntity newItem, ItemEntity oldItem)
         {
+            Debug.Assert(oldItem != newItem);
+            Debug.Assert((oldItem != null && newItem == null) || (oldItem == null && newItem != null));
+
             // If we are loading the Inventory, we do not want to do database updates since that would be redundant
             // and likely cause problems
             if (!_isPersistent)
                 return;
 
+            // Stop listening for changes on the item that was removed
+            if (oldItem != null)
+            {
+                oldItem.GraphicOrAmountChanged -= ItemGraphicOrAmountChangeHandler;
+            }
+
+            // Listen to the item for changes on the item that was added
+            if (newItem != null)
+            {
+                newItem.GraphicOrAmountChanged += ItemGraphicOrAmountChangeHandler;
+            }
+
+            // Update the inventory slot in the database
             if (newItem == null)
             {
-                // Item was removed
-
-                // Update the database
                 if (!_isLoading)
                     DbController.GetQuery<DeleteCharacterInventoryItemQuery>().Execute(Character.ID, slot);
-
-                // Stop listening for changes
-                oldItem.GraphicOrAmountChanged -= ItemGraphicOrAmountChangeHandler;
             }
             else
             {
-                // Item was added
-
-                // Update the database
                 if (!_isLoading)
                     DbController.GetQuery<ReplaceCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
-
-                // Listen to the item for changes
-                newItem.GraphicOrAmountChanged += ItemGraphicOrAmountChangeHandler;
             }
 
             // Prepare the slot for updating
