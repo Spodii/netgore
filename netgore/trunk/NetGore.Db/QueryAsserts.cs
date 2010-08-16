@@ -7,9 +7,9 @@ namespace DemoGame.Server.Queries
 {
     /// <summary>
     /// Provides methods that assist in making asserts on the database queries. This provides better run-time checking of the
-    /// queries. It is recommended to use these <see cref="QueryAsserts"/> on all database query classes, when possible. Otherwise,
-    /// invalid queries might not throw any exceptions until you attempt to execute them, or the query may execute but not in the
-    /// way you expected it to.
+    /// queries. It is recommended to use these <see cref="QueryAsserts"/> on all database query classes in their constructor,
+    /// when possible. Otherwise, invalid queries might not throw any exceptions until you attempt to execute them, or the query
+    /// may execute but not in the way you expected it to.
     /// All assertion methods are handled in debug mode only. When building the project in release mode, none of these methods will
     /// be executed, so there is no performance cost for the end product.
     /// </summary>
