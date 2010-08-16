@@ -153,6 +153,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets if this character is currently involved in a peer trade session.
+        /// </summary>
+        public bool IsPeerTrading
+        {
+            get { return PeerTradeSession != null; }
+        }
+
+        /// <summary>
         /// Gets or sets the peer trade session that this <see cref="User"/> is currently participating in, or null if they
         /// are not currently trading. This should only be set by the <see cref="PeerTradeSession"/> class!
         /// </summary>
@@ -161,11 +169,6 @@ namespace DemoGame.Server
             get { return _peerTradeSession; }
             set { _peerTradeSession = value; }
         }
-        
-        /// <summary>
-        /// Gets if this character is currently involved in a peer trade session.
-        /// </summary>
-        public bool IsPeerTrading { get { return PeerTradeSession != null; } }
 
         /// <summary>
         /// Gets the <see cref="User"/>'s quest information.
@@ -204,6 +207,19 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        /// <summary>
+        /// If this <see cref="User"/> is involved in a peer trade, forces them to cancel it. Does nothing if the <see cref="User"/>
+        /// is not involved in any peer trade.
+        /// </summary>
+        public void CancelPeerTradeIfTrading()
+        {
+            var pts = PeerTradeSession;
+            if (pts == null)
+                return;
+
+            pts.Cancel(this);
         }
 
         /// <summary>
@@ -455,19 +471,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// If this <see cref="User"/> is involved in a peer trade, forces them to cancel it. Does nothing if the <see cref="User"/>
-        /// is not involved in any peer trade.
-        /// </summary>
-        public void CancelPeerTradeIfTrading()
-        {
-            var pts = PeerTradeSession;
-            if (pts == null)
-                return;
-
-            pts.Cancel(this);
-        }
-
-        /// <summary>
         /// Kills the user
         /// </summary>
         public override void Kill()
@@ -509,6 +512,17 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        /// <summary>
+        /// Translates the entity from its current position.
+        /// </summary>
+        /// <param name="adjustment">Amount to move.</param>
+        public override void Move(Vector2 adjustment)
+        {
+            CancelPeerTradeIfTrading();
+
+            base.Move(adjustment);
         }
 
         /// <summary>
@@ -586,29 +600,6 @@ namespace DemoGame.Server
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Teleports the character to a new position and informs clients in the area of
-        /// interest that the character has teleported.
-        /// </summary>
-        /// <param name="position">Position to teleport to.</param>
-        public override void Teleport(Vector2 position)
-        {
-            CancelPeerTradeIfTrading();
-
-            base.Teleport(position);
-        }
-
-        /// <summary>
-        /// Translates the entity from its current position.
-        /// </summary>
-        /// <param name="adjustment">Amount to move.</param>
-        public override void Move(Vector2 adjustment)
-        {
-            CancelPeerTradeIfTrading();
-
-            base.Move(adjustment);
         }
 
         /// <summary>
@@ -837,6 +828,18 @@ namespace DemoGame.Server
 
             // Inventory
             _userInventory.UpdateClient();
+        }
+
+        /// <summary>
+        /// Teleports the character to a new position and informs clients in the area of
+        /// interest that the character has teleported.
+        /// </summary>
+        /// <param name="position">Position to teleport to.</param>
+        public override void Teleport(Vector2 position)
+        {
+            CancelPeerTradeIfTrading();
+
+            base.Teleport(position);
         }
 
         public bool TryBuyItem(IItemTemplateTable itemTemplate, byte amount)
@@ -1083,9 +1086,7 @@ namespace DemoGame.Server
                 return false;
             }
             else
-            {
                 return true;
-            }
         }
 
         public void UseInventoryItem(InventorySlot slot)

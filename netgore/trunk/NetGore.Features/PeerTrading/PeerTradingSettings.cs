@@ -34,9 +34,11 @@ namespace NetGore.Features.PeerTrading
         /// </summary>
         public static PeerTradingSettings Instance
         {
-            get {
+            get
+            {
                 Debug.Assert(_instance != null, "The settings instance should not be null!");
-                return _instance; }
+                return _instance;
+            }
         }
 
         /// <summary>

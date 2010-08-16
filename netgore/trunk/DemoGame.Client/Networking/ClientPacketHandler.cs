@@ -87,22 +87,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the <see cref="ClientPeerTradeInfoHandler.GameMessageCallback"/> event from the <see cref="ClientPeerTradeInfoHandler"/>.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="gameMessage">The game message.</param>
-        /// <param name="args">The message arguments.</param>
-        void PeerTradeInfoHandler_GameMessageCallback(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args)
-        {
-            // Parse the GameMessage
-            var msg = _gameMessages.GetMessage(gameMessage, args);
-
-            // Display
-            if (!string.IsNullOrEmpty(msg))
-                GameplayScreen.AppendToChatOutput(msg);
-        }
-
-        /// <summary>
         /// Notifies listeners when a message has been received about creating an account.
         /// </summary>
         public event CreateAccountEventHandler ReceivedCreateAccount;
@@ -208,6 +192,22 @@ namespace DemoGame.Client
             Debug.Fail(string.Format(errmsg, soundID));
         }
 
+        /// <summary>
+        /// Handles the <see cref="ClientPeerTradeInfoHandler.GameMessageCallback"/> event from the <see cref="ClientPeerTradeInfoHandler"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="gameMessage">The game message.</param>
+        /// <param name="args">The message arguments.</param>
+        void PeerTradeInfoHandler_GameMessageCallback(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args)
+        {
+            // Parse the GameMessage
+            var msg = _gameMessages.GetMessage(gameMessage, args);
+
+            // Display
+            if (!string.IsNullOrEmpty(msg))
+                GameplayScreen.AppendToChatOutput(msg);
+        }
+
         public void Ping()
         {
             if (_pingWatch.IsRunning)
@@ -290,12 +290,6 @@ namespace DemoGame.Client
             var actionDisplay = ActionDisplayScripts.ActionDisplays[actionDisplayID];
             if (actionDisplay != null)
                 actionDisplay.Execute(Map, attacker, attacked);
-        }
-
-        [MessageHandler((byte)ServerPacketID.PeerTradeEvent)]
-        void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
-        {
-            PeerTradeInfoHandler.Read(r);
         }
 
         [MessageHandler((byte)ServerPacketID.CharDamage)]
@@ -486,6 +480,12 @@ namespace DemoGame.Client
 
             if (chr == World.UserChar)
                 _gameplayScreen.InfoBox.Add("You have leveled up!");
+        }
+
+        [MessageHandler((byte)ServerPacketID.PeerTradeEvent)]
+        void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
+        {
+            PeerTradeInfoHandler.Read(r);
         }
 
         [MessageHandler((byte)ServerPacketID.Ping)]

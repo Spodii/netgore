@@ -9,8 +9,6 @@ namespace DemoGame.Client
 {
     public class ClientPeerTradeInfoHandler : ClientPeerTradeInfoHandlerBase<Character, ItemEntity, IItemTable>
     {
-        ISocketSender _socketSender;
-
         /// <summary>
         /// Delegate for handling the <see cref="GameMessageCallback"/> event.
         /// </summary>
@@ -19,10 +17,7 @@ namespace DemoGame.Client
         /// <param name="args">The arguments for the message.</param>
         public delegate void GameMessageCallbackHandler(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args);
 
-        /// <summary>
-        /// Notifies listeners when this object has generated a <see cref="GameMessage"/> that needs to be displayed.
-        /// </summary>
-        public event GameMessageCallbackHandler GameMessageCallback;
+        ISocketSender _socketSender;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPeerTradeInfoHandler"/> class.
@@ -35,6 +30,40 @@ namespace DemoGame.Client
                 throw new ArgumentNullException("socketSender");
 
             SocketSender = socketSender;
+        }
+
+        /// <summary>
+        /// Notifies listeners when this object has generated a <see cref="GameMessage"/> that needs to be displayed.
+        /// </summary>
+        public event GameMessageCallbackHandler GameMessageCallback;
+
+        /// <summary>
+        /// Gets or sets the <see cref="ISocketSender"/> used to communicate with the server.
+        /// </summary>
+        public ISocketSender SocketSender
+        {
+            get { return _socketSender; }
+            set
+            {
+                if (_socketSender == value)
+                    return;
+
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _socketSender = value;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets a <see cref="PacketWriter"/> to use to write data to.
+        /// The created <see cref="PacketWriter"/> should also contain a header ID so you can recognize when messages
+        /// are to/from peer trading handler.
+        /// </summary>
+        /// <returns>A <see cref="PacketWriter"/> to use to write data to.</returns>
+        protected override PacketWriter CreateWriter()
+        {
+            return ClientPacket.GetWriter(ClientPacketID.PeerTradeEvent);
         }
 
         /// <summary>
@@ -82,35 +111,6 @@ namespace DemoGame.Client
 
             if (GameMessageCallback != null)
                 GameMessageCallback(this, GameMessage.PeerTradingTradeOpened, new string[] { OtherCharName });
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ISocketSender"/> used to communicate with the server.
-        /// </summary>
-        public ISocketSender SocketSender
-        {
-            get { return _socketSender; }
-            set
-            {
-                if (_socketSender == value)
-                    return;
-
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _socketSender = value;
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets a <see cref="PacketWriter"/> to use to write data to.
-        /// The created <see cref="PacketWriter"/> should also contain a header ID so you can recognize when messages
-        /// are to/from peer trading handler.
-        /// </summary>
-        /// <returns>A <see cref="PacketWriter"/> to use to write data to.</returns>
-        protected override PacketWriter CreateWriter()
-        {
-            return ClientPacket.GetWriter(ClientPacketID.PeerTradeEvent);
         }
 
         /// <summary>

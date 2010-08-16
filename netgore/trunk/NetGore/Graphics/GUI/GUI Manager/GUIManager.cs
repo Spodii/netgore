@@ -538,10 +538,10 @@ namespace NetGore.Graphics.GUI
                 // Take the control we already found as being under the cursor. Then, create a loop that will check if
                 // the control implements IDragDropProvider. If not, grab the parent. This will either give us the first
                 // control to implement IDragDropProvider, or null.
-                Control tmpDropOntoControl = c;
+                var tmpDropOntoControl = c;
                 while (tmpDropOntoControl != null)
                 {
-                    IDragDropProvider asDDP = tmpDropOntoControl as IDragDropProvider;
+                    var asDDP = tmpDropOntoControl as IDragDropProvider;
 
                     // If the control implements IDragDropProvider, and we can drop onto it, use that. Otherwise, move onto the parent.
                     if (asDDP != null && asDDP.CanDrop(DraggedDragDropProvider))

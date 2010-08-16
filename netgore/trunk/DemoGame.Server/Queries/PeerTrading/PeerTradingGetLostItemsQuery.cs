@@ -11,19 +11,19 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class PeerTradingGetLostItemsQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT `item_id` FROM `{0}` WHERE `character_id` = @characterID", ActiveTradeItemTable.TableName);
+        static readonly IEnumerable<ItemID> _emptyCollection = Enumerable.Empty<ItemID>();
+
+        static readonly string _queryStr = FormatQueryString("SELECT `item_id` FROM `{0}` WHERE `character_id` = @characterID",
+                                                             ActiveTradeItemTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingGetLostItemsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        public PeerTradingGetLostItemsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public PeerTradingGetLostItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(ActiveTradeItemTable.DbColumns, "character_id", "item_id");
         }
-
-        static readonly IEnumerable<ItemID> _emptyCollection = Enumerable.Empty<ItemID>();
 
         public IEnumerable<ItemID> Execute(CharacterID characterID)
         {
@@ -43,7 +43,8 @@ namespace DemoGame.Server.Queries
                 }
             }
 
-            Debug.Assert(ret == null || !ret.HasDuplicates(), "There shouldn't be any duplicates since the item_id field should be a primary key...");
+            Debug.Assert(ret == null || !ret.HasDuplicates(),
+                         "There shouldn't be any duplicates since the item_id field should be a primary key...");
 
             // If there were no items for this character, return the empty collection
             if (ret == null)

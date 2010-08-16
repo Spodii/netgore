@@ -27,6 +27,16 @@ namespace DemoGame.Client
         const int _columns = 6;
 
         /// <summary>
+        /// The background to use for drawing the item amount.
+        /// </summary>
+        public static Color ItemAmountBackColor = Color.Black;
+
+        /// <summary>
+        /// The foreground color to use for drawing the item amount.
+        /// </summary>
+        public static Color ItemAmountForeColor = Color.White;
+
+        /// <summary>
         /// The size of each item box.
         /// </summary>
         static readonly Vector2 _itemSize = new Vector2(32, 32);
@@ -35,16 +45,6 @@ namespace DemoGame.Client
         /// The amount of space between each item.
         /// </summary>
         static readonly Vector2 _padding = new Vector2(2, 2);
-
-        /// <summary>
-        /// The foreground color to use for drawing the item amount.
-        /// </summary>
-        public static Color ItemAmountForeColor = Color.White;
-
-        /// <summary>
-        /// The background to use for drawing the item amount.
-        /// </summary>
-        public static Color ItemAmountBackColor = Color.Black;
 
         readonly DragDropHandler _dragDropHandler;
         readonly ItemInfoRequesterBase<InventorySlot> _infoRequester;
@@ -314,7 +314,8 @@ namespace DemoGame.Client
 
                 // Draw the amount
                 if (item.Amount > 1)
-                    spriteBatch.DrawStringShaded(GUIManager.Font, item.Amount.ToString(), ScreenPosition, ItemAmountForeColor, ItemAmountBackColor);
+                    spriteBatch.DrawStringShaded(GUIManager.Font, item.Amount.ToString(), ScreenPosition, ItemAmountForeColor,
+                                                 ItemAmountBackColor);
             }
 
             /// <summary>

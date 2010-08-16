@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
@@ -13,14 +12,15 @@ namespace DemoGame.Server.PeerTrading
         static readonly ServerPeerTradeInfoHandler _instance;
 
         /// <summary>
-        /// When overridden in the derived class, gets the name for a character that will be displayed for the trade.
+        /// A cached <see cref="ItemTable"/> instanced for being able to use <see cref="IPersistable"/> with an
+        /// <see cref="IItemTable"/>.
         /// </summary>
-        /// <param name="character">The character to get the display name of.</param>
-        /// <returns>The display name of the <paramref name="character"/>.</returns>
-        protected override string GetCharDisplayName(User character)
-        {
-            return character.Name;
-        }
+        readonly ItemTable _itemTableInfoCache = new ItemTable();
+
+        /// <summary>
+        /// The locking object for the <see cref="_itemTableInfoCache"/>.
+        /// </summary>
+        readonly object _itemTableInfoCacheSync = new object();
 
         /// <summary>
         /// Initializes the <see cref="ServerPeerTradeInfoHandler"/> class.
@@ -62,6 +62,16 @@ namespace DemoGame.Server.PeerTrading
         protected override PacketWriter CreateWriter()
         {
             return ServerPacket.GetWriter(ServerPacketID.PeerTradeEvent);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name for a character that will be displayed for the trade.
+        /// </summary>
+        /// <param name="character">The character to get the display name of.</param>
+        /// <returns>The display name of the <paramref name="character"/>.</returns>
+        protected override string GetCharDisplayName(User character)
+        {
+            return character.Name;
         }
 
         /// <summary>
@@ -127,17 +137,6 @@ namespace DemoGame.Server.PeerTrading
 
             return item;
         }
-
-        /// <summary>
-        /// A cached <see cref="ItemTable"/> instanced for being able to use <see cref="IPersistable"/> with an
-        /// <see cref="IItemTable"/>.
-        /// </summary>
-        readonly ItemTable _itemTableInfoCache = new ItemTable();
-
-        /// <summary>
-        /// The locking object for the <see cref="_itemTableInfoCache"/>.
-        /// </summary>
-        readonly object _itemTableInfoCacheSync = new object();
 
         /// <summary>
         /// When overridden in the derived class, writes the information for an item.

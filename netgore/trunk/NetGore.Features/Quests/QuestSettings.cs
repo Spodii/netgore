@@ -28,7 +28,7 @@ namespace NetGore.Features.Quests
         {
             get
             {
-                Debug.Assert(_instance != null, "The settings instance should not be null!"); 
+                Debug.Assert(_instance != null, "The settings instance should not be null!");
                 return _instance;
             }
         }

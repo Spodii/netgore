@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using DemoGame.DbObjs;
 using NetGore;
 using NetGore.Features.PeerTrading;
@@ -49,6 +48,16 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the item quantity value from the item information.
+        /// </summary>
+        /// <param name="itemInfo">The item information to get the quantity value for.</param>
+        /// <returns>The quantity value for the <paramref name="itemInfo"/>.</returns>
+        protected override int GetItemAmount(IItemTable itemInfo)
+        {
+            return itemInfo.Amount;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, initializes a <see cref="Grh"/> to display the information for an item.
         /// </summary>
         /// <param name="grh">The <see cref="Grh"/> to initialize (cannot be null).</param>
@@ -94,16 +103,6 @@ namespace DemoGame.Client
                     return;
                 }
             }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the item quantity value from the item information.
-        /// </summary>
-        /// <param name="itemInfo">The item information to get the quantity value for.</param>
-        /// <returns>The quantity value for the <paramref name="itemInfo"/>.</returns>
-        protected override int GetItemAmount(IItemTable itemInfo)
-        {
-            return itemInfo.Amount;
         }
 
         /// <summary>
@@ -166,6 +165,18 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling of setting up the control that holds all the
+        /// controls for one side of a peer trade.
+        /// </summary>
+        /// <param name="tradePanel">The <see cref="PeerTradeFormBase{TChar,TItem,TItemInfo}.PeerTradeSidePanel"/> to set up.</param>
+        protected override void SetupTradePanelControl(PeerTradeSidePanel tradePanel)
+        {
+            base.SetupTradePanelControl(tradePanel);
+
+            tradePanel.Border = GUIManager.SkinManager.GetBorder("TextBox");
+        }
+
+        /// <summary>
         /// Handles the <see cref="TooltipHandler"/> callback for an item slot in the trade form.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -177,7 +188,7 @@ namespace DemoGame.Client
             var asItemSlot = sender as PeerTradeSidePanel.PeerTradeItemsCollectionSlot;
             if (asItemSlot == null)
                 return null;
-            
+
             // Ensure a valid trade state
             var ptih = PeerTradeInfoHandler;
             if (ptih == null || !ptih.IsTradeOpen)
@@ -186,7 +197,7 @@ namespace DemoGame.Client
             // Get the item info for the slot
             IItemTable itemInfo;
             if (asItemSlot.ItemsCollection.IsSourceSide)
-                itemInfo= ptih.GetSourceItemInfo(asItemSlot.Slot);
+                itemInfo = ptih.GetSourceItemInfo(asItemSlot.Slot);
             else
                 itemInfo = ptih.GetTargetItemInfo(asItemSlot.Slot);
 
@@ -195,18 +206,6 @@ namespace DemoGame.Client
 
             // Get and return the tooltip text
             return ItemInfoHelper.GetStyledText(itemInfo);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling of setting up the control that holds all the
-        /// controls for one side of a peer trade.
-        /// </summary>
-        /// <param name="tradePanel">The <see cref="PeerTradeFormBase{TChar,TItem,TItemInfo}.PeerTradeSidePanel"/> to set up.</param>
-        protected override void SetupTradePanelControl(PeerTradeSidePanel tradePanel)
-        {
-            base.SetupTradePanelControl(tradePanel);
-
-            tradePanel.Border = GUIManager.SkinManager.GetBorder("TextBox");
         }
 
         /// <summary>
@@ -352,9 +351,7 @@ namespace DemoGame.Client
             // Handle an inventory item control
             var asInvItem = source as InventoryForm.InventoryItemPB;
             if (asInvItem != null)
-            {
                 ptih.WriteAddInventoryItem(asInvItem.Slot);
-            }
         }
 
         #endregion

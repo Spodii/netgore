@@ -99,23 +99,6 @@ namespace DemoGame.Server
             {
                 get { return Server.World; }
             }
-            
-            /// <summary>
-            /// Starts a trade with another user.
-            /// </summary>
-            /// <param name="userName">The name of the user to trade with.</param>
-            [SayCommand("Trade")]
-            public void Trade(string userName)
-            {
-                var target = World.FindUser(userName);
-                if (target == null)
-                {
-                    User.Send(GameMessage.PeerTradingInvalidTarget);
-                    return;
-                }
-
-                User.TryStartPeerTrade(target);
-            }
 
             /// <summary>
             /// Sends a message to everyone online.
@@ -171,6 +154,23 @@ namespace DemoGame.Server
                     // User not found
                     User.Send(GameMessage.CommandTellInvalidUser, userName);
                 }
+            }
+
+            /// <summary>
+            /// Starts a trade with another user.
+            /// </summary>
+            /// <param name="userName">The name of the user to trade with.</param>
+            [SayCommand("Trade")]
+            public void Trade(string userName)
+            {
+                var target = World.FindUser(userName);
+                if (target == null)
+                {
+                    User.Send(GameMessage.PeerTradingInvalidTarget);
+                    return;
+                }
+
+                User.TryStartPeerTrade(target);
             }
 
             #region Helper methods
