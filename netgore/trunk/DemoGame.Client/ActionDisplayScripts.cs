@@ -152,7 +152,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="actionDisplay">The <see cref="ActionDisplay"/>.</param>
         /// <param name="source">The source of the sound.</param>
-        static void PlaySoundSimple(ActionDisplay actionDisplay, Entity source)
+        static void PlaySoundSimple(ActionDisplay actionDisplay, ISpatial source)
         {
             // Check for valid parameters
             if (actionDisplay == null)

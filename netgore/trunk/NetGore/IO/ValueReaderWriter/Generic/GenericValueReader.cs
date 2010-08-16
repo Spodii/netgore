@@ -85,12 +85,12 @@ namespace NetGore.IO
         /// <param name="headerLength">The actual length of the header.</param>
         /// <param name="expected">The expected bytes for the header.</param>
         /// <returns>True if the <paramref name="header"/> matches the <paramref name="expected"/>; otherwise false.</returns>
-        static bool CheckFormatHeader(char[] header, int headerLength, char[] expected)
+        static bool CheckFormatHeader(IList<char> header, int headerLength, IList<char> expected)
         {
-            if (headerLength < expected.Length)
+            if (headerLength < expected.Count)
                 return false;
 
-            for (var i = 0; i < expected.Length; i++)
+            for (var i = 0; i < expected.Count; i++)
             {
                 if (header[i] != expected[i])
                     return false;
