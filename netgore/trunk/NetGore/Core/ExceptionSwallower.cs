@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using log4net;
 
 namespace NetGore
@@ -43,7 +44,7 @@ namespace NetGore
         static ExceptionSwallower()
         {
             // Set the default ExceptionSwallower instance
-            _instance = new ExceptionSwallower(false);
+            _instance = new ExceptionSwallower();
         }
 
         /// <summary>
@@ -74,13 +75,32 @@ namespace NetGore
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        static int _exceptionsSwallowed = 0;
+
+        /// <summary>
+        /// Gets the total number of <see cref="Exception"/>s that have been swallowed since this application has been running.
+        /// </summary>
+        public static int ExceptionsSwallowed { get { return _exceptionsSwallowed; } }
+
         /// <summary>
         /// Allows for general handling of an unhandled <see cref="Exception"/>. The passed <see cref="Exception"/> will not be treated
         /// (as that logic should be done in a normal try/catch block). Instead, the <see cref="Exception"/> will be logged so that
         /// its existance is not completely forgotten.
         /// </summary>
-        /// <param name="ex">The unhandled <see cref="Exception"/>.</param>
-        public virtual void Swallow(Exception ex)
+        /// <param name="ex">The swallowed unhandled <see cref="Exception"/>.</param>
+        public void Swallow(Exception ex)
+        {
+            Interlocked.Increment(ref _exceptionsSwallowed);
+
+            SwallowHandler(ex);
+        }
+
+        /// <summary>
+        /// Performs the actual swallowing of the unhandled <see cref="Exception"/>. Derived classes should override this method to implement
+        /// their own handling logic.
+        /// </summary>
+        /// <param name="ex">The swallowed unhandled <see cref="Exception"/>.</param>
+        protected virtual void SwallowHandler(Exception ex)
         {
             const string errmsg = "`{0}` swallowed unhandled exception: {1}";
 
