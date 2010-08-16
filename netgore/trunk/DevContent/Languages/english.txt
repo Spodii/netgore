@@ -99,6 +99,8 @@ PeerTradingTradeCanceledByYou: "You have canceled the trade with $0."
 PeerTradingTradeCanceledByOther: "$0 has canceled the trade with you."
 PeerTradingTradeComplete: "You have successfully completed your trade with $0."
 PeerTradingTradeOpened: "You have started a trade with $0."
+PeerTradingItemsRecovered: "$0 of your items lost during your last trade have been recovered, but $1 still remains. Try to empty out some of your inventory, then log out and back in."
+PeerTradingItemsRecoveredNoRemaining: "All of your items ($0 total) lost during your last trade have been recovered and returned to you."
 
 QuestAccepted: "You have accepted a new quest!"
 QuestAcceptFailedAlreadyCompleted: "You cannot accept that quest since you have already completed it."

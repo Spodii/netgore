@@ -119,6 +119,7 @@
   <ItemGroup>
     <Compile Include="DbObjs\ActiveTradeItemTable.cs" />
     <Compile Include="DbObjs\DbExtensions\ActiveTradeItemTableDbExtensions.cs" />
+    <Compile Include="PeerTrading\PeerTradingHelper.cs" />
     <Compile Include="PeerTrading\ServerPeerTradeInfoHandler.cs" />
     <Compile Include="Queries\Account\AccountIDCreator.cs" />
     <Compile Include="DbObjs\AccountIpsTable.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Queries\Item\Template\ReplaceItemTemplateQuery.cs" />
     <Compile Include="Queries\Map\SelectMapIDsQuery.cs" />
     <Compile Include="Queries\NPC\SelectPersistentMapNPCsByRespawnMapQuery.cs" />
+    <Compile Include="Queries\PeerTrading\PeerTradingGetLostItemsQuery.cs" />
     <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusQuery.cs" />
     <Compile Include="Queries\Quest\Character\InsertCharacterQuestStatusStartQuery.cs" />
     <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusKillsQuery.cs" />
@@ -259,8 +261,8 @@
     <Compile Include="Queries\Shop\DeleteShopQuery.cs" />
     <Compile Include="Queries\Shop\InsertShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\ReplaceShopItemQuery.cs" />
-    <Compile Include="Queries\UserTrading\UserTradingInsertItemQuery.cs" />
-    <Compile Include="Queries\UserTrading\UserTradingRemoveItemQuery.cs" />
+    <Compile Include="Queries\PeerTrading\PeerTradingInsertItemQuery.cs" />
+    <Compile Include="Queries\PeerTrading\PeerTradingRemoveItemQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsGuildUserChangeQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsNetworkQuery.cs" />
     <Compile Include="Queries\WorldStats\InsertWorldStatsNPCKillUserQuery.cs" />

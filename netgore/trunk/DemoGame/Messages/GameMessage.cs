@@ -200,6 +200,8 @@ namespace DemoGame
         PeerTradingTradeCanceledByOther,
         PeerTradingTradeComplete,
         PeerTradingTradeOpened,
+        PeerTradingItemsRecovered,
+        PeerTradingItemsRecoveredNoRemaining,
 
         #endregion
 
