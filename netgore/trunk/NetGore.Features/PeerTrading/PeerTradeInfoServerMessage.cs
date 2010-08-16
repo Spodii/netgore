@@ -11,6 +11,7 @@ namespace NetGore.Features.PeerTrading
         Open,
         UpdateSlot,
         UpdateAccepted,
+        UpdateCash,
         Completed,
         Canceled,
         Closed

@@ -95,6 +95,16 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, handles giving cash to a character.
+        /// </summary>
+        /// <param name="c">The character to give the cash to.</param>
+        /// <param name="cash">The amount of cash to give the character.</param>
+        protected override void GiveCashTo(User c, int cash)
+        {
+            c.Cash += cash;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles giving an item to a character.
         /// </summary>
         /// <param name="c">The character to give the item to.</param>
@@ -119,6 +129,22 @@ namespace DemoGame.Server.PeerTrading
             var asClientCommunicator = receiver as IClientCommunicator;
             if (asClientCommunicator != null)
                 asClientCommunicator.Send(data);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, takes cash from the character.
+        /// </summary>
+        /// <param name="c">The character to take the cash from.</param>
+        /// <param name="cash">The amount of cash to take.</param>
+        /// <returns>The amount of cash that was taken, or less than or equal to zero if no cash was taken.</returns>
+        protected override int TakeCash(User c, int cash)
+        {
+            // Check if we have enough cash available
+            if (c.Cash < cash)
+                return 0;
+
+            c.Cash -= cash;
+            return cash;
         }
 
         /// <summary>

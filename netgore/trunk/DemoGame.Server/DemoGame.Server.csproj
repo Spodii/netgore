@@ -228,7 +228,10 @@
     <Compile Include="Queries\Item\Template\ReplaceItemTemplateQuery.cs" />
     <Compile Include="Queries\Map\SelectMapIDsQuery.cs" />
     <Compile Include="Queries\NPC\SelectPersistentMapNPCsByRespawnMapQuery.cs" />
+    <Compile Include="Queries\PeerTrading\PeerTradingGetLostCashQuery.cs" />
     <Compile Include="Queries\PeerTrading\PeerTradingGetLostItemsQuery.cs" />
+    <Compile Include="Queries\PeerTrading\PeerTradingRemoveCashQuery.cs" />
+    <Compile Include="Queries\PeerTrading\PeerTradingReplaceCashQuery.cs" />
     <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusQuery.cs" />
     <Compile Include="Queries\Quest\Character\InsertCharacterQuestStatusStartQuery.cs" />
     <Compile Include="Queries\Quest\Character\DeleteCharacterQuestStatusKillsQuery.cs" />

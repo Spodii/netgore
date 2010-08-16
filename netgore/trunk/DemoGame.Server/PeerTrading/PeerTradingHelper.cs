@@ -32,6 +32,16 @@ namespace DemoGame.Server.PeerTrading
         static readonly PeerTradingRemoveItemQuery _removeItemQuery;
 
         /// <summary>
+        /// The <see cref="PeerTradingGetLostCashQuery"/> instance to use.
+        /// </summary>
+        static readonly PeerTradingGetLostCashQuery _getLostCashQuery;
+
+        /// <summary>
+        /// The <see cref="PeerTradingRemoveCashQuery"/> instance to use.
+        /// </summary>
+        static readonly PeerTradingRemoveCashQuery _removeCashQuery;
+
+        /// <summary>
         /// Initializes the <see cref="PeerTradingHelper"/> class.
         /// </summary>
         static PeerTradingHelper()
@@ -41,6 +51,8 @@ namespace DemoGame.Server.PeerTrading
             _getLostItemsQuery = dbController.GetQuery<PeerTradingGetLostItemsQuery>();
             _insertItemQuery = dbController.GetQuery<PeerTradingInsertItemQuery>();
             _removeItemQuery = dbController.GetQuery<PeerTradingRemoveItemQuery>();
+            _getLostCashQuery = dbController.GetQuery<PeerTradingGetLostCashQuery>();
+            _removeCashQuery = dbController.GetQuery<PeerTradingRemoveCashQuery>();
         }
 
         /// <summary>
@@ -56,6 +68,46 @@ namespace DemoGame.Server.PeerTrading
             int recovered;
             int remaining;
             RecoverLostTradeItems(character, out recovered, out remaining);
+        }
+
+        /// <summary>
+        /// Recovers cash from the <see cref="ActiveTradeCashTable"/> for a character, and gives the cash to the character.
+        /// Unlike with items, cash can be restored much more easily and safely, so this method is guaranteed to restore all
+        /// cash if there is any in the <see cref="ActiveTradeCashTable"/>. However, also unlike with items, cash will not
+        /// linger around in the table until restored. Starting a new trade will remove the old entry. So it is highly
+        /// recommended to call this whenever the <see cref="Character"/> logs in, and maybe even before starting a trade.
+        /// If the <see cref="Character"/> starts a new trade while they have cash that needs to be restored, that cash
+        /// will likely end up lost forever.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> to get the lost cash for.</param>
+        /// <returns>The amount of cash that was restored to the <paramref name="character"/>. Will be 0 if they had no cash
+        /// to be restored.</returns>
+        public static int RecoverLostTradeCash(User character)
+        {
+            if (character == null)
+                throw new ArgumentNullException("character");
+
+            // Make sure that we do not try executing this while they are trading! Doing so would be very, very ugly.
+            if (character.IsPeerTrading)
+            {
+                const string errmsg = "Tried to recover lost trade cash for `{0}` while they were trading. Very bad idea...";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, character);
+                return 0;
+            }
+
+            // Get the lost cash
+            int lostCash;
+            bool exists = _getLostCashQuery.TryExecute(character.ID, out lostCash);
+
+            // Check if any cash needs to be returned
+            if (!exists || lostCash == 0)
+                return 0;
+
+            // Return the cash to the character
+            character.Cash += lostCash;
+
+            return lostCash;
         }
 
         /// <summary>
