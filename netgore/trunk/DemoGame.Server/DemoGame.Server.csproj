@@ -117,7 +117,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbObjs\ActiveTradeCashTable.cs" />
     <Compile Include="DbObjs\ActiveTradeItemTable.cs" />
+    <Compile Include="DbObjs\DbExtensions\ActiveTradeCashTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ActiveTradeItemTableDbExtensions.cs" />
     <Compile Include="PeerTrading\PeerTradingHelper.cs" />
     <Compile Include="PeerTrading\ServerPeerTradeInfoHandler.cs" />

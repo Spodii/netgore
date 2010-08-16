@@ -15,6 +15,7 @@ PeerTrading handles trading that takes place between two characters. While it is
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 DATABASE TABLES:
+ * active_trade_cash
  * active_trade_item
 
 CONTENT FILES:
