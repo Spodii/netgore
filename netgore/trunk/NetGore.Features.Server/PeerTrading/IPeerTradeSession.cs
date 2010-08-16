@@ -6,12 +6,22 @@ namespace NetGore.Features.PeerTrading
     public interface IPeerTradeSession<TChar, TItem> where TChar : Entity where TItem : Entity
     {
         /// <summary>
-        /// Gets the first character in the trade session. This is the character that started the trade.
+        /// Gets the amount of cash that the source character has put down in the trade. Will never be negative.
+        /// </summary>
+        int CharSourceCash { get; }
+
+        /// <summary>
+        /// Gets the amount of cash that the target character has put down in the trade. Will never be negative.
+        /// </summary>
+        int CharTargetCash { get; }
+
+        /// <summary>
+        /// Gets the source character in the trade session. This is the character that started the trade.
         /// </summary>
         TChar CharSource { get; }
 
         /// <summary>
-        /// Gets the second character in the trade session. This is the character that was requested to be traded with.
+        /// Gets the target character in the trade session. This is the character that was requested to be traded with.
         /// </summary>
         TChar CharTarget { get; }
 
@@ -61,5 +71,22 @@ namespace NetGore.Features.PeerTrading
         /// <returns>True if the item was successfully removed; false if the item could not be removed for some reason or if the
         /// slot was empty.</returns>
         bool TryRemoveItem(TChar c, InventorySlot slot);
+
+        /// <summary>
+        /// Adds cash to a character's side of the trade table. Either all of the <paramref name="cash"/> will be added, or none.
+        /// </summary>
+        /// <param name="c">The character adding cash to the trade table.</param>
+        /// <param name="cash">The amount of cash to add. Cannot be less than or equal to zero.</param>
+        /// <returns>True if the cash was successfully added; otherwise false.</returns>
+        bool AddCash(TChar c, int cash);
+
+        /// <summary>
+        /// Removes cash from a character's side of the trade table and gives it back to the character.
+        /// </summary>
+        /// <param name="c">The character removing cash from the trade table.</param>
+        /// <param name="cash">The amount of cash to remove. Cannot be less than or equal to zero.</param>
+        /// <returns>True if the specified amount of cash was removed from the trade table; false if not all of the cash could be removed,
+        /// usually because the character does not have that much cash placed down in the trade.</returns>
+        bool TryRemoveCash(TChar c, int cash);
     }
 }

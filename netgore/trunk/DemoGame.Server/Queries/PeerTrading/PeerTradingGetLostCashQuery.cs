@@ -1,57 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Diagnostics;
-using System.Linq;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class PeerTradingGetLostItemsQuery : DbQueryReader<CharacterID>
+    public class PeerTradingGetLostCashQuery : DbQueryReader<CharacterID>
     {
-        static readonly IEnumerable<ItemID> _emptyCollection = Enumerable.Empty<ItemID>();
-
-        static readonly string _queryStr = FormatQueryString("SELECT `item_id` FROM `{0}` WHERE `character_id` = @characterID",
-                                                             ActiveTradeItemTable.TableName);
-
+        static readonly string _queryStr = FormatQueryString("SELECT `cash` FROM `{0}` WHERE `character_id` = @characterID",
+                                                             ActiveTradeCashTable.TableName);
         /// <summary>
-        /// Initializes a new instance of the <see cref="PeerTradingGetLostItemsQuery"/> class.
+        /// Initializes a new instance of the <see cref="PeerTradingGetLostCashQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        public PeerTradingGetLostItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public PeerTradingGetLostCashQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, _queryStr)
         {
-            QueryAsserts.ContainsColumns(ActiveTradeItemTable.DbColumns, "character_id", "item_id");
+            QueryAsserts.ContainsColumns(ActiveTradeCashTable.DbColumns, "cash");
+            QueryAsserts.ArePrimaryKeys(ActiveTradeCashTable.DbKeyColumns, "character_id");
         }
 
-        public IEnumerable<ItemID> Execute(CharacterID characterID)
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <param name="characterID">The ID of the character to get the lost cash for.</param>
+        /// <param name="cash">When this method returns true, contains the amount of lost cash for the <paramref name="characterID"/>.</param>
+        /// <returns>True if a value existed in the table for the <paramref name="characterID"/>; otherwise false.</returns>
+        public bool TryExecute(CharacterID characterID, out int cash)
         {
-            List<ItemID> ret = null;
+            cash = 0;
 
             using (var r = ExecuteReader(characterID))
             {
-                while (r.Read())
-                {
-                    var itemID = r.GetItemID("item_id");
+                if (!r.Read())
+                    return false;
 
-                    // Delay the creation of the return list if possible so we can avoid needless garbage
-                    if (ret == null)
-                        ret = new List<ItemID>();
-
-                    ret.Add(itemID);
-                }
+                cash = r.GetInt32("cash");
             }
 
-            Debug.Assert(ret == null || !ret.HasDuplicates(),
-                         "There shouldn't be any duplicates since the item_id field should be a primary key...");
-
-            // If there were no items for this character, return the empty collection
-            if (ret == null)
-                return _emptyCollection;
-            else
-                return ret;
+            return true;
         }
 
         #region Overrides of DbQueryBase

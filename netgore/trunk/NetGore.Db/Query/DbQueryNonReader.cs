@@ -96,7 +96,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>Number of rows affected by the query.</returns>
-        /// <exception cref="DuplicateKeyException">Trying to insert a value who's primary key already exists.</exception>
+        /// <exception cref="DuplicateKeyException">Tried to perform an insert query for a key that already exists.</exception>
         public virtual int Execute(T item)
         {
             int returnValue;

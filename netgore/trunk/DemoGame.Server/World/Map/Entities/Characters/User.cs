@@ -418,8 +418,9 @@ namespace DemoGame.Server
 
             World.AddUser(this);
 
-            // Check if there are any items that the user lost during a trade session last time they were on
+            // Restore any of the user's lost cash or items from an improperly closed trade (namely for if the server crashed)
             PeerTradingHelper.RecoverLostTradeItems(this);
+            PeerTradingHelper.RecoverLostTradeCash(this);
         }
 
         /// <summary>

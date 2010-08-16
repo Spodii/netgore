@@ -128,7 +128,7 @@ namespace NetGore.Graphics.GUI
         public static int MaxWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets the message displayed in the <see cref="MessageBox"/>.
         /// </summary>
         public virtual string Message
         {

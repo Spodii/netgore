@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -77,12 +78,26 @@ namespace NetGore.Features.PeerTrading
         protected abstract void GiveItemTo(TChar c, TItem item);
 
         /// <summary>
+        /// When overridden in the derived class, handles giving cash to a character.
+        /// </summary>
+        /// <param name="c">The character to give the cash to.</param>
+        /// <param name="cash">The amount of cash to give the character.</param>
+        protected abstract void GiveCashTo(TChar c, int cash);
+
+        /// <summary>
         /// Reads a stream of data sent from the client.
         /// </summary>
         /// <param name="source">The character the received data came from.</param>
         /// <param name="reader">The <see cref="BitStream"/> containing the data to read.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="reader"/> is null.</exception>
         public void Read(TChar source, BitStream reader)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (reader == null)
+                throw new ArgumentNullException("reader");
+
             var id = reader.ReadEnum<PeerTradeInfoClientMessage>();
 
             switch (id)
@@ -99,8 +114,16 @@ namespace NetGore.Features.PeerTrading
                     ReadCancel(source);
                     break;
 
-                case PeerTradeInfoClientMessage.RemoveItem:
-                    ReadRemoveItem(source, reader);
+                case PeerTradeInfoClientMessage.RemoveInventoryItem:
+                    ReadRemoveInventoryItem(source, reader);
+                    break;
+
+                case PeerTradeInfoClientMessage.AddCash:
+                    ReadAddCash(source, reader);
+                    break;
+
+                case PeerTradeInfoClientMessage.RemoveCash:
+                    ReadRemoveCash(source, reader);
                     break;
 
                 default:
@@ -165,11 +188,68 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
-        /// Reads a <see cref="PeerTradeInfoClientMessage.RemoveItem"/>.
+        /// Reads a <see cref="PeerTradeInfoClientMessage.AddCash"/>.
         /// </summary>
         /// <param name="source">The character the received data came from.</param>
         /// <param name="reader">The <see cref="BitStream"/> to read the data from.</param>
-        void ReadRemoveItem(TChar source, BitStream reader)
+        void ReadAddCash(TChar source, BitStream reader)
+        {
+            var cash = reader.ReadInt();
+
+            if (cash <= 0)
+                return;
+
+            var session = GetTradeSession(source);
+            if (session == null)
+                return;
+
+            // Get the cash from the character
+            int cashToAdd = TakeCash(source, cash);
+            if (cashToAdd <= 0)
+                return;
+
+            // Add the cash
+            if (!session.AddCash(source, cashToAdd))
+            {
+                // Couldn't add the cash, so give it back to the character
+                GiveCashTo(source, cashToAdd);
+            }
+        }
+
+        /// <summary>
+        /// Reads a <see cref="PeerTradeInfoClientMessage.AddCash"/>.
+        /// </summary>
+        /// <param name="source">The character the received data came from.</param>
+        /// <param name="reader">The <see cref="BitStream"/> to read the data from.</param>
+        void ReadRemoveCash(TChar source, BitStream reader)
+        {
+            var cash = reader.ReadInt();
+
+            if (cash <= 0)
+                return;
+
+            var session = GetTradeSession(source);
+            if (session == null)
+                return;
+
+            // Remove the cash
+            session.TryRemoveCash(source, cash);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, takes cash from the character.
+        /// </summary>
+        /// <param name="c">The character to take the cash from.</param>
+        /// <param name="cash">The amount of cash to take.</param>
+        /// <returns>The amount of cash that was taken, or less than or equal to zero if no cash was taken.</returns>
+        protected abstract int TakeCash(TChar c, int cash);
+
+        /// <summary>
+        /// Reads a <see cref="PeerTradeInfoClientMessage.RemoveInventoryItem"/>.
+        /// </summary>
+        /// <param name="source">The character the received data came from.</param>
+        /// <param name="reader">The <see cref="BitStream"/> to read the data from.</param>
+        void ReadRemoveInventoryItem(TChar source, BitStream reader)
         {
             var slot = reader.ReadInventorySlot();
 
@@ -203,8 +283,32 @@ namespace NetGore.Features.PeerTrading
         /// <param name="hasAccepted"><paramref name="c"/>'s accept status.</param>
         public void WriteAcceptStatusChanged(IPeerTradeSession<TChar, TItem> peerTradeSession, TChar c, bool hasAccepted)
         {
-            Debug.Assert(c == peerTradeSession.CharSource || c == peerTradeSession.CharTarget,
-                         "`c` needs to be either the source or target...");
+            if (peerTradeSession == null)
+            {
+                const string errmsg = "Parameter `peerTradeSession` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (c == null)
+            {
+                const string errmsg = "Parameter `c` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (c != peerTradeSession.CharSource && c != peerTradeSession.CharTarget)
+            {
+                const string errmsg = "Character `{0}` is not part of the trade session `{1}`!";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, c, peerTradeSession);
+                Debug.Fail(string.Format(errmsg, c, peerTradeSession));
+                return;
+            }
 
             // Check who can receive the data
             var sendToSource = CanSendDataTo(peerTradeSession.CharSource);
@@ -246,6 +350,24 @@ namespace NetGore.Features.PeerTrading
         /// <param name="c">The character that canceled the trade.</param>
         public void WriteTradeCanceled(IPeerTradeSession<TChar, TItem> peerTradeSession, TChar c)
         {
+            if (peerTradeSession == null)
+            {
+                const string errmsg = "Parameter `peerTradeSession` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (c == null)
+            {
+                const string errmsg = "Parameter `c` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
             // Check who can receive the data
             var sendToSource = CanSendDataTo(peerTradeSession.CharSource);
             var sendToTarget = CanSendDataTo(peerTradeSession.CharTarget);
@@ -273,6 +395,15 @@ namespace NetGore.Features.PeerTrading
         /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
         public void WriteTradeClosed(IPeerTradeSession<TChar, TItem> peerTradeSession)
         {
+            if (peerTradeSession == null)
+            {
+                const string errmsg = "Parameter `peerTradeSession` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
             // Check who can receive the data
             var sendToSource = CanSendDataTo(peerTradeSession.CharSource);
             var sendToTarget = CanSendDataTo(peerTradeSession.CharTarget);
@@ -297,6 +428,15 @@ namespace NetGore.Features.PeerTrading
         /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
         public void WriteTradeCompleted(IPeerTradeSession<TChar, TItem> peerTradeSession)
         {
+            if (peerTradeSession == null)
+            {
+                const string errmsg = "Parameter `peerTradeSession` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
             // Check who can receive the data
             var sendToSource = CanSendDataTo(peerTradeSession.CharSource);
             var sendToTarget = CanSendDataTo(peerTradeSession.CharTarget);
@@ -321,6 +461,15 @@ namespace NetGore.Features.PeerTrading
         /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
         public void WriteTradeOpened(IPeerTradeSession<TChar, TItem> peerTradeSession)
         {
+            if (peerTradeSession == null)
+            {
+                const string errmsg = "Parameter `peerTradeSession` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
             // Check who can receive the data
             var sendToSource = CanSendDataTo(peerTradeSession.CharSource);
             var sendToTarget = CanSendDataTo(peerTradeSession.CharTarget);
@@ -356,6 +505,67 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Handles writing the information about the amount of cash on the table changing.
+        /// </summary>
+        /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
+        /// <param name="c">The character that owns the side of the trade table that changed.</param>
+        /// <param name="cash">The amount of cash on <paramref name="c"/>'s side of the table.</param>
+        public void WriteCashChanged(IPeerTradeSession<TChar, TItem> peerTradeSession, TChar c, int cash)
+        {
+            if (peerTradeSession == null)
+            {
+                const string errmsg = "Parameter `peerTradeSession` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (c == null)
+            {
+                const string errmsg = "Parameter `c` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (c != peerTradeSession.CharSource && c != peerTradeSession.CharTarget)
+            {
+                const string errmsg = "Character `{0}` is not part of the trade session `{1}`!";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, c, peerTradeSession);
+                Debug.Fail(string.Format(errmsg, c, peerTradeSession));
+                return;
+            }
+
+            // Check who can receive the data
+            var sendToSource = CanSendDataTo(peerTradeSession.CharSource);
+            var sendToTarget = CanSendDataTo(peerTradeSession.CharTarget);
+
+            if (!sendToSource && !sendToTarget)
+                return;
+
+            // Find out what side the change took place on
+            var isSourceSide = (peerTradeSession.CharSource == c);
+
+            // Construct and send the data
+            using (var pw = CreateWriter(PeerTradeInfoServerMessage.UpdateCash))
+            {
+                // Build
+                pw.Write(isSourceSide);
+                pw.Write(cash);
+
+                // Send
+                if (sendToSource)
+                    SendDataTo(peerTradeSession.CharSource, pw);
+
+                if (sendToTarget)
+                    SendDataTo(peerTradeSession.CharTarget, pw);
+            }
+        }
+
+        /// <summary>
         /// Handles writing the information about a table slot changing.
         /// </summary>
         /// <param name="peerTradeSession">The <see cref="IPeerTradeSession{TChar,TItem}"/>.</param>
@@ -365,8 +575,32 @@ namespace NetGore.Features.PeerTrading
         public void WriteTradeTableSlotChanged(IPeerTradeSession<TChar, TItem> peerTradeSession, TChar c, InventorySlot slot,
                                                TItem item)
         {
-            Debug.Assert(c == peerTradeSession.CharSource || c == peerTradeSession.CharTarget,
-                         "`c` needs to be either the source or target...");
+            if (peerTradeSession == null)
+            {
+                const string errmsg = "Parameter `peerTradeSession` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (c == null)
+            {
+                const string errmsg = "Parameter `c` cannot be null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (c != peerTradeSession.CharSource && c != peerTradeSession.CharTarget)
+            {
+                const string errmsg = "Character `{0}` is not part of the trade session `{1}`!";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, c, peerTradeSession);
+                Debug.Fail(string.Format(errmsg, c, peerTradeSession));
+                return;
+            }
 
             // Check who can receive the data
             var sendToSource = CanSendDataTo(peerTradeSession.CharSource);

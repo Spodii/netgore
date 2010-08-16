@@ -16,6 +16,19 @@ namespace DemoGame.Server.PeerTrading
     {
         static readonly PeerTradingSettings _settings = PeerTradingSettings.Instance;
         static readonly ServerPeerTradeInfoHandler _tradeInfoHandler = ServerPeerTradeInfoHandler.Instance;
+        static readonly PeerTradingReplaceCashQuery _replaceCashQuery;
+        static readonly PeerTradingRemoveCashQuery _removeCashQuery;
+
+        /// <summary>
+        /// Initializes the <see cref="PeerTradeSession"/> class.
+        /// </summary>
+        static PeerTradeSession()
+        {
+            // Cash the queries we will need
+            var dbController = DbControllerBase.GetInstance();
+            _replaceCashQuery = dbController.GetQuery<PeerTradingReplaceCashQuery>();
+            _removeCashQuery = dbController.GetQuery<PeerTradingRemoveCashQuery>();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradeSession"/> class.
@@ -144,6 +157,18 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, gives the <paramref name="character"/> the specified amount of <paramref name="cash"/>.
+        /// It should not matter where the <paramref name="cash"/> is coming from, or why it is being given to the
+        /// <paramref name="character"/>.
+        /// </summary>
+        /// <param name="character">The character to give the <paramref name="cash"/>.</param>
+        /// <param name="cash">The amount of cash to give to the <paramref name="character"/>.</param>
+        protected override void GiveCashToCharacter(User character, int cash)
+        {
+            character.Cash += cash;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when there are too many items in the trade table to give them all to
         /// a character. The derived class should provide some sort of notification to the character (if a player-controlled character)
         /// that the items cannot fit. No action actually needs to take place to resolve this problem.
@@ -174,6 +199,22 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for handling when the amount of cash a character has put down in the
+        /// trade table has changed.
+        /// </summary>
+        /// <param name="c">The character who's cash value has changed.</param>
+        /// <param name="oldValue">The previous amount of cash they had placed down in the trade.</param>
+        /// <param name="newValue">The current amount of cash they have placed down in the trade.</param>
+        protected override void OnCashChanged(User c, int oldValue, int newValue)
+        {
+            // Update the value in the database
+            _replaceCashQuery.Execute(c.ID, newValue);
+
+            // Update the client
+            _tradeInfoHandler.WriteCashChanged(this, c, newValue);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles when the trade has finished. This can be due to both canceling and
         /// accepting the trade. However, this method will not be invoked by the base class when it is not cleanly cleaned up.
         /// That is, it will not be called if the object reference is lost and is garbage collected. All clean-up of trades
@@ -181,8 +222,14 @@ namespace DemoGame.Server.PeerTrading
         /// </summary>
         protected override void OnTradeClosed()
         {
+            // Remove the cash columns from the database (since, unlike items, it is not removed automatically)
+            _removeCashQuery.Execute(CharSource.ID);
+            _removeCashQuery.Execute(CharTarget.ID);
+
+            // Send that the trade has closed
             _tradeInfoHandler.WriteTradeClosed(this);
 
+            // Remove the trade session from the characters
             CharSource.PeerTradeSession = null;
             CharTarget.PeerTradeSession = null;
         }

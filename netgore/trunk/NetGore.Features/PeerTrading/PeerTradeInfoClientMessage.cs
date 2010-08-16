@@ -11,6 +11,8 @@ namespace NetGore.Features.PeerTrading
         Cancel,
         Accept,
         AddInventoryItem,
-        RemoveItem
+        RemoveInventoryItem,
+        AddCash,
+        RemoveCash,
     }
 }
