@@ -453,6 +453,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event arguments.</param>
         public void SendEventMouseButtonPressed(MouseButtonEventArgs e)
         {
+            UpdateControlUnderCursor(e.X, e.Y);
+
             var c = UnderCursor;
 
             // Handle a left mouse button press
@@ -496,6 +498,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event arguments.</param>
         public void SendEventMouseButtonReleased(MouseButtonEventArgs e)
         {
+            UpdateControlUnderCursor(e.X, e.Y);
+
             // If it was the left mouse button that was released, then stop dragging the drag-and-drop provider
             // control (if we have one)
             if (e.Button == MouseButton.Left && DraggedDragDropProvider != null)
@@ -513,10 +517,10 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Sends an event for the mouse moving to this <see cref="IGUIManager"/>.
+        /// Updates what <see cref="Control"/> is currently under the cursor.
         /// </summary>
-        /// <param name="e">The event arguments.</param>
-        public void SendEventMouseMoved(MouseMoveEventArgs e)
+        /// <param name="e">The <see cref="SFML.Window.MouseMoveEventArgs"/> instance containing the event data.</param>
+        void UpdateControlUnderCursor(MouseMoveEventArgs e)
         {
             var lastUnderCursor = UnderCursor;
             _underCursor = GetControlAtPoint(CursorPosition);
@@ -531,6 +535,51 @@ namespace NetGore.Graphics.GUI
                 if (c != null)
                     c.SendMouseEnterEvent(e);
             }
+        }
+
+        /// <summary>
+        /// Updates what <see cref="Control"/> is currently under the cursor.
+        /// </summary>
+        /// <param name="x">The mouse X position.</param>
+        /// <param name="y">The mouse Y position.</param>
+        void UpdateControlUnderCursor(int x, int y)
+        {
+            MouseMoveEventArgs eArgs = null;
+
+            var lastUnderCursor = UnderCursor;
+            _underCursor = GetControlAtPoint(CursorPosition);
+
+            // When the control under the cursor changes, handle the mouse enter/leave events
+            var c = UnderCursor;
+            if (lastUnderCursor != c)
+            {
+                if (lastUnderCursor != null)
+                {
+                    if (eArgs == null)
+                        eArgs = new MouseMoveEventArgs(new MouseMoveEvent { X = x, Y = y });
+
+                    lastUnderCursor.SendMouseLeaveEvent(eArgs);
+                }
+
+                if (c != null)
+                {
+                    if (eArgs == null)
+                        eArgs = new MouseMoveEventArgs(new MouseMoveEvent { X = x, Y = y });
+
+                    c.SendMouseEnterEvent(eArgs);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sends an event for the mouse moving to this <see cref="IGUIManager"/>.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        public void SendEventMouseMoved(MouseMoveEventArgs e)
+        {
+            UpdateControlUnderCursor(e);
+
+            var c = UnderCursor;
 
             // Update the DropOntoContorl
             if (DraggedDragDropProvider != null)
@@ -586,6 +635,11 @@ namespace NetGore.Graphics.GUI
             {
                 control.Update(currentTime);
             }
+
+            // If we have a cache of the control under the cursor, make sure that the control is valid. If not, then
+            // update what control is under the cursor using the current cache of the cursor position.
+            if (UnderCursor != null && (!UnderCursor.IsVisible || UnderCursor.IsDisposed))
+                UpdateControlUnderCursor((int)CursorPosition.X, (int)CursorPosition.Y);
 
             // Update the tooltip
             Tooltip.Update(currentTime);
