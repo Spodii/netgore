@@ -41,6 +41,26 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
+        /// Checks that the given set of <paramref name="columns"/> match the expected set of column names exactly, except for in order.
+        /// </summary>
+        /// <param name="columns">The actual set of columns.</param>
+        /// <param name="expectedColumns">The expected set of columns.</param>
+        [Conditional("DEBUG")]
+        public static void AreColumns(IEnumerable<string> columns, params string[] expectedColumns)
+        {
+            const string errmsg = "The two sets of columns do not match perfectly.";
+
+            if (columns.Count() != expectedColumns.Length)
+                Debug.Fail(errmsg);
+
+            foreach (var expectedKey in expectedColumns)
+            {
+                if (!columns.Contains(expectedKey, _columnNameComparer))
+                    Debug.Fail(errmsg);
+            }
+        }
+
+        /// <summary>
         /// Checks if the given set of <paramref name="columns"/> contains the expected set of
         /// <paramref name="expectedColumns"/>. The expected set of <paramref name="columns"/> does not
         /// need to contain all of the actual <paramref name="columns"/>.
