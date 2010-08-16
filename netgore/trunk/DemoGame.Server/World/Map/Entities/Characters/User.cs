@@ -80,6 +80,7 @@ namespace DemoGame.Server
         {
             // Set the connection information
             _conn = conn;
+            _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
 
             // Create some objects
             _guildMemberInfo = new GuildMemberInfo(this);
@@ -89,7 +90,6 @@ namespace DemoGame.Server
             _questInfo = CreateQuestInfo();
             _userStatsBase = (UserStats)BaseStats;
             _userStatsMod = (UserStats)ModStats;
-            _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
 
             // Load the character data
             Load(characterID);
