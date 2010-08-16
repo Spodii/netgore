@@ -59,7 +59,7 @@ namespace DemoGame.Server.PeerTrading
         /// <param name="charTarget">The second character in the trade session.
         /// This is the character that was requested to be traded with.</param>
         /// <returns>True if the states are still valid; false if the trade needs to be terminated.</returns>
-        static bool AreCharacterStatesValidInternal(User charSource, User charTarget)
+        static bool AreCharacterStatesValidInternal(Character charSource, Character charTarget)
         {
             if (charSource.Map != charTarget.Map || charSource.GetDistance(charTarget) > _settings.MaxDistance)
                 return false;

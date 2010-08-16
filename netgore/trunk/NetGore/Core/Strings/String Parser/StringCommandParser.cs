@@ -341,12 +341,12 @@ namespace NetGore
         /// the <paramref name="method"/>. If unsuccessfully invoked, or the <paramref name="method"/> has
         /// a void return type, this will be an empty string.</param>
         /// <returns>True if the <paramref name="method"/> was invoked successfully; otherwise false.</returns>
-        static bool TryInvokeMethod(object binder, MethodInfo method, string[] args, out string result)
+        static bool TryInvokeMethod(object binder, MethodInfo method, IList<string> args, out string result)
         {
             var parameters = method.GetParameters();
 
             // Args always has to be >= the number of parameters
-            if (parameters.Length > args.Length)
+            if (parameters.Length > args.Count)
             {
                 result = string.Empty;
                 return false;
@@ -354,7 +354,7 @@ namespace NetGore
 
             // The number of parameters can only be less than the number of args if the last parameter is a string
             var lastParameter = parameters.LastOrDefault();
-            if (parameters.Length < args.Length && (lastParameter == null || lastParameter.ParameterType != typeof(string)))
+            if (parameters.Length < args.Count && (lastParameter == null || lastParameter.ParameterType != typeof(string)))
             {
                 result = string.Empty;
                 return false;
@@ -365,10 +365,10 @@ namespace NetGore
             // If args.Length > parameters.Length, then the last parameter is a string, so just join them all together
             // as one big string. Otherwise, we have to parse the last argument.
             var length = parameters.Length;
-            if (parameters.Length < args.Length)
+            if (parameters.Length < args.Count)
             {
                 length--; // Makes it so we don't try to parse the last argument
-                var combinedString = CombineStrings(args, convertedArgs.Length - 1, args.Length - 1, ' ');
+                var combinedString = CombineStrings(args, convertedArgs.Length - 1, args.Count - 1, ' ');
                 convertedArgs[convertedArgs.Length - 1] = combinedString;
             }
 
