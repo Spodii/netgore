@@ -7,12 +7,6 @@ using log4net;
 using NetGore.World;
 
 // TODO: !! Keep getting System.ArgumentException in DemoGame.dll when adding to trade, but it seems to be getting swallowed
-// TODO: !! Still cannot move after both parties accept the trade
-// TODO: !! The items traded are lost after the trade (not on ground, not in anyone's inventory)
-// TODO: !!    * Lots of "failed to get inventory slot of ..." messages in server
-// TODO: !!      - Probably using the wrong approach of moving the trade items from the table to the user
-// TODO: !! Seems to be issues with synchronizing the display of items when removed from and added to the trade table or inventory sometimes
-
 // TODO: !! Add support for adding money to the trade
 
 namespace NetGore.Features.PeerTrading
@@ -204,14 +198,17 @@ namespace NetGore.Features.PeerTrading
             // One-by-one, take out the items from the trade table and give it to the appropriate character. We give the item
             // first before removing it from the trade table to ensure that, as long as the inventory implementations persist
             // to the database, recovery from a crash during the trade is possible.
-            var validItemsAndSlot = _ttSource.Where(x => x.Value != null && !x.Value.IsDisposed).ToImmutable();
+            var validItemsAndSlot = tradeTable.Where(x => x.Value != null && !x.Value.IsDisposed).ToImmutable();
             foreach (var kvp in validItemsAndSlot)
             {
+                Debug.Assert(kvp.Value == tradeTable[kvp.Key]);
+
                 // Give the item
                 GiveItemToCharacter(character, kvp.Value);
 
-                // Remove the item from the trade table
-                tradeTable.RemoveAt(kvp.Key, false);
+                // Remove the item from the trade table (if it wasn't already removed for us)
+                if (tradeTable[kvp.Key] != null)
+                    tradeTable.RemoveAt(kvp.Key, false);
             }
         }
 
