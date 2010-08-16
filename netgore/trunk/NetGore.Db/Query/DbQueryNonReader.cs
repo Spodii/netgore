@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -13,9 +14,10 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryNonReader"/> class.
         /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <param name="commandText">String containing the command to use for the query.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="commandText"/> is null or empty.</exception>
         protected DbQueryNonReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
         {
         }
@@ -69,11 +71,12 @@ namespace NetGore.Db
     public abstract class DbQueryNonReader<T> : DbQueryBase, IDbQueryNonReader<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbQueryNonReader&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DbQueryNonReader{T}"/> class.
         /// </summary>
-        /// <param name="connectionPool"><see cref="DbConnectionPool"/> to use for creating connections to
-        /// execute the query on.</param>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <param name="commandText">String containing the command to use for the query.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="commandText"/> is null or empty.</exception>
         protected DbQueryNonReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
         {
         }

@@ -48,8 +48,8 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryBase"/> class.
         /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
-        /// <param name="commandText">The command text.</param>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
+        /// <param name="commandText">String containing the command to use for the query.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="commandText"/> is null or empty.</exception>
         protected DbQueryBase(DbConnectionPool connectionPool, string commandText)

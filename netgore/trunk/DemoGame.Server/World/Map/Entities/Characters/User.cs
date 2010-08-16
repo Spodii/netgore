@@ -353,7 +353,8 @@ namespace DemoGame.Server
             if (!RespawnMapID.HasValue)
             {
                 const string errmsg =
-                    "Users are expected to have a valid respawn position at all times, but user `{0}` does not. Using ServerSettings.InvalidUserLoad... instead.";
+                    "Users are expected to have a valid respawn position at all times, but user `{0}` does not." +
+                    " Using ServerSettings.InvalidUserLoad... instead.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
@@ -400,6 +401,9 @@ namespace DemoGame.Server
             }
 
             World.AddUser(this);
+
+            // Check if there are any items that the user lost during a trade session last time they were on
+            PeerTradingHelper.RecoverLostTradeItems(this);
         }
 
         /// <summary>

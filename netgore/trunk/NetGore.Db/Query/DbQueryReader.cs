@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -13,8 +14,10 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryReader"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <param name="commandText">String containing the command to use for the query.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="commandText"/> is null or empty.</exception>
         protected DbQueryReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
         {
         }
@@ -74,8 +77,10 @@ namespace NetGore.Db
         /// <summary>
         /// Initializes a new instance of the <see cref="DbQueryReader{T}"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <param name="commandText">String containing the command to use for the query.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="commandText"/> is null or empty.</exception>
         protected DbQueryReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
         {
         }
