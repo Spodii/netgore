@@ -116,7 +116,7 @@ namespace NetGore.Graphics.GUI
                 ChatBubble c;
                 if (_chatBubbles.TryGetValue(owner, out c))
                 {
-                    c._textControl.Text = text;
+                    c._textControl.ChangeTextAndResize(text);
                     c._deathTime = (TickCount)(TickCount.Now + Lifespan);
                     return c;
                 }
@@ -243,16 +243,21 @@ namespace NetGore.Graphics.GUI
         sealed class ChatBubbleText : TextBox
         {
             /// <summary>
+            /// The initial height of the textbox. Doesn't really matter too much what the value is.
+            /// </summary>
+            const int _initialHeight = 256;
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="ChatBubbleText"/> class.
             /// </summary>
             /// <param name="parent">The parent.</param>
             /// <param name="text">The text.</param>
-            public ChatBubbleText(Control parent, string text) : base(parent, Vector2.Zero, new Vector2(MaxChatBubbleWidth, 256))
+            public ChatBubbleText(Control parent, string text)
+                : base(parent, Vector2.Zero, new Vector2(MaxChatBubbleWidth, _initialHeight))
             {
                 IsMultiLine = true;
 
-                Text = text;
-                ResizeToFitText(MaxChatBubbleWidth);
+                ChangeTextAndResize(text);
             }
 
             /// <summary>
@@ -263,6 +268,21 @@ namespace NetGore.Graphics.GUI
             public override void LoadSkin(ISkinManager skinManager)
             {
                 // Do not skin the ChatBubbleText
+            }
+
+            /// <summary>
+            /// Changes the control's text and properly resizes it to fit the text. Use this instead of setting the
+            /// <see cref="Text"/> property when resizing.
+            /// </summary>
+            public void ChangeTextAndResize(string newText)
+            {
+                if (Text == newText)
+                    return;
+
+                Clear();
+                ClientSize = new Vector2(MaxChatBubbleWidth, _initialHeight);
+                Text = newText;
+                ResizeToFitText();
             }
 
             /// <summary>

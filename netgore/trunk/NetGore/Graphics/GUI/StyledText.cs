@@ -521,11 +521,9 @@ namespace NetGore.Graphics.GUI
 
                         splitAt -= (s.Length - current.Text.Length);
 
-                        // TODO: This will enter an infinite loop if the width is smaller than a single character. Need to fix that.
-
                         // Don't try to split farther back than the current styled text block
-                        if (splitAt < -1)
-                            splitAt = -1;
+                        if (splitAt < 0)
+                            splitAt = 0;
 
                         if (splitAt + 1 == current.Text.Length)
                         {
