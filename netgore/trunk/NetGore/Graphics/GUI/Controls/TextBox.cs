@@ -278,6 +278,8 @@ namespace NetGore.Graphics.GUI
             get { return _numCharsToDraw; }
         }
 
+        bool _hasTextChanged = false;
+
         /// <summary>
         /// Gets or sets the text in this <see cref="TextBox"/>. Please beware that setting the text through this
         /// method will result in all font styling to be lost.
@@ -344,6 +346,8 @@ namespace NetGore.Graphics.GUI
             }
 
             _numCharsToDraw.Invalidate();
+
+            _hasTextChanged = true;
         }
 
         /// <summary>
@@ -399,7 +403,10 @@ namespace NetGore.Graphics.GUI
         public void Clear()
         {
             _cursorLinePosition = 0;
+            _lineBufferOffset = 0;
+            _lineCharBufferOffset = 0;
             _lines.Clear();
+            _hasTextChanged = true;
 
             Debug.Assert(_lines.Count == 1);
             Debug.Assert(_lines.CurrentLineIndex == 0);
@@ -639,6 +646,8 @@ namespace NetGore.Graphics.GUI
             _editableTextHandler.HandleText(e);
 
             base.OnTextEntered(e);
+
+            _hasTextChanged = true;
         }
 
         void ResetCursorBlink()
@@ -726,6 +735,12 @@ namespace NetGore.Graphics.GUI
                 ResetCursorBlink();
 
             base.UpdateControl(currentTime);
+
+            if (_hasTextChanged)
+            {
+                _hasTextChanged = false;
+                InvokeTextChanged();
+            }
         }
 
         /// <summary>
