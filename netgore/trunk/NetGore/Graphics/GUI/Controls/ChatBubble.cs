@@ -8,7 +8,7 @@ using NetGore.Graphics.GUI;
 using NetGore.World;
 using SFML.Graphics;
 
-namespace NetGore.Graphics
+namespace NetGore.Graphics.GUI
 {
     /// <summary>
     /// A bubble of text that appears near an <see cref="Entity"/> and is used to denote chatting text.
