@@ -14,7 +14,6 @@ namespace DemoGame.GUITester
 
         Label _dragLbl;
         TextBox _textBox;
-        ControlBorder _topBorder;
         Form topForm;
 
         /// <summary>
@@ -69,8 +68,6 @@ namespace DemoGame.GUITester
             };
 
             tb.Append(styledTexts);
-
-            _topBorder = topForm.Border;
 
             var form = new Form(topForm, new Vector2(50, 50), new Vector2(200, 200)) { Text = "My form" };
 
