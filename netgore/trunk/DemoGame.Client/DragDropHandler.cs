@@ -80,6 +80,20 @@ namespace DemoGame.Client
             _dropCallbacks = CreateDropCallbacks(methods, _dropMethodPrefix);
         }
 
+        Inventory UserInventory
+        {
+            get
+            {
+                if (_gps == null)
+                    return null;
+
+                if (_gps.UserInfo == null)
+                    return null;
+
+                return _gps.UserInfo.Inventory;
+            }
+        }
+
         /// <summary>
         /// Gets if the specified <see cref="IDragDropProvider"/> can be dropped on this <see cref="IDragDropProvider"/>.
         /// </summary>
@@ -397,20 +411,6 @@ namespace DemoGame.Client
             return true;
         }
 
-        Inventory UserInventory
-        {
-            get
-            {
-                if (_gps == null)
-                    return null;
-
-                if (_gps.UserInfo == null)
-                    return null;
-
-                return _gps.UserInfo.Inventory;
-            }
-        }
-
         /// <summary>
         /// Adds support for dragging a
         /// <see cref="InventoryForm.InventoryItemPB"/> onto an <see cref="ShopForm"/>.
@@ -430,7 +430,7 @@ namespace DemoGame.Client
             var src = (InventoryForm.InventoryItemPB)srcDDP;
 
             UserInventory.SellToShop(src.Slot, _gps.GUIManager);
-            
+
             return true;
         }
 
