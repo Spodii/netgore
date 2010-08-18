@@ -9,16 +9,17 @@ namespace NetGore.Db.MySql
     [DbControllerQuery]
     public class MySqlFindForeignKeysQuery : FindForeignKeysQuery
     {
-        const string _queryStr =
-            "SELECT `TABLE_NAME`, `COLUMN_NAME`" + " FROM information_schema.KEY_COLUMN_USAGE" + " WHERE `TABLE_SCHEMA` = {0} AND" +
-            " `REFERENCED_TABLE_SCHEMA` = {0} AND" + " `REFERENCED_TABLE_NAME` = {1} AND" + " `REFERENCED_COLUMN_NAME` = {2};";
+        static readonly string _queryStr =
+            FormatQueryString("SELECT `TABLE_NAME`, `COLUMN_NAME`" + " FROM information_schema.KEY_COLUMN_USAGE" + " WHERE `TABLE_SCHEMA` = {0} AND" +
+            " `REFERENCED_TABLE_SCHEMA` = {0} AND" + " `REFERENCED_TABLE_NAME` = {1} AND" + " `REFERENCED_COLUMN_NAME` = {2};",
+            "@" + DbParameterName, "@" + TableParameterName, "@" + ColumnParameterName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FindForeignKeysQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
         public MySqlFindForeignKeysQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, string.Format(_queryStr, DbParameterName, TableParameterName, ColumnParameterName))
+            : base(connectionPool, _queryStr)
         {
         }
 

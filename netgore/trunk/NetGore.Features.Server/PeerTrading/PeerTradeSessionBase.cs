@@ -336,6 +336,7 @@ namespace NetGore.Features.PeerTrading
             // Give the cash to the characters
             if (CharSourceCash > 0)
                 GiveCashToCharacter(CharTarget, CharSourceCash);
+
             if (CharTargetCash > 0)
                 GiveCashToCharacter(CharSource, CharTargetCash);
 
