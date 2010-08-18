@@ -108,42 +108,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the OptionSelected event of the DropInputBox, which is the <see cref="InputBox"/> created to
-        /// let the user specify how much of the item they want to drop.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void DropInputBox_OptionSelected(Control sender, MessageBoxButton args)
-        {
-            InventorySlot slot = (InventorySlot)sender.Tag;
-            var inBox = (InputBox)sender;
-
-            byte amount;
-            if (!byte.TryParse(inBox.InputText, out amount))
-                return;
-
-            Drop(slot, amount);
-        }
-
-        /// <summary>
-        /// Handles the OptionSelected event of the SellToShopInputBox, which is the <see cref="InputBox"/> created to
-        /// let the user specify how much of the item they want to sell to a shop.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void SellToShopInputBox_OptionSelected(Control sender, MessageBoxButton args)
-        {
-            InventorySlot slot = (InventorySlot)sender.Tag;
-            var inBox = (InputBox)sender;
-
-            byte amount;
-            if (!byte.TryParse(inBox.InputText, out amount))
-                return;
-
-            SellToShop(slot, amount);
-        }
-
-        /// <summary>
         /// Drops an item from the inventory onto the ground.
         /// </summary>
         /// <param name="slot">The slot of the item to drop.</param>
@@ -160,6 +124,24 @@ namespace DemoGame.Client
             {
                 _socket.Send(pw);
             }
+        }
+
+        /// <summary>
+        /// Handles the OptionSelected event of the DropInputBox, which is the <see cref="InputBox"/> created to
+        /// let the user specify how much of the item they want to drop.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        void DropInputBox_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            var slot = (InventorySlot)sender.Tag;
+            var inBox = (InputBox)sender;
+
+            byte amount;
+            if (!byte.TryParse(inBox.InputText, out amount))
+                return;
+
+            Drop(slot, amount);
         }
 
         /// <summary>
@@ -208,6 +190,24 @@ namespace DemoGame.Client
             {
                 _socket.Send(pw);
             }
+        }
+
+        /// <summary>
+        /// Handles the OptionSelected event of the SellToShopInputBox, which is the <see cref="InputBox"/> created to
+        /// let the user specify how much of the item they want to sell to a shop.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        void SellToShopInputBox_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            var slot = (InventorySlot)sender.Tag;
+            var inBox = (InputBox)sender;
+
+            byte amount;
+            if (!byte.TryParse(inBox.InputText, out amount))
+                return;
+
+            SellToShop(slot, amount);
         }
 
         /// <summary>
