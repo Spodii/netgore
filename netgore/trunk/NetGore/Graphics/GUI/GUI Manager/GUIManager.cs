@@ -130,30 +130,8 @@ namespace NetGore.Graphics.GUI
                 _controls.Remove(newFocusedRoot);
                 _controls.Add(newFocusedRoot);
 
-                ConfirmAlwaysOnTopOrdered();
-
                 if (FocusedRootChanged != null)
                     FocusedRootChanged(this);
-            }
-        }
-
-        /// <summary>
-        /// Makes sure that all of the child <see cref="Control"/>s that are set to <see cref="Control.AlwaysOnTop"/> are
-        /// properly ordered in the array.
-        /// </summary>
-        void ConfirmAlwaysOnTopOrdered()
-        {
-            int end = _controls.Count;
-            for (int i = 0; i < end; i++)
-            {
-                if (_controls[i].ContainsAlwaysOnTop)
-                {
-                    var c = _controls[i];
-                    _controls.RemoveAt(i);
-                    _controls.Add(c);
-                    i--;
-                    end--;
-                }
             }
         }
 
