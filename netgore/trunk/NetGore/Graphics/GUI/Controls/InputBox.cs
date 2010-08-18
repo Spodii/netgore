@@ -21,8 +21,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="maxWidth">The maximum width of the created <see cref="MessageBox"/>. If less than or equal to 0, then
         /// the <see cref="MessageBox.DefaultMaxWidth"/> will be used instead. Default is 0.</param>
         public InputBox(IGUIManager guiManager, string text, string message,
-                        MessageBoxButton buttonTypes = MessageBoxButton.OkCancel, int maxWidth = 0) : base(guiManager, text, message, buttonTypes, 
-            maxWidth)
+                        MessageBoxButton buttonTypes = MessageBoxButton.OkCancel, int maxWidth = 0)
+            : base(guiManager, text, message, buttonTypes, maxWidth)
         {
         }
 
@@ -56,18 +56,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets if this <see cref="Control"/> should always be on top. This method will be invoked during the construction
-        /// of the root level <see cref="Control"/>, so values set during the construction of the derived class will not
-        /// be set before this method is called. It is highly recommended you only return a constant True or False value.
-        /// This is only called when the <see cref="Control"/> is a root-level <see cref="Control"/>.
-        /// </summary>
-        /// <returns>If this <see cref="Control"/> will always be on top.</returns>
-        protected override bool GetIsAlwaysOnTop()
-        {
-            return true;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
         /// before the buttons.
         /// </summary>
@@ -82,12 +70,32 @@ namespace NetGore.Graphics.GUI
             if (_input == null)
             {
                 _input = CreateTextBoxControl(pos, new Vector2(32, 4));
+                _input.SetFocus();
             }
 
             var height = Math.Max(_input.Size.Y, _input.Font.GetLineSpacing(_input.Font.DefaultSize) + _input.Border.Height);
             InputControl.Size = new Vector2(ClientSize.X - (Padding * 2), height);
 
             yOffset += (int)_input.Size.Y;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="InputBox"/> that only accepts numeric values.
+        /// </summary>
+        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
+        /// <param name="text">The message box's title text.</param>
+        /// <param name="message">The message to display.</param>
+        /// <param name="buttonTypes">The <see cref="MessageBoxButton"/>s to display. Default is <see cref="MessageBoxButton.OkCancel"/></param>
+        /// <param name="maxWidth">The maximum width of the created <see cref="MessageBox"/>. If less than or equal to 0, then
+        /// the <see cref="MessageBox.DefaultMaxWidth"/> will be used instead. Default is 0.</param>
+        /// <returns>An <see cref="InputBox"/> that only accepts numeric values.</returns>
+        public static InputBox CreateNumericInputBox(IGUIManager guiManager, string text, string message,
+                                                     MessageBoxButton buttonTypes = MessageBoxButton.OkCancel, int maxWidth = 0)
+        {
+            var ret = new InputBox(guiManager, text, message, buttonTypes, maxWidth);
+            ret.InputControl.AllowKeysHandler = TextEventArgsFilters.IsDigitFunc;
+            ret.InputText = "0";
+            return ret;
         }
 
         /// <summary>
@@ -100,6 +108,18 @@ namespace NetGore.Graphics.GUI
         {
             var ret = new InputTextBox(this, position, size) { IsMultiLine = false };
             return ret;
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="Control"/> should always be on top. This method will be invoked during the construction
+        /// of the root level <see cref="Control"/>, so values set during the construction of the derived class will not
+        /// be set before this method is called. It is highly recommended you only return a constant True or False value.
+        /// This is only called when the <see cref="Control"/> is a root-level <see cref="Control"/>.
+        /// </summary>
+        /// <returns>If this <see cref="Control"/> will always be on top.</returns>
+        protected override bool GetIsAlwaysOnTop()
+        {
+            return true;
         }
 
         /// <summary>
