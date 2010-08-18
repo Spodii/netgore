@@ -380,6 +380,18 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets if this <see cref="Control"/> should always be on top. This method will be invoked during the construction
+        /// of the root level <see cref="Control"/>, so values set during the construction of the derived class will not
+        /// be set before this method is called. It is highly recommended you only return a constant True or False value.
+        /// This is only called when the <see cref="Control"/> is a root-level <see cref="Control"/>.
+        /// </summary>
+        /// <returns>If this <see cref="Control"/> will always be on top.</returns>
+        protected override bool GetIsAlwaysOnTop()
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Handles when the <see cref="TextControl.Text"/> has changed.
         /// This is called immediately before <see cref="TextControl.TextChanged"/>.
         /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.

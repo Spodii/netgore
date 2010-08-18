@@ -50,6 +50,7 @@ namespace NetGore.Graphics.GUI
         readonly IGUIManager _gui;
         readonly Control _parent;
         readonly Control _root;
+        readonly bool _alwaysOnTop;
 
         ControlBorder _border;
         Color _borderColor = Color.White;
@@ -82,6 +83,12 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets if this <see cref="Control"/> is always on top. Only valid for root-level <see cref="Control"/>s. Non-root
+        /// <see cref="Control"/>s will always return false.
+        /// </summary>
+        public bool AlwaysOnTop { get { return _alwaysOnTop; } }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
@@ -96,8 +103,8 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
         /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
+        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
@@ -119,9 +126,7 @@ namespace NetGore.Graphics.GUI
             else
                 _root = Parent.Root;
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Initialize();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             if (Parent != null)
             {
@@ -138,13 +143,25 @@ namespace NetGore.Graphics.GUI
             }
             else
             {
+                _alwaysOnTop = GetIsAlwaysOnTop();
+
                 // This control is the root, so add it directly to the GUI manager
                 GUIManager.Add(this);
             }
 
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             SetDefaultValues();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="Control"/> should always be on top. This method will be invoked during the construction
+        /// of the root level <see cref="Control"/>, so values set during the construction of the derived class will not
+        /// be set before this method is called. It is highly recommended you only return a constant True or False value.
+        /// This is only called when the <see cref="Control"/> is a root-level <see cref="Control"/>.
+        /// </summary>
+        /// <returns>If this <see cref="Control"/> will always be on top.</returns>
+        protected virtual bool GetIsAlwaysOnTop()
+        {
+            return false;
         }
 
         /// <summary>
