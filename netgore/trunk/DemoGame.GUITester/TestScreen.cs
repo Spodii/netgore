@@ -140,8 +140,9 @@ namespace DemoGame.GUITester
 
         void b_Clicked(object sender, MouseButtonEventArgs e)
         {
-            var msgBox = new MessageBox(GUIManager, ":o", "You clicked the magical button!", MessageBoxButton.YesNoCancel);
-            msgBox.OptionSelected += msgBox_OptionSelected;
+            var inBox = new InputBox(GUIManager, "Input", "Enter some number:", MessageBoxButton.OkCancel);
+            //var msgBox = new MessageBox(GUIManager, ":o", "You clicked the magical button!", MessageBoxButton.YesNoCancel);
+            //msgBox.OptionSelected += msgBox_OptionSelected;
         }
 
         static void msgBox_OptionSelected(Control sender, MessageBoxButton args)

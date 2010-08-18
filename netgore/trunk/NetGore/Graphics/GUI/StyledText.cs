@@ -521,19 +521,14 @@ namespace NetGore.Graphics.GUI
 
                         splitAt -= (s.Length - current.Text.Length);
 
-                        // Don't try to split farther back than the current styled text block
-                        if (splitAt < 0)
+                        // Don't try to split farther back than the current styled text block unless the character is larger
+                        // than the maximum line length. In which case, we just throw the character into the line (not much
+                        // else we can do other than just show nothing, and that is no better...)
+                        if (retLine.Count == 0 && splitAt < 0)
                             splitAt = 0;
 
                         if (splitAt + 1 == current.Text.Length)
                         {
-                            const string errmsg =
-                                "Splitting string `{0}` at index `{1}` results in the right side of the split" +
-                                " being an empty string. This will lead to an infinite recusion of split attempts...";
-                            log.FatalFormat(errmsg, s, splitAt);
-                            Debug.Fail(string.Format(errmsg, s, splitAt));
-
-                            // Recover by just not splitting
                             retLine.Add(current);
                         }
                         else
@@ -565,9 +560,6 @@ namespace NetGore.Graphics.GUI
                     ret.Add(retLine);
                 }
             }
-
-            Debug.Assert(ret.All(x => font.MeasureString(ToString(x)).X <= maxLineLength),
-                         "One or more lines were greater than the max length.");
 
             return ret;
         }

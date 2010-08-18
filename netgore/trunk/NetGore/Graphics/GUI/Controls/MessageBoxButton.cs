@@ -50,5 +50,10 @@ namespace NetGore.Graphics.GUI
         /// The "Yes", "No", and "Cancel" buttons on a <see cref="MessageBox"/>.
         /// </summary>
         YesNoCancel = Yes | No | Cancel,
+
+        /// <summary>
+        /// The "Ok" and "Cancel" buttons on a <see cref="MessageBox"/>.
+        /// </summary>
+        OkCancel = Ok | Cancel
     }
 }
