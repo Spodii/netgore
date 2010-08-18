@@ -555,17 +555,13 @@ namespace DemoGame.Client
                 // If we are doing a peer trade, add the item into the trade instead
                 var ptih = PeerTradeForm.PeerTradeInfoHandler;
                 if (ptih != null)
-                {
                     _peerTradeForm.AddToTrade(slot);
-                }
             }
             else if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
             {
                 // If we are currently shopping, try to sell the item instead
                 if (ShopForm.ShopInfo.CanBuy)
-                {
                     UserInfo.Inventory.SellToShop(slot, GUIManager);
-                }
             }
             else
             {

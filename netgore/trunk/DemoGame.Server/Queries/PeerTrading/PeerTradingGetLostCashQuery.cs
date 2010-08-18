@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -11,12 +11,12 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryStr = FormatQueryString("SELECT `cash` FROM `{0}` WHERE `character_id` = @characterID",
                                                              ActiveTradeCashTable.TableName);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingGetLostCashQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        public PeerTradingGetLostCashQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public PeerTradingGetLostCashQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(ActiveTradeCashTable.DbColumns, "cash");
             QueryAsserts.ArePrimaryKeys(ActiveTradeCashTable.DbKeyColumns, "character_id");

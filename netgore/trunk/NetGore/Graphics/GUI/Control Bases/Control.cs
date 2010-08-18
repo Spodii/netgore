@@ -44,13 +44,13 @@ namespace NetGore.Graphics.GUI
         static readonly object _eventTextEntered = new object();
         static readonly object _eventTooltipChanged = new object();
         static readonly object _eventVisibleChanged = new object();
+        readonly bool _alwaysOnTop;
 
         readonly List<Control> _controls = new List<Control>(1);
         readonly EventHandlerList _eventHandlerList = new EventHandlerList();
         readonly IGUIManager _gui;
         readonly Control _parent;
         readonly Control _root;
-        readonly bool _alwaysOnTop;
 
         ControlBorder _border;
         Color _borderColor = Color.White;
@@ -81,12 +81,6 @@ namespace NetGore.Graphics.GUI
             : this(parent, parent.GUIManager, position, clientSize)
         {
         }
-
-        /// <summary>
-        /// Gets if this <see cref="Control"/> is always on top. Only valid for root-level <see cref="Control"/>s. Non-root
-        /// <see cref="Control"/>s will always return false.
-        /// </summary>
-        public bool AlwaysOnTop { get { return _alwaysOnTop; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Control"/> class.
@@ -150,18 +144,6 @@ namespace NetGore.Graphics.GUI
             }
 
             SetDefaultValues();
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="Control"/> should always be on top. This method will be invoked during the construction
-        /// of the root level <see cref="Control"/>, so values set during the construction of the derived class will not
-        /// be set before this method is called. It is highly recommended you only return a constant True or False value.
-        /// This is only called when the <see cref="Control"/> is a root-level <see cref="Control"/>.
-        /// </summary>
-        /// <returns>If this <see cref="Control"/> will always be on top.</returns>
-        protected virtual bool GetIsAlwaysOnTop()
-        {
-            return false;
         }
 
         /// <summary>
@@ -397,6 +379,15 @@ namespace NetGore.Graphics.GUI
         {
             add { Events.AddHandler(_eventVisibleChanged, value); }
             remove { Events.RemoveHandler(_eventVisibleChanged, value); }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="Control"/> is always on top. Only valid for root-level <see cref="Control"/>s. Non-root
+        /// <see cref="Control"/>s will always return false.
+        /// </summary>
+        public bool AlwaysOnTop
+        {
+            get { return _alwaysOnTop; }
         }
 
         /// <summary>
@@ -838,9 +829,7 @@ namespace NetGore.Graphics.GUI
                         GUIManager.Remove(this);
                 }
                 else
-                {
                     Parent._controls.Remove(this);
-                }
 
                 Events.Dispose();
             }
@@ -992,6 +981,18 @@ namespace NetGore.Graphics.GUI
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="Control"/> should always be on top. This method will be invoked during the construction
+        /// of the root level <see cref="Control"/>, so values set during the construction of the derived class will not
+        /// be set before this method is called. It is highly recommended you only return a constant True or False value.
+        /// This is only called when the <see cref="Control"/> is a root-level <see cref="Control"/>.
+        /// </summary>
+        /// <returns>If this <see cref="Control"/> will always be on top.</returns>
+        protected virtual bool GetIsAlwaysOnTop()
+        {
+            return false;
         }
 
         /// <summary>

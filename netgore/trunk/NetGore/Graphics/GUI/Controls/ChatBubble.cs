@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore.Graphics.GUI;
 using NetGore.World;
 using SFML.Graphics;
 
@@ -261,16 +260,6 @@ namespace NetGore.Graphics.GUI
             }
 
             /// <summary>
-            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
-            /// from the given <paramref name="skinManager"/>.
-            /// </summary>
-            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
-            public override void LoadSkin(ISkinManager skinManager)
-            {
-                // Do not skin the ChatBubbleText
-            }
-
-            /// <summary>
             /// Changes the control's text and properly resizes it to fit the text. Use this instead of setting the
             /// <see cref="Text"/> property when resizing.
             /// </summary>
@@ -283,6 +272,16 @@ namespace NetGore.Graphics.GUI
                 ClientSize = new Vector2(MaxChatBubbleWidth, _initialHeight);
                 Text = newText;
                 ResizeToFitText();
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, loads the skinning information for the <see cref="Control"/>
+            /// from the given <paramref name="skinManager"/>.
+            /// </summary>
+            /// <param name="skinManager">The <see cref="ISkinManager"/> to load the skinning information from.</param>
+            public override void LoadSkin(ISkinManager skinManager)
+            {
+                // Do not skin the ChatBubbleText
             }
 
             /// <summary>

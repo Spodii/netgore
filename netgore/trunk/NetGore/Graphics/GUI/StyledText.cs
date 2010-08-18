@@ -528,9 +528,7 @@ namespace NetGore.Graphics.GUI
                             splitAt = 0;
 
                         if (splitAt + 1 == current.Text.Length)
-                        {
                             retLine.Add(current);
-                        }
                         else
                         {
                             var left = current.Substring(0, splitAt + 1);

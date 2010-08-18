@@ -32,6 +32,7 @@ namespace NetGore.Graphics.GUI
         TickCount _cursorBlinkTimer;
 
         int _cursorLinePosition = 0;
+        bool _hasTextChanged = false;
 
         bool _isMultiLine = true;
 
@@ -277,8 +278,6 @@ namespace NetGore.Graphics.GUI
         {
             get { return _numCharsToDraw; }
         }
-
-        bool _hasTextChanged = false;
 
         /// <summary>
         /// Gets or sets the text in this <see cref="TextBox"/>. Please beware that setting the text through this

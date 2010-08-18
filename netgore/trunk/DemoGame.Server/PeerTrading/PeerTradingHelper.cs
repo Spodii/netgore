@@ -17,6 +17,11 @@ namespace DemoGame.Server.PeerTrading
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// The <see cref="PeerTradingGetLostCashQuery"/> instance to use.
+        /// </summary>
+        static readonly PeerTradingGetLostCashQuery _getLostCashQuery;
+
+        /// <summary>
         /// The <see cref="PeerTradingGetLostItemsQuery"/> instance to use.
         /// </summary>
         static readonly PeerTradingGetLostItemsQuery _getLostItemsQuery;
@@ -27,19 +32,14 @@ namespace DemoGame.Server.PeerTrading
         static readonly PeerTradingInsertItemQuery _insertItemQuery;
 
         /// <summary>
-        /// The <see cref="PeerTradingRemoveItemQuery"/> instance to use.
-        /// </summary>
-        static readonly PeerTradingRemoveItemQuery _removeItemQuery;
-
-        /// <summary>
-        /// The <see cref="PeerTradingGetLostCashQuery"/> instance to use.
-        /// </summary>
-        static readonly PeerTradingGetLostCashQuery _getLostCashQuery;
-
-        /// <summary>
         /// The <see cref="PeerTradingRemoveCashQuery"/> instance to use.
         /// </summary>
         static readonly PeerTradingRemoveCashQuery _removeCashQuery;
+
+        /// <summary>
+        /// The <see cref="PeerTradingRemoveItemQuery"/> instance to use.
+        /// </summary>
+        static readonly PeerTradingRemoveItemQuery _removeItemQuery;
 
         /// <summary>
         /// Initializes the <see cref="PeerTradingHelper"/> class.
@@ -53,21 +53,6 @@ namespace DemoGame.Server.PeerTrading
             _removeItemQuery = dbController.GetQuery<PeerTradingRemoveItemQuery>();
             _getLostCashQuery = dbController.GetQuery<PeerTradingGetLostCashQuery>();
             _removeCashQuery = dbController.GetQuery<PeerTradingRemoveCashQuery>();
-        }
-
-        /// <summary>
-        /// Recovers items from the <see cref="ActiveTradeItemTable"/> for a character, and gives them to the character. Items can
-        /// get stuck in this table when the server unexpectedly shuts down during a peer trade session. Calling this method
-        /// will attempt to give the <see cref="Character"/> any items they might have in this table. This cannot be done if the
-        /// <paramref name="character"/> is currently trading.
-        /// </summary>
-        /// <param name="character">The <see cref="Character"/> to get the lost items for.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="character"/> is null.</exception>
-        public static void RecoverLostTradeItems(User character)
-        {
-            int recovered;
-            int remaining;
-            RecoverLostTradeItems(character, out recovered, out remaining);
         }
 
         /// <summary>
@@ -98,7 +83,7 @@ namespace DemoGame.Server.PeerTrading
 
             // Get the lost cash
             int lostCash;
-            bool exists = _getLostCashQuery.TryExecute(character.ID, out lostCash);
+            var exists = _getLostCashQuery.TryExecute(character.ID, out lostCash);
 
             // Check if any cash needs to be returned
             if (!exists || lostCash == 0)
@@ -108,6 +93,21 @@ namespace DemoGame.Server.PeerTrading
             character.Cash += lostCash;
 
             return lostCash;
+        }
+
+        /// <summary>
+        /// Recovers items from the <see cref="ActiveTradeItemTable"/> for a character, and gives them to the character. Items can
+        /// get stuck in this table when the server unexpectedly shuts down during a peer trade session. Calling this method
+        /// will attempt to give the <see cref="Character"/> any items they might have in this table. This cannot be done if the
+        /// <paramref name="character"/> is currently trading.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> to get the lost items for.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="character"/> is null.</exception>
+        public static void RecoverLostTradeItems(User character)
+        {
+            int recovered;
+            int remaining;
+            RecoverLostTradeItems(character, out recovered, out remaining);
         }
 
         /// <summary>

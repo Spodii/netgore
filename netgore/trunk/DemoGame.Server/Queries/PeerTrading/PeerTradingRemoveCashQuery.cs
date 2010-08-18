@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -15,8 +16,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="PeerTradingRemoveCashQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-        public PeerTradingRemoveCashQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public PeerTradingRemoveCashQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(ActiveTradeCashTable.DbKeyColumns, "character_id");
         }

@@ -318,123 +318,12 @@ namespace NetGore.Features.PeerTrading
 
         public class PeerTradeSidePanel : Panel
         {
-            public class CashLabel : Label
-            {
-                readonly PeerTradeSidePanel _itemsCollection;
-
-                string _caption = "Cash";
-                int _lastCash = 0;
-
-                /// <summary>
-                /// Gets the <see cref="PeerTradeSidePanel"/> that this control belongs to.
-                /// </summary>
-                public PeerTradeSidePanel ItemsCollection
-                {
-                    get { return _itemsCollection; }
-                }
-
-                /// <summary>
-                /// Initializes a new instance of the <see cref="PeerTradeFormBase{TChar, TItem, TItemInfo}.PeerTradeSidePanel.CashLabel"/> class.
-                /// </summary>
-                /// <param name="parent">The parent.</param>
-                /// <param name="position">The position of the control.</param>
-                public CashLabel(PeerTradeSidePanel parent, Vector2 position)
-                    : base(parent, position)
-                {
-                    _itemsCollection = parent;
-                    Text = GetDisplayText(Caption, Cash);
-                }
-
-                /// <summary>
-                /// Gets the text to display on the control.
-                /// </summary>
-                /// <param name="caption">The caption text.</param>
-                /// <param name="cash">The amount of cash.</param>
-                /// <returns>The text to display on the control.</returns>
-                protected virtual string GetDisplayText(string caption, int cash)
-                {
-                    return caption + ": " + cash;
-                }
-
-                /// <summary>
-                /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-                /// base class's method to ensure that changes to settings are hierchical.
-                /// </summary>
-                protected override void SetDefaultValues()
-                {
-                    base.SetDefaultValues();
-
-                    Caption = "Cash";
-                    IncludeInResizeToChildren = false;
-                }
-
-                /// <summary>
-                /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
-                /// not visible.
-                /// </summary>
-                /// <param name="currentTime">The current time in milliseconds.</param>
-                protected override void UpdateControl(TickCount currentTime)
-                {
-                    base.UpdateControl(currentTime);
-
-                    if (!IsVisible)
-                        return;
-
-                    // Update the text if the cash amount has changed
-                    var newCash = Cash;
-                    if (newCash == _lastCash)
-                        return;
-
-                    _lastCash = newCash;
-                    Text = GetDisplayText(Caption, newCash);
-                }
-
-                /// <summary>
-                /// Gets the current amount of cash for this side of the trade.
-                /// </summary>
-                int Cash
-                {
-                    get
-                    {
-                        bool isSourceSide = ItemsCollection.IsSourceSide;
-                        var ptih = ItemsCollection.PeerTradeForm.PeerTradeInfoHandler;
-                        if (ptih == null)
-                            return 0;
-
-                        if (isSourceSide)
-                            return ptih.SourceCash;
-                        else
-                            return ptih.TargetCash;
-                    }
-                }
-
-                /// <summary>
-                /// Gets or sets the caption of the control, which is the text displayed next to the actual cash amount displayed.
-                /// </summary>
-                public string Caption
-                {
-                    get { return _caption; }
-                    set
-                    {
-                        if (value == null)
-                            value = string.Empty;
-
-                        if (_caption == value)
-                            return;
-
-                        _caption = value;
-
-                        Text = GetDisplayText(Caption, Cash);
-                    }
-                }
-            }
-
             readonly Label _acceptedLabel;
+            readonly CashLabel _cashLabel;
             readonly Grh _grh = new Grh();
             readonly bool _isSourceSide;
             readonly PeerTradeFormBase<TChar, TItem, TItemInfo> _peerTradeForm;
             readonly Label _title;
-            readonly CashLabel _cashLabel;
 
             bool _acceptLabelStatus = false;
 
@@ -570,7 +459,6 @@ namespace NetGore.Features.PeerTrading
                     _acceptedLabel.Text = "Not Accepted";
             }
 
-
             /// <summary>
             /// Creates a <see cref="CashLabel"/> for displaying the cash amount in this side of the peer trade table.
             /// </summary>
@@ -650,6 +538,116 @@ namespace NetGore.Features.PeerTrading
                 var ptih = PeerTradeForm.PeerTradeInfoHandler;
                 if (ptih != null)
                     ChangeAcceptLabelStatus(IsSourceSide ? ptih.HasSourceAccepted : ptih.HasTargetAccepted);
+            }
+
+            public class CashLabel : Label
+            {
+                readonly PeerTradeSidePanel _itemsCollection;
+
+                string _caption = "Cash";
+                int _lastCash = 0;
+
+                /// <summary>
+                /// Initializes a new instance of the <see cref="PeerTradeFormBase{TChar, TItem, TItemInfo}.PeerTradeSidePanel.CashLabel"/> class.
+                /// </summary>
+                /// <param name="parent">The parent.</param>
+                /// <param name="position">The position of the control.</param>
+                public CashLabel(PeerTradeSidePanel parent, Vector2 position) : base(parent, position)
+                {
+                    _itemsCollection = parent;
+                    Text = GetDisplayText(Caption, Cash);
+                }
+
+                /// <summary>
+                /// Gets or sets the caption of the control, which is the text displayed next to the actual cash amount displayed.
+                /// </summary>
+                public string Caption
+                {
+                    get { return _caption; }
+                    set
+                    {
+                        if (value == null)
+                            value = string.Empty;
+
+                        if (_caption == value)
+                            return;
+
+                        _caption = value;
+
+                        Text = GetDisplayText(Caption, Cash);
+                    }
+                }
+
+                /// <summary>
+                /// Gets the current amount of cash for this side of the trade.
+                /// </summary>
+                int Cash
+                {
+                    get
+                    {
+                        var isSourceSide = ItemsCollection.IsSourceSide;
+                        var ptih = ItemsCollection.PeerTradeForm.PeerTradeInfoHandler;
+                        if (ptih == null)
+                            return 0;
+
+                        if (isSourceSide)
+                            return ptih.SourceCash;
+                        else
+                            return ptih.TargetCash;
+                    }
+                }
+
+                /// <summary>
+                /// Gets the <see cref="PeerTradeSidePanel"/> that this control belongs to.
+                /// </summary>
+                public PeerTradeSidePanel ItemsCollection
+                {
+                    get { return _itemsCollection; }
+                }
+
+                /// <summary>
+                /// Gets the text to display on the control.
+                /// </summary>
+                /// <param name="caption">The caption text.</param>
+                /// <param name="cash">The amount of cash.</param>
+                /// <returns>The text to display on the control.</returns>
+                protected virtual string GetDisplayText(string caption, int cash)
+                {
+                    return caption + ": " + cash;
+                }
+
+                /// <summary>
+                /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+                /// base class's method to ensure that changes to settings are hierchical.
+                /// </summary>
+                protected override void SetDefaultValues()
+                {
+                    base.SetDefaultValues();
+
+                    Caption = "Cash";
+                    IncludeInResizeToChildren = false;
+                }
+
+                /// <summary>
+                /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
+                /// not visible.
+                /// </summary>
+                /// <param name="currentTime">The current time in milliseconds.</param>
+                protected override void UpdateControl(TickCount currentTime)
+                {
+                    base.UpdateControl(currentTime);
+
+                    if (!IsVisible)
+                        return;
+
+                    // Update the text if the cash amount has changed
+                    var newCash = Cash;
+                    if (newCash == _lastCash)
+                        return;
+
+                    _lastCash = newCash;
+                    Text = GetDisplayText(Caption, newCash);
+                }
             }
 
             /// <summary>

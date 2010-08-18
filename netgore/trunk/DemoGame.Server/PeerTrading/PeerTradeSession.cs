@@ -14,10 +14,10 @@ namespace DemoGame.Server.PeerTrading
     /// </summary>
     public class PeerTradeSession : PeerTradeSessionBase<User, ItemEntity>
     {
+        static readonly PeerTradingRemoveCashQuery _removeCashQuery;
+        static readonly PeerTradingReplaceCashQuery _replaceCashQuery;
         static readonly PeerTradingSettings _settings = PeerTradingSettings.Instance;
         static readonly ServerPeerTradeInfoHandler _tradeInfoHandler = ServerPeerTradeInfoHandler.Instance;
-        static readonly PeerTradingReplaceCashQuery _replaceCashQuery;
-        static readonly PeerTradingRemoveCashQuery _removeCashQuery;
 
         /// <summary>
         /// Initializes the <see cref="PeerTradeSession"/> class.
@@ -132,6 +132,18 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
+        /// When overridden in the derived class, gives the <paramref name="character"/> the specified amount of <paramref name="cash"/>.
+        /// It should not matter where the <paramref name="cash"/> is coming from, or why it is being given to the
+        /// <paramref name="character"/>.
+        /// </summary>
+        /// <param name="character">The character to give the <paramref name="cash"/>.</param>
+        /// <param name="cash">The amount of cash to give to the <paramref name="character"/>.</param>
+        protected override void GiveCashToCharacter(User character, int cash)
+        {
+            character.Cash += cash;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gives the <paramref name="character"/> an <paramref name="item"/>. It should not
         /// matter where the <paramref name="item"/> is coming from, or why it is being given to the <paramref name="character"/>.
         /// </summary>
@@ -157,18 +169,6 @@ namespace DemoGame.Server.PeerTrading
         }
 
         /// <summary>
-        /// When overridden in the derived class, gives the <paramref name="character"/> the specified amount of <paramref name="cash"/>.
-        /// It should not matter where the <paramref name="cash"/> is coming from, or why it is being given to the
-        /// <paramref name="character"/>.
-        /// </summary>
-        /// <param name="character">The character to give the <paramref name="cash"/>.</param>
-        /// <param name="cash">The amount of cash to give to the <paramref name="character"/>.</param>
-        protected override void GiveCashToCharacter(User character, int cash)
-        {
-            character.Cash += cash;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles when there are too many items in the trade table to give them all to
         /// a character. The derived class should provide some sort of notification to the character (if a player-controlled character)
         /// that the items cannot fit. No action actually needs to take place to resolve this problem.
@@ -177,6 +177,22 @@ namespace DemoGame.Server.PeerTrading
         protected override void OnCannotFitItems(User character)
         {
             character.Send(GameMessage.PeerTradingNotEnoughSpaceInInventory);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the amount of cash a character has put down in the
+        /// trade table has changed.
+        /// </summary>
+        /// <param name="c">The character who's cash value has changed.</param>
+        /// <param name="oldValue">The previous amount of cash they had placed down in the trade.</param>
+        /// <param name="newValue">The current amount of cash they have placed down in the trade.</param>
+        protected override void OnCashChanged(User c, int oldValue, int newValue)
+        {
+            // Update the value in the database
+            _replaceCashQuery.Execute(c.ID, newValue);
+
+            // Update the client
+            _tradeInfoHandler.WriteCashChanged(this, c, newValue);
         }
 
         /// <summary>
@@ -196,22 +212,6 @@ namespace DemoGame.Server.PeerTrading
         protected override void OnTradeCanceled(User canceler)
         {
             _tradeInfoHandler.WriteTradeCanceled(this, canceler);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the amount of cash a character has put down in the
-        /// trade table has changed.
-        /// </summary>
-        /// <param name="c">The character who's cash value has changed.</param>
-        /// <param name="oldValue">The previous amount of cash they had placed down in the trade.</param>
-        /// <param name="newValue">The current amount of cash they have placed down in the trade.</param>
-        protected override void OnCashChanged(User c, int oldValue, int newValue)
-        {
-            // Update the value in the database
-            _replaceCashQuery.Execute(c.ID, newValue);
-
-            // Update the client
-            _tradeInfoHandler.WriteCashChanged(this, c, newValue);
         }
 
         /// <summary>

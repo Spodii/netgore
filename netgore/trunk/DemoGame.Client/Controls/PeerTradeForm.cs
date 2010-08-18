@@ -11,6 +11,11 @@ namespace DemoGame.Client
 {
     public class PeerTradeForm : PeerTradeFormBase<Character, ItemEntity, IItemTable>, IDragDropProvider
     {
+        /// <summary>
+        /// If any of the input boxes or message boxes for adding/removing cash are created.
+        /// </summary>
+        bool _isCashInputBoxCreated = false;
+
         public PeerTradeForm(Control parent, Vector2 position) : base(parent, position)
         {
         }
@@ -41,6 +46,78 @@ namespace DemoGame.Client
         public UserInfo UserInfo { get; set; }
 
         /// <summary>
+        /// Adds an inventory item to the currently open trade.
+        /// </summary>
+        /// <param name="slot">The slot of the item to add to the trade.</param>
+        public void AddToTrade(InventorySlot slot)
+        {
+            if (UserInfo == null)
+                return;
+
+            // Check for a valid item
+            var item = UserInfo.Inventory[slot];
+            if (item == null)
+                return;
+
+            // Check the amount
+            if (item.Amount > 1)
+            {
+                // Create an InputBox to ask how much to drop
+                const string text = "Add item";
+                const string message = "How much of the item do you wish to add to the trade?\n(Enter a value from 1 to {0})";
+
+                var inBox = InputBox.CreateNumericInputBox(GUIManager, text, string.Format(message, item.Amount));
+                inBox.Tag = slot;
+                inBox.OptionSelected += AddToTradeInputBox_OptionSelected;
+            }
+            else
+            {
+                // Auto-drop if there is just one of the item
+                AddToTrade(slot, 1);
+            }
+        }
+
+        /// <summary>
+        /// Adds an inventory item to the currently open trade.
+        /// </summary>
+        /// <param name="slot">The slot of the item to add to the trade.</param>
+        /// <param name="amount">The amount of the item in the slot to add to the trade.</param>
+        public void AddToTrade(InventorySlot slot, byte amount)
+        {
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null)
+                return;
+
+            if (UserInfo == null)
+                return;
+
+            // Check for a valid item
+            var item = UserInfo.Inventory[slot];
+            if (item == null)
+                return;
+
+            ptih.WriteAddInventoryItem(slot, amount);
+        }
+
+        /// <summary>
+        /// Handles the OptionSelected event of the AddToTradeInputBox, which is the <see cref="InputBox"/> created to
+        /// let the user specify how much of the item they want to add to a trade.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        void AddToTradeInputBox_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            var slot = (InventorySlot)sender.Tag;
+            var inBox = (InputBox)sender;
+
+            byte amount;
+            if (!byte.TryParse(inBox.InputText, out amount))
+                return;
+
+            AddToTrade(slot, amount);
+        }
+
+        /// <summary>
         /// Handles the Clicked event of the CashLabel control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -68,15 +145,8 @@ namespace DemoGame.Client
                 _isCashInputBoxCreated = true;
             }
             else
-            {
                 CreateAddCashInputBox();
-            }
         }
-
-        /// <summary>
-        /// If any of the input boxes or message boxes for adding/removing cash are created.
-        /// </summary>
-        bool _isCashInputBoxCreated = false;
 
         /// <summary>
         /// Creates and displays the <see cref="InputBox"/> for adding cash to the trade.
@@ -618,77 +688,5 @@ namespace DemoGame.Client
         }
 
         #endregion
-
-        /// <summary>
-        /// Adds an inventory item to the currently open trade.
-        /// </summary>
-        /// <param name="slot">The slot of the item to add to the trade.</param>
-        public void AddToTrade(InventorySlot slot)
-        {
-            if (UserInfo == null)
-                return;
-
-            // Check for a valid item
-            var item = UserInfo.Inventory[slot];
-            if (item == null)
-                return;
-
-            // Check the amount
-            if (item.Amount > 1)
-            {
-                // Create an InputBox to ask how much to drop
-                const string text = "Add item";
-                const string message = "How much of the item do you wish to add to the trade?\n(Enter a value from 1 to {0})";
-
-                var inBox = InputBox.CreateNumericInputBox(GUIManager, text, string.Format(message, item.Amount));
-                inBox.Tag = slot;
-                inBox.OptionSelected += AddToTradeInputBox_OptionSelected;
-            }
-            else
-            {
-                // Auto-drop if there is just one of the item
-                AddToTrade(slot, 1);
-            }
-        }
-
-        /// <summary>
-        /// Adds an inventory item to the currently open trade.
-        /// </summary>
-        /// <param name="slot">The slot of the item to add to the trade.</param>
-        /// <param name="amount">The amount of the item in the slot to add to the trade.</param>
-        public void AddToTrade(InventorySlot slot, byte amount)
-        {
-            var ptih = PeerTradeInfoHandler;
-            if (ptih == null)
-                return;
-
-            if (UserInfo == null)
-                return;
-
-            // Check for a valid item
-            var item = UserInfo.Inventory[slot];
-            if (item == null)
-                return;
-
-            ptih.WriteAddInventoryItem(slot, amount);
-        }
-
-        /// <summary>
-        /// Handles the OptionSelected event of the AddToTradeInputBox, which is the <see cref="InputBox"/> created to
-        /// let the user specify how much of the item they want to add to a trade.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        void AddToTradeInputBox_OptionSelected(Control sender, MessageBoxButton args)
-        {
-            var slot = (InventorySlot)sender.Tag;
-            var inBox = (InputBox)sender;
-
-            byte amount;
-            if (!byte.TryParse(inBox.InputText, out amount))
-                return;
-
-            AddToTrade(slot, amount);
-        }
     }
 }

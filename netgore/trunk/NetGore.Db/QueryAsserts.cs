@@ -21,26 +21,6 @@ namespace DemoGame.Server.Queries
         static readonly StringComparer _columnNameComparer = StringComparer.OrdinalIgnoreCase;
 
         /// <summary>
-        /// Checks that the given set of primary keys match the expected set exactly, except for in order.
-        /// </summary>
-        /// <param name="primaryKeys">The actual set of primary keys.</param>
-        /// <param name="expectedKeys">The expected set of primary keys.</param>
-        [Conditional("DEBUG")]
-        public static void ArePrimaryKeys(IEnumerable<string> primaryKeys, params string[] expectedKeys)
-        {
-            const string errmsg = "The two sets of primary keys do not match perfectly.";
-
-            if (primaryKeys.Count() != expectedKeys.Length)
-                Debug.Fail(errmsg);
-
-            foreach (var expectedKey in expectedKeys)
-            {
-                if (!primaryKeys.Contains(expectedKey, _columnNameComparer))
-                    Debug.Fail(errmsg);
-            }
-        }
-
-        /// <summary>
         /// Checks that the given set of <paramref name="columns"/> match the expected set of column names exactly, except for in order.
         /// </summary>
         /// <param name="columns">The actual set of columns.</param>
@@ -56,6 +36,26 @@ namespace DemoGame.Server.Queries
             foreach (var expectedKey in expectedColumns)
             {
                 if (!columns.Contains(expectedKey, _columnNameComparer))
+                    Debug.Fail(errmsg);
+            }
+        }
+
+        /// <summary>
+        /// Checks that the given set of primary keys match the expected set exactly, except for in order.
+        /// </summary>
+        /// <param name="primaryKeys">The actual set of primary keys.</param>
+        /// <param name="expectedKeys">The expected set of primary keys.</param>
+        [Conditional("DEBUG")]
+        public static void ArePrimaryKeys(IEnumerable<string> primaryKeys, params string[] expectedKeys)
+        {
+            const string errmsg = "The two sets of primary keys do not match perfectly.";
+
+            if (primaryKeys.Count() != expectedKeys.Length)
+                Debug.Fail(errmsg);
+
+            foreach (var expectedKey in expectedKeys)
+            {
+                if (!primaryKeys.Contains(expectedKey, _columnNameComparer))
                     Debug.Fail(errmsg);
             }
         }

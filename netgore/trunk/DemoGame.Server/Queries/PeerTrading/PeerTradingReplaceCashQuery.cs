@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -10,50 +10,8 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class PeerTradingReplaceCashQuery : DbQueryNonReader<IActiveTradeCashTable>
     {
-        /// <summary>
-        /// Arguments for the <see cref="PeerTradingReplaceCashQuery"/> class.
-        /// </summary>
-        struct QueryArgs : IActiveTradeCashTable
-        {
-            readonly CharacterID _characterID;
-            readonly int _cash;
-
-            /// <summary>
-            /// Gets the character ID.
-            /// </summary>
-            public CharacterID CharacterID { get { return _characterID; } }
-
-            /// <summary>
-            /// Creates a deep copy of this table. All the values will be the same
-            /// but they will be contained in a different object instance.
-            /// </summary>
-            /// <returns>
-            /// A deep copy of this table.
-            /// </returns>
-            IActiveTradeCashTable IActiveTradeCashTable.DeepCopy()
-            {
-                return new QueryArgs(CharacterID, Cash);
-            }
-
-            /// <summary>
-            /// Gets the cash.
-            /// </summary>
-            public int Cash { get { return _cash; } }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
-            /// </summary>
-            /// <param name="characterID">The character ID.</param>
-            /// <param name="cash">The cash.</param>
-            public QueryArgs(CharacterID characterID, int cash)
-            {
-                _characterID = characterID;
-                _cash = cash;
-            }
-        }
-
-        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}",
-                                                             ActiveTradeCashTable.TableName, FormatParametersIntoValuesString(ActiveTradeCashTable.DbColumns));
+        static readonly string _queryStr = FormatQueryString("REPLACE INTO `{0}` {1}", ActiveTradeCashTable.TableName,
+                                                             FormatParametersIntoValuesString(ActiveTradeCashTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeerTradingReplaceCashQuery"/> class.
@@ -103,5 +61,53 @@ namespace DemoGame.Server.Queries
         }
 
         #endregion
+
+        /// <summary>
+        /// Arguments for the <see cref="PeerTradingReplaceCashQuery"/> class.
+        /// </summary>
+        struct QueryArgs : IActiveTradeCashTable
+        {
+            readonly CharacterID _characterID;
+            readonly int _cash;
+
+            /// <summary>
+            /// Gets the character ID.
+            /// </summary>
+            public CharacterID CharacterID
+            {
+                get { return _characterID; }
+            }
+
+            /// <summary>
+            /// Creates a deep copy of this table. All the values will be the same
+            /// but they will be contained in a different object instance.
+            /// </summary>
+            /// <returns>
+            /// A deep copy of this table.
+            /// </returns>
+            IActiveTradeCashTable IActiveTradeCashTable.DeepCopy()
+            {
+                return new QueryArgs(CharacterID, Cash);
+            }
+
+            /// <summary>
+            /// Gets the cash.
+            /// </summary>
+            public int Cash
+            {
+                get { return _cash; }
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
+            /// </summary>
+            /// <param name="characterID">The character ID.</param>
+            /// <param name="cash">The cash.</param>
+            public QueryArgs(CharacterID characterID, int cash)
+            {
+                _characterID = characterID;
+                _cash = cash;
+            }
+        }
     }
 }

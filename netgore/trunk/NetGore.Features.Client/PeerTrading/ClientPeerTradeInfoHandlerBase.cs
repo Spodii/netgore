@@ -32,6 +32,16 @@ namespace NetGore.Features.PeerTrading
         /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
         /// </summary>
         /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
+        /// <param name="cash">The new cash value.</param>
+        /// <param name="isSourceSide">If true, the changed cash amount was on the source character's side.
+        /// If false, it was on the target character's side.</param>
+        public delegate void CashUpdatedEventHandler(
+            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, int cash, bool isSourceSide);
+
+        /// <summary>
+        /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
         public delegate void EventHandler(ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender);
 
         /// <summary>
@@ -43,16 +53,6 @@ namespace NetGore.Features.PeerTrading
         /// If false, it was on the target character's side.</param>
         public delegate void SlotUpdatedEventHandler(
             ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, InventorySlot slot, bool isSourceSide);
-
-        /// <summary>
-        /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> that the event came from.</param>
-        /// <param name="cash">The new cash value.</param>
-        /// <param name="isSourceSide">If true, the changed cash amount was on the source character's side.
-        /// If false, it was on the target character's side.</param>
-        public delegate void CashUpdatedEventHandler(
-            ClientPeerTradeInfoHandlerBase<TChar, TItem, TItemInfo> sender, int cash, bool isSourceSide);
 
         /// <summary>
         /// Delegate for handling events on the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/>.
@@ -73,33 +73,9 @@ namespace NetGore.Features.PeerTrading
         bool _hasTargetAccepted;
         bool _isTradeOpen;
         string _otherCharName = string.Empty;
-        bool _userIsSource;
         int _sourceCash;
         int _targetCash;
-
-        /// <summary>
-        /// Gets the amount of cash that the source character has put down on the trade table.
-        /// </summary>
-        public int SourceCash { get { return _sourceCash; } }
-
-        /// <summary>
-        /// Gets the amount of cash that the target character has put down on the trade table.
-        /// </summary>
-        public int TargetCash { get { return _targetCash; } }
-
-        /// <summary>
-        /// Gets the amount of cash that the user's character has put down on the trade table.
-        /// </summary>
-        public int UserCash
-        {
-            get
-            {
-                if (UserIsSource) 
-                    return SourceCash;
-                else
-                    return TargetCash;
-            }
-        }
+        bool _userIsSource;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPeerTradeInfoHandlerBase{TChar,TItem,TItemInfo}"/> class.
@@ -118,14 +94,14 @@ namespace NetGore.Features.PeerTrading
         public event AcceptStatusChangedEventHandler AcceptStatusChanged;
 
         /// <summary>
-        /// Notifies listeners when a slot on the trade table has been updated.
-        /// </summary>
-        public event SlotUpdatedEventHandler SlotUpdated;
-
-        /// <summary>
         /// Notifies listeners when the amount of cash a character has placed in the trade has changed.
         /// </summary>
         public event CashUpdatedEventHandler CashUpdated;
+
+        /// <summary>
+        /// Notifies listeners when a slot on the trade table has been updated.
+        /// </summary>
+        public event SlotUpdatedEventHandler SlotUpdated;
 
         /// <summary>
         /// Notifies listeners when a trade session has been canceled.
@@ -209,6 +185,36 @@ namespace NetGore.Features.PeerTrading
         public string OtherCharName
         {
             get { return _otherCharName; }
+        }
+
+        /// <summary>
+        /// Gets the amount of cash that the source character has put down on the trade table.
+        /// </summary>
+        public int SourceCash
+        {
+            get { return _sourceCash; }
+        }
+
+        /// <summary>
+        /// Gets the amount of cash that the target character has put down on the trade table.
+        /// </summary>
+        public int TargetCash
+        {
+            get { return _targetCash; }
+        }
+
+        /// <summary>
+        /// Gets the amount of cash that the user's character has put down on the trade table.
+        /// </summary>
+        public int UserCash
+        {
+            get
+            {
+                if (UserIsSource)
+                    return SourceCash;
+                else
+                    return TargetCash;
+            }
         }
 
         /// <summary>
@@ -303,22 +309,22 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="SlotUpdated"/> event.
-        /// </summary>
-        /// <param name="slot">The slot that changed.</param>
-        /// <param name="isSourceSide">If true, the changed slot was on the source character's side.
-        /// If false, it was on the target character's side.</param>
-        protected virtual void OnSlotUpdated(InventorySlot slot, bool isSourceSide)
-        {
-        }
-
-        /// <summary>
         /// When overridden in the derived class, allows for handling the <see cref="CashUpdated"/> event.
         /// </summary>
         /// <param name="cash">The new cash value.</param>
         /// <param name="isSourceSide">If true, the changed value was on the source character's side.
         /// If false, it was on the target character's side.</param>
         protected virtual void OnCashUpdated(int cash, bool isSourceSide)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling the <see cref="SlotUpdated"/> event.
+        /// </summary>
+        /// <param name="slot">The slot that changed.</param>
+        /// <param name="isSourceSide">If true, the changed slot was on the source character's side.
+        /// If false, it was on the target character's side.</param>
+        protected virtual void OnSlotUpdated(InventorySlot slot, bool isSourceSide)
         {
         }
 
@@ -578,6 +584,26 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Sends a notification to the server that the client wants to add cash to the trade.
+        /// </summary>
+        /// <param name="cash">The amount of cash to add to the trade. If less than or equal to zero, then the request
+        /// will not be sent.</param>
+        public void WriteAddCash(int cash)
+        {
+            if (!IsTradeOpen)
+                return;
+
+            if (cash <= 0)
+                return;
+
+            using (var pw = CreateWriter(PeerTradeInfoClientMessage.AddCash))
+            {
+                pw.Write(cash);
+                SendData(pw);
+            }
+        }
+
+        /// <summary>
         /// Sends a notification to the server that the client wants to add an inventory item to the trade.
         /// </summary>
         /// <param name="slot">The slot containing the item to add.</param>
@@ -610,42 +636,6 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
-        /// Sends a notification to the server that the client wants to remove an item from the trade.
-        /// </summary>
-        /// <param name="slot">The slot containing the item to remove.</param>
-        public void WriteRemoveItem(InventorySlot slot)
-        {
-            if (!IsTradeOpen)
-                return;
-
-            using (var pw = CreateWriter(PeerTradeInfoClientMessage.RemoveInventoryItem))
-            {
-                pw.Write(slot);
-                SendData(pw);
-            }
-        }
-
-        /// <summary>
-        /// Sends a notification to the server that the client wants to add cash to the trade.
-        /// </summary>
-        /// <param name="cash">The amount of cash to add to the trade. If less than or equal to zero, then the request
-        /// will not be sent.</param>
-        public void WriteAddCash(int cash)
-        {
-            if (!IsTradeOpen)
-                return;
-
-            if (cash <= 0)
-                return;
-
-            using (var pw = CreateWriter(PeerTradeInfoClientMessage.AddCash))
-            {
-                pw.Write(cash);
-                SendData(pw);
-            }
-        }
-
-        /// <summary>
         /// Sends a notification to the server that the client wants to remove cash from the trade.
         /// </summary>
         /// <param name="cash">The amount of cash to remove from the trade. If less than or equal to zero, then the request
@@ -661,6 +651,22 @@ namespace NetGore.Features.PeerTrading
             using (var pw = CreateWriter(PeerTradeInfoClientMessage.RemoveCash))
             {
                 pw.Write(cash);
+                SendData(pw);
+            }
+        }
+
+        /// <summary>
+        /// Sends a notification to the server that the client wants to remove an item from the trade.
+        /// </summary>
+        /// <param name="slot">The slot containing the item to remove.</param>
+        public void WriteRemoveItem(InventorySlot slot)
+        {
+            if (!IsTradeOpen)
+                return;
+
+            using (var pw = CreateWriter(PeerTradeInfoClientMessage.RemoveInventoryItem))
+            {
+                pw.Write(slot);
                 SendData(pw);
             }
         }
