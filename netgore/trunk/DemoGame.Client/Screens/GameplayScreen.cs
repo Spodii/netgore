@@ -555,7 +555,9 @@ namespace DemoGame.Client
                 // If we are doing a peer trade, add the item into the trade instead
                 var ptih = PeerTradeForm.PeerTradeInfoHandler;
                 if (ptih != null)
+                {
                     ptih.WriteAddInventoryItem(slot);
+                }
             }
             else if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
             {
@@ -571,7 +573,7 @@ namespace DemoGame.Client
             else
             {
                 // Drop the item onto the ground
-                UserInfo.Inventory.Drop(slot);
+                UserInfo.Inventory.Drop(slot, GUIManager);
             }
         }
 

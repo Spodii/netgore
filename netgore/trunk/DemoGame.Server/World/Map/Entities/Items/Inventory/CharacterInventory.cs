@@ -120,6 +120,47 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Makes the Character drop an item from their Inventory.
+        /// </summary>
+        /// <param name="slot">Slot of the item to drop.</param>
+        /// <param name="amount">The maximum amount of the item to drop.</param>
+        /// <returns>True if the item was successfully dropped, else false.</returns>
+        public bool Drop(InventorySlot slot, byte amount)
+        {
+            // Get the item to drop
+            var dropItem = this[slot];
+
+            // Check for an invalid item
+            if (dropItem == null)
+            {
+                const string errmsg = "Could not drop item since no item exists at slot `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, slot);
+                return false;
+            }
+
+            // If the amount to drop is greater than or equal to the amount available, drop it all
+            if (dropItem.Amount <= amount)
+            {
+                // Remove the item from the inventory
+                RemoveAt(slot, false);
+
+                // Drop the item
+                Character.DropItem(dropItem);
+            }
+            else
+            {
+                // Only drop some of the item
+                var dropPart = dropItem.Split(amount);
+
+                // Drop the portion of the item
+                Character.DropItem(dropPart);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, performs additional processing to handle an inventory slot
         /// changing. This is only called when the object references changes, not when any part of the object
         /// (such as the Item's amount) changes. It is guarenteed that if <paramref name="newItem"/> is null,
