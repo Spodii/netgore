@@ -30,7 +30,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("character_id");
+            return CreateParameters("characterID");
         }
 
         #endregion
