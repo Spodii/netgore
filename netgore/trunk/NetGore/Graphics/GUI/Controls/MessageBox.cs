@@ -11,7 +11,11 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class MessageBox : Form
     {
-        const int _padding = 4;
+        /// <summary>
+        /// The amount of padding between the child controls in the <see cref="MessageBox"/>.
+        /// </summary>
+        public const int Padding = 4;
+
         static readonly object _eventButtonTypesChanged = new object();
         static readonly object _eventMessageChanged = new object();
         static readonly object _eventOptionSelected = new object();
@@ -68,9 +72,6 @@ namespace NetGore.Graphics.GUI
 
             _maxWidth = maxWidth;
 
-            DisposeOnSelection = true;
-            ResizeToChildren = true;
-
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Text = text;
             Message = message;
@@ -80,6 +81,18 @@ namespace NetGore.Graphics.GUI
             _suspendCreateChildControls = false;
 
             CreateChildControls();
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            DisposeOnSelection = true;
+            ResizeToChildren = true;
         }
 
         /// <summary>
@@ -226,39 +239,77 @@ namespace NetGore.Graphics.GUI
                 _msgBoxChildren.Clear();
             }
 
+            var yOffset = Padding;
+
+            BeforeCreateMessage(ref yOffset);
+
             // Create the text
             var lines = StyledText.ToMultiline(new StyledText[] { new StyledText(Message) }, true, Font,
-                                               _maxWidth - (_padding * 2) - Border.Width);
-            var yOffset = _padding;
+                                               _maxWidth - (Padding * 2) - Border.Width);
+
             foreach (var line in lines)
             {
                 var concatLine = StyledText.ToString(line);
-                var lbl = new Label(this, new Vector2(_padding, yOffset)) { Text = concatLine };
+                var lbl = new Label(this, new Vector2(Padding, yOffset)) { Text = concatLine };
                 _msgBoxChildren.Add(lbl);
                 yOffset += Font.GetLineSpacing();
             }
 
-            yOffset += _padding;
+            yOffset += Padding;
+
+            BeforeCreateButtons(ref yOffset);
 
             // Create the buttons
             var buttons = CreateButtons(ButtonTypes);
             _msgBoxChildren.AddRange(buttons.Cast<Control>());
 
             // Expand the form if needed to fit the buttons
-            var neededButtonWidth = buttons.Sum(x => x.Size.X) + ((buttons.Count() + 1) * _padding);
+            var neededButtonWidth = buttons.Sum(x => x.Size.X) + ((buttons.Count() + 1) * Padding);
             if (ClientSize.X < neededButtonWidth)
                 ClientSize = new Vector2(neededButtonWidth, ClientSize.Y);
 
             // Arrange the buttons
-            var xOffset = Math.Max(_padding, (ClientSize.X - neededButtonWidth) / 2f);
+            var xOffset = Math.Max(Padding, (ClientSize.X - neededButtonWidth) / 2f);
             foreach (var button in buttons)
             {
                 button.Position = new Vector2(xOffset, yOffset);
-                xOffset += button.Size.X + _padding;
+                xOffset += button.Size.X + Padding;
             }
+
+            AfterCreateButtons(ref yOffset);
 
             // Center to the screen
             Position = (GUIManager.ScreenSize / 2f) - (Size / 2f);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
+        /// before the buttons.
+        /// </summary>
+        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
+        /// to offset the <see cref="Control"/>s that will come after it.</param>
+        protected virtual void BeforeCreateButtons(ref int yOffset)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
+        /// after the buttons.
+        /// </summary>
+        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
+        /// to offset the <see cref="Control"/>s that will come after it.</param>
+        protected virtual void AfterCreateButtons(ref int yOffset)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
+        /// before the message.
+        /// </summary>
+        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
+        /// to offset the <see cref="Control"/>s that will come after it.</param>
+        protected virtual void BeforeCreateMessage(ref int yOffset)
+        {
         }
 
         /// <summary>
