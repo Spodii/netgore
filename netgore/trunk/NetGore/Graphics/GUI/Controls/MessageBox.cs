@@ -26,6 +26,11 @@ namespace NetGore.Graphics.GUI
         static readonly IEnumerable<MessageBoxButton> _validButtonCreationTypes;
 
         /// <summary>
+        /// The maximum width.
+        /// </summary>
+        readonly int _maxWidth;
+
+        /// <summary>
         /// List of the child controls created by the <see cref="MessageBox"/>.
         /// </summary>
         readonly List<Control> _msgBoxChildren = new List<Control>();
@@ -34,11 +39,6 @@ namespace NetGore.Graphics.GUI
         /// If true, the child controls will not be updated.
         /// </summary>
         readonly bool _suspendCreateChildControls = true;
-
-        /// <summary>
-        /// The maximum width.
-        /// </summary>
-        readonly int _maxWidth;
 
         MessageBoxButton _buttonTypes;
         string _message;
@@ -81,18 +81,6 @@ namespace NetGore.Graphics.GUI
             _suspendCreateChildControls = false;
 
             CreateChildControls();
-        }
-
-        /// <summary>
-        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-        /// base class's method to ensure that changes to settings are hierchical.
-        /// </summary>
-        protected override void SetDefaultValues()
-        {
-            base.SetDefaultValues();
-
-            DisposeOnSelection = true;
-            ResizeToChildren = true;
         }
 
         /// <summary>
@@ -140,17 +128,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets the default maximum width of a <see cref="MessageBox"/>. Default value is 500.
+        /// </summary>
+        public static int DefaultMaxWidth { get; set; }
+
+        /// <summary>
         /// Gets or sets if this <see cref="MessageBox"/> will automatically be disposed when any of the options
         /// have been selected. Disposing will happen after the <see cref="MessageBox.OptionSelected"/> event is
         /// raised, so it is possible to effectively change this value through the <see cref="MessageBox.OptionSelected"/>
         /// event handlers.
         /// </summary>
         public bool DisposeOnSelection { get; set; }
-
-        /// <summary>
-        /// Gets or sets the default maximum width of a <see cref="MessageBox"/>. Default value is 500.
-        /// </summary>
-        public static int DefaultMaxWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the message displayed in the <see cref="MessageBox"/>.
@@ -167,6 +155,36 @@ namespace NetGore.Graphics.GUI
 
                 InvokeMessageChanged();
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
+        /// after the buttons.
+        /// </summary>
+        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
+        /// to offset the <see cref="Control"/>s that will come after it.</param>
+        protected virtual void AfterCreateButtons(ref int yOffset)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
+        /// before the buttons.
+        /// </summary>
+        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
+        /// to offset the <see cref="Control"/>s that will come after it.</param>
+        protected virtual void BeforeCreateButtons(ref int yOffset)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
+        /// before the message.
+        /// </summary>
+        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
+        /// to offset the <see cref="Control"/>s that will come after it.</param>
+        protected virtual void BeforeCreateMessage(ref int yOffset)
+        {
         }
 
         /// <summary>
@@ -283,33 +301,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
-        /// before the buttons.
+        /// Gets if this <see cref="Control"/> should always be on top. This method will be invoked during the construction
+        /// of the root level <see cref="Control"/>, so values set during the construction of the derived class will not
+        /// be set before this method is called. It is highly recommended you only return a constant True or False value.
+        /// This is only called when the <see cref="Control"/> is a root-level <see cref="Control"/>.
         /// </summary>
-        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
-        /// to offset the <see cref="Control"/>s that will come after it.</param>
-        protected virtual void BeforeCreateButtons(ref int yOffset)
+        /// <returns>If this <see cref="Control"/> will always be on top.</returns>
+        protected override bool GetIsAlwaysOnTop()
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
-        /// after the buttons.
-        /// </summary>
-        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
-        /// to offset the <see cref="Control"/>s that will come after it.</param>
-        protected virtual void AfterCreateButtons(ref int yOffset)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for something to be created and placed on the <see cref="MessageBox"/>
-        /// before the message.
-        /// </summary>
-        /// <param name="yOffset">The current y-axis offset. If controls are added, this offset should be used, then updated afterwards
-        /// to offset the <see cref="Control"/>s that will come after it.</param>
-        protected virtual void BeforeCreateMessage(ref int yOffset)
-        {
+            return true;
         }
 
         /// <summary>
@@ -380,18 +380,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets if this <see cref="Control"/> should always be on top. This method will be invoked during the construction
-        /// of the root level <see cref="Control"/>, so values set during the construction of the derived class will not
-        /// be set before this method is called. It is highly recommended you only return a constant True or False value.
-        /// This is only called when the <see cref="Control"/> is a root-level <see cref="Control"/>.
-        /// </summary>
-        /// <returns>If this <see cref="Control"/> will always be on top.</returns>
-        protected override bool GetIsAlwaysOnTop()
-        {
-            return true;
-        }
-
-        /// <summary>
         /// Handles when the <see cref="TextControl.Text"/> has changed.
         /// This is called immediately before <see cref="TextControl.TextChanged"/>.
         /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
@@ -401,6 +389,18 @@ namespace NetGore.Graphics.GUI
             base.OnTextChanged();
 
             CreateChildControls();
+        }
+
+        /// <summary>
+        /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+        /// base class's method to ensure that changes to settings are hierchical.
+        /// </summary>
+        protected override void SetDefaultValues()
+        {
+            base.SetDefaultValues();
+
+            DisposeOnSelection = true;
+            ResizeToChildren = true;
         }
     }
 }

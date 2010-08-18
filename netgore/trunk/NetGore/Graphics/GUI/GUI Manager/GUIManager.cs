@@ -15,6 +15,7 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class GUIManager : IGUIManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static Color _draggedItemColor = new Color(255, 255, 255, 150);
 
         readonly List<Control> _controls = new List<Control>(2);
@@ -68,6 +69,81 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Checks that the AlwaysOnTop ordering for the _controls list is valid.
+        /// </summary>
+        [Conditional("DEBUG")]
+        void AssertAlwaysOnTopIsValid()
+        {
+            int firstAlwaysOnTop;
+            for (firstAlwaysOnTop = 0; firstAlwaysOnTop < _controls.Count; firstAlwaysOnTop++)
+            {
+                if (_controls[firstAlwaysOnTop].AlwaysOnTop)
+                    break;
+            }
+
+            for (var i = firstAlwaysOnTop; i < _controls.Count; i++)
+            {
+                Debug.Assert(_controls[i].AlwaysOnTop);
+            }
+        }
+
+        /// <summary>
+        /// Pushes a root <see cref="Control"/> to the top of the controls list. Mostly intended for bringing focused controls
+        /// up to the front.
+        /// </summary>
+        /// <param name="c">The <see cref="Control"/> to bring to the front. Needs to be a valid <see cref="Control"/> that exists
+        /// in this <see cref="GUIManager"/>.</param>
+        /// <param name="skipRemoval">If true, skip the removal step.</param>
+        void BumpRootControlToTop(Control c, bool skipRemoval = false)
+        {
+            if (c == null)
+            {
+                const string errmsg = "The argument `c` should never be null...";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (!skipRemoval)
+            {
+                // Remove the control so we can add it back in
+                if (!_controls.Remove(c))
+                {
+                    const string errmsg = "Set focus on control `{0}` that doesn't even belong to this IGUIManager!";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, c);
+                    Debug.Fail(string.Format(errmsg, c));
+                    return;
+                }
+            }
+
+            if (c.AlwaysOnTop)
+            {
+                // If the Control we are moving to the top is top-most, then our job is easy - just put it at the very top
+                _controls.Add(c);
+            }
+            else
+            {
+                // Otherwise, we have to find the index of the last AlwaysOnTop control, and insert it right before that
+                // Start at the end of the list since there is likely to be very few AlwaysOnTop controls, if any
+                var insertIndex = _controls.Count - 1;
+                while (insertIndex > 0 && _controls[insertIndex].AlwaysOnTop)
+                {
+                    insertIndex--;
+                }
+
+                // Ensure the insert index is valid (it won't be if the _controls list is empty)
+                if (insertIndex < 0)
+                    insertIndex = 0;
+
+                _controls.Insert(insertIndex, c);
+            }
+
+            AssertAlwaysOnTopIsValid();
+        }
+
+        /// <summary>
         /// Creates the <see cref="Tooltip"/> to be used with this <see cref="GUIManager"/>.
         /// </summary>
         /// <returns>The <see cref="Tooltip"/> to be used with this <see cref="GUIManager"/>. Can be null
@@ -106,6 +182,30 @@ namespace NetGore.Graphics.GUI
 
             // No child controls contained the point, so we found the deepest control containing the point
             return root;
+        }
+
+        /// <summary>
+        /// Makes sure that <see cref="Control"/>s in the <see cref="_controls"/> list that have <see cref="Control.AlwaysOnTop"/>
+        /// set to true are the top-most <see cref="Control"/>s.
+        /// </summary>
+        void OrganizeAlwaysOnTopControls()
+        {
+            // For each AlwaysOnTop control, pull it out of the list and push it onto the end. This approach
+            // does preserve ordering, so an already-sorted list will come out the exact same.
+            var max = _controls.Count;
+            for (var i = 0; i < max; i++)
+            {
+                var c = _controls[i];
+                if (c.AlwaysOnTop)
+                {
+                    _controls.RemoveAt(i);
+                    _controls.Add(c);
+                    i--;
+                    max--;
+                }
+            }
+
+            AssertAlwaysOnTopIsValid();
         }
 
         /// <summary>
@@ -241,64 +341,6 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Pushes a root <see cref="Control"/> to the top of the controls list. Mostly intended for bringing focused controls
-        /// up to the front.
-        /// </summary>
-        /// <param name="c">The <see cref="Control"/> to bring to the front. Needs to be a valid <see cref="Control"/> that exists
-        /// in this <see cref="GUIManager"/>.</param>
-        /// <param name="skipRemoval">If true, skip the removal step.</param>
-        void BumpRootControlToTop(Control c, bool skipRemoval = false)
-        {
-            if (c == null)
-            {
-                const string errmsg = "The argument `c` should never be null...";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
-            if (!skipRemoval)
-            {
-                // Remove the control so we can add it back in
-                if (!_controls.Remove(c))
-                {
-                    const string errmsg = "Set focus on control `{0}` that doesn't even belong to this IGUIManager!";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, c);
-                    Debug.Fail(string.Format(errmsg, c));
-                    return;
-                }
-            }
-
-            if (c.AlwaysOnTop)
-            {
-                // If the Control we are moving to the top is top-most, then our job is easy - just put it at the very top
-                _controls.Add(c);
-            }
-            else
-            {
-                // Otherwise, we have to find the index of the last AlwaysOnTop control, and insert it right before that
-                // Start at the end of the list since there is likely to be very few AlwaysOnTop controls, if any
-                int insertIndex = _controls.Count - 1;
-                while (insertIndex > 0 && _controls[insertIndex].AlwaysOnTop)
-                {
-                    insertIndex--;
-                }
-                
-                // Ensure the insert index is valid (it won't be if the _controls list is empty)
-                if (insertIndex < 0)
-                    insertIndex = 0;
-
-                _controls.Insert(insertIndex, c);
-            }
-
-            AssertAlwaysOnTopIsValid();
-        }
-
         /// <summary>
         /// Gets the top-level <see cref="Control"/> that currently has focus, or has a child <see cref="Control"/>
         /// that has focus.
@@ -409,49 +451,6 @@ namespace NetGore.Graphics.GUI
                 throw new ArgumentException("Only root controls may be added to the IGUIManager directly.");
 
             BumpRootControlToTop(control, true);
-        }
-
-        /// <summary>
-        /// Checks that the AlwaysOnTop ordering for the _controls list is valid.
-        /// </summary>
-        [Conditional("DEBUG")]
-        void AssertAlwaysOnTopIsValid()
-        {
-            int firstAlwaysOnTop;
-            for (firstAlwaysOnTop = 0; firstAlwaysOnTop < _controls.Count; firstAlwaysOnTop++)
-            {
-                if (_controls[firstAlwaysOnTop].AlwaysOnTop)
-                    break;
-            }
-
-            for (int i = firstAlwaysOnTop; i < _controls.Count; i++)
-            {
-                Debug.Assert(_controls[i].AlwaysOnTop);
-            }
-        }
-
-        /// <summary>
-        /// Makes sure that <see cref="Control"/>s in the <see cref="_controls"/> list that have <see cref="Control.AlwaysOnTop"/>
-        /// set to true are the top-most <see cref="Control"/>s.
-        /// </summary>
-        void OrganizeAlwaysOnTopControls()
-        {
-            // For each AlwaysOnTop control, pull it out of the list and push it onto the end. This approach
-            // does preserve ordering, so an already-sorted list will come out the exact same.
-            int max = _controls.Count;
-            for (int i = 0; i < max; i++)
-            {
-                var c = _controls[i];
-                if (c.AlwaysOnTop)
-                {
-                    _controls.RemoveAt(i);
-                    _controls.Add(c);
-                    i--;
-                    max--;
-                }
-            }
-
-            AssertAlwaysOnTopIsValid();
         }
 
         /// <summary>

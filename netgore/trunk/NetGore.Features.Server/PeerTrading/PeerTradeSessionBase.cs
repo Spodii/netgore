@@ -32,10 +32,10 @@ namespace NetGore.Features.PeerTrading
         /// </summary>
         readonly IInventory<TItem> _ttTarget;
 
-        bool _hasCharSourceAccepted = false;
-        bool _hasCharTargetAccepted = false;
         int _charSourceCash = 0;
         int _charTargetCash = 0;
+        bool _hasCharSourceAccepted = false;
+        bool _hasCharTargetAccepted = false;
         bool _isClosed = false;
 
         /// <summary>
@@ -180,14 +180,6 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
-        /// When overridden in the derived class, gives the <paramref name="character"/> an <paramref name="item"/>. It should not
-        /// matter where the <paramref name="item"/> is coming from, or why it is being given to the <paramref name="character"/>.
-        /// </summary>
-        /// <param name="character">The character to give the <paramref name="item"/>.</param>
-        /// <param name="item">The item to give to the <paramref name="character"/>.</param>
-        protected abstract void GiveItemToCharacter(TChar character, TItem item);
-
-        /// <summary>
         /// When overridden in the derived class, gives the <paramref name="character"/> the specified amount of <paramref name="cash"/>.
         /// It should not matter where the <paramref name="cash"/> is coming from, or why it is being given to the
         /// <paramref name="character"/>.
@@ -195,6 +187,14 @@ namespace NetGore.Features.PeerTrading
         /// <param name="character">The character to give the <paramref name="cash"/>.</param>
         /// <param name="cash">The amount of cash to give to the <paramref name="character"/>.</param>
         protected abstract void GiveCashToCharacter(TChar character, int cash);
+
+        /// <summary>
+        /// When overridden in the derived class, gives the <paramref name="character"/> an <paramref name="item"/>. It should not
+        /// matter where the <paramref name="item"/> is coming from, or why it is being given to the <paramref name="character"/>.
+        /// </summary>
+        /// <param name="character">The character to give the <paramref name="item"/>.</param>
+        /// <param name="item">The item to give to the <paramref name="character"/>.</param>
+        protected abstract void GiveItemToCharacter(TChar character, TItem item);
 
         /// <summary>
         /// Gives all of the items from a trade table to a character.
@@ -227,6 +227,17 @@ namespace NetGore.Features.PeerTrading
         /// </summary>
         /// <param name="character">The character who cannot accept all of the items being given to them.</param>
         protected virtual void OnCannotFitItems(TChar character)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the amount of cash a character has put down in the
+        /// trade table has changed.
+        /// </summary>
+        /// <param name="c">The character who's cash value has changed.</param>
+        /// <param name="oldValue">The previous amount of cash they had placed down in the trade.</param>
+        /// <param name="newValue">The current amount of cash they have placed down in the trade.</param>
+        protected virtual void OnCashChanged(TChar c, int oldValue, int newValue)
         {
         }
 
@@ -269,17 +280,6 @@ namespace NetGore.Features.PeerTrading
         /// once and is called after the trade session is fully set up.
         /// </summary>
         protected virtual void OnTradeOpened()
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the amount of cash a character has put down in the
-        /// trade table has changed.
-        /// </summary>
-        /// <param name="c">The character who's cash value has changed.</param>
-        /// <param name="oldValue">The previous amount of cash they had placed down in the trade.</param>
-        /// <param name="newValue">The current amount of cash they have placed down in the trade.</param>
-        protected virtual void OnCashChanged(TChar c, int oldValue, int newValue)
         {
         }
 
@@ -347,27 +347,6 @@ namespace NetGore.Features.PeerTrading
         #region IPeerTradeSession<TChar,TItem> Members
 
         /// <summary>
-        /// Gets the amount of cash that the source character has put down in the trade. Will never be negative.
-        /// </summary>
-        public int CharSourceCash
-        {
-            get
-            {
-                Debug.Assert(_charSourceCash >= 0, "The total amount of cash added to a trade should never be negative...");
-                return _charSourceCash; }
-        }
-
-        /// <summary>
-        /// Gets the amount of cash that the target character has put down in the trade. Will never be negative.
-        /// </summary>
-        public int CharTargetCash
-        {
-            get {
-                Debug.Assert(_charTargetCash >= 0, "The total amount of cash added to a trade should never be negative...");
-                return _charTargetCash; }
-        }
-
-        /// <summary>
         /// Gets the source character in the trade session. This is the character that started the trade.
         /// </summary>
         public TChar CharSource
@@ -376,11 +355,35 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Gets the amount of cash that the source character has put down in the trade. Will never be negative.
+        /// </summary>
+        public int CharSourceCash
+        {
+            get
+            {
+                Debug.Assert(_charSourceCash >= 0, "The total amount of cash added to a trade should never be negative...");
+                return _charSourceCash;
+            }
+        }
+
+        /// <summary>
         /// Gets the target character in the trade session. This is the character that was requested to be traded with.
         /// </summary>
         public TChar CharTarget
         {
             get { return _charTarget; }
+        }
+
+        /// <summary>
+        /// Gets the amount of cash that the target character has put down in the trade. Will never be negative.
+        /// </summary>
+        public int CharTargetCash
+        {
+            get
+            {
+                Debug.Assert(_charTargetCash >= 0, "The total amount of cash added to a trade should never be negative...");
+                return _charTargetCash;
+            }
         }
 
         /// <summary>
@@ -471,6 +474,70 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Adds cash to a character's side of the trade table. Either all of the <paramref name="cash"/> will be added, or none.
+        /// </summary>
+        /// <param name="c">The character adding cash to the trade table.</param>
+        /// <param name="cash">The amount of cash to add. Cannot be less than or equal to zero.</param>
+        /// <returns>True if the cash was successfully added; otherwise false.</returns>
+        public bool AddCash(TChar c, int cash)
+        {
+            if (IsClosed)
+            {
+                Debug.Fail("Trade session is already closed...");
+                return false;
+            }
+
+            if (c == null)
+            {
+                const string errmsg = "Parameter `c` is null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return false;
+            }
+
+            // Make sure the character states are valid
+            if (CloseIfCharacterStatesInvalid())
+                return false;
+
+            if (cash <= 0)
+                return false;
+
+            // Add the cash
+            int oldValue;
+            int newValue;
+            if (c == CharSource)
+            {
+                oldValue = _charSourceCash;
+                _charSourceCash += cash;
+                newValue = _charSourceCash;
+            }
+            else if (c == CharTarget)
+            {
+                oldValue = _charTargetCash;
+                _charTargetCash += cash;
+                newValue = _charTargetCash;
+            }
+            else
+            {
+                // Not a valid character
+                const string errmsg = "`{0}` tried to add `{1}` cash to a trade session, but they are not part of this session!";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, c, cash);
+                Debug.Fail(string.Format(errmsg, c, cash));
+                return false;
+            }
+
+            // Raise the event
+            OnCashChanged(c, oldValue, newValue);
+
+            // Clear the accept status since the table changed
+            ClearAcceptStatus();
+
+            return true;
+        }
+
+        /// <summary>
         /// Cancels the trade.
         /// </summary>
         /// <param name="canceler">The character that is canceling the trade.</param>
@@ -551,6 +618,81 @@ namespace NetGore.Features.PeerTrading
         }
 
         /// <summary>
+        /// Removes cash from a character's side of the trade table and gives it back to the character.
+        /// </summary>
+        /// <param name="c">The character removing cash from the trade table.</param>
+        /// <param name="cash">The amount of cash to remove. Cannot be less than or equal to zero.</param>
+        /// <returns>True if the specified amount of cash was removed from the trade table; false if not all of the cash could be removed,
+        /// usually because the character does not have that much cash placed down in the trade.</returns>
+        public bool TryRemoveCash(TChar c, int cash)
+        {
+            if (IsClosed)
+            {
+                Debug.Fail("Trade session is already closed...");
+                return false;
+            }
+
+            if (c == null)
+            {
+                const string errmsg = "Parameter `c` is null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return false;
+            }
+
+            // Make sure the character states are valid
+            if (CloseIfCharacterStatesInvalid())
+                return false;
+
+            if (cash <= 0)
+                return false;
+
+            // Remove the cash
+            int oldValue;
+            int newValue;
+            if (c == CharSource)
+            {
+                if (CharSourceCash < cash)
+                    return false;
+
+                oldValue = _charSourceCash;
+                _charSourceCash -= cash;
+                newValue = _charSourceCash;
+            }
+            else if (c == CharTarget)
+            {
+                if (CharTargetCash < cash)
+                    return false;
+
+                oldValue = _charTargetCash;
+                _charTargetCash -= cash;
+                newValue = _charTargetCash;
+            }
+            else
+            {
+                // Not a valid character
+                const string errmsg = "`{0}` tried to add `{1}` cash to a trade session, but they are not part of this session!";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, c, cash);
+                Debug.Fail(string.Format(errmsg, c, cash));
+                return false;
+            }
+
+            // Give the cash back to the character
+            var cashDiff = oldValue - newValue;
+            GiveCashToCharacter(c, cashDiff);
+
+            // Raise the event
+            OnCashChanged(c, oldValue, newValue);
+
+            // Clear the accept status since the table changed
+            ClearAcceptStatus();
+
+            return true;
+        }
+
+        /// <summary>
         /// Removes an item from the trade table at the given slot and gives it back to the character.
         /// </summary>
         /// <param name="c">The character who is removing an item from their trade table.</param>
@@ -616,145 +758,6 @@ namespace NetGore.Features.PeerTrading
 
             // Update the slot
             OnTradeTableSlotChanged(c, slot, null);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Adds cash to a character's side of the trade table. Either all of the <paramref name="cash"/> will be added, or none.
-        /// </summary>
-        /// <param name="c">The character adding cash to the trade table.</param>
-        /// <param name="cash">The amount of cash to add. Cannot be less than or equal to zero.</param>
-        /// <returns>True if the cash was successfully added; otherwise false.</returns>
-        public bool AddCash(TChar c, int cash)
-        {
-            if (IsClosed)
-            {
-                Debug.Fail("Trade session is already closed...");
-                return false;
-            }
-
-            if (c == null)
-            {
-                const string errmsg = "Parameter `c` is null.";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return false;
-            }
-
-            // Make sure the character states are valid
-            if (CloseIfCharacterStatesInvalid())
-                return false;
-
-            if (cash <= 0)
-                return false;
-            
-            // Add the cash
-            int oldValue;
-            int newValue;
-            if (c == CharSource)
-            {
-                oldValue = _charSourceCash;
-                _charSourceCash += cash;
-                newValue = _charSourceCash;
-            }
-            else if (c == CharTarget)
-            {
-                oldValue = _charTargetCash;
-                _charTargetCash += cash;
-                newValue = _charTargetCash;
-            }
-            else
-            {
-                // Not a valid character
-                const string errmsg = "`{0}` tried to add `{1}` cash to a trade session, but they are not part of this session!";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, c, cash);
-                Debug.Fail(string.Format(errmsg, c, cash));
-                return false;
-            }
-
-            // Raise the event
-            OnCashChanged(c, oldValue, newValue);
-
-            // Clear the accept status since the table changed
-            ClearAcceptStatus();
-
-            return true;
-        }
-
-        /// <summary>
-        /// Removes cash from a character's side of the trade table and gives it back to the character.
-        /// </summary>
-        /// <param name="c">The character removing cash from the trade table.</param>
-        /// <param name="cash">The amount of cash to remove. Cannot be less than or equal to zero.</param>
-        /// <returns>True if the specified amount of cash was removed from the trade table; false if not all of the cash could be removed,
-        /// usually because the character does not have that much cash placed down in the trade.</returns>
-        public bool TryRemoveCash(TChar c, int cash)
-        {
-            if (IsClosed)
-            {
-                Debug.Fail("Trade session is already closed...");
-                return false;
-            }
-
-            if (c == null)
-            {
-                const string errmsg = "Parameter `c` is null.";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return false;
-            }
-
-            // Make sure the character states are valid
-            if (CloseIfCharacterStatesInvalid())
-                return false;
-
-            if (cash <= 0)
-                return false;
-
-            // Remove the cash
-            int oldValue;
-            int newValue;
-            if (c == CharSource)
-            {
-                if (CharSourceCash < cash)
-                    return false;
-
-                oldValue = _charSourceCash;
-                _charSourceCash -= cash;
-                newValue = _charSourceCash;
-            }
-            else if (c == CharTarget)
-            {
-                if (CharTargetCash < cash)
-                    return false;
-
-                oldValue = _charTargetCash;
-                _charTargetCash -= cash;
-                newValue = _charTargetCash;
-            }
-            else
-            {
-                // Not a valid character
-                const string errmsg = "`{0}` tried to add `{1}` cash to a trade session, but they are not part of this session!";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, c, cash);
-                Debug.Fail(string.Format(errmsg, c, cash));
-                return false;
-            }
-
-            // Give the cash back to the character
-            int cashDiff = oldValue - newValue;
-            GiveCashToCharacter(c, cashDiff);
-
-            // Raise the event
-            OnCashChanged(c, oldValue, newValue);
-
-            // Clear the accept status since the table changed
-            ClearAcceptStatus();
 
             return true;
         }

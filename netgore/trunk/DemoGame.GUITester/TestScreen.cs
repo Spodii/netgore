@@ -154,7 +154,8 @@ namespace DemoGame.GUITester
             switch (args)
             {
                 case MessageBoxButton.Yes:
-                    new MessageBox(sender.GUIManager, ":|", "Yes? What do you mean yes? I didn't even ask you a question!", MessageBoxButton.Ok);
+                    new MessageBox(sender.GUIManager, ":|", "Yes? What do you mean yes? I didn't even ask you a question!",
+                                   MessageBoxButton.Ok);
                     break;
 
                 case MessageBoxButton.No:
