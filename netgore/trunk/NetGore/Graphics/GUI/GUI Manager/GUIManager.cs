@@ -135,6 +135,61 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Updates what <see cref="Control"/> is currently under the cursor.
+        /// </summary>
+        /// <param name="e">The <see cref="SFML.Window.MouseMoveEventArgs"/> instance containing the event data.</param>
+        void UpdateControlUnderCursor(MouseMoveEventArgs e)
+        {
+            var lastUnderCursor = UnderCursor;
+            _underCursor = GetControlAtPoint(CursorPosition);
+
+            // When the control under the cursor changes, handle the mouse enter/leave events
+            var c = UnderCursor;
+            if (lastUnderCursor != c)
+            {
+                if (lastUnderCursor != null)
+                    lastUnderCursor.SendMouseLeaveEvent(e);
+
+                if (c != null)
+                    c.SendMouseEnterEvent(e);
+            }
+        }
+
+        /// <summary>
+        /// Updates what <see cref="Control"/> is currently under the cursor.
+        /// </summary>
+        /// <param name="x">The mouse X position.</param>
+        /// <param name="y">The mouse Y position.</param>
+        void UpdateControlUnderCursor(int x, int y)
+        {
+            MouseMoveEventArgs eArgs = null;
+
+            var lastUnderCursor = UnderCursor;
+            _underCursor = GetControlAtPoint(CursorPosition);
+
+            // When the control under the cursor changes, handle the mouse enter/leave events
+            var c = UnderCursor;
+            if (lastUnderCursor != c)
+            {
+                if (lastUnderCursor != null)
+                {
+                    if (eArgs == null)
+                        eArgs = new MouseMoveEventArgs(new MouseMoveEvent { X = x, Y = y });
+
+                    lastUnderCursor.SendMouseLeaveEvent(eArgs);
+                }
+
+                if (c != null)
+                {
+                    if (eArgs == null)
+                        eArgs = new MouseMoveEventArgs(new MouseMoveEvent { X = x, Y = y });
+
+                    c.SendMouseEnterEvent(eArgs);
+                }
+            }
+        }
+
         #region IGUIManager Members
 
         /// <summary>
@@ -514,61 +569,6 @@ namespace NetGore.Graphics.GUI
             var c = UnderCursor;
             if (c != null)
                 c.SendMouseButtonReleasedEvent(e);
-        }
-
-        /// <summary>
-        /// Updates what <see cref="Control"/> is currently under the cursor.
-        /// </summary>
-        /// <param name="e">The <see cref="SFML.Window.MouseMoveEventArgs"/> instance containing the event data.</param>
-        void UpdateControlUnderCursor(MouseMoveEventArgs e)
-        {
-            var lastUnderCursor = UnderCursor;
-            _underCursor = GetControlAtPoint(CursorPosition);
-
-            // When the control under the cursor changes, handle the mouse enter/leave events
-            var c = UnderCursor;
-            if (lastUnderCursor != c)
-            {
-                if (lastUnderCursor != null)
-                    lastUnderCursor.SendMouseLeaveEvent(e);
-
-                if (c != null)
-                    c.SendMouseEnterEvent(e);
-            }
-        }
-
-        /// <summary>
-        /// Updates what <see cref="Control"/> is currently under the cursor.
-        /// </summary>
-        /// <param name="x">The mouse X position.</param>
-        /// <param name="y">The mouse Y position.</param>
-        void UpdateControlUnderCursor(int x, int y)
-        {
-            MouseMoveEventArgs eArgs = null;
-
-            var lastUnderCursor = UnderCursor;
-            _underCursor = GetControlAtPoint(CursorPosition);
-
-            // When the control under the cursor changes, handle the mouse enter/leave events
-            var c = UnderCursor;
-            if (lastUnderCursor != c)
-            {
-                if (lastUnderCursor != null)
-                {
-                    if (eArgs == null)
-                        eArgs = new MouseMoveEventArgs(new MouseMoveEvent { X = x, Y = y });
-
-                    lastUnderCursor.SendMouseLeaveEvent(eArgs);
-                }
-
-                if (c != null)
-                {
-                    if (eArgs == null)
-                        eArgs = new MouseMoveEventArgs(new MouseMoveEvent { X = x, Y = y });
-
-                    c.SendMouseEnterEvent(eArgs);
-                }
-            }
         }
 
         /// <summary>
