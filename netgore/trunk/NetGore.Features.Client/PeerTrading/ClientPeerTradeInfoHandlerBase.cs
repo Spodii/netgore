@@ -581,7 +581,8 @@ namespace NetGore.Features.PeerTrading
         /// Sends a notification to the server that the client wants to add an inventory item to the trade.
         /// </summary>
         /// <param name="slot">The slot containing the item to add.</param>
-        public void WriteAddInventoryItem(InventorySlot slot)
+        /// <param name="amount">The amount of the item to add.</param>
+        public void WriteAddInventoryItem(InventorySlot slot, byte amount)
         {
             if (!IsTradeOpen)
                 return;
@@ -589,6 +590,7 @@ namespace NetGore.Features.PeerTrading
             using (var pw = CreateWriter(PeerTradeInfoClientMessage.AddInventoryItem))
             {
                 pw.Write(slot);
+                pw.Write(amount);
                 SendData(pw);
             }
         }

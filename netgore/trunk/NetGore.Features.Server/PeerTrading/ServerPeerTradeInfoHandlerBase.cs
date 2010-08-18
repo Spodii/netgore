@@ -156,13 +156,14 @@ namespace NetGore.Features.PeerTrading
         void ReadAddInventoryItem(TChar source, BitStream reader)
         {
             var slot = reader.ReadInventorySlot();
+            var amount = reader.ReadByte();
 
             var session = GetTradeSession(source);
             if (session == null)
                 return;
 
             // Get the inventory item
-            var item = TakeInventoryItem(source, slot);
+            var item = TakeInventoryItem(source, slot, amount);
             if (item == null)
                 return;
 
@@ -272,8 +273,9 @@ namespace NetGore.Features.PeerTrading
         /// </summary>
         /// <param name="c">The character to take the inventory item from.</param>
         /// <param name="slot">The slot of the inventory item to take.</param>
+        /// <param name="amount">The amount of the item to take.</param>
         /// <returns>The character's inventory item at the given slot, or null if the slot is invalid or empty.</returns>
-        protected abstract TItem TakeInventoryItem(TChar c, InventorySlot slot);
+        protected abstract TItem TakeInventoryItem(TChar c, InventorySlot slot, byte amount);
 
         /// <summary>
         /// Handles writing the information about the acceptance of the trade status changing.
