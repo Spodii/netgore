@@ -564,10 +564,7 @@ namespace DemoGame.Client
                 // If we are currently shopping, try to sell the item instead
                 if (ShopForm.ShopInfo.CanBuy)
                 {
-                    using (var pw = ClientPacket.SellInventoryToShop(slot, 1))
-                    {
-                        Socket.Send(pw);
-                    }
+                    UserInfo.Inventory.SellToShop(slot, GUIManager);
                 }
             }
             else
