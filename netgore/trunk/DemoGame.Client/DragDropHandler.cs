@@ -397,6 +397,20 @@ namespace DemoGame.Client
             return true;
         }
 
+        Inventory UserInventory
+        {
+            get
+            {
+                if (_gps == null)
+                    return null;
+
+                if (_gps.UserInfo == null)
+                    return null;
+
+                return _gps.UserInfo.Inventory;
+            }
+        }
+
         /// <summary>
         /// Adds support for dragging a
         /// <see cref="InventoryForm.InventoryItemPB"/> onto an <see cref="ShopForm"/>.
@@ -410,13 +424,13 @@ namespace DemoGame.Client
             if (!CanDrop_InventoryItemToShop(srcDDP, destDDP))
                 return false;
 
+            if (UserInventory == null)
+                return false;
+
             var src = (InventoryForm.InventoryItemPB)srcDDP;
 
-            using (var pw = ClientPacket.SellInventoryToShop(src.Slot, 1))
-            {
-                _gps.Socket.Send(pw);
-            }
-
+            UserInventory.SellToShop(src.Slot, _gps.GUIManager);
+            
             return true;
         }
 

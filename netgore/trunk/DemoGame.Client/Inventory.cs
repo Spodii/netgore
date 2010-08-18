@@ -93,7 +93,7 @@ namespace DemoGame.Client
             if (item.Amount > 1)
             {
                 // Create an InputBox to ask how much to drop
-                const string text = "Drop items";
+                const string text = "Drop item";
                 const string message = "How much of the item do you wish to drop?\n(Enter a value from 1 to {0})";
 
                 var inBox = InputBox.CreateNumericInputBox(guiManager, text, string.Format(message, item.Amount));
@@ -116,13 +116,31 @@ namespace DemoGame.Client
         void DropInputBox_OptionSelected(Control sender, MessageBoxButton args)
         {
             InventorySlot slot = (InventorySlot)sender.Tag;
-            var inBox= (InputBox)sender;
+            var inBox = (InputBox)sender;
 
             byte amount;
             if (!byte.TryParse(inBox.InputText, out amount))
                 return;
 
             Drop(slot, amount);
+        }
+
+        /// <summary>
+        /// Handles the OptionSelected event of the SellToShopInputBox, which is the <see cref="InputBox"/> created to
+        /// let the user specify how much of the item they want to sell to a shop.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        void SellToShopInputBox_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            InventorySlot slot = (InventorySlot)sender.Tag;
+            var inBox = (InputBox)sender;
+
+            byte amount;
+            if (!byte.TryParse(inBox.InputText, out amount))
+                return;
+
+            SellToShop(slot, amount);
         }
 
         /// <summary>
@@ -139,6 +157,54 @@ namespace DemoGame.Client
 
             // Drop
             using (var pw = ClientPacket.DropInventoryItem(slot, amount))
+            {
+                _socket.Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// Sells an inventory item to the currently open shop.
+        /// </summary>
+        /// <param name="slot">The slot of the item to sell.</param>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to use to create the <see cref="InputBox"/> if it is needed.</param>
+        public void SellToShop(InventorySlot slot, IGUIManager guiManager)
+        {
+            // Check for a valid item
+            var item = this[slot];
+            if (item == null)
+                return;
+
+            // Check the amount
+            if (item.Amount > 1)
+            {
+                // Create an InputBox to ask how much to drop
+                const string text = "Sell item";
+                const string message = "How much of the item do you wish to sell?\n(Enter a value from 1 to {0})";
+
+                var inBox = InputBox.CreateNumericInputBox(guiManager, text, string.Format(message, item.Amount));
+                inBox.Tag = slot;
+                inBox.OptionSelected += SellToShopInputBox_OptionSelected;
+            }
+            else
+            {
+                // Auto-drop if there is just one of the item
+                SellToShop(slot, 1);
+            }
+        }
+
+        /// <summary>
+        /// Sells an inventory item to the currently open shop.
+        /// </summary>
+        /// <param name="slot">The slot of the item to sell.</param>
+        /// <param name="amount">The amount of the item in the slot to sell.</param>
+        public void SellToShop(InventorySlot slot, byte amount)
+        {
+            // Check for a valid item
+            var item = this[slot];
+            if (item == null)
+                return;
+
+            using (var pw = ClientPacket.SellInventoryToShop(slot, amount))
             {
                 _socket.Send(pw);
             }
