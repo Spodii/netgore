@@ -147,6 +147,10 @@ namespace DemoGame.GUITester
 
         static void msgBox_OptionSelected(Control sender, MessageBoxButton args)
         {
+            var senderAsMsgBox = sender as MessageBox;
+            if (senderAsMsgBox != null)
+                senderAsMsgBox.OptionSelected -= msgBox_OptionSelected;
+
             switch (args)
             {
                 case MessageBoxButton.Yes:
@@ -156,7 +160,6 @@ namespace DemoGame.GUITester
                 case MessageBoxButton.No:
                     string message;
 
-                    var senderAsMsgBox = sender as MessageBox;
                     if (senderAsMsgBox != null && senderAsMsgBox.Message.StartsWith("NO!"))
                         message = senderAsMsgBox.Message + "!!!";
                     else
