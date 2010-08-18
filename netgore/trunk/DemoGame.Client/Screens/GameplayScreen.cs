@@ -556,7 +556,7 @@ namespace DemoGame.Client
                 var ptih = PeerTradeForm.PeerTradeInfoHandler;
                 if (ptih != null)
                 {
-                    ptih.WriteAddInventoryItem(slot);
+                    _peerTradeForm.AddToTrade(slot);
                 }
             }
             else if (ShopForm.IsVisible && ShopForm.ShopInfo != null)

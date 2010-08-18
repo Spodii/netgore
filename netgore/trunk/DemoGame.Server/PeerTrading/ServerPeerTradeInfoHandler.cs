@@ -152,14 +152,26 @@ namespace DemoGame.Server.PeerTrading
         /// </summary>
         /// <param name="c">The character to take the inventory item from.</param>
         /// <param name="slot">The slot of the inventory item to take.</param>
-        /// <returns>The character's inventory item at the given slot, or null if the slot is invalid or empty.</returns>
-        protected override ItemEntity TakeInventoryItem(User c, InventorySlot slot)
+        /// <param name="amount">The amount.</param>
+        /// <returns>
+        /// The character's inventory item at the given slot, or null if the slot is invalid or empty.
+        /// </returns>
+        protected override ItemEntity TakeInventoryItem(User c, InventorySlot slot, byte amount)
         {
             // Get the item reference
             var item = c.Inventory[slot];
 
-            // Remove it from the inventory
-            c.Inventory.RemoveAt(slot, false);
+            // Check exactly how much of the item we are taking
+            if (amount >= item.Amount)
+            {
+                // If we take all of the item, remove it from the inventory
+                c.Inventory.RemoveAt(slot, false);
+            }
+            else
+            {
+                // Otherwise, only take a portion of the item
+                item = item.Split(amount);
+            }
 
             return item;
         }
