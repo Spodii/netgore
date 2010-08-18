@@ -31,6 +31,11 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         readonly bool _suspendCreateChildControls = true;
 
+        /// <summary>
+        /// The maximum width.
+        /// </summary>
+        readonly int _maxWidth;
+
         MessageBoxButton _buttonTypes;
         string _message;
 
@@ -39,7 +44,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         static MessageBox()
         {
-            MaxWidth = 500;
+            DefaultMaxWidth = 500;
 
             // Only allow creating buttons where the enum's value is a power of 2, since non-power-of-2 values
             // means that it is a concatenation of flags
@@ -53,9 +58,16 @@ namespace NetGore.Graphics.GUI
         /// <param name="text">The message box's title text.</param>
         /// <param name="message">The message to display.</param>
         /// <param name="buttonTypes">The <see cref="MessageBoxButton"/>s to display.</param>
-        public MessageBox(IGUIManager guiManager, string text, string message, MessageBoxButton buttonTypes)
+        /// <param name="maxWidth">The maximum width of the created <see cref="MessageBox"/>. If less than or equal to 0, then
+        /// the <see cref="DefaultMaxWidth"/> will be used instead.</param>
+        public MessageBox(IGUIManager guiManager, string text, string message, MessageBoxButton buttonTypes, int maxWidth = 0)
             : base(guiManager, Vector2.Zero, new Vector2(32))
         {
+            if (maxWidth <= 0)
+                maxWidth = DefaultMaxWidth;
+
+            _maxWidth = maxWidth;
+
             DisposeOnSelection = true;
             ResizeToChildren = true;
 
@@ -123,9 +135,9 @@ namespace NetGore.Graphics.GUI
         public bool DisposeOnSelection { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum width of a <see cref="MessageBox"/>.
+        /// Gets or sets the default maximum width of a <see cref="MessageBox"/>. Default value is 500.
         /// </summary>
-        public static int MaxWidth { get; set; }
+        public static int DefaultMaxWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the message displayed in the <see cref="MessageBox"/>.
@@ -216,7 +228,7 @@ namespace NetGore.Graphics.GUI
 
             // Create the text
             var lines = StyledText.ToMultiline(new StyledText[] { new StyledText(Message) }, true, Font,
-                                               MaxWidth - (_padding * 2) - Border.Width);
+                                               _maxWidth - (_padding * 2) - Border.Width);
             var yOffset = _padding;
             foreach (var line in lines)
             {
