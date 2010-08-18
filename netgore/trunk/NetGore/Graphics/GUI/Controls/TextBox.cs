@@ -86,7 +86,7 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets a <see cref="Func{T,U}"/> used to determine if only certain keys should be accepted when entering
         /// text into this <see cref="TextBox"/>. If null, all of the default keys will be accepted. Default is null.
         /// </summary>
-        public Func<KeyEventArgs, bool> AllowKeysHandler { get; set; }
+        public Func<TextEventArgs, bool> AllowKeysHandler { get; set; }
 
         /// <summary>
         /// Gets or sets the number of lines to trim the buffer down to when the number of lines in this
@@ -149,7 +149,7 @@ namespace NetGore.Graphics.GUI
         /// Gets or sets a <see cref="Func{T,U}"/> used to determine if certain keys should be ignored when entering text into
         /// this <see cref="TextBox"/>. If null, the default keys will be ignored. Default is null.
         /// </summary>
-        public Func<KeyEventArgs, bool> IgnoreKeysHandler { get; set; }
+        public Func<TextEventArgs, bool> IgnoreKeysHandler { get; set; }
 
         /// <summary>
         /// Gets or sets if this <see cref="TextBox"/> supports multiple lines. When changing from multiple lines to
@@ -606,12 +606,6 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected override void OnKeyPressed(KeyEventArgs e)
         {
-            if (IgnoreKeysHandler != null && IgnoreKeysHandler(e))
-                return;
-
-            if (AllowKeysHandler != null && !AllowKeysHandler(e))
-                return;
-
             _editableTextHandler.HandleKey(e);
 
             base.OnKeyPressed(e);
@@ -643,6 +637,12 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected override void OnTextEntered(TextEventArgs e)
         {
+            if (IgnoreKeysHandler != null && IgnoreKeysHandler(e))
+                return;
+
+            if (AllowKeysHandler != null && !AllowKeysHandler(e))
+                return;
+
             _editableTextHandler.HandleText(e);
 
             base.OnTextEntered(e);

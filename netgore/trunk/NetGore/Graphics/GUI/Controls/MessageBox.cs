@@ -63,7 +63,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="message">The message to display.</param>
         /// <param name="buttonTypes">The <see cref="MessageBoxButton"/>s to display.</param>
         /// <param name="maxWidth">The maximum width of the created <see cref="MessageBox"/>. If less than or equal to 0, then
-        /// the <see cref="DefaultMaxWidth"/> will be used instead.</param>
+        /// the <see cref="DefaultMaxWidth"/> will be used instead. Default is 0.</param>
         public MessageBox(IGUIManager guiManager, string text, string message, MessageBoxButton buttonTypes, int maxWidth = 0)
             : base(guiManager, Vector2.Zero, new Vector2(32))
         {

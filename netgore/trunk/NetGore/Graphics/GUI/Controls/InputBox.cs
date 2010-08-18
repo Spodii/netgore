@@ -11,8 +11,18 @@ namespace NetGore.Graphics.GUI
     {
         TextBox _input;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InputBox"/> class.
+        /// </summary>
+        /// <param name="guiManager">The GUI manager this <see cref="Control"/> will be managed by.</param>
+        /// <param name="text">The message box's title text.</param>
+        /// <param name="message">The message to display.</param>
+        /// <param name="buttonTypes">The <see cref="MessageBoxButton"/>s to display. Default is <see cref="MessageBoxButton.OkCancel"/></param>
+        /// <param name="maxWidth">The maximum width of the created <see cref="MessageBox"/>. If less than or equal to 0, then
+        /// the <see cref="MessageBox.DefaultMaxWidth"/> will be used instead. Default is 0.</param>
         public InputBox(IGUIManager guiManager, string text, string message,
-                        MessageBoxButton buttonTypes = MessageBoxButton.OkCancel) : base(guiManager, text, message, buttonTypes)
+                        MessageBoxButton buttonTypes = MessageBoxButton.OkCancel, int maxWidth = 0) : base(guiManager, text, message, buttonTypes, 
+            maxWidth)
         {
         }
 
