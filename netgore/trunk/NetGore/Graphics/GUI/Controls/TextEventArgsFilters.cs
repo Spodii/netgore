@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SFML.Window;
 
@@ -15,10 +16,6 @@ namespace NetGore.Graphics.GUI
         static readonly Func<TextEventArgs, bool> _isLetterFunc;
         static readonly Func<TextEventArgs, bool> _isLetterOrDigit;
         static readonly Func<TextEventArgs, bool> _isPunctuation;
-        static readonly Func<TextEventArgs, bool> _notIsDigitFunc;
-        static readonly Func<TextEventArgs, bool> _notIsLetterFunc;
-        static readonly Func<TextEventArgs, bool> _notIsLetterOrDigit;
-        static readonly Func<TextEventArgs, bool> _notIsPunctuation;
 
         /// <summary>
         /// Initializes the <see cref="TextEventArgsFilters"/> class.
@@ -26,16 +23,9 @@ namespace NetGore.Graphics.GUI
         static TextEventArgsFilters()
         {
             _isDigitFunc = IsDigit;
-            _notIsDigitFunc = (x => !IsDigit(x));
-
             _isLetterFunc = IsLetter;
-            _notIsLetterFunc = (x => !IsLetter(x));
-
             _isLetterOrDigit = IsLetterOrDigit;
-            _notIsLetterOrDigit = (x => !IsLetterOrDigit(x));
-
             _isPunctuation = IsPunctuation;
-            _notIsPunctuation = (x => !IsPunctuation(x));
         }
 
         /// <summary>
@@ -71,39 +61,8 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets a <see cref="Func{TextEventArgs, Boolean}"/> for the NOT of the <see cref="IsDigit"/> method.
-        /// </summary>
-        public static Func<TextEventArgs, bool> NotIsDigitFunc
-        {
-            get { return _notIsDigitFunc; }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Func{TextEventArgs, Boolean}"/> for the NOT of the <see cref="IsLetter"/> method.
-        /// </summary>
-        public static Func<TextEventArgs, bool> NotIsLetterFunc
-        {
-            get { return _notIsLetterFunc; }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Func{TextEventArgs, Boolean}"/> for the NOT of the <see cref="IsLetterOrDigit"/> method.
-        /// </summary>
-        public static Func<TextEventArgs, bool> NotIsLetterOrDigitFunc
-        {
-            get { return _notIsLetterOrDigit; }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Func{TextEventArgs, Boolean}"/> for the NOT of the <see cref="IsPunctuation"/> method.
-        /// </summary>
-        public static Func<TextEventArgs, bool> NotIsPunctuationFunc
-        {
-            get { return _notIsPunctuation; }
-        }
-
-        /// <summary>
         /// Gets if the text in the <see cref="TextEventArgs"/> is a digit.
+        /// Common edit-related keys, such as backspace, also return true.
         /// </summary>
         /// <param name="e">The <see cref="TextEventArgs"/>.</param>
         /// <returns>True if the <paramref name="e"/> is of the expected type; otherwise false.</returns>
@@ -112,11 +71,12 @@ namespace NetGore.Graphics.GUI
             if (e.Unicode.Length != 1)
                 return false;
 
-            return char.IsDigit(e.Unicode[0]);
+            return char.IsDigit(e.Unicode[0]) || IsCommonKey(e);
         }
 
         /// <summary>
         /// Gets if the text in the <see cref="TextEventArgs"/> is a letter.
+        /// Common edit-related keys, such as backspace, also return true.
         /// </summary>
         /// <param name="e">The <see cref="TextEventArgs"/>.</param>
         /// <returns>True if the <paramref name="e"/> is of the expected type; otherwise false.</returns>
@@ -125,11 +85,12 @@ namespace NetGore.Graphics.GUI
             if (e.Unicode.Length != 1)
                 return false;
 
-            return char.IsLetter(e.Unicode[0]);
+            return char.IsLetter(e.Unicode[0]) || IsCommonKey(e);
         }
 
         /// <summary>
         /// Gets if the text in the <see cref="TextEventArgs"/> is a letter or digit.
+        /// Common edit-related keys, such as backspace, also return true.
         /// </summary>
         /// <param name="e">The <see cref="TextEventArgs"/>.</param>
         /// <returns>True if the <paramref name="e"/> is of the expected type; otherwise false.</returns>
@@ -138,11 +99,17 @@ namespace NetGore.Graphics.GUI
             if (e.Unicode.Length != 1)
                 return false;
 
-            return char.IsLetterOrDigit(e.Unicode[0]);
+            return char.IsLetterOrDigit(e.Unicode[0]) || IsCommonKey(e);
         }
 
         /// <summary>
+        /// Gets the characters that are always accepted by the filter methods in this class.
+        /// </summary>
+        public static IEnumerable<char> CommonChars { get { return _commonChars; } }
+
+        /// <summary>
         /// Gets if the text in the <see cref="TextEventArgs"/> is a punctuation mark.
+        /// Common edit-related keys, such as backspace, also return true.
         /// </summary>
         /// <param name="e">The <see cref="TextEventArgs"/>.</param>
         /// <returns>True if the <paramref name="e"/> is of the expected type; otherwise false.</returns>
@@ -151,7 +118,25 @@ namespace NetGore.Graphics.GUI
             if (e.Unicode.Length != 1)
                 return false;
 
-            return char.IsPunctuation(e.Unicode[0]);
+            return char.IsPunctuation(e.Unicode[0]) || IsCommonKey(e);
+        }
+
+        static readonly char[] _commonChars = new char[] { '\b' /* Backspace */ };
+
+        /// <summary>
+        /// Gets if the <see cref="TextEventArgs"/> contains one of the <see cref="CommonChars"/>.
+        /// </summary>
+        /// <param name="e">The <see cref="TextEventArgs"/>.</param>
+        /// <returns>True if the <paramref name="e"/> contains one of the <see cref="CommonChars"/>; otherwise false.</returns>
+        public static bool IsCommonKey(TextEventArgs e)
+        {
+            if (e.Unicode.Length != 1)
+                return false;
+
+            if (_commonChars.Contains(e.Unicode[0]))
+                return true;
+
+            return false;
         }
     }
 }

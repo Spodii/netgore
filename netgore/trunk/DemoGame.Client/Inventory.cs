@@ -4,12 +4,13 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
+using NetGore.Graphics.GUI;
 using NetGore.Network;
 
 namespace DemoGame.Client
 {
     /// <summary>
-    /// A very simple client-side Inventory, used only by the User's character
+    /// A very simple client-side Inventory, used only by the client's character.
     /// </summary>
     public class Inventory
     {
@@ -18,6 +19,10 @@ namespace DemoGame.Client
 
         readonly ISocketSender _socket;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Inventory"/> class.
+        /// </summary>
+        /// <param name="socket">The <see cref="ISocketSender"/> to use to communicate with the server.</param>
         public Inventory(ISocketSender socket)
         {
             if (socket == null)
@@ -70,13 +75,70 @@ namespace DemoGame.Client
             }
         }
 
-        public void Drop(InventorySlot slot)
+        /// <summary>
+        /// Drops an item from the inventory onto the ground. If the user has just one item in the given <paramref name="slot"/>,
+        /// then it is dropped. If they have multiple items in the <paramref name="slot"/>, then they are presented with an
+        /// <see cref="InputBox"/> so they can enter in how much to drop.
+        /// </summary>
+        /// <param name="slot">The slot of the item to drop.</param>
+        /// <param name="guiManager">The <see cref="IGUIManager"/> to use to create the <see cref="InputBox"/> if it is needed.</param>
+        public void Drop(InventorySlot slot, IGUIManager guiManager)
         {
+            // Check for a valid item
             var item = this[slot];
             if (item == null)
                 return;
 
-            using (var pw = ClientPacket.DropInventoryItem(slot))
+            // Check the amount
+            if (item.Amount > 1)
+            {
+                // Create an InputBox to ask how much to drop
+                const string text = "Drop items";
+                const string message = "How much of the item do you wish to drop?\n(Enter a value from 1 to {0})";
+
+                var inBox = InputBox.CreateNumericInputBox(guiManager, text, string.Format(message, item.Amount));
+                inBox.Tag = slot;
+                inBox.OptionSelected += DropInputBox_OptionSelected;
+            }
+            else
+            {
+                // Auto-drop if there is just one of the item
+                Drop(slot, 1);
+            }
+        }
+
+        /// <summary>
+        /// Handles the OptionSelected event of the DropInputBox, which is the <see cref="InputBox"/> created to
+        /// let the user specify how much of the item they want to drop.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        void DropInputBox_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            InventorySlot slot = (InventorySlot)sender.Tag;
+            var inBox= (InputBox)sender;
+
+            byte amount;
+            if (!byte.TryParse(inBox.InputText, out amount))
+                return;
+
+            Drop(slot, amount);
+        }
+
+        /// <summary>
+        /// Drops an item from the inventory onto the ground.
+        /// </summary>
+        /// <param name="slot">The slot of the item to drop.</param>
+        /// <param name="amount">The amount of the item in the slot to drop.</param>
+        public void Drop(InventorySlot slot, byte amount)
+        {
+            // Check for a valid item
+            var item = this[slot];
+            if (item == null)
+                return;
+
+            // Drop
+            using (var pw = ClientPacket.DropInventoryItem(slot, amount))
             {
                 _socket.Send(pw);
             }

@@ -233,6 +233,7 @@ namespace DemoGame.Server
         void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadInventorySlot();
+            var amount = r.ReadByte();
 
             User user;
             if ((user = TryGetUser(conn)) == null)
@@ -241,7 +242,10 @@ namespace DemoGame.Server
             if (user.IsPeerTrading)
                 return;
 
-            user.Inventory.Drop(slot);
+            if (amount < 1)
+                return;
+
+            user.Inventory.Drop(slot, amount);
         }
 
         [MessageHandler((byte)ClientPacketID.EndNPCChatDialog)]

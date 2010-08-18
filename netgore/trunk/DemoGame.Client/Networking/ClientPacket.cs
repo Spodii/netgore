@@ -40,10 +40,11 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter DropInventoryItem(InventorySlot slot)
+        public static PacketWriter DropInventoryItem(InventorySlot slot, byte amount)
         {
             var pw = GetWriter(ClientPacketID.DropInventoryItem);
             pw.Write(slot);
+            pw.Write(amount);
             return pw;
         }
 
