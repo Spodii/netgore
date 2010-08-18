@@ -17,7 +17,7 @@ namespace NetGore.Graphics.GUI
     public abstract class Control : IDisposable, IPersistable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static readonly object _eventAlwaysOnTopChanged = new object();
+
         static readonly object _eventBeginDrag = new object();
         static readonly object _eventBorderChanged = new object();
         static readonly object _eventBorderColorChanged = new object();
@@ -146,15 +146,6 @@ namespace NetGore.Graphics.GUI
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             SetDefaultValues();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        }
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="Control.AlwaysOnTop"/> of this <see cref="Control"/> has changed.
-        /// </summary>
-        public event ControlEventHandler AlwaysOnTopChanged
-        {
-            add { Events.AddHandler(_eventAlwaysOnTopChanged, value); }
-            remove { Events.RemoveHandler(_eventAlwaysOnTopChanged, value); }
         }
 
         /// <summary>
@@ -390,25 +381,6 @@ namespace NetGore.Graphics.GUI
         {
             add { Events.AddHandler(_eventVisibleChanged, value); }
             remove { Events.RemoveHandler(_eventVisibleChanged, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets if this <see cref="Control"/> is always on top of other <see cref="Control"/>s who have this
-        /// property set to false. If multiple <see cref="Control"/>s have this value set to true, then they will continue
-        /// to use the same behavior for deciding who is on top (that is, using the order that they last had focus).
-        /// </summary>
-        public bool AlwaysOnTop
-        {
-            get { return _alwaysOnTop; }
-            set
-            {
-                if (_alwaysOnTop == value)
-                    return;
-
-                _alwaysOnTop = value;
-
-                InvokeAlwaysOnTopChanged();
-            }
         }
 
         /// <summary>
@@ -1076,18 +1048,6 @@ namespace NetGore.Graphics.GUI
         /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
         /// the virtual method and event directly to ensure that the event is invoked correctly.
         /// </summary>
-        void InvokeAlwaysOnTopChanged()
-        {
-            OnAlwaysOnTopChanged();
-            var handler = Events[_eventAlwaysOnTopChanged] as ControlEventHandler;
-            if (handler != null)
-                handler(this);
-        }
-
-        /// <summary>
-        /// Invokes the corresponding virtual method and event for the given event. Use this instead of invoking
-        /// the virtual method and event directly to ensure that the event is invoked correctly.
-        /// </summary>
         void InvokeBeginDrag()
         {
             OnBeginDrag();
@@ -1735,49 +1695,6 @@ namespace NetGore.Graphics.GUI
                 // Remove the control from the list, then add it to the top (end of the list)
                 _controls.Remove(child);
                 _controls.Add(child);
-            }
-
-            ConfirmAlwaysOnTopOrdered();
-        }
-
-        /// <summary>
-        /// Makes sure that all of the child <see cref="Control"/>s that are set to <see cref="AlwaysOnTop"/> are
-        /// properly ordered in the array.
-        /// </summary>
-        void ConfirmAlwaysOnTopOrdered()
-        {
-            int end = _controls.Count;
-            for (int i = 0; i < end; i++)
-            {
-                if (_controls[i].ContainsAlwaysOnTop)
-                {
-                    var c = _controls[i];
-                    _controls.RemoveAt(i);
-                    _controls.Add(c);
-                    i--;
-                    end--;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="Control"/>, or any other <see cref="Control"/> under it, has their <see cref="AlwaysOnTop"/>
-        /// property set to true.
-        /// </summary>
-        public bool ContainsAlwaysOnTop
-        {
-            get
-            {
-                if (AlwaysOnTop)
-                    return true;
-
-                foreach (var c in Controls)
-                {
-                    if (c.ContainsAlwaysOnTop)
-                        return true;
-                }
-
-                return false;
             }
         }
 
