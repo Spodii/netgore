@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
@@ -70,13 +71,25 @@ namespace NetGore.Graphics.GUI
 
             if (_input == null)
             {
-                _input = new TextBox(this, pos, new Vector2(32))
-                { Text = "as" };
+                _input = CreateTextBoxControl(pos, new Vector2(32, 4));
             }
 
-            InputControl.Size = new Vector2(ClientSize.X - (Padding * 2), _input.Font.GetLineSpacing() + 16);
+            var height = Math.Max(_input.Size.Y, _input.Font.GetLineSpacing(_input.Font.DefaultSize) + _input.Border.Height);
+            InputControl.Size = new Vector2(ClientSize.X - (Padding * 2), height);
 
             yOffset += (int)_input.Size.Y;
+        }
+
+        /// <summary>
+        /// Creates the <see cref="TextBox"/> instance to use for the input.
+        /// </summary>
+        /// <param name="position">The position of the <see cref="TextBox"/>.</param>
+        /// <param name="size">The suggested size of the <see cref="TextBox"/>.</param>
+        /// <returns>The <see cref="TextBox"/> instance to use for the input.</returns>
+        protected virtual TextBox CreateTextBoxControl(Vector2 position, Vector2 size)
+        {
+            var ret = new InputTextBox(this, position, size) { IsMultiLine = false };
+            return ret;
         }
 
         /// <summary>
@@ -90,6 +103,23 @@ namespace NetGore.Graphics.GUI
 
             if (InputControl != null)
                 InputControl.Size = new Vector2(ClientSize.X - (Padding * 2), _input.Size.Y);
+        }
+
+        /// <summary>
+        /// The input <see cref="TextBox"/> for the <see cref="InputBox"/>.
+        /// </summary>
+        sealed class InputTextBox : TextBox
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InputTextBox"/> class.
+            /// </summary>
+            /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
+            /// <param name="position">Position of the Control reletive to its parent.</param>
+            /// <param name="clientSize">The size of the <see cref="Control"/>'s client area.</param>
+            /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
+            public InputTextBox(Control parent, Vector2 position, Vector2 clientSize) : base(parent, position, clientSize)
+            {
+            }
         }
     }
 }
