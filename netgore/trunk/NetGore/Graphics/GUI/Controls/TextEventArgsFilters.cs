@@ -12,6 +12,7 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public static class TextEventArgsFilters
     {
+        static readonly char[] _commonChars = new char[] { '\b' /* Backspace */ };
         static readonly Func<TextEventArgs, bool> _isDigitFunc;
         static readonly Func<TextEventArgs, bool> _isLetterFunc;
         static readonly Func<TextEventArgs, bool> _isLetterOrDigit;
@@ -26,6 +27,14 @@ namespace NetGore.Graphics.GUI
             _isLetterFunc = IsLetter;
             _isLetterOrDigit = IsLetterOrDigit;
             _isPunctuation = IsPunctuation;
+        }
+
+        /// <summary>
+        /// Gets the characters that are always accepted by the filter methods in this class.
+        /// </summary>
+        public static IEnumerable<char> CommonChars
+        {
+            get { return _commonChars; }
         }
 
         /// <summary>
@@ -58,6 +67,22 @@ namespace NetGore.Graphics.GUI
         public static Func<TextEventArgs, bool> IsPunctuationFunc
         {
             get { return _isPunctuation; }
+        }
+
+        /// <summary>
+        /// Gets if the <see cref="TextEventArgs"/> contains one of the <see cref="CommonChars"/>.
+        /// </summary>
+        /// <param name="e">The <see cref="TextEventArgs"/>.</param>
+        /// <returns>True if the <paramref name="e"/> contains one of the <see cref="CommonChars"/>; otherwise false.</returns>
+        public static bool IsCommonKey(TextEventArgs e)
+        {
+            if (e.Unicode.Length != 1)
+                return false;
+
+            if (_commonChars.Contains(e.Unicode[0]))
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -103,11 +128,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the characters that are always accepted by the filter methods in this class.
-        /// </summary>
-        public static IEnumerable<char> CommonChars { get { return _commonChars; } }
-
-        /// <summary>
         /// Gets if the text in the <see cref="TextEventArgs"/> is a punctuation mark.
         /// Common edit-related keys, such as backspace, also return true.
         /// </summary>
@@ -119,24 +139,6 @@ namespace NetGore.Graphics.GUI
                 return false;
 
             return char.IsPunctuation(e.Unicode[0]) || IsCommonKey(e);
-        }
-
-        static readonly char[] _commonChars = new char[] { '\b' /* Backspace */ };
-
-        /// <summary>
-        /// Gets if the <see cref="TextEventArgs"/> contains one of the <see cref="CommonChars"/>.
-        /// </summary>
-        /// <param name="e">The <see cref="TextEventArgs"/>.</param>
-        /// <returns>True if the <paramref name="e"/> contains one of the <see cref="CommonChars"/>; otherwise false.</returns>
-        public static bool IsCommonKey(TextEventArgs e)
-        {
-            if (e.Unicode.Length != 1)
-                return false;
-
-            if (_commonChars.Contains(e.Unicode[0]))
-                return true;
-
-            return false;
         }
     }
 }
