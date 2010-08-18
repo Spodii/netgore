@@ -252,6 +252,19 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Creates a <see cref="DatabaseException"/> to use for when a query fails. Used to produce a more useful <see cref="Exception"/>
+        /// message.
+        /// </summary>
+        /// <param name="innerException">The inner <see cref="Exception"/>. Cannot be null.</param>
+        /// <returns>The <see cref="DbException"/> to throw.</returns>
+        internal DatabaseException CreateQueryException(Exception innerException)
+        {
+            const string errmsg = "Error while trying to execute following database query:{0}\"{1}\"{0}Error:{2}{0}{0}Details:{3}";
+            var msg = string.Format(errmsg, Environment.NewLine, CommandText, innerException.Message, innerException);
+            return new DatabaseException(msg, innerException);
+        }
+
+        /// <summary>
         /// Loads all the values from all the rows in an IDataReader and converts it into a list of Dictionaries.
         /// </summary>
         /// <param name="dataReader">IDataReader to load the field names and values from.</param>
@@ -501,15 +514,29 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="parameters">The <see cref="DbParameter"/>s.</param>
         [Conditional("DEBUG")]
-        static void ValidateParameters(IEnumerable<DbParameter> parameters)
+        void ValidateParameters(IEnumerable<DbParameter> parameters)
         {
+            const string errmsg = "Issue found with parameter `{0}` on object `{1}`:{2}{2}{3}";
+
             foreach (var p in parameters)
             {
                 var n = p.ParameterName;
+
                 Debug.Assert(n.Length >= 2,
-                             "Parameters should always be 2 or more characters (one for the prefix, one or more for the name).");
-                Debug.Assert(n[0] == ParameterPrefixChar, "Parameters should begin with the ParameterPrefix.");
-                Debug.Assert(n[1] != ParameterPrefixChar, "The second character should not be the ParameterPrefix.");
+                             string.Format(errmsg, p, this, Environment.NewLine,
+                                           "Parameters should always be 2 or more characters (one for the prefix, one or more for the name)."));
+
+                Debug.Assert(n[0] == ParameterPrefixChar,
+                             string.Format(errmsg, p, this, Environment.NewLine,
+                                           "Parameters should begin with the ParameterPrefix."));
+
+                Debug.Assert(n[1] != ParameterPrefixChar,
+                             string.Format(errmsg, p, this, Environment.NewLine,
+                                           "The second character should not be the ParameterPrefix."));
+
+                Debug.Assert(CommandText.Contains(p.ParameterName),
+                             string.Format(errmsg, p, this, Environment.NewLine,
+                                           "The parameter could not be found in the CommandText..."));
             }
         }
 

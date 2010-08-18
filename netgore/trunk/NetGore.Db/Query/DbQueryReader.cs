@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using MySql.Data.MySqlClient;
 
 namespace NetGore.Db
 {
@@ -128,7 +129,20 @@ namespace NetGore.Db
             }
 
             // Execute the query
-            var retReader = cmd.ExecuteReader();
+            DbDataReader retReader;
+            try
+            {
+                retReader = cmd.ExecuteReader();
+            }
+            catch (MySqlException ex)
+            {
+                // Throw a custom exception for common errors
+                if (ex.Number == 1062)
+                    throw new DuplicateKeyException(ex);
+
+                // Everything else, just throw the default exception
+                throw;
+            }
 
             // Return the DbDataReader wrapped in a custom container that will allow us to
             // properly free the command and close the connection when the DbDataReader is disposed
