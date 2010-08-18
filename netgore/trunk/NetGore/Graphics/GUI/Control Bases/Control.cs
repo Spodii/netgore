@@ -50,7 +50,6 @@ namespace NetGore.Graphics.GUI
         readonly IGUIManager _gui;
         readonly Control _parent;
         readonly Control _root;
-        bool _alwaysOnTop;
 
         ControlBorder _border;
         Color _borderColor = Color.White;
@@ -1396,15 +1395,6 @@ namespace NetGore.Graphics.GUI
                 name = name.Substring(0, name.IndexOf('`'));
 
             Border = skinManager.GetBorder(name);
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="Control.AlwaysOnTop"/> has changed.
-        /// This is called immediately before <see cref="Control.AlwaysOnTopChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="Control.AlwaysOnTopChanged"/> when possible.
-        /// </summary>
-        protected virtual void OnAlwaysOnTopChanged()
-        {
         }
 
         /// <summary>
