@@ -31,7 +31,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(GuildTable.DbColumns);
+            return CreateParameters("name","tag","id");
         }
 
         /// <summary>

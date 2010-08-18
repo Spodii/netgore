@@ -35,6 +35,77 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="UserInfo"/>. Can be null. When not null, allows for more useful information to be
+        /// displayed.
+        /// </summary>
+        public UserInfo UserInfo { get; set; }
+
+        /// <summary>
+        /// Handles the Clicked event of the CashLabel control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
+        void CashLabel_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            if (_isCashInputBoxCreated)
+                return;
+
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null)
+                return;
+
+            var panel = (CustomSidePanel)((Control)sender).Parent;
+
+            // Make sure the click was on our side (ignore clicks on the other side's money label)
+            if (!((ptih.UserIsSource && panel.IsSourceSide) || (!ptih.UserIsSource && !panel.IsSourceSide)))
+                return;
+
+            // If there is already cash on the table, ask if they want to add more or remove some
+            if (ptih.UserCash > 0)
+            {
+                var msgBoxAddOrRemove = new AddOrRemoveCashMessageBox(GUIManager);
+                msgBoxAddOrRemove.OptionSelected += msgBoxAddOrRemove_OptionSelected;
+                _isCashInputBoxCreated = true;
+            }
+            else
+            {
+                CreateAddCashInputBox();
+            }
+        }
+
+        /// <summary>
+        /// If any of the input boxes or message boxes for adding/removing cash are created.
+        /// </summary>
+        bool _isCashInputBoxCreated = false;
+
+        /// <summary>
+        /// Creates and displays the <see cref="InputBox"/> for adding cash to the trade.
+        /// </summary>
+        /// <returns>The <see cref="InputBox"/> for adding cash to the trade.</returns>
+        InputBox CreateAddCashInputBox()
+        {
+            _isCashInputBoxCreated = true;
+            var currentCash = UserInfo == null ? (int?)null : UserInfo.Cash;
+            var inBoxAddCash = new AddCashInputBox(GUIManager, currentCash);
+            inBoxAddCash.OptionSelected += inBoxAddCash_OptionSelected;
+            return inBoxAddCash;
+        }
+
+        /// <summary>
+        /// Creates and displays the <see cref="InputBox"/> for removing cash from the trade.
+        /// </summary>
+        /// <returns>The <see cref="InputBox"/> for removing cash from the trade.</returns>
+        InputBox CreateRemoveCashInputBox()
+        {
+            _isCashInputBoxCreated = true;
+            var ptih = PeerTradeInfoHandler;
+            var currentCash = ptih == null ? (int?)null : ptih.UserCash;
+            var inBoxRemoveCash = new RemoveCashInputBox(GUIManager, currentCash);
+            inBoxRemoveCash.OptionSelected += inBoxRemoveCash_OptionSelected;
+            return inBoxRemoveCash;
+        }
+
+        /// <summary>
         /// Creates a <see cref="PeerTradeFormBase{TChar,TItem,TItemInfo}.PeerTradeSidePanel"/> instance.
         /// </summary>
         /// <param name="parent">The parent control.</param>
@@ -219,6 +290,159 @@ namespace DemoGame.Client
 
             // Always show when a trade is active
             IsVisible = IsTradeActive;
+
+            // Just make sure that this variable never gets stuck to true somehow
+            if (!IsVisible)
+                _isCashInputBoxCreated = false;
+        }
+
+        /// <summary>
+        /// Handles the OptionSelected event of the <see cref="AddCashInputBox"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        void inBoxAddCash_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            _isCashInputBoxCreated = false;
+
+            if (args == MessageBoxButton.Cancel)
+                return;
+
+            var c = (InputBox)sender;
+            int cash;
+
+            if (!int.TryParse(c.InputText, out cash) || cash < 0)
+            {
+                var msgBox = new MessageBox(GUIManager, "Invalid value", "Invalid value entered.", MessageBoxButton.Ok);
+                var inBox = CreateAddCashInputBox();
+                inBox.InputText = c.InputText;
+                msgBox.SetFocus();
+                return;
+            }
+
+            if (UserInfo != null && cash > UserInfo.Cash)
+            {
+                var msgBox = new MessageBox(GUIManager, "Invalid value", "You do not have that much money!", MessageBoxButton.Ok);
+                var inBox = CreateAddCashInputBox();
+                inBox.InputText = c.InputText;
+                msgBox.SetFocus();
+                return;
+            }
+
+            if (cash == 0)
+                return;
+
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null)
+                return;
+
+            ptih.WriteAddCash(cash);
+        }
+
+        /// <summary>
+        /// Handles the OptionSelected event of the <see cref="RemoveCashInputBox"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        void inBoxRemoveCash_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            _isCashInputBoxCreated = false;
+
+            if (args == MessageBoxButton.Cancel)
+                return;
+
+            var c = (InputBox)sender;
+            int cash;
+
+            if (!int.TryParse(c.InputText, out cash) || cash < 0)
+            {
+                var msgBox = new MessageBox(GUIManager, "Invalid value", "Invalid value entered.", MessageBoxButton.Ok);
+                var inBox = CreateRemoveCashInputBox();
+                inBox.InputText = c.InputText;
+                msgBox.SetFocus();
+                return;
+            }
+
+            if (UserInfo != null && cash > UserInfo.Cash)
+            {
+                var msgBox = new MessageBox(GUIManager, "Invalid value",
+                                            "You cannot take back more money than you have put down in the trade!",
+                                            MessageBoxButton.Ok);
+                var inBox = CreateRemoveCashInputBox();
+                inBox.InputText = c.InputText;
+                msgBox.SetFocus();
+                return;
+            }
+
+            if (cash == 0)
+                return;
+
+            var ptih = PeerTradeInfoHandler;
+            if (ptih == null)
+                return;
+
+            ptih.WriteRemoveCash(cash);
+        }
+
+        /// <summary>
+        /// Handles the OptionSelected event of the <see cref="AddOrRemoveCashMessageBox"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        void msgBoxAddOrRemove_OptionSelected(Control sender, MessageBoxButton args)
+        {
+            _isCashInputBoxCreated = false;
+
+            switch (args)
+            {
+                case MessageBoxButton.Yes:
+                    CreateAddCashInputBox();
+                    break;
+
+                case MessageBoxButton.No:
+                    CreateRemoveCashInputBox();
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// An <see cref="InputBox"/> for adding cash to the trade.
+        /// </summary>
+        class AddCashInputBox : InputBox
+        {
+            const string _message = "How much cash do you wish to add?";
+            const string _messageExtra = "\n(Enter a value from 1 to {0})";
+            const string _text = "Add cash";
+
+            public AddCashInputBox(IGUIManager guiManager, int? currentCash) : base(guiManager, _text, GetMessage(currentCash))
+            {
+            }
+
+            static string GetMessage(int? currentCash)
+            {
+                if (!currentCash.HasValue)
+                    return _message;
+
+                return _message + string.Format(_messageExtra, currentCash.Value);
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="MessageBox"/> for asking if the user wants to add cash to the trade, or remove cash they
+        /// have already added.
+        /// </summary>
+        class AddOrRemoveCashMessageBox : MessageBox
+        {
+            const string _message =
+                "Do you wish to add more cash to the trade? Or take back cash you have already added?" +
+                "\n\nYes: Add more cash to trade." + "\nNo: Take cash back that you already added." + "\nCancel: Do nothing.";
+
+            const string _text = "Add or remove cash?";
+
+            public AddOrRemoveCashMessageBox(IGUIManager guiManager)
+                : base(guiManager, _text, _message, MessageBoxButton.YesNoCancel)
+            {
+            }
         }
 
         /// <summary>
@@ -229,6 +453,23 @@ namespace DemoGame.Client
             public CustomSidePanel(PeerTradeFormBase<Character, ItemEntity, IItemTable> parent, Vector2 position,
                                    bool isSourceSide) : base(parent, position, isSourceSide)
             {
+            }
+
+            /// <summary>
+            /// Creates a <see cref="PeerTradeSidePanel.CashLabel"/> for displaying the cash amount in this side of the peer trade table.
+            /// </summary>
+            /// <param name="position">The position of the control.</param>
+            /// <returns>A <see cref="PeerTradeSidePanel.CashLabel"/> for displaying the cash amount in this side of the peer trade table.</returns>
+            protected override CashLabel CreateCashLabel(Vector2 position)
+            {
+                var parentAsPeerTradeForm = Parent as PeerTradeForm;
+
+                var ret = base.CreateCashLabel(position);
+
+                if (parentAsPeerTradeForm != null)
+                    ret.Clicked += parentAsPeerTradeForm.CashLabel_Clicked;
+
+                return ret;
             }
 
             /// <summary>
@@ -280,6 +521,28 @@ namespace DemoGame.Client
                 {
                     return InventoryForm.ItemAmountBackColor;
                 }
+            }
+        }
+
+        /// <summary>
+        /// An <see cref="InputBox"/> for removing cash from the trade.
+        /// </summary>
+        class RemoveCashInputBox : InputBox
+        {
+            const string _message = "How much cash do you wish to take back from the trade?";
+            const string _messageExtra = "\n(Enter a value from 1 to {0})";
+            const string _text = "Remove cash";
+
+            public RemoveCashInputBox(IGUIManager guiManager, int? currentCash) : base(guiManager, _text, GetMessage(currentCash))
+            {
+            }
+
+            static string GetMessage(int? currentCash)
+            {
+                if (!currentCash.HasValue)
+                    return _message;
+
+                return _message + string.Format(_messageExtra, currentCash.Value);
             }
         }
 
