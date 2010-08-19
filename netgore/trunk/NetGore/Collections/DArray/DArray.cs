@@ -296,7 +296,7 @@ namespace NetGore.Collections
         /// <returns>Array containing the items in the DArray</returns>
         public T[] ToArray()
         {
-            var ret = new T[_buffer.Length];
+            var ret = new T[Length];
             _buffer.CopyTo(ret, 0);
             return ret;
         }
