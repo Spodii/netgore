@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-08-15 20:39:18',16777343,16777343),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-15 20:21:33',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-08-18 19:16:17',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,7 +51,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=170;
+) TYPE=InnoDB AUTO_INCREMENT=190;
 
 --
 -- Dumping data for table `account_ips`
@@ -59,7 +59,6 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
-INSERT INTO `account_ips` VALUES (88,1,16777343,'2010-08-06 14:51:29'),(89,2,16777343,'2010-08-06 15:00:57'),(90,1,16777343,'2010-08-06 15:01:22'),(91,1,16777343,'2010-08-06 15:02:30'),(92,2,16777343,'2010-08-06 15:02:48'),(93,1,16777343,'2010-08-06 15:05:40'),(94,2,16777343,'2010-08-06 15:05:52'),(95,1,16777343,'2010-08-06 15:07:25'),(96,1,16777343,'2010-08-06 15:12:28'),(97,2,16777343,'2010-08-06 15:12:37'),(98,2,16777343,'2010-08-06 15:14:38'),(99,1,16777343,'2010-08-06 15:15:18'),(100,1,16777343,'2010-08-06 15:15:19'),(101,1,16777343,'2010-08-06 15:15:20'),(102,2,16777343,'2010-08-06 15:15:25'),(103,2,16777343,'2010-08-06 15:15:29'),(104,1,16777343,'2010-08-06 15:18:53'),(105,2,16777343,'2010-08-06 15:19:04'),(106,1,16777343,'2010-08-06 15:20:29'),(107,2,16777343,'2010-08-06 15:20:34'),(108,1,16777343,'2010-08-10 14:27:49'),(109,1,16777343,'2010-08-10 23:19:53'),(110,1,16777343,'2010-08-10 23:22:53'),(111,1,16777343,'2010-08-10 23:27:24'),(112,1,16777343,'2010-08-10 23:34:18'),(113,1,16777343,'2010-08-10 23:40:09'),(114,1,16777343,'2010-08-10 23:51:38'),(115,1,16777343,'2010-08-10 23:53:31'),(116,1,16777343,'2010-08-10 23:59:02'),(117,1,16777343,'2010-08-10 23:59:55'),(118,1,16777343,'2010-08-11 00:02:26'),(119,1,16777343,'2010-08-11 00:03:58'),(120,1,16777343,'2010-08-11 00:20:26'),(121,1,16777343,'2010-08-11 00:24:20'),(122,1,16777343,'2010-08-11 00:31:03'),(123,1,16777343,'2010-08-11 00:42:33'),(124,1,16777343,'2010-08-11 00:46:11'),(125,1,16777343,'2010-08-11 00:50:14'),(126,1,16777343,'2010-08-11 00:51:03'),(127,1,16777343,'2010-08-11 17:22:07'),(128,1,16777343,'2010-08-11 17:37:42'),(129,1,16777343,'2010-08-11 17:41:48'),(130,1,16777343,'2010-08-11 17:48:52'),(131,1,16777343,'2010-08-11 17:50:35'),(132,1,16777343,'2010-08-11 17:55:22'),(133,1,16777343,'2010-08-11 21:38:16'),(134,1,16777343,'2010-08-11 21:41:30'),(135,1,16777343,'2010-08-11 21:43:46'),(136,1,16777343,'2010-08-11 21:46:55'),(137,1,16777343,'2010-08-11 22:51:49'),(138,1,16777343,'2010-08-12 13:27:46'),(139,1,16777343,'2010-08-12 13:33:23'),(140,1,16777343,'2010-08-12 13:36:45'),(141,1,16777343,'2010-08-12 14:53:17'),(142,2,16777343,'2010-08-12 14:53:36'),(143,1,16777343,'2010-08-14 18:45:07'),(144,2,16777343,'2010-08-14 18:45:41'),(145,1,16777343,'2010-08-14 19:05:34'),(146,2,16777343,'2010-08-14 19:05:43'),(147,1,16777343,'2010-08-15 16:09:42'),(148,1,16777343,'2010-08-15 16:15:39'),(149,2,16777343,'2010-08-15 16:16:00'),(150,2,16777343,'2010-08-15 16:16:23'),(151,1,16777343,'2010-08-15 16:26:58'),(152,2,16777343,'2010-08-15 16:27:10'),(153,1,16777343,'2010-08-15 16:39:00'),(154,2,16777343,'2010-08-15 16:39:15'),(155,1,16777343,'2010-08-15 16:43:28'),(156,2,16777343,'2010-08-15 16:43:43'),(157,1,16777343,'2010-08-15 16:46:47'),(158,2,16777343,'2010-08-15 16:46:55'),(159,1,16777343,'2010-08-15 17:51:34'),(160,1,16777343,'2010-08-15 20:13:26'),(161,2,16777343,'2010-08-15 20:14:20'),(162,2,16777343,'2010-08-15 20:14:47'),(163,1,16777343,'2010-08-15 20:18:10'),(164,2,16777343,'2010-08-15 20:18:29'),(165,1,16777343,'2010-08-15 20:21:26'),(166,2,16777343,'2010-08-15 20:21:33'),(167,1,16777343,'2010-08-15 20:33:59'),(168,1,16777343,'2010-08-15 20:35:10'),(169,1,16777343,'2010-08-15 20:39:18');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -989,7 +988,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-08-15 20:39:33');
+INSERT INTO `server_time` VALUES ('2010-08-18 19:16:47');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1082,6 +1081,213 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `world_stats_count_consume_item`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_consume_item`;
+CREATE TABLE `world_stats_count_consume_item` (
+  `item_template_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`item_template_id`),
+  CONSTRAINT `world_stats_count_consume_item_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `world_stats_count_consume_item`
+--
+
+LOCK TABLES `world_stats_count_consume_item` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_consume_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_consume_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_count_item_buy`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_item_buy`;
+CREATE TABLE `world_stats_count_item_buy` (
+  `item_template_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`item_template_id`),
+  CONSTRAINT `world_stats_count_item_buy_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `world_stats_count_item_buy`
+--
+
+LOCK TABLES `world_stats_count_item_buy` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_item_buy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_item_buy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_count_item_create`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_item_create`;
+CREATE TABLE `world_stats_count_item_create` (
+  `item_template_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`item_template_id`),
+  CONSTRAINT `world_stats_count_item_create_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `world_stats_count_item_create`
+--
+
+LOCK TABLES `world_stats_count_item_create` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_count_item_sell`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_item_sell`;
+CREATE TABLE `world_stats_count_item_sell` (
+  `item_template_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`item_template_id`),
+  CONSTRAINT `world_stats_count_item_sell_ibfk_1` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `world_stats_count_item_sell`
+--
+
+LOCK TABLES `world_stats_count_item_sell` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_item_sell` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_item_sell` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_count_npc_kill_user`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_npc_kill_user`;
+CREATE TABLE `world_stats_count_npc_kill_user` (
+  `user_id` int(11) NOT NULL,
+  `npc_template_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`user_id`,`npc_template_id`),
+  KEY `npc_template_id` (`npc_template_id`),
+  CONSTRAINT `world_stats_count_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_count_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `world_stats_count_npc_kill_user`
+--
+
+LOCK TABLES `world_stats_count_npc_kill_user` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_npc_kill_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_npc_kill_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_count_shop_buy`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_shop_buy`;
+CREATE TABLE `world_stats_count_shop_buy` (
+  `shop_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`shop_id`),
+  CONSTRAINT `world_stats_count_shop_buy_ibfk_2` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `world_stats_count_shop_buy`
+--
+
+LOCK TABLES `world_stats_count_shop_buy` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_shop_buy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_shop_buy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_count_shop_sell`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_shop_sell`;
+CREATE TABLE `world_stats_count_shop_sell` (
+  `shop_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`shop_id`),
+  CONSTRAINT `world_stats_count_shop_sell_ibfk_2` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `world_stats_count_shop_sell`
+--
+
+LOCK TABLES `world_stats_count_shop_sell` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_shop_sell` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_shop_sell` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_count_user_consume_item`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_user_consume_item`;
+CREATE TABLE `world_stats_count_user_consume_item` (
+  `user_id` int(11) NOT NULL,
+  `item_template_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`user_id`,`item_template_id`),
+  KEY `item_template_id` (`item_template_id`),
+  CONSTRAINT `world_stats_count_user_consume_item_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_count_user_consume_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `world_stats_count_user_consume_item`
+--
+
+LOCK TABLES `world_stats_count_user_consume_item` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_user_consume_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_user_consume_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `world_stats_count_user_kill_npc`
+--
+
+DROP TABLE IF EXISTS `world_stats_count_user_kill_npc`;
+CREATE TABLE `world_stats_count_user_kill_npc` (
+  `user_id` int(11) NOT NULL,
+  `npc_template_id` smallint(5) unsigned NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`user_id`,`npc_template_id`),
+  KEY `npc_template_id` (`npc_template_id`),
+  CONSTRAINT `world_stats_count_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `world_stats_count_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) TYPE=InnoDB;
+
+--
+-- Dumping data for table `world_stats_count_user_kill_npc`
+--
+
+LOCK TABLES `world_stats_count_user_kill_npc` WRITE;
+/*!40000 ALTER TABLE `world_stats_count_user_kill_npc` DISABLE KEYS */;
+/*!40000 ALTER TABLE `world_stats_count_user_kill_npc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `world_stats_guild_user_change`
 --
 
@@ -1125,7 +1331,7 @@ CREATE TABLE `world_stats_network` (
   `udp_sends` mediumint(8) unsigned NOT NULL COMMENT 'The number of messages that have been sent over the UDP channel.',
   `connections` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=329;
+) TYPE=MyISAM AUTO_INCREMENT=360;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1159,7 +1365,7 @@ CREATE TABLE `world_stats_npc_kill_user` (
   CONSTRAINT `world_stats_npc_kill_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_npc_kill_user_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=5;
+) TYPE=InnoDB AUTO_INCREMENT=7;
 
 --
 -- Dumping data for table `world_stats_npc_kill_user`
@@ -1317,7 +1523,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB;
+) TYPE=InnoDB AUTO_INCREMENT=3;
 
 --
 -- Dumping data for table `world_stats_user_kill_npc`
@@ -1559,4 +1765,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-08-16 11:26:23
+-- Dump completed on 2010-08-18 19:17:56

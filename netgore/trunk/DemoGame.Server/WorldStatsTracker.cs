@@ -37,6 +37,15 @@ namespace DemoGame.Server
         readonly InsertWorldStatsUserKillNpcQuery _userKillNPCQuery;
         readonly InsertWorldStatsUserLevelQuery _userLevelQuery;
         readonly InsertWorldStatsUserShoppingQuery _userShoppingQuery;
+        readonly InsertWorldStatsCountConsumeItemQuery _countConsumeItemQuery;
+        readonly InsertWorldStatsCountItemBuyQuery _countItemBuyQuery;
+        readonly InsertWorldStatsCountItemCreateQuery _countItemCreateQuery;
+        readonly InsertWorldStatsCountItemSellQuery _countItemSellQuery;
+        readonly InsertWorldStatsCountNPCKillUserQuery _countNPCKillUserQuery;
+        readonly InsertWorldStatsCountShopBuyQuery _countShopBuyQuery;
+        readonly InsertWorldStatsCountShopSellQuery _countShopSellQuery;
+        readonly InsertWorldStatsCountUserConsumeItemQuery _countUserConsumeItemQuery;
+        readonly InsertWorldStatsCountUserKillNPCQuery _countUserKillNPCQuery;
 
         /// <summary>
         /// Initializes the <see cref="WorldStatsTracker"/> class.
@@ -64,6 +73,16 @@ namespace DemoGame.Server
             _questCancelQuery = dbController.GetQuery<InsertWorldStatsQuestCancelQuery>();
             _questCompleteQuery = dbController.GetQuery<InsertWorldStatsQuestCompleteQuery>();
             _questAcceptQuery = dbController.GetQuery<InsertWorldStatsQuestAcceptQuery>();
+
+            _countConsumeItemQuery = dbController.GetQuery<InsertWorldStatsCountConsumeItemQuery>();
+            _countItemBuyQuery = dbController.GetQuery<InsertWorldStatsCountItemBuyQuery>();
+            _countItemCreateQuery = dbController.GetQuery<InsertWorldStatsCountItemCreateQuery>();
+            _countItemSellQuery = dbController.GetQuery<InsertWorldStatsCountItemSellQuery>();
+            _countNPCKillUserQuery = dbController.GetQuery<InsertWorldStatsCountNPCKillUserQuery>();
+            _countShopBuyQuery = dbController.GetQuery<InsertWorldStatsCountShopBuyQuery>();
+            _countShopSellQuery = dbController.GetQuery<InsertWorldStatsCountShopSellQuery>();
+            _countUserConsumeItemQuery = dbController.GetQuery<InsertWorldStatsCountUserConsumeItemQuery>();
+            _countUserKillNPCQuery = dbController.GetQuery<InsertWorldStatsCountUserKillNPCQuery>();
         }
 
         /// <summary>
@@ -72,6 +91,95 @@ namespace DemoGame.Server
         public static IWorldStatsTracker<User, NPC, ItemEntity> Instance
         {
             get { return _instance; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item purchase counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was purchased from a shop.</param>
+        /// <param name="amount">The number of items purchased.</param>
+        protected override void InternalAddCountBuyItem(int itemTID, int amount)
+        {
+            _countItemBuyQuery.Execute(itemTID, amount);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item consumption counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was consumed.</param>
+        protected override void InternalAddCountConsumeItem(int itemTID)
+        {
+            _countConsumeItemQuery.Execute(itemTID);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item creation counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was sold to a shop.</param>
+        /// <param name="amount">The number of items created.</param>
+        protected override void InternalAddCountCreateItem(int itemTID, int amount)
+        {
+            _countItemCreateQuery.Execute(itemTID, amount);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the NPC kill user counter.
+        /// </summary>
+        /// <param name="npcTID">The template ID of the NPC that killed the user.</param>
+        /// <param name="userID">The template ID of the user that was killed.</param>
+        protected override void InternalAddCountNPCKillUser(int npcTID, int userID)
+        {
+            _countNPCKillUserQuery.Execute(userID, npcTID);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item sell counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was sold to a shop.</param>
+        /// <param name="amount">The number of items sold.</param>
+        protected override void InternalAddCountSellItem(int itemTID, int amount)
+        {
+            _countItemSellQuery.Execute(itemTID, amount);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item being purchased from a shop counter.
+        /// </summary>
+        /// <param name="shopID">The ID of the shop that sold the item.</param>
+        /// <param name="amount">The number of items the shop sold.</param>
+        protected override void InternalAddCountShopBuy(int shopID, int amount)
+        {
+            _countShopBuyQuery.Execute(shopID, amount);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item being sold to a shop counter.
+        /// </summary>
+        /// <param name="shopID">The ID of the shop the item was sold to.</param>
+        /// <param name="amount">The number of items sold to the shop.</param>
+        protected override void InternalAddCountShopSell(int shopID, int amount)
+        {
+            _countShopSellQuery.Execute(shopID, amount);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item consumption count.
+        /// </summary>
+        /// <param name="userID">The ID of the user who consumed the item.</param>
+        /// <param name="itemTID">The item template ID of the item consumed.</param>
+        protected override void InternalAddCountUserConsumeItem(int userID, int itemTID)
+        {
+            _countUserConsumeItemQuery.Execute(userID, itemTID);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the user kill a NPC counter.
+        /// </summary>
+        /// <param name="userID">The template ID of the user that killed the NPC.</param>
+        /// <param name="npcTID">The template ID of the NPC that was killed.</param>
+        protected override void InternalAddCountUserKillNPC(int userID, int npcTID)
+        {
+            _countUserKillNPCQuery.Execute(userID, npcTID);
         }
 
         /// <summary>

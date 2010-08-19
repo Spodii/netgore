@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsUserKillNpcQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool">The connection pool.</param>
+        /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
         public InsertWorldStatsUserKillNpcQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }

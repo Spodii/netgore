@@ -1647,6 +1647,8 @@ namespace DemoGame.Server
         /// <param name="item">The item that was used.</param>
         protected virtual void OnUsedItem(ItemEntity item)
         {
+            if (item.Type == ItemType.UseOnce)
+                WorldStatsTracker.Instance.AddCountConsumeItem((int)item.ID);
         }
 
         /// <summary>

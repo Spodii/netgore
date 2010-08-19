@@ -125,6 +125,7 @@ namespace DemoGame.Server
                 t.Value, amount, t.HP, t.MP, t.EquippedBody, t.ActionDisplayID, t.Stats.Select(x => (Stat<StatType>)x),
                 t.ReqStats.Select(x => (Stat<StatType>)x))
         {
+            WorldStatsTracker.Instance.AddCountCreateItem((int)t.ID, amount);
         }
 
         /// <summary>

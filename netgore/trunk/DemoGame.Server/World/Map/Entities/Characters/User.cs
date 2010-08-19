@@ -582,6 +582,9 @@ namespace DemoGame.Server
 
                 WorldStatsTracker.Instance.AddUserKillNPC(this, killedNPC);
 
+                if (killedNPC.CharacterTemplateID.HasValue)
+                    WorldStatsTracker.Instance.AddCountUserKillNPC((int)ID, (int)killedNPC.CharacterTemplateID.Value);
+
                 // If in a group, split among the group members (as needed)
                 var group = ((IGroupable)this).Group;
                 if (group == null || group.ShareMode == GroupShareMode.NoSharing)
@@ -677,7 +680,12 @@ namespace DemoGame.Server
             base.OnUsedItem(item);
 
             if (item.Type == ItemType.UseOnce)
+            {
                 WorldStatsTracker.Instance.AddUserConsumeItem(this, item);
+
+                if (item.ItemTemplateID.HasValue)
+                    WorldStatsTracker.Instance.AddCountUserConsumeItem((int)ID, (int)item.ItemTemplateID.Value);
+            }
         }
 
         /// <summary>
@@ -936,6 +944,11 @@ namespace DemoGame.Server
                 {
                     WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)itemEntity.ItemTemplateID, (byte)amountPurchased,
                                                                   chargeAmount, ShoppingState.ShoppingAt.ID);
+
+                    if (itemEntity.ItemTemplateID.HasValue)
+                        WorldStatsTracker.Instance.AddCountBuyItem((int)itemEntity.ItemTemplateID.Value, amountPurchased);
+
+                    WorldStatsTracker.Instance.AddCountShopBuy((int)Shop.ID, amountPurchased);
                 }
             }
 
@@ -1028,8 +1041,13 @@ namespace DemoGame.Server
 
                 if (ShoppingState != null && ShoppingState.ShoppingAt != null)
                 {
-                    WorldStatsTracker.Instance.AddUserShopBuyItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash,
+                    WorldStatsTracker.Instance.AddUserShopSellItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash,
                                                                   ShoppingState.ShoppingAt.ID);
+
+                    if (invItem.ItemTemplateID.HasValue)
+                        WorldStatsTracker.Instance.AddCountSellItem((int)invItem.ItemTemplateID.Value, amountToSell);
+
+                    WorldStatsTracker.Instance.AddCountShopSell((int)Shop.ID, amountToSell);
                 }
             }
 
