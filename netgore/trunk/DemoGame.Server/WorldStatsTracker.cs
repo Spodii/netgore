@@ -27,6 +27,16 @@ namespace DemoGame.Server
         /// </summary>
         static readonly IWorldStatsTracker<User, NPC, ItemEntity> _instance;
 
+        readonly InsertWorldStatsCountConsumeItemQuery _countConsumeItemQuery;
+        readonly InsertWorldStatsCountItemBuyQuery _countItemBuyQuery;
+        readonly InsertWorldStatsCountItemCreateQuery _countItemCreateQuery;
+        readonly InsertWorldStatsCountItemSellQuery _countItemSellQuery;
+        readonly InsertWorldStatsCountNPCKillUserQuery _countNPCKillUserQuery;
+        readonly InsertWorldStatsCountShopBuyQuery _countShopBuyQuery;
+        readonly InsertWorldStatsCountShopSellQuery _countShopSellQuery;
+        readonly InsertWorldStatsCountUserConsumeItemQuery _countUserConsumeItemQuery;
+        readonly InsertWorldStatsCountUserKillNPCQuery _countUserKillNPCQuery;
+
         readonly InsertWorldStatsGuildUserChangeQuery _guildUserChangeQuery;
         readonly InsertWorldStatsNetworkQuery _networkQuery;
         readonly InsertWorldStatsNPCKillUserQuery _npcKillUserQuery;
@@ -37,15 +47,6 @@ namespace DemoGame.Server
         readonly InsertWorldStatsUserKillNpcQuery _userKillNPCQuery;
         readonly InsertWorldStatsUserLevelQuery _userLevelQuery;
         readonly InsertWorldStatsUserShoppingQuery _userShoppingQuery;
-        readonly InsertWorldStatsCountConsumeItemQuery _countConsumeItemQuery;
-        readonly InsertWorldStatsCountItemBuyQuery _countItemBuyQuery;
-        readonly InsertWorldStatsCountItemCreateQuery _countItemCreateQuery;
-        readonly InsertWorldStatsCountItemSellQuery _countItemSellQuery;
-        readonly InsertWorldStatsCountNPCKillUserQuery _countNPCKillUserQuery;
-        readonly InsertWorldStatsCountShopBuyQuery _countShopBuyQuery;
-        readonly InsertWorldStatsCountShopSellQuery _countShopSellQuery;
-        readonly InsertWorldStatsCountUserConsumeItemQuery _countUserConsumeItemQuery;
-        readonly InsertWorldStatsCountUserKillNPCQuery _countUserKillNPCQuery;
 
         /// <summary>
         /// Initializes the <see cref="WorldStatsTracker"/> class.

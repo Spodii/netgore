@@ -14,12 +14,6 @@ namespace NetGore.Features.WorldStats
     public interface IWorldStatsTracker<in TUser, in TNPC, in TItem> where TUser : class where TNPC : class where TItem : class
     {
         /// <summary>
-        /// Adds to the item consumption counter.
-        /// </summary>
-        /// <param name="itemTID">The template ID of the item that was consumed.</param>
-        void AddCountConsumeItem(int itemTID);
-
-        /// <summary>
         /// Adds to the item purchase counter.
         /// </summary>
         /// <param name="itemTID">The template ID of the item that was purchased from a shop.</param>
@@ -27,11 +21,10 @@ namespace NetGore.Features.WorldStats
         void AddCountBuyItem(int itemTID, int amount);
 
         /// <summary>
-        /// Adds to the item sell counter.
+        /// Adds to the item consumption counter.
         /// </summary>
-        /// <param name="itemTID">The template ID of the item that was sold to a shop.</param>
-        /// <param name="amount">The number of items sold.</param>
-        void AddCountSellItem(int itemTID, int amount);
+        /// <param name="itemTID">The template ID of the item that was consumed.</param>
+        void AddCountConsumeItem(int itemTID);
 
         /// <summary>
         /// Adds to the item creation counter.
@@ -46,6 +39,13 @@ namespace NetGore.Features.WorldStats
         /// <param name="npcTID">The template ID of the NPC that killed the user.</param>
         /// <param name="userID">The template ID of the user that was killed.</param>
         void AddCountNPCKillUser(int npcTID, int userID);
+
+        /// <summary>
+        /// Adds to the item sell counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was sold to a shop.</param>
+        /// <param name="amount">The number of items sold.</param>
+        void AddCountSellItem(int itemTID, int amount);
 
         /// <summary>
         /// Adds to the item being purchased from a shop counter.
