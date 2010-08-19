@@ -136,76 +136,30 @@ namespace DemoGame.Server
             }
 #elif TOPDOWN
 
-    //Checks whether the _target is above the Actor.
-            if (_target.Position.Y < Actor.Position.Y)
-            {
-                //_target above
-                //Move upwards
+            // Move towards the target until in range
+            // Horizontal
+            if (Actor.Center.X > _target.Center.X + 20)
+                Actor.MoveLeft();
+            else if (Actor.Center.X < _target.Center.X - 20)
+                Actor.MoveRight();
+            else
+                Actor.StopMovingHorizontal();
+
+            // Vertical
+            if (Actor.Center.Y > _target.Center.Y + 20)
                 Actor.MoveUp();
-                Actor.SetHeading(Direction.North);
-
-                //Move right because _target is to the right.
-                if (_target.Position.X > Actor.Position.X)
-                {
-                    Actor.MoveRight();
-                    Actor.SetHeading(Direction.NorthEast);
-                }
-
-                //Move left becuase target is to the left.
-                if (_target.Position.X < Actor.Position.X)
-                {
-                    Actor.MoveLeft();
-                    Actor.SetHeading(Direction.NorthWest);
-                }
-            }
-
-            if (_target.Position.Y > Actor.Position.Y)
-            {
-                //_target below
-                //Move downwards
-
+            else if (Actor.Center.Y < _target.Center.Y - 20)
                 Actor.MoveDown();
-                Actor.SetHeading(Direction.South);
+            else
+                Actor.StopMovingVertical();
 
-                if (_target.Position.X >= Actor.Position.X)
-                {
-                    Actor.MoveRight();
-                    Actor.SetHeading(Direction.SouthEast);
-                }
-
-                if (_target.Position.X <= Actor.Position.X)
-                {
-                    Actor.MoveLeft();
-                    Actor.SetHeading(Direction.SouthWest);
-                }
-            }
-
-
-            if (_target.Position.Y == Actor.Position.Y)
+            if (IsInMeleeRange(_target))
             {
-                //target is level
-                if (_target.Position.X >= Actor.Position.X)
-                {
-                    Actor.MoveRight();
-                    Actor.SetHeading(Direction.East);
-                }
-
-                if (_target.Position.X <= Actor.Position.X)
-                {
-                    Actor.MoveLeft();
-                    Actor.SetHeading(Direction.West);
-                }
-            }
-
-#endif
-
-            //Instead of attacking EVERY loop attack occasionally to save resources.
-            // Attack if in range
-            if (Rand(0, 100) == 1)
-            {
-                if (IsInMeleeRange(_target))
+                if (Rand(0, 70) == 1)
                     Actor.Attack(_target);
             }
+#endif
+
         }
     }
 }
