@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -9,16 +10,17 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertWorldStatsCountShopSellQuery : DbQueryNonReader<KeyValuePair<int, int>>
     {
-        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` (`shop_id`,`count`) VALUES (@id,@count)" +
-                                                             " ON DUPLICATE KEY UPDATE `count`=`count`+@count", WorldStatsCountShopSellTable.TableName);
+        static readonly string _queryStr =
+            FormatQueryString(
+                "INSERT INTO `{0}` (`shop_id`,`count`) VALUES (@id,@count)" + " ON DUPLICATE KEY UPDATE `count`=`count`+@count",
+                WorldStatsCountShopSellTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsCountShopSellQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsCountShopSellQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertWorldStatsCountShopSellQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(WorldStatsCountShopSellTable.DbColumns, "shop_id", "count");
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -9,16 +10,17 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertWorldStatsCountUserKillNPCQuery : DbQueryNonReader<KeyValuePair<int, int>>
     {
-        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` (`user_id`,`npc_template_id`,`count`) VALUES (@userID,@npcTID,1)" +
-                                                             " ON DUPLICATE KEY UPDATE `count`=`count`+1", WorldStatsCountUserKillNpcTable.TableName);
+        static readonly string _queryStr =
+            FormatQueryString(
+                "INSERT INTO `{0}` (`user_id`,`npc_template_id`,`count`) VALUES (@userID,@npcTID,1)" +
+                " ON DUPLICATE KEY UPDATE `count`=`count`+1", WorldStatsCountUserKillNpcTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsCountUserKillNPCQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsCountUserKillNPCQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertWorldStatsCountUserKillNPCQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(WorldStatsCountUserKillNpcTable.DbColumns, "user_id", "npc_template_id");
         }

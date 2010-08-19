@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -9,16 +10,17 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class InsertWorldStatsCountConsumeItemQuery : DbQueryNonReader<int>
     {
-        static readonly string _queryStr = FormatQueryString("INSERT INTO `{0}` (`item_template_id`,`count`) VALUES (@id,1)" +
-                                                             " ON DUPLICATE KEY UPDATE `count`=`count`+1", WorldStatsCountConsumeItemTable.TableName);
+        static readonly string _queryStr =
+            FormatQueryString(
+                "INSERT INTO `{0}` (`item_template_id`,`count`) VALUES (@id,1)" + " ON DUPLICATE KEY UPDATE `count`=`count`+1",
+                WorldStatsCountConsumeItemTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertWorldStatsCountConsumeItemQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public InsertWorldStatsCountConsumeItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public InsertWorldStatsCountConsumeItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(WorldStatsCountConsumeItemTable.DbColumns, "item_template_id", "count");
         }

@@ -1042,7 +1042,7 @@ namespace DemoGame.Server
                 if (ShoppingState != null && ShoppingState.ShoppingAt != null)
                 {
                     WorldStatsTracker.Instance.AddUserShopSellItem(this, (int?)invItem.ItemTemplateID, amountToSell, totalCash,
-                                                                  ShoppingState.ShoppingAt.ID);
+                                                                   ShoppingState.ShoppingAt.ID);
 
                     if (invItem.ItemTemplateID.HasValue)
                         WorldStatsTracker.Instance.AddCountSellItem((int)invItem.ItemTemplateID.Value, amountToSell);
