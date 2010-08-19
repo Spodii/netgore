@@ -297,7 +297,7 @@ namespace NetGore.Collections
         public T[] ToArray()
         {
             var ret = new T[Length];
-            _buffer.CopyTo(ret, 0);
+            Array.Copy(_buffer, ret, ret.Length);
             return ret;
         }
 
