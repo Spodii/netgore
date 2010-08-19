@@ -464,7 +464,11 @@ namespace DemoGame.Server
 
             var killedUser = killed as User;
             if (killedUser != null)
+            {
                 WorldStatsTracker.Instance.AddNPCKillUser(this, killedUser);
+                if (CharacterTemplateID.HasValue)
+                    WorldStatsTracker.Instance.AddCountNPCKillUser((int)CharacterTemplateID.Value, (int)killedUser.ID);
+            }
         }
 
         /// <summary>

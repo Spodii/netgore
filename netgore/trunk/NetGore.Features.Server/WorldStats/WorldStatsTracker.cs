@@ -69,6 +69,68 @@ namespace NetGore.Features.WorldStats
         }
 
         /// <summary>
+        /// When overridden in the derived class, adds to the item purchase counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was purchased from a shop.</param>
+        /// <param name="amount">The number of items purchased.</param>
+        protected abstract void InternalAddCountBuyItem(int itemTID, int amount);
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item consumption counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was consumed.</param>
+        protected abstract void InternalAddCountConsumeItem(int itemTID);
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item creation counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was sold to a shop.</param>
+        /// <param name="amount">The number of items created.</param>
+        protected abstract void InternalAddCountCreateItem(int itemTID, int amount);
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the NPC kill user counter.
+        /// </summary>
+        /// <param name="npcTID">The template ID of the NPC that killed the user.</param>
+        /// <param name="userID">The template ID of the user that was killed.</param>
+        protected abstract void InternalAddCountNPCKillUser(int npcTID, int userID);
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item sell counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was sold to a shop.</param>
+        /// <param name="amount">The number of items sold.</param>
+        protected abstract void InternalAddCountSellItem(int itemTID, int amount);
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item being purchased from a shop counter.
+        /// </summary>
+        /// <param name="shopID">The ID of the shop that sold the item.</param>
+        /// <param name="amount">The number of items the shop sold.</param>
+        protected abstract void InternalAddCountShopBuy(int shopID, int amount);
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item being sold to a shop counter.
+        /// </summary>
+        /// <param name="shopID">The ID of the shop the item was sold to.</param>
+        /// <param name="amount">The number of items sold to the shop.</param>
+        protected abstract void InternalAddCountShopSell(int shopID, int amount);
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the item consumption count.
+        /// </summary>
+        /// <param name="userID">The ID of the user who consumed the item.</param>
+        /// <param name="itemTID">The item template ID of the item consumed.</param>
+        protected abstract void InternalAddCountUserConsumeItem(int userID, int itemTID);
+
+        /// <summary>
+        /// When overridden in the derived class, adds to the user kill a NPC counter.
+        /// </summary>
+        /// <param name="userID">The template ID of the user that killed the NPC.</param>
+        /// <param name="npcTID">The template ID of the NPC that was killed.</param>
+        protected abstract void InternalAddCountUserKillNPC(int userID, int npcTID);
+
+        /// <summary>
         /// When overridden in the derived class, adds when a NPC kills a user.
         /// </summary>
         /// <param name="npc">The NPC that killed the <paramref name="user"/>.</param>
@@ -180,6 +242,95 @@ namespace NetGore.Features.WorldStats
         }
 
         #region IWorldStatsTracker<TUser,TNPC,TItem> Members
+
+        /// <summary>
+        /// Adds to the item purchase counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was purchased from a shop.</param>
+        /// <param name="amount">The number of items purchased.</param>
+        public void AddCountBuyItem(int itemTID, int amount)
+        {
+            InternalAddCountBuyItem(itemTID, amount);
+        }
+
+        /// <summary>
+        /// Adds to the item consumption counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was consumed.</param>
+        public void AddCountConsumeItem(int itemTID)
+        {
+            InternalAddCountConsumeItem(itemTID);
+        }
+
+        /// <summary>
+        /// Adds to the item creation counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was sold to a shop.</param>
+        /// <param name="amount">The number of items created.</param>
+        public void AddCountCreateItem(int itemTID, int amount)
+        {
+            InternalAddCountCreateItem(itemTID, amount);
+        }
+
+        /// <summary>
+        /// Adds to the NPC kill user counter.
+        /// </summary>
+        /// <param name="npcTID">The template ID of the NPC that killed the user.</param>
+        /// <param name="userID">The template ID of the user that was killed.</param>
+        public void AddCountNPCKillUser(int npcTID, int userID)
+        {
+            InternalAddCountNPCKillUser(npcTID, userID);
+        }
+
+        /// <summary>
+        /// Adds to the item sell counter.
+        /// </summary>
+        /// <param name="itemTID">The template ID of the item that was sold to a shop.</param>
+        /// <param name="amount">The number of items sold.</param>
+        public void AddCountSellItem(int itemTID, int amount)
+        {
+            InternalAddCountSellItem(itemTID, amount);
+        }
+
+        /// <summary>
+        /// Adds to the item being purchased from a shop counter.
+        /// </summary>
+        /// <param name="shopID">The ID of the shop that sold the item.</param>
+        /// <param name="amount">The number of items the shop sold.</param>
+        public void AddCountShopBuy(int shopID, int amount)
+        {
+            InternalAddCountShopBuy(shopID, amount);
+        }
+
+        /// <summary>
+        /// Adds to the item being sold to a shop counter.
+        /// </summary>
+        /// <param name="shopID">The ID of the shop the item was sold to.</param>
+        /// <param name="amount">The number of items sold to the shop.</param>
+        public void AddCountShopSell(int shopID, int amount)
+        {
+            InternalAddCountShopSell(shopID, amount);
+        }
+
+        /// <summary>
+        /// Adds to the item consumption count.
+        /// </summary>
+        /// <param name="userID">The ID of the user who consumed the item.</param>
+        /// <param name="itemTID">The item template ID of the item consumed.</param>
+        public void AddCountUserConsumeItem(int userID, int itemTID)
+        {
+            InternalAddCountUserConsumeItem(userID, itemTID);
+        }
+
+        /// <summary>
+        /// Adds to the user kill a NPC counter.
+        /// </summary>
+        /// <param name="userID">The template ID of the user that killed the NPC.</param>
+        /// <param name="npcTID">The template ID of the NPC that was killed.</param>
+        public void AddCountUserKillNPC(int userID, int npcTID)
+        {
+            InternalAddCountUserKillNPC(userID, npcTID);
+        }
 
         /// <summary>
         /// Adds when a NPC kills a user.
