@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore.Collections;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -17,7 +18,7 @@ namespace NetGore.Network
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly int _messageIDBitLength;
-        readonly IMessageProcessor[] _processors = new IMessageProcessor[MessageProcessor.MaxProcessorID + 1];
+        readonly IMessageProcessor[] _processors;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessorManager"/> class.
@@ -35,19 +36,30 @@ namespace NetGore.Network
 
             _messageIDBitLength = messageIDBitLength;
 
-            // Store the types we will use
+            _processors = BuildMessageProcessors(source);
+        }
+
+        /// <summary>
+        /// Builds the array of <see cref="IMessageProcessor"/>s.
+        /// </summary>
+        /// <param name="source">Root object instance containing all the classes (null if static).</param>
+        /// <returns>The array of <see cref="IMessageProcessor"/>s.</returns>
+        IMessageProcessor[] BuildMessageProcessors(object source)
+        {
+            const BindingFlags bindFlags =
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod |
+                BindingFlags.Static;
+
             var mpdType = typeof(MessageProcessorHandler);
             var atbType = typeof(MessageHandlerAttribute);
             var voidType = typeof(void);
+
+            DArray<IMessageProcessor> tmpProcessors = new DArray<IMessageProcessor>();
 
             // Search through all types in the Assembly
             var assemb = Assembly.GetAssembly(source.GetType());
             foreach (var type in assemb.GetTypes())
             {
-                const BindingFlags bindFlags =
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod |
-                    BindingFlags.Static;
-
                 // Search through every method in the class
                 foreach (var method in type.GetMethods(bindFlags))
                 {
@@ -67,20 +79,23 @@ namespace NetGore.Network
                     // Create the message processor for the method
                     foreach (var atb in atbs)
                     {
-                        if (_processors[atb.MsgID] != null)
+                        if (tmpProcessors.CanGet(atb.MsgID) && tmpProcessors[atb.MsgID] != null)
                         {
                             const string errmsg =
                                 "A MessageHandlerAttribute with ID `{0}` already exists. Methods in question: {1} and {2}";
-                            Debug.Fail(string.Format(errmsg, atb.MsgID, _processors[atb.MsgID].Call.Method, method));
-                            throw new Exception(string.Format(errmsg, atb.MsgID, _processors[atb.MsgID].Call.Method, method));
+                            Debug.Fail(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method, method));
+                            throw new Exception(string.Format(errmsg, atb.MsgID, tmpProcessors[atb.MsgID].Call.Method, method));
                         }
 
                         var del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);
                         Debug.Assert(del != null);
-                        _processors[atb.MsgID] = CreateMessageProcessor(atb, del);
+                        var msgProcessor = CreateMessageProcessor(atb, del);
+                        tmpProcessors.Insert(atb.MsgID, msgProcessor);
                     }
                 }
             }
+
+            return tmpProcessors.ToArray();
         }
 
         /// <summary>
