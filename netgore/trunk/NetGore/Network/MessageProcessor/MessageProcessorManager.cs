@@ -190,7 +190,7 @@ namespace NetGore.Network
         /// </summary>
         public IEnumerable<IMessageProcessor> Processors
         {
-            get { return _processors; }
+            get { return _processors.Where(x => x != null); }
         }
 
         /// <summary>
