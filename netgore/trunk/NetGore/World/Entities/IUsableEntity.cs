@@ -4,7 +4,9 @@ using System.Linq;
 namespace NetGore.World
 {
     /// <summary>
-    /// Interface for a DynamicEntity that can be used by a DynamicEntity.
+    /// Interface for a <see cref="DynamicEntity"/> that can be used by another <see cref="DynamicEntity"/> (usually by a user or NPC
+    /// character). When this interface is attached to a <see cref="DynamicEntity"/>, then it will be able to be used on the map
+    /// just like any other entity that can be used.
     /// </summary>
     public interface IUsableEntity
     {
