@@ -223,7 +223,7 @@ namespace DemoGame.Client
             _pingWatch.Start();
         }
 
-        [MessageHandler((byte)ServerPacketID.AcceptOrTurnInQuestReply)]
+        [MessageHandler((uint)ServerPacketID.AcceptOrTurnInQuestReply)]
         void RecvAcceptOrTurnInQuestReply(IIPSocket conn, BitStream r)
         {
             var questID = r.ReadQuestID();
@@ -239,7 +239,7 @@ namespace DemoGame.Client
             }
         }
 
-        [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
+        [MessageHandler((uint)ServerPacketID.AddStatusEffect)]
         void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
             var statusEffectType = r.ReadEnum<StatusEffectType>();
@@ -250,7 +250,7 @@ namespace DemoGame.Client
             GameplayScreen.AppendToChatOutput(string.Format("Added status effect {0} with power {1}.", statusEffectType, power));
         }
 
-        [MessageHandler((byte)ServerPacketID.CharAttack)]
+        [MessageHandler((uint)ServerPacketID.CharAttack)]
         void RecvCharAttack(IIPSocket conn, BitStream r)
         {
             // Read the values
@@ -292,7 +292,7 @@ namespace DemoGame.Client
                 actionDisplay.Execute(Map, attacker, attacked);
         }
 
-        [MessageHandler((byte)ServerPacketID.CharDamage)]
+        [MessageHandler((uint)ServerPacketID.CharDamage)]
         void RecvCharDamage(IIPSocket conn, BitStream r)
         {
             var mapCharIndex = r.ReadMapEntityIndex();
@@ -305,14 +305,14 @@ namespace DemoGame.Client
             GameplayScreen.DamageTextPool.Create(damage, chr, GetTime());
         }
 
-        [MessageHandler((byte)ServerPacketID.Chat)]
+        [MessageHandler((uint)ServerPacketID.Chat)]
         void RecvChat(IIPSocket conn, BitStream r)
         {
             var text = r.ReadString(GameData.MaxServerSayLength);
             GameplayScreen.AppendToChatOutput(text);
         }
 
-        [MessageHandler((byte)ServerPacketID.ChatSay)]
+        [MessageHandler((uint)ServerPacketID.ChatSay)]
         void RecvChatSay(IIPSocket conn, BitStream r)
         {
             var name = r.ReadString(GameData.MaxServerSayNameLength);
@@ -333,7 +333,7 @@ namespace DemoGame.Client
                 GameplayScreen.AddChatBubble(entity, text);
         }
 
-        [MessageHandler((byte)ServerPacketID.CreateAccount)]
+        [MessageHandler((uint)ServerPacketID.CreateAccount)]
         void RecvCreateAccount(IIPSocket conn, BitStream r)
         {
             var successful = r.ReadBool();
@@ -343,7 +343,7 @@ namespace DemoGame.Client
                 ReceivedCreateAccount(conn, successful, errorMessage);
         }
 
-        [MessageHandler((byte)ServerPacketID.CreateAccountCharacter)]
+        [MessageHandler((uint)ServerPacketID.CreateAccountCharacter)]
         void RecvCreateAccountCharacter(IIPSocket conn, BitStream r)
         {
             var successful = r.ReadBool();
@@ -353,7 +353,7 @@ namespace DemoGame.Client
                 ReceivedCreateAccountCharacter(conn, successful, errorMessage);
         }
 
-        [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
+        [MessageHandler((uint)ServerPacketID.CreateDynamicEntity)]
         void RecvCreateDynamicEntity(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -372,7 +372,7 @@ namespace DemoGame.Client
                                dynamicEntity.GetType());
         }
 
-        [MessageHandler((byte)ServerPacketID.Emote)]
+        [MessageHandler((uint)ServerPacketID.Emote)]
         void RecvEmote(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -385,25 +385,25 @@ namespace DemoGame.Client
             EmoticonDisplayManager.Instance.Add(entity, emoticon, GetTime());
         }
 
-        [MessageHandler((byte)ServerPacketID.EndChatDialog)]
+        [MessageHandler((uint)ServerPacketID.EndChatDialog)]
         void RecvEndChatDialog(IIPSocket conn, BitStream r)
         {
             GameplayScreen.ChatDialogForm.EndDialog();
         }
 
-        [MessageHandler((byte)ServerPacketID.GroupInfo)]
+        [MessageHandler((uint)ServerPacketID.GroupInfo)]
         void RecvGroupInfo(IIPSocket conn, BitStream r)
         {
             GroupInfo.Read(r);
         }
 
-        [MessageHandler((byte)ServerPacketID.GuildInfo)]
+        [MessageHandler((uint)ServerPacketID.GuildInfo)]
         void RecvGuildInfo(IIPSocket conn, BitStream r)
         {
             GuildInfo.Read(r);
         }
 
-        [MessageHandler((byte)ServerPacketID.HasQuestFinishRequirementsReply)]
+        [MessageHandler((uint)ServerPacketID.HasQuestFinishRequirementsReply)]
         void RecvHasQuestFinishRequirementsReply(IIPSocket conn, BitStream r)
         {
             var questID = r.ReadQuestID();
@@ -412,7 +412,7 @@ namespace DemoGame.Client
             UserInfo.HasFinishQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
         }
 
-        [MessageHandler((byte)ServerPacketID.HasQuestStartRequirementsReply)]
+        [MessageHandler((uint)ServerPacketID.HasQuestStartRequirementsReply)]
         void RecvHasQuestStartRequirementsReply(IIPSocket conn, BitStream r)
         {
             var questID = r.ReadQuestID();
@@ -421,14 +421,14 @@ namespace DemoGame.Client
             UserInfo.HasStartQuestRequirements.SetRequirementsStatus(questID, hasRequirements);
         }
 
-        [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
+        [MessageHandler((uint)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
             if (ReceivedLoginSuccessful != null)
                 ReceivedLoginSuccessful(this, conn);
         }
 
-        [MessageHandler((byte)ServerPacketID.LoginUnsuccessful)]
+        [MessageHandler((uint)ServerPacketID.LoginUnsuccessful)]
         void RecvLoginUnsuccessful(IIPSocket conn, BitStream r)
         {
             var message = r.ReadGameMessage(_gameMessages);
@@ -437,7 +437,7 @@ namespace DemoGame.Client
                 ReceivedLoginUnsuccessful(this, conn, message);
         }
 
-        [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
+        [MessageHandler((uint)ServerPacketID.NotifyExpCash)]
         void RecvNotifyExpCash(IIPSocket conn, BitStream r)
         {
             var exp = r.ReadInt();
@@ -454,7 +454,7 @@ namespace DemoGame.Client
             _gameplayScreen.InfoBox.Add(msg);
         }
 
-        [MessageHandler((byte)ServerPacketID.NotifyGetItem)]
+        [MessageHandler((uint)ServerPacketID.NotifyGetItem)]
         void RecvNotifyGetItem(IIPSocket conn, BitStream r)
         {
             var name = r.ReadString();
@@ -469,7 +469,7 @@ namespace DemoGame.Client
             _gameplayScreen.InfoBox.Add(msg);
         }
 
-        [MessageHandler((byte)ServerPacketID.NotifyLevel)]
+        [MessageHandler((uint)ServerPacketID.NotifyLevel)]
         void RecvNotifyLevel(IIPSocket conn, BitStream r)
         {
             var mapCharIndex = r.ReadMapEntityIndex();
@@ -482,19 +482,19 @@ namespace DemoGame.Client
                 _gameplayScreen.InfoBox.Add("You have leveled up!");
         }
 
-        [MessageHandler((byte)ServerPacketID.PeerTradeEvent)]
+        [MessageHandler((uint)ServerPacketID.PeerTradeEvent)]
         void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
         {
             PeerTradeInfoHandler.Read(r);
         }
 
-        [MessageHandler((byte)ServerPacketID.Ping)]
+        [MessageHandler((uint)ServerPacketID.Ping)]
         void RecvPing(IIPSocket conn, BitStream r)
         {
             _pingWatch.Stop();
         }
 
-        [MessageHandler((byte)ServerPacketID.PlaySound)]
+        [MessageHandler((uint)ServerPacketID.PlaySound)]
         void RecvPlaySound(IIPSocket conn, BitStream r)
         {
             var soundID = r.ReadSoundID();
@@ -503,7 +503,7 @@ namespace DemoGame.Client
                 LogFailPlaySound(soundID);
         }
 
-        [MessageHandler((byte)ServerPacketID.PlaySoundAt)]
+        [MessageHandler((uint)ServerPacketID.PlaySoundAt)]
         void RecvPlaySoundAt(IIPSocket conn, BitStream r)
         {
             var soundID = r.ReadSoundID();
@@ -513,7 +513,7 @@ namespace DemoGame.Client
                 LogFailPlaySound(soundID);
         }
 
-        [MessageHandler((byte)ServerPacketID.PlaySoundAtEntity)]
+        [MessageHandler((uint)ServerPacketID.PlaySoundAtEntity)]
         void RecvPlaySoundAtEntity(IIPSocket conn, BitStream r)
         {
             var soundID = r.ReadSoundID();
@@ -533,13 +533,13 @@ namespace DemoGame.Client
                 LogFailPlaySound(soundID);
         }
 
-        [MessageHandler((byte)ServerPacketID.QuestInfo)]
+        [MessageHandler((uint)ServerPacketID.QuestInfo)]
         void RecvQuestInfo(IIPSocket conn, BitStream r)
         {
             QuestInfo.Read(r);
         }
 
-        [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
+        [MessageHandler((uint)ServerPacketID.RemoveDynamicEntity)]
         void RecvRemoveDynamicEntity(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -561,7 +561,7 @@ namespace DemoGame.Client
             }
         }
 
-        [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
+        [MessageHandler((uint)ServerPacketID.RemoveStatusEffect)]
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
             var statusEffectType = r.ReadEnum<StatusEffectType>();
@@ -570,7 +570,7 @@ namespace DemoGame.Client
             GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
         }
 
-        [MessageHandler((byte)ServerPacketID.RequestUDPConnection)]
+        [MessageHandler((uint)ServerPacketID.RequestUDPConnection)]
         void RecvRequestUDPConnection(IIPSocket conn, BitStream r)
         {
             var challenge = r.ReadInt();
@@ -578,7 +578,7 @@ namespace DemoGame.Client
             ClientSockets.Instance.ConnectUDP(GameData.ServerIP, GameData.ServerUDPPort, challenge);
         }
 
-        [MessageHandler((byte)ServerPacketID.SendAccountCharacters)]
+        [MessageHandler((uint)ServerPacketID.SendAccountCharacters)]
         void RecvSendAccountCharacters(IIPSocket conn, BitStream r)
         {
             var count = r.ReadByte();
@@ -592,21 +592,21 @@ namespace DemoGame.Client
             _accountCharacterInfos.SetInfos(charInfos);
         }
 
-        [MessageHandler((byte)ServerPacketID.SendEquipmentItemInfo)]
+        [MessageHandler((uint)ServerPacketID.SendEquipmentItemInfo)]
         void RecvSendEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadEnum<EquipmentSlot>();
             GameplayScreen.EquipmentInfoRequester.ReceiveInfo(slot, r);
         }
 
-        [MessageHandler((byte)ServerPacketID.SendInventoryItemInfo)]
+        [MessageHandler((uint)ServerPacketID.SendInventoryItemInfo)]
         void RecvSendInventoryItemInfo(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadInventorySlot();
             GameplayScreen.InventoryInfoRequester.ReceiveInfo(slot, r);
         }
 
-        [MessageHandler((byte)ServerPacketID.SendMessage)]
+        [MessageHandler((uint)ServerPacketID.SendMessage)]
         void RecvSendMessage(IIPSocket conn, BitStream r)
         {
             var message = r.ReadGameMessage(_gameMessages);
@@ -622,14 +622,14 @@ namespace DemoGame.Client
             GameplayScreen.AppendToChatOutput(message, Color.Black);
         }
 
-        [MessageHandler((byte)ServerPacketID.SetCash)]
+        [MessageHandler((uint)ServerPacketID.SetCash)]
         void RecvSetCash(IIPSocket conn, BitStream r)
         {
             var cash = r.ReadInt();
             UserInfo.Cash = cash;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetCharacterHPPercent)]
+        [MessageHandler((uint)ServerPacketID.SetCharacterHPPercent)]
         void RecvSetCharacterHPPercent(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -642,7 +642,7 @@ namespace DemoGame.Client
             character.HPPercent = percent;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetCharacterMPPercent)]
+        [MessageHandler((uint)ServerPacketID.SetCharacterMPPercent)]
         void RecvSetCharacterMPPercent(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -655,7 +655,7 @@ namespace DemoGame.Client
             character.MPPercent = percent;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetCharacterPaperDoll)]
+        [MessageHandler((uint)ServerPacketID.SetCharacterPaperDoll)]
         void RecvSetCharacterPaperDoll(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -674,7 +674,7 @@ namespace DemoGame.Client
             character.CharacterSprite.SetPaperDollLayers(layers);
         }
 
-        [MessageHandler((byte)ServerPacketID.SetChatDialogPage)]
+        [MessageHandler((uint)ServerPacketID.SetChatDialogPage)]
         void RecvSetChatDialogPage(IIPSocket conn, BitStream r)
         {
             var pageID = r.ReadNPCChatDialogItemID();
@@ -689,14 +689,14 @@ namespace DemoGame.Client
             GameplayScreen.ChatDialogForm.SetPageIndex(pageID, responsesToSkip);
         }
 
-        [MessageHandler((byte)ServerPacketID.SetExp)]
+        [MessageHandler((uint)ServerPacketID.SetExp)]
         void RecvSetExp(IIPSocket conn, BitStream r)
         {
             var exp = r.ReadInt();
             UserInfo.Exp = exp;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetGameTime)]
+        [MessageHandler((uint)ServerPacketID.SetGameTime)]
         void RecvSetGameTime(IIPSocket conn, BitStream r)
         {
             var serverTimeBinary = r.ReadLong();
@@ -705,7 +705,7 @@ namespace DemoGame.Client
             GameDateTime.SetServerTimeOffset(serverTime);
         }
 
-        [MessageHandler((byte)ServerPacketID.SetHP)]
+        [MessageHandler((uint)ServerPacketID.SetHP)]
         void RecvSetHP(IIPSocket conn, BitStream r)
         {
             var value = r.ReadSPValueType();
@@ -717,7 +717,7 @@ namespace DemoGame.Client
             User.HPPercent = UserInfo.HPPercent;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetInventorySlot)]
+        [MessageHandler((uint)ServerPacketID.SetInventorySlot)]
         void RecvSetInventorySlot(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadInventorySlot();
@@ -728,14 +728,14 @@ namespace DemoGame.Client
             UserInfo.Inventory.Update(slot, graphic, amount, GetTime());
         }
 
-        [MessageHandler((byte)ServerPacketID.SetLevel)]
+        [MessageHandler((uint)ServerPacketID.SetLevel)]
         void RecvSetLevel(IIPSocket conn, BitStream r)
         {
             var level = r.ReadByte();
             UserInfo.Level = level;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetMP)]
+        [MessageHandler((uint)ServerPacketID.SetMP)]
         void RecvSetMP(IIPSocket conn, BitStream r)
         {
             var value = r.ReadSPValueType();
@@ -747,7 +747,7 @@ namespace DemoGame.Client
             User.MPPercent = UserInfo.MPPercent;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetMap)]
+        [MessageHandler((uint)ServerPacketID.SetMap)]
         void RecvSetMap(IIPSocket conn, BitStream r)
         {
             var mapID = r.ReadMapID();
@@ -769,7 +769,7 @@ namespace DemoGame.Client
             GameplayScreen.ScreenManager.SetScreen(GameplayScreen.ScreenName);
         }
 
-        [MessageHandler((byte)ServerPacketID.SetProvidedQuests)]
+        [MessageHandler((uint)ServerPacketID.SetProvidedQuests)]
         void RecvSetProvidedQuests(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -785,7 +785,7 @@ namespace DemoGame.Client
                 character.ProvidedQuests = questIDs;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetSkillGroupCooldown)]
+        [MessageHandler((uint)ServerPacketID.SetSkillGroupCooldown)]
         void RecvSetSkillGroupCooldown(IIPSocket conn, BitStream r)
         {
             var skillGroup = r.ReadByte();
@@ -794,21 +794,21 @@ namespace DemoGame.Client
             GameplayScreen.SkillCooldownManager.SetCooldown(skillGroup, cooldownTime, GetTime());
         }
 
-        [MessageHandler((byte)ServerPacketID.SetStatPoints)]
+        [MessageHandler((uint)ServerPacketID.SetStatPoints)]
         void RecvSetStatPoints(IIPSocket conn, BitStream r)
         {
             var statPoints = r.ReadInt();
             UserInfo.StatPoints = statPoints;
         }
 
-        [MessageHandler((byte)ServerPacketID.SetUserChar)]
+        [MessageHandler((uint)ServerPacketID.SetUserChar)]
         void RecvSetUserChar(IIPSocket conn, BitStream r)
         {
             var mapCharIndex = r.ReadMapEntityIndex();
             World.UserCharIndex = mapCharIndex;
         }
 
-        [MessageHandler((byte)ServerPacketID.StartCastingSkill)]
+        [MessageHandler((uint)ServerPacketID.StartCastingSkill)]
         void RecvStartCastingSkill(IIPSocket conn, BitStream r)
         {
             var skillType = r.ReadEnum<SkillType>();
@@ -817,7 +817,7 @@ namespace DemoGame.Client
             GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
         }
 
-        [MessageHandler((byte)ServerPacketID.StartChatDialog)]
+        [MessageHandler((uint)ServerPacketID.StartChatDialog)]
         void RecvStartChatDialog(IIPSocket conn, BitStream r)
         {
             var npcIndex = r.ReadMapEntityIndex();
@@ -827,7 +827,7 @@ namespace DemoGame.Client
             GameplayScreen.ChatDialogForm.StartDialog(dialog);
         }
 
-        [MessageHandler((byte)ServerPacketID.StartQuestChatDialog)]
+        [MessageHandler((uint)ServerPacketID.StartQuestChatDialog)]
         void RecvStartQuestChatDialog(IIPSocket conn, BitStream r)
         {
             var npcIndex = r.ReadMapEntityIndex();
@@ -867,7 +867,7 @@ namespace DemoGame.Client
             GameplayScreen.AvailableQuestsForm.Display(qds, npcIndex);
         }
 
-        [MessageHandler((byte)ServerPacketID.StartShopping)]
+        [MessageHandler((uint)ServerPacketID.StartShopping)]
         void RecvStartShopping(IIPSocket conn, BitStream r)
         {
             var shopOwnerIndex = r.ReadMapEntityIndex();
@@ -889,13 +889,13 @@ namespace DemoGame.Client
             GameplayScreen.ShopForm.DisplayShop(shopInfo);
         }
 
-        [MessageHandler((byte)ServerPacketID.StopShopping)]
+        [MessageHandler((uint)ServerPacketID.StopShopping)]
         void RecvStopShopping(IIPSocket conn, BitStream r)
         {
             GameplayScreen.ShopForm.HideShop();
         }
 
-        [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]
+        [MessageHandler((uint)ServerPacketID.UpdateEquipmentSlot)]
         void RecvUpdateEquipmentSlot(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadEnum<EquipmentSlot>();
@@ -910,7 +910,7 @@ namespace DemoGame.Client
                 UserInfo.Equipped.ClearSlot(slot);
         }
 
-        [MessageHandler((byte)ServerPacketID.UpdateStat)]
+        [MessageHandler((uint)ServerPacketID.UpdateStat)]
         void RecvUpdateStat(IIPSocket conn, BitStream r)
         {
             var isBaseStat = r.ReadBool();
@@ -920,7 +920,7 @@ namespace DemoGame.Client
             coll[stat.StatType] = stat.Value;
         }
 
-        [MessageHandler((byte)ServerPacketID.UpdateVelocityAndPosition)]
+        [MessageHandler((uint)ServerPacketID.UpdateVelocityAndPosition)]
         void RecvUpdateVelocityAndPosition(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -944,7 +944,7 @@ namespace DemoGame.Client
             }
         }
 
-        [MessageHandler((byte)ServerPacketID.UseEntity)]
+        [MessageHandler((uint)ServerPacketID.UseEntity)]
         void RecvUseEntity(IIPSocket conn, BitStream r)
         {
             var usedEntityIndex = r.ReadMapEntityIndex();
@@ -988,7 +988,7 @@ namespace DemoGame.Client
             asUsable.Use(usedBy);
         }
 
-        [MessageHandler((byte)ServerPacketID.UseSkill)]
+        [MessageHandler((uint)ServerPacketID.UseSkill)]
         void RecvUseSkill(IIPSocket conn, BitStream r)
         {
             var userID = r.ReadMapEntityIndex();

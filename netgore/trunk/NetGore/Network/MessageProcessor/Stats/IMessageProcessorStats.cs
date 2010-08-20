@@ -26,7 +26,7 @@ namespace NetGore.Network
         /// <summary>
         /// Gets the ID of the <see cref="IMessageProcessor"/> that these stats are for.
         /// </summary>
-        byte ProcessorID { get; }
+        MessageProcessorID ProcessorID { get; }
 
         /// <summary>
         /// Gets the total bits read by this processor.

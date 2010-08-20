@@ -6,7 +6,7 @@ namespace DemoGame
     /// <summary>
     /// Unique IDs for the different ServerPacket (packets sent from the server to client).
     /// </summary>
-    public enum ServerPacketID : byte
+    public enum ServerPacketID : ushort
     {
         /// <summary>
         /// This value is reserved and must not be used!

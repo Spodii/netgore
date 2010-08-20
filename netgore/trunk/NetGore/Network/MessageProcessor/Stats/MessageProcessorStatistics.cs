@@ -17,7 +17,8 @@ namespace NetGore.Network
         const string _rootNodeName = "MessageProcessorStats";
 
         readonly IMessageProcessorManager _mpm;
-        readonly ProcStats[] _stats = new ProcStats[MessageProcessor.MaxProcessorID + 1];
+        readonly Dictionary<MessageProcessorID, ProcStats> _stats = new Dictionary<MessageProcessorID, ProcStats>();
+        readonly object _statsSync = new object();
 
         TickCount _nextDumpTime;
         int _outDumpRate;
@@ -61,7 +62,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="processorID">The ID of the <see cref="IMessageProcessor"/>.</param>
         /// <param name="bits">The number of bits read or written. Does not include the message ID.</param>
-        public void HandleProcessorInvoked(byte processorID, int bits)
+        public void HandleProcessorInvoked(MessageProcessorID processorID, int bits)
         {
             var ubits = (ushort)bits;
 
@@ -84,13 +85,14 @@ namespace NetGore.Network
             }
 
             // Grab the stats
-            var stats = _stats[processorID];
-
-            // Create the stats if this is the first call to this processor
-            if (stats == null)
+            ProcStats stats;
+            lock (_statsSync)
             {
-                stats = new ProcStats(processorID);
-                _stats[processorID] = stats;
+                if (!_stats.TryGetValue(processorID, out stats))
+                {
+                    stats = new ProcStats(processorID);
+                    _stats[processorID] = stats;
+                }
             }
 
             // Update the stats
@@ -138,15 +140,9 @@ namespace NetGore.Network
         /// <summary>
         /// Gets all of the <see cref="IMessageProcessorStats"/> paired with their corresponding <see cref="IMessageProcessor"/> ID.
         /// </summary>
-        public IEnumerable<KeyValuePair<byte, IMessageProcessorStats>> GetAllStats()
+        public IEnumerable<IMessageProcessorStats> GetAllStats()
         {
-            Debug.Assert(_stats.Length - 1 <= byte.MaxValue);
-
-            for (var i = 0; i < _stats.Length; i++)
-            {
-                if (_stats[i] != null)
-                    yield return new KeyValuePair<byte, IMessageProcessorStats>((byte)i, _stats[i]);
-            }
+            return _stats.Values.Cast<IMessageProcessorStats>();
         }
 
         /// <summary>
@@ -155,7 +151,7 @@ namespace NetGore.Network
         /// <param name="msgID">The ID of the <see cref="IMessageProcessor"/> to get the stats for.</param>
         /// <returns>The <see cref="IMessageProcessorStats"/> for the given <paramref name="msgID"/>, or null if no
         /// stats exist for the given <paramref name="msgID"/>.</returns>
-        public IMessageProcessorStats GetStats(byte msgID)
+        public IMessageProcessorStats GetStats(MessageProcessorID msgID)
         {
             return _stats[msgID];
         }
@@ -180,11 +176,11 @@ namespace NetGore.Network
         {
             foreach (var stat in GetAllStats())
             {
-                var nodeName = "ID" + stat.Key;
+                var nodeName = "ID" + stat.ProcessorID;
 
                 writer.WriteStartNode(nodeName);
 
-                stat.Value.Write(writer);
+                stat.Write(writer);
 
                 writer.WriteEndNode(nodeName);
             }
@@ -197,7 +193,7 @@ namespace NetGore.Network
         /// </summary>
         class ProcStats : IMessageProcessorStats
         {
-            readonly byte _id;
+            readonly MessageProcessorID _id;
 
             uint _calls;
             ushort _max;
@@ -208,7 +204,7 @@ namespace NetGore.Network
             /// Initializes a new instance of the <see cref="ProcStats"/> class.
             /// </summary>
             /// <param name="id">The <see cref="IMessageProcessor"/> ID.</param>
-            public ProcStats(byte id)
+            public ProcStats(MessageProcessorID id)
             {
                 _id = id;
             }
@@ -258,7 +254,7 @@ namespace NetGore.Network
             /// <summary>
             /// Gets the ID of the <see cref="IMessageProcessor"/> that these stats are for.
             /// </summary>
-            public byte ProcessorID
+            public MessageProcessorID ProcessorID
             {
                 get { return _id; }
             }

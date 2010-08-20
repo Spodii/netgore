@@ -4,24 +4,34 @@ using System.Linq;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Marks a method as being a message processor. The method is required
-    /// to be public and have a void return.
+    /// Marks a method as being a message processor. The method this attribute is attached to must have the same
+    /// signature as <see cref="MessageProcessorHandler"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public sealed class MessageHandlerAttribute : Attribute
     {
-        /// <summary>
-        /// ID of the message this method will handle
-        /// </summary>
-        public readonly byte MsgID;
+        readonly MessageProcessorID _msgID;
 
         /// <summary>
-        /// MessageAttribute constructor
+        /// Gets the ID of the message that the method this attribute is attached to will handle.
         /// </summary>
-        /// <param name="msgID">ID of the message this method will handle</param>
-        public MessageHandlerAttribute(byte msgID)
+        public MessageProcessorID MsgID { get { return _msgID; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageHandlerAttribute"/> class.
+        /// </summary>
+        /// <param name="msgID">The ID of the message that the method this attribute is attached to will handle.</param>
+        public MessageHandlerAttribute(MessageProcessorID msgID)
         {
-            MsgID = msgID;
+            _msgID = msgID;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageHandlerAttribute"/> class.
+        /// </summary>
+        /// <param name="msgID">The ID of the message that the method this attribute is attached to will handle.</param>
+        public MessageHandlerAttribute(uint msgID) : this(new MessageProcessorID(msgID))
+        {
         }
     }
 }
