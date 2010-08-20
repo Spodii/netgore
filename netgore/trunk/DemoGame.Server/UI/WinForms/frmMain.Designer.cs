@@ -68,9 +68,9 @@
             this.chkWarn = new System.Windows.Forms.CheckBox();
             this.chkInfo = new System.Windows.Forms.CheckBox();
             this.chkDebug = new System.Windows.Forms.CheckBox();
-            this.lstLog = new DemoGame.Server.UI.LogListBox();
             this.tmrUpdateDisplay = new System.Windows.Forms.Timer(this.components);
             this.tt = new System.Windows.Forms.ToolTip(this.components);
+            this.lstLog = new DemoGame.Server.UI.LogListBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -564,7 +564,7 @@
             this.chkFatal.Text = "Fatal";
             this.tt.SetToolTip(this.chkFatal, "Tick to show Fatal logs.");
             this.chkFatal.UseVisualStyleBackColor = true;
-            this.chkFatal.CheckedChanged += new System.EventHandler(this.chkFatal_CheckedChanged);
+            this.chkFatal.CheckedChanged += new System.EventHandler(this.LogCheckBox_CheckedChanged);
             // 
             // chkError
             // 
@@ -579,7 +579,7 @@
             this.chkError.Text = "Error";
             this.tt.SetToolTip(this.chkError, "Tick to show Error logs.");
             this.chkError.UseVisualStyleBackColor = true;
-            this.chkError.CheckedChanged += new System.EventHandler(this.chkError_CheckedChanged);
+            this.chkError.CheckedChanged += new System.EventHandler(this.LogCheckBox_CheckedChanged);
             // 
             // chkWarn
             // 
@@ -594,7 +594,7 @@
             this.chkWarn.Text = "Warn";
             this.tt.SetToolTip(this.chkWarn, "Tick to show Warn logs.");
             this.chkWarn.UseVisualStyleBackColor = true;
-            this.chkWarn.CheckedChanged += new System.EventHandler(this.chkWarn_CheckedChanged);
+            this.chkWarn.CheckedChanged += new System.EventHandler(this.LogCheckBox_CheckedChanged);
             // 
             // chkInfo
             // 
@@ -609,7 +609,7 @@
             this.chkInfo.Text = "Info";
             this.tt.SetToolTip(this.chkInfo, "Tick to show Info logs.");
             this.chkInfo.UseVisualStyleBackColor = true;
-            this.chkInfo.CheckedChanged += new System.EventHandler(this.chkInfo_CheckedChanged);
+            this.chkInfo.CheckedChanged += new System.EventHandler(this.LogCheckBox_CheckedChanged);
             // 
             // chkDebug
             // 
@@ -622,7 +622,13 @@
             this.chkDebug.Text = "Debug";
             this.tt.SetToolTip(this.chkDebug, "Tick to show Debug logs.");
             this.chkDebug.UseVisualStyleBackColor = true;
-            this.chkDebug.CheckedChanged += new System.EventHandler(this.chkDebug_CheckedChanged);
+            this.chkDebug.CheckedChanged += new System.EventHandler(this.LogCheckBox_CheckedChanged);
+            // 
+            // tmrUpdateDisplay
+            // 
+            this.tmrUpdateDisplay.Enabled = true;
+            this.tmrUpdateDisplay.Interval = 500;
+            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
             // 
             // lstLog
             // 
@@ -635,12 +641,6 @@
             this.lstLog.TabIndex = 0;
             this.lstLog.SelectedIndexChanged += new System.EventHandler(this.lbLog_SelectedIndexChanged);
             this.lstLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbLog_KeyDown);
-            // 
-            // tmrUpdateDisplay
-            // 
-            this.tmrUpdateDisplay.Enabled = true;
-            this.tmrUpdateDisplay.Interval = 500;
-            this.tmrUpdateDisplay.Tick += new System.EventHandler(this.tmrUpdateDisplay_Tick);
             // 
             // frmMain
             // 
