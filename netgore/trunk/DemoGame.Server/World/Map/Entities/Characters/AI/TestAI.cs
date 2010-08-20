@@ -152,13 +152,16 @@ namespace DemoGame.Server
                 Actor.MoveDown();
             else
                 Actor.StopMovingVertical();
-
-            if (IsInMeleeRange(_target))
-            {
-                if (Rand(0, 70) == 1)
-                    Actor.Attack(_target);
-            }
 #endif
+
+            // Attack the target if they are in range
+            if (Rand(0, 70) == 1)
+            {
+                if (IsInMeleeRange(_target))
+                {
+                    Actor.Attack(_target);
+                }
+            }
 
         }
     }
