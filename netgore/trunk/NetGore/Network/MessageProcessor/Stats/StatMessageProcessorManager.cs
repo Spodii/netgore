@@ -16,7 +16,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="source">Root object instance containing all the classes (null if static).</param>
         /// <param name="messageIDBitLength">The length of the message ID in bits. Must be between a value
-        /// greater than or equal to 1, and less than or equal to 8.</param>
+        /// greater than or equal to 1, and less than or equal to 32.</param>
         /// <returns>Returns a list of all the found message processors for a given class.</returns>
         public StatMessageProcessorManager(object source, int messageIDBitLength) : base(source, messageIDBitLength)
         {

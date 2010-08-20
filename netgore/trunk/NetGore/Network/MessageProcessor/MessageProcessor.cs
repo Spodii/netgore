@@ -11,11 +11,6 @@ namespace NetGore.Network
     public class MessageProcessor : IMessageProcessor
     {
         /// <summary>
-        /// The maximum valid message processor ID.
-        /// </summary>
-        public const int MaxProcessorID = byte.MaxValue;
-
-        /// <summary>
         /// Delegate to the processing method
         /// </summary>
         readonly MessageProcessorHandler _call;
@@ -23,17 +18,15 @@ namespace NetGore.Network
         /// <summary>
         /// ID of the message the delegate processes.
         /// </summary>
-        readonly byte _msgID;
+        readonly MessageProcessorID _msgID;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessor"/> class.
         /// </summary>
         /// <param name="msgID">ID of the message to process. Must be non-zero.</param>
         /// <param name="methodDelegate">Delegate to the processing method.</param>
-        public MessageProcessor(byte msgID, MessageProcessorHandler methodDelegate)
+        public MessageProcessor(MessageProcessorID msgID, MessageProcessorHandler methodDelegate)
         {
-            Debug.Assert(msgID <= MaxProcessorID);
-
             if (methodDelegate == null)
                 throw new ArgumentNullException("methodDelegate");
 
@@ -57,7 +50,7 @@ namespace NetGore.Network
         /// <summary>
         /// Gets the message ID that <see cref="IMessageProcessor"/> processes.
         /// </summary>
-        public byte MsgID
+        public MessageProcessorID MsgID
         {
             get { return _msgID; }
         }

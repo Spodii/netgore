@@ -16,6 +16,6 @@ namespace NetGore.Network
         /// <summary>
         /// Gets the message ID that <see cref="IMessageProcessor"/> processes.
         /// </summary>
-        byte MsgID { get; }
+        MessageProcessorID MsgID { get; }
     }
 }

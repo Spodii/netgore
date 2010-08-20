@@ -6,7 +6,7 @@ namespace DemoGame
     /// <summary>
     /// Unique IDs for the different ClientPackets (packets sent from the client to server).
     /// </summary>
-    public enum ClientPacketID : byte
+    public enum ClientPacketID : ushort
     {
         /// <summary>
         /// This value is reserved and must not be used!
@@ -42,7 +42,7 @@ namespace DemoGame
         StartNPCChatDialog,
         StartShopping,
         SwapInventorySlots,
-        UnequipItem,
+        UnequipItem ,
         UseInventoryItem,
         UseSkill,
         UseWorld,

@@ -205,9 +205,7 @@ namespace DemoGame
         /// <param name="serverPacketID">ServerPacketID to write.</param>
         public static void Write(this BitStream bitStream, ServerPacketID serverPacketID)
         {
-            // Write as a byte instead of using the enum I/O due to the way the packet ID manager works
-            var value = (byte)serverPacketID;
-            bitStream.Write(value, _serverPacketIDBits);
+            bitStream.Write((uint)serverPacketID, _serverPacketIDBits);
         }
 
         /// <summary>
@@ -217,9 +215,7 @@ namespace DemoGame
         /// <param name="clientPacketID">ClientPacketID to write.</param>
         public static void Write(this BitStream bitStream, ClientPacketID clientPacketID)
         {
-            // Write as a byte instead of using the enum I/O due to the way the packet ID manager works
-            var value = (byte)clientPacketID;
-            bitStream.Write(value, _clientPacketIDBits);
+            bitStream.Write((uint)clientPacketID, _clientPacketIDBits);
         }
 
         /// <summary>

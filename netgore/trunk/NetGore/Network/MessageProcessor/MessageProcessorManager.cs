@@ -17,7 +17,7 @@ namespace NetGore.Network
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly int _messageIDBitLength;
+        readonly byte _messageIDBitLength;
         readonly IMessageProcessor[] _processors;
 
         /// <summary>
@@ -25,16 +25,16 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="source">Root object instance containing all the classes (null if static).</param>
         /// <param name="messageIDBitLength">The length of the message ID in bits. Must be between a value
-        /// greater than or equal to 1, and less than or equal to 8.</param>
+        /// greater than or equal to 1, and less than or equal to 32.</param>
         /// <returns>Returns a list of all the found message processors for a given class.</returns>
         public MessageProcessorManager(object source, int messageIDBitLength)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (messageIDBitLength > 8 || messageIDBitLength < 1)
+            if (messageIDBitLength > 32 || messageIDBitLength < 1)
                 throw new ArgumentOutOfRangeException("messageIDBitLength");
 
-            _messageIDBitLength = messageIDBitLength;
+            _messageIDBitLength = (byte)messageIDBitLength;
 
             _processors = BuildMessageProcessors(source);
         }
@@ -129,7 +129,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="msgID">The ID of the message.</param>
         /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
-        protected IMessageProcessor GetInternalMessageProcessor(byte msgID)
+        protected IMessageProcessor GetInternalMessageProcessor(MessageProcessorID msgID)
         {
             return _processors[msgID];
         }
@@ -141,7 +141,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="msgID">The ID of the message.</param>
         /// <returns>The <see cref="IMessageProcessor"/> for the <paramref name="msgID"/>, or null if an invalid ID.</returns>
-        protected virtual IMessageProcessor GetMessageProcessor(byte msgID)
+        protected virtual IMessageProcessor GetMessageProcessor(MessageProcessorID msgID)
         {
             return GetInternalMessageProcessor(msgID);
         }
@@ -162,9 +162,9 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="reader">The <see cref="BitStream"/> to read the ID from.</param>
         /// <returns>The next message ID.</returns>
-        protected virtual byte ReadMessageID(BitStream reader)
+        protected virtual MessageProcessorID ReadMessageID(BitStream reader)
         {
-            return reader.ReadByte(_messageIDBitLength);
+            return (MessageProcessorID)reader.ReadUInt(_messageIDBitLength);
         }
 
         /// <summary>

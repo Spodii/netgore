@@ -27,9 +27,9 @@ namespace NetGore.Network
         void EnableFileOutput(string filePath, int dumpRate = 10000);
 
         /// <summary>
-        /// Gets all of the <see cref="IMessageProcessorStats"/> paired with their corresponding <see cref="IMessageProcessor"/> ID.
+        /// Gets all of the <see cref="IMessageProcessorStats"/>.
         /// </summary>
-        IEnumerable<KeyValuePair<byte, IMessageProcessorStats>> GetAllStats();
+        IEnumerable<IMessageProcessorStats> GetAllStats();
 
         /// <summary>
         /// Gets the <see cref="IMessageProcessorStats"/> for a <see cref="IMessageProcessor"/> identified by the ID.
@@ -37,7 +37,7 @@ namespace NetGore.Network
         /// <param name="msgID">The ID of the <see cref="IMessageProcessor"/> to get the stats for.</param>
         /// <returns>The <see cref="IMessageProcessorStats"/> for the given <paramref name="msgID"/>, or null if no
         /// stats exist for the given <paramref name="msgID"/>.</returns>
-        IMessageProcessorStats GetStats(byte msgID);
+        IMessageProcessorStats GetStats(MessageProcessorID msgID);
 
         /// <summary>
         /// Writes the statistics to an <see cref="IValueWriter"/>.

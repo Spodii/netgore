@@ -119,7 +119,7 @@ namespace DemoGame.Server
             return target;
         }
 
-        [MessageHandler((byte)ClientPacketID.AcceptOrTurnInQuest)]
+        [MessageHandler((uint)ClientPacketID.AcceptOrTurnInQuest)]
         void RecvAcceptOrTurnInQuest(IIPSocket conn, BitStream r)
         {
             var providerIndex = r.ReadMapEntityIndex();
@@ -174,7 +174,7 @@ namespace DemoGame.Server
             }
         }
 
-        [MessageHandler((byte)ClientPacketID.Attack)]
+        [MessageHandler((uint)ClientPacketID.Attack)]
         void RecvAttack(IIPSocket conn, BitStream r)
         {
             User user;
@@ -193,7 +193,7 @@ namespace DemoGame.Server
             }
         }
 
-        [MessageHandler((byte)ClientPacketID.BuyFromShop)]
+        [MessageHandler((uint)ClientPacketID.BuyFromShop)]
         void RecvBuyFromShop(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadShopItemIndex();
@@ -209,7 +209,7 @@ namespace DemoGame.Server
             user.ShoppingState.TryPurchase(slot, amount);
         }
 
-        [MessageHandler((byte)ClientPacketID.Emoticon)]
+        [MessageHandler((uint)ClientPacketID.Emoticon)]
         void RecvEmoticon(IIPSocket conn, BitStream r)
         {
             var emoticon = r.ReadEnum<Emoticon>();
@@ -229,7 +229,7 @@ namespace DemoGame.Server
             user.Emote(emoticon);
         }
 
-        [MessageHandler((byte)ClientPacketID.DropInventoryItem)]
+        [MessageHandler((uint)ClientPacketID.DropInventoryItem)]
         void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadInventorySlot();
@@ -248,7 +248,7 @@ namespace DemoGame.Server
             user.Inventory.Drop(slot, amount);
         }
 
-        [MessageHandler((byte)ClientPacketID.EndNPCChatDialog)]
+        [MessageHandler((uint)ClientPacketID.EndNPCChatDialog)]
         void RecvEndNPCChatDialog(IIPSocket conn, BitStream r)
         {
             User user;
@@ -258,7 +258,7 @@ namespace DemoGame.Server
             user.ChatState.EndChat();
         }
 
-        [MessageHandler((byte)ClientPacketID.GetEquipmentItemInfo)]
+        [MessageHandler((uint)ClientPacketID.GetEquipmentItemInfo)]
         void RecvGetEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadEnum<EquipmentSlot>();
@@ -268,7 +268,7 @@ namespace DemoGame.Server
                 user.SendEquipmentItemStats(slot);
         }
 
-        [MessageHandler((byte)ClientPacketID.HasQuestStartRequirements)]
+        [MessageHandler((uint)ClientPacketID.HasQuestStartRequirements)]
         void RecvHasQuestStartRequirements(IIPSocket conn, BitStream r)
         {
             var questID = r.ReadQuestID();
@@ -295,7 +295,7 @@ namespace DemoGame.Server
             }
         }
 
-        [MessageHandler((byte)ClientPacketID.PeerTradeEvent)]
+        [MessageHandler((uint)ClientPacketID.PeerTradeEvent)]
         void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
         {
             User user;
@@ -305,7 +305,7 @@ namespace DemoGame.Server
             ServerPeerTradeInfoHandler.Instance.Read(user, r);
         }
 
-        [MessageHandler((byte)ClientPacketID.HasQuestFinishRequirements)]
+        [MessageHandler((uint)ClientPacketID.HasQuestFinishRequirements)]
         void RecvHasQuestFinishRequirements(IIPSocket conn, BitStream r)
         {
             var questID = r.ReadQuestID();
@@ -332,7 +332,7 @@ namespace DemoGame.Server
             }
         }
 
-        [MessageHandler((byte)ClientPacketID.GetInventoryItemInfo)]
+        [MessageHandler((uint)ClientPacketID.GetInventoryItemInfo)]
         void RecvGetInventoryItemInfo(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadInventorySlot();
@@ -343,7 +343,7 @@ namespace DemoGame.Server
         }
 
 #if !TOPDOWN
-        [MessageHandler((byte)ClientPacketID.Jump)]
+        [MessageHandler((uint)ClientPacketID.Jump)]
         void RecvJump(IIPSocket conn, BitStream r)
         {
             User user;
@@ -357,7 +357,7 @@ namespace DemoGame.Server
         }
 #endif
 
-        [MessageHandler((byte)ClientPacketID.Login)]
+        [MessageHandler((uint)ClientPacketID.Login)]
         void RecvLogin(IIPSocket conn, BitStream r)
         {
             ThreadAsserts.IsMainThread();
@@ -368,7 +368,7 @@ namespace DemoGame.Server
             Server.LoginAccount(conn, name, password);
         }
 
-        [MessageHandler((byte)ClientPacketID.CreateNewAccountCharacter)]
+        [MessageHandler((uint)ClientPacketID.CreateNewAccountCharacter)]
         void RecvCreateNewAccountCharacter(IIPSocket conn, BitStream r)
         {
             ThreadAsserts.IsMainThread();
@@ -399,7 +399,7 @@ namespace DemoGame.Server
             Server.CreateAccountCharacter(conn, name);
         }
 
-        [MessageHandler((byte)ClientPacketID.CreateNewAccount)]
+        [MessageHandler((uint)ClientPacketID.CreateNewAccount)]
         void RecvCreateNewAccount(IIPSocket conn, BitStream r)
         {
             ThreadAsserts.IsMainThread();
@@ -423,7 +423,7 @@ namespace DemoGame.Server
         }
 
 #if TOPDOWN
-        [MessageHandler((byte)ClientPacketID.MoveDown)]
+        [MessageHandler((uint)ClientPacketID.MoveDown)]
         void RecvMoveDown(IIPSocket conn, BitStream r)
         {
             User user;
@@ -432,7 +432,7 @@ namespace DemoGame.Server
         }
 #endif
 
-        [MessageHandler((byte)ClientPacketID.MoveLeft)]
+        [MessageHandler((uint)ClientPacketID.MoveLeft)]
         void RecvMoveLeft(IIPSocket conn, BitStream r)
         {
             User user;
@@ -445,7 +445,7 @@ namespace DemoGame.Server
             }
         }
 
-        [MessageHandler((byte)ClientPacketID.MoveRight)]
+        [MessageHandler((uint)ClientPacketID.MoveRight)]
         void RecvMoveRight(IIPSocket conn, BitStream r)
         {
             User user;
@@ -458,7 +458,7 @@ namespace DemoGame.Server
             }
         }
 
-        [MessageHandler((byte)ClientPacketID.MoveStop)]
+        [MessageHandler((uint)ClientPacketID.MoveStop)]
         void RecvMoveStop(IIPSocket conn, BitStream r)
         {
             User user;
@@ -467,7 +467,7 @@ namespace DemoGame.Server
         }
 
 #if TOPDOWN
-        [MessageHandler((byte)ClientPacketID.MoveStopHorizontal)]
+        [MessageHandler((uint)ClientPacketID.MoveStopHorizontal)]
         void RecvMoveStopHorizontal(IIPSocket conn, BitStream r)
         {
             User user;
@@ -481,7 +481,7 @@ namespace DemoGame.Server
 #endif
 
 #if TOPDOWN
-        [MessageHandler((byte)ClientPacketID.MoveStopVertical)]
+        [MessageHandler((uint)ClientPacketID.MoveStopVertical)]
         void RecvMoveStopVertical(IIPSocket conn, BitStream r)
         {
             User user;
@@ -496,7 +496,7 @@ namespace DemoGame.Server
 #endif
 
 #if TOPDOWN
-        [MessageHandler((byte)ClientPacketID.MoveUp)]
+        [MessageHandler((uint)ClientPacketID.MoveUp)]
         void RecvMoveUp(IIPSocket conn, BitStream r)
         {
             User user;
@@ -510,7 +510,7 @@ namespace DemoGame.Server
         }
 #endif
 
-        [MessageHandler((byte)ClientPacketID.PickupItem)]
+        [MessageHandler((uint)ClientPacketID.PickupItem)]
         void RecvPickupItem(IIPSocket conn, BitStream r)
         {
             var mapEntityIndex = r.ReadMapEntityIndex();
@@ -538,7 +538,7 @@ namespace DemoGame.Server
             item.Pickup(user);
         }
 
-        [MessageHandler((byte)ClientPacketID.Ping)]
+        [MessageHandler((uint)ClientPacketID.Ping)]
         void RecvPing(IIPSocket conn, BitStream r)
         {
             // Get the User
@@ -552,7 +552,7 @@ namespace DemoGame.Server
             }
         }
 
-        [MessageHandler((byte)ClientPacketID.RaiseStat)]
+        [MessageHandler((uint)ClientPacketID.RaiseStat)]
         void RecvRaiseStat(IIPSocket conn, BitStream r)
         {
             StatType statType;
@@ -580,7 +580,7 @@ namespace DemoGame.Server
             user.RaiseStat(statType);
         }
 
-        [MessageHandler((byte)ClientPacketID.Say)]
+        [MessageHandler((uint)ClientPacketID.Say)]
         void RecvSay(IIPSocket conn, BitStream r)
         {
             var text = r.ReadString(GameData.MaxClientSayLength);
@@ -592,7 +592,7 @@ namespace DemoGame.Server
             _sayHandler.Process(user, text);
         }
 
-        [MessageHandler((byte)ClientPacketID.SelectAccountCharacter)]
+        [MessageHandler((uint)ClientPacketID.SelectAccountCharacter)]
         void RecvSelectAccountCharacter(IIPSocket conn, BitStream r)
         {
             ThreadAsserts.IsMainThread();
@@ -636,7 +636,7 @@ namespace DemoGame.Server
             }
         }
 
-        [MessageHandler((byte)ClientPacketID.SelectNPCChatDialogResponse)]
+        [MessageHandler((uint)ClientPacketID.SelectNPCChatDialogResponse)]
         void RecvSelectNPCChatDialogResponse(IIPSocket conn, BitStream r)
         {
             var responseIndex = r.ReadByte();
@@ -648,7 +648,7 @@ namespace DemoGame.Server
             user.ChatState.EnterResponse(responseIndex);
         }
 
-        [MessageHandler((byte)ClientPacketID.SellInventoryToShop)]
+        [MessageHandler((uint)ClientPacketID.SellInventoryToShop)]
         void RecvSellInventoryToShop(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadInventorySlot();
@@ -661,14 +661,14 @@ namespace DemoGame.Server
             user.ShoppingState.TrySellInventory(slot, amount);
         }
 
-        [MessageHandler((byte)ClientPacketID.SetUDPPort)]
+        [MessageHandler((uint)ClientPacketID.SetUDPPort)]
         void RecvSetUDPPort(IIPSocket conn, BitStream r)
         {
             var remotePort = r.ReadUShort();
             conn.SetRemoteUnreliablePort(remotePort);
         }
 
-        [MessageHandler((byte)ClientPacketID.StartNPCChatDialog)]
+        [MessageHandler((uint)ClientPacketID.StartNPCChatDialog)]
         void RecvStartNPCChatDialog(IIPSocket conn, BitStream r)
         {
             var npcIndex = r.ReadMapEntityIndex();
@@ -714,7 +714,7 @@ namespace DemoGame.Server
             user.ChatState.StartChat(npc);
         }
 
-        [MessageHandler((byte)ClientPacketID.SwapInventorySlots)]
+        [MessageHandler((uint)ClientPacketID.SwapInventorySlots)]
         void RecvSwapInventorySlots(IIPSocket conn, BitStream r)
         {
             var a = r.ReadInventorySlot();
@@ -727,7 +727,7 @@ namespace DemoGame.Server
             user.Inventory.SwapSlots(a, b);
         }
 
-        [MessageHandler((byte)ClientPacketID.StartShopping)]
+        [MessageHandler((uint)ClientPacketID.StartShopping)]
         void RecvStartShopping(IIPSocket conn, BitStream r)
         {
             var entityIndex = r.ReadMapEntityIndex();
@@ -747,7 +747,7 @@ namespace DemoGame.Server
             user.ShoppingState.TryStartShopping(shopkeeper);
         }
 
-        [MessageHandler((byte)ClientPacketID.UnequipItem)]
+        [MessageHandler((uint)ClientPacketID.UnequipItem)]
         void RecvUnequipItem(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadEnum<EquipmentSlot>();
@@ -757,7 +757,7 @@ namespace DemoGame.Server
                 user.Equipped.RemoveAt(slot);
         }
 
-        [MessageHandler((byte)ClientPacketID.UseInventoryItem)]
+        [MessageHandler((uint)ClientPacketID.UseInventoryItem)]
         void RecvUseInventoryItem(IIPSocket conn, BitStream r)
         {
             var slot = r.ReadInventorySlot();
@@ -769,7 +769,7 @@ namespace DemoGame.Server
             user.UseInventoryItem(slot);
         }
 
-        [MessageHandler((byte)ClientPacketID.UseSkill)]
+        [MessageHandler((uint)ClientPacketID.UseSkill)]
         void RecvUseSkill(IIPSocket conn, BitStream r)
         {
             SkillType skillType;
@@ -796,7 +796,7 @@ namespace DemoGame.Server
                 user.UseSkill(skillType, GetTargetCharacter(user, targetIndex));
         }
 
-        [MessageHandler((byte)ClientPacketID.UseWorld)]
+        [MessageHandler((uint)ClientPacketID.UseWorld)]
         void RecvUseWorld(IIPSocket conn, BitStream r)
         {
             var useEntityIndex = r.ReadMapEntityIndex();
