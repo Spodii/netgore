@@ -108,51 +108,11 @@ namespace DemoGame.Server.UI
         }
 
         /// <summary>
-        /// Handles the CheckedChanged event of the chkDebug control.
+        /// Handles the CheckedChanged event of the log CheckBoxes.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void chkDebug_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkError control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void chkError_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkFatal control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void chkFatal_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkInfo control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void chkInfo_CheckedChanged(object sender, EventArgs e)
-        {
-            RebuildLogList();
-        }
-
-        /// <summary>
-        /// Handles the CheckedChanged event of the chkWarn control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void chkWarn_CheckedChanged(object sender, EventArgs e)
+        void LogCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             RebuildLogList();
         }
