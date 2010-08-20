@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -264,6 +265,8 @@ namespace DemoGame.Server.UI
 
             if (level == Level.Fatal)
                 return chkFatal;
+
+            Debug.Fail(string.Format("No CheckBox available for log level `{0}`.", level));
 
             return null;
         }
