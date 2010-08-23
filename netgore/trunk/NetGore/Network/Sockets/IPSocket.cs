@@ -18,13 +18,13 @@ namespace NetGore.Network
         /// <summary>
         /// Value given to the remote UDP port when it has not been set.
         /// </summary>
-        const int _unsetRemoteUDPPortValue = 0;
+        const ushort _unsetRemoteUDPPortValue = 0;
 
         readonly ITCPSocket _tcpSocket;
         readonly IUDPSocket _udpSocket;
 
         bool _disposed = false;
-        int _remoteUDPPort = _unsetRemoteUDPPortValue;
+        ushort _remoteUDPPort = _unsetRemoteUDPPortValue;
         EndPoint _udpEndPoint;
 
         /// <summary>
@@ -326,9 +326,14 @@ namespace NetGore.Network
         /// Sets the port used to communicate with the remote connection over an unreliable stream.
         /// </summary>
         /// <param name="port">Port for the unreliable stream.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="port"/> must be between <see cref="ushort.MinValue"/>
+        /// and <see cref="ushort.MaxValue"/>.</exception>
         public void SetRemoteUnreliablePort(int port)
         {
-            _remoteUDPPort = port;
+            if (port < ushort.MinValue || port > ushort.MaxValue)
+                throw new ArgumentOutOfRangeException("port", "Value must be between ushort.MinValue and ushort.MaxValue.");
+
+            _remoteUDPPort = (ushort)port;
         }
 
         #endregion
