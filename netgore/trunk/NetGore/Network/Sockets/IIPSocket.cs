@@ -103,6 +103,8 @@ namespace NetGore.Network
         /// Sets the port used to communicate with the remote connection over an unreliable stream.
         /// </summary>
         /// <param name="port">Port for the unreliable stream.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="port"/> must be between <see cref="ushort.MinValue"/>
+        /// and <see cref="ushort.MaxValue"/>.</exception>
         void SetRemoteUnreliablePort(int port);
     }
 }
