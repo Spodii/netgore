@@ -224,7 +224,8 @@ namespace NetGore.Network
             if (_bindEndPoint == null)
                 _bindEndPoint = new IPEndPoint(0, 0);
 
-            Send(data, host);
+            if (data != null)
+                Send(data, host);
 
             BeginReceiveFrom();
         }
