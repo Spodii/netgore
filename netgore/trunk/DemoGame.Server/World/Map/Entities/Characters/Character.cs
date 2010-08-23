@@ -1795,15 +1795,21 @@ namespace DemoGame.Server
 
             if (newMap != Map)
             {
+                // Take the character off the old map, teleport, then put them on the new map
                 if (Map != null)
                     Map.RemoveEntity(this);
 
                 _map = null;
 
+                Teleport(position);
+
                 newMap.AddEntity(this);
             }
-
-            Teleport(position);
+            else
+            {
+                // Just teleport since the map didn't change
+                Teleport(position);
+            }
         }
 
         /// <summary>
@@ -1813,24 +1819,10 @@ namespace DemoGame.Server
         /// <param name="position">Position to teleport to.</param>
         public override void Teleport(Vector2 position)
         {
-            if (Map == null)
-            {
-                if (IsAlive && IsLoaded)
-                {
-                    // If the map is null, but they are alive and loaded, we have a problem...
-                    const string errmsg = "Attempted to teleport a Character `{0}` while their map was null.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, this);
-                    Debug.Fail(string.Format(errmsg, this));
-                }
-            }
-            else
-            {
-                // Make sure the position we teleport to is valid
-                position = ValidatePosition(position);
-            }
+            // Make sure the position we teleport to is valid
+            var validPosition = ValidatePosition(position);
 
-            base.Teleport(position);
+            base.Teleport(validPosition);
         }
 
         /// <summary>
