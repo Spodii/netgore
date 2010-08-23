@@ -84,7 +84,6 @@ namespace NetGore.Network
             {
                 Debug.Fail(ex.ToString());
                 Dispose();
-                return;
             }
         }
 
