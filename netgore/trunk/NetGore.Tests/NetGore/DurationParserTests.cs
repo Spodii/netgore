@@ -56,7 +56,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void MixTest2()
         {
-            Assert.AreEqual(TimeSpan.FromDays(10) + TimeSpan.FromHours(5) + TimeSpan.FromSeconds(3), DurationParser.Parse("2s5h10days"));
+            Assert.AreEqual(TimeSpan.FromDays(10) + TimeSpan.FromHours(5) + TimeSpan.FromSeconds(3), DurationParser.Parse("3s5h10days"));
         }
 
         [Test]
