@@ -7,6 +7,11 @@ namespace GoreUpdater.Core
     {
         bool _isDisposed = false;
 
+        public HttpDownloadSource()
+        {
+            
+        }
+
         #region Implementation of IDisposable
 
         /// <summary>
