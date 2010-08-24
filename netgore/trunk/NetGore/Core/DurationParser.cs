@@ -13,7 +13,7 @@ namespace NetGore
     /// unit names, are:
     ///     second  - s, sec, secs, second, seconds
     ///     minute  - m, min, mins, minute, minutes
-    ///     hour    - h, hr, hour, hours
+    ///     hour    - h, hr, hrs, hour, hours
     ///     day     - d, day, days
     ///     week    - w, wk, week, weeks
     ///     month   - mon, month, months
@@ -111,6 +111,7 @@ namespace NetGore
 
                     case "h":
                     case "hr":
+                    case "hrs":
                     case "hour":
                     case "hours":
                         ts += TimeSpan.FromHours(value);
