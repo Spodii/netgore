@@ -115,5 +115,7 @@ namespace DemoGame.Server
         /// no weapon is specified (see: <see cref="World.UnarmedWeapon"/>).
         /// </summary>
         public static readonly ItemTemplateID UnarmedItemTemplateID = new ItemTemplateID(0);
+
+        public static readonly string MinimumClientVersion = "0.0.0.0";
     }
 }

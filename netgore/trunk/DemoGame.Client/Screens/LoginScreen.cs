@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
@@ -193,7 +194,7 @@ namespace DemoGame.Client
 
         void sockets_Connected(SocketManager sender, IIPSocket conn)
         {
-            using (var pw = ClientPacket.Login(_cNameText.Text, _cPasswordText.Text))
+            using (var pw = ClientPacket.Login(_cNameText.Text, _cPasswordText.Text, Assembly.GetExecutingAssembly().GetName().Version))
             {
                 _sockets.Send(pw);
             }
