@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GoreUpdater.Core
 {
     public class DownloadManager : IDownloadManager
     {
-        readonly string _targetPath;
         readonly Queue<string> _downloadQueue = new Queue<string>();
         readonly object _downloadQueueSync = new object();
-        readonly List<string> _finishedDownloads = new List<string>();
-        readonly object _finishedDownloadsSync = new object();
         readonly List<IDownloadSource> _downloadSources = new List<IDownloadSource>();
         readonly object _downloadSourcesSync = new object();
+        readonly List<string> _finishedDownloads = new List<string>();
+        readonly object _finishedDownloadsSync = new object();
         readonly Queue<string> _notStartedQueue = new Queue<string>();
         readonly object _notStartedQueueSync = new object();
+        readonly string _targetPath;
 
         bool _isDisposed = false;
 
@@ -22,58 +23,44 @@ namespace GoreUpdater.Core
             _targetPath = targetPath;
         }
 
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="DownloadManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~DownloadManager()
+        {
+            HandleDispose(true);
+            _isDisposed = true;
+        }
+
+        /// <summary>
+        /// Handles disposing of this object.
+        /// </summary>
+        /// <param name="disposeManaged">If false, this object was garbage collected and managed objects do not need to be disposed.
+        /// If true, Dispose was called on this object and managed objects need to be disposed.</param>
+        protected virtual void HandleDispose(bool disposeManaged)
+        {
+        }
 
         void WorkerThreadLoop()
         {
-            
         }
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            HandleDispose(false);
+            _isDisposed = true;
+        }
+
+        #endregion
 
         #region Implementation of IDownloadManager
-
-        /// <summary>
-        /// Gets the number of items that have finished downloading in this <see cref="IDownloadManager"/>.
-        /// </summary>
-        public int FinishedCount
-        {
-            get
-            {
-                lock (_finishedDownloadsSync)
-                {
-                    return _finishedDownloads.Count;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="IDownloadManager"/> has been disposed.
-        /// </summary>
-        public bool IsDisposed
-        {
-            get { return _isDisposed; }
-        }
-
-        /// <summary>
-        /// Gets the current collection of finished downloads.
-        /// </summary>
-        /// <returns>The current collection of finished downloads.</returns>
-        public IEnumerable<string> GetFinished()
-        {
-            lock (_finishedDownloadsSync)
-            {
-                return _finishedDownloads.ToArray();
-            }
-        }
-
-        /// <summary>
-        /// Clears the finished downloads information.
-        /// </summary>
-        public void ClearFinished()
-        {
-            lock (_finishedDownloadsSync)
-            {
-                _finishedDownloads.Clear();
-            }
-        }
 
         /// <summary>
         /// Notifies listeners when a file download has finished.
@@ -98,6 +85,28 @@ namespace GoreUpdater.Core
                     return _downloadSources.ToArray();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the number of items that have finished downloading in this <see cref="IDownloadManager"/>.
+        /// </summary>
+        public int FinishedCount
+        {
+            get
+            {
+                lock (_finishedDownloadsSync)
+                {
+                    return _finishedDownloads.Count;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IDownloadManager"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
         }
 
         /// <summary>
@@ -145,6 +154,17 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
+        /// Clears the finished downloads information.
+        /// </summary>
+        public void ClearFinished()
+        {
+            lock (_finishedDownloadsSync)
+            {
+                _finishedDownloads.Clear();
+            }
+        }
+
+        /// <summary>
         /// Enqueues a file for download.
         /// </summary>
         /// <param name="file">The path of the file to download.</param>
@@ -178,6 +198,18 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
+        /// Gets the current collection of finished downloads.
+        /// </summary>
+        /// <returns>The current collection of finished downloads.</returns>
+        public IEnumerable<string> GetFinished()
+        {
+            lock (_finishedDownloadsSync)
+            {
+                return _finishedDownloads.ToArray();
+            }
+        }
+
+        /// <summary>
         /// Gets the queue of remaining downloads.
         /// </summary>
         /// <returns>The queue of remaining downloads.</returns>
@@ -204,39 +236,6 @@ namespace GoreUpdater.Core
             {
                 return _downloadSources.Remove(downloadSource);
             }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="DownloadManager"/> is reclaimed by garbage collection.
-        /// </summary>
-        ~DownloadManager()
-        {
-            HandleDispose(true);
-            _isDisposed = true;
-        }
-
-        /// <summary>
-        /// Handles disposing of this object.
-        /// </summary>
-        /// <param name="disposeManaged">If false, this object was garbage collected and managed objects do not need to be disposed.
-        /// If true, Dispose was called on this object and managed objects need to be disposed.</param>
-        protected virtual void HandleDispose(bool disposeManaged)
-        {
-        }
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-            HandleDispose(false);
-            _isDisposed = true;
         }
 
         #endregion
