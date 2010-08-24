@@ -39,6 +39,12 @@ namespace NetGore.Network
         ListenSocket _listenSocket;
 
         /// <summary>
+        /// Gets if we are currently listening for and accepting connections. Listening has to be set up by calling
+        /// <see cref="SocketManager.Listen"/>.
+        /// </summary>
+        public bool IsListening { get { return _listenSocket != null && _listenSocket.IsAlive; } }
+
+        /// <summary>
         /// Maximum allowed connections from a single IP address
         /// </summary>
         int _maxDupeIP = 3;
@@ -70,6 +76,27 @@ namespace NetGore.Network
         IEnumerable<IPSocket> Connections
         {
             get { return _connections; }
+        }
+
+        /// <summary>
+        /// Finds all connections matching the given predicate.
+        /// </summary>
+        /// <param name="pred">The predicate for the connections to match.</param>
+        /// <returns>The connections that match the given <paramref name="pred"/>.</returns>
+        public IEnumerable<IIPSocket> FindConnections(Predicate<IIPSocket> pred)
+        {
+            List<IIPSocket> ret = new List<IIPSocket>();
+
+            lock (_connectionsLock)
+            {
+                foreach (var conn in Connections)
+                {
+                    if (pred(conn))
+                        ret.Add(conn);
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -236,47 +263,22 @@ namespace NetGore.Network
                 _listenSocket.Dispose();
         }
 
-        /// <summary>
-        /// Gets all received data queues from all active connections
-        /// </summary>
-        /// <returns>List of received data if any sockets contain any data, else null</returns>
-        protected IEnumerable<SocketReceiveData> GetReceivedData()
-        {
-            List<SocketReceiveData> ret = null;
+        static readonly IEnumerable<SocketReceiveData> _emptySocketReceiveData = Enumerable.Empty<SocketReceiveData>();
 
+        /// <summary>
+        /// Gets all received data queues from all active connections.
+        /// </summary>
+        /// <param name="connData">Contains the data received from connection-oriented protocols (such as TCP).</param>
+        /// <param name="nonConnData">Contains the data received from connectionless protocols (such as UDP).</param>
+        protected void GetReceivedData(out IEnumerable<SocketReceiveData> connData, out IEnumerable<AddressedPacket> nonConnData)
+        {
+            // Grab the data from connectionless protocols
+            nonConnData = _udpSocket.GetRecvData();
+
+            // Grab the data from connection-oriented protocols
+            List<SocketReceiveData> retConnData = null;
             lock (_connectionsLock)
             {
-                // On the server, we don't receive data over UDP, so anything going through here is going to be
-                // a request to set the UDP port for a client.
-                if (_listenSocket != null)
-                {
-                    var udpData = _udpSocket.GetRecvData();
-                    if (udpData != null)
-                    {
-                        foreach (var v in udpData)
-                        {
-                            // Read the challenge value
-                            var challenge = BitConverter.ToInt32(v.Data, 0);
-
-                            // Grab the IPEndPoint and get the numeric value of the IP address
-                            var ipEP = ((IPEndPoint)v.RemoteEndPoint);
-                            var ipAsUInt = IPAddressHelper.IPv4AddressToUInt(ipEP.Address.GetAddressBytes(), 0);
-
-                            // Find all connections from the given IP
-                            var connsFromIP = Connections.Where(x => x.TCPSocket.IP == ipAsUInt).ToImmutable();
-                            foreach (var c in connsFromIP)
-                            {
-                                // Check which connection from the given IP has a hash that matches the received challenge hash
-                                if (c.GetHashCode() == challenge)
-                                {
-                                    c.SetRemoteUnreliablePort(ipEP.Port);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
                 // Loop through each socket
                 foreach (var conn in Connections)
                 {
@@ -284,17 +286,17 @@ namespace NetGore.Network
                     var data = conn.GetRecvData();
                     if (data != null && data.Length > 0)
                     {
-                        // Create the return object if needed
-                        if (ret == null)
-                            ret = new List<SocketReceiveData>();
+                        // Create the return list if needed
+                        if (retConnData == null)
+                            retConnData = new List<SocketReceiveData>();
 
                         // Add the data to the return list
-                        ret.Add(new SocketReceiveData(conn, data));
+                        retConnData.Add(new SocketReceiveData(conn, data));
                     }
                 }
             }
 
-            return ret;
+            connData = retConnData ?? _emptySocketReceiveData;
         }
 
         /// <summary>
