@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DownloadManager.cs" />
     <Compile Include="IDownloadSource.cs" />
     <Compile Include="DownloadSourceFileEventHandler.cs" />
     <Compile Include="FileDownloaderFileEventHandler.cs" />
