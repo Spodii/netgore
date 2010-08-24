@@ -136,8 +136,8 @@ namespace DemoGame.Server
             }
 #elif TOPDOWN
 
-            // Move towards the target until in range
-            // Horizontal
+    // Move towards the target until in range
+    // Horizontal
             if (Actor.Center.X > _target.Center.X + 20)
                 Actor.MoveLeft();
             else if (Actor.Center.X < _target.Center.X - 20)
@@ -158,11 +158,8 @@ namespace DemoGame.Server
             if (Rand(0, 70) == 1)
             {
                 if (IsInMeleeRange(_target))
-                {
                     Actor.Attack(_target);
-                }
             }
-
         }
     }
 }

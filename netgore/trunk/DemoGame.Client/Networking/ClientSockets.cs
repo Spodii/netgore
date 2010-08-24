@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -141,7 +140,7 @@ namespace DemoGame.Client
                 _packetHandler.Process(connData);
 
             if (nonConnData != null)
-                _packetHandler.Process(nonConnData.Select(x => new SocketReceiveData(Socket, new byte[][] { x.Data})));
+                _packetHandler.Process(nonConnData.Select(x => new SocketReceiveData(Socket, new byte[][] { x.Data })));
 
             // Update the latency tracker
             if (_latencyTracker != null)

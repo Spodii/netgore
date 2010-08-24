@@ -13,11 +13,6 @@ namespace NetGore.Network
         readonly MessageProcessorID _msgID;
 
         /// <summary>
-        /// Gets the ID of the message that the method this attribute is attached to will handle.
-        /// </summary>
-        public MessageProcessorID MsgID { get { return _msgID; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MessageHandlerAttribute"/> class.
         /// </summary>
         /// <param name="msgID">The ID of the message that the method this attribute is attached to will handle.</param>
@@ -32,6 +27,14 @@ namespace NetGore.Network
         /// <param name="msgID">The ID of the message that the method this attribute is attached to will handle.</param>
         public MessageHandlerAttribute(uint msgID) : this(new MessageProcessorID(msgID))
         {
+        }
+
+        /// <summary>
+        /// Gets the ID of the message that the method this attribute is attached to will handle.
+        /// </summary>
+        public MessageProcessorID MsgID
+        {
+            get { return _msgID; }
         }
     }
 }

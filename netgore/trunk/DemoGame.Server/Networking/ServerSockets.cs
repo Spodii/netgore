@@ -28,40 +28,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Processes the unreliable data received from a connectionless protocol (UDP). Since all data the server receives
-        /// from the client related to the game is done over a reliable protocol (TCP), unreliable data is mostly just for
-        /// handling networking-related tasks and not actual game data.
-        /// </summary>
-        /// <param name="data">The received data from the connectionless protocol (UDP).</param>
-        void ProcessUnreliableData(IEnumerable<AddressedPacket> data)
-        {
-            if (data == null || data.IsEmpty())
-                return;
-
-            foreach (var v in data)
-            {
-                // Read the challenge value
-                var challenge = BitConverter.ToInt32(v.Data, 0);
-
-                // Grab the IPEndPoint and get the numeric value of the IP address
-                var ipEP = ((IPEndPoint)v.RemoteEndPoint);
-                var ipAsUInt = IPAddressHelper.IPv4AddressToUInt(ipEP.Address.GetAddressBytes(), 0);
-
-                // Find all connections from the given IP
-                var connsFromIP = FindConnections(x => x.IP == ipAsUInt);
-                foreach (var c in connsFromIP)
-                {
-                    // Check which connection from the given IP has a hash that matches the received challenge hash
-                    if (c.GetHashCode() == challenge)
-                    {
-                        c.SetRemoteUnreliablePort(ipEP.Port);
-                        break;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Updates the sockets
         /// </summary>
         public void Heartbeat()
@@ -112,6 +78,40 @@ namespace DemoGame.Server
             using (var pw = ServerPacket.SetGameTime(DateTime.Now))
             {
                 conn.Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// Processes the unreliable data received from a connectionless protocol (UDP). Since all data the server receives
+        /// from the client related to the game is done over a reliable protocol (TCP), unreliable data is mostly just for
+        /// handling networking-related tasks and not actual game data.
+        /// </summary>
+        /// <param name="data">The received data from the connectionless protocol (UDP).</param>
+        void ProcessUnreliableData(IEnumerable<AddressedPacket> data)
+        {
+            if (data == null || data.IsEmpty())
+                return;
+
+            foreach (var v in data)
+            {
+                // Read the challenge value
+                var challenge = BitConverter.ToInt32(v.Data, 0);
+
+                // Grab the IPEndPoint and get the numeric value of the IP address
+                var ipEP = ((IPEndPoint)v.RemoteEndPoint);
+                var ipAsUInt = IPAddressHelper.IPv4AddressToUInt(ipEP.Address.GetAddressBytes(), 0);
+
+                // Find all connections from the given IP
+                var connsFromIP = FindConnections(x => x.IP == ipAsUInt);
+                foreach (var c in connsFromIP)
+                {
+                    // Check which connection from the given IP has a hash that matches the received challenge hash
+                    if (c.GetHashCode() == challenge)
+                    {
+                        c.SetRemoteUnreliablePort(ipEP.Port);
+                        break;
+                    }
+                }
             }
         }
 
