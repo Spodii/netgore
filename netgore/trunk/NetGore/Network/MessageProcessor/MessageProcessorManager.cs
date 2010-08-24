@@ -54,7 +54,7 @@ namespace NetGore.Network
             var atbType = typeof(MessageHandlerAttribute);
             var voidType = typeof(void);
 
-            DArray<IMessageProcessor> tmpProcessors = new DArray<IMessageProcessor>();
+            var tmpProcessors = new DArray<IMessageProcessor>();
 
             // Search through all types in the Assembly
             var assemb = Assembly.GetAssembly(source.GetType());

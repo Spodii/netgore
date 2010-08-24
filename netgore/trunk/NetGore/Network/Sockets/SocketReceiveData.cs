@@ -15,12 +15,18 @@ namespace NetGore.Network
         /// Gets the received socket data. Each top-level array element is a full message, and each second-level
         /// array element is the individual bytes that make up the message.
         /// </summary>
-        public byte[][] Data { get { return _data; } }
+        public byte[][] Data
+        {
+            get { return _data; }
+        }
 
         /// <summary>
         /// Gets the <see cref="IIPSocket"/> that this data came from.
         /// </summary>
-        public IIPSocket Socket { get { return _socket; } }
+        public IIPSocket Socket
+        {
+            get { return _socket; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SocketReceiveData"/> struct.

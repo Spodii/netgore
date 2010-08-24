@@ -42,7 +42,7 @@ namespace DemoGame
         StartNPCChatDialog,
         StartShopping,
         SwapInventorySlots,
-        UnequipItem ,
+        UnequipItem,
         UseInventoryItem,
         UseSkill,
         UseWorld,

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using log4net;
@@ -15,6 +14,7 @@ namespace NetGore.Network
     public class SocketManager : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static readonly IEnumerable<SocketReceiveData> _emptySocketReceiveData = Enumerable.Empty<SocketReceiveData>();
 
         /// <summary>
         /// List of all the current connections.
@@ -37,12 +37,6 @@ namespace NetGore.Network
         /// Socket for accepting connections
         /// </summary>
         ListenSocket _listenSocket;
-
-        /// <summary>
-        /// Gets if we are currently listening for and accepting connections. Listening has to be set up by calling
-        /// <see cref="SocketManager.Listen"/>.
-        /// </summary>
-        public bool IsListening { get { return _listenSocket != null && _listenSocket.IsAlive; } }
 
         /// <summary>
         /// Maximum allowed connections from a single IP address
@@ -79,32 +73,20 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Finds all connections matching the given predicate.
-        /// </summary>
-        /// <param name="pred">The predicate for the connections to match.</param>
-        /// <returns>The connections that match the given <paramref name="pred"/>.</returns>
-        public IEnumerable<IIPSocket> FindConnections(Predicate<IIPSocket> pred)
-        {
-            List<IIPSocket> ret = new List<IIPSocket>();
-
-            lock (_connectionsLock)
-            {
-                foreach (var conn in Connections)
-                {
-                    if (pred(conn))
-                        ret.Add(conn);
-                }
-            }
-
-            return ret;
-        }
-
-        /// <summary>
         /// Gets if the listen socket is correctly working and accepting connections.
         /// </summary>
         public bool IsAlive
         {
             get { return _listenSocket.IsAlive; }
+        }
+
+        /// <summary>
+        /// Gets if we are currently listening for and accepting connections. Listening has to be set up by calling
+        /// <see cref="SocketManager.Listen"/>.
+        /// </summary>
+        public bool IsListening
+        {
+            get { return _listenSocket != null && _listenSocket.IsAlive; }
         }
 
         /// <summary>
@@ -263,7 +245,26 @@ namespace NetGore.Network
                 _listenSocket.Dispose();
         }
 
-        static readonly IEnumerable<SocketReceiveData> _emptySocketReceiveData = Enumerable.Empty<SocketReceiveData>();
+        /// <summary>
+        /// Finds all connections matching the given predicate.
+        /// </summary>
+        /// <param name="pred">The predicate for the connections to match.</param>
+        /// <returns>The connections that match the given <paramref name="pred"/>.</returns>
+        public IEnumerable<IIPSocket> FindConnections(Predicate<IIPSocket> pred)
+        {
+            var ret = new List<IIPSocket>();
+
+            lock (_connectionsLock)
+            {
+                foreach (var conn in Connections)
+                {
+                    if (pred(conn))
+                        ret.Add(conn);
+                }
+            }
+
+            return ret;
+        }
 
         /// <summary>
         /// Gets all received data queues from all active connections.
