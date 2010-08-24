@@ -19,6 +19,13 @@ namespace NetGore.Tests.NetGore
             Assert.AreEqual(TimeSpan.FromSeconds(88), DurationParser.Parse("88seconds"));
         }
 
+
+        [Test]
+        public void OutOfRangeTest()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => DurationParser.Parse("1000000years"));
+        }
+
         [Test]
         public void MinuteTest()
         {
