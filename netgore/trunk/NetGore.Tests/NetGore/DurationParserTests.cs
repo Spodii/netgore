@@ -48,6 +48,35 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
+        public void WeekTest()
+        {
+            Assert.AreEqual(TimeSpan.FromDays(10 * 7), DurationParser.Parse("10w"));
+            Assert.AreEqual(TimeSpan.FromDays(1 * 7), DurationParser.Parse("1week"));
+            Assert.AreEqual(TimeSpan.FromDays(50 * 7), DurationParser.Parse("50wk"));
+            Assert.AreEqual(TimeSpan.FromDays(61 * 7), DurationParser.Parse("61weeks"));
+        }
+
+        [Test]
+        public void MonthTest()
+        {
+            // "about" 365 days in a year, though let some room slide for minor rounding errors
+            const int marginOfErrorPerYears = 2;
+            var a = DurationParser.Parse("24months").TotalDays;
+            var b = TimeSpan.FromDays(365 * 2).TotalDays;
+            Assert.IsTrue(Math.Abs(a - b) < (marginOfErrorPerYears * 2));
+        }
+
+        [Test]
+        public void YearTest()
+        {
+            // "about" 365 days in a year, though let some room slide for minor rounding errors
+            const int marginOfErrorPerYears = 2;
+            var a = DurationParser.Parse("10years").TotalDays;
+            var b = TimeSpan.FromDays(365 * 10).TotalDays;
+            Assert.IsTrue(Math.Abs(a - b) < (marginOfErrorPerYears * 10));
+        }
+
+        [Test]
         public void MixTest1()
         {
             Assert.AreEqual(TimeSpan.FromDays(10) + TimeSpan.FromHours(5) + TimeSpan.FromSeconds(3), DurationParser.Parse("10d5h3s"));
