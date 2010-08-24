@@ -8,8 +8,22 @@ using System.Text.RegularExpressions;
 namespace NetGore
 {
     /// <summary>
-    /// Provides some ways to parse a duration of time from a string.
+    /// Provides some ways to parse a duration of time from a string. Duration strings are formatted as
+    /// a positive numeric value followed by a unit. The possible types of units, and their possible
+    /// unit names, are:
+    ///     second  - s, sec, secs, second, seconds
+    ///     minute  - m, min, mins, minute, minutes
+    ///     hour    - h, hr, hour, hours
+    ///     day     - d, day, days
+    ///     week    - w, wk, week, weeks
+    ///     month   - mon, month, months
+    ///     year    - y, yr, year, years
     /// </summary>
+    /// <example>
+    /// 5m10s       - 5 minutes and 10 seconds
+    /// 3s          - 3 seconds
+    /// 10s5y3m     - 5 years, 3 months, and 10 seconds
+    /// </example>
     public static class DurationParser
     {
         static readonly Regex _regex = new Regex("(?<Value>[0-9]+)(?<Unit>[a-z]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.CultureInvariant);
@@ -76,7 +90,7 @@ namespace NetGore
                     return false;
                 }
 
-                var unit = match.Groups["Unit"].Value.ToLowerInvariant();
+                var unit = match.Groups["Unit"].Value.Trim().ToLowerInvariant();
                 switch (unit)
                 {
                     case "s":
@@ -84,7 +98,7 @@ namespace NetGore
                     case "secs":
                     case "second":
                     case "seconds":
-                        ts.Add(TimeSpan.FromSeconds(value));
+                        ts += TimeSpan.FromSeconds(value);
                         break;
 
                     case "m":
@@ -92,34 +106,34 @@ namespace NetGore
                     case "mins":
                     case "minute":
                     case "minutes":
-                        ts.Add(TimeSpan.FromMinutes(value));
+                        ts += TimeSpan.FromMinutes(value);
                         break;
 
                     case "h":
                     case "hr":
                     case "hour":
                     case "hours":
-                        ts.Add(TimeSpan.FromHours(value));
+                        ts += TimeSpan.FromHours(value);
                         break;
 
                     case "d":
                     case "day":
                     case "days":
-                        ts.Add(TimeSpan.FromDays(value));
+                        ts += TimeSpan.FromDays(value);
                         break;
 
                     case "w":
                     case "wk":
                     case "week":
                     case "weeks":
-                        ts.Add(TimeSpan.FromDays(value * 7));
+                        ts+=TimeSpan.FromDays(value * 7);
                         break;
 
                     case "mon":
                     case "month":
                     case "months":
                         var now = DateTime.Now;
-                        ts.Add(now.AddMonths(value) - now);
+                        ts+= now.AddMonths(value) - now;
                         break;
 
                     case "y":
@@ -127,7 +141,7 @@ namespace NetGore
                     case "year":
                     case "years":
                         var now2 = DateTime.Now;
-                        ts.Add(now2.AddYears(value) - now2);
+                        ts+= now2.AddYears(value) - now2;
                         break;
 
                     default:
