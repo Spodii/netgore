@@ -1,11 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace GoreUpdater.Core
 {
     public class DownloadManager : IDownloadManager
     {
+        /// <summary>
+        /// For how long to sleep the worker thread when there are no jobs available.
+        /// </summary>
+        const int _workerThreadNoJobsTimeout = 500;
+
+        /// <summary>
+        /// For how long to sleep when all of the <see cref="IDownloadSource"/>s are busy.
+        /// </summary>
+        const int _workerThreadSourcesBusyTimeout = 500;
+
         readonly Queue<string> _downloadQueue = new Queue<string>();
         readonly object _downloadQueueSync = new object();
         readonly List<IDownloadSource> _downloadSources = new List<IDownloadSource>();
@@ -16,11 +28,41 @@ namespace GoreUpdater.Core
         readonly object _notStartedQueueSync = new object();
         readonly string _targetPath;
 
+        readonly List<Thread> _workerThreads = new List<Thread>();
+
         bool _isDisposed = false;
+
+        /// <summary>
+        /// A counter for counting what <see cref="DownloadManager"/> instance number this is. Mostly just used for when
+        /// naming the worker threads.
+        /// </summary>
+        static int _downloadManagerCount = -1;
 
         public DownloadManager(string targetPath)
         {
             _targetPath = targetPath;
+
+            var id = Interlocked.Increment(ref _downloadManagerCount);
+
+            // Spawn the worker threads
+            var numWorkers = GetNumWorkerThreads();
+            for (var i = 0; i < numWorkers; i++)
+            {
+                var workerThread = new Thread(WorkerThreadLoop)
+                { IsBackground = true};
+
+                try
+                {
+                    workerThread.Name = string.Format("DownloadManager [{0}] worker thread [{1}", id, i);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
+
+                workerThread.Start();
+                _workerThreads.Add(workerThread);
+            }
         }
 
         /// <summary>
@@ -34,6 +76,15 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
+        /// Gets the number of threads to use for the <see cref="WorkerThreadLoop"/>.
+        /// </summary>
+        /// <returns>The number of threads to use for the <see cref="WorkerThreadLoop"/>.</returns>
+        static int GetNumWorkerThreads()
+        {
+            return 4;
+        }
+
+        /// <summary>
         /// Handles disposing of this object.
         /// </summary>
         /// <param name="disposeManaged">If false, this object was garbage collected and managed objects do not need to be disposed.
@@ -44,6 +95,51 @@ namespace GoreUpdater.Core
 
         void WorkerThreadLoop()
         {
+            while (!IsDisposed)
+            {
+                string workItem = null;
+
+                // Grab the next job from the queue
+                lock (_notStartedQueueSync)
+                {
+                    if (_notStartedQueue.Count > 0)
+                        workItem = _notStartedQueue.Dequeue();
+                }
+
+                // If we grabbed nothing, then idle for a while and try again
+                if (workItem == null)
+                {
+                    Thread.Sleep(_workerThreadNoJobsTimeout);
+                    continue;
+                }
+
+                // Push the work item in to the next free IDownloadSource
+                var added = false;
+                lock (_downloadSourcesSync)
+                {
+                    foreach (var ds in _downloadSources)
+                    {
+                        if (ds.CanDownload)
+                        {
+                            ds.Download(workItem, TargetPath + workItem);
+                            added = true;
+                            break;
+                        }
+                    }
+                }
+
+                // If it couldn't be added into any of the download sources, then add it back into the queue and sleep a while
+                if (!added)
+                {
+                    lock (_notStartedQueueSync)
+                    {
+                        _notStartedQueue.Enqueue(workItem);
+                    }
+
+                    Thread.Sleep(_workerThreadSourcesBusyTimeout);
+                    continue;
+                }
+            }
         }
 
         #region Implementation of IDisposable
