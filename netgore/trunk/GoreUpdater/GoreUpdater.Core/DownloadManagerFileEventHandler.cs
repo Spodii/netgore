@@ -8,5 +8,5 @@ namespace GoreUpdater.Core
     /// <param name="sender">The <see cref="IDownloadManager"/> that downloaded the file.</param>
     /// <param name="remoteFile">The remote file that was downloaded.</param>
     /// <param name="localFilePath">The path to the local file where the downloaded file is stored.</param>
-    public delegate void FileDownloaderFileEventHandler(IDownloadManager sender, string remoteFile, string localFilePath);
+    public delegate void DownloadManagerFileEventHandler(IDownloadManager sender, string remoteFile, string localFilePath);
 }
