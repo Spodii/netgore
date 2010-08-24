@@ -8,15 +8,19 @@ namespace NetGore.Network
     /// </summary>
     public struct SocketReceiveData
     {
-        /// <summary>
-        /// Queue of bytes, each entry containing an individual message received
-        /// </summary>
-        public readonly byte[][] Data;
+        readonly byte[][] _data;
+        readonly IIPSocket _socket;
 
         /// <summary>
-        /// Socket the data came from.
+        /// Gets the received socket data. Each top-level array element is a full message, and each second-level
+        /// array element is the individual bytes that make up the message.
         /// </summary>
-        public readonly IIPSocket Socket;
+        public byte[][] Data { get { return _data; } }
+
+        /// <summary>
+        /// Gets the <see cref="IIPSocket"/> that this data came from.
+        /// </summary>
+        public IIPSocket Socket { get { return _socket; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SocketReceiveData"/> struct.
@@ -25,8 +29,8 @@ namespace NetGore.Network
         /// <param name="data">Data received.</param>
         public SocketReceiveData(IIPSocket socket, byte[][] data)
         {
-            Socket = socket;
-            Data = data;
+            _socket = socket;
+            _data = data;
         }
     }
 }

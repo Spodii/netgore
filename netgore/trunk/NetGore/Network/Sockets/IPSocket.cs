@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -15,16 +16,11 @@ namespace NetGore.Network
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// Value given to the remote UDP port when it has not been set.
-        /// </summary>
-        const ushort _unsetRemoteUDPPortValue = 0;
-
         readonly ITCPSocket _tcpSocket;
         readonly IUDPSocket _udpSocket;
 
         bool _disposed = false;
-        ushort _remoteUDPPort = _unsetRemoteUDPPortValue;
+        ushort? _remoteUDPPort = null;
         EndPoint _udpEndPoint;
 
         /// <summary>
@@ -191,47 +187,15 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the queue of received data.
+        /// Gets the queue of received data. This only includes data from a connection-oriented socket. Data from a connectionless protocol
+        /// is not included, even if it was the owner of this <see cref="IIPSocket"/> that sent the data over a connectionless protocol.
+        /// communication.
         /// </summary>
-        /// <returns>Queue of received data if any, or null if no queued data.</returns>
+        /// <returns>Queue of received reliable data if any, or null if no queued data.</returns>
         public byte[][] GetRecvData()
         {
-            // Get the messages from both sockets
             var fromTCP = TCPSocket.GetRecvData();
-
-            var udpData = UDPSocket.GetRecvData();
-            byte[][] fromUDP;
-            if (udpData == null)
-                fromUDP = null;
-            else
-                fromUDP = udpData.Select(x => x.Data).ToArray();
-
-            // If they're both null, return null
-            if (fromTCP == null && fromUDP == null)
-                return null;
-
-            // If they're both not null, we have to join them together
-            // If only one is null, we can just return that one
-            byte[][] ret;
-            if (fromTCP == null)
-                ret = fromUDP;
-            else
-            {
-                if (fromUDP != null)
-                    ret = JoinArrays(fromUDP, fromTCP);
-                else
-                    ret = fromTCP;
-            }
-
-            if (log.IsDebugEnabled)
-            {
-                foreach (var r in ret)
-                {
-                    log.DebugFormat("Received `{0}` bytes from `{1}`", r.Length, Address);
-                }
-            }
-
-            return ret;
+            return fromTCP;
         }
 
         /// <summary>
@@ -261,7 +225,7 @@ namespace NetGore.Network
 
             // If the remote UDP port hasn't been set yet, we can still fall back on TCP at least instead of just
             // dropping the send completely
-            if (_remoteUDPPort == _unsetRemoteUDPPortValue)
+            if (!_remoteUDPPort.HasValue)
             {
                 const string errmsg = "Tried sending over unreliable stream before setting the port.";
                 if (log.IsErrorEnabled)
@@ -273,9 +237,9 @@ namespace NetGore.Network
 
             // Create the EndPoint if it has not already been created
             if (_udpEndPoint == null)
-                _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort);
+                _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort.Value);
 
-            _udpSocket.Send(data, data.Length, _udpEndPoint);
+            UDPSocket.Send(data, data.Length, _udpEndPoint);
         }
 
         /// <summary>
@@ -296,7 +260,7 @@ namespace NetGore.Network
 
             // If the remote UDP port hasn't been set yet, we can still fall back on TCP at least instead of just
             // dropping the send completely
-            if (_remoteUDPPort == _unsetRemoteUDPPortValue)
+            if (!_remoteUDPPort.HasValue)
             {
                 const string errmsg = "Tried sending over unreliable stream before setting the port.";
                 if (log.IsErrorEnabled)
@@ -308,9 +272,9 @@ namespace NetGore.Network
 
             // Create the EndPoint if it has not already been created
             if (_udpEndPoint == null)
-                _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort);
+                _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort.Value);
 
-            _udpSocket.Send(data.GetBuffer(), data.Length, _udpEndPoint);
+            UDPSocket.Send(data.GetBuffer(), data.Length, _udpEndPoint);
         }
 
         /// <summary>

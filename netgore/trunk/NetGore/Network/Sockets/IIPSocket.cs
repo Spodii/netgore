@@ -64,9 +64,11 @@ namespace NetGore.Network
         TickCount TimeCreated { get; }
 
         /// <summary>
-        /// Gets the queue of received data.
+        /// Gets the queue of received data. This only includes data from a connection-oriented socket. Data from a connectionless protocol
+        /// is not included, even if it was the owner of this <see cref="IIPSocket"/> that sent the data over a connectionless protocol.
+        /// communication.
         /// </summary>
-        /// <returns>Queue of received data if any, or null if no queued data.</returns>
+        /// <returns>Queue of received reliable data if any, or null if no queued data.</returns>
         byte[][] GetRecvData();
 
         /// <summary>

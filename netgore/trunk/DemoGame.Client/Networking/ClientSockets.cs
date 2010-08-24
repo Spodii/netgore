@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetGore;
@@ -127,9 +129,19 @@ namespace DemoGame.Client
             if (_conn == null)
                 return;
 
-            // Process received data
-            var recvData = GetReceivedData();
-            _packetHandler.Process(recvData);
+            // Get the received data
+            IEnumerable<AddressedPacket> nonConnData;
+            IEnumerable<SocketReceiveData> connData;
+            GetReceivedData(out connData, out nonConnData);
+
+            // Process all data the same. For the unreliable data, we have to attach an IIPSocket, so just use the Socket property.
+            // This should be the only socket we receive data from on this port anyways, unless someone is trying to do a malicious
+            // attack on us by spoofing as the server, in which case there isn't much we can do.
+            if (connData != null)
+                _packetHandler.Process(connData);
+
+            if (nonConnData != null)
+                _packetHandler.Process(nonConnData.Select(x => new SocketReceiveData(Socket, new byte[][] { x.Data})));
 
             // Update the latency tracker
             if (_latencyTracker != null)

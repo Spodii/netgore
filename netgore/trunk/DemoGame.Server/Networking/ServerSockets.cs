@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using NetGore;
 using NetGore.Network;
 
@@ -26,6 +28,40 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Processes the unreliable data received from a connectionless protocol (UDP). Since all data the server receives
+        /// from the client related to the game is done over a reliable protocol (TCP), unreliable data is mostly just for
+        /// handling networking-related tasks and not actual game data.
+        /// </summary>
+        /// <param name="data">The received data from the connectionless protocol (UDP).</param>
+        void ProcessUnreliableData(IEnumerable<AddressedPacket> data)
+        {
+            if (data == null || data.IsEmpty())
+                return;
+
+            foreach (var v in data)
+            {
+                // Read the challenge value
+                var challenge = BitConverter.ToInt32(v.Data, 0);
+
+                // Grab the IPEndPoint and get the numeric value of the IP address
+                var ipEP = ((IPEndPoint)v.RemoteEndPoint);
+                var ipAsUInt = IPAddressHelper.IPv4AddressToUInt(ipEP.Address.GetAddressBytes(), 0);
+
+                // Find all connections from the given IP
+                var connsFromIP = FindConnections(x => x.IP == ipAsUInt);
+                foreach (var c in connsFromIP)
+                {
+                    // Check which connection from the given IP has a hash that matches the received challenge hash
+                    if (c.GetHashCode() == challenge)
+                    {
+                        c.SetRemoteUnreliablePort(ipEP.Port);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Updates the sockets
         /// </summary>
         public void Heartbeat()
@@ -40,9 +76,17 @@ namespace DemoGame.Server
                     account.Dispose();
             }
 
-            // Process received data
-            var recvData = GetReceivedData();
-            _packetHandler.Process(recvData);
+            // Get the received data
+            IEnumerable<AddressedPacket> nonConnData;
+            IEnumerable<SocketReceiveData> connData;
+            GetReceivedData(out connData, out nonConnData);
+
+            // Process the unreliable data separately
+            ProcessUnreliableData(nonConnData);
+
+            // Process the received reliable data. Any important data is going to be here, since TCP is used in client -> server
+            // communication for basically everything (the server only sends unreliable data to the client, not vise versa).
+            _packetHandler.Process(connData);
 
             // Update the latency tracker
             _latencyTracker.Update();
