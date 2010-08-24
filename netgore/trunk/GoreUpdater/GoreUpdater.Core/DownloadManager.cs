@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GoreUpdater.Core
 {
@@ -11,10 +12,20 @@ namespace GoreUpdater.Core
         readonly object _finishedDownloadsSync = new object();
         readonly List<IDownloadSource> _downloadSources = new List<IDownloadSource>();
         readonly object _downloadSourcesSync = new object();
+        readonly Queue<string> _notStartedQueue = new Queue<string>();
+        readonly object _notStartedQueueSync = new object();
+
+        bool _isDisposed = false;
 
         public DownloadManager(string targetPath)
         {
             _targetPath = targetPath;
+        }
+
+
+        void WorkerThreadLoop()
+        {
+            
         }
 
         #region Implementation of IDownloadManager
@@ -31,6 +42,14 @@ namespace GoreUpdater.Core
                     return _finishedDownloads.Count;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IDownloadManager"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
         }
 
         /// <summary>
@@ -148,6 +167,11 @@ namespace GoreUpdater.Core
                 }
 
                 _downloadQueue.Enqueue(file);
+
+                lock (_notStartedQueueSync)
+                {
+                    _notStartedQueue.Enqueue(file);
+                }
             }
 
             return true;
@@ -180,6 +204,39 @@ namespace GoreUpdater.Core
             {
                 return _downloadSources.Remove(downloadSource);
             }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="DownloadManager"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~DownloadManager()
+        {
+            HandleDispose(true);
+            _isDisposed = true;
+        }
+
+        /// <summary>
+        /// Handles disposing of this object.
+        /// </summary>
+        /// <param name="disposeManaged">If false, this object was garbage collected and managed objects do not need to be disposed.
+        /// If true, Dispose was called on this object and managed objects need to be disposed.</param>
+        protected virtual void HandleDispose(bool disposeManaged)
+        {
+        }
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            HandleDispose(false);
+            _isDisposed = true;
         }
 
         #endregion

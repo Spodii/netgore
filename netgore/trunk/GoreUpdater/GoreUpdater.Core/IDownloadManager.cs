@@ -3,12 +3,17 @@ using System.Collections.Generic;
 
 namespace GoreUpdater.Core
 {
-    public interface IDownloadManager
+    public interface IDownloadManager : IDisposable
     {
         /// <summary>
         /// Gets the number of items that have finished downloading in this <see cref="IDownloadManager"/>.
         /// </summary>
         int FinishedCount { get; }
+
+        /// <summary>
+        /// Gets if this <see cref="IDownloadManager"/> has been disposed.
+        /// </summary>
+        bool IsDisposed { get; }
 
         /// <summary>
         /// Gets the current collection of finished downloads.
