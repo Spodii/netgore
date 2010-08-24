@@ -9,13 +9,13 @@ namespace GoreUpdater.Core
         /// <summary>
         /// Notifies listeners when a file download has finished.
         /// </summary>
-        event FileDownloaderFileEventHandler DownloadFinished;
+        event DownloadManagerFileEventHandler DownloadFinished;
 
         /// <summary>
         /// Notifies listeners when a file could not be moved to the target file path. Often times, this happens because
         /// the file is in use and cannot be deleted.
         /// </summary>
-        event FileDownloaderFileMoveFailedEventHandler FileMoveFailed;
+        event DownloadManagerFileMoveFailedEventHandler FileMoveFailed;
 
         /// <summary>
         /// Gets the available file download sources.

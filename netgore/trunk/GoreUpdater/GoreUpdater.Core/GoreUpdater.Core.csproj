@@ -43,8 +43,8 @@
     <Compile Include="DownloadManager.cs" />
     <Compile Include="IDownloadSource.cs" />
     <Compile Include="DownloadSourceFileEventHandler.cs" />
-    <Compile Include="FileDownloaderFileEventHandler.cs" />
-    <Compile Include="FileDownloaderFileMoveFailedEventHandler.cs" />
+    <Compile Include="DownloadManagerFileEventHandler.cs" />
+    <Compile Include="DownloadManagerFileMoveFailedEventHandler.cs" />
     <Compile Include="IDownloadManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
