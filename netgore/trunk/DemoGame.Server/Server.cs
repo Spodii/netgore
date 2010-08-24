@@ -389,6 +389,12 @@ namespace DemoGame.Server
                         log.InfoFormat("Login for account `{0}` failed: Incorrect password.", name);
                     loginFailureGameMessage = GameMessage.LoginInvalidPassword;
                     break;
+                    
+                case AccountLoginResult.OldClient:
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Login for account `{0}` failed: Old client version.", name);
+                    loginFailureGameMessage = GameMessage.OldClientVersion;
+                    break;
 
                 default:
                     // If the value is undefined, just say its an invalid name
@@ -437,7 +443,7 @@ namespace DemoGame.Server
         /// <param name="conn">Connection that the login request was made on.</param>
         /// <param name="name">Name of the account.</param>
         /// <param name="password">Entered password for this account.</param>
-        public void LoginAccount(IIPSocket conn, string name, string password)
+        public void LoginAccount(IIPSocket conn, string name, string password, string ClientVersion)
         {
             ThreadAsserts.IsMainThread();
 
@@ -445,6 +451,12 @@ namespace DemoGame.Server
             {
                 if (log.IsErrorEnabled)
                     log.Error("conn is null.");
+                return;
+            }
+
+            if (ClientVersion != ServerSettings.MinimumClientVersion)
+            {
+                HandleFailedLogin(conn, AccountLoginResult.OldClient, name);
                 return;
             }
 

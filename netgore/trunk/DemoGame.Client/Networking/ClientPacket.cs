@@ -119,11 +119,13 @@ namespace DemoGame.Client
         }
 #endif
 
-        public static PacketWriter Login(string name, string password)
+        public static PacketWriter Login(string name, string password, System.Version version)
         {
+            
             var pw = GetWriter(ClientPacketID.Login);
             pw.Write(name);
             pw.Write(password);
+            pw.Write(version.ToString());
             return pw;
         }
 

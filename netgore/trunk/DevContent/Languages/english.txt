@@ -23,6 +23,7 @@ CommandTellOfflineUser: "User $0 is currently offline."
 LoginInvalidName: "Account with the given name does not exist."
 LoginInvalidPassword: "Incorrect password."
 LoginAccountInUse: "Account is already in use."
+OldClientVersion: "You must update your client to the latest version."
 
 ShopInsufficientFundsToPurchaseSingular: "You do not have enough money to purchase a $0."
 ShopInsufficientFundsToPurchasePlural: "You do not have enough money to purchase $0 $1s."

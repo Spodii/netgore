@@ -73,6 +73,8 @@ namespace DemoGame
         /// </summary>
         LoginAccountInUse,
 
+        OldClientVersion,
+
         #region Shops
 
         /// <summary>
