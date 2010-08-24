@@ -21,6 +21,13 @@ namespace NetGore.Tests.NetGore
 
 
         [Test]
+        public void SpacingTest()
+        {
+            Assert.AreEqual(TimeSpan.FromDays(10) + TimeSpan.FromHours(5) + TimeSpan.FromSeconds(3), DurationParser.Parse("3s 5h 10days"));
+            Assert.AreEqual(TimeSpan.FromDays(10) + TimeSpan.FromHours(5) + TimeSpan.FromSeconds(3), DurationParser.Parse("3s 5 hr 10   days  "));
+        }
+
+        [Test]
         public void OutOfRangeTest()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => DurationParser.Parse("1000000years"));
