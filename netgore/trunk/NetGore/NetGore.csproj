@@ -159,6 +159,7 @@
     <Compile Include="Collections\TimeExpirationQueue.cs" />
     <Compile Include="Core\Direction.cs" />
     <Compile Include="Core\DirectionHelper.cs" />
+    <Compile Include="Core\DurationParser.cs" />
     <Compile Include="Core\EngineSettings.cs" />
     <Compile Include="Core\Enum\EnumFieldAttributeManager.cs" />
     <Compile Include="Core\Exceptions\DuplicateKeyException.cs" />
