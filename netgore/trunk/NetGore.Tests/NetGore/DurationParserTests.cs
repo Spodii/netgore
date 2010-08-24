@@ -97,9 +97,21 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
+        public void NegativeMixTest1()
+        {
+            Assert.AreEqual(TimeSpan.FromDays(10) + TimeSpan.FromHours(5) + TimeSpan.FromSeconds(-3), DurationParser.Parse("10d5h-3s"));
+        }
+
+        [Test]
         public void MixTest2()
         {
             Assert.AreEqual(TimeSpan.FromDays(10) + TimeSpan.FromHours(5) + TimeSpan.FromSeconds(3), DurationParser.Parse("3s5h10days"));
+        }
+
+        [Test]
+        public void NegativeMixTest2()
+        {
+            Assert.AreEqual(TimeSpan.FromDays(-10) + TimeSpan.FromHours(5) + TimeSpan.FromSeconds(3), DurationParser.Parse("3s5h-10days"));
         }
 
         [Test]
@@ -109,7 +121,13 @@ namespace NetGore.Tests.NetGore
         }
 
         [Test]
-        public void MixTest5()
+        public void NegativeMixTest3()
+        {
+            Assert.AreEqual(TimeSpan.FromMinutes(-10) + TimeSpan.FromSeconds(3), DurationParser.Parse("-10m3s"));
+        }
+
+        [Test]
+        public void MixTest4()
         {
             Assert.AreEqual(TimeSpan.FromMinutes(59) + TimeSpan.FromSeconds(60), DurationParser.Parse("1hr"));
         }
