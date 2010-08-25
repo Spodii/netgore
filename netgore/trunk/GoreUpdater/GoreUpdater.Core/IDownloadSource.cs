@@ -9,6 +9,12 @@ namespace GoreUpdater.Core
         /// Notifies listeners when this <see cref="IDownloadSource"/> has finished downloading a file.
         /// </summary>
         event DownloadSourceFileEventHandler DownloadFinished;
+        
+        /// <summary>
+        /// Notifies listeners when this <see cref="IDownloadSource"/> has failed to download a file, such as because
+        /// the file did not exist on the source.
+        /// </summary>
+        event DownloadSourceFileFailedEventHandler DownloadFailed;
 
         /// <summary>
         /// Gets if this <see cref="IDownloadSource"/> has been disposed.

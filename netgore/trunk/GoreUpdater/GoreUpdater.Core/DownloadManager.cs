@@ -118,9 +118,8 @@ namespace GoreUpdater.Core
                 {
                     foreach (var ds in _downloadSources)
                     {
-                        if (ds.CanDownload)
+                        if (ds.Download(workItem, TargetPath + workItem))
                         {
-                            ds.Download(workItem, TargetPath + workItem);
                             added = true;
                             break;
                         }
