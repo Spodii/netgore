@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="DownloadManager\DownloadManager.cs" />
     <Compile Include="DownloadManager\DownloadManagerDownloadFailedEventHandler.cs" />
+    <Compile Include="DownloadManager\DownloadManagerEventHandler.cs" />
     <Compile Include="DownloadSource\DownloadSourceFileFailedEventHandler.cs" />
     <Compile Include="DownloadSource\HttpDownloadSource.cs" />
     <Compile Include="DownloadSource\IDownloadSource.cs" />
