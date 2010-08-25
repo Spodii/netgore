@@ -20,6 +20,11 @@ namespace GoreUpdater.Core
         const int _workerThreadSourcesBusyTimeout = 500;
 
         /// <summary>
+        /// A synchronization object for performing operations on the file system (creating directories, moving files, etc).
+        /// </summary>
+        static readonly object _fileSystemSync = new object();
+
+        /// <summary>
         /// A counter for counting what <see cref="DownloadManager"/> instance number this is. Mostly just used for when
         /// naming the worker threads.
         /// </summary>
@@ -116,6 +121,17 @@ namespace GoreUpdater.Core
 
                 var downloadTo = GetTempPath(workItem);
 
+                // Ensure the target directory exists
+                lock (_fileSystemSync)
+                {
+                    var dir = Path.GetDirectoryName(downloadTo);
+                    if (dir != null)
+                    {
+                        if (!Directory.Exists(dir))
+                            Directory.CreateDirectory(dir);
+                    }
+                }
+
                 // Push the work item in to the next free IDownloadSource
                 var added = false;
                 lock (_downloadSourcesSync)
@@ -175,7 +191,7 @@ namespace GoreUpdater.Core
         /// <returns>The target path for the <paramref name="remoteFile"/>.</returns>
         protected string GetTargetPath(string remoteFile)
         {
-            return Path.Combine(TargetPath, remoteFile);
+            return PathHelper.CombineDifferentPaths(TargetPath, remoteFile);
         }
 
         /// <summary>
@@ -186,7 +202,7 @@ namespace GoreUpdater.Core
         /// <returns>The temporary path for the <paramref name="remoteFile"/>.</returns>
         protected string GetTempPath(string remoteFile)
         {
-            return Path.Combine(TempPath, remoteFile);
+            return PathHelper.CombineDifferentPaths(TempPath, remoteFile);
         }
 
         void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
@@ -212,10 +228,27 @@ namespace GoreUpdater.Core
             var tempPath = GetTempPath(remoteFile);
             var targetPath = GetTargetPath(remoteFile);
 
+            // Ensure the target path exists
+            lock (_fileSystemSync)
+            {
+                var dir = Path.GetDirectoryName(targetPath);
+                if (dir != null)
+                {
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
+                }
+            }
+
             // Try to move the file
             try
             {
-                File.Move(tempPath, targetPath);
+                lock (_fileSystemSync)
+                {
+                    if (File.Exists(targetPath))
+                        File.Delete(targetPath);
+
+                    File.Move(tempPath, targetPath);
+                }
             }
             catch (Exception ex)
             {
@@ -366,6 +399,18 @@ namespace GoreUpdater.Core
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Enqueues multiple files for download.
+        /// </summary>
+        /// <param name="files">The files to enqueue for download.</param>
+        public void Enqueue(IEnumerable<string> files)
+        {
+            foreach (var file in files)
+            {
+                Enqueue(file);
+            }
         }
 
         /// <summary>
