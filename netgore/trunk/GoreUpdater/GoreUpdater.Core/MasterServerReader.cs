@@ -465,7 +465,29 @@ namespace GoreUpdater
                             _masterReadInfo.AddMasterServer(desc);
                         }
 
-                        // If any of the added master servers are not in this list
+                        // If any of the added master servers are not in our list, grab from it, too
+                        lock (_sourcesSync)
+                        {
+                            foreach (var desc in descriptors)
+                            {
+                                var d = desc;
+                                if (!_sources.Any(x => x.IsIdenticalTo(d)))
+                                {
+                                    // None of our existing sources match the descriptor, so add it to our list and start
+                                    // grabbing from that new source
+                                    try
+                                    {
+                                        var newSource = desc.Instantiate();
+                                        _sources.Add(newSource);
+                                        ExecuteSource(newSource);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Debug.Fail(ex.ToString());
+                                    }
+                                }
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
