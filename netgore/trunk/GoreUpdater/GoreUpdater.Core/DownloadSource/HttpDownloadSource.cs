@@ -133,22 +133,6 @@ namespace GoreUpdater
         public event DownloadSourceFileEventHandler DownloadFinished;
 
         /// <summary>
-        /// Checks if this <see cref="IDownloadSource"/> contains the same values as the given <see cref="DownloadSourceDescriptor"/>.
-        /// </summary>
-        /// <param name="descriptor">The <see cref="DownloadSourceDescriptor"/> to compare to.</param>
-        /// <returns>True if they have equal values; otherwise false.</returns>
-        public bool IsIdenticalTo(DownloadSourceDescriptor descriptor)
-        {
-            if (descriptor.Type != DownloadSourceType.Http)
-                return false;
-
-            if (descriptor.RootPath != RootPath)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
         /// Gets if this <see cref="IDownloadSource"/> can start a download.
         /// </summary>
         public bool CanDownload
@@ -182,7 +166,7 @@ namespace GoreUpdater
         /// <returns>True if the download was successfully started; otherwise false.</returns>
         public bool Download(string remoteFile, string localFilePath, int? version)
         {
-            string uriPath = RootPath;
+            var uriPath = RootPath;
 
             // Add the version directory if needed
             if (version.HasValue)
@@ -213,12 +197,28 @@ namespace GoreUpdater
             return true;
         }
 
+        /// <summary>
+        /// Checks if this <see cref="IDownloadSource"/> contains the same values as the given <see cref="DownloadSourceDescriptor"/>.
+        /// </summary>
+        /// <param name="descriptor">The <see cref="DownloadSourceDescriptor"/> to compare to.</param>
+        /// <returns>True if they have equal values; otherwise false.</returns>
+        public bool IsIdenticalTo(DownloadSourceDescriptor descriptor)
+        {
+            if (descriptor.Type != DownloadSourceType.Http)
+                return false;
+
+            if (descriptor.RootPath != RootPath)
+                return false;
+
+            return true;
+        }
+
         #endregion
 
         class AsyncDownloadInfo
         {
-            readonly string _remoteFile;
             readonly string _localFilePath;
+            readonly string _remoteFile;
 
             public AsyncDownloadInfo(string remoteFile, string localFilePath)
             {
@@ -226,14 +226,14 @@ namespace GoreUpdater
                 _localFilePath = localFilePath;
             }
 
-            public string RemoteFile
-            {
-                get { return _remoteFile; }
-            }
-
             public string LocalFilePath
             {
                 get { return _localFilePath; }
+            }
+
+            public string RemoteFile
+            {
+                get { return _remoteFile; }
             }
         }
     }

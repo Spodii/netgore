@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater
+﻿using System.Linq;
+
+namespace GoreUpdater
 {
     /// <summary>
     /// Delegate for handling reading the information from the master servers.

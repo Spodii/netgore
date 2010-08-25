@@ -11,37 +11,6 @@ namespace GoreUpdater
     public static class PathHelper
     {
         /// <summary>
-        /// Safely deletes a temporary file.
-        /// </summary>
-        /// <param name="filePath">The temporary file path.</param>
-        public static void SafeDeleteTempFile(string filePath)
-        {
-            // Try up to 10 times to delete the file. After that, screw it.
-            for (int i = 0; i < 10; i++)
-            {
-                try
-                {
-                    // Make sure the file exists
-                    if (!File.Exists(filePath))
-                        break;
-
-                    // Try to delete
-                    File.Delete(filePath);
-
-                    // Break early if deletion successful
-                    break;
-                }
-                catch (IOException ex)
-                {
-                    Debug.Fail(ex.ToString());
-
-                    // Give a small timout before trying to delete again
-                    Thread.Sleep(25);
-                }
-            }
-        }
-
-        /// <summary>
         /// The minimum version string length. Versions with less digits than this value will be prefixed with 0's.
         /// </summary>
         public const int MinVersionStringLength = 6;
@@ -51,21 +20,6 @@ namespace GoreUpdater
         /// </summary>
         static readonly string[] _pathSeps = new string[]
         { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
-
-        /// <summary>
-        /// Gets the string to use for a version number.
-        /// </summary>
-        /// <param name="version">The version number.</param>
-        /// <returns>The string to use for the version number.</returns>
-        public static string GetVersionString(int version)
-        {
-            var vstr = version.ToString();
-            int prefixLen = MinVersionStringLength - vstr.Length;
-            if (prefixLen > 0)
-                vstr = new string('0', prefixLen) + vstr;
-
-            return vstr;
-        }
 
         /// <summary>
         /// Combines two paths and forces them to be in different directories. That is, the second path will always
@@ -137,6 +91,52 @@ namespace GoreUpdater
             }
 
             return ForceEndWithChar(path, endingChar.ToString(), r);
+        }
+
+        /// <summary>
+        /// Gets the string to use for a version number.
+        /// </summary>
+        /// <param name="version">The version number.</param>
+        /// <returns>The string to use for the version number.</returns>
+        public static string GetVersionString(int version)
+        {
+            var vstr = version.ToString();
+            var prefixLen = MinVersionStringLength - vstr.Length;
+            if (prefixLen > 0)
+                vstr = new string('0', prefixLen) + vstr;
+
+            return vstr;
+        }
+
+        /// <summary>
+        /// Safely deletes a temporary file.
+        /// </summary>
+        /// <param name="filePath">The temporary file path.</param>
+        public static void SafeDeleteTempFile(string filePath)
+        {
+            // Try up to 10 times to delete the file. After that, screw it.
+            for (var i = 0; i < 10; i++)
+            {
+                try
+                {
+                    // Make sure the file exists
+                    if (!File.Exists(filePath))
+                        break;
+
+                    // Try to delete
+                    File.Delete(filePath);
+
+                    // Break early if deletion successful
+                    break;
+                }
+                catch (IOException ex)
+                {
+                    Debug.Fail(ex.ToString());
+
+                    // Give a small timout before trying to delete again
+                    Thread.Sleep(25);
+                }
+            }
         }
     }
 }

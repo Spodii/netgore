@@ -47,8 +47,10 @@ namespace GoreUpdater
         {
             base.OnLoad(e);
 
-            var sourceListPath = PathHelper.CombineDifferentPaths(Application.StartupPath, MasterServerReader.CurrentDownloadSourcesFilePath);
-            var masterListPath = PathHelper.CombineDifferentPaths(Application.StartupPath, MasterServerReader.CurrentMasterServersFilePath);
+            var sourceListPath = PathHelper.CombineDifferentPaths(Application.StartupPath,
+                                                                  MasterServerReader.CurrentDownloadSourcesFilePath);
+            var masterListPath = PathHelper.CombineDifferentPaths(Application.StartupPath,
+                                                                  MasterServerReader.CurrentMasterServersFilePath);
             _msr = new MasterServerReader(sourceListPath, masterListPath);
 
             LogLine("Reading from master servers...");
