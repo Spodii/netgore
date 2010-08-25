@@ -34,7 +34,6 @@ namespace GoreUpdater.Core
         readonly Queue<string> _notStartedQueue = new Queue<string>();
         readonly object _notStartedQueueSync = new object();
         readonly string _targetPath;
-
         readonly string _tempPath;
         readonly List<Thread> _workerThreads = new List<Thread>();
 
