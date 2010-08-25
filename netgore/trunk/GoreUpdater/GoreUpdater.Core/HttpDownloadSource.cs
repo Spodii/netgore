@@ -11,6 +11,7 @@ namespace GoreUpdater.Core
         readonly string _rootPath;
         readonly Stack<WebClient> _webClients = new Stack<WebClient>();
         readonly object _webClientsSync = new object();
+
         bool _isDisposed = false;
 
         /// <summary>

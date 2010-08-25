@@ -41,13 +41,33 @@ namespace GoreUpdater.Core
         readonly string _targetPath;
         readonly string _tempPath;
         readonly List<Thread> _workerThreads = new List<Thread>();
+        readonly object _downloadFailedDictSync = new object();
+        readonly Dictionary<string, List<IDownloadSource>> _downloadFailedDict = new Dictionary<string, List<IDownloadSource>>(StringComparer.Ordinal);
+        readonly Dictionary<string, int> _downloadFailedDictCount = new Dictionary<string, int>(StringComparer.Ordinal);
+        readonly object _failedDownloadsSync = new object();
+        readonly List<string> _failedDownloads = new List<string>();
+        readonly byte _attemptsPerSource;
 
+        int _maxAttempts = 2;
         bool _isDisposed = false;
 
-        public DownloadManager(string targetPath, string tempPath)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DownloadManager"/> class.
+        /// </summary>
+        /// <param name="targetPath">The path that downloaded files will ultimately end up in.</param>
+        /// <param name="tempPath">The path to store temporary download files until they finish.</param>
+        /// <param name="attemptsPerSource">The number of times we will attempt each source before giving up completely on
+        /// a file. While this value is quite high (3) by default, this is due to the fact that failing to download a file
+        /// completely can be hard to recover from. If less than 1, this value will be set to 1.</param>
+        public DownloadManager(string targetPath, string tempPath, byte attemptsPerSource = (byte)3)
         {
+            if (attemptsPerSource < 1)
+                attemptsPerSource = 1;
+
             _targetPath = targetPath;
             _tempPath = tempPath;
+
+            _attemptsPerSource = attemptsPerSource;
 
             var id = Interlocked.Increment(ref _downloadManagerCount);
 
@@ -205,13 +225,111 @@ namespace GoreUpdater.Core
             return PathHelper.CombineDifferentPaths(TempPath, remoteFile);
         }
 
+        /// <summary>
+        /// Removes the <paramref name="remoteFile"/> from the download failure dictionaries.
+        /// </summary>
+        /// <param name="remoteFile">The remote file.</param>
+        /// <param name="getLock">If true, a lock will be aquired. Set to false when calling this from inside a
+        /// <see cref="_downloadFailedDictSync"/> lock.</param>
+        void RemoveFromFailedDicts(string remoteFile, bool getLock)
+        {
+            if (getLock)
+            {
+                lock (_downloadFailedDictSync)
+                {
+                    _downloadFailedDict.Remove(remoteFile);
+                    _downloadFailedDictCount.Remove(remoteFile);
+                }
+            }
+            else
+            {
+                _downloadFailedDict.Remove(remoteFile);
+                _downloadFailedDictCount.Remove(remoteFile);
+            }
+        }
+
         void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
         {
-            // TODO: Handle failed downloads
+            lock (_downloadFailedDictSync)
+            {
+                // Increment the fail count for this file
+                int fails;
+                if (!_downloadFailedDictCount.TryGetValue(remoteFile, out fails))
+                {
+                    fails = 1;
+                    _downloadFailedDictCount.Add(remoteFile, fails);
+                }
+                else
+                {
+                    _downloadFailedDictCount[remoteFile]++;
+                }
+
+                // Check if the failure has happened too many times that we will just give up
+                if (fails > MaxAttempts)
+                {
+                    RemoveFromFailedDicts(remoteFile, false);
+
+                    lock (_downloadQueueSync)
+                    {
+                        bool removed = _downloadQueue.Remove(remoteFile);
+                        Debug.Assert(removed);
+                    }
+
+                    lock (_failedDownloadsSync)
+                    {
+                        if (!_failedDownloads.Contains(remoteFile))
+                            _failedDownloads.Add(remoteFile);
+                    }
+
+                    if (DownloadFailed != null)
+                        DownloadFailed(this, remoteFile);
+
+                    return;
+                }
+
+                // Add the downloader that just failed to the list of failed sources
+                List<IDownloadSource> failedSources;
+                if (!_downloadFailedDict.TryGetValue(remoteFile, out failedSources))
+                {
+                    failedSources = new List<IDownloadSource>();
+                    _downloadFailedDict.Add(remoteFile, failedSources);
+                }
+
+                failedSources.Add(sender);
+
+                // If every source we have has failed, empty the list so they can all try again. This forces
+                // failed files to rotate through all sources before trying the same one again.
+                bool containsAllSources = true;
+                lock (_downloadSourcesSync)
+                {
+                    foreach (var src in _downloadSources)
+                    {
+                        if (!failedSources.Contains(src))
+                        {
+                            containsAllSources = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (containsAllSources)
+                {
+                    failedSources.Clear();
+                }
+            }
         }
 
         void downloadSource_DownloadFinished(IDownloadSource sender, string remoteFile)
         {
+            // Remove from the failed dictionaries
+            RemoveFromFailedDicts(remoteFile, true);
+
+            // Remove from failed list
+            lock (_failedDownloadsSync)
+            {
+                _failedDownloads.Remove(remoteFile);
+            }
+
             // Remove from the download queue
             lock (_downloadQueueSync)
             {
@@ -273,6 +391,54 @@ namespace GoreUpdater.Core
         /// the file is in use and cannot be deleted.
         /// </summary>
         public event DownloadManagerFileMoveFailedEventHandler FileMoveFailed;
+
+        /// <summary>
+        /// Notifies listeners when a file completely failed to be downloaded after <see cref="IDownloadManager.MaxAttempts"/>
+        /// attempts.
+        /// </summary>
+        public event DownloadManagerDownloadFailedEventHandler DownloadFailed;
+
+        /// <summary>
+        /// Updates the <see cref="_maxAttempts"/> value. The <see cref="_downloadSourcesSync"/> needs to be acquired.
+        /// </summary>
+        void UpdateMaxAttempts()
+        {
+            int n = _downloadSources.Count * _attemptsPerSource;
+            if (n < 3)
+                 n = 3;
+
+            if (n > 255)
+                n = 255;
+
+            _maxAttempts = (byte)n;
+        }
+
+        /// <summary>
+        /// Gets the files that failed to be downloaded. These files will not be re-attempted automatically since they had already
+        /// passed the <see cref="IDownloadManager.MaxAttempts"/> limit.
+        /// </summary>
+        /// <returns>The files that failed to be downloaded</returns>
+        public IEnumerable<string> GetFailedDownloads()
+        {
+            lock (_failedDownloadsSync)
+            {
+                return _failedDownloads.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of items in the list of files that failed to be downloaded.
+        /// </summary>
+        public int FailedDownloadsCount
+        {
+            get
+            {
+                lock (_failedDownloadsSync)
+                {
+                    return _failedDownloads.Count;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the available file download sources.
@@ -352,6 +518,8 @@ namespace GoreUpdater.Core
                 downloadSource.DownloadFailed += downloadSource_DownloadFailed;
 
                 _downloadSources.Add(downloadSource);
+
+                UpdateMaxAttempts();
             }
 
             return true;
@@ -369,6 +537,17 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
+        /// Clears the failed downloads information.
+        /// </summary>
+        public void ClearFailed()
+        {
+            lock (_failedDownloadsSync)
+            {
+                _failedDownloads.Clear();
+            }
+        }
+
+        /// <summary>
         /// Enqueues a file for download.
         /// </summary>
         /// <param name="file">The path of the file to download.</param>
@@ -381,6 +560,7 @@ namespace GoreUpdater.Core
 
             lock (_downloadQueueSync)
             {
+                // Check if the file is already waiting to be downloaded, or has already been downloaded
                 lock (_finishedDownloadsSync)
                 {
                     if (_downloadQueue.Contains(file))
@@ -390,8 +570,18 @@ namespace GoreUpdater.Core
                         return false;
                 }
 
+                // Remove any information about this file failing, since adding a failed file is just like restarting it
+                lock (_failedDownloadsSync)
+                {
+                    _failedDownloads.Remove(file);
+                }
+
+                RemoveFromFailedDicts(file, true);
+
+                // Add to the download queue
                 _downloadQueue.Add(file);
 
+                // Add to the not started queue
                 lock (_notStartedQueueSync)
                 {
                     _notStartedQueue.Enqueue(file);
@@ -452,12 +642,23 @@ namespace GoreUpdater.Core
             {
                 if (!_downloadSources.Remove(downloadSource))
                     return false;
+
+                UpdateMaxAttempts();
             }
 
             downloadSource.DownloadFinished -= downloadSource_DownloadFinished;
             downloadSource.DownloadFailed -= downloadSource_DownloadFailed;
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets the maximum times a single file will attempt to download. If a download failes more than this many times, it will
+        /// be aborted and the <see cref="IDownloadManager.DownloadFailed"/> event will be raised.
+        /// </summary>
+        public int MaxAttempts
+        {
+            get { return _maxAttempts; }
         }
 
         #endregion
