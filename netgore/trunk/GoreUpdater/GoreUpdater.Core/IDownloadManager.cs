@@ -64,6 +64,12 @@ namespace GoreUpdater.Core
         bool Enqueue(string file);
 
         /// <summary>
+        /// Enqueues multiple files for download.
+        /// </summary>
+        /// <param name="files">The files to enqueue for download.</param>
+        void Enqueue(IEnumerable<string> files);
+
+        /// <summary>
         /// Gets the current collection of finished downloads.
         /// </summary>
         /// <returns>The current collection of finished downloads.</returns>
