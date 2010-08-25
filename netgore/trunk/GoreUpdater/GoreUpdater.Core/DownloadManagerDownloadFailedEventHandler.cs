@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater.Core
+﻿using System.Linq;
+
+namespace GoreUpdater.Core
 {
     /// <summary>
     /// Delegate for handling a file download failure event from the <see cref="IDownloadManager"/>.
