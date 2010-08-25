@@ -2,58 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net;
 
 namespace GoreUpdater.Core
 {
-    public static class PathHelper
-    {
-        static readonly string[] _pathSeps = new string[] { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
-
-        public static string CombineDifferentPaths(string l, string r)
-        {
-            if (_pathSeps.Any(l.EndsWith))
-            {
-                if (_pathSeps.Any(r.StartsWith))
-                {
-                    return l + r.Substring(1);
-                }
-                else
-                {
-                    return l + r;
-                }
-            }
-            else
-            {
-                if (_pathSeps.Any(r.StartsWith))
-                {
-                    return l + r;
-                }
-                else
-                {
-                    return l + Path.DirectorySeparatorChar + r;
-                }
-            }
-        }
-
-        public static string ForceEndWithChar(string path, string endingChar, params string[] removeChars)
-        {
-            if (removeChars != null)
-            {
-                while (removeChars.Any(path.EndsWith))
-                {
-                    path = path.Substring(0, path.Length - 1);
-                }
-            }
-
-            if (!path.EndsWith(endingChar))
-                path += endingChar;
-
-            return path;
-        }
-    }
-
     public class HttpDownloadSource : IDownloadSource
     {
         readonly string _rootPath;
@@ -67,8 +19,9 @@ namespace GoreUpdater.Core
         /// <param name="rootPath">The root path to the HTTP server.</param>
         public HttpDownloadSource(string rootPath)
         {
-            _rootPath = PathHelper.ForceEndWithChar(rootPath, "/", Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString());
+            _rootPath = PathHelper.ForceEndWithChar(rootPath, '/', Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
+            // Create the web clients that we will be using for the downloading
             var numWebClients = GetNumWebClients();
 
             lock (_webClientsSync)
