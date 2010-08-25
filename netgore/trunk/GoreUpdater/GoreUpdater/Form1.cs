@@ -40,7 +40,7 @@ namespace GoreUpdater
             var sources = info.DownloadSources.Select(x => x.Instantiate());
             _dm.AddSources(sources);
 
-            _dm.Enqueue(new string[] { "11.bmp", "12.bmp", "13.bmp" });
+            _dm.Enqueue(new string[] { "11.png", "12.png", "13.png" });
         }
 
         protected override void OnLoad(EventArgs e)
