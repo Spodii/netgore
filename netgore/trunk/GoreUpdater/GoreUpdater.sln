@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoreUpdater", "GoreUpdater\GoreUpdater.csproj", "{4181B979-6EA5-4A0B-9215-0717A7617BD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoreUpdater.Client", "GoreUpdater.Client\GoreUpdater.Client.csproj", "{4181B979-6EA5-4A0B-9215-0717A7617BD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoreUpdater.Core", "GoreUpdater.Core\GoreUpdater.Core.csproj", "{9AED7C14-A737-4D19-A64B-69B401691862}"
 EndProject
