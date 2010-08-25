@@ -30,5 +30,15 @@ namespace GoreUpdater
         /// </summary>
         /// <returns>All of the queued jobs and their corresponding destination.</returns>
         IEnumerable<KeyValuePair<string, string>> GetJobs();
+
+        /// <summary>
+        /// Gets the number of jobs in this <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        int JobCount { get; }
+
+        /// <summary>
+        /// Gets the path to the output file for this <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        string FilePath { get; }
     }
 }

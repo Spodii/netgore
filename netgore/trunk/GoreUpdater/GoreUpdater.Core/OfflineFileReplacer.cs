@@ -35,6 +35,17 @@ namespace GoreUpdater
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
             }
+
+            // Delete the output file if it already exists
+            try
+            {
+                if (File.Exists(outputFilePath))
+                    File.Delete(outputFilePath);
+            }
+            catch (IOException ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         #region Implementation of IOfflineFileReplacer
@@ -78,21 +89,24 @@ namespace GoreUpdater
 
             // Require that the batch file first waits for this process to finish
             var currProc = Process.GetCurrentProcess();
-            sb.AppendLine(string.Format("tasklist /FI \"PID eq {0}\"", currProc.Id));
+            sb.AppendLine(string.Format("TASKLIST /FI \"PID eq {0}\"", currProc.Id));
 
             // Add a wait for 2 seconds, accomplished by abusing the ping command to ping localhost twice
-            sb.AppendLine("ping -n 2 127.0.0.1 > nul");
+            sb.AppendLine("PING -n 2 127.0.0.1 > nul");
 
             // Add the individual move jobs
             foreach (var job in _jobs)
             {
-                var s = string.Format("move \"{0}\" \"{1}\"", job.Key, job.Value);
+                var s = string.Format("MOVE \"{0}\" \"{1}\"", job.Key, job.Value);
                 sb.AppendLine(s);
             }
 
             // Add a call to re-load the program
             if (!string.IsNullOrEmpty(_appPath))
                 sb.AppendLine(string.Format("START \"{0}\"", _appPath));
+
+            // Finally, add a call for the batch file to delete itself
+            sb.AppendLine(string.Format("DEL \"{0}\"", FilePath));
 
             return sb.ToString();
         }
@@ -161,6 +175,28 @@ namespace GoreUpdater
             {
                 return _jobs.ToArray();
             }
+        }
+
+        /// <summary>
+        /// Gets the number of jobs in this <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        public int JobCount
+        {
+            get
+            {
+                lock (_jobsSync)
+                {
+                    return _jobs.Count;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the path to the output file for this <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        public string FilePath
+        {
+            get { return _outputFilePath; }
         }
 
         #endregion
