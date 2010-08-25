@@ -307,8 +307,9 @@ namespace GoreUpdater
             /// <summary>
             /// Executes the downloader and waits until all master servers finish to return the <see cref="IMasterServerReadInfo"/>.
             /// </summary>
+            /// <param name="timeout">How many milliseconds to wait before giving up.</param>
             /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
-            public void Execute()
+            public void Execute(int timeout = 10000)
             {
                 if (IsDisposed)
                     throw new ObjectDisposedException("this");
@@ -322,12 +323,16 @@ namespace GoreUpdater
                     }
                 }
 
-                // TODO: Timeout support
+                int startTime = Environment.TickCount;
 
                 // Wait until all sources finish
                 while (!CheckIfComplete())
                 {
-                    Thread.Sleep(500);
+                    Thread.Sleep(150);
+
+                    // Check if its time to timeout
+                    if (Environment.TickCount - startTime > timeout)
+                        break;
                 }
             }
 
