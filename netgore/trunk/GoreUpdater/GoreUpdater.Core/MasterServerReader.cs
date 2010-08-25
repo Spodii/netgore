@@ -55,11 +55,19 @@ namespace GoreUpdater
         /// from the method call.</param>
         public void BeginRead(MasterServerReaderReadCallback callback, object userState)
         {
-            // Create the master server readers from the file
-            var descriptors = DownloadSourceDescriptor.FromDescriptorFile(LocalMasterServerListPath);
-
             // Create the worker
-            // TODO:
+            Thread t = new Thread(ReadThreadWorker) { IsBackground = true };
+
+            try
+            {
+                t.Name = "MasterServerReader read thread.";
+            }
+            catch (InvalidOperationException)
+            {
+            }
+
+            // Start it
+            t.Start(new ThreadWorkerArgs(callback, userState));
         }
 
         static readonly object _ioSync = new object();
@@ -160,14 +168,44 @@ namespace GoreUpdater
             }
         }
 
+        class ThreadWorkerArgs
+        {
+            readonly MasterServerReaderReadCallback _callback;
+            readonly object _userState;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ThreadWorkerArgs"/> class.
+            /// </summary>
+            /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
+            /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
+            /// from the method call.</param>
+            public ThreadWorkerArgs(MasterServerReaderReadCallback callback, object userState)
+            {
+                _callback = callback;
+                _userState = userState;
+            }
+
+            /// <summary>
+            /// Gets the callback delegate.
+            /// </summary>
+            public MasterServerReaderReadCallback Callback { get { return _callback; } }
+
+            /// <summary>
+            /// Gets the user state object.
+            /// </summary>
+            public object UserState { get { return _userState; } }
+        }
+
         /// <summary>
         /// The worker method for the reader threads.
         /// </summary>
-        /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
-        /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
-        /// from the method call.</param>
-        void ReadThreadWorker(MasterServerReaderReadCallback callback, object userState)
+        /// <param name="o">The arguments.</param>
+        void ReadThreadWorker(object o)
         {
+            var stateObj = (ThreadWorkerArgs)o;
+            var callback = stateObj.Callback;
+            var userState = stateObj.UserState;
+
             MasterServerReadInfo info = new MasterServerReadInfo();
 
             // Create the master server readers from the file
