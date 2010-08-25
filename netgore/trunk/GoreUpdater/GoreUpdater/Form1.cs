@@ -8,15 +8,22 @@ namespace GoreUpdater
     {
         DownloadManager _dm;
         BatchOfflineFileReplacer _fileRep;
+        MasterServerReader _msr;
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        protected override void OnLoad(EventArgs e)
+        void LogLine(string s)
         {
-            base.OnLoad(e);
+            textBox1.Invoke((Action)(() => textBox1.AppendText(s + Environment.NewLine)));
+        }
+
+        void MSRCallback(IMasterServerReader sender, IMasterServerReadInfo info, object userState)
+        {
+            LogLine("Done reading from master servers.");
+            LogLine(" * Latest version: " + info.Version);
 
             var tempPath = PathHelper.CombineDifferentPaths(Application.StartupPath, "_temp");
             var targetPath = PathHelper.CombineDifferentPaths(Application.StartupPath, "Downloaded");
@@ -30,35 +37,49 @@ namespace GoreUpdater
             _dm.DownloadFailed += _dm_DownloadFailed;
             _dm.Finished += _dm_Finished;
 
-            _dm.AddSource(new HttpDownloadSource("http://www.netgore.com/docs"));
+            var sources = info.DownloadSources.Select(x => x.Instantiate());
+            _dm.AddSources(sources);
 
             _dm.Enqueue(new string[] { "tab_a.png", "tab_b.png", "tab_h.png", "tabs.css" });
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            var sourceListPath = PathHelper.CombineDifferentPaths(Application.StartupPath, "current.sourcelist");
+            var masterListPath = PathHelper.CombineDifferentPaths(Application.StartupPath, "current.masterlist");
+            _msr = new MasterServerReader(sourceListPath, masterListPath);
+
+            LogLine("Reading from master servers...");
+
+            _msr.BeginRead(MSRCallback, null);
+        }
+
         void _dm_DownloadFailed(IDownloadManager sender, string remoteFile)
         {
-            textBox1.Invoke((Action)(() => textBox1.AppendText("FAIL (DOWNLOAD): " + remoteFile + Environment.NewLine)));
+            LogLine("FAIL (DOWNLOAD): " + remoteFile);
 
             if (_dm.QueueCount == 0)
-                textBox1.Invoke((Action)(() => textBox1.AppendText(" === ALL DONE ===" + Environment.NewLine)));
+                LogLine(" === ALL DONE ===");
         }
 
         void _dm_DownloadFinished(IDownloadManager sender, string remoteFile, string localFilePath)
         {
-            textBox1.Invoke((Action)(() => textBox1.AppendText("DONE: " + remoteFile + Environment.NewLine)));
+            LogLine("DONE: " + remoteFile);
 
             if (_dm.QueueCount == 0)
-                textBox1.Invoke((Action)(() => textBox1.AppendText(" === ALL DONE ===" + Environment.NewLine)));
+                LogLine(" === ALL DONE ===");
         }
 
         void _dm_FileMoveFailed(IDownloadManager sender, string remoteFile, string localFilePath, string targetFilePath)
         {
             _fileRep.AddJob(localFilePath, targetFilePath);
 
-            textBox1.Invoke((Action)(() => textBox1.AppendText("FAIL (MOVE): " + remoteFile + Environment.NewLine)));
+            LogLine("FAIL (MOVE): " + remoteFile);
 
             if (_dm.QueueCount == 0)
-                textBox1.Invoke((Action)(() => textBox1.AppendText(" === ALL DONE ===" + Environment.NewLine)));
+                LogLine(" === ALL DONE ===");
         }
 
         void _dm_Finished(IDownloadManager sender)
