@@ -43,13 +43,16 @@
     <Compile Include="DownloadManager\DownloadManager.cs" />
     <Compile Include="DownloadManager\DownloadManagerDownloadFailedEventHandler.cs" />
     <Compile Include="DownloadManager\DownloadManagerEventHandler.cs" />
+    <Compile Include="DownloadSource\DownloadSourceDescriptor.cs" />
     <Compile Include="DownloadSource\DownloadSourceFileFailedEventHandler.cs" />
+    <Compile Include="DownloadSource\DownloadSourceType.cs" />
     <Compile Include="DownloadSource\HttpDownloadSource.cs" />
     <Compile Include="DownloadSource\IDownloadSource.cs" />
     <Compile Include="DownloadSource\DownloadSourceFileEventHandler.cs" />
     <Compile Include="DownloadManager\DownloadManagerFileEventHandler.cs" />
     <Compile Include="DownloadManager\DownloadManagerFileMoveFailedEventHandler.cs" />
     <Compile Include="DownloadManager\IDownloadManager.cs" />
+    <Compile Include="MasterServerReader.cs" />
     <Compile Include="OfflineFileReplacer\IOfflineFileReplacer.cs" />
     <Compile Include="OfflineFileReplacer\OfflineFileReplacer.cs" />
     <Compile Include="OfflineFileReplacer\OfflineFileReplacerHelper.cs" />
