@@ -103,7 +103,7 @@ namespace GoreUpdater
 
             // Add a call to re-load the program
             if (!string.IsNullOrEmpty(_appPath))
-                sb.AppendLine(string.Format("START \"{0}\"", _appPath));
+                sb.AppendLine(string.Format("START \"\" \"{0}\"", _appPath));
 
             // Finally, add a call for the batch file to delete itself
             sb.AppendLine(string.Format("DEL \"{0}\"", FilePath));

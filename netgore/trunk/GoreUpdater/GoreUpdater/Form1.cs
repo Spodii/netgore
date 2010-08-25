@@ -29,7 +29,7 @@ namespace GoreUpdater
             _dm.DownloadFinished += _dm_DownloadFinished;
             _dm.FileMoveFailed += _dm_FileMoveFailed;
             _dm.DownloadFailed += _dm_DownloadFailed;
-            _dm.Finished += new DownloadManagerEventHandler(_dm_Finished);
+            _dm.Finished += _dm_Finished;
 
             _dm.AddSource(new HttpDownloadSource("http://www.netgore.com/docs"));
 
