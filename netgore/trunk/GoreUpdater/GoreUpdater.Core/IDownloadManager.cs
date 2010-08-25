@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GoreUpdater.Core
+namespace GoreUpdater
 {
     public interface IDownloadManager : IDisposable
     {

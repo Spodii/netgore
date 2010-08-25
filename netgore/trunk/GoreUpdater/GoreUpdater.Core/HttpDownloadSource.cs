@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace GoreUpdater.Core
+namespace GoreUpdater
 {
     public class HttpDownloadSource : IDownloadSource
     {

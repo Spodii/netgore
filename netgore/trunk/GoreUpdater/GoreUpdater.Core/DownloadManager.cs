@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace GoreUpdater.Core
+namespace GoreUpdater
 {
     public class DownloadManager : IDownloadManager
     {

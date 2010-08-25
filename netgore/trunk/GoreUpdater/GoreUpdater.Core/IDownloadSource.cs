@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace GoreUpdater.Core
+namespace GoreUpdater
 {
     public interface IDownloadSource : IDisposable
     {
