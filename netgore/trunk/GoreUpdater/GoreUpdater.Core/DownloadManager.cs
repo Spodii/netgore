@@ -30,10 +30,20 @@ namespace GoreUpdater.Core
         /// </summary>
         static int _downloadManagerCount = -1;
 
+        readonly byte _attemptsPerSource;
+
+        readonly Dictionary<string, List<IDownloadSource>> _downloadFailedDict =
+            new Dictionary<string, List<IDownloadSource>>(StringComparer.Ordinal);
+
+        readonly Dictionary<string, int> _downloadFailedDictCount = new Dictionary<string, int>(StringComparer.Ordinal);
+        readonly object _downloadFailedDictSync = new object();
+
         readonly List<string> _downloadQueue = new List<string>();
         readonly object _downloadQueueSync = new object();
         readonly List<IDownloadSource> _downloadSources = new List<IDownloadSource>();
         readonly object _downloadSourcesSync = new object();
+        readonly List<string> _failedDownloads = new List<string>();
+        readonly object _failedDownloadsSync = new object();
         readonly List<string> _finishedDownloads = new List<string>();
         readonly object _finishedDownloadsSync = new object();
         readonly Queue<string> _notStartedQueue = new Queue<string>();
@@ -41,15 +51,8 @@ namespace GoreUpdater.Core
         readonly string _targetPath;
         readonly string _tempPath;
         readonly List<Thread> _workerThreads = new List<Thread>();
-        readonly object _downloadFailedDictSync = new object();
-        readonly Dictionary<string, List<IDownloadSource>> _downloadFailedDict = new Dictionary<string, List<IDownloadSource>>(StringComparer.Ordinal);
-        readonly Dictionary<string, int> _downloadFailedDictCount = new Dictionary<string, int>(StringComparer.Ordinal);
-        readonly object _failedDownloadsSync = new object();
-        readonly List<string> _failedDownloads = new List<string>();
-        readonly byte _attemptsPerSource;
-
-        int _maxAttempts = 2;
         bool _isDisposed = false;
+        int _maxAttempts = 2;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DownloadManager"/> class.
@@ -248,6 +251,21 @@ namespace GoreUpdater.Core
             }
         }
 
+        /// <summary>
+        /// Updates the <see cref="_maxAttempts"/> value. The <see cref="_downloadSourcesSync"/> needs to be acquired.
+        /// </summary>
+        void UpdateMaxAttempts()
+        {
+            var n = _downloadSources.Count * _attemptsPerSource;
+            if (n < 3)
+                n = 3;
+
+            if (n > 255)
+                n = 255;
+
+            _maxAttempts = (byte)n;
+        }
+
         void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
         {
             lock (_downloadFailedDictSync)
@@ -260,9 +278,7 @@ namespace GoreUpdater.Core
                     _downloadFailedDictCount.Add(remoteFile, fails);
                 }
                 else
-                {
                     _downloadFailedDictCount[remoteFile]++;
-                }
 
                 // Check if the failure has happened too many times that we will just give up
                 if (fails > MaxAttempts)
@@ -271,7 +287,7 @@ namespace GoreUpdater.Core
 
                     lock (_downloadQueueSync)
                     {
-                        bool removed = _downloadQueue.Remove(remoteFile);
+                        var removed = _downloadQueue.Remove(remoteFile);
                         Debug.Assert(removed);
                     }
 
@@ -299,7 +315,7 @@ namespace GoreUpdater.Core
 
                 // If every source we have has failed, empty the list so they can all try again. This forces
                 // failed files to rotate through all sources before trying the same one again.
-                bool containsAllSources = true;
+                var containsAllSources = true;
                 lock (_downloadSourcesSync)
                 {
                     foreach (var src in _downloadSources)
@@ -313,9 +329,7 @@ namespace GoreUpdater.Core
                 }
 
                 if (containsAllSources)
-                {
                     failedSources.Clear();
-                }
             }
         }
 
@@ -382,6 +396,12 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
+        /// Notifies listeners when a file completely failed to be downloaded after <see cref="IDownloadManager.MaxAttempts"/>
+        /// attempts.
+        /// </summary>
+        public event DownloadManagerDownloadFailedEventHandler DownloadFailed;
+
+        /// <summary>
         /// Notifies listeners when a file download has finished.
         /// </summary>
         public event DownloadManagerFileEventHandler DownloadFinished;
@@ -393,36 +413,16 @@ namespace GoreUpdater.Core
         public event DownloadManagerFileMoveFailedEventHandler FileMoveFailed;
 
         /// <summary>
-        /// Notifies listeners when a file completely failed to be downloaded after <see cref="IDownloadManager.MaxAttempts"/>
-        /// attempts.
+        /// Gets the available file download sources.
         /// </summary>
-        public event DownloadManagerDownloadFailedEventHandler DownloadFailed;
-
-        /// <summary>
-        /// Updates the <see cref="_maxAttempts"/> value. The <see cref="_downloadSourcesSync"/> needs to be acquired.
-        /// </summary>
-        void UpdateMaxAttempts()
+        public IEnumerable<IDownloadSource> DownloadSources
         {
-            int n = _downloadSources.Count * _attemptsPerSource;
-            if (n < 3)
-                 n = 3;
-
-            if (n > 255)
-                n = 255;
-
-            _maxAttempts = (byte)n;
-        }
-
-        /// <summary>
-        /// Gets the files that failed to be downloaded. These files will not be re-attempted automatically since they had already
-        /// passed the <see cref="IDownloadManager.MaxAttempts"/> limit.
-        /// </summary>
-        /// <returns>The files that failed to be downloaded</returns>
-        public IEnumerable<string> GetFailedDownloads()
-        {
-            lock (_failedDownloadsSync)
+            get
             {
-                return _failedDownloads.ToArray();
+                lock (_downloadSourcesSync)
+                {
+                    return _downloadSources.ToArray();
+                }
             }
         }
 
@@ -436,20 +436,6 @@ namespace GoreUpdater.Core
                 lock (_failedDownloadsSync)
                 {
                     return _failedDownloads.Count;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the available file download sources.
-        /// </summary>
-        public IEnumerable<IDownloadSource> DownloadSources
-        {
-            get
-            {
-                lock (_downloadSourcesSync)
-                {
-                    return _downloadSources.ToArray();
                 }
             }
         }
@@ -474,6 +460,15 @@ namespace GoreUpdater.Core
         public bool IsDisposed
         {
             get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Gets the maximum times a single file will attempt to download. If a download failes more than this many times, it will
+        /// be aborted and the <see cref="IDownloadManager.DownloadFailed"/> event will be raised.
+        /// </summary>
+        public int MaxAttempts
+        {
+            get { return _maxAttempts; }
         }
 
         /// <summary>
@@ -526,17 +521,6 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
-        /// Clears the finished downloads information.
-        /// </summary>
-        public void ClearFinished()
-        {
-            lock (_finishedDownloadsSync)
-            {
-                _finishedDownloads.Clear();
-            }
-        }
-
-        /// <summary>
         /// Clears the failed downloads information.
         /// </summary>
         public void ClearFailed()
@@ -544,6 +528,17 @@ namespace GoreUpdater.Core
             lock (_failedDownloadsSync)
             {
                 _failedDownloads.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Clears the finished downloads information.
+        /// </summary>
+        public void ClearFinished()
+        {
+            lock (_finishedDownloadsSync)
+            {
+                _finishedDownloads.Clear();
             }
         }
 
@@ -604,6 +599,19 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
+        /// Gets the files that failed to be downloaded. These files will not be re-attempted automatically since they had already
+        /// passed the <see cref="IDownloadManager.MaxAttempts"/> limit.
+        /// </summary>
+        /// <returns>The files that failed to be downloaded</returns>
+        public IEnumerable<string> GetFailedDownloads()
+        {
+            lock (_failedDownloadsSync)
+            {
+                return _failedDownloads.ToArray();
+            }
+        }
+
+        /// <summary>
         /// Gets the current collection of finished downloads.
         /// </summary>
         /// <returns>The current collection of finished downloads.</returns>
@@ -650,15 +658,6 @@ namespace GoreUpdater.Core
             downloadSource.DownloadFailed -= downloadSource_DownloadFailed;
 
             return true;
-        }
-
-        /// <summary>
-        /// Gets the maximum times a single file will attempt to download. If a download failes more than this many times, it will
-        /// be aborted and the <see cref="IDownloadManager.DownloadFailed"/> event will be raised.
-        /// </summary>
-        public int MaxAttempts
-        {
-            get { return _maxAttempts; }
         }
 
         #endregion

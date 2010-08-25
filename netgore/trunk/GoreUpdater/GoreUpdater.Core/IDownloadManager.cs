@@ -7,6 +7,12 @@ namespace GoreUpdater.Core
     public interface IDownloadManager : IDisposable
     {
         /// <summary>
+        /// Notifies listeners when a file completely failed to be downloaded after <see cref="IDownloadManager.MaxAttempts"/>
+        /// attempts.
+        /// </summary>
+        event DownloadManagerDownloadFailedEventHandler DownloadFailed;
+
+        /// <summary>
         /// Notifies listeners when a file download has finished.
         /// </summary>
         event DownloadManagerFileEventHandler DownloadFinished;
@@ -18,27 +24,14 @@ namespace GoreUpdater.Core
         event DownloadManagerFileMoveFailedEventHandler FileMoveFailed;
 
         /// <summary>
-        /// Notifies listeners when a file completely failed to be downloaded after <see cref="IDownloadManager.MaxAttempts"/>
-        /// attempts.
+        /// Gets the available file download sources.
         /// </summary>
-        event DownloadManagerDownloadFailedEventHandler DownloadFailed;
-
-        /// <summary>
-        /// Gets the files that failed to be downloaded. These files will not be re-attempted automatically since they had already
-        /// passed the <see cref="MaxAttempts"/> limit.
-        /// </summary>
-        /// <returns>The files that failed to be downloaded</returns>
-        IEnumerable<string> GetFailedDownloads();
+        IEnumerable<IDownloadSource> DownloadSources { get; }
 
         /// <summary>
         /// Gets the number of items in the list of files that failed to be downloaded.
         /// </summary>
         int FailedDownloadsCount { get; }
-
-        /// <summary>
-        /// Gets the available file download sources.
-        /// </summary>
-        IEnumerable<IDownloadSource> DownloadSources { get; }
 
         /// <summary>
         /// Gets the number of items that have finished downloading in this <see cref="IDownloadManager"/>.
@@ -49,6 +42,12 @@ namespace GoreUpdater.Core
         /// Gets if this <see cref="IDownloadManager"/> has been disposed.
         /// </summary>
         bool IsDisposed { get; }
+
+        /// <summary>
+        /// Gets the maximum times a single file will attempt to download. If a download failes more than this many times, it will
+        /// be aborted and the <see cref="IDownloadManager.DownloadFailed"/> event will be raised.
+        /// </summary>
+        int MaxAttempts { get; }
 
         /// <summary>
         /// Gets the number of items remaining in the download queue.
@@ -69,14 +68,14 @@ namespace GoreUpdater.Core
         bool AddSource(IDownloadSource downloadSource);
 
         /// <summary>
-        /// Clears the finished downloads information.
-        /// </summary>
-        void ClearFinished();
-
-        /// <summary>
         /// Clears the failed downloads information.
         /// </summary>
         void ClearFailed();
+
+        /// <summary>
+        /// Clears the finished downloads information.
+        /// </summary>
+        void ClearFinished();
 
         /// <summary>
         /// Enqueues a file for download.
@@ -91,6 +90,13 @@ namespace GoreUpdater.Core
         /// </summary>
         /// <param name="files">The files to enqueue for download.</param>
         void Enqueue(IEnumerable<string> files);
+
+        /// <summary>
+        /// Gets the files that failed to be downloaded. These files will not be re-attempted automatically since they had already
+        /// passed the <see cref="MaxAttempts"/> limit.
+        /// </summary>
+        /// <returns>The files that failed to be downloaded</returns>
+        IEnumerable<string> GetFailedDownloads();
 
         /// <summary>
         /// Gets the current collection of finished downloads.
@@ -111,11 +117,5 @@ namespace GoreUpdater.Core
         /// <returns>True if the <paramref name="downloadSource"/> was removed; false if the <paramref name="downloadSource"/> was
         /// invalid or not in this <see cref="IDownloadManager"/>.</returns>
         bool RemoveSource(IDownloadSource downloadSource);
-
-        /// <summary>
-        /// Gets the maximum times a single file will attempt to download. If a download failes more than this many times, it will
-        /// be aborted and the <see cref="IDownloadManager.DownloadFailed"/> event will be raised.
-        /// </summary>
-        int MaxAttempts { get; }
     }
 }
