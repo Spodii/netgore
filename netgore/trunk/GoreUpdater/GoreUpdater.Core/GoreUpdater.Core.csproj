@@ -52,13 +52,18 @@
     <Compile Include="DownloadManager\DownloadManagerFileEventHandler.cs" />
     <Compile Include="DownloadManager\DownloadManagerFileMoveFailedEventHandler.cs" />
     <Compile Include="DownloadManager\IDownloadManager.cs" />
-    <Compile Include="MasterServerReader.cs" />
+    <Compile Include="MasterServerReader\IMasterServerReader.cs" />
+    <Compile Include="MasterServerReader\IMasterServerReadInfo.cs" />
+    <Compile Include="MasterServerReader\MasterServerReader.cs" />
+    <Compile Include="MasterServerReader\MasterServerReaderReadCallback.cs" />
+    <Compile Include="MasterServerReader\MasterServerReadInfo.cs" />
     <Compile Include="OfflineFileReplacer\IOfflineFileReplacer.cs" />
     <Compile Include="OfflineFileReplacer\OfflineFileReplacer.cs" />
     <Compile Include="OfflineFileReplacer\OfflineFileReplacerHelper.cs" />
     <Compile Include="PathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
