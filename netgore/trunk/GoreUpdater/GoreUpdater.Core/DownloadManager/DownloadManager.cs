@@ -7,6 +7,9 @@ using System.Threading;
 
 namespace GoreUpdater
 {
+    /// <summary>
+    /// A basic implementation of the <see cref="IDownloadManager"/>.
+    /// </summary>
     public class DownloadManager : IDownloadManager
     {
         /// <summary>
