@@ -20,13 +20,6 @@ namespace GoreUpdater
         event DownloadSourceFileEventHandler DownloadFinished;
 
         /// <summary>
-        /// Checks if this <see cref="IDownloadSource"/> contains the same values as the given <see cref="DownloadSourceDescriptor"/>.
-        /// </summary>
-        /// <param name="descriptor">The <see cref="DownloadSourceDescriptor"/> to compare to.</param>
-        /// <returns>True if they have equal values; otherwise false.</returns>
-        bool IsIdenticalTo(DownloadSourceDescriptor descriptor);
-
-        /// <summary>
         /// Gets if this <see cref="IDownloadSource"/> can start a download.
         /// </summary>
         bool CanDownload { get; }
@@ -44,5 +37,12 @@ namespace GoreUpdater
         /// <param name="version">The file version to download.</param>
         /// <returns>True if the download was successfully started; otherwise false.</returns>
         bool Download(string remoteFile, string localFilePath, int? version);
+
+        /// <summary>
+        /// Checks if this <see cref="IDownloadSource"/> contains the same values as the given <see cref="DownloadSourceDescriptor"/>.
+        /// </summary>
+        /// <param name="descriptor">The <see cref="DownloadSourceDescriptor"/> to compare to.</param>
+        /// <returns>True if they have equal values; otherwise false.</returns>
+        bool IsIdenticalTo(DownloadSourceDescriptor descriptor);
     }
 }

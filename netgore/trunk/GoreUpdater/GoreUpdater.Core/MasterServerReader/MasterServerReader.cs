@@ -29,172 +29,7 @@ namespace GoreUpdater
 
         #region Implementation of IMasterServerReader
 
-        /// <summary>
-        /// Gets the path to the local file containing the list of download sources. This file will be updated automatically
-        /// as new download sources are discovered by this <see cref="IMasterServerReader"/>.
-        /// </summary>
-        public string LocalDownloadSourceListPath
-        {
-            get { return _localDownloadSourceListPath; }
-        }
-
-        /// <summary>
-        /// Gets the path to the local file containing the list of master servers. This file will be updated automatically
-        /// as new master servers are discovered by this <see cref="IMasterServerReader"/>.
-        /// </summary>
-        public string LocalMasterServerListPath
-        {
-            get { return _localMasterServerListPath; }
-        }
-
-        /// <summary>
-        /// Begins reading the master server information.
-        /// </summary>
-        /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
-        /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
-        /// from the method call.</param>
-        public void BeginRead(MasterServerReaderReadCallback callback, object userState)
-        {
-            // Create the worker
-            Thread t = new Thread(ReadThreadWorker) { IsBackground = true };
-
-            try
-            {
-                t.Name = "MasterServerReader read thread.";
-            }
-            catch (InvalidOperationException)
-            {
-            }
-
-            // Start it
-            t.Start(new ThreadWorkerArgs(callback, userState));
-        }
-
         static readonly object _ioSync = new object();
-
-        /// <summary>
-        /// Writes the master servers file.
-        /// </summary>
-        /// <param name="info">The <see cref="MasterServerReadInfo"/>.</param>
-        /// <param name="filePath">The file path to write to.</param>
-        static void WriteMasterServersFile(MasterServerReadInfo info, string filePath)
-        {
-            // If we have nothing to write, just keep the old file instead of overwriting it with an empty file. Even though
-            // the entries are probably outdated, its better to have outdated entries than nothing at all.
-            if (info.MasterServers.Count() == 0)
-                return;
-
-            var sb = new StringBuilder();
-
-            foreach (var desc in info.MasterServers)
-            {
-                sb.AppendLine(desc.GetDescriptorString());
-            }
-
-            lock (_ioSync)
-            {
-                // We will make 5 attempts to write the file before completely giving up
-                for (int i = 0; i < 5; i++)
-                {
-                    var tmpFile = Path.GetTempFileName();
-
-                    try
-                    {
-                        // Write the text to the file then copy it over to the destination
-                        File.WriteAllText(tmpFile, sb.ToString());
-                        File.Copy(tmpFile, filePath, true);
-
-                        // Success!
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Fail(ex.ToString());
-                    }
-                    finally
-                    {
-                        // Delete the temporary file
-                        PathHelper.SafeDeleteTempFile(tmpFile);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Writes the download sources file.
-        /// </summary>
-        /// <param name="info">The <see cref="MasterServerReadInfo"/>.</param>
-        /// <param name="filePath">The file path to write to.</param>
-        static void WriteDownloadSourcesFile(MasterServerReadInfo info, string filePath)
-        {
-            // If we have nothing to write, just keep the old file instead of overwriting it with an empty file. Even though
-            // the entries are probably outdated, its better to have outdated entries than nothing at all.
-            if (info.DownloadSources.Count() == 0)
-                return;
-
-            var sb = new StringBuilder();
-
-            foreach (var desc in info.DownloadSources)
-            {
-                sb.AppendLine(desc.GetDescriptorString());
-            }
-
-            lock (_ioSync)
-            {
-                // We will make 5 attempts to write the file before completely giving up
-                for (int i = 0; i < 5; i++)
-                {
-                    var tmpFile = Path.GetTempFileName();
-
-                    try
-                    {
-                        // Write the text to the file then copy it over to the destination
-                        File.WriteAllText(tmpFile, sb.ToString());
-                        File.Copy(tmpFile, filePath, true);
-
-                        // Success!
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Fail(ex.ToString());
-                    }
-                    finally
-                    {
-                        // Delete the temporary file
-                        PathHelper.SafeDeleteTempFile(tmpFile);
-                    }
-                }
-            }
-        }
-
-        class ThreadWorkerArgs
-        {
-            readonly MasterServerReaderReadCallback _callback;
-            readonly object _userState;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ThreadWorkerArgs"/> class.
-            /// </summary>
-            /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
-            /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
-            /// from the method call.</param>
-            public ThreadWorkerArgs(MasterServerReaderReadCallback callback, object userState)
-            {
-                _callback = callback;
-                _userState = userState;
-            }
-
-            /// <summary>
-            /// Gets the callback delegate.
-            /// </summary>
-            public MasterServerReaderReadCallback Callback { get { return _callback; } }
-
-            /// <summary>
-            /// Gets the user state object.
-            /// </summary>
-            public object UserState { get { return _userState; } }
-        }
 
         /// <summary>
         /// The worker method for the reader threads.
@@ -206,7 +41,7 @@ namespace GoreUpdater
             var callback = stateObj.Callback;
             var userState = stateObj.UserState;
 
-            MasterServerReadInfo info = new MasterServerReadInfo();
+            var info = new MasterServerReadInfo();
 
             // Create the master server readers from the file
             IEnumerable<DownloadSourceDescriptor> descriptors;
@@ -224,10 +59,11 @@ namespace GoreUpdater
             }
 
             // Create the source instances
-            List<IDownloadSource> sources = new List<IDownloadSource>();
+            var sources = new List<IDownloadSource>();
             foreach (var desc in descriptors)
             {
-                try{
+                try
+                {
                     var src = desc.Instantiate();
                     sources.Add(src);
                 }
@@ -261,13 +97,224 @@ namespace GoreUpdater
                 callback(this, info, userState);
         }
 
+        /// <summary>
+        /// Writes the download sources file.
+        /// </summary>
+        /// <param name="info">The <see cref="MasterServerReadInfo"/>.</param>
+        /// <param name="filePath">The file path to write to.</param>
+        static void WriteDownloadSourcesFile(MasterServerReadInfo info, string filePath)
+        {
+            // If we have nothing to write, just keep the old file instead of overwriting it with an empty file. Even though
+            // the entries are probably outdated, its better to have outdated entries than nothing at all.
+            if (info.DownloadSources.Count() == 0)
+                return;
+
+            var sb = new StringBuilder();
+
+            foreach (var desc in info.DownloadSources)
+            {
+                sb.AppendLine(desc.GetDescriptorString());
+            }
+
+            lock (_ioSync)
+            {
+                // We will make 5 attempts to write the file before completely giving up
+                for (var i = 0; i < 5; i++)
+                {
+                    var tmpFile = Path.GetTempFileName();
+
+                    try
+                    {
+                        // Write the text to the file then copy it over to the destination
+                        File.WriteAllText(tmpFile, sb.ToString());
+                        File.Copy(tmpFile, filePath, true);
+
+                        // Success!
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                    }
+                    finally
+                    {
+                        // Delete the temporary file
+                        PathHelper.SafeDeleteTempFile(tmpFile);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes the master servers file.
+        /// </summary>
+        /// <param name="info">The <see cref="MasterServerReadInfo"/>.</param>
+        /// <param name="filePath">The file path to write to.</param>
+        static void WriteMasterServersFile(MasterServerReadInfo info, string filePath)
+        {
+            // If we have nothing to write, just keep the old file instead of overwriting it with an empty file. Even though
+            // the entries are probably outdated, its better to have outdated entries than nothing at all.
+            if (info.MasterServers.Count() == 0)
+                return;
+
+            var sb = new StringBuilder();
+
+            foreach (var desc in info.MasterServers)
+            {
+                sb.AppendLine(desc.GetDescriptorString());
+            }
+
+            lock (_ioSync)
+            {
+                // We will make 5 attempts to write the file before completely giving up
+                for (var i = 0; i < 5; i++)
+                {
+                    var tmpFile = Path.GetTempFileName();
+
+                    try
+                    {
+                        // Write the text to the file then copy it over to the destination
+                        File.WriteAllText(tmpFile, sb.ToString());
+                        File.Copy(tmpFile, filePath, true);
+
+                        // Success!
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                    }
+                    finally
+                    {
+                        // Delete the temporary file
+                        PathHelper.SafeDeleteTempFile(tmpFile);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the path to the local file containing the list of download sources. This file will be updated automatically
+        /// as new download sources are discovered by this <see cref="IMasterServerReader"/>.
+        /// </summary>
+        public string LocalDownloadSourceListPath
+        {
+            get { return _localDownloadSourceListPath; }
+        }
+
+        /// <summary>
+        /// Gets the path to the local file containing the list of master servers. This file will be updated automatically
+        /// as new master servers are discovered by this <see cref="IMasterServerReader"/>.
+        /// </summary>
+        public string LocalMasterServerListPath
+        {
+            get { return _localMasterServerListPath; }
+        }
+
+        /// <summary>
+        /// Begins reading the master server information.
+        /// </summary>
+        /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
+        /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
+        /// from the method call.</param>
+        public void BeginRead(MasterServerReaderReadCallback callback, object userState)
+        {
+            // Create the worker
+            var t = new Thread(ReadThreadWorker) { IsBackground = true };
+
+            try
+            {
+                t.Name = "MasterServerReader read thread.";
+            }
+            catch (InvalidOperationException)
+            {
+            }
+
+            // Start it
+            t.Start(new ThreadWorkerArgs(callback, userState));
+        }
+
+        class ThreadWorkerArgs
+        {
+            readonly MasterServerReaderReadCallback _callback;
+            readonly object _userState;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ThreadWorkerArgs"/> class.
+            /// </summary>
+            /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
+            /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
+            /// from the method call.</param>
+            public ThreadWorkerArgs(MasterServerReaderReadCallback callback, object userState)
+            {
+                _callback = callback;
+                _userState = userState;
+            }
+
+            /// <summary>
+            /// Gets the callback delegate.
+            /// </summary>
+            public MasterServerReaderReadCallback Callback
+            {
+                get { return _callback; }
+            }
+
+            /// <summary>
+            /// Gets the user state object.
+            /// </summary>
+            public object UserState
+            {
+                get { return _userState; }
+            }
+        }
+
         #endregion
+
+        /// <summary>
+        /// Gets the relative path on the master server to the file containing the latest download sources.
+        /// </summary>
+        public static string CurrentDownloadSourcesFilePath
+        {
+            get { return "current.sourcelist"; }
+        }
+
+        /// <summary>
+        /// Gets the relative path on the master server to the file containing the latest master servers.
+        /// </summary>
+        public static string CurrentMasterServersFilePath
+        {
+            get { return "current.masterlist"; }
+        }
+
+        /// <summary>
+        /// Gets the relative path on the master server to the file containing the current version.
+        /// </summary>
+        public static string CurrentVersionFilePath
+        {
+            get { return "current.version"; }
+        }
 
         class MasterServerDownloader : IDisposable
         {
+            readonly MasterServerReadInfo _masterReadInfo;
             readonly List<IDownloadSource> _sources;
             readonly object _sourcesSync = new object();
-            readonly MasterServerReadInfo _masterReadInfo;
+            bool _isDisposed = false;
+
+            /// <summary>
+            /// The number of downloaders busy grabbing the download sources file.
+            /// </summary>
+            int _numBusyDownloadSourcesFile = 0;
+
+            /// <summary>
+            /// The number of downloaders busy grabbing the master servers file.
+            /// </summary>
+            int _numBusyMasterServersFile = 0;
+
+            /// <summary>
+            /// The number of downloaders busy grabbing the version file.
+            /// </summary>
+            int _numBusyVersionFile = 0;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MasterServerDownloader"/> class.
@@ -286,22 +333,23 @@ namespace GoreUpdater
             public bool DisposeSources { get; set; }
 
             /// <summary>
-            /// Tries to read the text from a file.
+            /// Gets if this object has been disposed.
             /// </summary>
-            /// <param name="filePath">The path to the file to read.</param>
-            /// <returns>The text from the <paramref name="filePath"/>, or null if it failed to read.</returns>
-            string TryReadAllText(string filePath)
+            public bool IsDisposed
             {
-                try
-                {
-                    return File.ReadAllText(filePath);
-                }
-                catch (Exception ex)
-                {
-                    _masterReadInfo.AppendError("Failed to read temp file: " + ex);
-                }
+                get { return _isDisposed; }
+            }
 
-                return null;
+            /// <summary>
+            /// Checks if we have completed all downloads.
+            /// </summary>
+            /// <returns>If true, we have completed.</returns>
+            bool CheckIfComplete()
+            {
+                if (_numBusyDownloadSourcesFile != 0 || _numBusyMasterServersFile != 0 || _numBusyVersionFile != 0)
+                    return false;
+
+                return true;
             }
 
             /// <summary>
@@ -323,7 +371,7 @@ namespace GoreUpdater
                     }
                 }
 
-                int startTime = Environment.TickCount;
+                var startTime = Environment.TickCount;
 
                 // Wait until all sources finish
                 while (!CheckIfComplete())
@@ -335,21 +383,6 @@ namespace GoreUpdater
                         break;
                 }
             }
-
-            /// <summary>
-            /// The number of downloaders busy grabbing the version file.
-            /// </summary>
-            int _numBusyVersionFile = 0;
-
-            /// <summary>
-            /// The number of downloaders busy grabbing the download sources file.
-            /// </summary>
-            int _numBusyDownloadSourcesFile = 0;
-
-            /// <summary>
-            /// The number of downloaders busy grabbing the master servers file.
-            /// </summary>
-            int _numBusyMasterServersFile = 0;
 
             void ExecuteSource(IDownloadSource source)
             {
@@ -384,21 +417,34 @@ namespace GoreUpdater
                 }
             }
 
+            /// <summary>
+            /// Tries to read the text from a file.
+            /// </summary>
+            /// <param name="filePath">The path to the file to read.</param>
+            /// <returns>The text from the <paramref name="filePath"/>, or null if it failed to read.</returns>
+            string TryReadAllText(string filePath)
+            {
+                try
+                {
+                    return File.ReadAllText(filePath);
+                }
+                catch (Exception ex)
+                {
+                    _masterReadInfo.AppendError("Failed to read temp file: " + ex);
+                }
+
+                return null;
+            }
+
             void source_DownloadFailed(IDownloadSource sender, string remoteFile, string localFilePath)
             {
                 // Handle based on what remote file it was
                 if (remoteFile == CurrentVersionFilePath)
-                {
                     Interlocked.Decrement(ref _numBusyVersionFile);
-                }
                 else if (remoteFile == CurrentMasterServersFilePath)
-                {
                     Interlocked.Decrement(ref _numBusyMasterServersFile);
-                }
                 else if (remoteFile == CurrentDownloadSourcesFilePath)
-                {
                     Interlocked.Decrement(ref _numBusyDownloadSourcesFile);
-                }
                 else
                 {
                     Debug.Fail("Unexpected remote file downloaded: " + remoteFile);
@@ -409,18 +455,6 @@ namespace GoreUpdater
                 PathHelper.SafeDeleteTempFile(localFilePath);
 
                 CheckIfComplete();
-            }
-
-            /// <summary>
-            /// Checks if we have completed all downloads.
-            /// </summary>
-            /// <returns>If true, we have completed.</returns>
-            bool CheckIfComplete()
-            {
-                if (_numBusyDownloadSourcesFile != 0 || _numBusyMasterServersFile != 0 || _numBusyVersionFile != 0)
-                    return false;
-
-                return true;
             }
 
             void source_DownloadFinished(IDownloadSource sender, string remoteFile, string localFilePath)
@@ -436,13 +470,10 @@ namespace GoreUpdater
                             // Try to parse and add the version
                             int version;
                             if (!int.TryParse(txt, out version))
-                            {
-                                _masterReadInfo.AppendError(string.Format("Failed to parse version file to integer. Contents: `{0}`", txt));
-                            }
+                                _masterReadInfo.AppendError(
+                                    string.Format("Failed to parse version file to integer. Contents: `{0}`", txt));
                             else
-                            {
                                 _masterReadInfo.AddVersion(version);
-                            }
                         }
                     }
                     catch (Exception ex)
@@ -530,13 +561,6 @@ namespace GoreUpdater
                 CheckIfComplete();
             }
 
-            bool _isDisposed = false;
-
-            /// <summary>
-            /// Gets if this object has been disposed.
-            /// </summary>
-            public bool IsDisposed { get { return _isDisposed; } }
-
             #region Implementation of IDisposable
 
             /// <summary>
@@ -549,7 +573,7 @@ namespace GoreUpdater
 
                 _isDisposed = true;
 
-                bool disposeSources = DisposeSources;
+                var disposeSources = DisposeSources;
 
                 lock (_sourcesSync)
                 {
@@ -560,17 +584,17 @@ namespace GoreUpdater
                         src.DownloadFailed -= source_DownloadFailed;
 
                         // Check to dispose the source
-                            if (disposeSources)
+                        if (disposeSources)
+                        {
+                            try
                             {
-                        try
-                        {
                                 src.Dispose();
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.Fail(ex.ToString());
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            Debug.Fail(ex.ToString());
-                        }
-            }
                     }
 
                     _sources.Clear();
@@ -579,20 +603,5 @@ namespace GoreUpdater
 
             #endregion
         }
-
-        /// <summary>
-        /// Gets the relative path on the master server to the file containing the current version.
-        /// </summary>
-        public static string CurrentVersionFilePath { get { return "current.version"; } }
-
-        /// <summary>
-        /// Gets the relative path on the master server to the file containing the latest download sources.
-        /// </summary>
-        public static string CurrentDownloadSourcesFilePath { get { return "current.sourcelist"; } }
-
-        /// <summary>
-        /// Gets the relative path on the master server to the file containing the latest master servers.
-        /// </summary>
-        public static string CurrentMasterServersFilePath { get { return "current.masterlist"; } }
     }
 }

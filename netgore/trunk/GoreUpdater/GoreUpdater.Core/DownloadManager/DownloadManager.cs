@@ -37,6 +37,7 @@ namespace GoreUpdater
 
         readonly Dictionary<string, List<IDownloadSource>> _downloadFailedDict =
             new Dictionary<string, List<IDownloadSource>>(StringComparer.Ordinal);
+
         readonly Dictionary<string, int> _downloadFailedDictCount = new Dictionary<string, int>(StringComparer.Ordinal);
         readonly object _downloadFailedDictSync = new object();
 
@@ -598,7 +599,9 @@ namespace GoreUpdater
         public void AddSources(IEnumerable<IDownloadSource> downloadSources)
         {
             foreach (var src in downloadSources)
+            {
                 AddSource(src);
+            }
         }
 
         /// <summary>

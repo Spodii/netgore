@@ -11,33 +11,34 @@ namespace GoreUpdater
     /// </summary>
     public class MasterServerReadInfo : IMasterServerReadInfo
     {
-        readonly List<DownloadSourceDescriptor> _sources = new List<DownloadSourceDescriptor>();
-        readonly object _sourcesSync = new object();
         readonly object _errorSync = new object();
-        readonly object _versionSync = new object();
         readonly List<DownloadSourceDescriptor> _masters = new List<DownloadSourceDescriptor>();
         readonly object _mastersSync = new object();
+        readonly List<DownloadSourceDescriptor> _sources = new List<DownloadSourceDescriptor>();
+        readonly object _sourcesSync = new object();
+        readonly object _versionSync = new object();
 
         string _error;
         int _version = 0;
 
         /// <summary>
-        /// Appends a new error string.
+        /// Adds a download source read from a master server.
         /// </summary>
-        /// <param name="error">The new error string.</param>
-        public void AppendError(string error)
+        /// <param name="source">The <see cref="DownloadSourceDescriptor"/>.</param>
+        public void AddDownloadSource(DownloadSourceDescriptor source)
         {
-            // Append the error
-            lock (_errorSync)
+            if (source == null)
             {
-                if (_error == null)
+                Debug.Fail("source is null.");
+                return;
+            }
+
+            lock (_sourcesSync)
+            {
+                if (!_sources.Any(source.IsIdenticalTo))
                 {
-                    _error = error;
-                }
-                else
-                {
-                    _error += Environment.NewLine + Environment.NewLine + "---------------------" + Environment.NewLine + Environment.NewLine;
-                    _error += error;
+                    _sources.Add(source);
+                    return;
                 }
             }
         }
@@ -65,28 +66,6 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Adds a download source read from a master server.
-        /// </summary>
-        /// <param name="source">The <see cref="DownloadSourceDescriptor"/>.</param>
-        public void AddDownloadSource(DownloadSourceDescriptor source)
-        {
-            if (source == null)
-            {
-                Debug.Fail("source is null.");
-                return;
-            }
-
-            lock (_sourcesSync)
-            {
-                if (!_sources.Any(source.IsIdenticalTo))
-                {
-                    _sources.Add(source);
-                    return;
-                }
-            }
-        }
-
-        /// <summary>
         /// Adds the version information read from a master server.
         /// </summary>
         /// <param name="version">The verison.</param>
@@ -100,33 +79,27 @@ namespace GoreUpdater
             }
         }
 
-        #region Implementation of IMasterServerReadInfo
-
         /// <summary>
-        /// Gets the current version.
+        /// Appends a new error string.
         /// </summary>
-        public int Version
+        /// <param name="error">The new error string.</param>
+        public void AppendError(string error)
         {
-            get
+            // Append the error
+            lock (_errorSync)
             {
-                lock (_versionSync)
-                { 
-                    // TODO: Make sure I always locked on the correct object
-                    return _version; 
+                if (_error == null)
+                    _error = error;
+                else
+                {
+                    _error += Environment.NewLine + Environment.NewLine + "---------------------" + Environment.NewLine +
+                              Environment.NewLine;
+                    _error += error;
                 }
             }
         }
 
-        public IEnumerable<DownloadSourceDescriptor> MasterServers
-        {
-            get
-            {
-                lock (_mastersSync)
-                {
-                    return _masters.ToArray();
-                }
-            }
-        }
+        #region Implementation of IMasterServerReadInfo
 
         /// <summary>
         /// Gets the descriptors for the download sources available.
@@ -152,6 +125,32 @@ namespace GoreUpdater
                 lock (_errorSync)
                 {
                     return _error;
+                }
+            }
+        }
+
+        public IEnumerable<DownloadSourceDescriptor> MasterServers
+        {
+            get
+            {
+                lock (_mastersSync)
+                {
+                    return _masters.ToArray();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the current version.
+        /// </summary>
+        public int Version
+        {
+            get
+            {
+                lock (_versionSync)
+                {
+                    // TODO: Make sure I always locked on the correct object
+                    return _version;
                 }
             }
         }

@@ -6,26 +6,7 @@ namespace GoreUpdater.Tests
     [TestFixture]
     public class PathHelperTests
     {
-        [Test]
-        public void ForceEndWithCharTest1()
-        {
-            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a\", '\\'));
-            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a\", "\\"));
-        }
-
-        [Test]
-        public void ForceEndWithCharTest2()
-        {
-            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a", '\\'));
-            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a", "\\"));
-        }
-
-        [Test]
-        public void ForceEndWithCharTest3()
-        {
-            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a/", '\\', '/'));
-            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a/", "\\", "/"));
-        }
+        #region Unit tests
 
         [Test]
         public void CombineDifferentPathsTest1()
@@ -55,7 +36,26 @@ namespace GoreUpdater.Tests
             Assert.AreEqual(@"C:\test\a\test\sadf.png", p);
         }
 
-        #region Unit tests
+        [Test]
+        public void ForceEndWithCharTest1()
+        {
+            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a\", '\\'));
+            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a\", "\\"));
+        }
+
+        [Test]
+        public void ForceEndWithCharTest2()
+        {
+            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a", '\\'));
+            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a", "\\"));
+        }
+
+        [Test]
+        public void ForceEndWithCharTest3()
+        {
+            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a/", '\\', '/'));
+            Assert.AreEqual(@"C:\test\a\", PathHelper.ForceEndWithChar(@"C:\test\a/", "\\", "/"));
+        }
 
         [Test]
         public void GetVersionStringTest1()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GoreUpdater
 {
@@ -8,16 +9,6 @@ namespace GoreUpdater
     public interface IMasterServerReadInfo
     {
         /// <summary>
-        /// Gets the current version.
-        /// </summary>
-        int Version { get; }
-
-        /// <summary>
-        /// Gets the descriptors for the master servers available.
-        /// </summary>
-        IEnumerable<DownloadSourceDescriptor> MasterServers { get; }
-
-        /// <summary>
         /// Gets the descriptors for the download sources available.
         /// </summary>
         IEnumerable<DownloadSourceDescriptor> DownloadSources { get; }
@@ -26,5 +17,15 @@ namespace GoreUpdater
         /// Gets a string containing errors that occured while getting the information, or null if no errors.
         /// </summary>
         string Error { get; }
+
+        /// <summary>
+        /// Gets the descriptors for the master servers available.
+        /// </summary>
+        IEnumerable<DownloadSourceDescriptor> MasterServers { get; }
+
+        /// <summary>
+        /// Gets the current version.
+        /// </summary>
+        int Version { get; }
     }
 }

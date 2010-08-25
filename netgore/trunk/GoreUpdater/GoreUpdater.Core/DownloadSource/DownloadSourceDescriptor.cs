@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace GoreUpdater
 {
@@ -13,8 +12,8 @@ namespace GoreUpdater
     /// </summary>
     public class DownloadSourceDescriptor
     {
-        readonly DownloadSourceType _type;
         readonly string _rootPath;
+        readonly DownloadSourceType _type;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DownloadSourceDescriptor"/> class.
@@ -28,27 +27,70 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Gets the type of download source.
-        /// </summary>
-        public DownloadSourceType Type { get { return _type; } }
-
-        /// <summary>
         /// Gets the root path of the download source.
         /// </summary>
-        public string RootPath { get { return _rootPath; } }
+        public string RootPath
+        {
+            get { return _rootPath; }
+        }
 
         /// <summary>
-        /// Checks if this <see cref="DownloadSourceDescriptor"/> is identical to another <see cref="DownloadSourceDescriptor"/>.
+        /// Gets the type of download source.
         /// </summary>
-        /// <param name="other">The other <see cref="DownloadSourceDescriptor"/>.</param>
-        /// <returns>True if they are identical; otherwise false.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is null.</exception>
-        public bool IsIdenticalTo(DownloadSourceDescriptor other)
+        public DownloadSourceType Type
         {
-            if (other == null)
-                throw new ArgumentNullException("other");
+            get { return _type; }
+        }
 
-            return this == other || Type == other.Type || RootPath == other.RootPath;
+        /// <summary>
+        /// Creates many <see cref="DownloadSourceDescriptor"/>s from a file.
+        /// </summary>
+        /// <param name="filePath">The path to the file to read.</param>
+        /// <returns>The <see cref="DownloadSourceDescriptor"/>s.</returns>
+        public static IEnumerable<DownloadSourceDescriptor> FromDescriptorFile(string filePath)
+        {
+            var ret = new List<DownloadSourceDescriptor>();
+
+            // Read the file
+            var lines = File.ReadAllLines(filePath);
+
+            // Try to create a descriptor from each line
+            foreach (var line in lines)
+            {
+                // Create the descriptor
+                DownloadSourceDescriptor desc;
+                try
+                {
+                    desc = FromDescriptorString(line);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print(ex.ToString());
+                    desc = null;
+                }
+
+                // If successful, then add it to the list only if it is unique
+                if (desc != null)
+                {
+                    if (!ret.Any(x => x.IsIdenticalTo(desc)))
+                        ret.Add(desc);
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DownloadSourceDescriptor"/> from a string.
+        /// </summary>
+        /// <param name="descriptorString">The descriptor string.</param>
+        public static DownloadSourceDescriptor FromDescriptorString(string descriptorString)
+        {
+            var split = descriptorString.Split('|');
+            var type = (DownloadSourceType)Enum.Parse(typeof(DownloadSourceType), split[0], true);
+            var rootPath = split[1].Trim();
+
+            return new DownloadSourceDescriptor(type, rootPath);
         }
 
         /// <summary>
@@ -78,56 +120,17 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Creates a <see cref="DownloadSourceDescriptor"/> from a string.
+        /// Checks if this <see cref="DownloadSourceDescriptor"/> is identical to another <see cref="DownloadSourceDescriptor"/>.
         /// </summary>
-        /// <param name="descriptorString">The descriptor string.</param>
-        public static DownloadSourceDescriptor FromDescriptorString(string descriptorString)
+        /// <param name="other">The other <see cref="DownloadSourceDescriptor"/>.</param>
+        /// <returns>True if they are identical; otherwise false.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is null.</exception>
+        public bool IsIdenticalTo(DownloadSourceDescriptor other)
         {
-            var split = descriptorString.Split('|');
-            var type = (DownloadSourceType)Enum.Parse(typeof(DownloadSourceType), split[0], true);
-            var rootPath = split[1].Trim();
+            if (other == null)
+                throw new ArgumentNullException("other");
 
-            return new DownloadSourceDescriptor(type, rootPath);
-        }
-
-        /// <summary>
-        /// Creates many <see cref="DownloadSourceDescriptor"/>s from a file.
-        /// </summary>
-        /// <param name="filePath">The path to the file to read.</param>
-        /// <returns>The <see cref="DownloadSourceDescriptor"/>s.</returns>
-        public static IEnumerable<DownloadSourceDescriptor> FromDescriptorFile(string filePath)
-        {
-            List<DownloadSourceDescriptor> ret = new List<DownloadSourceDescriptor>();
-
-            // Read the file
-            var lines = File.ReadAllLines(filePath);
-
-            // Try to create a descriptor from each line
-            foreach (var line in lines)
-            {
-                // Create the descriptor
-                DownloadSourceDescriptor desc;
-                try
-                {
-                    desc = FromDescriptorString(line);
-                }
-                catch (Exception ex)
-                {
-                    Debug.Print(ex.ToString());
-                    desc = null;
-                }
-
-                // If successful, then add it to the list only if it is unique
-                if (desc != null)
-                {
-                    if (!ret.Any(x => x.IsIdenticalTo(desc)))
-                    {
-                        ret.Add(desc);
-                    }
-                }
-            }
-
-            return ret;
+            return this == other || Type == other.Type || RootPath == other.RootPath;
         }
     }
 }
