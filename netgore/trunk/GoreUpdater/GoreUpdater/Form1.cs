@@ -31,7 +31,7 @@ namespace GoreUpdater
             var replacerFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath, GlobalSettings.ReplacerFileName);
             _fileRep = new BatchOfflineFileReplacer(replacerFilePath, Application.ExecutablePath);
 
-            _dm = new DownloadManager(targetPath, tempPath, 1);
+            _dm = new DownloadManager(targetPath, tempPath, info.Version);
             _dm.DownloadFinished += _dm_DownloadFinished;
             _dm.FileMoveFailed += _dm_FileMoveFailed;
             _dm.DownloadFailed += _dm_DownloadFailed;
@@ -40,7 +40,7 @@ namespace GoreUpdater
             var sources = info.DownloadSources.Select(x => x.Instantiate());
             _dm.AddSources(sources);
 
-            _dm.Enqueue(new string[] { "tab_a.png", "tab_b.png", "tab_h.png", "tabs.css" });
+            _dm.Enqueue(new string[] { "11.bmp", "12.bmp", "13.bmp" });
         }
 
         protected override void OnLoad(EventArgs e)
