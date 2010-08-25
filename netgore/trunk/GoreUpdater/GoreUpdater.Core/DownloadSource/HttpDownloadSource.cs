@@ -7,6 +7,9 @@ using System.Net;
 
 namespace GoreUpdater
 {
+    /// <summary>
+    /// Implementation of the <see cref="IDownloadSource"/> for downloading over HTTP.
+    /// </summary>
     public class HttpDownloadSource : IDownloadSource
     {
         readonly string _rootPath;
