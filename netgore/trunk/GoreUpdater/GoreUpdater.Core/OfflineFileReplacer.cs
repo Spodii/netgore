@@ -8,60 +8,6 @@ using System.Text;
 namespace GoreUpdater
 {
     /// <summary>
-    /// Interface for an object that generates a stand-alone script file or executable that can be used to replace files that
-    /// are currently in use, then re-load the program that was used to generate the file when completed.
-    /// </summary>
-    public interface IOfflineFileReplacer
-    {
-        /// <summary>
-        /// Adds a job to replace a file. If a job for the <paramref name="filePath"/> already exists, the path will
-        /// be updated to the <paramref name="newFilePath"/>.
-        /// </summary>
-        /// <param name="filePath">The path to the file to move.</param>
-        /// <param name="newFilePath">The path to move the <paramref name="filePath"/> to.</param>
-        /// <returns>True if the job was successfully added; otherwise false.</returns>
-        bool AddJob(string filePath, string newFilePath);
-
-        /// <summary>
-        /// Removes a job.
-        /// </summary>
-        /// <param name="filePath">The path to the file.</param>
-        /// <returns>True if the job was successfully removed; false if the <paramref name="filePath"/> was invalid
-        /// or no job exists for the given <paramref name="filePath"/>.</returns>
-        bool RemoveJob(string filePath);
-
-        /// <summary>
-        /// Gets all of the queued jobs.
-        /// </summary>
-        /// <returns>All of the queued jobs and their corresponding destination.</returns>
-        IEnumerable<KeyValuePair<string, string>> GetJobs();
-    }
-
-    /// <summary>
-    /// Helper methods for the <see cref="IOfflineFileReplacer"/>.
-    /// </summary>
-    public static class OfflineFileReplacerHelper
-    {
-        /// <summary>
-        /// Tries to execute an <see cref="IOfflineFileReplacer"/> file.
-        /// </summary>
-        /// <param name="filePath">The path to the file to execute.</param>
-        /// <returns>True if the <paramref name="filePath"/> exists and was successfully executed; otherwise false.</returns>
-        public static bool TryExecute(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-                return false;
-
-            if (!File.Exists(filePath))
-                return false;
-
-            var psi = new ProcessStartInfo(filePath);
-            Process p = new Process { StartInfo = psi };
-            return p.Start();
-        }
-    }
-
-    /// <summary>
     /// Implementation of the <see cref="IOfflineFileReplacer"/> using a Windows batch file.
     /// </summary>
     public class BatchOfflineFileReplacer : IOfflineFileReplacer
