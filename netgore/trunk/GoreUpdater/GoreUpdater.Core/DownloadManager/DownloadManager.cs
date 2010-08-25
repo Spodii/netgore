@@ -376,10 +376,7 @@ namespace GoreUpdater
             {
                 lock (_fileSystemSync)
                 {
-                    if (File.Exists(targetPath))
-                        File.Delete(targetPath);
-
-                    File.Move(tempPath, targetPath);
+                    File.Copy(tempPath, targetPath, true);
                 }
             }
             catch (Exception ex)
@@ -388,6 +385,20 @@ namespace GoreUpdater
                 if (FileMoveFailed != null)
                     FileMoveFailed(this, remoteFile, tempPath, targetPath);
                 return;
+            }
+
+            // Delete the old file
+            lock (_fileSystemSync)
+            {
+                try
+                {
+                    if (File.Exists(tempPath))
+                        File.Delete(tempPath);
+                }
+                catch (IOException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
             }
 
             // Notify that the file successfully downloaded and was moved
