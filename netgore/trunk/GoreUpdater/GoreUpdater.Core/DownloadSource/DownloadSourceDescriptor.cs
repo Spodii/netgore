@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,14 +81,53 @@ namespace GoreUpdater
         /// Creates a <see cref="DownloadSourceDescriptor"/> from a string.
         /// </summary>
         /// <param name="descriptorString">The descriptor string.</param>
-        /// <returns>The <see cref="DownloadSourceDescriptor"/>.</returns>
-        public DownloadSourceDescriptor FromDescriptorString(string descriptorString)
+        public static DownloadSourceDescriptor FromDescriptorString(string descriptorString)
         {
             var split = descriptorString.Split('|');
             var type = (DownloadSourceType)Enum.Parse(typeof(DownloadSourceType), split[0], true);
             var rootPath = split[1].Trim();
 
             return new DownloadSourceDescriptor(type, rootPath);
+        }
+
+        /// <summary>
+        /// Creates many <see cref="DownloadSourceDescriptor"/>s from a file.
+        /// </summary>
+        /// <param name="filePath">The path to the file to read.</param>
+        /// <returns>The <see cref="DownloadSourceDescriptor"/>s.</returns>
+        public static IEnumerable<DownloadSourceDescriptor> FromDescriptorFile(string filePath)
+        {
+            List<DownloadSourceDescriptor> ret = new List<DownloadSourceDescriptor>();
+
+            // Read the file
+            var lines = File.ReadAllLines(filePath);
+
+            // Try to create a descriptor from each line
+            foreach (var line in lines)
+            {
+                // Create the descriptor
+                DownloadSourceDescriptor desc;
+                try
+                {
+                    desc = FromDescriptorString(line);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print(ex.ToString());
+                    desc = null;
+                }
+
+                // If successful, then add it to the list only if it is unique
+                if (desc != null)
+                {
+                    if (!ret.Any(x => x.IsIdenticalTo(desc)))
+                    {
+                        ret.Add(desc);
+                    }
+                }
+            }
+
+            return ret;
         }
     }
 }

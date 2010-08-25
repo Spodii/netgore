@@ -7,5 +7,6 @@ namespace GoreUpdater
     /// </summary>
     /// <param name="sender">The <see cref="IDownloadSource"/> that failed to download the file.</param>
     /// <param name="remoteFile">The remote file that failed to be downloaded.</param>
-    public delegate void DownloadSourceFileFailedEventHandler(IDownloadSource sender, string remoteFile);
+    /// <param name="localFilePath">The complete file path to the local file that was being used to download the contents to.</param>
+    public delegate void DownloadSourceFileFailedEventHandler(IDownloadSource sender, string remoteFile, string localFilePath);
 }

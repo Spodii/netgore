@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace GoreUpdater
 {
@@ -8,6 +10,37 @@ namespace GoreUpdater
     /// </summary>
     public static class PathHelper
     {
+        /// <summary>
+        /// Safely deletes a temporary file.
+        /// </summary>
+        /// <param name="filePath">The temporary file path.</param>
+        public static void SafeDeleteTempFile(string filePath)
+        {
+            // Try up to 10 times to delete the file. After that, screw it.
+            for (int i = 0; i < 10; i++)
+            {
+                try
+                {
+                    // Make sure the file exists
+                    if (!File.Exists(filePath))
+                        break;
+
+                    // Try to delete
+                    File.Delete(filePath);
+
+                    // Break early if deletion successful
+                    break;
+                }
+                catch (IOException ex)
+                {
+                    Debug.Fail(ex.ToString());
+
+                    // Give a small timout before trying to delete again
+                    Thread.Sleep(25);
+                }
+            }
+        }
+
         /// <summary>
         /// The minimum version string length. Versions with less digits than this value will be prefixed with 0's.
         /// </summary>

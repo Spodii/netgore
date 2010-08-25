@@ -278,7 +278,7 @@ namespace GoreUpdater
             _maxAttempts = (byte)n;
         }
 
-        void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
+        void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile, string localFilePath)
         {
             var invokeFailed = false;
             var invokeFinished = false;
@@ -362,7 +362,7 @@ namespace GoreUpdater
             }
         }
 
-        void downloadSource_DownloadFinished(IDownloadSource sender, string remoteFile)
+        void downloadSource_DownloadFinished(IDownloadSource sender, string remoteFile, string localFilePath)
         {
             // Remove from the failed dictionaries
             RemoveFromFailedDicts(remoteFile, true);
