@@ -40,15 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DownloadManager.cs" />
-    <Compile Include="DownloadManagerDownloadFailedEventHandler.cs" />
-    <Compile Include="DownloadSourceFileFailedEventHandler.cs" />
-    <Compile Include="HttpDownloadSource.cs" />
-    <Compile Include="IDownloadSource.cs" />
-    <Compile Include="DownloadSourceFileEventHandler.cs" />
-    <Compile Include="DownloadManagerFileEventHandler.cs" />
-    <Compile Include="DownloadManagerFileMoveFailedEventHandler.cs" />
-    <Compile Include="IDownloadManager.cs" />
+    <Compile Include="DownloadManager\DownloadManager.cs" />
+    <Compile Include="DownloadManager\DownloadManagerDownloadFailedEventHandler.cs" />
+    <Compile Include="DownloadSource\DownloadSourceFileFailedEventHandler.cs" />
+    <Compile Include="DownloadSource\HttpDownloadSource.cs" />
+    <Compile Include="DownloadSource\IDownloadSource.cs" />
+    <Compile Include="DownloadSource\DownloadSourceFileEventHandler.cs" />
+    <Compile Include="DownloadManager\DownloadManagerFileEventHandler.cs" />
+    <Compile Include="DownloadManager\DownloadManagerFileMoveFailedEventHandler.cs" />
+    <Compile Include="DownloadManager\IDownloadManager.cs" />
     <Compile Include="PathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
