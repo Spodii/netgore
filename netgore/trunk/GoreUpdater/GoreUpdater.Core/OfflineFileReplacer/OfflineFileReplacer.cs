@@ -12,10 +12,10 @@ namespace GoreUpdater
     /// </summary>
     public class BatchOfflineFileReplacer : IOfflineFileReplacer
     {
-        readonly string _outputFilePath;
+        readonly string _appPath;
         readonly Dictionary<string, string> _jobs = new Dictionary<string, string>(StringComparer.Ordinal);
         readonly object _jobsSync = new object();
-        readonly string _appPath;
+        readonly string _outputFilePath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchOfflineFileReplacer"/> class.
@@ -51,41 +51,12 @@ namespace GoreUpdater
         #region Implementation of IOfflineFileReplacer
 
         /// <summary>
-        /// Adds a job to replace a file. If a job for the <paramref name="filePath"/> already exists, the path will
-        /// be updated to the <paramref name="newFilePath"/>.
-        /// </summary>
-        /// <param name="filePath">The path to the file to move.</param>
-        /// <param name="newFilePath">The path to move the <paramref name="filePath"/> to.</param>
-        /// <returns>True if the job was successfully added; otherwise false.</returns>
-        public bool AddJob(string filePath, string newFilePath)
-        {
-            if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(newFilePath))
-                return false;
-
-            lock (_jobsSync)
-            {
-                if (_jobs.ContainsKey(filePath))
-                {
-                    _jobs[filePath] = newFilePath;
-                }
-                else
-                {
-                    _jobs.Add(filePath, newFilePath);
-                }
-
-                WriteFile();
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Creates the contents for the batch file.
         /// </summary>
         /// <returns>The contents for the batch file.</returns>
         string GetFileContents()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             // Turn echo off
             sb.AppendLine("@ECHO OFF");
@@ -147,10 +118,69 @@ namespace GoreUpdater
 
                 // Move the file
                 File.Copy(tempFilePath, _outputFilePath, true);
-                
+
                 // Delete the temp file
                 if (File.Exists(tempFilePath))
                     File.Delete(tempFilePath);
+            }
+        }
+
+        /// <summary>
+        /// Gets the path to the output file for this <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        public string FilePath
+        {
+            get { return _outputFilePath; }
+        }
+
+        /// <summary>
+        /// Gets the number of jobs in this <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        public int JobCount
+        {
+            get
+            {
+                lock (_jobsSync)
+                {
+                    return _jobs.Count;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a job to replace a file. If a job for the <paramref name="filePath"/> already exists, the path will
+        /// be updated to the <paramref name="newFilePath"/>.
+        /// </summary>
+        /// <param name="filePath">The path to the file to move.</param>
+        /// <param name="newFilePath">The path to move the <paramref name="filePath"/> to.</param>
+        /// <returns>True if the job was successfully added; otherwise false.</returns>
+        public bool AddJob(string filePath, string newFilePath)
+        {
+            if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(newFilePath))
+                return false;
+
+            lock (_jobsSync)
+            {
+                if (_jobs.ContainsKey(filePath))
+                    _jobs[filePath] = newFilePath;
+                else
+                    _jobs.Add(filePath, newFilePath);
+
+                WriteFile();
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets all of the queued jobs.
+        /// </summary>
+        /// <returns>All of the queued jobs and their corresponding destination.</returns>
+        public IEnumerable<KeyValuePair<string, string>> GetJobs()
+        {
+            lock (_jobsSync)
+            {
+                return _jobs.ToArray();
             }
         }
 
@@ -171,46 +201,10 @@ namespace GoreUpdater
                 removed = _jobs.Remove(filePath);
 
                 if (removed)
-                {
                     WriteFile();
-                }
             }
 
             return removed;
-        }
-
-        /// <summary>
-        /// Gets all of the queued jobs.
-        /// </summary>
-        /// <returns>All of the queued jobs and their corresponding destination.</returns>
-        public IEnumerable<KeyValuePair<string, string>> GetJobs()
-        {
-            lock (_jobsSync)
-            {
-                return _jobs.ToArray();
-            }
-        }
-
-        /// <summary>
-        /// Gets the number of jobs in this <see cref="IOfflineFileReplacer"/>.
-        /// </summary>
-        public int JobCount
-        {
-            get
-            {
-                lock (_jobsSync)
-                {
-                    return _jobs.Count;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the path to the output file for this <see cref="IOfflineFileReplacer"/>.
-        /// </summary>
-        public string FilePath
-        {
-            get { return _outputFilePath; }
         }
 
         #endregion

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using GoreUpdater;
 
 namespace GoreUpdater
 {
@@ -36,16 +35,6 @@ namespace GoreUpdater
             _dm.Enqueue(new string[] { "tab_a.png", "tab_b.png", "tab_h.png", "tabs.css" });
         }
 
-        void _dm_Finished(IDownloadManager sender)
-        {
-            // If we have any failed file moves, invoke the file replacer script and close the program 
-            if (_fileRep.JobCount > 0)
-            {
-                if (OfflineFileReplacerHelper.TryExecute(_fileRep.FilePath))
-                    Invoke((Action)(Close));
-            }
-        }
-
         void _dm_DownloadFailed(IDownloadManager sender, string remoteFile)
         {
             textBox1.Invoke((Action)(() => textBox1.AppendText("FAIL (DOWNLOAD): " + remoteFile + Environment.NewLine)));
@@ -70,6 +59,16 @@ namespace GoreUpdater
 
             if (_dm.QueueCount == 0)
                 textBox1.Invoke((Action)(() => textBox1.AppendText(" === ALL DONE ===" + Environment.NewLine)));
+        }
+
+        void _dm_Finished(IDownloadManager sender)
+        {
+            // If we have any failed file moves, invoke the file replacer script and close the program 
+            if (_fileRep.JobCount > 0)
+            {
+                if (OfflineFileReplacerHelper.TryExecute(_fileRep.FilePath))
+                    Invoke((Action)(Close));
+            }
         }
     }
 }

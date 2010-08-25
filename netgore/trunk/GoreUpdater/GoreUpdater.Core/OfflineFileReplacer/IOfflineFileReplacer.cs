@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GoreUpdater
 {
@@ -9,6 +10,16 @@ namespace GoreUpdater
     public interface IOfflineFileReplacer
     {
         /// <summary>
+        /// Gets the path to the output file for this <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        string FilePath { get; }
+
+        /// <summary>
+        /// Gets the number of jobs in this <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        int JobCount { get; }
+
+        /// <summary>
         /// Adds a job to replace a file. If a job for the <paramref name="filePath"/> already exists, the path will
         /// be updated to the <paramref name="newFilePath"/>.
         /// </summary>
@@ -18,27 +29,17 @@ namespace GoreUpdater
         bool AddJob(string filePath, string newFilePath);
 
         /// <summary>
-        /// Removes a job.
-        /// </summary>
-        /// <param name="filePath">The path to the file.</param>
-        /// <returns>True if the job was successfully removed; false if the <paramref name="filePath"/> was invalid
-        /// or no job exists for the given <paramref name="filePath"/>.</returns>
-        bool RemoveJob(string filePath);
-
-        /// <summary>
         /// Gets all of the queued jobs.
         /// </summary>
         /// <returns>All of the queued jobs and their corresponding destination.</returns>
         IEnumerable<KeyValuePair<string, string>> GetJobs();
 
         /// <summary>
-        /// Gets the number of jobs in this <see cref="IOfflineFileReplacer"/>.
+        /// Removes a job.
         /// </summary>
-        int JobCount { get; }
-
-        /// <summary>
-        /// Gets the path to the output file for this <see cref="IOfflineFileReplacer"/>.
-        /// </summary>
-        string FilePath { get; }
+        /// <param name="filePath">The path to the file.</param>
+        /// <returns>True if the job was successfully removed; false if the <paramref name="filePath"/> was invalid
+        /// or no job exists for the given <paramref name="filePath"/>.</returns>
+        bool RemoveJob(string filePath);
     }
 }

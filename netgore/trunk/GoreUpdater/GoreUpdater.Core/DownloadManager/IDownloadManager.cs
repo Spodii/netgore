@@ -13,13 +13,6 @@ namespace GoreUpdater
         event DownloadManagerDownloadFailedEventHandler DownloadFailed;
 
         /// <summary>
-        /// Notifies listeners when all of the jobs in this <see cref="IDownloadManager"/> have finished. This event will
-        /// be raised whenever the job queue hits 0. So if some jobs are added, they finish, then move jobs are added and finish,
-        /// this event will be raised twice.
-        /// </summary>
-        event DownloadManagerEventHandler Finished;
-
-        /// <summary>
         /// Notifies listeners when a file download has finished.
         /// </summary>
         event DownloadManagerFileEventHandler DownloadFinished;
@@ -29,6 +22,13 @@ namespace GoreUpdater
         /// the file is in use and cannot be deleted.
         /// </summary>
         event DownloadManagerFileMoveFailedEventHandler FileMoveFailed;
+
+        /// <summary>
+        /// Notifies listeners when all of the jobs in this <see cref="IDownloadManager"/> have finished. This event will
+        /// be raised whenever the job queue hits 0. So if some jobs are added, they finish, then move jobs are added and finish,
+        /// this event will be raised twice.
+        /// </summary>
+        event DownloadManagerEventHandler Finished;
 
         /// <summary>
         /// Gets the available file download sources.
