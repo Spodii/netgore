@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace GoreUpdater
 {
@@ -22,7 +23,7 @@ namespace GoreUpdater
                 return false;
 
             var psi = new ProcessStartInfo(filePath);
-            Process p = new Process { StartInfo = psi };
+            var p = new Process { StartInfo = psi };
             return p.Start();
         }
     }

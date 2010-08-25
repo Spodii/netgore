@@ -268,8 +268,8 @@ namespace GoreUpdater
 
         void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
         {
-            bool invokeFailed = false;
-            bool invokeFinished = false;
+            var invokeFailed = false;
+            var invokeFinished = false;
 
             lock (_downloadFailedDictSync)
             {
@@ -362,7 +362,7 @@ namespace GoreUpdater
             }
 
             // Remove from the download queue
-            bool finished = false;
+            var finished = false;
             lock (_downloadQueueSync)
             {
                 var removed = _downloadQueue.Remove(remoteFile);
@@ -393,7 +393,7 @@ namespace GoreUpdater
             }
 
             // Try to move the file
-            bool fileCopied = true;
+            var fileCopied = true;
             try
             {
                 lock (_fileSystemSync)
@@ -445,13 +445,6 @@ namespace GoreUpdater
         public event DownloadManagerDownloadFailedEventHandler DownloadFailed;
 
         /// <summary>
-        /// Notifies listeners when all of the jobs in this <see cref="IDownloadManager"/> have finished. This event will
-        /// be raised whenever the job queue hits 0. So if some jobs are added, they finish, then move jobs are added and finish,
-        /// this event will be raised twice.
-        /// </summary>
-        public event DownloadManagerEventHandler Finished;
-
-        /// <summary>
         /// Notifies listeners when a file download has finished.
         /// </summary>
         public event DownloadManagerFileEventHandler DownloadFinished;
@@ -461,6 +454,13 @@ namespace GoreUpdater
         /// the file is in use and cannot be deleted.
         /// </summary>
         public event DownloadManagerFileMoveFailedEventHandler FileMoveFailed;
+
+        /// <summary>
+        /// Notifies listeners when all of the jobs in this <see cref="IDownloadManager"/> have finished. This event will
+        /// be raised whenever the job queue hits 0. So if some jobs are added, they finish, then move jobs are added and finish,
+        /// this event will be raised twice.
+        /// </summary>
+        public event DownloadManagerEventHandler Finished;
 
         /// <summary>
         /// Gets the available file download sources.
