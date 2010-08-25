@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using GoreUpdater.Core;
@@ -8,14 +7,14 @@ namespace GoreUpdater
 {
     public partial class Form1 : Form
     {
+        DownloadManager _dm;
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        DownloadManager _dm;
-
-        protected override void OnLoad(System.EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
@@ -28,15 +27,7 @@ namespace GoreUpdater
 
             _dm.AddSource(new HttpDownloadSource("http://www.netgore.com/docs"));
 
-            _dm.Enqueue(new string[] { "tab_a.png", "tab_b.png", "tab_h.png", "tabs.css"});
-        }
-
-        void _dm_FileMoveFailed(IDownloadManager sender, string remoteFile, string localFilePath, string targetFilePath)
-        {
-            textBox1.Invoke((Action)(() => textBox1.AppendText("FAIL: " + remoteFile + Environment.NewLine)));
-
-            if (_dm.QueueCount == 0)
-                textBox1.Invoke((Action)(() => textBox1.AppendText(" === ALL DONE ===" + remoteFile + Environment.NewLine)));
+            _dm.Enqueue(new string[] { "tab_a.png", "tab_b.png", "tab_h.png", "tabs.css" });
         }
 
         void _dm_DownloadFinished(IDownloadManager sender, string remoteFile, string localFilePath)
@@ -45,6 +36,14 @@ namespace GoreUpdater
 
             if (_dm.QueueCount == 0)
                 textBox1.Invoke((Action)(() => textBox1.AppendText(" === ALL DONE ===" + remoteFile + Environment.NewLine)));
+        }
+
+        void _dm_FileMoveFailed(IDownloadManager sender, string remoteFile, string localFilePath, string targetFilePath)
+        {
+            textBox1.Invoke((Action)(() => textBox1.AppendText("FAIL: " + remoteFile + Environment.NewLine)));
+
+            if (_dm.QueueCount == 0)
+                textBox1.Invoke((Action)(() => textBox1.AppendText(" === ALL DONE ===" + Environment.NewLine)));
         }
     }
 }
