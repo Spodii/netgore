@@ -398,14 +398,13 @@ namespace GoreUpdater
             {
                 lock (_fileSystemSync)
                 {
-                    throw new Exception(); // NOTE: Temp
                     File.Copy(tempPath, targetPath, true);
                 }
             }
             catch (Exception ex)
             {
                 fileCopied = false;
-                // Debug.Fail(ex.ToString());  // NOTE: Temp
+                Debug.Fail(ex.ToString());
                 if (FileMoveFailed != null)
                     FileMoveFailed(this, remoteFile, tempPath, targetPath);
             }
