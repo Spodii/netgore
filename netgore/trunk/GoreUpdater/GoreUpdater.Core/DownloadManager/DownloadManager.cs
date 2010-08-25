@@ -268,6 +268,9 @@ namespace GoreUpdater
 
         void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
         {
+            bool invokeFailed = false;
+            bool invokeFinished = false;
+
             lock (_downloadFailedDictSync)
             {
                 // Increment the fail count for this file
@@ -280,7 +283,7 @@ namespace GoreUpdater
                 else
                     _downloadFailedDictCount[remoteFile]++;
 
-                // Check if the failure has happened too many times that we will just give up
+                // Check if the failure has happened too many times and that we should just give up
                 if (fails > MaxAttempts)
                 {
                     RemoveFromFailedDicts(remoteFile, false);
@@ -289,6 +292,9 @@ namespace GoreUpdater
                     {
                         var removed = _downloadQueue.Remove(remoteFile);
                         Debug.Assert(removed);
+
+                        if (_downloadQueue.Count == 0)
+                            invokeFinished = true;
                     }
 
                     lock (_failedDownloadsSync)
@@ -297,39 +303,50 @@ namespace GoreUpdater
                             _failedDownloads.Add(remoteFile);
                     }
 
-                    if (DownloadFailed != null)
-                        DownloadFailed(this, remoteFile);
-
-                    return;
+                    invokeFailed = true;
                 }
-
-                // Add the downloader that just failed to the list of failed sources
-                List<IDownloadSource> failedSources;
-                if (!_downloadFailedDict.TryGetValue(remoteFile, out failedSources))
+                else
                 {
-                    failedSources = new List<IDownloadSource>();
-                    _downloadFailedDict.Add(remoteFile, failedSources);
-                }
-
-                failedSources.Add(sender);
-
-                // If every source we have has failed, empty the list so they can all try again. This forces
-                // failed files to rotate through all sources before trying the same one again.
-                var containsAllSources = true;
-                lock (_downloadSourcesSync)
-                {
-                    foreach (var src in _downloadSources)
+                    // Add the downloader that just failed to the list of failed sources
+                    List<IDownloadSource> failedSources;
+                    if (!_downloadFailedDict.TryGetValue(remoteFile, out failedSources))
                     {
-                        if (!failedSources.Contains(src))
+                        failedSources = new List<IDownloadSource>();
+                        _downloadFailedDict.Add(remoteFile, failedSources);
+                    }
+
+                    failedSources.Add(sender);
+
+                    // If every source we have has failed, empty the list so they can all try again. This forces
+                    // failed files to rotate through all sources before trying the same one again.
+                    var containsAllSources = true;
+                    lock (_downloadSourcesSync)
+                    {
+                        foreach (var src in _downloadSources)
                         {
-                            containsAllSources = false;
-                            break;
+                            if (!failedSources.Contains(src))
+                            {
+                                containsAllSources = false;
+                                break;
+                            }
                         }
                     }
-                }
 
-                if (containsAllSources)
-                    failedSources.Clear();
+                    if (containsAllSources)
+                        failedSources.Clear();
+                }
+            }
+
+            if (invokeFailed)
+            {
+                if (DownloadFailed != null)
+                    DownloadFailed(this, remoteFile);
+            }
+
+            if (invokeFinished)
+            {
+                if (JobsFinished != null)
+                    JobsFinished(this);
             }
         }
 
@@ -345,10 +362,14 @@ namespace GoreUpdater
             }
 
             // Remove from the download queue
+            bool finished = false;
             lock (_downloadQueueSync)
             {
                 var removed = _downloadQueue.Remove(remoteFile);
                 Debug.Assert(removed);
+
+                if (_downloadQueue.Count == 0)
+                    finished = true;
             }
 
             // Add to the finished queue
@@ -372,6 +393,7 @@ namespace GoreUpdater
             }
 
             // Try to move the file
+            bool fileCopied = true;
             try
             {
                 lock (_fileSystemSync)
@@ -381,29 +403,39 @@ namespace GoreUpdater
             }
             catch (Exception ex)
             {
+                fileCopied = false;
                 Debug.Fail(ex.ToString());
                 if (FileMoveFailed != null)
                     FileMoveFailed(this, remoteFile, tempPath, targetPath);
-                return;
             }
 
             // Delete the old file
-            lock (_fileSystemSync)
+            if (fileCopied)
             {
-                try
+                lock (_fileSystemSync)
                 {
-                    if (File.Exists(tempPath))
-                        File.Delete(tempPath);
+                    try
+                    {
+                        if (File.Exists(tempPath))
+                            File.Delete(tempPath);
+                    }
+                    catch (IOException ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                    }
                 }
-                catch (IOException ex)
-                {
-                    Debug.Fail(ex.ToString());
-                }
+
+                // Notify that the file successfully downloaded and was moved
+                if (DownloadFinished != null)
+                    DownloadFinished(this, remoteFile, targetPath);
             }
 
-            // Notify that the file successfully downloaded and was moved
-            if (DownloadFinished != null)
-                DownloadFinished(this, remoteFile, targetPath);
+            // Notify if all jobs have finished
+            if (finished)
+            {
+                if (JobsFinished != null)
+                    JobsFinished(this);
+            }
         }
 
         /// <summary>
@@ -411,6 +443,13 @@ namespace GoreUpdater
         /// attempts.
         /// </summary>
         public event DownloadManagerDownloadFailedEventHandler DownloadFailed;
+
+        /// <summary>
+        /// Notifies listeners when all of the jobs in this <see cref="IDownloadManager"/> have finished. This event will
+        /// be raised whenever the job queue hits 0. So if some jobs are added, they finish, then move jobs are added and finish,
+        /// this event will be raised twice.
+        /// </summary>
+        public event DownloadManagerEventHandler JobsFinished;
 
         /// <summary>
         /// Notifies listeners when a file download has finished.
