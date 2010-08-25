@@ -40,6 +40,12 @@ namespace GoreUpdater
         IEnumerable<IDownloadSource> DownloadSources { get; }
 
         /// <summary>
+        /// Gets the version of the file being downloaded. When not set, calls to the <see cref="IDownloadSource"/> will not specify
+        /// a version number when downloading files.
+        /// </summary>
+        int? DownloadVersion { get; }
+
+        /// <summary>
         /// Gets the number of items in the list of files that failed to be downloaded.
         /// </summary>
         int FailedDownloadsCount { get; }

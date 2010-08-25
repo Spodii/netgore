@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoreUpdater", "GoreUpdater\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoreUpdater.Core", "GoreUpdater.Core\GoreUpdater.Core.csproj", "{9AED7C14-A737-4D19-A64B-69B401691862}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoreUpdater.Tests", "GoreUpdater.Tests\GoreUpdater.Tests.csproj", "{36C4A09F-BF39-4B0D-9BC4-A1820158691D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{9AED7C14-A737-4D19-A64B-69B401691862}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9AED7C14-A737-4D19-A64B-69B401691862}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9AED7C14-A737-4D19-A64B-69B401691862}.Release|x86.ActiveCfg = Release|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{36C4A09F-BF39-4B0D-9BC4-A1820158691D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

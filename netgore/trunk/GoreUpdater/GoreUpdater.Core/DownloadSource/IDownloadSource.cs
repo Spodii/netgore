@@ -31,7 +31,8 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="remoteFile">The file to download.</param>
         /// <param name="localFilePath">The complete file path that will be used to store the downloaded file.</param>
+        /// <param name="version">The file version to download.</param>
         /// <returns>True if the download was successfully started; otherwise false.</returns>
-        bool Download(string remoteFile, string localFilePath);
+        bool Download(string remoteFile, string localFilePath, int? version);
     }
 }

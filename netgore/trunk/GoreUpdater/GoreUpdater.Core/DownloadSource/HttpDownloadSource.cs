@@ -159,10 +159,20 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="remoteFile">The file to download.</param>
         /// <param name="localFilePath">The complete file path that will be used to store the downloaded file.</param>
+        /// <param name="version">The file version to download.</param>
         /// <returns>True if the download was successfully started; otherwise false.</returns>
-        public bool Download(string remoteFile, string localFilePath)
+        public bool Download(string remoteFile, string localFilePath, int? version)
         {
-            var uri = new Uri(RootPath + remoteFile);
+            string uriPath = RootPath;
+
+            // Add the version directory if needed
+            if (version.HasValue)
+                uriPath = PathHelper.CombineDifferentPaths(uriPath, PathHelper.GetVersionString(version.Value));
+
+            // Add the file to get to the path
+            uriPath = PathHelper.CombineDifferentPaths(uriPath, remoteFile);
+
+            var uri = new Uri(uriPath);
 
             // Ensure the directory exists
             var dir = Path.GetDirectoryName(localFilePath);

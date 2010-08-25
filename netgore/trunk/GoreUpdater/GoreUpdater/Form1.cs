@@ -24,7 +24,7 @@ namespace GoreUpdater
             var replacerFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath, GlobalSettings.ReplacerFileName);
             _fileRep = new BatchOfflineFileReplacer(replacerFilePath, Application.ExecutablePath);
 
-            _dm = new DownloadManager(targetPath, tempPath);
+            _dm = new DownloadManager(targetPath, tempPath, 1);
             _dm.DownloadFinished += _dm_DownloadFinished;
             _dm.FileMoveFailed += _dm_FileMoveFailed;
             _dm.DownloadFailed += _dm_DownloadFailed;

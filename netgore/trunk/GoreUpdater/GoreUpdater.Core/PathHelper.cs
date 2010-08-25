@@ -9,10 +9,30 @@ namespace GoreUpdater
     public static class PathHelper
     {
         /// <summary>
+        /// The minimum version string length. Versions with less digits than this value will be prefixed with 0's.
+        /// </summary>
+        public const int MinVersionStringLength = 6;
+
+        /// <summary>
         /// The possible path separators.
         /// </summary>
         static readonly string[] _pathSeps = new string[]
         { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
+
+        /// <summary>
+        /// Gets the string to use for a version number.
+        /// </summary>
+        /// <param name="version">The version number.</param>
+        /// <returns>The string to use for the version number.</returns>
+        public static string GetVersionString(int version)
+        {
+            var vstr = version.ToString();
+            int prefixLen = MinVersionStringLength - vstr.Length;
+            if (prefixLen > 0)
+                vstr = new string('0', prefixLen) + vstr;
+
+            return vstr;
+        }
 
         /// <summary>
         /// Combines two paths and forces them to be in different directories. That is, the second path will always

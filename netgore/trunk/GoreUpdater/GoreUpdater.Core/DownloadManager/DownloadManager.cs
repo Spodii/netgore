@@ -37,23 +37,30 @@ namespace GoreUpdater
 
         readonly Dictionary<string, List<IDownloadSource>> _downloadFailedDict =
             new Dictionary<string, List<IDownloadSource>>(StringComparer.Ordinal);
-
         readonly Dictionary<string, int> _downloadFailedDictCount = new Dictionary<string, int>(StringComparer.Ordinal);
         readonly object _downloadFailedDictSync = new object();
 
         readonly List<string> _downloadQueue = new List<string>();
         readonly object _downloadQueueSync = new object();
+
         readonly List<IDownloadSource> _downloadSources = new List<IDownloadSource>();
         readonly object _downloadSourcesSync = new object();
+
+        readonly int? _downloadVersion;
+
         readonly List<string> _failedDownloads = new List<string>();
         readonly object _failedDownloadsSync = new object();
+
         readonly List<string> _finishedDownloads = new List<string>();
         readonly object _finishedDownloadsSync = new object();
+
         readonly Queue<string> _notStartedQueue = new Queue<string>();
         readonly object _notStartedQueueSync = new object();
+
         readonly string _targetPath;
         readonly string _tempPath;
         readonly List<Thread> _workerThreads = new List<Thread>();
+
         bool _isDisposed = false;
         int _maxAttempts = 2;
 
@@ -62,14 +69,16 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="targetPath">The path that downloaded files will ultimately end up in.</param>
         /// <param name="tempPath">The path to store temporary download files until they finish.</param>
+        /// <param name="downloadVersion">The version of the file to download.</param>
         /// <param name="attemptsPerSource">The number of times we will attempt each source before giving up completely on
         /// a file. While this value is quite high (3) by default, this is due to the fact that failing to download a file
         /// completely can be hard to recover from. If less than 1, this value will be set to 1.</param>
-        public DownloadManager(string targetPath, string tempPath, byte attemptsPerSource = (byte)3)
+        public DownloadManager(string targetPath, string tempPath, int? downloadVersion, byte attemptsPerSource = (byte)3)
         {
             if (attemptsPerSource < 1)
                 attemptsPerSource = 1;
 
+            _downloadVersion = downloadVersion;
             _targetPath = targetPath;
             _tempPath = tempPath;
 
@@ -164,7 +173,7 @@ namespace GoreUpdater
                 {
                     foreach (var ds in _downloadSources)
                     {
-                        if (ds.Download(workItem, downloadTo))
+                        if (ds.Download(workItem, downloadTo, DownloadVersion))
                         {
                             added = true;
                             break;
@@ -477,6 +486,15 @@ namespace GoreUpdater
                     return _downloadSources.ToArray();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the version of the file being downloaded. When not set, calls to the <see cref="IDownloadSource"/> will not specify
+        /// a version number when downloading files.
+        /// </summary>
+        public int? DownloadVersion
+        {
+            get { return _downloadVersion; }
         }
 
         /// <summary>
