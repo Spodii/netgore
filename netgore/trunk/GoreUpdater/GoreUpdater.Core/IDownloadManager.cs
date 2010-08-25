@@ -18,6 +18,24 @@ namespace GoreUpdater.Core
         event DownloadManagerFileMoveFailedEventHandler FileMoveFailed;
 
         /// <summary>
+        /// Notifies listeners when a file completely failed to be downloaded after <see cref="IDownloadManager.MaxAttempts"/>
+        /// attempts.
+        /// </summary>
+        event DownloadManagerDownloadFailedEventHandler DownloadFailed;
+
+        /// <summary>
+        /// Gets the files that failed to be downloaded. These files will not be re-attempted automatically since they had already
+        /// passed the <see cref="MaxAttempts"/> limit.
+        /// </summary>
+        /// <returns>The files that failed to be downloaded</returns>
+        IEnumerable<string> GetFailedDownloads();
+
+        /// <summary>
+        /// Gets the number of items in the list of files that failed to be downloaded.
+        /// </summary>
+        int FailedDownloadsCount { get; }
+
+        /// <summary>
         /// Gets the available file download sources.
         /// </summary>
         IEnumerable<IDownloadSource> DownloadSources { get; }
@@ -56,6 +74,11 @@ namespace GoreUpdater.Core
         void ClearFinished();
 
         /// <summary>
+        /// Clears the failed downloads information.
+        /// </summary>
+        void ClearFailed();
+
+        /// <summary>
         /// Enqueues a file for download.
         /// </summary>
         /// <param name="file">The path of the file to download.</param>
@@ -88,5 +111,11 @@ namespace GoreUpdater.Core
         /// <returns>True if the <paramref name="downloadSource"/> was removed; false if the <paramref name="downloadSource"/> was
         /// invalid or not in this <see cref="IDownloadManager"/>.</returns>
         bool RemoveSource(IDownloadSource downloadSource);
+
+        /// <summary>
+        /// Gets the maximum times a single file will attempt to download. If a download failes more than this many times, it will
+        /// be aborted and the <see cref="IDownloadManager.DownloadFailed"/> event will be raised.
+        /// </summary>
+        int MaxAttempts { get; }
     }
 }
