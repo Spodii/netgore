@@ -8,6 +8,7 @@ namespace GoreUpdater
     public partial class Form1 : Form
     {
         DownloadManager _dm;
+        BatchOfflineFileReplacer _fileRep;
 
         public Form1()
         {
@@ -20,6 +21,9 @@ namespace GoreUpdater
 
             var tempPath = PathHelper.CombineDifferentPaths(Application.StartupPath, "_temp");
             var targetPath = PathHelper.CombineDifferentPaths(Application.StartupPath, "Downloaded");
+
+            var replacerFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath, GlobalSettings.ReplacerFileName);
+            _fileRep = new BatchOfflineFileReplacer(replacerFilePath, Application.ExecutablePath);
 
             _dm = new DownloadManager(targetPath, tempPath);
             _dm.DownloadFinished += _dm_DownloadFinished;
