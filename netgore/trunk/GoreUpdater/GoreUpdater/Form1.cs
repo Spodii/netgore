@@ -53,6 +53,8 @@ namespace GoreUpdater
 
         void _dm_FileMoveFailed(IDownloadManager sender, string remoteFile, string localFilePath, string targetFilePath)
         {
+            _fileRep.AddJob(localFilePath, targetFilePath);
+
             textBox1.Invoke((Action)(() => textBox1.AppendText("FAIL (MOVE): " + remoteFile + Environment.NewLine)));
 
             if (_dm.QueueCount == 0)
