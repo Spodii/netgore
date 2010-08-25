@@ -17,7 +17,7 @@ namespace GoreUpdater
         /// be raised whenever the job queue hits 0. So if some jobs are added, they finish, then move jobs are added and finish,
         /// this event will be raised twice.
         /// </summary>
-        event DownloadManagerEventHandler JobsFinished;
+        event DownloadManagerEventHandler Finished;
 
         /// <summary>
         /// Notifies listeners when a file download has finished.

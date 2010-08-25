@@ -29,10 +29,21 @@ namespace GoreUpdater
             _dm.DownloadFinished += _dm_DownloadFinished;
             _dm.FileMoveFailed += _dm_FileMoveFailed;
             _dm.DownloadFailed += _dm_DownloadFailed;
+            _dm.Finished += new DownloadManagerEventHandler(_dm_Finished);
 
             _dm.AddSource(new HttpDownloadSource("http://www.netgore.com/docs"));
 
             _dm.Enqueue(new string[] { "tab_a.png", "tab_b.png", "tab_h.png", "tabs.css" });
+        }
+
+        void _dm_Finished(IDownloadManager sender)
+        {
+            // If we have any failed file moves, invoke the file replacer script and close the program 
+            if (_fileRep.JobCount > 0)
+            {
+                if (OfflineFileReplacerHelper.TryExecute(_fileRep.FilePath))
+                    Invoke((Action)(Close));
+            }
         }
 
         void _dm_DownloadFailed(IDownloadManager sender, string remoteFile)

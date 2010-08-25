@@ -345,8 +345,8 @@ namespace GoreUpdater
 
             if (invokeFinished)
             {
-                if (JobsFinished != null)
-                    JobsFinished(this);
+                if (Finished != null)
+                    Finished(this);
             }
         }
 
@@ -398,13 +398,14 @@ namespace GoreUpdater
             {
                 lock (_fileSystemSync)
                 {
+                    throw new Exception(); // NOTE: Temp
                     File.Copy(tempPath, targetPath, true);
                 }
             }
             catch (Exception ex)
             {
                 fileCopied = false;
-                Debug.Fail(ex.ToString());
+                // Debug.Fail(ex.ToString());  // NOTE: Temp
                 if (FileMoveFailed != null)
                     FileMoveFailed(this, remoteFile, tempPath, targetPath);
             }
@@ -433,8 +434,8 @@ namespace GoreUpdater
             // Notify if all jobs have finished
             if (finished)
             {
-                if (JobsFinished != null)
-                    JobsFinished(this);
+                if (Finished != null)
+                    Finished(this);
             }
         }
 
@@ -449,7 +450,7 @@ namespace GoreUpdater
         /// be raised whenever the job queue hits 0. So if some jobs are added, they finish, then move jobs are added and finish,
         /// this event will be raised twice.
         /// </summary>
-        public event DownloadManagerEventHandler JobsFinished;
+        public event DownloadManagerEventHandler Finished;
 
         /// <summary>
         /// Notifies listeners when a file download has finished.
