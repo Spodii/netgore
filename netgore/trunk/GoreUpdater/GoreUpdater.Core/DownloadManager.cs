@@ -19,6 +19,12 @@ namespace GoreUpdater.Core
         /// </summary>
         const int _workerThreadSourcesBusyTimeout = 500;
 
+        /// <summary>
+        /// A counter for counting what <see cref="DownloadManager"/> instance number this is. Mostly just used for when
+        /// naming the worker threads.
+        /// </summary>
+        static int _downloadManagerCount = -1;
+
         readonly List<string> _downloadQueue = new List<string>();
         readonly object _downloadQueueSync = new object();
         readonly List<IDownloadSource> _downloadSources = new List<IDownloadSource>();
@@ -28,17 +34,11 @@ namespace GoreUpdater.Core
         readonly Queue<string> _notStartedQueue = new Queue<string>();
         readonly object _notStartedQueueSync = new object();
         readonly string _targetPath;
-        readonly List<Thread> _workerThreads = new List<Thread>();
 
         readonly string _tempPath;
+        readonly List<Thread> _workerThreads = new List<Thread>();
 
         bool _isDisposed = false;
-
-        /// <summary>
-        /// A counter for counting what <see cref="DownloadManager"/> instance number this is. Mostly just used for when
-        /// naming the worker threads.
-        /// </summary>
-        static int _downloadManagerCount = -1;
 
         public DownloadManager(string targetPath, string tempPath)
         {
@@ -51,8 +51,7 @@ namespace GoreUpdater.Core
             var numWorkers = GetNumWorkerThreads();
             for (var i = 0; i < numWorkers; i++)
             {
-                var workerThread = new Thread(WorkerThreadLoop)
-                { IsBackground = true};
+                var workerThread = new Thread(WorkerThreadLoop) { IsBackground = true };
 
                 try
                 {
@@ -116,7 +115,7 @@ namespace GoreUpdater.Core
                     continue;
                 }
 
-                string downloadTo = GetTempPath(workItem);
+                var downloadTo = GetTempPath(workItem);
 
                 // Push the work item in to the next free IDownloadSource
                 var added = false;
@@ -161,6 +160,76 @@ namespace GoreUpdater.Core
         #endregion
 
         #region Implementation of IDownloadManager
+
+        /// <summary>
+        /// Gets the temporary download path.
+        /// </summary>
+        public string TempPath
+        {
+            get { return _tempPath; }
+        }
+
+        /// <summary>
+        /// Gets the target path for a remote file.
+        /// </summary>
+        /// <param name="remoteFile">The remote file being downloaded.</param>
+        /// <returns>The target path for the <paramref name="remoteFile"/>.</returns>
+        protected string GetTargetPath(string remoteFile)
+        {
+            return Path.Combine(TargetPath, remoteFile);
+        }
+
+        /// <summary>
+        /// Gets the temporary path to use to download a remote file. The file is downloaded to here completely first before
+        /// moving it to the real target path.
+        /// </summary>
+        /// <param name="remoteFile">The remote file being downloaded.</param>
+        /// <returns>The temporary path for the <paramref name="remoteFile"/>.</returns>
+        protected string GetTempPath(string remoteFile)
+        {
+            return Path.Combine(TempPath, remoteFile);
+        }
+
+        void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
+        {
+            // TODO: Handle failed downloads
+        }
+
+        void downloadSource_DownloadFinished(IDownloadSource sender, string remoteFile)
+        {
+            // Remove from the download queue
+            lock (_downloadQueueSync)
+            {
+                var removed = _downloadQueue.Remove(remoteFile);
+                Debug.Assert(removed);
+            }
+
+            // Add to the finished queue
+            lock (_finishedDownloadsSync)
+            {
+                _finishedDownloads.Add(remoteFile);
+            }
+
+            var tempPath = GetTempPath(remoteFile);
+            var targetPath = GetTargetPath(remoteFile);
+
+            // Try to move the file
+            try
+            {
+                File.Move(tempPath, targetPath);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+                if (FileMoveFailed != null)
+                    FileMoveFailed(this, remoteFile, tempPath, targetPath);
+                return;
+            }
+
+            // Notify that the file successfully downloaded and was moved
+            if (DownloadFinished != null)
+                DownloadFinished(this, remoteFile, targetPath);
+        }
 
         /// <summary>
         /// Notifies listeners when a file download has finished.
@@ -224,14 +293,6 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
-        /// Gets the temporary download path.
-        /// </summary>
-        public string TempPath
-        {
-            get { return _tempPath; }
-        }
-
-        /// <summary>
         /// Gets the target path that the downloaded files will be moved to.
         /// </summary>
         public string TargetPath
@@ -262,68 +323,6 @@ namespace GoreUpdater.Core
             }
 
             return true;
-        }
-
-        void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
-        {
-            // TODO: Handle failed downloads
-        }
-
-        /// <summary>
-        /// Gets the temporary path to use to download a remote file. The file is downloaded to here completely first before
-        /// moving it to the real target path.
-        /// </summary>
-        /// <param name="remoteFile">The remote file being downloaded.</param>
-        /// <returns>The temporary path for the <paramref name="remoteFile"/>.</returns>
-        protected string GetTempPath(string remoteFile)
-        {
-            return Path.Combine(TempPath, remoteFile);
-        }
-        
-        /// <summary>
-        /// Gets the target path for a remote file.
-        /// </summary>
-        /// <param name="remoteFile">The remote file being downloaded.</param>
-        /// <returns>The target path for the <paramref name="remoteFile"/>.</returns>
-        protected string GetTargetPath(string remoteFile)
-        {
-            return Path.Combine(TargetPath, remoteFile);
-        }
-
-        void downloadSource_DownloadFinished(IDownloadSource sender, string remoteFile)
-        {
-            // Remove from the download queue
-            lock (_downloadQueueSync)
-            {
-                bool removed = _downloadQueue.Remove(remoteFile);
-                Debug.Assert(removed);
-            }
-
-            // Add to the finished queue
-            lock (_finishedDownloadsSync)
-            {
-                _finishedDownloads.Add(remoteFile);
-            }
-
-            string tempPath = GetTempPath(remoteFile);
-            string targetPath = GetTargetPath(remoteFile);
-
-            // Try to move the file
-            try
-            {
-                File.Move(tempPath, targetPath);
-            }
-            catch (Exception ex)
-            {
-                Debug.Fail(ex.ToString());
-                if (FileMoveFailed != null)
-                    FileMoveFailed(this, remoteFile, tempPath, targetPath);
-                return;
-            }
-
-            // Notify that the file successfully downloaded and was moved
-            if (DownloadFinished != null)
-                DownloadFinished(this, remoteFile, targetPath);
         }
 
         /// <summary>
