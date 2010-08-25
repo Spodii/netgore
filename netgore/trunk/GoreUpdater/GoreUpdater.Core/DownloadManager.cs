@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 
@@ -18,7 +19,7 @@ namespace GoreUpdater.Core
         /// </summary>
         const int _workerThreadSourcesBusyTimeout = 500;
 
-        readonly Queue<string> _downloadQueue = new Queue<string>();
+        readonly List<string> _downloadQueue = new List<string>();
         readonly object _downloadQueueSync = new object();
         readonly List<IDownloadSource> _downloadSources = new List<IDownloadSource>();
         readonly object _downloadSourcesSync = new object();
@@ -29,6 +30,8 @@ namespace GoreUpdater.Core
         readonly string _targetPath;
         readonly List<Thread> _workerThreads = new List<Thread>();
 
+        readonly string _tempPath;
+
         bool _isDisposed = false;
 
         /// <summary>
@@ -37,9 +40,10 @@ namespace GoreUpdater.Core
         /// </summary>
         static int _downloadManagerCount = -1;
 
-        public DownloadManager(string targetPath)
+        public DownloadManager(string targetPath, string tempPath)
         {
             _targetPath = targetPath;
+            _tempPath = tempPath;
 
             var id = Interlocked.Increment(ref _downloadManagerCount);
 
@@ -112,13 +116,15 @@ namespace GoreUpdater.Core
                     continue;
                 }
 
+                string downloadTo = GetTempPath(workItem);
+
                 // Push the work item in to the next free IDownloadSource
                 var added = false;
                 lock (_downloadSourcesSync)
                 {
                     foreach (var ds in _downloadSources)
                     {
-                        if (ds.Download(workItem, TargetPath + workItem))
+                        if (ds.Download(workItem, downloadTo))
                         {
                             added = true;
                             break;
@@ -218,6 +224,14 @@ namespace GoreUpdater.Core
         }
 
         /// <summary>
+        /// Gets the temporary download path.
+        /// </summary>
+        public string TempPath
+        {
+            get { return _tempPath; }
+        }
+
+        /// <summary>
         /// Gets the target path that the downloaded files will be moved to.
         /// </summary>
         public string TargetPath
@@ -241,10 +255,75 @@ namespace GoreUpdater.Core
                 if (_downloadSources.Contains(downloadSource))
                     return false;
 
+                downloadSource.DownloadFinished += downloadSource_DownloadFinished;
+                downloadSource.DownloadFailed += downloadSource_DownloadFailed;
+
                 _downloadSources.Add(downloadSource);
             }
 
             return true;
+        }
+
+        void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile)
+        {
+            // TODO: Handle failed downloads
+        }
+
+        /// <summary>
+        /// Gets the temporary path to use to download a remote file. The file is downloaded to here completely first before
+        /// moving it to the real target path.
+        /// </summary>
+        /// <param name="remoteFile">The remote file being downloaded.</param>
+        /// <returns>The temporary path for the <paramref name="remoteFile"/>.</returns>
+        protected string GetTempPath(string remoteFile)
+        {
+            return Path.Combine(TempPath, remoteFile);
+        }
+        
+        /// <summary>
+        /// Gets the target path for a remote file.
+        /// </summary>
+        /// <param name="remoteFile">The remote file being downloaded.</param>
+        /// <returns>The target path for the <paramref name="remoteFile"/>.</returns>
+        protected string GetTargetPath(string remoteFile)
+        {
+            return Path.Combine(TargetPath, remoteFile);
+        }
+
+        void downloadSource_DownloadFinished(IDownloadSource sender, string remoteFile)
+        {
+            // Remove from the download queue
+            lock (_downloadQueueSync)
+            {
+                bool removed = _downloadQueue.Remove(remoteFile);
+                Debug.Assert(removed);
+            }
+
+            // Add to the finished queue
+            lock (_finishedDownloadsSync)
+            {
+                _finishedDownloads.Add(remoteFile);
+            }
+
+            string tempPath = GetTempPath(remoteFile);
+            string targetPath = GetTargetPath(remoteFile);
+
+            // Try to move the file
+            try
+            {
+                File.Move(tempPath, targetPath);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+                if (FileMoveFailed != null)
+                    FileMoveFailed(this, remoteFile, tempPath, targetPath);
+                return;
+            }
+
+            // Notify that the file successfully downloaded and was moved
+            if (DownloadFinished != null)
+                DownloadFinished(this, remoteFile, targetPath);
         }
 
         /// <summary>
@@ -280,7 +359,7 @@ namespace GoreUpdater.Core
                         return false;
                 }
 
-                _downloadQueue.Enqueue(file);
+                _downloadQueue.Add(file);
 
                 lock (_notStartedQueueSync)
                 {
@@ -328,8 +407,14 @@ namespace GoreUpdater.Core
 
             lock (_downloadSourcesSync)
             {
-                return _downloadSources.Remove(downloadSource);
+                if (!_downloadSources.Remove(downloadSource))
+                    return false;
             }
+
+            downloadSource.DownloadFinished -= downloadSource_DownloadFinished;
+            downloadSource.DownloadFailed -= downloadSource_DownloadFailed;
+
+            return true;
         }
 
         #endregion

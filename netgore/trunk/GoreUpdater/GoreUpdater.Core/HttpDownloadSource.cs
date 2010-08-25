@@ -56,7 +56,7 @@ namespace GoreUpdater.Core
             else
             {
                 if (DownloadFinished != null)
-                    DownloadFinished(this, downloadInfo.RemoteFile, downloadInfo.LocalFilePath);
+                    DownloadFinished(this, downloadInfo.RemoteFile);
             }
         }
 
@@ -147,7 +147,7 @@ namespace GoreUpdater.Core
                     return false;
 
                 var wc = _webClients.Pop();
-                wc.DownloadFileAsync(uri, localFilePath, new AsyncDownloadInfo(remoteFile, localFilePath));
+                wc.DownloadFileAsync(uri, localFilePath, new AsyncDownloadInfo(remoteFile));
             }
 
             return true;
@@ -175,17 +175,13 @@ namespace GoreUpdater.Core
         class AsyncDownloadInfo
         {
             readonly string _remoteFile;
-            readonly string _localFilePath;
 
-            public AsyncDownloadInfo(string remoteFile, string localFilePath)
+            public AsyncDownloadInfo(string remoteFile)
             {
                 _remoteFile = remoteFile;
-                _localFilePath = localFilePath;
             }
 
             public string RemoteFile { get { return _remoteFile; } }
-
-            public string LocalFilePath { get { return _localFilePath; } }
         }
     }
 }
