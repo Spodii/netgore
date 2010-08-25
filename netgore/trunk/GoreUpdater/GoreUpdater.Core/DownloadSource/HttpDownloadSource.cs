@@ -133,6 +133,22 @@ namespace GoreUpdater
         public event DownloadSourceFileEventHandler DownloadFinished;
 
         /// <summary>
+        /// Checks if this <see cref="IDownloadSource"/> contains the same values as the given <see cref="DownloadSourceDescriptor"/>.
+        /// </summary>
+        /// <param name="descriptor">The <see cref="DownloadSourceDescriptor"/> to compare to.</param>
+        /// <returns>True if they have equal values; otherwise false.</returns>
+        public bool IsIdenticalTo(DownloadSourceDescriptor descriptor)
+        {
+            if (descriptor.Type != DownloadSourceType.Http)
+                return false;
+
+            if (descriptor.RootPath != RootPath)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets if this <see cref="IDownloadSource"/> can start a download.
         /// </summary>
         public bool CanDownload
