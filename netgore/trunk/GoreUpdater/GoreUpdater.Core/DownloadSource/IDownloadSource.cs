@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace GoreUpdater
 {
+    /// <summary>
+    /// Interface for an object that provides access to files that can be downloaded.
+    /// </summary>
     public interface IDownloadSource : IDisposable
     {
         /// <summary>
