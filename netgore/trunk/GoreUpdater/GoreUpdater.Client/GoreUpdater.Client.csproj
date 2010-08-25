@@ -81,9 +81,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GoreUpdater.Core\GoreUpdater.Core.csproj">
+    <ProjectReference Include="..\GoreUpdater\GoreUpdater.csproj">
       <Project>{9AED7C14-A737-4D19-A64B-69B401691862}</Project>
-      <Name>GoreUpdater.Core</Name>
+      <Name>GoreUpdater</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
