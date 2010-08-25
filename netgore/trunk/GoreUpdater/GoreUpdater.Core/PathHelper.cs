@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace GoreUpdater.Core
+namespace GoreUpdater
 {
     /// <summary>
     /// Helper methods for working with paths.
