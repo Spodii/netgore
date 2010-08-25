@@ -85,6 +85,12 @@ namespace GoreUpdater
         bool AddSource(IDownloadSource downloadSource);
 
         /// <summary>
+        /// Adds multiple <see cref="IDownloadSource"/>s to this <see cref="IDownloadManager"/>.
+        /// </summary>
+        /// <param name="downloadSources">The <see cref="IDownloadSource"/>s to add.</param>
+        void AddSources(IEnumerable<IDownloadSource> downloadSources);
+
+        /// <summary>
         /// Clears the failed downloads information.
         /// </summary>
         void ClearFailed();
