@@ -87,25 +87,39 @@ namespace GoreUpdater
         {
             StringBuilder sb = new StringBuilder();
 
+            // Turn echo off
+            sb.AppendLine("@ECHO OFF");
+
             // Require that the batch file first waits for this process to finish
             var currProc = Process.GetCurrentProcess();
-            sb.AppendLine(string.Format("TASKLIST /FI \"PID eq {0}\"", currProc.Id));
+            sb.AppendLine(string.Format("ECHO Waiting for `{0}` (ID {1}) to close...", currProc.ProcessName, currProc.Id));
+            sb.AppendLine(":CHECKPROGRAMSTATE");
+            sb.AppendLine(string.Format("TASKLIST /FI \"PID eq {0}\" > NUL", currProc.Id));
+            sb.AppendLine("IF NOT ERRORLEVEL 0 GOTO CHECKPROGRAMSTATE");
+            sb.AppendLine("ECHO Process closed");
 
             // Add a wait for 2 seconds, accomplished by abusing the ping command to ping localhost twice
-            sb.AppendLine("PING -n 2 127.0.0.1 > nul");
+            sb.AppendLine("ECHO Delaying for 2 seconds...");
+            sb.AppendLine("PING -n 2 127.0.0.1 > NUL");
+            sb.AppendLine("ECHO Delay complete");
 
             // Add the individual move jobs
             foreach (var job in _jobs)
             {
+                sb.AppendLine(string.Format("ECHO Moving file: `{0}` to `{1}`", job.Key, job.Value));
                 var s = string.Format("MOVE \"{0}\" \"{1}\"", job.Key, job.Value);
                 sb.AppendLine(s);
             }
 
             // Add a call to re-load the program
             if (!string.IsNullOrEmpty(_appPath))
+            {
+                sb.AppendLine(string.Format("CALL Restarting application `{0}`", _appPath));
                 sb.AppendLine(string.Format("START \"\" \"{0}\"", _appPath));
+            }
 
             // Finally, add a call for the batch file to delete itself
+            sb.AppendLine("CALL Deleting self...");
             sb.AppendLine(string.Format("DEL \"{0}\"", FilePath));
 
             return sb.ToString();
