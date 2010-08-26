@@ -157,6 +157,26 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Enqueues the specified job.
+        /// </summary>
+        /// <param name="job">The job.</param>
+        /// <returns>True if successfully enqueued; otherwise false.</returns>
+        bool EnqueueJob(IFtpFileUploaderJob job)
+        {
+            lock (_jobsSync)
+            {
+                // Check if this job already exists
+                if (_jobsQueue.Any(x => x.AreJobsSame(job)) || _jobsActive.Any(x => x.AreJobsSame(job)))
+                    return false;
+
+                // Add the job
+                _jobsQueue.Enqueue(job);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
         /// <see cref="FtpFileUploader"/> is reclaimed by garbage collection.
         /// </summary>
@@ -758,27 +778,7 @@ namespace GoreUpdater
             }
         }
 
-        #region Implementation of IFileUploader
-
-        /// <summary>
-        /// Enqueues the specified job.
-        /// </summary>
-        /// <param name="job">The job.</param>
-        /// <returns>True if successfully enqueued; otherwise false.</returns>
-        bool EnqueueJob(IFtpFileUploaderJob job)
-        {
-            lock (_jobsSync)
-            {
-                // Check if this job already exists
-                if (_jobsQueue.Any(x => x.AreJobsSame(job)) || _jobsActive.Any(x => x.AreJobsSame(job)))
-                    return false;
-
-                // Add the job
-                _jobsQueue.Enqueue(job);
-            }
-
-            return true;
-        }
+        #region IFileUploader Members
 
         /// <summary>
         /// Notifies listeners when a request to delete a directory has been completed.
@@ -880,6 +880,18 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (IsDisposed)
+                return;
+
+            HandleDispose(true);
+            _isDisposed = true;
+        }
+
+        /// <summary>
         /// Enqueues a file for uploading.
         /// </summary>
         /// <param name="sourcePath">The path to the local file to upload.</param>
@@ -905,22 +917,6 @@ namespace GoreUpdater
             {
                 Enqueue(f.Key, f.Value);
             }
-        }
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (IsDisposed)
-                return;
-
-            HandleDispose(true);
-            _isDisposed = true;
         }
 
         #endregion
@@ -962,7 +958,34 @@ namespace GoreUpdater
 
             byte _attempts = 0;
 
-            #region Implementation of IFtpFileUploaderJob
+            /// <summary>
+            /// Initializes a new instance of the <see cref="JobCreateFile"/> class.
+            /// </summary>
+            /// <param name="localFile">The full path to the local file to upload.</param>
+            /// <param name="remoteFile">The relative path on the server to upload the file to.</param>
+            public JobCreateFile(string localFile, string remoteFile)
+            {
+                _localFile = localFile;
+                _remoteFile = SanitizeFtpTargetPath(remoteFile);
+            }
+
+            /// <summary>
+            /// Gets the full path to the local file to upload.
+            /// </summary>
+            public string LocalFile
+            {
+                get { return _localFile; }
+            }
+
+            /// <summary>
+            /// Gets the relative path on the server to upload the file to.
+            /// </summary>
+            public string RemoteFile
+            {
+                get { return _remoteFile; }
+            }
+
+            #region IFtpFileUploaderJob Members
 
             /// <summary>
             /// Gets the number of times this job has been attempted.
@@ -1001,33 +1024,6 @@ namespace GoreUpdater
             }
 
             #endregion
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="JobCreateFile"/> class.
-            /// </summary>
-            /// <param name="localFile">The full path to the local file to upload.</param>
-            /// <param name="remoteFile">The relative path on the server to upload the file to.</param>
-            public JobCreateFile(string localFile, string remoteFile)
-            {
-                _localFile = localFile;
-                _remoteFile = SanitizeFtpTargetPath(remoteFile);
-            }
-
-            /// <summary>
-            /// Gets the full path to the local file to upload.
-            /// </summary>
-            public string LocalFile
-            {
-                get { return _localFile; }
-            }
-
-            /// <summary>
-            /// Gets the relative path on the server to upload the file to.
-            /// </summary>
-            public string RemoteFile
-            {
-                get { return _remoteFile; }
-            }
         }
 
         /// <summary>
@@ -1036,6 +1032,8 @@ namespace GoreUpdater
         class JobDeleteDir : IFtpFileUploaderJob
         {
             readonly string _remotePath;
+
+            byte _attempts = 0;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="JobDeleteDir"/> class.
@@ -1046,9 +1044,15 @@ namespace GoreUpdater
                 _remotePath = SanitizeFtpTargetPath(remotePath);
             }
 
-            #region Implementation of IFtpFileUploaderJob
+            /// <summary>
+            /// Gets the remote path to delete.
+            /// </summary>
+            public string RemotePath
+            {
+                get { return _remotePath; }
+            }
 
-            byte _attempts = 0;
+            #region IFtpFileUploaderJob Members
 
             /// <summary>
             /// Gets the number of times this job has been attempted.
@@ -1087,14 +1091,6 @@ namespace GoreUpdater
             }
 
             #endregion
-
-            /// <summary>
-            /// Gets the remote path to delete.
-            /// </summary>
-            public string RemotePath
-            {
-                get { return _remotePath; }
-            }
         }
     }
 }
