@@ -52,6 +52,8 @@
     <Compile Include="DownloadManager\DownloadManagerFileEventHandler.cs" />
     <Compile Include="DownloadManager\DownloadManagerFileMoveFailedEventHandler.cs" />
     <Compile Include="DownloadManager\IDownloadManager.cs" />
+    <Compile Include="FileUploader\FtpFileUploader.cs" />
+    <Compile Include="FileUploader\IFileUploader.cs" />
     <Compile Include="Hasher.cs" />
     <Compile Include="MasterServerReader\IMasterServerReader.cs" />
     <Compile Include="MasterServerReader\IMasterServerReadInfo.cs" />
