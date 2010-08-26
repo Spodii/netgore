@@ -9,13 +9,19 @@ using System.Windows.Forms;
 namespace GoreUpdater.Manager
 {
     /// <summary>
+    /// Delegate for handling events from the <see cref="ManagerSettings"/>.
+    /// </summary>
+    /// <param name="sender">The <see cref="ManagerSettings"/> that the event occured on.</param>
+    public delegate void ManagerSettingsEventHandler(ManagerSettings sender);
+
+    /// <summary>
     /// Contains settings for the GoreUpdater manager.
     /// </summary>
     public class ManagerSettings
     {
         const string _headerDelimiter = "=";
         const string _headerLiveVersion = "LIVEVERSION";
-        const string _settingsFile = "settings.xml";
+        const string _settingsFile = "settings.txt";
 
         static readonly ManagerSettings _instance;
 
@@ -36,6 +42,11 @@ namespace GoreUpdater.Manager
         {
             Save();
         }
+
+        /// <summary>
+        /// Notifies listeners when the live version has changed.
+        /// </summary>
+        public event ManagerSettingsEventHandler LiveVersionChanged;
 
         /// <summary>
         /// Initializes the <see cref="ManagerSettings"/> class.
@@ -186,6 +197,9 @@ namespace GoreUpdater.Manager
             _liveVersion = newVersion;
 
             Save();
+
+            if (LiveVersionChanged != null)
+                LiveVersionChanged(this);
 
             return true;
         }

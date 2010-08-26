@@ -30,35 +30,35 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpCurrentVersion = new System.Windows.Forms.TabPage();
-            this.tpMasterServers = new System.Windows.Forms.TabPage();
-            this.tpFileServers = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cmbLiveVersion = new System.Windows.Forms.ComboBox();
-            this.lblLiveVersionHelp = new System.Windows.Forms.Label();
-            this.btnNewVersion = new System.Windows.Forms.Button();
             this.lblCreateNewVersionHelp = new System.Windows.Forms.Label();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lstFS = new System.Windows.Forms.ListBox();
-            this.btnFSDelete = new System.Windows.Forms.Button();
-            this.btnFSInfo = new System.Windows.Forms.Button();
-            this.btnFSNew = new System.Windows.Forms.Button();
+            this.btnNewVersion = new System.Windows.Forms.Button();
+            this.lblLiveVersionHelp = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tpMasterServers = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.lstMS = new System.Windows.Forms.ListBox();
             this.btnMSNew = new System.Windows.Forms.Button();
             this.btnMSInfo = new System.Windows.Forms.Button();
             this.btnMSDelete = new System.Windows.Forms.Button();
+            this.tpFileServers = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lstFS = new System.Windows.Forms.ListBox();
+            this.btnFSNew = new System.Windows.Forms.Button();
+            this.btnFSInfo = new System.Windows.Forms.Button();
+            this.btnFSDelete = new System.Windows.Forms.Button();
+            this.lblLiveVersion = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpCurrentVersion.SuspendLayout();
             this.tpMasterServers.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.tpFileServers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -75,10 +75,10 @@
             // 
             // tpCurrentVersion
             // 
+            this.tpCurrentVersion.Controls.Add(this.lblLiveVersion);
             this.tpCurrentVersion.Controls.Add(this.lblCreateNewVersionHelp);
             this.tpCurrentVersion.Controls.Add(this.btnNewVersion);
             this.tpCurrentVersion.Controls.Add(this.lblLiveVersionHelp);
-            this.tpCurrentVersion.Controls.Add(this.cmbLiveVersion);
             this.tpCurrentVersion.Controls.Add(this.label1);
             this.tpCurrentVersion.Location = new System.Drawing.Point(4, 22);
             this.tpCurrentVersion.Name = "tpCurrentVersion";
@@ -87,6 +87,44 @@
             this.tpCurrentVersion.TabIndex = 0;
             this.tpCurrentVersion.Text = "Version";
             this.tpCurrentVersion.UseVisualStyleBackColor = true;
+            // 
+            // lblCreateNewVersionHelp
+            // 
+            this.lblCreateNewVersionHelp.AutoSize = true;
+            this.lblCreateNewVersionHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblCreateNewVersionHelp.Location = new System.Drawing.Point(6, 34);
+            this.lblCreateNewVersionHelp.Name = "lblCreateNewVersionHelp";
+            this.lblCreateNewVersionHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblCreateNewVersionHelp.TabIndex = 4;
+            this.lblCreateNewVersionHelp.Text = "?";
+            // 
+            // btnNewVersion
+            // 
+            this.btnNewVersion.Location = new System.Drawing.Point(25, 28);
+            this.btnNewVersion.Name = "btnNewVersion";
+            this.btnNewVersion.Size = new System.Drawing.Size(112, 24);
+            this.btnNewVersion.TabIndex = 3;
+            this.btnNewVersion.Text = " Create New Version";
+            this.btnNewVersion.UseVisualStyleBackColor = true;
+            // 
+            // lblLiveVersionHelp
+            // 
+            this.lblLiveVersionHelp.AutoSize = true;
+            this.lblLiveVersionHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblLiveVersionHelp.Location = new System.Drawing.Point(6, 12);
+            this.lblLiveVersionHelp.Name = "lblLiveVersionHelp";
+            this.lblLiveVersionHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblLiveVersionHelp.TabIndex = 2;
+            this.lblLiveVersionHelp.Text = "?";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(25, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Live Version:";
             // 
             // tpMasterServers
             // 
@@ -97,123 +135,6 @@
             this.tpMasterServers.TabIndex = 2;
             this.tpMasterServers.Text = "Master Servers";
             this.tpMasterServers.UseVisualStyleBackColor = true;
-            // 
-            // tpFileServers
-            // 
-            this.tpFileServers.Controls.Add(this.splitContainer1);
-            this.tpFileServers.Location = new System.Drawing.Point(4, 22);
-            this.tpFileServers.Name = "tpFileServers";
-            this.tpFileServers.Size = new System.Drawing.Size(365, 328);
-            this.tpFileServers.TabIndex = 3;
-            this.tpFileServers.Text = "File Servers";
-            this.tpFileServers.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Live Version:";
-            // 
-            // cmbLiveVersion
-            // 
-            this.cmbLiveVersion.FormattingEnabled = true;
-            this.cmbLiveVersion.Location = new System.Drawing.Point(80, 9);
-            this.cmbLiveVersion.Name = "cmbLiveVersion";
-            this.cmbLiveVersion.Size = new System.Drawing.Size(113, 21);
-            this.cmbLiveVersion.TabIndex = 1;
-            // 
-            // lblLiveVersionHelp
-            // 
-            this.lblLiveVersionHelp.AutoSize = true;
-            this.lblLiveVersionHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblLiveVersionHelp.Location = new System.Drawing.Point(199, 9);
-            this.lblLiveVersionHelp.Name = "lblLiveVersionHelp";
-            this.lblLiveVersionHelp.Size = new System.Drawing.Size(13, 13);
-            this.lblLiveVersionHelp.TabIndex = 2;
-            this.lblLiveVersionHelp.Text = "?";
-            // 
-            // btnNewVersion
-            // 
-            this.btnNewVersion.Location = new System.Drawing.Point(9, 36);
-            this.btnNewVersion.Name = "btnNewVersion";
-            this.btnNewVersion.Size = new System.Drawing.Size(112, 24);
-            this.btnNewVersion.TabIndex = 3;
-            this.btnNewVersion.Text = " Create New Version";
-            this.btnNewVersion.UseVisualStyleBackColor = true;
-            // 
-            // lblCreateNewVersionHelp
-            // 
-            this.lblCreateNewVersionHelp.AutoSize = true;
-            this.lblCreateNewVersionHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblCreateNewVersionHelp.Location = new System.Drawing.Point(127, 36);
-            this.lblCreateNewVersionHelp.Name = "lblCreateNewVersionHelp";
-            this.lblCreateNewVersionHelp.Size = new System.Drawing.Size(13, 13);
-            this.lblCreateNewVersionHelp.TabIndex = 4;
-            this.lblCreateNewVersionHelp.Text = "?";
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.lstFS);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.btnFSNew);
-            this.splitContainer1.Panel2.Controls.Add(this.btnFSInfo);
-            this.splitContainer1.Panel2.Controls.Add(this.btnFSDelete);
-            this.splitContainer1.Size = new System.Drawing.Size(365, 328);
-            this.splitContainer1.SplitterDistance = 299;
-            this.splitContainer1.TabIndex = 0;
-            // 
-            // lstFS
-            // 
-            this.lstFS.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstFS.FormattingEnabled = true;
-            this.lstFS.Location = new System.Drawing.Point(0, 0);
-            this.lstFS.Name = "lstFS";
-            this.lstFS.Size = new System.Drawing.Size(365, 299);
-            this.lstFS.TabIndex = 0;
-            // 
-            // btnFSDelete
-            // 
-            this.btnFSDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnFSDelete.Location = new System.Drawing.Point(311, 0);
-            this.btnFSDelete.Name = "btnFSDelete";
-            this.btnFSDelete.Size = new System.Drawing.Size(54, 25);
-            this.btnFSDelete.TabIndex = 2;
-            this.btnFSDelete.Text = "Delete";
-            this.btnFSDelete.UseVisualStyleBackColor = true;
-            // 
-            // btnFSInfo
-            // 
-            this.btnFSInfo.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnFSInfo.Location = new System.Drawing.Point(257, 0);
-            this.btnFSInfo.Name = "btnFSInfo";
-            this.btnFSInfo.Size = new System.Drawing.Size(54, 25);
-            this.btnFSInfo.TabIndex = 4;
-            this.btnFSInfo.Text = "Info";
-            this.btnFSInfo.UseVisualStyleBackColor = true;
-            // 
-            // btnFSNew
-            // 
-            this.btnFSNew.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnFSNew.Location = new System.Drawing.Point(203, 0);
-            this.btnFSNew.Name = "btnFSNew";
-            this.btnFSNew.Size = new System.Drawing.Size(54, 25);
-            this.btnFSNew.TabIndex = 5;
-            this.btnFSNew.Text = "New";
-            this.btnFSNew.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
             // 
@@ -276,6 +197,86 @@
             this.btnMSDelete.Text = "Delete";
             this.btnMSDelete.UseVisualStyleBackColor = true;
             // 
+            // tpFileServers
+            // 
+            this.tpFileServers.Controls.Add(this.splitContainer1);
+            this.tpFileServers.Location = new System.Drawing.Point(4, 22);
+            this.tpFileServers.Name = "tpFileServers";
+            this.tpFileServers.Size = new System.Drawing.Size(365, 328);
+            this.tpFileServers.TabIndex = 3;
+            this.tpFileServers.Text = "File Servers";
+            this.tpFileServers.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer1.IsSplitterFixed = true;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.lstFS);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnFSNew);
+            this.splitContainer1.Panel2.Controls.Add(this.btnFSInfo);
+            this.splitContainer1.Panel2.Controls.Add(this.btnFSDelete);
+            this.splitContainer1.Size = new System.Drawing.Size(365, 328);
+            this.splitContainer1.SplitterDistance = 299;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // lstFS
+            // 
+            this.lstFS.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstFS.FormattingEnabled = true;
+            this.lstFS.Location = new System.Drawing.Point(0, 0);
+            this.lstFS.Name = "lstFS";
+            this.lstFS.Size = new System.Drawing.Size(365, 299);
+            this.lstFS.TabIndex = 0;
+            // 
+            // btnFSNew
+            // 
+            this.btnFSNew.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnFSNew.Location = new System.Drawing.Point(203, 0);
+            this.btnFSNew.Name = "btnFSNew";
+            this.btnFSNew.Size = new System.Drawing.Size(54, 25);
+            this.btnFSNew.TabIndex = 5;
+            this.btnFSNew.Text = "New";
+            this.btnFSNew.UseVisualStyleBackColor = true;
+            // 
+            // btnFSInfo
+            // 
+            this.btnFSInfo.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnFSInfo.Location = new System.Drawing.Point(257, 0);
+            this.btnFSInfo.Name = "btnFSInfo";
+            this.btnFSInfo.Size = new System.Drawing.Size(54, 25);
+            this.btnFSInfo.TabIndex = 4;
+            this.btnFSInfo.Text = "Info";
+            this.btnFSInfo.UseVisualStyleBackColor = true;
+            // 
+            // btnFSDelete
+            // 
+            this.btnFSDelete.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnFSDelete.Location = new System.Drawing.Point(311, 0);
+            this.btnFSDelete.Name = "btnFSDelete";
+            this.btnFSDelete.Size = new System.Drawing.Size(54, 25);
+            this.btnFSDelete.TabIndex = 2;
+            this.btnFSDelete.Text = "Delete";
+            this.btnFSDelete.UseVisualStyleBackColor = true;
+            // 
+            // lblLiveVersion
+            // 
+            this.lblLiveVersion.AutoSize = true;
+            this.lblLiveVersion.Location = new System.Drawing.Point(99, 12);
+            this.lblLiveVersion.Name = "lblLiveVersion";
+            this.lblLiveVersion.Size = new System.Drawing.Size(13, 13);
+            this.lblLiveVersion.TabIndex = 5;
+            this.lblLiveVersion.Text = "0";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -291,15 +292,15 @@
             this.tpCurrentVersion.ResumeLayout(false);
             this.tpCurrentVersion.PerformLayout();
             this.tpMasterServers.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.tpFileServers.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -314,7 +315,6 @@
         private System.Windows.Forms.Label lblCreateNewVersionHelp;
         private System.Windows.Forms.Button btnNewVersion;
         private System.Windows.Forms.Label lblLiveVersionHelp;
-        private System.Windows.Forms.ComboBox cmbLiveVersion;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListBox lstFS;
         private System.Windows.Forms.Button btnFSNew;
@@ -325,6 +325,7 @@
         private System.Windows.Forms.Button btnMSNew;
         private System.Windows.Forms.Button btnMSInfo;
         private System.Windows.Forms.Button btnMSDelete;
+        private System.Windows.Forms.Label lblLiveVersion;
 
     }
 }
