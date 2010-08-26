@@ -290,6 +290,7 @@
             this.btnChangeLiveVersion.TabIndex = 6;
             this.btnChangeLiveVersion.Text = "Change Live Version";
             this.btnChangeLiveVersion.UseVisualStyleBackColor = true;
+            this.btnChangeLiveVersion.Click += new System.EventHandler(this.btnChangeLiveVersion_Click);
             // 
             // lblChangeLiveVersionHelp
             // 
