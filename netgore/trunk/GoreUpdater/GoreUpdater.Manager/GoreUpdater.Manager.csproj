@@ -52,11 +52,21 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NewVersionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewVersionForm.Designer.cs">
+      <DependentUpon>NewVersionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ManagerSettings.cs" />
+    <Compile Include="VersionHelper.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewVersionForm.resx">
+      <DependentUpon>NewVersionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
