@@ -47,6 +47,8 @@
             this.btnFSInfo = new System.Windows.Forms.Button();
             this.btnFSDelete = new System.Windows.Forms.Button();
             this.lblLiveVersion = new System.Windows.Forms.Label();
+            this.btnChangeLiveVersion = new System.Windows.Forms.Button();
+            this.lblChangeLiveVersionHelp = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpCurrentVersion.SuspendLayout();
             this.tpMasterServers.SuspendLayout();
@@ -75,6 +77,8 @@
             // 
             // tpCurrentVersion
             // 
+            this.tpCurrentVersion.Controls.Add(this.lblChangeLiveVersionHelp);
+            this.tpCurrentVersion.Controls.Add(this.btnChangeLiveVersion);
             this.tpCurrentVersion.Controls.Add(this.lblLiveVersion);
             this.tpCurrentVersion.Controls.Add(this.lblCreateNewVersionHelp);
             this.tpCurrentVersion.Controls.Add(this.btnNewVersion);
@@ -92,7 +96,7 @@
             // 
             this.lblCreateNewVersionHelp.AutoSize = true;
             this.lblCreateNewVersionHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblCreateNewVersionHelp.Location = new System.Drawing.Point(6, 34);
+            this.lblCreateNewVersionHelp.Location = new System.Drawing.Point(6, 67);
             this.lblCreateNewVersionHelp.Name = "lblCreateNewVersionHelp";
             this.lblCreateNewVersionHelp.Size = new System.Drawing.Size(13, 13);
             this.lblCreateNewVersionHelp.TabIndex = 4;
@@ -100,9 +104,9 @@
             // 
             // btnNewVersion
             // 
-            this.btnNewVersion.Location = new System.Drawing.Point(25, 28);
+            this.btnNewVersion.Location = new System.Drawing.Point(25, 61);
             this.btnNewVersion.Name = "btnNewVersion";
-            this.btnNewVersion.Size = new System.Drawing.Size(112, 24);
+            this.btnNewVersion.Size = new System.Drawing.Size(127, 24);
             this.btnNewVersion.TabIndex = 3;
             this.btnNewVersion.Text = " Create New Version";
             this.btnNewVersion.UseVisualStyleBackColor = true;
@@ -277,6 +281,25 @@
             this.lblLiveVersion.TabIndex = 5;
             this.lblLiveVersion.Text = "0";
             // 
+            // btnChangeLiveVersion
+            // 
+            this.btnChangeLiveVersion.Location = new System.Drawing.Point(25, 31);
+            this.btnChangeLiveVersion.Name = "btnChangeLiveVersion";
+            this.btnChangeLiveVersion.Size = new System.Drawing.Size(127, 24);
+            this.btnChangeLiveVersion.TabIndex = 6;
+            this.btnChangeLiveVersion.Text = "Change Live Version";
+            this.btnChangeLiveVersion.UseVisualStyleBackColor = true;
+            // 
+            // lblChangeLiveVersionHelp
+            // 
+            this.lblChangeLiveVersionHelp.AutoSize = true;
+            this.lblChangeLiveVersionHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblChangeLiveVersionHelp.Location = new System.Drawing.Point(6, 37);
+            this.lblChangeLiveVersionHelp.Name = "lblChangeLiveVersionHelp";
+            this.lblChangeLiveVersionHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblChangeLiveVersionHelp.TabIndex = 7;
+            this.lblChangeLiveVersionHelp.Text = "?";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -326,6 +349,8 @@
         private System.Windows.Forms.Button btnMSInfo;
         private System.Windows.Forms.Button btnMSDelete;
         private System.Windows.Forms.Label lblLiveVersion;
+        private System.Windows.Forms.Button btnChangeLiveVersion;
+        private System.Windows.Forms.Label lblChangeLiveVersionHelp;
 
     }
 }
