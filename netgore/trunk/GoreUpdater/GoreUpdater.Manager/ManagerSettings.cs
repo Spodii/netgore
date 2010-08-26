@@ -11,13 +11,13 @@ namespace GoreUpdater.Manager
     /// <summary>
     /// Contains settings for the GoreUpdater manager.
     /// </summary>
-    public class Settings
+    public class ManagerSettings
     {
         const string _headerDelimiter = "=";
         const string _headerLiveVersion = "LIVEVERSION";
         const string _settingsFile = "settings.xml";
 
-        static readonly Settings _instance;
+        static readonly ManagerSettings _instance;
 
         readonly string _filePath;
 
@@ -30,27 +30,27 @@ namespace GoreUpdater.Manager
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="Settings"/> is reclaimed by garbage collection.
+        /// <see cref="ManagerSettings"/> is reclaimed by garbage collection.
         /// </summary>
-        ~Settings()
+        ~ManagerSettings()
         {
             Save();
         }
 
         /// <summary>
-        /// Initializes the <see cref="Settings"/> class.
+        /// Initializes the <see cref="ManagerSettings"/> class.
         /// </summary>
-        static Settings()
+        static ManagerSettings()
         {
             var filePath = PathHelper.CombineDifferentPaths(Application.StartupPath, _settingsFile);
-            _instance = new Settings(filePath);
+            _instance = new ManagerSettings(filePath);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Settings"/> class.
+        /// Initializes a new instance of the <see cref="ManagerSettings"/> class.
         /// </summary>
         /// <param name="filePath">The settings file path.</param>
-        Settings(string filePath)
+        ManagerSettings(string filePath)
         {
             _filePath = filePath;
 
@@ -91,9 +91,9 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Gets the global <see cref="Settings"/> instance.
+        /// Gets the global <see cref="ManagerSettings"/> instance.
         /// </summary>
-        public static Settings Instance
+        public static ManagerSettings Instance
         {
             get { return _instance; }
         }
