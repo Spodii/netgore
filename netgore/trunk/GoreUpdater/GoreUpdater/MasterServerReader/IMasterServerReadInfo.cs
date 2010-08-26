@@ -5,6 +5,7 @@ namespace GoreUpdater
 {
     /// <summary>
     /// Interface for an object that holds the information read from the master server(s).
+    /// All implementations must be completely thread-safe.
     /// </summary>
     public interface IMasterServerReadInfo
     {
