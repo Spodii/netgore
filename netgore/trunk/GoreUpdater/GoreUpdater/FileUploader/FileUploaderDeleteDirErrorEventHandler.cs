@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater
+﻿using System.Linq;
+
+namespace GoreUpdater
 {
     /// <summary>
     /// Delegate for handling upload events from the <see cref="IFileUploader"/>.
@@ -9,5 +11,6 @@
     /// <param name="attemptCount">The number of times this particular job has been attempted. This value is incremented every
     /// time the job is attempted, even if it fails for a different reason.
     /// Once this value reaches 255, it will no longer increment.</param>
-    public delegate void FileUploaderDeleteDirErrorEventHandler(IFileUploader sender, string path, string error, byte attemptCount);
+    public delegate void FileUploaderDeleteDirErrorEventHandler(IFileUploader sender, string path, string error, byte attemptCount
+        );
 }

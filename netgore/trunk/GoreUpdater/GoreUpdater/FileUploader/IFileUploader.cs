@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace GoreUpdater
 {
@@ -11,17 +11,6 @@ namespace GoreUpdater
     public interface IFileUploader : IDisposable
     {
         /// <summary>
-        /// Notifies listeners when there has been an error related to one of the upload jobs. The job in question will still
-        /// be re-attempted by default.
-        /// </summary>
-        event FileUploaderErrorEventHandler UploadError;
-
-        /// <summary>
-        /// Notifies listeners when an upload has been completed.
-        /// </summary>
-        event FileUploaderUploadEventHandler UploadComplete;
-
-        /// <summary>
         /// Notifies listeners when a request to delete a directory has been completed.
         /// </summary>
         event FileUploaderDeleteDirEventHandler DeleteDirectoryComplete;
@@ -30,6 +19,17 @@ namespace GoreUpdater
         /// Notifies listeners when a request to delete a directory has encountered an error.
         /// </summary>
         event FileUploaderDeleteDirErrorEventHandler DeleteDirectoryError;
+
+        /// <summary>
+        /// Notifies listeners when an upload has been completed.
+        /// </summary>
+        event FileUploaderUploadEventHandler UploadComplete;
+
+        /// <summary>
+        /// Notifies listeners when there has been an error related to one of the upload jobs. The job in question will still
+        /// be re-attempted by default.
+        /// </summary>
+        event FileUploaderErrorEventHandler UploadError;
 
         /// <summary>
         /// Gets if the <see cref="IFileUploader"/> is currently busy uploading files. This will be false when the queue is empty

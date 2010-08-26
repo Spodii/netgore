@@ -238,30 +238,6 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Gets the fully resolved path for a relative remote path.
-        /// </summary>
-        /// <param name="relativePath">The relative remote path.</param>
-        /// <returns>The fully resolved remote path.</returns>
-        string ResolveRemotePath(string relativePath)
-        {
-            // Check if the path is already resolved
-            if (relativePath.Length >= _hostRoot.Length && relativePath.StartsWith(_hostRoot))
-                return relativePath;
-
-            if (relativePath.Length == 0)
-                return _hostRoot;
-
-            if (relativePath.StartsWith("/"))
-            {
-                return _hostRoot + relativePath.Substring(1);
-            }
-            else
-            {
-                return _hostRoot + relativePath;
-            }
-        }
-
-        /// <summary>
         /// Creates a file on the Ftp server. Required sub-directories are created automatically when needed.
         /// </summary>
         /// <param name="localFile">The full path to the local file to upload.</param>
@@ -325,91 +301,6 @@ namespace GoreUpdater
 
             // Rename the file from the temporary name to the correct name
             FtpRenameFile(remoteTempFile, fileName);
-        }
-
-        /// <summary>
-        /// Gets the Ftp directory listing containing only file names (FTP NLST).
-        /// </summary>
-        /// <param name="remotePath">The path to get the listing for.</param>
-        /// <param name="requireExists">When false, this method will silently fail when the <paramref name="remotePath"/>
-        /// does not exist.</param>
-        /// <returns>The directory listing for the <paramref name="remotePath"/>, or null if <paramref name="requireExists"/> is
-        /// false and the directory does not exist.</returns>
-        IEnumerable<string> FtpNListDir(string remotePath, bool requireExists = false)
-        {
-            remotePath = ResolveRemotePath(remotePath);
-
-            var req = CreateFtpWebRequest(remotePath);
-            req.Method = WebRequestMethods.Ftp.ListDirectory;
-
-            try
-            {
-                using (var res = req.GetResponse())
-                {
-                    if (res == null)
-                        return null;
-
-                    using (var resStream = res.GetResponseStream())
-                    {
-                        if (resStream == null)
-                            return null;
-
-                        using (var sr = new StreamReader(resStream))
-                        {
-                            List<string> ret = new List<string>();
-
-                            while (!sr.EndOfStream)
-                            {
-                                var s = sr.ReadLine();
-
-                                // Skip null lines
-                                if (s == null)
-                                    continue;
-
-                                // Trim
-                                s = s.Trim();
-
-                                // Skip empty lines
-                                if (s.Length == 0)
-                                    continue;
-
-                                // Add the line
-                                ret.Add(s);
-                            }
-
-                            // Return the file listing
-                            return ret;
-                        }
-                    }
-                }
-            }
-            catch (WebException ex)
-            {
-                var res = (FtpWebResponse)ex.Response;
-                try
-                {
-                    switch (res.StatusCode)
-                    {
-                        case FtpStatusCode.ActionNotTakenFileUnavailable:
-                            if (requireExists)
-                            {
-                                Debug.Fail(ex.ToString());
-                                throw;
-                            }
-                            break;
-
-                        default:
-                            Debug.Fail(ex.ToString());
-                            throw;
-                    }
-                }
-                finally
-                {
-                    res.Close();
-                }
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -593,6 +484,91 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Gets the Ftp directory listing containing only file names (FTP NLST).
+        /// </summary>
+        /// <param name="remotePath">The path to get the listing for.</param>
+        /// <param name="requireExists">When false, this method will silently fail when the <paramref name="remotePath"/>
+        /// does not exist.</param>
+        /// <returns>The directory listing for the <paramref name="remotePath"/>, or null if <paramref name="requireExists"/> is
+        /// false and the directory does not exist.</returns>
+        IEnumerable<string> FtpNListDir(string remotePath, bool requireExists = false)
+        {
+            remotePath = ResolveRemotePath(remotePath);
+
+            var req = CreateFtpWebRequest(remotePath);
+            req.Method = WebRequestMethods.Ftp.ListDirectory;
+
+            try
+            {
+                using (var res = req.GetResponse())
+                {
+                    if (res == null)
+                        return null;
+
+                    using (var resStream = res.GetResponseStream())
+                    {
+                        if (resStream == null)
+                            return null;
+
+                        using (var sr = new StreamReader(resStream))
+                        {
+                            var ret = new List<string>();
+
+                            while (!sr.EndOfStream)
+                            {
+                                var s = sr.ReadLine();
+
+                                // Skip null lines
+                                if (s == null)
+                                    continue;
+
+                                // Trim
+                                s = s.Trim();
+
+                                // Skip empty lines
+                                if (s.Length == 0)
+                                    continue;
+
+                                // Add the line
+                                ret.Add(s);
+                            }
+
+                            // Return the file listing
+                            return ret;
+                        }
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                var res = (FtpWebResponse)ex.Response;
+                try
+                {
+                    switch (res.StatusCode)
+                    {
+                        case FtpStatusCode.ActionNotTakenFileUnavailable:
+                            if (requireExists)
+                            {
+                                Debug.Fail(ex.ToString());
+                                throw;
+                            }
+                            break;
+
+                        default:
+                            Debug.Fail(ex.ToString());
+                            throw;
+                    }
+                }
+                finally
+                {
+                    res.Close();
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Renames a file on the Ftp server.
         /// </summary>
         /// <param name="filePath">The path to the file to rename. Can be a relative or fully qualified path.</param>
@@ -639,6 +615,26 @@ namespace GoreUpdater
 
                 _threads.Clear();
             }
+        }
+
+        /// <summary>
+        /// Gets the fully resolved path for a relative remote path.
+        /// </summary>
+        /// <param name="relativePath">The relative remote path.</param>
+        /// <returns>The fully resolved remote path.</returns>
+        string ResolveRemotePath(string relativePath)
+        {
+            // Check if the path is already resolved
+            if (relativePath.Length >= _hostRoot.Length && relativePath.StartsWith(_hostRoot))
+                return relativePath;
+
+            if (relativePath.Length == 0)
+                return _hostRoot;
+
+            if (relativePath.StartsWith("/"))
+                return _hostRoot + relativePath.Substring(1);
+            else
+                return _hostRoot + relativePath;
         }
 
         /// <summary>
