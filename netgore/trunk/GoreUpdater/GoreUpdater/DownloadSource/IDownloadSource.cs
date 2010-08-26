@@ -5,6 +5,7 @@ namespace GoreUpdater
 {
     /// <summary>
     /// Interface for an object that provides access to files that can be downloaded.
+    /// All implementations must be completely thread-safe.
     /// </summary>
     public interface IDownloadSource : IDisposable
     {

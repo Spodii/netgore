@@ -6,6 +6,7 @@ namespace GoreUpdater
     /// <summary>
     /// Interface for an object that generates a stand-alone script file or executable that can be used to replace files that
     /// are currently in use, then re-load the program that was used to generate the file when completed.
+    /// All implementations must be completely thread-safe.
     /// </summary>
     public interface IOfflineFileReplacer
     {

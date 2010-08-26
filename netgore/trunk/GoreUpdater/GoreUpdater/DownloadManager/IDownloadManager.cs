@@ -7,6 +7,7 @@ namespace GoreUpdater
     /// <summary>
     /// Interface for an object that is able to manage downloading multiple files from multiple <see cref="IDownloadSource"/>s.
     /// Files that fail are automatically retried, and queued items are automatically processed.
+    /// All implementations must be completely thread-safe.
     /// </summary>
     public interface IDownloadManager : IDisposable
     {
