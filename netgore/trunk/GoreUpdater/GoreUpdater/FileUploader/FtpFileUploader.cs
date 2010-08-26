@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Cache;
 using System.Threading;
 
 namespace GoreUpdater
@@ -63,6 +64,8 @@ namespace GoreUpdater
         /// Sync root for <see cref="_jobsQueue"/> and <see cref="_jobsActive"/>.
         /// </summary>
         readonly object _jobsSync = new object();
+
+        readonly RequestCachePolicy _requestCachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
 
         /// <summary>
         /// The list of worker threads.
@@ -150,7 +153,10 @@ namespace GoreUpdater
             // Set the common properties
             req.UseBinary = true;
             req.UsePassive = UsePassive;
-            req.KeepAlive = false;
+            req.KeepAlive = true;
+            req.CachePolicy = _requestCachePolicy;
+            req.ConnectionGroupName = _credentials.UserName + "@" + _hostRoot;
+            req.ServicePoint.ConnectionLimit = _numThreads;
             req.Credentials = _credentials;
 
             return req;
