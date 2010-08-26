@@ -114,6 +114,11 @@ namespace GoreUpdater.Manager
             }
 
             // Save the file list
+            var outFilePath = VersionHelper.GetVersionFileListPath(_version);
+            vfl.Write(outFilePath);
+
+            MessageBox.Show("Version " + _version + " successfully created!", "Success!",  MessageBoxButtons.OK);
+            Close();
         }
 
         /// <summary>
