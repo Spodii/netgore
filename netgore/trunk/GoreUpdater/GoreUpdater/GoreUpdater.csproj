@@ -52,6 +52,10 @@
     <Compile Include="DownloadManager\DownloadManagerFileEventHandler.cs" />
     <Compile Include="DownloadManager\DownloadManagerFileMoveFailedEventHandler.cs" />
     <Compile Include="DownloadManager\IDownloadManager.cs" />
+    <Compile Include="FileUploader\FileUploaderDeleteDirErrorEventHandler.cs" />
+    <Compile Include="FileUploader\FileUploaderDeleteDirEventHandler.cs" />
+    <Compile Include="FileUploader\FileUploaderErrorEventHandler.cs" />
+    <Compile Include="FileUploader\FileUploaderUploadEventHandler.cs" />
     <Compile Include="FileUploader\FtpFileUploader.cs" />
     <Compile Include="FileUploader\IFileUploader.cs" />
     <Compile Include="Hasher.cs" />
