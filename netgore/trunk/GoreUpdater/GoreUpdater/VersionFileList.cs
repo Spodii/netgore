@@ -120,6 +120,20 @@ namespace GoreUpdater
         /// <param name="outputFile">The output file.</param>
         public void Write(string outputFile)
         {
+            // Create the destination directory, if needed
+            try
+            {
+                var p = Path.GetDirectoryName(outputFile);
+                if (p != null)
+                {
+                    if (!Directory.Exists(p))
+                        Directory.CreateDirectory(p);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
             StringBuilder sb = new StringBuilder();
 
             // Add the files
