@@ -148,6 +148,7 @@ namespace GoreUpdater
             }
 
             // Set the common properties
+            req.UseBinary = true;
             req.UsePassive = UsePassive;
             req.KeepAlive = false;
             req.Credentials = _credentials;
