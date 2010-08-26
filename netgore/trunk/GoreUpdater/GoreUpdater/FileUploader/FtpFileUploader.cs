@@ -8,6 +8,9 @@ using System.Threading;
 
 namespace GoreUpdater
 {
+    /// <summary>
+    /// Implementation of the <see cref="IFileUploader"/> for FTP.
+    /// </summary>
     public class FtpFileUploader : IFileUploader
     {
         /// <summary>
@@ -210,6 +213,10 @@ namespace GoreUpdater
 
         #region Implementation of IFileUploader
 
+        /// <summary>
+        /// Notifies listeners when there has been an error related to one of the upload jobs. The job in question will still
+        /// be re-attempted by default.
+        /// </summary>
         public event FileUploaderErrorEventHandler UploadError;
 
         /// <summary>
