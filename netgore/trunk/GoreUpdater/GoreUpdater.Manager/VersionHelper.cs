@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows.Forms;
 
 namespace GoreUpdater.Manager
@@ -9,12 +6,15 @@ namespace GoreUpdater.Manager
     public static class VersionHelper
     {
         /// <summary>
-        /// Gets the root directory for version files.
+        /// Gets the path to the file list for a version.
         /// </summary>
-        /// <returns>The root directory for version files.</returns>
-        public static string GetVersionRootDir()
+        /// <param name="version">The version.</param>
+        /// <returns>The path to the file list for a version.</returns>
+        public static string GetVersionFileListPath(int version)
         {
-            return PathHelper.CombineDifferentPaths(Application.StartupPath, "versions");
+            var path = PathHelper.CombineDifferentPaths(Application.StartupPath, "filelists");
+            path = PathHelper.CombineDifferentPaths(path, version + ".txt");
+            return path;
         }
 
         /// <summary>
@@ -29,15 +29,12 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Gets the path to the file list for a version.
+        /// Gets the root directory for version files.
         /// </summary>
-        /// <param name="version">The version.</param>
-        /// <returns>The path to the file list for a version.</returns>
-        public static string GetVersionFileListPath(int version)
+        /// <returns>The root directory for version files.</returns>
+        public static string GetVersionRootDir()
         {
-            var path = PathHelper.CombineDifferentPaths(Application.StartupPath, "filelists");
-            path = PathHelper.CombineDifferentPaths(path, version + ".txt");
-            return path;
+            return PathHelper.CombineDifferentPaths(Application.StartupPath, "versions");
         }
     }
 }
