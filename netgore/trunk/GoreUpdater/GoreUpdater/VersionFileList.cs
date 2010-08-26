@@ -27,7 +27,7 @@ namespace GoreUpdater
         {
             // Store the files in a sorted form
             _files = new List<VersionFileInfo>(files.OrderBy(x => x.FilePath, _pathComparer));
-            _filters = new List<string>(filters.OrderBy(x => x, _pathComparer));
+            _filters = new List<string>(filters.Select(x => x.Trim()).Where(x => x.Length > 0).OrderBy(x => x, _pathComparer));
 
             // Add to the dictionary, too
             _filesDict = new Dictionary<string, VersionFileInfo>(_pathComparer);
@@ -36,6 +36,11 @@ namespace GoreUpdater
                 _filesDict.Add(file.FilePath, file);
             }
         }
+
+        /// <summary>
+        /// Gets all of the file deletion ignore filters in this version.
+        /// </summary>
+        public IEnumerable<string> Filters { get { return _filters; } }
 
         /// <summary>
         /// Gets all of the files included in this version.

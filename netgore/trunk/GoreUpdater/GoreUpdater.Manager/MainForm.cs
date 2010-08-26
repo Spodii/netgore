@@ -34,5 +34,29 @@ namespace GoreUpdater.Manager
         {
             lblLiveVersion.Invoke((Action)(() => lblLiveVersion.Text = _settings.LiveVersion.ToString()));
         }
+
+        /// <summary>
+        /// Handles the Click event of the btnNewVersion control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void btnNewVersion_Click(object sender, EventArgs e)
+        {
+            var newVersionForm = new NewVersionForm();
+            btnNewVersion.Enabled = false;
+            newVersionForm.FormClosed += newVersionForm_FormClosed;
+
+            newVersionForm.Show();
+        }
+
+        /// <summary>
+        /// Handles the FormClosed event of the newVersionForm control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.FormClosedEventArgs"/> instance containing the event data.</param>
+        void newVersionForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            btnNewVersion.Enabled = true;
+        }
     }
 }

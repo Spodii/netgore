@@ -110,6 +110,7 @@
             this.btnNewVersion.TabIndex = 3;
             this.btnNewVersion.Text = " Create New Version";
             this.btnNewVersion.UseVisualStyleBackColor = true;
+            this.btnNewVersion.Click += new System.EventHandler(this.btnNewVersion_Click);
             // 
             // lblLiveVersionHelp
             // 
