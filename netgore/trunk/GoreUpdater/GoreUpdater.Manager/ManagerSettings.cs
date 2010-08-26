@@ -26,27 +26,9 @@ namespace GoreUpdater.Manager
         static readonly ManagerSettings _instance;
 
         readonly string _filePath;
+        readonly object _saveSync = new object();
 
         int _liveVersion = 0;
-
-        /// <summary>
-        /// Gets the path to the settings file.
-        /// </summary>
-        public string FilePath { get { return _filePath; } }
-
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="ManagerSettings"/> is reclaimed by garbage collection.
-        /// </summary>
-        ~ManagerSettings()
-        {
-            Save();
-        }
-
-        /// <summary>
-        /// Notifies listeners when the live version has changed.
-        /// </summary>
-        public event ManagerSettingsEventHandler LiveVersionChanged;
 
         /// <summary>
         /// Initializes the <see cref="ManagerSettings"/> class.
@@ -66,6 +48,66 @@ namespace GoreUpdater.Manager
             _filePath = filePath;
 
             Load(FilePath);
+        }
+
+        /// <summary>
+        /// Notifies listeners when the live version has changed.
+        /// </summary>
+        public event ManagerSettingsEventHandler LiveVersionChanged;
+
+        /// <summary>
+        /// Gets the path to the settings file.
+        /// </summary>
+        public string FilePath
+        {
+            get { return _filePath; }
+        }
+
+        /// <summary>
+        /// Gets the global <see cref="ManagerSettings"/> instance.
+        /// </summary>
+        public static ManagerSettings Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
+        /// Gets the current live version number.
+        /// </summary>
+        public int LiveVersion
+        {
+            get { return _liveVersion; }
+        }
+
+        /// <summary>
+        /// Adds a settings line to the <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        static void AddSetting(StringBuilder sb, string key, string value)
+        {
+            sb.AppendLine(key + _headerDelimiter + value);
+        }
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="ManagerSettings"/> is reclaimed by garbage collection.
+        /// </summary>
+        ~ManagerSettings()
+        {
+            Save();
+        }
+
+        /// <summary>
+        /// Reads a settings line.
+        /// </summary>
+        /// <param name="line">The line.</param>
+        /// <returns>The settings line.</returns>
+        static KeyValuePair<string, string> GetSettingLine(string line)
+        {
+            var s = line.Split(new string[] { _headerDelimiter }, 2, StringSplitOptions.None);
+            return new KeyValuePair<string, string>(s[0], s[1]);
         }
 
         /// <summary>
@@ -100,46 +142,6 @@ namespace GoreUpdater.Manager
                 }
             }
         }
-
-        /// <summary>
-        /// Gets the global <see cref="ManagerSettings"/> instance.
-        /// </summary>
-        public static ManagerSettings Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
-        /// Gets the current live version number.
-        /// </summary>
-        public int LiveVersion
-        {
-            get { return _liveVersion; }
-        }
-
-        /// <summary>
-        /// Adds a settings line to the <see cref="StringBuilder"/>.
-        /// </summary>
-        /// <param name="sb">The <see cref="StringBuilder"/>.</param>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        static void AddSetting(StringBuilder sb, string key, string value)
-        {
-            sb.AppendLine(key + _headerDelimiter + value);
-        }
-
-        /// <summary>
-        /// Reads a settings line.
-        /// </summary>
-        /// <param name="line">The line.</param>
-        /// <returns>The settings line.</returns>
-        static KeyValuePair<string, string> GetSettingLine(string line)
-        {
-            var s = line.Split(new string[] {_headerDelimiter},2, StringSplitOptions.None);
-            return new KeyValuePair<string, string>(s[0], s[1]);
-        }
-
-        readonly object _saveSync = new object();
 
         /// <summary>
         /// Saves the settings to file.

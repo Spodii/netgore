@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace GoreUpdater
 {
@@ -23,18 +22,14 @@ namespace GoreUpdater
         static readonly object _hashersSync = new object();
 
         /// <summary>
-        /// Gets an object for generating the hashes from the pool.
+        /// Converts an array of bytes to a string.
         /// </summary>
-        /// <returns>The object for generating the hashes.</returns>
-        static MD5 GetHasher()
+        /// <param name="bytes">The array of bytes.</param>
+        /// <returns>The string representation of the array of bytes.</returns>
+        static string BytesToString(byte[] bytes)
         {
-            lock (_hashersSync)
-            {
-                if (_hashers.Count == 0)
-                    return MD5.Create();
-                else
-                    return _hashers.Pop();
-            }
+            var s = Convert.ToBase64String(bytes);
+            return s;
         }
 
         /// <summary>
@@ -47,61 +42,6 @@ namespace GoreUpdater
             lock (_hashersSync)
             {
                 _hashers.Push(hasher);
-            }
-        }
-
-        /// <summary>
-        /// Converts an array of bytes to a string.
-        /// </summary>
-        /// <param name="bytes">The array of bytes.</param>
-        /// <returns>The string representation of the array of bytes.</returns>
-        static string BytesToString(byte[] bytes)
-        {
-            var s = Convert.ToBase64String(bytes);
-            return s;
-        }
-
-        /// <summary>
-        /// Gets the hash for an array of bytes.
-        /// </summary>
-        /// <param name="data">The array of bytes.</param>
-        /// <returns>The hash for the <paramref name="data"/>.</returns>
-        public static string GetHash(byte[] data)
-        {
-            var hasher = GetHasher();
-
-            try
-            {
-                byte[] hash = hasher.ComputeHash(data);
-                return BytesToString(hash);
-            }
-            finally
-            {
-                FreeHasher(hasher);
-            }
-        }
-
-        /// <summary>
-        /// Gets the hash for an array of bytes.
-        /// </summary>
-        /// <param name="data">The array of bytes.</param>
-        /// <param name="offset">The offset in the <paramref name="data"/> array to start at.</param>
-        /// <param name="count">The number of bytes to use from the <paramref name="offset"/>.</param>
-        /// <returns>
-        /// The hash for the <paramref name="data"/>.
-        /// </returns>
-        public static string GetHash(byte[] data, int offset, int count)
-        {
-            var hasher = GetHasher();
-
-            try
-            {
-                byte[] hash = hasher.ComputeHash(data, offset, count);
-                return BytesToString(hash);
-            }
-            finally
-            {
-                FreeHasher(hasher);
             }
         }
 
@@ -126,6 +66,65 @@ namespace GoreUpdater
             finally
             {
                 FreeHasher(hasher);
+            }
+        }
+
+        /// <summary>
+        /// Gets the hash for an array of bytes.
+        /// </summary>
+        /// <param name="data">The array of bytes.</param>
+        /// <returns>The hash for the <paramref name="data"/>.</returns>
+        public static string GetHash(byte[] data)
+        {
+            var hasher = GetHasher();
+
+            try
+            {
+                var hash = hasher.ComputeHash(data);
+                return BytesToString(hash);
+            }
+            finally
+            {
+                FreeHasher(hasher);
+            }
+        }
+
+        /// <summary>
+        /// Gets the hash for an array of bytes.
+        /// </summary>
+        /// <param name="data">The array of bytes.</param>
+        /// <param name="offset">The offset in the <paramref name="data"/> array to start at.</param>
+        /// <param name="count">The number of bytes to use from the <paramref name="offset"/>.</param>
+        /// <returns>
+        /// The hash for the <paramref name="data"/>.
+        /// </returns>
+        public static string GetHash(byte[] data, int offset, int count)
+        {
+            var hasher = GetHasher();
+
+            try
+            {
+                var hash = hasher.ComputeHash(data, offset, count);
+                return BytesToString(hash);
+            }
+            finally
+            {
+                FreeHasher(hasher);
+            }
+        }
+
+        /// <summary>
+        /// Gets an object for generating the hashes from the pool.
+        /// </summary>
+        /// <returns>The object for generating the hashes.</returns>
+        static MD5 GetHasher()
+        {
+            lock (_hashersSync)
+            {
+                if (_hashers.Count == 0)
+                    return MD5.Create();
+                else
+                    return _hashers.Pop();
             }
         }
     }

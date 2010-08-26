@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -44,7 +40,7 @@ namespace GoreUpdater.Manager
                 {
                     var pv = VersionFileList.CreateFromFile(prevVersionPath);
 
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
                     foreach (var f in pv.Filters)
                     {
                         sb.AppendLine(f);
@@ -61,17 +57,16 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Handles the TextChanged event of the lblVersion control.
+        /// Handles the Click event of the btnCancel control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lblVersion_TextChanged(object sender, EventArgs e)
+        void btnCancel_Click(object sender, EventArgs e)
         {
-            int i;
-            if (!int.TryParse(lblVersion.Text, out i))
+            if (MessageBox.Show("Are you sure you wish to cancel?", "Cancel?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            txtRootPath.Text = VersionHelper.GetVersionPath(i);
+            Close();
         }
 
         /// <summary>
@@ -79,7 +74,7 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnCreate_Click(object sender, EventArgs e)
+        void btnCreate_Click(object sender, EventArgs e)
         {
             // Create the directory if it does not already exist
             try
@@ -92,13 +87,17 @@ namespace GoreUpdater.Manager
             }
 
             // Ensure there are files in the list
-            if (!Directory.Exists(txtRootPath.Text) || Directory.GetFiles(txtRootPath.Text, "*", SearchOption.AllDirectories).Length <= 0)
+            if (!Directory.Exists(txtRootPath.Text) ||
+                Directory.GetFiles(txtRootPath.Text, "*", SearchOption.AllDirectories).Length <= 0)
             {
-                MessageBox.Show("You must first add the files for this new version to the path:" + Environment.NewLine + Environment.NewLine + txtRootPath.Text);
+                MessageBox.Show("You must first add the files for this new version to the path:" + Environment.NewLine +
+                                Environment.NewLine + txtRootPath.Text);
                 return;
             }
 
-            if (MessageBox.Show("Are you sure you wish to create this new version?", "Create new version?", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+            if (
+                MessageBox.Show("Are you sure you wish to create this new version?", "Create new version?",
+                                MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             // Create the version file list
@@ -117,21 +116,22 @@ namespace GoreUpdater.Manager
             var outFilePath = VersionHelper.GetVersionFileListPath(_version);
             vfl.Write(outFilePath);
 
-            MessageBox.Show("Version " + _version + " successfully created!", "Success!",  MessageBoxButtons.OK);
+            MessageBox.Show("Version " + _version + " successfully created!", "Success!", MessageBoxButtons.OK);
             Close();
         }
 
         /// <summary>
-        /// Handles the Click event of the btnCancel control.
+        /// Handles the TextChanged event of the lblVersion control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void btnCancel_Click(object sender, EventArgs e)
+        void lblVersion_TextChanged(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you wish to cancel?", "Cancel?", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+            int i;
+            if (!int.TryParse(lblVersion.Text, out i))
                 return;
 
-            Close();
+            txtRootPath.Text = VersionHelper.GetVersionPath(i);
         }
     }
 }
