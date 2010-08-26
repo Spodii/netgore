@@ -141,7 +141,7 @@
             this.btnNewVersion.Name = "btnNewVersion";
             this.btnNewVersion.Size = new System.Drawing.Size(112, 24);
             this.btnNewVersion.TabIndex = 3;
-            this.btnNewVersion.Text = "Create New Version";
+            this.btnNewVersion.Text = " Create New Version";
             this.btnNewVersion.UseVisualStyleBackColor = true;
             // 
             // lblCreateNewVersionHelp
