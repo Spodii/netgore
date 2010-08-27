@@ -63,6 +63,7 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="remotePath">The remote path for the upload to cancel.</param>
         /// <returns>True if the job was removed; otherwise false.</returns>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         bool CancelAsyncUpload(string remotePath);
 
         /// <summary>
@@ -70,7 +71,19 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="localPath">The fully qualified local path of the download to cancel.</param>
         /// <returns>True if the job was removed; otherwise false.</returns>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         bool CancelAsyncDownload(string localPath);
+
+        /// <summary>
+        /// Deletes a directory synchronously. If the root directory is specified, then all files and folders in the root
+        /// directory will be deleted, but the root directory itself will not be deleted. Otherwise, the specified directory
+        /// will be deleted along with all files and folders under it.
+        /// </summary>
+        /// <param name="targetPath">The relative path of the directory to delete.</param>
+        /// <param name="requireExists">If false, and the <paramref name="targetPath"/> does not exist, then the deletion
+        /// will fail silently.</param>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
+        void DeleteDirectory(string targetPath, bool requireExists = false);
 
         /// <summary>
         /// Deletes a directory asynchronously. If the root directory is specified, then all files and folders in the root
@@ -80,21 +93,26 @@ namespace GoreUpdater
         /// <param name="targetPath">The relative path of the directory to delete.</param>
         /// <returns>True if the directory deletion task was enqueued; false if the <paramref name="targetPath"/> is already
         /// queued for deletion, or if the <paramref name="targetPath"/> is invalid.</returns>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         bool DeleteDirectoryAsync(string targetPath);
 
         /// <summary>
         /// Synchronously downloads a remote file and returns the contents of the downloaded file as an array of bytes.
         /// </summary>
         /// <param name="remoteFile">The remote file to download.</param>
+        /// <param name="requireExists">If false, and the remote file does not exist, a null will be returned instead.</param>
         /// <returns>The downloaded file's contents.</returns>
-        byte[] Download(string remoteFile);
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
+        byte[] Download(string remoteFile, bool requireExists = false);
 
         /// <summary>
         /// Synchronously downloads a remote file and returns the contents of the downloaded file as a string.
         /// </summary>
         /// <param name="remoteFile">The remote file to download.</param>
+        /// <param name="requireExists">If false, and the remote file does not exist, a null will be returned instead.</param>
         /// <returns>The downloaded file's contents.</returns>
-        string DownloadAsString(string remoteFile);
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
+        string DownloadAsString(string remoteFile, bool requireExists = false);
 
         /// <summary>
         /// Enqueues a file for asynchronous downloading.
@@ -103,6 +121,7 @@ namespace GoreUpdater
         /// <param name="sourcePath">The fully qualified path to download the file to.</param>
         /// <returns>True if the file was enqueued; false if either of the arguments were invalid, or the file already
         /// exists in the queue.</returns>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         bool DownloadAsync(string remotePath, string sourcePath);
 
         /// <summary>
@@ -112,6 +131,7 @@ namespace GoreUpdater
         /// <param name="remotePath">The path to upload the file to on the destination.</param>
         /// <returns>True if the file was enqueued; false if either of the arguments were invalid, or the file already
         /// exists in the queue.</returns>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         bool UploadAsync(string sourcePath, string remotePath);
 
         /// <summary>
@@ -119,6 +139,7 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="files">The files to upload, where the key is the source path, and the value is the
         /// path to upload the file on the destination.</param>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         void UploadAsync(IEnumerable<KeyValuePair<string, string>> files);
 
         /// <summary>
@@ -126,6 +147,7 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="files">The files to download, where the key is the remote file path, and the value is the
         /// fully qualified local path to download the file to.</param>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         void DownloadAsync(IEnumerable<KeyValuePair<string, string>> files);
     }
 }

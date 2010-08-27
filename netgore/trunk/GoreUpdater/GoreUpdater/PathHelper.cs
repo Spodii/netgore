@@ -16,6 +16,13 @@ namespace GoreUpdater
         public const int MinVersionStringLength = 6;
 
         /// <summary>
+        /// The name of the remote file that holds the hash of the <see cref="VersionFileList"/> in a version folder. This file
+        /// only exists when the synchronization is completed, and contains the hash of the <see cref="VersionFileList"/> for
+        /// the files uploaded.
+        /// </summary>
+        public const string RemoteFileListHashFileName = "sync_complete";
+
+        /// <summary>
         /// The possible path separators.
         /// </summary>
         static readonly string[] _pathSeps = new string[]
