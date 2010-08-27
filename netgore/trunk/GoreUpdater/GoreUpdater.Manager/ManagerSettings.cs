@@ -22,6 +22,7 @@ namespace GoreUpdater.Manager
     {
         const string _headerDelimiter = "=";
         const string _headerLiveVersion = "LIVEVERSION";
+        const string _headerFileServer = "FILESERVER";
         const string _settingsFile = "settings.txt";
 
         static readonly ManagerSettings _instance;
@@ -29,6 +30,76 @@ namespace GoreUpdater.Manager
         readonly string _filePath;
         readonly object _saveSync = new object();
         readonly object _versionSync = new object();
+
+        /// <summary>
+        /// Notifies listeners when a file server has been added or removed from the list.
+        /// </summary>
+        public event ManagerSettingsEventHandler FileServerListChanged;
+
+        /// <summary>
+        /// Gets the list of file servers.
+        /// </summary>
+        public IEnumerable<FileServerInfo> FileServers
+        {
+            get
+            {
+                lock (_fileServersSync)
+                {
+                    return _fileServers.ToArray();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes from the file server list.
+        /// </summary>
+        /// <param name="fileServer">The <see cref="FileServerInfo"/> to remove.</param>
+        /// <returns>True if removed; otherwise false.</returns>
+        public bool RemoveFileServer(FileServerInfo fileServer)
+        {
+            bool removed;
+            lock (_fileServersSync)
+            {
+                removed = _fileServers.Remove(fileServer);
+            }
+
+            if (removed)
+            {
+                Save();
+
+                if (FileServerListChanged != null)
+                    FileServerListChanged(this);
+            }
+
+            return removed;
+        }
+
+        /// <summary>
+        /// Adds to the file server list.
+        /// </summary>
+        /// <param name="fileServer">The <see cref="FileServerInfo"/> to add.</param>
+        /// <returns>True if added; otherwise false.</returns>
+        public bool AddFileServer(FileServerInfo fileServer)
+        {
+            lock (_fileServersSync)
+            {
+                if (_fileServers.Contains(fileServer))
+                    return false;
+
+                _fileServers.Add(fileServer);
+            }
+
+            Save();
+
+            if (FileServerListChanged != null)
+                FileServerListChanged(this);
+
+            return true;
+        }
+
+        readonly object _fileServersSync = new object();
+
+        readonly List<FileServerInfo> _fileServers = new List<FileServerInfo>();
 
         int _liveVersion = 0;
 
@@ -39,6 +110,7 @@ namespace GoreUpdater.Manager
         {
             var filePath = PathHelper.CombineDifferentPaths(Application.StartupPath, _settingsFile);
             _instance = new ManagerSettings(filePath);
+            _instance.Load(filePath);
         }
 
         /// <summary>
@@ -48,8 +120,6 @@ namespace GoreUpdater.Manager
         ManagerSettings(string filePath)
         {
             _filePath = filePath;
-
-            Load(FilePath);
         }
 
         /// <summary>
@@ -173,23 +243,40 @@ namespace GoreUpdater.Manager
 
             foreach (var v in values)
             {
-                switch (v.Key)
-                {
-                    case _headerLiveVersion:
-                        int i;
-                        if (!int.TryParse(v.Value, out i))
-                        {
-                            MessageBox.Show(string.Format("Encountered invalid `{0}` value in settings file.", _headerLiveVersion));
+                    switch (v.Key)
+                    {
+                        case _headerLiveVersion:
+                            int i;
+                            if (!int.TryParse(v.Value, out i))
+                            {
+                                const string errmsg = "Encountered invalid {0} value in settings file.";
+                                MessageBox.Show(string.Format(errmsg, _headerLiveVersion));
+                                break;
+                            }
+
+                            _liveVersion = i;
                             break;
-                        }
 
-                        _liveVersion = i;
-                        break;
+                        case _headerFileServer:
+                            try
+                            {
+                                var fs = FileServerInfo.Create(v.Value);
+                                lock (_fileServersSync)
+                                {
+                                    _fileServers.Add(fs);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                const string errmsg = "Encountered invalid {0} value in settings file: {1}";
+                                MessageBox.Show(string.Format(errmsg, _headerLiveVersion, ex));
+                            }
+                            break;
 
-                    default:
-                        MessageBox.Show("Encountered unknown setting: " + v.Key);
-                        break;
-                }
+                        default:
+                            MessageBox.Show("Encountered unknown setting: " + v.Key);
+                            break;
+                    }
             }
         }
 
@@ -204,6 +291,14 @@ namespace GoreUpdater.Manager
 
                 // Write the settings
                 AddSetting(sb, _headerLiveVersion, LiveVersion.ToString());
+
+                lock (_fileServersSync)
+                {
+                    foreach (var s in _fileServers)
+                    {
+                        AddSetting(sb, _headerFileServer, s.GetCreationString());
+                    }
+                }
 
                 // Save the file
                 var tmpFile = FilePath + ".tmp";

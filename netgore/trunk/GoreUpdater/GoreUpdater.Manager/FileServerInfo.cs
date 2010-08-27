@@ -20,27 +20,76 @@ namespace GoreUpdater.Manager
         readonly object _syncVersionSync = new object();
         readonly Thread _workerThread;
 
+        /// <summary>
+        /// Gets a string that can be used to recreate this object instance.
+        /// </summary>
+        /// <returns>A string that can be used to recreate this object instance.</returns>
+        public string GetCreationString()
+        {
+            lock (_infoSync)
+            {
+                return FileUploaderType + "|" + Host + "|" + User + "|" + Password;
+            }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="FileServerInfo"/> from a creation string.
+        /// </summary>
+        /// <param name="creationString">The <see cref="FileServerInfo"/> creation string.</param>
+        /// <returns>The <see cref="FileServerInfo"/> instance.</returns>
+        public static FileServerInfo Create(string creationString)
+        {
+            var s = creationString.Split('|');
+            if (s.Length != 4)
+                throw new ArgumentException("Invalid creation string - incorrect number of arguments provided.");
+
+            var type = (FileUploaderType)Enum.Parse(typeof(FileUploaderType), s[0]);
+            var host = s[1];
+            var user = s[2];
+            var password = s[3];
+
+            return new FileServerInfo(type, host, user, password);
+        }
+
         IFileUploader _fileUploader;
         FileUploaderType _fileUploaderType;
         string _host;
         string _password;
         string _user;
+        bool _isBusySyncing;
+
+        /// <summary>
+        /// Gets if this <see cref="FileServerInfo"/> is busy synchronizing to the server.
+        /// </summary>
+        public bool IsBusySyncing { get { return _isBusySyncing; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileServerInfo"/> class.
         /// </summary>
+        /// <param name="type">The type of file uploader to use.</param>
         /// <param name="host">The host address.</param>
         /// <param name="user">The user.</param>
         /// <param name="password">The password.</param>
-        public FileServerInfo(string host, string user, string password)
+        public FileServerInfo(FileUploaderType type, string host, string user, string password)
         {
+            _fileUploaderType = type;
             _host = host;
             _user = user;
             _password = password;
 
+            // Listen for when any versions change
             _settings.LiveVersionChanged += _settings_LiveVersionChanged;
             _settings.NextVersionCreated += _settings_NextVersionCreated;
 
+            // Enqueue the live version and, if it exists, the next version, to ensure they are synchronized
+            EnqueueSyncVersion(_settings.LiveVersion);
+            if (_settings.DoesNextVersionExist())
+                EnqueueSyncVersion(_settings.LiveVersion + 1);
+
+            // Create the initial file uploader
+            RecreateFileUploader();
+
+            // Create the worker thread and start it
             _workerThread = new Thread(WorkerThreadLoop) { IsBackground = true };
 
             try
@@ -75,9 +124,12 @@ namespace GoreUpdater.Manager
 
                 if (fu == null)
                 {
+                    _isBusySyncing = false;
                     Thread.Sleep(_workerThreadNoJobTimeout);
                     continue;
                 }
+
+                _isBusySyncing = true;
 
                 // Grab the next version to check if synced
                 int v = int.MinValue;
@@ -110,12 +162,27 @@ namespace GoreUpdater.Manager
                     var fileListHashPath = GetVersionRemoteFilePath(v, PathHelper.RemoteFileListHashFileName);
                     string vflHahs = fu.DownloadAsString(fileListHashPath);
 
-                    // Check if the hash matches the current version's hash
-                    var expectedVflHash = File.ReadAllText(VersionHelper.GetVersionFileListHashPath(v));
-                    if (vflHahs != expectedVflHash)
+                    // Check if the hash file exists on the server
+                    if (vflHahs != null)
                     {
-                        // Delete the whole version folder first
-                        fu.DeleteDirectory(GetVersionRemoteFilePath(v, null));
+                        // Check if the hash matches the current version's hash
+                        var expectedVflHash = File.ReadAllText(VersionHelper.GetVersionFileListHashPath(v));
+                        if (vflHahs != expectedVflHash)
+                        {
+                            // Delete the whole version folder first
+                            fu.DeleteDirectory(GetVersionRemoteFilePath(v, null));
+                        }
+                        else
+                        {
+                            // Hash existed and was correct - good enough for us!
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        // Hash didn't exist at all, so we will have to update. As long as SkipIfExists is set to true, files
+                        // that already exist will be skipped, so we will only end up uploading the new files. In any case, its
+                        // the same process either way.
                     }
 
                     // Check the hashes of the local files
@@ -320,6 +387,9 @@ namespace GoreUpdater.Manager
         /// <param name="version">The version to synchronize.</param>
         void EnqueueSyncVersion(int version)
         {
+            if (version <= 0)
+                return;
+
             lock (_syncVersionSync)
             {
                 if (!_versionSyncQueue.Contains(version))
