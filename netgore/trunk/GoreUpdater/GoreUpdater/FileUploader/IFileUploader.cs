@@ -11,25 +11,36 @@ namespace GoreUpdater
     public interface IFileUploader : IDisposable
     {
         /// <summary>
-        /// Notifies listeners when a request to delete a directory has been completed.
+        /// Notifies listeners when an asynchronous request to delete a directory has been completed.
         /// </summary>
         event FileUploaderDeleteDirEventHandler DeleteDirectoryComplete;
 
         /// <summary>
-        /// Notifies listeners when a request to delete a directory has encountered an error.
+        /// Notifies listeners when an asynchronous request to delete a directory has encountered an error.
         /// </summary>
         event FileUploaderDeleteDirErrorEventHandler DeleteDirectoryError;
 
         /// <summary>
-        /// Notifies listeners when an upload has been completed.
+        /// Notifies listeners when an asynchronous upload has been completed.
         /// </summary>
         event FileUploaderUploadEventHandler UploadComplete;
 
         /// <summary>
-        /// Notifies listeners when there has been an error related to one of the upload jobs. The job in question will still
-        /// be re-attempted by default.
+        /// Notifies listeners when an asynchronous download has been completed.
         /// </summary>
-        event FileUploaderErrorEventHandler UploadError;
+        event FileUploaderDownloadEventHandler DownloadComplete;
+
+        /// <summary>
+        /// Notifies listeners when there has been an error related to one of the asynchronous upload jobs.
+        /// The job in question will still be re-attempted by default.
+        /// </summary>
+        event FileUploaderUploadErrorEventHandler UploadError;
+
+        /// <summary>
+        /// Notifies listeners when there has been an error related to one of the asynchronous download jobs.
+        /// The job in question will still be re-attempted by default.
+        /// </summary>
+        event FileUploaderDownloadErrorEventHandler DownloadError;
 
         /// <summary>
         /// Gets if the <see cref="IFileUploader"/> is currently busy uploading files. This will be false when the queue is empty
@@ -48,11 +59,18 @@ namespace GoreUpdater
         bool SkipIfExists { get; set; }
 
         /// <summary>
-        /// Removes a file from the transfer queue and aborts it.
+        /// Removes a file from the asynchronous upload queue and aborts it.
         /// </summary>
-        /// <param name="targetPath">The remote path for the transfer to cancel.</param>
+        /// <param name="remotePath">The remote path for the upload to cancel.</param>
         /// <returns>True if the job was removed; otherwise false.</returns>
-        bool CancelTransfer(string targetPath);
+        bool CancelAsyncUpload(string remotePath);
+
+        /// <summary>
+        /// Removes a file from the asynchronous download queue and aborts it.
+        /// </summary>
+        /// <param name="localPath">The fully qualified local path of the download to cancel.</param>
+        /// <returns>True if the job was removed; otherwise false.</returns>
+        bool CancelAsyncDownload(string localPath);
 
         /// <summary>
         /// Deletes a directory asynchronously. If the root directory is specified, then all files and folders in the root
@@ -69,29 +87,45 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="remoteFile">The remote file to download.</param>
         /// <returns>The downloaded file's contents.</returns>
-        byte[] DownloadFile(string remoteFile);
+        byte[] Download(string remoteFile);
 
         /// <summary>
         /// Synchronously downloads a remote file and returns the contents of the downloaded file as a string.
         /// </summary>
         /// <param name="remoteFile">The remote file to download.</param>
         /// <returns>The downloaded file's contents.</returns>
-        string DownloadFileAsString(string remoteFile);
+        string DownloadAsString(string remoteFile);
+
+        /// <summary>
+        /// Enqueues a file for asynchronous downloading.
+        /// </summary>
+        /// <param name="remotePath">The path to the file to download on the destination.</param>
+        /// <param name="sourcePath">The fully qualified path to download the file to.</param>
+        /// <returns>True if the file was enqueued; false if either of the arguments were invalid, or the file already
+        /// exists in the queue.</returns>
+        bool DownloadAsync(string remotePath, string sourcePath);
 
         /// <summary>
         /// Enqueues a file for asynchronous uploading.
         /// </summary>
         /// <param name="sourcePath">The path to the local file to upload.</param>
-        /// <param name="targetPath">The path to upload the file to on the destination.</param>
+        /// <param name="remotePath">The path to upload the file to on the destination.</param>
         /// <returns>True if the file was enqueued; false if either of the arguments were invalid, or the file already
         /// exists in the queue.</returns>
-        bool EnqueueAsync(string sourcePath, string targetPath);
+        bool UploadAsync(string sourcePath, string remotePath);
 
         /// <summary>
         /// Enqueues multiple files for asynchronous uploading.
         /// </summary>
         /// <param name="files">The files to upload, where the key is the source path, and the value is the
         /// path to upload the file on the destination.</param>
-        void EnqueueAsync(IEnumerable<KeyValuePair<string, string>> files);
+        void UploadAsync(IEnumerable<KeyValuePair<string, string>> files);
+
+        /// <summary>
+        /// Enqueues multiple files for asynchronous downloading.
+        /// </summary>
+        /// <param name="files">The files to download, where the key is the remote file path, and the value is the
+        /// fully qualified local path to download the file to.</param>
+        void DownloadAsync(IEnumerable<KeyValuePair<string, string>> files);
     }
 }
