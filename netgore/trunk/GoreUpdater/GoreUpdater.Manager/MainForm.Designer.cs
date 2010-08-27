@@ -42,7 +42,7 @@
             this.btnMSDelete = new System.Windows.Forms.Button();
             this.tpFileServers = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.lstFS = new System.Windows.Forms.ListBox();
+            this.lstFS = new FileServerListBox();
             this.btnFSNew = new System.Windows.Forms.Button();
             this.btnFSInfo = new System.Windows.Forms.Button();
             this.btnFSDelete = new System.Windows.Forms.Button();
@@ -341,7 +341,7 @@
         private System.Windows.Forms.Button btnNewVersion;
         private System.Windows.Forms.Label lblLiveVersionHelp;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListBox lstFS;
+        private FileServerListBox lstFS;
         private System.Windows.Forms.Button btnFSNew;
         private System.Windows.Forms.Button btnFSInfo;
         private System.Windows.Forms.Button btnFSDelete;

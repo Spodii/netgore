@@ -215,7 +215,7 @@ namespace GoreUpdater
         public FtpFileUploader(string hostRoot, string username, string password)
         {
             SkipIfExists = true;
-            UsePassive = true;
+            UsePassive = false;
 
             if (!hostRoot.EndsWith("/"))
                 hostRoot += "/";
@@ -255,7 +255,7 @@ namespace GoreUpdater
 
         /// <summary>
         /// Gets or sets if passive FTP will be used. You may have to change this value to get the FTP connection to work, depending
-        /// on your system configuration. Default value is true.
+        /// on your system configuration. Default value is false.
         /// </summary>
         public bool UsePassive { get; set; }
 

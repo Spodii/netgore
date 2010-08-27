@@ -9,6 +9,9 @@ namespace GoreUpdater.Manager
     {
         static readonly ManagerSettings _settings = ManagerSettings.Instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainForm"/> class.
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -70,6 +73,8 @@ namespace GoreUpdater.Manager
                 MessageBox.Show("Are you sure you wish to update the live version?", "Update live version?",
                                 MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
+
+            _settings.TrySetLiveVersion(_settings.LiveVersion + 1);
 
             // If the new version is still being uploaded to the servers, warn the user
             // TODO: ...

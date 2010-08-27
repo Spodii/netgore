@@ -167,12 +167,12 @@ namespace GoreUpdater
                 var l = line.Trim();
 
                 // Check for a header
-                if (strComp.Equals(IncludeHeader))
+                if (strComp.Equals(IncludeHeader, l))
                 {
                     addToFiles = true;
                     continue;
                 }
-                else if (strComp.Equals(IgnoreHeader))
+                else if (strComp.Equals(IgnoreHeader, l))
                 {
                     addToFiles = false;
                     continue;
