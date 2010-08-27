@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace GoreUpdater.Manager
 {
@@ -17,12 +15,33 @@ namespace GoreUpdater.Manager
     public class MasterServerInfo
     {
         readonly object _syncRoot = new object();
+        IFileUploader _fileUploader;
+        FileUploaderType _fileUploaderType;
 
         string _host;
-        string _user;
         string _password;
-        FileUploaderType _fileUploaderType;
-        IFileUploader _fileUploader;
+        string _user;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MasterServerInfo"/> class.
+        /// </summary>
+        /// <param name="host">The host address.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="password">The password.</param>
+        public MasterServerInfo(string host, string user, string password)
+        {
+            _host = host;
+            _user = user;
+            _password = password;
+        }
+
+        /// <summary>
+        /// Gets the type of <see cref="IFileUploader"/> to use.
+        /// </summary>
+        public FileUploaderType FileUploaderType
+        {
+            get { return _fileUploaderType; }
+        }
 
         /// <summary>
         /// Gets or sets the server host.
@@ -30,14 +49,6 @@ namespace GoreUpdater.Manager
         public string Host
         {
             get { return _host; }
-        }
-
-        /// <summary>
-        /// Gets the user name to use to log into the server.
-        /// </summary>
-        public string User
-        {
-            get { return _user; }
         }
 
         /// <summary>
@@ -49,11 +60,11 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Gets the type of <see cref="IFileUploader"/> to use.
+        /// Gets the user name to use to log into the server.
         /// </summary>
-        public FileUploaderType FileUploaderType
+        public string User
         {
-            get { return _fileUploaderType; }
+            get { return _user; }
         }
 
         /// <summary>
@@ -82,9 +93,7 @@ namespace GoreUpdater.Manager
 
                 if (sc.Equals(newHost, Host) && sc.Equals(newUser, User) && sc.Equals(newPassword, Password) &&
                     newType == FileUploaderType)
-                {
                     return;
-                }
 
                 // Set the new values
                 _host = newHost;
@@ -104,14 +113,12 @@ namespace GoreUpdater.Manager
         {
             // Dispose of the old uploader
             if (_fileUploader != null)
-            {
                 _fileUploader.Dispose();
-            }
 
             // Create the new uploader
             switch (FileUploaderType)
             {
-                case Manager.FileUploaderType.Ftp:
+                case FileUploaderType.Ftp:
                     _fileUploader = new FtpFileUploader(Host, User, Password);
                     break;
 
@@ -122,19 +129,6 @@ namespace GoreUpdater.Manager
             }
 
             // TODO: Start checking if the server is up-to-date
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MasterServerInfo"/> class.
-        /// </summary>
-        /// <param name="host">The host address.</param>
-        /// <param name="user">The user.</param>
-        /// <param name="password">The password.</param>
-        public MasterServerInfo(string host, string user, string password)
-        {
-            _host = host;
-            _user = user;
-            _password = password;
         }
     }
 }
