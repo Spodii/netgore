@@ -62,22 +62,36 @@ namespace GoreUpdater
         /// <param name="targetPath">The relative path of the directory to delete.</param>
         /// <returns>True if the directory deletion task was enqueued; false if the <paramref name="targetPath"/> is already
         /// queued for deletion, or if the <paramref name="targetPath"/> is invalid.</returns>
-        bool DeleteDirectory(string targetPath);
+        bool DeleteDirectoryAsync(string targetPath);
 
         /// <summary>
-        /// Enqueues a file for uploading.
+        /// Synchronously downloads a remote file and returns the contents of the downloaded file as an array of bytes.
+        /// </summary>
+        /// <param name="remoteFile">The remote file to download.</param>
+        /// <returns>The downloaded file's contents.</returns>
+        byte[] DownloadFile(string remoteFile);
+
+        /// <summary>
+        /// Synchronously downloads a remote file and returns the contents of the downloaded file as a string.
+        /// </summary>
+        /// <param name="remoteFile">The remote file to download.</param>
+        /// <returns>The downloaded file's contents.</returns>
+        string DownloadFileAsString(string remoteFile);
+
+        /// <summary>
+        /// Enqueues a file for asynchronous uploading.
         /// </summary>
         /// <param name="sourcePath">The path to the local file to upload.</param>
         /// <param name="targetPath">The path to upload the file to on the destination.</param>
         /// <returns>True if the file was enqueued; false if either of the arguments were invalid, or the file already
         /// exists in the queue.</returns>
-        bool Enqueue(string sourcePath, string targetPath);
+        bool EnqueueAsync(string sourcePath, string targetPath);
 
         /// <summary>
-        /// Enqueues multiple files for uploading.
+        /// Enqueues multiple files for asynchronous uploading.
         /// </summary>
         /// <param name="files">The files to upload, where the key is the source path, and the value is the
         /// path to upload the file on the destination.</param>
-        void Enqueue(IEnumerable<KeyValuePair<string, string>> files);
+        void EnqueueAsync(IEnumerable<KeyValuePair<string, string>> files);
     }
 }

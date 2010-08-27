@@ -875,7 +875,7 @@ namespace GoreUpdater
         /// <param name="targetPath">The relative path of the directory to delete.</param>
         /// <returns>True if the directory deletion task was enqueued; false if the <paramref name="targetPath"/> is already
         /// queued for deletion, or if the <paramref name="targetPath"/> is invalid.</returns>
-        public bool DeleteDirectory(string targetPath)
+        public bool DeleteDirectoryAsync(string targetPath)
         {
             if (string.IsNullOrEmpty(targetPath))
                 return false;
@@ -898,11 +898,66 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Synchronously downloads a remote file and returns the contents of the downloaded file as an array of bytes.
+        /// </summary>
+        /// <param name="remoteFile">The remote file to download.</param>
+        /// <returns>The downloaded file's contents.</returns>
+        public byte[] DownloadFile(string remoteFile)
+        {
+            var fullRemotePath = ResolveRemotePath(remoteFile);
+            var req = CreateFtpWebRequest(fullRemotePath);
+            req.Method = WebRequestMethods.Ftp.DownloadFile;
+            req.UseBinary = true;
+
+            using (var res = req.GetResponse())
+            {
+                using (var resStream = res.GetResponseStream())
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        byte[] b = new byte[8192];
+                        int r;
+                        while ((r = resStream.Read(b, 0, b.Length)) > 0)
+                        {
+                            ms.Write(b, 0, r);
+                        }
+
+                        return ms.ToArray();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Synchronously downloads a remote file and returns the contents of the downloaded file as a string.
+        /// </summary>
+        /// <param name="remoteFile">The remote file to download.</param>
+        /// <returns>The downloaded file's contents.</returns>
+        public string DownloadFileAsString(string remoteFile)
+        {
+            var fullRemotePath = ResolveRemotePath(remoteFile);
+            var req = CreateFtpWebRequest(fullRemotePath);
+            req.Method = WebRequestMethods.Ftp.DownloadFile;
+            req.UseBinary = false;
+
+            using (var res = req.GetResponse())
+            {
+                using (var resStream = res.GetResponseStream())
+                {
+                    using (var sr = new StreamReader(resStream))
+                    {
+                        return sr.ReadToEnd();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Enqueues a file for uploading.
         /// </summary>
         /// <param name="sourcePath">The path to the local file to upload.</param>
         /// <param name="targetPath">The path to upload the file to on the destionation.</param>
-        public bool Enqueue(string sourcePath, string targetPath)
+        public bool EnqueueAsync(string sourcePath, string targetPath)
         {
             if (string.IsNullOrEmpty(sourcePath) || string.IsNullOrEmpty(targetPath))
                 return false;
@@ -917,11 +972,11 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="files">The files to upload, where the key is the source path, and the value is the
         /// path to upload the file on the destination.</param>
-        public void Enqueue(IEnumerable<KeyValuePair<string, string>> files)
+        public void EnqueueAsync(IEnumerable<KeyValuePair<string, string>> files)
         {
             foreach (var f in files)
             {
-                Enqueue(f.Key, f.Value);
+                EnqueueAsync(f.Key, f.Value);
             }
         }
 
