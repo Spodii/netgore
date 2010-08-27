@@ -43,7 +43,7 @@ namespace GoreUpdater
         bool IsDisposed { get; }
 
         /// <summary>
-        /// Gets or sets if files that already exist on the destination will be skipped.
+        /// Gets or sets if files that already exist on the destination will be skipped. Default value is true.
         /// </summary>
         bool SkipIfExists { get; set; }
 

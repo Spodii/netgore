@@ -91,6 +91,7 @@ namespace GoreUpdater
         /// <param name="password">The Ftp account password.</param>
         public FtpFileUploader(string hostRoot, string username, string password)
         {
+            SkipIfExists = true;
             UsePassive = true;
 
             if (!hostRoot.EndsWith("/"))
@@ -833,7 +834,7 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Gets or sets if files that already exist on the destination will be skipped.
+        /// Gets or sets if files that already exist on the destination will be skipped. Default value is true.
         /// </summary>
         public bool SkipIfExists { get; set; }
 
