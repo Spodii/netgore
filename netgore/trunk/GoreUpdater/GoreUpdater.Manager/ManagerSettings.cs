@@ -16,6 +16,7 @@ namespace GoreUpdater.Manager
 
     /// <summary>
     /// Contains settings for the GoreUpdater manager.
+    /// This class is not thread-safe.
     /// </summary>
     public class ManagerSettings
     {
@@ -27,6 +28,7 @@ namespace GoreUpdater.Manager
 
         readonly string _filePath;
         readonly object _saveSync = new object();
+        readonly object _versionSync = new object();
 
         int _liveVersion = 0;
 
@@ -51,9 +53,51 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Uses the given <see cref="VersionFileList"/> to set up the next version.
+        /// </summary>
+        /// <param name="vfl">The <see cref="VersionFileList"/> for the next version..</param>
+        /// <exception cref="ArgumentException">The <paramref name="vfl"/> was invalid or the version failed
+        /// to be created.</exception>
+        public void SetNextVersion(VersionFileList vfl)
+        {
+            var nextVersion = LiveVersion + 1;
+
+            // Save the file listing
+            var outFilePath = VersionHelper.GetVersionFileListPath(nextVersion);
+            vfl.Write(outFilePath);
+
+            // Save the hash for the file listing
+            var hash = Hasher.GetFileHash(outFilePath);
+            var outHashPath = VersionHelper.GetVersionFileListHashPath(nextVersion);
+            if (File.Exists(outHashPath))
+                File.Delete(outHashPath);
+
+            File.WriteAllText(outHashPath, hash);
+
+            // Notify listeners
+            if (NextVersionCreated != null)
+                NextVersionCreated(this);
+        }
+
+        /// <summary>
+        /// Notifies listeners when the next version (the version after the live version) to release has been created, or re-created.
+        /// </summary>
+        public event ManagerSettingsEventHandler NextVersionCreated;
+
+        /// <summary>
         /// Notifies listeners when the live version has changed.
         /// </summary>
         public event ManagerSettingsEventHandler LiveVersionChanged;
+
+        /// <summary>
+        /// Gets if the next version (the version after the live version) exists.
+        /// </summary>
+        /// <returns>True if the next version exists; otherwise false.</returns>
+        public bool DoesNextVersionExist()
+        {
+            var nextVersionPath = VersionHelper.GetVersionFileListPath(LiveVersion + 1);
+            return File.Exists(nextVersionPath);
+        }
 
         /// <summary>
         /// Gets the path to the settings file.
@@ -76,7 +120,13 @@ namespace GoreUpdater.Manager
         /// </summary>
         public int LiveVersion
         {
-            get { return _liveVersion; }
+            get
+            {
+                lock (_versionSync)
+                {
+                    return _liveVersion;
+                }
+            }
         }
 
         /// <summary>

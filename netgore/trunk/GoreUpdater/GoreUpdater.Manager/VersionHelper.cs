@@ -12,8 +12,22 @@ namespace GoreUpdater.Manager
         /// <returns>The path to the file list for a version.</returns>
         public static string GetVersionFileListPath(int version)
         {
+            var versionStr = PathHelper.GetVersionString(version);
             var path = PathHelper.CombineDifferentPaths(Application.StartupPath, "filelists");
-            path = PathHelper.CombineDifferentPaths(path, version + ".txt");
+            path = PathHelper.CombineDifferentPaths(path, versionStr + ".txt");
+            return path;
+        }
+
+        /// <summary>
+        /// Gets the path to the hash of the file list for a version.
+        /// </summary>
+        /// <param name="version">The version.</param>
+        /// <returns>The path to the hash of the file list for a version.</returns>
+        public static string GetVersionFileListHashPath(int version)
+        {
+            var versionStr = PathHelper.GetVersionString(version);
+            var path = PathHelper.CombineDifferentPaths(Application.StartupPath, "filelists");
+            path = PathHelper.CombineDifferentPaths(path, versionStr + ".hash");
             return path;
         }
 

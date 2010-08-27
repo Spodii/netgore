@@ -90,15 +90,18 @@ namespace GoreUpdater.Manager
             if (!Directory.Exists(txtRootPath.Text) ||
                 Directory.GetFiles(txtRootPath.Text, "*", SearchOption.AllDirectories).Length <= 0)
             {
-                MessageBox.Show("You must first add the files for this new version to the path:" + Environment.NewLine +
-                                Environment.NewLine + txtRootPath.Text);
+                const string errmsg = "You must first add the files for this new version to the path:{0}{1}";
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, txtRootPath.Text));
                 return;
             }
 
+            const string confirmationMsg = "Are you sure you wish to create this new version?";
             if (
-                MessageBox.Show("Are you sure you wish to create this new version?", "Create new version?",
+                MessageBox.Show(confirmationMsg, "Create new version?",
                                 MessageBoxButtons.YesNo) == DialogResult.No)
+            {
                 return;
+            }
 
             // Create the version file list
             VersionFileList vfl;
@@ -108,15 +111,25 @@ namespace GoreUpdater.Manager
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to create VersionFileList:" + Environment.NewLine + Environment.NewLine + ex);
+                const string errmsg = "Failed to create VersionFileList due to an unexpected error." + " Please resolve the error below then try again.{0}{0}{1}";
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, ex));
                 return;
             }
 
             // Save the file list
-            var outFilePath = VersionHelper.GetVersionFileListPath(_version);
-            vfl.Write(outFilePath);
+            try
+            {
+                ManagerSettings.Instance.SetNextVersion(vfl);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to set the next version due to an unexpected error." + 
+                    " Please resolve the error below then try again.{0}{1}";
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, ex));
+                return;
+            }
 
-            MessageBox.Show("Version " + _version + " successfully created!", "Success!", MessageBoxButtons.OK);
+            MessageBox.Show("Version `" + _version + "` successfully created!", "Success!", MessageBoxButtons.OK);
             Close();
         }
 
