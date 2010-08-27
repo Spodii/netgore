@@ -3,6 +3,13 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+// TODO: Display the list of file servers on the GUI + be able to edit the entries
+// TODO: Display if the next version already exists
+// TODO: Create the master server logic
+// TODO: Start work on the client
+
+// TODO: [LATER] Add the logging framework and make use of it
+
 namespace GoreUpdater.Manager
 {
     public partial class MainForm : Form
@@ -74,16 +81,16 @@ namespace GoreUpdater.Manager
                                 MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            _settings.TrySetLiveVersion(_settings.LiveVersion + 1);
+            // If the next version is already created, warn the user
+            // TODO: ...
 
             // If the new version is still being uploaded to the servers, warn the user
             // TODO: ...
 
-            // Check that the file hashes match up
-            // TODO: ...
-
             // Update the version number on the master servers
             // TODO: ...
+
+            _settings.TrySetLiveVersion(_settings.LiveVersion + 1);
 
             // Done!
             MessageBox.Show("The live version has been successfully updated!", "Done!", MessageBoxButtons.OK);
