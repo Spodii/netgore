@@ -10,9 +10,9 @@ using System.Windows.Forms;
 namespace GoreUpdater.Manager
 {
     /// <summary>
-    /// Describes a master server instance.
+    /// Describes a file server instance.
     /// </summary>
-    public class MasterServerInfo : IDisposable
+    public class FileServerInfo : IDisposable
     {
         static readonly ManagerSettings _settings = ManagerSettings.Instance;
 
@@ -27,12 +27,12 @@ namespace GoreUpdater.Manager
         string _user;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MasterServerInfo"/> class.
+        /// Initializes a new instance of the <see cref="FileServerInfo"/> class.
         /// </summary>
         /// <param name="host">The host address.</param>
         /// <param name="user">The user.</param>
         /// <param name="password">The password.</param>
-        public MasterServerInfo(string host, string user, string password)
+        public FileServerInfo(string host, string user, string password)
         {
             _host = host;
             _user = user;

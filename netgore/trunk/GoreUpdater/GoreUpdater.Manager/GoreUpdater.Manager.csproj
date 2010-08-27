@@ -53,7 +53,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MasterServerInfo.cs" />
+    <Compile Include="FileServerInfo.cs" />
     <Compile Include="NewVersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
