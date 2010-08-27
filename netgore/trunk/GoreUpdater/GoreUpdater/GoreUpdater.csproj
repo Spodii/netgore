@@ -54,7 +54,9 @@
     <Compile Include="DownloadManager\IDownloadManager.cs" />
     <Compile Include="FileUploader\FileUploaderDeleteDirErrorEventHandler.cs" />
     <Compile Include="FileUploader\FileUploaderDeleteDirEventHandler.cs" />
-    <Compile Include="FileUploader\FileUploaderErrorEventHandler.cs" />
+    <Compile Include="FileUploader\FileUploaderDownloadErrorEventHandler.cs" />
+    <Compile Include="FileUploader\FileUploaderDownloadEventHandler.cs" />
+    <Compile Include="FileUploader\FileUploaderUploadErrorEventHandler.cs" />
     <Compile Include="FileUploader\FileUploaderUploadEventHandler.cs" />
     <Compile Include="FileUploader\FtpFileUploader.cs" />
     <Compile Include="FileUploader\IFileUploader.cs" />
