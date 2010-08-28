@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 
 // TODO: Display the list of file servers on the GUI + be able to edit the entries
-// TODO: Display if the next version already exists
 // TODO: Create the master server logic
 // TODO: Start work on the client
 
@@ -33,12 +32,20 @@ namespace GoreUpdater.Manager
             base.OnLoad(e);
 
             _settings.LiveVersionChanged += _settings_LiveVersionChanged;
+            _settings.NextVersionCreated += _settings_NextVersionCreated;
+
+            btnChangeLiveVersion.Enabled = _settings.DoesNextVersionExist();
             lblLiveVersion.Text = _settings.LiveVersion.ToString();
+        }
+
+        void _settings_NextVersionCreated(ManagerSettings sender)
+        {
+            btnChangeLiveVersion.Enabled = sender.DoesNextVersionExist();
         }
 
         void _settings_LiveVersionChanged(ManagerSettings sender)
         {
-            lblLiveVersion.Invoke((Action)(() => lblLiveVersion.Text = _settings.LiveVersion.ToString()));
+            lblLiveVersion.Invoke((Action)(() => lblLiveVersion.Text = sender.LiveVersion.ToString()));
         }
 
         /// <summary>
@@ -61,17 +68,15 @@ namespace GoreUpdater.Manager
             }
 
             // Ensure the next version's contents are valid
-            VersionFileList vfl;
             try
             {
-                vfl = VersionFileList.CreateFromFile(VersionHelper.GetVersionFileListPath(nextVersion));
+                VersionFileList.CreateFromFile(VersionHelper.GetVersionFileListPath(nextVersion));
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "The file listing file for the next version exists, but it is corrupt. Please use Create New Version to recreate the next version then try again." +
-                    Environment.NewLine + "Inner exception:" + Environment.NewLine + ex, "Corrupt file listing file",
-                    MessageBoxButtons.OK);
+                const string errmsg = "The file listing file for the next version exists, but it is corrupt." +
+                    " Please use Create New Version to recreate the next version then try again.{0}Inner Exception:{0}{1}";
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, ex), "Corrupt file listing file",  MessageBoxButtons.OK);
                 return;
             }
 
@@ -81,19 +86,25 @@ namespace GoreUpdater.Manager
                                 MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            // If the next version is already created, warn the user
-            // TODO: ...
-
             // If the new version is still being uploaded to the servers, warn the user
-            // TODO: ...
+            bool areServersBusy = _settings.FileServers.Any(x => x.IsBusySyncing);
+            if (areServersBusy)
+            {
+                const string msg = "Are you sure you wish to update the live version? One or more servers (either file or master servers)" +
+                    " are still synchronizing. Updating the live version now may leave you in a state where not all of the files" +
+                    " are available on all of the servers. It is highly recommended you wait until all synchronization finishes." +
+                    "{0}{0}Do you wish to continue? (Canceling is highly recommended!)";
+                if (MessageBox.Show(msg, "Continue updating live version?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
+            }
 
             // Update the version number on the master servers
-            // TODO: ...
-
             _settings.TrySetLiveVersion(_settings.LiveVersion + 1);
 
             // Done!
-            MessageBox.Show("The live version has been successfully updated!", "Done!", MessageBoxButtons.OK);
+            const string doneMsg = "The live version has been successfully updated!" +
+                " The master servers will automatically start to update with the new live version number.";
+            MessageBox.Show(doneMsg, "Done!", MessageBoxButtons.OK);
         }
 
         /// <summary>
@@ -103,10 +114,19 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnNewVersion_Click(object sender, EventArgs e)
         {
+            // If the version already exists, confirm that they want to recreate it
+            if (_settings.DoesNextVersionExist())
+            {
+                const string msg = "The next version already exists, it just has not been made live yet." +
+                    " Are you sure you wish to recreate the next version?";
+                if (MessageBox.Show(msg, "Recreate next version?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+            }
+
+            // Show the form for creating the new version
             var newVersionForm = new NewVersionForm();
             btnNewVersion.Enabled = false;
             newVersionForm.FormClosed += newVersionForm_FormClosed;
-
             newVersionForm.Show();
         }
 
