@@ -205,5 +205,35 @@ namespace GoreUpdater.Manager
         {
             btnNewVersion.Enabled = true;
         }
+
+        private void btnFSDelete_Click(object sender, EventArgs e)
+        {
+            // TODO: ...
+        }
+
+        private void btnFSInfo_Click(object sender, EventArgs e)
+        {
+            // TODO: ...
+        }
+
+        private void btnFSNew_Click(object sender, EventArgs e)
+        {
+            // TODO: ...
+        }
+
+        private void btnMSDelete_Click(object sender, EventArgs e)
+        {
+            // TODO: ...
+        }
+
+        private void btnMSInfo_Click(object sender, EventArgs e)
+        {
+            // TODO: ...
+        }
+
+        private void btnMSNew_Click(object sender, EventArgs e)
+        {
+            // TODO: ...
+        }
     }
 }
