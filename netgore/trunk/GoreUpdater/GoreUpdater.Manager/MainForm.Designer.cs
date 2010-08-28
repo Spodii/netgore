@@ -36,7 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tpMasterServers = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.lstMS = new System.Windows.Forms.ListBox();
+            this.lstMS = new ServerInfoListBox();
             this.btnMSNew = new System.Windows.Forms.Button();
             this.btnMSInfo = new System.Windows.Forms.Button();
             this.btnMSDelete = new System.Windows.Forms.Button();
@@ -346,7 +346,7 @@
         private System.Windows.Forms.Button btnFSInfo;
         private System.Windows.Forms.Button btnFSDelete;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.ListBox lstMS;
+        private ServerInfoListBox lstMS;
         private System.Windows.Forms.Button btnMSNew;
         private System.Windows.Forms.Button btnMSInfo;
         private System.Windows.Forms.Button btnMSDelete;

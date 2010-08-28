@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -34,48 +35,48 @@ namespace GoreUpdater.Manager
             _settings.LiveVersionChanged += _settings_LiveVersionChanged;
             _settings.NextVersionCreated += _settings_NextVersionCreated;
             _settings.FileServerListChanged += _settings_FileServerListChanged;
+            _settings.MasterServerListChanged += _settings_MasterServerListChanged;
 
             btnChangeLiveVersion.Enabled = _settings.DoesNextVersionExist();
             lblLiveVersion.Text = _settings.LiveVersion.ToString();
 
-            UpdateFileServerList();
+            UpdateServerListBox(lstFS, _settings.FileServers, FileServerInfo_IsBusySyncingChanged);
+            UpdateServerListBox(lstMS, _settings.MasterServers, MasterServerInfo_IsBusySyncingChanged);
         }
 
         /// <summary>
         /// Updates the file server listbox.
         /// </summary>
-        void UpdateFileServerList()
+        static void UpdateServerListBox(ServerInfoListBox lb, IEnumerable<ServerInfoBase> servers,
+            ServerInfoEventHandler changedEventHandler)
         {
             // Use Invoke to ensure we are in the correct thread
-            lstFS.Invoke((Action)delegate
+            lb.Invoke((Action)delegate
             {
-                // Get the servers
-                var servers = _settings.FileServers;
-
                 // Store the selected item so we can restore it when done
-                var selected = lstFS.SelectedItem;
+                var selected = lb.SelectedItem;
                 
                 // Remove the update listener from existing items to make sure we don't add it twice (no harm in removing
                 // the event hook if it doesn't exist to begin with)
-                foreach (var s in lstFS.Items.OfType<FileServerInfo>())
+                foreach (var s in lb.Items.OfType<ServerInfoBase>())
                 {
-                    s.IsBusySyncingChanged -= FileServerInfo_IsBusySyncingChanged;
+                    s.IsBusySyncingChanged -= changedEventHandler;
                 }
 
                 // Add the update listener to all items (after double-checking that the event listener isn't attached)
                 foreach (var s in servers)
                 {
-                    s.IsBusySyncingChanged -= FileServerInfo_IsBusySyncingChanged;
-                    s.IsBusySyncingChanged += FileServerInfo_IsBusySyncingChanged;
+                    s.IsBusySyncingChanged -= changedEventHandler;
+                    s.IsBusySyncingChanged += changedEventHandler;
                 }
 
                 // Re-add all items
-                lstFS.Items.Clear();
-                lstFS.Items.AddRange(servers.ToArray<object>());
+                lb.Items.Clear();
+                lb.Items.AddRange(servers.ToArray<object>());
 
                 // Restore the selected item if it is still in the list
                 if (servers.Any(x => x == selected))
-                    lstFS.SelectedItem = selected;
+                    lb.SelectedItem = selected;
             });
         }
 
@@ -84,9 +85,19 @@ namespace GoreUpdater.Manager
             lstFS.Invoke((Action)(() => lstFS.RefreshItem(sender)));
         }
 
+        void MasterServerInfo_IsBusySyncingChanged(ServerInfoBase sender)
+        {
+            lstMS.Invoke((Action)(() => lstMS.RefreshItem(sender)));
+        }
+
         void _settings_FileServerListChanged(ManagerSettings sender)
         {
-            UpdateFileServerList();
+            UpdateServerListBox(lstFS, sender.FileServers, FileServerInfo_IsBusySyncingChanged);
+        }
+
+        void _settings_MasterServerListChanged(ManagerSettings sender)
+        {
+            UpdateServerListBox(lstMS, sender.MasterServers, MasterServerInfo_IsBusySyncingChanged);
         }
 
         void _settings_LiveVersionChanged(ManagerSettings sender)
