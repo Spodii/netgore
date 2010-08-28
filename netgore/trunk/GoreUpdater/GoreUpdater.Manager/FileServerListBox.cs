@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -18,6 +19,29 @@ namespace GoreUpdater.Manager
         {
             DrawMode = DrawMode.OwnerDrawFixed;
             DoubleBuffered = true;
+        }
+
+        /// <summary>
+        /// Refreshes the display of an item in this <see cref="ListBox"/>.
+        /// </summary>
+        /// <param name="item">The item to refresh.</param>
+        public void RefreshItem(object item)
+        {
+            try
+            {
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    if (Items[i] == item)
+                    {
+                        Invalidate(GetItemRectangle(i));
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -43,7 +67,11 @@ namespace GoreUpdater.Manager
             e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
             // Draw the text
-            e.Graphics.DrawString(item.Host + (item.IsBusySyncing ? " [Syncing]" : ""), e.Font, Brushes.Black, textRect);
+            var displayText = item.Host;
+            if (item.IsBusySyncing)
+                displayText += " [Syncing]";
+
+            e.Graphics.DrawString(displayText, e.Font, Brushes.Black, textRect);
 
             // Draw the focus rectangle
             e.DrawFocusRectangle();
