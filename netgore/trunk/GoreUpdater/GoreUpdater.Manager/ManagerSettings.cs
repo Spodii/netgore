@@ -102,6 +102,20 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Gets the list of master servers.
+        /// </summary>
+        public IEnumerable<MasterServerInfo> MasterServers
+        {
+            get
+            {
+                lock (_masterServersSync)
+                {
+                    return _masterServers.ToArray();
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the global <see cref="ManagerSettings"/> instance.
         /// </summary>
         public static ManagerSettings Instance
