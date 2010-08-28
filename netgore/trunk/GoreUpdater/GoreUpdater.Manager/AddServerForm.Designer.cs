@@ -29,16 +29,20 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtHost = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txtUser = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnTest = new System.Windows.Forms.Button();
             this.btnCreate = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.lblTypeHelp = new System.Windows.Forms.Label();
+            this.lblHostHelp = new System.Windows.Forms.Label();
+            this.lblUserHelp = new System.Windows.Forms.Label();
+            this.lblPasswordHelp = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -50,13 +54,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Connection type:";
             // 
-            // comboBox1
+            // cmbType
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(105, 12);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(129, 21);
-            this.comboBox1.TabIndex = 1;
+            this.cmbType.FormattingEnabled = true;
+            this.cmbType.Location = new System.Drawing.Point(105, 12);
+            this.cmbType.Name = "cmbType";
+            this.cmbType.Size = new System.Drawing.Size(129, 21);
+            this.cmbType.TabIndex = 1;
             // 
             // label2
             // 
@@ -67,12 +71,12 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Host:";
             // 
-            // textBox1
+            // txtHost
             // 
-            this.textBox1.Location = new System.Drawing.Point(74, 39);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(160, 20);
-            this.textBox1.TabIndex = 3;
+            this.txtHost.Location = new System.Drawing.Point(74, 39);
+            this.txtHost.Name = "txtHost";
+            this.txtHost.Size = new System.Drawing.Size(160, 20);
+            this.txtHost.TabIndex = 3;
             // 
             // label3
             // 
@@ -92,19 +96,19 @@
             this.label4.TabIndex = 5;
             this.label4.Text = "Password:";
             // 
-            // textBox2
+            // txtUser
             // 
-            this.textBox2.Location = new System.Drawing.Point(74, 65);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(160, 20);
-            this.textBox2.TabIndex = 6;
+            this.txtUser.Location = new System.Drawing.Point(74, 65);
+            this.txtUser.Name = "txtUser";
+            this.txtUser.Size = new System.Drawing.Size(160, 20);
+            this.txtUser.TabIndex = 6;
             // 
-            // textBox3
+            // txtPassword
             // 
-            this.textBox3.Location = new System.Drawing.Point(74, 91);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(160, 20);
-            this.textBox3.TabIndex = 7;
+            this.txtPassword.Location = new System.Drawing.Point(74, 91);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(160, 20);
+            this.txtPassword.TabIndex = 7;
             // 
             // btnTest
             // 
@@ -136,22 +140,72 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // lblTypeHelp
+            // 
+            this.lblTypeHelp.AutoSize = true;
+            this.lblTypeHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblTypeHelp.Location = new System.Drawing.Point(240, 12);
+            this.lblTypeHelp.Name = "lblTypeHelp";
+            this.lblTypeHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblTypeHelp.TabIndex = 11;
+            this.lblTypeHelp.Text = "?";
+            this.lblTypeHelp.Click += new System.EventHandler(this.lblTypeHelp_Click);
+            // 
+            // lblHostHelp
+            // 
+            this.lblHostHelp.AutoSize = true;
+            this.lblHostHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblHostHelp.Location = new System.Drawing.Point(240, 39);
+            this.lblHostHelp.Name = "lblHostHelp";
+            this.lblHostHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblHostHelp.TabIndex = 12;
+            this.lblHostHelp.Text = "?";
+            this.lblHostHelp.Click += new System.EventHandler(this.lblHostHelp_Click);
+            // 
+            // lblUserHelp
+            // 
+            this.lblUserHelp.AutoSize = true;
+            this.lblUserHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblUserHelp.Location = new System.Drawing.Point(240, 65);
+            this.lblUserHelp.Name = "lblUserHelp";
+            this.lblUserHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblUserHelp.TabIndex = 13;
+            this.lblUserHelp.Text = "?";
+            this.lblUserHelp.Click += new System.EventHandler(this.lblUserHelp_Click);
+            // 
+            // lblPasswordHelp
+            // 
+            this.lblPasswordHelp.AutoSize = true;
+            this.lblPasswordHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblPasswordHelp.Location = new System.Drawing.Point(240, 91);
+            this.lblPasswordHelp.Name = "lblPasswordHelp";
+            this.lblPasswordHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblPasswordHelp.TabIndex = 14;
+            this.lblPasswordHelp.Text = "?";
+            this.lblPasswordHelp.Click += new System.EventHandler(this.lblPasswordHelp_Click);
+            // 
             // AddServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(250, 153);
+            this.ClientSize = new System.Drawing.Size(262, 153);
+            this.Controls.Add(this.lblPasswordHelp);
+            this.Controls.Add(this.lblUserHelp);
+            this.Controls.Add(this.lblHostHelp);
+            this.Controls.Add(this.lblTypeHelp);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnCreate);
             this.Controls.Add(this.btnTest);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.txtPassword);
+            this.Controls.Add(this.txtUser);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtHost);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cmbType);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "AddServerForm";
             this.Text = "Add Server";
             this.ResumeLayout(false);
@@ -162,15 +216,19 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtHost;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txtUser;
+        private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Button btnCreate;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblTypeHelp;
+        private System.Windows.Forms.Label lblHostHelp;
+        private System.Windows.Forms.Label lblUserHelp;
+        private System.Windows.Forms.Label lblPasswordHelp;
     }
 }
