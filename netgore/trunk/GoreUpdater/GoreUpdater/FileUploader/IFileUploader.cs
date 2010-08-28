@@ -21,20 +21,9 @@ namespace GoreUpdater
         event FileUploaderDeleteDirErrorEventHandler DeleteDirectoryError;
 
         /// <summary>
-        /// Notifies listeners when an asynchronous upload has been completed.
-        /// </summary>
-        event FileUploaderUploadEventHandler UploadComplete;
-
-        /// <summary>
         /// Notifies listeners when an asynchronous download has been completed.
         /// </summary>
         event FileUploaderDownloadEventHandler DownloadComplete;
-
-        /// <summary>
-        /// Notifies listeners when there has been an error related to one of the asynchronous upload jobs.
-        /// The job in question will still be re-attempted by default.
-        /// </summary>
-        event FileUploaderUploadErrorEventHandler UploadError;
 
         /// <summary>
         /// Notifies listeners when there has been an error related to one of the asynchronous download jobs.
@@ -48,6 +37,17 @@ namespace GoreUpdater
         /// messages.
         /// </summary>
         event FileUploaderTestConnectionMessageEventHandler TestConnectionMessage;
+
+        /// <summary>
+        /// Notifies listeners when an asynchronous upload has been completed.
+        /// </summary>
+        event FileUploaderUploadEventHandler UploadComplete;
+
+        /// <summary>
+        /// Notifies listeners when there has been an error related to one of the asynchronous upload jobs.
+        /// The job in question will still be re-attempted by default.
+        /// </summary>
+        event FileUploaderUploadErrorEventHandler UploadError;
 
         /// <summary>
         /// Gets if the <see cref="IFileUploader"/> is currently busy uploading files. This will be false when the queue is empty
@@ -66,20 +66,20 @@ namespace GoreUpdater
         bool SkipIfExists { get; set; }
 
         /// <summary>
-        /// Removes a file from the asynchronous upload queue and aborts it.
-        /// </summary>
-        /// <param name="remotePath">The remote path for the upload to cancel.</param>
-        /// <returns>True if the job was removed; otherwise false.</returns>
-        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
-        bool CancelAsyncUpload(string remotePath);
-
-        /// <summary>
         /// Removes a file from the asynchronous download queue and aborts it.
         /// </summary>
         /// <param name="localPath">The fully qualified local path of the download to cancel.</param>
         /// <returns>True if the job was removed; otherwise false.</returns>
         /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         bool CancelAsyncDownload(string localPath);
+
+        /// <summary>
+        /// Removes a file from the asynchronous upload queue and aborts it.
+        /// </summary>
+        /// <param name="remotePath">The remote path for the upload to cancel.</param>
+        /// <returns>True if the job was removed; otherwise false.</returns>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
+        bool CancelAsyncUpload(string remotePath);
 
         /// <summary>
         /// Deletes a directory synchronously. If the root directory is specified, then all files and folders in the root
@@ -122,16 +122,6 @@ namespace GoreUpdater
         string DownloadAsString(string remoteFile, bool requireExists = false);
 
         /// <summary>
-        /// Tests the connection of the <see cref="IFileUploader"/> and ensures that the needed operations can be performed.
-        /// The test runs synchronously.
-        /// </summary>
-        /// <param name="userState">An optional object that can be used. When the <see cref="TestConnectionMessage"/> event is raised,
-        /// this object is passed back through the event, allowing you to differentiate between multiple connection tests.</param>
-        /// <param name="error">When this method returns false, contains a string describing the error encountered during testing.</param>
-        /// <returns>True if the test was successful; otherwise false.</returns>
-        bool TestConnection(object userState, out string error);
-
-        /// <summary>
         /// Enqueues a file for asynchronous downloading.
         /// </summary>
         /// <param name="remotePath">The path to the file to download on the destination.</param>
@@ -140,6 +130,24 @@ namespace GoreUpdater
         /// exists in the queue.</returns>
         /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         bool DownloadAsync(string remotePath, string sourcePath);
+
+        /// <summary>
+        /// Enqueues multiple files for asynchronous downloading.
+        /// </summary>
+        /// <param name="files">The files to download, where the key is the remote file path, and the value is the
+        /// fully qualified local path to download the file to.</param>
+        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
+        void DownloadAsync(IEnumerable<KeyValuePair<string, string>> files);
+
+        /// <summary>
+        /// Tests the connection of the <see cref="IFileUploader"/> and ensures that the needed operations can be performed.
+        /// The test runs synchronously.
+        /// </summary>
+        /// <param name="userState">An optional object that can be used. When the <see cref="TestConnectionMessage"/> event is raised,
+        /// this object is passed back through the event, allowing you to differentiate between multiple connection tests.</param>
+        /// <param name="error">When this method returns false, contains a string describing the error encountered during testing.</param>
+        /// <returns>True if the test was successful; otherwise false.</returns>
+        bool TestConnection(object userState, out string error);
 
         /// <summary>
         /// Enqueues a file for asynchronous uploading.
@@ -158,13 +166,5 @@ namespace GoreUpdater
         /// path to upload the file on the destination.</param>
         /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         void UploadAsync(IEnumerable<KeyValuePair<string, string>> files);
-
-        /// <summary>
-        /// Enqueues multiple files for asynchronous downloading.
-        /// </summary>
-        /// <param name="files">The files to download, where the key is the remote file path, and the value is the
-        /// fully qualified local path to download the file to.</param>
-        /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
-        void DownloadAsync(IEnumerable<KeyValuePair<string, string>> files);
     }
 }

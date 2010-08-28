@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace GoreUpdater.Manager
@@ -56,8 +57,8 @@ namespace GoreUpdater.Manager
 
             reEnqueue = false;
 
-            string remoteFileListFilePath = PathHelper.GetVersionString(v) + ".txt";
-            string remoteFileListHashFilePath = PathHelper.GetVersionString(v) + ".hash";
+            var remoteFileListFilePath = PathHelper.GetVersionString(v) + ".txt";
+            var remoteFileListHashFilePath = PathHelper.GetVersionString(v) + ".hash";
 
             // Ensure the live version is written. This is a very small but very important file, so just write it during
             // every synchronization.

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GoreUpdater.Manager
@@ -22,29 +20,6 @@ namespace GoreUpdater.Manager
         {
             DrawMode = DrawMode.OwnerDrawFixed;
             DoubleBuffered = true;
-        }
-
-        /// <summary>
-        /// Refreshes the display of an item in this <see cref="ListBox"/>.
-        /// </summary>
-        /// <param name="item">The item to refresh.</param>
-        public void RefreshItem(object item)
-        {
-            try
-            {
-                for (int i = 0; i < Items.Count; i++)
-                {
-                    if (Items[i] == item)
-                    {
-                        Invalidate(GetItemRectangle(i));
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Fail(ex.ToString());
-            }
         }
 
         /// <summary>
@@ -99,6 +74,29 @@ namespace GoreUpdater.Manager
             // Draw the stauts icon
             e.Graphics.DrawImage(drawImage, new Point(e.Bounds.X, e.Bounds.Y));
             */
+        }
+
+        /// <summary>
+        /// Refreshes the display of an item in this <see cref="ListBox"/>.
+        /// </summary>
+        /// <param name="item">The item to refresh.</param>
+        public void RefreshItem(object item)
+        {
+            try
+            {
+                for (var i = 0; i < Items.Count; i++)
+                {
+                    if (Items[i] == item)
+                    {
+                        Invalidate(GetItemRectangle(i));
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
     }
 }

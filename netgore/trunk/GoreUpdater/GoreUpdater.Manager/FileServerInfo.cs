@@ -23,8 +23,7 @@ namespace GoreUpdater.Manager
         /// <param name="host">The host address.</param>
         /// <param name="user">The user.</param>
         /// <param name="password">The password.</param>
-        public FileServerInfo(FileUploaderType type, string host, string user, string password)
-            : base(type, host, user, password)
+        public FileServerInfo(FileUploaderType type, string host, string user, string password) : base(type, host, user, password)
         {
         }
 
