@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -206,32 +207,147 @@ namespace GoreUpdater.Manager
             btnNewVersion.Enabled = true;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnFSDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnFSDelete_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            var server = lstFS.SelectedItem as FileServerInfo;
+            if (server == null)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to delete this {0} server?{1} * Host: {2}{1} * User: {3}" +
+                "{1}{1}NOTE: This will NOT delete the files off the server!";
+            string confirmMsgFormatted= string.Format(confirmMsg, "file", Environment.NewLine, server.Host, server.User);
+            if (MessageBox.Show(confirmMsgFormatted, "Delete server?", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                return;
+
+            bool removed = _settings.RemoveFileServer(server);
+            Debug.Assert(removed, "Why was this server in the ListBox control, but not in the actual server list in the settings?");
+
+            server.Dispose();
+
+            MessageBox.Show("Server successfully deleted.", "Success!", MessageBoxButtons.OK);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnFSInfo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnFSInfo_Click(object sender, EventArgs e)
         {
             // TODO: ...
         }
 
+        /// <summary>
+        /// Shows the form to add a new server.
+        /// </summary>
+        /// <param name="isMasterServer">True if it is a master server to add; false for file server.</param>
+        void ShowAddNewServerForm(bool isMasterServer)
+        {
+            // Create the new form, using Invoke() calls to ensure that we have no issues if this is called from another thread
+            // for whatever reason (better safe than sorry!)
+            Invoke((Action)delegate
+            {
+                var frm = new AddServerForm(isMasterServer);
+                frm.Show();
+                frm.Focus();
+
+                btnFSNew.Enabled = false;
+                btnMSNew.Enabled = false;
+
+                frm.FormClosed += delegate
+                {
+                    btnFSNew.Invoke((Action)(() => btnFSNew.Enabled = true));
+                    btnMSNew.Invoke((Action)(() => btnMSNew.Enabled = true));
+                };
+            });
+        }
+
+        /// <summary>
+        /// Handles the Click event of the btnFSNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnFSNew_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            ShowAddNewServerForm(false);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnMSDelete control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnMSDelete_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            var server = lstMS.SelectedItem as MasterServerInfo;
+            if (server == null)
+                return;
+
+            const string confirmMsg = "Are you sure you wish to delete this {0} server?{1} * Host: {2}{1} * User: {3}" + 
+                "{1}{1}NOTE: This will NOT delete the files off the server!";
+            string confirmMsgFormatted = string.Format(confirmMsg, "master", Environment.NewLine, server.Host, server.User);
+            if (MessageBox.Show(confirmMsgFormatted, "Delete server?", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                return;
+
+            bool removed = _settings.RemoveMasterServer(server);
+            Debug.Assert(removed, "Why was this server in the ListBox control, but not in the actual server list in the settings?");
+
+            server.Dispose();
+
+            MessageBox.Show("Server successfully deleted.", "Success!", MessageBoxButtons.OK);
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnMSInfo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnMSInfo_Click(object sender, EventArgs e)
         {
             // TODO: ...
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnMSNew control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnMSNew_Click(object sender, EventArgs e)
+        {
+            ShowAddNewServerForm(true);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblLiveVersionHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lblLiveVersionHelp_Click(object sender, EventArgs e)
+        {
+            // TODO: ...
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblChangeLiveVersionHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lblChangeLiveVersionHelp_Click(object sender, EventArgs e)
+        {
+            // TODO: ...
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblCreateNewVersionHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lblCreateNewVersionHelp_Click(object sender, EventArgs e)
         {
             // TODO: ...
         }
