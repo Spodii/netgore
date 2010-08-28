@@ -96,12 +96,8 @@ namespace GoreUpdater.Manager
             }
 
             const string confirmationMsg = "Are you sure you wish to create this new version?";
-            if (
-                MessageBox.Show(confirmationMsg, "Create new version?",
-                                MessageBoxButtons.YesNo) == DialogResult.No)
-            {
+            if (MessageBox.Show(confirmationMsg, "Create new version?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
-            }
 
             // Create the version file list
             VersionFileList vfl;
@@ -111,7 +107,9 @@ namespace GoreUpdater.Manager
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to create VersionFileList due to an unexpected error." + " Please resolve the error below then try again.{0}{0}{1}";
+                const string errmsg =
+                    "Failed to create VersionFileList due to an unexpected error." +
+                    " Please resolve the error below then try again.{0}{0}{1}";
                 MessageBox.Show(string.Format(errmsg, Environment.NewLine, ex));
                 return;
             }
@@ -123,7 +121,8 @@ namespace GoreUpdater.Manager
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to set the next version due to an unexpected error." + 
+                const string errmsg =
+                    "Failed to set the next version due to an unexpected error." +
                     " Please resolve the error below then try again.{0}{1}";
                 MessageBox.Show(string.Format(errmsg, Environment.NewLine, ex));
                 return;

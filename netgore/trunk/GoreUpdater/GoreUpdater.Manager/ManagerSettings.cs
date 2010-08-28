@@ -22,8 +22,8 @@ namespace GoreUpdater.Manager
     {
         const string _headerDelimiter = "=";
         const string _headerFileServer = "FILESERVER";
-        const string _headerMasterServer = "MASTERSERVER";
         const string _headerLiveVersion = "LIVEVERSION";
+        const string _headerMasterServer = "MASTERSERVER";
         const string _settingsFile = "settings.txt";
 
         static readonly ManagerSettings _instance;
@@ -31,9 +31,9 @@ namespace GoreUpdater.Manager
         readonly string _filePath;
         readonly List<FileServerInfo> _fileServers = new List<FileServerInfo>();
         readonly object _fileServersSync = new object();
+        readonly string _liveVersionFilePath;
         readonly List<MasterServerInfo> _masterServers = new List<MasterServerInfo>();
         readonly object _masterServersSync = new object();
-        readonly string _liveVersionFilePath;
         readonly object _saveSync = new object();
         readonly object _versionSync = new object();
 
@@ -65,14 +65,14 @@ namespace GoreUpdater.Manager
         public event ManagerSettingsEventHandler FileServerListChanged;
 
         /// <summary>
-        /// Notifies listeners when a master server has been added or removed from the list.
-        /// </summary>
-        public event ManagerSettingsEventHandler MasterServerListChanged;
-
-        /// <summary>
         /// Notifies listeners when the live version has changed.
         /// </summary>
         public event ManagerSettingsEventHandler LiveVersionChanged;
+
+        /// <summary>
+        /// Notifies listeners when a master server has been added or removed from the list.
+        /// </summary>
+        public event ManagerSettingsEventHandler MasterServerListChanged;
 
         /// <summary>
         /// Notifies listeners when the next version (the version after the live version) to release has been created, or re-created.
@@ -97,20 +97,6 @@ namespace GoreUpdater.Manager
                 lock (_fileServersSync)
                 {
                     return _fileServers.ToArray();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the list of master servers.
-        /// </summary>
-        public IEnumerable<MasterServerInfo> MasterServers
-        {
-            get
-            {
-                lock (_masterServersSync)
-                {
-                    return _masterServers.ToArray();
                 }
             }
         }
@@ -143,6 +129,20 @@ namespace GoreUpdater.Manager
         public string LiveVersionFilePath
         {
             get { return _liveVersionFilePath; }
+        }
+
+        /// <summary>
+        /// Gets the list of master servers.
+        /// </summary>
+        public IEnumerable<MasterServerInfo> MasterServers
+        {
+            get
+            {
+                lock (_masterServersSync)
+                {
+                    return _masterServers.ToArray();
+                }
+            }
         }
 
         /// <summary>

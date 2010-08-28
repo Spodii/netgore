@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace GoreUpdater.Manager
@@ -10,6 +11,11 @@ namespace GoreUpdater.Manager
     /// </summary>
     public abstract class ServerInfoBase : IDisposable
     {
+        /// <summary>
+        /// The delimiter used on the creation strings for the <see cref="ServerInfoBase"/>.
+        /// </summary>
+        public const string CreationStringDelimiter = "|";
+
         /// <summary>
         /// How long, in milliseconds, the worker thread will sleep when there are no jobs available.
         /// </summary>
@@ -177,6 +183,28 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Creates a <see cref="IFileUploader"/> instance.
+        /// </summary>
+        /// <param name="type">The <see cref="FileUploaderType"/>.</param>
+        /// <param name="host">The host.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>The <see cref="IFileUploader"/> instance.</returns>
+        public static IFileUploader CreateFileUploader(FileUploaderType type, string host, string user, string password)
+        {
+            switch (type)
+            {
+                case FileUploaderType.Ftp:
+                    return new FtpFileUploader(host, user, password);
+
+                default:
+                    const string errmsg = "FileUploaderType `{0}` not supported.";
+                    Debug.Fail(string.Format(errmsg, type));
+                    throw new NotSupportedException(string.Format(errmsg, type));
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles synchronizing the given version.
         /// </summary>
         /// <param name="fu">The <see cref="IFileUploader"/> to use.</param>
@@ -203,11 +231,6 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// The delimiter used on the creation strings for the <see cref="ServerInfoBase"/>.
-        /// </summary>
-        public const string CreationStringDelimiter = "|";
-
-        /// <summary>
         /// Gets a string that can be used to recreate this object instance.
         /// </summary>
         /// <returns>A string that can be used to recreate this object instance.</returns>
@@ -215,7 +238,8 @@ namespace GoreUpdater.Manager
         {
             lock (_infoSync)
             {
-                return FileUploaderType + CreationStringDelimiter + Host + CreationStringDelimiter + User + CreationStringDelimiter + Password;
+                return FileUploaderType + CreationStringDelimiter + Host + CreationStringDelimiter + User +
+                       CreationStringDelimiter + Password;
             }
         }
 
@@ -255,28 +279,6 @@ namespace GoreUpdater.Manager
             EnqueueSyncVersion(_settings.LiveVersion);
             if (_settings.DoesNextVersionExist())
                 EnqueueSyncVersion(_settings.LiveVersion + 1);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="IFileUploader"/> instance.
-        /// </summary>
-        /// <param name="type">The <see cref="FileUploaderType"/>.</param>
-        /// <param name="host">The host.</param>
-        /// <param name="user">The user.</param>
-        /// <param name="password">The password.</param>
-        /// <returns>The <see cref="IFileUploader"/> instance.</returns>
-        public static IFileUploader CreateFileUploader(FileUploaderType type, string host, string user, string password)
-        {
-            switch (type)
-            {
-                case FileUploaderType.Ftp:
-                    return new FtpFileUploader(host, user, password);
-
-                default:
-                    const string errmsg = "FileUploaderType `{0}` not supported.";
-                    Debug.Fail(string.Format(errmsg, type));
-                    throw new NotSupportedException(string.Format(errmsg, type));
-            }
         }
 
         /// <summary>

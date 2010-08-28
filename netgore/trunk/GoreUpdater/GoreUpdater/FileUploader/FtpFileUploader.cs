@@ -83,129 +83,6 @@ namespace GoreUpdater
         bool _isDisposed = false;
 
         /// <summary>
-        /// Downloads a remote file from the Ftp server.
-        /// </summary>
-        /// <param name="remoteFile">The remote file to download.</param>
-        /// <param name="requireExists">If false, and the remote file does not exist, a null will be returned instead.</param>
-        /// <returns>The contents of the <paramref name="remoteFile"/>.</returns>
-        byte[] FtpDownload(string remoteFile, bool requireExists)
-        {
-            var fullRemotePath = ResolveRemotePath(remoteFile);
-            var req = CreateFtpWebRequest(fullRemotePath);
-            req.Method = WebRequestMethods.Ftp.DownloadFile;
-            req.UseBinary = true;
-
-            try
-            {
-            using (var res = req.GetResponse())
-            {
-                if (res == null)
-                    throw new WebException("Failed to get response while trying to download remote file `" + remoteFile + "`.");
-
-                using (var resStream = res.GetResponseStream())
-                {
-                    if (resStream == null)
-                        throw new WebException("Could not open stream to remote file `" + remoteFile + "`.");
-
-                    using (var ms = new MemoryStream())
-                    {
-                        byte[] b = new byte[8192];
-                        int r;
-                        while ((r = resStream.Read(b, 0, b.Length)) > 0)
-                        {
-                            ms.Write(b, 0, r);
-                        }
-
-                        return ms.ToArray();
-                    }
-                }
-            }
-            }
-            catch (WebException ex)
-            {
-                var res = (FtpWebResponse)ex.Response;
-                try
-                {
-                    switch (res.StatusCode)
-                    {
-                        case FtpStatusCode.ActionNotTakenFileUnavailable:
-                        case FtpStatusCode.ActionNotTakenFileUnavailableOrBusy:
-                            if (!requireExists)
-                                return null;
-                            else
-                                throw;
-
-                        default:
-                            Debug.Fail(ex.ToString());
-                            throw;
-                    }
-                }
-                finally
-                {
-                    res.Close();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Downloads a remote file from the Ftp server as a string.
-        /// </summary>
-        /// <param name="remoteFile">The remote file to download.</param>
-        /// <param name="requireExists">If false, and the remote file does not exist, a null will be returned instead.</param>
-        /// <returns>The contents of the <paramref name="remoteFile"/>.</returns>
-        string FtpDownloadAsString(string remoteFile, bool requireExists)
-        {
-            var fullRemotePath = ResolveRemotePath(remoteFile);
-            var req = CreateFtpWebRequest(fullRemotePath);
-            req.Method = WebRequestMethods.Ftp.DownloadFile;
-            req.UseBinary = false;
-
-            try
-            {
-                using (var res = req.GetResponse())
-                {
-                    if (res == null)
-                        throw new WebException("Failed to get response while trying to download remote file `" + remoteFile + "`.");
-
-                    using (var resStream = res.GetResponseStream())
-                    {
-                        if (resStream == null)
-                            throw new WebException("Could not open stream to remote file `" + remoteFile + "`.");
-
-                        using (var sr = new StreamReader(resStream))
-                        {
-                            return sr.ReadToEnd();
-                        }
-                    }
-                }
-            }
-            catch (WebException ex)
-            {
-                var res = (FtpWebResponse)ex.Response;
-                try
-                {
-                    switch (res.StatusCode)
-                    {
-                        case FtpStatusCode.ActionNotTakenFileUnavailable:
-                        case FtpStatusCode.ActionNotTakenFileUnavailableOrBusy:
-                            if (!requireExists)
-                                return null;
-                            else
-                                throw;
-
-                        default:
-                            Debug.Fail(ex.ToString());
-                            throw;
-                    }
-                }
-                finally
-                {
-                    res.Close();
-                }
-            }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="FtpFileUploader"/> class.
         /// </summary>
         /// <param name="hostRoot">The root address of the Ftp server to upload to, including the host. Must be prefixed with
@@ -588,6 +465,129 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Downloads a remote file from the Ftp server.
+        /// </summary>
+        /// <param name="remoteFile">The remote file to download.</param>
+        /// <param name="requireExists">If false, and the remote file does not exist, a null will be returned instead.</param>
+        /// <returns>The contents of the <paramref name="remoteFile"/>.</returns>
+        byte[] FtpDownload(string remoteFile, bool requireExists)
+        {
+            var fullRemotePath = ResolveRemotePath(remoteFile);
+            var req = CreateFtpWebRequest(fullRemotePath);
+            req.Method = WebRequestMethods.Ftp.DownloadFile;
+            req.UseBinary = true;
+
+            try
+            {
+                using (var res = req.GetResponse())
+                {
+                    if (res == null)
+                        throw new WebException("Failed to get response while trying to download remote file `" + remoteFile + "`.");
+
+                    using (var resStream = res.GetResponseStream())
+                    {
+                        if (resStream == null)
+                            throw new WebException("Could not open stream to remote file `" + remoteFile + "`.");
+
+                        using (var ms = new MemoryStream())
+                        {
+                            var b = new byte[8192];
+                            int r;
+                            while ((r = resStream.Read(b, 0, b.Length)) > 0)
+                            {
+                                ms.Write(b, 0, r);
+                            }
+
+                            return ms.ToArray();
+                        }
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                var res = (FtpWebResponse)ex.Response;
+                try
+                {
+                    switch (res.StatusCode)
+                    {
+                        case FtpStatusCode.ActionNotTakenFileUnavailable:
+                        case FtpStatusCode.ActionNotTakenFileUnavailableOrBusy:
+                            if (!requireExists)
+                                return null;
+                            else
+                                throw;
+
+                        default:
+                            Debug.Fail(ex.ToString());
+                            throw;
+                    }
+                }
+                finally
+                {
+                    res.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Downloads a remote file from the Ftp server as a string.
+        /// </summary>
+        /// <param name="remoteFile">The remote file to download.</param>
+        /// <param name="requireExists">If false, and the remote file does not exist, a null will be returned instead.</param>
+        /// <returns>The contents of the <paramref name="remoteFile"/>.</returns>
+        string FtpDownloadAsString(string remoteFile, bool requireExists)
+        {
+            var fullRemotePath = ResolveRemotePath(remoteFile);
+            var req = CreateFtpWebRequest(fullRemotePath);
+            req.Method = WebRequestMethods.Ftp.DownloadFile;
+            req.UseBinary = false;
+
+            try
+            {
+                using (var res = req.GetResponse())
+                {
+                    if (res == null)
+                        throw new WebException("Failed to get response while trying to download remote file `" + remoteFile + "`.");
+
+                    using (var resStream = res.GetResponseStream())
+                    {
+                        if (resStream == null)
+                            throw new WebException("Could not open stream to remote file `" + remoteFile + "`.");
+
+                        using (var sr = new StreamReader(resStream))
+                        {
+                            return sr.ReadToEnd();
+                        }
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                var res = (FtpWebResponse)ex.Response;
+                try
+                {
+                    switch (res.StatusCode)
+                    {
+                        case FtpStatusCode.ActionNotTakenFileUnavailable:
+                        case FtpStatusCode.ActionNotTakenFileUnavailableOrBusy:
+                            if (!requireExists)
+                                return null;
+                            else
+                                throw;
+
+                        default:
+                            Debug.Fail(ex.ToString());
+                            throw;
+                    }
+                }
+                finally
+                {
+                    res.Close();
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets if a file exists on the server.
         /// </summary>
         /// <param name="filePath">The remote path to the file to check if exists. Can be a relative or fully qualified path.</param>
@@ -867,8 +867,8 @@ namespace GoreUpdater
                     {
                         var asJobDownloadFile = (JobDownloadFile)job;
                         if (DownloadError != null)
-                            DownloadError(this, asJobDownloadFile.LocalFile, asJobDownloadFile.RemoteFile, FormatExceptionMessage(ex),
-                                        job.Attempts);
+                            DownloadError(this, asJobDownloadFile.LocalFile, asJobDownloadFile.RemoteFile,
+                                          FormatExceptionMessage(ex), job.Attempts);
                     }
                     else if (job is JobDeleteDir)
                     {
@@ -934,20 +934,9 @@ namespace GoreUpdater
         public event FileUploaderDeleteDirErrorEventHandler DeleteDirectoryError;
 
         /// <summary>
-        /// Notifies listeners when an asynchronous upload has been completed.
-        /// </summary>
-        public event FileUploaderUploadEventHandler UploadComplete;
-
-        /// <summary>
         /// Notifies listeners when an asynchronous download has been completed.
         /// </summary>
         public event FileUploaderDownloadEventHandler DownloadComplete;
-
-        /// <summary>
-        /// Notifies listeners when there has been an error related to one of the asynchronous upload jobs.
-        /// The job in question will still be re-attempted by default.
-        /// </summary>
-        public event FileUploaderUploadErrorEventHandler UploadError;
 
         /// <summary>
         /// Notifies listeners when there has been an error related to one of the asynchronous download jobs.
@@ -961,6 +950,17 @@ namespace GoreUpdater
         /// messages.
         /// </summary>
         public event FileUploaderTestConnectionMessageEventHandler TestConnectionMessage;
+
+        /// <summary>
+        /// Notifies listeners when an asynchronous upload has been completed.
+        /// </summary>
+        public event FileUploaderUploadEventHandler UploadComplete;
+
+        /// <summary>
+        /// Notifies listeners when there has been an error related to one of the asynchronous upload jobs.
+        /// The job in question will still be re-attempted by default.
+        /// </summary>
+        public event FileUploaderUploadErrorEventHandler UploadError;
 
         /// <summary>
         /// Gets if the <see cref="IFileUploader"/> is currently busy.
@@ -993,20 +993,19 @@ namespace GoreUpdater
         public bool SkipIfExists { get; set; }
 
         /// <summary>
-        /// Removes a file from the asynchronous upload queue and aborts it.
+        /// Removes a file from the asynchronous download queue and aborts it.
         /// </summary>
-        /// <param name="remotePath">The remote path for the upload to cancel.</param>
+        /// <param name="localPath">The fully qualified local path of the download to cancel.</param>
         /// <returns>True if the job was removed; otherwise false.</returns>
-        public bool CancelAsyncUpload(string remotePath)
+        public bool CancelAsyncDownload(string localPath)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("this");
 
-            var p = SanitizeFtpTargetPath(remotePath);
-
             lock (_jobsSync)
             {
-                var match = _jobsQueue.OfType<JobUploadFile>().FirstOrDefault(x => StringComparer.Ordinal.Equals(x.RemoteFile, p));
+                var match =
+                    _jobsQueue.OfType<JobDownloadFile>().FirstOrDefault(x => StringComparer.Ordinal.Equals(x.LocalFile, localPath));
                 if (match == null)
                     return false;
 
@@ -1026,18 +1025,20 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Removes a file from the asynchronous download queue and aborts it.
+        /// Removes a file from the asynchronous upload queue and aborts it.
         /// </summary>
-        /// <param name="localPath">The fully qualified local path of the download to cancel.</param>
+        /// <param name="remotePath">The remote path for the upload to cancel.</param>
         /// <returns>True if the job was removed; otherwise false.</returns>
-        public bool CancelAsyncDownload(string localPath)
+        public bool CancelAsyncUpload(string remotePath)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("this");
 
+            var p = SanitizeFtpTargetPath(remotePath);
+
             lock (_jobsSync)
             {
-                var match = _jobsQueue.OfType<JobDownloadFile>().FirstOrDefault(x => StringComparer.Ordinal.Equals(x.LocalFile, localPath));
+                var match = _jobsQueue.OfType<JobUploadFile>().FirstOrDefault(x => StringComparer.Ordinal.Equals(x.RemoteFile, p));
                 if (match == null)
                     return false;
 
@@ -1134,6 +1135,42 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Enqueues a file for asynchronous downloading.
+        /// </summary>
+        /// <param name="remotePath">The path to the file to download on the destination.</param>
+        /// <param name="sourcePath">The fully qualified path to download the file to.</param>
+        /// <returns>True if the file was enqueued; false if either of the arguments were invalid, or the file already
+        /// exists in the queue.</returns>
+        public bool DownloadAsync(string remotePath, string sourcePath)
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException("this");
+
+            if (string.IsNullOrEmpty(remotePath) || string.IsNullOrEmpty(sourcePath))
+                return false;
+
+            var job = new JobDownloadFile(remotePath, sourcePath);
+
+            return EnqueueJob(job);
+        }
+
+        /// <summary>
+        /// Enqueues multiple files for asynchronous downloading.
+        /// </summary>
+        /// <param name="files">The files to download, where the key is the remote file path, and the value is the
+        /// fully qualified local path to download the file to.</param>
+        public void DownloadAsync(IEnumerable<KeyValuePair<string, string>> files)
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException("this");
+
+            foreach (var f in files)
+            {
+                DownloadAsync(f.Key, f.Value);
+            }
+        }
+
+        /// <summary>
         /// Tests the connection of the <see cref="IFileUploader"/> and ensures that the needed operations can be performed.
         /// The test runs synchronously.
         /// </summary>
@@ -1189,7 +1226,8 @@ namespace GoreUpdater
                 }
                 catch (Exception ex)
                 {
-                    const string errmsg = "Failed to create file on remote server. Check your file creation permissions. Details:{0}{1}";
+                    const string errmsg =
+                        "Failed to create file on remote server. Check your file creation permissions. Details:{0}{1}";
                     error = string.Format(errmsg, Environment.NewLine, ex);
                     return false;
                 }
@@ -1209,18 +1247,21 @@ namespace GoreUpdater
                         TestConnectionMessage(this, "File download complete", userState);
 
                     if (TestConnectionMessage != null)
-                        TestConnectionMessage(this, "Checking the contents of the file to ensure integrity was preserved...", userState);
+                        TestConnectionMessage(this, "Checking the contents of the file to ensure integrity was preserved...",
+                                              userState);
 
                     if (!StringComparer.Ordinal.Equals(contents.Trim(), remoteTestFileContents))
                     {
-                        const string errmsg = "The contents of the downloaded file did not match the expected file contents." +
+                        const string errmsg =
+                            "The contents of the downloaded file did not match the expected file contents." +
                             "{0}Expected: {1}{0}Actual: {2}";
                         throw new Exception(string.Format(errmsg, Environment.NewLine, remoteTestFileContents, contents));
                     }
                 }
                 catch (Exception ex)
                 {
-                    const string errmsg = "Failed to download file from the remote server. Check your file download permissions. Details:{0}{1}";
+                    const string errmsg =
+                        "Failed to download file from the remote server. Check your file download permissions. Details:{0}{1}";
                     error = string.Format(errmsg, Environment.NewLine, ex);
                     return false;
                 }
@@ -1234,7 +1275,7 @@ namespace GoreUpdater
 
                 try
                 {
-                    bool exists = FtpFileExists(remoteTestFile);
+                    var exists = FtpFileExists(remoteTestFile);
                     if (!exists)
                         throw new Exception("File was expected to exist, but FtpFileExists returned false.");
                 }
@@ -1258,7 +1299,8 @@ namespace GoreUpdater
                 }
                 catch (Exception ex)
                 {
-                    const string errmsg = "Failed to delete file on remote server. Check your file deletion permissions. Details:{0}{1}";
+                    const string errmsg =
+                        "Failed to delete file on remote server. Check your file deletion permissions. Details:{0}{1}";
                     error = string.Format(errmsg, Environment.NewLine, ex);
                     return false;
                 }
@@ -1268,7 +1310,8 @@ namespace GoreUpdater
 
                 // *** Directory create test ***
                 if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Creating sub-directories and creating a file inside those sub-directories...", userState);
+                    TestConnectionMessage(this, "Creating sub-directories and creating a file inside those sub-directories...",
+                                          userState);
 
                 try
                 {
@@ -1276,7 +1319,8 @@ namespace GoreUpdater
                 }
                 catch (Exception ex)
                 {
-                    const string errmsg = "Failed to create a file inside directory on remote server. Check your directory creation permissions. Details:{0}{1}";
+                    const string errmsg =
+                        "Failed to create a file inside directory on remote server. Check your directory creation permissions. Details:{0}{1}";
                     error = string.Format(errmsg, Environment.NewLine, ex);
                     return false;
                 }
@@ -1290,13 +1334,14 @@ namespace GoreUpdater
 
                 try
                 {
-                    bool exists = FtpFileExists(remoteTestDir + remoteTestFile);
+                    var exists = FtpFileExists(remoteTestDir + remoteTestFile);
                     if (!exists)
                         throw new Exception("File was expected to exist, but FtpFileExists returned false.");
                 }
                 catch (Exception ex)
                 {
-                    const string errmsg = "Failed to check file existance on remote server when inside a subdirectory. Details:{0}{1}";
+                    const string errmsg =
+                        "Failed to check file existance on remote server when inside a subdirectory. Details:{0}{1}";
                     error = string.Format(errmsg, Environment.NewLine, ex);
                     return false;
                 }
@@ -1314,7 +1359,8 @@ namespace GoreUpdater
                 }
                 catch (Exception ex)
                 {
-                    const string errmsg = "Failed to delete directory on remote server. Check your directory deletion permissions. Details:{0}{1}";
+                    const string errmsg =
+                        "Failed to delete directory on remote server. Check your directory deletion permissions. Details:{0}{1}";
                     error = string.Format(errmsg, Environment.NewLine, ex);
                     return false;
                 }
@@ -1328,7 +1374,7 @@ namespace GoreUpdater
 
                 try
                 {
-                    bool exists = FtpFileExists(remoteTestFile);
+                    var exists = FtpFileExists(remoteTestFile);
                     if (exists)
                         throw new Exception("File was expected to not exist, but FtpFileExists returned true.");
                 }
@@ -1349,7 +1395,8 @@ namespace GoreUpdater
                 error = string.Format(errmsg, Environment.NewLine, ex);
                 return false;
             }
-            finally{
+            finally
+            {
                 try
                 {
                     if (!string.IsNullOrEmpty(tmpFile) && File.Exists(tmpFile))
@@ -1363,26 +1410,6 @@ namespace GoreUpdater
 
             error = null;
             return true;
-        }
-
-        /// <summary>
-        /// Enqueues a file for asynchronous downloading.
-        /// </summary>
-        /// <param name="remotePath">The path to the file to download on the destination.</param>
-        /// <param name="sourcePath">The fully qualified path to download the file to.</param>
-        /// <returns>True if the file was enqueued; false if either of the arguments were invalid, or the file already
-        /// exists in the queue.</returns>
-        public bool DownloadAsync(string remotePath, string sourcePath)
-        {
-            if (IsDisposed)
-                throw new ObjectDisposedException("this");
-
-            if (string.IsNullOrEmpty(remotePath) || string.IsNullOrEmpty(sourcePath))
-                return false;
-
-            var job = new JobDownloadFile(remotePath, sourcePath);
-
-            return EnqueueJob(job);
         }
 
         /// <summary>
@@ -1421,22 +1448,6 @@ namespace GoreUpdater
             }
         }
 
-        /// <summary>
-        /// Enqueues multiple files for asynchronous downloading.
-        /// </summary>
-        /// <param name="files">The files to download, where the key is the remote file path, and the value is the
-        /// fully qualified local path to download the file to.</param>
-        public void DownloadAsync(IEnumerable<KeyValuePair<string, string>> files)
-        {
-            if (IsDisposed)
-                throw new ObjectDisposedException("this");
-
-            foreach (var f in files)
-            {
-                DownloadAsync(f.Key, f.Value);
-            }
-        }
-
         #endregion
 
         /// <summary>
@@ -1467,40 +1478,29 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// A file upload job. Uploads a single file from the local machine to the Ftp server.
+        /// A directory deletion job. Deletes a directory from the Ftp server.
         /// </summary>
-        class JobUploadFile : IFtpFileUploaderJob
+        class JobDeleteDir : IFtpFileUploaderJob
         {
-            readonly string _localFile;
-            readonly string _remoteFile;
+            readonly string _remotePath;
 
             byte _attempts = 0;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="JobUploadFile"/> class.
+            /// Initializes a new instance of the <see cref="JobDeleteDir"/> class.
             /// </summary>
-            /// <param name="localFile">The full path to the local file to upload.</param>
-            /// <param name="remoteFile">The relative path on the server to upload the file to.</param>
-            public JobUploadFile(string localFile, string remoteFile)
+            /// <param name="remotePath">The remote path to delete.</param>
+            public JobDeleteDir(string remotePath)
             {
-                _localFile = localFile;
-                _remoteFile = SanitizeFtpTargetPath(remoteFile);
+                _remotePath = SanitizeFtpTargetPath(remotePath);
             }
 
             /// <summary>
-            /// Gets the full path to the local file to upload.
+            /// Gets the remote path to delete.
             /// </summary>
-            public string LocalFile
+            public string RemotePath
             {
-                get { return _localFile; }
-            }
-
-            /// <summary>
-            /// Gets the relative path on the server to upload the file to.
-            /// </summary>
-            public string RemoteFile
-            {
-                get { return _remoteFile; }
+                get { return _remotePath; }
             }
 
             #region IFtpFileUploaderJob Members
@@ -1522,11 +1522,11 @@ namespace GoreUpdater
             /// <returns>True if the jobs are the same; otherwise false.</returns>
             public bool AreJobsSame(IFtpFileUploaderJob otherJob)
             {
-                var o = otherJob as JobUploadFile;
+                var o = otherJob as JobDeleteDir;
                 if (o == null)
                     return false;
 
-                return StringComparer.Ordinal.Equals(RemoteFile, o.RemoteFile);
+                return StringComparer.Ordinal.Equals(RemotePath, o.RemotePath);
             }
 
             /// <summary>
@@ -1538,7 +1538,7 @@ namespace GoreUpdater
                 if (_attempts < byte.MaxValue)
                     _attempts++;
 
-                parent.FtpCreateFile(LocalFile, RemoteFile);
+                parent.FtpDeleteDir(RemotePath);
             }
 
             #endregion
@@ -1646,29 +1646,40 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// A directory deletion job. Deletes a directory from the Ftp server.
+        /// A file upload job. Uploads a single file from the local machine to the Ftp server.
         /// </summary>
-        class JobDeleteDir : IFtpFileUploaderJob
+        class JobUploadFile : IFtpFileUploaderJob
         {
-            readonly string _remotePath;
+            readonly string _localFile;
+            readonly string _remoteFile;
 
             byte _attempts = 0;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="JobDeleteDir"/> class.
+            /// Initializes a new instance of the <see cref="JobUploadFile"/> class.
             /// </summary>
-            /// <param name="remotePath">The remote path to delete.</param>
-            public JobDeleteDir(string remotePath)
+            /// <param name="localFile">The full path to the local file to upload.</param>
+            /// <param name="remoteFile">The relative path on the server to upload the file to.</param>
+            public JobUploadFile(string localFile, string remoteFile)
             {
-                _remotePath = SanitizeFtpTargetPath(remotePath);
+                _localFile = localFile;
+                _remoteFile = SanitizeFtpTargetPath(remoteFile);
             }
 
             /// <summary>
-            /// Gets the remote path to delete.
+            /// Gets the full path to the local file to upload.
             /// </summary>
-            public string RemotePath
+            public string LocalFile
             {
-                get { return _remotePath; }
+                get { return _localFile; }
+            }
+
+            /// <summary>
+            /// Gets the relative path on the server to upload the file to.
+            /// </summary>
+            public string RemoteFile
+            {
+                get { return _remoteFile; }
             }
 
             #region IFtpFileUploaderJob Members
@@ -1690,11 +1701,11 @@ namespace GoreUpdater
             /// <returns>True if the jobs are the same; otherwise false.</returns>
             public bool AreJobsSame(IFtpFileUploaderJob otherJob)
             {
-                var o = otherJob as JobDeleteDir;
+                var o = otherJob as JobUploadFile;
                 if (o == null)
                     return false;
 
-                return StringComparer.Ordinal.Equals(RemotePath, o.RemotePath);
+                return StringComparer.Ordinal.Equals(RemoteFile, o.RemoteFile);
             }
 
             /// <summary>
@@ -1706,7 +1717,7 @@ namespace GoreUpdater
                 if (_attempts < byte.MaxValue)
                     _attempts++;
 
-                parent.FtpDeleteDir(RemotePath);
+                parent.FtpCreateFile(LocalFile, RemoteFile);
             }
 
             #endregion

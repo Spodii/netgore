@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Security;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -14,6 +10,10 @@ namespace GoreUpdater.Manager
     public partial class TestServerSettingsForm : Form
     {
         readonly IFileUploader _server;
+
+        bool _isStarted = false;
+
+        Thread _workerThread;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestServerSettingsForm"/> class.
@@ -29,43 +29,25 @@ namespace GoreUpdater.Manager
             Show();
         }
 
-        void _server_TestConnectionMessage(IFileUploader sender, string message, object userState)
-        {
-            // Ensure the message is for us
-            if (userState != this)
-                return;
-
-            // Log it
-            Log(message);
-        }
-
-        bool _isStarted = false;
-
-        Thread _workerThread;
-
         /// <summary>
-        /// Starts the testing.
+        /// Logs a message to the testing screen.
         /// </summary>
-        public void StartTesting()
+        /// <param name="msg">The message.</param>
+        void Log(string msg)
         {
-            if (_isStarted)
-                return;
-
-            _isStarted = true;
-
-            _server.TestConnectionMessage += _server_TestConnectionMessage;
-
-            _workerThread = new Thread(WorkerThreadLoop) { IsBackground = true };
-
             try
             {
-                _workerThread.Name = "TestServerSettingsForm worker thread";
+                txtLog.Invoke((Action)delegate
+                {
+                    txtLog.Text += msg + Environment.NewLine;
+                    txtLog.Select(txtLog.TextLength - 1, 0);
+                    txtLog.ScrollToCaret();
+                });
             }
             catch (InvalidOperationException)
             {
+                // InvalidOperationException can happen if we try to log too early or before the form is shown
             }
-
-            _workerThread.Start();
         }
 
         /// <summary>
@@ -96,24 +78,28 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Logs a message to the testing screen.
+        /// Starts the testing.
         /// </summary>
-        /// <param name="msg">The message.</param>
-        void Log(string msg)
+        public void StartTesting()
         {
+            if (_isStarted)
+                return;
+
+            _isStarted = true;
+
+            _server.TestConnectionMessage += _server_TestConnectionMessage;
+
+            _workerThread = new Thread(WorkerThreadLoop) { IsBackground = true };
+
             try
             {
-                txtLog.Invoke((Action)delegate
-            {
-                txtLog.Text += msg + Environment.NewLine;
-                txtLog.Select(txtLog.TextLength - 1, 0);
-                txtLog.ScrollToCaret();
-            });
+                _workerThread.Name = "TestServerSettingsForm worker thread";
             }
             catch (InvalidOperationException)
             {
-                // InvalidOperationException can happen if we try to log too early or before the form is shown
             }
+
+            _workerThread.Start();
         }
 
         /// <summary>
@@ -127,7 +113,7 @@ namespace GoreUpdater.Manager
             try
             {
                 string errmsg;
-                bool success = _server.TestConnection(this, out errmsg);
+                var success = _server.TestConnection(this, out errmsg);
 
                 if (!success)
                 {
@@ -135,9 +121,7 @@ namespace GoreUpdater.Manager
                     Log("Testing completed UNSUCCESSFULLY. Please close this form when done reading the log.");
                 }
                 else
-                {
                     Log("Testing completed SUCCESSFULLY! Please close this form when done reading the log.");
-                }
             }
             catch (Exception ex)
             {
@@ -145,6 +129,16 @@ namespace GoreUpdater.Manager
                 Log("Testing completed UNSUCCESSFULLY. Please close this form when done reading the log.");
                 return;
             }
+        }
+
+        void _server_TestConnectionMessage(IFileUploader sender, string message, object userState)
+        {
+            // Ensure the message is for us
+            if (userState != this)
+                return;
+
+            // Log it
+            Log(message);
         }
     }
 }

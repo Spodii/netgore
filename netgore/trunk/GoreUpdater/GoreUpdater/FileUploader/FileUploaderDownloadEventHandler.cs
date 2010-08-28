@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater
+﻿using System.Linq;
+
+namespace GoreUpdater
 {
     /// <summary>
     /// Delegate for handling download events from the <see cref="IFileUploader"/>.

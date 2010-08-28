@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater.Manager
+﻿using System.Linq;
+
+namespace GoreUpdater.Manager
 {
     /// <summary>
     /// The different types of <see cref="IFileUploader"/>s.
