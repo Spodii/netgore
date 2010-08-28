@@ -249,22 +249,34 @@ namespace GoreUpdater.Manager
                 _fileUploader.Dispose();
 
             // Create the new uploader
-            switch (FileUploaderType)
-            {
-                case FileUploaderType.Ftp:
-                    _fileUploader = new FtpFileUploader(Host, User, Password);
-                    break;
-
-                default:
-                    const string errmsg = "FileUploaderType `{0}` not supported.";
-                    Debug.Fail(string.Format(errmsg, FileUploaderType));
-                    throw new NotSupportedException(string.Format(errmsg, FileUploaderType));
-            }
+            _fileUploader = CreateFileUploader(FileUploaderType, Host, User, Password);
 
             // Start the synchronization of the live and next version
             EnqueueSyncVersion(_settings.LiveVersion);
             if (_settings.DoesNextVersionExist())
                 EnqueueSyncVersion(_settings.LiveVersion + 1);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="IFileUploader"/> instance.
+        /// </summary>
+        /// <param name="type">The <see cref="FileUploaderType"/>.</param>
+        /// <param name="host">The host.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>The <see cref="IFileUploader"/> instance.</returns>
+        public static IFileUploader CreateFileUploader(FileUploaderType type, string host, string user, string password)
+        {
+            switch (type)
+            {
+                case FileUploaderType.Ftp:
+                    return new FtpFileUploader(host, user, password);
+
+                default:
+                    const string errmsg = "FileUploaderType `{0}` not supported.";
+                    Debug.Fail(string.Format(errmsg, type));
+                    throw new NotSupportedException(string.Format(errmsg, type));
+            }
         }
 
         /// <summary>

@@ -61,7 +61,27 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void btnTest_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            FileUploaderType type = (FileUploaderType)cmbType.SelectedItem;
+            var host = txtHost.Text;
+            var user = txtUser.Text;
+            var pass = txtPassword.Text;
+
+            IFileUploader server;
+            try
+            {
+                server = ServerInfoBase.CreateFileUploader(type, host, user, pass);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to create the IFileUploader to use for testing the connection due to an unexpected error:{0}{1}";
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, ex), "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            var testForm = new TestServerSettingsForm(server);
+            btnTest.Enabled = false;
+            testForm.FormClosing += delegate { btnTest.Invoke((Action)(() => btnTest.Enabled = true)); };
+            testForm.StartTesting();
         }
 
         /// <summary>
