@@ -956,6 +956,13 @@ namespace GoreUpdater
         public event FileUploaderDownloadErrorEventHandler DownloadError;
 
         /// <summary>
+        /// Notifies listeners when the <see cref="IFileUploader.TestConnection"/> method has produced a message
+        /// related to the status of the connection testing. This only contains status update messages, not error
+        /// messages.
+        /// </summary>
+        public event FileUploaderTestConnectionMessageEventHandler TestConnectionMessage;
+
+        /// <summary>
         /// Gets if the <see cref="IFileUploader"/> is currently busy.
         /// </summary>
         public bool IsBusy
@@ -1124,6 +1131,238 @@ namespace GoreUpdater
                 throw new ObjectDisposedException("this");
 
             return FtpDownloadAsString(remoteFile, requireExists);
+        }
+
+        /// <summary>
+        /// Tests the connection of the <see cref="IFileUploader"/> and ensures that the needed operations can be performed.
+        /// The test runs synchronously.
+        /// </summary>
+        /// <param name="userState">An optional object that can be used. When the <see cref="TestConnectionMessage"/> event is raised,
+        /// this object is passed back through the event, allowing you to differentiate between multiple connection tests.</param>
+        /// <param name="error">When this method returns false, contains a string describing the error encountered during testing.</param>
+        /// <returns>
+        /// True if the test was successful; otherwise false.
+        /// </returns>
+        public bool TestConnection(object userState, out string error)
+        {
+            const string remoteTestFile = "___connection_test.tmp";
+            const string remoteTestDir = "/__connection_test/__test/__a/";
+            const string remoteTestFileContents = "Test file. Please delete.";
+
+            if (TestConnectionMessage != null)
+            {
+                TestConnectionMessage(this, "Connection information:", userState);
+                TestConnectionMessage(this, " * Class: " + GetType(), userState);
+                TestConnectionMessage(this, " * Host: " + FtpRoot, userState);
+                TestConnectionMessage(this, " * User: " + _credentials.UserName, userState);
+                TestConnectionMessage(this, " * Domain: " + _credentials.Domain, userState);
+                TestConnectionMessage(this, " * Passive FTP?: " + UsePassive, userState);
+
+                TestConnectionMessage(this, "Setting up tests...", userState);
+            }
+
+            if (TestConnectionMessage != null)
+                TestConnectionMessage(this, "Getting the path for a temporary local file...", userState);
+
+            var tmpFile = Path.GetTempFileName();
+
+            if (TestConnectionMessage != null)
+                TestConnectionMessage(this, "Writing content to the temporary local file...", userState);
+
+            File.WriteAllText(tmpFile, "Test file. Please delete.");
+
+            if (TestConnectionMessage != null)
+                TestConnectionMessage(this, "Test setup complete", userState);
+
+            if (TestConnectionMessage != null)
+                TestConnectionMessage(this, "Starting tests on the server", userState);
+
+            try
+            {
+                // *** File creation test ***
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Uploading a test file to root directory...", userState);
+
+                try
+                {
+                    FtpCreateFile(tmpFile, remoteTestFile);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to create file on remote server. Check your file creation permissions. Details:{0}{1}";
+                    error = string.Format(errmsg, Environment.NewLine, ex);
+                    return false;
+                }
+
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "File upload complete", userState);
+
+                // *** File integrity test ***
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Downloading the file just uploaded...", userState);
+
+                try
+                {
+                    var contents = FtpDownloadAsString(remoteTestFile, true);
+
+                    if (TestConnectionMessage != null)
+                        TestConnectionMessage(this, "File download complete", userState);
+
+                    if (TestConnectionMessage != null)
+                        TestConnectionMessage(this, "Checking the contents of the file to ensure integrity was preserved...", userState);
+
+                    if (!StringComparer.Ordinal.Equals(contents.Trim(), remoteTestFileContents))
+                    {
+                        const string errmsg = "The contents of the downloaded file did not match the expected file contents." +
+                            "{0}Expected: {1}{0}Actual: {2}";
+                        throw new Exception(string.Format(errmsg, Environment.NewLine, remoteTestFileContents, contents));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to download file from the remote server. Check your file download permissions. Details:{0}{1}";
+                    error = string.Format(errmsg, Environment.NewLine, ex);
+                    return false;
+                }
+
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "File integrity test passed", userState);
+
+                // *** File exists test ***
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Testing the ability to detect if the file exists...", userState);
+
+                try
+                {
+                    bool exists = FtpFileExists(remoteTestFile);
+                    if (!exists)
+                        throw new Exception("File was expected to exist, but FtpFileExists returned false.");
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to check file existance on remote server. Details:{0}{1}";
+                    error = string.Format(errmsg, Environment.NewLine, ex);
+                    return false;
+                }
+
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "File successfully determined to exist", userState);
+
+                // *** File deletion test ***
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Deleting the test file...", userState);
+
+                try
+                {
+                    FtpDeleteFile(remoteTestFile);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to delete file on remote server. Check your file deletion permissions. Details:{0}{1}";
+                    error = string.Format(errmsg, Environment.NewLine, ex);
+                    return false;
+                }
+
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Test file deleted", userState);
+
+                // *** Directory create test ***
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Creating sub-directories and creating a file inside those sub-directories...", userState);
+
+                try
+                {
+                    FtpCreateFile(tmpFile, remoteTestDir + remoteTestFile);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to create a file inside directory on remote server. Check your directory creation permissions. Details:{0}{1}";
+                    error = string.Format(errmsg, Environment.NewLine, ex);
+                    return false;
+                }
+
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Sub-directories test file successfully created", userState);
+
+                // *** Directory exists test ***
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Checking ability to determine if the test file exists...", userState);
+
+                try
+                {
+                    bool exists = FtpFileExists(remoteTestDir + remoteTestFile);
+                    if (!exists)
+                        throw new Exception("File was expected to exist, but FtpFileExists returned false.");
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to check file existance on remote server when inside a subdirectory. Details:{0}{1}";
+                    error = string.Format(errmsg, Environment.NewLine, ex);
+                    return false;
+                }
+
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "File successfully determined to exist", userState);
+
+                // *** Directory deletion test ***
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Deleting the test sub-directory and all of its contents...", userState);
+
+                try
+                {
+                    FtpDeleteDir(remoteTestDir);
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to delete directory on remote server. Check your directory deletion permissions. Details:{0}{1}";
+                    error = string.Format(errmsg, Environment.NewLine, ex);
+                    return false;
+                }
+
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Test sub-directory successfully deleted", userState);
+
+                // *** File doesn't exists test ***
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "Checking ability to determine that a file does not exist...", userState);
+
+                try
+                {
+                    bool exists = FtpFileExists(remoteTestFile);
+                    if (exists)
+                        throw new Exception("File was expected to not exist, but FtpFileExists returned true.");
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to check file existance on remote server. Details:{0}{1}";
+                    error = string.Format(errmsg, Environment.NewLine, ex);
+                    return false;
+                }
+
+                if (TestConnectionMessage != null)
+                    TestConnectionMessage(this, "File successfully determined to not exist", userState);
+            }
+            catch (Exception ex)
+            {
+                // Catch unexpected error at any phase during the testing
+                const string errmsg = "Unexpected error encountered. Details:{0}{1}";
+                error = string.Format(errmsg, Environment.NewLine, ex);
+                return false;
+            }
+            finally{
+                try
+                {
+                    if (!string.IsNullOrEmpty(tmpFile) && File.Exists(tmpFile))
+                        File.Delete(tmpFile);
+                }
+                catch (IOException)
+                {
+                    // Ignore errors deleting the temp file
+                }
+            }
+
+            error = null;
+            return true;
         }
 
         /// <summary>

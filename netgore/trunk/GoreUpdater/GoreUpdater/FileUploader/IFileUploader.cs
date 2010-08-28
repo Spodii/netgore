@@ -43,6 +43,13 @@ namespace GoreUpdater
         event FileUploaderDownloadErrorEventHandler DownloadError;
 
         /// <summary>
+        /// Notifies listeners when the <see cref="IFileUploader.TestConnection"/> method has produced a message
+        /// related to the status of the connection testing. This only contains status update messages, not error
+        /// messages.
+        /// </summary>
+        event FileUploaderTestConnectionMessageEventHandler TestConnectionMessage;
+
+        /// <summary>
         /// Gets if the <see cref="IFileUploader"/> is currently busy uploading files. This will be false when the queue is empty
         /// and all active file transfers have finished.
         /// </summary>
@@ -113,6 +120,16 @@ namespace GoreUpdater
         /// <returns>The downloaded file's contents.</returns>
         /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
         string DownloadAsString(string remoteFile, bool requireExists = false);
+
+        /// <summary>
+        /// Tests the connection of the <see cref="IFileUploader"/> and ensures that the needed operations can be performed.
+        /// The test runs synchronously.
+        /// </summary>
+        /// <param name="userState">An optional object that can be used. When the <see cref="TestConnectionMessage"/> event is raised,
+        /// this object is passed back through the event, allowing you to differentiate between multiple connection tests.</param>
+        /// <param name="error">When this method returns false, contains a string describing the error encountered during testing.</param>
+        /// <returns>True if the test was successful; otherwise false.</returns>
+        bool TestConnection(object userState, out string error);
 
         /// <summary>
         /// Enqueues a file for asynchronous downloading.
