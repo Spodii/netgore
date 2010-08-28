@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileServerListBox.cs">
+    <Compile Include="ServerInfoListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="FileUploaderType.cs" />
@@ -57,6 +57,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FileServerInfo.cs" />
+    <Compile Include="MasterServerInfo.cs" />
     <Compile Include="NewVersionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +67,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ManagerSettings.cs" />
+    <Compile Include="ServerInfoBase.cs" />
     <Compile Include="VersionHelper.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

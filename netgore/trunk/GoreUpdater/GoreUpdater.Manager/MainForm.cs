@@ -79,7 +79,7 @@ namespace GoreUpdater.Manager
             });
         }
 
-        void FileServerInfo_IsBusySyncingChanged(FileServerInfo sender)
+        void FileServerInfo_IsBusySyncingChanged(ServerInfoBase sender)
         {
             lstFS.Invoke((Action)(() => lstFS.RefreshItem(sender)));
         }

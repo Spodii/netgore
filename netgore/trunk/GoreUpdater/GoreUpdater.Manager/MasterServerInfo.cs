@@ -1,39 +1,32 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading;
 
 namespace GoreUpdater.Manager
 {
     /// <summary>
-    /// Delegate for handling an event from the <see cref="ServerInfoBase"/>.
+    /// Describes a master server instance.
     /// </summary>
-    /// <param name="sender">The <see cref="ServerInfoBase"/> the event came from.</param>
-    public delegate void ServerInfoEventHandler(ServerInfoBase sender);
-
-    /// <summary>
-    /// Describes a file server instance.
-    /// </summary>
-    public class FileServerInfo : ServerInfoBase
+    public class MasterServerInfo : ServerInfoBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileServerInfo"/> class.
+        /// Initializes a new instance of the <see cref="MasterServerInfo"/> class.
         /// </summary>
         /// <param name="type">The type of file uploader to use.</param>
         /// <param name="host">The host address.</param>
         /// <param name="user">The user.</param>
         /// <param name="password">The password.</param>
-        public FileServerInfo(FileUploaderType type, string host, string user, string password)
+        public MasterServerInfo(FileUploaderType type, string host, string user, string password)
             : base(type, host, user, password)
         {
         }
 
         /// <summary>
-        /// Creates a <see cref="FileServerInfo"/> from a creation string.
+        /// Creates a <see cref="MasterServerInfo"/> from a creation string.
         /// </summary>
-        /// <param name="creationString">The <see cref="FileServerInfo"/> creation string.</param>
-        /// <returns>The <see cref="FileServerInfo"/> instance.</returns>
-        public static FileServerInfo Create(string creationString)
+        /// <param name="creationString">The <see cref="MasterServerInfo"/> creation string.</param>
+        /// <returns>The <see cref="MasterServerInfo"/> instance.</returns>
+        public static MasterServerInfo Create(string creationString)
         {
             var s = creationString.Split(new string[] { CreationStringDelimiter }, StringSplitOptions.None);
             if (s.Length != 4)
@@ -44,8 +37,10 @@ namespace GoreUpdater.Manager
             var user = s[2];
             var password = s[3];
 
-            return new FileServerInfo(type, host, user, password);
+            return new MasterServerInfo(type, host, user, password);
         }
+
+        #region Overrides of ServerInfoBase
 
         /// <summary>
         /// When overridden in the derived class, handles synchronizing the given version.
@@ -54,12 +49,19 @@ namespace GoreUpdater.Manager
         /// <param name="v">The version to synchronize.</param>
         /// <param name="reEnqueue">True if the <paramref name="v"/> should be re-enqueued so it can be re-attempted.
         /// If the method throws an <see cref="Exception"/>, the <paramref name="v"/> will be re-enqueued no matter what.</param>
-        /// <returns>
-        /// The error string, or null if the synchronization was successful.
-        /// </returns>
+        /// <returns>The error string, or null if the synchronization was successful.</returns>
         protected override string DoSync(IFileUploader fu, int v, out bool reEnqueue)
         {
+            fu.SkipIfExists = false;
+
             reEnqueue = false;
+
+            string remoteFileListFilePath = PathHelper.GetVersionString(v) + ".txt";
+            string remoteFileListHashFilePath = PathHelper.GetVersionString(v) + ".hash";
+
+            // Ensure the live version is written. This is a very small but very important file, so just write it during
+            // every synchronization.
+            fu.UploadAsync(_settings.LiveVersionFilePath, "live_version");
 
             // Load the VersionFileList for the version to check
             var vflPath = VersionHelper.GetVersionFileListPath(v);
@@ -69,7 +71,8 @@ namespace GoreUpdater.Manager
                 return null;
             }
 
-            var vfl = VersionFileList.CreateFromFile(vflPath);
+            // Test the creation of the VersionFileList to ensure its valid
+            VersionFileList.CreateFromFile(vflPath);
 
             // Try to download the version's file list hash
             var fileListHashPath = GetVersionRemoteFilePath(v, PathHelper.RemoteFileListHashFileName);
@@ -82,8 +85,7 @@ namespace GoreUpdater.Manager
                 var expectedVflHash = File.ReadAllText(VersionHelper.GetVersionFileListHashPath(v));
                 if (vflHahs != expectedVflHash)
                 {
-                    // Delete the whole version folder first
-                    fu.DeleteDirectory(GetVersionRemoteFilePath(v, null));
+                    // We don't need to delete anything since we make the MasterServer overwrite instead
                 }
                 else
                 {
@@ -98,32 +100,9 @@ namespace GoreUpdater.Manager
                 // the same process either way.
             }
 
-            // Check the hashes of the local files
-            foreach (var f in vfl.Files)
-            {
-                // Get the local file path
-                var localPath = VersionHelper.GetVersionFile(v, f.FilePath);
-
-                // Confirm the hash of the file
-                var fileHash = Hasher.GetFileHash(localPath);
-                if (fileHash != f.Hash)
-                {
-                    const string errmsg =
-                        "The cached hash ({0}) of file `{1}` does not match the real hash ({2}) for version {3}." +
-                        " Possible version corruption.";
-                    return string.Format(errmsg, f.Hash, f.FilePath, fileHash, v);
-                }
-            }
-
-            // Hashes check out, start uploading
-            foreach (var f in vfl.Files)
-            {
-                // Get the local file path
-                var localPath = VersionHelper.GetVersionFile(v, f.FilePath);
-
-                var remotePath = GetVersionRemoteFilePath(v, f.FilePath);
-                fu.UploadAsync(localPath, remotePath);
-            }
+            // Upload the files
+            fu.UploadAsync(VersionHelper.GetVersionFileListPath(v), remoteFileListFilePath);
+            fu.UploadAsync(VersionHelper.GetVersionFileListHashPath(v), remoteFileListHashFilePath);
 
             // Wait for uploads to finish
             while (fu.IsBusy)
@@ -131,12 +110,10 @@ namespace GoreUpdater.Manager
                 Thread.Sleep(1000);
             }
 
-            // All uploads have finished, so upload the VersionFileList hash
-            var vflHashRemoteFilePath = GetVersionRemoteFilePath(v, PathHelper.RemoteFileListHashFileName);
-            fu.UploadAsync(vflPath, vflHashRemoteFilePath);
-
-            // All done! That was easy enough, eh? *sigh*
+            // All done!
             return null;
         }
+
+        #endregion
     }
 }
