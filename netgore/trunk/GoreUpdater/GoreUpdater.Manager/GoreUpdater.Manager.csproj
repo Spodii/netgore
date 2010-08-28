@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddServerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddServerForm.Designer.cs">
+      <DependentUpon>AddServerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ServerInfoListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     <Compile Include="ManagerSettings.cs" />
     <Compile Include="ServerInfoBase.cs" />
     <Compile Include="VersionHelper.cs" />
+    <EmbeddedResource Include="AddServerForm.resx">
+      <DependentUpon>AddServerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
