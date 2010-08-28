@@ -10,6 +10,12 @@ using System.Windows.Forms;
 namespace GoreUpdater.Manager
 {
     /// <summary>
+    /// Delegate for handling an event from the <see cref="FileServerInfo"/>.
+    /// </summary>
+    /// <param name="sender">The <see cref="FileServerInfo"/> the event came from.</param>
+    public delegate void FileServerInfoEventHandler(FileServerInfo sender);
+
+    /// <summary>
     /// Describes a file server instance.
     /// </summary>
     public class FileServerInfo : IDisposable
@@ -51,6 +57,11 @@ namespace GoreUpdater.Manager
             return new FileServerInfo(type, host, user, password);
         }
 
+        /// <summary>
+        /// Notifies listeners when the <see cref="IsBusySyncing"/> status has changed.
+        /// </summary>
+        public event FileServerInfoEventHandler IsBusySyncingChanged;
+
         IFileUploader _fileUploader;
         FileUploaderType _fileUploaderType;
         string _host;
@@ -61,7 +72,20 @@ namespace GoreUpdater.Manager
         /// <summary>
         /// Gets if this <see cref="FileServerInfo"/> is busy synchronizing to the server.
         /// </summary>
-        public bool IsBusySyncing { get { return _isBusySyncing; } }
+        public bool IsBusySyncing
+        {
+            get { return _isBusySyncing; }
+            private set
+            {
+                if (_isBusySyncing == value)
+                    return;
+
+                _isBusySyncing = value;
+
+                if (IsBusySyncingChanged != null)
+                    IsBusySyncingChanged(this);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileServerInfo"/> class.
@@ -124,12 +148,10 @@ namespace GoreUpdater.Manager
 
                 if (fu == null)
                 {
-                    _isBusySyncing = false;
-                    Thread.Sleep(_workerThreadNoJobTimeout);
+                    // Hopefully a null IFileUploader scenario fixes itself over time
+                    Thread.Sleep(500);
                     continue;
                 }
-
-                _isBusySyncing = true;
 
                 // Grab the next version to check if synced
                 int v = int.MinValue;
@@ -142,9 +164,12 @@ namespace GoreUpdater.Manager
                 // If no jobs, sleep for a while
                 if (v == int.MinValue)
                 {
+                    IsBusySyncing = false;
                     Thread.Sleep(_workerThreadNoJobTimeout);
                     continue;
                 }
+
+                IsBusySyncing = true;
 
                 try
                 {

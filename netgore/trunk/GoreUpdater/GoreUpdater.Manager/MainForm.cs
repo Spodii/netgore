@@ -33,19 +33,70 @@ namespace GoreUpdater.Manager
 
             _settings.LiveVersionChanged += _settings_LiveVersionChanged;
             _settings.NextVersionCreated += _settings_NextVersionCreated;
+            _settings.FileServerListChanged += _settings_FileServerListChanged;
 
             btnChangeLiveVersion.Enabled = _settings.DoesNextVersionExist();
             lblLiveVersion.Text = _settings.LiveVersion.ToString();
+
+            UpdateFileServerList();
         }
 
-        void _settings_NextVersionCreated(ManagerSettings sender)
+        /// <summary>
+        /// Updates the file server listbox.
+        /// </summary>
+        void UpdateFileServerList()
         {
-            btnChangeLiveVersion.Enabled = sender.DoesNextVersionExist();
+            // Use Invoke to ensure we are in the correct thread
+            lstFS.Invoke((Action)delegate
+            {
+                // Get the servers
+                var servers = _settings.FileServers;
+
+                // Store the selected item so we can restore it when done
+                var selected = lstFS.SelectedItem;
+                
+                // Remove the update listener from existing items to make sure we don't add it twice (no harm in removing
+                // the event hook if it doesn't exist to begin with)
+                foreach (var s in lstFS.Items.OfType<FileServerInfo>())
+                {
+                    s.IsBusySyncingChanged -= FileServerInfo_IsBusySyncingChanged;
+                }
+
+                // Add the update listener to all items (after double-checking that the event listener isn't attached)
+                foreach (var s in servers)
+                {
+                    s.IsBusySyncingChanged -= FileServerInfo_IsBusySyncingChanged;
+                    s.IsBusySyncingChanged += FileServerInfo_IsBusySyncingChanged;
+                }
+
+                // Re-add all items
+                lstFS.Items.Clear();
+                lstFS.Items.AddRange(servers.ToArray<object>());
+
+                // Restore the selected item if it is still in the list
+                if (servers.Any(x => x == selected))
+                    lstFS.SelectedItem = selected;
+            });
+        }
+
+        void FileServerInfo_IsBusySyncingChanged(FileServerInfo sender)
+        {
+            lstFS.Invoke((Action)(() => lstFS.RefreshItem(sender)));
+        }
+
+        void _settings_FileServerListChanged(ManagerSettings sender)
+        {
+            UpdateFileServerList();
         }
 
         void _settings_LiveVersionChanged(ManagerSettings sender)
         {
             lblLiveVersion.Invoke((Action)(() => lblLiveVersion.Text = sender.LiveVersion.ToString()));
+        }
+
+        void _settings_NextVersionCreated(ManagerSettings sender)
+        {
+            btnChangeLiveVersion.Enabled = sender.DoesNextVersionExist();
         }
 
         /// <summary>
@@ -74,9 +125,10 @@ namespace GoreUpdater.Manager
             }
             catch (Exception ex)
             {
-                const string errmsg = "The file listing file for the next version exists, but it is corrupt." +
+                const string errmsg =
+                    "The file listing file for the next version exists, but it is corrupt." +
                     " Please use Create New Version to recreate the next version then try again.{0}Inner Exception:{0}{1}";
-                MessageBox.Show(string.Format(errmsg, Environment.NewLine, ex), "Corrupt file listing file",  MessageBoxButtons.OK);
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, ex), "Corrupt file listing file", MessageBoxButtons.OK);
                 return;
             }
 
@@ -87,10 +139,11 @@ namespace GoreUpdater.Manager
                 return;
 
             // If the new version is still being uploaded to the servers, warn the user
-            bool areServersBusy = _settings.FileServers.Any(x => x.IsBusySyncing);
+            var areServersBusy = _settings.FileServers.Any(x => x.IsBusySyncing);
             if (areServersBusy)
             {
-                const string msg = "Are you sure you wish to update the live version? One or more servers (either file or master servers)" +
+                const string msg =
+                    "Are you sure you wish to update the live version? One or more servers (either file or master servers)" +
                     " are still synchronizing. Updating the live version now may leave you in a state where not all of the files" +
                     " are available on all of the servers. It is highly recommended you wait until all synchronization finishes." +
                     "{0}{0}Do you wish to continue? (Canceling is highly recommended!)";
@@ -102,7 +155,8 @@ namespace GoreUpdater.Manager
             _settings.TrySetLiveVersion(_settings.LiveVersion + 1);
 
             // Done!
-            const string doneMsg = "The live version has been successfully updated!" +
+            const string doneMsg =
+                "The live version has been successfully updated!" +
                 " The master servers will automatically start to update with the new live version number.";
             MessageBox.Show(doneMsg, "Done!", MessageBoxButtons.OK);
         }
@@ -117,7 +171,8 @@ namespace GoreUpdater.Manager
             // If the version already exists, confirm that they want to recreate it
             if (_settings.DoesNextVersionExist())
             {
-                const string msg = "The next version already exists, it just has not been made live yet." +
+                const string msg =
+                    "The next version already exists, it just has not been made live yet." +
                     " Are you sure you wish to recreate the next version?";
                 if (MessageBox.Show(msg, "Recreate next version?", MessageBoxButtons.YesNo) == DialogResult.No)
                     return;
