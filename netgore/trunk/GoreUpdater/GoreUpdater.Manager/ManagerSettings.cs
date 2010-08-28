@@ -21,85 +21,21 @@ namespace GoreUpdater.Manager
     public class ManagerSettings
     {
         const string _headerDelimiter = "=";
-        const string _headerLiveVersion = "LIVEVERSION";
         const string _headerFileServer = "FILESERVER";
+        const string _headerMasterServer = "MASTERSERVER";
+        const string _headerLiveVersion = "LIVEVERSION";
         const string _settingsFile = "settings.txt";
 
         static readonly ManagerSettings _instance;
 
         readonly string _filePath;
+        readonly List<FileServerInfo> _fileServers = new List<FileServerInfo>();
+        readonly object _fileServersSync = new object();
+        readonly List<MasterServerInfo> _masterServers = new List<MasterServerInfo>();
+        readonly object _masterServersSync = new object();
+        readonly string _liveVersionFilePath;
         readonly object _saveSync = new object();
         readonly object _versionSync = new object();
-
-        /// <summary>
-        /// Notifies listeners when a file server has been added or removed from the list.
-        /// </summary>
-        public event ManagerSettingsEventHandler FileServerListChanged;
-
-        /// <summary>
-        /// Gets the list of file servers.
-        /// </summary>
-        public IEnumerable<FileServerInfo> FileServers
-        {
-            get
-            {
-                lock (_fileServersSync)
-                {
-                    return _fileServers.ToArray();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Removes from the file server list.
-        /// </summary>
-        /// <param name="fileServer">The <see cref="FileServerInfo"/> to remove.</param>
-        /// <returns>True if removed; otherwise false.</returns>
-        public bool RemoveFileServer(FileServerInfo fileServer)
-        {
-            bool removed;
-            lock (_fileServersSync)
-            {
-                removed = _fileServers.Remove(fileServer);
-            }
-
-            if (removed)
-            {
-                Save();
-
-                if (FileServerListChanged != null)
-                    FileServerListChanged(this);
-            }
-
-            return removed;
-        }
-
-        /// <summary>
-        /// Adds to the file server list.
-        /// </summary>
-        /// <param name="fileServer">The <see cref="FileServerInfo"/> to add.</param>
-        /// <returns>True if added; otherwise false.</returns>
-        public bool AddFileServer(FileServerInfo fileServer)
-        {
-            lock (_fileServersSync)
-            {
-                if (_fileServers.Contains(fileServer))
-                    return false;
-
-                _fileServers.Add(fileServer);
-            }
-
-            Save();
-
-            if (FileServerListChanged != null)
-                FileServerListChanged(this);
-
-            return true;
-        }
-
-        readonly object _fileServersSync = new object();
-
-        readonly List<FileServerInfo> _fileServers = new List<FileServerInfo>();
 
         int _liveVersion = 0;
 
@@ -119,40 +55,19 @@ namespace GoreUpdater.Manager
         /// <param name="filePath">The settings file path.</param>
         ManagerSettings(string filePath)
         {
+            _liveVersionFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath, "liveversion");
             _filePath = filePath;
         }
 
         /// <summary>
-        /// Uses the given <see cref="VersionFileList"/> to set up the next version.
+        /// Notifies listeners when a file server has been added or removed from the list.
         /// </summary>
-        /// <param name="vfl">The <see cref="VersionFileList"/> for the next version..</param>
-        /// <exception cref="ArgumentException">The <paramref name="vfl"/> was invalid or the version failed
-        /// to be created.</exception>
-        public void SetNextVersion(VersionFileList vfl)
-        {
-            var nextVersion = LiveVersion + 1;
-
-            // Save the file listing
-            var outFilePath = VersionHelper.GetVersionFileListPath(nextVersion);
-            vfl.Write(outFilePath);
-
-            // Save the hash for the file listing
-            var hash = Hasher.GetFileHash(outFilePath);
-            var outHashPath = VersionHelper.GetVersionFileListHashPath(nextVersion);
-            if (File.Exists(outHashPath))
-                File.Delete(outHashPath);
-
-            File.WriteAllText(outHashPath, hash);
-
-            // Notify listeners
-            if (NextVersionCreated != null)
-                NextVersionCreated(this);
-        }
+        public event ManagerSettingsEventHandler FileServerListChanged;
 
         /// <summary>
-        /// Notifies listeners when the next version (the version after the live version) to release has been created, or re-created.
+        /// Notifies listeners when a master server has been added or removed from the list.
         /// </summary>
-        public event ManagerSettingsEventHandler NextVersionCreated;
+        public event ManagerSettingsEventHandler MasterServerListChanged;
 
         /// <summary>
         /// Notifies listeners when the live version has changed.
@@ -160,14 +75,9 @@ namespace GoreUpdater.Manager
         public event ManagerSettingsEventHandler LiveVersionChanged;
 
         /// <summary>
-        /// Gets if the next version (the version after the live version) exists.
+        /// Notifies listeners when the next version (the version after the live version) to release has been created, or re-created.
         /// </summary>
-        /// <returns>True if the next version exists; otherwise false.</returns>
-        public bool DoesNextVersionExist()
-        {
-            var nextVersionPath = VersionHelper.GetVersionFileListPath(LiveVersion + 1);
-            return File.Exists(nextVersionPath);
-        }
+        public event ManagerSettingsEventHandler NextVersionCreated;
 
         /// <summary>
         /// Gets the path to the settings file.
@@ -175,6 +85,20 @@ namespace GoreUpdater.Manager
         public string FilePath
         {
             get { return _filePath; }
+        }
+
+        /// <summary>
+        /// Gets the list of file servers.
+        /// </summary>
+        public IEnumerable<FileServerInfo> FileServers
+        {
+            get
+            {
+                lock (_fileServersSync)
+                {
+                    return _fileServers.ToArray();
+                }
+            }
         }
 
         /// <summary>
@@ -200,6 +124,60 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Gets the file path to the live version file. This is simply just a file that contains the live version.
+        /// </summary>
+        public string LiveVersionFilePath
+        {
+            get { return _liveVersionFilePath; }
+        }
+
+        /// <summary>
+        /// Adds to the file server list.
+        /// </summary>
+        /// <param name="server">The <see cref="FileServerInfo"/> to add.</param>
+        /// <returns>True if added; otherwise false.</returns>
+        public bool AddFileServer(FileServerInfo server)
+        {
+            lock (_fileServersSync)
+            {
+                if (_fileServers.Contains(server))
+                    return false;
+
+                _fileServers.Add(server);
+            }
+
+            Save();
+
+            if (FileServerListChanged != null)
+                FileServerListChanged(this);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Adds to the master server list.
+        /// </summary>
+        /// <param name="server">The <see cref="MasterServerInfo"/> to add.</param>
+        /// <returns>True if added; otherwise false.</returns>
+        public bool AddMasterServer(MasterServerInfo server)
+        {
+            lock (_masterServersSync)
+            {
+                if (_masterServers.Contains(server))
+                    return false;
+
+                _masterServers.Add(server);
+            }
+
+            Save();
+
+            if (MasterServerListChanged != null)
+                MasterServerListChanged(this);
+
+            return true;
+        }
+
+        /// <summary>
         /// Adds a settings line to the <see cref="StringBuilder"/>.
         /// </summary>
         /// <param name="sb">The <see cref="StringBuilder"/>.</param>
@@ -208,6 +186,16 @@ namespace GoreUpdater.Manager
         static void AddSetting(StringBuilder sb, string key, string value)
         {
             sb.AppendLine(key + _headerDelimiter + value);
+        }
+
+        /// <summary>
+        /// Gets if the next version (the version after the live version) exists.
+        /// </summary>
+        /// <returns>True if the next version exists; otherwise false.</returns>
+        public bool DoesNextVersionExist()
+        {
+            var nextVersionPath = VersionHelper.GetVersionFileListPath(LiveVersion + 1);
+            return File.Exists(nextVersionPath);
         }
 
         /// <summary>
@@ -243,41 +231,106 @@ namespace GoreUpdater.Manager
 
             foreach (var v in values)
             {
-                    switch (v.Key)
-                    {
-                        case _headerLiveVersion:
-                            int i;
-                            if (!int.TryParse(v.Value, out i))
-                            {
-                                const string errmsg = "Encountered invalid {0} value in settings file.";
-                                MessageBox.Show(string.Format(errmsg, _headerLiveVersion));
-                                break;
-                            }
-
-                            _liveVersion = i;
+                switch (v.Key)
+                {
+                    case _headerLiveVersion:
+                        int i;
+                        if (!int.TryParse(v.Value, out i))
+                        {
+                            const string errmsg = "Encountered invalid {0} value in settings file.";
+                            MessageBox.Show(string.Format(errmsg, _headerLiveVersion));
                             break;
+                        }
 
-                        case _headerFileServer:
-                            try
-                            {
-                                var fs = FileServerInfo.Create(v.Value);
-                                lock (_fileServersSync)
-                                {
-                                    _fileServers.Add(fs);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                const string errmsg = "Encountered invalid {0} value in settings file: {1}";
-                                MessageBox.Show(string.Format(errmsg, _headerLiveVersion, ex));
-                            }
-                            break;
+                        _liveVersion = i;
+                        UpdateLiveVersionFile();
+                        break;
 
-                        default:
-                            MessageBox.Show("Encountered unknown setting: " + v.Key);
-                            break;
-                    }
+                    case _headerFileServer:
+                        try
+                        {
+                            var server = FileServerInfo.Create(v.Value);
+                            lock (_fileServersSync)
+                            {
+                                _fileServers.Add(server);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            const string errmsg = "Encountered invalid {0} value in settings file: {1}";
+                            MessageBox.Show(string.Format(errmsg, _headerFileServer, ex));
+                        }
+                        break;
+
+                    case _headerMasterServer:
+                        try
+                        {
+                            var server = MasterServerInfo.Create(v.Value);
+                            lock (_masterServersSync)
+                            {
+                                _masterServers.Add(server);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            const string errmsg = "Encountered invalid {0} value in settings file: {1}";
+                            MessageBox.Show(string.Format(errmsg, _headerMasterServer, ex));
+                        }
+                        break;
+
+                    default:
+                        MessageBox.Show("Encountered unknown setting: " + v.Key);
+                        break;
+                }
             }
+        }
+
+        /// <summary>
+        /// Removes from the file server list.
+        /// </summary>
+        /// <param name="server">The <see cref="FileServerInfo"/> to remove.</param>
+        /// <returns>True if removed; otherwise false.</returns>
+        public bool RemoveFileServer(FileServerInfo server)
+        {
+            bool removed;
+            lock (_fileServersSync)
+            {
+                removed = _fileServers.Remove(server);
+            }
+
+            if (removed)
+            {
+                Save();
+
+                if (FileServerListChanged != null)
+                    FileServerListChanged(this);
+            }
+
+            return removed;
+        }
+
+        /// <summary>
+        /// Removes from the master server list.
+        /// </summary>
+        /// <param name="server">The <see cref="MasterServerInfo"/> to remove.</param>
+        /// <returns>True if removed; otherwise false.</returns>
+        public bool RemoveMasterServer(MasterServerInfo server)
+        {
+            bool removed;
+            lock (_masterServersSync)
+            {
+                removed = _masterServers.Remove(server);
+            }
+
+            if (removed)
+            {
+                Save();
+
+                if (MasterServerListChanged != null)
+                    MasterServerListChanged(this);
+            }
+
+            return removed;
         }
 
         /// <summary>
@@ -297,6 +350,14 @@ namespace GoreUpdater.Manager
                     foreach (var s in _fileServers)
                     {
                         AddSetting(sb, _headerFileServer, s.GetCreationString());
+                    }
+                }
+
+                lock (_masterServersSync)
+                {
+                    foreach (var s in _masterServers)
+                    {
+                        AddSetting(sb, _headerMasterServer, s.GetCreationString());
                     }
                 }
 
@@ -322,6 +383,33 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Uses the given <see cref="VersionFileList"/> to set up the next version.
+        /// </summary>
+        /// <param name="vfl">The <see cref="VersionFileList"/> for the next version..</param>
+        /// <exception cref="ArgumentException">The <paramref name="vfl"/> was invalid or the version failed
+        /// to be created.</exception>
+        public void SetNextVersion(VersionFileList vfl)
+        {
+            var nextVersion = LiveVersion + 1;
+
+            // Save the file listing
+            var outFilePath = VersionHelper.GetVersionFileListPath(nextVersion);
+            vfl.Write(outFilePath);
+
+            // Save the hash for the file listing
+            var hash = Hasher.GetFileHash(outFilePath);
+            var outHashPath = VersionHelper.GetVersionFileListHashPath(nextVersion);
+            if (File.Exists(outHashPath))
+                File.Delete(outHashPath);
+
+            File.WriteAllText(outHashPath, hash);
+
+            // Notify listeners
+            if (NextVersionCreated != null)
+                NextVersionCreated(this);
+        }
+
+        /// <summary>
         /// Tries to set the live version to a new value.
         /// </summary>
         /// <param name="newVersion">The new live version.</param>
@@ -343,12 +431,32 @@ namespace GoreUpdater.Manager
 
             _liveVersion = newVersion;
 
+            UpdateLiveVersionFile();
+
             Save();
 
             if (LiveVersionChanged != null)
                 LiveVersionChanged(this);
 
             return true;
+        }
+
+        /// <summary>
+        /// Updates the live version file.
+        /// </summary>
+        void UpdateLiveVersionFile()
+        {
+            var tmpPath = _liveVersionFilePath + ".tmp";
+
+            if (File.Exists(tmpPath))
+                File.Delete(tmpPath);
+
+            File.WriteAllText(tmpPath, LiveVersion.ToString());
+
+            File.Copy(tmpPath, _liveVersionFilePath, true);
+
+            if (File.Exists(tmpPath))
+                File.Delete(tmpPath);
         }
     }
 }

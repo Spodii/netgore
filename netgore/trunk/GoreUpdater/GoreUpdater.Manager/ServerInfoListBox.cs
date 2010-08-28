@@ -10,12 +10,15 @@ using System.Windows.Forms;
 
 namespace GoreUpdater.Manager
 {
-    public class FileServerListBox : ListBox
+    /// <summary>
+    /// A list box for displaying <see cref="ServerInfoBase"/>s.
+    /// </summary>
+    public class ServerInfoListBox : ListBox
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileServerListBox"/> class.
+        /// Initializes a new instance of the <see cref="ServerInfoListBox"/> class.
         /// </summary>
-        public FileServerListBox()
+        public ServerInfoListBox()
         {
             DrawMode = DrawMode.OwnerDrawFixed;
             DoubleBuffered = true;
@@ -55,8 +58,8 @@ namespace GoreUpdater.Manager
             e.DrawBackground();
 
             // Check for a valid index and ITestable item
-            FileServerInfo item;
-            if (e.Index < 0 || e.Index >= Items.Count || ((item = (Items[e.Index] as FileServerInfo)) == null))
+            ServerInfoBase item;
+            if (e.Index < 0 || e.Index >= Items.Count || ((item = (Items[e.Index] as ServerInfoBase)) == null))
                 return;
 
             // Get the rectangle describing where to draw the text
