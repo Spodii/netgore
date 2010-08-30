@@ -32,6 +32,7 @@ namespace GoreUpdater.Manager
         readonly List<FileServerInfo> _fileServers = new List<FileServerInfo>();
         readonly object _fileServersSync = new object();
         readonly string _liveVersionFilePath;
+        readonly string _serverListFilePath;
         readonly List<MasterServerInfo> _masterServers = new List<MasterServerInfo>();
         readonly object _masterServersSync = new object();
         readonly object _saveSync = new object();
@@ -56,6 +57,7 @@ namespace GoreUpdater.Manager
         ManagerSettings(string filePath)
         {
             _liveVersionFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath, "liveversion");
+            _serverListFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath, "serverlist");
             _filePath = filePath;
         }
 
@@ -68,6 +70,12 @@ namespace GoreUpdater.Manager
         /// Notifies listeners when the live version has changed.
         /// </summary>
         public event ManagerSettingsEventHandler LiveVersionChanged;
+
+        /// <summary>
+        /// Notifies listeners when the server list has changed. This is raised when any server list has changed, such as the
+        /// master server list and the file server list.
+        /// </summary>
+        public event ManagerSettingsEventHandler ServerListChanged;
 
         /// <summary>
         /// Notifies listeners when a master server has been added or removed from the list.
@@ -132,6 +140,15 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Gets the file path to the server listing file. This file contains a list of the valid master and file servers
+        /// available.
+        /// </summary>
+        public string ServerListFilePath
+        {
+            get { return _serverListFilePath; }
+        }
+
+        /// <summary>
         /// Gets the list of master servers.
         /// </summary>
         public IEnumerable<MasterServerInfo> MasterServers
@@ -161,9 +178,13 @@ namespace GoreUpdater.Manager
             }
 
             Save();
+            UpdateServerListFile();
 
             if (FileServerListChanged != null)
                 FileServerListChanged(this);
+
+            if (ServerListChanged != null)
+                ServerListChanged(this);
 
             return true;
         }
@@ -184,9 +205,13 @@ namespace GoreUpdater.Manager
             }
 
             Save();
+            UpdateServerListFile();
 
             if (MasterServerListChanged != null)
                 MasterServerListChanged(this);
+
+            if (ServerListChanged != null)
+                ServerListChanged(this);
 
             return true;
         }
@@ -243,11 +268,13 @@ namespace GoreUpdater.Manager
             var lines = File.ReadAllLines(filePath);
             var values = lines.Select(x => x.Trim()).Where(x => x.Length > 0).Select(GetSettingLine);
 
+            // Read the settings
             foreach (var v in values)
             {
                 switch (v.Key)
                 {
                     case _headerLiveVersion:
+                        // Read the live version
                         int i;
                         if (!int.TryParse(v.Value, out i))
                         {
@@ -261,6 +288,7 @@ namespace GoreUpdater.Manager
                         break;
 
                     case _headerFileServer:
+                        // Read a file server
                         try
                         {
                             var server = FileServerInfo.Create(v.Value);
@@ -277,6 +305,7 @@ namespace GoreUpdater.Manager
                         break;
 
                     case _headerMasterServer:
+                        // Read a master server
                         try
                         {
                             var server = MasterServerInfo.Create(v.Value);
@@ -297,6 +326,10 @@ namespace GoreUpdater.Manager
                         break;
                 }
             }
+
+            // Update the info files
+            UpdateServerListFile();
+            UpdateLiveVersionFile();
         }
 
         /// <summary>
@@ -315,9 +348,13 @@ namespace GoreUpdater.Manager
             if (removed)
             {
                 Save();
+                UpdateServerListFile();
 
                 if (FileServerListChanged != null)
                     FileServerListChanged(this);
+
+                if (ServerListChanged != null)
+                    ServerListChanged(this);
             }
 
             return removed;
@@ -339,9 +376,13 @@ namespace GoreUpdater.Manager
             if (removed)
             {
                 Save();
+                UpdateServerListFile();
 
                 if (MasterServerListChanged != null)
                     MasterServerListChanged(this);
+
+                if (ServerListChanged != null)
+                    ServerListChanged(this);
             }
 
             return removed;
@@ -468,11 +509,29 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Updates the server list file.
+        /// </summary>
+        void UpdateServerListFile()
+        {
+            var tmpPath = ServerListFilePath + ".tmp";
+
+            if (File.Exists(tmpPath))
+                File.Delete(tmpPath);
+
+            File.WriteAllText(tmpPath, LiveVersion.ToString());
+
+            File.Copy(tmpPath, _liveVersionFilePath, true);
+
+            if (File.Exists(tmpPath))
+                File.Delete(tmpPath);
+        }
+
+        /// <summary>
         /// Updates the live version file.
         /// </summary>
         void UpdateLiveVersionFile()
         {
-            var tmpPath = _liveVersionFilePath + ".tmp";
+            var tmpPath = LiveVersionFilePath + ".tmp";
 
             if (File.Exists(tmpPath))
                 File.Delete(tmpPath);
