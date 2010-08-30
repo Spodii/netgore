@@ -347,10 +347,7 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         static void lblChangeLiveVersionHelp_Click(object sender, EventArgs e)
         {
-            const string msg = "This will set the live version to the next version, as long as the next version is available."
-                + " It is highly recommended you wait on updating the live version until all of your servers have been" +
-                " synchronized. That way, you can be sure people have access to the files that they need when they go to update.";
-            MessageBox.Show(msg, "Change live version", MessageBoxButtons.OK);
+            HelpHelper.DisplayHelp(HelpHelper.HelpChangeLiveVersion);
         }
 
         /// <summary>
@@ -360,11 +357,7 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         static void lblCreateNewVersionHelp_Click(object sender, EventArgs e)
         {
-            const string msg = "Creates the next version, which by default is always the version immediately after the live version."
-                + " If the next version already exists, this will overwrite it instead of creating another new version." +
-                " Once the new version is created, the servers will automatically start to synchronize with the new contents so that"
-                + " when you update the new version to the live version, all the files will be ready for download.";
-            MessageBox.Show(msg, "Create new version", MessageBoxButtons.OK);
+            HelpHelper.DisplayHelp(HelpHelper.HelpCreateNewVersion);
         }
 
         /// <summary>
@@ -374,9 +367,7 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         static void lblLiveVersionHelp_Click(object sender, EventArgs e)
         {
-            const string msg = "The live version is the current version that clients are updated to. It is usually either the latest version," +
-                " or the version immediately before the latest version.";
-            MessageBox.Show(msg, "Live version", MessageBoxButtons.OK);
+            HelpHelper.DisplayHelp(HelpHelper.HelpLiveVersion);
         }
 
         /// <summary>

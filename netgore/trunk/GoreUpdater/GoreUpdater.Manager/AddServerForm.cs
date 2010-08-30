@@ -154,10 +154,7 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         static void lblHostHelp_Click(object sender, EventArgs e)
         {
-            string msg = "The fully qualified address of the server, including the protocol and the sub-directory to use."
-                + " For example, for ftp:" + Environment.NewLine +
-                "   ftp://www.mydomain.com/subdirectory/";
-            MessageBox.Show(msg, "Host", MessageBoxButtons.OK);
+            HelpHelper.DisplayHelp(HelpHelper.HelpHost);
         }
 
         /// <summary>
@@ -167,8 +164,7 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         static void lblPasswordHelp_Click(object sender, EventArgs e)
         {
-            const string msg = "The password for the given user account.";
-            MessageBox.Show(msg, "Password", MessageBoxButtons.OK);
+            HelpHelper.DisplayHelp(HelpHelper.HelpAccountPassword);
         }
 
         /// <summary>
@@ -178,9 +174,7 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         static void lblTypeHelp_Click(object sender, EventArgs e)
         {
-            const string msg = "The method to use to communicate with the server. This is the method used by the update manager"
-                + " only, and does not affect the method used by the updater clients (the end user).";
-            MessageBox.Show(msg, "Updater type", MessageBoxButtons.OK);
+            HelpHelper.DisplayHelp(HelpHelper.HelpServerType);
         }
 
         /// <summary>
@@ -190,8 +184,7 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         static void lblUserHelp_Click(object sender, EventArgs e)
         {
-            const string msg = "The user account to use to connect to the server.";
-            MessageBox.Show(msg, "User", MessageBoxButtons.OK);
+            HelpHelper.DisplayHelp(HelpHelper.HelpAccountUser);
         }
     }
 }
