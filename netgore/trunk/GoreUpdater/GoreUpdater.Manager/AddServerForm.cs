@@ -34,6 +34,9 @@ namespace GoreUpdater.Manager
         {
             base.OnLoad(e);
 
+            if (DesignMode)
+                return;
+
             // Change the form text
             if (_isMasterServer)
                 Text = "Add master server";

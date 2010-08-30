@@ -27,6 +27,9 @@ namespace GoreUpdater.Manager
         {
             base.OnLoad(e);
 
+            if (DesignMode)
+                return;
+
             // Use the version immediately after the live version
             _version = ManagerSettings.Instance.LiveVersion + 1;
 

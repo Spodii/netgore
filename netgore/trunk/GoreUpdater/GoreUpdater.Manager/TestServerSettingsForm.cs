@@ -58,6 +58,9 @@ namespace GoreUpdater.Manager
         {
             base.OnClosing(e);
 
+            if (DesignMode)
+                return;
+
             try
             {
                 if (_workerThread != null && _workerThread.IsAlive)

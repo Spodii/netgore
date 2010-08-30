@@ -26,20 +26,20 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Handles the IsBusySyncingChanged event of a <see cref="FileServerInfo"/> instance.
+        /// Handles the ServerChanged event of a <see cref="FileServerInfo"/> instance.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        void FileServerInfo_IsBusySyncingChanged(ServerInfoBase sender)
+        void FileServerInfo_ServerChanged(ServerInfoBase sender)
         {
             // Refresh the display of the item in the ListBox
             lstFS.Invoke((Action)(() => lstFS.RefreshItem(sender)));
         }
 
         /// <summary>
-        /// Handles the IsBusySyncingChanged event of a <see cref="MasterServerInfo"/> instance.
+        /// Handles the ServerChanged event of a <see cref="MasterServerInfo"/> instance.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        void MasterServerInfo_IsBusySyncingChanged(ServerInfoBase sender)
+        void MasterServerInfo_ServerChanged(ServerInfoBase sender)
         {
             // Refresh the display of the item in the ListBox
             lstMS.Invoke((Action)(() => lstMS.RefreshItem(sender)));
@@ -53,6 +53,9 @@ namespace GoreUpdater.Manager
         {
             base.OnLoad(e);
 
+            if (DesignMode)
+                return;
+
             _settings.LiveVersionChanged += _settings_LiveVersionChanged;
             _settings.NextVersionCreated += _settings_NextVersionCreated;
             _settings.FileServerListChanged += _settings_FileServerListChanged;
@@ -61,8 +64,8 @@ namespace GoreUpdater.Manager
             btnChangeLiveVersion.Enabled = _settings.DoesNextVersionExist();
             lblLiveVersion.Text = _settings.LiveVersion.ToString();
 
-            UpdateServerListBox(lstFS, _settings.FileServers, FileServerInfo_IsBusySyncingChanged);
-            UpdateServerListBox(lstMS, _settings.MasterServers, MasterServerInfo_IsBusySyncingChanged);
+            UpdateServerListBox(lstFS, _settings.FileServers, FileServerInfo_ServerChanged);
+            UpdateServerListBox(lstMS, _settings.MasterServers, MasterServerInfo_ServerChanged);
         }
 
         /// <summary>
@@ -106,14 +109,14 @@ namespace GoreUpdater.Manager
                 // the event hook if it doesn't exist to begin with)
                 foreach (var s in lb.Items.OfType<ServerInfoBase>())
                 {
-                    s.IsBusySyncingChanged -= changedEventHandler;
+                    s.ServerChanged -= changedEventHandler;
                 }
 
                 // Add the update listener to all items (after double-checking that the event listener isn't attached)
                 foreach (var s in servers)
                 {
-                    s.IsBusySyncingChanged -= changedEventHandler;
-                    s.IsBusySyncingChanged += changedEventHandler;
+                    s.ServerChanged -= changedEventHandler;
+                    s.ServerChanged += changedEventHandler;
                 }
 
                 // Re-add all items
@@ -132,7 +135,7 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_FileServerListChanged(ManagerSettings sender)
         {
-            UpdateServerListBox(lstFS, sender.FileServers, FileServerInfo_IsBusySyncingChanged);
+            UpdateServerListBox(lstFS, sender.FileServers, FileServerInfo_ServerChanged);
         }
 
         /// <summary>
@@ -150,7 +153,7 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_MasterServerListChanged(ManagerSettings sender)
         {
-            UpdateServerListBox(lstMS, sender.MasterServers, MasterServerInfo_IsBusySyncingChanged);
+            UpdateServerListBox(lstMS, sender.MasterServers, MasterServerInfo_ServerChanged);
         }
 
         /// <summary>
@@ -257,7 +260,12 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnFSInfo_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            var server = lstFS.SelectedItem as FileServerInfo;
+            if (server == null)
+                return;
+
+            var frm = new ModifyServerForm(server);
+            frm.Show();
         }
 
         /// <summary>
@@ -303,7 +311,12 @@ namespace GoreUpdater.Manager
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnMSInfo_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            var server = lstMS.SelectedItem as MasterServerInfo;
+            if (server == null)
+                return;
+
+            var frm = new ModifyServerForm(server);
+            frm.Show();
         }
 
         /// <summary>

@@ -28,6 +28,13 @@ namespace GoreUpdater.Manager
         /// <param name="e">A <see cref="T:System.Windows.Forms.DrawItemEventArgs"/> that contains the event data.</param>
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
+            // When in design mode, don't do anything fancy
+            if (DesignMode)
+            {
+                base.OnDrawItem(e);
+                return;
+            }
+
             const int iconSize = 0;
 
             e.DrawBackground();
@@ -35,7 +42,10 @@ namespace GoreUpdater.Manager
             // Check for a valid index and ITestable item
             ServerInfoBase item;
             if (e.Index < 0 || e.Index >= Items.Count || ((item = (Items[e.Index] as ServerInfoBase)) == null))
+            {
+                base.OnDrawItem(e);
                 return;
+            }
 
             // Get the rectangle describing where to draw the text
             var textRect = new Rectangle(e.Bounds.X + iconSize, e.Bounds.Y, e.Bounds.Width - iconSize, e.Bounds.Height);
