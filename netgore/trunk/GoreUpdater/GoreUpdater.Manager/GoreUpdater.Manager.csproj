@@ -60,6 +60,11 @@
     </Compile>
     <Compile Include="HelpHelper.cs" />
     <Compile Include="HelpMessage.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ServerInfoListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -101,6 +106,10 @@
     <EmbeddedResource Include="NewVersionForm.resx">
       <DependentUpon>NewVersionForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestServerSettingsForm.resx">
       <DependentUpon>TestServerSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,6 +119,12 @@
       <Project>{9AED7C14-A737-4D19-A64B-69B401691862}</Project>
       <Name>GoreUpdater</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\busy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\done.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
