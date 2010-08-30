@@ -1183,7 +1183,8 @@ namespace GoreUpdater
         public bool TestConnection(object userState, out string error)
         {
             const string remoteTestFile = "___connection_test.tmp";
-            const string remoteTestDir = "/__connection_test/__test/__a/";
+            const string remoteTestDirRoot = "/__connection_test/";
+            const string remoteTestDir = remoteTestDirRoot + "/__connection_test/__test/__a/";
             const string remoteTestFileContents = "Test file. Please delete.";
 
             if (TestConnectionMessage != null)
@@ -1355,7 +1356,7 @@ namespace GoreUpdater
 
                 try
                 {
-                    FtpDeleteDir(remoteTestDir);
+                    FtpDeleteDir(remoteTestDirRoot);
                 }
                 catch (Exception ex)
                 {
