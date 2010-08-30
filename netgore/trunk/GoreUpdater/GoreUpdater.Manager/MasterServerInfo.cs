@@ -76,15 +76,14 @@ namespace GoreUpdater.Manager
             VersionFileList.CreateFromFile(vflPath);
 
             // Try to download the version's file list hash
-            var fileListHashPath = GetVersionRemoteFilePath(v, PathHelper.RemoteFileListHashFileName);
-            var vflHahs = fu.DownloadAsString(fileListHashPath);
+            var vflHash = fu.DownloadAsString(remoteFileListHashFilePath);
 
             // Check if the hash file exists on the server
-            if (vflHahs != null)
+            if (vflHash != null)
             {
                 // Check if the hash matches the current version's hash
                 var expectedVflHash = File.ReadAllText(VersionHelper.GetVersionFileListHashPath(v));
-                if (vflHahs != expectedVflHash)
+                if (vflHash != expectedVflHash)
                 {
                     // We don't need to delete anything since we make the MasterServer overwrite instead
                 }
