@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater.Manager
+﻿using System.Linq;
+
+namespace GoreUpdater.Manager
 {
     /// <summary>
     /// Describes the title and message body of a help message.
@@ -22,11 +24,17 @@
         /// <summary>
         /// Gets the help message body.
         /// </summary>
-        public string Message { get { return _message; } }
+        public string Message
+        {
+            get { return _message; }
+        }
 
         /// <summary>
         /// Gets the help title.
         /// </summary>
-        public string Title { get { return _title; } }
+        public string Title
+        {
+            get { return _title; }
+        }
     }
 }
