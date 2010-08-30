@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Forms;
+using GoreUpdater.Manager.Properties;
 
 namespace GoreUpdater.Manager
 {
@@ -35,7 +36,7 @@ namespace GoreUpdater.Manager
                 return;
             }
 
-            const int iconSize = 0;
+            const int iconSize = 10;
 
             e.DrawBackground();
 
@@ -55,35 +56,21 @@ namespace GoreUpdater.Manager
             e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
             // Draw the text
-            var displayText = item.Host;
-            if (item.IsBusySyncing)
-                displayText += " [Syncing]";
-
-            e.Graphics.DrawString(displayText, e.Font, Brushes.Black, textRect);
+            e.Graphics.DrawString(item.Host, e.Font, Brushes.Black, textRect);
 
             // Draw the focus rectangle
             e.DrawFocusRectangle();
 
             // Get what status icon to draw based on the last status of the test
-            // TODO: Create status icon display
-            /*
             Image drawImage;
-            switch (item.LastRunStatus)
-            {
-                case TestStatus.Failed:
-                    drawImage = Resources.fail;
-                    break;
-                case TestStatus.Passed:
-                    drawImage = Resources.pass;
-                    break;
-                default:
-                    drawImage = Resources.idle;
-                    break;
-            }
-
+            if (item.IsBusySyncing)
+                drawImage = Resources.busy;
+            else
+                drawImage = Resources.done;
+            
             // Draw the stauts icon
-            e.Graphics.DrawImage(drawImage, new Point(e.Bounds.X, e.Bounds.Y));
-            */
+            if (drawImage != null)
+                e.Graphics.DrawImage(drawImage, new Point(e.Bounds.X, e.Bounds.Y));
         }
 
         /// <summary>
