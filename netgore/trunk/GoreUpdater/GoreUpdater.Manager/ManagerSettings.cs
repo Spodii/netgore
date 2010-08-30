@@ -348,9 +348,10 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Saves the settings to file.
+        /// Saves the settings to file. This method is invoked automatically internally when changes are detected, but can be called
+        /// externally to ensure that changes are saved properly.
         /// </summary>
-        void Save()
+        public void Save()
         {
             lock (_saveSync)
             {

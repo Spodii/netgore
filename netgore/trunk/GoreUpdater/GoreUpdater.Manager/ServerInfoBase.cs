@@ -22,6 +22,7 @@ namespace GoreUpdater.Manager
         const int _workerThreadNoJobTimeout = 1000;
 
         protected static readonly ManagerSettings _settings = ManagerSettings.Instance;
+
         readonly object _infoSync = new object();
         readonly object _syncVersionSync = new object();
 
@@ -182,6 +183,9 @@ namespace GoreUpdater.Manager
                 _user = newUser;
                 _password = newPassword;
                 _fileUploaderType = newType;
+
+                // Force saving
+                _settings.Save();
 
                 // Recreate the uploader
                 RecreateFileUploader();
