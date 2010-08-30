@@ -101,7 +101,7 @@
             this.lblChangeLiveVersionHelp.Size = new System.Drawing.Size(13, 13);
             this.lblChangeLiveVersionHelp.TabIndex = 7;
             this.lblChangeLiveVersionHelp.Text = "?";
-            this.lblChangeLiveVersionHelp.Click += new System.EventHandler(this.lblChangeLiveVersionHelp_Click);
+            this.lblChangeLiveVersionHelp.Click += new System.EventHandler(lblChangeLiveVersionHelp_Click);
             // 
             // btnChangeLiveVersion
             // 
@@ -111,7 +111,7 @@
             this.btnChangeLiveVersion.TabIndex = 6;
             this.btnChangeLiveVersion.Text = "Change Live Version";
             this.btnChangeLiveVersion.UseVisualStyleBackColor = true;
-            this.btnChangeLiveVersion.Click += new System.EventHandler(this.btnChangeLiveVersion_Click);
+            this.btnChangeLiveVersion.Click += new System.EventHandler(btnChangeLiveVersion_Click);
             // 
             // lblLiveVersion
             // 
@@ -131,7 +131,7 @@
             this.lblCreateNewVersionHelp.Size = new System.Drawing.Size(13, 13);
             this.lblCreateNewVersionHelp.TabIndex = 4;
             this.lblCreateNewVersionHelp.Text = "?";
-            this.lblCreateNewVersionHelp.Click += new System.EventHandler(this.lblCreateNewVersionHelp_Click);
+            this.lblCreateNewVersionHelp.Click += new System.EventHandler(lblCreateNewVersionHelp_Click);
             // 
             // btnNewVersion
             // 
@@ -152,7 +152,7 @@
             this.lblLiveVersionHelp.Size = new System.Drawing.Size(13, 13);
             this.lblLiveVersionHelp.TabIndex = 2;
             this.lblLiveVersionHelp.Text = "?";
-            this.lblLiveVersionHelp.Click += new System.EventHandler(this.lblLiveVersionHelp_Click);
+            this.lblLiveVersionHelp.Click += new System.EventHandler(lblLiveVersionHelp_Click);
             // 
             // label1
             // 
