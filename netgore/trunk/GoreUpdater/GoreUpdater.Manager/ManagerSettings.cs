@@ -432,6 +432,7 @@ namespace GoreUpdater.Manager
         /// <returns>True if the live version was successfully changed; otherwise false.</returns>
         public bool TrySetLiveVersion(int newVersion, bool showMessageBox = true)
         {
+            // Check for a valid new version number
             if (newVersion < LiveVersion)
             {
                 if (showMessageBox)
@@ -442,14 +443,24 @@ namespace GoreUpdater.Manager
             if (newVersion == LiveVersion)
                 return false;
 
-            // TODO: Make sure the version exists
+            // Make sure the version exists
+            var newVersionPath = VersionHelper.GetVersionFileListPath(newVersion);
+            if (!File.Exists(newVersionPath))
+            {
+                if (showMessageBox)
+                    MessageBox.Show("Cannot set the live version to the specified new version since that version does not exist!");
+                return false;
+            }
 
+            // Set the new live version
             _liveVersion = newVersion;
 
             UpdateLiveVersionFile();
 
+            // Save
             Save();
 
+            // Raise event
             if (LiveVersionChanged != null)
                 LiveVersionChanged(this);
 
