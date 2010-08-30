@@ -78,10 +78,8 @@ namespace GoreUpdater.Manager
         void btnCreate_Click(object sender, EventArgs e)
         {
             // Confirm
-            const string confirmMsg =
-                "Are you sure you with to modify this server with the new values?";
-            if (MessageBox.Show(confirmMsg, "Modify server?", MessageBoxButtons.YesNo) ==
-                DialogResult.No)
+            const string confirmMsg = "Are you sure you with to modify this server with the new values?";
+            if (MessageBox.Show(confirmMsg, "Modify server?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             try
