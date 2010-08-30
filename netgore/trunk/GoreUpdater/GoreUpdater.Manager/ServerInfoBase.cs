@@ -40,6 +40,8 @@ namespace GoreUpdater.Manager
         bool _isDisposed = false;
         string _password;
         string _user;
+        DownloadSourceType _fileDownloaderType;
+        string _downloadHost;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerInfoBase"/> class.
@@ -48,12 +50,18 @@ namespace GoreUpdater.Manager
         /// <param name="host">The host address.</param>
         /// <param name="user">The user.</param>
         /// <param name="password">The password.</param>
-        protected ServerInfoBase(FileUploaderType type, string host, string user, string password)
+        /// <param name="downloadType">The type of file downloader to use.</param>
+        /// <param name="downloadHost">The download host.</param>
+        protected ServerInfoBase(FileUploaderType type, string host, string user, string password,
+            DownloadSourceType downloadType,
+            string downloadHost)
         {
             _fileUploaderType = type;
             _host = host;
             _user = user;
             _password = password;
+            _fileDownloaderType = downloadType;
+            _downloadHost = downloadHost;
 
             // Listen for when any versions change
             _settings.LiveVersionChanged += _settings_LiveVersionChanged;
@@ -92,6 +100,22 @@ namespace GoreUpdater.Manager
         public FileUploaderType FileUploaderType
         {
             get { return _fileUploaderType; }
+        }
+
+        /// <summary>
+        /// Gets the type of <see cref="IDownloadSource"/> to use.
+        /// </summary>
+        public DownloadSourceType DownloadSourceType
+        {
+            get { return _fileDownloaderType; }
+        }
+
+        /// <summary>
+        /// Gets the host to use to download.
+        /// </summary>
+        public string DownloadHost
+        {
+            get { return _downloadHost; }
         }
 
         /// <summary>
@@ -157,10 +181,16 @@ namespace GoreUpdater.Manager
         /// <param name="newUser">The new user.</param>
         /// <param name="newPassword">The new password.</param>
         /// <param name="newType">The new type of <see cref="IFileUploader"/>.</param>
+        /// <param name="newDownloadType">The new type of <see cref="IDownloadSource"/>.</param>
+        /// <param name="newDownloadHost">The new download host.</param>
         /// <exception cref="ArgumentNullException"><paramref name="newHost"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="newUser"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="newPassword"/> is null.</exception>
-        public void ChangeInfo(string newHost, string newUser, string newPassword, FileUploaderType newType)
+        /// <exception cref="ArgumentNullException"><paramref name="newDownloadHost"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="newType"/> is not a valid enum value.</exception>
+        /// <exception cref="ArgumentException"><paramref name="newDownloadType"/> is not a valid enum value.</exception>
+        public void ChangeInfo(string newHost, string newUser, string newPassword, FileUploaderType newType,
+            DownloadSourceType newDownloadType, string newDownloadHost)
         {
             if (newHost == null)
                 throw new ArgumentNullException("newHost");
@@ -168,6 +198,13 @@ namespace GoreUpdater.Manager
                 throw new ArgumentNullException("newUser");
             if (newPassword == null)
                 throw new ArgumentNullException("newPassword");
+            if (newDownloadHost == null)
+                throw new ArgumentNullException("newDownloadHost");
+
+            if (!Enum.IsDefined(typeof(FileUploaderType), newType))
+                throw new ArgumentException("Invalid FileUploaderType value: " + newType, "newType");
+            if (!Enum.IsDefined(typeof(DownloadSourceType), newDownloadType))
+                throw new ArgumentException("Invalid DownloadSourceType value: " + newDownloadType, "newDownloadType");
 
             lock (_infoSync)
             {
@@ -175,7 +212,7 @@ namespace GoreUpdater.Manager
                 var sc = StringComparer.Ordinal;
 
                 if (sc.Equals(newHost, Host) && sc.Equals(newUser, User) && sc.Equals(newPassword, Password) &&
-                    newType == FileUploaderType)
+                    newType == FileUploaderType && newDownloadType == DownloadSourceType && sc.Equals(newDownloadHost, DownloadHost))
                     return;
 
                 // Set the new values
@@ -183,6 +220,8 @@ namespace GoreUpdater.Manager
                 _user = newUser;
                 _password = newPassword;
                 _fileUploaderType = newType;
+                _downloadHost = newDownloadHost;
+                _fileDownloaderType = newDownloadType;
 
                 // Force saving
                 _settings.Save();
@@ -237,7 +276,7 @@ namespace GoreUpdater.Manager
         /// Enqueues a version to be checked if synchronized
         /// </summary>
         /// <param name="version">The version to synchronize.</param>
-        void EnqueueSyncVersion(int version)
+        protected void EnqueueSyncVersion(int version)
         {
             if (version <= 0)
                 return;
@@ -257,8 +296,8 @@ namespace GoreUpdater.Manager
         {
             lock (_infoSync)
             {
-                return FileUploaderType + CreationStringDelimiter + Host + CreationStringDelimiter + User +
-                       CreationStringDelimiter + Password;
+                return string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}",
+                    CreationStringDelimiter, FileUploaderType, Host, User, Password, DownloadSourceType, DownloadHost);
             }
         }
 

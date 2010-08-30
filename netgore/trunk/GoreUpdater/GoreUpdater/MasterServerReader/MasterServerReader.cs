@@ -14,6 +14,7 @@ namespace GoreUpdater
     public class MasterServerReader : IMasterServerReader
     {
         static readonly object _ioSync = new object();
+
         readonly string _localDownloadSourceListPath;
         readonly string _localMasterServerListPath;
 
@@ -33,7 +34,7 @@ namespace GoreUpdater
         /// </summary>
         public static string CurrentDownloadSourcesFilePath
         {
-            get { return "current.sourcelist"; }
+            get { return "file_servers"; }
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace GoreUpdater
         /// </summary>
         public static string CurrentMasterServersFilePath
         {
-            get { return "current.masterlist"; }
+            get { return "master_servers"; }
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace GoreUpdater
         /// </summary>
         public static string CurrentVersionFilePath
         {
-            get { return "current.version"; }
+            get { return "live_version"; }
         }
 
         /// <summary>
