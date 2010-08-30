@@ -152,9 +152,12 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lblHostHelp_Click(object sender, EventArgs e)
+        static void lblHostHelp_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            string msg = "The fully qualified address of the server, including the protocol and the sub-directory to use."
+                + " For example, for ftp:" + Environment.NewLine +
+                "   ftp://www.mydomain.com/subdirectory/";
+            MessageBox.Show(msg, "Host", MessageBoxButtons.OK);
         }
 
         /// <summary>
@@ -162,9 +165,10 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lblPasswordHelp_Click(object sender, EventArgs e)
+        static void lblPasswordHelp_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            const string msg = "The password for the given user account.";
+            MessageBox.Show(msg, "Password", MessageBoxButtons.OK);
         }
 
         /// <summary>
@@ -172,9 +176,11 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lblTypeHelp_Click(object sender, EventArgs e)
+        static void lblTypeHelp_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            const string msg = "The method to use to communicate with the server. This is the method used by the update manager"
+                + " only, and does not affect the method used by the updater clients (the end user).";
+            MessageBox.Show(msg, "Updater type", MessageBoxButtons.OK);
         }
 
         /// <summary>
@@ -182,9 +188,10 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lblUserHelp_Click(object sender, EventArgs e)
+        static void lblUserHelp_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            const string msg = "The user account to use to connect to the server.";
+            MessageBox.Show(msg, "User", MessageBoxButtons.OK);
         }
     }
 }

@@ -149,7 +149,7 @@
             this.lblTypeHelp.Size = new System.Drawing.Size(13, 13);
             this.lblTypeHelp.TabIndex = 11;
             this.lblTypeHelp.Text = "?";
-            this.lblTypeHelp.Click += new System.EventHandler(this.lblTypeHelp_Click);
+            this.lblTypeHelp.Click += new System.EventHandler(lblTypeHelp_Click);
             // 
             // lblHostHelp
             // 
@@ -160,7 +160,7 @@
             this.lblHostHelp.Size = new System.Drawing.Size(13, 13);
             this.lblHostHelp.TabIndex = 12;
             this.lblHostHelp.Text = "?";
-            this.lblHostHelp.Click += new System.EventHandler(this.lblHostHelp_Click);
+            this.lblHostHelp.Click += new System.EventHandler(lblHostHelp_Click);
             // 
             // lblUserHelp
             // 
@@ -171,7 +171,7 @@
             this.lblUserHelp.Size = new System.Drawing.Size(13, 13);
             this.lblUserHelp.TabIndex = 13;
             this.lblUserHelp.Text = "?";
-            this.lblUserHelp.Click += new System.EventHandler(this.lblUserHelp_Click);
+            this.lblUserHelp.Click += new System.EventHandler(lblUserHelp_Click);
             // 
             // lblPasswordHelp
             // 
@@ -182,7 +182,7 @@
             this.lblPasswordHelp.Size = new System.Drawing.Size(13, 13);
             this.lblPasswordHelp.TabIndex = 14;
             this.lblPasswordHelp.Text = "?";
-            this.lblPasswordHelp.Click += new System.EventHandler(this.lblPasswordHelp_Click);
+            this.lblPasswordHelp.Click += new System.EventHandler(lblPasswordHelp_Click);
             // 
             // AddServerForm
             // 
