@@ -72,14 +72,14 @@ namespace GoreUpdater.Manager
 
             // Try to download the version's file list hash
             var fileListHashPath = GetVersionRemoteFilePath(v, PathHelper.RemoteFileListHashFileName);
-            var vflHahs = fu.DownloadAsString(fileListHashPath);
+            var vflHash = fu.DownloadAsString(fileListHashPath);
 
             // Check if the hash file exists on the server
-            if (vflHahs != null)
+            if (vflHash != null)
             {
                 // Check if the hash matches the current version's hash
                 var expectedVflHash = File.ReadAllText(VersionHelper.GetVersionFileListHashPath(v));
-                if (vflHahs != expectedVflHash)
+                if (vflHash != expectedVflHash)
                 {
                     // Delete the whole version folder first
                     fu.DeleteDirectory(GetVersionRemoteFilePath(v, null));
@@ -131,8 +131,7 @@ namespace GoreUpdater.Manager
             }
 
             // All uploads have finished, so upload the VersionFileList hash
-            var vflHashRemoteFilePath = GetVersionRemoteFilePath(v, PathHelper.RemoteFileListHashFileName);
-            fu.UploadAsync(vflPath, vflHashRemoteFilePath);
+            fu.UploadAsync(VersionHelper.GetVersionFileListHashPath(v), fileListHashPath);
 
             // All done! That was easy enough, eh? *sigh*
             return null;
