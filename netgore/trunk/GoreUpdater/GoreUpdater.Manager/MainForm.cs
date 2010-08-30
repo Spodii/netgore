@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-// TODO: Display the list of file servers on the GUI + be able to edit the entries
-// TODO: Create the master server logic
 // TODO: Start work on the client
 
 // TODO: [LATER] Add the logging framework and make use of it
