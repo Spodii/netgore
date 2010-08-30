@@ -25,13 +25,23 @@ namespace GoreUpdater.Manager
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Handles the IsBusySyncingChanged event of a <see cref="FileServerInfo"/> instance.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
         void FileServerInfo_IsBusySyncingChanged(ServerInfoBase sender)
         {
+            // Refresh the display of the item in the ListBox
             lstFS.Invoke((Action)(() => lstFS.RefreshItem(sender)));
         }
 
+        /// <summary>
+        /// Handles the IsBusySyncingChanged event of a <see cref="MasterServerInfo"/> instance.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
         void MasterServerInfo_IsBusySyncingChanged(ServerInfoBase sender)
         {
+            // Refresh the display of the item in the ListBox
             lstMS.Invoke((Action)(() => lstMS.RefreshItem(sender)));
         }
 
