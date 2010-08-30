@@ -8,6 +8,7 @@ namespace GoreUpdater.Manager
     public partial class ModifyServerForm : Form
     {
         static readonly object[] _fileUploaderTypes = Enum.GetValues(typeof(FileUploaderType)).OfType<object>().ToArray();
+        static readonly object[] _fileDownloaderTypes = Enum.GetValues(typeof(DownloadSourceType)).OfType<object>().ToArray();
 
         /// <summary>
         /// The server being modified.
@@ -88,6 +89,22 @@ namespace GoreUpdater.Manager
                 var host = txtHost.Text;
                 var user = txtUser.Text;
                 var pass = txtPassword.Text;
+                var downloadType = (DownloadSourceType)cmbDownloadType.SelectedItem;
+                var downloadHost = txtDownloadHost.Text;
+
+                if (string.IsNullOrEmpty(host))
+                {
+                    MessageBox.Show("Please enter a valid host.", "Invalid value", MessageBoxButtons.OK);
+                    txtHost.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(downloadHost))
+                {
+                    MessageBox.Show("Please enter a valid download host.", "Invalid value", MessageBoxButtons.OK);
+                    txtDownloadHost.Focus();
+                    return;
+                }
 
                 if (!Enum.IsDefined(typeof(FileUploaderType), type))
                 {
@@ -97,8 +114,16 @@ namespace GoreUpdater.Manager
                     throw new InvalidEnumArgumentException(string.Format(errmsg, type));
                 }
 
+                if (!Enum.IsDefined(typeof(DownloadSourceType), downloadType))
+                {
+                    const string errmsg =
+                        "Invalid DownloadSourceType type ({0}) supplied - not a known enum value. Please select a valid type.";
+                    cmbDownloadType.SelectedIndex = 0;
+                    throw new InvalidEnumArgumentException(string.Format(errmsg, downloadType));
+                }
+
                 // Update
-                _server.ChangeInfo(host, user, pass, type);
+                _server.ChangeInfo(host, user, pass, type, downloadType, downloadHost);
             }
             catch (Exception ex)
             {
@@ -180,6 +205,26 @@ namespace GoreUpdater.Manager
         static void lblUserHelp_Click(object sender, EventArgs e)
         {
             HelpHelper.DisplayHelp(HelpHelper.HelpAccountUser);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblDownloadTypeHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lblDownloadTypeHelp_Click(object sender, EventArgs e)
+        {
+            // TODO:
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblDownloadHostHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lblDownloadHostHelp_Click(object sender, EventArgs e)
+        {
+            // TODO:
         }
     }
 }

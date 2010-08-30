@@ -23,7 +23,11 @@ namespace GoreUpdater.Manager
         /// <param name="host">The host address.</param>
         /// <param name="user">The user.</param>
         /// <param name="password">The password.</param>
-        public FileServerInfo(FileUploaderType type, string host, string user, string password) : base(type, host, user, password)
+        /// <param name="downloadType">The type of file downloader to use.</param>
+        /// <param name="downloadHost">The download host.</param>
+        public FileServerInfo(FileUploaderType type, string host, string user, string password, DownloadSourceType downloadType,
+            string downloadHost)
+            : base(type, host, user, password, downloadType, downloadHost)
         {
         }
 
@@ -35,15 +39,17 @@ namespace GoreUpdater.Manager
         public static FileServerInfo Create(string creationString)
         {
             var s = creationString.Split(new string[] { CreationStringDelimiter }, StringSplitOptions.None);
-            if (s.Length != 4)
+            if (s.Length != 6)
                 throw new ArgumentException("Invalid creation string - incorrect number of arguments provided.");
 
             var type = (FileUploaderType)Enum.Parse(typeof(FileUploaderType), s[0]);
             var host = s[1];
             var user = s[2];
             var password = s[3];
+            var downloadType = (DownloadSourceType)Enum.Parse(typeof(DownloadSourceType), s[4]);
+            var downloadHost = s[5];
 
-            return new FileServerInfo(type, host, user, password);
+            return new FileServerInfo(type, host, user, password, downloadType, downloadHost);
         }
 
         /// <summary>

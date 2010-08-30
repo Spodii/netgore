@@ -29,10 +29,11 @@ namespace GoreUpdater.Manager
         static readonly ManagerSettings _instance;
 
         readonly string _filePath;
+        readonly string _fileServerListFilePath;
         readonly List<FileServerInfo> _fileServers = new List<FileServerInfo>();
         readonly object _fileServersSync = new object();
         readonly string _liveVersionFilePath;
-        readonly string _serverListFilePath;
+        readonly string _masterServerListFilePath;
         readonly List<MasterServerInfo> _masterServers = new List<MasterServerInfo>();
         readonly object _masterServersSync = new object();
         readonly object _saveSync = new object();
@@ -56,8 +57,13 @@ namespace GoreUpdater.Manager
         /// <param name="filePath">The settings file path.</param>
         ManagerSettings(string filePath)
         {
-            _liveVersionFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath, "liveversion");
-            _serverListFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath, "serverlist");
+            _liveVersionFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath,
+                                                                    MasterServerReader.CurrentVersionFilePath);
+            _masterServerListFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath,
+                                                                         MasterServerReader.CurrentMasterServersFilePath);
+            _fileServerListFilePath = PathHelper.CombineDifferentPaths(Application.StartupPath,
+                                                                       MasterServerReader.CurrentDownloadSourcesFilePath);
+
             _filePath = filePath;
         }
 
@@ -70,12 +76,6 @@ namespace GoreUpdater.Manager
         /// Notifies listeners when the live version has changed.
         /// </summary>
         public event ManagerSettingsEventHandler LiveVersionChanged;
-
-        /// <summary>
-        /// Notifies listeners when the server list has changed. This is raised when any server list has changed, such as the
-        /// master server list and the file server list.
-        /// </summary>
-        public event ManagerSettingsEventHandler ServerListChanged;
 
         /// <summary>
         /// Notifies listeners when a master server has been added or removed from the list.
@@ -93,6 +93,14 @@ namespace GoreUpdater.Manager
         public string FilePath
         {
             get { return _filePath; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the file server listing file.
+        /// </summary>
+        public string FileServerListFilePath
+        {
+            get { return _fileServerListFilePath; }
         }
 
         /// <summary>
@@ -140,12 +148,11 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Gets the file path to the server listing file. This file contains a list of the valid master and file servers
-        /// available.
+        /// Gets the file path to the master server listing file.
         /// </summary>
-        public string ServerListFilePath
+        public string MasterServerListFilePath
         {
-            get { return _serverListFilePath; }
+            get { return _masterServerListFilePath; }
         }
 
         /// <summary>
@@ -178,13 +185,10 @@ namespace GoreUpdater.Manager
             }
 
             Save();
-            UpdateServerListFile();
+            UpdateFileServerListFile();
 
             if (FileServerListChanged != null)
                 FileServerListChanged(this);
-
-            if (ServerListChanged != null)
-                ServerListChanged(this);
 
             return true;
         }
@@ -205,13 +209,10 @@ namespace GoreUpdater.Manager
             }
 
             Save();
-            UpdateServerListFile();
+            UpdateMasterServerListFile();
 
             if (MasterServerListChanged != null)
                 MasterServerListChanged(this);
-
-            if (ServerListChanged != null)
-                ServerListChanged(this);
 
             return true;
         }
@@ -225,6 +226,28 @@ namespace GoreUpdater.Manager
         static void AddSetting(StringBuilder sb, string key, string value)
         {
             sb.AppendLine(key + _headerDelimiter + value);
+        }
+
+        /// <summary>
+        /// Builds the text for the server list file.
+        /// </summary>
+        /// <param name="servers">The servers.</param>
+        /// <param name="serversSync">The servers sync object.</param>
+        /// <returns>The text for the server list file.</returns>
+        static string BuildServerListFileText(IEnumerable<ServerInfoBase> servers, object serversSync)
+        {
+            var sb = new StringBuilder();
+
+            lock (serversSync)
+            {
+                foreach (var s in servers)
+                {
+                    var str = DownloadSourceDescriptor.GetDescriptorString(s.DownloadSourceType, s.DownloadHost);
+                    sb.AppendLine(str);
+                }
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -328,7 +351,8 @@ namespace GoreUpdater.Manager
             }
 
             // Update the info files
-            UpdateServerListFile();
+            UpdateMasterServerListFile();
+            UpdateFileServerListFile();
             UpdateLiveVersionFile();
         }
 
@@ -348,13 +372,10 @@ namespace GoreUpdater.Manager
             if (removed)
             {
                 Save();
-                UpdateServerListFile();
+                UpdateFileServerListFile();
 
                 if (FileServerListChanged != null)
                     FileServerListChanged(this);
-
-                if (ServerListChanged != null)
-                    ServerListChanged(this);
             }
 
             return removed;
@@ -376,13 +397,10 @@ namespace GoreUpdater.Manager
             if (removed)
             {
                 Save();
-                UpdateServerListFile();
+                UpdateMasterServerListFile();
 
                 if (MasterServerListChanged != null)
                     MasterServerListChanged(this);
-
-                if (ServerListChanged != null)
-                    ServerListChanged(this);
             }
 
             return removed;
@@ -509,18 +527,20 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Updates the server list file.
+        /// Updates the file server list file.
         /// </summary>
-        void UpdateServerListFile()
+        void UpdateFileServerListFile()
         {
-            var tmpPath = ServerListFilePath + ".tmp";
+            var p = FileServerListFilePath;
+            var tmpPath = p + ".tmp";
 
             if (File.Exists(tmpPath))
                 File.Delete(tmpPath);
 
-            File.WriteAllText(tmpPath, LiveVersion.ToString());
+            var data = BuildServerListFileText(_fileServers, _fileServersSync);
+            File.WriteAllText(tmpPath, data);
 
-            File.Copy(tmpPath, _liveVersionFilePath, true);
+            File.Copy(tmpPath, p, true);
 
             if (File.Exists(tmpPath))
                 File.Delete(tmpPath);
@@ -531,14 +551,35 @@ namespace GoreUpdater.Manager
         /// </summary>
         void UpdateLiveVersionFile()
         {
-            var tmpPath = LiveVersionFilePath + ".tmp";
+            var p = LiveVersionFilePath;
+            var tmpPath = p + ".tmp";
 
             if (File.Exists(tmpPath))
                 File.Delete(tmpPath);
 
             File.WriteAllText(tmpPath, LiveVersion.ToString());
 
-            File.Copy(tmpPath, _liveVersionFilePath, true);
+            File.Copy(tmpPath, p, true);
+
+            if (File.Exists(tmpPath))
+                File.Delete(tmpPath);
+        }
+
+        /// <summary>
+        /// Updates the master server list file.
+        /// </summary>
+        void UpdateMasterServerListFile()
+        {
+            var p = MasterServerListFilePath;
+            var tmpPath = p + ".tmp";
+
+            if (File.Exists(tmpPath))
+                File.Delete(tmpPath);
+
+            var data = BuildServerListFileText(_masterServers, _masterServersSync);
+            File.WriteAllText(tmpPath, data);
+
+            File.Copy(tmpPath, p, true);
 
             if (File.Exists(tmpPath))
                 File.Delete(tmpPath);

@@ -17,9 +17,35 @@ namespace GoreUpdater.Manager
         /// <param name="host">The host address.</param>
         /// <param name="user">The user.</param>
         /// <param name="password">The password.</param>
-        public MasterServerInfo(FileUploaderType type, string host, string user, string password)
-            : base(type, host, user, password)
+        /// <param name="downloadType">The type of file downloader to use.</param>
+        /// <param name="downloadHost">The download host.</param>
+        public MasterServerInfo(FileUploaderType type, string host, string user, string password, DownloadSourceType downloadType,
+            string downloadHost)
+            : base(type, host, user, password, downloadType, downloadHost)
         {
+            // For the master server, we also want to update whenever the list of servers changes
+            _settings.FileServerListChanged += _settings_FileServerListChanged;
+            _settings.MasterServerListChanged += _settings_MasterServerListChanged;
+        }
+
+        /// <summary>
+        /// Handles when the master server list has changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void _settings_MasterServerListChanged(ManagerSettings sender)
+        {
+            // Just sync the latest version, which will force the server list to update
+            EnqueueSyncVersion(sender.LiveVersion);
+        }
+
+        /// <summary>
+        /// Handles when the file server list has changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void _settings_FileServerListChanged(ManagerSettings sender)
+        {
+            // Just sync the latest version, which will force the server list to update
+            EnqueueSyncVersion(sender.LiveVersion);
         }
 
         /// <summary>
@@ -30,15 +56,17 @@ namespace GoreUpdater.Manager
         public static MasterServerInfo Create(string creationString)
         {
             var s = creationString.Split(new string[] { CreationStringDelimiter }, StringSplitOptions.None);
-            if (s.Length != 4)
+            if (s.Length != 6)
                 throw new ArgumentException("Invalid creation string - incorrect number of arguments provided.");
 
             var type = (FileUploaderType)Enum.Parse(typeof(FileUploaderType), s[0]);
             var host = s[1];
             var user = s[2];
             var password = s[3];
+            var downloadType = (DownloadSourceType)Enum.Parse(typeof(DownloadSourceType), s[4]);
+            var downloadHost = s[5];
 
-            return new MasterServerInfo(type, host, user, password);
+            return new MasterServerInfo(type, host, user, password, downloadType, downloadHost);
         }
 
         #region Overrides of ServerInfoBase
@@ -62,7 +90,12 @@ namespace GoreUpdater.Manager
 
             // Ensure the live version is written. This is a very small but very important file, so just write it during
             // every synchronization.
-            fu.UploadAsync(_settings.LiveVersionFilePath, "live_version");
+            fu.UploadAsync(_settings.LiveVersionFilePath, MasterServerReader.CurrentVersionFilePath);
+
+            // Also ensure the master server and file server lists are up-to-date. Again, we will just do this every time we
+            // check to sync since they are relatively small lists but very important to keep up-to-date.
+            fu.UploadAsync(_settings.FileServerListFilePath, MasterServerReader.CurrentDownloadSourcesFilePath);
+            fu.UploadAsync(_settings.MasterServerListFilePath, MasterServerReader.CurrentMasterServersFilePath);
 
             // Load the VersionFileList for the version to check
             var vflPath = VersionHelper.GetVersionFileListPath(v);

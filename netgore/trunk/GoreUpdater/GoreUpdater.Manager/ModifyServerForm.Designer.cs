@@ -43,6 +43,12 @@
             this.lblHostHelp = new System.Windows.Forms.Label();
             this.lblUserHelp = new System.Windows.Forms.Label();
             this.lblPasswordHelp = new System.Windows.Forms.Label();
+            this.lblDownloadHostHelp = new System.Windows.Forms.Label();
+            this.lblDownloadTypeHelp = new System.Windows.Forms.Label();
+            this.cmbDownloadType = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtDownloadHost = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -112,7 +118,7 @@
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(100, 117);
+            this.btnTest.Location = new System.Drawing.Point(100, 177);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(64, 23);
             this.btnTest.TabIndex = 8;
@@ -122,7 +128,7 @@
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(170, 117);
+            this.btnCreate.Location = new System.Drawing.Point(170, 177);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(64, 23);
             this.btnCreate.TabIndex = 9;
@@ -132,7 +138,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(30, 117);
+            this.btnCancel.Location = new System.Drawing.Point(30, 177);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(64, 23);
             this.btnCancel.TabIndex = 10;
@@ -184,11 +190,72 @@
             this.lblPasswordHelp.Text = "?";
             this.lblPasswordHelp.Click += new System.EventHandler(lblPasswordHelp_Click);
             // 
+            // lblDownloadHostHelp
+            // 
+            this.lblDownloadHostHelp.AutoSize = true;
+            this.lblDownloadHostHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblDownloadHostHelp.Location = new System.Drawing.Point(240, 155);
+            this.lblDownloadHostHelp.Name = "lblDownloadHostHelp";
+            this.lblDownloadHostHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblDownloadHostHelp.TabIndex = 26;
+            this.lblDownloadHostHelp.Text = "?";
+            this.lblDownloadHostHelp.Click += new System.EventHandler(this.lblDownloadHostHelp_Click);
+            // 
+            // lblDownloadTypeHelp
+            // 
+            this.lblDownloadTypeHelp.AutoSize = true;
+            this.lblDownloadTypeHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblDownloadTypeHelp.Location = new System.Drawing.Point(240, 127);
+            this.lblDownloadTypeHelp.Name = "lblDownloadTypeHelp";
+            this.lblDownloadTypeHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblDownloadTypeHelp.TabIndex = 25;
+            this.lblDownloadTypeHelp.Text = "?";
+            this.lblDownloadTypeHelp.Click += new System.EventHandler(this.lblDownloadTypeHelp_Click);
+            // 
+            // cmbDownloadType
+            // 
+            this.cmbDownloadType.FormattingEnabled = true;
+            this.cmbDownloadType.Location = new System.Drawing.Point(101, 125);
+            this.cmbDownloadType.Name = "cmbDownloadType";
+            this.cmbDownloadType.Size = new System.Drawing.Size(133, 21);
+            this.cmbDownloadType.TabIndex = 24;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 128);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(81, 13);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "Download type:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 155);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(83, 13);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "Download Host:";
+            // 
+            // txtDownloadHost
+            // 
+            this.txtDownloadHost.Location = new System.Drawing.Point(101, 152);
+            this.txtDownloadHost.Name = "txtDownloadHost";
+            this.txtDownloadHost.Size = new System.Drawing.Size(133, 20);
+            this.txtDownloadHost.TabIndex = 21;
+            // 
             // ModifyServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(262, 153);
+            this.ClientSize = new System.Drawing.Size(262, 212);
+            this.Controls.Add(this.lblDownloadHostHelp);
+            this.Controls.Add(this.lblDownloadTypeHelp);
+            this.Controls.Add(this.cmbDownloadType);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtDownloadHost);
             this.Controls.Add(this.lblPasswordHelp);
             this.Controls.Add(this.lblUserHelp);
             this.Controls.Add(this.lblHostHelp);
@@ -230,5 +297,11 @@
         private System.Windows.Forms.Label lblHostHelp;
         private System.Windows.Forms.Label lblUserHelp;
         private System.Windows.Forms.Label lblPasswordHelp;
+        private System.Windows.Forms.Label lblDownloadHostHelp;
+        private System.Windows.Forms.Label lblDownloadTypeHelp;
+        private System.Windows.Forms.ComboBox cmbDownloadType;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtDownloadHost;
     }
 }
