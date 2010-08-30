@@ -126,13 +126,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\fail.png" />
+    <EmbeddedResource Include="Resources\fail.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\idle.png" />
+    <EmbeddedResource Include="Resources\idle.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\pass.png" />
+    <EmbeddedResource Include="Resources\pass.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
