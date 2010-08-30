@@ -81,9 +81,9 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Notifies listeners when the <see cref="IsBusySyncing"/> status has changed.
+        /// Notifies listeners when the server settings or state has changed.
         /// </summary>
-        public event ServerInfoEventHandler IsBusySyncingChanged;
+        public event ServerInfoEventHandler ServerChanged;
 
         /// <summary>
         /// Gets the type of <see cref="IFileUploader"/> to use.
@@ -114,8 +114,14 @@ namespace GoreUpdater.Manager
 
                 _isBusySyncing = value;
 
-                if (IsBusySyncingChanged != null)
-                    IsBusySyncingChanged(this);
+                try
+                {
+                    if (ServerChanged != null)
+                        ServerChanged(this);
+                }
+                catch (NullReferenceException)
+                {
+                }
             }
         }
 
@@ -179,6 +185,15 @@ namespace GoreUpdater.Manager
 
                 // Recreate the uploader
                 RecreateFileUploader();
+
+                try
+                {
+                    if (ServerChanged != null)
+                        ServerChanged(this);
+                }
+                catch (NullReferenceException)
+                {
+                }
             }
         }
 

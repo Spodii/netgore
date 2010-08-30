@@ -5,23 +5,22 @@ using System.Windows.Forms;
 
 namespace GoreUpdater.Manager
 {
-    public partial class AddServerForm : Form
+    public partial class ModifyServerForm : Form
     {
         static readonly object[] _fileUploaderTypes = Enum.GetValues(typeof(FileUploaderType)).OfType<object>().ToArray();
 
         /// <summary>
-        /// If this form is for adding a master server. If false, assumes its for adding a file server.
+        /// The server being modified.
         /// </summary>
-        readonly bool _isMasterServer;
+        readonly ServerInfoBase _server;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddServerForm"/> class.
+        /// Initializes a new instance of the <see cref="ModifyServerForm"/> class.
         /// </summary>
-        /// <param name="isMasterServer">If this form is for adding a master server. If false, assumes its for adding a
-        /// file server.</param>
-        public AddServerForm(bool isMasterServer)
+        /// <param name="server">The server being modified.</param>
+        public ModifyServerForm(ServerInfoBase server)
         {
-            _isMasterServer = isMasterServer;
+            _server = server;
 
             InitializeComponent();
         }
@@ -38,15 +37,21 @@ namespace GoreUpdater.Manager
                 return;
 
             // Change the form text
-            if (_isMasterServer)
-                Text = "Add master server";
+            if (_server is MasterServerInfo)
+                Text = "Modify master server";
             else
-                Text = "Add file server";
+                Text = "Modify file server";
 
             // Add the items to the type combo box
             cmbType.Items.Clear();
             cmbType.Items.AddRange(_fileUploaderTypes);
             cmbType.SelectedIndex = 0;
+
+            // Enter the current values
+            txtHost.Text = _server.Host;
+            txtPassword.Text = _server.Password;
+            txtUser.Text = _server.User;
+            cmbType.SelectedItem = _server.FileUploaderType;
         }
 
         /// <summary>
@@ -57,7 +62,7 @@ namespace GoreUpdater.Manager
         void btnCancel_Click(object sender, EventArgs e)
         {
             // Confirm
-            const string confirmMsg = "Are you sure you wish to cancel adding a server?";
+            const string confirmMsg = "Are you sure you wish to cancel modifying this server?";
             if (MessageBox.Show(confirmMsg, "Cancel?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
@@ -74,10 +79,8 @@ namespace GoreUpdater.Manager
         {
             // Confirm
             const string confirmMsg =
-                "Are you sure you wish to create this server?{0}It is highly recommended that you test the settings" +
-                " first and make sure they pass, but not required. Although you can change the settings later, it is best to avoid" +
-                " doing so whenever possible.";
-            if (MessageBox.Show(string.Format(confirmMsg, Environment.NewLine), "Create server?", MessageBoxButtons.YesNo) ==
+                "Are you sure you with to modify this server with the new values?";
+            if (MessageBox.Show(confirmMsg, "Modify server?", MessageBoxButtons.YesNo) ==
                 DialogResult.No)
                 return;
 
@@ -96,26 +99,17 @@ namespace GoreUpdater.Manager
                     throw new InvalidEnumArgumentException(string.Format(errmsg, type));
                 }
 
-                // Create
-                if (_isMasterServer)
-                {
-                    var server = new MasterServerInfo(type, host, user, pass);
-                    ManagerSettings.Instance.AddMasterServer(server);
-                }
-                else
-                {
-                    var server = new FileServerInfo(type, host, user, pass);
-                    ManagerSettings.Instance.AddFileServer(server);
-                }
+                // Update
+                _server.ChangeInfo(host, user, pass, type);
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to create the server instance. Reason: {0}";
+                const string errmsg = "Failed to modify the server. Reason: {0}";
                 MessageBox.Show(string.Format(errmsg, ex));
                 return;
             }
 
-            MessageBox.Show("Server successfully created!", "Success!", MessageBoxButtons.OK);
+            MessageBox.Show("Server successfully modified!", "Success!", MessageBoxButtons.OK);
             Close();
         }
 

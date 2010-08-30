@@ -52,6 +52,12 @@
     <Compile Include="AddServerForm.Designer.cs">
       <DependentUpon>AddServerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModifyServerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModifyServerForm.Designer.cs">
+      <DependentUpon>ModifyServerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelpHelper.cs" />
     <Compile Include="HelpMessage.cs" />
     <Compile Include="ServerInfoListBox.cs">
@@ -85,6 +91,9 @@
     <Compile Include="VersionHelper.cs" />
     <EmbeddedResource Include="AddServerForm.resx">
       <DependentUpon>AddServerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModifyServerForm.resx">
+      <DependentUpon>ModifyServerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
