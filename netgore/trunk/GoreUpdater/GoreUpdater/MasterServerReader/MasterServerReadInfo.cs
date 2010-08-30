@@ -129,6 +129,9 @@ namespace GoreUpdater
             }
         }
 
+        /// <summary>
+        /// Gets the descriptors for the master servers available.
+        /// </summary>
         public IEnumerable<DownloadSourceDescriptor> MasterServers
         {
             get
