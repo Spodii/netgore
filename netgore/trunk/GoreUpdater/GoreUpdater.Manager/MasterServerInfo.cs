@@ -122,7 +122,12 @@ namespace GoreUpdater.Manager
                 }
                 else
                 {
-                    // Hash existed and was correct - good enough for us!
+                    // Hash existed and was correct - good enough for us! But first, wait for uploads to finish...
+                    while (fu.IsBusy)
+                    {
+                        Thread.Sleep(500);
+                    }
+
                     return null;
                 }
             }
