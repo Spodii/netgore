@@ -13,6 +13,7 @@ namespace GoreUpdater.Manager
         [STAThread]
         static void Main()
         {
+            // ReSharper disable EmptyGeneralCatchClause
             // Create the root version directory
             try
             {
@@ -23,7 +24,9 @@ namespace GoreUpdater.Manager
             catch (Exception)
             {
             }
+            // ReSharper restore EmptyGeneralCatchClause
 
+            // ReSharper disable EmptyGeneralCatchClause
             // Ensure the directory for version 0 exists
             try
             {
@@ -34,6 +37,7 @@ namespace GoreUpdater.Manager
             catch (Exception)
             {
             }
+            // ReSharper restore EmptyGeneralCatchClause
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
