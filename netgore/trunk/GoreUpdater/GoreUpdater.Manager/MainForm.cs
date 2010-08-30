@@ -116,21 +116,37 @@ namespace GoreUpdater.Manager
             });
         }
 
+        /// <summary>
+        /// Handles the FileServerListChanged event of the <see cref="_settings"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
         void _settings_FileServerListChanged(ManagerSettings sender)
         {
             UpdateServerListBox(lstFS, sender.FileServers, FileServerInfo_IsBusySyncingChanged);
         }
 
+        /// <summary>
+        /// Handles the LiveVersionChanged event of the <see cref="_settings"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
         void _settings_LiveVersionChanged(ManagerSettings sender)
         {
             lblLiveVersion.Invoke((Action)(() => lblLiveVersion.Text = sender.LiveVersion.ToString()));
         }
 
+        /// <summary>
+        /// Handles the MasterServerListChanged event of the <see cref="_settings"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
         void _settings_MasterServerListChanged(ManagerSettings sender)
         {
             UpdateServerListBox(lstMS, sender.MasterServers, MasterServerInfo_IsBusySyncingChanged);
         }
 
+        /// <summary>
+        /// Handles the NextVersionCreated event of the <see cref="_settings"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
         void _settings_NextVersionCreated(ManagerSettings sender)
         {
             btnChangeLiveVersion.Enabled = sender.DoesNextVersionExist();
@@ -141,7 +157,7 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void btnChangeLiveVersion_Click(object sender, EventArgs e)
+        static void btnChangeLiveVersion_Click(object sender, EventArgs e)
         {
             // Check that the next version even exists
             var nextVersion = _settings.LiveVersion + 1;
@@ -319,9 +335,12 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lblChangeLiveVersionHelp_Click(object sender, EventArgs e)
+        static void lblChangeLiveVersionHelp_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            const string msg = "This will set the live version to the next version, as long as the next version is available."
+                + " It is highly recommended you wait on updating the live version until all of your servers have been" +
+                " synchronized. That way, you can be sure people have access to the files that they need when they go to update.";
+            MessageBox.Show(msg, "Change live version", MessageBoxButtons.OK);
         }
 
         /// <summary>
@@ -329,9 +348,13 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lblCreateNewVersionHelp_Click(object sender, EventArgs e)
+        static void lblCreateNewVersionHelp_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            const string msg = "Creates the next version, which by default is always the version immediately after the live version."
+                + " If the next version already exists, this will overwrite it instead of creating another new version." +
+                " Once the new version is created, the servers will automatically start to synchronize with the new contents so that"
+                + " when you update the new version to the live version, all the files will be ready for download.";
+            MessageBox.Show(msg, "Create new version", MessageBoxButtons.OK);
         }
 
         /// <summary>
@@ -339,9 +362,11 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lblLiveVersionHelp_Click(object sender, EventArgs e)
+        static void lblLiveVersionHelp_Click(object sender, EventArgs e)
         {
-            // TODO: ...
+            const string msg = "The live version is the current version that clients are updated to. It is usually either the latest version," +
+                " or the version immediately before the latest version.";
+            MessageBox.Show(msg, "Live version", MessageBoxButtons.OK);
         }
 
         /// <summary>
