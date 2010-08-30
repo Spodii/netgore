@@ -149,7 +149,6 @@ namespace GoreUpdater
             {
                 lock (_versionSync)
                 {
-                    // TODO: Make sure I always locked on the correct object
                     return _version;
                 }
             }
