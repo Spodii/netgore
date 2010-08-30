@@ -13,6 +13,7 @@ namespace GoreUpdater
     /// </summary>
     public class MasterServerReader : IMasterServerReader
     {
+        static readonly object _ioSync = new object();
         readonly string _localDownloadSourceListPath;
         readonly string _localMasterServerListPath;
 
@@ -27,9 +28,29 @@ namespace GoreUpdater
             _localMasterServerListPath = localMasterServerListPath;
         }
 
-        #region Implementation of IMasterServerReader
+        /// <summary>
+        /// Gets the relative path on the master server to the file containing the latest download sources.
+        /// </summary>
+        public static string CurrentDownloadSourcesFilePath
+        {
+            get { return "current.sourcelist"; }
+        }
 
-        static readonly object _ioSync = new object();
+        /// <summary>
+        /// Gets the relative path on the master server to the file containing the latest master servers.
+        /// </summary>
+        public static string CurrentMasterServersFilePath
+        {
+            get { return "current.masterlist"; }
+        }
+
+        /// <summary>
+        /// Gets the relative path on the master server to the file containing the current version.
+        /// </summary>
+        public static string CurrentVersionFilePath
+        {
+            get { return "current.version"; }
+        }
 
         /// <summary>
         /// The worker method for the reader threads.
@@ -193,6 +214,8 @@ namespace GoreUpdater
             }
         }
 
+        #region IMasterServerReader Members
+
         /// <summary>
         /// Gets the path to the local file containing the list of download sources. This file will be updated automatically
         /// as new download sources are discovered by this <see cref="IMasterServerReader"/>.
@@ -234,65 +257,7 @@ namespace GoreUpdater
             t.Start(new ThreadWorkerArgs(callback, userState));
         }
 
-        class ThreadWorkerArgs
-        {
-            readonly MasterServerReaderReadCallback _callback;
-            readonly object _userState;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ThreadWorkerArgs"/> class.
-            /// </summary>
-            /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
-            /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
-            /// from the method call.</param>
-            public ThreadWorkerArgs(MasterServerReaderReadCallback callback, object userState)
-            {
-                _callback = callback;
-                _userState = userState;
-            }
-
-            /// <summary>
-            /// Gets the callback delegate.
-            /// </summary>
-            public MasterServerReaderReadCallback Callback
-            {
-                get { return _callback; }
-            }
-
-            /// <summary>
-            /// Gets the user state object.
-            /// </summary>
-            public object UserState
-            {
-                get { return _userState; }
-            }
-        }
-
         #endregion
-
-        /// <summary>
-        /// Gets the relative path on the master server to the file containing the latest download sources.
-        /// </summary>
-        public static string CurrentDownloadSourcesFilePath
-        {
-            get { return "current.sourcelist"; }
-        }
-
-        /// <summary>
-        /// Gets the relative path on the master server to the file containing the latest master servers.
-        /// </summary>
-        public static string CurrentMasterServersFilePath
-        {
-            get { return "current.masterlist"; }
-        }
-
-        /// <summary>
-        /// Gets the relative path on the master server to the file containing the current version.
-        /// </summary>
-        public static string CurrentVersionFilePath
-        {
-            get { return "current.version"; }
-        }
 
         class MasterServerDownloader : IDisposable
         {
@@ -561,7 +526,7 @@ namespace GoreUpdater
                 CheckIfComplete();
             }
 
-            #region Implementation of IDisposable
+            #region IDisposable Members
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -602,6 +567,40 @@ namespace GoreUpdater
             }
 
             #endregion
+        }
+
+        class ThreadWorkerArgs
+        {
+            readonly MasterServerReaderReadCallback _callback;
+            readonly object _userState;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ThreadWorkerArgs"/> class.
+            /// </summary>
+            /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
+            /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
+            /// from the method call.</param>
+            public ThreadWorkerArgs(MasterServerReaderReadCallback callback, object userState)
+            {
+                _callback = callback;
+                _userState = userState;
+            }
+
+            /// <summary>
+            /// Gets the callback delegate.
+            /// </summary>
+            public MasterServerReaderReadCallback Callback
+            {
+                get { return _callback; }
+            }
+
+            /// <summary>
+            /// Gets the user state object.
+            /// </summary>
+            public object UserState
+            {
+                get { return _userState; }
+            }
         }
     }
 }
