@@ -120,7 +120,7 @@ namespace DemoGame.Server
                 return false;
             }
 
-            if (_user.StandingOn == null)
+            if (!_user.IsOnGround)
             {
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, _user, npc, "User is not on the ground");

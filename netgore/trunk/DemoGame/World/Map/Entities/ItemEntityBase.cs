@@ -82,7 +82,7 @@ namespace DemoGame
         protected override void HandleUpdate(IMap imap, int deltaTime)
         {
             // For items, once they hit the ground, they no longer update
-            if (StandingOn != null)
+            if (IsOnGround)
                 return;
 
             // Perform typical collision detection/etc
