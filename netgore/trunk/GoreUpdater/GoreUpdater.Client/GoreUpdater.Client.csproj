@@ -64,10 +64,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="current.masterlist">
+    <None Include="master_servers">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="current.sourcelist">
+    <None Include="file_servers">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
