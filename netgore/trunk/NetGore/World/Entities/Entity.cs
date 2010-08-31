@@ -110,6 +110,21 @@ namespace NetGore.World
         }
 
         /// <summary>
+        /// Gets if this <see cref="Entity"/> is currently on the ground. For top-down, this will always return true.
+        /// </summary>
+        public bool IsOnGround
+        {
+            get
+            {
+#if TOPDOWN
+                return true;
+#else
+                return StandingOn != null;
+#endif
+            }
+        }
+
+        /// <summary>
         /// Gets the <see cref="WallEntityBase"/> that the <see cref="Entity"/> is standing on, or null if they are
         /// not standing on anything (are not on the ground). If using a top-down perspective, this value is always null.
         /// </summary>
@@ -411,7 +426,7 @@ namespace NetGore.World
             _lastPosition = Position;
 
             // Only perform movement if moving
-            if (StandingOn != null && Velocity == Vector2.Zero)
+            if (IsOnGround && Velocity == Vector2.Zero)
                 return;
 
 #if !TOPDOWN

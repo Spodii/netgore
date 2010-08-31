@@ -42,12 +42,19 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets if the character meets the requirements allowing them to jump.
+        /// Gets if the character meets the requirements allowing them to jump. For top-down, this is always false.
         /// </summary>
         [Browsable(false)]
         public bool CanJump
         {
-            get { return StandingOn != null; }
+            get 
+            { 
+#if TOPDOWN
+                return false;
+#else
+                return IsOnGround;
+#endif
+            }
         }
 
         /// <summary>
@@ -143,7 +150,7 @@ namespace DemoGame
 
 #if !TOPDOWN
         /// <summary>
-        /// Gets the character's current state
+        /// Gets the character's current state.
         /// </summary>
         public CharacterState State
         {
