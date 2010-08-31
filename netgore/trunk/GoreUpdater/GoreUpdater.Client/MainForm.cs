@@ -4,13 +4,16 @@ using System.Windows.Forms;
 
 namespace GoreUpdater
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         DownloadManager _dm;
         BatchOfflineFileReplacer _fileRep;
         MasterServerReader _msr;
 
-        public Form1()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainForm"/> class.
+        /// </summary>
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -43,6 +46,10 @@ namespace GoreUpdater
             _dm.Enqueue(new string[] { "11.png", "12.png", "13.png" });
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
