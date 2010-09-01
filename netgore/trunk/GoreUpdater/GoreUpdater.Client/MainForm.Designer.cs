@@ -33,19 +33,20 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 12);
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox1.Location = new System.Drawing.Point(0, 0);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(260, 238);
+            this.textBox1.Size = new System.Drawing.Size(485, 309);
             this.textBox1.TabIndex = 0;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(485, 309);
             this.Controls.Add(this.textBox1);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
