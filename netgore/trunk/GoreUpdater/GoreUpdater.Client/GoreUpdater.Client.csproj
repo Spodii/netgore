@@ -73,10 +73,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="master_servers">
+    <None Include="UpdaterSettings\master_servers">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="file_servers">
+    <None Include="UpdaterSettings\file_servers">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">

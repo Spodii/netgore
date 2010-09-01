@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace GoreUpdater
 {
+    // TODO: Store locally what the current version number is. If file containing current version number not found, use 0.
+    // TODO: Perform hash check on files to see if we really need to download them.
+    // TODO: Download the file listings from the master server(s) so we know what files to update.
+
     /// <summary>
     /// A master class for the updater client that performs the whole update process.
     /// This class is thread-safe.
@@ -250,8 +254,6 @@ namespace GoreUpdater
             {
                 Debug.Fail(ex.ToString());
             }
-
-            CheckIfDownloadManagerComplete();
         }
 
         /// <summary>
@@ -273,8 +275,6 @@ namespace GoreUpdater
             {
                 Debug.Fail(ex.ToString());
             }
-
-            CheckIfDownloadManagerComplete();
         }
 
         /// <summary>
@@ -300,8 +300,6 @@ namespace GoreUpdater
             {
                 Debug.Fail(ex.ToString());
             }
-
-            CheckIfDownloadManagerComplete();
         }
 
         /// <summary>
@@ -326,9 +324,21 @@ namespace GoreUpdater
         {
             State = UpdateClientState.DoneReadingMasterServers;
 
+            // Check for errors
             if (info.Error != null)
             {
                 HasErrors = true;
+
+                // Raise error event
+                try
+                {
+                    if (MasterServerReaderError != null)
+                        MasterServerReaderError(this, info.Error);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
 
                 // Change the state
                 State = UpdateClientState.Completed;
@@ -351,15 +361,7 @@ namespace GoreUpdater
                     }
                 }
 
-                try
-                {
-                    if (MasterServerReaderError != null)
-                        MasterServerReaderError(this, info.Error);
-                }
-                catch (NullReferenceException ex)
-                {
-                    Debug.Fail(ex.ToString());
-                }
+                return;
             }
 
             // Set the found live version
