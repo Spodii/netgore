@@ -37,6 +37,12 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Notifies listeners when there has been a critical error reading from the master server(s) that result in the update
+        /// process not being able to continue.
+        /// </summary>
+        public event UpdateClientMasterServerReaderErrorEventHandler MasterServerReaderError;
+
+        /// <summary>
         /// Notifies listeners when a file has completely failed to be downloaded after multiple attempts. This is usually
         /// a breaking issue since all files need to be updated for the update to finish but this file could not download at all.
         /// </summary>
@@ -202,6 +208,9 @@ namespace GoreUpdater
                 }
             }
 
+            // Change the state
+            State = UpdateClientState.Completed;
+
             // Set to not running
             lock (_isRunningSync)
             {
@@ -219,9 +228,6 @@ namespace GoreUpdater
                     Debug.Fail(ex.ToString());
                 }
             }
-
-            // Change the state
-            State = UpdateClientState.Completed;
         }
 
         /// <summary>
@@ -319,6 +325,42 @@ namespace GoreUpdater
         void MasterServerReader_Callback(IMasterServerReader sender, IMasterServerReadInfo info, object userState)
         {
             State = UpdateClientState.DoneReadingMasterServers;
+
+            if (info.Error != null)
+            {
+                HasErrors = true;
+
+                // Change the state
+                State = UpdateClientState.Completed;
+
+                // Set to not running
+                lock (_isRunningSync)
+                {
+                    Debug.Assert(_isRunning);
+
+                    _isRunning = false;
+
+                    try
+                    {
+                        if (IsRunningChanged != null)
+                            IsRunningChanged(this);
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                    }
+                }
+
+                try
+                {
+                    if (MasterServerReaderError != null)
+                        MasterServerReaderError(this, info.Error);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
+            }
 
             // Set the found live version
             LiveVersion = info.Version;
