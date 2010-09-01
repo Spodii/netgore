@@ -231,7 +231,7 @@ namespace GoreUpdater
         /// <param name="info">The information from the master server(s).</param>
         /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
         /// from the method call.</param>
-        void MSRCallback(IMasterServerReader sender, IMasterServerReadInfo info, object userState)
+        void MasterServerReader_Callback(IMasterServerReader sender, IMasterServerReadInfo info, object userState)
         {
             State = UpdateClientState.DoneReadingMasterServers;
 
@@ -242,10 +242,10 @@ namespace GoreUpdater
 
             // Create the DownloadManager
             _dm = new DownloadManager(Settings.TargetPath, Settings.TempPath, info.Version);
-            _dm.DownloadFinished += _dm_DownloadFinished;
-            _dm.FileMoveFailed += _dm_FileMoveFailed;
-            _dm.DownloadFailed += _dm_DownloadFailed;
-            _dm.Finished += _dm_Finished;
+            _dm.DownloadFinished += DownloadManager_DownloadFinished;
+            _dm.FileMoveFailed += DownloadManager_FileMoveFailed;
+            _dm.DownloadFailed += DownloadManager_DownloadFailed;
+            _dm.Finished += DownloadManager_Finished;
 
             State = UpdateClientState.UpdatingFiles;
 
@@ -296,7 +296,7 @@ namespace GoreUpdater
             State = UpdateClientState.ReadingMasterServers;
 
             // Start grabbing from the master server
-            _msr.BeginRead(MSRCallback, this);
+            _msr.BeginRead(MasterServerReader_Callback, this);
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace GoreUpdater
         /// </summary>
         /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
         /// <param name="remoteFile">The remote file that was downloaded.</param>
-        void _dm_DownloadFailed(IDownloadManager sender, string remoteFile)
+        void DownloadManager_DownloadFailed(IDownloadManager sender, string remoteFile)
         {
             Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
 
@@ -350,7 +350,7 @@ namespace GoreUpdater
         /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
         /// <param name="remoteFile">The remote file that was downloaded.</param>
         /// <param name="localFilePath">The path to the local file where the downloaded file is stored.</param>
-        void _dm_DownloadFinished(IDownloadManager sender, string remoteFile, string localFilePath)
+        void DownloadManager_DownloadFinished(IDownloadManager sender, string remoteFile, string localFilePath)
         {
             Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
 
@@ -374,7 +374,7 @@ namespace GoreUpdater
         /// <param name="remoteFile">The remote file that was downloaded.</param>
         /// <param name="localFilePath">The path to the local file where the downloaded file is stored.</param>
         /// <param name="targetFilePath">The path where the file is supposed to be, but failed to be moved to.</param>
-        void _dm_FileMoveFailed(IDownloadManager sender, string remoteFile, string localFilePath, string targetFilePath)
+        void DownloadManager_FileMoveFailed(IDownloadManager sender, string remoteFile, string localFilePath, string targetFilePath)
         {
             Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
 
@@ -397,7 +397,7 @@ namespace GoreUpdater
         /// Handles the <see cref="IDownloadManager.Finished"/> event.
         /// </summary>
         /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
-        void _dm_Finished(IDownloadManager sender)
+        void DownloadManager_Finished(IDownloadManager sender)
         {
             Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
 
