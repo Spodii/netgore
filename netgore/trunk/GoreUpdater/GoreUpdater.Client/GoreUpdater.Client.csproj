@@ -57,6 +57,7 @@
     <Compile Include="UpdateClient\UpdateClientFileDownloadedEventHandler.cs" />
     <Compile Include="UpdateClient\UpdateClientFileDownloadFailedEventHandler.cs" />
     <Compile Include="UpdateClient\UpdateClientFileMoveFailedEventHandler.cs" />
+    <Compile Include="UpdateClient\UpdateClientMasterServerReaderErrorEventHandler.cs" />
     <Compile Include="UpdateClient\UpdateClientSettings.cs" />
     <Compile Include="UpdateClient\UpdateClientState.cs" />
     <Compile Include="UpdateClient\UpdateClientStateChangedEventHandler.cs" />

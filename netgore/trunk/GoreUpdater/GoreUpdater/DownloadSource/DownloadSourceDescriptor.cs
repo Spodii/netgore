@@ -51,6 +51,9 @@ namespace GoreUpdater
         {
             var ret = new List<DownloadSourceDescriptor>();
 
+            if (!File.Exists(filePath))
+                return Enumerable.Empty<DownloadSourceDescriptor>();
+
             // Read the file
             var lines = File.ReadAllLines(filePath);
 
