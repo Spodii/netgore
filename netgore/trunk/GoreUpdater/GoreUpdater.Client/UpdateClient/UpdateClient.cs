@@ -225,6 +225,91 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Handles the <see cref="IDownloadManager.DownloadFailed"/> event.
+        /// </summary>
+        /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
+        /// <param name="remoteFile">The remote file that was downloaded.</param>
+        void DownloadManager_DownloadFailed(IDownloadManager sender, string remoteFile)
+        {
+            Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
+
+            HasErrors = true;
+
+            try
+            {
+                if (FileDownloadFailed != null)
+                    FileDownloadFailed(this, remoteFile);
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
+
+            CheckIfDownloadManagerComplete();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IDownloadManager.DownloadFinished"/> event.
+        /// </summary>
+        /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
+        /// <param name="remoteFile">The remote file that was downloaded.</param>
+        /// <param name="localFilePath">The path to the local file where the downloaded file is stored.</param>
+        void DownloadManager_DownloadFinished(IDownloadManager sender, string remoteFile, string localFilePath)
+        {
+            Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
+
+            try
+            {
+                if (FileDownloaded != null)
+                    FileDownloaded(this, remoteFile, localFilePath);
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
+
+            CheckIfDownloadManagerComplete();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IDownloadManager.FileMoveFailed"/> event.
+        /// </summary>
+        /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
+        /// <param name="remoteFile">The remote file that was downloaded.</param>
+        /// <param name="localFilePath">The path to the local file where the downloaded file is stored.</param>
+        /// <param name="targetFilePath">The path where the file is supposed to be, but failed to be moved to.</param>
+        void DownloadManager_FileMoveFailed(IDownloadManager sender, string remoteFile, string localFilePath,
+                                            string targetFilePath)
+        {
+            Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
+
+            _fileReplacer.AddJob(localFilePath, targetFilePath);
+
+            try
+            {
+                if (FileMoveFailed != null)
+                    FileMoveFailed(this, remoteFile, localFilePath, targetFilePath);
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
+
+            CheckIfDownloadManagerComplete();
+        }
+
+        /// <summary>
+        /// Handles the <see cref="IDownloadManager.Finished"/> event.
+        /// </summary>
+        /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
+        void DownloadManager_Finished(IDownloadManager sender)
+        {
+            Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
+
+            CheckIfDownloadManagerComplete();
+        }
+
+        /// <summary>
         /// The callback method for the <see cref="IMasterServerReader.BeginRead"/>.
         /// </summary>
         /// <param name="sender">The <see cref="IMasterServerReader"/> this event came from.</param>
@@ -318,90 +403,6 @@ namespace GoreUpdater
 
             // Execute
             return OfflineFileReplacerHelper.TryExecute(_fileReplacer.FilePath);
-        }
-
-        /// <summary>
-        /// Handles the <see cref="IDownloadManager.DownloadFailed"/> event.
-        /// </summary>
-        /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
-        /// <param name="remoteFile">The remote file that was downloaded.</param>
-        void DownloadManager_DownloadFailed(IDownloadManager sender, string remoteFile)
-        {
-            Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
-
-            HasErrors = true;
-
-            try
-            {
-                if (FileDownloadFailed != null)
-                    FileDownloadFailed(this, remoteFile);
-            }
-            catch (NullReferenceException ex)
-            {
-                Debug.Fail(ex.ToString());
-            }
-
-            CheckIfDownloadManagerComplete();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="IDownloadManager.DownloadFinished"/> event.
-        /// </summary>
-        /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
-        /// <param name="remoteFile">The remote file that was downloaded.</param>
-        /// <param name="localFilePath">The path to the local file where the downloaded file is stored.</param>
-        void DownloadManager_DownloadFinished(IDownloadManager sender, string remoteFile, string localFilePath)
-        {
-            Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
-
-            try
-            {
-                if (FileDownloaded != null)
-                    FileDownloaded(this, remoteFile, localFilePath);
-            }
-            catch (NullReferenceException ex)
-            {
-                Debug.Fail(ex.ToString());
-            }
-
-            CheckIfDownloadManagerComplete();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="IDownloadManager.FileMoveFailed"/> event.
-        /// </summary>
-        /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
-        /// <param name="remoteFile">The remote file that was downloaded.</param>
-        /// <param name="localFilePath">The path to the local file where the downloaded file is stored.</param>
-        /// <param name="targetFilePath">The path where the file is supposed to be, but failed to be moved to.</param>
-        void DownloadManager_FileMoveFailed(IDownloadManager sender, string remoteFile, string localFilePath, string targetFilePath)
-        {
-            Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
-
-            _fileReplacer.AddJob(localFilePath, targetFilePath);
-
-            try
-            {
-                if (FileMoveFailed != null)
-                    FileMoveFailed(this, remoteFile, localFilePath, targetFilePath);
-            }
-            catch (NullReferenceException ex)
-            {
-                Debug.Fail(ex.ToString());
-            }
-
-            CheckIfDownloadManagerComplete();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="IDownloadManager.Finished"/> event.
-        /// </summary>
-        /// <param name="sender">The <see cref="IDownloadManager"/> the event came from.</param>
-        void DownloadManager_Finished(IDownloadManager sender)
-        {
-            Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
-
-            CheckIfDownloadManagerComplete();
         }
     }
 }
