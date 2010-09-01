@@ -59,6 +59,11 @@ namespace GoreUpdater
         public event UpdateClientEventHandler HasErrorsChanged;
 
         /// <summary>
+        /// Notifies listeners when the <see cref="UpdateClient.IsRunning"/> property has changed.
+        /// </summary>
+        public event UpdateClientEventHandler IsRunningChanged;
+
+        /// <summary>
         /// Notifies listeners when the live version has been found.
         /// </summary>
         public event UpdateClientEventHandler LiveVersionFound;
@@ -181,7 +186,42 @@ namespace GoreUpdater
             if (_dm.QueueCount > 0)
                 return;
 
-            // TODO: Check if complete
+            Debug.Assert(!_dm.IsDisposed);
+
+            // Clean up
+            if (!_dm.IsDisposed)
+            {
+                try
+                {
+                    _dm.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to dispose DownloadManager `{0}`. Reason: {1}";
+                    Debug.Fail(string.Format(errmsg, _dm, ex));
+                }
+            }
+
+            // Set to not running
+            lock (_isRunningSync)
+            {
+                Debug.Assert(_isRunning);
+
+                _isRunning = false;
+
+                try
+                {
+                    if (IsRunningChanged != null)
+                        IsRunningChanged(this);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
+            }
+
+            // Change the state
+            State = UpdateClientState.Completed;
         }
 
         /// <summary>
@@ -236,6 +276,16 @@ namespace GoreUpdater
             // Throw an exception if the IsRunning was already true
             if (isAlreadyRunning)
                 throw new InvalidOperationException("The UpdateClient is already running.");
+
+            try
+            {
+                if (IsRunningChanged != null)
+                    IsRunningChanged(this);
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
 
             State = UpdateClientState.Initializing;
 
