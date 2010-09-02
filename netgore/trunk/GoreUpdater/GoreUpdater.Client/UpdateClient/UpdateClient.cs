@@ -395,7 +395,33 @@ namespace GoreUpdater
             // Set the found live version
             LiveVersion = info.Version;
 
-            // TODO: Be able to abort here if the live version == current version
+            // Check if the live version equals our version and, if so, there is no need to continue with the update process
+            var currentVersion = Settings.GetCurrentVersion();
+            if (currentVersion.HasValue && currentVersion.Value == LiveVersion.Value)
+            {
+                // Change the state
+                State = UpdateClientState.Completed;
+
+                // Set to not running
+                lock (_isRunningSync)
+                {
+                    Debug.Assert(_isRunning);
+
+                    _isRunning = false;
+
+                    try
+                    {
+                        if (IsRunningChanged != null)
+                            IsRunningChanged(this);
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                    }
+                }
+
+                return;
+            }
 
             // Create the DownloadManager
             _dm = new DownloadManager(Settings.TargetPath, Settings.TempPath, info.Version);

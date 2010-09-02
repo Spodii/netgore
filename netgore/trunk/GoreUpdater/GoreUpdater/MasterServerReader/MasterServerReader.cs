@@ -265,6 +265,13 @@ namespace GoreUpdater
             readonly MasterServerReadInfo _masterReadInfo;
             readonly List<IDownloadSource> _sources;
             readonly object _sourcesSync = new object();
+
+            /// <summary>
+            /// If a version has been read from ANY of the master servers. This allows to avoid having to wait on very slow
+            /// master servers when we already have the version.
+            /// </summary>
+            volatile bool _hasReadVersion = false;
+
             bool _isDisposed = false;
 
             /// <summary>
@@ -321,12 +328,17 @@ namespace GoreUpdater
             /// <summary>
             /// Executes the downloader and waits until all master servers finish to return the <see cref="IMasterServerReadInfo"/>.
             /// </summary>
-            /// <param name="timeout">How many milliseconds to wait before giving up.</param>
+            /// <param name="giveUpTime">How many milliseconds to wait before giving up completely even when nothing has been read.</param>
+            /// <param name="stallTime">How many milliseconds to wait for the results from other servers after the first server has been read.
+            /// Although the results are only needed from one server, its best to get it from multiple servers to ensure accuracy. However,
+            /// you do not want to wait too long for very slow servers.</param>
             /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
-            public void Execute(int timeout = 10000)
+            public void Execute(int giveUpTime = 10000, int stallTime = 3000)
             {
                 if (IsDisposed)
                     throw new ObjectDisposedException("this");
+
+                _hasReadVersion = false;
 
                 // Set the event hooks on the sources and start the downloads on each source
                 lock (_sourcesSync)
@@ -338,14 +350,25 @@ namespace GoreUpdater
                 }
 
                 var startTime = Environment.TickCount;
+                var stallEndTime = int.MaxValue;
 
                 // Wait until all sources finish
                 while (!CheckIfComplete())
                 {
                     Thread.Sleep(150);
 
+                    var now = Environment.TickCount;
+
+                    // Check to set the stallEndTime
+                    if (stallEndTime == int.MaxValue && _hasReadVersion)
+                        stallEndTime = now + stallTime;
+
+                    // Check if we have exceeded the stall time
+                    if (now > stallEndTime)
+                        break;
+
                     // Check if its time to timeout
-                    if (Environment.TickCount - startTime > timeout)
+                    if (now - startTime > giveUpTime)
                         break;
                 }
             }
@@ -439,7 +462,10 @@ namespace GoreUpdater
                                 _masterReadInfo.AppendError(
                                     string.Format("Failed to parse version file to integer. Contents: `{0}`", txt));
                             else
+                            {
                                 _masterReadInfo.AddVersion(version);
+                                _hasReadVersion = true;
+                            }
                         }
                     }
                     catch (Exception ex)
