@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace GoreUpdater
 {
-    // TODO: Store locally what the current version number is. If file containing current version number not found, use 0.
     // TODO: Perform hash check on files to see if we really need to download them.
     // TODO: Download the file listings from the master server(s) so we know what files to update.
+    // TODO: Hash check the downloaded files to ensure they are correct
+    // TODO: Run the delete routine after successfully updating
 
     /// <summary>
     /// A master class for the updater client that performs the whole update process.
@@ -189,6 +191,29 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Tries to set the client's version to the live version. That is, sets the update as being completed successfully.
+        /// </summary>
+        void TrySetClientVersionToLive()
+        {
+            // Do not set if we have files that need to be copied
+            if (_fileReplacer.JobCount > 0)
+                return;
+
+            // Do not update version if there were errors
+            if (HasErrors)
+                return;
+
+            if (!_liveVersion.HasValue)
+            {
+                Debug.Fail("Why is the LiveVersion not set?");
+                return;
+            }
+
+            // Update the version file
+            File.WriteAllText(Settings.VersionFilePath, _liveVersion.Value.ToString());
+        }
+
+        /// <summary>
         /// Checks if the downloading with the <see cref="DownloadManager"/> has been completed.
         /// </summary>
         void CheckIfDownloadManagerComplete()
@@ -211,6 +236,9 @@ namespace GoreUpdater
                     Debug.Fail(string.Format(errmsg, _dm, ex));
                 }
             }
+
+            // If done, update the version
+            TrySetClientVersionToLive();
 
             // Change the state
             State = UpdateClientState.Completed;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace GoreUpdater
 {
@@ -13,6 +15,7 @@ namespace GoreUpdater
         string _targetPath;
         string _tempPath;
         string _offlineFileReplacerPath;
+        string _versionFilePath;
         Func<string, string, IOfflineFileReplacer> _offlineFileReplacer;
 
         /// <summary>
@@ -40,6 +43,48 @@ namespace GoreUpdater
                     throw ReadOnlyException(); 
                 
                 _offlineFileReplacerPath = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the current version of the client using the <see cref="VersionFilePath"/>.
+        /// </summary>
+        /// <returns>The current version, or null if the current version is unknown since the file at the <see cref="VersionFilePath"/>
+        /// does not exist or contains invalid data.</returns>
+        public int? GetCurrentVersion()
+        {
+            var f = VersionFilePath;
+
+            // Check for the file
+            if (!File.Exists(f))
+                return null;
+
+            // Read the file
+            var s = File.ReadAllText(f);
+
+            // Parse the file's contents
+            int version;
+            if (!int.TryParse(s, out version))
+            {
+                Debug.Fail("Could not parse version file. Contents: " + s);
+                return null;
+            }
+
+            return version;
+        }
+
+        /// <summary>
+        /// Gets or sets the path to the file containing the current version.
+        /// </summary>
+        public string VersionFilePath
+        {
+            get { return _versionFilePath; }
+            set
+            {
+                if (IsReadOnly)
+                    throw ReadOnlyException();
+
+                _versionFilePath = value;
             }
         }
 
@@ -105,6 +150,7 @@ namespace GoreUpdater
             LocalFileServerPath = PathHelper.CombineDifferentPaths(settingsPath, MasterServerReader.CurrentDownloadSourcesFilePath);
             LocalMasterServerPath = PathHelper.CombineDifferentPaths(settingsPath, MasterServerReader.CurrentMasterServersFilePath);
             OfflineFileReplacerPath = PathHelper.CombineDifferentPaths(settingsPath, GlobalSettings.ReplacerFileName);
+            VersionFilePath = PathHelper.CombineDifferentPaths(settingsPath, "current_version");
         }
 
         /// <summary>
