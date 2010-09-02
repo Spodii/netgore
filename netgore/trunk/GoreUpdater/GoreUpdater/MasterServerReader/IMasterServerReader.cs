@@ -21,11 +21,20 @@ namespace GoreUpdater
         string LocalMasterServerListPath { get; }
 
         /// <summary>
-        /// Begins reading the master server information.
+        /// Begins reading the version from the master server(s).
         /// </summary>
         /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
         /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
         /// from the method call.</param>
-        void BeginRead(MasterServerReaderReadCallback callback, object userState);
+        void BeginReadVersion(MasterServerReaderReadCallback callback, object userState);
+
+        /// <summary>
+        /// Begins reading the version file list from the master server(s).
+        /// </summary>
+        /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
+        /// <param name="version">The version to get the <see cref="VersionFileList"/> for.</param>
+        /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
+        /// from the method call.</param>
+        void BeginReadVersionFileList(MasterServerReaderReadCallback callback, int version, object userState);
     }
 }

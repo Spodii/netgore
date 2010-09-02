@@ -25,8 +25,16 @@ namespace GoreUpdater
         IEnumerable<DownloadSourceDescriptor> MasterServers { get; }
 
         /// <summary>
-        /// Gets the current version.
+        /// Gets the current version. When using <see cref="IMasterServerReader.BeginReadVersionFileList"/>, this value is
+        /// equal to the version value given when calling the method.
         /// </summary>
         int Version { get; }
+
+        /// <summary>
+        /// Gets the text for the <see cref="VersionFileList"/>. This value is only set when using
+        /// <see cref="IMasterServerReader.BeginReadVersionFileList"/>, and will stay null if using
+        /// <see cref="IMasterServerReader.BeginReadVersion"/> or if the file failed to be read.
+        /// </summary>
+        string VersionFileListText { get; }
     }
 }
