@@ -218,24 +218,34 @@ namespace GoreUpdater
         /// </summary>
         void CheckIfDownloadManagerComplete()
         {
-            if (_dm.QueueCount > 0)
-                return;
-
-            Debug.Assert(!_dm.IsDisposed);
-
-            // Clean up
-            if (!_dm.IsDisposed)
+            // If the download manager is null, then skip checking it
+            if (_dm != null)
             {
-                try
+                if (!_dm.IsDisposed)
                 {
-                    _dm.Dispose();
+                    // Do not continue if items are still enqueued for download
+                    if (_dm.QueueCount > 0)
+                    {
+                        Debug.Fail("Why are items still in the download queue?");
+                        return;
+                    }
+
+                    // Clean up
+                    try
+                    {
+                        _dm.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose DownloadManager `{0}`. Reason: {1}";
+                        Debug.Fail(string.Format(errmsg, _dm, ex));
+                    }
                 }
-                catch (Exception ex)
-                {
-                    const string errmsg = "Failed to dispose DownloadManager `{0}`. Reason: {1}";
-                    Debug.Fail(string.Format(errmsg, _dm, ex));
-                }
+
+                _dm = null;
             }
+
+            // TODO: Should I also abort here if HasErrors is set? Probably...
 
             // If done, update the version
             TrySetClientVersionToLive();
@@ -342,6 +352,39 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// The callback method for the <see cref="IMasterServerReader.BeginReadVersionFileList"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="IMasterServerReader"/> this event came from.</param>
+        /// <param name="info">The information from the master server(s).</param>
+        /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
+        /// from the method call.</param>
+        void MasterServerReader_Callback_VersionFileList(IMasterServerReader sender, IMasterServerReadInfo info, object userState)
+        {
+            State = UpdateClientState.ReadingLiveVersionFileListDone;
+            
+            // TODO: Check to make sure the VersionFileList is valid
+            // TODO: Grab the list of files to update from the VersionFileList
+            // TODO: For each file to check to download, compare the hashes first to see if we even need to download it
+            // TODO: If all file hashes match, then consider us updated (call CheckIfDownloadManagerComplete)
+
+            // Create the DownloadManager
+            _dm = new DownloadManager(Settings.TargetPath, Settings.TempPath, info.Version);
+            _dm.DownloadFinished += DownloadManager_DownloadFinished;
+            _dm.FileMoveFailed += DownloadManager_FileMoveFailed;
+            _dm.DownloadFailed += DownloadManager_DownloadFailed;
+            _dm.Finished += DownloadManager_Finished;
+
+            State = UpdateClientState.UpdatingFiles;
+
+            // Add the sources to the DownloadManager
+            var sources = info.DownloadSources.Select(x => x.Instantiate());
+            _dm.AddSources(sources);
+
+            // Enqueue the files that need to be downloaded
+            _dm.Enqueue(new string[] { "11.png", "12.png", "13.png" });
+        }
+
+        /// <summary>
         /// The callback method for the <see cref="IMasterServerReader.BeginReadVersion"/>.
         /// </summary>
         /// <param name="sender">The <see cref="IMasterServerReader"/> this event came from.</param>
@@ -350,7 +393,7 @@ namespace GoreUpdater
         /// from the method call.</param>
         void MasterServerReader_Callback(IMasterServerReader sender, IMasterServerReadInfo info, object userState)
         {
-            State = UpdateClientState.DoneReadingMasterServers;
+            State = UpdateClientState.ReadingLiveVersionDone;
 
             // Check for errors
             if (info.Error != null)
@@ -423,26 +466,10 @@ namespace GoreUpdater
                 return;
             }
 
-            // TODO: Instead of the below, use:
-            // _msr.BeginReadVersionFileList(MasterServerReader_Callback_VersionFileList, this);
-            // Then put this stuff below into that method
+            // Grab the VersionFileList
+            State = UpdateClientState.ReadingLiveVersionFileList;
 
-            // Create the DownloadManager
-            _dm = new DownloadManager(Settings.TargetPath, Settings.TempPath, info.Version);
-            _dm.DownloadFinished += DownloadManager_DownloadFinished;
-            _dm.FileMoveFailed += DownloadManager_FileMoveFailed;
-            _dm.DownloadFailed += DownloadManager_DownloadFailed;
-            _dm.Finished += DownloadManager_Finished;
-
-            State = UpdateClientState.UpdatingFiles;
-
-            // Add the sources to the DownloadManager
-            var sources = info.DownloadSources.Select(x => x.Instantiate());
-            _dm.AddSources(sources);
-
-            // Get the files to update
-            // TODO: Only update files needing to be updated
-            _dm.Enqueue(new string[] { "11.png", "12.png", "13.png" });
+            _msr.BeginReadVersionFileList(MasterServerReader_Callback_VersionFileList, info.Version, this);
         }
 
         /// <summary>
@@ -480,7 +507,7 @@ namespace GoreUpdater
             _msr = new MasterServerReader(Settings.LocalFileServerPath, Settings.LocalMasterServerPath);
             _fileReplacer = Settings.CreateOfflineFileReplacer();
 
-            State = UpdateClientState.ReadingMasterServers;
+            State = UpdateClientState.ReadingLiveVersion;
 
             // Start grabbing from the master server
             _msr.BeginReadVersion(MasterServerReader_Callback, this);
