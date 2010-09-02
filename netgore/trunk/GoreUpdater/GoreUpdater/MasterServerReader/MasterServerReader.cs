@@ -75,7 +75,8 @@ namespace GoreUpdater
             // Ensure we have descriptors
             if (descriptors.Count() == 0)
             {
-                info.AppendError("No DownloadSourceDescriptors could be found.");
+                const string errmsg = "No DownloadSourceDescriptors could be found.";
+                info.AppendError(errmsg);
                 callback(this, info, userState);
                 return;
             }
@@ -91,14 +92,16 @@ namespace GoreUpdater
                 }
                 catch (Exception ex)
                 {
-                    info.AppendError(string.Format("Failed to instantiate DownloadSourceDescriptor `{0}`: {1}", desc, ex));
+                    const string errmsg = "Failed to instantiate DownloadSourceDescriptor `{0}`: {1}";
+                    info.AppendError(string.Format(errmsg, desc, ex));
                 }
             }
 
             // Ensure we have at least one source
             if (sources.Count == 0)
             {
-                info.AppendError("All DownloadSourceDescriptors failed to be instantiated - no servers available to use.");
+                const string errmsg = "All DownloadSourceDescriptors failed to be instantiated - no servers available to use.";
+                info.AppendError(errmsg);
                 callback(this, info, userState);
                 return;
             }
@@ -236,12 +239,12 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Begins reading the master server information.
+        /// Begins reading the version from the master server(s).
         /// </summary>
         /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
         /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
         /// from the method call.</param>
-        public void BeginRead(MasterServerReaderReadCallback callback, object userState)
+        public void BeginReadVersion(MasterServerReaderReadCallback callback, object userState)
         {
             // Create the worker
             var t = new Thread(ReadThreadWorker) { IsBackground = true };
@@ -255,7 +258,8 @@ namespace GoreUpdater
             }
 
             // Start it
-            t.Start(new ThreadWorkerArgs(callback, userState));
+            var args = new ThreadWorkerArgs(callback, userState);
+            t.Start(args);
         }
 
         #endregion
