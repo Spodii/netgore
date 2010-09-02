@@ -53,24 +53,32 @@ namespace GoreUpdater
         /// does not exist or contains invalid data.</returns>
         public int? GetCurrentVersion()
         {
-            var f = VersionFilePath;
-
-            // Check for the file
-            if (!File.Exists(f))
-                return null;
-
-            // Read the file
-            var s = File.ReadAllText(f);
-
-            // Parse the file's contents
-            int version;
-            if (!int.TryParse(s, out version))
+            try
             {
-                Debug.Fail("Could not parse version file. Contents: " + s);
+                var f = VersionFilePath;
+
+                // Check for the file
+                if (!File.Exists(f))
+                    return null;
+
+                // Read the file
+                var s = File.ReadAllText(f);
+
+                // Parse the file's contents
+                int version;
+                if (!int.TryParse(s, out version))
+                {
+                    Debug.Fail("Could not parse version file. Contents: " + s);
+                    return null;
+                }
+
+                return version;
+            }
+            catch (IOException ex)
+            {
+                Debug.Fail(ex.ToString());
                 return null;
             }
-
-            return version;
         }
 
         /// <summary>
