@@ -60,8 +60,10 @@ namespace GoreUpdater
         void ReadThreadWorker(object o)
         {
             var stateObj = (ThreadWorkerArgs)o;
+
             var callback = stateObj.Callback;
             var userState = stateObj.UserState;
+            var readVersion = (int?)stateObj.Version;
 
             var info = new MasterServerReadInfo();
 
@@ -107,7 +109,7 @@ namespace GoreUpdater
             }
 
             // Start the downloader
-            using (var msd = new MasterServerDownloader(info, sources) { DisposeSources = true })
+            using (var msd = new MasterServerDownloader(info, sources, readVersion) { DisposeSources = true })
             {
                 // This will block until its complete
                 msd.Execute();
@@ -251,14 +253,39 @@ namespace GoreUpdater
 
             try
             {
-                t.Name = "MasterServerReader read thread.";
+                t.Name = "MasterServerReader BeginReadVersion thread.";
             }
             catch (InvalidOperationException)
             {
             }
 
             // Start it
-            var args = new ThreadWorkerArgs(callback, userState);
+            var args = new ThreadWorkerArgs(callback, userState, null);
+            t.Start(args);
+        }
+
+        /// <summary>
+        /// Begins reading the version file list from the master server(s).
+        /// </summary>
+        /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
+        /// <param name="version">The version to get the <see cref="VersionFileList"/> for.</param>
+        /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
+        /// from the method call.</param>
+        public void BeginReadVersionFileList(MasterServerReaderReadCallback callback, int version, object userState)
+        {
+            // Create the worker
+            var t = new Thread(ReadThreadWorker) { IsBackground = true };
+
+            try
+            {
+                t.Name = "MasterServerReader BeginReadVersionFileList thread.";
+            }
+            catch (InvalidOperationException)
+            {
+            }
+
+            // Start it
+            var args = new ThreadWorkerArgs(callback, userState, version);
             t.Start(args);
         }
 
@@ -269,6 +296,7 @@ namespace GoreUpdater
             readonly MasterServerReadInfo _masterReadInfo;
             readonly List<IDownloadSource> _sources;
             readonly object _sourcesSync = new object();
+            readonly int? _readVersion;
 
             /// <summary>
             /// If a version has been read from ANY of the master servers. This allows to avoid having to wait on very slow
@@ -298,10 +326,24 @@ namespace GoreUpdater
             /// </summary>
             /// <param name="masterReadInfo">The <see cref="MasterServerReadInfo"/> to add to.</param>
             /// <param name="sources">The <see cref="IDownloadSource"/> to use to download.</param>
-            public MasterServerDownloader(MasterServerReadInfo masterReadInfo, IEnumerable<IDownloadSource> sources)
+            /// <param name="readVersion">The version of the <see cref="VersionFileList"/> to read, or null if reading
+            /// the current version number.</param>
+            public MasterServerDownloader(MasterServerReadInfo masterReadInfo, IEnumerable<IDownloadSource> sources,
+                int? readVersion)
             {
+                _readVersion = readVersion;
                 _masterReadInfo = masterReadInfo;
                 _sources = new List<IDownloadSource>(sources);
+
+                // Cache the remote file path
+                if (_readVersion.HasValue)
+                {
+                    _remoteFileToDownload = PathHelper.GetVersionString(_readVersion.Value);
+                }
+                else
+                {
+                    _remoteFileToDownload = CurrentVersionFilePath;
+                }
             }
 
             /// <summary>
@@ -330,19 +372,62 @@ namespace GoreUpdater
             }
 
             /// <summary>
+            /// The default value for "giveUpTime" for the <see cref="Execute"/> parameter
+            /// for when reading the version file.
+            /// </summary>
+            const int _defaultGiveUpTimeVersion = 10000;
+
+            /// <summary>
+            /// The default value for "giveUpTime" for the <see cref="Execute"/> parameter
+            /// for when reading the <see cref="VersionFileList"/> file.
+            /// </summary>
+            const int _defaultGiveUpTimeVersionFileList = 30000;
+
+            /// <summary>
+            /// The default value for "stallTime" for the <see cref="Execute"/> parameter
+            /// for when reading the version file.
+            /// </summary>
+            const int _defaultStallTimeVersion = 3000;
+
+            /// <summary>
+            /// The default value for "stallTime" for the <see cref="Execute"/> parameter
+            /// for when reading the <see cref="VersionFileList"/> file.
+            /// </summary>
+            const int _defaultStallTimeVersionFileList = 6000;
+
+            /// <summary>
             /// Executes the downloader and waits until all master servers finish to return the <see cref="IMasterServerReadInfo"/>.
             /// </summary>
-            /// <param name="giveUpTime">How many milliseconds to wait before giving up completely even when nothing has been read.</param>
+            /// <param name="giveUpTime">How many milliseconds to wait before giving up completely even when nothing has been read.
+            /// If less than 0, the default value will be used.</param>
             /// <param name="stallTime">How many milliseconds to wait for the results from other servers after the first server has been read.
             /// Although the results are only needed from one server, its best to get it from multiple servers to ensure accuracy. However,
-            /// you do not want to wait too long for very slow servers.</param>
+            /// you do not want to wait too long for very slow servers.
+            /// If less than 0, the default value will be used.</param>
             /// <exception cref="ObjectDisposedException">This object is disposed.</exception>
-            public void Execute(int giveUpTime = 10000, int stallTime = 3000)
+            public void Execute(int giveUpTime = -1, int stallTime = -1)
             {
                 if (IsDisposed)
                     throw new ObjectDisposedException("this");
 
                 _hasReadVersion = false;
+
+                // Set the needed default values
+                if (giveUpTime < 0)
+                {
+                    if (_readVersion.HasValue)
+                        giveUpTime = _defaultGiveUpTimeVersionFileList;
+                    else
+                        giveUpTime = _defaultGiveUpTimeVersion;
+                }
+
+                if (stallTime < 0)
+                {
+                    if (_readVersion.HasValue)
+                        stallTime = _defaultStallTimeVersionFileList;
+                    else
+                        stallTime = _defaultStallTimeVersion;
+                }
 
                 // Set the event hooks on the sources and start the downloads on each source
                 lock (_sourcesSync)
@@ -382,7 +467,7 @@ namespace GoreUpdater
                 source.DownloadFinished += source_DownloadFinished;
                 source.DownloadFailed += source_DownloadFailed;
 
-                // Master servers file
+                // Master servers file (master server list)
                 var tempFile = Path.GetTempFileName();
                 Interlocked.Increment(ref _numBusyMasterServersFile);
                 if (!source.Download(CurrentMasterServersFilePath, tempFile, null))
@@ -391,16 +476,7 @@ namespace GoreUpdater
                     PathHelper.SafeDeleteTempFile(tempFile);
                 }
 
-                // Version file
-                tempFile = Path.GetTempFileName();
-                Interlocked.Increment(ref _numBusyVersionFile);
-                if (!source.Download(CurrentVersionFilePath, tempFile, null))
-                {
-                    Interlocked.Decrement(ref _numBusyVersionFile);
-                    PathHelper.SafeDeleteTempFile(tempFile);
-                }
-
-                // Download sources file
+                // Download sources file (file server list)
                 tempFile = Path.GetTempFileName();
                 Interlocked.Increment(ref _numBusyDownloadSourcesFile);
                 if (!source.Download(CurrentDownloadSourcesFilePath, tempFile, null))
@@ -408,7 +484,23 @@ namespace GoreUpdater
                     Interlocked.Decrement(ref _numBusyDownloadSourcesFile);
                     PathHelper.SafeDeleteTempFile(tempFile);
                 }
+
+                // Version file (contains the current version number)
+                //      -or-
+                // VersionFileList file (contains the listing of all the files for the version)
+                tempFile = Path.GetTempFileName();
+                Interlocked.Increment(ref _numBusyVersionFile);
+                if (!source.Download(_remoteFileToDownload, tempFile, null))
+                {
+                    Interlocked.Decrement(ref _numBusyVersionFile);
+                    PathHelper.SafeDeleteTempFile(tempFile);
+                }
             }
+
+            /// <summary>
+            /// The remote path of the file to download.
+            /// </summary>
+            readonly string _remoteFileToDownload;
 
             /// <summary>
             /// Tries to read the text from a file.
@@ -604,6 +696,7 @@ namespace GoreUpdater
         {
             readonly MasterServerReaderReadCallback _callback;
             readonly object _userState;
+            readonly int? _version;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ThreadWorkerArgs"/> class.
@@ -611,11 +704,20 @@ namespace GoreUpdater
             /// <param name="callback">The <see cref="MasterServerReaderReadCallback"/> to invoke with the results when complete.</param>
             /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
             /// from the method call.</param>
-            public ThreadWorkerArgs(MasterServerReaderReadCallback callback, object userState)
+            /// <param name="version">When using <see cref="IMasterServerReader.BeginReadVersionFileList"/>, contains the verison
+            /// to read. When null, assume using <see cref="IMasterServerReader.BeginReadVersion"/>.</param>
+            public ThreadWorkerArgs(MasterServerReaderReadCallback callback, object userState, int? version)
             {
                 _callback = callback;
                 _userState = userState;
+                _version = version;
             }
+
+            /// <summary>
+            /// Gets the version to read. When using <see cref="IMasterServerReader.BeginReadVersionFileList"/>, contains the verison
+            /// to read. When null, assume using <see cref="IMasterServerReader.BeginReadVersion"/>.
+            /// </summary>
+            public int? Version { get { return _version; } }
 
             /// <summary>
             /// Gets the callback delegate.

@@ -342,7 +342,7 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// The callback method for the <see cref="IMasterServerReader.BeginRead"/>.
+        /// The callback method for the <see cref="IMasterServerReader.BeginReadVersion"/>.
         /// </summary>
         /// <param name="sender">The <see cref="IMasterServerReader"/> this event came from.</param>
         /// <param name="info">The information from the master server(s).</param>
@@ -423,6 +423,10 @@ namespace GoreUpdater
                 return;
             }
 
+            // TODO: Instead of the below, use:
+            // _msr.BeginReadVersionFileList(MasterServerReader_Callback_VersionFileList, this);
+            // Then put this stuff below into that method
+
             // Create the DownloadManager
             _dm = new DownloadManager(Settings.TargetPath, Settings.TempPath, info.Version);
             _dm.DownloadFinished += DownloadManager_DownloadFinished;
@@ -479,7 +483,7 @@ namespace GoreUpdater
             State = UpdateClientState.ReadingMasterServers;
 
             // Start grabbing from the master server
-            _msr.BeginRead(MasterServerReader_Callback, this);
+            _msr.BeginReadVersion(MasterServerReader_Callback, this);
         }
 
         /// <summary>

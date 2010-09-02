@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace GoreUpdater
@@ -17,8 +18,11 @@ namespace GoreUpdater
         readonly List<DownloadSourceDescriptor> _sources = new List<DownloadSourceDescriptor>();
         readonly object _sourcesSync = new object();
         readonly object _versionSync = new object();
+        readonly object _versionFileListTextSync = new object();
 
         string _error;
+        string _versionFileListText;
+        bool _currVersionFileListTextLegal;
         int _version = 0;
 
         /// <summary>
@@ -60,6 +64,71 @@ namespace GoreUpdater
                 if (!_masters.Any(master.IsIdenticalTo))
                 {
                     _masters.Add(master);
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the text read for the <see cref="VersionFileList"/>. This method will use a "best guess" approach
+        /// to determine what text to use when multiple different texts are added.
+        /// </summary>
+        /// <param name="text">The text for the <see cref="VersionFileList"/>.</param>
+        public void AddVersionFileListText(string text)
+        {
+            lock (_versionFileListTextSync)
+            {
+                // If the text is exactly the same as the current _versionFileListText, then just ignore it since there is obviously
+                // nothing to be done
+                if (StringComparer.Ordinal.Equals(text, _versionFileListText))
+                    return;
+
+                // Try to parse the text as a VersionFileList to see if it is valid
+                bool textIsValid;
+                try
+                {
+                    VersionFileList.CreateFromString(text);
+                    textIsValid = true;
+                }
+                catch (InvalidDataException)
+                {
+                    // Ignore InvalidDataException since its expected when the version is invalid
+                    textIsValid = false;
+                }
+                catch (Exception ex)
+                {
+                    // For any other exception, it still must be invalid, but check it out when debugging
+                    Debug.Fail(ex.ToString());
+                    textIsValid = false;
+                }
+
+                // If no value set, just use the text no matter what
+                if (string.IsNullOrEmpty(_versionFileListText))
+                {
+                    _versionFileListText = text;
+                    _currVersionFileListTextLegal = textIsValid;
+                    return;
+                }
+
+                // The _versionFileListText already exists. If the current text is invalid but the new text is valid, then
+                // just use the new text.
+                if (!_currVersionFileListTextLegal && textIsValid)
+                {
+                    _versionFileListText = text;
+                    _currVersionFileListTextLegal = textIsValid;
+                    return;
+                }
+
+                // Likewise, if the current text is valid but the new text is invalid, do not use the new text
+                if (_currVersionFileListTextLegal && !textIsValid)
+                    return;
+
+                // From here, they are either both valid or both invalid. To keep things simple, just assume that the larger
+                // of the two strings are "better". So change to the new text if it is longer.
+                if (text.Length > _versionFileListText.Length)
+                {
+                    _versionFileListText = text;
+                    _currVersionFileListTextLegal = textIsValid;
                     return;
                 }
             }
@@ -144,7 +213,8 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Gets the current version.
+        /// Gets the current version. When using <see cref="IMasterServerReader.BeginReadVersionFileList"/>, this value is
+        /// equal to the version value given when calling the method.
         /// </summary>
         public int Version
         {
@@ -153,6 +223,21 @@ namespace GoreUpdater
                 lock (_versionSync)
                 {
                     return _version;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the text for the <see cref="VersionFileList"/>. This value is only set when using
+        /// <see cref="IMasterServerReader.BeginReadVersionFileList"/>, and will stay null if using
+        /// <see cref="IMasterServerReader.BeginReadVersion"/> or if the file failed to be read.
+        /// </summary>
+        public string VersionFileListText
+        {
+            get {
+                lock (_versionFileListTextSync)
+                {
+                    return _versionFileListText;
                 }
             }
         }
