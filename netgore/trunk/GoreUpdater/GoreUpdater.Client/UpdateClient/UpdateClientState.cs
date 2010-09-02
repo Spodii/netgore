@@ -19,17 +19,27 @@
         Initializing,
 
         /// <summary>
-        /// The current version and server lists are being downloaded from the master servers.
+        /// The current version and server lists are being downloaded from the master server(s).
         /// </summary>
-        ReadingMasterServers,
+        ReadingLiveVersion,
 
         /// <summary>
-        /// Reading from the master servers has completed, and the results are being processed.
+        /// <see cref="UpdateClientState.ReadingLiveVersion"/> has completed and the results are being processed.
         /// </summary>
-        DoneReadingMasterServers,
+        ReadingLiveVersionDone,
 
         /// <summary>
-        /// Downloading the new files from the file servers.
+        /// The file list for the live version is being downloaded from the master server(s).
+        /// </summary>
+        ReadingLiveVersionFileList,
+
+        /// <summary>
+        /// <see cref="UpdateClientState.ReadingLiveVersionFileList"/> has completed and the results are being processed.
+        /// </summary>
+        ReadingLiveVersionFileListDone,
+
+        /// <summary>
+        /// Downloading the new files from the file server(s).
         /// </summary>
         UpdatingFiles,
 
