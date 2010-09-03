@@ -109,6 +109,7 @@ namespace NetGore.AI
         /// <param name="minY">Y size of map</param>
         public void Initialize(ushort maxX, ushort minY)
         {
+            _isInitialized = false;
 
             _memoryCells = null;
             
@@ -134,6 +135,8 @@ namespace NetGore.AI
                     _memoryCells[X, Y] = new MemoryCell((ushort)(X * _cellSize), (ushort)(Y * _cellSize));
                 }
             }
+
+            _isInitialized = true;
         }
         
         /// <summary>
@@ -174,6 +177,9 @@ namespace NetGore.AI
         /// <param name="ID">The ID of the MemoryMap, this should be kept the same as it's corresponding World Map.</param>
         public void SaveMemoryMap(ContentPaths contentPath, int ID)
         {
+            if (!_isInitialized)
+                throw new Exception("You can not save a memory map that has not been Initialized properly.");
+
             var path = GetFilePath(contentPath, ID);
 
             using (var writer = new GenericValueWriter(path, _rootNodeName, EncodingFormat))
