@@ -154,10 +154,13 @@ namespace NetGore.AI
             }
 
             var read = new GenericValueReader(path, _rootNodeName);
-
+            
+            
+            _cellSize = read.ReadUShort("CellSize");
+            
             Initialize(1024, 1024);
 
-            _cellSize = read.ReadUShort("CellSize");
+            
 
             for (var X = 0; X < _cellsX; X++)
             {
