@@ -347,6 +347,13 @@ namespace GoreUpdater
 
                     if (containsAllSources)
                         failedSources.Clear();
+
+                    // Add back to the NotStartedQueue so it can be attempted again
+                    lock (_notStartedQueueSync)
+                    {
+                        Debug.Assert(!_notStartedQueue.Contains(remoteFile), "Why is this item already in the NotStartedQueue?");
+                        _notStartedQueue.Enqueue(remoteFile);
+                    }
                 }
             }
 

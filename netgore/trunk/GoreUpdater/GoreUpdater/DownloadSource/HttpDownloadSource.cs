@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -33,11 +34,21 @@ namespace GoreUpdater
             {
                 for (var i = 0; i < numWebClients; i++)
                 {
-                    var wc = new WebClient();
-                    wc.DownloadFileCompleted += wc_DownloadFileCompleted;
+                    var wc = CreateWebClient();
                     _webClients.Push(wc);
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="WebClient"/> that will be used to perform the downloading.
+        /// </summary>
+        /// <returns>A <see cref="WebClient"/> that will be used to perform the downloading.</returns>
+        WebClient CreateWebClient()
+        {
+            var wc = new WebClient();
+            wc.DownloadFileCompleted += wc_DownloadFileCompleted;
+            return wc;
         }
 
         /// <summary>
@@ -81,8 +92,11 @@ namespace GoreUpdater
         /// <param name="e">The <see cref="System.ComponentModel.AsyncCompletedEventArgs"/> instance containing the event data.</param>
         void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            Debug.Assert(sender is WebClient);
+
             var downloadInfo = (AsyncDownloadInfo)e.UserState;
 
+            // Raise the appropriate event
             if (e.Cancelled || e.Error != null)
             {
                 if (DownloadFailed != null)
@@ -92,6 +106,12 @@ namespace GoreUpdater
             {
                 if (DownloadFinished != null)
                     DownloadFinished(this, downloadInfo.RemoteFile, downloadInfo.LocalFilePath);
+            }
+
+            // Add the WebClient back to the pool
+            lock (_webClientsSync)
+            {
+                _webClients.Push((WebClient)sender);
             }
         }
 

@@ -7,6 +7,7 @@ using System.Linq;
 namespace GoreUpdater
 {
     // TODO: Run the delete routine after successfully updating
+    // TODO: Delete the _temp directory when done
 
     /// <summary>
     /// A master class for the updater client that performs the whole update process.
@@ -222,7 +223,10 @@ namespace GoreUpdater
 
             // Abort if HasErrors is true
             if (HasErrors)
+            {
+                State = UpdateClientState.Completed;
                 return;
+            }
 
             // If done, update the version
             TrySetClientVersionToLive();
