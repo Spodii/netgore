@@ -41,12 +41,6 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Notifies listeners when there has been a critical error reading from the master server(s) that result in the update
-        /// process not being able to continue.
-        /// </summary>
-        public event UpdateClientMasterServerReaderErrorEventHandler MasterServerReaderError;
-
-        /// <summary>
         /// Notifies listeners when a file has completely failed to be downloaded after multiple attempts. This is usually
         /// a breaking issue since all files need to be updated for the update to finish but this file could not download at all.
         /// </summary>
@@ -77,6 +71,12 @@ namespace GoreUpdater
         /// Notifies listeners when the live version has been found.
         /// </summary>
         public event UpdateClientEventHandler LiveVersionFound;
+
+        /// <summary>
+        /// Notifies listeners when there has been a critical error reading from the master server(s) that result in the update
+        /// process not being able to continue.
+        /// </summary>
+        public event UpdateClientMasterServerReaderErrorEventHandler MasterServerReaderError;
 
         /// <summary>
         /// Notifies listeners when the <see cref="UpdateClient.State"/> property has changed.
@@ -186,29 +186,6 @@ namespace GoreUpdater
                     Debug.Fail(ex.ToString());
                 }
             }
-        }
-
-        /// <summary>
-        /// Tries to set the client's version to the live version. That is, sets the update as being completed successfully.
-        /// </summary>
-        void TrySetClientVersionToLive()
-        {
-            // Do not set if we have files that need to be copied
-            if (_fileReplacer.JobCount > 0)
-                return;
-
-            // Do not update version if there were errors
-            if (HasErrors)
-                return;
-
-            if (!_liveVersion.HasValue)
-            {
-                Debug.Fail("Why is the LiveVersion not set?");
-                return;
-            }
-
-            // Update the version file
-            File.WriteAllText(Settings.VersionFilePath, _liveVersion.Value.ToString());
         }
 
         /// <summary>
@@ -359,7 +336,7 @@ namespace GoreUpdater
         /// <returns>The relative paths to the files that need to be updated.</returns>
         IEnumerable<string> FindFilesToUpdate(VersionFileList vfl)
         {
-            List<string> ret = new List<string>();
+            var ret = new List<string>();
 
             // Loop through each file
             foreach (var updateFileInfo in vfl.Files)
@@ -408,70 +385,6 @@ namespace GoreUpdater
 
             // LOG: Number of files to update
             return ret;
-        }
-
-        /// <summary>
-        /// The callback method for the <see cref="IMasterServerReader.BeginReadVersionFileList"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="IMasterServerReader"/> this event came from.</param>
-        /// <param name="info">The information from the master server(s).</param>
-        /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
-        /// from the method call.</param>
-        void MasterServerReader_Callback_VersionFileList(IMasterServerReader sender, IMasterServerReadInfo info, object userState)
-        {
-            State = UpdateClientState.ReadingLiveVersionFileListDone;
-            
-            // Check for a valid VersionFileList
-            if (string.IsNullOrEmpty(info.VersionFileListText))
-            {
-                const string errmsg = "Could not get a valid VersionFileList file from the master servers for version `{0}` - download failed.";
-                if (MasterServerReaderError != null)
-                    MasterServerReaderError(this, string.Format(errmsg, info.Version));
-                HasErrors = true;
-                return;
-            }
-
-            VersionFileList vfl;
-            try
-            {
-                vfl = VersionFileList.CreateFromString(info.VersionFileListText);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg= "Could not get a valid VersionFileList file from the master servers for version `{0}`. Details: {1}";
-                if (MasterServerReaderError != null)
-                    MasterServerReaderError(this, string.Format(errmsg, info.Version, ex));
-                HasErrors = true;
-                return;
-            }
-
-            // Find the files to update
-            var toUpdate = FindFilesToUpdate(vfl);
-
-            // If all file hashes match, then we are good to go
-            if (toUpdate.Count() == 0)
-            {
-                CheckIfDownloadManagerComplete();
-                return;
-            }
-
-            // There was one or more files to update, so start the updating...
-
-            // Create the DownloadManager
-            _dm = new DownloadManager(Settings.TargetPath, Settings.TempPath, info.Version);
-            _dm.DownloadFinished += DownloadManager_DownloadFinished;
-            _dm.FileMoveFailed += DownloadManager_FileMoveFailed;
-            _dm.DownloadFailed += DownloadManager_DownloadFailed;
-            _dm.Finished += DownloadManager_Finished;
-
-            State = UpdateClientState.UpdatingFiles;
-
-            // Add the sources to the DownloadManager
-            var sources = info.DownloadSources.Select(x => x.Instantiate());
-            _dm.AddSources(sources);
-
-            // Enqueue the files that need to be downloaded
-            _dm.Enqueue(toUpdate);
         }
 
         /// <summary>
@@ -563,6 +476,72 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// The callback method for the <see cref="IMasterServerReader.BeginReadVersionFileList"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="IMasterServerReader"/> this event came from.</param>
+        /// <param name="info">The information from the master server(s).</param>
+        /// <param name="userState">An optional state object passed by the caller to supply information to the callback method
+        /// from the method call.</param>
+        void MasterServerReader_Callback_VersionFileList(IMasterServerReader sender, IMasterServerReadInfo info, object userState)
+        {
+            State = UpdateClientState.ReadingLiveVersionFileListDone;
+
+            // Check for a valid VersionFileList
+            if (string.IsNullOrEmpty(info.VersionFileListText))
+            {
+                const string errmsg =
+                    "Could not get a valid VersionFileList file from the master servers for version `{0}` - download failed.";
+                if (MasterServerReaderError != null)
+                    MasterServerReaderError(this, string.Format(errmsg, info.Version));
+                HasErrors = true;
+                return;
+            }
+
+            VersionFileList vfl;
+            try
+            {
+                vfl = VersionFileList.CreateFromString(info.VersionFileListText);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg =
+                    "Could not get a valid VersionFileList file from the master servers for version `{0}`. Details: {1}";
+                if (MasterServerReaderError != null)
+                    MasterServerReaderError(this, string.Format(errmsg, info.Version, ex));
+                HasErrors = true;
+                return;
+            }
+
+            // Find the files to update
+            var toUpdate = FindFilesToUpdate(vfl);
+
+            // If all file hashes match, then we are good to go
+            if (toUpdate.Count() == 0)
+            {
+                CheckIfDownloadManagerComplete();
+                return;
+            }
+
+            // There was one or more files to update, so start the updating...
+
+            // Create the DownloadManager
+            _dm = new DownloadManager(Settings.TargetPath, Settings.TempPath, info.Version);
+            _dm.DownloadFinished += DownloadManager_DownloadFinished;
+            _dm.FileMoveFailed += DownloadManager_FileMoveFailed;
+            _dm.DownloadFailed += DownloadManager_DownloadFailed;
+            _dm.Finished += DownloadManager_Finished;
+
+            State = UpdateClientState.UpdatingFiles;
+
+            // Add the sources to the DownloadManager
+            var sources = info.DownloadSources.Select(x => x.Instantiate());
+            _dm.AddSources(sources);
+
+            // Enqueue the files that need to be downloaded
+            _dm.Enqueue(toUpdate);
+        }
+
+        /// <summary>
         /// Starts the asynchronous update process.
         /// </summary>
         /// <exception cref="InvalidOperationException"><see cref="IsRunning"/> was true.</exception>
@@ -622,6 +601,29 @@ namespace GoreUpdater
 
             // Execute
             return OfflineFileReplacerHelper.TryExecute(_fileReplacer.FilePath);
+        }
+
+        /// <summary>
+        /// Tries to set the client's version to the live version. That is, sets the update as being completed successfully.
+        /// </summary>
+        void TrySetClientVersionToLive()
+        {
+            // Do not set if we have files that need to be copied
+            if (_fileReplacer.JobCount > 0)
+                return;
+
+            // Do not update version if there were errors
+            if (HasErrors)
+                return;
+
+            if (!_liveVersion.HasValue)
+            {
+                Debug.Fail("Why is the LiveVersion not set?");
+                return;
+            }
+
+            // Update the version file
+            File.WriteAllText(Settings.VersionFilePath, _liveVersion.Value.ToString());
         }
     }
 }

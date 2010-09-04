@@ -293,10 +293,40 @@ namespace GoreUpdater
 
         class MasterServerDownloader : IDisposable
         {
+            /// <summary>
+            /// The default value for "giveUpTime" for the <see cref="Execute"/> parameter
+            /// for when reading the version file.
+            /// </summary>
+            const int _defaultGiveUpTimeVersion = 10000;
+
+            /// <summary>
+            /// The default value for "giveUpTime" for the <see cref="Execute"/> parameter
+            /// for when reading the <see cref="VersionFileList"/> file.
+            /// </summary>
+            const int _defaultGiveUpTimeVersionFileList = 30000;
+
+            /// <summary>
+            /// The default value for "stallTime" for the <see cref="Execute"/> parameter
+            /// for when reading the version file.
+            /// </summary>
+            const int _defaultStallTimeVersion = 3000;
+
+            /// <summary>
+            /// The default value for "stallTime" for the <see cref="Execute"/> parameter
+            /// for when reading the <see cref="VersionFileList"/> file.
+            /// </summary>
+            const int _defaultStallTimeVersionFileList = 6000;
+
             readonly MasterServerReadInfo _masterReadInfo;
+            readonly int? _readVersion;
+
+            /// <summary>
+            /// The remote path of the file to download.
+            /// </summary>
+            readonly string _remoteFileToDownload;
+
             readonly List<IDownloadSource> _sources;
             readonly object _sourcesSync = new object();
-            readonly int? _readVersion;
 
             /// <summary>
             /// If a version has been read from ANY of the master servers. This allows to avoid having to wait on very slow
@@ -329,7 +359,7 @@ namespace GoreUpdater
             /// <param name="readVersion">The version of the <see cref="VersionFileList"/> to read, or null if reading
             /// the current version number.</param>
             public MasterServerDownloader(MasterServerReadInfo masterReadInfo, IEnumerable<IDownloadSource> sources,
-                int? readVersion)
+                                          int? readVersion)
             {
                 _readVersion = readVersion;
                 _masterReadInfo = masterReadInfo;
@@ -337,13 +367,9 @@ namespace GoreUpdater
 
                 // Cache the remote file path
                 if (_readVersion.HasValue)
-                {
                     _remoteFileToDownload = PathHelper.GetVersionString(_readVersion.Value) + ".txt";
-                }
                 else
-                {
                     _remoteFileToDownload = CurrentVersionFilePath;
-                }
             }
 
             /// <summary>
@@ -370,30 +396,6 @@ namespace GoreUpdater
 
                 return true;
             }
-
-            /// <summary>
-            /// The default value for "giveUpTime" for the <see cref="Execute"/> parameter
-            /// for when reading the version file.
-            /// </summary>
-            const int _defaultGiveUpTimeVersion = 10000;
-
-            /// <summary>
-            /// The default value for "giveUpTime" for the <see cref="Execute"/> parameter
-            /// for when reading the <see cref="VersionFileList"/> file.
-            /// </summary>
-            const int _defaultGiveUpTimeVersionFileList = 30000;
-
-            /// <summary>
-            /// The default value for "stallTime" for the <see cref="Execute"/> parameter
-            /// for when reading the version file.
-            /// </summary>
-            const int _defaultStallTimeVersion = 3000;
-
-            /// <summary>
-            /// The default value for "stallTime" for the <see cref="Execute"/> parameter
-            /// for when reading the <see cref="VersionFileList"/> file.
-            /// </summary>
-            const int _defaultStallTimeVersionFileList = 6000;
 
             /// <summary>
             /// Executes the downloader and waits until all master servers finish to return the <see cref="IMasterServerReadInfo"/>.
@@ -498,11 +500,6 @@ namespace GoreUpdater
             }
 
             /// <summary>
-            /// The remote path of the file to download.
-            /// </summary>
-            readonly string _remoteFileToDownload;
-
-            /// <summary>
             /// Tries to read the text from a file.
             /// </summary>
             /// <param name="filePath">The path to the file to read.</param>
@@ -526,7 +523,9 @@ namespace GoreUpdater
                 // Handle based on what remote file it was
                 if (remoteFile == CurrentVersionFilePath)
                     Interlocked.Decrement(ref _numBusyVersionFile);
-                else if (_readVersion.HasValue && StringComparer.OrdinalIgnoreCase.Equals(PathHelper.GetVersionString(_readVersion.Value) + ".txt", remoteFile))
+                else if (_readVersion.HasValue &&
+                         StringComparer.OrdinalIgnoreCase.Equals(PathHelper.GetVersionString(_readVersion.Value) + ".txt",
+                                                                 remoteFile))
                     Interlocked.Decrement(ref _numBusyVersionFile);
                 else if (remoteFile == CurrentMasterServersFilePath)
                     Interlocked.Decrement(ref _numBusyMasterServersFile);
@@ -576,7 +575,9 @@ namespace GoreUpdater
                         Interlocked.Decrement(ref _numBusyVersionFile);
                     }
                 }
-                else if (_readVersion.HasValue && StringComparer.OrdinalIgnoreCase.Equals(PathHelper.GetVersionString(_readVersion.Value) + ".txt", remoteFile))
+                else if (_readVersion.HasValue &&
+                         StringComparer.OrdinalIgnoreCase.Equals(PathHelper.GetVersionString(_readVersion.Value) + ".txt",
+                                                                 remoteFile))
                 {
                     // VersionFileList file
                     try
@@ -734,12 +735,6 @@ namespace GoreUpdater
             }
 
             /// <summary>
-            /// Gets the version to read. When using <see cref="IMasterServerReader.BeginReadVersionFileList"/>, contains the verison
-            /// to read. When null, assume using <see cref="IMasterServerReader.BeginReadVersion"/>.
-            /// </summary>
-            public int? Version { get { return _version; } }
-
-            /// <summary>
             /// Gets the callback delegate.
             /// </summary>
             public MasterServerReaderReadCallback Callback
@@ -753,6 +748,15 @@ namespace GoreUpdater
             public object UserState
             {
                 get { return _userState; }
+            }
+
+            /// <summary>
+            /// Gets the version to read. When using <see cref="IMasterServerReader.BeginReadVersionFileList"/>, contains the verison
+            /// to read. When null, assume using <see cref="IMasterServerReader.BeginReadVersion"/>.
+            /// </summary>
+            public int? Version
+            {
+                get { return _version; }
             }
         }
     }

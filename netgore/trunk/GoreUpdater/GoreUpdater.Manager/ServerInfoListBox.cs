@@ -67,7 +67,7 @@ namespace GoreUpdater.Manager
                 drawImage = Resources.busy;
             else
                 drawImage = Resources.done;
-            
+
             // Draw the stauts icon
             if (drawImage != null)
                 e.Graphics.DrawImage(drawImage, new Point(e.Bounds.X, e.Bounds.Y));

@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater
+﻿using System.Linq;
+
+namespace GoreUpdater
 {
     /// <summary>
     /// Delegate for handling when the <see cref="UpdateClient"/>'s state has changed.

@@ -6,9 +6,11 @@ namespace GoreUpdater
     {
         public static string ReplacerFileName
         {
-            get { 
+            get
+            {
                 // TODO: Does this string really need to be global?
-                return "filereplacer.bat"; }
+                return "filereplacer.bat";
+            }
         }
     }
 }

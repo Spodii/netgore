@@ -7,8 +7,8 @@ namespace GoreUpdater.Manager
 {
     public partial class AddServerForm : Form
     {
-        static readonly object[] _fileUploaderTypes = Enum.GetValues(typeof(FileUploaderType)).OfType<object>().ToArray();
         static readonly object[] _fileDownloaderTypes = Enum.GetValues(typeof(DownloadSourceType)).OfType<object>().ToArray();
+        static readonly object[] _fileUploaderTypes = Enum.GetValues(typeof(FileUploaderType)).OfType<object>().ToArray();
 
         /// <summary>
         /// If this form is for adding a master server. If false, assumes its for adding a file server.
@@ -182,6 +182,26 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Handles the Click event of the lblDownloadHostHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lblDownloadHostHelp_Click(object sender, EventArgs e)
+        {
+            // TODO:
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblDownloadTypeHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void lblDownloadTypeHelp_Click(object sender, EventArgs e)
+        {
+            // TODO:
+        }
+
+        /// <summary>
         /// Handles the Click event of the lblHostHelp control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -219,26 +239,6 @@ namespace GoreUpdater.Manager
         static void lblUserHelp_Click(object sender, EventArgs e)
         {
             HelpHelper.DisplayHelp(HelpHelper.HelpAccountUser);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the lblDownloadTypeHelp control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lblDownloadTypeHelp_Click(object sender, EventArgs e)
-        {
-            // TODO:
-        }
-
-        /// <summary>
-        /// Handles the Click event of the lblDownloadHostHelp control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lblDownloadHostHelp_Click(object sender, EventArgs e)
-        {
-            // TODO:
         }
     }
 }
