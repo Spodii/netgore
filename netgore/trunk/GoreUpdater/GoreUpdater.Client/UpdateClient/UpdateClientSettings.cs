@@ -265,7 +265,9 @@ namespace GoreUpdater
                 TempPath = TempPath,
                 TargetPath = TargetPath,
                 OfflineFileReplacerCreator = OfflineFileReplacerCreator,
-                OfflineFileReplacerPath = OfflineFileReplacerPath
+                OfflineFileReplacerPath = OfflineFileReplacerPath,
+                VersionFilePath = VersionFilePath,
+                ResetAppPath = ResetAppPath
             };
 
             return ret;

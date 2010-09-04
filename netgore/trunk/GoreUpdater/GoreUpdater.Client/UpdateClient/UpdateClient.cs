@@ -1,13 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace GoreUpdater
 {
-    // TODO: Perform hash check on files to see if we really need to download them.
-    // TODO: Download the file listings from the master server(s) so we know what files to update.
-    // TODO: Hash check the downloaded files to ensure they are correct
     // TODO: Run the delete routine after successfully updating
 
     /// <summary>
@@ -245,7 +243,9 @@ namespace GoreUpdater
                 _dm = null;
             }
 
-            // TODO: Should I also abort here if HasErrors is set? Probably...
+            // Abort if HasErrors is true
+            if (HasErrors)
+                return;
 
             // If done, update the version
             TrySetClientVersionToLive();
@@ -352,6 +352,65 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Checks the files provided in the given <see cref="VersionFileList"/> and compares them to the local files
+        /// to see what files need to be updated.
+        /// </summary>
+        /// <param name="vfl">The <see cref="VersionFileList"/> containing the files to be updated.</param>
+        /// <returns>The relative paths to the files that need to be updated.</returns>
+        IEnumerable<string> FindFilesToUpdate(VersionFileList vfl)
+        {
+            List<string> ret = new List<string>();
+
+            // Loop through each file
+            foreach (var updateFileInfo in vfl.Files)
+            {
+                // Get the local file path
+                var localFilePath = PathHelper.CombineDifferentPaths(Settings.TargetPath, updateFileInfo.FilePath);
+
+                // If the file does not exist, add it
+                if (!File.Exists(localFilePath))
+                {
+                    ret.Add(updateFileInfo.FilePath);
+                    continue;
+                }
+
+                // Get the info for the local file
+                try
+                {
+                    var localFileInfo = new FileInfo(localFilePath);
+
+                    // If the size of the local file doesn't equal the size of the updated file, avoid
+                    // checking the hash and just update it
+                    if (localFileInfo.Length != updateFileInfo.Size)
+                    {
+                        ret.Add(updateFileInfo.FilePath);
+                        continue;
+                    }
+
+                    // File exists and is of the correct size, so compare the hash of the local file to the expected hash
+                    var localFileHash = Hasher.GetFileHash(localFilePath);
+                    if (!StringComparer.Ordinal.Equals(localFileHash, updateFileInfo.Hash))
+                    {
+                        ret.Add(updateFileInfo.FilePath);
+                        continue;
+                    }
+                }
+                catch (IOException ex)
+                {
+                    // On an exception, assume the file needs to be updated
+                    Debug.Fail(ex.ToString());
+                    ret.Add(updateFileInfo.FilePath);
+                    continue;
+                }
+
+                // LOG: File passed hash check
+            }
+
+            // LOG: Number of files to update
+            return ret;
+        }
+
+        /// <summary>
         /// The callback method for the <see cref="IMasterServerReader.BeginReadVersionFileList"/>.
         /// </summary>
         /// <param name="sender">The <see cref="IMasterServerReader"/> this event came from.</param>
@@ -362,10 +421,41 @@ namespace GoreUpdater
         {
             State = UpdateClientState.ReadingLiveVersionFileListDone;
             
-            // TODO: Check to make sure the VersionFileList is valid
-            // TODO: Grab the list of files to update from the VersionFileList
-            // TODO: For each file to check to download, compare the hashes first to see if we even need to download it
-            // TODO: If all file hashes match, then consider us updated (call CheckIfDownloadManagerComplete)
+            // Check for a valid VersionFileList
+            if (string.IsNullOrEmpty(info.VersionFileListText))
+            {
+                const string errmsg = "Could not get a valid VersionFileList file from the master servers for version `{0}` - download failed.";
+                if (MasterServerReaderError != null)
+                    MasterServerReaderError(this, string.Format(errmsg, info.Version));
+                HasErrors = true;
+                return;
+            }
+
+            VersionFileList vfl;
+            try
+            {
+                vfl = VersionFileList.CreateFromString(info.VersionFileListText);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg= "Could not get a valid VersionFileList file from the master servers for version `{0}`. Details: {1}";
+                if (MasterServerReaderError != null)
+                    MasterServerReaderError(this, string.Format(errmsg, info.Version, ex));
+                HasErrors = true;
+                return;
+            }
+
+            // Find the files to update
+            var toUpdate = FindFilesToUpdate(vfl);
+
+            // If all file hashes match, then we are good to go
+            if (toUpdate.Count() == 0)
+            {
+                CheckIfDownloadManagerComplete();
+                return;
+            }
+
+            // There was one or more files to update, so start the updating...
 
             // Create the DownloadManager
             _dm = new DownloadManager(Settings.TargetPath, Settings.TempPath, info.Version);
@@ -381,7 +471,7 @@ namespace GoreUpdater
             _dm.AddSources(sources);
 
             // Enqueue the files that need to be downloaded
-            _dm.Enqueue(new string[] { "11.png", "12.png", "13.png" });
+            _dm.Enqueue(toUpdate);
         }
 
         /// <summary>

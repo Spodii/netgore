@@ -63,7 +63,7 @@ namespace GoreUpdater
 
             var callback = stateObj.Callback;
             var userState = stateObj.UserState;
-            var readVersion = (int?)stateObj.Version;
+            var readVersion = stateObj.Version;
 
             var info = new MasterServerReadInfo();
 
@@ -338,7 +338,7 @@ namespace GoreUpdater
                 // Cache the remote file path
                 if (_readVersion.HasValue)
                 {
-                    _remoteFileToDownload = PathHelper.GetVersionString(_readVersion.Value);
+                    _remoteFileToDownload = PathHelper.GetVersionString(_readVersion.Value) + ".txt";
                 }
                 else
                 {
@@ -526,6 +526,8 @@ namespace GoreUpdater
                 // Handle based on what remote file it was
                 if (remoteFile == CurrentVersionFilePath)
                     Interlocked.Decrement(ref _numBusyVersionFile);
+                else if (_readVersion.HasValue && StringComparer.OrdinalIgnoreCase.Equals(PathHelper.GetVersionString(_readVersion.Value) + ".txt", remoteFile))
+                    Interlocked.Decrement(ref _numBusyVersionFile);
                 else if (remoteFile == CurrentMasterServersFilePath)
                     Interlocked.Decrement(ref _numBusyMasterServersFile);
                 else if (remoteFile == CurrentDownloadSourcesFilePath)
@@ -547,6 +549,7 @@ namespace GoreUpdater
                 // Handle based on what remote file it was
                 if (remoteFile == CurrentVersionFilePath)
                 {
+                    // Version file
                     try
                     {
                         var txt = TryReadAllText(localFilePath);
@@ -563,6 +566,23 @@ namespace GoreUpdater
                                 _hasReadVersion = true;
                             }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        _masterReadInfo.AppendError("Unexpected error while handling version file: " + ex);
+                    }
+                    finally
+                    {
+                        Interlocked.Decrement(ref _numBusyVersionFile);
+                    }
+                }
+                else if (_readVersion.HasValue && StringComparer.OrdinalIgnoreCase.Equals(PathHelper.GetVersionString(_readVersion.Value) + ".txt", remoteFile))
+                {
+                    // VersionFileList file
+                    try
+                    {
+                        var txt = TryReadAllText(localFilePath);
+                        _masterReadInfo.AddVersionFileListText(txt);
                     }
                     catch (Exception ex)
                     {
