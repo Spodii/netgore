@@ -39,6 +39,16 @@
         ReadingLiveVersionFileListDone,
 
         /// <summary>
+        /// The downloaded <see cref="VersionFileList"/> for the current version is being parsed.
+        /// </summary>
+        ParsingVersionFileList,
+
+        /// <summary>
+        /// Comparing the hashes of the new version's files to the current files to see what needs to be updated.
+        /// </summary>
+        ComparingFileHashes,
+
+        /// <summary>
         /// Downloading the new files from the file server(s).
         /// </summary>
         UpdatingFiles,
