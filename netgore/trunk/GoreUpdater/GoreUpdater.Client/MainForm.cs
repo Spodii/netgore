@@ -42,8 +42,14 @@ namespace GoreUpdater
             _uc.FileMoveFailed += _uc_FileMoveFailed;
             _uc.MasterServerReaderError += _uc_MasterServerReaderError;
             _uc.IsRunningChanged += _uc_IsRunningChanged;
+            _uc.HasErrorsChanged += _uc_HasErrorsChanged;
 
             _uc.Start();
+        }
+
+        void _uc_HasErrorsChanged(UpdateClient sender)
+        {
+            LogLine("HasErrors changed to: " + sender.HasErrors);
         }
 
         void _uc_FileDownloadFailed(UpdateClient sender, string remoteFile)
