@@ -26,8 +26,7 @@ namespace GoreUpdater.Manager
         /// <param name="downloadType">The type of file downloader to use.</param>
         /// <param name="downloadHost">The download host.</param>
         public FileServerInfo(FileUploaderType type, string host, string user, string password, DownloadSourceType downloadType,
-            string downloadHost)
-            : base(type, host, user, password, downloadType, downloadHost)
+                              string downloadHost) : base(type, host, user, password, downloadType, downloadHost)
         {
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace GoreUpdater
 {
@@ -12,133 +13,12 @@ namespace GoreUpdater
         bool _isReadOnly;
         string _localFileServerPath;
         string _localMasterServerPath;
+        Func<string, string, IOfflineFileReplacer> _offlineFileReplacer;
+        string _offlineFileReplacerPath;
+        string _resetAppPath;
         string _targetPath;
         string _tempPath;
-        string _offlineFileReplacerPath;
         string _versionFilePath;
-        Func<string, string, IOfflineFileReplacer> _offlineFileReplacer;
-
-        /// <summary>
-        /// The default method for creating the <see cref="IOfflineFileReplacer"/>.
-        /// </summary>
-        /// <param name="filePath">The path for the <see cref="IOfflineFileReplacer"/>'s output.</param>
-        /// <param name="appPath">The path to the application to run after the <see cref="IOfflineFileReplacer"/> finishes.</param>
-        /// <returns>The <see cref="IOfflineFileReplacer"/> instance.</returns>
-        protected virtual IOfflineFileReplacer DefaultOfflineFileReplacer(string filePath, string appPath)
-        {
-            // FUTURE: Support Linux by using something other than batch files
-            return new BatchOfflineFileReplacer(filePath, appPath);
-        }
-
-        /// <summary>
-        /// Gets or sets the path to the file that the <see cref="IOfflineFileReplacer"/> instance will output to.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Tried to set the value while <see cref="IsReadOnly"/> is true.</exception>
-        public string OfflineFileReplacerPath
-        {
-            get { return _offlineFileReplacerPath; }
-            set
-            {
-                if (IsReadOnly)
-                    throw ReadOnlyException(); 
-                
-                _offlineFileReplacerPath = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the current version of the client using the <see cref="VersionFilePath"/>.
-        /// </summary>
-        /// <returns>The current version, or null if the current version is unknown since the file at the <see cref="VersionFilePath"/>
-        /// does not exist or contains invalid data.</returns>
-        public int? GetCurrentVersion()
-        {
-            try
-            {
-                var f = VersionFilePath;
-
-                // Check for the file
-                if (!File.Exists(f))
-                    return null;
-
-                // Read the file
-                var s = File.ReadAllText(f);
-
-                // Parse the file's contents
-                int version;
-                if (!int.TryParse(s, out version))
-                {
-                    Debug.Fail("Could not parse version file. Contents: " + s);
-                    return null;
-                }
-
-                return version;
-            }
-            catch (IOException ex)
-            {
-                Debug.Fail(ex.ToString());
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the path to the file containing the current version.
-        /// </summary>
-        public string VersionFilePath
-        {
-            get { return _versionFilePath; }
-            set
-            {
-                if (IsReadOnly)
-                    throw ReadOnlyException();
-
-                _versionFilePath = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the Func to use to create the <see cref="IOfflineFileReplacer"/> to be used. If set to null, the
-        /// internal default implementation will be used. The first parameter is the output file path for the generated
-        /// <see cref="IOfflineFileReplacer"/> program or script (such as a batch file, bash script, etc) and the
-        /// second parameter is the path to the application that should be run after the script finishes.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Tried to set the value while <see cref="IsReadOnly"/> is true.</exception>
-        public Func<string, string, IOfflineFileReplacer> OfflineFileReplacerCreator
-        {
-            get
-            {
-                if (_offlineFileReplacer == null)
-                    return DefaultOfflineFileReplacer;
-
-                return _offlineFileReplacer;
-            }
-            set
-            {
-                if (IsReadOnly)
-                    throw ReadOnlyException();
-
-                _offlineFileReplacer = value;
-            }
-        }
-
-        string _resetAppPath;
-
-        /// <summary>
-        /// Gets or sets the full path to the application that will be run if this program ever needs to reset
-        /// itself, such as to update itself. This is typically the path to the current application.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Tried to set the value while <see cref="IsReadOnly"/> is true.</exception>
-        public string ResetAppPath
-        {
-            get { return _resetAppPath; }
-            set
-            {
-                if (IsReadOnly)
-                    throw ReadOnlyException();
-                
-                _resetAppPath = value;
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateClientSettings"/> class.
@@ -210,6 +90,64 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Gets or sets the Func to use to create the <see cref="IOfflineFileReplacer"/> to be used. If set to null, the
+        /// internal default implementation will be used. The first parameter is the output file path for the generated
+        /// <see cref="IOfflineFileReplacer"/> program or script (such as a batch file, bash script, etc) and the
+        /// second parameter is the path to the application that should be run after the script finishes.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Tried to set the value while <see cref="IsReadOnly"/> is true.</exception>
+        public Func<string, string, IOfflineFileReplacer> OfflineFileReplacerCreator
+        {
+            get
+            {
+                if (_offlineFileReplacer == null)
+                    return DefaultOfflineFileReplacer;
+
+                return _offlineFileReplacer;
+            }
+            set
+            {
+                if (IsReadOnly)
+                    throw ReadOnlyException();
+
+                _offlineFileReplacer = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the path to the file that the <see cref="IOfflineFileReplacer"/> instance will output to.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Tried to set the value while <see cref="IsReadOnly"/> is true.</exception>
+        public string OfflineFileReplacerPath
+        {
+            get { return _offlineFileReplacerPath; }
+            set
+            {
+                if (IsReadOnly)
+                    throw ReadOnlyException();
+
+                _offlineFileReplacerPath = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the full path to the application that will be run if this program ever needs to reset
+        /// itself, such as to update itself. This is typically the path to the current application.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Tried to set the value while <see cref="IsReadOnly"/> is true.</exception>
+        public string ResetAppPath
+        {
+            get { return _resetAppPath; }
+            set
+            {
+                if (IsReadOnly)
+                    throw ReadOnlyException();
+
+                _resetAppPath = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the path that the updated files should ultimately be located. This is usually the same directory
         /// that the program is running in.
         /// </summary>
@@ -244,6 +182,21 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Gets or sets the path to the file containing the current version.
+        /// </summary>
+        public string VersionFilePath
+        {
+            get { return _versionFilePath; }
+            set
+            {
+                if (IsReadOnly)
+                    throw ReadOnlyException();
+
+                _versionFilePath = value;
+            }
+        }
+
+        /// <summary>
         /// Creates a <see cref="IOfflineFileReplacer"/> instance using the settings provided by this object instance.
         /// </summary>
         /// <returns>The <see cref="IOfflineFileReplacer"/> instance using the settings provided by this object instance.</returns>
@@ -271,6 +224,53 @@ namespace GoreUpdater
             };
 
             return ret;
+        }
+
+        /// <summary>
+        /// The default method for creating the <see cref="IOfflineFileReplacer"/>.
+        /// </summary>
+        /// <param name="filePath">The path for the <see cref="IOfflineFileReplacer"/>'s output.</param>
+        /// <param name="appPath">The path to the application to run after the <see cref="IOfflineFileReplacer"/> finishes.</param>
+        /// <returns>The <see cref="IOfflineFileReplacer"/> instance.</returns>
+        protected virtual IOfflineFileReplacer DefaultOfflineFileReplacer(string filePath, string appPath)
+        {
+            // FUTURE: Support Linux by using something other than batch files
+            return new BatchOfflineFileReplacer(filePath, appPath);
+        }
+
+        /// <summary>
+        /// Gets the current version of the client using the <see cref="VersionFilePath"/>.
+        /// </summary>
+        /// <returns>The current version, or null if the current version is unknown since the file at the <see cref="VersionFilePath"/>
+        /// does not exist or contains invalid data.</returns>
+        public int? GetCurrentVersion()
+        {
+            try
+            {
+                var f = VersionFilePath;
+
+                // Check for the file
+                if (!File.Exists(f))
+                    return null;
+
+                // Read the file
+                var s = File.ReadAllText(f);
+
+                // Parse the file's contents
+                int version;
+                if (!int.TryParse(s, out version))
+                {
+                    Debug.Fail("Could not parse version file. Contents: " + s);
+                    return null;
+                }
+
+                return version;
+            }
+            catch (IOException ex)
+            {
+                Debug.Fail(ex.ToString());
+                return null;
+            }
         }
 
         /// <summary>

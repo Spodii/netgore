@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater
+﻿using System.Linq;
+
+namespace GoreUpdater
 {
     /// <summary>
     /// Describes the different states the <see cref="UpdateClient"/> can be in. For the most part, the enum value of

@@ -1,4 +1,6 @@
-﻿namespace GoreUpdater
+﻿using System.Linq;
+
+namespace GoreUpdater
 {
     /// <summary>
     /// Delegate for handling the <see cref="UpdateClient.FileDownloaded"/> from the <see cref="UpdateClient"/>.

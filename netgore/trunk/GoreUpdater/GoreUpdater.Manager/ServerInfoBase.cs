@@ -32,6 +32,8 @@ namespace GoreUpdater.Manager
         readonly Queue<int> _versionSyncQueue = new Queue<int>();
 
         readonly Thread _workerThread;
+        string _downloadHost;
+        DownloadSourceType _fileDownloaderType;
 
         IFileUploader _fileUploader;
         FileUploaderType _fileUploaderType;
@@ -40,8 +42,6 @@ namespace GoreUpdater.Manager
         bool _isDisposed = false;
         string _password;
         string _user;
-        DownloadSourceType _fileDownloaderType;
-        string _downloadHost;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerInfoBase"/> class.
@@ -52,9 +52,8 @@ namespace GoreUpdater.Manager
         /// <param name="password">The password.</param>
         /// <param name="downloadType">The type of file downloader to use.</param>
         /// <param name="downloadHost">The download host.</param>
-        protected ServerInfoBase(FileUploaderType type, string host, string user, string password,
-            DownloadSourceType downloadType,
-            string downloadHost)
+        protected ServerInfoBase(FileUploaderType type, string host, string user, string password, DownloadSourceType downloadType,
+                                 string downloadHost)
         {
             _fileUploaderType = type;
             _host = host;
@@ -95,11 +94,11 @@ namespace GoreUpdater.Manager
         public event ServerInfoEventHandler ServerChanged;
 
         /// <summary>
-        /// Gets the type of <see cref="IFileUploader"/> to use.
+        /// Gets the host to use to download.
         /// </summary>
-        public FileUploaderType FileUploaderType
+        public string DownloadHost
         {
-            get { return _fileUploaderType; }
+            get { return _downloadHost; }
         }
 
         /// <summary>
@@ -111,11 +110,11 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
-        /// Gets the host to use to download.
+        /// Gets the type of <see cref="IFileUploader"/> to use.
         /// </summary>
-        public string DownloadHost
+        public FileUploaderType FileUploaderType
         {
-            get { return _downloadHost; }
+            get { return _fileUploaderType; }
         }
 
         /// <summary>
@@ -190,7 +189,7 @@ namespace GoreUpdater.Manager
         /// <exception cref="ArgumentException"><paramref name="newType"/> is not a valid enum value.</exception>
         /// <exception cref="ArgumentException"><paramref name="newDownloadType"/> is not a valid enum value.</exception>
         public void ChangeInfo(string newHost, string newUser, string newPassword, FileUploaderType newType,
-            DownloadSourceType newDownloadType, string newDownloadHost)
+                               DownloadSourceType newDownloadType, string newDownloadHost)
         {
             if (newHost == null)
                 throw new ArgumentNullException("newHost");
@@ -212,7 +211,8 @@ namespace GoreUpdater.Manager
                 var sc = StringComparer.Ordinal;
 
                 if (sc.Equals(newHost, Host) && sc.Equals(newUser, User) && sc.Equals(newPassword, Password) &&
-                    newType == FileUploaderType && newDownloadType == DownloadSourceType && sc.Equals(newDownloadHost, DownloadHost))
+                    newType == FileUploaderType && newDownloadType == DownloadSourceType &&
+                    sc.Equals(newDownloadHost, DownloadHost))
                     return;
 
                 // Set the new values
@@ -296,8 +296,8 @@ namespace GoreUpdater.Manager
         {
             lock (_infoSync)
             {
-                return string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}",
-                    CreationStringDelimiter, FileUploaderType, Host, User, Password, DownloadSourceType, DownloadHost);
+                return string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}", CreationStringDelimiter, FileUploaderType, Host, User,
+                                     Password, DownloadSourceType, DownloadHost);
             }
         }
 

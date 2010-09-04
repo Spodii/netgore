@@ -97,15 +97,6 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Gets a string that can be used to reconstruct this <see cref="DownloadSourceDescriptor"/>.
-        /// </summary>
-        /// <returns>A string that can be used to reconstruct this <see cref="DownloadSourceDescriptor"/>.</returns>
-        public string GetDescriptorString()
-        {
-            return string.Format("{0}|{1}", Type, RootPath);
-        }
-
-        /// <summary>
         /// Gets a string that can be used to reconstruct a <see cref="DownloadSourceDescriptor"/>.
         /// </summary>
         /// <param name="type">The <see cref="DownloadSourceType"/>.</param>
@@ -116,6 +107,15 @@ namespace GoreUpdater
         public static string GetDescriptorString(DownloadSourceType type, string rootPath)
         {
             return string.Format("{0}|{1}", type, rootPath);
+        }
+
+        /// <summary>
+        /// Gets a string that can be used to reconstruct this <see cref="DownloadSourceDescriptor"/>.
+        /// </summary>
+        /// <returns>A string that can be used to reconstruct this <see cref="DownloadSourceDescriptor"/>.</returns>
+        public string GetDescriptorString()
+        {
+            return string.Format("{0}|{1}", Type, RootPath);
         }
 
         /// <summary>

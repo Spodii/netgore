@@ -17,13 +17,13 @@ namespace GoreUpdater
         readonly object _mastersSync = new object();
         readonly List<DownloadSourceDescriptor> _sources = new List<DownloadSourceDescriptor>();
         readonly object _sourcesSync = new object();
-        readonly object _versionSync = new object();
         readonly object _versionFileListTextSync = new object();
+        readonly object _versionSync = new object();
 
-        string _error;
-        string _versionFileListText;
         bool _currVersionFileListTextLegal;
+        string _error;
         int _version = 0;
+        string _versionFileListText;
 
         /// <summary>
         /// Adds a download source read from a master server.
@@ -66,6 +66,20 @@ namespace GoreUpdater
                     _masters.Add(master);
                     return;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Adds the version information read from a master server.
+        /// </summary>
+        /// <param name="version">The verison.</param>
+        public void AddVersion(int version)
+        {
+            // Use the greatest version
+            lock (_versionSync)
+            {
+                if (version > _version)
+                    _version = version;
             }
         }
 
@@ -131,20 +145,6 @@ namespace GoreUpdater
                     _currVersionFileListTextLegal = textIsValid;
                     return;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Adds the version information read from a master server.
-        /// </summary>
-        /// <param name="version">The verison.</param>
-        public void AddVersion(int version)
-        {
-            // Use the greatest version
-            lock (_versionSync)
-            {
-                if (version > _version)
-                    _version = version;
             }
         }
 
@@ -234,7 +234,8 @@ namespace GoreUpdater
         /// </summary>
         public string VersionFileListText
         {
-            get {
+            get
+            {
                 lock (_versionFileListTextSync)
                 {
                     return _versionFileListText;

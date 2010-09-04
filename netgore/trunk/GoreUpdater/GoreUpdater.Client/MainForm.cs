@@ -29,26 +29,36 @@ namespace GoreUpdater
         {
             base.OnLoad(e);
 
-            var targetDir=Application.StartupPath;
-            var settingsPath =PathHelper.CombineDifferentPaths(Application.StartupPath, "UpdaterSettings");
+            var targetDir = Application.StartupPath;
+            var settingsPath = PathHelper.CombineDifferentPaths(Application.StartupPath, "UpdaterSettings");
             var resetAppPath = Application.ExecutablePath;
             var settings = new UpdateClientSettings(targetDir, settingsPath, resetAppPath);
 
             _uc = new UpdateClient(settings);
-            _uc.StateChanged += new UpdateClientStateChangedEventHandler(_uc_StateChanged);
-            _uc.LiveVersionFound += new UpdateClientEventHandler(_uc_LiveVersionFound);
-            _uc.FileDownloaded += new UpdateClientFileDownloadedEventHandler(_uc_FileDownloaded);
-            _uc.FileDownloadFailed += new UpdateClientFileDownloadFailedEventHandler(_uc_FileDownloadFailed);
-            _uc.FileMoveFailed += new UpdateClientFileMoveFailedEventHandler(_uc_FileMoveFailed);
-            _uc.MasterServerReaderError += new UpdateClientMasterServerReaderErrorEventHandler(_uc_MasterServerReaderError);
-            _uc.IsRunningChanged += new UpdateClientEventHandler(_uc_IsRunningChanged);
+            _uc.StateChanged += _uc_StateChanged;
+            _uc.LiveVersionFound += _uc_LiveVersionFound;
+            _uc.FileDownloaded += _uc_FileDownloaded;
+            _uc.FileDownloadFailed += _uc_FileDownloadFailed;
+            _uc.FileMoveFailed += _uc_FileMoveFailed;
+            _uc.MasterServerReaderError += _uc_MasterServerReaderError;
+            _uc.IsRunningChanged += _uc_IsRunningChanged;
 
             _uc.Start();
         }
 
-        void _uc_MasterServerReaderError(UpdateClient sender, string error)
+        void _uc_FileDownloadFailed(UpdateClient sender, string remoteFile)
         {
-            LogLine("MasterServerReader error: " + error);
+            LogLine("File download failed: " + remoteFile);
+        }
+
+        void _uc_FileDownloaded(UpdateClient sender, string remoteFile, string localFilePath)
+        {
+            LogLine("File downloaded: " + remoteFile);
+        }
+
+        void _uc_FileMoveFailed(UpdateClient sender, string remoteFile, string localFilePath, string targetFilePath)
+        {
+            LogLine("File move failed: " + remoteFile);
         }
 
         void _uc_IsRunningChanged(UpdateClient sender)
@@ -65,24 +75,14 @@ namespace GoreUpdater
             }
         }
 
-        void _uc_FileMoveFailed(UpdateClient sender, string remoteFile, string localFilePath, string targetFilePath)
-        {
-            LogLine("File move failed: " + remoteFile);
-        }
-
-        void _uc_FileDownloadFailed(UpdateClient sender, string remoteFile)
-        {
-            LogLine("File download failed: " + remoteFile);
-        }
-
-        void _uc_FileDownloaded(UpdateClient sender, string remoteFile, string localFilePath)
-        {
-            LogLine("File downloaded: " + remoteFile);
-        }
-
         void _uc_LiveVersionFound(UpdateClient sender)
         {
             LogLine("Live version found: " + sender.LiveVersion);
+        }
+
+        void _uc_MasterServerReaderError(UpdateClient sender, string error)
+        {
+            LogLine("MasterServerReader error: " + error);
         }
 
         void _uc_StateChanged(UpdateClient sender, UpdateClientState oldState, UpdateClientState newState)

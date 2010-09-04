@@ -20,32 +20,11 @@ namespace GoreUpdater.Manager
         /// <param name="downloadType">The type of file downloader to use.</param>
         /// <param name="downloadHost">The download host.</param>
         public MasterServerInfo(FileUploaderType type, string host, string user, string password, DownloadSourceType downloadType,
-            string downloadHost)
-            : base(type, host, user, password, downloadType, downloadHost)
+                                string downloadHost) : base(type, host, user, password, downloadType, downloadHost)
         {
             // For the master server, we also want to update whenever the list of servers changes
             _settings.FileServerListChanged += _settings_FileServerListChanged;
             _settings.MasterServerListChanged += _settings_MasterServerListChanged;
-        }
-
-        /// <summary>
-        /// Handles when the master server list has changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void _settings_MasterServerListChanged(ManagerSettings sender)
-        {
-            // Just sync the latest version, which will force the server list to update
-            EnqueueSyncVersion(sender.LiveVersion);
-        }
-
-        /// <summary>
-        /// Handles when the file server list has changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        void _settings_FileServerListChanged(ManagerSettings sender)
-        {
-            // Just sync the latest version, which will force the server list to update
-            EnqueueSyncVersion(sender.LiveVersion);
         }
 
         /// <summary>
@@ -67,6 +46,26 @@ namespace GoreUpdater.Manager
             var downloadHost = s[5];
 
             return new MasterServerInfo(type, host, user, password, downloadType, downloadHost);
+        }
+
+        /// <summary>
+        /// Handles when the file server list has changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void _settings_FileServerListChanged(ManagerSettings sender)
+        {
+            // Just sync the latest version, which will force the server list to update
+            EnqueueSyncVersion(sender.LiveVersion);
+        }
+
+        /// <summary>
+        /// Handles when the master server list has changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        void _settings_MasterServerListChanged(ManagerSettings sender)
+        {
+            // Just sync the latest version, which will force the server list to update
+            EnqueueSyncVersion(sender.LiveVersion);
         }
 
         #region Overrides of ServerInfoBase
