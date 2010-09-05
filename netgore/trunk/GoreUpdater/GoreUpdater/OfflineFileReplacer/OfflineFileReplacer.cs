@@ -65,8 +65,6 @@ namespace GoreUpdater
             }
         }
 
-        #region Implementation of IOfflineFileReplacer
-
         /// <summary>
         /// Creates the contents for the batch file.
         /// </summary>
@@ -121,7 +119,11 @@ namespace GoreUpdater
             if (_jobs.Count == 0)
             {
                 if (log.IsDebugEnabled)
-                    log.DebugFormat("Writing OfflineFileReplacer `{0}`'s contents to file `{1}`: No replace jobs, so deleting file instead.", this, _outputFilePath);
+                {
+                    log.DebugFormat(
+                        "Writing OfflineFileReplacer `{0}`'s contents to file `{1}`: No replace jobs, so deleting file instead.",
+                        this, _outputFilePath);
+                }
 
                 // No jobs - just delete the old file
                 if (File.Exists(_outputFilePath))
@@ -130,7 +132,10 @@ namespace GoreUpdater
             else
             {
                 if (log.IsDebugEnabled)
-                    log.DebugFormat("Writing OfflineFileReplacer `{0}`'s contents to file `{1}`: {2} jobs to write.", this, _outputFilePath, _jobs.Count);
+                {
+                    log.DebugFormat("Writing OfflineFileReplacer `{0}`'s contents to file `{1}`: {2} jobs to write.", this,
+                                    _outputFilePath, _jobs.Count);
+                }
 
                 // Build the file contents
                 var fileText = GetFileContents();
@@ -147,6 +152,8 @@ namespace GoreUpdater
                     File.Delete(tempFilePath);
             }
         }
+
+        #region IOfflineFileReplacer Members
 
         /// <summary>
         /// Gets the path to the output file for this <see cref="IOfflineFileReplacer"/>.
