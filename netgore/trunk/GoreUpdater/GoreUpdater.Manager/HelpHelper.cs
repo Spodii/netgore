@@ -66,7 +66,7 @@ namespace GoreUpdater.Manager
             " * All paths are relative to the directory they are being downloaded to" + Environment.NewLine+
             " * All paths start with the path separator character" + Environment.NewLine+
             " * All filters use a case-insensitive matching" + Environment.NewLine+
-            " * Any back- and forward-slashes will be converted to the client OS's native path separator automatically");
+            " * Back slashes (\\) should always be used to denote a path separator, never a forward slash");
         }
 
         /// <summary>

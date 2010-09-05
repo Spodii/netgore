@@ -52,6 +52,12 @@
     <Compile Include="DownloadManager\DownloadManagerFileEventHandler.cs" />
     <Compile Include="DownloadManager\DownloadManagerFileMoveFailedEventHandler.cs" />
     <Compile Include="DownloadManager\IDownloadManager.cs" />
+    <Compile Include="FileFilter\FileFilterCollection.cs" />
+    <Compile Include="FileFilter\FileFilterHelper.cs" />
+    <Compile Include="FileFilter\IFileFilter.cs" />
+    <Compile Include="FileFilter\IFileFilterCollection.cs" />
+    <Compile Include="FileFilter\RegexFileFilter.cs" />
+    <Compile Include="FileFilter\WildcardFileFilter.cs" />
     <Compile Include="FileUploader\FileUploaderDeleteDirErrorEventHandler.cs" />
     <Compile Include="FileUploader\FileUploaderDeleteDirEventHandler.cs" />
     <Compile Include="FileUploader\FileUploaderDownloadErrorEventHandler.cs" />
