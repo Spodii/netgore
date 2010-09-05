@@ -36,6 +36,9 @@
             this.lblVersion = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtRootPath = new System.Windows.Forms.TextBox();
+            this.lblVersionHelp = new System.Windows.Forms.Label();
+            this.lblRootPathHelp = new System.Windows.Forms.Label();
+            this.lblFiltersHelp = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -108,14 +111,50 @@
             this.txtRootPath.Location = new System.Drawing.Point(75, 31);
             this.txtRootPath.Name = "txtRootPath";
             this.txtRootPath.ReadOnly = true;
-            this.txtRootPath.Size = new System.Drawing.Size(185, 20);
+            this.txtRootPath.Size = new System.Drawing.Size(166, 20);
             this.txtRootPath.TabIndex = 10;
+            // 
+            // lblVersionHelp
+            // 
+            this.lblVersionHelp.AutoSize = true;
+            this.lblVersionHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblVersionHelp.Location = new System.Drawing.Point(82, 15);
+            this.lblVersionHelp.Name = "lblVersionHelp";
+            this.lblVersionHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblVersionHelp.TabIndex = 11;
+            this.lblVersionHelp.Text = "?";
+            this.lblVersionHelp.Click += new System.EventHandler(this.lblVersionHelp_Click);
+            // 
+            // lblRootPathHelp
+            // 
+            this.lblRootPathHelp.AutoSize = true;
+            this.lblRootPathHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblRootPathHelp.Location = new System.Drawing.Point(247, 34);
+            this.lblRootPathHelp.Name = "lblRootPathHelp";
+            this.lblRootPathHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblRootPathHelp.TabIndex = 12;
+            this.lblRootPathHelp.Text = "?";
+            this.lblRootPathHelp.Click += new System.EventHandler(this.lblRootPathHelp_Click);
+            // 
+            // lblFiltersHelp
+            // 
+            this.lblFiltersHelp.AutoSize = true;
+            this.lblFiltersHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblFiltersHelp.Location = new System.Drawing.Point(122, 68);
+            this.lblFiltersHelp.Name = "lblFiltersHelp";
+            this.lblFiltersHelp.Size = new System.Drawing.Size(13, 13);
+            this.lblFiltersHelp.TabIndex = 13;
+            this.lblFiltersHelp.Text = "?";
+            this.lblFiltersHelp.Click += new System.EventHandler(this.lblFiltersHelp_Click);
             // 
             // NewVersionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(272, 257);
+            this.Controls.Add(this.lblFiltersHelp);
+            this.Controls.Add(this.lblRootPathHelp);
+            this.Controls.Add(this.lblVersionHelp);
             this.Controls.Add(this.txtRootPath);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblVersion);
@@ -142,5 +181,8 @@
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtRootPath;
+        private System.Windows.Forms.Label lblVersionHelp;
+        private System.Windows.Forms.Label lblRootPathHelp;
+        private System.Windows.Forms.Label lblFiltersHelp;
     }
 }
