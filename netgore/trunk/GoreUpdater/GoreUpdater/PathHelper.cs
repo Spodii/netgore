@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -42,21 +44,30 @@ namespace GoreUpdater
         /// <returns>The <paramref name="l"/> and <paramref name="r"/> paths combined.</returns>
         public static string CombineDifferentPaths(string l, string r)
         {
+            string ret;
+
             if (_pathSeps.Any(l.EndsWith))
             {
                 if (_pathSeps.Any(r.StartsWith))
-                    return l + r.Substring(_pathSeperatorCharLength);
+                    ret = l + r.Substring(_pathSeperatorCharLength);
                 else
-                    return l + r;
+                    ret = l + r;
             }
             else
             {
                 if (_pathSeps.Any(r.StartsWith))
-                    return l + r;
+                    ret = l + r;
                 else
-                    return l + Path.DirectorySeparatorChar + r;
+                    ret = l + Path.DirectorySeparatorChar + r;
             }
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("CombineDifferentPaths(l: {0}, r: {1}) -> {2}", l, r, ret);
+
+            return ret;
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Combines two paths and forces them to be in different directories. That is, the second path will always
@@ -70,20 +81,27 @@ namespace GoreUpdater
         /// </returns>
         public static string CombineDifferentPaths(string l, string r, string separator)
         {
+            string ret;
+
             if (l.EndsWith(separator))
             {
                 if (r.StartsWith(separator))
-                    return l + r.Substring(separator.Length);
+                    ret = l + r.Substring(separator.Length);
                 else
-                    return l + r;
+                    ret = l + r;
             }
             else
             {
                 if (r.StartsWith(separator))
-                    return l + r;
+                    ret = l + r;
                 else
-                    return l + separator + r;
+                    ret = l + separator + r;
             }
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("CombineDifferentPaths(l: {0}, r: {1}, separator: {3}) -> {2}", l, r, ret, separator);
+
+            return ret;
         }
 
         /// <summary>
@@ -96,18 +114,23 @@ namespace GoreUpdater
         /// <returns>The new path.</returns>
         public static string ForceEndWithChar(string path, string endingChar, params string[] removeChars)
         {
+            string ret = path;
+
             if (removeChars != null)
             {
-                while (removeChars.Any(path.EndsWith))
+                while (removeChars.Any(ret.EndsWith))
                 {
-                    path = path.Substring(0, path.Length - 1);
+                    ret = path.Substring(0, ret.Length - 1);
                 }
             }
 
-            if (!path.EndsWith(endingChar))
-                path += endingChar;
+            if (!ret.EndsWith(endingChar))
+                ret += endingChar;
 
-            return path;
+            if (log.IsDebugEnabled)
+                log.DebugFormat("ForceEndWithChar(path: {0}, endingChar: {1}, removeChars: ({2})) -> {3}", path, endingChar, removeChars == null ? "[NULL]" : removeChars.Aggregate((x,y)=>x+","+y), ret);
+
+            return ret;
         }
 
         /// <summary>
