@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
+// TODO: Make use of log4net
+
 namespace GoreUpdater
 {
     /// <summary>
