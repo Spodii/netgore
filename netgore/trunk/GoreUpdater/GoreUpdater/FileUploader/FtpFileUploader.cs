@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Cache;
+using System.Reflection;
 using System.Threading;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -14,6 +16,8 @@ namespace GoreUpdater
     /// </summary>
     public class FtpFileUploader : IFileUploader
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// For how long each thread will time out when the job queue is empty.
         /// </summary>
@@ -143,6 +147,9 @@ namespace GoreUpdater
         /// <returns>The <see cref="FtpWebRequest"/> to use.</returns>
         FtpWebRequest CreateFtpWebRequest(string fullRemotePath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating FtpWebRequest for path: {0}", fullRemotePath);
+
             // I am not sure if the WebRequest.Create() method is thread-safe already, so might as well just ensure
             // that we minimize any threading issues within it by making every FtpFileUploader lock (our sync object is static)
             FtpWebRequest req;
@@ -174,10 +181,18 @@ namespace GoreUpdater
             {
                 // Check if this job already exists
                 if (_jobsQueue.Any(x => x.AreJobsSame(job)) || _jobsActive.Any(x => x.AreJobsSame(job)))
+                {
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Enqueueing job `{0}` failed: job already in queue.", job);
+
                     return false;
+                }
 
                 // Add the job
                 _jobsQueue.Enqueue(job);
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Enqueueing job `{0}` successful.", job);
             }
 
             return true;
@@ -218,6 +233,9 @@ namespace GoreUpdater
         /// instead of a file, make sure that the directory has a trailing slash.</param>
         void FtpCreateDirectoryIfNotExists(string filePath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpCreateDirectoryIfNotExists(filePath: {0})", filePath);
+
             // Find the index of the last path separator
             var lastSlash = filePath.LastIndexOf('/');
 
@@ -254,7 +272,10 @@ namespace GoreUpdater
                             break;
 
                         default:
-                            Debug.Fail(ex.ToString());
+                            const string errmsg = "Error trying to create directory `{0}`: {1}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, dir, ex);
+                            Debug.Fail(string.Format(errmsg, dir, ex));
                             throw;
                     }
                 }
@@ -272,6 +293,9 @@ namespace GoreUpdater
         /// <param name="remoteFile">The path on the server to upload the file to. Can be a relative or fully qualified path.</param>
         void FtpCreateFile(string localFile, string remoteFile)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpCreateFile(localFile: {0}, remoteFile: {1})", localFile, remoteFile);
+
             remoteFile = ResolveRemotePath(remoteFile);
 
             var remoteTempFile = remoteFile + ".ftptmp";
@@ -286,12 +310,19 @@ namespace GoreUpdater
             }
             catch (Exception ex)
             {
-                Debug.Fail(ex.ToString());
+                const string errmsg = "FtpDeleteFile on `{0}` failed (likely not an issue): {1}";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, remoteTempFile, ex);
+                Debug.Fail(string.Format(errmsg, remoteTempFile, ex));
             }
 
             // If the we are skipping files that exist, then return if it exists
             if (fileExists && SkipIfExists)
+            {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Skipping creating remote file `{0}` - file already exists and SkipIfExists is set.", remoteFile);
                 return;
+            }
 
             if (fileExists)
             {
@@ -339,6 +370,9 @@ namespace GoreUpdater
         /// instead of throwing a <see cref="WebException"/>.</param>
         void FtpDeleteDir(string dirPath, bool requireExists = false)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpDeleteDir(dirPath: {0}, requireExists: {1})", dirPath, requireExists);
+
             dirPath = ResolveRemotePath(dirPath);
 
             // Make sure the path always ends with a /, so that we get listings without the parent directory's name and that
@@ -396,13 +430,19 @@ namespace GoreUpdater
                         case FtpStatusCode.ActionNotTakenFileUnavailable:
                             if (requireExists)
                             {
-                                Debug.Fail(ex.ToString());
+                                const string errmsg = "Failed to delete remote directory `{0}` when requireExists was set. Exception: {1}";
+                                if (log.IsErrorEnabled)
+                                    log.ErrorFormat(errmsg, dirPath, ex);
+                                Debug.Fail(string.Format(errmsg, dirPath, ex));
                                 throw;
                             }
                             break;
 
                         default:
-                            Debug.Fail(ex.ToString());
+                            const string errmsg2 = "Failed to delete remote directory `{0}` due to unexpected error: {1}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg2, dirPath, ex);
+                            Debug.Fail(string.Format(errmsg2, dirPath, ex));
                             throw;
                     }
                 }
@@ -421,6 +461,9 @@ namespace GoreUpdater
         /// will be thrown. If false and the file does not exist, it will just silently fail.</param>
         void FtpDeleteFile(string filePath, bool requireExists = false)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpDeleteFile(filePath: {0}, requireExists: {1})", filePath, requireExists);
+
             filePath = ResolveRemotePath(filePath);
 
             // Create and execute the request
@@ -447,13 +490,19 @@ namespace GoreUpdater
                         case FtpStatusCode.ActionNotTakenFileUnavailableOrBusy:
                             if (requireExists)
                             {
-                                Debug.Fail(ex.ToString());
+                                const string errmsg = "Failed to delete remote file `{0}` when requireExists was set. Exception: {1}";
+                                if (log.IsErrorEnabled)
+                                    log.ErrorFormat(errmsg, filePath, ex);
+                                Debug.Fail(string.Format(errmsg, filePath, ex));
                                 throw;
                             }
                             break;
 
                         default:
-                            Debug.Fail(ex.ToString());
+                            const string errmsg2 = "Failed to delete remote file `{0}` due to unexpected error: {1}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg2, filePath, ex);
+                            Debug.Fail(string.Format(errmsg2, filePath, ex));
                             throw;
                     }
                 }
@@ -472,6 +521,9 @@ namespace GoreUpdater
         /// <returns>The contents of the <paramref name="remoteFile"/>.</returns>
         byte[] FtpDownload(string remoteFile, bool requireExists)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpDownload(remoteFile: {0}, requireExists: {1})", remoteFile, requireExists);
+
             var fullRemotePath = ResolveRemotePath(remoteFile);
             var req = CreateFtpWebRequest(fullRemotePath);
             req.Method = WebRequestMethods.Ftp.DownloadFile;
@@ -518,7 +570,10 @@ namespace GoreUpdater
                                 throw;
 
                         default:
-                            Debug.Fail(ex.ToString());
+                            const string errmsg = "Failed to download remote file `{0}`. Exception: {1}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, fullRemotePath, ex);
+                            Debug.Fail(string.Format(errmsg, fullRemotePath, ex));
                             throw;
                     }
                 }
@@ -537,6 +592,9 @@ namespace GoreUpdater
         /// <returns>The contents of the <paramref name="remoteFile"/>.</returns>
         string FtpDownloadAsString(string remoteFile, bool requireExists)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpDownloadAsString(remoteFile: {0}, requireExists: {1})", remoteFile, requireExists);
+
             var fullRemotePath = ResolveRemotePath(remoteFile);
             var req = CreateFtpWebRequest(fullRemotePath);
             req.Method = WebRequestMethods.Ftp.DownloadFile;
@@ -576,7 +634,10 @@ namespace GoreUpdater
                                 throw;
 
                         default:
-                            Debug.Fail(ex.ToString());
+                            const string errmsg = "Failed to download remote file `{0}` as string. Exception: {1}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, fullRemotePath, ex);
+                            Debug.Fail(string.Format(errmsg, fullRemotePath, ex));
                             throw;
                     }
                 }
@@ -594,6 +655,9 @@ namespace GoreUpdater
         /// <returns>True if the file exists; false if the file does not exist or you do not have the credentials to access the file.</returns>
         bool FtpFileExists(string filePath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpFileExists(filePath: {0})", filePath);
+
             filePath = ResolveRemotePath(filePath);
 
             // Create and execute the request
@@ -623,7 +687,10 @@ namespace GoreUpdater
                             return false;
 
                         default:
-                            Debug.Fail(ex.ToString());
+                            const string errmsg = "FtpFileExist for path `{0}` failed. Exception: {1}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, filePath, ex);
+                            Debug.Fail(string.Format(errmsg, filePath, ex));
                             throw;
                     }
                 }
@@ -644,6 +711,9 @@ namespace GoreUpdater
         /// false and the directory does not exist.</returns>
         IEnumerable<string> FtpNListDir(string remotePath, bool requireExists = false)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpNListDir(remotePath: {0}, requireExists: {1})", remotePath, requireExists);
+
             remotePath = ResolveRemotePath(remotePath);
 
             var req = CreateFtpWebRequest(remotePath);
@@ -654,20 +724,39 @@ namespace GoreUpdater
                 using (var res = req.GetResponse())
                 {
                     if (res == null)
+                    {
+                        const string errmsgResNull = "Received null WebResponse for remote path `{0}`. Returning null.";
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsgResNull, remotePath);
+                        Debug.Fail(string.Format(errmsgResNull, remotePath));
                         return null;
+                    }
 
                     using (var resStream = res.GetResponseStream())
                     {
                         if (resStream == null)
+                        {
+                            const string errmsgResStreamNull = "Received null WebResponseStream for remote path `{0}`. Returning null.";
+                            if (log.IsWarnEnabled)
+                                log.WarnFormat(errmsgResStreamNull, remotePath);
+                            Debug.Fail(string.Format(errmsgResStreamNull, remotePath));
                             return null;
+                        }
 
                         using (var sr = new StreamReader(resStream))
                         {
                             var ret = new List<string>();
+                            
+                            if (log.IsDebugEnabled)
+                                log.DebugFormat("Starting read of WebResponseStream `{0}` for remote path `{1}` using StreamReader `{2}`.", resStream,
+                                    remotePath, sr);
 
                             while (!sr.EndOfStream)
                             {
                                 var s = sr.ReadLine();
+
+                                if (log.IsDebugEnabled)
+                                    log.DebugFormat("Read WebResponseStream line for remote path `{0}`: {1}", remotePath, s ?? "[NULL]");
 
                                 // Skip null lines
                                 if (s == null)
@@ -700,13 +789,19 @@ namespace GoreUpdater
                         case FtpStatusCode.ActionNotTakenFileUnavailable:
                             if (requireExists)
                             {
-                                Debug.Fail(ex.ToString());
+                                const string errmsg = "FtpNListDir for path `{0}` failed when requireExists was set. Exception: {1}";
+                                if (log.IsErrorEnabled)
+                                    log.ErrorFormat(errmsg, remotePath, ex);
+                                Debug.Fail(string.Format(errmsg, remotePath, ex));
                                 throw;
                             }
                             break;
 
                         default:
-                            Debug.Fail(ex.ToString());
+                            const string errmsg2 = "FtpNListDir for path `{0}` failed. Exception: {1}";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg2, remotePath, ex);
+                            Debug.Fail(string.Format(errmsg2, remotePath, ex));
                             throw;
                     }
                 }
@@ -726,6 +821,9 @@ namespace GoreUpdater
         /// <param name="newName">The new name of the file.</param>
         void FtpRenameFile(string filePath, string newName)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("FtpRenameFile(filePath: {0}, newName: {1})", filePath, newName);
+
             filePath = ResolveRemotePath(filePath);
 
             // Create and execute the request
@@ -756,10 +854,17 @@ namespace GoreUpdater
                     // ReSharper disable EmptyGeneralCatchClause
                     try
                     {
+                        if (log.IsDebugEnabled)
+                            log.DebugFormat("Disposing `{0}`'s worker thread `{1}`.", this, t);
+
                         t.Abort();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        const string errmsg = "Disposing `{0}`'s worker thread `{1}` failed. Exception: {2}";
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg, this, t, ex);
+                        Debug.Fail(string.Format(errmsg, this, t, ex));
                     }
                     // ReSharper restore EmptyGeneralCatchClause
                 }
@@ -796,16 +901,19 @@ namespace GoreUpdater
         static string SanitizeFtpTargetPath(string p)
         {
             // Trim
-            p = p.Trim();
+            var ret = p.Trim();
 
             // Make sure to always use / instead of \
-            p = p.Replace('\\', '/');
+            ret = ret.Replace('\\', '/');
 
             // Remove a prefixed path separator
-            if (p.StartsWith("/"))
-                p = p.Substring(1);
+            if (ret.StartsWith("/"))
+                ret = ret.Substring(1);
 
-            return p;
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Path `{0}` sanitized to `{1}`.", p, ret);
+
+            return ret;
         }
 
         /// <summary>
@@ -835,6 +943,9 @@ namespace GoreUpdater
                     continue;
                 }
 
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Processing job: {0}", job);
+
                 try
                 {
                     // Execute the job
@@ -842,6 +953,9 @@ namespace GoreUpdater
                 }
                 catch (Exception ex)
                 {
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Processing job `{0}` failed. Exception: {1}", job, ex);
+
                     // Throw the job back into the queue
                     lock (_jobsSync)
                     {
@@ -914,6 +1028,8 @@ namespace GoreUpdater
                 }
 
                 // If we made it this far, the file job was successful!
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Job `{0}` successfully processed.", job);
 
                 // Remove the job from the active list
                 lock (_jobsSync)
@@ -1050,6 +1166,9 @@ namespace GoreUpdater
             if (IsDisposed)
                 throw new ObjectDisposedException("this");
 
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Canceling async download for `{0}`.", localPath);
+
             lock (_jobsSync)
             {
                 var match =
@@ -1081,6 +1200,9 @@ namespace GoreUpdater
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("this");
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Canceling async upload for `{0}`.", remotePath);
 
             var p = SanitizeFtpTargetPath(remotePath);
 
@@ -1118,6 +1240,9 @@ namespace GoreUpdater
             if (IsDisposed)
                 throw new ObjectDisposedException("this");
 
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Deleting directory `{0}`.", targetPath);
+
             FtpDeleteDir(targetPath, requireExists);
         }
 
@@ -1136,6 +1261,9 @@ namespace GoreUpdater
 
             if (string.IsNullOrEmpty(targetPath))
                 return false;
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Asynchronously deleting directory `{0}`.", targetPath);
 
             var job = new JobDeleteDir(targetPath);
 
@@ -1165,6 +1293,9 @@ namespace GoreUpdater
             if (IsDisposed)
                 throw new ObjectDisposedException("this");
 
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Downloading file `{0}`.", remoteFile);
+
             return FtpDownload(remoteFile, requireExists);
         }
 
@@ -1178,6 +1309,9 @@ namespace GoreUpdater
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("this");
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Downloading file `{0}` as string.", remoteFile);
 
             return FtpDownloadAsString(remoteFile, requireExists);
         }
@@ -1196,6 +1330,9 @@ namespace GoreUpdater
 
             if (string.IsNullOrEmpty(remotePath) || string.IsNullOrEmpty(sourcePath))
                 return false;
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Asynchronously Downloading file `{0}`.", remotePath);
 
             var job = new JobDownloadFile(remotePath, sourcePath);
 
@@ -1219,6 +1356,29 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Invokes the <see cref="TestConnectionMessage"/> event.
+        /// </summary>
+        /// <param name="userState">State of the user.</param>
+        /// <param name="msg">The message.</param>
+        void WriteTestConnectionMessage(object userState, string msg)
+        {
+            if (TestConnectionMessage != null)
+            {
+                try
+                {
+                    TestConnectionMessage(this, msg, userState);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
+            }
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("TestConnectionMessage (userState: {0}): {1}", userState != null ? userState.ToString() : "[NULL]", msg);
+        }
+
+        /// <summary>
         /// Tests the connection of the <see cref="IFileUploader"/> and ensures that the needed operations can be performed.
         /// The test runs synchronously.
         /// </summary>
@@ -1235,39 +1395,29 @@ namespace GoreUpdater
             const string remoteTestDir = remoteTestDirRoot + "/__connection_test/__test/__a/";
             const string remoteTestFileContents = "Test file. Please delete.";
 
-            if (TestConnectionMessage != null)
-            {
-                TestConnectionMessage(this, "Connection information:", userState);
-                TestConnectionMessage(this, " * Class: " + GetType(), userState);
-                TestConnectionMessage(this, " * Host: " + FtpRoot, userState);
-                TestConnectionMessage(this, " * User: " + _credentials.UserName, userState);
-                TestConnectionMessage(this, " * Domain: " + _credentials.Domain, userState);
-                TestConnectionMessage(this, " * Passive FTP?: " + UsePassive, userState);
+            WriteTestConnectionMessage(userState, "Connection information:");
+            WriteTestConnectionMessage(userState, " * Class: " + GetType());
+            WriteTestConnectionMessage(userState, " * Host: " + FtpRoot);
+            WriteTestConnectionMessage(userState, " * User: " + _credentials.UserName);
+            WriteTestConnectionMessage(userState, " * Domain: " + _credentials.Domain);
+            WriteTestConnectionMessage(userState, " * Passive FTP?: " + UsePassive);
 
-                TestConnectionMessage(this, "Setting up tests...", userState);
-            }
-
-            if (TestConnectionMessage != null)
-                TestConnectionMessage(this, "Getting the path for a temporary local file...", userState);
+            WriteTestConnectionMessage(userState, "Setting up tests...");
+            WriteTestConnectionMessage(userState, "Getting the path for a temporary local file...");
 
             var tmpFile = Path.GetTempFileName();
 
-            if (TestConnectionMessage != null)
-                TestConnectionMessage(this, "Writing content to the temporary local file...", userState);
+            WriteTestConnectionMessage(userState, "Writing content to the temporary local file...");
 
             File.WriteAllText(tmpFile, "Test file. Please delete.");
 
-            if (TestConnectionMessage != null)
-                TestConnectionMessage(this, "Test setup complete", userState);
-
-            if (TestConnectionMessage != null)
-                TestConnectionMessage(this, "Starting tests on the server", userState);
+            WriteTestConnectionMessage(userState, "Test setup complete");
+            WriteTestConnectionMessage(userState, "Starting tests on the server");
 
             try
             {
                 // *** File creation test ***
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Uploading a test file to root directory...", userState);
+                WriteTestConnectionMessage(userState, "Uploading a test file to root directory...");
 
                 try
                 {
@@ -1281,23 +1431,17 @@ namespace GoreUpdater
                     return false;
                 }
 
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "File upload complete", userState);
+                WriteTestConnectionMessage(userState, "File upload complete");
 
                 // *** File integrity test ***
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Downloading the file just uploaded...", userState);
+                WriteTestConnectionMessage(userState, "Downloading the file just uploaded...");
 
                 try
                 {
                     var contents = FtpDownloadAsString(remoteTestFile, true);
 
-                    if (TestConnectionMessage != null)
-                        TestConnectionMessage(this, "File download complete", userState);
-
-                    if (TestConnectionMessage != null)
-                        TestConnectionMessage(this, "Checking the contents of the file to ensure integrity was preserved...",
-                                              userState);
+                    WriteTestConnectionMessage(userState, "File download complete");
+                    WriteTestConnectionMessage(userState, "Checking the contents of the file to ensure integrity was preserved...");
 
                     if (!StringComparer.Ordinal.Equals(contents.Trim(), remoteTestFileContents))
                     {
@@ -1315,12 +1459,10 @@ namespace GoreUpdater
                     return false;
                 }
 
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "File integrity test passed", userState);
+                WriteTestConnectionMessage(userState, "File integrity test passed");
 
                 // *** File exists test ***
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Testing the ability to detect if the file exists...", userState);
+                WriteTestConnectionMessage(userState, "Testing the ability to detect if the file exists...");
 
                 try
                 {
@@ -1335,12 +1477,10 @@ namespace GoreUpdater
                     return false;
                 }
 
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "File successfully determined to exist", userState);
+                WriteTestConnectionMessage(userState, "File successfully determined to exist");
 
                 // *** File deletion test ***
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Deleting the test file...", userState);
+                WriteTestConnectionMessage(userState, "Deleting the test file...");
 
                 try
                 {
@@ -1354,13 +1494,10 @@ namespace GoreUpdater
                     return false;
                 }
 
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Test file deleted", userState);
+                WriteTestConnectionMessage(userState, "Test file deleted");
 
                 // *** Directory create test ***
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Creating sub-directories and creating a file inside those sub-directories...",
-                                          userState);
+                 WriteTestConnectionMessage(userState, "Creating sub-directories and creating a file inside those sub-directories...");
 
                 try
                 {
@@ -1374,12 +1511,10 @@ namespace GoreUpdater
                     return false;
                 }
 
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Sub-directories test file successfully created", userState);
+                WriteTestConnectionMessage(userState, "Sub-directories test file successfully created");
 
                 // *** Directory exists test ***
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Checking ability to determine if the test file exists...", userState);
+                WriteTestConnectionMessage(userState, "Checking ability to determine if the test file exists...");
 
                 try
                 {
@@ -1395,12 +1530,10 @@ namespace GoreUpdater
                     return false;
                 }
 
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "File successfully determined to exist", userState);
+                WriteTestConnectionMessage(userState, "File successfully determined to exist");
 
                 // *** Directory deletion test ***
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Deleting the test sub-directory and all of its contents...", userState);
+                WriteTestConnectionMessage(userState, "Deleting the test sub-directory and all of its contents...");
 
                 try
                 {
@@ -1414,12 +1547,10 @@ namespace GoreUpdater
                     return false;
                 }
 
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Test sub-directory successfully deleted", userState);
+                WriteTestConnectionMessage(userState, "Test sub-directory successfully deleted");
 
                 // *** File doesn't exists test ***
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "Checking ability to determine that a file does not exist...", userState);
+                WriteTestConnectionMessage(userState, "Checking ability to determine that a file does not exist...");
 
                 try
                 {
@@ -1434,8 +1565,7 @@ namespace GoreUpdater
                     return false;
                 }
 
-                if (TestConnectionMessage != null)
-                    TestConnectionMessage(this, "File successfully determined to not exist", userState);
+                WriteTestConnectionMessage(userState, "File successfully determined to not exist");
             }
             catch (Exception ex)
             {
@@ -1475,6 +1605,9 @@ namespace GoreUpdater
 
             if (string.IsNullOrEmpty(sourcePath) || string.IsNullOrEmpty(remotePath))
                 return false;
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Asynchronously uploading file `{0}` to `{1}`.", sourcePath, remotePath);
 
             var job = new JobUploadFile(sourcePath, remotePath);
 
