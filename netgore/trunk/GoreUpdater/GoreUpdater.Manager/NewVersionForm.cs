@@ -154,9 +154,9 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lblVersionHelp_Click(object sender, EventArgs e)
+        private static void lblVersionHelp_Click(object sender, EventArgs e)
         {
-            // TODO:
+            HelpHelper.DisplayHelp(HelpHelper.HelpNewVersionNumber);
         }
 
         /// <summary>
@@ -164,9 +164,9 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lblRootPathHelp_Click(object sender, EventArgs e)
+        private static void lblRootPathHelp_Click(object sender, EventArgs e)
         {
-            // TODO:
+            HelpHelper.DisplayHelp(HelpHelper.HelpRootPath);
         }
 
         /// <summary>
@@ -174,9 +174,9 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void lblFiltersHelp_Click(object sender, EventArgs e)
+        private static void lblFiltersHelp_Click(object sender, EventArgs e)
         {
-            // TODO:
+            HelpHelper.DisplayHelp(HelpHelper.HelpDeleteFilters);
         }
     }
 }
