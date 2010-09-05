@@ -29,6 +29,11 @@ namespace GoreUpdater
         { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
 
         /// <summary>
+        /// The length of the <see cref="Path.DirectorySeparatorChar"/> as a string.
+        /// </summary>
+        static readonly int _pathSeperatorCharLength = Path.DirectorySeparatorChar.ToString().Length;
+
+        /// <summary>
         /// Combines two paths and forces them to be in different directories. That is, the second path will always
         /// be either a file or sub-directory of the first path.
         /// </summary>
@@ -40,7 +45,7 @@ namespace GoreUpdater
             if (_pathSeps.Any(l.EndsWith))
             {
                 if (_pathSeps.Any(r.StartsWith))
-                    return l + r.Substring(1);
+                    return l + r.Substring(_pathSeperatorCharLength);
                 else
                     return l + r;
             }
@@ -50,6 +55,34 @@ namespace GoreUpdater
                     return l + r;
                 else
                     return l + Path.DirectorySeparatorChar + r;
+            }
+        }
+
+        /// <summary>
+        /// Combines two paths and forces them to be in different directories. That is, the second path will always
+        /// be either a file or sub-directory of the first path.
+        /// </summary>
+        /// <param name="l">The left-side path (first path).</param>
+        /// <param name="r">The right-side path (second path).</param>
+        /// <param name="separator">The string to use to separate the paths of the <paramref name="l"/> and <paramref name="r"/>.</param>
+        /// <returns>
+        /// The <paramref name="l"/> and <paramref name="r"/> paths combined.
+        /// </returns>
+        public static string CombineDifferentPaths(string l, string r, string separator)
+        {
+            if (l.EndsWith(separator))
+            {
+                if (r.StartsWith(separator))
+                    return l + r.Substring(separator.Length);
+                else
+                    return l + r;
+            }
+            else
+            {
+                if (r.StartsWith(separator))
+                    return l + r;
+                else
+                    return l + separator + r;
             }
         }
 
