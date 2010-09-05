@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -80,6 +82,8 @@ namespace GoreUpdater
             get { return false; }
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
@@ -88,7 +92,17 @@ namespace GoreUpdater
         public void Add(IFileFilter item)
         {
             if (!_filters.Contains(item))
+            {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Adding IFileFilter `{0}` to `{1}` failed: object already in collection.", item, this);
+
                 _filters.Add(item);
+            }
+            else
+            {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Added IFileFilter `{0}` to `{1}`.", item, this);
+            }
         }
 
         /// <summary>
@@ -97,6 +111,9 @@ namespace GoreUpdater
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only. </exception>
         public void Clear()
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Clearing `{0}`.", this);
+
             _filters.Clear();
         }
 
@@ -139,6 +156,9 @@ namespace GoreUpdater
         /// </returns>
         public bool IsMatch(string filePath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Performing IsMatch on `{0}` for filePath `{1}`.", this, filePath);
+
             return _filters.Any(x => x.IsMatch(filePath));
         }
 
