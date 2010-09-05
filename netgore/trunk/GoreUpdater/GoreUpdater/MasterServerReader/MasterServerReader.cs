@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -13,6 +15,7 @@ namespace GoreUpdater
     /// </summary>
     public class MasterServerReader : IMasterServerReader
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly object _ioSync = new object();
 
         readonly string _localDownloadSourceListPath;
@@ -65,6 +68,10 @@ namespace GoreUpdater
             var userState = stateObj.UserState;
             var readVersion = stateObj.Version;
 
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Running MasterServerReader worker. UserState: {0}. ReadVersion: {1}. Callback: {2}",
+                    userState, readVersion.HasValue ? readVersion.Value.ToString() : "[NULL]", callback);
+
             var info = new MasterServerReadInfo();
             if (readVersion.HasValue)
                 info.AddVersion(readVersion.Value);
@@ -80,6 +87,8 @@ namespace GoreUpdater
             if (descriptors.Count() == 0)
             {
                 const string errmsg = "No DownloadSourceDescriptors could be found.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
                 info.AppendError(errmsg);
                 callback(this, info, userState);
                 return;
@@ -97,6 +106,8 @@ namespace GoreUpdater
                 catch (Exception ex)
                 {
                     const string errmsg = "Failed to instantiate DownloadSourceDescriptor `{0}`: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, desc, ex);
                     info.AppendError(string.Format(errmsg, desc, ex));
                 }
             }
@@ -105,6 +116,8 @@ namespace GoreUpdater
             if (sources.Count == 0)
             {
                 const string errmsg = "All DownloadSourceDescriptors failed to be instantiated - no servers available to use.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg);
                 info.AppendError(errmsg);
                 callback(this, info, userState);
                 return;
@@ -163,7 +176,10 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(ex.ToString());
+                        const string errmsg = "Failed to write download sources file `{0}`. Exception: {1}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, filePath, ex);
+                        Debug.Fail(string.Format(errmsg, filePath, ex));
                     }
                     finally
                     {
@@ -211,7 +227,10 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(ex.ToString());
+                        const string errmsg = "Failed to write master servers file `{0}`. Exception: {1}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, filePath, ex);
+                        Debug.Fail(string.Format(errmsg, filePath, ex));
                     }
                     finally
                     {
@@ -466,8 +485,15 @@ namespace GoreUpdater
                 }
             }
 
+            /// <summary>
+            /// Executes a <see cref="IDownloadSource"/>, which will read the desired files.
+            /// </summary>
+            /// <param name="source">The <see cref="IDownloadSource"/> to use.</param>
             void ExecuteSource(IDownloadSource source)
             {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Executing download source: {0}", source);
+
                 source.DownloadFinished += source_DownloadFinished;
                 source.DownloadFailed += source_DownloadFailed;
 
@@ -514,7 +540,10 @@ namespace GoreUpdater
                 }
                 catch (Exception ex)
                 {
-                    _masterReadInfo.AppendError("Failed to read temp file: " + ex);
+                    const string errmsg = "Failed to read temp file `{0}`. Exception: {1}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, filePath, ex);
+                    _masterReadInfo.AppendError(string.Format(errmsg, filePath, ex));
                 }
 
                 return null;
@@ -535,7 +564,10 @@ namespace GoreUpdater
                     Interlocked.Decrement(ref _numBusyDownloadSourcesFile);
                 else
                 {
-                    Debug.Fail("Unexpected remote file downloaded: " + remoteFile);
+                    const string errmsg = "Unexpected remote file `{0}` downloaded by `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, remoteFile, sender);
+                    Debug.Fail(string.Format(errmsg, remoteFile, sender));
                     return;
                 }
 
@@ -559,8 +591,12 @@ namespace GoreUpdater
                             // Try to parse and add the version
                             int version;
                             if (!int.TryParse(txt, out version))
-                                _masterReadInfo.AppendError(
-                                    string.Format("Failed to parse version file to integer. Contents: `{0}`", txt));
+                            {
+                                const string errmsg = "Failed to parse version file to integer (remote path: {0}, local path: {1}). Contents: `{2}`";
+                                if (log.IsErrorEnabled)
+                                    log.ErrorFormat(errmsg, remoteFile, localFilePath, txt);
+                                _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, txt));
+                            }
                             else
                             {
                                 _masterReadInfo.AddVersion(version);
@@ -570,7 +606,10 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        _masterReadInfo.AppendError("Unexpected error while handling version file: " + ex);
+                        const string errmsg = "Unexpected error while handling version file (remote path: {0}, local path: {1}). Exception: {2}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, remoteFile, localFilePath, ex);
+                        _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, ex));
                     }
                     finally
                     {
@@ -589,7 +628,10 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        _masterReadInfo.AppendError("Unexpected error while handling version file: " + ex);
+                        const string errmsg = "Unexpected error while handling version file (remote path: {0}, local path: {1}). Exception: {2}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, remoteFile, localFilePath, ex);
+                        _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, ex));
                     }
                     finally
                     {
@@ -625,7 +667,10 @@ namespace GoreUpdater
                                     }
                                     catch (Exception ex)
                                     {
-                                        Debug.Fail(ex.ToString());
+                                        const string errmsg = "Failed to instantiate and/or execute downoaded master server using DownloadSourceDescriptor `{0}`. Exception: {1}";
+                                        if (log.IsWarnEnabled)
+                                            log.WarnFormat(errmsg, desc, ex);
+                                        Debug.Fail(string.Format(errmsg, desc, ex));
                                     }
                                 }
                             }
@@ -633,7 +678,10 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        _masterReadInfo.AppendError("Unexpected error while handling master servers file: " + ex);
+                        const string errmsg = "Unexpected error while handling master servers file (remote path: {0}, local path: {1}). Exception: {2}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, remoteFile, localFilePath, ex);
+                        _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, ex));
                     }
                     finally
                     {
@@ -653,7 +701,10 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        _masterReadInfo.AppendError("Unexpected error while handling download sources file: " + ex);
+                        const string errmsg = "Unexpected error while handling download sources file (remote path: {0}, local path: {1}). Exception: {2}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, remoteFile, localFilePath, ex);
+                        _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, ex));
                     }
                     finally
                     {
@@ -662,7 +713,10 @@ namespace GoreUpdater
                 }
                 else
                 {
-                    Debug.Fail("Unexpected remote file downloaded: " + remoteFile);
+                    const string errmsg = "Unexpected remote file `{0}` downloaded by `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, remoteFile, sender);
+                    Debug.Fail(string.Format(errmsg, remoteFile, sender));
                     return;
                 }
 
@@ -715,6 +769,9 @@ namespace GoreUpdater
             #endregion
         }
 
+        /// <summary>
+        /// Contains the arguments that are passed to the worker thread method.
+        /// </summary>
         class ThreadWorkerArgs
         {
             readonly MasterServerReaderReadCallback _callback;
