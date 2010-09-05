@@ -440,9 +440,10 @@ namespace GoreUpdater
                 fileCopied = false;
                 Debug.Fail(ex.ToString());
 
-                try{
-                if (FileMoveFailed != null)
-                    FileMoveFailed(this, remoteFile, tempPath, targetPath);
+                try
+                {
+                    if (FileMoveFailed != null)
+                        FileMoveFailed(this, remoteFile, tempPath, targetPath);
                 }
                 catch (NullReferenceException ex2)
                 {
@@ -481,9 +482,10 @@ namespace GoreUpdater
             // Notify if all jobs have finished
             if (finished)
             {
-                try{
-                if (Finished != null)
-                    Finished(this);
+                try
+                {
+                    if (Finished != null)
+                        Finished(this);
                 }
                 catch (NullReferenceException ex)
                 {
