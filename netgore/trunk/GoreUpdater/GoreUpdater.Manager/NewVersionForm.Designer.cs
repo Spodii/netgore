@@ -123,7 +123,7 @@
             this.lblVersionHelp.Size = new System.Drawing.Size(13, 13);
             this.lblVersionHelp.TabIndex = 11;
             this.lblVersionHelp.Text = "?";
-            this.lblVersionHelp.Click += new System.EventHandler(this.lblVersionHelp_Click);
+            this.lblVersionHelp.Click += new System.EventHandler(lblVersionHelp_Click);
             // 
             // lblRootPathHelp
             // 
@@ -134,7 +134,7 @@
             this.lblRootPathHelp.Size = new System.Drawing.Size(13, 13);
             this.lblRootPathHelp.TabIndex = 12;
             this.lblRootPathHelp.Text = "?";
-            this.lblRootPathHelp.Click += new System.EventHandler(this.lblRootPathHelp_Click);
+            this.lblRootPathHelp.Click += new System.EventHandler(lblRootPathHelp_Click);
             // 
             // lblFiltersHelp
             // 
@@ -145,7 +145,7 @@
             this.lblFiltersHelp.Size = new System.Drawing.Size(13, 13);
             this.lblFiltersHelp.TabIndex = 13;
             this.lblFiltersHelp.Text = "?";
-            this.lblFiltersHelp.Click += new System.EventHandler(this.lblFiltersHelp_Click);
+            this.lblFiltersHelp.Click += new System.EventHandler(lblFiltersHelp_Click);
             // 
             // NewVersionForm
             // 
