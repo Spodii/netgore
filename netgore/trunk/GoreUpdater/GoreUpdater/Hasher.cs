@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
-
-// TODO: Make use of log4net
+using log4net;
 
 namespace GoreUpdater
 {
@@ -43,9 +43,14 @@ namespace GoreUpdater
         {
             lock (_hashersSync)
             {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Freeing hasher [object hash: {0}].", hasher.GetHashCode());
+
                 _hashers.Push(hasher);
             }
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Gets the hash for a file.
@@ -54,6 +59,9 @@ namespace GoreUpdater
         /// <returns>The hash of the <paramref name="filePath"/>.</returns>
         public static string GetFileHash(string filePath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Getting hash for file: {0}", filePath);
+
             var hasher = GetHasher();
 
             try
@@ -78,6 +86,9 @@ namespace GoreUpdater
         /// <returns>The hash for the <paramref name="data"/>.</returns>
         public static string GetHash(byte[] data)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Getting hash for data (length: {0}).", data.Length);
+
             var hasher = GetHasher();
 
             try
@@ -102,6 +113,9 @@ namespace GoreUpdater
         /// </returns>
         public static string GetHash(byte[] data, int offset, int count)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Getting hash for data (length: {0}; offset: {1}; count: {2}).", data.Length, offset, count);
+
             var hasher = GetHasher();
 
             try
@@ -121,13 +135,27 @@ namespace GoreUpdater
         /// <returns>The object for generating the hashes.</returns>
         static MD5 GetHasher()
         {
+            MD5 ret;
+
             lock (_hashersSync)
             {
                 if (_hashers.Count == 0)
-                    return MD5.Create();
+                {
+                    ret = MD5.Create();
+
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Acquired hasher [object hash: {0}] - created new instance.", ret.GetHashCode());
+                }
                 else
-                    return _hashers.Pop();
+                {
+                    ret = _hashers.Pop();
+
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Acquired hasher [object hash: {0}] - acquired from pool.", ret.GetHashCode());
+                }
             }
+
+            return ret;
         }
     }
 }
