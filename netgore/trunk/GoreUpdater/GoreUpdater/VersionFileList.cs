@@ -234,8 +234,9 @@ namespace GoreUpdater
                         Directory.CreateDirectory(p);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.Fail(ex.ToString());
             }
 
             var sb = new StringBuilder();
