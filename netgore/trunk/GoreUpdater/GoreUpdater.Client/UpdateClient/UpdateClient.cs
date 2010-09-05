@@ -6,9 +6,6 @@ using System.Linq;
 
 namespace GoreUpdater
 {
-    // TODO: Run the delete routine after successfully updating
-    // TODO: Delete the _temp directory when done
-
     /// <summary>
     /// A master class for the updater client that performs the whole update process.
     /// This class is thread-safe.
@@ -190,6 +187,99 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Runs the clean-up routines.
+        /// </summary>
+        void Cleanup()
+        {
+            State = UpdateClientState.CleaningUp;
+
+            // Delete files from the update process
+            try
+            {
+                if (_versionFileList != null)
+                {
+                    if (Directory.Exists(Settings.TargetPath))
+                    {
+                        var ffc = FileFilterHelper.CreateCollection(_versionFileList.Filters);
+                        if (ffc.Count > 0)
+                        {
+                            int pathTrimLen = Settings.TargetPath.Length;
+                            if (!Settings.TargetPath.EndsWith(Path.DirectorySeparatorChar.ToString()) &&
+                                !Settings.TargetPath.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+                                pathTrimLen++;
+
+                            var files = Directory.GetFiles(Settings.TargetPath);
+                            foreach (var f in files)
+                            {
+                                var relativePath = f.Substring(pathTrimLen);
+
+                                try
+                                {
+                                    if (_versionFileList.ContainsFile(relativePath))
+                                        continue;
+
+                                    if (ffc.IsMatch("\\" + relativePath))
+                                    {
+                                        // LOG: File skipped since it matched filter
+                                        continue;
+                                    }
+
+                                    // LOG: Deleting file
+                                    File.Delete(f);
+                                }
+                                catch (Exception ex)
+                                {
+                                    const string errmsg = "Unexpected error while checking if file `{0}` should be deleted: {1}";
+                                    Debug.Fail(string.Format(errmsg, f, ex));
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    const string errmsg = "_versionFileList was null, but wasn't expected to be.";
+                    Debug.Fail(errmsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to delete old files: {0}";
+                Debug.Fail(string.Format(errmsg, ex));
+            }
+
+            // Delete temp files
+            try
+            {
+                if (Directory.Exists(Settings.TempPath))
+                {
+                    var tempFiles = Directory.GetFiles(Settings.TempPath);
+                    foreach (var f in tempFiles)
+                    {
+                        try
+                        {
+                            // LOG: Deleting temp file
+                            File.Delete(f);
+                        }
+                        catch (Exception ex)
+                        {
+                            const string errmsg = "Failed to delete temporary file `{0}`: {1}";
+                            Debug.Fail(string.Format(errmsg, f, ex));
+                        }
+                    }
+
+                    // LOG: Deleting temp file directory
+                    Directory.Delete(Settings.TempPath, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to delete temp files: {0}";
+                Debug.Fail(string.Format(errmsg, ex));
+            }
+        }
+
+        /// <summary>
         /// Checks if the downloading with the <see cref="DownloadManager"/> has been completed.
         /// </summary>
         void CheckIfDownloadManagerComplete()
@@ -227,6 +317,9 @@ namespace GoreUpdater
                 State = UpdateClientState.Completed;
                 return;
             }
+
+            // Clean up
+            Cleanup();
 
             // If done, update the version
             TrySetClientVersionToLive();
@@ -480,6 +573,12 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// The <see cref="VersionFileList"/>. Can, and often will, be null. Only set when grabbing the <see cref="VersionFileList"/>
+        /// from the server (that is, actually making an update).
+        /// </summary>
+        VersionFileList _versionFileList;
+
+        /// <summary>
         /// The callback method for the <see cref="IMasterServerReader.BeginReadVersionFileList"/>.
         /// </summary>
         /// <param name="sender">The <see cref="IMasterServerReader"/> this event came from.</param>
@@ -501,10 +600,9 @@ namespace GoreUpdater
                 return;
             }
 
-            VersionFileList vfl;
             try
             {
-                vfl = VersionFileList.CreateFromString(info.VersionFileListText);
+                _versionFileList = VersionFileList.CreateFromString(info.VersionFileListText);
             }
             catch (Exception ex)
             {
@@ -517,7 +615,7 @@ namespace GoreUpdater
             }
 
             // Find the files to update
-            var toUpdate = FindFilesToUpdate(vfl);
+            var toUpdate = FindFilesToUpdate(_versionFileList);
 
             // If all file hashes match, then we are good to go
             if (toUpdate.Count() == 0)
