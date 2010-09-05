@@ -56,6 +56,11 @@ namespace GoreUpdater
         UpdatingFiles,
 
         /// <summary>
+        /// Cleaning up the old and temporary files.
+        /// </summary>
+        CleaningUp,
+
+        /// <summary>
         /// The update process has completed.
         /// </summary>
         Completed,
