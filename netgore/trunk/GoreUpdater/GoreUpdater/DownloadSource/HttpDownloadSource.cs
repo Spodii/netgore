@@ -99,9 +99,10 @@ namespace GoreUpdater
             // Raise the appropriate event
             if (e.Cancelled || e.Error != null)
             {
-                try{
-                if (DownloadFailed != null)
-                    DownloadFailed(this, downloadInfo.RemoteFile, downloadInfo.LocalFilePath);
+                try
+                {
+                    if (DownloadFailed != null)
+                        DownloadFailed(this, downloadInfo.RemoteFile, downloadInfo.LocalFilePath);
                 }
                 catch (NullReferenceException ex)
                 {
@@ -110,9 +111,10 @@ namespace GoreUpdater
             }
             else
             {
-                try{
-                if (DownloadFinished != null)
-                    DownloadFinished(this, downloadInfo.RemoteFile, downloadInfo.LocalFilePath);
+                try
+                {
+                    if (DownloadFinished != null)
+                        DownloadFinished(this, downloadInfo.RemoteFile, downloadInfo.LocalFilePath);
                 }
                 catch (NullReferenceException ex)
                 {
