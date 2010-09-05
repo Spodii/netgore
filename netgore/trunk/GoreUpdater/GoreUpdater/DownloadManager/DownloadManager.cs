@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -12,6 +14,8 @@ namespace GoreUpdater
     /// </summary>
     public class DownloadManager : IDownloadManager
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// For how long to sleep the worker thread when there are no jobs available.
         /// </summary>
@@ -93,6 +97,9 @@ namespace GoreUpdater
             {
                 var workerThread = new Thread(WorkerThreadLoop) { IsBackground = true };
 
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Creating worker thread #{0}", i);
+
                 try
                 {
                     workerThread.Name = string.Format("DownloadManager [{0}] worker thread [{1}", id, i);
@@ -155,6 +162,9 @@ namespace GoreUpdater
                     continue;
                 }
 
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Starting DownloadManager job: {0}", workItem);
+
                 var downloadTo = GetTempPath(workItem);
 
                 // Ensure the target directory exists
@@ -164,7 +174,12 @@ namespace GoreUpdater
                     if (dir != null)
                     {
                         if (!Directory.Exists(dir))
+                        {
+                            if (log.IsDebugEnabled)
+                                log.DebugFormat("Creating directory: {0}", dir);
+
                             Directory.CreateDirectory(dir);
+                        }
                     }
                 }
 
@@ -176,6 +191,9 @@ namespace GoreUpdater
                     {
                         if (ds.Download(workItem, downloadTo, DownloadVersion))
                         {
+                            if (log.IsDebugEnabled)
+                                log.DebugFormat("Job `{0}` added to DownloadSource `{1}`.", workItem, ds);
+
                             added = true;
                             break;
                         }
@@ -185,6 +203,9 @@ namespace GoreUpdater
                 // If it couldn't be added into any of the download sources, then add it back into the queue and sleep a while
                 if (!added)
                 {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Job `{0}` failed to be added to any DownloadSources.", workItem);
+
                     lock (_notStartedQueueSync)
                     {
                         _notStartedQueue.Enqueue(workItem);
@@ -279,6 +300,12 @@ namespace GoreUpdater
             _maxAttempts = (byte)n;
         }
 
+        /// <summary>
+        /// Handles the <see cref="IDownloadSource.DownloadFailed"/> event for the <see cref="_downloadSources"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="remoteFile">The remote file.</param>
+        /// <param name="localFilePath">The local file path.</param>
         void downloadSource_DownloadFailed(IDownloadSource sender, string remoteFile, string localFilePath)
         {
             var invokeFailed = false;
@@ -294,7 +321,12 @@ namespace GoreUpdater
                     _downloadFailedDictCount.Add(remoteFile, fails);
                 }
                 else
+                {
                     _downloadFailedDictCount[remoteFile]++;
+                }
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Job `{0}` failed (attempt #{1}; retry? {2})", remoteFile, fails + 1, fails <= MaxAttempts);
 
                 // Check if the failure has happened too many times and that we should just give up
                 if (fails > MaxAttempts)
@@ -357,6 +389,7 @@ namespace GoreUpdater
                 }
             }
 
+            // Invoke the DownloadFailed event if needed (done here to prevent invoking while in lock)
             if (invokeFailed)
             {
                 try
@@ -370,6 +403,7 @@ namespace GoreUpdater
                 }
             }
 
+            // Invoke the DownloadFinished event if needed (done here to prevent invoking while in lock)
             if (invokeFinished)
             {
                 try
@@ -384,8 +418,17 @@ namespace GoreUpdater
             }
         }
 
+        /// <summary>
+        /// Handles the <see cref="IDownloadSource.DownloadFinished"/> event for the <see cref="_downloadSources"/>.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="remoteFile">The remote file.</param>
+        /// <param name="localFilePath">The local file path.</param>
         void downloadSource_DownloadFinished(IDownloadSource sender, string remoteFile, string localFilePath)
         {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Job `{0}` finished successfully.", remoteFile);
+
             // Remove from the failed dictionaries
             RemoveFromFailedDicts(remoteFile, true);
 
@@ -432,13 +475,22 @@ namespace GoreUpdater
             {
                 lock (_fileSystemSync)
                 {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Copying file from `{0}` to `{1}`.", tempPath, targetPath);
+
                     File.Copy(tempPath, targetPath, true);
                 }
             }
             catch (Exception ex)
             {
                 fileCopied = false;
-                Debug.Fail(ex.ToString());
+
+                const string errmsg = "File copy from `{0}` to `{1}` failed: {2}";
+
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, tempPath, targetPath, ex);
+
+                Debug.Fail(string.Format(errmsg, tempPath, targetPath, ex));
 
                 try
                 {
@@ -459,11 +511,21 @@ namespace GoreUpdater
                     try
                     {
                         if (File.Exists(tempPath))
+                        {
+                            if (log.IsDebugEnabled)
+                                log.DebugFormat("Deleting temporary file: {0}", tempPath);
+
                             File.Delete(tempPath);
+                        }
                     }
                     catch (IOException ex)
                     {
-                        Debug.Fail(ex.ToString());
+                        const string errmsg = "Failed to delete temporary file `{0}`: {1}";
+
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg, tempPath, ex);
+
+                        Debug.Fail(string.Format(errmsg, tempPath, ex));
                     }
                 }
 
@@ -619,10 +681,18 @@ namespace GoreUpdater
             if (downloadSource == null)
                 return false;
 
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Adding DownloadSource: {0}", downloadSource);
+
             lock (_downloadSourcesSync)
             {
                 if (_downloadSources.Contains(downloadSource))
+                {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("DownloadSource `{0}` not added - already in collection.", downloadSource);
+
                     return false;
+                }
 
                 downloadSource.DownloadFinished += downloadSource_DownloadFinished;
                 downloadSource.DownloadFailed += downloadSource_DownloadFailed;
@@ -652,6 +722,9 @@ namespace GoreUpdater
         /// </summary>
         public void ClearFailed()
         {
+            if (log.IsDebugEnabled)
+                log.Debug("Clearing all failed download statistics.");
+
             lock (_failedDownloadsSync)
             {
                 _failedDownloads.Clear();
@@ -663,6 +736,9 @@ namespace GoreUpdater
         /// </summary>
         public void ClearFinished()
         {
+            if (log.IsDebugEnabled)
+                log.Debug("Clearing all finished download statistics.");
+
             lock (_finishedDownloadsSync)
             {
                 _finishedDownloads.Clear();
@@ -686,10 +762,20 @@ namespace GoreUpdater
                 lock (_finishedDownloadsSync)
                 {
                     if (_downloadQueue.Contains(file))
+                    {
+                        if (log.IsDebugEnabled)
+                            log.DebugFormat("Enqueue file `{0}` failed: already in _downloadQueue.", file);
+
                         return false;
+                    }
 
                     if (_finishedDownloads.Contains(file))
+                    {
+                        if (log.IsDebugEnabled)
+                            log.DebugFormat("Enqueue file `{0}` failed: already in _finishedDownloads.", file);
+
                         return false;
+                    }
                 }
 
                 // Remove any information about this file failing, since adding a failed file is just like restarting it
@@ -708,6 +794,9 @@ namespace GoreUpdater
                 {
                     _notStartedQueue.Enqueue(file);
                 }
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Enqueued download job: {0}", file);
             }
 
             return true;
@@ -770,19 +859,35 @@ namespace GoreUpdater
         /// invalid or not in this <see cref="IDownloadManager"/>.</returns>
         public bool RemoveSource(IDownloadSource downloadSource)
         {
+            // Check for a valid argument
             if (downloadSource == null)
-                return false;
+            {
+                if (log.IsInfoEnabled)
+                    log.Info("RemoveSource failed since the DownloadSource parameter was null.");
 
+                return false;
+            }
+
+            // Remove from the _downloadSources list
             lock (_downloadSourcesSync)
             {
                 if (!_downloadSources.Remove(downloadSource))
+                {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Could not remove DownloadSource `{0}` - was not in the _downloadSources list.", downloadSource);
+
                     return false;
+                }
 
                 UpdateMaxAttempts();
             }
 
+            // Remove the event hooks
             downloadSource.DownloadFinished -= downloadSource_DownloadFinished;
             downloadSource.DownloadFailed -= downloadSource_DownloadFailed;
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("DownloadSource `{0}` removed from DownloadManager `{1}`.", downloadSource, this);
 
             return true;
         }
