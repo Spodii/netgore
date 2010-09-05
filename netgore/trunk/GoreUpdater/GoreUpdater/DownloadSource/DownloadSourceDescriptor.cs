@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -49,25 +51,38 @@ namespace GoreUpdater
         /// <returns>The <see cref="DownloadSourceDescriptor"/>s.</returns>
         public static IEnumerable<DownloadSourceDescriptor> FromDescriptorFile(string filePath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating DownloadSourceDescriptors from file: {0}", filePath);
+
             var ret = new List<DownloadSourceDescriptor>();
 
             if (!File.Exists(filePath))
+            {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("File `{0}` did not exist - returning empty collection.", filePath);
                 return Enumerable.Empty<DownloadSourceDescriptor>();
+            }
 
             // Read the file
             var lines = File.ReadAllLines(filePath);
 
             // Try to create a descriptor from each line
-            foreach (var line in lines)
+            foreach (var line in lines.Where(x => x != null))
             {
+                var l = line.Trim();
+                if (l.Length == 0)
+                    continue;
+
                 // Create the descriptor
                 DownloadSourceDescriptor desc;
                 try
                 {
-                    desc = FromDescriptorString(line);
+                    desc = FromDescriptorString(l);
                 }
                 catch (Exception ex)
                 {
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat("Failed to create DownloadSourceDescriptor from file `{0}` on the line `{1}`. Reason: {2}", filePath, line, ex);
                     Debug.Print(ex.ToString());
                     desc = null;
                 }
@@ -76,7 +91,15 @@ namespace GoreUpdater
                 if (desc != null)
                 {
                     if (!ret.Any(x => x.IsIdenticalTo(desc)))
+                    {
                         ret.Add(desc);
+                    }
+                    else
+                    {
+                        if (log.IsDebugEnabled)
+                            log.DebugFormat("Skipped DownloadSourceDescriptor from file `{0}` on the line `{1}` since" + 
+                                " an identical DownloadSourceDescriptor was already found.", filePath, line);
+                    }
                 }
             }
 
@@ -89,6 +112,9 @@ namespace GoreUpdater
         /// <param name="descriptorString">The descriptor string.</param>
         public static DownloadSourceDescriptor FromDescriptorString(string descriptorString)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating DownloadSourceDescriptor from string: {0}", descriptorString);
+
             var split = descriptorString.Split('|');
             var type = (DownloadSourceType)Enum.Parse(typeof(DownloadSourceType), split[0], true);
             var rootPath = split[1].Trim();
@@ -118,6 +144,8 @@ namespace GoreUpdater
             return string.Format("{0}|{1}", Type, RootPath);
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Creates an instance of the <see cref="IDownloadSource"/> described by this <see cref="DownloadSourceDescriptor"/>.
         /// </summary>
@@ -125,13 +153,19 @@ namespace GoreUpdater
         /// <exception cref="NotSupportedException">The <see cref="DownloadSourceType"/> is not supported.</exception>
         public IDownloadSource Instantiate()
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Instantiating DownloadSourceDescriptor: {0}", this);
+
             switch (Type)
             {
                 case DownloadSourceType.Http:
                     return new HttpDownloadSource(RootPath);
 
                 default:
-                    throw new NotSupportedException("Unsupported DownloadSourceType: " + Type);
+                    const string errmsg = "Unsupported DownloadSourceType `{0}` - could not instantiate.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, Type);
+                    throw new NotSupportedException(string.Format(errmsg, Type));
             }
         }
 
