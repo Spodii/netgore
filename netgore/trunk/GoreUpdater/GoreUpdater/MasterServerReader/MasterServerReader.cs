@@ -66,6 +66,8 @@ namespace GoreUpdater
             var readVersion = stateObj.Version;
 
             var info = new MasterServerReadInfo();
+            if (readVersion.HasValue)
+                info.AddVersion(readVersion.Value);
 
             // Create the master server readers from the file
             IEnumerable<DownloadSourceDescriptor> descriptors;
