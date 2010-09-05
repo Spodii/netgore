@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -12,6 +14,8 @@ namespace GoreUpdater
     /// </summary>
     public class VersionFileList
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The string used to delimit items in the listing.
         /// </summary>
@@ -99,6 +103,10 @@ namespace GoreUpdater
         /// <returns>The <see cref="VersionFileList"/> created from the given parameters.</returns>
         public static VersionFileList Create(string rootDir, IEnumerable<string> filters)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("VersionFileList.Create(rootDir: {0}, fiters: ...)",
+                    rootDir);
+
             var addFiles = new List<VersionFileInfo>();
 
             var files = Directory.GetFiles(rootDir, "*", SearchOption.AllDirectories);
@@ -136,6 +144,10 @@ namespace GoreUpdater
         /// <returns>The <see cref="VersionFileList"/> loaded from the <paramref name="filePath"/>.</returns>
         public static VersionFileList CreateFromFile(string filePath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("VersionFileList.CreateFromFile(filePath: {0})",
+                    filePath);
+
             var fileContents = File.ReadAllText(filePath);
             return CreateFromString(fileContents);
         }
@@ -148,6 +160,10 @@ namespace GoreUpdater
         /// <exception cref="InvalidDataException">Any of the lines are invalid.</exception>
         public static VersionFileList CreateFromString(string contents)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("VersionFileList.CreateFromString(contents: {0})",
+                    contents);
+
             var lines = contents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             // Create the lists
@@ -188,7 +204,12 @@ namespace GoreUpdater
                 {
                     // Expect a line for a filter
                     if (l.Contains(Delimiter))
-                        throw new InvalidDataException("Was expecting a line containing a filter on line: " + line);
+                    {
+                        const string errmsg = "Was expecting a line containing a filter on line: {0}";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, line);
+                        throw new InvalidDataException(string.Format(errmsg, line));
+                    }
 
                     filters.Add(l);
                 }
@@ -319,14 +340,24 @@ namespace GoreUpdater
                 if (split.Length != 3)
                 {
                     if (line.Contains(Delimiter))
-                        throw new InvalidDataException("Invalid number of columns for include file on line: " + line);
+                    {
+                        const string errmsg = "Invalid number of columns for include file on line `{0}`.";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, line);
+                        throw new InvalidDataException(string.Format(errmsg, line));
+                    }
                 }
 
                 var filePath = split[0];
                 var hash = split[1];
                 long size;
                 if (!long.TryParse(split[2], out size))
-                    throw new InvalidDataException("Invalid size parameter for include file on line: " + line);
+                {
+                    const string errmsg = "Invalid size parameter ({0}) for include file on line `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, split[2], line);
+                    throw new InvalidDataException(string.Format(errmsg, split[2], line));
+                }
 
                 return new VersionFileInfo(filePath, hash, size);
             }
