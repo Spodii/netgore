@@ -148,5 +148,35 @@ namespace GoreUpdater.Manager
 
             txtRootPath.Text = VersionHelper.GetVersionPath(i);
         }
+
+        /// <summary>
+        /// Handles the Click event of the lblVersionHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lblVersionHelp_Click(object sender, EventArgs e)
+        {
+            // TODO:
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblRootPathHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lblRootPathHelp_Click(object sender, EventArgs e)
+        {
+            // TODO:
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblFiltersHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void lblFiltersHelp_Click(object sender, EventArgs e)
+        {
+            // TODO:
+        }
     }
 }
