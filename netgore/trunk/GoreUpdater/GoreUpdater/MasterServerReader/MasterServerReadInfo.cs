@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -12,6 +14,8 @@ namespace GoreUpdater
     /// </summary>
     public class MasterServerReadInfo : IMasterServerReadInfo
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly object _errorSync = new object();
         readonly List<DownloadSourceDescriptor> _masters = new List<DownloadSourceDescriptor>();
         readonly object _mastersSync = new object();
@@ -37,6 +41,9 @@ namespace GoreUpdater
                 return;
             }
 
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Adding download source `{0}` to MasterServerReadInfo `{1}`.", source, this);
+
             lock (_sourcesSync)
             {
                 if (!_sources.Any(source.IsIdenticalTo))
@@ -59,6 +66,9 @@ namespace GoreUpdater
                 return;
             }
 
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Adding master server `{0}` to MasterServerReadInfo `{1}`.", master, this);
+
             lock (_mastersSync)
             {
                 if (!_masters.Any(master.IsIdenticalTo))
@@ -75,6 +85,9 @@ namespace GoreUpdater
         /// <param name="version">The verison.</param>
         public void AddVersion(int version)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Adding version `{0}` to MasterServerReadInfo `{1}`.", version, this);
+
             // Use the greatest version
             lock (_versionSync)
             {
@@ -90,6 +103,9 @@ namespace GoreUpdater
         /// <param name="text">The text for the <see cref="VersionFileList"/>.</param>
         public void AddVersionFileListText(string text)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Adding VersionFileList text `{0}` to MasterServerReadInfo `{1}`.", text, this);
+
             lock (_versionFileListTextSync)
             {
                 // If the text is exactly the same as the current _versionFileListText, then just ignore it since there is obviously
@@ -154,6 +170,9 @@ namespace GoreUpdater
         /// <param name="error">The new error string.</param>
         public void AppendError(string error)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Adding error `{0}` to MasterServerReadInfo `{1}`.", error, this);
+
             // Append the error
             lock (_errorSync)
             {
