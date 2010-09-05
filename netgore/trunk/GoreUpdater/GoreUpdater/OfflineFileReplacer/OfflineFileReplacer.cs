@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -12,6 +14,8 @@ namespace GoreUpdater
     /// </summary>
     public class BatchOfflineFileReplacer : IOfflineFileReplacer
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly string _appPath;
         readonly Dictionary<string, string> _jobs = new Dictionary<string, string>(StringComparer.Ordinal);
         readonly object _jobsSync = new object();
@@ -33,17 +37,30 @@ namespace GoreUpdater
             if (dir != null)
             {
                 if (!Directory.Exists(dir))
+                {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Creating directory: {0}", dir);
+
                     Directory.CreateDirectory(dir);
+                }
             }
 
             // Delete the output file if it already exists
             try
             {
                 if (File.Exists(outputFilePath))
+                {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Deleting file: {0}", outputFilePath);
+
                     File.Delete(outputFilePath);
+                }
             }
             catch (IOException ex)
             {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Failed to delete file `{0}`. Exception: {1}", outputFilePath, ex);
+
                 Debug.Fail(ex.ToString());
             }
         }
@@ -103,12 +120,18 @@ namespace GoreUpdater
         {
             if (_jobs.Count == 0)
             {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Writing OfflineFileReplacer `{0}`'s contents to file `{1}`: No replace jobs, so deleting file instead.", this, _outputFilePath);
+
                 // No jobs - just delete the old file
                 if (File.Exists(_outputFilePath))
                     File.Delete(_outputFilePath);
             }
             else
             {
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Writing OfflineFileReplacer `{0}`'s contents to file `{1}`: {2} jobs to write.", this, _outputFilePath, _jobs.Count);
+
                 // Build the file contents
                 var fileText = GetFileContents();
 
@@ -159,6 +182,9 @@ namespace GoreUpdater
             if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(newFilePath))
                 return false;
 
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Adding file replace job to `{0}`: Move `{1}` to `{2}`.", this, filePath, newFilePath);
+
             lock (_jobsSync)
             {
                 if (_jobs.ContainsKey(filePath))
@@ -194,6 +220,9 @@ namespace GoreUpdater
         {
             if (string.IsNullOrEmpty(filePath))
                 return false;
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Removing job from `{0}` for file path `{1}`.", this, filePath);
 
             bool removed;
             lock (_jobsSync)
