@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -13,6 +15,8 @@ namespace GoreUpdater
     /// </summary>
     public class HttpDownloadSource : IDownloadSource
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly string _rootPath;
         readonly Stack<WebClient> _webClients = new Stack<WebClient>();
         readonly object _webClientsSync = new object();
@@ -25,6 +29,9 @@ namespace GoreUpdater
         /// <param name="rootPath">The root path to the HTTP server.</param>
         public HttpDownloadSource(string rootPath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating {0} (rootPath: {1})", GetType().Name, rootPath);
+
             _rootPath = PathHelper.ForceEndWithChar(rootPath, '/', Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
             // Create the web clients that we will be using for the downloading
@@ -34,6 +41,9 @@ namespace GoreUpdater
             {
                 for (var i = 0; i < numWebClients; i++)
                 {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Creating worker thread #{0} for {1}", i, this);
+
                     var wc = CreateWebClient();
                     _webClients.Push(wc);
                 }
@@ -54,6 +64,9 @@ namespace GoreUpdater
         /// <returns>A <see cref="WebClient"/> that will be used to perform the downloading.</returns>
         WebClient CreateWebClient()
         {
+            if (log.IsDebugEnabled)
+                log.Debug("Creating WebClient instance");
+
             var wc = new WebClient();
             wc.DownloadFileCompleted += wc_DownloadFileCompleted;
             return wc;
@@ -79,6 +92,9 @@ namespace GoreUpdater
             {
                 foreach (var wc in _webClients)
                 {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Disposing WebClient instance: {0}", wc);
+
                     wc.CancelAsync();
                     wc.Dispose();
                 }
@@ -95,10 +111,17 @@ namespace GoreUpdater
             Debug.Assert(sender is WebClient);
 
             var downloadInfo = (AsyncDownloadInfo)e.UserState;
+            
+            if (log.IsDebugEnabled)
+                log.DebugFormat("DownloadFileComplete received from `{0}`.", sender);
 
             // Raise the appropriate event
             if (e.Cancelled || e.Error != null)
             {
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Download of file `{0}` to `{1}` using {2} failed (cancelled? {3}). Error: {4}", downloadInfo.RemoteFile,
+                        downloadInfo.LocalFilePath, sender, e.Cancelled, e.Error != null ? e.Error.ToString() : "[NULL]");
+
                 try
                 {
                     if (DownloadFailed != null)
@@ -111,6 +134,10 @@ namespace GoreUpdater
             }
             else
             {
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Download of file `{0}` to `{1}` using {2} successful.", downloadInfo.RemoteFile,
+                        downloadInfo.LocalFilePath, sender);
+
                 try
                 {
                     if (DownloadFinished != null)
@@ -200,6 +227,10 @@ namespace GoreUpdater
         /// <returns>True if the download was successfully started; otherwise false.</returns>
         public bool Download(string remoteFile, string localFilePath, int? version)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Attempting Download on `{0}`. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}", this,
+                    remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]");
+
             var uriPath = RootPath;
 
             // Add the version directory if needed
@@ -216,16 +247,32 @@ namespace GoreUpdater
             if (dir != null)
             {
                 if (!Directory.Exists(dir))
+                {
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Creating directory: {0}", dir);
                     Directory.CreateDirectory(dir);
+                }
             }
 
+            // Get the WebClient to use
             lock (_webClientsSync)
             {
+                // Check for a free WebClient
                 if (_webClients.Count == 0)
+                {
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Could not start download on `{0}` since no WebClients are available. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}", this,
+                            remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]");
                     return false;
+                }
 
+                // Grab the free WebClient and start the download
                 var wc = _webClients.Pop();
                 wc.DownloadFileAsync(uri, localFilePath, new AsyncDownloadInfo(remoteFile, localFilePath));
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Starting download on `{0}` using WebClient {4}. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}", this,
+                        remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]", wc);
             }
 
             return true;
@@ -249,22 +296,36 @@ namespace GoreUpdater
 
         #endregion
 
+        /// <summary>
+        /// Contains the information for an asynchronous download.
+        /// </summary>
         class AsyncDownloadInfo
         {
             readonly string _localFilePath;
             readonly string _remoteFile;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="AsyncDownloadInfo"/> class.
+            /// </summary>
+            /// <param name="remoteFile">The remote file.</param>
+            /// <param name="localFilePath">The local file path.</param>
             public AsyncDownloadInfo(string remoteFile, string localFilePath)
             {
                 _remoteFile = remoteFile;
                 _localFilePath = localFilePath;
             }
 
+            /// <summary>
+            /// Gets the local file path for the asynchronous download.
+            /// </summary>
             public string LocalFilePath
             {
                 get { return _localFilePath; }
             }
 
+            /// <summary>
+            /// Gets the remote file path for the asynchronous download.
+            /// </summary>
             public string RemoteFile
             {
                 get { return _remoteFile; }
