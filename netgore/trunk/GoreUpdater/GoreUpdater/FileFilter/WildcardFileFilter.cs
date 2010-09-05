@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -8,6 +10,8 @@ namespace GoreUpdater
     /// </summary>
     public class WildcardFileFilter : IFileFilter
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly RegexFileFilter _filter;
 
         /// <summary>
@@ -22,6 +26,9 @@ namespace GoreUpdater
             s = s.Replace(@"\?", ".?");
             s = "^" + s + "$";
 
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Creating WildcardFileFilter. Input pattern: {0} Output Regex pattern: {1}", pattern, s);
+
             _filter = new RegexFileFilter(s);
         }
 
@@ -34,6 +41,9 @@ namespace GoreUpdater
         /// <returns>True if the filter matches the <paramref name="filePath"/>; otherwise false.</returns>
         public bool IsMatch(string filePath)
         {
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Performing IsMatch on `{0}` for filePath `{1}`. Note: Will end up calling RegexFileFilter.", this, filePath);
+
             return _filter.IsMatch(filePath);
         }
 
