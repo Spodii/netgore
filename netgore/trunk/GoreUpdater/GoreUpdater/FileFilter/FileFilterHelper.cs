@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -16,7 +17,7 @@ namespace GoreUpdater
         /// <returns>The <see cref="IFileFilterCollection"/> created from the <paramref name="filterStrings"/>.</returns>
         public static IFileFilterCollection CreateCollection(IEnumerable<string> filterStrings)
         {
-            var filters = filterStrings.Where(x => !string.IsNullOrEmpty(x)).Select(CreateFilter);
+            var filters = filterStrings.Where(x => !string.IsNullOrEmpty(x)).Distinct(StringComparer.OrdinalIgnoreCase).Select(CreateFilter);
             return new FileFilterCollection(filters);
         }
 
