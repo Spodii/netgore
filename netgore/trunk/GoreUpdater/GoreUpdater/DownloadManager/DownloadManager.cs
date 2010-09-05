@@ -359,14 +359,28 @@ namespace GoreUpdater
 
             if (invokeFailed)
             {
-                if (DownloadFailed != null)
-                    DownloadFailed(this, remoteFile);
+                try
+                {
+                    if (DownloadFailed != null)
+                        DownloadFailed(this, remoteFile);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
             }
 
             if (invokeFinished)
             {
-                if (Finished != null)
-                    Finished(this);
+                try
+                {
+                    if (Finished != null)
+                        Finished(this);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
             }
         }
 
@@ -425,8 +439,15 @@ namespace GoreUpdater
             {
                 fileCopied = false;
                 Debug.Fail(ex.ToString());
+
+                try{
                 if (FileMoveFailed != null)
                     FileMoveFailed(this, remoteFile, tempPath, targetPath);
+                }
+                catch (NullReferenceException ex2)
+                {
+                    Debug.Fail(ex2.ToString());
+                }
             }
 
             // Delete the old file
@@ -446,15 +467,28 @@ namespace GoreUpdater
                 }
 
                 // Notify that the file successfully downloaded and was moved
-                if (DownloadFinished != null)
-                    DownloadFinished(this, remoteFile, targetPath);
+                try
+                {
+                    if (DownloadFinished != null)
+                        DownloadFinished(this, remoteFile, targetPath);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
             }
 
             // Notify if all jobs have finished
             if (finished)
             {
+                try{
                 if (Finished != null)
                     Finished(this);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
             }
         }
 

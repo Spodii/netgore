@@ -99,13 +99,25 @@ namespace GoreUpdater
             // Raise the appropriate event
             if (e.Cancelled || e.Error != null)
             {
+                try{
                 if (DownloadFailed != null)
                     DownloadFailed(this, downloadInfo.RemoteFile, downloadInfo.LocalFilePath);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
             }
             else
             {
+                try{
                 if (DownloadFinished != null)
                     DownloadFinished(this, downloadInfo.RemoteFile, downloadInfo.LocalFilePath);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
             }
 
             // Add the WebClient back to the pool

@@ -859,22 +859,43 @@ namespace GoreUpdater
                     if (job is JobUploadFile)
                     {
                         var asJobCreateFile = (JobUploadFile)job;
+
+                        try{
                         if (UploadError != null)
                             UploadError(this, asJobCreateFile.LocalFile, asJobCreateFile.RemoteFile, FormatExceptionMessage(ex),
                                         job.Attempts);
+                        }
+                        catch (NullReferenceException ex2)
+                        {
+                            Debug.Fail(ex2.ToString());
+                        }
                     }
                     else if (job is JobDownloadFile)
                     {
                         var asJobDownloadFile = (JobDownloadFile)job;
+
+                        try{
                         if (DownloadError != null)
                             DownloadError(this, asJobDownloadFile.LocalFile, asJobDownloadFile.RemoteFile,
                                           FormatExceptionMessage(ex), job.Attempts);
+                        }
+                        catch (NullReferenceException ex2)
+                        {
+                            Debug.Fail(ex2.ToString());
+                        }
                     }
                     else if (job is JobDeleteDir)
                     {
                         var asJobDeleteDir = (JobDeleteDir)job;
+
+                        try{
                         if (DeleteDirectoryError != null)
                             DeleteDirectoryError(this, asJobDeleteDir.RemotePath, FormatExceptionMessage(ex), job.Attempts);
+                        }
+                        catch (NullReferenceException ex2)
+                        {
+                            Debug.Fail(ex2.ToString());
+                        }
                     }
                     else
                     {
@@ -903,20 +924,41 @@ namespace GoreUpdater
                 if (job is JobUploadFile)
                 {
                     var asJobCreateFile = (JobUploadFile)job;
+
+                    try{
                     if (UploadComplete != null)
                         UploadComplete(this, asJobCreateFile.LocalFile, asJobCreateFile.RemoteFile);
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                    }
                 }
                 else if (job is JobDownloadFile)
                 {
                     var asJobDownloadFile = (JobDownloadFile)job;
+
+                    try{
                     if (DownloadComplete != null)
                         DownloadComplete(this, asJobDownloadFile.LocalFile, asJobDownloadFile.RemoteFile);
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                    }
                 }
                 else if (job is JobDeleteDir)
                 {
                     var asJobDeleteDir = (JobDeleteDir)job;
+
+                    try{
                     if (DeleteDirectoryComplete != null)
                         DeleteDirectoryComplete(this, asJobDeleteDir.RemotePath);
+                    }
+                    catch (NullReferenceException ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                    }
                 }
             }
         }
