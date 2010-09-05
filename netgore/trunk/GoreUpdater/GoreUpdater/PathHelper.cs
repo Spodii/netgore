@@ -23,15 +23,15 @@ namespace GoreUpdater
         public const string RemoteFileListHashFileName = "sync_complete";
 
         /// <summary>
+        /// The length of the <see cref="Path.DirectorySeparatorChar"/> as a string.
+        /// </summary>
+        static readonly int _pathSeperatorCharLength = Path.DirectorySeparatorChar.ToString().Length;
+
+        /// <summary>
         /// The possible path separators.
         /// </summary>
         static readonly string[] _pathSeps = new string[]
         { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
-
-        /// <summary>
-        /// The length of the <see cref="Path.DirectorySeparatorChar"/> as a string.
-        /// </summary>
-        static readonly int _pathSeperatorCharLength = Path.DirectorySeparatorChar.ToString().Length;
 
         /// <summary>
         /// Combines two paths and forces them to be in different directories. That is, the second path will always

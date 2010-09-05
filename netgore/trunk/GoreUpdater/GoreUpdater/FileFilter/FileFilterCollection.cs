@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace GoreUpdater
 {
@@ -61,6 +59,28 @@ namespace GoreUpdater
         #region Implementation of ICollection<IFileFilter>
 
         /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        /// <returns>
+        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </returns>
+        public int Count
+        {
+            get { return _filters.Count; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </summary>
+        /// <returns>
+        /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
+        /// </returns>
+        bool ICollection<IFileFilter>.IsReadOnly
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
@@ -111,6 +131,18 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Checks if any of the filters in this collection match the given file path.
+        /// </summary>
+        /// <param name="filePath">The file path to test.</param>
+        /// <returns>
+        /// True if any of the filters match the <paramref name="filePath"/>; otherwise false.
+        /// </returns>
+        public bool IsMatch(string filePath)
+        {
+            return _filters.Any(x => x.IsMatch(filePath));
+        }
+
+        /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
@@ -123,40 +155,6 @@ namespace GoreUpdater
         public bool Remove(IFileFilter item)
         {
             return _filters.Remove(item);
-        }
-
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        /// <returns>
-        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </returns>
-        public int Count
-        {
-            get { return _filters.Count; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
-        /// </summary>
-        /// <returns>
-        /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
-        /// </returns>
-        bool ICollection<IFileFilter>.IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Checks if any of the filters in this collection match the given file path.
-        /// </summary>
-        /// <param name="filePath">The file path to test.</param>
-        /// <returns>
-        /// True if any of the filters match the <paramref name="filePath"/>; otherwise false.
-        /// </returns>
-        public bool IsMatch(string filePath)
-        {
-            return _filters.Any(x => x.IsMatch(filePath));
         }
 
         #endregion

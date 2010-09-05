@@ -136,6 +136,36 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Handles the Click event of the lblFiltersHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        static void lblFiltersHelp_Click(object sender, EventArgs e)
+        {
+            HelpHelper.DisplayHelp(HelpHelper.HelpDeleteFilters);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblRootPathHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        static void lblRootPathHelp_Click(object sender, EventArgs e)
+        {
+            HelpHelper.DisplayHelp(HelpHelper.HelpRootPath);
+        }
+
+        /// <summary>
+        /// Handles the Click event of the lblVersionHelp control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        static void lblVersionHelp_Click(object sender, EventArgs e)
+        {
+            HelpHelper.DisplayHelp(HelpHelper.HelpNewVersionNumber);
+        }
+
+        /// <summary>
         /// Handles the TextChanged event of the lblVersion control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -147,36 +177,6 @@ namespace GoreUpdater.Manager
                 return;
 
             txtRootPath.Text = VersionHelper.GetVersionPath(i);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the lblVersionHelp control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private static void lblVersionHelp_Click(object sender, EventArgs e)
-        {
-            HelpHelper.DisplayHelp(HelpHelper.HelpNewVersionNumber);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the lblRootPathHelp control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private static void lblRootPathHelp_Click(object sender, EventArgs e)
-        {
-            HelpHelper.DisplayHelp(HelpHelper.HelpRootPath);
-        }
-
-        /// <summary>
-        /// Handles the Click event of the lblFiltersHelp control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private static void lblFiltersHelp_Click(object sender, EventArgs e)
-        {
-            HelpHelper.DisplayHelp(HelpHelper.HelpDeleteFilters);
         }
     }
 }

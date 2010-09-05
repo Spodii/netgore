@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace GoreUpdater
 {
@@ -27,7 +28,7 @@ namespace GoreUpdater
         /// <returns>True if the filter matches the <paramref name="filePath"/>; otherwise false.</returns>
         public bool IsMatch(string filePath)
         {
-            string s = FileFilterHelper.SanitizeFilePath(filePath);
+            var s = FileFilterHelper.SanitizeFilePath(filePath);
             return _regex.IsMatch(s);
         }
 

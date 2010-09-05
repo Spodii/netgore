@@ -41,6 +41,14 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Gets the root path to the HTTP server.
+        /// </summary>
+        public string RootPath
+        {
+            get { return _rootPath; }
+        }
+
+        /// <summary>
         /// Creates a <see cref="WebClient"/> that will be used to perform the downloading.
         /// </summary>
         /// <returns>A <see cref="WebClient"/> that will be used to perform the downloading.</returns>
@@ -49,14 +57,6 @@ namespace GoreUpdater
             var wc = new WebClient();
             wc.DownloadFileCompleted += wc_DownloadFileCompleted;
             return wc;
-        }
-
-        /// <summary>
-        /// Gets the root path to the HTTP server.
-        /// </summary>
-        public string RootPath
-        {
-            get { return _rootPath; }
         }
 
         /// <summary>

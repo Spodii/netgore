@@ -25,6 +25,12 @@ namespace GoreUpdater
         UpdateClientState _state;
 
         /// <summary>
+        /// The <see cref="VersionFileList"/>. Can, and often will, be null. Only set when grabbing the <see cref="VersionFileList"/>
+        /// from the server (that is, actually making an update).
+        /// </summary>
+        VersionFileList _versionFileList;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UpdateClient"/> class.
         /// </summary>
         /// <param name="settings">The <see cref="UpdateClientSettings"/>.</param>
@@ -187,6 +193,73 @@ namespace GoreUpdater
         }
 
         /// <summary>
+        /// Checks if the downloading with the <see cref="DownloadManager"/> has been completed.
+        /// </summary>
+        void CheckIfDownloadManagerComplete()
+        {
+            // If the download manager is null, then skip checking it
+            if (_dm != null)
+            {
+                if (!_dm.IsDisposed)
+                {
+                    // Do not continue if items are still enqueued for download
+                    if (_dm.QueueCount > 0)
+                    {
+                        Debug.Fail("Why are items still in the download queue?");
+                        return;
+                    }
+
+                    // Clean up
+                    try
+                    {
+                        _dm.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        const string errmsg = "Failed to dispose DownloadManager `{0}`. Reason: {1}";
+                        Debug.Fail(string.Format(errmsg, _dm, ex));
+                    }
+                }
+
+                _dm = null;
+            }
+
+            // Abort if HasErrors is true
+            if (HasErrors)
+            {
+                State = UpdateClientState.Completed;
+                return;
+            }
+
+            // Clean up
+            Cleanup();
+
+            // If done, update the version
+            TrySetClientVersionToLive();
+
+            // Change the state
+            State = UpdateClientState.Completed;
+
+            // Set to not running
+            lock (_isRunningSync)
+            {
+                Debug.Assert(_isRunning);
+
+                _isRunning = false;
+
+                try
+                {
+                    if (IsRunningChanged != null)
+                        IsRunningChanged(this);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
+            }
+        }
+
+        /// <summary>
         /// Runs the clean-up routines.
         /// </summary>
         void Cleanup()
@@ -203,7 +276,7 @@ namespace GoreUpdater
                         var ffc = FileFilterHelper.CreateCollection(_versionFileList.Filters);
                         if (ffc.Count > 0)
                         {
-                            int pathTrimLen = Settings.TargetPath.Length;
+                            var pathTrimLen = Settings.TargetPath.Length;
                             if (!Settings.TargetPath.EndsWith(Path.DirectorySeparatorChar.ToString()) &&
                                 !Settings.TargetPath.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
                                 pathTrimLen++;
@@ -276,73 +349,6 @@ namespace GoreUpdater
             {
                 const string errmsg = "Failed to delete temp files: {0}";
                 Debug.Fail(string.Format(errmsg, ex));
-            }
-        }
-
-        /// <summary>
-        /// Checks if the downloading with the <see cref="DownloadManager"/> has been completed.
-        /// </summary>
-        void CheckIfDownloadManagerComplete()
-        {
-            // If the download manager is null, then skip checking it
-            if (_dm != null)
-            {
-                if (!_dm.IsDisposed)
-                {
-                    // Do not continue if items are still enqueued for download
-                    if (_dm.QueueCount > 0)
-                    {
-                        Debug.Fail("Why are items still in the download queue?");
-                        return;
-                    }
-
-                    // Clean up
-                    try
-                    {
-                        _dm.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        const string errmsg = "Failed to dispose DownloadManager `{0}`. Reason: {1}";
-                        Debug.Fail(string.Format(errmsg, _dm, ex));
-                    }
-                }
-
-                _dm = null;
-            }
-
-            // Abort if HasErrors is true
-            if (HasErrors)
-            {
-                State = UpdateClientState.Completed;
-                return;
-            }
-
-            // Clean up
-            Cleanup();
-
-            // If done, update the version
-            TrySetClientVersionToLive();
-
-            // Change the state
-            State = UpdateClientState.Completed;
-
-            // Set to not running
-            lock (_isRunningSync)
-            {
-                Debug.Assert(_isRunning);
-
-                _isRunning = false;
-
-                try
-                {
-                    if (IsRunningChanged != null)
-                        IsRunningChanged(this);
-                }
-                catch (NullReferenceException ex)
-                {
-                    Debug.Fail(ex.ToString());
-                }
             }
         }
 
@@ -571,12 +577,6 @@ namespace GoreUpdater
 
             _msr.BeginReadVersionFileList(MasterServerReader_Callback_VersionFileList, info.Version, this);
         }
-
-        /// <summary>
-        /// The <see cref="VersionFileList"/>. Can, and often will, be null. Only set when grabbing the <see cref="VersionFileList"/>
-        /// from the server (that is, actually making an update).
-        /// </summary>
-        VersionFileList _versionFileList;
 
         /// <summary>
         /// The callback method for the <see cref="IMasterServerReader.BeginReadVersionFileList"/>.
