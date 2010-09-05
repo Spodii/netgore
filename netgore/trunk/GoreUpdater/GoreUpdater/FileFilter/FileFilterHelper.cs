@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -10,6 +12,8 @@ namespace GoreUpdater
     /// </summary>
     public static class FileFilterHelper
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Creates an <see cref="IFileFilterCollection"/> from a collection of filter strings.
         /// </summary>
@@ -49,15 +53,20 @@ namespace GoreUpdater
         /// <returns>The sanitized <paramref name="filePath"/>.</returns>
         public static string SanitizeFilePath(string filePath)
         {
+            string ret = filePath;
+
             // Always start with the path separator
-            if (!filePath.StartsWith("\\"))
-                filePath = "\\" + filePath;
+            if (!ret.StartsWith("\\"))
+                ret = "\\" + ret;
 
             // Use the proper path separator
             if (Path.DirectorySeparatorChar != '\\')
-                filePath.Replace('\\', Path.DirectorySeparatorChar);
+                ret.Replace('\\', Path.DirectorySeparatorChar);
 
-            return filePath;
+            if (log.IsDebugEnabled)
+                log.DebugFormat("File path `{0}` sanitized to `{1}`.", filePath, ret);
+
+            return ret;
         }
     }
 }
