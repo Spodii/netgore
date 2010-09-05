@@ -47,11 +47,6 @@ namespace GoreUpdater
             _uc.Start();
         }
 
-        void _uc_HasErrorsChanged(UpdateClient sender)
-        {
-            LogLine("HasErrors changed to: " + sender.HasErrors);
-        }
-
         void _uc_FileDownloadFailed(UpdateClient sender, string remoteFile)
         {
             LogLine("File download failed: " + remoteFile);
@@ -65,6 +60,11 @@ namespace GoreUpdater
         void _uc_FileMoveFailed(UpdateClient sender, string remoteFile, string localFilePath, string targetFilePath)
         {
             LogLine("File move failed: " + remoteFile);
+        }
+
+        void _uc_HasErrorsChanged(UpdateClient sender)
+        {
+            LogLine("HasErrors changed to: " + sender.HasErrors);
         }
 
         void _uc_IsRunningChanged(UpdateClient sender)

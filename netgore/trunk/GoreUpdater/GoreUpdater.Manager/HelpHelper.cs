@@ -13,12 +13,12 @@ namespace GoreUpdater.Manager
         static readonly HelpMessage _accountUser;
         static readonly HelpMessage _changeLiveVersion;
         static readonly HelpMessage _createNewVersion;
+        static readonly HelpMessage _deleteFilters;
         static readonly HelpMessage _host;
         static readonly HelpMessage _liveVersion;
-        static readonly HelpMessage _serverType;
         static readonly HelpMessage _newVersionNumber;
         static readonly HelpMessage _rootPath;
-        static readonly HelpMessage _deleteFilters;
+        static readonly HelpMessage _serverType;
 
         /// <summary>
         /// Initializes the <see cref="HelpHelper"/> class.
@@ -54,43 +54,25 @@ namespace GoreUpdater.Manager
 
             _newVersionNumber = new HelpMessage("Version number", "The version number that will be assigned to this new version.");
 
-            _rootPath = new HelpMessage("Root path", "The root path to the directory containing the files to be used for this version." +
-            " This directory must contain all files that are to be in the version.");
+            _rootPath = new HelpMessage("Root path",
+                                        "The root path to the directory containing the files to be used for this version." +
+                                        " This directory must contain all files that are to be in the version.");
 
-            _deleteFilters = new HelpMessage("Delete filters", "The filters that will be used to determine what files to NOT delete when" +
-            " deleting the left-over files after updating to the latest version. Any file that is not in the list of files for the version" +
-            " and does not match ANY of the filters will be deleted after updating." + Environment.NewLine + Environment.NewLine +
-            " * Default filter: Uses the * and ? wildcards, where * matches 0 or more characters and ? matches 0 or 1 characters." + Environment.NewLine +
-            " * Regex filter: Uses .NET's Regex class to match file path strings. Use by starting the line with a single forward slash (/)." + Environment.NewLine + Environment.NewLine +
-            "Other important notes:" + Environment.NewLine +
-            " * All paths are relative to the directory they are being downloaded to" + Environment.NewLine+
-            " * All paths start with the path separator character" + Environment.NewLine+
-            " * All filters use a case-insensitive matching" + Environment.NewLine+
-            " * Back slashes (\\) should always be used to denote a path separator, never a forward slash");
-        }
-
-        /// <summary>
-        /// Gets the <see cref="HelpMessage"/> for the file delete filters.
-        /// </summary>
-        public static HelpMessage HelpDeleteFilters
-        {
-            get { return _deleteFilters; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="HelpMessage"/> for the root path.
-        /// </summary>
-        public static HelpMessage HelpRootPath
-        {
-            get { return _rootPath; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="HelpMessage"/> for the new version number.
-        /// </summary>
-        public static HelpMessage HelpNewVersionNumber
-        {
-            get { return _newVersionNumber; }
+            _deleteFilters = new HelpMessage("Delete filters",
+                                             "The filters that will be used to determine what files to NOT delete when" +
+                                             " deleting the left-over files after updating to the latest version. Any file that is not in the list of files for the version" +
+                                             " and does not match ANY of the filters will be deleted after updating." +
+                                             Environment.NewLine + Environment.NewLine +
+                                             " * Default filter: Uses the * and ? wildcards, where * matches 0 or more characters and ? matches 0 or 1 characters." +
+                                             Environment.NewLine +
+                                             " * Regex filter: Uses .NET's Regex class to match file path strings. Use by starting the line with a single forward slash (/)." +
+                                             Environment.NewLine + Environment.NewLine + "Other important notes:" +
+                                             Environment.NewLine +
+                                             " * All paths are relative to the directory they are being downloaded to" +
+                                             Environment.NewLine + " * All paths start with the path separator character" +
+                                             Environment.NewLine + " * All filters use a case-insensitive matching" +
+                                             Environment.NewLine +
+                                             " * Back slashes (\\) should always be used to denote a path separator, never a forward slash");
         }
 
         /// <summary>
@@ -126,6 +108,14 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Gets the <see cref="HelpMessage"/> for the file delete filters.
+        /// </summary>
+        public static HelpMessage HelpDeleteFilters
+        {
+            get { return _deleteFilters; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="HelpMessage"/> for the host.
         /// </summary>
         public static HelpMessage HelpHost
@@ -139,6 +129,22 @@ namespace GoreUpdater.Manager
         public static HelpMessage HelpLiveVersion
         {
             get { return _liveVersion; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="HelpMessage"/> for the new version number.
+        /// </summary>
+        public static HelpMessage HelpNewVersionNumber
+        {
+            get { return _newVersionNumber; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="HelpMessage"/> for the root path.
+        /// </summary>
+        public static HelpMessage HelpRootPath
+        {
+            get { return _rootPath; }
         }
 
         /// <summary>
