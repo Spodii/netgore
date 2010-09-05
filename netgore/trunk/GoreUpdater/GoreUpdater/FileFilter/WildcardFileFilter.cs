@@ -7,7 +7,7 @@ namespace GoreUpdater
     /// </summary>
     public class WildcardFileFilter : IFileFilter
     {
-        readonly Regex _regex;
+        readonly RegexFileFilter _filter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegexFileFilter"/> class.
@@ -21,7 +21,7 @@ namespace GoreUpdater
             s = s.Replace(@"\?", ".?");
             s = "^" + s + "$";
 
-            _regex = new Regex(s, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            _filter = new RegexFileFilter(s);
         }
 
         #region Implementation of IFileFilter
@@ -33,8 +33,7 @@ namespace GoreUpdater
         /// <returns>True if the filter matches the <paramref name="filePath"/>; otherwise false.</returns>
         public bool IsMatch(string filePath)
         {
-            string s = FileFilterHelper.SanitizeFilePath(filePath);
-            return _regex.IsMatch(s);
+            return _filter.IsMatch(filePath);
         }
 
         #endregion
