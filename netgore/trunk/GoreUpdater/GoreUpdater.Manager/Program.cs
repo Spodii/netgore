@@ -1,18 +1,24 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using log4net;
 
 namespace GoreUpdater.Manager
 {
     static class Program
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            log.Info("Starting GoreUpdater server...");
+
             // ReSharper disable EmptyGeneralCatchClause
             // Create the root version directory
             try
