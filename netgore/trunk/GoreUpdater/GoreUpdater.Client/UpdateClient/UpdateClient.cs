@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace GoreUpdater
 {
@@ -192,6 +194,8 @@ namespace GoreUpdater
             }
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Checks if the downloading with the <see cref="DownloadManager"/> has been completed.
         /// </summary>
@@ -205,7 +209,10 @@ namespace GoreUpdater
                     // Do not continue if items are still enqueued for download
                     if (_dm.QueueCount > 0)
                     {
-                        Debug.Fail("Why are items still in the download queue?");
+                        const string errmsg = "CheckIfDownloadManagerComplete() called, but items still in the download queue?";
+                        if (log.IsWarnEnabled)
+                            log.Warn(errmsg);
+                        Debug.Fail(errmsg);
                         return;
                     }
 
@@ -217,6 +224,8 @@ namespace GoreUpdater
                     catch (Exception ex)
                     {
                         const string errmsg = "Failed to dispose DownloadManager `{0}`. Reason: {1}";
+                        if (log.IsWarnEnabled)
+                            log.WarnFormat(errmsg, _dm, ex);
                         Debug.Fail(string.Format(errmsg, _dm, ex));
                     }
                 }
@@ -293,16 +302,21 @@ namespace GoreUpdater
 
                                     if (ffc.IsMatch("\\" + relativePath))
                                     {
-                                        // LOG: File skipped since it matched filter
+                                        if (log.IsDebugEnabled)
+                                            log.DebugFormat("Skipping deleting outdated client file `{0}` - matches one or more delete skip filters.", f);
                                         continue;
                                     }
 
-                                    // LOG: Deleting file
+                                    if (log.IsInfoEnabled)
+                                        log.InfoFormat("Deleting outdated client file: {0}", f);
+
                                     File.Delete(f);
                                 }
                                 catch (Exception ex)
                                 {
-                                    const string errmsg = "Unexpected error while checking if file `{0}` should be deleted: {1}";
+                                    const string errmsg = "Unexpected error while checking if file `{0}` should be deleted. Exception: {1}";
+                                    if (log.IsErrorEnabled)
+                                        log.ErrorFormat(errmsg, f, ex);
                                     Debug.Fail(string.Format(errmsg, f, ex));
                                 }
                             }
@@ -312,12 +326,16 @@ namespace GoreUpdater
                 else
                 {
                     const string errmsg = "_versionFileList was null, but wasn't expected to be.";
+                    if (log.IsErrorEnabled)
+                        log.Error(errmsg);
                     Debug.Fail(errmsg);
                 }
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to delete old files: {0}";
+                const string errmsg = "Failed to delete old files. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
                 Debug.Fail(string.Format(errmsg, ex));
             }
 
@@ -327,28 +345,36 @@ namespace GoreUpdater
                 if (Directory.Exists(Settings.TempPath))
                 {
                     var tempFiles = Directory.GetFiles(Settings.TempPath);
+
+                    // Delete each file individually first, even though Directory.Delete can do this, just to make sure that
+                    // we delete as much as we possibly can if there are errors
                     foreach (var f in tempFiles)
                     {
                         try
                         {
-                            // LOG: Deleting temp file
+                            if (log.IsDebugEnabled)
+                                log.DebugFormat("Deleting temp file `{0}`.", f);
                             File.Delete(f);
                         }
                         catch (Exception ex)
                         {
-                            const string errmsg = "Failed to delete temporary file `{0}`: {1}";
+                            const string errmsg = "Failed to delete temporary file `{0}`. Exception: {1}";
                             Debug.Fail(string.Format(errmsg, f, ex));
                         }
                     }
 
-                    // LOG: Deleting temp file directory
+                    // Delete the directory
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Deleting directory `{0}`.", Settings.TempPath);
                     Directory.Delete(Settings.TempPath, true);
                 }
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to delete temp files: {0}";
-                Debug.Fail(string.Format(errmsg, ex));
+                const string errmsg = "Failed to delete temp files from path `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, Settings.TempPath, ex);
+                Debug.Fail(string.Format(errmsg, Settings.TempPath, ex));
             }
         }
 
@@ -360,6 +386,9 @@ namespace GoreUpdater
         void DownloadManager_DownloadFailed(IDownloadManager sender, string remoteFile)
         {
             Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
+
+            if (log.IsWarnEnabled)
+                log.WarnFormat("Failed to download remote file `{0}` using `{1}`.", remoteFile, sender);
 
             HasErrors = true;
 
@@ -383,6 +412,9 @@ namespace GoreUpdater
         void DownloadManager_DownloadFinished(IDownloadManager sender, string remoteFile, string localFilePath)
         {
             Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Successfully downloaded remote file `{0}` to `{1}` using `{2}`.", remoteFile, localFilePath, sender);
 
             try
             {
@@ -409,6 +441,10 @@ namespace GoreUpdater
 
             _fileReplacer.AddJob(localFilePath, targetFilePath);
 
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Failed to move file `{0}` to `{1}` using `{2}`; adding job to IOfflineFileReplacer `{3}`.", localFilePath, 
+                    targetFilePath, sender, _fileReplacer);
+
             try
             {
                 if (FileMoveFailed != null)
@@ -427,6 +463,9 @@ namespace GoreUpdater
         void DownloadManager_Finished(IDownloadManager sender)
         {
             Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("DownloadManager `{0}` returned Finished.", sender);
 
             CheckIfDownloadManagerComplete();
         }
@@ -463,6 +502,10 @@ namespace GoreUpdater
                     // checking the hash and just update it
                     if (localFileInfo.Length != updateFileInfo.Size)
                     {
+                        if (log.IsDebugEnabled)
+                            log.DebugFormat("Update check on file `{0}`: File needs update - size mismatch (current: {1}, expected: {2}).",
+                                updateFileInfo.FilePath, localFileInfo.Length, updateFileInfo.Size);
+
                         ret.Add(updateFileInfo.FilePath);
                         continue;
                     }
@@ -471,22 +514,35 @@ namespace GoreUpdater
                     var localFileHash = Hasher.GetFileHash(localFilePath);
                     if (!StringComparer.Ordinal.Equals(localFileHash, updateFileInfo.Hash))
                     {
+                        if (log.IsDebugEnabled)
+                            log.DebugFormat("Update check on file `{0}`: File needs update - hash mismatch (current: {1}, expected: {2}).",
+                                updateFileInfo.FilePath, localFileHash, updateFileInfo.Hash);
+
                         ret.Add(updateFileInfo.FilePath);
                         continue;
                     }
                 }
                 catch (IOException ex)
                 {
-                    // On an exception, assume the file needs to be updated
-                    Debug.Fail(ex.ToString());
+                    const string errmsg = "Failed to analyze file `{0}` to see if it needs to be updated. Will assume update is required. Exception: {1}";
+                    
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, updateFileInfo.FilePath, ex);
+
+                    Debug.Fail(string.Format(errmsg, updateFileInfo.FilePath, ex));
+
+                    // On an IOException, assume the file needs to be updated
                     ret.Add(updateFileInfo.FilePath);
                     continue;
                 }
 
-                // LOG: File passed hash check
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Update check on file `{0}`: file is up-to-date.", updateFileInfo.FilePath);
             }
 
-            // LOG: Number of files to update
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Found `{0}` files needing to be updated.", ret.Count);
+
             return ret;
         }
 
@@ -594,8 +650,13 @@ namespace GoreUpdater
             {
                 const string errmsg =
                     "Could not get a valid VersionFileList file from the master servers for version `{0}` - download failed.";
+
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, info.Version);
+
                 if (MasterServerReaderError != null)
                     MasterServerReaderError(this, string.Format(errmsg, info.Version));
+
                 HasErrors = true;
                 return;
             }
@@ -607,9 +668,14 @@ namespace GoreUpdater
             catch (Exception ex)
             {
                 const string errmsg =
-                    "Could not get a valid VersionFileList file from the master servers for version `{0}`. Details: {1}";
+                    "Could not get a valid VersionFileList file from the master servers for version `{0}`. Exception: {1}";
+
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, info.Version, ex);
+
                 if (MasterServerReaderError != null)
                     MasterServerReaderError(this, string.Format(errmsg, info.Version, ex));
+
                 HasErrors = true;
                 return;
             }
@@ -693,13 +759,27 @@ namespace GoreUpdater
         /// false.</returns>
         public bool TryExecuteOfflineFileReplacer()
         {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Trying to execute IOfflineFileReplacer `{0}`.", _fileReplacer);
+
             // Check that the update process has completed (no use to reset while in the middle of updating)
             if (State != UpdateClientState.Completed)
+            {
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Could not execute IOfflineFileReplacer `{0}` - state is `{1}` (expected: {2}).",
+                        _fileReplacer, State, UpdateClientState.Completed);
+
                 return false;
+            }
 
             // Check that there are files that need to be replaced
             if (_fileReplacer.JobCount <= 0)
+            {
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Could not execute IOfflineFileReplacer `{0}` - file replace queue is empty.", _fileReplacer);
+
                 return false;
+            }
 
             // Execute
             return OfflineFileReplacerHelper.TryExecute(_fileReplacer.FilePath);
