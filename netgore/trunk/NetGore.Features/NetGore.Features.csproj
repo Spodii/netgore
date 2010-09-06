@@ -178,18 +178,18 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="ActionDisplays\_FeatureInfo.txt" />
-    <Content Include="Emoticons\_FeatureInfo.txt" />
-    <Content Include="GameTime\_FeatureInfo.txt" />
-    <Content Include="Groups\_FeatureInfo.txt" />
-    <Content Include="Guilds\_FeatureInfo.txt" />
-    <Content Include="Quests\_FeatureInfo.txt" />
-    <Content Include="Shops\_FeatureInfo.txt" />
-    <Content Include="Skills\_FeatureInfo.txt" />
-    <Content Include="StatusEffects\_FeatureInfo.txt" />
-    <Content Include="PeerTrading\_FeatureInfo.txt" />
-    <Content Include="WorldStats\_FeatureInfo.txt" />
-    <Content Include="_ProjectInfo.txt" />
+    <None Include="ActionDisplays\_FeatureInfo.txt" />
+    <None Include="Emoticons\_FeatureInfo.txt" />
+    <None Include="GameTime\_FeatureInfo.txt" />
+    <None Include="Groups\_FeatureInfo.txt" />
+    <None Include="Guilds\_FeatureInfo.txt" />
+    <None Include="Quests\_FeatureInfo.txt" />
+    <None Include="Shops\_FeatureInfo.txt" />
+    <None Include="Skills\_FeatureInfo.txt" />
+    <None Include="StatusEffects\_FeatureInfo.txt" />
+    <None Include="PeerTrading\_FeatureInfo.txt" />
+    <None Include="WorldStats\_FeatureInfo.txt" />
+    <None Include="_ProjectInfo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
