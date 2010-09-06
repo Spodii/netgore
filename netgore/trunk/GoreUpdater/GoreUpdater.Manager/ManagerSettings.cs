@@ -537,7 +537,7 @@ namespace GoreUpdater.Manager
             if (File.Exists(tmpPath))
                 File.Delete(tmpPath);
 
-            var data = BuildServerListFileText(_fileServers, _fileServersSync);
+            var data = BuildServerListFileText(_fileServers.Cast<ServerInfoBase>(), _fileServersSync);
             File.WriteAllText(tmpPath, data);
 
             File.Copy(tmpPath, p, true);
@@ -576,7 +576,7 @@ namespace GoreUpdater.Manager
             if (File.Exists(tmpPath))
                 File.Delete(tmpPath);
 
-            var data = BuildServerListFileText(_masterServers, _masterServersSync);
+            var data = BuildServerListFileText(_masterServers.Cast<ServerInfoBase>(), _masterServersSync);
             File.WriteAllText(tmpPath, data);
 
             File.Copy(tmpPath, p, true);

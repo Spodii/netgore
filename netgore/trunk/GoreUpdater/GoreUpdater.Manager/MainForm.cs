@@ -5,10 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-// TODO: Start work on the client
-
-// TODO: [LATER] Add the logging framework and make use of it
-
 namespace GoreUpdater.Manager
 {
     public partial class MainForm : Form
@@ -62,8 +58,8 @@ namespace GoreUpdater.Manager
             btnChangeLiveVersion.Enabled = _settings.DoesNextVersionExist();
             lblLiveVersion.Text = _settings.LiveVersion.ToString();
 
-            UpdateServerListBox(lstFS, _settings.FileServers, FileServerInfo_ServerChanged);
-            UpdateServerListBox(lstMS, _settings.MasterServers, MasterServerInfo_ServerChanged);
+            UpdateServerListBox(lstFS, _settings.FileServers.Cast<ServerInfoBase>(), FileServerInfo_ServerChanged);
+            UpdateServerListBox(lstMS, _settings.MasterServers.Cast<ServerInfoBase>(), MasterServerInfo_ServerChanged);
         }
 
         /// <summary>
@@ -119,7 +115,7 @@ namespace GoreUpdater.Manager
 
                 // Re-add all items
                 lb.Items.Clear();
-                lb.Items.AddRange(servers.ToArray<object>());
+                lb.Items.AddRange(servers.Cast<object>().ToArray());
 
                 // Restore the selected item if it is still in the list
                 if (servers.Any(x => x == selected))
@@ -133,7 +129,7 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_FileServerListChanged(ManagerSettings sender)
         {
-            UpdateServerListBox(lstFS, sender.FileServers, FileServerInfo_ServerChanged);
+            UpdateServerListBox(lstFS, sender.FileServers.Cast<ServerInfoBase>(), FileServerInfo_ServerChanged);
         }
 
         /// <summary>
@@ -151,7 +147,7 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_MasterServerListChanged(ManagerSettings sender)
         {
-            UpdateServerListBox(lstMS, sender.MasterServers, MasterServerInfo_ServerChanged);
+            UpdateServerListBox(lstMS, sender.MasterServers.Cast<ServerInfoBase>(), MasterServerInfo_ServerChanged);
         }
 
         /// <summary>
