@@ -98,6 +98,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banning\BanningManagerBase.cs" />
+    <Compile Include="Banning\IBanningManager.cs" />
     <Compile Include="Groups\Group.cs" />
     <Compile Include="Groups\GroupManager.cs" />
     <Compile Include="Groups\Event Handlers\IGroupManagerEventHandler.cs" />
@@ -164,7 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionDisplays\" />
-    <Folder Include="Banning\" />
     <Folder Include="Emoticons\" />
     <Folder Include="GameTime\" />
     <Folder Include="Skills\" />

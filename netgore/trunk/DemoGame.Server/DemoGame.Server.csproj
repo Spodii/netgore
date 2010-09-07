@@ -117,6 +117,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BanningManager.cs" />
     <Compile Include="DbObjs\AccountBanTable.cs" />
     <Compile Include="DbObjs\ActiveTradeCashTable.cs" />
     <Compile Include="DbObjs\ActiveTradeItemTable.cs" />
@@ -237,6 +238,8 @@
     <Compile Include="Groups\GroupHelper.cs" />
     <Compile Include="Groups\GroupMemberInfo.cs" />
     <Compile Include="IServerSaveable.cs" />
+    <Compile Include="Queries\Banning\InsertAccountBanQuery.cs" />
+    <Compile Include="Queries\Banning\SelectAccountBansQuery.cs" />
     <Compile Include="Queries\Character\Template\DeleteCharacterTemplateQuery.cs" />
     <Compile Include="Queries\Character\Template\ReplaceCharacterTemplateEquippedQuery.cs" />
     <Compile Include="Queries\Character\Template\ReplaceCharacterTemplateInventoryQuery.cs" />
@@ -478,9 +481,9 @@
     <Compile Include="World\Map\Entities\Characters\NPCChat\ResponseActions\RestoreHP.cs" />
     <Compile Include="World\Map\Entities\Characters\NPCChat\ResponseActions\RestoreMP.cs" />
     <Compile Include="Account\AccountLoginResult.cs" />
-    <Compile Include="Queries\SelectAccountQuery.cs" />
-    <Compile Include="Queries\TrySetAccountIPIfNullQuery.cs" />
-    <Compile Include="Queries\UpdateCharacterQuery.cs" />
+    <Compile Include="Queries\Account\SelectAccountQuery.cs" />
+    <Compile Include="Queries\Account\TrySetAccountIPIfNullQuery.cs" />
+    <Compile Include="Queries\Character\UpdateCharacterQuery.cs" />
     <Compile Include="SayHandler.cs" />
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />
