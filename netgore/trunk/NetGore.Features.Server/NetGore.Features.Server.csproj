@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banning\BanningManagerAccountBannedEventHandler.cs" />
     <Compile Include="Banning\BanningManagerBase.cs" />
     <Compile Include="Banning\IBanningManager.cs" />
     <Compile Include="Groups\Group.cs" />

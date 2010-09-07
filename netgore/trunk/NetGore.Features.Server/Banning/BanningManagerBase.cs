@@ -9,13 +9,6 @@ using NetGore.Db;
 namespace NetGore.Features.Banning
 {
     /// <summary>
-    /// Delegate for handling events from the <see cref="IBanningManager{T}"/>.
-    /// </summary>
-    /// <typeparam name="TAccountID">The type of account ID.</typeparam>
-    /// <param name="sender">The <see cref="IBanningManager{T}"/> that this event came from.</param>
-    public delegate void BanningManagerEventHandler<out TAccountID>(IBanningManager<TAccountID> sender);
-
-    /// <summary>
     /// The default implementation of <see cref="IBanningManager{T}"/>.
     /// </summary>
     /// <typeparam name="TAccountID">The type of account ID.</typeparam>
@@ -44,7 +37,7 @@ namespace NetGore.Features.Banning
         /// <summary>
         /// Notifies listeners when an account has been banned.
         /// </summary>
-        public event BanningManagerEventHandler<TAccountID> AccountBanned;
+        public event BanningManagerAccountBannedEventHandler<TAccountID> AccountBanned;
 
         /// <summary>
         /// When overridden in the derived class, allows for additional handling for when a ban is successfully added to an account.
@@ -191,7 +184,7 @@ namespace NetGore.Features.Banning
             OnAccountBanned(accountID);
 
             if (AccountBanned != null)
-                AccountBanned(this);
+                AccountBanned(this, accountID);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Successfully banned account `{0}` (length: {1}; reason: {2}; issuedBy: {3}).", accountID, length,
