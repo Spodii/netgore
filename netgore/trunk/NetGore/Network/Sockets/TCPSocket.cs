@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
-using System.Threading;
 using log4net;
 using NetGore.IO;
 
@@ -44,6 +43,8 @@ namespace NetGore.Network
         /// </summary>
         const int RecvQueueStartSize = 4;
 
+        static readonly LingerOption _lingerOption = new LingerOption(false, 0);
+
         /// <summary>
         /// Local cache of the global <see cref="NetStats"/> instance.
         /// </summary>
@@ -52,14 +53,14 @@ namespace NetGore.Network
         /// <summary>
         /// Object used to lock receives
         /// </summary>
-        readonly object _recvLock = new object();
+        readonly object _recvSync = new object();
+
+        readonly SocketSendQueue _sendQueue = new SocketSendQueue(MaxSendSize);
 
         /// <summary>
         /// Object used to lock sends
         /// </summary>
-        readonly object _sendLock = new object();
-
-        readonly SocketSendQueue _sendQueue = new SocketSendQueue(MaxSendSize);
+        readonly object _sendSync = new object();
 
         readonly TickCount _timeCreated = TickCount.Now;
 
@@ -75,15 +76,7 @@ namespace NetGore.Network
 
         uint _ipUInt;
 
-        /// <summary>
-        /// If the socket has been initialized
-        /// </summary>
-        bool _isInitialized = false;
-
-        /// <summary>
-        /// If the socket is currently busy sending data
-        /// </summary>
-        bool _isSending;
+        bool _isCleanedUp;
 
         /// <summary>
         /// When true, the <see cref="TCPSocket"/> is in the process of being disposed. However, when Dispose was called, there
@@ -91,6 +84,21 @@ namespace NetGore.Network
         /// finish.
         /// </summary>
         bool _isFlushingForDisposal;
+
+        /// <summary>
+        /// If the socket has been initialized
+        /// </summary>
+        bool _isInitialized = false;
+
+        /// <summary>
+        /// If the socket is currently busy receiving data.
+        /// </summary>
+        bool _isRecving;
+
+        /// <summary>
+        /// If the socket is currently busy sending data.
+        /// </summary>
+        bool _isSending;
 
         ushort _port;
 
@@ -134,10 +142,25 @@ namespace NetGore.Network
         Socket _socket;
 
         /// <summary>
-        /// Wrapper for the socket BeginReceive method
+        /// Wrapper for the socket BeginReceive method. Starts receiving new data coming into the socket. _isRecving
+        /// needs to be false.
         /// </summary>
         void BeginRecv()
         {
+            lock (_recvSync)
+            {
+                if (_isRecving)
+                {
+                    const string errmsg = "Called BeginRecv() while _isRecving == False. This should never happen!";
+                    if (log.IsErrorEnabled)
+                        log.Error(errmsg);
+                    Debug.Fail(errmsg);
+                    return;
+                }
+
+                _isRecving = true;
+            }
+
             try
             {
                 // Set up the event args
@@ -161,51 +184,40 @@ namespace NetGore.Network
         /// </summary>
         void BeginSend(byte[] dataToSend)
         {
-#if DEBUG
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Send `{0}` bytes to `{1}`", dataToSend.Length, Address);
+
             // Ensure _isSending was set properly... just in case
-            lock (_sendLock)
+#if DEBUG
+            lock (_sendSync)
             {
                 if (!_isSending)
                 {
                     const string errmsg = "Called BeginSend() while _isSending == False. This should never happen!";
-                    if (log.IsFatalEnabled)
-                        log.Fatal(errmsg);
+                    if (log.IsErrorEnabled)
+                        log.Error(errmsg);
                     Debug.Fail(errmsg);
-                    _isSending = false;
                     return;
                 }
             }
 #endif
 
-            if (log.IsDebugEnabled)
-                log.DebugFormat("Send `{0}` bytes to `{1}`", dataToSend.Length, Address);
-
+            // Check for a valid socket
             if (_socket == null)
             {
                 const string errmsg = "BeginSend() failed since the socket is null (this.Disposed == `{0}`).";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, _disposed);
-
-                lock (_sendLock)
-                {
-                    _isSending = false;
-                }
-
                 return;
             }
 
+            // Check for valid data
             if (dataToSend == null)
             {
                 const string errmsg = "Sending failed since there is no message!";
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
                 Debug.Fail(errmsg);
-
-                lock (_sendLock)
-                {
-                    _isSending = false;
-                }
-
                 return;
             }
 
@@ -231,6 +243,11 @@ namespace NetGore.Network
             }
             catch (Exception ex)
             {
+                lock (_sendSync)
+                {
+                    _isSending = false;
+                }
+
                 const string errmsg = "Failed to begin send. Socket will now close.";
                 if (log.IsFatalEnabled)
                     log.Fatal(errmsg, ex);
@@ -281,23 +298,73 @@ namespace NetGore.Network
             }
         }
 
-        void EndDisconnect(object sender, SocketAsyncEventArgs e)
+        /// <summary>
+        /// Performs the actual disposing process. This is either called by Dispose() directly if Dispose() was called
+        /// while there was nothing being sent, or after everything finishes being sent and <see cref="_isFlushingForDisposal"/>
+        /// is set.
+        /// </summary>
+        void DisposeReal()
         {
-            // NOTE: Not sure I like the idea of doing Close() here...
-            // NOTE: If I use DisconnectReuseSocket=True on Disconnect(), it seems to be an alternative to calling Close()... pooling it is!
-            var senderSocket = sender as Socket;
-            if (senderSocket != null && senderSocket.Connected)
+            // If _isInitialized is false, we have already completely cleaned up
+            if (_isCleanedUp)
+                return;
+
+            // Make sure we have finished sending
+            lock (_sendSync)
             {
-                try
+                if (_isSending)
                 {
-                    senderSocket.Close();
-                }
-                catch (ObjectDisposedException)
-                {
+                    _isFlushingForDisposal = true;
+                    return;
                 }
             }
 
-            // TODO: Maybe try reusing the sockets?
+            // Make sure we have finished receiving
+            lock (_recvSync)
+            {
+                if (_isRecving)
+                {
+                    _isFlushingForDisposal = true;
+                    return;
+                }
+            }
+
+            Debug.Assert(!_isSending);
+            Debug.Assert(!_isRecving);
+
+            _isFlushingForDisposal = false;
+
+            // Close down the socket
+            if (_socket != null)
+            {
+                try
+                {
+                    _socket.Shutdown(SocketShutdown.Both);
+
+                    var disconnectArgs = new SocketAsyncEventArgs { DisconnectReuseSocket = false };
+                    disconnectArgs.Completed += EndDisconnect;
+
+                    if (!_socket.DisconnectAsync(disconnectArgs))
+                        EndDisconnect(_socket, disconnectArgs);
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    const string errmsg = "Error while trying to dispose socket `{0}` for `{1}`: {2}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, _socket, this, ex);
+                    Debug.Fail(string.Format(errmsg, _socket, this, ex));
+                }
+            }
+
+            // Mark that we have completely cleaned up
+            _isCleanedUp = true;
+        }
+
+        void EndDisconnect(object sender, SocketAsyncEventArgs e)
+        {
+            Debug.Assert(!_isSending);
+            Debug.Assert(!_isRecving);
+
             if (log.IsDebugEnabled)
                 log.DebugFormat("Socket `{0}` in `{1}` finished disconnecting.", sender, this);
 
@@ -313,13 +380,22 @@ namespace NetGore.Network
         /// <param name="e">SocketAsyncEventArgs</param>
         void EndRecv(object sender, SocketAsyncEventArgs e)
         {
+            lock (_recvSync)
+            {
+                Debug.Assert(_isRecving, "This should be true... uh-oh!");
+                _isRecving = false;
+            }
+
             // Read from the socket
             var readLength = e.BytesTransferred;
 
             // 0 receive length = gracefully closed
             if (readLength == 0)
             {
-                //Dispose();
+                if (_isFlushingForDisposal)
+                    DisposeReal();
+                else
+                    Dispose();
                 return;
             }
 
@@ -333,11 +409,7 @@ namespace NetGore.Network
 
             // We can start receiving again since we are done playing with the receive buffer
             if (_socket != null && _socket.Connected)
-            {
-                e.SetBuffer(_recvBufferPos, MaxRecvSize); // Inconsistant size with the other SetBuffer for recv
-                if (!_socket.ReceiveAsync(e))
-                    EndRecv(this, e);
-            }
+                BeginRecv();
         }
 
         /// <summary>
@@ -349,7 +421,7 @@ namespace NetGore.Network
         void EndSend(object sender, SocketAsyncEventArgs e)
         {
 #if DEBUG
-            lock (_sendLock)
+            lock (_sendSync)
             {
                 Debug.Assert(_isSending, "How the hell did EndSend() get called with _isSending = false? This is bad...");
             }
@@ -369,7 +441,7 @@ namespace NetGore.Network
             else
             {
                 // Nothing enqueued or not allowed to send again, so do not start sending again
-                lock (_sendLock)
+                lock (_sendSync)
                 {
                     _isSending = false;
                 }
@@ -378,8 +450,6 @@ namespace NetGore.Network
                     DisposeReal();
             }
         }
-
-        static readonly LingerOption _lingerOption = new LingerOption(true, 3); 
 
         /// <summary>
         /// Creates the objects for the connection and allows use of it. Call
@@ -396,7 +466,7 @@ namespace NetGore.Network
             _isInitialized = true;
 
             _socket.LingerState = _lingerOption;
-            _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, false);
+            _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
             _socket.NoDelay = true;
             _recvQueue = new Queue<byte[]>(RecvQueueStartSize);
 
@@ -427,7 +497,7 @@ namespace NetGore.Network
         {
             var offset = 0;
 
-            lock (_recvLock)
+            lock (_recvSync)
             {
                 // Start at the start of the buffer and loop until either an incomplete
                 // message is found or all of the buffer has been read
@@ -596,55 +666,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Performs the actual disposing process. This is either called by Dispose() directly if Dispose() was called
-        /// while there was nothing being sent, or after everything finishes being sent and <see cref="_isFlushingForDisposal"/>
-        /// is set.
-        /// </summary>
-        void DisposeReal()
-        {
-#if DEBUG
-            Debug.Assert(!_isSending);
-#endif
-
-            _isFlushingForDisposal = false;
-
-            // Close down the socket
-            if (_socket != null)
-            {
-                try
-                {
-                    _socket.Shutdown(SocketShutdown.Both);
-
-                    var disconnectArgs = new SocketAsyncEventArgs { DisconnectReuseSocket = false };
-                    disconnectArgs.Completed += EndDisconnect;
-
-                    if (!_socket.DisconnectAsync(disconnectArgs))
-                        EndDisconnect(_socket, disconnectArgs);
-                }
-                catch (ObjectDisposedException ex)
-                {
-                    const string errmsg = "Error while trying to dispose socket `{0}` for `{1}`: {2}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, _socket, this, ex);
-                    Debug.Fail(string.Format(errmsg, _socket, this, ex));
-                }
-                finally
-                {
-                    _socket = null;
-                }
-            }
-
-            // Clear out the queues
-            lock (_recvLock)
-            {
-                if (_recvQueue != null)
-                    _recvQueue.Clear();
-            }
-
-            _isInitialized = false;
-        }
-
-        /// <summary>
         /// Disposes all resources used by the TCPSocket.
         /// </summary>
         public void Dispose()
@@ -655,9 +676,12 @@ namespace NetGore.Network
             _disposed = true;
 
             // If we are busy sending, we will let those sends finish before doing the disposal
-            lock (_sendLock)
+            lock (_sendSync)
             {
-                _isFlushingForDisposal = _isSending;
+                lock (_recvSync)
+                {
+                    _isFlushingForDisposal = _isSending || _isRecving;
+                }
             }
 
             // Call the dispose right away if we had nothing to send
@@ -676,13 +700,10 @@ namespace NetGore.Network
         {
             byte[][] ret;
 
-            if (_disposed)
-                return null;
-
             if (!_isInitialized)
                 throw new MethodAccessException("Called GetRecvData() before Initialize().");
 
-            lock (_recvLock)
+            lock (_recvSync)
             {
                 if (_recvQueue.Count == 0)
                 {
@@ -715,12 +736,16 @@ namespace NetGore.Network
             bool willSend;
 
             // Determine if we will send the data now, or enqueue it for later
-            lock (_sendLock)
+            lock (_sendSync)
             {
                 if (_isSending)
+                {
+                    // Busy sending - enqueue
                     willSend = false;
+                }
                 else
                 {
+                    // Not busy sending - get ready to send
                     willSend = true;
                     _isSending = true; // We must set to true now while we have the lock
                 }
