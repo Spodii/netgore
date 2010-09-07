@@ -411,7 +411,7 @@ namespace DemoGame.Server
                 conn.Send(pw);
             }
 
-            conn.Dispose(); // NOTE: Closes socket; data doesn't go through. Issue is in the NetGore networking core.
+            conn.Dispose();
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace DemoGame.Server
             if (BanningManager.Instance.IsBanned(userAccount.ID, out banReason, out banMins))
             {
                 conn.Send(ServerPacket.LoginUnsuccessful(GameMessage.AccountBanned, banMins, banReason));
-                userAccount.Dispose(); // NOTE: Closes socket; data doesn't go through. Issue is in the NetGore networking core.
+                userAccount.Dispose();
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Disconnected account `{0}` after successful login since they have been banned.", name);
                 return;

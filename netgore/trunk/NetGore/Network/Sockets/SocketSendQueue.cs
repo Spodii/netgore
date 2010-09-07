@@ -12,14 +12,14 @@ namespace NetGore.Network
     /// Queues data to be sent on a socket, concatenating as much as possible while preserving the data
     /// and ordering, then returning the data to the socket when dequeued. Like a normal queue, messages
     /// are guarenteed to be dequeued in the same order they are enqueued. Unlike a normal queue, messages
-    /// may be concatenated when dequeued. This class is thread-safe.
+    /// may be concatenated when dequeued.
+    /// This class is not thread-safe.
     /// </summary>
     public class SocketSendQueue
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly ushort _maxMessageSize;
-        readonly object _queueLock = new object();
 
         /// <summary>
         /// Queue of messages that have surpassed the maximum size of the _sendStream. Anything
@@ -37,7 +37,7 @@ namespace NetGore.Network
         /// <summary>
         /// Gets the number of items in the queue.
         /// </summary>
-        public int Count { get { lock (_queueLock) { return _sendQueue.Count; } } }
+        public int Count { get { return _sendQueue.Count; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SocketSendQueue"/> class.
@@ -115,26 +115,23 @@ namespace NetGore.Network
         /// less than or equal to MaxMessageSize.</returns>
         public byte[] Dequeue()
         {
-            lock (_queueLock)
+            // Check the queue
+            if (_sendQueue.Count > 0)
             {
-                // Check the queue
-                if (_sendQueue.Count > 0)
-                {
-                    var ret = _sendQueue.Dequeue();
-                    return ret;
-                }
-
-                // Check the stream
-                if (_sendStream.LengthBits > 0)
-                {
-                    var ret = _sendStream.GetBufferCopy();
-                    _sendStream.Reset();
-                    return ret;
-                }
-
-                // Nothing available
-                return null;
+                var ret = _sendQueue.Dequeue();
+                return ret;
             }
+
+            // Check the stream
+            if (_sendStream.LengthBits > 0)
+            {
+                var ret = _sendStream.GetBufferCopy();
+                _sendStream.Reset();
+                return ret;
+            }
+
+            // Nothing available
+            return null;
         }
 
         /// <summary>
@@ -156,10 +153,7 @@ namespace NetGore.Network
                 bitStream.Mode = BitStreamMode.Write;
             }
 
-            lock (_queueLock)
-            {
-                AddToSendStream(bitStream);
-            }
+            AddToSendStream(bitStream);
         }
 
         /// <summary>
