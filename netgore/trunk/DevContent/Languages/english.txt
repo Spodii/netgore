@@ -111,3 +111,5 @@ QuestAcceptFailedTooManyActive: "You cannot accept any more quests. Try to compl
 QuestCanceled: "You have canceled a quest."
 QuestFinished: "You have finished the quest!"
 QuestFinishFailedCannotGiveRewards: "Cannot turn in the quest because you cannot receive the quest's rewards! Make sure you have enough room in your inventory."
+
+AccountBanned: "Your account has been banned. The ban will expire in $0. Reason: $1"
