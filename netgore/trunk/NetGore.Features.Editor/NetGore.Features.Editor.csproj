@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionDisplays\" />
+    <Folder Include="Banning\" />
     <Folder Include="Emoticons\" />
     <Folder Include="GameTime\" />
     <Folder Include="Groups\" />

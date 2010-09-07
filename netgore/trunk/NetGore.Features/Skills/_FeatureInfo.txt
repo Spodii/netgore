@@ -17,5 +17,8 @@ of the skill itself since that is so game specific. Luckily, its easy to define 
 DATABASE TABLES:
  * [None]
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * [None]

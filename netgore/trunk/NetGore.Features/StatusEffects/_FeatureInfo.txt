@@ -18,5 +18,8 @@ applying a status effect to someone who already has a status effect enabled on t
 DATABASE TABLES:
  * [None]
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * [None]

@@ -18,5 +18,8 @@ DATABASE TABLES:
  * active_trade_cash
  * active_trade_item
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * [None]

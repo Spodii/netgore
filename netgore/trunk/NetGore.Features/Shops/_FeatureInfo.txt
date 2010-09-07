@@ -19,5 +19,8 @@ DATABASE TABLES:
  * shop
  * shop_item
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * [None]

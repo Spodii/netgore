@@ -19,5 +19,8 @@ Groups are not persistent. Once you log out, your leave the group. If the server
 DATABASE TABLES:
  * [None]
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * [None]
