@@ -336,7 +336,9 @@ namespace GoreUpdater
             }
 
             // Get the name of just the file
-            var fileName = remoteFile.Substring(remoteFile.LastIndexOf('/'));
+            var fileName = remoteFile.Substring(remoteFile.LastIndexOf('/') + 1);
+
+            Debug.Assert(!fileName.StartsWith("/"));
 
             // Read the file to upload into memory
             var data = File.ReadAllBytes(localFile);
