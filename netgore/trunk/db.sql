@@ -50,12 +50,12 @@ CREATE TABLE `account_ban` (
   `end_time` datetime NOT NULL COMMENT 'When this ban ends.',
   `reason` varchar(255) NOT NULL COMMENT 'The reason why this account was banned.',
   `issued_by` varchar(255) DEFAULT NULL COMMENT 'Name of the person or system that issued this ban.',
-  `expired` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'If the ban is expired. A non-zero value means true.',
+  `expired` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'If the ban is expired. A non-zero value means true.',
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   KEY `expired` (`expired`),
   CONSTRAINT `account_ban_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=2;
+) TYPE=InnoDB AUTO_INCREMENT=3;
 
 --
 -- Dumping data for table `account_ban`
@@ -74,12 +74,11 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `bi_account_ban_fer` BEFORE INSERT ON `account_ban` FOR EACH ROW
-BEGIN
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `bi_account_ban_fer` BEFORE INSERT ON `account_ban` FOR EACH ROW BEGIN
 	IF new.end_time <= NOW() THEN
-		SET new.expired = 0;
-	ELSE
 		SET new.expired = 1;
+	ELSE
+		SET new.expired = 0;
 	END IF;
 END */;;
 DELIMITER ;
@@ -96,12 +95,11 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `bu_account_ban_fer` BEFORE UPDATE ON `account_ban` FOR EACH ROW
-BEGIN
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `bu_account_ban_fer` BEFORE UPDATE ON `account_ban` FOR EACH ROW BEGIN
 	IF new.end_time <= NOW() THEN
-		SET new.expired = 0;
-	ELSE
 		SET new.expired = 1;
+	ELSE
+		SET new.expired = 0;
 	END IF;
 END */;;
 DELIMITER ;
@@ -1742,22 +1740,29 @@ BEGIN
 		@SUMMARY: Checks if the given account is currently banned.
 		@PARAMS:
 			* @accountID: The ID of the account to check.
-		@RETURNS: 1 if the account is banned; 0 if they are not banned.
+		@RETURNS: The number of active bans on the account, or 0 if they are not banned.
 		*/
 
 		DECLARE cnt INT DEFAULT 0;
+		DECLARE tnow TIMESTAMP;
+
+		SET tnow = NOW();
+
+		/* Start by ensuring the expired bans are marked as expired. This is a bit overkill to have execute on each select, but
+		   its the easiest way to accomplish it and shouldn't be expensive at all unless someone has thousands of active bans on them. */
+
+		UPDATE `account_ban`
+			SET `expired` = 1
+			WHERE `expired` = 0
+				AND `end_time` <= tnow;
 		
-		/* Count the non-expired bans for the accountID. Even though we use "WHERE expired = 0",
-		   we still have to compare the expiration time of the ban to the current time since
-		   the expired flag has an update delay. */
+		/* Count and return the non-expired bans for the accountID. */
 		   
 		SELECT COUNT(*)
 			INTO cnt
 			FROM `account_ban`
 			WHERE `expired` = 0
-				AND `account_id` = accountID
-				AND `end_time` > NOW()
-			LIMIT 1;
+				AND `account_id` = accountID;
 				
 		RETURN cnt;
 END */;;
@@ -1780,19 +1785,20 @@ DELIMITER ;;
 BEGIN
 		/*
 		@SUMMARY: Updates the `expired` flag of the rows in the account_ban table.
-			This only sets the expiration from 0 to 1, not vise versa.
+			This only sets the expiration from 0 to 1, not vise versa. You do not need to
+			call this procedure if you use ft_banning_isbanned() like you should.
 		@PARAMS: N/A
 		@RETURNS: N/A
 		*/
 		
-		DECLARE now TIMESTAMP;
+		DECLARE tnow TIMESTAMP;
 		
-		SET now = NOW();
+		SET tnow = NOW();
 		
 		UPDATE `account_ban`
 			SET `expired` = 1
 			WHERE `expired` = 0
-				AND `end_time` <= now;
+				AND `end_time` <= tnow;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1910,4 +1916,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-09-06 19:43:27
+-- Dump completed on 2010-09-06 19:58:45
