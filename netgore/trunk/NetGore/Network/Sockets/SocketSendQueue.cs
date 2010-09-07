@@ -35,6 +35,11 @@ namespace NetGore.Network
         readonly BitStream _sendStream;
 
         /// <summary>
+        /// Gets the number of items in the queue.
+        /// </summary>
+        public int Count { get { lock (_queueLock) { return _sendQueue.Count; } } }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SocketSendQueue"/> class.
         /// </summary>
         /// <param name="maxMessageSize">The maximum size of each message in bytes. When concatenating sends, the
