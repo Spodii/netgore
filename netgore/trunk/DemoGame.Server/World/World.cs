@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Server.Guilds;
+using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Collections;
@@ -22,7 +23,8 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
-        readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
+        readonly object _delayedDisposeQueueSync = new object();
+        readonly Queue<IDisposable> _delayedDisposeQueue = new Queue<IDisposable>(4);
         readonly GuildMemberPerformer _guildMemberPerformer;
         readonly List<MapInstance> _instancedMaps = new List<MapInstance>();
         readonly object _instancedMapsSync = new object();
@@ -80,6 +82,41 @@ namespace DemoGame.Server
 
             // Trim down the maps array under the assumption we won't be adding more maps
             _maps.Trim();
+
+            // Add some event hooks
+            BanningManager.Instance.AccountBanned += BanningManager_AccountBanned;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="BanningManager.AccountBanned"/> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="accountID">The account that was banned.</param>
+        void BanningManager_AccountBanned(NetGore.Features.Banning.IBanningManager<AccountID> sender, AccountID accountID)
+        {
+            // If the user is online, disconnect them
+            
+            // Get the name of the users in the account since we have no decent way to look it up a character by AccountID in memory
+            var q = DbController.GetQuery<SelectAccountCharacterNamesQuery>();
+            var accountChars = q.Execute(accountID);
+
+            // Check for all of the users by their name and, if they are online, disconnect them after we confirm that their
+            // account matches the accountID
+            foreach (var name in accountChars)
+            {
+                var c = FindUser(name);
+                if (c == null)
+                    continue;
+
+                var acc = c.GetAccount();
+                if (acc == null)
+                    continue;
+
+                if (acc.ID != accountID)
+                    continue;
+
+                c.DelayedDispose();
+            }
         }
 
         /// <summary>
@@ -91,13 +128,18 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets a stack of objects that need to be disposed. The stack is processed once every frame.
-        /// Use for any Dispose call that would otherwise cause a potential exception (such as
-        /// trying to Dispose a character during their Update) or threading complications.
+        /// Pushes an object into a stack for delayed disposal. This is thread-safe and helps avoid issues with disposing
+        /// while in certain places (such as enumerating over a collection). Note that objects pushed into this stack
+        /// will be called for disposal once for each time they are added, so be sure to keep track of if an object
+        /// is disposed so you can avoid disposing multiple times.
         /// </summary>
-        public Stack<IDisposable> DisposeStack
+        /// <param name="obj">The object to dispose.</param>
+        public void DelayedDispose(IDisposable obj)
         {
-            get { return _disposeStack; }
+            lock (_delayedDisposeQueueSync)
+            {
+                _delayedDisposeQueue.Enqueue(obj);
+            }
         }
 
         public GuildMemberPerformer GuildMemberPerformer
@@ -324,11 +366,15 @@ namespace DemoGame.Server
         /// </summary>
         void ProcessDisposeStack()
         {
-            // Keep popping until the stack is empty
-            while (_disposeStack.Count > 0)
+            lock (_delayedDisposeQueueSync)
             {
-                // Pop out the object then call Dispose on it
-                _disposeStack.Pop().Dispose();
+                // Keep popping until the stack is empty
+                while (_delayedDisposeQueue.Count > 0)
+                {
+                    // Pop out the object then call Dispose on it
+                    var obj = _delayedDisposeQueue.Dequeue();
+                    obj.Dispose();
+                }
             }
         }
 

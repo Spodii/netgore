@@ -892,9 +892,7 @@ namespace DemoGame.Server
         /// </summary>
         public void DelayedDispose()
         {
-            var stack = World.DisposeStack;
-            if (!stack.Contains(this))
-                stack.Push(this);
+            World.DelayedDispose(this);
         }
 
         /// <summary>

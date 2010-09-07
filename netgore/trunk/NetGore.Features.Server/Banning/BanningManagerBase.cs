@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -83,7 +81,7 @@ namespace NetGore.Features.Banning
         /// </summary>
         /// <param name="accountID">The ID of the account to check if banned.</param>
         /// <returns>True if the <paramref name="accountID"/> is currently banned; otherwise false.</returns>
-        public protected bool IsBanned(TAccountID accountID)
+        public virtual bool IsBanned(TAccountID accountID)
         {
             var id = ToInt(accountID);
             return _procIsBanned.Execute(id);
@@ -98,7 +96,7 @@ namespace NetGore.Features.Banning
         /// <param name="minsLeft">When this method returns true, contains the amount of time remaining in minutes for
         /// all bans to expire.</param>
         /// <returns>True if the <paramref name="accountID"/> is currently banned; otherwise false.</returns>
-        public protected bool IsBanned(TAccountID accountID, out string reasons, out int minsLeft)
+        public virtual bool IsBanned(TAccountID accountID, out string reasons, out int minsLeft)
         {
             var id = ToInt(accountID);
             return _procGetReasons.Execute(id, out reasons, out minsLeft);
@@ -196,124 +194,5 @@ namespace NetGore.Features.Banning
 
         #endregion
 
-        [DbControllerQuery]
-        sealed class StoredProcGetReasons : DbQueryReader<int>
-        {
-            static readonly string _queryStr = FormatQueryString("CALL ft_banning_get_reasons(@accountID)");
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="BanningManagerBase{TAccountID}.StoredProcGetReasons"/> class.
-            /// </summary>
-            /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-            /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-            public StoredProcGetReasons(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
-            {
-            }
-
-            /// <summary>
-            /// Checks if an account is currently banned, and if so, gets the reason(s) why and how long the ban will last.
-            /// </summary>
-            /// <param name="accountID">The ID of the account to check if banned.</param>
-            /// <param name="reasons">When this method returns true, contains the reasons as to why the account is
-            /// banned, where each reason is delimited by a new line.</param>
-            /// <param name="minsLeft">When this method returns true, contains the amount of time remaining in minutes for
-            /// all bans to expire.</param>
-            /// <returns>True if the <paramref name="accountID"/> is currently banned; otherwise false.</returns>
-            public bool Execute(int accountID, out string reasons, out int minsLeft)
-            {
-                using (var r = ExecuteReader(accountID))
-                {
-                    if (!r.Read())
-                    {
-                        reasons = null;
-                        minsLeft = 0;
-                        return false;
-                    }
-
-                    reasons = r.GetString("reasons");
-                    minsLeft = r.GetInt32("mins_left");
-                }
-
-                return true;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-            /// </summary>
-            /// <returns>The <see cref="DbParameter"/>s needed for this class to perform database queries.
-            /// If null, no parameters will be used.</returns>
-            protected override IEnumerable<DbParameter> InitializeParameters()
-            {
-                return CreateParameters("accountID");
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
-            /// based on the values specified in the given <paramref name="item"/> parameter.
-            /// </summary>
-            /// <param name="p">Collection of database parameters to set the values for.</param>
-            /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-            protected override void SetParameters(DbParameterValues p, int item)
-            {
-                p["accountID"] = item;
-            }
-        }
-
-        [DbControllerQuery]
-        sealed class StoredProcIsBanned : DbQueryReader<int>
-        {
-            static readonly string _queryStr = FormatQueryString("CALL ft_banning_isbanned(@accountID)");
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="BanningManagerBase{TAccountID}.StoredProcIsBanned"/> class.
-            /// </summary>
-            /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
-            /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-            public StoredProcIsBanned(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
-            {
-            }
-
-            /// <summary>
-            /// Checks if an account is currently banned.
-            /// </summary>
-            /// <param name="accountID">The ID of the account to check if banned.</param>
-            /// <returns>True if the <paramref name="accountID"/> is currently banned; otherwise false.</returns>
-            public bool Execute(int accountID)
-            {
-                using (var r = ExecuteReader(accountID))
-                {
-                    if (!r.Read())
-                        return false;
-
-                    var ret = r.GetInt32(0);
-
-                    if (ret != 0)
-                        return true;
-                    else
-                        return false;
-                }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-            /// </summary>
-            /// <returns>The <see cref="DbParameter"/>s needed for this class to perform database queries.
-            /// If null, no parameters will be used.</returns>
-            protected override IEnumerable<DbParameter> InitializeParameters()
-            {
-                return CreateParameters("accountID");
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
-            /// based on the values specified in the given <paramref name="item"/> parameter.
-            /// </summary>
-            /// <param name="p">Collection of database parameters to set the values for.</param>
-            /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-            protected override void SetParameters(DbParameterValues p, int item)
-            {
-                p["accountID"] = item;
-            }
-        }
     }
 }

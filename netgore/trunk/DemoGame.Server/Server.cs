@@ -410,6 +410,8 @@ namespace DemoGame.Server
             {
                 conn.Send(pw);
             }
+
+            conn.Dispose(); // NOTE: Closes socket; data doesn't go through. Issue is in the NetGore networking core.
         }
 
         /// <summary>
@@ -464,11 +466,23 @@ namespace DemoGame.Server
             // Try to log in the account
             UserAccount userAccount;
             var loginResult = UserAccount.Login(DbController, conn, name, password, out userAccount);
-
+    
             // Check that the login was successful
             if (loginResult != AccountLoginResult.Successful)
             {
                 HandleFailedLogin(conn, loginResult, name);
+                return;
+            }
+
+            // Check if banned
+            int banMins;
+            string banReason;
+            if (BanningManager.Instance.IsBanned(userAccount.ID, out banReason, out banMins))
+            {
+                conn.Send(ServerPacket.LoginUnsuccessful(GameMessage.AccountBanned, banMins, banReason));
+                userAccount.Dispose(); // NOTE: Closes socket; data doesn't go through. Issue is in the NetGore networking core.
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Disconnected account `{0}` after successful login since they have been banned.", name);
                 return;
             }
 
@@ -558,10 +572,11 @@ namespace DemoGame.Server
         /// </summary>
         public void Start()
         {
+            // Clean up the garbage generated during the initialization phase
+            GC.Collect();
+
             if (log.IsInfoEnabled)
                 log.Info("Server done loading. Game loop has started...");
-
-            GC.Collect();
 
             // Start the main game loop
             GameLoop();

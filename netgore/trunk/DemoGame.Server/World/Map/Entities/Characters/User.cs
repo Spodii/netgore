@@ -436,12 +436,19 @@ namespace DemoGame.Server
             base.HandleDispose();
 
             // Remove the User from being the active User in the account
-            var account = World.GetUserAccount(Conn);
+            var account = GetAccount();
             if (account != null)
                 account.CloseUser();
 
             _groupMemberInfo.HandleDisposed();
         }
+
+        /// <summary>
+        /// Gets this <see cref="User"/>'s <see cref="UserAccount"/>.
+        /// </summary>
+        /// <returns>This <see cref="User"/>'s <see cref="UserAccount"/>. Shouldn't be null, but may potentially be and the caller
+        /// should always be prepared for the value being null.</returns>
+        public UserAccount GetAccount() { return World.GetUserAccount(Conn); }
 
         /// <summary>
         /// When overridden in the derived class, allows for additional steps to be taken when saving.

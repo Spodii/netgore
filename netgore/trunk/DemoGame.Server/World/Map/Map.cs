@@ -676,7 +676,7 @@ namespace DemoGame.Server
             var disposableEntities = Entities.OfType<IDisposable>();
             foreach (var entity in disposableEntities)
             {
-                _world.DisposeStack.Push(entity);
+                World.DelayedDispose(entity);
             }
         }
 
