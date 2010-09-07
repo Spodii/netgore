@@ -283,13 +283,14 @@ namespace NetGore.Network
 
         void EndDisconnect(object sender, SocketAsyncEventArgs e)
         {
-            // NOTE: Not sure I like the idea of doing Close() here... fucking blocking calls...
+            // NOTE: Not sure I like the idea of doing Close() here...
+            // NOTE: If I use DisconnectReuseSocket=True on Disconnect(), it seems to be an alternative to calling Close()... pooling it is!
             var senderSocket = sender as Socket;
             if (senderSocket != null && senderSocket.Connected)
             {
                 try
                 {
-                    senderSocket.Close(3000);
+                    senderSocket.Close();
                 }
                 catch (ObjectDisposedException)
                 {
@@ -592,12 +593,6 @@ namespace NetGore.Network
         public TickCount TimeCreated
         {
             get { return _timeCreated; }
-        }
-
-        void DisposeInvoker()
-        {
-            Thread t = new Thread(DisposeReal) { IsBackground = true };
-            t.Start();
         }
 
         /// <summary>
