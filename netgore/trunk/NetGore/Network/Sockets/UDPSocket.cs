@@ -77,12 +77,25 @@ namespace NetGore.Network
         {
             try
             {
+                // TODO: Should probably make sure this is only called once at a time
+                // TODO: Use ReceiveFromAsync?
                 _socket.BeginReceiveFrom(_receiveBuffer, 0, _receiveBuffer.Length, SocketFlags.None, ref _bindEndPoint,
                                          ReceiveFromCallback, this);
             }
+            catch (SocketException ex)
+            {
+                const string errmsg = "Unexpected exception from socket `{0}` on `{1}` while calling BeginReceiveFrom. Exception: {2}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, _socket, this, ex);
+                Debug.Fail(string.Format(errmsg, _socket, this, ex));
+                Dispose();
+            }
             catch (ObjectDisposedException ex)
             {
-                Debug.Fail(ex.ToString());
+                const string errmsg = "Unexpected exception from socket `{0}` on `{1}` while calling BeginReceiveFrom. Exception: {2}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, _socket, this, ex);
+                Debug.Fail(string.Format(errmsg, _socket, this, ex));
                 Dispose();
             }
         }
@@ -93,6 +106,9 @@ namespace NetGore.Network
         /// <param name="result">Async result.</param>
         void ReceiveFromCallback(IAsyncResult result)
         {
+            if (IsDisposed)
+                return;
+
             byte[] received;
             EndPoint remoteEndPoint = new IPEndPoint(0, 0);
 
@@ -104,16 +120,25 @@ namespace NetGore.Network
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
             }
-            catch (ObjectDisposedException)
+            catch (ObjectDisposedException ex)
             {
+                const string errmsg = "Unexpected exception from socket `{0}` on `{1}` while calling EndReceiveFrom. Exception: {2}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, _socket, this, ex);
+                Debug.Fail(string.Format(errmsg, _socket, this, ex));
                 Dispose();
                 return;
             }
-            catch (SocketException e)
+            catch (SocketException ex)
             {
-                if (log.IsErrorEnabled)
-                    log.Error(e);
+                // Ignore certain errors
+                if (ex.SocketErrorCode == SocketError.ConnectionReset)
+                    return;
 
+                const string errmsg = "Unexpected exception from socket `{0}` on `{1}` while calling EndReceiveFrom. Exception: {2}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, _socket, this, ex);
+                Debug.Fail(string.Format(errmsg, _socket, this, ex));
                 Dispose();
                 return;
             }
@@ -268,12 +293,26 @@ namespace NetGore.Network
             _disposed = true;
 
             if (_socket != null)
-                _socket.Close();
+            {
+                var disconnectArgs = new SocketAsyncEventArgs { DisconnectReuseSocket = false };
+                disconnectArgs.Completed += EndDisconnect;
+                if (!_socket.DisconnectAsync(disconnectArgs))
+                    EndDisconnect(_socket, disconnectArgs);
+            }
 
             if (Disposed != null)
                 Disposed(this);
 
             _receiveQueue.Clear();
+        }
+
+        void EndDisconnect(object sender, SocketAsyncEventArgs e)
+        {
+            // TODO: Maybe try reusing the sockets?
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Socket `{0}` in `{1}` finished disconnecting.", sender, this);
+
+            e.Dispose();
         }
 
         /// <summary>
@@ -319,6 +358,7 @@ namespace NetGore.Network
 
             try
             {
+                // TODO: Use async send?
                 _socket.SendTo(data, totalLength, SocketFlags.None, endPoint);
             }
             catch (ObjectDisposedException ex)

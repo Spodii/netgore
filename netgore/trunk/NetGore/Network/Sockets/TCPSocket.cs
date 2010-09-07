@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using NetGore.IO;
 
@@ -84,6 +85,13 @@ namespace NetGore.Network
         /// </summary>
         bool _isSending;
 
+        /// <summary>
+        /// When true, the <see cref="TCPSocket"/> is in the process of being disposed. However, when Dispose was called, there
+        /// was data to be sent. As a result, this flag is set to true to denote that we will finish disposing after all sends
+        /// finish.
+        /// </summary>
+        bool _isFlushingForDisposal;
+
         ushort _port;
 
         /// <summary>
@@ -155,20 +163,17 @@ namespace NetGore.Network
         {
 #if DEBUG
             // Ensure _isSending was set properly... just in case
-            bool debugIsSending;
             lock (_sendLock)
             {
-                debugIsSending = _isSending;
-            }
-
-            if (!debugIsSending)
-            {
-                const string errmsg = "Called BeginSend() while _isSending == False. This should never happen!";
-                if (log.IsFatalEnabled)
-                    log.Fatal(errmsg);
-                Debug.Fail(errmsg);
-                _isSending = false;
-                return;
+                if (!_isSending)
+                {
+                    const string errmsg = "Called BeginSend() while _isSending == False. This should never happen!";
+                    if (log.IsFatalEnabled)
+                        log.Fatal(errmsg);
+                    Debug.Fail(errmsg);
+                    _isSending = false;
+                    return;
+                }
             }
 #endif
 
@@ -182,7 +187,9 @@ namespace NetGore.Network
                     log.WarnFormat(errmsg, _disposed);
 
                 lock (_sendLock)
+                {
                     _isSending = false;
+                }
 
                 return;
             }
@@ -195,7 +202,9 @@ namespace NetGore.Network
                 Debug.Fail(errmsg);
 
                 lock (_sendLock)
+                {
                     _isSending = false;
+                }
 
                 return;
             }
@@ -272,6 +281,30 @@ namespace NetGore.Network
             }
         }
 
+        void EndDisconnect(object sender, SocketAsyncEventArgs e)
+        {
+            // NOTE: Not sure I like the idea of doing Close() here... fucking blocking calls...
+            var senderSocket = sender as Socket;
+            if (senderSocket != null && senderSocket.Connected)
+            {
+                try
+                {
+                    senderSocket.Close(3000);
+                }
+                catch (ObjectDisposedException)
+                {
+                }
+            }
+
+            // TODO: Maybe try reusing the sockets?
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Socket `{0}` in `{1}` finished disconnecting.", sender, this);
+
+            e.Dispose();
+            _recvEventArgs.Dispose();
+            _sendEventArgs.Dispose();
+        }
+
         /// <summary>
         /// Ends an async receive and starts receiving again
         /// </summary>
@@ -285,7 +318,7 @@ namespace NetGore.Network
             // 0 receive length = gracefully closed
             if (readLength == 0)
             {
-                Dispose();
+                //Dispose();
                 return;
             }
 
@@ -335,9 +368,17 @@ namespace NetGore.Network
             else
             {
                 // Nothing enqueued or not allowed to send again, so do not start sending again
-                _isSending = false;
+                lock (_sendLock)
+                {
+                    _isSending = false;
+                }
+
+                if (_isFlushingForDisposal)
+                    DisposeReal();
             }
         }
+
+        static readonly LingerOption _lingerOption = new LingerOption(true, 3); 
 
         /// <summary>
         /// Creates the objects for the connection and allows use of it. Call
@@ -353,7 +394,8 @@ namespace NetGore.Network
 
             _isInitialized = true;
 
-            _socket.LingerState = new LingerOption(true, 2);
+            _socket.LingerState = _lingerOption;
+            _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, false);
             _socket.NoDelay = true;
             _recvQueue = new Queue<byte[]>(RecvQueueStartSize);
 
@@ -552,15 +594,24 @@ namespace NetGore.Network
             get { return _timeCreated; }
         }
 
-        /// <summary>
-        /// Disposes all resources used by the TCPSocket.
-        /// </summary>
-        public void Dispose()
+        void DisposeInvoker()
         {
-            if (_disposed)
-                return;
+            Thread t = new Thread(DisposeReal) { IsBackground = true };
+            t.Start();
+        }
 
-            _disposed = true;
+        /// <summary>
+        /// Performs the actual disposing process. This is either called by Dispose() directly if Dispose() was called
+        /// while there was nothing being sent, or after everything finishes being sent and <see cref="_isFlushingForDisposal"/>
+        /// is set.
+        /// </summary>
+        void DisposeReal()
+        {
+#if DEBUG
+            Debug.Assert(!_isSending);
+#endif
+
+            _isFlushingForDisposal = false;
 
             // Close down the socket
             if (_socket != null)
@@ -568,11 +619,19 @@ namespace NetGore.Network
                 try
                 {
                     _socket.Shutdown(SocketShutdown.Both);
-                    _socket.Close();
+
+                    var disconnectArgs = new SocketAsyncEventArgs { DisconnectReuseSocket = false };
+                    disconnectArgs.Completed += EndDisconnect;
+
+                    if (!_socket.DisconnectAsync(disconnectArgs))
+                        EndDisconnect(_socket, disconnectArgs);
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    Debug.Fail(ex.ToString());
+                    const string errmsg = "Error while trying to dispose socket `{0}` for `{1}`: {2}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, _socket, this, ex);
+                    Debug.Fail(string.Format(errmsg, _socket, this, ex));
                 }
                 finally
                 {
@@ -588,6 +647,27 @@ namespace NetGore.Network
             }
 
             _isInitialized = false;
+        }
+
+        /// <summary>
+        /// Disposes all resources used by the TCPSocket.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
+            // If we are busy sending, we will let those sends finish before doing the disposal
+            lock (_sendLock)
+            {
+                _isFlushingForDisposal = _isSending;
+            }
+
+            // Call the dispose right away if we had nothing to send
+            if (!_isFlushingForDisposal)
+                DisposeReal();
 
             if (Disposed != null)
                 Disposed(this);
@@ -631,10 +711,11 @@ namespace NetGore.Network
         /// <param name="sourceStream">BitStream containing the data to send. The data in this BitStream will
         /// be copied to an internal BitStream, so after the Send call returns, the <paramref name="sourceStream"/>
         /// will be safe from the TCPSocket's control.</param>
+        /// <exception cref="InvalidOperationException">Initialize() has not been called yet.</exception>
         public void Send(BitStream sourceStream)
         {
             if (!_isInitialized && !_disposed)
-                throw new Exception("Called Send() before Initialize()");
+                throw new InvalidOperationException("Called Send() before Initialize()");
 
             bool willSend;
 
