@@ -116,6 +116,7 @@
     <Compile Include="Body\BodyIDTypeConverter.cs" />
     <Compile Include="Body\BodyInfo.cs" />
     <Compile Include="Body\BodyInfoManager.cs" />
+    <Compile Include="DbObjs\Interfaces\IAccountBanTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountIpsTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountTable.cs" />
     <Compile Include="DbObjs\Interfaces\IActiveTradeCashTable.cs" />
