@@ -219,5 +219,11 @@ namespace DemoGame
         QuestFinishFailedCannotGiveRewards,
 
         #endregion
+
+        #region Banning
+
+        AccountBanned,
+
+        #endregion
     }
 }

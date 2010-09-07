@@ -101,6 +101,8 @@
     <Compile Include="Banning\BanningManagerAccountBannedEventHandler.cs" />
     <Compile Include="Banning\BanningManagerBase.cs" />
     <Compile Include="Banning\IBanningManager.cs" />
+    <Compile Include="Banning\StoredProcGetReasons.cs" />
+    <Compile Include="Banning\StoredProcIsBanned.cs" />
     <Compile Include="Groups\Group.cs" />
     <Compile Include="Groups\GroupManager.cs" />
     <Compile Include="Groups\Event Handlers\IGroupManagerEventHandler.cs" />
