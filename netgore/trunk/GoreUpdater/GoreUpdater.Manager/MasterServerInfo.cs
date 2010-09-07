@@ -101,6 +101,10 @@ namespace GoreUpdater.Manager
             if (!File.Exists(vflPath))
             {
                 // Version doesn't exist at all
+                while (fu.IsBusy)
+                {
+                    Thread.Sleep(500);
+                }
                 return null;
             }
 
