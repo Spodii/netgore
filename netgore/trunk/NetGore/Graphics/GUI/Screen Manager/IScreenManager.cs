@@ -19,7 +19,9 @@ namespace NetGore.Graphics.GUI
         event IScreenManagerEventHandler Updated;
 
         /// <summary>
-        /// Gets or sets the currently active <see cref="IGameScreen"/>.
+        /// Gets or sets the currently active <see cref="IGameScreen"/>. If <see cref="IScreenManager.ShowConsole"/> is set
+        /// and <see cref="IScreenManager.ConsoleScreen"/> is valid, then the console screen will be returned. Otherwise, it will
+        /// be the current game screen.
         /// </summary>
         /// <exception cref="ArgumentException"><paramref name="value"/> does not belong to this
         /// <see cref="IScreenManager"/>.</exception>
