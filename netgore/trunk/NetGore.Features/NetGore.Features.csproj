@@ -176,7 +176,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Banning\_FeatureInfo.txt" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="ActionDisplays\_FeatureInfo.txt" />
     <None Include="Emoticons\_FeatureInfo.txt" />

@@ -24,5 +24,8 @@ DATABASE TABLES:
  * quest_require_*
  * quest_reward_*
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * \Data\questdata.dat

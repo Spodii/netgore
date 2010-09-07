@@ -16,5 +16,8 @@ of code provided to make the implementation and usage as simple as possible.
 DATABASE TABLES:
  * [None]
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * \Data\emoticons.dat

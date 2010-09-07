@@ -138,6 +138,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Banning\" />
     <Folder Include="GameTime\" />
     <Folder Include="Skills\" />
     <Folder Include="StatusEffects\" />

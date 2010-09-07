@@ -32,5 +32,8 @@ really provide a whole lot. Majority of the implementation resides in the server
 DATABASE TABLES:
  * world_stats_*
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * [None]

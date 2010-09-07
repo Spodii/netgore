@@ -28,5 +28,8 @@ the parameters given.
 DATABASE TABLES:
  * [None]
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * \Data\actiondisplays.dat

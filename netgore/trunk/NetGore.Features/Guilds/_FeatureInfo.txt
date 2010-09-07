@@ -20,5 +20,8 @@ DATABASE TABLES:
  * guild_event
  * guild_member
 
+DATABASE PROCEDURES:
+ * [None]
+
 CONTENT FILES:
  * [None]
