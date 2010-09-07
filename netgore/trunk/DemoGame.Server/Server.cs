@@ -443,7 +443,8 @@ namespace DemoGame.Server
         /// <param name="conn">Connection that the login request was made on.</param>
         /// <param name="name">Name of the account.</param>
         /// <param name="password">Entered password for this account.</param>
-        public void LoginAccount(IIPSocket conn, string name, string password, string ClientVersion)
+        /// <param name="clientVersion">The version of the client.</param>
+        public void LoginAccount(IIPSocket conn, string name, string password, string clientVersion)
         {
             ThreadAsserts.IsMainThread();
 
@@ -454,7 +455,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            if (ClientVersion != ServerSettings.MinimumClientVersion)
+            if (clientVersion != ServerSettings.MinimumClientVersion)
             {
                 HandleFailedLogin(conn, AccountLoginResult.OldClient, name);
                 return;
