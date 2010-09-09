@@ -2557,12 +2557,73 @@ namespace NetGore.IO
             }
         }
 
+        public void Write(NetIncomingMessage source)
+        {
+#if DEBUG
+            int startBSPos = PositionBits;
+            int startMsgPos = (int)source.Position;
+#endif
+
+            while (source.LengthBits - source.Position > 8)
+            {
+                var v = source.ReadByte();
+                Write(v);
+            }
+
+            while (source.LengthBits > source.Position)
+            {
+                var v = source.ReadBoolean();
+                Write(v);
+            }
+
+            /*
+            // TODO: !! Make sure this works
+            // Work in 32-bit blocks
+            int bitsLeft;
+            while ((bitsLeft = source.LengthBits - (int)source.Position) > 0)
+            {
+                if (bitsLeft >= 32)
+                {
+                    // Write a full 32 bits
+                    var v = source.ReadUInt32();
+                    Write(v);
+                }
+                else
+                {
+                    // Write less than 32 bits
+                    var v = source.ReadUInt32(bitsLeft);
+                    Write(v, bitsLeft);
+                }
+            }
+            */
+
+            Debug.Assert(source.Position == source.LengthBits);
+
+#if DEBUG
+            Debug.Assert(PositionBits - startBSPos == source.LengthBits - startMsgPos);
+#endif
+        }
+
         public void CopyTo(NetOutgoingMessage target)
         {
 #if DEBUG
             var startMsgLen = target.LengthBits;
 #endif
+            for (int i = 0; i <= HighestWrittenIndex; i++)
+            {
+                target.Write(_buffer[i]);
+            }
 
+            if (Mode == BitStreamMode.Write && _workBufferPos != _highBit)
+            {
+                for (var i = _highBit; i > _workBufferPos; i--)
+                {
+                    target.Write((_workBuffer & (1 << i)) != 0);
+                }
+            }
+
+            /*
+            // TODO: !! Make sure this works
             // Copy over the finished buffer
             if (HighestWrittenIndex > -1)
                 target.Write(_buffer, 0, HighestWrittenIndex + 1);
@@ -2576,6 +2637,7 @@ namespace NetGore.IO
                     target.Write((_workBuffer & (1 << i)) != 0);
                 }
             }
+            */
 
 #if DEBUG
             Debug.Assert(target.LengthBits - startMsgLen == LengthBits);

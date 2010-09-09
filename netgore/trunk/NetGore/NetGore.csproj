@@ -181,7 +181,6 @@
     <Compile Include="Core\ExceptionSwallower.cs" />
     <Compile Include="Graphics\GUI\Controls\InputBox.cs" />
     <Compile Include="Graphics\GUI\Controls\TextEventArgsFilters.cs" />
-    <Compile Include="Network\BitStreamExtensions.cs" />
     <Compile Include="Network\MessageProcessor\MessageProcessorID.cs" />
     <Compile Include="Network\Sockets\SocketManager\ClientSocketManagerBase.cs" />
     <Compile Include="Network\Sockets\SocketManager\IClientSocketManager.cs" />
