@@ -14,7 +14,7 @@ namespace DemoGame.Client
     /// A <see cref="Form"/> that contains multiple user-assignable slots for quickly accessing and using different items, spells,
     /// skills, etc.
     /// </summary>
-    class QuickBarForm : Form
+    public class QuickBarForm : Form
     {
         const int _numSlots = 10;
         const int _slotPadding = 2;

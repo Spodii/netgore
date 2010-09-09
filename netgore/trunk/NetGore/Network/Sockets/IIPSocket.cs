@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Lidgren.Network;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -11,21 +12,26 @@ namespace NetGore.Network
     public delegate void IIPSocketEventHandler(IIPSocket socket);
 
     /// <summary>
-    /// Interface for a socket that abstracts the protocol implementation (ie TCP or UDP) into a single
-    /// object that just sends and receives data.
+    /// Interface for a connection made over IP that can be used to communicate with and control the connection with the
+    /// other end.
     /// </summary>
-    public interface IIPSocket : IDisposable
+    public interface IIPSocket 
     {
-        /// <summary>
-        /// Notifies listeners when this <see cref="IIPSocket"/> has been disposed.
-        /// </summary>
-        event IIPSocketEventHandler Disposed;
-
         /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
         /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
         /// </summary>
         string Address { get; }
+
+        /// <summary>
+        /// Gets the status of the <see cref="IIPSocket"/>'s connection.
+        /// </summary>
+        NetConnectionStatus Status { get; }
+
+        /// <summary>
+        /// Gets the average round-trip time of this connection in milliseconds.
+        /// </summary>
+        float AverageLatency { get; }
 
         /// <summary>
         /// Gets the IPv4 address as an unsigned 32-bit integer.
@@ -36,16 +42,6 @@ namespace NetGore.Network
         /// Gets if this <see cref="IIPSocket"/> is currently connected.
         /// </summary>
         bool IsConnected { get; }
-
-        /// <summary>
-        /// Gets the maximum size of a message to the reliable channel.
-        /// </summary>
-        int MaxReliableMessageSize { get; }
-
-        /// <summary>
-        /// Gets the maximum size of a message to the unreliable channel.
-        /// </summary>
-        int MaxUnreliableMessageSize { get; }
 
         /// <summary>
         /// Gets the port as a 16-bit unsigned integer.
@@ -62,14 +58,6 @@ namespace NetGore.Network
         /// Gets the time that this <see cref="IIPSocket"/> was created.
         /// </summary>
         TickCount TimeCreated { get; }
-
-        /// <summary>
-        /// Gets the queue of received data. This only includes data from a connection-oriented socket. Data from a connectionless protocol
-        /// is not included, even if it was the owner of this <see cref="IIPSocket"/> that sent the data over a connectionless protocol.
-        /// communication.
-        /// </summary>
-        /// <returns>Queue of received reliable data if any, or null if no queued data.</returns>
-        byte[][] GetRecvData();
 
         /// <summary>
         /// Sends data over a reliable stream.
@@ -102,11 +90,8 @@ namespace NetGore.Network
         void Send(byte[] data, bool reliable);
 
         /// <summary>
-        /// Sets the port used to communicate with the remote connection over an unreliable stream.
+        /// Terminates this connection.
         /// </summary>
-        /// <param name="port">Port for the unreliable stream.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="port"/> must be between <see cref="ushort.MinValue"/>
-        /// and <see cref="ushort.MaxValue"/>.</exception>
-        void SetRemoteUnreliablePort(int port);
+        void Disconnect();
     }
 }

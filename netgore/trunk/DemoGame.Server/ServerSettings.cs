@@ -27,11 +27,6 @@ namespace DemoGame.Server
         public const int DefaultMapItemLife = 1000 * 60 * 3;
 
         /// <summary>
-        /// The minimum number of milliseconds a connection should be inactive to be considered dead.
-        /// </summary>
-        public const int InactiveConnectionTimeOut = 20000;
-
-        /// <summary>
         /// The minimum amount of time in milliseconds that may elapse between checks for expired items.
         /// The lower this value, the closer the time the items are removed will be to the
         /// actual sepcified time, but the greater the performance cost. It is recommended to keep this
@@ -44,11 +39,6 @@ namespace DemoGame.Server
         /// with the other group members.
         /// </summary>
         public const float MaxGroupShareDistance = 1000;
-
-        /// <summary>
-        /// The number of milliseconds to wait before checking for inactive connections to remove.
-        /// </summary>
-        public const int RemoveInactiveConnectionsRate = 60000;
 
         /// <summary>
         /// How often, in milliseconds, to wait between check to respawn <see cref="IRespawnable"/> entities.

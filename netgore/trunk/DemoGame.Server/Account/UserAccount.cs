@@ -438,9 +438,9 @@ namespace DemoGame.Server
             // Make sure the User is closed
             CloseUser();
 
-            // Dispose of the socket
+            // Break the connection, if connected
             if (Socket != null)
-                Socket.Dispose();
+                Socket.Disconnect();
 
             // Log the account out in the database
             _dbController.GetQuery<SetAccountCurrentIPNullQuery>().Execute(ID);

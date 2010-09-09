@@ -33,7 +33,15 @@ namespace NetGore.Features.Banning
         {
             using (var r = ExecuteReader(accountID))
             {
-                if (!r.Read())
+                // Check for any results
+                bool isValid = r.Read();
+                if (isValid)
+                {
+                    // Ensure we actually got valid results by checking if any of the two columns are now
+                    isValid = !r.IsDBNull(0) && !r.IsDBNull(1);
+                }
+
+                if (!isValid)
                 {
                     reasons = null;
                     minsLeft = 0;

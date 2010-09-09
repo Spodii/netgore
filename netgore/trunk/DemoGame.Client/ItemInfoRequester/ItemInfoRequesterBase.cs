@@ -10,7 +10,7 @@ namespace DemoGame.Client
     /// Manages sending requests to the server for the <see cref="IItemTable"/> for items in various collections.
     /// </summary>
     /// <typeparam name="T">The slot type.</typeparam>
-    abstract class ItemInfoRequesterBase<T>
+    public abstract class ItemInfoRequesterBase<T>
     {
         readonly ItemTable _reusableItemInfo = new ItemTable();
         readonly ISocketSender _socket;

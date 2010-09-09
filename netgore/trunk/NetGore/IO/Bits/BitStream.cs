@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Lidgren.Network;
 
 // FUTURE: Add a Debug check to see if Write operations result in data loss
 
@@ -2554,6 +2555,31 @@ namespace NetGore.IO
             {
                 Write(value[i]);
             }
+        }
+
+        public void CopyTo(NetOutgoingMessage target)
+        {
+#if DEBUG
+            var startMsgLen = target.LengthBits;
+#endif
+
+            // Copy over the finished buffer
+            if (HighestWrittenIndex > -1)
+                target.Write(_buffer, 0, HighestWrittenIndex + 1);
+
+            // If there are any unwritten partial bits, copy those over, too
+            if (Mode == BitStreamMode.Write && _workBufferPos != _highBit)
+            {
+                for (var i = _highBit; i > _workBufferPos; i--)
+                {
+                    // TODO: !! Needlessly slow looping
+                    target.Write((_workBuffer & (1 << i)) != 0);
+                }
+            }
+
+#if DEBUG
+            Debug.Assert(target.LengthBits - startMsgLen == LengthBits);
+#endif
         }
 
         /// <summary>

@@ -237,11 +237,6 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter Ping()
-        {
-            return GetWriter(ServerPacketID.Ping);
-        }
-
         public static PacketWriter PlaySound(SoundID sound)
         {
             var pw = GetWriter(ServerPacketID.PlaySound);
@@ -283,13 +278,6 @@ namespace DemoGame.Server
         {
             var pw = GetWriter(ServerPacketID.RemoveStatusEffect);
             pw.WriteEnum(statusEffectType);
-            return pw;
-        }
-
-        public static PacketWriter RequestUDPConnection(int challenge)
-        {
-            var pw = GetWriter(ServerPacketID.RequestUDPConnection);
-            pw.Write(challenge);
             return pw;
         }
 

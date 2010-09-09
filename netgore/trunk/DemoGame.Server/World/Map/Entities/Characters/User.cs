@@ -48,7 +48,6 @@ namespace DemoGame.Server
         readonly GuildMemberInfo _guildMemberInfo;
         readonly QuestPerformerStatusHelper _questInfo;
         readonly UserShoppingState _shoppingState;
-        readonly SocketSendQueue _unreliableBuffer;
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
@@ -78,9 +77,7 @@ namespace DemoGame.Server
         /// <param name="characterID">User's CharacterID.</param>
         public User(IIPSocket conn, World world, CharacterID characterID) : base(world, true)
         {
-            // Set the connection information
             _conn = conn;
-            _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
 
             // Create some objects
             _guildMemberInfo = new GuildMemberInfo(this);
@@ -309,33 +306,6 @@ namespace DemoGame.Server
         protected override StatCollection<StatType> CreateStats(StatCollectionType statCollectionType)
         {
             return new UserStats(statCollectionType);
-        }
-
-        /// <summary>
-        /// Sends all the data buffered for the unreliable channel by SendUnreliableBuffered() to the User.
-        /// </summary>
-        public void FlushUnreliableBuffer()
-        {
-            if (IsDisposed)
-                return;
-
-            if (_conn == null || !_conn.IsConnected)
-            {
-                const string errmsg =
-                    "Send to `{0}` failed - Conn is null or not connected." +
-                    " Connection by client was probably not closed properly. Usually not a big deal. Disposing User...";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this);
-                DelayedDispose();
-
-                return;
-            }
-
-            byte[] data;
-            while ((data = _unreliableBuffer.Dequeue()) != null)
-            {
-                _conn.Send(data, false);
-            }
         }
 
         /// <summary>
@@ -766,16 +736,6 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
-        }
-
-        /// <summary>
-        /// Sends data to the User. The data is actually buffered indefinately until FlushUnreliableBuffer() is
-        /// called. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send to the User.</param>
-        public void SendUnreliableBuffered(BitStream data)
-        {
-            _unreliableBuffer.Enqueue(data);
         }
 
         /// <summary>

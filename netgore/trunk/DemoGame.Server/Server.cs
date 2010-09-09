@@ -286,8 +286,6 @@ namespace DemoGame.Server
             var updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
             var serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
 
-            long lastRemoveConnsTime = 0;
-
             _nextServerSaveTime = GetTime() + ServerSettings.RoutineServerSaveRate;
 
             var worldStatsTracker = WorldStatsTracker.Instance;
@@ -296,13 +294,6 @@ namespace DemoGame.Server
             {
                 // Store the loop start time so we can calculate how long the loop took
                 var loopStartTime = GetTime();
-
-                // Check to remove inactive connections
-                if (loopStartTime - lastRemoveConnsTime > ServerSettings.RemoveInactiveConnectionsRate)
-                {
-                    lastRemoveConnsTime = loopStartTime;
-                    ServerSockets.RemoveInactiveConnections(ServerSettings.InactiveConnectionTimeOut);
-                }
 
                 // Update the networking
                 ServerSockets.Heartbeat();
@@ -368,6 +359,7 @@ namespace DemoGame.Server
 
         static void HandleFailedLogin(IIPSocket conn, AccountLoginResult loginResult, string name)
         {
+            // TODO: !! Send the error message via Disconnect()
             // Get the error message
             GameMessage loginFailureGameMessage;
             switch (loginResult)
@@ -411,7 +403,7 @@ namespace DemoGame.Server
                 conn.Send(pw);
             }
 
-            conn.Dispose();
+            conn.Disconnect();
         }
 
         /// <summary>

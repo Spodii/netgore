@@ -8,7 +8,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Manages requests for the item information for equipped items.
     /// </summary>
-    class EquipmentInfoRequester : ItemInfoRequesterBase<EquipmentSlot>
+    public class EquipmentInfoRequester : ItemInfoRequesterBase<EquipmentSlot>
     {
         UserEquipped _equipment;
 

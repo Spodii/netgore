@@ -597,17 +597,11 @@ namespace DemoGame.Server
                             ServerPacket.UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);
                             foreach (var user in usersToSyncTo)
                             {
-                                user.SendUnreliableBuffered(pw);
+                                user.Send(pw, false);
                             }
                         }
                     }
                 }
-            }
-
-            // Flush the unreliable buffers for all of the users
-            foreach (var user in Users)
-            {
-                user.FlushUnreliableBuffer();
             }
         }
 

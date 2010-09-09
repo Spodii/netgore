@@ -95,6 +95,10 @@
     <CodeAnalysisRuleSet>..\CodeRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\_dependencies\Lidgren.Network.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
@@ -178,6 +182,7 @@
     <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="Emoticons\Emoticon.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
+    <Compile Include="IO\Packets\ClientConnectType.cs" />
     <Compile Include="IO\PropertySyncEmoticon.cs" />
     <Compile Include="IO\PropertySyncCharacterID.cs" />
     <Compile Include="IO\PropertySyncCharacterTemplateID.cs" />

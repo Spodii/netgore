@@ -1,7 +1,7 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Lidgren.Network;
 using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
@@ -18,8 +18,7 @@ namespace DemoGame.Client
         Label _cError;
         TextBox _cNameText;
         MaskedTextBox _cPasswordText;
-        GameplayScreen _gpScreen = null;
-        ClientSockets _sockets = null;
+        ClientSockets _sockets;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginScreen"/> class.
@@ -36,24 +35,9 @@ namespace DemoGame.Client
         /// </summary>
         public override void Activate()
         {
-            if (_gpScreen == null)
-            {
-                _gpScreen = ScreenManager.GetScreen(GameplayScreen.ScreenName) as GameplayScreen;
-                if (_gpScreen == null)
-                    throw new Exception("Failed to find 'game' screen.");
-            }
-
-            if (_sockets == null)
-            {
-                _sockets = _gpScreen.Socket;
-                if (_sockets == null)
-                    throw new Exception("Failed to reference the ClientSockets.");
-            }
-
-            _sockets.Connected += sockets_Connected;
-            _sockets.ConnectFailed += sockets_ConnectFailed;
-            _sockets.PacketHandler.ReceivedLoginUnsuccessful += sockets_ReceivedLoginUnsuccessful;
-            _sockets.PacketHandler.ReceivedLoginSuccessful += sockets_ReceivedLoginSuccessful;
+            // No reason to be connected while at the login screen
+            if (_sockets.IsConnected)
+                _sockets.Disconnect();
 
             base.Activate();
         }
@@ -64,11 +48,6 @@ namespace DemoGame.Client
         /// </summary>
         public override void Deactivate()
         {
-            _sockets.Connected -= sockets_Connected;
-            _sockets.ConnectFailed -= sockets_ConnectFailed;
-            _sockets.PacketHandler.ReceivedLoginSuccessful -= sockets_ReceivedLoginSuccessful;
-            _sockets.PacketHandler.ReceivedLoginUnsuccessful -= sockets_ReceivedLoginUnsuccessful;
-
             _cError.Text = string.Empty;
         }
 
@@ -102,6 +81,27 @@ namespace DemoGame.Client
             menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
             cScreen.SetFocus();
+
+            // Set up the networking stuff for this screen
+            _sockets = ClientSockets.Instance;
+            _sockets.StatusChanged += _sockets_StatusChanged;
+            _sockets.PacketHandler.ReceivedLoginSuccessful += PacketHandler_ReceivedLoginSuccessful;
+            _sockets.PacketHandler.ReceivedLoginUnsuccessful += PacketHandler_ReceivedLoginUnsuccessful;
+        }
+
+        void PacketHandler_ReceivedLoginUnsuccessful(ClientPacketHandler sender, IIPSocket conn, string e)
+        {
+            // Show the login screen
+            ScreenManager.ActiveScreen = this;
+
+            // Display the message
+            SetError(e);
+        }
+
+        void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
+        {
+            // Show the character selection screen
+            ScreenManager.ActiveScreen = ScreenManager.GetScreen<CharacterSelectionScreen>();
         }
 
         /// <summary>
@@ -123,7 +123,10 @@ namespace DemoGame.Client
         /// <param name="gameTime">The current game time.</param>
         public override void Update(TickCount gameTime)
         {
-            _btnLogin.IsEnabled = !(_sockets.IsConnecting || _sockets.IsConnected);
+            var sock = _sockets.RemoteSocket;
+            _btnLogin.IsEnabled = (sock == null ||
+                                   !(sock.Status == NetConnectionStatus.Connected || sock.Status == NetConnectionStatus.Connecting || sock.Status == NetConnectionStatus.None));
+
             base.Update(gameTime);
         }
 
@@ -187,29 +190,32 @@ namespace DemoGame.Client
             _cPasswordText.CursorLinePosition = clp;
         }
 
-        void sockets_ConnectFailed(SocketManager sender)
+        void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
         {
-            SetError("Failed to connect to server.");
-        }
+            // Make sure we are the active screen
+            if (ScreenManager.ActiveNonConsoleScreen != this)
+                return;
 
-        void sockets_Connected(SocketManager sender, IIPSocket conn)
-        {
-            using (var pw = ClientPacket.Login(_cNameText.Text, _cPasswordText.Text, Assembly.GetExecutingAssembly().GetName().Version))
+            switch (newStatus)
             {
-                _sockets.Send(pw);
+                case NetConnectionStatus.Connected:
+                    // When the status has changed to Connected, send the login info
+                    var name = _cNameText.Text;
+                    var pass = _cPasswordText.Text;
+                    var version = Assembly.GetExecutingAssembly().GetName().Version;
+                    using (var pw = ClientPacket.Login(name, pass, version))
+                    {
+                        _sockets.Send(pw);
+                    }
+                    break;
+
+                case NetConnectionStatus.Disconnected:
+                    string s = "Connection to the server lost";
+                    if (!string.IsNullOrEmpty(reason))
+                        s += ": " + reason;
+                    SetError(s);
+                    break;
             }
-        }
-
-        void sockets_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
-        {
-            ScreenManager.SetScreen(CharacterSelectionScreen.ScreenName);
-        }
-
-        void sockets_ReceivedLoginUnsuccessful(ClientPacketHandler sender, IIPSocket conn, string message)
-        {
-            SetError(message);
-
-            _sockets.Disconnect();
         }
     }
 }
