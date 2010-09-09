@@ -28,6 +28,12 @@ namespace NetGore.Graphics.GUI
         IGameScreen ActiveScreen { get; set; }
 
         /// <summary>
+        /// Gets the currently active <see cref="IGameScreen"/> that is not the console. Same as
+        /// <see cref="IScreenManager.ActiveScreen"/> but wil lnever return the <see cref="IScreenManager.ConsoleScreen"/>.
+        /// </summary>
+        IGameScreen ActiveNonConsoleScreen { get; }
+
+        /// <summary>
         /// Gets the <see cref="IAudioManager"/> to be used by all of the <see cref="IGameScreen"/>s in this
         /// <see cref="IScreenManager"/>.
         /// </summary>

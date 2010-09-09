@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.IO;
 
 namespace NetGore.Network
 {
@@ -16,20 +17,15 @@ namespace NetGore.Network
         /// <summary>
         /// Handles received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
         /// </summary>
-        /// <param name="rec"><see cref="SocketReceiveData"/> to process.</param>
-        void Process(SocketReceiveData rec);
-
-        /// <summary>
-        /// Handles received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
-        /// </summary>
         /// <param name="socket"><see cref="IIPSocket"/> the data came from.</param>
-        /// <param name="data">Data to process.</param>
-        void Process(IIPSocket socket, byte[] data);
+        /// <param name="data">The <see cref="BitStream"/> containing the data to process.</param>
+        void Process(IIPSocket socket, BitStream data);
 
         /// <summary>
         /// Handles a list of received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
         /// </summary>
-        /// <param name="recvData">IEnumerable of <see cref="SocketReceiveData"/>s to process.</param>
-        void Process(IEnumerable<SocketReceiveData> recvData);
+        /// <param name="recvData">IEnumerable of <see cref="BitStream"/> to process and the corresponding
+        /// <see cref="IIPSocket"/> that the data came from.</param>
+        void Process(IEnumerable<KeyValuePair<IIPSocket, BitStream>> recvData);
     }
 }

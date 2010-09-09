@@ -25,7 +25,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Screen for the actual game
     /// </summary>
-    class GameplayScreen : GameScreen, IGetTime
+    public class GameplayScreen : GameScreen, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string ScreenName = "game";
@@ -299,14 +299,15 @@ namespace DemoGame.Client
             {
                 try
                 {
-                    Socket.Dispose();
+                    Socket.Disconnect();
                 }
                 catch (Exception ex)
                 {
                     // Ignore errors in disconnecting
-                    Debug.Fail("Disconnect failed: " + ex);
+                    const string errmsg = "Failed to disconnect client socket ({0}). Exception: {1}";
+                    Debug.Fail(string.Format(errmsg, Socket, ex));
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat("Failed to disconnect client socket ({0}). Exception: {1}", Socket, ex);
+                        log.ErrorFormat(errmsg, Socket, ex);
                 }
             }
         }
@@ -430,15 +431,10 @@ namespace DemoGame.Client
             _gameControls = new GameplayScreenControls(this);
             _dragDropHandler = new DragDropHandler(this);
 
-            ClientSockets.Initialize(this);
-
             _socket = ClientSockets.Instance;
 
             _world = new World(this, new Camera2D(GameData.ScreenSize), new UserInfo(Socket));
             _world.MapChanged += World_MapChanged;
-
-            // Create the socket
-            Socket.Disconnected += OnDisconnect;
 
             // Create some misc goodies that require a reference to the Socket
             _equipmentInfoRequester = new EquipmentInfoRequester(UserInfo.Equipped, Socket);
@@ -595,20 +591,6 @@ namespace DemoGame.Client
             _damageFont = ScreenManager.Content.LoadFont("Font/Arial", 14, ContentLevel.Global);
         }
 
-        void OnDisconnect(SocketManager sender, IIPSocket conn)
-        {
-            // We ony return want to the login screen if we were at this screen when the socket was disconnected
-            if (ScreenManager.ActiveScreen != this)
-                return;
-
-            var login = (LoginScreen)ScreenManager.GetScreen(LoginScreen.ScreenName);
-            if (ScreenManager.ActiveScreen != login)
-            {
-                login.SetError("Connection to server lost.");
-                ScreenManager.SetScreen(LoginScreen.ScreenName);
-            }
-        }
-
         void ShopForm_RequestPurchase(ShopForm shopForm, ShopItemIndex slot)
         {
             using (var pw = ClientPacket.BuyFromShop(slot, 1))
@@ -711,8 +693,9 @@ namespace DemoGame.Client
             // Update controls
             _gameControls.Update(GUIManager, _currentTime);
 
-            if (_latencyLabel != null)
-                _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
+            var sock = _socket.RemoteSocket;
+            if (_latencyLabel != null && sock != null && sock.IsConnected)
+                _latencyLabel.Text = string.Format(_latencyString, sock.AverageLatency);
 
             _userLight.IsEnabled = true;
             _userLight.Teleport(UserChar.Position);

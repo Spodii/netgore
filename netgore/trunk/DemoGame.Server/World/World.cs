@@ -322,24 +322,33 @@ namespace DemoGame.Server
         /// Gets the <see cref="UserAccount"/> attached to the <paramref name="conn"/>.
         /// </summary>
         /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="UserAccount"/> for.</param>
-        /// <returns>The <see cref="UserAccount"/> for the <paramref name="conn"/>, or null if there
-        /// was a problem getting the <see cref="UserAccount"/>.</returns>
-        public static UserAccount GetUserAccount(IIPSocket conn)
+        /// <param name="warnIfNotFound">When true, when this method returns null, a warning message will be logged.</param>
+        /// <returns>
+        /// The <see cref="UserAccount"/> for the <paramref name="conn"/>, or null if there
+        /// was a problem getting the <see cref="UserAccount"/>.
+        /// </returns>
+        public static UserAccount GetUserAccount(IIPSocket conn, bool warnIfNotFound = true)
         {
             if (conn.Tag == null)
             {
-                const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but it has no tag.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, conn);
+                if (warnIfNotFound)
+                {
+                    const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but it has no tag.";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, conn);
+                }
                 return null;
             }
 
             var userAccount = conn.Tag as UserAccount;
             if (userAccount == null)
             {
-                const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but the tag was invalid (`{1}`).";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, conn, conn.Tag);
+                if (warnIfNotFound)
+                {
+                    const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but the tag was invalid (`{1}`).";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, conn, conn.Tag);
+                }
                 return null;
             }
 

@@ -195,11 +195,6 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter Ping()
-        {
-            return GetWriter(ClientPacketID.Ping);
-        }
-
         public static PacketWriter RaiseStat(StatType statType)
         {
             var pw = GetWriter(ClientPacketID.RaiseStat);
@@ -233,13 +228,6 @@ namespace DemoGame.Client
             var pw = GetWriter(ClientPacketID.SellInventoryToShop);
             pw.Write(slot);
             pw.Write(amount);
-            return pw;
-        }
-
-        public static PacketWriter SetUDPPort(int port)
-        {
-            var pw = GetWriter(ClientPacketID.SetUDPPort);
-            pw.Write((ushort)port);
             return pw;
         }
 

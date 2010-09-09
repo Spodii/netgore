@@ -6,6 +6,7 @@ using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
+using NetGore.Network;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -18,6 +19,16 @@ namespace DemoGame.Client
     {
         readonly ScreenManager _screenManager;
         readonly ClientSockets _sockets;
+
+        /// <summary>
+        /// Gets the <see cref="IScreenManager"/> instance used to display the screens for the client.
+        /// </summary>
+        public IScreenManager ScreenManager { get { return _screenManager; } }
+
+        /// <summary>
+        /// Gets the <see cref="IClientSocketManager"/> instance used to let the client communicate with the server.
+        /// </summary>
+        public IClientSocketManager Sockets { get { return _sockets; } }
 
         IEnumerable<TextureAtlas> _globalAtlases;
 
@@ -33,26 +44,28 @@ namespace DemoGame.Client
             // Create the screen manager
             _screenManager = new ScreenManager(this, new SkinManager("Default"), "Font/Arial", 24);
 
+            // Initialize the socket manager
+            ClientSockets.Initialize(ScreenManager);
+            _sockets = ClientSockets.Instance;
+
             // Read the GrhInfo
             LoadGrhInfo();
             _screenManager.DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
             // Create the screens
-            new GameplayScreen(_screenManager);
-            new MainMenuScreen(_screenManager);
-            new LoginScreen(_screenManager);
-            new CharacterSelectionScreen(_screenManager);
-            new CreateCharacterScreen(_screenManager);
-            new NewAccountScreen(_screenManager);
+            new GameplayScreen(ScreenManager);
+            new MainMenuScreen(ScreenManager);
+            new LoginScreen(ScreenManager);
+            new CharacterSelectionScreen(ScreenManager);
+            new CreateCharacterScreen(ScreenManager);
+            new NewAccountScreen(ScreenManager);
 
-            _screenManager.ConsoleScreen = new ConsoleScreen(_screenManager);
-            _screenManager.SetScreen(MainMenuScreen.ScreenName);
+            ScreenManager.ConsoleScreen = new ConsoleScreen(ScreenManager);
+            ScreenManager.ActiveScreen = ScreenManager.GetScreen<MainMenuScreen>();
 
             // NOTE: Temporary volume reduction
-            _screenManager.AudioManager.SoundManager.Volume = 70f;
-            _screenManager.AudioManager.MusicManager.Volume = 20f;
-
-            _sockets = ClientSockets.Instance;
+            ScreenManager.AudioManager.SoundManager.Volume = 70f;
+            ScreenManager.AudioManager.MusicManager.Volume = 20f;
 
             ShowMouseCursor(true);
             UseVerticalSync(true);

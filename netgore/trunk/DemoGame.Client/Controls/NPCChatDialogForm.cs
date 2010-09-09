@@ -16,18 +16,18 @@ namespace DemoGame.Client
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="response">The response that the user chose.</param>
-    delegate void ChatDialogSelectResponseHandler(NPCChatDialogForm sender, NPCChatResponseBase response);
+    public delegate void ChatDialogSelectResponseHandler(NPCChatDialogForm sender, NPCChatResponseBase response);
 
     /// <summary>
     /// Delegate for handling when the <see cref="NPCChatDialogForm"/> wants to end the chatting.
     /// </summary>
     /// <param name="sender">The sender.</param>
-    delegate void ChatDialogRequestEndDialogHandler(NPCChatDialogForm sender);
+    public delegate void ChatDialogRequestEndDialogHandler(NPCChatDialogForm sender);
 
     /// <summary>
     /// A <see cref="Form"/> that is used to interact with NPCs.
     /// </summary>
-    class NPCChatDialogForm : Form
+    public class NPCChatDialogForm : Form
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const int _numDisplayedResponses = 4;

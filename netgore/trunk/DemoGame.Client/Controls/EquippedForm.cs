@@ -13,12 +13,12 @@ namespace DemoGame.Client
     /// </summary>
     /// <param name="equippedForm">The sender.</param>
     /// <param name="slot">The slot of the item the user wants to unequip.</param>
-    delegate void RequestUnequipHandler(EquippedForm equippedForm, EquipmentSlot slot);
+    public delegate void RequestUnequipHandler(EquippedForm equippedForm, EquipmentSlot slot);
 
     /// <summary>
     /// A <see cref="Form"/> that dislpays the user's equipped items.
     /// </summary>
-    class EquippedForm : Form, IDragDropProvider
+    public class EquippedForm : Form, IDragDropProvider
     {
         static readonly Vector2 _itemSize = new Vector2(32, 32);
 

@@ -226,6 +226,15 @@ namespace NetGore.Graphics.GUI
         public event IScreenManagerEventHandler Updated;
 
         /// <summary>
+        /// Gets the currently active <see cref="IGameScreen"/> that is not the console. Same as
+        /// <see cref="IScreenManager.ActiveScreen"/> but wil lnever return the <see cref="IScreenManager.ConsoleScreen"/>.
+        /// </summary>
+        public IGameScreen ActiveNonConsoleScreen
+        {
+            get { return _activeScreen; }
+        }
+
+        /// <summary>
         /// Gets or sets the currently active <see cref="IGameScreen"/>. If <see cref="IScreenManager.ShowConsole"/> is set
         /// and <see cref="IScreenManager.ConsoleScreen"/> is valid, then the console screen will be returned. Otherwise, it will
         /// be the current game screen.

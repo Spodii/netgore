@@ -118,6 +118,13 @@ namespace DemoGame
         public static readonly ActionDisplayID DefaultActionDisplayID = new ActionDisplayID(0);
 
         /// <summary>
+        /// The string used to identify this application over the network. The actual string isn't too important, but it is recommended
+        /// you keep it relatively short. Only applications with the same identifier string will be able to connect to one
+        /// another.
+        /// </summary>
+        public const string NetworkAppIdentifier = "NetGore";
+
+        /// <summary>
         /// The rules for the user names.
         /// </summary>
         public static readonly StringRules UserName = new StringRules(3, 15, CharType.Alpha);

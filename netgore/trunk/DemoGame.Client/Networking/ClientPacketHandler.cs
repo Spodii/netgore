@@ -29,7 +29,10 @@ using SFML.Graphics;
 
 namespace DemoGame.Client
 {
-    class ClientPacketHandler : ISocketReceiveDataProcessor, IGetTime
+    /// <summary>
+    /// Holds all the methods used to process received packets.
+    /// </summary>
+    public class ClientPacketHandler : IGetTime
     {
         /// <summary>
         /// Handles when a CreateAccount message is received.
@@ -46,44 +49,34 @@ namespace DemoGame.Client
         readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
         readonly IDynamicEntityFactory _dynamicEntityFactory;
         readonly GameMessageCollection _gameMessages = GameMessageCollection.Create();
-        readonly GameplayScreen _gameplayScreen;
         readonly ClientPeerTradeInfoHandler _peerTradeInfoHandler;
-        readonly Stopwatch _pingWatch = new Stopwatch();
-        readonly IMessageProcessorManager _ppManager;
+        readonly IScreenManager _screenManager;
         readonly ISocketSender _socketSender;
+        GameplayScreen _gameplayScreenCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
         /// </summary>
         /// <param name="socketSender">The socket sender.</param>
-        /// <param name="gameplayScreen">The gameplay screen.</param>
+        /// <param name="screenManager">The <see cref="IScreenManager"/>.</param>
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to serialize
         /// <see cref="DynamicEntity"/>s.</param>
-        public ClientPacketHandler(ISocketSender socketSender, GameplayScreen gameplayScreen,
+        public ClientPacketHandler(ISocketSender socketSender, IScreenManager screenManager,
                                    IDynamicEntityFactory dynamicEntityFactory)
         {
             if (dynamicEntityFactory == null)
                 throw new ArgumentNullException("dynamicEntityFactory");
-            if (gameplayScreen == null)
-                throw new ArgumentNullException("gameplayScreen");
+            if (screenManager == null)
+                throw new ArgumentNullException("screenManager");
             if (socketSender == null)
                 throw new ArgumentNullException("socketSender");
 
             _dynamicEntityFactory = dynamicEntityFactory;
             _socketSender = socketSender;
-            _gameplayScreen = gameplayScreen;
+            _screenManager = screenManager;
 
             _peerTradeInfoHandler = new ClientPeerTradeInfoHandler(socketSender);
             _peerTradeInfoHandler.GameMessageCallback += PeerTradeInfoHandler_GameMessageCallback;
-
-            // When debugging, use the StatMessageProcessorManager instead (same thing as the other, but provides network statistics)
-#if DEBUG
-            var m = new StatMessageProcessorManager(this, EnumHelper<ServerPacketID>.BitsRequired);
-            m.Stats.EnableFileOutput(ContentPaths.Build.Root.Join("netstats_in" + EngineSettings.DataFileSuffix));
-            _ppManager = m;
-#else
-            _ppManager = new MessageProcessorManager(this, EnumHelper<ServerPacketID>.BitsRequired);
-#endif
         }
 
         /// <summary>
@@ -116,7 +109,13 @@ namespace DemoGame.Client
         /// </summary>
         public GameplayScreen GameplayScreen
         {
-            get { return _gameplayScreen; }
+            get
+            {
+                if (_gameplayScreenCache == null)
+                    _gameplayScreenCache = _screenManager.GetScreen<GameplayScreen>();
+
+                return _gameplayScreenCache;
+            }
         }
 
         public UserGroupInformation GroupInfo
@@ -148,6 +147,14 @@ namespace DemoGame.Client
         public UserQuestInformation QuestInfo
         {
             get { return GameplayScreen.UserInfo.QuestInfo; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IScreenManager"/>.
+        /// </summary>
+        public IScreenManager ScreenManager
+        {
+            get { return _screenManager; }
         }
 
         ISoundManager SoundManager
@@ -206,21 +213,6 @@ namespace DemoGame.Client
             // Display
             if (!string.IsNullOrEmpty(msg))
                 GameplayScreen.AppendToChatOutput(msg);
-        }
-
-        public void Ping()
-        {
-            if (_pingWatch.IsRunning)
-                return;
-
-            _pingWatch.Reset();
-
-            using (var pw = ClientPacket.Ping())
-            {
-                _socketSender.Send(pw);
-            }
-
-            _pingWatch.Start();
         }
 
         [MessageHandler((uint)ServerPacketID.AcceptOrTurnInQuestReply)]
@@ -451,7 +443,7 @@ namespace DemoGame.Client
             }
 
             var msg = string.Format("Got {0} exp and {1} cash", exp, cash);
-            _gameplayScreen.InfoBox.Add(msg);
+            GameplayScreen.InfoBox.Add(msg);
         }
 
         [MessageHandler((uint)ServerPacketID.NotifyGetItem)]
@@ -466,7 +458,7 @@ namespace DemoGame.Client
             else
                 msg = string.Format("You got a {0}", name);
 
-            _gameplayScreen.InfoBox.Add(msg);
+            GameplayScreen.InfoBox.Add(msg);
         }
 
         [MessageHandler((uint)ServerPacketID.NotifyLevel)]
@@ -479,19 +471,13 @@ namespace DemoGame.Client
                 return;
 
             if (chr == World.UserChar)
-                _gameplayScreen.InfoBox.Add("You have leveled up!");
+                GameplayScreen.InfoBox.Add("You have leveled up!");
         }
 
         [MessageHandler((uint)ServerPacketID.PeerTradeEvent)]
         void RecvPeerTradeEvent(IIPSocket conn, BitStream r)
         {
             PeerTradeInfoHandler.Read(r);
-        }
-
-        [MessageHandler((uint)ServerPacketID.Ping)]
-        void RecvPing(IIPSocket conn, BitStream r)
-        {
-            _pingWatch.Stop();
         }
 
         [MessageHandler((uint)ServerPacketID.PlaySound)]
@@ -568,14 +554,6 @@ namespace DemoGame.Client
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
             GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
-        }
-
-        [MessageHandler((uint)ServerPacketID.RequestUDPConnection)]
-        void RecvRequestUDPConnection(IIPSocket conn, BitStream r)
-        {
-            var challenge = r.ReadInt();
-
-            ClientSockets.Instance.ConnectUDP(GameData.ServerIP, GameData.ServerUDPPort, challenge);
         }
 
         [MessageHandler((uint)ServerPacketID.SendAccountCharacters)]
@@ -1030,19 +1008,6 @@ namespace DemoGame.Client
         public TickCount GetTime()
         {
             return GameplayScreen.GetTime();
-        }
-
-        #endregion
-
-        #region ISocketReceiveDataProcessor Members
-
-        /// <summary>
-        /// Handles a list of received data and forwards it to the corresponding MessageProcessors.
-        /// </summary>
-        /// <param name="recvData">List of SocketReceiveData to process.</param>
-        public void Process(IEnumerable<SocketReceiveData> recvData)
-        {
-            _ppManager.Process(recvData);
         }
 
         #endregion

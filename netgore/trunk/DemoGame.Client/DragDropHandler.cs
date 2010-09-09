@@ -15,7 +15,7 @@ namespace DemoGame.Client
     /// <see cref="Control"/>s. While this could done through the controls directly, it is done
     /// here to make it easier to keep track of all the drop-and-drop connections.
     /// </summary>
-    class DragDropHandler
+    public class DragDropHandler
     {
         /// <summary>
         /// A delegate the <see cref="IDragDropProvider.CanDrop"/> and <see cref="IDragDropProvider.Drop"/>

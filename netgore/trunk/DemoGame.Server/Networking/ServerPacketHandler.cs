@@ -18,43 +18,26 @@ using NetGore.World;
 
 namespace DemoGame.Server
 {
-    class ServerPacketHandler : ISocketReceiveDataProcessor, IGetTime
+    class ServerPacketHandler : IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly QuestManager _questManager = QuestManager.Instance;
 
-        readonly Queue<IIPSocket> _disconnectedSockets = new Queue<IIPSocket>();
-        readonly IMessageProcessorManager _ppManager;
         readonly SayHandler _sayHandler;
         readonly Server _server;
-        readonly ServerSockets _serverSockets;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerPacketHandler"/> class.
         /// </summary>
-        /// <param name="serverSockets">The server sockets.</param>
         /// <param name="server">The server.</param>
-        public ServerPacketHandler(ServerSockets serverSockets, Server server)
+        public ServerPacketHandler(Server server)
         {
-            if (serverSockets == null)
-                throw new ArgumentNullException("serverSockets");
             if (server == null)
                 throw new ArgumentNullException("server");
 
             _server = server;
-            _serverSockets = serverSockets;
-            _serverSockets.Disconnected += ServerSockets_Disconnected;
 
             _sayHandler = new SayHandler(server);
-
-            // When debugging, use the StatMessageProcessorManager instead (same thing as the other, but provides network statistics)
-#if DEBUG
-            var m = new StatMessageProcessorManager(this, EnumHelper<ClientPacketID>.BitsRequired);
-            m.Stats.EnableFileOutput(ContentPaths.Build.Root.Join("netstats_in" + EngineSettings.DataFileSuffix));
-            _ppManager = m;
-#else
-            _ppManager = new MessageProcessorManager(this, EnumHelper<ClientPacketID>.BitsRequired);
-#endif
         }
 
         public IDbController DbController
@@ -76,26 +59,6 @@ namespace DemoGame.Server
         public World World
         {
             get { return Server.World; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IIPSocket"/>s that have been disconnected since the last call to this method.
-        /// </summary>
-        /// <returns>The <see cref="IIPSocket"/>s that have been disconnected since the last call to this method.</returns>
-        public IEnumerable<IIPSocket> GetDisconnectedSockets()
-        {
-            if (_disconnectedSockets.Count == 0)
-                return Enumerable.Empty<IIPSocket>();
-
-            lock (_disconnectedSockets)
-            {
-                if (_disconnectedSockets.Count == 0)
-                    return Enumerable.Empty<IIPSocket>();
-
-                var ret = _disconnectedSockets.ToArray();
-                _disconnectedSockets.Clear();
-                return ret;
-            }
         }
 
         static Character GetTargetCharacter(Character user, MapEntityIndex? index)
@@ -539,20 +502,6 @@ namespace DemoGame.Server
             item.Pickup(user);
         }
 
-        [MessageHandler((uint)ClientPacketID.Ping)]
-        void RecvPing(IIPSocket conn, BitStream r)
-        {
-            // Get the User
-            User user;
-            if ((user = TryGetUser(conn)) == null)
-                return;
-
-            using (var pw = ServerPacket.Ping())
-            {
-                user.Send(pw);
-            }
-        }
-
         [MessageHandler((uint)ClientPacketID.RaiseStat)]
         void RecvRaiseStat(IIPSocket conn, BitStream r)
         {
@@ -660,13 +609,6 @@ namespace DemoGame.Server
                 return;
 
             user.ShoppingState.TrySellInventory(slot, amount);
-        }
-
-        [MessageHandler((uint)ClientPacketID.SetUDPPort)]
-        void RecvSetUDPPort(IIPSocket conn, BitStream r)
-        {
-            var remotePort = r.ReadUShort();
-            conn.SetRemoteUnreliablePort(remotePort);
         }
 
         [MessageHandler((uint)ClientPacketID.StartNPCChatDialog)]
@@ -857,19 +799,6 @@ namespace DemoGame.Server
             }
         }
 
-        /// <summary>
-        /// A connection has been lost with a client.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="conn">Connection the user was using.</param>
-        void ServerSockets_Disconnected(SocketManager sender, IIPSocket conn)
-        {
-            lock (_disconnectedSockets)
-            {
-                _disconnectedSockets.Enqueue(conn);
-            }
-        }
-
         static UserAccount TryGetAccount(IIPSocket conn)
         {
             // Check for a valid conn
@@ -979,20 +908,6 @@ namespace DemoGame.Server
         public TickCount GetTime()
         {
             return Server.GetTime();
-        }
-
-        #endregion
-
-        #region IMessageProcessor Members
-
-        /// <summary>
-        /// Handles a list of received data and forwards it to the corresponding MessageProcessors.
-        /// </summary>
-        /// <param name="recvData">List of SocketReceiveData to process.</param>
-        public void Process(IEnumerable<SocketReceiveData> recvData)
-        {
-            ThreadAsserts.IsMainThread();
-            _ppManager.Process(recvData);
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Manages requests for the item information for inventory items.
     /// </summary>
-    class InventoryInfoRequester : ItemInfoRequesterBase<InventorySlot>
+    public class InventoryInfoRequester : ItemInfoRequesterBase<InventorySlot>
     {
         Inventory _inventory;
 

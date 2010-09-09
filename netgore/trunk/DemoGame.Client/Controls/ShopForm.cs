@@ -16,12 +16,12 @@ namespace DemoGame.Client
     /// </summary>
     /// <param name="shopForm">The sender.</param>
     /// <param name="slot">The slot containing the item the user wants to purchase.</param>
-    delegate void ShopFormPurchaseHandler(ShopForm shopForm, ShopItemIndex slot);
+    public delegate void ShopFormPurchaseHandler(ShopForm shopForm, ShopItemIndex slot);
 
     /// <summary>
     /// A <see cref="Form"/> that displays the contents of a shop.
     /// </summary>
-    class ShopForm : Form, IDragDropProvider
+    public class ShopForm : Form, IDragDropProvider
     {
         /// <summary>
         /// The number of items on each row.

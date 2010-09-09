@@ -196,35 +196,12 @@ namespace NetGore.Network
         /// <summary>
         /// Handles received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
         /// </summary>
-        /// <param name="rec"><see cref="SocketReceiveData"/> to process.</param>
-        public void Process(SocketReceiveData rec)
-        {
-            if (rec.Socket == null)
-            {
-                Debug.Fail("rec.Socket is null.");
-                return;
-            }
-
-            if (rec.Data == null)
-            {
-                Debug.Fail("rec.Data is null.");
-                return;
-            }
-
-            // Go through each piece of data and forward to the message processor
-            foreach (var data in rec.Data)
-            {
-                Process(rec.Socket, data);
-            }
-        }
-
-        /// <summary>
-        /// Handles received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
-        /// </summary>
         /// <param name="socket"><see cref="IIPSocket"/> the data came from.</param>
         /// <param name="data">Data to process.</param>
-        public void Process(IIPSocket socket, byte[] data)
+        public void Process(IIPSocket socket, BitStream data)
         {
+            ThreadAsserts.IsMainThread();
+
             // Validate the arguments
             if (socket == null)
             {
@@ -253,24 +230,23 @@ namespace NetGore.Network
                 return;
             }
 
-            // Create a BitStream to read the data
-            var recvReader = CreateReader(data);
-
+            Debug.Assert(data.Mode == BitStreamMode.Read);
+            
             // Loop through the data until it is emptied
-            while (recvReader.PositionBytes < data.Length)
+            while (data.PositionBits < data.LengthBits)
             {
                 // Get the ID of the message
-                var msgID = ReadMessageID(recvReader);
+                var msgID = ReadMessageID(data);
 
                 if (log.IsDebugEnabled)
-                    log.DebugFormat("Parsing message ID `{0}`. Stream now at bit position `{1}`.", msgID, recvReader.PositionBits);
+                    log.DebugFormat("Parsing message ID `{0}`. Stream now at bit position `{1}`.", msgID, data.PositionBits);
 
                 // If we get a message ID of 0, we have likely hit the end
                 if (msgID == 0)
                 {
 #if DEBUG
                     const string errmsg = "Encountered msgID = 0, but there was set bits remaining in the stream.";
-                    if (!RestOfStreamIsZero(recvReader))
+                    if (!RestOfStreamIsZero(data))
                     {
                         if (log.IsWarnEnabled)
                             log.WarnFormat(errmsg);
@@ -304,15 +280,16 @@ namespace NetGore.Network
                 }
 
                 // Call the processor
-                InvokeProcessor(socket, processor, recvReader);
+                InvokeProcessor(socket, processor, data);
             }
         }
 
         /// <summary>
         /// Handles a list of received data and forwards it to the corresponding <see cref="IMessageProcessor"/>.
         /// </summary>
-        /// <param name="recvData">IEnumerable of <see cref="SocketReceiveData"/>s to process.</param>
-        public void Process(IEnumerable<SocketReceiveData> recvData)
+        /// <param name="recvData">IEnumerable of <see cref="BitStream"/> to process and the corresponding
+        /// <see cref="IIPSocket"/> that the data came from.</param>
+        public void Process(IEnumerable<KeyValuePair<IIPSocket, BitStream>> recvData)
         {
             if (recvData == null)
                 return;
@@ -320,7 +297,7 @@ namespace NetGore.Network
             // Loop through the received data collections from each socket
             foreach (var rec in recvData)
             {
-                Process(rec);
+                Process(rec.Key, rec.Value);
             }
         }
 

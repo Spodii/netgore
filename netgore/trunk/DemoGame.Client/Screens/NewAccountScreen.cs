@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Lidgren.Network;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using SFML.Graphics;
@@ -99,6 +100,8 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
+            _sockets = ClientSockets.Instance;
+
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             _errorLabel = new Label(cScreen, new Vector2(410, 80)) { IsVisible = false };
@@ -122,6 +125,8 @@ namespace DemoGame.Client
             menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
             _createAccountButton = menuButtons["Create Account"];
+
+            _sockets.StatusChanged += _sockets_StatusChanged;
         }
 
         void PacketHandler_ReceivedCreateAccount(IIPSocket conn, bool successful, string errorMessage)
@@ -146,16 +151,10 @@ namespace DemoGame.Client
         {
             if (add)
             {
-                _sockets.Connected += sockets_Connected;
-                _sockets.Disconnected += sockets_Disconnected;
-                _sockets.ConnectFailed += sockets_ConnectFailed;
                 _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
             }
             else
             {
-                _sockets.Connected -= sockets_Connected;
-                _sockets.Disconnected -= sockets_Disconnected;
-                _sockets.ConnectFailed -= sockets_ConnectFailed;
                 _sockets.PacketHandler.ReceivedCreateAccount -= PacketHandler_ReceivedCreateAccount;
             }
         }
@@ -173,24 +172,34 @@ namespace DemoGame.Client
             _errorLabel.ForeColor = Color.Green;
         }
 
-        void sockets_ConnectFailed(SocketManager sender)
+        void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
         {
-            ShowError("Failed to connect to the server.");
-        }
+            // Make sure we are the active screen
+            if (ScreenManager.ActiveNonConsoleScreen != this)
+                return;
 
-        void sockets_Connected(SocketManager sender, IIPSocket conn)
-        {
-            ShowMessage("Connected to server. Sending new account request...");
-
-            using (var pw = ClientPacket.CreateNewAccount(_cNameText.Text, _cPasswordText.Text, _cEmailText.Text))
+            switch (newStatus)
             {
-                _sockets.Send(pw);
-            }
-        }
+                case NetConnectionStatus.Connected:
+                    ShowMessage("Connected to server. Sending new account request...");
 
-        void sockets_Disconnected(SocketManager sender, IIPSocket conn)
-        {
-            _createAccountButton.IsEnabled = true;
+                    // When the status has changed to Connected, send the account info
+                    var name = _cNameText.Text;
+                    var pass = _cPasswordText.Text;
+                    var email = _cEmailText.Text;
+                    using (var pw = ClientPacket.CreateNewAccount(name, pass, email))
+                    {
+                        _sockets.Send(pw);
+                    }
+                    break;
+
+                case NetConnectionStatus.Disconnected:
+                    string s = "Failed to connect to the server";
+                    if (!string.IsNullOrEmpty(reason))
+                        s += ": " + reason;
+                    ShowError(s);
+                    break;
+            }
         }
     }
 }

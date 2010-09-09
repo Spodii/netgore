@@ -1,8 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using Lidgren.Network;
+using log4net;
 using NetGore;
+using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
 
@@ -11,30 +14,36 @@ namespace DemoGame.Client
     /// <summary>
     /// The client socket manager.
     /// </summary>
-    class ClientSockets : SocketManager, IGetTime, ISocketSender
+    public class ClientSockets : ClientSocketManagerBase, IGetTime, ISocketSender
     {
-        const int _updateLatencyInterval = 5000;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static ClientSockets _instance;
 
+        readonly IMessageProcessorManager _messageProcessorManager;
         readonly ClientPacketHandler _packetHandler;
-
-        IIPSocket _conn = null;
-        bool _isConnecting = false;
-        int _lastLatency;
-        TickCount _lastPingTime;
-        LatencyTrackerClient _latencyTracker;
+        readonly IScreenManager _screenManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientSockets"/> class.
         /// </summary>
-        /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> instance.</param>
         /// <exception cref="MethodAccessException">An instance of this object has already been created.</exception>
-        ClientSockets(GameplayScreen gameplayScreen)
+        ClientSockets(IScreenManager screenManager) : base(GameData.NetworkAppIdentifier)
         {
             if (_instance != null)
                 throw new MethodAccessException("ClientSockets instance was already created. Use that instead.");
 
-            _packetHandler = new ClientPacketHandler(this, gameplayScreen, DynamicEntityFactory.Instance);
+            _screenManager = screenManager;
+            _packetHandler = new ClientPacketHandler(this, ScreenManager, DynamicEntityFactory.Instance);
+
+            // When debugging, use the StatMessageProcessorManager instead (same thing as the other, but provides network statistics)
+#if DEBUG
+            var m = new StatMessageProcessorManager(_packetHandler, EnumHelper<ServerPacketID>.BitsRequired);
+            m.Stats.EnableFileOutput(ContentPaths.Build.Root.Join("netstats_in" + EngineSettings.DataFileSuffix));
+            _messageProcessorManager = m;
+#else
+            _messageProcessorManager = new MessageProcessorManager(_packetHandler, EnumHelper<ServerPacketID>.BitsRequired);
+#endif
         }
 
         /// <summary>
@@ -46,35 +55,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets if the socket is currently trying to connect, and is waiting for the connection to be made or rejected.
-        /// </summary>
-        public bool IsConnecting
-        {
-            get
-            {
-                if (_conn != null)
-                    return false;
-
-                return _isConnecting;
-            }
-        }
-
-        /// <summary>
-        /// Gets the latency of the connection in milliseconds.
-        /// </summary>
-        public int Latency
-        {
-            get
-            {
-                // Store the last latency in case this method is called and the _latencyTracker has been disposed
-                if (_latencyTracker != null)
-                    _lastLatency = _latencyTracker.Latency;
-
-                return _lastLatency;
-            }
-        }
-
-        /// <summary>
         /// Gets the ClientPacketHandler used to handle data from this ClientSockets.
         /// </summary>
         public ClientPacketHandler PacketHandler
@@ -82,156 +62,69 @@ namespace DemoGame.Client
             get { return _packetHandler; }
         }
 
-        /// <summary>
-        /// Gets the TCPSocket used for the connection to the server if a connection is established.
-        /// </summary>
-        public IIPSocket Socket
+        public IScreenManager ScreenManager
         {
-            get { return _conn; }
-        }
-
-        void Conn_Disposed(IIPSocket socket)
-        {
-            if (socket == _conn)
-            {
-                _conn.Disposed -= Conn_Disposed;
-                _conn = null;
-
-                if (_latencyTracker != null)
-                {
-                    _latencyTracker.Dispose();
-                    _latencyTracker = null;
-                }
-            }
+            get { return _screenManager; }
         }
 
         /// <summary>
-        /// Starts the client's connection to the server, or does nothing if <see cref="ClientSockets.IsConnecting"/>
-        /// or <see cref="ClientSockets.IsConnected"/> is true.
+        /// Attempts to connect to the server using the default server address.
         /// </summary>
-        public void Connect()
+        /// <returns>
+        /// True if the connection attempt was successfully started. Does not mean that the connection was established, but
+        /// just that it can be attempted. Will return false if a connection is already established or being established.</returns>
+        public bool Connect()
         {
-            if (IsConnecting || IsConnected)
-                return;
-
-            _isConnecting = true;
-
-            Connect(GameData.ServerIP, GameData.ServerTCPPort);
-        }
-
-        /// <summary>
-        /// Updates the sockets.
-        /// </summary>
-        public void Heartbeat()
-        {
-            // Ensure the connection has been established first
-            if (_conn == null)
-                return;
-
-            // Get the received data
-            IEnumerable<AddressedPacket> nonConnData;
-            IEnumerable<SocketReceiveData> connData;
-            GetReceivedData(out connData, out nonConnData);
-
-            // Process all data the same. For the unreliable data, we have to attach an IIPSocket, so just use the Socket property.
-            // This should be the only socket we receive data from on this port anyways, unless someone is trying to do a malicious
-            // attack on us by spoofing as the server, in which case there isn't much we can do.
-            if (connData != null)
-                _packetHandler.Process(connData);
-
-            if (nonConnData != null)
-                _packetHandler.Process(nonConnData.Select(x => new SocketReceiveData(Socket, new byte[][] { x.Data })));
-
-            // Update the latency tracker
-            if (_latencyTracker != null)
-                _latencyTracker.Update();
-
-            // Check if enough time has elapsed for sending another ping
-            if (_lastPingTime + _updateLatencyInterval < GetTime())
-                Ping();
+            return Connect(GameData.ServerIP, GameData.ServerUDPPort);
         }
 
         /// <summary>
         /// Initializes the <see cref="ClientSockets"/> instance. This only needs to be called once.
         /// </summary>
-        /// <param name="gameplayScreen">The <see cref="GameplayScreen"/>.</param>
-        /// <exception cref="ArgumentNullException"><see cref="gameplayScreen"/> is null.</exception>
-        public static void Initialize(GameplayScreen gameplayScreen)
+        /// <param name="screenManager">The <see cref="IScreenManager"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><see cref="screenManager"/> is null.</exception>
+        public static void Initialize(IScreenManager screenManager)
         {
-            if (gameplayScreen == null)
-                throw new ArgumentNullException("gameplayScreen");
+            if (screenManager == null)
+                throw new ArgumentNullException("screenManager");
 
             if (Instance != null)
                 return;
 
-            _instance = new ClientSockets(gameplayScreen);
+            _instance = new ClientSockets(screenManager);
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
+        /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.
         /// </summary>
-        protected override void OnConnectFailed()
+        /// <param name="sender">The <see cref="IIPSocket"/> that the data came from.</param>
+        /// <param name="data">The data that was received.</param>
+        protected override void OnReceiveData(IIPSocket sender, BitStream data)
         {
-            base.OnConnectFailed();
+            base.OnReceiveData(sender, data);
 
-            _isConnecting = false;
-
-            if (_conn != null)
-            {
-                _conn.Dispose();
-                _conn = null;
-            }
+            // Process the received data
+            _messageProcessorManager.Process(sender, data);
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
+        /// When overridden in the derived class, allows for handling when the status of an <see cref="IIPSocket"/> changes.
         /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnConnected(IIPSocket conn)
+        /// <param name="sender">The <see cref="IIPSocket"/> who's status has changed.</param>
+        /// <param name="status">The new status.</param>
+        /// <param name="reason">The reason for the status change.</param>
+        protected override void OnReceiveStatusChanged(IIPSocket sender, NetConnectionStatus status, string reason)
         {
-            base.OnConnected(conn);
+            base.OnReceiveStatusChanged(sender, status, reason);
 
-            _conn = conn;
-            _conn.Disposed += Conn_Disposed;
-            _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
-            Ping();
-
-            _isConnecting = false;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling the corresponding event without
-        /// the overhead of using event hooks. Therefore, it is recommended that this overload is used instead of
-        /// the corresponding event when possible.
-        /// </summary>
-        /// <param name="conn">Connection on which the event occured.</param>
-        protected override void OnDisconnected(IIPSocket conn)
-        {
-            base.OnDisconnected(conn);
-
-            _isConnecting = false;
-
-            if (_conn != null)
+            switch (status)
             {
-                _conn.Dispose();
-                _conn = null;
+                case NetConnectionStatus.Disconnected:
+                    // Change to the login screen
+                    var loginScreen = ScreenManager.GetScreen<LoginScreen>();
+                    ScreenManager.ActiveScreen = loginScreen;
+                    break;
             }
-        }
-
-        void Ping()
-        {
-            if (_latencyTracker == null)
-            {
-                Debug.Fail("LatencyTrackerClient has not been set up yet!");
-                return;
-            }
-
-            _lastPingTime = GetTime();
-            _latencyTracker.Ping();
         }
 
         #region IGetTime Members
@@ -250,26 +143,32 @@ namespace DemoGame.Client
         #region ISocketSender Members
 
         /// <summary>
-        /// Gets a bool stating if the client is currently connected or not.
-        /// </summary>
-        public bool IsConnected
-        {
-            get
-            {
-                if (_conn == null)
-                    return false;
-
-                return _conn.IsConnected;
-            }
-        }
-
-        /// <summary>
         /// Sends data to the server.
         /// </summary>
         /// <param name="data">BitStream containing the data to send.</param>
         public void Send(BitStream data)
         {
-            _conn.Send(data);
+            var sock = RemoteSocket;
+            if (sock == null)
+            {
+                const string errmsg = "Could not send data - connection not established!";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            try
+            {
+                sock.Send(data);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to send data. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+            }
         }
 
         /// <summary>
@@ -278,7 +177,27 @@ namespace DemoGame.Client
         /// <param name="data">Data to send.</param>
         public void Send(byte[] data)
         {
-            _conn.Send(data);
+            var sock = RemoteSocket;
+            if (sock == null)
+            {
+                const string errmsg = "Could not send data - connection not established!";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            try
+            {
+                sock.Send(data);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to send data. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+            }
         }
 
         #endregion

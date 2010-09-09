@@ -12,8 +12,19 @@ namespace NetGore.Network
         /// <summary>
         /// Initializes a new instance of the <see cref="PacketWriterPool"/> class.
         /// </summary>
-        public PacketWriterPool() : base(x => new PacketWriter(x), x => x.Reset(BitStreamMode.Write), null, true)
+        public PacketWriterPool()
+            : base(CreatorHandler, InitializeHandler, null, true)
         {
+        }
+
+        static PacketWriter CreatorHandler(ObjectPool<PacketWriter> pool)
+        {
+            return new PacketWriter(pool);
+        }
+
+        static void InitializeHandler(PacketWriter x)
+        {
+            x.Reset(BitStreamMode.Write);
         }
     }
 }
