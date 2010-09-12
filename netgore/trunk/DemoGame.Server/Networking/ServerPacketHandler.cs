@@ -327,9 +327,8 @@ namespace DemoGame.Server
 
             var name = r.ReadString();
             var password = r.ReadString();
-            var clientVersion = r.ReadString();
 
-            Server.LoginAccount(conn, name, password, clientVersion);
+            Server.LoginAccount(conn, name, password);
         }
 
         [MessageHandler((uint)ClientPacketID.CreateNewAccountCharacter)]

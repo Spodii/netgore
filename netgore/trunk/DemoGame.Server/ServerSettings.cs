@@ -106,6 +106,5 @@ namespace DemoGame.Server
         /// </summary>
         public static readonly ItemTemplateID UnarmedItemTemplateID = new ItemTemplateID(0);
 
-        public static readonly string MinimumClientVersion = "0.0.0.0";
     }
 }
