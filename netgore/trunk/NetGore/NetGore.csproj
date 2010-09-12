@@ -181,6 +181,10 @@
     <Compile Include="Core\ExceptionSwallower.cs" />
     <Compile Include="Graphics\GUI\Controls\InputBox.cs" />
     <Compile Include="Graphics\GUI\Controls\TextEventArgsFilters.cs" />
+    <Compile Include="IO\BitStream\BitStream.IValueReader.cs" />
+    <Compile Include="IO\BitStream\BitStream.IValueWriter.cs" />
+    <Compile Include="IO\BitStream\BitStream.Read.cs" />
+    <Compile Include="IO\BitStream\BitStream.Write.cs" />
     <Compile Include="Network\MessageProcessor\MessageProcessorID.cs" />
     <Compile Include="Network\Sockets\SocketManager\ClientSocketManagerBase.cs" />
     <Compile Include="Network\Sockets\SocketManager\IClientSocketManager.cs" />
@@ -381,7 +385,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Scripting\AssemblyClassInvoker.cs" />
-    <Compile Include="IO\Bits\BitStreamExtensions.cs" />
+    <Compile Include="IO\BitStream\BitStreamExtensions.cs" />
     <Compile Include="IO\IMessageCollection.cs" />
     <Compile Include="Core\ByteArrayEqualityComparer.cs" />
     <Compile Include="Scripting\JScriptAssemblyCreator.cs" />
@@ -507,10 +511,10 @@
     <Compile Include="Core\Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Core\Extensions\IsBetweenExtensions.cs" />
     <Compile Include="Core\Extensions\StackExtensions.cs" />
-    <Compile Include="IO\Bits\BitStream.cs" />
-    <Compile Include="IO\Bits\BitStreamBufferMode.cs" />
-    <Compile Include="IO\Bits\BitStreamMode.cs" />
-    <Compile Include="IO\Bits\BitStreamSeekOrigin.cs" />
+    <Compile Include="IO\BitStream\BitStream.cs" />
+    <Compile Include="IO\BitStream\BitStreamBufferMode.cs" />
+    <Compile Include="IO\BitStream\BitStreamMode.cs" />
+    <Compile Include="IO\BitStream\BitStreamSeekOrigin.cs" />
     <Compile Include="IO\ContentPaths.cs" />
     <Compile Include="IO\PathString.cs" />
     <Compile Include="IO\MessageCollectionBase.cs" />
