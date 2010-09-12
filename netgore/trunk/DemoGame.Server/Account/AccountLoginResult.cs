@@ -7,7 +7,6 @@ namespace DemoGame.Server
         Successful,
         InvalidName,
         InvalidPassword,
-        AccountInUse,
-        OldClient
+        AccountInUse
     }
 }

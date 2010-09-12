@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using Lidgren.Network;
 using NetGore;
 using NetGore.Graphics.GUI;
@@ -202,8 +201,7 @@ namespace DemoGame.Client
                     // When the status has changed to Connected, send the login info
                     var name = _cNameText.Text;
                     var pass = _cPasswordText.Text;
-                    var version = Assembly.GetExecutingAssembly().GetName().Version;
-                    using (var pw = ClientPacket.Login(name, pass, version))
+                    using (var pw = ClientPacket.Login(name, pass))
                     {
                         _sockets.Send(pw);
                     }
