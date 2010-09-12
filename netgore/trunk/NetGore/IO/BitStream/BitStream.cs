@@ -314,16 +314,29 @@ namespace NetGore.IO
 #if DEBUG
             var startMsgLen = target.LengthBits;
 #endif
-            for (var i = 0; i <= HighestWrittenIndex; i++)
+            int i = 0;
+
+            // Write full 32-bit integers
+            while (i + 3 <= HighestWrittenIndex)
             {
-                target.Write(_buffer[i]);
+                var v = (_buffer[i] << 24) | (_buffer[i+1] << 16) | (_buffer[i+2] << 8)|(_buffer[i+3]);
+                i += 4;
+                target.Write((uint)v);
             }
 
+            // Write full 8-bit integers
+            while (i <= HighestWrittenIndex)
+            {
+                target.Write(_buffer[i]);
+                i++;
+            }
+
+            // Write the partial chunk of the work buffer
             if (Mode == BitStreamMode.Write && _workBufferPos != _highBit)
             {
-                for (var i = _highBit; i > _workBufferPos; i--)
+                for (var j = _highBit; j > _workBufferPos; j--)
                 {
-                    target.Write((_workBuffer & (1 << i)) != 0);
+                    target.Write((_workBuffer & (1 << j)) != 0);
                 }
             }
 

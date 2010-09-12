@@ -670,12 +670,21 @@ namespace NetGore.IO
             var startMsgPos = (int)source.Position;
 #endif
 
-            while (source.LengthBits - source.Position > 8)
+            // Read full 32-bit integers
+            while (source.LengthBits - source.Position >= 32)
+            {
+                var v = source.ReadUInt32();
+                Write(v);
+            }
+
+            // Read full 8-bit integers
+            while (source.LengthBits - source.Position >= 8)
             {
                 var v = source.ReadByte();
                 Write(v);
             }
 
+            // Read the remaining bits
             while (source.LengthBits > source.Position)
             {
                 var v = source.ReadBoolean();
