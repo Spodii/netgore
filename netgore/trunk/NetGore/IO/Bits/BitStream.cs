@@ -2557,6 +2557,10 @@ namespace NetGore.IO
             }
         }
 
+        /// <summary>
+        /// Writes a <see cref="NetIncomingMessage"/> buffer into the BitStream.
+        /// </summary>
+        /// <param name="source">The <see cref="NetIncomingMessage"/> who's contents will be copied to this BitStream.</param>
         public void Write(NetIncomingMessage source)
         {
 #if DEBUG
@@ -2576,27 +2580,6 @@ namespace NetGore.IO
                 Write(v);
             }
 
-            /*
-            // TODO: !! Make sure this works
-            // Work in 32-bit blocks
-            int bitsLeft;
-            while ((bitsLeft = source.LengthBits - (int)source.Position) > 0)
-            {
-                if (bitsLeft >= 32)
-                {
-                    // Write a full 32 bits
-                    var v = source.ReadUInt32();
-                    Write(v);
-                }
-                else
-                {
-                    // Write less than 32 bits
-                    var v = source.ReadUInt32(bitsLeft);
-                    Write(v, bitsLeft);
-                }
-            }
-            */
-
             Debug.Assert(source.Position == source.LengthBits);
 
 #if DEBUG
@@ -2604,6 +2587,11 @@ namespace NetGore.IO
 #endif
         }
 
+        /// <summary>
+        /// Copies the contents of the BitStream to a <see cref="NetOutgoingMessage"/>. This works in both
+        /// <see cref="BitStreamMode.Read"/> and <see cref="BitStreamMode.Write"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="NetOutgoingMessage"/> to copy the contents of this <see cref="BitStream"/> to.</param>
         public void CopyTo(NetOutgoingMessage target)
         {
 #if DEBUG
@@ -2621,23 +2609,6 @@ namespace NetGore.IO
                     target.Write((_workBuffer & (1 << i)) != 0);
                 }
             }
-
-            /*
-            // TODO: !! Make sure this works
-            // Copy over the finished buffer
-            if (HighestWrittenIndex > -1)
-                target.Write(_buffer, 0, HighestWrittenIndex + 1);
-
-            // If there are any unwritten partial bits, copy those over, too
-            if (Mode == BitStreamMode.Write && _workBufferPos != _highBit)
-            {
-                for (var i = _highBit; i > _workBufferPos; i--)
-                {
-                    // TODO: !! Needlessly slow looping
-                    target.Write((_workBuffer & (1 << i)) != 0);
-                }
-            }
-            */
 
 #if DEBUG
             Debug.Assert(target.LengthBits - startMsgLen == LengthBits);
