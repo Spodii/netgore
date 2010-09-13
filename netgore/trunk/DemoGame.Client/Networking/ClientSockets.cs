@@ -130,26 +130,6 @@ namespace DemoGame.Client
             _messageProcessorManager.Process(sender, data);
         }
 
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the status of an <see cref="IIPSocket"/> changes.
-        /// </summary>
-        /// <param name="sender">The <see cref="IIPSocket"/> who's status has changed.</param>
-        /// <param name="status">The new status.</param>
-        /// <param name="reason">The reason for the status change.</param>
-        protected override void OnReceiveStatusChanged(IIPSocket sender, NetConnectionStatus status, string reason)
-        {
-            base.OnReceiveStatusChanged(sender, status, reason);
-
-            switch (status)
-            {
-                case NetConnectionStatus.Disconnected:
-                    // Change to the login screen
-                    var loginScreen = ScreenManager.GetScreen<LoginScreen>();
-                    ScreenManager.ActiveScreen = loginScreen;
-                    break;
-            }
-        }
-
         #region IGetTime Members
 
         /// <summary>
