@@ -25,6 +25,13 @@ namespace NetGore.Network
         IIPSocket RemoteSocket { get; }
 
         /// <summary>
+        /// Gets if it was us, the client, who terminated the connection to the server. This will only be true when
+        /// the client is in the process of disconnecting or has disconnected, and will always be false when establishing
+        /// a connection or connected.
+        /// </summary>
+        bool ClientDisconnected { get; }
+
+        /// <summary>
         /// Gets if we are currently connected to the server.
         /// </summary>
         bool IsConnected { get; }

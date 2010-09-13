@@ -47,7 +47,7 @@ namespace DemoGame.Client
         /// </summary>
         public override void Deactivate()
         {
-            _cError.Text = string.Empty;
+            SetError(null);
         }
 
         /// <summary>
@@ -104,16 +104,21 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Sets the error message to display
+        /// Sets the error message to display.
         /// </summary>
-        /// <param name="message">Error message</param>
+        /// <param name="message">The error message. Use null to clear.</param>
         public void SetError(string message)
         {
-            Debug.Assert(_cError != null, "_cError is null.");
             if (_cError == null)
+            {
+                Debug.Fail("_cError is null.");
                 return;
+            }
 
-            _cError.Text = string.Format("Error: {0}", message);
+            if (message == null)
+                _cError.Text = string.Empty;
+            else
+                _cError.Text = "Error: " + message;
         }
 
         /// <summary>
@@ -208,6 +213,13 @@ namespace DemoGame.Client
                     break;
 
                 case NetConnectionStatus.Disconnected:
+                    // If we were the ones to disconnect, clear the error
+                    if (sender.ClientDisconnected)
+                    {
+                        SetError(null);
+                        break;
+                    }
+
                     // If no reason specified, use generic one
                     if (string.IsNullOrEmpty(reason))
                         reason = ClientSockets.Instance.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
