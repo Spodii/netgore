@@ -38,6 +38,8 @@ namespace DemoGame.Client
             if (_sockets.IsConnected)
                 _sockets.Disconnect();
 
+            SetError(null);
+
             base.Activate();
         }
 
@@ -196,35 +198,46 @@ namespace DemoGame.Client
 
         void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
         {
-            // Make sure we are the active screen
-            if (ScreenManager.ActiveNonConsoleScreen != this)
-                return;
-
             switch (newStatus)
             {
                 case NetConnectionStatus.Connected:
-                    // When the status has changed to Connected, send the login info
-                    var name = _cNameText.Text;
-                    var pass = _cPasswordText.Text;
-                    using (var pw = ClientPacket.Login(name, pass))
+
+                    // When the status has changed to Connected, and this screen is active, send the login info
+                    if (ScreenManager.ActiveNonConsoleScreen == this)
                     {
-                        _sockets.Send(pw);
+                        var name = _cNameText.Text;
+                        var pass = _cPasswordText.Text;
+                        using (var pw = ClientPacket.Login(name, pass))
+                        {
+                            _sockets.Send(pw);
+                        }
                     }
                     break;
 
                 case NetConnectionStatus.Disconnected:
-                    // If we were the ones to disconnect, clear the error
-                    if (sender.ClientDisconnected)
+
+                    // If any screen other than this screen or the new account screen is the active screen when we
+                    // receive a disconnect, set this screen as active
+                    if (!(ScreenManager.ActiveNonConsoleScreen is LoginScreen || ScreenManager.ActiveNonConsoleScreen is NewAccountScreen))
+                        ScreenManager.ActiveScreen = this;
+
+                    // If this screen is the active screen, set the error text
+                    if (ScreenManager.ActiveNonConsoleScreen == this)
                     {
-                        SetError(null);
-                        break;
+                        // If we were the ones to disconnect, clear the error
+                        if (sender.ClientDisconnected)
+                        {
+                            SetError(null);
+                            break;
+                        }
+
+                        // If no reason specified, use generic one
+                        if (string.IsNullOrEmpty(reason))
+                            reason = ClientSockets.Instance.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+
+                        SetError(reason);
                     }
 
-                    // If no reason specified, use generic one
-                    if (string.IsNullOrEmpty(reason))
-                        reason = ClientSockets.Instance.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
-
-                    SetError(reason);
                     break;
             }
         }
