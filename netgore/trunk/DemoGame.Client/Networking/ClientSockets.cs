@@ -24,6 +24,29 @@ namespace DemoGame.Client
         readonly IScreenManager _screenManager;
 
         /// <summary>
+        /// When overridden in the derived class, parses the string sent from the server containing the reason why we
+        /// were disconnected. The message is specified when the server calls <see cref="IIPSocket.Disconnect"/>
+        /// with parameters.
+        /// </summary>
+        /// <param name="msg">The message that was sent containing the reason for disconnecting. Can be empty if the
+        /// server gave no reason.</param>
+        /// <returns>The parsed <paramref name="msg"/>, or the original <paramref name="msg"/> if no known way to parse
+        /// it was found.</returns>
+        protected override string ParseCustomDisconnectMessage(string msg)
+        {
+            if (string.IsNullOrEmpty(msg))
+                return base.ParseCustomDisconnectMessage(msg);
+
+            // Try to parse as a GameMessage
+            var ret = PacketHandler.GameMessages.TryGetMessageFromString(msg);
+            if (ret != null)
+                return ret;
+
+            // Could not parse
+            return base.ParseCustomDisconnectMessage(msg);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ClientSockets"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> instance.</param>

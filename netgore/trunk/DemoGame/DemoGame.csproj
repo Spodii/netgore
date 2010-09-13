@@ -198,6 +198,8 @@
     <Compile Include="Items\ItemTemplateIDTypeConverter.cs" />
     <Compile Include="Items\WeaponType.cs" />
     <Compile Include="LogLevelExtensions.cs" />
+    <Compile Include="Messages\GameMessageCollectionExtensions.cs" />
+    <Compile Include="Messages\GameMessageHelper.cs" />
     <Compile Include="Skills\SkillInfoManager.cs" />
     <Compile Include="Stats\SPValueTypeConverter.cs" />
     <Compile Include="Stats\SPValueTypeReadWriteExtensions.cs" />

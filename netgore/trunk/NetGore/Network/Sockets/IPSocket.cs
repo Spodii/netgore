@@ -32,7 +32,6 @@ namespace NetGore.Network
                 return ret;
 
             // Create the IPSocket instance and attach it to the tag
-            // TODO: !! Use a pool
             ret = new IPSocket(conn);
             conn.Tag = ret;
 
@@ -53,6 +52,11 @@ namespace NetGore.Network
             _address = IPAddressHelper.IPv4AddressToUInt(addressBytes, 0);
         }
 
+        /// <summary>
+        /// Sends data over the connection.
+        /// </summary>
+        /// <param name="data">The data to send.</param>
+        /// <param name="method">The method to use to send the data.</param>
         void Send(BitStream data, NetDeliveryMethod method)
         {
             var msg = _conn.Owner.CreateMessage();
@@ -60,6 +64,11 @@ namespace NetGore.Network
             _conn.SendMessage(msg, method);
         }
 
+        /// <summary>
+        /// Sends data over the connection.
+        /// </summary>
+        /// <param name="data">The data to send.</param>
+        /// <param name="method">The method to use to send the data.</param>
         void Send(byte[] data, NetDeliveryMethod method)
         {
             var msg = _conn.Owner.CreateMessage();
@@ -71,8 +80,9 @@ namespace NetGore.Network
 
         /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
-        /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
+        /// as "xxx.xxx.xxx.xxx:yyyyy". Leading 0's from each segment are omitted.
         /// </summary>
+        /// <example>27.0.1.160:12345</example>
         public string Address
         {
             get { return IPAddressHelper.ToIPv4Address(_address) + ":" + _conn.RemoteEndpoint.Port; }
@@ -186,9 +196,11 @@ namespace NetGore.Network
         /// <summary>
         /// Terminates this connection.
         /// </summary>
-        public void Disconnect()
+        /// <param name="reason">A string containing the reason why the connection was terminated. Can be null or empty, but
+        /// recommended that a reason is provided.</param>
+        public void Disconnect(string reason)
         {
-            _conn.Disconnect(string.Empty);
+            _conn.Disconnect(reason);
         }
 
         #endregion
