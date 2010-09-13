@@ -695,7 +695,7 @@ namespace DemoGame.Client
 
             var sock = _socket.RemoteSocket;
             if (_latencyLabel != null && sock != null && sock.IsConnected)
-                _latencyLabel.Text = string.Format(_latencyString, sock.AverageLatency);
+                _latencyLabel.Text = string.Format(_latencyString, sock.AverageLatency < 1 ? "<1": Math.Round(sock.AverageLatency).ToString());
 
             _userLight.IsEnabled = true;
             _userLight.Teleport(UserChar.Position);
