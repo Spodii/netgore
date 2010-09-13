@@ -17,7 +17,7 @@ namespace DemoGame.Server.Queries
 
         static readonly string _queryStr =
             string.Format(
-                "INSERT INTO `{0}` (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`,`creator_ip`)" +
+                "INSERT IGNORE INTO `{0}` (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`,`creator_ip`)" +
                 " VALUES (@id,@name,@password,@email,NOW(),NOW(),@ip)", AccountTable.TableName);
 
         /// <summary>

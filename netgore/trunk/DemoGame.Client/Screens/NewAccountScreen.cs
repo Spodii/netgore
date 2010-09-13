@@ -16,7 +16,7 @@ namespace DemoGame.Client
         TextBox _cNameText;
         TextBox _cPasswordText;
         Button _createAccountButton;
-        Label _errorLabel;
+        Label _statusLabel;
         ClientSockets _sockets = null;
 
         /// <summary>
@@ -34,49 +34,46 @@ namespace DemoGame.Client
         /// </summary>
         public override void Activate()
         {
-            if (_sockets == null)
-            {
-                _sockets = ((GameplayScreen)ScreenManager.GetScreen(GameplayScreen.ScreenName)).Socket;
-                if (_sockets == null)
-                    throw new Exception("Failed to reference the ClientSockets.");
-            }
+            SetMessage(null);
 
-            SetSocketHooks(true);
-
-            _createAccountButton.IsEnabled = true;
-            _errorLabel.IsVisible = false;
+            // If we are already connected to the server for some reason, disconnect
+            if (_sockets.IsConnected)
+                _sockets.Disconnect();
 
             base.Activate();
         }
 
+        /// <summary>
+        /// Handles when the CreateAccount button is clicked.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void ClickButton_CreateAccount(object sender, MouseButtonEventArgs e)
         {
             if (!GameData.AccountName.IsValid(_cNameText.Text))
             {
-                ShowError("Invalid account name.");
+                SetError("Invalid account name.");
                 return;
             }
 
             if (!GameData.AccountPassword.IsValid(_cPasswordText.Text))
             {
-                ShowError("Invalid account password.");
+                SetError("Invalid account password.");
                 return;
             }
 
             if (!GameData.AccountEmail.IsValid(_cEmailText.Text))
             {
-                ShowError("Invalid email address.");
+                SetError("Invalid email address.");
                 return;
             }
 
             if (_sockets.IsConnected)
                 _sockets.Disconnect();
 
-            ShowMessage("Connecting to server...");
+            SetMessage("Connecting to server...");
 
             _sockets.Connect();
-
-            _createAccountButton.IsEnabled = false;
         }
 
         /// <summary>
@@ -85,12 +82,36 @@ namespace DemoGame.Client
         /// </summary>
         public override void Deactivate()
         {
-            SetSocketHooks(false);
-
             if (_sockets.IsConnected)
                 _sockets.Disconnect();
 
+            SetMessage(null);
+
             base.Deactivate();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            _sockets.PacketHandler.ReceivedCreateAccount -= PacketHandler_ReceivedCreateAccount;
+
+            base.Dispose();
+        }
+
+        /// <summary>
+        /// Updates the screen if it is currently the active screen.
+        /// </summary>
+        /// <param name="gameTime">The current game time.</param>
+        public override void Update(NetGore.TickCount gameTime)
+        {
+            base.Update(gameTime);
+
+            if (_sockets.RemoteSocket == null || _sockets.RemoteSocket.Status == NetConnectionStatus.None || _sockets.RemoteSocket.Status == NetConnectionStatus.Disconnected)
+                _createAccountButton.IsEnabled = true;
+            else
+                _createAccountButton.IsEnabled = false;
         }
 
         /// <summary>
@@ -101,10 +122,11 @@ namespace DemoGame.Client
         public override void Initialize()
         {
             _sockets = ClientSockets.Instance;
+            _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
 
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
-            _errorLabel = new Label(cScreen, new Vector2(410, 80)) { IsVisible = false };
+            _statusLabel = new Label(cScreen, new Vector2(410, 80));
 
             // Create the new account fields
             new Label(cScreen, new Vector2(60, 180)) { Text = "Name:" };
@@ -129,59 +151,84 @@ namespace DemoGame.Client
             _sockets.StatusChanged += _sockets_StatusChanged;
         }
 
+        /// <summary>
+        /// Handles the ReceiveCreateAccount event from the <see cref="ClientPacketHandler"/>.
+        /// </summary>
+        /// <param name="conn">The <see cref="IIPSocket"/> the event came from.</param>
+        /// <param name="successful">If the account creation was successful.</param>
+        /// <param name="errorMessage">When <paramref name="successful"/> is false, contains the error message.</param>
         void PacketHandler_ReceivedCreateAccount(IIPSocket conn, bool successful, string errorMessage)
         {
             if (!successful)
             {
+                // Unsuccessful - display reason for failure
                 var s = "Failed to create account: ";
                 if (!string.IsNullOrEmpty(s))
                     s += errorMessage;
                 else
                     s += "Unspecified error returned from server.";
 
-                ShowError(s);
+                SetError(s);
             }
             else
-                ShowMessage("Account successfully created!");
+            {
+                // Successful
+                SetMessage("Account successfully created!");
+            }
 
             _sockets.Disconnect();
         }
 
-        void SetSocketHooks(bool add)
+        /// <summary>
+        /// Sets the message text for displaying an error.
+        /// </summary>
+        /// <param name="errorMsg">The error message to display. Use null to clear.</param>
+        void SetError(string errorMsg)
         {
-            if (add)
+            if (errorMsg == null)
             {
-                _sockets.PacketHandler.ReceivedCreateAccount += PacketHandler_ReceivedCreateAccount;
+                _statusLabel.Text = string.Empty;
+                return;
             }
-            else
+
+            _statusLabel.Text = errorMsg;
+            _statusLabel.ForeColor = Color.Red;
+        }
+
+        /// <summary>
+        /// Sets the message text.
+        /// </summary>
+        /// <param name="message">The message to display. Use null to clear.</param>
+        void SetMessage(string message)
+        {
+            if (message == null)
             {
-                _sockets.PacketHandler.ReceivedCreateAccount -= PacketHandler_ReceivedCreateAccount;
+                _statusLabel.Text = string.Empty;
+                return;
             }
+
+            _statusLabel.Text = message;
+            _statusLabel.ForeColor = Color.Green;
         }
 
-        void ShowError(string errorMsg)
-        {
-            _errorLabel.Text = errorMsg;
-            _errorLabel.IsVisible = true;
-            _errorLabel.ForeColor = Color.Red;
-        }
-
-        void ShowMessage(string message)
-        {
-            ShowError(message);
-            _errorLabel.ForeColor = Color.Green;
-        }
-
+        /// <summary>
+        /// Handles when the status of the <see cref="IClientSocketManager"/> changes.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="newStatus">The new status.</param>
+        /// <param name="reason">The reason for the status change.</param>
         void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
         {
             // Make sure we are the active screen
             if (ScreenManager.ActiveNonConsoleScreen != this)
                 return;
 
+            var clientSockets = (ClientSockets)sender;
+
             switch (newStatus)
             {
                 case NetConnectionStatus.Connected:
-                    ShowMessage("Connected to server. Sending new account request...");
+                    SetMessage("Connected to server. Sending new account request...");
 
                     // When the status has changed to Connected, send the account info
                     var name = _cNameText.Text;
@@ -194,10 +241,17 @@ namespace DemoGame.Client
                     break;
 
                 case NetConnectionStatus.Disconnected:
-                    string s = "Failed to connect to the server";
-                    if (!string.IsNullOrEmpty(reason))
-                        s += ": " + reason;
-                    ShowError(s);
+
+                    // If we were the ones to disconnect, do not change the display text
+                    if (sender.ClientDisconnected)
+                        break;
+
+                    // If no reason specified, use generic one
+                    if (string.IsNullOrEmpty(reason))
+                        reason = clientSockets.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+
+                    SetError(reason);
+
                     break;
             }
         }
