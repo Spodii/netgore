@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using Lidgren.Network;
 using log4net;
@@ -88,6 +89,22 @@ namespace NetGore.Network
 
                         string reason = incMsg.ReadString();
 
+                        // Set the ClientDisconnected value based on the status
+                        switch (status)
+                        {
+                            case NetConnectionStatus.Connecting:
+                            case NetConnectionStatus.Connected:
+                            case NetConnectionStatus.None:
+                                // Reset the status
+                                _clientDisconnected = false;
+                                break;
+
+                            case NetConnectionStatus.Disconnecting:
+                                // Disconnecting only is set when we are the ones disconnecting
+                                _clientDisconnected = true;
+                                break;
+                        }
+
                         // Handle parsing a custom disconnect message
                         if (status == NetConnectionStatus.Disconnected)
                             reason = ParseCustomDisconnectMessage(reason);
@@ -151,6 +168,18 @@ namespace NetGore.Network
         public IIPSocket RemoteSocket
         {
             get { return _remote; }
+        }
+
+        bool _clientDisconnected = false;
+
+        /// <summary>
+        /// Gets if it was us, the client, who terminated the connection to the server. This will only be true when
+        /// the client is in the process of disconnecting or has disconnected, and will always be false when establishing
+        /// a connection or connected.
+        /// </summary>
+        public bool ClientDisconnected
+        {
+            get { return _clientDisconnected; }
         }
 
         /// <summary>
