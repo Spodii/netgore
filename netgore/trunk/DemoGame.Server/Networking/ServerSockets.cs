@@ -55,11 +55,21 @@ namespace DemoGame.Server
         /// <param name="port">The port that the remote connection is coming from.</param>
         /// <param name="data">The data sent along with the connection request.</param>
         /// <returns>
-        /// True if the connection should be accepted; otherwise false.
+        /// If null or empty, the connection will be accepted. Otherwise, return a non-empty string containing the reason
+        /// as to why the connection is to be rejected to reject the connection.
         /// </returns>
-        protected override bool AcceptConnect(uint ip, ushort port, BitStream data)
+        protected override string AcceptConnect(uint ip, ushort port, BitStream data)
         {
-            // TODO: !! Implement some accept/reject logic
+            // Check for too many connections from the IP
+            if (ServerSettings.MaxConnectionsPerIP > 0)
+            {
+                var connsFromIP = Connections.Count(x => x.IP == ip);
+                if (connsFromIP >= ServerSettings.MaxConnectionsPerIP)
+                {
+                    return GameMessageHelper.AsString(GameMessage.DisconnectTooManyConnectionsFromIP);
+                }
+            }
+
             return base.AcceptConnect(ip, port, data);
         }
 

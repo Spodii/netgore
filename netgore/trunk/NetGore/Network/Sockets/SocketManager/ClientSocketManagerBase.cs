@@ -26,6 +26,21 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// When overridden in the derived class, parses the string sent from the server containing the reason why we
+        /// were disconnected. The message is specified when the server calls <see cref="IIPSocket.Disconnect"/>
+        /// with parameters.
+        /// </summary>
+        /// <param name="msg">The message that was sent containing the reason for disconnecting. Can be empty if the
+        /// server gave no reason.</param>
+        /// <returns>The parsed <paramref name="msg"/>, or the original <paramref name="msg"/> if no known way to parse
+        /// it was found.</returns>
+        protected virtual string ParseCustomDisconnectMessage(string msg)
+        {
+            // No parsing support by default
+            return msg;
+        }
+
+        /// <summary>
         /// Handles processing of the underlying connection(s) and promoting data to the upper layer to be handled
         /// by the application. Should be called once per frame.
         /// </summary>
@@ -70,7 +85,16 @@ namespace NetGore.Network
                     case NetIncomingMessageType.StatusChanged:
                         NetConnectionStatus status = (NetConnectionStatus)incMsg.ReadByte();
                         ipSocket = (IIPSocket)incMsg.SenderConnection.Tag;
-                        string reason = incMsg.ReadString(); // TODO: !! Format into a GameMessage and utilize the reason string
+
+                        string reason = incMsg.ReadString();
+
+                        // Handle parsing a custom disconnect message
+                        if (status == NetConnectionStatus.Disconnected)
+                            reason = ParseCustomDisconnectMessage(reason);
+
+                        // Don't let them set it to null
+                        if (reason == null)
+                            reason = string.Empty;
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Socket `{0}` status changed to `{1}`. Reason: {2}", ipSocket, status, reason);

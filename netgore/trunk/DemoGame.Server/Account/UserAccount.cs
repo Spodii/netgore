@@ -440,7 +440,7 @@ namespace DemoGame.Server
 
             // Break the connection, if connected
             if (Socket != null)
-                Socket.Disconnect();
+                Socket.Disconnect(GameMessage.DisconnectUserDisposed);
 
             // Log the account out in the database
             _dbController.GetQuery<SetAccountCurrentIPNullQuery>().Execute(ID);

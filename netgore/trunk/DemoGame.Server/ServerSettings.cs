@@ -22,6 +22,11 @@ namespace DemoGame.Server
         public const bool AllowRemoteConnections = false;
 
         /// <summary>
+        /// The maximum number of connections allowed for a single IP address. Set to a value less than or equal to 0 to disable.
+        /// </summary>
+        public const int MaxConnectionsPerIP = 6;
+
+        /// <summary>
         /// The amount of time an item may remain on the map before it is removed automatically.
         /// </summary>
         public const int DefaultMapItemLife = 1000 * 60 * 3;

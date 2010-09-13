@@ -359,27 +359,25 @@ namespace DemoGame.Server
 
         static void HandleFailedLogin(IIPSocket conn, AccountLoginResult loginResult, string name)
         {
-            // TODO: !! Send the error message via Disconnect()
             // Get the error message
-            GameMessage loginFailureGameMessage;
             switch (loginResult)
             {
                 case AccountLoginResult.AccountInUse:
                     if (log.IsInfoEnabled)
                         log.InfoFormat("Login for account `{0}` failed: Account in use.", name);
-                    loginFailureGameMessage = GameMessage.LoginAccountInUse;
+                    conn.Disconnect(GameMessage.LoginAccountInUse);
                     break;
 
                 case AccountLoginResult.InvalidName:
                     if (log.IsInfoEnabled)
                         log.InfoFormat("Login for account `{0}` failed: Invalid name.", name);
-                    loginFailureGameMessage = GameMessage.LoginInvalidName;
+                    conn.Disconnect(GameMessage.LoginInvalidName);
                     break;
 
                 case AccountLoginResult.InvalidPassword:
                     if (log.IsInfoEnabled)
                         log.InfoFormat("Login for account `{0}` failed: Incorrect password.", name);
-                    loginFailureGameMessage = GameMessage.LoginInvalidPassword;
+                    conn.Disconnect(GameMessage.LoginInvalidPassword);
                     break;
 
                 default:
@@ -387,17 +385,10 @@ namespace DemoGame.Server
                     const string errmsg = "Invalid AccountLoginResult value `{0}`.";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, loginResult);
-                    loginFailureGameMessage = GameMessage.LoginInvalidName;
                     Debug.Fail(string.Format(errmsg, loginResult));
+                    conn.Disconnect(GameMessage.LoginInvalidName);
                     break;
             }
-
-            using (var pw = ServerPacket.LoginUnsuccessful(loginFailureGameMessage))
-            {
-                conn.Send(pw);
-            }
-
-            conn.Disconnect();
         }
 
         /// <summary>
@@ -431,7 +422,6 @@ namespace DemoGame.Server
         /// <param name="conn">Connection that the login request was made on.</param>
         /// <param name="name">Name of the account.</param>
         /// <param name="password">Entered password for this account.</param>
-        /// <param name="clientVersion">The version of the client.</param>
         public void LoginAccount(IIPSocket conn, string name, string password)
         {
             ThreadAsserts.IsMainThread();
@@ -460,7 +450,7 @@ namespace DemoGame.Server
             string banReason;
             if (BanningManager.Instance.IsBanned(userAccount.ID, out banReason, out banMins))
             {
-                conn.Send(ServerPacket.LoginUnsuccessful(GameMessage.AccountBanned, banMins, banReason));
+                conn.Disconnect(GameMessage.AccountBanned, banMins, banReason);
                 userAccount.Dispose();
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Disconnected account `{0}` after successful login since they have been banned.", name);

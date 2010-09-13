@@ -1,3 +1,7 @@
+DisconnectTooManyConnectionsFromIP: "Connection rejected by the server since there are too many connections from your IP address."
+DisconnectUserDisposed: "The connection to the server has been lost."
+DisconnectNoReasonSpecified: "The connection to the server has been lost."
+
 InsufficientPermissions: "You do not have the permissions to do that."
 
 CannotAttackWithWeapon: "You cannot attack with a $0."

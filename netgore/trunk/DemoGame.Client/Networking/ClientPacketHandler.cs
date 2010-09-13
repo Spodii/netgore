@@ -51,7 +51,12 @@ namespace DemoGame.Client
         readonly GameMessageCollection _gameMessages = GameMessageCollection.Create();
         readonly ClientPeerTradeInfoHandler _peerTradeInfoHandler;
         readonly IScreenManager _screenManager;
-        readonly ISocketSender _socketSender;
+
+        /// <summary>
+        /// Gets the <see cref="GameMessageCollection"/> instance.
+        /// </summary>
+        public GameMessageCollection GameMessages { get { return _gameMessages; } }
+
         GameplayScreen _gameplayScreenCache;
 
         /// <summary>
@@ -72,7 +77,6 @@ namespace DemoGame.Client
                 throw new ArgumentNullException("socketSender");
 
             _dynamicEntityFactory = dynamicEntityFactory;
-            _socketSender = socketSender;
             _screenManager = screenManager;
 
             _peerTradeInfoHandler = new ClientPeerTradeInfoHandler(socketSender);

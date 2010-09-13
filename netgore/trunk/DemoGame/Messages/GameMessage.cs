@@ -73,6 +73,20 @@ namespace DemoGame
         /// </summary>
         LoginAccountInUse,
 
+        /// <summary>
+        /// Tried to connect to the server, but there are too many connections from this IP.
+        /// </summary>
+        DisconnectTooManyConnectionsFromIP,
+
+        /// <summary>
+        /// The server has disposed the user's character.
+        /// </summary>
+        DisconnectUserDisposed,
+
+        /// <summary>
+        /// No reason was given for why the client was disconnected.
+        /// </summary>
+        DisconnectNoReasonSpecified,
 
         #region Shops
 

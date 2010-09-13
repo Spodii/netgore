@@ -208,10 +208,11 @@ namespace DemoGame.Client
                     break;
 
                 case NetConnectionStatus.Disconnected:
-                    string s = "Connection to the server lost";
-                    if (!string.IsNullOrEmpty(reason))
-                        s += ": " + reason;
-                    SetError(s);
+                    // If no reason specified, use generic one
+                    if (string.IsNullOrEmpty(reason))
+                        reason = ClientSockets.Instance.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+
+                    SetError(reason);
                     break;
             }
         }

@@ -6,12 +6,6 @@ using NetGore.IO;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Handles events from the <see cref="IIPSocket"/>.
-    /// </summary>
-    /// <param name="socket">The <see cref="IIPSocket"/> the event came from.</param>
-    public delegate void IIPSocketEventHandler(IIPSocket socket);
-
-    /// <summary>
     /// Interface for a connection made over IP that can be used to communicate with and control the connection with the
     /// other end.
     /// </summary>
@@ -19,8 +13,9 @@ namespace NetGore.Network
     {
         /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
-        /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
+        /// as "xxx.xxx.xxx.xxx:yyyyy". Leading 0's from each segment are omitted.
         /// </summary>
+        /// <example>27.0.1.160:12345</example>
         string Address { get; }
 
         /// <summary>
@@ -92,6 +87,8 @@ namespace NetGore.Network
         /// <summary>
         /// Terminates this connection.
         /// </summary>
-        void Disconnect();
+        /// <param name="reason">A string containing the reason why the connection was terminated. Can be null or empty, but
+        /// recommended that a reason is provided.</param>
+        void Disconnect(string reason);
     }
 }

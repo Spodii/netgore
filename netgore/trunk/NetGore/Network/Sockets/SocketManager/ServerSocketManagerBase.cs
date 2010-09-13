@@ -10,8 +10,6 @@ namespace NetGore.Network
 {
     public class ServerSocketManagerBase : IServerSocketManager
     {
-        // TODO: !! Implement support for limiting the number of connections from a single IP
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly NetServer _local;
@@ -24,6 +22,10 @@ namespace NetGore.Network
         public ServerSocketManagerBase(string appIdentifier, int port)
         {
             var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true, Port = port };
+
+            // Manually handle connection approval instead of just accepting everything
+            config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
+
             _local = new NetServer(config);
             _local.Start();
         }
@@ -82,16 +84,16 @@ namespace NetGore.Network
                         bs.Mode = BitStreamMode.Read;
 
                         // Ask the acception handler method if this connection will be accepted
-                        bool approved = AcceptConnect(ipSocket.IP, ipSocket.Port, bs);
+                        string rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, bs);
 
                         if (log.IsDebugEnabled)
-                            log.DebugFormat("Received connection request from `{0}`. Accepted? {1}.", ipSocket, approved);
+                            log.DebugFormat("Received connection request from `{0}`. Accepted? {1}.", ipSocket, string.IsNullOrEmpty(rejectMessage));
 
                         // Approve or deny the connection accordingly
-                        if (approved)
+                        if (string.IsNullOrEmpty(rejectMessage))
                             incMsg.SenderConnection.Approve();
                         else
-                            incMsg.SenderConnection.Deny(string.Empty); // TODO: !! Format into a GameMessage and utilize the reason string
+                            incMsg.SenderConnection.Deny(rejectMessage);
 
                         break;
 
@@ -145,12 +147,13 @@ namespace NetGore.Network
         /// <param name="port">The port that the remote connection is coming from.</param>
         /// <param name="data">The data sent along with the connection request.</param>
         /// <returns>
-        /// True if the connection should be accepted; otherwise false.
+        /// If null or empty, the connection will be accepted. Otherwise, return a non-empty string containing the reason
+        /// as to why the connection is to be rejected to reject the connection.
         /// </returns>
-        protected virtual bool AcceptConnect(uint ip, ushort port, BitStream data)
+        protected virtual string AcceptConnect(uint ip, ushort port, BitStream data)
         {
             // Always accept connections by default
-            return true;
+            return null;
         }
 
         /// <summary>
