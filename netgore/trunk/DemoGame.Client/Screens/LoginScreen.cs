@@ -198,6 +198,8 @@ namespace DemoGame.Client
 
         void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
         {
+            var clientSockets = (ClientSockets)sender;
+
             switch (newStatus)
             {
                 case NetConnectionStatus.Connected:
@@ -233,7 +235,7 @@ namespace DemoGame.Client
 
                         // If no reason specified, use generic one
                         if (string.IsNullOrEmpty(reason))
-                            reason = ClientSockets.Instance.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+                            reason = clientSockets.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
 
                         SetError(reason);
                     }

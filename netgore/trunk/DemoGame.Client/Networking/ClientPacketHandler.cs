@@ -334,6 +334,7 @@ namespace DemoGame.Client
         {
             var successful = r.ReadBool();
             var errorMessage = successful ? string.Empty : r.ReadString();
+            // TODO: Make the ErrorMessage a GameMessage instead of a static string
 
             if (ReceivedCreateAccount != null)
                 ReceivedCreateAccount(conn, successful, errorMessage);
