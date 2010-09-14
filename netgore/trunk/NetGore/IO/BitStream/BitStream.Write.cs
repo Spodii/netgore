@@ -699,9 +699,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes all of an existing BitStream's buffer to this BitStream
+        /// Writes all of an existing BitStream's buffer to this BitStream.
         /// </summary>
-        /// <param name="source">BitStream to read from</param>
+        /// <param name="source">BitStream to read from.</param>
         public void Write(BitStream source)
         {
             // Write over the finished buffer from the source
