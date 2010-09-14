@@ -12,7 +12,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Server socket manager
     /// </summary>
-    public class ServerSockets : ServerSocketManagerBase
+    public class ServerSockets : ServerSocketManager
     {
         readonly ServerPacketHandler _packetHandler;
         readonly IMessageProcessorManager _messageProcessorManager;
@@ -21,7 +21,8 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="ServerSockets"/> class.
         /// </summary>
         /// <param name="server">The <see cref="Server"/> instance.</param>
-        public ServerSockets(Server server) : base(GameData.NetworkAppIdentifier, GameData.ServerUDPPort)
+        public ServerSockets(Server server)
+            : base(CommonConfig.Network.NetworkAppIdentifier, GameData.NetworkSettings.ServerPort)
         {
             _packetHandler = new ServerPacketHandler(server);
 
@@ -33,6 +34,25 @@ namespace DemoGame.Server
 #else
             _ppManager = new MessageProcessorManager(_packetHandler, EnumHelper<ClientPacketID>.BitsRequired);
 #endif
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional configuring of the <see cref="NetPeerConfiguration"/> instance
+        /// that will be used for this <see cref="ServerSocketManager"/>.
+        /// </summary>
+        protected override void InitNetPeerConfig(NetPeerConfiguration config)
+        {
+            base.InitNetPeerConfig(config);
+
+            config.PingFrequency = CommonConfig.Network.PingFrequency;
+
+            config.SimulatedDuplicatesChance = CommonConfig.Network.SimulatedDuplicatesChance;
+            config.SimulatedLoss = CommonConfig.Network.SimulatedLoss;
+            config.SimulatedMinimumLatency = CommonConfig.Network.SimulatedMinimumLatency;
+            config.SimulatedRandomLatency = CommonConfig.Network.SimulatedRandomLatency;
+
+            // Settings unique to the server (not set on the client)
+            config.MaximumConnections = ServerConfig.MaxConnections;
         }
 
         /// <summary>
@@ -61,10 +81,10 @@ namespace DemoGame.Server
         protected override string AcceptConnect(uint ip, ushort port, BitStream data)
         {
             // Check for too many connections from the IP
-            if (ServerSettings.MaxConnectionsPerIP > 0)
+            if (ServerConfig.MaxConnectionsPerIP > 0)
             {
                 var connsFromIP = Connections.Count(x => x.IP == ip);
-                if (connsFromIP >= ServerSettings.MaxConnectionsPerIP)
+                if (connsFromIP >= ServerConfig.MaxConnectionsPerIP)
                 {
                     return GameMessageHelper.AsString(GameMessage.DisconnectTooManyConnectionsFromIP);
                 }

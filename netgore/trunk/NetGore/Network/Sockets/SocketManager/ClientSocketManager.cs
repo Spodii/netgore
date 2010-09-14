@@ -24,9 +24,22 @@ namespace NetGore.Network
         /// <param name="appIdentifier">The application identifier string.</param>
         public ClientSocketManager(string appIdentifier)
         {
-            var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true };
+            var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = false };
+
+            // Custom configuration
+            InitNetPeerConfig(config);
+
+            // Start
             _local = new NetClient(config);
             _local.Start();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional configuring of the <see cref="NetPeerConfiguration"/> instance
+        /// that will be used for this <see cref="ClientSocketManager"/>.
+        /// </summary>
+        protected virtual void InitNetPeerConfig(NetPeerConfiguration config)
+        {
         }
 
         /// <summary>

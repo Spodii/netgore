@@ -5,26 +5,36 @@ using SFML.Graphics;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// The settings for the server. This should mostly just contain consts used by the server that are related
+    /// The compile-time configuration for the server. This should mostly just contain consts used by the server that are related
     /// to performance. They are all grouped together here to make tweaking for performance easier.
-    /// Actual game settings and settings used by more than just the server go into <see cref="GameData"/>.
+    /// Actual game configuration and configuration used by more than just the server go into <see cref="GameData"/>.
     /// </summary>
-    public static class ServerSettings
+    public static class ServerConfig
     {
         /// <summary>
         /// If remote connections are allowed. By default, this is set to false, which will only allow connections
-        /// made locally (from the same computer). If set to true, you must make sure that the needed ports defined by
-        /// <see cref="GameData.ServerTCPPort"/>, <see cref="GameData.ServerUDPPort"/>, and <see cref="GameData.ServerPingPort"/>
+        /// made locally (from the same computer). If set to true, you must make sure that the <see cref="GameData.ServerPort"/>
         /// allow incoming connections and can be listened on. If you have a firewall, you need to add an exception in it
-        /// to allow this. If you are behind a router, forward these ports (for both TCP and UDP) to the local IP
+        /// to allow this. If you are behind a router, forward these ports (for UDP) to the local IP
         /// address of the machine hosting the server process in the network.
         /// </summary>
         public const bool AllowRemoteConnections = false;
 
         /// <summary>
+        /// The maximum accounts that can be created for a single IP address over a given period of time. The period
+        /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
+        /// </summary>
+        public const int MaxRecentlyCreatedAccounts = 4;
+
+        /// <summary>
         /// The maximum number of connections allowed for a single IP address. Set to a value less than or equal to 0 to disable.
         /// </summary>
         public const int MaxConnectionsPerIP = 6;
+
+        /// <summary>
+        /// The maximum number of connections that can be made to the server.
+        /// </summary>
+        public const int MaxConnections = 100;
 
         /// <summary>
         /// The amount of time an item may remain on the map before it is removed automatically.

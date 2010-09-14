@@ -99,7 +99,7 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Server loaded.");
 
-            if (log.IsWarnEnabled && !ServerSettings.AllowRemoteConnections)
+            if (log.IsWarnEnabled && !ServerConfig.AllowRemoteConnections)
             {
                 log.Warn("NOTICE: ServerSettings.AllowRemoteConnections is set to false." +
                          " As a result, the server will only accept local connections." +
@@ -286,7 +286,7 @@ namespace DemoGame.Server
             var updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
             var serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
 
-            _nextServerSaveTime = GetTime() + ServerSettings.RoutineServerSaveRate;
+            _nextServerSaveTime = GetTime() + ServerConfig.RoutineServerSaveRate;
 
             var worldStatsTracker = WorldStatsTracker.Instance;
 
@@ -315,7 +315,7 @@ namespace DemoGame.Server
                 worldStatsTracker.Update();
 
                 // Check if we can afford sleeping the thread
-                var sleepTime = (long)ServerSettings.ServerUpdateRate - (GetTime() - loopStartTime);
+                var sleepTime = (long)ServerConfig.ServerUpdateRate - (GetTime() - loopStartTime);
                 if (sleepTime > 0)
                     Thread.Sleep((int)sleepTime);
 
@@ -348,9 +348,9 @@ namespace DemoGame.Server
                 MinCharacterNameLength = (byte)GameData.UserName.MinLength,
                 ScreenHeight = (ushort)GameData.ScreenSize.Y,
                 ScreenWidth = (ushort)GameData.ScreenSize.X,
-                ServerIp = GameData.ServerIP,
-                ServerPingPort = (ushort)GameData.ServerPingPort,
-                ServerTcpPort = (ushort)GameData.ServerTCPPort,
+                ServerIp = GameData.NetworkSettings.ServerIP,
+                ServerPingPort = (ushort)GameData.NetworkSettings.ServerPingPort,
+                ServerTcpPort = (ushort)GameData.NetworkSettings.ServerTCPPort,
                 WorldPhysicsUpdateRate = (ushort)GameData.WorldPhysicsUpdateRate
             };
 
@@ -624,7 +624,7 @@ namespace DemoGame.Server
                 log.InfoFormat("World state saved. Save took a total of `{0}` milliseconds.", saveEndTime - saveStartTime);
 
             // Update the next auto save time
-            _nextServerSaveTime = saveEndTime + ServerSettings.RoutineServerSaveRate;
+            _nextServerSaveTime = saveEndTime + ServerConfig.RoutineServerSaveRate;
         }
 
         #endregion

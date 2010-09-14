@@ -7,11 +7,62 @@ using SFML.Graphics;
 namespace DemoGame
 {
     /// <summary>
-    /// Contains static data for the game that describes how some different aspects of the general game works.
+    /// Contains static data and methods for the game that describes how some different aspects of the general game works.
     /// </summary>
     /// <seealso cref="EngineSettingsInitializer"/>
     public static class GameData
     {
+        /// <summary>
+        /// Settings specific to the networking.
+        /// </summary>
+        public static class NetworkSettings
+        {
+            /// <summary>
+            /// Gets the IP address of the server.
+            /// </summary>
+            public static string ServerIP
+            {
+                get { 
+                    // TODO: Should be specified through file and only for the client
+                    return "127.0.0.1"; }
+            }
+
+            /// <summary>
+            /// Gets the port used by the server for handling pings.
+            /// </summary>
+            public static int ServerPingPort
+            {
+                get
+                {
+                    // TODO: !! Remove
+                    return 44446;
+                }
+            }
+
+            /// <summary>
+            /// Gets the port used by the server for TCP connections for the main game networking.
+            /// </summary>
+            public static int ServerTCPPort
+            {
+                get
+                {
+                    // TODO: !! Remove
+                    return 44445;
+                }
+            }
+
+            /// <summary>
+            /// Gets the port used by the server for UDP connections for the main game networking.
+            /// </summary>
+            public static int ServerPort
+            {
+                get
+                {
+                    // TODO: Client should be able to override this value through a settings file
+                    return 44447; }
+            }
+        }
+
         /// <summary>
         /// If a User is allowed to move while they have a chat dialog open with a NPC.
         /// </summary>
@@ -63,12 +114,6 @@ namespace DemoGame
         public const int MaxNPCChatDistance = 16;
 
         /// <summary>
-        /// The maximum accounts that can be created for a single IP address over a given period of time. The period
-        /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
-        /// </summary>
-        public const int MaxRecentlyCreatedAccounts = 4;
-
-        /// <summary>
         /// Maximum length of each parameter string in the server's SendMessage.
         /// </summary>
         public const int MaxServerMessageParameterLength = 250;
@@ -118,13 +163,6 @@ namespace DemoGame
         public static readonly ActionDisplayID DefaultActionDisplayID = new ActionDisplayID(0);
 
         /// <summary>
-        /// The string used to identify this application over the network. The actual string isn't too important, but it is recommended
-        /// you keep it relatively short. Only applications with the same identifier string will be able to connect to one
-        /// another.
-        /// </summary>
-        public const string NetworkAppIdentifier = "NetGore";
-
-        /// <summary>
         /// The rules for the user names.
         /// </summary>
         public static readonly StringRules UserName = new StringRules(3, 15, CharType.Alpha);
@@ -141,42 +179,6 @@ namespace DemoGame
         public static int MaxDrawDeltaTime
         {
             get { return 100; }
-        }
-
-        /// <summary>
-        /// Gets the IP address of the server.
-        /// </summary>
-        public static string ServerIP
-        {
-            get { return "127.0.0.1"; }
-        }
-
-        /// <summary>
-        /// Gets the port used by the server for handling pings.
-        /// </summary>
-        public static int ServerPingPort
-        {
-            get { 
-                // TODO: !! Remove
-                return 44446; }
-        }
-
-        /// <summary>
-        /// Gets the port used by the server for TCP connections for the main game networking.
-        /// </summary>
-        public static int ServerTCPPort
-        {
-            get {
-                // TODO: !! Remove
-                return 44445; }
-        }
-
-        /// <summary>
-        /// Gets the port used by the server for UDP connections for the main game networking.
-        /// </summary>
-        public static int ServerUDPPort
-        {
-            get { return 44447; }
         }
 
         /// <summary>

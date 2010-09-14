@@ -29,8 +29,20 @@ namespace NetGore.Network
             // Manually handle connection approval instead of just accepting everything
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
 
+            // Custom configuration
+            InitNetPeerConfig(config);
+
+            // Start
             _local = new NetServer(config);
             _local.Start();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional configuring of the <see cref="NetPeerConfiguration"/> instance
+        /// that will be used for this <see cref="ServerSocketManager"/>.
+        /// </summary>
+        protected virtual void InitNetPeerConfig(NetPeerConfiguration config)
+        {
         }
 
         /// <summary>
