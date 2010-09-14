@@ -306,12 +306,12 @@ namespace NetGore.IO
 
             Debug.Assert(nodeLength >= 0);
 
-            _writer.SeekFromCurrentPosition(BitStreamSeekOrigin.Beginning, nodeStart);
+            _writer.Seek(BitStreamSeekOrigin.Beginning, nodeStart);
             Debug.Assert(_writer.PositionBits == nodeStart);
 
             _writer.Write(nodeLength);
 
-            _writer.SeekFromCurrentPosition(BitStreamSeekOrigin.Beginning, nodeEnd);
+            _writer.Seek(BitStreamSeekOrigin.Beginning, nodeEnd);
             Debug.Assert(_writer.PositionBits == nodeEnd);
         }
 

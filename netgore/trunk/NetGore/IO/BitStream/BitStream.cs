@@ -83,6 +83,11 @@ namespace NetGore.IO
         int _highestWrittenIndex = -1;
 
         /// <summary>
+        /// The number of bits in the buffer that contain valid data to read.
+        /// </summary>
+        int _readLengthBits;
+
+        /// <summary>
         /// Current I/O mode being used
         /// </summary>
         BitStreamMode _mode;
@@ -187,8 +192,8 @@ namespace NetGore.IO
 
         /// <summary>
         /// Gets the length of the bit stream in bytes. For writing, this is the highest
-        /// byte written to the buffer, plus another byte if there are any partial bits. For reading, 
-        /// this is the length of the internal buffer in bytes.
+        /// byte written to the buffer, plus another byte if there are any partial bits.
+        /// For reading, this is the length of the data that contains useful information.
         /// </summary>
         public int Length
         {
@@ -202,14 +207,14 @@ namespace NetGore.IO
                         return HighestWrittenIndex + 2;
                 }
                 else
-                    return _buffer.Length;
+                    return (int)Math.Ceiling(_readLengthBits / 8f);
             }
         }
 
         /// <summary>
-        /// Gets the length of the bit stream in bits. For writing, this is the highest
+        /// Gets or sets the length of the bit stream in bits. For writing, this is the highest
         /// bit, including any partial bits that have not yet been written to the buffer. 
-        /// For reading, this is the length of the internal buffer in bits.
+        /// For reading, this is the length of the data that contains useful information.
         /// </summary>
         public int LengthBits
         {
@@ -218,7 +223,17 @@ namespace NetGore.IO
                 if (Mode == BitStreamMode.Write)
                     return (HighestWrittenIndex + 1) * _bitsByte + (_highBit - _workBufferPos);
                 else
-                    return _buffer.Length * _bitsByte;
+                    return _readLengthBits;
+            }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("value");
+
+                if (Mode == BitStreamMode.Write)
+                    Seek(BitStreamSeekOrigin.Beginning, value);
+                else
+                    _readLengthBits = value;
             }
         }
 
@@ -238,6 +253,9 @@ namespace NetGore.IO
                 // If we're in the middle of writing, flush the work buffer to save it
                 if (_workBufferPos != _highBit && Mode == BitStreamMode.Write)
                     FlushWorkBuffer();
+
+                if (Mode == BitStreamMode.Write)
+                    _readLengthBits = LengthBits;
 
                 // Reset the stream
                 _mode = value;
@@ -715,6 +733,7 @@ namespace NetGore.IO
             _workBufferPos = _highBit;
             _workBuffer = 0;
             _highestWrittenIndex = -1;
+            _readLengthBits = 0;
         }
 
         /// <summary>
@@ -723,8 +742,8 @@ namespace NetGore.IO
         /// <param name="mode">Type of BitStreamMode to reset to.</param>
         public void Reset(BitStreamMode mode)
         {
-            _mode = mode;
             Reset();
+            _mode = mode;
         }
 
         /// <summary>
@@ -732,7 +751,7 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="origin">Origin to move from.</param>
         /// <param name="bits">Number of bits to move.</param>
-        public void SeekFromCurrentPosition(BitStreamSeekOrigin origin, int bits)
+        public void Seek(BitStreamSeekOrigin origin, int bits)
         {
             // Check if the buffer position needs to roll over
             if (_workBufferPos == -1)
@@ -757,11 +776,11 @@ namespace NetGore.IO
                 case BitStreamSeekOrigin.Beginning:
                     _bufferPos = 0;
                     _workBufferPos = 7;
-                    SeekFromCurrentPosition(bits);
+                    Seek(bits);
                     break;
 
                 case BitStreamSeekOrigin.Current:
-                    SeekFromCurrentPosition(bits);
+                    Seek(bits);
                     break;
             }
         }
@@ -770,7 +789,7 @@ namespace NetGore.IO
         /// Moves the buffer by a number of bits.
         /// </summary>
         /// <param name="bits">Number of bits to move.</param>
-        void SeekFromCurrentPosition(int bits)
+        void Seek(int bits)
         {
             // Check if we have anything to move
             if (bits == 0)
@@ -822,31 +841,36 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Sets a new internal buffer for the bit stream
+        /// Sets a new internal buffer for the BitStream.
         /// </summary>
-        /// <param name="buffer">New buffer</param>
-        public void SetBuffer(byte[] buffer)
+        /// <param name="buffer">The new buffer.</param>
+        void SetBuffer(byte[] buffer)
         {
+            Reset();
+
             _buffer = buffer;
-            _bufferPos = 0;
-            _workBufferPos = _highBit;
-            _highestWrittenIndex = -1;
             _workBuffer = _buffer[0];
+            _readLengthBits = buffer.Length * 8;
         }
 
-        static string StringFromByteArray(byte[] value)
+        /// <summary>
+        /// Converts a byte array to a string.
+        /// </summary>
+        /// <param name="bytes">The byte array.</param>
+        /// <returns>The string created from the <paramref name="bytes"/>.</returns>
+        static string StringFromByteArray(byte[] bytes)
         {
-            return Encoding.ASCII.GetString(value);
+            return Encoding.UTF8.GetString(bytes);
         }
 
         /// <summary>
         /// Converts a string to a byte array.
         /// </summary>
-        /// <param name="s">The string.</param>
-        /// <returns>The byte array for the given string <paramref name="s"/>.</returns>
-        static byte[] StringToByteArray(string s)
+        /// <param name="str">The string.</param>
+        /// <returns>The byte array for the <paramref name="str"/>.</returns>
+        static byte[] StringToByteArray(string str)
         {
-            return Encoding.ASCII.GetBytes(s);
+            return Encoding.UTF8.GetBytes(str);
         }
 
         /// <summary>

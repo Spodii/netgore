@@ -133,6 +133,11 @@ namespace DemoGame
         /// </summary>
         DisconnectNoReasonSpecified,
 
+        /// <summary>
+        /// The connection was dropped since it was idle for too long.
+        /// </summary>
+        DisconnectTimedOut,
+
         #endregion
 
         #region Feature: Shops
