@@ -328,31 +328,30 @@ namespace DemoGame.Server
         /// <param name="email">The account email address.</param>
         /// <param name="accountID">When this method returns true, contains the AccountID for the created
         /// <see cref="UserAccount"/>.</param>
-        /// <param name="errorMessage">When this method returns false, contains a message describing why the
-        /// account failed to be created.</param>
+        /// <param name="failReason">When this method returns false, contains a <see cref="GameMessage"/> that will be
+        /// used to describe why the account failed to be created.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
         public static bool TryCreateAccount(IDbController dbController, IIPSocket socket, string name, string password,
-                                            string email, out AccountID accountID, out string errorMessage)
+                                            string email, out AccountID accountID, out GameMessage failReason)
         {
             accountID = new AccountID(0);
-            errorMessage = string.Empty;
 
             // Check for valid values
             if (!GameData.AccountName.IsValid(name))
             {
-                errorMessage = "Invalid name";
+                failReason = GameMessage.CreateAccountInvalidName;
                 return false;
             }
 
             if (!GameData.AccountPassword.IsValid(password))
             {
-                errorMessage = "Invalid password";
+                failReason = GameMessage.CreateAccountInvalidPassword;
                 return false;
             }
 
             if (!GameData.AccountEmail.IsValid(email))
             {
-                errorMessage = "Invalid email";
+                failReason = GameMessage.CreateAccountInvalidEmail;
                 return false;
             }
 
@@ -365,9 +364,17 @@ namespace DemoGame.Server
                 var recentCreatedCount = dbController.GetQuery<CountRecentlyCreatedAccounts>().Execute(ip);
                 if (recentCreatedCount >= GameData.MaxRecentlyCreatedAccounts)
                 {
-                    errorMessage = "Too many accounts have been created from this IP recently";
+                    failReason = GameMessage.CreateAccountTooManyCreated;
                     return false;
                 }
+            }
+            
+            // Check if the account exists
+            var existingAccountID = dbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(name);
+            if (existingAccountID.HasValue)
+            {
+                failReason = GameMessage.CreateAccountAlreadyExists;
+                return false;
             }
 
             // Get the account ID
@@ -381,6 +388,7 @@ namespace DemoGame.Server
             if (!success)
                 idCreator.FreeID(accountID);
 
+            failReason = GameMessage.CreateAccountUnknownError;
             return success;
         }
 

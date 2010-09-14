@@ -39,8 +39,8 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="successful">If the account was successfully created.</param>
-        /// <param name="errorMessage">If <paramref name="successful"/> is false, contains the error message from
-        /// the server.</param>
+        /// <param name="errorMessage">If <paramref name="successful"/> is false, contains the reason
+        /// why the account failed to be created.</param>
         public delegate void CreateAccountEventHandler(IIPSocket sender, bool successful, string errorMessage);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -48,14 +48,8 @@ namespace DemoGame.Client
 
         readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
         readonly IDynamicEntityFactory _dynamicEntityFactory;
-        readonly GameMessageCollection _gameMessages = GameMessageCollection.Create();
         readonly ClientPeerTradeInfoHandler _peerTradeInfoHandler;
         readonly IScreenManager _screenManager;
-
-        /// <summary>
-        /// Gets the <see cref="GameMessageCollection"/> instance.
-        /// </summary>
-        public GameMessageCollection GameMessages { get { return _gameMessages; } }
 
         GameplayScreen _gameplayScreenCache;
 
@@ -212,7 +206,7 @@ namespace DemoGame.Client
         void PeerTradeInfoHandler_GameMessageCallback(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args)
         {
             // Parse the GameMessage
-            var msg = _gameMessages.GetMessage(gameMessage, args);
+            var msg = GameMessageCollection.Instance.GetMessage(gameMessage, args);
 
             // Display
             if (!string.IsNullOrEmpty(msg))
@@ -333,9 +327,14 @@ namespace DemoGame.Client
         void RecvCreateAccount(IIPSocket conn, BitStream r)
         {
             var successful = r.ReadBool();
-            var errorMessage = successful ? string.Empty : r.ReadString();
-            // TODO: Make the ErrorMessage a GameMessage instead of a static string
+            string errorMessage = string.Empty;
 
+            if (!successful)
+            {
+                var failureGameMessage = r.ReadEnum<GameMessage>();
+                errorMessage = GameMessageCollection.Instance.GetMessage(failureGameMessage);
+            }
+    
             if (ReceivedCreateAccount != null)
                 ReceivedCreateAccount(conn, successful, errorMessage);
         }
@@ -428,7 +427,7 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.LoginUnsuccessful)]
         void RecvLoginUnsuccessful(IIPSocket conn, BitStream r)
         {
-            var message = r.ReadGameMessage(_gameMessages);
+            var message = r.ReadGameMessage(GameMessageCollection.Instance);
 
             if (ReceivedLoginUnsuccessful != null)
                 ReceivedLoginUnsuccessful(this, conn, message);
@@ -592,7 +591,7 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.SendMessage)]
         void RecvSendMessage(IIPSocket conn, BitStream r)
         {
-            var message = r.ReadGameMessage(_gameMessages);
+            var message = r.ReadGameMessage(GameMessageCollection.Instance);
 
             if (string.IsNullOrEmpty(message))
             {

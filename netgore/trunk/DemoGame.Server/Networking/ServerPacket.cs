@@ -84,12 +84,12 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter CreateAccount(bool successful, string failureMessage)
+        public static PacketWriter CreateAccount(bool successful, GameMessage failureReason)
         {
             var pw = GetWriter(ServerPacketID.CreateAccount);
             pw.Write(successful);
             if (!successful)
-                pw.Write(failureMessage);
+                pw.WriteEnum(failureReason);
             return pw;
         }
 
