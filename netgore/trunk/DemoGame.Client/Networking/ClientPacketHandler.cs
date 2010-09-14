@@ -206,7 +206,7 @@ namespace DemoGame.Client
         void PeerTradeInfoHandler_GameMessageCallback(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args)
         {
             // Parse the GameMessage
-            var msg = GameMessageCollection.Instance.GetMessage(gameMessage, args);
+            var msg = GameMessageCollection.CurrentLanguage.GetMessage(gameMessage, args);
 
             // Display
             if (!string.IsNullOrEmpty(msg))
@@ -332,7 +332,7 @@ namespace DemoGame.Client
             if (!successful)
             {
                 var failureGameMessage = r.ReadEnum<GameMessage>();
-                errorMessage = GameMessageCollection.Instance.GetMessage(failureGameMessage);
+                errorMessage = GameMessageCollection.CurrentLanguage.GetMessage(failureGameMessage);
             }
     
             if (ReceivedCreateAccount != null)
@@ -427,7 +427,7 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.LoginUnsuccessful)]
         void RecvLoginUnsuccessful(IIPSocket conn, BitStream r)
         {
-            var message = r.ReadGameMessage(GameMessageCollection.Instance);
+            var message = r.ReadGameMessage(GameMessageCollection.CurrentLanguage);
 
             if (ReceivedLoginUnsuccessful != null)
                 ReceivedLoginUnsuccessful(this, conn, message);
@@ -591,7 +591,7 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.SendMessage)]
         void RecvSendMessage(IIPSocket conn, BitStream r)
         {
-            var message = r.ReadGameMessage(GameMessageCollection.Instance);
+            var message = r.ReadGameMessage(GameMessageCollection.CurrentLanguage);
 
             if (string.IsNullOrEmpty(message))
             {

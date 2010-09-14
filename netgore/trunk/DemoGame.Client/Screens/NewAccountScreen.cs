@@ -53,19 +53,19 @@ namespace DemoGame.Client
             // Manually check for invalid values before checking with the server
             if (!GameData.AccountName.IsValid(_cNameText.Text))
             {
-                SetError(GameMessageCollection.Instance.GetMessage(GameMessage.CreateAccountInvalidName));
+                SetError(GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CreateAccountInvalidName));
                 return;
             }
 
             if (!GameData.AccountPassword.IsValid(_cPasswordText.Text))
             {
-                SetError(GameMessageCollection.Instance.GetMessage(GameMessage.CreateAccountInvalidPassword));
+                SetError(GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CreateAccountInvalidPassword));
                 return;
             }
 
             if (!GameData.AccountEmail.IsValid(_cEmailText.Text))
             {
-                SetError(GameMessageCollection.Instance.GetMessage(GameMessage.CreateAccountInvalidEmail));
+                SetError(GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.CreateAccountInvalidEmail));
                 return;
             }
 
@@ -251,7 +251,7 @@ namespace DemoGame.Client
 
                     // If no reason specified, use generic one
                     if (string.IsNullOrEmpty(reason))
-                        reason = GameMessageCollection.Instance.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+                        reason = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
 
                     SetError(reason);
 
