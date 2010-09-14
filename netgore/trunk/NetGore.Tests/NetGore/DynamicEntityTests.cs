@@ -21,7 +21,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TestSkipNonSyncNetworkValues()
         {
-            var writer = new BitStream(BitStreamMode.Write, 2048);
+            var writer = new BitStream(2048);
             var src = new DE { SkipA = 1, SkipB = 2, SkipC = 3 };
             _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
@@ -69,7 +69,7 @@ namespace NetGore.Tests.NetGore
             src.Q = new Vector3(123, 412, 1931);
             src.R = new Vector4(109, 12, 190, 51);
 
-            writer = new BitStream(BitStreamMode.Write, 2048);
+            writer = new BitStream(2048);
             src.Serialize(writer);
 
             buffer = writer.GetBuffer();
@@ -111,7 +111,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TestSkipNonSyncValues()
         {
-            var writer = new BitStream(BitStreamMode.Write, 2048);
+            var writer = new BitStream(2048);
             var src = new DE { SkipA = 1, SkipB = 2, SkipC = 3 };
             _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
@@ -162,7 +162,7 @@ namespace NetGore.Tests.NetGore
             src.Q = new Vector3(213, 123, 41);
             src.R = new Vector4(51, 213, 123, 41);
 
-            writer = new BitStream(BitStreamMode.Write, 2048);
+            writer = new BitStream(2048);
             src.Serialize(writer);
 
             buffer = writer.GetBuffer();
@@ -204,7 +204,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TestWrite()
         {
-            var writer = new BitStream(BitStreamMode.Write, 2048);
+            var writer = new BitStream(2048);
             var src = new DE();
             _dynamicEntityFactoryBase.Write(writer, src);
         }
@@ -212,7 +212,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TestWriteRead()
         {
-            var writer = new BitStream(BitStreamMode.Write, 2048);
+            var writer = new BitStream(2048);
             var src = new DE();
             _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
@@ -226,7 +226,7 @@ namespace NetGore.Tests.NetGore
         {
             const int count = 1000;
 
-            var writer = new BitStream(BitStreamMode.Write, 1024 * 1024);
+            var writer = new BitStream(1024 * 1024);
             var sources = new List<DE>(count);
             for (var i = 0; i < count; i++)
             {
@@ -340,7 +340,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TestWriteReadValues()
         {
-            var writer = new BitStream(BitStreamMode.Write, 2048);
+            var writer = new BitStream(1024);
             var src = new DE();
             _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
@@ -359,7 +359,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TestWriteReadValuesAndUpdateExtensive()
         {
-            var writer = new BitStream(BitStreamMode.Write, 2048);
+            var writer = new BitStream(2048);
             var src = new DE();
             _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
@@ -401,7 +401,7 @@ namespace NetGore.Tests.NetGore
             src.M = new GrhIndex(10091);
             src.L = new Vector2(213, 123);
 
-            writer = new BitStream(BitStreamMode.Write, 2048);
+            writer = new BitStream(2048);
             src.Serialize(writer);
 
             buffer = writer.GetBuffer();
@@ -439,7 +439,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TestWriteReadValuesAndUpdatePositionVelocity()
         {
-            var writer = new BitStream(BitStreamMode.Write, 2048);
+            var writer = new BitStream(2048);
             var src = new DE();
             _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();
@@ -476,7 +476,7 @@ namespace NetGore.Tests.NetGore
             src.Position = new Vector2(10981, -123);
             src.SetVelocity(new Vector2(0.114f, 10.181f));
 
-            writer = new BitStream(BitStreamMode.Write, 2048);
+            writer = new BitStream(2048);
             src.SerializePositionAndVelocity(writer, 0);
 
             buffer = writer.GetBuffer();
@@ -514,7 +514,7 @@ namespace NetGore.Tests.NetGore
         [Test]
         public void TestWriteReadValuesExtensive()
         {
-            var writer = new BitStream(BitStreamMode.Write, 2048);
+            var writer = new BitStream(2048);
             var src = new DE();
             _dynamicEntityFactoryBase.Write(writer, src);
             var buffer = writer.GetBuffer();

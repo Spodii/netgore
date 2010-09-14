@@ -78,7 +78,7 @@ namespace NetGore.Tests.NetGore
             object o;
 #pragma warning restore 219
 
-            var bs = new BitStream(BitStreamMode.Write, 128);
+            var bs = new BitStream(128);
 
             Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.BitsRequired);
             Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.MaxValue);
@@ -90,7 +90,7 @@ namespace NetGore.Tests.NetGore
             Assert.Throws<MethodAccessException>(() => EnumHelper<EVULong>.WriteValue(bs, EVULong.A));
             Assert.Throws<MethodAccessException>(() => EnumHelper<EVULong>.WriteValue(bs, "test", EVULong.A));
 
-            bs.Mode = BitStreamMode.Read;
+            bs.PositionBits = 0;
 
             Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.ReadValue(bs));
             Assert.Throws<MethodAccessException>(() => o = EnumHelper<EVULong>.ReadValue(bs, "test"));

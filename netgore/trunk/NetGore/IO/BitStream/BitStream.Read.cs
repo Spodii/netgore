@@ -12,24 +12,7 @@ namespace NetGore.IO
         /// <returns>Value of the next bit in the BitStream (0 or 1)</returns>
         public int ReadBit()
         {
-            RequireMode(BitStreamMode.Read);
-
-            // Check if the buffer will overflow
-            if (_bufferPos >= _buffer.Length)
-                ExpandBuffer();
-
-            // Get the bit value as 0 or 1
-            var ret = ((_workBuffer & (1 << _workBufferPos)) != 0) ? 1 : 0;
-
-            // Decrease the work buffer position
-            _workBufferPos--;
-
-            // If the work buffer ran out, grab the next one
-            if (_workBufferPos == -1)
-                RefillWorkBuffer();
-
-            // Return the bit value
-            return ret;
+            return ReadUnsigned(1);
         }
 
         /// <summary>
@@ -150,37 +133,29 @@ namespace NetGore.IO
             if (bitLength < 0)
                 throw new ArgumentOutOfRangeException("bitLength");
             if (bitLength == 0)
-                return new BitStream(BitStreamMode.Read, 1);
-            if (PositionBits + bitLength > LengthBits)
-                throw new ArgumentOutOfRangeException("bitLength");
+                return new BitStream();
 
 #if DEBUG
             var initialBitPosition = PositionBits;
 #endif
 
-            var fullBytes = bitLength / _bitsByte;
-            var remainingBits = bitLength % _bitsByte;
-            var requiredBytes = fullBytes;
-            if (remainingBits > 0)
-                requiredBytes++;
+            var retSizeBytes = Math.Max(16, BitOps.NextPowerOf2(bitLength / 8));
+            var ret = new BitStream(retSizeBytes);
 
-            Debug.Assert(remainingBits < _bitsByte);
-            Debug.Assert(remainingBits >= 0);
-            Debug.Assert(fullBytes >= 0);
-            Debug.Assert(requiredBytes > 0);
+            var bitsRemaining = bitLength;
 
-            var ret = new BitStream(BitStreamMode.Write, requiredBytes) { WriteMode = BitStreamBufferMode.Static };
-
-            if (fullBytes > 0)
+            // Read full 32-bit integers at a time
+            while (bitsRemaining > _bitsUInt)
             {
-                var bytes = ReadBytes(fullBytes);
-                ret.Write(bytes, 0, bytes.Length);
+                ret.Write(ReadUInt());
+                bitsRemaining -= _bitsUInt;
             }
 
-            if (remainingBits > 0)
+            // Read the remainder
+            if (bitsRemaining > 0)
             {
-                var value = ReadByte(remainingBits);
-                ret.Write(value, remainingBits);
+                var partialValue = ReadUInt(bitsRemaining);
+                ret.Write(partialValue, bitsRemaining);
             }
 
 #if DEBUG
@@ -188,7 +163,7 @@ namespace NetGore.IO
             Debug.Assert(PositionBits - initialBitPosition == bitLength);
 #endif
 
-            ret.Mode = BitStreamMode.Read;
+            ret.PositionBits = 0;
 
             return ret;
         }

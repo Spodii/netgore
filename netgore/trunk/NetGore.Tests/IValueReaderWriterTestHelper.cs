@@ -78,7 +78,7 @@ namespace NetGore.Tests
         /// </summary>
         class BitStreamByteArrayReaderWriterCreator : ReaderWriterCreatorBase
         {
-            readonly BitStream _writeStream = new BitStream(BitStreamMode.Write, _bufferSize);
+            readonly BitStream _writeStream = new BitStream(_bufferSize);
 
             /// <summary>
             /// When overridden in the derived class, gets if name lookup is supported.
@@ -122,7 +122,7 @@ namespace NetGore.Tests
         /// </summary>
         class BitStreamReaderWriterCreator : ReaderWriterCreatorBase
         {
-            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
+            readonly BitStream _stream = new BitStream(_bufferSize);
 
             /// <summary>
             /// When overridden in the derived class, gets if name lookup is supported.
@@ -147,7 +147,7 @@ namespace NetGore.Tests
             /// <returns>The IValueWriter instance.</returns>
             public override IValueReader GetReader()
             {
-                _stream.Mode = BitStreamMode.Read;
+                _stream.PositionBits = 0;
                 return _stream;
             }
 
@@ -225,7 +225,7 @@ namespace NetGore.Tests
         /// </summary>
         class MemoryBinaryValueReaderWriterCreator : ReaderWriterCreatorBase
         {
-            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
+            readonly BitStream _stream = new BitStream(_bufferSize);
 
             /// <summary>
             /// When overridden in the derived class, gets if name lookup is supported.
@@ -250,7 +250,7 @@ namespace NetGore.Tests
             /// <returns>The IValueWriter instance.</returns>
             public override IValueReader GetReader()
             {
-                _stream.Mode = BitStreamMode.Read;
+                _stream.PositionBits = 0;
                 return new BinaryValueReader(_stream);
             }
 

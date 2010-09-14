@@ -24,12 +24,12 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual(value, property.GetValue(cSrc, null));
 
             // Serialize
-            var bs = new BitStream(BitStreamMode.Write, 64);
+            var bs = new BitStream();
             cSrc.Serialize(bs);
 
             // Deserialize
             var cDest = new TestClass();
-            bs.Mode = BitStreamMode.Read;
+            bs.PositionBits = 0;
             cDest.Deserialize(bs);
 
             // Check
@@ -47,12 +47,12 @@ namespace NetGore.Tests.NetGore.IO
             Assert.AreEqual(value, property.GetValue(cSrc, null));
 
             // Serialize
-            var bs = new BitStream(BitStreamMode.Write, 64);
+            var bs = new BitStream();
             cSrc.Serialize(bs);
 
             // Deserialize
             var cDest = new NullableTestClass();
-            bs.Mode = BitStreamMode.Read;
+            bs.PositionBits = 0;
             cDest.Deserialize(bs);
 
             // Check

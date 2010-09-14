@@ -23,8 +23,6 @@ namespace NetGore.IO
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
-            if (reader.Mode != BitStreamMode.Read)
-                throw new ArgumentException("The BitStream must be set to Read.", "reader");
 
             _useEnumNames = useEnumNames;
             _reader = reader;

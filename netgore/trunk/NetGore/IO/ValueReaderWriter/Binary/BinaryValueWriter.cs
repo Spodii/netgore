@@ -39,9 +39,6 @@ namespace NetGore.IO
             if (writer == null)
                 throw new ArgumentNullException("writer");
 
-            if (writer.Mode != BitStreamMode.Write)
-                throw new ArgumentException("The BitStream must be set to Write.", "writer");
-
             _writer = writer;
         }
 
@@ -51,7 +48,7 @@ namespace NetGore.IO
         /// <param name="filePath">Path to the file to write to.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BinaryValueWriter(string filePath, bool useEnumNames = true) : this(new BitStream(BitStreamMode.Write, 8192))
+        public BinaryValueWriter(string filePath, bool useEnumNames = true) : this(new BitStream(8192))
         {
             _useEnumNames = useEnumNames;
             _filePath = filePath;

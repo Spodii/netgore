@@ -24,7 +24,7 @@ namespace NetGore.Network
 
         static void InitializeHandler(PacketWriter x)
         {
-            x.Reset(BitStreamMode.Write);
+            x.Reset();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using Lidgren.Network;
 
 // FUTURE: Add a Debug check to see if Write operations result in data loss
+// TODO: !! Inherit from Stream
 
 namespace NetGore.IO
 {
@@ -54,16 +55,6 @@ namespace NetGore.IO
         /// </summary>
         const int _highBit = (sizeof(byte) * 8) - 1;
 
-        /// <summary>
-        /// Default BitStreamBufferMode for reading
-        /// </summary>
-        static BitStreamBufferMode _defaultBufferReadMode = BitStreamBufferMode.Dynamic;
-
-        /// <summary>
-        /// Default BitStreamBufferMode for writing
-        /// </summary>
-        static BitStreamBufferMode _defaultBufferWriteMode = BitStreamBufferMode.Dynamic;
-
         readonly bool _useEnumNames = false;
 
         /// <summary>
@@ -72,246 +63,154 @@ namespace NetGore.IO
         byte[] _buffer;
 
         /// <summary>
-        /// Current position in the buffer. When reading, this is where the work
-        /// buffer came from. When writing, this is where the work buffer will go.
+        /// Current position in the buffer in bits.
         /// </summary>
-        int _bufferPos = 0;
+        int _positionBits = 0;
 
         /// <summary>
-        /// Highest index that has been written to
+        /// The number of bits in the buffer that contain valid data.
         /// </summary>
-        int _highestWrittenIndex = -1;
-
-        /// <summary>
-        /// The number of bits in the buffer that contain valid data to read.
-        /// </summary>
-        int _readLengthBits;
-
-        /// <summary>
-        /// Current I/O mode being used
-        /// </summary>
-        BitStreamMode _mode;
-
-        /// <summary>
-        /// How the buffer is handled when using reading operations 
-        /// </summary>
-        BitStreamBufferMode _readMode = _defaultBufferReadMode;
-
-        /// <summary>
-        /// Buffer used to read and write the current bits from. Even though
-        /// the variable is an int, it is used as a byte.
-        /// </summary>
-        int _workBuffer = 0;
-
-        /// <summary>
-        /// Current bit position for the working buffer on a scale of 7 to 0. 
-        /// 7 is farthest left bit, 0 is farthest right bit.
-        /// </summary>
-        int _workBufferPos = _highBit;
-
-        /// <summary>
-        /// How the buffer is handled when using writing operations
-        /// </summary>
-        BitStreamBufferMode _writeMode = _defaultBufferWriteMode;
+        int _lengthBits;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BitStream"/> class.
         /// </summary>
         /// <param name="buffer">The initial buffer (default mode set to read). A shallow copy of this object
-        /// is used, so altering the buffer directly will alter the stream.</param>
+        /// is used, so altering the buffer directly will also alter the stream.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="buffer"/> is null.</exception>
         public BitStream(byte[] buffer, bool useEnumNames = false)
         {
-            _useEnumNames = useEnumNames;
-
             if (buffer == null)
                 throw new ArgumentNullException("buffer");
-            if (buffer.Length == 0)
-                throw new ArgumentException("buffer.Length == 0", "buffer");
 
-            _mode = BitStreamMode.Read;
+            _useEnumNames = useEnumNames;
             SetBuffer(buffer);
         }
+
+        const int _defaultBufferSize = 64;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BitStream"/> class.
         /// </summary>
-        /// <param name="mode">Initial I/O mode to create the bit stream in</param>
-        /// <param name="bufferSize">Initial size of the internal buffer in bytes (must be greater than 0)</param>
+        /// <param name="bufferByteSize">Initial size of the internal buffer in bytes (must be greater than 0),</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BitStream(BitStreamMode mode, int bufferSize, bool useEnumNames = false)
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferByteSize"/> is less than or equal to 0.</exception>
+        public BitStream(int bufferByteSize = _defaultBufferSize, bool useEnumNames = false)
         {
+            if (bufferByteSize <= 0)
+                throw new ArgumentOutOfRangeException("bufferByteSize", "BufferByteSize must be greater than 0.");
+
             _useEnumNames = useEnumNames;
-
-            // If the buffer size is invalid, silently fix it
-            if (bufferSize < 1)
-            {
-                Debug.Fail("bufferSize less than 1.");
-                bufferSize = 2;
-            }
-
-            _mode = mode;
-            _buffer = new byte[bufferSize];
+            _buffer = new byte[bufferByteSize];
         }
 
         /// <summary>
-        /// Gets the length of the internal buffer in bytes.
+        /// Gets or sets the length of the internal buffer in bytes. When setting the value, the value
+        /// must be greater than or equal to the <see cref="BitStream.LengthBytes"/>.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than <see cref="BitStream.LengthBytes"/>.</exception>
         public int BufferLength
         {
             get { return _buffer.Length; }
+            set
+            {
+                if (value < Length)
+                {
+                    const string errmsg = "value must be greater than or equal to the LengthBytes." +
+                        " If you want to truncate the buffer below this value, change the length first before changing the buffer length.";
+                    throw new ArgumentOutOfRangeException("value", errmsg);
+                }
+
+                Array.Resize(ref _buffer, value);
+            }
         }
 
         /// <summary>
-        /// Gets or sets the default BitStreamMode used for the read buffer for new BitStreams.
-        /// </summary>
-        public static BitStreamBufferMode DefaultReadBufferMode
-        {
-            get { return _defaultBufferReadMode; }
-            set { _defaultBufferReadMode = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the default BitStreamMode used for the write buffer for new BitStreams.
-        /// </summary>
-        public static BitStreamBufferMode DefaultWriteBufferMode
-        {
-            get { return _defaultBufferWriteMode; }
-            set { _defaultBufferWriteMode = value; }
-        }
-
-        /// <summary>
-        /// Gets the index of the highest byte written to.
-        /// </summary>
-        public int HighestWrittenIndex
-        {
-            get { return _highestWrittenIndex; }
-        }
-
-        /// <summary>
-        /// Gets the length of the bit stream in bytes. For writing, this is the highest
-        /// byte written to the buffer, plus another byte if there are any partial bits.
-        /// For reading, this is the length of the data that contains useful information.
+        /// Gets the length of the BitStream in full bytes. This value is always rounded up when there
+        /// are partial bytes written. For example, if you write anything, even just 1 bit, it will be greater than 0.
         /// </summary>
         public int Length
         {
             get
             {
-                if (Mode == BitStreamMode.Write)
-                {
-                    if (_workBufferPos == _highBit)
-                        return HighestWrittenIndex + 1;
-                    else
-                        return HighestWrittenIndex + 2;
-                }
-                else
-                    return (int)Math.Ceiling(_readLengthBits / 8f);
+                return LengthBytes;
             }
         }
 
         /// <summary>
-        /// Gets or sets the length of the bit stream in bits. For writing, this is the highest
-        /// bit, including any partial bits that have not yet been written to the buffer. 
-        /// For reading, this is the length of the data that contains useful information.
+        /// Gets the length of the BitStream in full bytes. This value is always rounded up when there
+        /// are partial bytes written. For example, if you write anything, even just 1 bit, it will be greater than 0.
+        /// </summary>
+        public int LengthBytes
+        {
+            get
+            {
+                return (int)Math.Ceiling(_lengthBits / (float)_bitsByte);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the length of the BitStream in bits. If the length is set to a value less than the
+        /// <see cref="PositionBits"/>, then the <see cref="PositionBits"/> will be changed to be equal
+        /// to the new length.
         /// </summary>
         public int LengthBits
         {
             get
             {
-                if (Mode == BitStreamMode.Write)
-                    return (HighestWrittenIndex + 1) * _bitsByte + (_highBit - _workBufferPos);
-                else
-                    return _readLengthBits;
+                return _lengthBits;
             }
             set
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException("value");
 
-                if (Mode == BitStreamMode.Write)
-                    Seek(BitStreamSeekOrigin.Beginning, value);
-                else
-                    _readLengthBits = value;
+                _lengthBits = value;
+
+                // When the position exceeds the length, update the position
+                if (_positionBits > _lengthBits)
+                {
+                _positionBits = _lengthBits;
+            }
             }
         }
 
         /// <summary>
-        /// Gets or sets the current I/O mode being used. If the mode changes, then the working buffer
-        /// will be flushed (if writing) and the position will be reset back to the start.
-        /// </summary>
-        public BitStreamMode Mode
-        {
-            get { return _mode; }
-            set
-            {
-                // Check that the mode is different
-                if (_mode == value)
-                    return;
-
-                // If we're in the middle of writing, flush the work buffer to save it
-                if (_workBufferPos != _highBit && Mode == BitStreamMode.Write)
-                    FlushWorkBuffer();
-
-                if (Mode == BitStreamMode.Write)
-                    _readLengthBits = LengthBits;
-
-                // Reset the stream
-                _mode = value;
-                _bufferPos = 0;
-                _workBufferPos = _highBit;
-
-                // Set the working buffer
-                if (_mode == BitStreamMode.Read)
-                    _workBuffer = _buffer[_bufferPos];
-                else
-                    _workBuffer = 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the position of the buffer in bits. When written to the byte buffer, if there are any bits
-        /// in the working bit buffer, this value will be rounded up to the nearest byte (8 bits).
+        /// Gets or sets the position of the buffer in bits.
         /// </summary>
         public int PositionBits
         {
-            get { return _bufferPos * _bitsByte + (_highBit - _workBufferPos); }
+            get { return _positionBits; }
+            set { _positionBits = value;
+
+                // When the position exceeds the length, update the length
+            if (_positionBits > _lengthBits)
+                _lengthBits = _positionBits;
+            }
         }
 
         /// <summary>
-        /// Gets the position of the internal buffer in bytes
+        /// Gets the position of the stream in bytes.
+        /// This value is always rounded down when on a partial bit.
         /// </summary>
         public int PositionBytes
         {
-            get { return _bufferPos; }
+            get {
+                var ret = PositionBits / _bitsByte;
+                Debug.Assert(ret == (int)Math.Floor(PositionBits / (float)_bitsByte));
+                return ret; }
         }
 
         /// <summary>
-        /// Gets or sets how the buffer is handled when using reading operations
-        /// </summary>
-        public BitStreamBufferMode ReadMode
-        {
-            get { return _readMode; }
-            set { _readMode = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets how the buffer is handled when using writing operations
-        /// </summary>
-        public BitStreamBufferMode WriteMode
-        {
-            get { return _writeMode; }
-            set { _writeMode = value; }
-        }
-
-        /// <summary>
-        /// If a number of bits can fit into the buffer without overflowing. If
+        /// Checks if a number of bits can fit into the buffer without overflowing. If
         /// the buffer is set to automatically expand, this will always be true.
         /// </summary>
-        /// <param name="numBits">Number of bits to check to fit into the buffer</param>
-        /// <returns>True if the bits can fit, else false</returns>
-        public bool CanFitBits(int numBits)
+        /// <param name="numBits">Number of bits to check to fit into the buffer.</param>
+        /// <returns>True if the bits can fit, else false.</returns>
+        bool CanFitBits(int numBits)
         {
             if (numBits < 1)
             {
@@ -319,12 +218,12 @@ namespace NetGore.IO
                 return true;
             }
 
-            return _bufferPos + Math.Ceiling(((numBits - _workBufferPos - 1f) / _bitsByte)) < _buffer.Length;
+            // Check if the bits can fit
+            return PositionBits + numBits <= BufferLength * _bitsByte;
         }
 
         /// <summary>
-        /// Copies the contents of the BitStream to a <see cref="NetOutgoingMessage"/>. This works in both
-        /// <see cref="BitStreamMode.Read"/> and <see cref="BitStreamMode.Write"/>.
+        /// Copies the contents of the BitStream to a <see cref="NetOutgoingMessage"/>.
         /// </summary>
         /// <param name="target">The <see cref="NetOutgoingMessage"/> to copy the contents of this <see cref="BitStream"/> to.</param>
         public void CopyTo(NetOutgoingMessage target)
@@ -334,27 +233,31 @@ namespace NetGore.IO
 #endif
             int i = 0;
 
+            var fullBytes = (int)Math.Floor(LengthBits / (float)_bitsByte);
+
             // Write full 32-bit integers
-            while (i + 3 <= HighestWrittenIndex)
+            while (i + 3 <= fullBytes)
             {
-                var v = (_buffer[i] << 24) | (_buffer[i+1] << 16) | (_buffer[i+2] << 8)|(_buffer[i+3]);
+                var v = (_buffer[i] << (_bitsByte * 3)) | (_buffer[i + 1] << (_bitsByte * 2)) | (_buffer[i + 2] << (_bitsByte * 1)) | (_buffer[i + 3]);
                 i += 4;
                 target.Write((uint)v);
             }
 
             // Write full 8-bit integers
-            while (i <= HighestWrittenIndex)
+            while (i <= fullBytes)
             {
                 target.Write(_buffer[i]);
                 i++;
             }
 
-            // Write the partial chunk of the work buffer
-            if (Mode == BitStreamMode.Write && _workBufferPos != _highBit)
+            // Write the remaining bits that don't make up a full byte
+            var remainingBits = LengthBits % _bitsByte;
+            if (remainingBits > 0)
             {
-                for (var j = _highBit; j > _workBufferPos; j--)
+                var remainingData = _buffer[i];
+                for (var j = _highBit; j > _highBit - remainingBits; j--)
                 {
-                    target.Write((_workBuffer & (1 << j)) != 0);
+                    target.Write((remainingData & (1 << j)) != 0);
                 }
             }
 
@@ -376,97 +279,29 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets a part of the buffer, returns it, and shifts all bytes in the buffer down
-        /// to fill in the gap. Can be used to grab a segment of the buffer without having to
-        /// flush the current partial bit being written (as is the case with GetBuffer()), and
-        /// without having to get the whole buffer. Keep in mind that the requested segment will
-        /// be completely removed, which will also result in the stream's position to change.
-        /// </summary>
-        /// <param name="segmentLength">Length of the requested segment, in bytes, from the start of the buffer</param>
-        /// <returns>A deep copy of the requested buffer</returns>
-        public byte[] DequeueBuffer(int segmentLength)
-        {
-            var bufLen = Length;
-
-            if (segmentLength > bufLen)
-            {
-                throw new ArgumentOutOfRangeException("segmentLength",
-                                                      "The dequeue segment length must be less or equal to than the BitStream.Length.");
-            }
-            if (segmentLength < 1)
-                throw new ArgumentOutOfRangeException("segmentLength", "The dequeue segment length must be greater than 0.");
-
-            // Create the segment and copy over the bytes
-            var segment = new byte[segmentLength];
-            Buffer.BlockCopy(_buffer, 0, segment, 0, segmentLength);
-
-            // Shift down the contents in the buffer to fill in the gap
-            Buffer.BlockCopy(_buffer, segmentLength + 1, _buffer, 0, bufLen - segmentLength);
-
-            // We also have to alter the buffer position tracker
-            _bufferPos -= segmentLength;
-            _highestWrittenIndex -= segmentLength;
-
-            // Return the segment copy now that we are done mucking with the buffer
-            return segment;
-        }
-
-        /// <summary>
-        /// Expands the buffer if the BitStreamMode for the current Mode is set to Dynamic, or throws an
-        /// OverflowException if the Mode is set to Static.
+        /// Expands the buffer.
         /// </summary>
         void ExpandBuffer()
         {
-            switch (Mode)
-            {
-                case BitStreamMode.Read:
-                    if (ReadMode == BitStreamBufferMode.Static)
-                        throw new OverflowException("Can not read past end of buffer.");
-                    break;
+            // The amount we expand will always be enough to fit in at least a 32-bit integer, and that is the largest
+            // number of bits we write to or read from the buffer at any one time, so this will always be enough.
 
-                case BitStreamMode.Write:
-                    if (WriteMode == BitStreamBufferMode.Static)
-                        throw new OverflowException("Can not write past end of buffer.");
-                    break;
-            }
+            // Always increase the buffer by at least 6 bytes.
+            var newSize = _buffer.Length + 6;
 
-            var newSize = Math.Max(_buffer.Length + 8, _buffer.Length * 2);
+            // Round up to the next power of two (if not already there)
+            newSize = BitOps.NextPowerOf2(newSize);
+
+            // Resize the buffer
             Array.Resize(ref _buffer, newSize);
         }
 
         /// <summary>
-        /// Writes out the current work buffer to the buffer and sets up a new one.
-        /// </summary>
-        void FlushWorkBuffer()
-        {
-            RequireMode(BitStreamMode.Write);
-
-            // Check for a new highest written index
-            if (_bufferPos > HighestWrittenIndex)
-                _highestWrittenIndex = _bufferPos;
-
-            // Write out the work buffer to the buffer, and increase the buffer offset
-            _buffer[_bufferPos] = (byte)_workBuffer;
-            _bufferPos++;
-
-            // Reset the work buffer
-            _workBufferPos = _highBit;
-            _workBuffer = 0;
-        }
-
-        /// <summary>
-        /// Gets the byte buffer (shallow copy) used by the BitStream. When called in Write mode, 
-        /// this will flush out the working buffer (if one exists), so do not call this until 
-        /// you are sure you are done writing! The buffer may contain empty indices unless 
-        /// you call TrimExcess first.
+        /// Gets the byte buffer (shallow copy) used by the BitStream.
         /// </summary>
         /// <returns>Byte buffer used by the BitStream (shallow copy).</returns>
         public byte[] GetBuffer()
         {
-            // Flush the working buffer
-            if (_workBufferPos != _highBit && Mode == BitStreamMode.Write)
-                FlushWorkBuffer();
-
             return _buffer;
         }
 
@@ -478,15 +313,10 @@ namespace NetGore.IO
         /// <returns>Byte buffer containing a copy of BitStream's buffer.</returns>
         public byte[] GetBufferCopy()
         {
-            // FUTURE: I can probably make the WorkBuffer not flush by just copying it over to the buffer copy
-
-            // Get the buffer
-            var buffer = GetBuffer();
-
             // Create the byte array to hold the copy and transfer over the data
-            var length = Length;
-            var ret = new byte[length];
-            Buffer.BlockCopy(buffer, 0, ret, 0, length);
+            var len = LengthBytes;
+            var ret = new byte[len];
+            Buffer.BlockCopy(_buffer, 0, ret, 0, len);
 
             // Return the copy
             return ret;
@@ -517,17 +347,11 @@ namespace NetGore.IO
         public void MoveToNextByte()
         {
             // Don't move if we're already on a perfect byte
-            if (_workBufferPos == _highBit)
+            var bitsToMove = _bitsByte - (PositionBits % _bitsByte);
+            if (bitsToMove == 0)
                 return;
 
-            if (Mode == BitStreamMode.Write)
-                FlushWorkBuffer();
-            else
-            {
-                _workBufferPos = _highBit;
-                _bufferPos++;
-                _workBuffer = _buffer[_bufferPos];
-            }
+            Seek(BitStreamSeekOrigin.Current, bitsToMove);
         }
 
         /// <summary>
@@ -577,143 +401,97 @@ namespace NetGore.IO
             if (numBits > _bitsInt || numBits < 1)
                 throw new ArgumentOutOfRangeException("numBits", string.Format("numBits contains an invalid range ({0})", numBits));
 
-            RequireMode(BitStreamMode.Read);
-
             // Check if the buffer will overflow
             if (!CanFitBits(numBits))
                 ExpandBuffer();
 
             int ret;
-            if (numBits % _bitsByte == 0 && _workBufferPos == 7)
+            if ((numBits % _bitsByte == 0) && (PositionBits % _bitsByte == 0))
             {
+                var bufferIndex = (PositionBits / _bitsByte);
+
                 // Optimal scenario - buffer is fresh and we're grabbing whole bytes,
                 // so just skip the buffer and copy the memory
                 switch (numBits)
                 {
-                    case _bitsByte: // Perfect byte copy
-                        ret = _buffer[_bufferPos + 0];
-                        _bufferPos += 1;
+                    case _bitsByte * 1: // Perfect byte copy
+                        ret = _buffer[bufferIndex + 0];
                         break;
 
                     case _bitsByte * 2: // Perfect short copy
-                        ret = (_buffer[_bufferPos + 0] << _bitsByte) | _buffer[_bufferPos + 1];
-                        _bufferPos += 2;
+                        ret = (_buffer[bufferIndex + 0] << _bitsByte) | _buffer[bufferIndex + 1];
                         break;
 
                     case _bitsByte * 3: // Perfect bigger-than-short-but-not-quite-int-but-we-love-him-anyways copy
-                        ret = (_buffer[_bufferPos + 0] << (_bitsByte * 2)) | (_buffer[_bufferPos + 1] << _bitsByte) |
-                              _buffer[_bufferPos + 2];
-                        _bufferPos += 3;
+                        ret = (_buffer[bufferIndex + 0] << (_bitsByte * 2)) | (_buffer[bufferIndex + 1] << _bitsByte) |
+                              _buffer[bufferIndex + 2];
                         break;
 
                     case _bitsByte * 4: // Perfect int copy
-                        ret = (_buffer[_bufferPos + 0] << (_bitsByte * 3)) | (_buffer[_bufferPos + 1] << (_bitsByte * 2)) |
-                              (_buffer[_bufferPos + 2] << _bitsByte) | _buffer[_bufferPos + 3];
-                        _bufferPos += 4;
+                        ret = (_buffer[bufferIndex + 0] << (_bitsByte * 3)) | (_buffer[bufferIndex + 1] << (_bitsByte * 2)) |
+                              (_buffer[bufferIndex + 2] << _bitsByte) | _buffer[bufferIndex + 3];
                         break;
 
                     default: // Compiler complains if we don't assign ret...
                         throw new Exception("Huh... how did this happen?");
                 }
 
-                // Get the new work buffer
-                RefillWorkBufferWithoutProgressing();
+                // Update the stream position
+                PositionBits += numBits;
             }
             else
             {
-                /*
-                // This commented block is a very basic, very slow, but very stable alternative
-                ret = 0;
-                int retPos = numBits - 1;
-                while (retPos >= 0)
-                {
-                    if (ReadBool())
-                        ret |= 1 << retPos;
-                    --retPos;
-                }
-                */
-
                 // Loop until all the bits have been read
                 ret = 0;
                 var retPos = numBits - 1;
                 do
                 {
-                    // Check which will run out of bits first - the buffer or the value
-                    if (retPos <= _workBufferPos)
+                    // Check how much of the current byte in the buffer can be read
+                    var bufferIndex = (PositionBits / _bitsByte);
+                    var bufferByteBitsLeft = _bitsByte - (PositionBits % _bitsByte);
+
+                    // *** Find the number of bits to read ***
+                    int bitsToRead;
+
+                    // Check if we can fit the whole piece of the buffer into the return value
+                    if (bufferByteBitsLeft > retPos + 1)
                     {
-                        // Full read (_workBufferPos > -1, done reading)
-                        // Set the bits onto the return value at the correct position
-
-                        // Old method:
-                        // ret |= GetBits(_workBuffer, _workBufferPos, retPos);
-
-                        // Optimized and inlined (about 2.5x faster):
-                        var value = _workBuffer >> (_workBufferPos - retPos);
-                        var mask = (1 << (retPos + 1)) - 1;
-                        ret |= value & mask;
-
-                        // Decrease the work buffer and refill it if needed
-                        _workBufferPos -= retPos + 1;
-                        if (_workBufferPos == -1)
-                            RefillWorkBuffer();
-                        break;
+                        // Only use the chunk of the buffer we can fit into the return value
+                        bitsToRead = retPos + 1;
                     }
                     else
                     {
-                        // Partial read (_workBufferPos = -1, will need to read again)
-                        // Set the bits onto the return value at the correct position
-
-                        // Old method:
-                        // ret |= GetBits(_workBuffer, _workBufferPos, _workBufferPos) << (retPos - _workBufferPos);
-
-                        // Optimized and inlined (about 10x faster):
-                        var offset = retPos - _workBufferPos;
-                        var mask = (1 << (_workBufferPos + 1)) - 1;
-                        ret |= (_workBuffer & mask) << offset;
-
-                        // Get the new work buffer and prepare for another read
-                        retPos -= _workBufferPos + 1;
-                        RefillWorkBuffer();
+                        // Use the remainder of the bits at the current buffer position
+                        bitsToRead = bufferByteBitsLeft;
                     }
+
+                    // *** Add the bits to the return value ***
+
+                    // Create the mask to apply to the value from the buffer
+                    var mask = (1 << bitsToRead) - 1;
+
+                    // Grab the value from the buffer and shift it over so it starts with the bits we are interested in
+                    var value = _buffer[bufferIndex] >> (bufferByteBitsLeft - bitsToRead);
+
+                    // Apply the mask to zero out values we are not interested in
+                    value &= mask;
+
+                    // Shift the value to the left to align it to where we want it on the return value
+                    value <<= (retPos - (bitsToRead - 1));
+
+                    // OR the value from the buffer onto the return value
+                    ret |= value;
+
+                    // Decrease the retPos by the number of bits we read and increase the stream position
+                    retPos -= bitsToRead;
+                    PositionBits += bitsToRead;
                 }
-                while (true);
+                while (retPos >= 0);
+
+                Debug.Assert(retPos == -1);
             }
 
             return ret;
-        }
-
-        void RefillWorkBuffer()
-        {
-            RequireMode(BitStreamMode.Read);
-
-            _bufferPos++;
-            RefillWorkBufferWithoutProgressing();
-        }
-
-        void RefillWorkBufferWithoutProgressing()
-        {
-            RequireMode(BitStreamMode.Read);
-
-            _workBufferPos = _highBit;
-            if (_bufferPos < _buffer.Length)
-                _workBuffer = _buffer[_bufferPos];
-            else
-                _workBuffer = 0;
-        }
-
-        /// <summary>
-        /// Requires the BitStream to be in the specified mode, throwing an InvalidOperationException
-        /// if the current BitStreamMode does not match the <paramref name="requiredMode"/>.
-        /// </summary>
-        /// <param name="requiredMode">Required BitStreamMode for the BitStream to be in.</param>
-        void RequireMode(BitStreamMode requiredMode)
-        {
-            if (Mode != requiredMode)
-            {
-                const string errmsg = "Operation requires the BitStream to be in mode `{0}`.";
-                var s = string.Format(errmsg, requiredMode);
-                throw new InvalidOperationException(s);
-            }
         }
 
         /// <summary>
@@ -722,28 +500,8 @@ namespace NetGore.IO
         /// </summary>
         public void Reset()
         {
-            // FUTURE: I can probably avoid clearing the array when in write mode since it will just be overwritten. Could use something like an IsDirty bool, which would clear the buffer if the mode changes.
-
-            // We have to check if anything was even written to the buffer since, if nothing was,
-            // _highestWrittenIndex will be -1
-            if (HighestWrittenIndex >= 0)
-                Array.Clear(_buffer, 0, HighestWrittenIndex);
-
-            _bufferPos = 0;
-            _workBufferPos = _highBit;
-            _workBuffer = 0;
-            _highestWrittenIndex = -1;
-            _readLengthBits = 0;
-        }
-
-        /// <summary>
-        /// Resets the bit stream content and variables to a "like-new" state.
-        /// </summary>
-        /// <param name="mode">Type of BitStreamMode to reset to.</param>
-        public void Reset(BitStreamMode mode)
-        {
-            Reset();
-            _mode = mode;
+            _lengthBits = 0;
+            _positionBits = 0;
         }
 
         /// <summary>
@@ -753,91 +511,16 @@ namespace NetGore.IO
         /// <param name="bits">Number of bits to move.</param>
         public void Seek(BitStreamSeekOrigin origin, int bits)
         {
-            // Check if the buffer position needs to roll over
-            if (_workBufferPos == -1)
-            {
-                Debug.Fail("I don't think this should ever be called...");
-                if (Mode == BitStreamMode.Write)
-                    FlushWorkBuffer();
-            }
-
-            // If writing, flush the current work buffer
-            // It is vital we do this before moving the buffer
-            if (Mode == BitStreamMode.Write && _workBufferPos != _highBit)
-            {
-                _buffer[_bufferPos] = (byte)_workBuffer;
-                if (HighestWrittenIndex < _bufferPos)
-                    _highestWrittenIndex = _bufferPos;
-            }
-
-            // Now that the work buffer has been flushed and we're safe, we can seek
             switch (origin)
             {
                 case BitStreamSeekOrigin.Beginning:
-                    _bufferPos = 0;
-                    _workBufferPos = 7;
-                    Seek(bits);
+                    PositionBits = bits;
                     break;
 
                 case BitStreamSeekOrigin.Current:
-                    Seek(bits);
+                    PositionBits += bits;
                     break;
             }
-        }
-
-        /// <summary>
-        /// Moves the buffer by a number of bits.
-        /// </summary>
-        /// <param name="bits">Number of bits to move.</param>
-        void Seek(int bits)
-        {
-            // Check if we have anything to move
-            if (bits == 0)
-                return;
-
-            if (bits % _bitsByte == 0)
-            {
-                // Move by bulk
-                _bufferPos += bits / _bitsByte;
-            }
-            else
-            {
-                var moveBits = bits;
-
-                // SeekFromCurrentPosition forward
-                while (moveBits > 0)
-                {
-                    _workBufferPos--;
-                    moveBits--;
-                    if (_workBufferPos == -1)
-                    {
-                        _workBufferPos = _highBit;
-                        _bufferPos++;
-                    }
-                }
-
-                // SeekFromCurrentPosition backwards
-                while (moveBits < 0)
-                {
-                    _workBufferPos++;
-                    moveBits++;
-                    if (_workBufferPos == _bitsByte)
-                    {
-                        _workBufferPos = 0;
-                        _bufferPos--;
-                    }
-                }
-            }
-
-            // Validate the buffer position
-            if (_bufferPos < 0)
-                throw new OverflowException("Can not seek past start of buffer");
-
-            if (_bufferPos >= _buffer.Length)
-                ExpandBuffer();
-
-            // Get the new work buffer
-            _workBuffer = _buffer[_bufferPos];
         }
 
         /// <summary>
@@ -849,8 +532,8 @@ namespace NetGore.IO
             Reset();
 
             _buffer = buffer;
-            _workBuffer = _buffer[0];
-            _readLengthBits = buffer.Length * 8;
+            LengthBits = buffer.Length * _bitsByte;
+            PositionBits = 0;
         }
 
         /// <summary>
@@ -874,26 +557,18 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Trims the excess indices off of the end of the buffer. Any existing
-        /// working write buffer will be flushed into the buffer, so do not call until
-        /// done writing.
+        /// Trims down the internal buffer to only fit the desired data. This will result in the internal buffer
+        /// length being equal to <see cref="BitStream.Length"/>.
         /// </summary>
         public void TrimExcess()
         {
-            // Flush write buffer
-            if (_workBufferPos != _highBit && Mode == BitStreamMode.Write)
-                FlushWorkBuffer();
-
-            // Scale down
-            Array.Resize(ref _buffer, HighestWrittenIndex + 1);
+            Array.Resize(ref _buffer, Length);
         }
 
         void WriteSigned(int value, int numBits)
         {
             if (numBits > _bitsInt || numBits < 1)
                 throw new ArgumentOutOfRangeException("numBits", "numBits must be between 1 and 32.");
-
-            RequireMode(BitStreamMode.Write);
 
             // Treat single bits as just that - a single bit
             // No sign will be written for 1-bit numbers, since that'd just be stupid... you stupid
@@ -951,88 +626,114 @@ namespace NetGore.IO
             if (numBits > _bitsInt || numBits < 1)
                 throw new ArgumentOutOfRangeException("numBits", "Value must be between 1 and 32.");
 
-            RequireMode(BitStreamMode.Write);
-
             // Check if the buffer will overflow
             if (!CanFitBits(numBits))
                 ExpandBuffer();
 
-            if (_workBufferPos == _highBit && (numBits % _bitsByte == 0))
+            if ((PositionBits % _bitsByte == 0) && (numBits % _bitsByte == 0))
             {
+                var bufferIndex = (PositionBits / _bitsByte);
+
                 // Optimal scenario - buffer is fresh and we're writing a byte, so
                 // we can just do a direct memory copy
                 switch (numBits)
                 {
-                    case _bitsByte: // Perfect byte writing
-                        _buffer[_bufferPos++] = (byte)(value);
+                    case _bitsByte * 1: // Perfect byte writing
+                        _buffer[bufferIndex + 0] = (byte)(value >> (_bitsByte * 0));
                         break;
 
                     case _bitsByte * 2: // Perfect short writing
-                        _buffer[_bufferPos++] = (byte)(value >> 8);
-                        _buffer[_bufferPos++] = (byte)(value);
+                        _buffer[bufferIndex + 0] = (byte)(value >> (_bitsByte * 1));
+                        _buffer[bufferIndex + 1] = (byte)(value >> (_bitsByte * 0));
                         break;
 
                     case _bitsByte * 3: // Perfect 24-bit writing
-                        _buffer[_bufferPos++] = (byte)(value >> 16);
-                        _buffer[_bufferPos++] = (byte)(value >> 8);
-                        _buffer[_bufferPos++] = (byte)(value);
+                        _buffer[bufferIndex + 0] = (byte)(value >> (_bitsByte * 2));
+                        _buffer[bufferIndex + 1] = (byte)(value >> (_bitsByte * 1));
+                        _buffer[bufferIndex + 2] = (byte)(value >> (_bitsByte * 0));
                         break;
 
                     case _bitsByte * 4: // Perfect int writing
-                        _buffer[_bufferPos++] = (byte)(value >> 24);
-                        _buffer[_bufferPos++] = (byte)(value >> 16);
-                        _buffer[_bufferPos++] = (byte)(value >> 8);
-                        _buffer[_bufferPos++] = (byte)(value);
+                        _buffer[bufferIndex + 0] = (byte)(value >> (_bitsByte * 3));
+                        _buffer[bufferIndex + 1] = (byte)(value >> (_bitsByte * 2));
+                        _buffer[bufferIndex + 2] = (byte)(value >> (_bitsByte * 1));
+                        _buffer[bufferIndex + 3] = (byte)(value >> (_bitsByte * 0));
                         break;
 
                     default:
                         throw new Exception("Huh... how did this happen?");
                 }
 
-                // Update the highest written index
-                if (_bufferPos - 1 > HighestWrittenIndex)
-                    _highestWrittenIndex = _bufferPos - 1;
+                // Update the stream position
+                PositionBits += numBits;
             }
             else
             {
-                /*
-                // This commented block is a very basic, very slow, but very stable alternative
-                int valueBitPos = numBits - 1;
-                while (valueBitPos >= 0)
-                {
-                    WriteBit(value & (1 << valueBitPos));
-                    valueBitPos--;
-                }
-                */
-
                 // Non-optimal scenario - we have to use some sexy bit hacking
-                var valueBitPos = numBits - 1;
+
+                // Loop until all the bits have been written
+                var valuePos = numBits - 1;
                 do
                 {
-                    if (valueBitPos <= _workBufferPos)
-                    {
-                        // All bits can fit into the buffer
-                        var valueMask = ((1 << (valueBitPos + 1)) - 1);
-                        _workBuffer |= (value & valueMask) << (_workBufferPos - valueBitPos);
-                        _workBufferPos -= valueBitPos + 1;
+                    // Check how much of the current byte in the buffer can be written
+                    var bufferIndex = (PositionBits / _bitsByte);
+                    var bufferByteBitsLeft = _bitsByte - (PositionBits % _bitsByte);
 
-                        // If the buffer is at -1, increase the position
-                        if (_workBufferPos == -1)
-                            FlushWorkBuffer();
-                        break;
+                    // *** Find the number of bits to write ***
+                    int bitsToWrite;
+
+                    // Check if we can fit the whole piece of the value into the buffer
+                    if (valuePos + 1 > bufferByteBitsLeft)
+                    {
+                        // Write to the remaining bits at the current buffer byte
+                        bitsToWrite = bufferByteBitsLeft;
                     }
                     else
                     {
-                        // Only some of the bits can fit into the buffer
-                        var valueMask = ((1 << (_workBufferPos + 1)) - 1);
-                        _workBuffer |= (value >> (valueBitPos - _workBufferPos)) & valueMask;
-                        valueBitPos -= _workBufferPos + 1;
-
-                        // Obviously the buffer is full if not all bits fit in it
-                        FlushWorkBuffer();
+                        // Only write the remaining bits in the value
+                        bitsToWrite = valuePos + 1;
                     }
+
+                    // *** Add the bits to the buffer ***
+
+                    // Create the mask to apply to the value
+                    var mask = (1 << bitsToWrite) - 1;
+
+                    // Shift over the value so that it starts with only the bits we are intersted in
+                    var valueToWrite = value >> ((valuePos + 1) - bitsToWrite);
+
+                    // Apply the mask to zero out values we are not interested in
+                    valueToWrite &= mask;
+
+                    // Shift the value to the left to align it to where we want it in the buffer
+                    valueToWrite <<= bufferByteBitsLeft - bitsToWrite;
+
+                    // Grab the current buffer value
+                    var newBufferValue = _buffer[bufferIndex];
+
+                    // Make sure we zero out the bits that we are about to write to so that way we can
+                    // be sure that, when overwriting existing values, 0's are still written properly even if
+                    // the bit in the buffer is a 1. We do this by taking the mask we have from earlier (which contains
+                    // the mask, stored in the right-most bits) and shifting it over to the position we want (giving
+                    // us a mask for the bits we are writing), then using a bitwise NOT to create a mask for all the
+                    // other bits. Finally, use a bitwise AND to zero out all bits that we will be writing to.
+                    byte clearMask = (byte)(mask << (bufferByteBitsLeft - bitsToWrite));
+                    clearMask = (byte)~clearMask;
+                    newBufferValue &= clearMask;
+
+                    // OR the value onto the buffer value
+                    newBufferValue |= (byte)valueToWrite;
+
+                    // Copy the value back into the buffer
+                    _buffer[bufferIndex] = newBufferValue;
+
+                    // Decrease the valuePos by the number of bits we wrote, and increase the stream position
+                    valuePos -= bitsToWrite;
+                    PositionBits += bitsToWrite;
                 }
-                while (true);
+                while (valuePos >= 0);
+
+                Debug.Assert(valuePos == -1);
             }
         }
     }
