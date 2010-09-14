@@ -20,12 +20,9 @@ namespace NetGore.Network
         /// <summary>
         /// Initializes a new instance of the <see cref="PacketWriter"/> class.
         /// </summary>
-        internal PacketWriter(IObjectPool<PacketWriter> objectPool) : base(BitStreamMode.Write, 128)
+        internal PacketWriter(IObjectPool<PacketWriter> objectPool) : base(128)
         {
             _objectPool = objectPool;
-
-            ReadMode = BitStreamBufferMode.Static;
-            WriteMode = BitStreamBufferMode.Dynamic;
         }
 
         /// <summary>

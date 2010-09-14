@@ -21,14 +21,14 @@ namespace NetGore.EditorTools.NPCChat
             if (source == null)
                 return;
 
-            var stream = new BitStream(BitStreamMode.Write, 256);
+            var stream = new BitStream(256);
 
             using (var writer = new BinaryValueWriter(stream))
             {
                 source.Write(writer);
             }
 
-            stream.Mode = BitStreamMode.Read;
+            stream.PositionBits = 0;
 
             IValueReader reader = new BinaryValueReader(stream);
 
@@ -71,14 +71,14 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="dest">The NPCChatConditionalCollectionBase to copy the values into.</param>
         public void CopyValuesTo(NPCChatConditionalCollectionBase dest)
         {
-            var stream = new BitStream(BitStreamMode.Write, 256);
+            var stream = new BitStream(256);
 
             using (var writer = new BinaryValueWriter(stream))
             {
                 Write(writer);
             }
 
-            stream.Mode = BitStreamMode.Read;
+            stream.PositionBits = 0;
 
             IValueReader reader = new BinaryValueReader(stream);
 

@@ -12,13 +12,13 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void ReadWriteFromHelperUsingPropertyTest()
         {
-            var bs = new BitStream(BitStreamMode.Write, 512);
+            var bs = new BitStream(512);
             var a = new ClassB { A = "asdf", B = 512 };
             var b = new ClassB();
 
             a.WriteState(bs);
 
-            bs.Mode = BitStreamMode.Read;
+            bs.PositionBits = 0;
 
             b.ReadState(bs);
 
@@ -29,13 +29,13 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void ReadWriteFromInterfaceTest()
         {
-            var bs = new BitStream(BitStreamMode.Write, 512);
+            var bs = new BitStream(512);
             var a = new ClassA { A = "asdf", B = 512 };
             var b = new ClassA();
 
             a.WriteState(bs);
 
-            bs.Mode = BitStreamMode.Read;
+            bs.PositionBits = 0;
 
             b.ReadState(bs);
 

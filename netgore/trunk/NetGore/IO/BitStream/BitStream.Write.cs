@@ -671,14 +671,14 @@ namespace NetGore.IO
 #endif
 
             // Read full 32-bit integers
-            while (source.LengthBits - source.Position >= 32)
+            while (source.LengthBits - source.Position >= _bitsInt)
             {
                 var v = source.ReadUInt32();
                 Write(v);
             }
 
             // Read full 8-bit integers
-            while (source.LengthBits - source.Position >= 8)
+            while (source.LengthBits - source.Position >= _bitsByte)
             {
                 var v = source.ReadByte();
                 Write(v);
@@ -704,16 +704,19 @@ namespace NetGore.IO
         /// <param name="source">BitStream to read from.</param>
         public void Write(BitStream source)
         {
-            // Write over the finished buffer from the source
-            if (source.HighestWrittenIndex > -1)
-                Write(source._buffer, 0, source.HighestWrittenIndex + 1);
+            // Write over the full bytes from the source
+            var numFullBytes = source.LengthBits / _bitsByte;
+            if (numFullBytes > 0)
+                Write(source._buffer, 0, numFullBytes);
 
-            // Write over any partial bits, if needed
-            if (source.Mode == BitStreamMode.Write && source._workBufferPos != _highBit)
+            // Write the remaining bits that don't make up a full byte
+            var remainingBits = source.LengthBits % _bitsByte;
+            if (remainingBits > 0)
             {
-                for (var i = _highBit; i > source._workBufferPos; i--)
+                var remainingData = source._buffer[source.Length - 1];
+                for (var j = _highBit; j > _highBit - remainingBits; j--)
                 {
-                    WriteBit((source._workBuffer & (1 << i)) != 0);
+                    Write((remainingData & (1 << j)) != 0);
                 }
             }
         }
@@ -727,7 +730,6 @@ namespace NetGore.IO
         {
             if (numBits > _bitsInt || numBits < 1)
                 throw new ArgumentOutOfRangeException("numBits", "Value must be between 1 and 32.");
-            RequireMode(BitStreamMode.Write);
 
             WriteSigned(value, numBits);
         }
@@ -741,8 +743,7 @@ namespace NetGore.IO
         {
             if (numBits > _bitsInt || numBits < 1)
                 throw new ArgumentOutOfRangeException("numBits", "Value must be between 1 and 32.");
-            RequireMode(BitStreamMode.Write);
-
+ 
             Write(value.HasValue);
             if (value.HasValue)
                 WriteSigned(value.Value, numBits);
@@ -844,28 +845,7 @@ namespace NetGore.IO
         /// <param name="bit">Value of the bit to write</param>
         public void WriteBit(int bit)
         {
-            RequireMode(BitStreamMode.Write);
-
-            // Check if the buffer will overflow
-            if (_bufferPos >= _buffer.Length)
-                ExpandBuffer();
-
-            if (bit != 0)
-            {
-                // Set the bit with OR operator at the bit's position
-                _workBuffer |= 1 << _workBufferPos;
-            }
-            else
-            {
-                // Remove the bit by moving the bit over to the position, reversing the
-                // bits with NOT, then ANDing to the buffer, forcing the target bit to 0
-                _workBuffer &= (~(1 << _workBufferPos));
-            }
-
-            // Move the work buffer bit position, flushing if full
-            _workBufferPos--;
-            if (_workBufferPos == -1)
-                FlushWorkBuffer();
+            WriteUnsigned(bit != 0 ? 1 : 0, 1);
         }
 
         /// <summary>

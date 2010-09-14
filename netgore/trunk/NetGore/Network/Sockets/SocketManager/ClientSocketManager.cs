@@ -146,9 +146,9 @@ namespace NetGore.Network
                             log.DebugFormat("Received {0} bits from {1}.", incMsg.LengthBits, ipSocket);
 
                         // Copy the received data into a BitStream before passing it up
-                        var bs = new BitStream(BitStreamMode.Write, 1024);
+                        var bs = new BitStream(1024);
                         bs.Write(incMsg);
-                        bs.Mode = BitStreamMode.Read;
+                        bs.PositionBits = 0;
 
                         // TODO: !! For some reason, there are problems when I try to cache the BitStream being passed up...
                         //_receiveBitStream.Reset(BitStreamMode.Write);
@@ -166,7 +166,7 @@ namespace NetGore.Network
         /// <summary>
         /// The <see cref="BitStream"/> instance used for when passing data up to be processed.
         /// </summary>
-        readonly BitStream _receiveBitStream = new BitStream(BitStreamMode.Write, 1024);
+        readonly BitStream _receiveBitStream = new BitStream(1024);
 
         /// <summary>
         /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.

@@ -92,9 +92,9 @@ namespace NetGore.Network
                         Debug.Assert(ipSocket != null);
 
                         // Copy the received data into a BitStream before passing it up
-                         var bs2 = new BitStream(BitStreamMode.Write, 1024);
+                         var bs2 = new BitStream(1024);
                          bs2.Write(incMsg);
-                         bs2.Mode = BitStreamMode.Read;
+                         bs2.PositionBits = 0;
 
                          // TODO: !! For some reason, there are problems when I try to cache the BitStream being passed up...
                         //_receiveBitStream.Reset(BitStreamMode.Write);
@@ -140,9 +140,9 @@ namespace NetGore.Network
                         Debug.Assert(ipSocket != null);
 
                         // Copy the received data into a BitStream before passing it up
-                        var bs = new BitStream(BitStreamMode.Write, 1024);
+                        var bs = new BitStream(1024);
                         bs.Write(incMsg);
-                        bs.Mode = BitStreamMode.Read;
+                        bs.PositionBits = 0;
 
                         // TODO: !! For some reason, there are problems when I try to cache the BitStream being passed up...
                         //_receiveBitStream.Reset(BitStreamMode.Write);
@@ -165,7 +165,7 @@ namespace NetGore.Network
         /// <summary>
         /// The <see cref="BitStream"/> instance used for when passing data up to be processed.
         /// </summary>
-        readonly BitStream _receiveBitStream = new BitStream(BitStreamMode.Write, 1024);
+        readonly BitStream _receiveBitStream = new BitStream(1024);
 
         /// <summary>
         /// Determines whether or not a connection request should be accepted.

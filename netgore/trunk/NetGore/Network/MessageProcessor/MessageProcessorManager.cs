@@ -231,8 +231,8 @@ namespace NetGore.Network
                 return;
             }
 
-            Debug.Assert(data.Mode == BitStreamMode.Read);
-            
+            Debug.Assert(data.PositionBits == 0);
+
             // Loop through the data until it is emptied
             while (data.PositionBits < data.LengthBits)
             {
