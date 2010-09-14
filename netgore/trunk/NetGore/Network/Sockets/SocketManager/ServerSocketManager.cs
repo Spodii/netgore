@@ -8,18 +8,21 @@ using NetGore.IO;
 
 namespace NetGore.Network
 {
-    public class ServerSocketManagerBase : IServerSocketManager
+    /// <summary>
+    /// A general implementation of a manager for the sockets on the server.
+    /// </summary>
+    public class ServerSocketManager : IServerSocketManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly NetServer _local;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerSocketManagerBase"/> class.
+        /// Initializes a new instance of the <see cref="ServerSocketManager"/> class.
         /// </summary>
         /// <param name="appIdentifier">The application identifier string.</param>
         /// <param name="port">The port to listen on.</param>
-        public ServerSocketManagerBase(string appIdentifier, int port)
+        public ServerSocketManager(string appIdentifier, int port)
         {
             var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true, Port = port };
 

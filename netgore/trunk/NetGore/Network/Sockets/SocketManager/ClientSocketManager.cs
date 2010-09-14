@@ -7,7 +7,10 @@ using NetGore.IO;
 
 namespace NetGore.Network
 {
-    public class ClientSocketManagerBase : IClientSocketManager
+    /// <summary>
+    /// A general implementation of a manager for the sockets on the client.
+    /// </summary>
+    public class ClientSocketManager : IClientSocketManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -16,10 +19,10 @@ namespace NetGore.Network
         IIPSocket _remote;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientSocketManagerBase"/> class.
+        /// Initializes a new instance of the <see cref="ClientSocketManager"/> class.
         /// </summary>
         /// <param name="appIdentifier">The application identifier string.</param>
-        public ClientSocketManagerBase(string appIdentifier)
+        public ClientSocketManager(string appIdentifier)
         {
             var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true };
             _local = new NetClient(config);
