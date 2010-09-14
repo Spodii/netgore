@@ -187,11 +187,11 @@
     <Compile Include="IO\BitStream\BitStream.Write.cs" />
     <Compile Include="Network\MessageProcessor\MessageProcessorID.cs" />
     <Compile Include="Network\Sockets\IIPSocketEventHandler.cs" />
-    <Compile Include="Network\Sockets\SocketManager\ClientSocketManagerBase.cs" />
+    <Compile Include="Network\Sockets\SocketManager\ClientSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\IClientSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\IServerSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\ISocketManager.cs" />
-    <Compile Include="Network\Sockets\SocketManager\ServerSocketManagerBase.cs" />
+    <Compile Include="Network\Sockets\SocketManager\ServerSocketManager.cs" />
     <Compile Include="World\Entities\IInventory.cs" />
     <Compile Include="World\Map\MapEvent\IDelayedMapEvent.cs" />
     <Compile Include="World\Map\MapEvent\TimeDelayedMapEvent.cs" />
