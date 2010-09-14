@@ -254,7 +254,7 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
 
-                return ServerSettings.InvalidPersistentNPCLoadMap;
+                return ServerConfig.InvalidPersistentNPCLoadMap;
             }
 
             return Map.ID;
@@ -280,7 +280,7 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
 
-                return ServerSettings.InvalidPersistentNPCLoadPosition;
+                return ServerConfig.InvalidPersistentNPCLoadPosition;
             }
 
             return Position;

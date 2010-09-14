@@ -16,7 +16,7 @@ namespace DemoGame.Server
         /// </summary>
         protected override TickCount UpdateRate
         {
-            get { return ServerSettings.MapItemExpirationUpdateRate; }
+            get { return ServerConfig.MapItemExpirationUpdateRate; }
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace DemoGame.Server
         /// <param name="currentTime">The current time.</param>
         public void Add(ItemEntityBase item, TickCount currentTime)
         {
-            Add(item, currentTime, ServerSettings.DefaultMapItemLife);
+            Add(item, currentTime, ServerConfig.DefaultMapItemLife);
         }
 
         /// <summary>
