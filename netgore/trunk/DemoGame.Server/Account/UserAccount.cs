@@ -362,7 +362,7 @@ namespace DemoGame.Server
             if (ip != GameData.DefaultCreateAccountIP)
             {
                 var recentCreatedCount = dbController.GetQuery<CountRecentlyCreatedAccounts>().Execute(ip);
-                if (recentCreatedCount >= GameData.MaxRecentlyCreatedAccounts)
+                if (recentCreatedCount >= ServerConfig.MaxRecentlyCreatedAccounts)
                 {
                     failReason = GameMessage.CreateAccountTooManyCreated;
                     return false;

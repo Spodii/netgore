@@ -14,7 +14,7 @@ namespace DemoGame.Client
     /// <summary>
     /// The client socket manager.
     /// </summary>
-    public class ClientSockets : ClientSocketManagerBase, IGetTime, ISocketSender
+    public class ClientSockets : ClientSocketManager, IGetTime, ISocketSender
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static ClientSockets _instance;
@@ -51,7 +51,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> instance.</param>
         /// <exception cref="MethodAccessException">An instance of this object has already been created.</exception>
-        ClientSockets(IScreenManager screenManager) : base(GameData.NetworkAppIdentifier)
+        ClientSockets(IScreenManager screenManager) : base(CommonConfig.Network.NetworkAppIdentifier)
         {
             if (_instance != null)
                 throw new MethodAccessException("ClientSockets instance was already created. Use that instead.");
@@ -98,7 +98,23 @@ namespace DemoGame.Client
         /// just that it can be attempted. Will return false if a connection is already established or being established.</returns>
         public bool Connect()
         {
-            return Connect(GameData.ServerIP, GameData.ServerUDPPort);
+            return Connect(GameData.NetworkSettings.ServerIP, GameData.NetworkSettings.ServerPort);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional configuring of the <see cref="NetPeerConfiguration"/> instance
+        /// that will be used for this <see cref="ClientSocketManager"/>.
+        /// </summary>
+        protected override void InitNetPeerConfig(NetPeerConfiguration config)
+        {
+            base.InitNetPeerConfig(config);
+
+            config.PingFrequency = CommonConfig.Network.PingFrequency;
+
+            config.SimulatedDuplicatesChance = CommonConfig.Network.SimulatedDuplicatesChance;
+            config.SimulatedLoss = CommonConfig.Network.SimulatedLoss;
+            config.SimulatedMinimumLatency = CommonConfig.Network.SimulatedMinimumLatency;
+            config.SimulatedRandomLatency = CommonConfig.Network.SimulatedRandomLatency;
         }
 
         /// <summary>
