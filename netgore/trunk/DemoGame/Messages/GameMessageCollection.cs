@@ -14,6 +14,14 @@ using NetGore.Scripting;
 namespace DemoGame
 {
     /// <summary>
+    /// Delegate for handling an event from the <see cref="GameMessageCollection"/>.
+    /// </summary>
+    /// <param name="oldLanguage">The <see cref="GameMessageCollection"/> for the old language.</param>
+    /// <param name="newLanguage">The <see cref="GameMessageCollection"/> for the new language.</param>
+    public delegate void GameMessageCollectionChangeLanguageEventHandler(
+        GameMessageCollection oldLanguage, GameMessageCollection newLanguage);
+
+    /// <summary>
     /// Class containing all of the messages for the correspoding GameMessage.
     /// </summary>
     public class GameMessageCollection : MessageCollectionBase<GameMessage>
@@ -34,6 +42,11 @@ namespace DemoGame
         const string _tempLanguageName = "TEMPORARY_COMPILATION_TEST_LANGUAGE";
 
         /// <summary>
+        /// Synchronization object for the <see cref="_currentLanguage"/>.
+        /// </summary>
+        static readonly object _currentLanguageSync = new object();
+
+        /// <summary>
         /// The <see cref="GameMessageCollection"/> instance for the default language.
         /// </summary>
         static readonly GameMessageCollection _defaultMessages;
@@ -48,7 +61,7 @@ namespace DemoGame
         /// </summary>
         static readonly object _instancesSync = new object();
 
-        static GameMessageCollection _instance;
+        static GameMessageCollection _currentLanguage;
 
         readonly string _language;
         readonly bool _rawMessagesOnly;
@@ -60,7 +73,7 @@ namespace DemoGame
         {
             _instances = new Dictionary<string, GameMessageCollection>(StringComparer.OrdinalIgnoreCase);
             _defaultMessages = Create();
-            _instance = _defaultMessages;
+            _currentLanguage = _defaultMessages;
         }
 
         /// <summary>
@@ -105,22 +118,27 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the file path to the global JScript file included in all generated <see cref="GameMessageCollection"/>s.
+        /// Notifies listeners when the <see cref="GameMessageCollection.CurrentLanguage"/> property has changed.
         /// </summary>
-        public static string GlobalJScriptFilePath
-        {
-            get { return ContentPaths.Build.Languages.Join("global.js"); }
-        }
+        public static event GameMessageCollectionChangeLanguageEventHandler CurrentLanguageChanged;
 
         /// <summary>
         /// Gets the <see cref="GameMessageCollection"/> instance for the current language. It is highly recommended that you do not
         /// cache this object locally, and instead refer to this property whenever accessing the object. This way, you will not
         /// have to worry about whether or not your are using the <see cref="GameMessageCollection"/> for the correct language.
-        /// This value will only change by calling <see cref="GameMessageCollection.TryChangeLanguage"/>.
+        /// This value will only change by calling <see cref="TryChangeCurrentLanguage"/>.
         /// </summary>
-        public static GameMessageCollection Instance
+        public static GameMessageCollection CurrentLanguage
         {
-            get { return _instance; }
+            get { return _currentLanguage; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the global JScript file included in all generated <see cref="GameMessageCollection"/>s.
+        /// </summary>
+        public static string GlobalJScriptFilePath
+        {
+            get { return ContentPaths.Build.Languages.Join("global.js"); }
         }
 
         /// <summary>
@@ -411,15 +429,22 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Attempts to change the <see cref="GameMessageCollection.Instance"/> to a new language.
+        /// Attempts to change the <see cref="CurrentLanguage"/> to a new language.
         /// </summary>
         /// <param name="newLanguage">The name of the language to change to.</param>
-        /// <returns>True if the language was successfully changed or if the language was already set to the <paramref name="newLanguage"/>;
-        /// otherwise false.</returns>
-        public static bool TryChangeLanguage(string newLanguage)
+        /// <returns>True if the language was successfully changed; false if the language was already set to the <paramref name="newLanguage"/>
+        /// or the <paramref name="newLanguage"/> does not exist or is invalid.</returns>
+        public static bool TryChangeCurrentLanguage(string newLanguage)
         {
+            if (string.IsNullOrEmpty(newLanguage))
+            {
+                Debug.Fail("Invalid newLanguage value.");
+                return false;
+            }
+
             GameMessageCollection newLanguageCollection;
 
+            // Try to create the GameMessageCollection for the new language
             try
             {
                 newLanguageCollection = Create(newLanguage);
@@ -433,7 +458,21 @@ namespace DemoGame
                 return false;
             }
 
-            _instance = newLanguageCollection;
+            // Change to the new language
+            GameMessageCollection oldLanguage;
+            lock (_currentLanguageSync)
+            {
+                // Check if we are just changing to the same language
+                if (_currentLanguage == newLanguageCollection)
+                    return false;
+
+                oldLanguage = _currentLanguage;
+                _currentLanguage = newLanguageCollection;
+            }
+
+            // Raise the event
+            if (CurrentLanguageChanged != null)
+                CurrentLanguageChanged(oldLanguage, _currentLanguage);
 
             return true;
         }
