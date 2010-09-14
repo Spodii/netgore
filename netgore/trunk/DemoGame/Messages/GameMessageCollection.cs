@@ -14,14 +14,6 @@ using NetGore.Scripting;
 namespace DemoGame
 {
     /// <summary>
-    /// Delegate for handling an event from the <see cref="GameMessageCollection"/>.
-    /// </summary>
-    /// <param name="oldLanguage">The <see cref="GameMessageCollection"/> for the old language.</param>
-    /// <param name="newLanguage">The <see cref="GameMessageCollection"/> for the new language.</param>
-    public delegate void GameMessageCollectionChangeLanguageEventHandler(
-        GameMessageCollection oldLanguage, GameMessageCollection newLanguage);
-
-    /// <summary>
     /// Class containing all of the messages for the correspoding GameMessage.
     /// </summary>
     public class GameMessageCollection : MessageCollectionBase<GameMessage>
