@@ -64,7 +64,7 @@ namespace DemoGame.Server
             _guildMemberPerformer = new GuildMemberPerformer(DbController, FindUser);
 
             // Create the unarmed weapon
-            _unarmedWeapon = new ItemEntity(_itemTemplateManager[ServerSettings.UnarmedItemTemplateID], 1);
+            _unarmedWeapon = new ItemEntity(_itemTemplateManager[ServerConfig.UnarmedItemTemplateID], 1);
 
             // Load the maps
             var mapFiles = MapBase.GetMapFiles(ContentPaths.Build);
@@ -437,14 +437,14 @@ namespace DemoGame.Server
             // If enough time has elapsed, update stuff to be respawned
             if (_updateRespawnablesTime < currentTime)
             {
-                _updateRespawnablesTime = currentTime + ServerSettings.RespawnablesUpdateRate;
+                _updateRespawnablesTime = currentTime + ServerConfig.RespawnablesUpdateRate;
                 _respawnTaskList.Process();
             }
 
             // If enough time has elapsed, update the extra user information
             if (_syncExtraUserInfoTime < currentTime)
             {
-                _syncExtraUserInfoTime = currentTime + ServerSettings.SyncExtraUserInformationRate;
+                _syncExtraUserInfoTime = currentTime + ServerConfig.SyncExtraUserInformationRate;
                 SyncExtraUserInformation();
             }
 
