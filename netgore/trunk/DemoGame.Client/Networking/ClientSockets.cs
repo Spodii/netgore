@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Client.Properties;
 using Lidgren.Network;
 using log4net;
 using NetGore;
@@ -98,7 +99,7 @@ namespace DemoGame.Client
         /// just that it can be attempted. Will return false if a connection is already established or being established.</returns>
         public bool Connect()
         {
-            return Connect(GameData.NetworkSettings.ServerIP, GameData.NetworkSettings.ServerPort);
+            return Connect(Settings.Default.ServerIP, CommonConfig.Network.ServerPort);
         }
 
         /// <summary>

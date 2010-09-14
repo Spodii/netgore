@@ -50,17 +50,6 @@ namespace DemoGame
                     return 44445;
                 }
             }
-
-            /// <summary>
-            /// Gets the port used by the server for UDP connections for the main game networking.
-            /// </summary>
-            public static int ServerPort
-            {
-                get
-                {
-                    // TODO: Client should be able to override this value through a settings file
-                    return 44447; }
-            }
         }
 
         /// <summary>

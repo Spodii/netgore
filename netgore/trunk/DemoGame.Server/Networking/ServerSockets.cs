@@ -22,7 +22,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="server">The <see cref="Server"/> instance.</param>
         public ServerSockets(Server server)
-            : base(CommonConfig.Network.NetworkAppIdentifier, GameData.NetworkSettings.ServerPort)
+            : base(CommonConfig.Network.NetworkAppIdentifier, CommonConfig.Network.ServerPort)
         {
             _packetHandler = new ServerPacketHandler(server);
 

@@ -21,7 +21,7 @@ namespace DemoGame.Server.Groups
                 return false;
             }
 
-            return a.Map == b.Map && a.Center.QuickDistance(b.Center) < ServerSettings.MaxGroupShareDistance;
+            return a.Map == b.Map && a.Center.QuickDistance(b.Center) < ServerConfig.MaxGroupShareDistance;
         }
     }
 }

@@ -184,6 +184,11 @@
     <Compile Include="Networking\ClientPacketHandler.cs" />
     <Compile Include="Controls\ChatForm.cs" />
     <Compile Include="Controls\EquippedForm.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Screens\CharacterSelectionScreen.cs" />
     <Compile Include="Screens\ConsoleScreen.cs" />
     <Compile Include="Screens\CreateCharacterScreen.cs" />
@@ -196,6 +201,7 @@
     <Compile Include="Controls\Toolbar.cs" />
     <Compile Include="Screens\NewAccountScreen.cs" />
     <Compile Include="Screens\GameScreenHelper.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="StatTypeExtensions.cs" />
     <Compile Include="CharacterTargeter.cs" />
     <Compile Include="UserEquipped.cs" />
@@ -264,6 +270,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="_ProjectInfo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -57,7 +57,6 @@ namespace NetGore.Network
             while ((incMsg = _local.ReadMessage()) != null)
             {
                 IIPSocket ipSocket;
-                BitStream bs;
 
                 switch (incMsg.MessageType)
                 {
@@ -93,12 +92,17 @@ namespace NetGore.Network
                         Debug.Assert(ipSocket != null);
 
                         // Copy the received data into a BitStream before passing it up
-                        _receiveBitStream.Mode = BitStreamMode.Write;
-                        _receiveBitStream.Write(incMsg);
-                        _receiveBitStream.Mode = BitStreamMode.Read;
+                         var bs2 = new BitStream(BitStreamMode.Write, 1024);
+                         bs2.Write(incMsg);
+                         bs2.Mode = BitStreamMode.Read;
+
+                         // TODO: !! For some reason, there are problems when I try to cache the BitStream being passed up...
+                        //_receiveBitStream.Reset(BitStreamMode.Write);
+                        //_receiveBitStream.Write(incMsg);
+                        //_receiveBitStream.Mode = BitStreamMode.Read;
 
                         // Ask the acception handler method if this connection will be accepted
-                        string rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, _receiveBitStream);
+                         string rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, bs2);
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Received connection request from `{0}`. Accepted? {1}.", ipSocket, string.IsNullOrEmpty(rejectMessage));
@@ -136,15 +140,20 @@ namespace NetGore.Network
                         Debug.Assert(ipSocket != null);
 
                         // Copy the received data into a BitStream before passing it up
-                        _receiveBitStream.Mode = BitStreamMode.Write;
-                        _receiveBitStream.Write(incMsg);
-                        _receiveBitStream.Mode = BitStreamMode.Read;
+                        var bs = new BitStream(BitStreamMode.Write, 1024);
+                        bs.Write(incMsg);
+                        bs.Mode = BitStreamMode.Read;
+
+                        // TODO: !! For some reason, there are problems when I try to cache the BitStream being passed up...
+                        //_receiveBitStream.Reset(BitStreamMode.Write);
+                        //_receiveBitStream.Write(incMsg);
+                        //_receiveBitStream.Mode = BitStreamMode.Read;
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Received {0} bits from {1}.", incMsg.LengthBits, ipSocket);
 
                         // Forward the data to the data handler
-                        OnReceiveData(ipSocket, _receiveBitStream);
+                        OnReceiveData(ipSocket, bs);
 
                         break;
                 }
