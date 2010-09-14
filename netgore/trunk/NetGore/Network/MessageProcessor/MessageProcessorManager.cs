@@ -176,6 +176,7 @@ namespace NetGore.Network
         {
             while (bitStream.PositionBits < bitStream.LengthBits)
             {
+                // TODO: !! Optimize by using bitStream.ReadInt() to read up to 32 bits at once
                 if (bitStream.ReadBool())
                     return false;
             }
@@ -245,9 +246,9 @@ namespace NetGore.Network
                 if (msgID == 0)
                 {
 #if DEBUG
-                    const string errmsg = "Encountered msgID = 0, but there was set bits remaining in the stream.";
                     if (!RestOfStreamIsZero(data))
                     {
+                        const string errmsg = "Encountered msgID = 0, but there was set bits remaining in the stream.";
                         if (log.IsWarnEnabled)
                             log.WarnFormat(errmsg);
                         Debug.Fail(errmsg);

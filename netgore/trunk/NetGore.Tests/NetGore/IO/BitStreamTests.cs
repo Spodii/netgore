@@ -953,7 +953,7 @@ namespace NetGore.Tests.IO
 
                 if (i % 2 == 0)
                 {
-                    bs.SeekFromCurrentPosition(BitStreamSeekOrigin.Current, bits);
+                    bs.Seek(BitStreamSeekOrigin.Current, bits);
                     continue;
                 }
 

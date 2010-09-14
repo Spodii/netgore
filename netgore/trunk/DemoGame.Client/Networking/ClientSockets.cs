@@ -38,6 +38,16 @@ namespace DemoGame.Client
             if (string.IsNullOrEmpty(msg))
                 return base.ParseCustomDisconnectMessage(msg);
 
+            // Check for special messages defined by the network library
+            if (msg.StartsWith("Timed out", StringComparison.OrdinalIgnoreCase))
+                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectTimedOut);
+            if (msg.StartsWith("Failed to complete handshake", StringComparison.OrdinalIgnoreCase))
+                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+            if (msg.StartsWith("Connection was reset by remote host", StringComparison.OrdinalIgnoreCase))
+                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+            if (msg.StartsWith("Connection forcibly closed", StringComparison.OrdinalIgnoreCase))
+                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+
             // Try to parse as a GameMessage
             var ret = GameMessageCollection.CurrentLanguage.TryGetMessageFromString(msg);
             if (ret != null)
