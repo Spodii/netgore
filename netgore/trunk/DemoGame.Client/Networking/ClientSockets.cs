@@ -121,7 +121,9 @@ namespace DemoGame.Client
         /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.
         /// </summary>
         /// <param name="sender">The <see cref="IIPSocket"/> that the data came from.</param>
-        /// <param name="data">The data that was received.</param>
+        /// <param name="data">The data that was received. This <see cref="BitStream"/> instance is reused internally, so it
+        /// is vital that you do NOT hold a reference to it when this method returns. This should be no problem since you should
+        /// not be holding onto raw received data anyways, but if you must, you can always make a deep copy.</param>
         protected override void OnReceiveData(IIPSocket sender, BitStream data)
         {
             base.OnReceiveData(sender, data);

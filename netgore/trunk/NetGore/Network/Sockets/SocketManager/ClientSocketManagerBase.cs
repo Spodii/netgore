@@ -126,15 +126,15 @@ namespace NetGore.Network
                     case NetIncomingMessageType.Data:
                         ipSocket = (IIPSocket)incMsg.SenderConnection.Tag;
 
-                        // TODO: !! Optimize this to not generate garbage, possibly by always using the same BitStream to hold the data
-                        BitStream bs = new BitStream(BitStreamMode.Write, 64);
-                        bs.Write(incMsg);
-                        bs.Mode = BitStreamMode.Read;
-
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Received {0} bits from {1}.", incMsg.LengthBits, ipSocket);
 
-                        OnReceiveData(ipSocket, bs);
+                        // Copy the received data into a BitStream before passing it up
+                        _receiveBitStream.Mode = BitStreamMode.Write;
+                        _receiveBitStream.Write(incMsg);
+                        _receiveBitStream.Mode = BitStreamMode.Read;
+
+                        OnReceiveData(ipSocket, _receiveBitStream);
                         break;
                 }
 
@@ -143,10 +143,17 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// The <see cref="BitStream"/> instance used for when passing data up to be processed.
+        /// </summary>
+        readonly BitStream _receiveBitStream = new BitStream(BitStreamMode.Write, 1024);
+
+        /// <summary>
         /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.
         /// </summary>
         /// <param name="sender">The <see cref="IIPSocket"/> that the data came from.</param>
-        /// <param name="data">The data that was received.</param>
+        /// <param name="data">The data that was received. This <see cref="BitStream"/> instance is reused internally, so it
+        /// is vital that you do NOT hold a reference to it when this method returns. This should be no problem since you should
+        /// not be holding onto raw received data anyways, but if you must, you can always make a deep copy.</param>
         protected virtual void OnReceiveData(IIPSocket sender, BitStream data)
         { 
         }

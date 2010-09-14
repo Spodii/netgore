@@ -77,14 +77,13 @@ namespace NetGore.Network
                         ipSocket = IPSocket.Create(incMsg.SenderConnection);
                         Debug.Assert(ipSocket != null);
 
-                        // Get the connection message and put it in a BitStream
-                        // TODO: !! Optimize this to not generate garbage, possibly by always using the same BitStream to hold the data
-                        bs = new BitStream(BitStreamMode.Write, 64);
-                        bs.Write(incMsg);
-                        bs.Mode = BitStreamMode.Read;
+                        // Copy the received data into a BitStream before passing it up
+                        _receiveBitStream.Mode = BitStreamMode.Write;
+                        _receiveBitStream.Write(incMsg);
+                        _receiveBitStream.Mode = BitStreamMode.Read;
 
                         // Ask the acception handler method if this connection will be accepted
-                        string rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, bs);
+                        string rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, _receiveBitStream);
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Received connection request from `{0}`. Accepted? {1}.", ipSocket, string.IsNullOrEmpty(rejectMessage));
@@ -121,17 +120,16 @@ namespace NetGore.Network
                         ipSocket = (IIPSocket)incMsg.SenderConnection.Tag;
                         Debug.Assert(ipSocket != null);
 
-                        // Read the received data and place it into a BitStream
-                        // TODO: !! Optimize this to not generate garbage, possibly by always using the same BitStream to hold the data
-                        bs = new BitStream(BitStreamMode.Write, 64);
-                        bs.Write(incMsg);
-                        bs.Mode = BitStreamMode.Read;
+                        // Copy the received data into a BitStream before passing it up
+                        _receiveBitStream.Mode = BitStreamMode.Write;
+                        _receiveBitStream.Write(incMsg);
+                        _receiveBitStream.Mode = BitStreamMode.Read;
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Received {0} bits from {1}.", incMsg.LengthBits, ipSocket);
 
                         // Forward the data to the data handler
-                        OnReceiveData(ipSocket, bs);
+                        OnReceiveData(ipSocket, _receiveBitStream);
 
                         break;
                 }
@@ -139,6 +137,11 @@ namespace NetGore.Network
                 _local.Recycle(incMsg);
             }
         }
+
+        /// <summary>
+        /// The <see cref="BitStream"/> instance used for when passing data up to be processed.
+        /// </summary>
+        readonly BitStream _receiveBitStream = new BitStream(BitStreamMode.Write, 1024);
 
         /// <summary>
         /// Determines whether or not a connection request should be accepted.
@@ -160,7 +163,9 @@ namespace NetGore.Network
         /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.
         /// </summary>
         /// <param name="sender">The <see cref="IIPSocket"/> that the data came from.</param>
-        /// <param name="data">The data that was received.</param>
+        /// <param name="data">The data that was received. This <see cref="BitStream"/> instance is reused internally, so it
+        /// is vital that you do NOT hold a reference to it when this method returns. This should be no problem since you should
+        /// not be holding onto raw received data anyways, but if you must, you can always make a deep copy.</param>
         protected virtual void OnReceiveData(IIPSocket sender, BitStream data)
         {
         }
