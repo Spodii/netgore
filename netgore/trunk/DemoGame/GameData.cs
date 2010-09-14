@@ -66,7 +66,7 @@ namespace DemoGame
         /// The maximum accounts that can be created for a single IP address over a given period of time. The period
         /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
         /// </summary>
-        public const int MaxRecentlyCreatedAccounts = 3;
+        public const int MaxRecentlyCreatedAccounts = 4;
 
         /// <summary>
         /// Maximum length of each parameter string in the server's SendMessage.
@@ -156,7 +156,9 @@ namespace DemoGame
         /// </summary>
         public static int ServerPingPort
         {
-            get { return 44446; }
+            get { 
+                // TODO: !! Remove
+                return 44446; }
         }
 
         /// <summary>
@@ -164,7 +166,9 @@ namespace DemoGame
         /// </summary>
         public static int ServerTCPPort
         {
-            get { return 44445; }
+            get {
+                // TODO: !! Remove
+                return 44445; }
         }
 
         /// <summary>

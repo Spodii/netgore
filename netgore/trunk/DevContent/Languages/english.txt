@@ -1,3 +1,11 @@
+CreateAccountSuccessful: "Account successfully created! You may now log in."
+CreateAccountInvalidName: "Invalid account name. Must be between 3 and 30 characters and contain only alphanumeric characters."
+CreateAccountInvalidPassword: "Invalid password. Must be between 3 and 30 characters and contain alphanumeric characters and/or punctuation."
+CreateAccountInvalidEmail: "Invalid email address."
+CreateAccountTooManyCreated: "Too many accounts have been created from your IP address recently. Please wait and try again later."
+CreateAccountAlreadyExists: "An account with that name already exists. Please try a different account name."
+CreateAccountUnknownError: "An unknown error has occured while trying to create the account. Please try again, or try a different account name."
+
 DisconnectTooManyConnectionsFromIP: "Connection rejected by the server since there are too many connections from your IP address."
 DisconnectUserDisposed: "The connection to the server has been lost."
 DisconnectNoReasonSpecified: "The connection to the server has been lost."

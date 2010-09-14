@@ -235,7 +235,7 @@ namespace DemoGame.Client
 
                         // If no reason specified, use generic one
                         if (string.IsNullOrEmpty(reason))
-                            reason = clientSockets.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+                            reason = GameMessageCollection.Instance.GetMessage(GameMessage.DisconnectNoReasonSpecified);
 
                         SetError(reason);
                     }

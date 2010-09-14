@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryStr =
             string.Format(
-                "SELECT COUNT(*) FROM `{0}` WHERE `creator_ip`=@ip AND `time_created` > DATE_SUB(NOW(), INTERVAL 60 MINUTE)",
+                "SELECT COUNT(*) FROM `{0}` WHERE `creator_ip`=@ip AND `time_created` > DATE_SUB(NOW(), INTERVAL 30 MINUTE)",
                 AccountTable.TableName);
 
         /// <summary>

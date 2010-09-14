@@ -21,7 +21,8 @@ namespace DemoGame
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Name of the default language to use.
+        /// Name of the default language to use. Messages that do not exist in other languages will be loaded from the
+        /// default language. That way, you get at least some message, even if it is in the wrong language.
         /// </summary>
         const string _defaultLanguageName = "English";
 
@@ -42,6 +43,13 @@ namespace DemoGame
         /// </summary>
         static readonly Dictionary<string, GameMessageCollection> _instances;
 
+        /// <summary>
+        /// Synchronization object for the <see cref="_instances"/>.
+        /// </summary>
+        static readonly object _instancesSync = new object();
+
+        static GameMessageCollection _instance;
+
         readonly string _language;
         readonly bool _rawMessagesOnly;
 
@@ -52,6 +60,7 @@ namespace DemoGame
         {
             _instances = new Dictionary<string, GameMessageCollection>(StringComparer.OrdinalIgnoreCase);
             _defaultMessages = Create();
+            _instance = _defaultMessages;
         }
 
         /// <summary>
@@ -104,6 +113,17 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the <see cref="GameMessageCollection"/> instance for the current language. It is highly recommended that you do not
+        /// cache this object locally, and instead refer to this property whenever accessing the object. This way, you will not
+        /// have to worry about whether or not your are using the <see cref="GameMessageCollection"/> for the correct language.
+        /// This value will only change by calling <see cref="GameMessageCollection.TryChangeLanguage"/>.
+        /// </summary>
+        public static GameMessageCollection Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
         /// Gets the name of this language.
         /// </summary>
         public string Language
@@ -134,10 +154,14 @@ namespace DemoGame
         public static GameMessageCollection Create(string language = _defaultLanguageName)
         {
             GameMessageCollection instance;
-            if (!_instances.TryGetValue(language, out instance))
+
+            lock (_instancesSync)
             {
-                instance = new GameMessageCollection(language, false);
-                _instances.Add(language, instance);
+                if (!_instances.TryGetValue(language, out instance))
+                {
+                    instance = new GameMessageCollection(language, false);
+                    _instances.Add(language, instance);
+                }
             }
 
             return instance;
@@ -220,7 +244,7 @@ namespace DemoGame
             var comp = StringComparer.OrdinalIgnoreCase;
 
             var dir = ContentPaths.Build.Languages;
-            var filePaths = Directory.GetFiles(dir, "*.txt", SearchOption.TopDirectoryOnly);
+            var filePaths = Directory.GetFiles(dir, "*" + _languageFileSuffix, SearchOption.TopDirectoryOnly);
 
             var files = filePaths.Select(Path.GetFileNameWithoutExtension);
             files = files.Distinct(comp);
@@ -384,6 +408,34 @@ namespace DemoGame
             }
 
             return success;
+        }
+
+        /// <summary>
+        /// Attempts to change the <see cref="GameMessageCollection.Instance"/> to a new language.
+        /// </summary>
+        /// <param name="newLanguage">The name of the language to change to.</param>
+        /// <returns>True if the language was successfully changed or if the language was already set to the <paramref name="newLanguage"/>;
+        /// otherwise false.</returns>
+        public static bool TryChangeLanguage(string newLanguage)
+        {
+            GameMessageCollection newLanguageCollection;
+
+            try
+            {
+                newLanguageCollection = Create(newLanguage);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to change language to `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, newLanguage, ex);
+                Debug.Fail(string.Format(errmsg, newLanguage, ex));
+                return false;
+            }
+
+            _instance = newLanguageCollection;
+
+            return true;
         }
 
         /// <summary>

@@ -58,6 +58,8 @@ namespace DemoGame
         /// </summary>
         CommandTellOfflineUser,
 
+        #region Core: Login failure reasons
+
         /// <summary>
         /// Tried to log in, but an invalid account name was given.
         /// </summary>
@@ -72,6 +74,49 @@ namespace DemoGame
         /// Tried to log in, but the account is already in use.
         /// </summary>
         LoginAccountInUse,
+
+        #endregion
+
+        #region Core: Account creation
+
+        /// <summary>
+        /// The user successfully created a new account.
+        /// </summary>
+        CreateAccountSuccessful,
+
+        /// <summary>
+        /// Tried to create a new account, but an invalid name was specified.
+        /// </summary>
+        CreateAccountInvalidName,
+
+        /// <summary>
+        /// Tried to create an account, but an invalid password was specified.
+        /// </summary>
+        CreateAccountInvalidPassword,
+
+        /// <summary>
+        /// Tried to create an account, but an invalid email address was specified.
+        /// </summary>
+        CreateAccountInvalidEmail,
+
+        /// <summary>
+        /// Tried to create an account, but too many accounts have been created from the client's IP address recently.
+        /// </summary>
+        CreateAccountTooManyCreated,
+
+        /// <summary>
+        /// Tried to create an account, but an account with that name already exists.
+        /// </summary>
+        CreateAccountAlreadyExists,
+
+        /// <summary>
+        /// Tried to create an account, but there was an unknown error.
+        /// </summary>
+        CreateAccountUnknownError,
+
+        #endregion
+
+        #region Core: Disconnect reasons
 
         /// <summary>
         /// Tried to connect to the server, but there are too many connections from this IP.
@@ -88,7 +133,9 @@ namespace DemoGame
         /// </summary>
         DisconnectNoReasonSpecified,
 
-        #region Shops
+        #endregion
+
+        #region Feature: Shops
 
         /// <summary>
         /// Tried to purchase an item from a shop, but they did not have enough money. Singular (tried to
@@ -124,7 +171,7 @@ namespace DemoGame
 
         #endregion
 
-        #region Guilds
+        #region Feature: Guilds
 
         InvalidCommandMustBeInGroup,
         InvalidCommandMustNotBeInGroup,
@@ -146,7 +193,7 @@ namespace DemoGame
 
         #endregion
 
-        #region Groups
+        #region Feature: Groups
 
         /// <summary>
         /// Cannot execute command because the user is in a guild.
@@ -204,7 +251,7 @@ namespace DemoGame
 
         #endregion
 
-        #region PeerTrading
+        #region Feature: PeerTrading
 
         PeerTradingNotEnoughSpaceInInventory,
         PeerTradingInvalidTarget,
@@ -220,7 +267,7 @@ namespace DemoGame
 
         #endregion
 
-        #region Quests
+        #region Feature: Quests
 
         QuestAccepted,
         QuestAcceptFailedAlreadyCompleted,
@@ -233,7 +280,7 @@ namespace DemoGame
 
         #endregion
 
-        #region Banning
+        #region Feature: Banning
 
         AccountBanned,
 

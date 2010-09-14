@@ -38,7 +38,7 @@ namespace DemoGame.Client
                 return base.ParseCustomDisconnectMessage(msg);
 
             // Try to parse as a GameMessage
-            var ret = PacketHandler.GameMessages.TryGetMessageFromString(msg);
+            var ret = GameMessageCollection.Instance.TryGetMessageFromString(msg);
             if (ret != null)
                 return ret;
 

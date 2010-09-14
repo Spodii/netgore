@@ -50,27 +50,30 @@ namespace DemoGame.Client
         /// <param name="e">The <see cref="SFML.Window.MouseButtonEventArgs"/> instance containing the event data.</param>
         void ClickButton_CreateAccount(object sender, MouseButtonEventArgs e)
         {
+            // Manually check for invalid values before checking with the server
             if (!GameData.AccountName.IsValid(_cNameText.Text))
             {
-                SetError("Invalid account name.");
+                SetError(GameMessageCollection.Instance.GetMessage(GameMessage.CreateAccountInvalidName));
                 return;
             }
 
             if (!GameData.AccountPassword.IsValid(_cPasswordText.Text))
             {
-                SetError("Invalid account password.");
+                SetError(GameMessageCollection.Instance.GetMessage(GameMessage.CreateAccountInvalidPassword));
                 return;
             }
 
             if (!GameData.AccountEmail.IsValid(_cEmailText.Text))
             {
-                SetError("Invalid email address.");
+                SetError(GameMessageCollection.Instance.GetMessage(GameMessage.CreateAccountInvalidEmail));
                 return;
             }
 
+            // Disconnect if already connected
             if (_sockets.IsConnected)
                 _sockets.Disconnect();
 
+            // Start connecting to the server
             SetMessage("Connecting to server...");
 
             _sockets.Connect();
@@ -248,7 +251,7 @@ namespace DemoGame.Client
 
                     // If no reason specified, use generic one
                     if (string.IsNullOrEmpty(reason))
-                        reason = clientSockets.PacketHandler.GameMessages.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+                        reason = GameMessageCollection.Instance.GetMessage(GameMessage.DisconnectNoReasonSpecified);
 
                     SetError(reason);
 

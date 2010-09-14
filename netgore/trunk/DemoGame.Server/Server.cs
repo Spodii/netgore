@@ -190,11 +190,11 @@ namespace DemoGame.Server
 
             // Create the account
             AccountID id;
-            string errorMessage;
-            var success = UserAccount.TryCreateAccount(DbController, conn, name, password, email, out id, out errorMessage);
+            GameMessage failReason;
+            var success = UserAccount.TryCreateAccount(DbController, conn, name, password, email, out id, out failReason);
 
             // Send the appropriate success message
-            using (var pw = ServerPacket.CreateAccount(success, errorMessage))
+            using (var pw = ServerPacket.CreateAccount(success, failReason))
             {
                 conn.Send(pw);
             }
