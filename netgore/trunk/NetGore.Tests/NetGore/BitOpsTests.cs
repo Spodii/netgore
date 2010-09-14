@@ -221,6 +221,22 @@ namespace NetGore.Tests.IO
         }
 
         [Test]
+        public void NextPowerOf2Test()
+        {
+            Assert.AreEqual(16, BitOps.NextPowerOf2(16));
+            Assert.AreEqual(16, BitOps.NextPowerOf2(15));
+            Assert.AreEqual(2, BitOps.NextPowerOf2(2));
+            Assert.AreEqual(4, BitOps.NextPowerOf2(3));
+            Assert.AreEqual(128, BitOps.NextPowerOf2(65));
+
+            Assert.AreEqual(16, BitOps.NextPowerOf2((uint)16));
+            Assert.AreEqual(16, BitOps.NextPowerOf2((uint)15));
+            Assert.AreEqual(2, BitOps.NextPowerOf2((uint)2));
+            Assert.AreEqual(4, BitOps.NextPowerOf2((uint)3));
+            Assert.AreEqual(128, BitOps.NextPowerOf2((uint)65));
+        }
+
+        [Test]
         public void PowerOf2Test()
         {
             const string errDetails = "Iterator: {0}    Value: {1}    Type: {2}";
