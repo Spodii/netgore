@@ -146,6 +146,7 @@
     <Compile Include="DbObjs\WorldStatsCountUserConsumeItemTable.cs" />
     <Compile Include="DbObjs\WorldStatsCountUserKillNpcTable.cs" />
     <Compile Include="Networking\IIPSocketExtensions.cs" />
+    <Compile Include="Networking\ServerMessageType.cs" />
     <Compile Include="PeerTrading\PeerTradingHelper.cs" />
     <Compile Include="PeerTrading\ServerPeerTradeInfoHandler.cs" />
     <Compile Include="Queries\Account\AccountIDCreator.cs" />
