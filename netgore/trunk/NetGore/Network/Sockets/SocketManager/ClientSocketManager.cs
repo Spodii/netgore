@@ -146,16 +146,11 @@ namespace NetGore.Network
                             log.DebugFormat("Received {0} bits from {1}.", incMsg.LengthBits, ipSocket);
 
                         // Copy the received data into a BitStream before passing it up
-                        var bs = new BitStream(1024);
-                        bs.Write(incMsg);
-                        bs.PositionBits = 0;
+                        _receiveBitStream.Reset();
+                        _receiveBitStream.Write(incMsg);
+                        _receiveBitStream.PositionBits = 0;
 
-                        // TODO: !! For some reason, there are problems when I try to cache the BitStream being passed up...
-                        //_receiveBitStream.Reset(BitStreamMode.Write);
-                        //_receiveBitStream.Write(incMsg);
-                        //_receiveBitStream.Mode = BitStreamMode.Read;
-
-                        OnReceiveData(ipSocket, bs);
+                        OnReceiveData(ipSocket, _receiveBitStream);
                         break;
                 }
 
