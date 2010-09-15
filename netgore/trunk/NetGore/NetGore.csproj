@@ -187,6 +187,7 @@
     <Compile Include="IO\BitStream\BitStream.Write.cs" />
     <Compile Include="Network\MessageProcessor\MessageProcessorID.cs" />
     <Compile Include="Network\Sockets\IIPSocketEventHandler.cs" />
+    <Compile Include="Network\Sockets\SocketHelper.cs" />
     <Compile Include="Network\Sockets\SocketManager\ClientSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\IClientSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\IServerSocketManager.cs" />
