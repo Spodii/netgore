@@ -52,7 +52,7 @@ namespace NetGore.World
         /// This will cause synchronization to happen even when the _syncPnVCount is 0 since it is used to ensure the
         /// simulation doesn't get too out of sync between the client and server.
         /// </summary>
-        const int _syncPnVMoveRate = 1000;
+        const int _syncPnVMoveRate = 800;
 
         const string _timeStampValueKey = "TimeStamp";
         const string _velocityValueKey = "Velocity";
