@@ -236,7 +236,7 @@ namespace NetGore.IO
             var fullBytes = (int)Math.Floor(LengthBits / (float)_bitsByte);
 
             // Write full 32-bit integers
-            while (i + 3 <= fullBytes)
+            while (i + 3 < fullBytes)
             {
                 var v = (_buffer[i] << (_bitsByte * 3)) | (_buffer[i + 1] << (_bitsByte * 2)) | (_buffer[i + 2] << (_bitsByte * 1)) | (_buffer[i + 3]);
                 i += 4;
@@ -244,7 +244,7 @@ namespace NetGore.IO
             }
 
             // Write full 8-bit integers
-            while (i <= fullBytes)
+            while (i < fullBytes)
             {
                 target.Write(_buffer[i]);
                 i++;
