@@ -26,6 +26,13 @@ namespace NetGore.Network
         {
             var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = false };
 
+            // Disable some message types that will not be used by the client
+            config.DisableMessageType(NetIncomingMessageType.NatIntroductionSuccess);
+            config.DisableMessageType(NetIncomingMessageType.Receipt);
+            config.DisableMessageType(NetIncomingMessageType.UnconnectedData);
+            config.DisableMessageType(NetIncomingMessageType.DiscoveryRequest);
+            config.DisableMessageType(NetIncomingMessageType.DiscoveryResponse);
+
             // Custom configuration
             InitNetPeerConfig(config);
 
