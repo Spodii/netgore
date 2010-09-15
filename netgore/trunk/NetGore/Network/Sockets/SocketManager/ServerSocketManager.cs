@@ -26,6 +26,13 @@ namespace NetGore.Network
         {
             var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true, Port = port };
 
+            // Disable some message types that will not be used by the server
+            config.DisableMessageType(NetIncomingMessageType.NatIntroductionSuccess);
+            config.DisableMessageType(NetIncomingMessageType.Receipt);
+            config.DisableMessageType(NetIncomingMessageType.UnconnectedData);
+            config.DisableMessageType(NetIncomingMessageType.DiscoveryRequest);
+            config.DisableMessageType(NetIncomingMessageType.DiscoveryResponse);
+
             // Manually handle connection approval instead of just accepting everything
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
 
