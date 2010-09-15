@@ -33,6 +33,9 @@ namespace NetGore.World
     /// </summary>
     public abstract class DynamicEntity : Entity
     {
+        const string _positionValueKey = "Position";
+        const string _propertyIndexValueKey = "PropertyIndex";
+
         /// <summary>
         /// How frequently, in milliseconds, the Position and Velocity are synchronized when _syncPnVCount is greater
         /// than zero. This is to ensure the synchronization message is received and starts off correctly.
@@ -50,6 +53,9 @@ namespace NetGore.World
         /// simulation doesn't get too out of sync between the client and server.
         /// </summary>
         const int _syncPnVMoveRate = 1000;
+
+        const string _timeStampValueKey = "TimeStamp";
+        const string _velocityValueKey = "Velocity";
 
         /// <summary>
         /// Index of the last PropertySync where SkipNetworkSync is false. See <see cref="_propertySyncs"/>
@@ -269,7 +275,7 @@ namespace NetGore.World
             for (var i = 0; i < count; i++)
             {
                 // Get the PropertySync to be deserialized
-                var propIndex = reader.ReadUInt("PropertyIndex", lastIndex, highestPropertyIndex);
+                var propIndex = reader.ReadUInt(_propertyIndexValueKey, lastIndex, highestPropertyIndex);
                 var propertySync = _propertySyncs[propIndex];
 
                 // Read the value into the property
@@ -316,9 +322,9 @@ namespace NetGore.World
         static void DeserializePositionAndVelocity(IValueReader reader, out Vector2 position, out Vector2 velocity,
                                                    out ushort timeStamp)
         {
-            timeStamp = reader.ReadUShort("TimeStamp");
-            position = reader.ReadVector2("Position");
-            velocity = reader.ReadVector2("velocity");
+            timeStamp = reader.ReadUShort(_timeStampValueKey);
+            position = reader.ReadVector2(_positionValueKey);
+            velocity = reader.ReadVector2(_velocityValueKey);
         }
 
         /// <summary>
@@ -444,7 +450,7 @@ namespace NetGore.World
             {
                 // Write the index of the property
                 var propIndex = (uint)writeIndices.Dequeue();
-                writer.Write("PropertyIndex", propIndex, lastIndex, highestPropertyIndex);
+                writer.Write(_propertyIndexValueKey, propIndex, lastIndex, highestPropertyIndex);
 
                 // Write the actual property value
                 var propertySync = _propertySyncs[propIndex];
@@ -472,9 +478,9 @@ namespace NetGore.World
             if (_syncPnVDupeCounter > 0)
                 --_syncPnVDupeCounter;
 
-            writer.Write("TimeStamp", PacketTimeStampHelper.GetTimeStamp());
-            writer.Write("Position", Position);
-            writer.Write("Velocity", Velocity);
+            writer.Write(_timeStampValueKey, PacketTimeStampHelper.GetTimeStamp());
+            writer.Write(_positionValueKey, Position);
+            writer.Write(_velocityValueKey, Velocity);
 
             _lastSentPosition = Position;
             _lastSentVelocity = Velocity;
