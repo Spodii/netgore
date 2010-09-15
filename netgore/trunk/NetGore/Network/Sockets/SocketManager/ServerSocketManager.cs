@@ -92,17 +92,12 @@ namespace NetGore.Network
                         Debug.Assert(ipSocket != null);
 
                         // Copy the received data into a BitStream before passing it up
-                         var bs2 = new BitStream(1024);
-                         bs2.Write(incMsg);
-                         bs2.PositionBits = 0;
-
-                         // TODO: !! For some reason, there are problems when I try to cache the BitStream being passed up...
-                        //_receiveBitStream.Reset(BitStreamMode.Write);
-                        //_receiveBitStream.Write(incMsg);
-                        //_receiveBitStream.Mode = BitStreamMode.Read;
+                        _receiveBitStream.Reset();
+                        _receiveBitStream.Write(incMsg);
+                        _receiveBitStream.PositionBits = 0;
 
                         // Ask the acception handler method if this connection will be accepted
-                         string rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, bs2);
+                        string rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, _receiveBitStream);
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Received connection request from `{0}`. Accepted? {1}.", ipSocket, string.IsNullOrEmpty(rejectMessage));
@@ -140,20 +135,15 @@ namespace NetGore.Network
                         Debug.Assert(ipSocket != null);
 
                         // Copy the received data into a BitStream before passing it up
-                        var bs = new BitStream(1024);
-                        bs.Write(incMsg);
-                        bs.PositionBits = 0;
-
-                        // TODO: !! For some reason, there are problems when I try to cache the BitStream being passed up...
-                        //_receiveBitStream.Reset(BitStreamMode.Write);
-                        //_receiveBitStream.Write(incMsg);
-                        //_receiveBitStream.Mode = BitStreamMode.Read;
+                        _receiveBitStream.Reset();
+                        _receiveBitStream.Write(incMsg);
+                        _receiveBitStream.PositionBits = 0;
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Received {0} bits from {1}.", incMsg.LengthBits, ipSocket);
 
                         // Forward the data to the data handler
-                        OnReceiveData(ipSocket, bs);
+                        OnReceiveData(ipSocket, _receiveBitStream);
 
                         break;
                 }
