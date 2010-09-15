@@ -26,6 +26,10 @@ namespace NetGore.Network
         {
             var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true, Port = port };
 
+            // Disable throttling
+            config.ThrottleBytesPerSecond = 0;
+            config.ThrottlePeakBytes = 0;
+
             // Disable some message types that will not be used by the server
             config.DisableMessageType(NetIncomingMessageType.NatIntroductionSuccess);
             config.DisableMessageType(NetIncomingMessageType.Receipt);
