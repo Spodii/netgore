@@ -59,7 +59,7 @@ namespace NetGore.Network
         /// <param name="method">The method to use to send the data.</param>
         void Send(BitStream data, NetDeliveryMethod method)
         {
-            var msg = _conn.Owner.CreateMessage();
+            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.LengthBytes);
             data.CopyTo(msg);
             _conn.SendMessage(msg, method);
         }
@@ -71,7 +71,7 @@ namespace NetGore.Network
         /// <param name="method">The method to use to send the data.</param>
         void Send(byte[] data, NetDeliveryMethod method)
         {
-            var msg = _conn.Owner.CreateMessage();
+            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.Length);
             msg.Write(data);
             _conn.SendMessage(msg, method);
         }

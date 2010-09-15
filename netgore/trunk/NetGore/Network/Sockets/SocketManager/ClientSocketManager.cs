@@ -252,7 +252,7 @@ namespace NetGore.Network
             if (approvalMessage != null && approvalMessage.LengthBits > 0)
             {
                 // Connect with approval message
-                var netOutMsg = _local.CreateMessage();
+                var netOutMsg = SocketHelper.GetNetOutgoingMessage(_local, approvalMessage.LengthBytes);
                 approvalMessage.CopyTo(netOutMsg);
 
                 conn = _local.Connect(host, port, netOutMsg);
