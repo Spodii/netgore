@@ -369,11 +369,11 @@ namespace NetGore.World
                 return true;
 
             // Check for repeated syncs
-            if (_syncPnVDupeCounter > 0 && _syncPnVLastTime + _syncPnVDupeDelay < currentTime)
+            if ((_syncPnVDupeCounter > 0) && (_syncPnVLastTime + _syncPnVDupeDelay < currentTime))
                 return true;
 
             // Update no matter what when moving and enough time has elapsed since last send
-            if (Velocity != Vector2.Zero && _syncPnVLastTime + _syncPnVMoveRate < currentTime)
+            if ((Velocity != Vector2.Zero) && (_syncPnVLastTime + _syncPnVMoveRate < currentTime))
                 return true;
 
             return false;
