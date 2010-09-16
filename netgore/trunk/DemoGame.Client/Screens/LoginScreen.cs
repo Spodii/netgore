@@ -14,7 +14,7 @@ namespace DemoGame.Client
         public const string ScreenName = "login";
 
         Button _btnLogin;
-        Label _cError;
+        TextBox _cError;
         TextBox _cNameText;
         MaskedTextBox _cPasswordText;
         ClientSockets _sockets;
@@ -73,7 +73,10 @@ namespace DemoGame.Client
             _cPasswordText.KeyPressed += cPasswordText_KeyPressed;
             _cPasswordText.TextChanged += cPasswordText_TextChanged;
 
-            _cError = new Label(cScreen, new Vector2(60, 500)) { ForeColor = Color.Red };
+            var textBoxPos = new Vector2(60, _cPasswordText.Position.Y + _cPasswordText.Size.Y + 20);
+            var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
+            _cError = new TextBox(cScreen, textBoxPos, textBoxSize) { ForeColor = Color.Red, Border = null,
+             CanFocus = false, IsMultiLine = true, IsEnabled = false};
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "Back");
