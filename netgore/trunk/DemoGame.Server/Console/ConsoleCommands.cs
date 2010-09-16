@@ -9,7 +9,7 @@ using NetGore.Db;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Handles commands entered into the console.
+    /// Handles commands entered directly into the server through the server's console.
     /// </summary>
     class ConsoleCommands
     {
