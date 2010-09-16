@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
+using DemoGame.Server.Properties;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -35,7 +36,6 @@ namespace DemoGame.Server
         readonly ConsoleCommands _consoleCommands;
         readonly IDbController _dbController;
         readonly GroupManager _groupManager;
-        readonly List<string> _motd = new List<string>();
         readonly ServerSockets _sockets;
         readonly TickCount _startupTime = TickCount.Now;
         readonly World _world;
@@ -69,9 +69,6 @@ namespace DemoGame.Server
 
             if (_dbController == null)
                 return;
-
-            // Load the server settings
-            LoadSettings();
 
             // Load the game data and such
             InitializeScripts();
@@ -117,19 +114,6 @@ namespace DemoGame.Server
         public bool IsDisposed
         {
             get { return _disposed; }
-        }
-
-        /// <summary>
-        /// Gets the Message of the Day displayed to users when they connect.
-        /// </summary>
-        public string MOTD
-        {
-            get
-            {
-                throw new NotImplementedException();
-                // TODO: !! Fix MOTD
-                //return _serverSettings.Motd;
-            }
         }
 
         /// <summary>
@@ -362,24 +346,6 @@ namespace DemoGame.Server
         static void InitializeScripts()
         {
             CreateScriptTypeCollection("AI");
-        }
-
-        /// <summary>
-        /// Loads the server settings from the database and sets up any settings that need it.
-        /// </summary>
-        void LoadSettings()
-        {
-            if (log.IsInfoEnabled)
-                log.Info("Loading server settings.");
-
-            // Create the MOTD list
-            // TODO: !! Fix MOTD
-            /*
-            var motdLines = _serverSettings.Motd.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
-            if (motdLines.Length > 0)
-                _motd.AddRange(motdLines);
-            */
-            _motd.TrimExcess();
         }
 
         /// <summary>

@@ -151,6 +151,11 @@
     <Compile Include="Networking\ServerMessageTypeExtensions.cs" />
     <Compile Include="PeerTrading\PeerTradingHelper.cs" />
     <Compile Include="PeerTrading\ServerPeerTradeInfoHandler.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Queries\Account\AccountIDCreator.cs" />
     <Compile Include="DbObjs\AccountIpsTable.cs" />
     <Compile Include="DbObjs\AccountTable.cs" />
@@ -589,6 +594,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="_ProjectInfo.txt" />
   </ItemGroup>
   <ItemGroup />
