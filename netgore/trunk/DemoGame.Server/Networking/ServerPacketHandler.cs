@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Server.PeerTrading;
+using DemoGame.Server.Properties;
 using DemoGame.Server.Quests;
 using log4net;
 using NetGore;
@@ -574,17 +575,14 @@ namespace DemoGame.Server
             userAccount.SetUser(World, characterID);
 
             // Send the MOTD
-            // TODO: !! Fix MOTD
-            /*
             var user = userAccount.User;
-            if (user != null && !string.IsNullOrEmpty(Server.MOTD))
+            if (user != null && !string.IsNullOrEmpty(Settings.Default.MOTD))
             {
-                using (var pw = ServerPacket.Chat(Server.MOTD))
+                using (var pw = ServerPacket.Chat(Settings.Default.MOTD))
                 {
                     user.Send(pw, ServerMessageType.GUIChat);
                 }
             }
-            */
         }
 
         [MessageHandler((uint)ClientPacketID.SelectNPCChatDialogResponse)]
