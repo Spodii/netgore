@@ -376,7 +376,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.BuyFromShop(src.Slot, 1))
             {
-                _gps.Socket.Send(pw);
+                _gps.Socket.Send(pw, ClientMessageType.GUIItems);
             }
 
             return true;
@@ -484,7 +484,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.SwapInventorySlots(src.Slot, dest.Slot))
             {
-                _gps.Socket.Send(pw);
+                _gps.Socket.Send(pw, ClientMessageType.GUIItems);
             }
 
             return true;

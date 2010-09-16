@@ -176,7 +176,7 @@ namespace DemoGame.Server.PeerTrading
         /// <param name="character">The character who cannot accept all of the items being given to them.</param>
         protected override void OnCannotFitItems(User character)
         {
-            character.Send(GameMessage.PeerTradingNotEnoughSpaceInInventory);
+            character.Send(GameMessage.PeerTradingNotEnoughSpaceInInventory, ServerMessageType.GUI);
         }
 
         /// <summary>

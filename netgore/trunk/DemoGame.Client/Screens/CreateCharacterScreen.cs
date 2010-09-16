@@ -61,7 +61,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.CreateNewAccountCharacter(name))
             {
-                _sockets.Send(pw);
+                _sockets.Send(pw, ClientMessageType.System);
             }
         }
 

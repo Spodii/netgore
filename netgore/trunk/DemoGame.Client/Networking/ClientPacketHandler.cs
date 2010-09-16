@@ -56,24 +56,24 @@ namespace DemoGame.Client
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
         /// </summary>
-        /// <param name="socketSender">The socket sender.</param>
+        /// <param name="networkSender">The socket sender.</param>
         /// <param name="screenManager">The <see cref="IScreenManager"/>.</param>
         /// <param name="dynamicEntityFactory">The <see cref="IDynamicEntityFactory"/> used to serialize
         /// <see cref="DynamicEntity"/>s.</param>
-        public ClientPacketHandler(ISocketSender socketSender, IScreenManager screenManager,
+        public ClientPacketHandler(INetworkSender networkSender, IScreenManager screenManager,
                                    IDynamicEntityFactory dynamicEntityFactory)
         {
             if (dynamicEntityFactory == null)
                 throw new ArgumentNullException("dynamicEntityFactory");
             if (screenManager == null)
                 throw new ArgumentNullException("screenManager");
-            if (socketSender == null)
-                throw new ArgumentNullException("socketSender");
+            if (networkSender == null)
+                throw new ArgumentNullException("networkSender");
 
             _dynamicEntityFactory = dynamicEntityFactory;
             _screenManager = screenManager;
 
-            _peerTradeInfoHandler = new ClientPeerTradeInfoHandler(socketSender);
+            _peerTradeInfoHandler = new ClientPeerTradeInfoHandler(networkSender);
             _peerTradeInfoHandler.GameMessageCallback += PeerTradeInfoHandler_GameMessageCallback;
         }
 

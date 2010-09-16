@@ -123,7 +123,7 @@ namespace DemoGame.Server
                 var success = user.TryFinishQuest(quest);
                 using (var pw = ServerPacket.AcceptOrTurnInQuestReply(questID, success, false))
                 {
-                    user.Send(pw);
+                    user.Send(pw, ServerMessageType.GUI);
                 }
             }
             else
@@ -132,7 +132,7 @@ namespace DemoGame.Server
                 var success = user.TryAddQuest(quest);
                 using (var pw = ServerPacket.AcceptOrTurnInQuestReply(questID, success, true))
                 {
-                    user.Send(pw);
+                    user.Send(pw, ServerMessageType.GUI);
                 }
             }
         }
@@ -254,7 +254,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.HasQuestStartRequirements(questID, hasRequirements))
             {
-                user.Send(pw);
+                user.Send(pw, ServerMessageType.GUI);
             }
         }
 
@@ -291,7 +291,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.HasQuestFinishRequirements(questID, hasRequirements))
             {
-                user.Send(pw);
+                user.Send(pw, ServerMessageType.GUI);
             }
         }
 
@@ -580,7 +580,7 @@ namespace DemoGame.Server
             {
                 using (var pw = ServerPacket.Chat(Server.MOTD))
                 {
-                    user.Send(pw);
+                    user.Send(pw, ServerMessageType.GUIChat);
                 }
             }
         }
@@ -646,7 +646,7 @@ namespace DemoGame.Server
                         var pw = ServerPacket.StartQuestChatDialog(npcIndex, availableQuests.Select(x => x.QuestID),
                                                                    turnInQuests.Select(x => x.QuestID)))
                     {
-                        user.Send(pw);
+                        user.Send(pw, ServerMessageType.GUI);
                     }
                     return;
                 }
@@ -792,7 +792,7 @@ namespace DemoGame.Server
                 {
                     using (var pw = ServerPacket.UseEntity(useEntity.MapEntityIndex, user.MapEntityIndex))
                     {
-                        map.Send(pw);
+                        map.Send(pw, ServerMessageType.Map);
                     }
                 }
             }

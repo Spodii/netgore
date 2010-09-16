@@ -38,7 +38,7 @@ namespace DemoGame.Server
         {
             using (var msg = ServerPacket.UpdateEquipmentSlot(slot, graphicIndex))
             {
-                User.Send(msg);
+                User.Send(msg, ServerMessageType.GUIItems);
             }
         }
     }

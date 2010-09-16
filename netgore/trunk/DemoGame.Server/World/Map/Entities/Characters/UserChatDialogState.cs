@@ -314,7 +314,7 @@ namespace DemoGame.Server
                 // Dialog has ended
                 using (var pw = ServerPacket.EndChatDialog())
                 {
-                    _user.Send(pw);
+                    _user.Send(pw, ServerMessageType.GUI);
                 }
             }
             else
@@ -322,7 +322,7 @@ namespace DemoGame.Server
                 // New page
                 using (var pw = ServerPacket.SetChatDialogPage(_dialogItem.ID, GetResponsesToSkip()))
                 {
-                    _user.Send(pw);
+                    _user.Send(pw, ServerMessageType.GUI);
                 }
             }
         }
@@ -343,7 +343,7 @@ namespace DemoGame.Server
             // Tell the client to open the dialog
             using (var pw = ServerPacket.StartChatDialog(npc.MapEntityIndex, ChatDialog.ID))
             {
-                _user.Send(pw);
+                _user.Send(pw, ServerMessageType.GUI);
             }
 
             // Get the first page to use

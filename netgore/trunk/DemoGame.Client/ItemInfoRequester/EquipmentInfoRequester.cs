@@ -17,7 +17,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="equipment">The equipment.</param>
         /// <param name="socket">The socket.</param>
-        public EquipmentInfoRequester(UserEquipped equipment, ISocketSender socket) : base(socket)
+        public EquipmentInfoRequester(UserEquipped equipment, INetworkSender socket) : base(socket)
         {
             _equipment = equipment;
         }

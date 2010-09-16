@@ -196,7 +196,7 @@ namespace DemoGame.Server
             // Send the appropriate success message
             using (var pw = ServerPacket.CreateAccount(success, failReason))
             {
-                conn.Send(pw);
+                conn.Send(pw, ServerMessageType.System);
             }
         }
 
@@ -218,7 +218,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.CreateAccountCharacter(success, errorMessage))
             {
-                conn.Send(pw);
+                conn.Send(pw, ServerMessageType.System);
             }
 
             if (success)
@@ -463,7 +463,7 @@ namespace DemoGame.Server
             // Send the "Login Successful" message
             using (var pw = ServerPacket.LoginSuccessful())
             {
-                conn.Send(pw);
+                conn.Send(pw, ServerMessageType.System);
             }
 
             if (log.IsInfoEnabled)

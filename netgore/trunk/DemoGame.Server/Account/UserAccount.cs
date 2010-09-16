@@ -223,7 +223,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.SendAccountCharacters(charInfos))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ServerMessageType.System);
             }
         }
 

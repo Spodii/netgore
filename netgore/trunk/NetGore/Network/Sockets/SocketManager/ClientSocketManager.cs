@@ -10,7 +10,7 @@ namespace NetGore.Network
     /// <summary>
     /// A general implementation of a manager for the sockets on the client.
     /// </summary>
-    public class ClientSocketManager : IClientSocketManager
+    public class ClientSocketManager : IClientSocketManager, INetworkSender
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -19,16 +19,106 @@ namespace NetGore.Network
         IIPSocket _remote;
 
         /// <summary>
+        /// Sends data to the other end of the connection.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
+        /// and sequencing will be handled.</param>
+        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
+        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
+        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value greater than or equal to 0 and
+        /// less than <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
+        /// <returns>
+        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
+        /// </returns>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
+        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
+        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than or equal to
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
+        public bool Send(BitStream data, NetDeliveryMethod deliveryMethod, int sequenceChannel = 0)
+        {
+            var sock = RemoteSocket;
+            if (sock == null)
+            {
+                const string errmsg = "Could not send data - connection not established!";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return false;
+            }
+
+            try
+            {
+                var ret = sock.Send(data, deliveryMethod, sequenceChannel);
+                if (!ret)
+                    Debug.Fail("Sending to server failed.");
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to send data. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Sends data to the other end of the connection.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
+        /// and sequencing will be handled.</param>
+        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
+        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
+        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value between 0 and
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
+        /// <returns>
+        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
+        /// </returns>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
+        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
+        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
+        public bool Send(byte[] data, NetDeliveryMethod deliveryMethod, int sequenceChannel = 0)
+        {
+            var sock = RemoteSocket;
+            if (sock == null)
+            {
+                const string errmsg = "Could not send data - connection not established!";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return false;
+            }
+
+            try
+            {
+                var ret = sock.Send(data, deliveryMethod, sequenceChannel);
+                if (!ret)
+                    Debug.Fail("Sending to server failed.");
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to send data. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ClientSocketManager"/> class.
         /// </summary>
         /// <param name="appIdentifier">The application identifier string.</param>
         public ClientSocketManager(string appIdentifier)
         {
             var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = false };
-
-            // Disable throttling
-            config.ThrottleBytesPerSecond = 0;
-            config.ThrottlePeakBytes = 0;
 
             // Disable some message types that will not be used by the client
             config.DisableMessageType(NetIncomingMessageType.NatIntroductionSuccess);

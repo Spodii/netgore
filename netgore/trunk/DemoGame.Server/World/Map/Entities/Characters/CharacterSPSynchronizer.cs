@@ -54,7 +54,7 @@ namespace DemoGame.Server
             {
                 ServerPacket.SetCharacterHPPercent(pw, _character.MapEntityIndex, _lastSentHPPercent);
                 ServerPacket.SetCharacterMPPercent(pw, _character.MapEntityIndex, _lastSentMPPercent);
-                user.Send(pw);
+                user.Send(pw, ServerMessageType.MapCharacterSP);
             }
         }
 
@@ -116,7 +116,7 @@ namespace DemoGame.Server
                     ServerPacket.SetCharacterHPPercent(pw, _character.MapEntityIndex, newHPPercent);
                     foreach (var user in users)
                     {
-                        user.Send(pw);
+                        user.Send(pw, ServerMessageType.MapCharacterSP);
                     }
                 }
                 if (updateMP)
@@ -125,7 +125,7 @@ namespace DemoGame.Server
                     ServerPacket.SetCharacterMPPercent(pw, _character.MapEntityIndex, newMPPercent);
                     foreach (var user in users)
                     {
-                        user.Send(pw);
+                        user.Send(pw, ServerMessageType.MapCharacterSP);
                     }
                 }
             }

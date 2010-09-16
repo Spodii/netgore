@@ -154,7 +154,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.Attack(TargetIndex))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterAction);
             }
         }
 
@@ -162,7 +162,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.Emoticon(emoticon))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterEmote);
             }
         }
 
@@ -176,7 +176,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.Jump())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
 #endif
@@ -186,7 +186,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.MoveDown())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
 #endif
@@ -195,7 +195,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.MoveLeft())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
 
@@ -203,7 +203,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.MoveRight())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
 
@@ -211,7 +211,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.MoveStop())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
 
@@ -220,7 +220,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.MoveStopHorizontal())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
 #endif
@@ -230,7 +230,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.MoveStopVertical())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
 #endif
@@ -240,7 +240,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.MoveUp())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterMove);
             }
         }
 #endif
@@ -253,7 +253,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.PickupItem(pickupItem.MapEntityIndex))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterInteract);
             }
         }
 
@@ -265,7 +265,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.StartShopping(shopOwner.MapEntityIndex))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterInteract);
             }
         }
 
@@ -278,7 +278,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex, false))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterInteract);
             }
         }
 
@@ -290,7 +290,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterInteract);
             }
         }
 

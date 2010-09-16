@@ -115,7 +115,7 @@ namespace DemoGame.Server.Guilds
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the log; otherwise false.</returns>
         protected override bool InternalTryViewEventLog(IGuildMember invoker)
         {
-            var user = invoker as IClientCommunicator;
+            var user = invoker as INetworkSender;
             if (user == null)
                 return false;
 
@@ -125,7 +125,7 @@ namespace DemoGame.Server.Guilds
             {
                 using (var pw = ServerPacket.Chat(e.ID + ": " + (GuildEvents)e.EventID))
                 {
-                    user.Send(pw);
+                    user.Send(pw, ServerMessageType.GUI);
                 }
             }
 
@@ -139,7 +139,7 @@ namespace DemoGame.Server.Guilds
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the member list; otherwise false.</returns>
         protected override bool InternalTryViewMembers(IGuildMember invoker)
         {
-            var user = invoker as IClientCommunicator;
+            var user = invoker as INetworkSender;
             if (user == null)
                 return false;
 
@@ -156,7 +156,7 @@ namespace DemoGame.Server.Guilds
         /// <returns>True if the <paramref name="invoker"/> successfully viewed the online member list; otherwise false.</returns>
         protected override bool InternalTryViewOnlineMembers(IGuildMember invoker)
         {
-            var user = invoker as IClientCommunicator;
+            var user = invoker as INetworkSender;
             if (user == null)
                 return false;
 
@@ -299,9 +299,9 @@ namespace DemoGame.Server.Guilds
         /// <param name="pw">The <see cref="PacketWriter"/> containing the data to send.</param>
         public void Send(PacketWriter pw)
         {
-            foreach (var member in OnlineMembers.OfType<IClientCommunicator>())
+            foreach (var member in OnlineMembers.OfType<INetworkSender>())
             {
-                member.Send(pw);
+                member.Send(pw, ServerMessageType.GUIChat);
             }
         }
 
@@ -311,7 +311,7 @@ namespace DemoGame.Server.Guilds
         /// <param name="user">The user to send the information to.</param>
         /// <param name="header">The heading to give the list.</param>
         /// <param name="members">The guild members and their ranks to include in the list.</param>
-        static void SendGuildMemberList(IClientCommunicator user, string header, IEnumerable<GuildMemberNameRank> members)
+        static void SendGuildMemberList(INetworkSender user, string header, IEnumerable<GuildMemberNameRank> members)
         {
             // Build the string
             var sb = new StringBuilder();
@@ -325,7 +325,7 @@ namespace DemoGame.Server.Guilds
             // Send
             using (var pw = ServerPacket.Chat(sb.ToString()))
             {
-                user.Send(pw);
+                user.Send(pw, ServerMessageType.GUI);
             }
         }
 

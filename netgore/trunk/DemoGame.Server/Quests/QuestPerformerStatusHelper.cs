@@ -26,7 +26,7 @@ namespace DemoGame.Server.Quests
             var active = ActiveQuests.Select(x => x.QuestID);
             using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteQuestInfo(x, completed, active)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
         }
 
@@ -65,7 +65,7 @@ namespace DemoGame.Server.Quests
         /// <param name="quest">The quest that could not be accepted.</param>
         protected override void NotifyCannotAcceptAlreadyCompleted(IQuest<User> quest)
         {
-            Owner.Send(GameMessage.QuestAcceptFailedAlreadyCompleted);
+            Owner.Send(GameMessage.QuestAcceptFailedAlreadyCompleted, ServerMessageType.GUI);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace DemoGame.Server.Quests
         /// <param name="quest">The quest that could not be accepted.</param>
         protected override void NotifyCannotAcceptAlreadyStarted(IQuest<User> quest)
         {
-            Owner.Send(GameMessage.QuestAcceptFailedAlreadyStarted);
+            Owner.Send(GameMessage.QuestAcceptFailedAlreadyStarted, ServerMessageType.GUI);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace DemoGame.Server.Quests
         /// <param name="quest">The quest that could not be accepted.</param>
         protected override void NotifyCannotAcceptDoNotHaveStartRequirements(IQuest<User> quest)
         {
-            Owner.Send(GameMessage.QuestAcceptFailedDoNotHaveStartRequirements);
+            Owner.Send(GameMessage.QuestAcceptFailedDoNotHaveStartRequirements, ServerMessageType.GUI);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace DemoGame.Server.Quests
         /// <param name="quest">The quest that could not be accepted.</param>
         protected override void NotifyCannotAcceptTooManyActive(IQuest<User> quest)
         {
-            Owner.Send(GameMessage.QuestAcceptFailedTooManyActive);
+            Owner.Send(GameMessage.QuestAcceptFailedTooManyActive, ServerMessageType.GUI);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace DemoGame.Server.Quests
         /// <param name="quest">The quest that caused the error.</param>
         protected override void NotifyCannotGiveQuestRewards(IQuest<User> quest)
         {
-            Owner.Send(GameMessage.QuestFinishFailedCannotGiveRewards);
+            Owner.Send(GameMessage.QuestFinishFailedCannotGiveRewards, ServerMessageType.GUI);
         }
 
         /// <summary>
@@ -119,10 +119,10 @@ namespace DemoGame.Server.Quests
 
             using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteAddActiveQuest(x, quest.QuestID)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
-            Owner.Send(GameMessage.QuestAccepted);
+            Owner.Send(GameMessage.QuestAccepted, ServerMessageType.GUI);
 
             _worldStats.AddQuestAccept(Owner, quest.QuestID);
         }
@@ -138,10 +138,10 @@ namespace DemoGame.Server.Quests
 
             using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteRemoveActiveQuest(x, quest.QuestID)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
-            Owner.Send(GameMessage.QuestCanceled);
+            Owner.Send(GameMessage.QuestCanceled, ServerMessageType.GUI);
 
             _worldStats.AddQuestCancel(Owner, quest.QuestID);
         }
@@ -157,15 +157,15 @@ namespace DemoGame.Server.Quests
 
             using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteRemoveActiveQuest(x, quest.QuestID)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
             using (var pw = ServerPacket.QuestInfo(x => UserQuestInformation.WriteAddCompletedQuest(x, quest.QuestID)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
-            Owner.Send(GameMessage.QuestFinished);
+            Owner.Send(GameMessage.QuestFinished, ServerMessageType.GUI);
 
             _worldStats.AddQuestComplete(Owner, quest.QuestID);
         }

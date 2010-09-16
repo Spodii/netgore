@@ -181,9 +181,9 @@ namespace DemoGame.Server.PeerTrading
 
             // Notify the character about the items recovered and remaining
             if (remaining > 0)
-                character.Send(GameMessage.PeerTradingItemsRecovered, recovered, remaining);
+                character.Send(GameMessage.PeerTradingItemsRecovered, ServerMessageType.GUI, recovered, remaining);
             else
-                character.Send(GameMessage.PeerTradingItemsRecoveredNoRemaining, recovered);
+                character.Send(GameMessage.PeerTradingItemsRecoveredNoRemaining, ServerMessageType.GUI, recovered);
         }
     }
 }

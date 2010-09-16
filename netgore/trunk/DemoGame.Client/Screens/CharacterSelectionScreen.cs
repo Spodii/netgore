@@ -53,7 +53,7 @@ namespace DemoGame.Client
             {
                 using (var pw = ClientPacket.SelectAccountCharacter(index))
                 {
-                    _sockets.Send(pw);
+                    _sockets.Send(pw, ClientMessageType.System);
                 }
             }
         }

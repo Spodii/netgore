@@ -48,7 +48,7 @@ namespace DemoGame.Server.PeerTrading
 #pragma warning disable 183
 
             // Anything that implements IClientCommunicator can be communicated with
-            return (receiver is IClientCommunicator);
+            return (receiver is INetworkSender);
 
 #pragma warning restore 183
         }
@@ -126,9 +126,9 @@ namespace DemoGame.Server.PeerTrading
         protected override void SendDataTo(User receiver, BitStream data)
         {
             // Anything that implements IClientCommunicator can be communicated with
-            var asClientCommunicator = receiver as IClientCommunicator;
+            var asClientCommunicator = receiver as INetworkSender;
             if (asClientCommunicator != null)
-                asClientCommunicator.Send(data);
+                asClientCommunicator.Send(data, ServerMessageType.GUI);
         }
 
         /// <summary>

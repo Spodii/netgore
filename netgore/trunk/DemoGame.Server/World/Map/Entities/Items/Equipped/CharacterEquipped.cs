@@ -9,6 +9,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
+using NetGore.Network;
 using NetGore.Stats;
 
 namespace DemoGame.Server
@@ -262,7 +263,7 @@ namespace DemoGame.Server
         /// Sends the paper-doll information for this <see cref="Character"/> to a specific client.
         /// </summary>
         /// <param name="client">The client to send this <see cref="Character"/>'s paper-doll information to.</param>
-        public void SynchronizePaperdollTo(IClientCommunicator client)
+        public void SynchronizePaperdollTo(INetworkSender client)
         {
             _paperDoll.SynchronizeBodyLayersTo(client);
         }
@@ -385,7 +386,7 @@ namespace DemoGame.Server
                 // Send the list of set paper-doll values
                 using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, _bodies.Where(x => x != null)))
                 {
-                    _character.Map.Send(pw);
+                    _character.Map.Send(pw, ServerMessageType.MapDynamicEntityProperty);
                 }
             }
 
@@ -393,7 +394,7 @@ namespace DemoGame.Server
             /// Handles synchronizing the paper-doll information to a single client.
             /// </summary>
             /// <param name="client">The client to send the information to</param>
-            internal void SynchronizeBodyLayersTo(IClientCommunicator client)
+            internal void SynchronizeBodyLayersTo(INetworkSender client)
             {
                 // Get the values to send
                 var bodiesToSend = _bodies.Where(x => x != null);
@@ -403,7 +404,7 @@ namespace DemoGame.Server
                 // Send the paper-doll information
                 using (var pw = ServerPacket.SetCharacterPaperDoll(_character.MapEntityIndex, bodiesToSend))
                 {
-                    client.Send(pw);
+                    client.Send(pw, ServerMessageType.MapDynamicEntityProperty);
                 }
             }
         }
