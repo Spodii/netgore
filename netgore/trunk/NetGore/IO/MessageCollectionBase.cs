@@ -217,16 +217,19 @@ namespace NetGore.IO
                 // Check for a still-valid line
                 if (!string.IsNullOrEmpty(fileLine))
                 {
-                    var colonIndex = fileLine.IndexOf(':');
-                    if (colonIndex > 0)
+                    if (!IsLineToIgnore(fileLine))
                     {
-                        // Split the message identifier and text
-                        var idStr = fileLine.Substring(0, colonIndex).Trim();
-                        msg = fileLine.Substring(colonIndex + 1).Trim();
+                        var colonIndex = fileLine.IndexOf(':');
+                        if (colonIndex > 0)
+                        {
+                            // Split the message identifier and text
+                            var idStr = fileLine.Substring(0, colonIndex).Trim();
+                            msg = fileLine.Substring(colonIndex + 1).Trim();
 
-                        // Find the corresponding ServerMessage for the id
-                        if (TryParseID(idStr, out id))
-                            return true;
+                            // Find the corresponding type T for the id
+                            if (TryParseID(idStr, out id))
+                                return true;
+                        }
                     }
                 }
             }
@@ -235,6 +238,18 @@ namespace NetGore.IO
             id = default(T);
             msg = null;
             return false;
+        }
+
+        /// <summary>
+        /// Checks if the given line is one that should be ignored. Typically, this means checking if a line starts with
+        /// comment characters. By default, lines starting with a hash (#), slash (\ or /), and apostrophe (') are ignored.
+        /// Blank lines are always ignored.
+        /// </summary>
+        /// <param name="fileLine">The line to check.</param>
+        /// <returns>True if the line should be ignored; otherwise false.</returns>
+        protected virtual bool IsLineToIgnore(string fileLine)
+        {
+            return fileLine.StartsWith("#") || fileLine.StartsWith("\\") || fileLine.StartsWith("'");
         }
 
         #region IMessageCollection<T> Members
