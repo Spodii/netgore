@@ -16,239 +16,226 @@ For more information on the DbClassCreator, please see:
 ********************************************************************/
 
 using System;
-using System.Data;
 using System.Linq;
-using DemoGame.DbObjs;
+using NetGore;
+using NetGore.IO;
+using System.Collections.Generic;
+using System.Collections;
 using NetGore.Db;
-
+using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
-    /// <summary>
-    /// Contains extension methods for class WorldStatsNetworkTable that assist in performing
-    /// reads and writes to and from a database.
-    /// </summary>
-    public static class WorldStatsNetworkTableDbExtensions
-    {
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-        ///  this method will not create them if they are missing.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this IWorldStatsNetworkTable source, DbParameterValues paramValues)
-        {
-            paramValues["connections"] = source.Connections;
-            paramValues["id"] = source.ID;
-            paramValues["tcp_recv"] = source.TcpRecv;
-            paramValues["tcp_recvs"] = source.TcpRecvs;
-            paramValues["tcp_sends"] = source.TcpSends;
-            paramValues["tcp_sent"] = source.TcpSent;
-            paramValues["udp_recv"] = source.UdpRecv;
-            paramValues["udp_recvs"] = source.UdpRecvs;
-            paramValues["udp_sends"] = source.UdpSends;
-            paramValues["udp_sent"] = source.UdpSent;
-            paramValues["when"] = source.When;
-        }
+/// <summary>
+/// Contains extension methods for class WorldStatsNetworkTable that assist in performing
+/// reads and writes to and from a database.
+/// </summary>
+public static  class WorldStatsNetworkTableDbExtensions
+{
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+///  this method will not create them if they are missing.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public static void CopyValues(this IWorldStatsNetworkTable source, NetGore.Db.DbParameterValues paramValues)
+{
+paramValues["connections"] = (System.UInt32)source.Connections;
+paramValues["connections_rejected"] = (System.UInt32)source.ConnectionsRejected;
+paramValues["id"] = (System.UInt32)source.ID;
+paramValues["recv"] = (System.UInt32)source.Recv;
+paramValues["recvs"] = (System.UInt32)source.Recvs;
+paramValues["sends"] = (System.UInt32)source.Sends;
+paramValues["sent"] = (System.UInt32)source.Sent;
+paramValues["when"] = (System.DateTime)source.When;
+}
 
-        /// <summary>
-        /// Checks if this <see cref="IWorldStatsNetworkTable"/> contains the same values as another <see cref="IWorldStatsNetworkTable"/>.
-        /// </summary>
-        /// <param name="source">The source <see cref="IWorldStatsNetworkTable"/>.</param>
-        /// <param name="otherItem">The <see cref="IWorldStatsNetworkTable"/> to compare the values to.</param>
-        /// <returns>
-        /// True if this <see cref="IWorldStatsNetworkTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
-        /// </returns>
-        public static Boolean HasSameValues(this IWorldStatsNetworkTable source, IWorldStatsNetworkTable otherItem)
-        {
-            return Equals(source.Connections, otherItem.Connections) && Equals(source.ID, otherItem.ID) &&
-                   Equals(source.TcpRecv, otherItem.TcpRecv) && Equals(source.TcpRecvs, otherItem.TcpRecvs) &&
-                   Equals(source.TcpSends, otherItem.TcpSends) && Equals(source.TcpSent, otherItem.TcpSent) &&
-                   Equals(source.UdpRecv, otherItem.UdpRecv) && Equals(source.UdpRecvs, otherItem.UdpRecvs) &&
-                   Equals(source.UdpSends, otherItem.UdpSends) && Equals(source.UdpSent, otherItem.UdpSent) &&
-                   Equals(source.When, otherItem.When);
-        }
+/// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. The database column's name is used to as the key, so the value
+/// will not be found if any aliases are used or not all columns were selected.
+/// </summary>
+/// <param name="source">The object to add the extension method to.</param>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public static void ReadValues(this WorldStatsNetworkTable source, System.Data.IDataReader dataReader)
+{
+System.Int32 i;
 
-        /// <summary>
-        /// Reads the values from an IDataReader and assigns the read values to this
-        /// object's properties. The database column's name is used to as the key, so the value
-        /// will not be found if any aliases are used or not all columns were selected.
-        /// </summary>
-        /// <param name="source">The object to add the extension method to.</param>
-        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this WorldStatsNetworkTable source, IDataReader dataReader)
-        {
-            Int32 i;
+i = dataReader.GetOrdinal("connections");
 
-            i = dataReader.GetOrdinal("connections");
+source.Connections = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
-            source.Connections = dataReader.GetUInt32(i);
+i = dataReader.GetOrdinal("connections_rejected");
 
-            i = dataReader.GetOrdinal("id");
+source.ConnectionsRejected = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
-            source.ID = dataReader.GetUInt32(i);
+i = dataReader.GetOrdinal("id");
 
-            i = dataReader.GetOrdinal("tcp_recv");
+source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
-            source.TcpRecv = dataReader.GetUInt32(i);
+i = dataReader.GetOrdinal("recv");
 
-            i = dataReader.GetOrdinal("tcp_recvs");
+source.Recv = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
-            source.TcpRecvs = dataReader.GetUInt32(i);
+i = dataReader.GetOrdinal("recvs");
 
-            i = dataReader.GetOrdinal("tcp_sends");
+source.Recvs = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
-            source.TcpSends = dataReader.GetUInt32(i);
+i = dataReader.GetOrdinal("sends");
 
-            i = dataReader.GetOrdinal("tcp_sent");
+source.Sends = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
-            source.TcpSent = dataReader.GetUInt32(i);
+i = dataReader.GetOrdinal("sent");
 
-            i = dataReader.GetOrdinal("udp_recv");
+source.Sent = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
-            source.UdpRecv = dataReader.GetUInt32(i);
+i = dataReader.GetOrdinal("when");
 
-            i = dataReader.GetOrdinal("udp_recvs");
+source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+}
 
-            source.UdpRecvs = dataReader.GetUInt32(i);
+/// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. Unlike ReadValues(), this method not only doesn't require
+/// all values to be in the IDataReader, but also does not require the values in
+/// the IDataReader to be a defined field for the table this class represents.
+/// Because of this, you need to be careful when using this method because values
+/// can easily be skipped without any indication.
+/// </summary>
+/// <param name="source">The object to add the extension method to.</param>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public static void TryReadValues(this WorldStatsNetworkTable source, System.Data.IDataReader dataReader)
+{
+for (int i = 0; i < dataReader.FieldCount; i++)
+{
+switch (dataReader.GetName(i))
+{
+case "connections":
+source.Connections = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+break;
 
-            i = dataReader.GetOrdinal("udp_sends");
 
-            source.UdpSends = dataReader.GetUInt32(i);
+case "connections_rejected":
+source.ConnectionsRejected = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+break;
 
-            i = dataReader.GetOrdinal("udp_sent");
 
-            source.UdpSent = dataReader.GetUInt32(i);
+case "id":
+source.ID = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+break;
 
-            i = dataReader.GetOrdinal("when");
 
-            source.When = dataReader.GetDateTime(i);
-        }
+case "recv":
+source.Recv = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+break;
 
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
-        /// match one of the column names, or if there is no field for a key, then it will be
-        /// ignored. Because of this, it is important to be careful when using this method
-        /// since columns or keys can be skipped without any indication.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this IWorldStatsNetworkTable source, DbParameterValues paramValues)
-        {
-            for (var i = 0; i < paramValues.Count; i++)
-            {
-                switch (paramValues.GetParameterName(i))
-                {
-                    case "connections":
-                        paramValues[i] = source.Connections;
-                        break;
 
-                    case "id":
-                        paramValues[i] = source.ID;
-                        break;
+case "recvs":
+source.Recvs = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+break;
 
-                    case "tcp_recv":
-                        paramValues[i] = source.TcpRecv;
-                        break;
 
-                    case "tcp_recvs":
-                        paramValues[i] = source.TcpRecvs;
-                        break;
+case "sends":
+source.Sends = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+break;
 
-                    case "tcp_sends":
-                        paramValues[i] = source.TcpSends;
-                        break;
 
-                    case "tcp_sent":
-                        paramValues[i] = source.TcpSent;
-                        break;
+case "sent":
+source.Sent = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+break;
 
-                    case "udp_recv":
-                        paramValues[i] = source.UdpRecv;
-                        break;
 
-                    case "udp_recvs":
-                        paramValues[i] = source.UdpRecvs;
-                        break;
+case "when":
+source.When = (System.DateTime)(System.DateTime)dataReader.GetDateTime(i);
+break;
 
-                    case "udp_sends":
-                        paramValues[i] = source.UdpSends;
-                        break;
 
-                    case "udp_sent":
-                        paramValues[i] = source.UdpSent;
-                        break;
+}
 
-                    case "when":
-                        paramValues[i] = source.When;
-                        break;
-                }
-            }
-        }
+}
+}
 
-        /// <summary>
-        /// Reads the values from an IDataReader and assigns the read values to this
-        /// object's properties. Unlike ReadValues(), this method not only doesn't require
-        /// all values to be in the IDataReader, but also does not require the values in
-        /// the IDataReader to be a defined field for the table this class represents.
-        /// Because of this, you need to be careful when using this method because values
-        /// can easily be skipped without any indication.
-        /// </summary>
-        /// <param name="source">The object to add the extension method to.</param>
-        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this WorldStatsNetworkTable source, IDataReader dataReader)
-        {
-            for (var i = 0; i < dataReader.FieldCount; i++)
-            {
-                switch (dataReader.GetName(i))
-                {
-                    case "connections":
-                        source.Connections = dataReader.GetUInt32(i);
-                        break;
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+/// for the value to be copied over. If any of the keys in the DbParameterValues do not
+/// match one of the column names, or if there is no field for a key, then it will be
+/// ignored. Because of this, it is important to be careful when using this method
+/// since columns or keys can be skipped without any indication.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public static void TryCopyValues(this IWorldStatsNetworkTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "connections":
+paramValues[i] = (System.UInt32)source.Connections;
+break;
 
-                    case "id":
-                        source.ID = dataReader.GetUInt32(i);
-                        break;
 
-                    case "tcp_recv":
-                        source.TcpRecv = dataReader.GetUInt32(i);
-                        break;
+case "connections_rejected":
+paramValues[i] = (System.UInt32)source.ConnectionsRejected;
+break;
 
-                    case "tcp_recvs":
-                        source.TcpRecvs = dataReader.GetUInt32(i);
-                        break;
 
-                    case "tcp_sends":
-                        source.TcpSends = dataReader.GetUInt32(i);
-                        break;
+case "id":
+paramValues[i] = (System.UInt32)source.ID;
+break;
 
-                    case "tcp_sent":
-                        source.TcpSent = dataReader.GetUInt32(i);
-                        break;
 
-                    case "udp_recv":
-                        source.UdpRecv = dataReader.GetUInt32(i);
-                        break;
+case "recv":
+paramValues[i] = (System.UInt32)source.Recv;
+break;
 
-                    case "udp_recvs":
-                        source.UdpRecvs = dataReader.GetUInt32(i);
-                        break;
 
-                    case "udp_sends":
-                        source.UdpSends = dataReader.GetUInt32(i);
-                        break;
+case "recvs":
+paramValues[i] = (System.UInt32)source.Recvs;
+break;
 
-                    case "udp_sent":
-                        source.UdpSent = dataReader.GetUInt32(i);
-                        break;
 
-                    case "when":
-                        source.When = dataReader.GetDateTime(i);
-                        break;
-                }
-            }
-        }
-    }
+case "sends":
+paramValues[i] = (System.UInt32)source.Sends;
+break;
+
+
+case "sent":
+paramValues[i] = (System.UInt32)source.Sent;
+break;
+
+
+case "when":
+paramValues[i] = (System.DateTime)source.When;
+break;
+
+
+}
+
+}
+}
+
+/// <summary>
+/// Checks if this <see cref="IWorldStatsNetworkTable"/> contains the same values as another <see cref="IWorldStatsNetworkTable"/>.
+/// </summary>
+/// <param name="source">The source <see cref="IWorldStatsNetworkTable"/>.</param>
+/// <param name="otherItem">The <see cref="IWorldStatsNetworkTable"/> to compare the values to.</param>
+/// <returns>
+/// True if this <see cref="IWorldStatsNetworkTable"/> contains the same values as the <paramref name="otherItem"/>; otherwise false.
+/// </returns>
+public static System.Boolean HasSameValues(this IWorldStatsNetworkTable source, IWorldStatsNetworkTable otherItem)
+{
+return Equals(source.Connections, otherItem.Connections) && 
+Equals(source.ConnectionsRejected, otherItem.ConnectionsRejected) && 
+Equals(source.ID, otherItem.ID) && 
+Equals(source.Recv, otherItem.Recv) && 
+Equals(source.Recvs, otherItem.Recvs) && 
+Equals(source.Sends, otherItem.Sends) && 
+Equals(source.Sent, otherItem.Sent) && 
+Equals(source.When, otherItem.When);
+}
+
+}
+
 }

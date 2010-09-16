@@ -43,7 +43,6 @@ namespace DemoGame.Server
         bool _disposed;
         bool _isRunning = true;
         TickCount _nextServerSaveTime;
-        IServerSettingTable _serverSettings;
         int _tick;
 
         /// <summary>
@@ -80,12 +79,6 @@ namespace DemoGame.Server
             // Validate the database
             DbTableValidator.ValidateTables(_dbController);
             ValidateDbControllerQueryAttributes();
-
-            // Update the GameData table
-            var gameDataValues = GetGameConstantTableValues();
-            DbController.GetQuery<UpdateGameConstantTableQuery>().Execute(gameDataValues);
-            if (log.IsInfoEnabled)
-                log.Info("Updated the GameData table with the current values.");
 
             // Create some objects
             _consoleCommands = new ConsoleCommands(this);
@@ -133,9 +126,17 @@ namespace DemoGame.Server
             get { return _disposed; }
         }
 
+        /// <summary>
+        /// Gets the Message of the Day displayed to users when they connect.
+        /// </summary>
         public string MOTD
         {
-            get { return _serverSettings.Motd; }
+            get
+            {
+                throw new NotImplementedException();
+                // TODO: !! Fix MOTD
+                //return _serverSettings.Motd;
+            }
         }
 
         /// <summary>
@@ -328,35 +329,6 @@ namespace DemoGame.Server
             worldStatsTracker.Update();
         }
 
-        /// <summary>
-        /// Creates an <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.
-        /// </summary>
-        /// <returns>An <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.</returns>
-        static IGameConstantTable GetGameConstantTableValues()
-        {
-            var gdt = new GameConstantTable
-            {
-                MaxAccountNameLength = (byte)GameData.AccountName.MaxLength,
-                MaxAccountPasswordLength = (byte)GameData.AccountPassword.MaxLength,
-                MaxCharacterNameLength = (byte)GameData.UserName.MaxLength,
-                MaxCharactersPerAccount = GameData.MaxCharactersPerAccount,
-                MaxInventorySize = GameData.MaxInventorySize,
-                MaxShopItems = ShopSettings.Instance.MaxShopItems,
-                MaxStatusEffectPower = StatusEffectsSettings.Instance.MaxStatusEffectPower,
-                MinAccountNameLength = (byte)GameData.AccountName.MinLength,
-                MinAccountPasswordLength = (byte)GameData.AccountPassword.MinLength,
-                MinCharacterNameLength = (byte)GameData.UserName.MinLength,
-                ScreenHeight = (ushort)GameData.ScreenSize.Y,
-                ScreenWidth = (ushort)GameData.ScreenSize.X,
-                ServerIp = GameData.NetworkSettings.ServerIP,
-                ServerPingPort = (ushort)GameData.NetworkSettings.ServerPingPort,
-                ServerTcpPort = (ushort)GameData.NetworkSettings.ServerTCPPort,
-                WorldPhysicsUpdateRate = (ushort)GameData.WorldPhysicsUpdateRate
-            };
-
-            return gdt;
-        }
-
         static void HandleFailedLogin(IIPSocket conn, AccountLoginResult loginResult, string name)
         {
             // Get the error message
@@ -407,12 +379,13 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Loading server settings.");
 
-            _serverSettings = DbController.GetQuery<SelectServerSettingsQuery>().Execute();
-
             // Create the MOTD list
+            // TODO: !! Fix MOTD
+            /*
             var motdLines = _serverSettings.Motd.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
             if (motdLines.Length > 0)
                 _motd.AddRange(motdLines);
+            */
             _motd.TrimExcess();
         }
 

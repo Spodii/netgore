@@ -13,14 +13,11 @@ namespace NetGore.Network
         static readonly NetStats _global;
 
         int _conns;
-        long _tcpRecv;
-        int _tcpRecvs;
-        int _tcpSends;
-        long _tcpSent;
-        long _udpRecv;
-        int _udpRecvs;
-        int _udpSends;
-        long _udpSent;
+        long _recv;
+        int _recvs;
+        int _rejected;
+        int _sends;
+        long _sent;
 
         /// <summary>
         /// Initializes the <see cref="NetStats"/> class.
@@ -47,7 +44,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the number of TCP connections that have been made.
+        /// Gets the number of connections that have been made and accepted.
         /// </summary>
         public int Connections
         {
@@ -75,17 +72,25 @@ namespace NetGore.Network
         /// game messages. Each send is usually one packet, but larger messages (if the socket allows it) can result in multiple packets
         /// for a single receive.
         /// </summary>
-        public int TCPReceives
+        public int Receives
         {
-            get { return _tcpRecvs; }
+            get { return _recvs; }
         }
 
         /// <summary>
         /// Gets the number of bytes that have been received over the TCP channel.
         /// </summary>
-        public long TCPRecv
+        public long Recv
         {
-            get { return Interlocked.Read(ref _tcpRecv); }
+            get { return Interlocked.Read(ref _recv); }
+        }
+
+        /// <summary>
+        /// Gets the number of connections that attempted to be made but were rejected.
+        /// </summary>
+        public int RejectedConnections
+        {
+            get { return _rejected; }
         }
 
         /// <summary>
@@ -93,53 +98,17 @@ namespace NetGore.Network
         /// game messages. Each send is usually one packet, but larger messages (if the socket allows it) can result in multiple packets
         /// for a single send.
         /// </summary>
-        public int TCPSends
+        public int Sends
         {
-            get { return _tcpSends; }
+            get { return _sends; }
         }
 
         /// <summary>
         /// Gets the number of bytes that have been sent over the TCP channel.
         /// </summary>
-        public long TCPSent
+        public long Sent
         {
-            get { return Interlocked.Read(ref _tcpSent); }
-        }
-
-        /// <summary>
-        /// Gets the number of messages that have been received over the UDP channel. Message refers to a socket-level message, not individual
-        /// game messages. Each send is usually one packet, but larger messages (if the socket allows it) can result in multiple packets
-        /// for a single receive.
-        /// </summary>
-        public int UDPReceives
-        {
-            get { return _udpRecvs; }
-        }
-
-        /// <summary>
-        /// Gets the number of bytes that have been received over the UDP channel.
-        /// </summary>
-        public long UDPRecv
-        {
-            get { return Interlocked.Read(ref _udpRecv); }
-        }
-
-        /// <summary>
-        /// Gets the number of messages that have been sent over the UDP channel. Message refers to a socket-level message, not individual
-        /// game messages. Each send is usually one packet, but larger messages (if the socket allows it) can result in multiple packets
-        /// for a single send.
-        /// </summary>
-        public int UDPSends
-        {
-            get { return _udpSends; }
-        }
-
-        /// <summary>
-        /// Gets the number of bytes that have been sent over the UDP channel.
-        /// </summary>
-        public long UDPSent
-        {
-            get { return Interlocked.Read(ref _udpSent); }
+            get { return Interlocked.Read(ref _sent); }
         }
 
         /// <summary>
@@ -152,57 +121,39 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Adds to the <see cref="NetStats.TCPRecv"/> property value.
+        /// Adds to the <see cref="Recv"/> property value.
         /// </summary>
         /// <param name="value">The amount to add.</param>
-        public void AddTCPRecv(long value)
+        public void AddRecv(long value)
         {
-            Interlocked.Add(ref _tcpRecv, value);
+            Interlocked.Add(ref _recv, value);
         }
 
         /// <summary>
-        /// Adds to the <see cref="NetStats.TCPSends"/> property value.
+        /// Adds to the <see cref="NetStats.RejectedConnections"/> property value.
         /// </summary>
         /// <param name="value">The amount to add.</param>
-        public void AddTCPSends(int value)
+        public void AddRejectedConnections(int value)
         {
-            Interlocked.Add(ref _tcpSends, value);
+            Interlocked.Add(ref _rejected, value);
         }
 
         /// <summary>
-        /// Adds to the <see cref="NetStats.TCPSent"/> property value.
+        /// Adds to the <see cref="Sends"/> property value.
         /// </summary>
         /// <param name="value">The amount to add.</param>
-        public void AddTCPSent(long value)
+        public void AddSends(int value)
         {
-            Interlocked.Add(ref _tcpSent, value);
+            Interlocked.Add(ref _sends, value);
         }
 
         /// <summary>
-        /// Adds to the <see cref="NetStats.UDPRecv"/> property value.
+        /// Adds to the <see cref="Sent"/> property value.
         /// </summary>
         /// <param name="value">The amount to add.</param>
-        public void AddUDPRecv(long value)
+        public void AddSent(long value)
         {
-            Interlocked.Add(ref _udpRecv, value);
-        }
-
-        /// <summary>
-        /// Adds to the <see cref="NetStats.UDPSends"/> property value.
-        /// </summary>
-        /// <param name="value">The amount to add.</param>
-        public void AddUDPSends(int value)
-        {
-            Interlocked.Add(ref _udpSends, value);
-        }
-
-        /// <summary>
-        /// Adds to the <see cref="NetStats.UDPSent"/> property value.
-        /// </summary>
-        /// <param name="value">The amount to add.</param>
-        public void AddUDPSent(long value)
-        {
-            Interlocked.Add(ref _udpSent, value);
+            Interlocked.Add(ref _sent, value);
         }
 
         /// <summary>
@@ -216,9 +167,8 @@ namespace NetGore.Network
             if (o == null)
                 return false;
 
-            return TCPSent == o.TCPSent && TCPSends == o.TCPSends && TCPRecv == o.TCPRecv && TCPReceives == o.TCPReceives &&
-                   UDPSent == o.UDPSent && UDPSends == o.UDPSends && UDPRecv == o.UDPRecv && UDPReceives == o.UDPReceives &&
-                   Connections == o.Connections;
+            return Sent == o.Sent && Sends == o.Sends && Recv == o.Recv && Receives == o.Receives && Connections == o.Connections &&
+                   RejectedConnections == o.RejectedConnections;
         }
 
         /// <summary>
@@ -227,17 +177,13 @@ namespace NetGore.Network
         /// <param name="source">The <see cref="NetStats"/> to copy the values from.</param>
         public void CopyValuesFrom(NetStats source)
         {
-            _tcpSent = source._tcpSent;
-            _tcpSends = source._tcpSends;
-            _tcpRecv = source._tcpRecv;
-            _tcpRecvs = source._tcpRecvs;
-
-            _udpSent = source._udpSent;
-            _udpSends = source._udpSends;
-            _udpRecv = source._udpRecv;
-            _udpRecvs = source._udpRecvs;
+            _sent = source._sent;
+            _sends = source._sends;
+            _recv = source._recv;
+            _recvs = source._recvs;
 
             _conns = source._conns;
+            _rejected = source._rejected;
         }
 
         /// <summary>
@@ -258,35 +204,27 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Increments the <see cref="NetStats.TCPReceives"/> property value by one.
+        /// Increments the <see cref="Receives"/> property value by one.
         /// </summary>
-        public void IncrementTCPReceives()
+        public void IncrementReceives()
         {
-            Interlocked.Increment(ref _tcpRecvs);
+            Interlocked.Increment(ref _recvs);
         }
 
         /// <summary>
-        /// Increments the <see cref="NetStats.TCPSends"/> property value by one.
+        /// Increments the <see cref="RejectedConnections"/> property value by one.
         /// </summary>
-        public void IncrementTCPSends()
+        public void IncrementRejected()
         {
-            Interlocked.Increment(ref _tcpSends);
+            Interlocked.Increment(ref _rejected);
         }
 
         /// <summary>
-        /// Increments the <see cref="NetStats.UDPReceives"/> property value by one.
+        /// Increments the <see cref="Sends"/> property value by one.
         /// </summary>
-        public void IncrementUDPReceives()
+        public void IncrementSends()
         {
-            Interlocked.Increment(ref _udpRecvs);
-        }
-
-        /// <summary>
-        /// Increments the <see cref="NetStats.UDPSends"/> property value by one.
-        /// </summary>
-        public void IncrementUDPSends()
-        {
-            Interlocked.Increment(ref _udpSends);
+            Interlocked.Increment(ref _sends);
         }
 
         /// <summary>
@@ -299,17 +237,13 @@ namespace NetGore.Network
             if (IsGlobalNetStats)
                 throw new InvalidOperationException("Cannot call Reset() on the global NetStats instance.");
 
-            _tcpSent = 0;
-            _tcpSends = 0;
-            _tcpRecv = 0;
-            _tcpRecvs = 0;
-
-            _udpSent = 0;
-            _udpSends = 0;
-            _udpRecv = 0;
-            _udpRecvs = 0;
+            _sent = 0;
+            _sends = 0;
+            _recv = 0;
+            _recvs = 0;
 
             _conns = 0;
+            _rejected = 0;
         }
 
         /// <summary>
@@ -322,15 +256,12 @@ namespace NetGore.Network
         {
             return new NetStats
             {
-                _tcpSent = left._tcpSent - right._tcpSent,
-                _tcpSends = left._tcpSends - right._tcpSends,
-                _tcpRecv = left._tcpRecv - right._tcpRecv,
-                _tcpRecvs = left._tcpRecvs - right._tcpRecvs,
-                _udpSent = left._udpSent - right._udpSent,
-                _udpSends = left._udpSends - right._udpSends,
-                _udpRecv = left._udpRecv - right._udpRecv,
-                _udpRecvs = left._udpRecvs - right._udpRecvs,
-                _conns = left._conns - right._conns
+                _sent = left._sent - right._sent,
+                _sends = left._sends - right._sends,
+                _recv = left._recv - right._recv,
+                _recvs = left._recvs - right._recvs,
+                _conns = left._conns - right._conns,
+                _rejected = left._rejected - right._rejected
             };
         }
 
@@ -344,15 +275,12 @@ namespace NetGore.Network
         {
             return new NetStats
             {
-                _tcpSent = left._tcpSent + right._tcpSent,
-                _tcpSends = left._tcpSends + right._tcpSends,
-                _tcpRecv = left._tcpRecv + right._tcpRecv,
-                _tcpRecvs = left._tcpRecvs + right._tcpRecvs,
-                _udpSent = left._udpSent + right._udpSent,
-                _udpSends = left._udpSends + right._udpSends,
-                _udpRecv = left._udpRecv + right._udpRecv,
-                _udpRecvs = left._udpRecvs + right._udpRecvs,
-                _conns = left._conns + right._conns
+                _sent = left._sent + right._sent,
+                _sends = left._sends + right._sends,
+                _recv = left._recv + right._recv,
+                _recvs = left._recvs + right._recvs,
+                _conns = left._conns + right._conns,
+                _rejected = left._rejected + right._rejected
             };
         }
     }
