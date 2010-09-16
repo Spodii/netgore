@@ -109,7 +109,7 @@ namespace DemoGame.Server
         {
             using (var pw = ServerPacket.StartShopping(ShopOwner.MapEntityIndex, shop))
             {
-                character.Send(pw);
+                character.Send(pw, ServerMessageType.GUI);
             }
         }
 
@@ -122,7 +122,7 @@ namespace DemoGame.Server
         {
             using (var pw = ServerPacket.StopShopping())
             {
-                character.Send(pw);
+                character.Send(pw, ServerMessageType.GUI);
             }
         }
     }

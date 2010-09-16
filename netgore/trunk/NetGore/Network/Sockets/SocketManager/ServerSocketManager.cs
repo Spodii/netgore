@@ -24,11 +24,7 @@ namespace NetGore.Network
         /// <param name="port">The port to listen on.</param>
         public ServerSocketManager(string appIdentifier, int port)
         {
-            var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true, Port = port };
-
-            // Disable throttling
-            config.ThrottleBytesPerSecond = 0;
-            config.ThrottlePeakBytes = 0;
+            var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true, Port = port, MaximumConnections = 50 };
 
             // Disable some message types that will not be used by the server
             config.DisableMessageType(NetIncomingMessageType.NatIntroductionSuccess);

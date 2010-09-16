@@ -13,7 +13,7 @@ namespace DemoGame.Client
     public abstract class ItemInfoRequesterBase<T>
     {
         readonly ItemTable _reusableItemInfo = new ItemTable();
-        readonly ISocketSender _socket;
+        readonly INetworkSender _socket;
 
         bool _isItemInfoSet;
         IItemTable _itemInfo;
@@ -25,7 +25,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="ItemInfoRequesterBase{T}"/> class.
         /// </summary>
         /// <param name="socket">The socket.</param>
-        protected ItemInfoRequesterBase(ISocketSender socket)
+        protected ItemInfoRequesterBase(INetworkSender socket)
         {
             if (socket == null)
                 throw new ArgumentNullException("socket");
@@ -52,7 +52,7 @@ namespace DemoGame.Client
         /// <summary>
         /// The socket used to send the requests.
         /// </summary>
-        public ISocketSender Socket
+        public INetworkSender Socket
         {
             get { return _socket; }
         }
@@ -148,7 +148,7 @@ namespace DemoGame.Client
                 // Send a request to the server for the information on the item in the slot
                 using (var pw = GetRequest(_slot))
                 {
-                    Socket.Send(pw);
+                    Socket.Send(pw, ClientMessageType.GUIItemInfoRequest);
                 }
 
                 _needToRequest = false;

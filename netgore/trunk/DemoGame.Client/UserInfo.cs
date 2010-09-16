@@ -23,13 +23,13 @@ namespace DemoGame.Client
         readonly Inventory _inventory;
         readonly StatCollection<StatType> _modStats = new StatCollection<StatType>(StatCollectionType.Modified);
         readonly UserQuestInformation _questInfo;
-        readonly ISocketSender _socket;
+        readonly INetworkSender _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserInfo"/> class.
         /// </summary>
         /// <param name="socket">The socket.</param>
-        public UserInfo(ISocketSender socket)
+        public UserInfo(INetworkSender socket)
         {
             if (socket == null)
                 throw new ArgumentNullException("socket");
@@ -130,7 +130,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.HasQuestFinishRequirements(questID))
             {
-                _socket.Send(pw);
+                _socket.Send(pw, ClientMessageType.GUIQuestStatusRequest);
             }
         }
 
@@ -138,7 +138,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.HasQuestStartRequirements(questID))
             {
-                _socket.Send(pw);
+                _socket.Send(pw, ClientMessageType.GUIQuestStatusRequest);
             }
         }
 

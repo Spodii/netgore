@@ -249,7 +249,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.EndNPCChatDialog())
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.GUI);
             }
         }
 
@@ -257,7 +257,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.SelectNPCChatDialogResponse(response.Value))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.GUI);
             }
         }
 
@@ -271,7 +271,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.Say(text))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.Chat);
             }
         }
 
@@ -358,7 +358,7 @@ namespace DemoGame.Client
             // Send unequip request
             using (var pw = ClientPacket.UnequipItem(slot))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.GUIItems);
             }
         }
 
@@ -595,7 +595,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.BuyFromShop(slot, 1))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.GUI);
             }
         }
 
@@ -603,7 +603,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.UseSkill(skillType, _characterTargeter.TargetCharacterIndex))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.CharacterAction);
             }
         }
 
@@ -616,7 +616,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.RaiseStat(statType))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.GUI);
             }
         }
 
@@ -745,7 +745,7 @@ namespace DemoGame.Client
         {
             using (var pw = ClientPacket.AcceptOrTurnInQuest(AvailableQuestsForm.QuestProviderIndex, args.QuestID))
             {
-                Socket.Send(pw);
+                Socket.Send(pw, ClientMessageType.GUI);
             }
         }
 

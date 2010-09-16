@@ -97,7 +97,7 @@ namespace DemoGame.Server
 
                     // Pack the data and send it
                     ServerPacket.SetInventorySlot(pw, invSlot, sendItemGraphic, sendItemAmount);
-                    OwnerUser.Send(pw);
+                    OwnerUser.Send(pw, ServerMessageType.GUIItems);
                 }
             }
             finally

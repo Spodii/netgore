@@ -173,7 +173,10 @@
     <Compile Include="ItemInfoHelper.cs" />
     <Compile Include="ItemInfoRequester\InventoryInfoRequester.cs" />
     <Compile Include="ItemInfoRequester\ItemInfoRequesterBase.cs" />
+    <Compile Include="Networking\ClientMessageType.cs" />
+    <Compile Include="Networking\ClientMessageTypeExtensions.cs" />
     <Compile Include="Networking\ClientPacketHandlerEventHandler.cs" />
+    <Compile Include="Networking\INetworkSenderExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interface\GUISettings.cs" />

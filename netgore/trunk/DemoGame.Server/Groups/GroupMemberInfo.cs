@@ -53,9 +53,9 @@ namespace DemoGame.Server.Groups
             // Give some more details on why they failed to join the group, if possible. Otherwise, just use the
             // generic "failed to join" message (which is not ideal, but better than nothing).
             if (group.Members.Count() == GroupSettings.Instance.MaxMembersPerGroup)
-                Owner.Send(GameMessage.GroupJoinFailedGroupIsFull, founderName);
+                Owner.Send(GameMessage.GroupJoinFailedGroupIsFull, ServerMessageType.GUI, founderName);
             else
-                Owner.Send(GameMessage.GroupJoinFailedUnknownReason, founderName);
+                Owner.Send(GameMessage.GroupJoinFailedUnknownReason, ServerMessageType.GUI, founderName);
         }
 
         /// <summary>
@@ -69,10 +69,10 @@ namespace DemoGame.Server.Groups
         {
             using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteAddMember(x, groupMember)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
-            Owner.Send(GameMessage.GroupMemberJoined, GetGroupMemberName(groupMember));
+            Owner.Send(GameMessage.GroupMemberJoined, ServerMessageType.GUI, GetGroupMemberName(groupMember));
         }
 
         /// <summary>
@@ -86,10 +86,10 @@ namespace DemoGame.Server.Groups
         {
             using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteRemoveMember(x, groupMember)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
-            Owner.Send(GameMessage.GroupMemberLeft, GetGroupMemberName(groupMember));
+            Owner.Send(GameMessage.GroupMemberLeft, ServerMessageType.GUI, GetGroupMemberName(groupMember));
         }
 
         /// <summary>
@@ -100,12 +100,12 @@ namespace DemoGame.Server.Groups
         {
             using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteGroupInfo(x, group)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
             // Don't send the message if we join our own group (since we already told we created the group)
             if (group.Founder != Owner)
-                Owner.Send(GameMessage.GroupJoined, GetGroupFounderName(group));
+                Owner.Send(GameMessage.GroupJoined, ServerMessageType.GUI, GetGroupFounderName(group));
         }
 
         /// <summary>
@@ -116,10 +116,10 @@ namespace DemoGame.Server.Groups
         {
             using (var pw = ServerPacket.GroupInfo(x => UserGroupInformation.WriteGroupInfo(x, null)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
-            Owner.Send(GameMessage.GroupLeave);
+            Owner.Send(GameMessage.GroupLeave, ServerMessageType.GUI);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace DemoGame.Server.Groups
         /// <param name="group">The group they were invited to.</param>
         protected override void OnReceiveInvite(IGroup group)
         {
-            Owner.Send(GameMessage.GroupInvited, GetGroupFounderName(group));
+            Owner.Send(GameMessage.GroupInvited, ServerMessageType.GUI, GetGroupFounderName(group));
         }
     }
 }

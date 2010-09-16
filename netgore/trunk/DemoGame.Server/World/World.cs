@@ -388,26 +388,58 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Send a message to every user in the world. This method is thread-safe.
+        /// Sends data to all users in the world. This method is thread-safe.
         /// </summary>
-        /// <param name="data">BitStream containing the data to send.</param>
-        /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
-        public void Send(BitStream data, bool reliable = true)
+        /// <param name="data">BitStream containing the data to send to the users.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="data"/>.</param>
+        public void Send(BitStream data, ServerMessageType messageType)
         {
-            // Ensure the data is not null and of a valid length
-            if (data == null || data.Length < 1)
-            {
-                const string errmsg = "Tried to send null or empty data to the World.";
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-                Debug.Fail(errmsg);
+            if (_users.Count == 0)
                 return;
-            }
 
-            // Send to all users in all maps
             foreach (var map in Maps)
             {
-                map.Send(data, reliable);
+                map.Send(data, messageType);
+            }
+
+            foreach (var map in InstancedMaps)
+            {
+                map.Send(data, messageType);
+            }
+        }
+
+        /// <summary>
+        /// Sends data to all users in the world. This method is thread-safe.
+        /// </summary>
+        /// <param name="message">GameMessage to send.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
+        public void Send(GameMessage message, ServerMessageType messageType)
+        {
+            Send(message, messageType, null);
+        }
+
+        /// <summary>
+        /// Sends data to all users in the world. This method is thread-safe.
+        /// </summary>
+        /// <param name="message">GameMessage to send.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
+        /// <param name="parameters">Message parameters.</param>
+        public void Send(GameMessage message, ServerMessageType messageType, params object[] parameters)
+        {
+            if (_users.Count == 0)
+                return;
+
+            using (var pw = ServerPacket.SendMessage(message, parameters))
+            {
+                foreach (var map in Maps)
+                {
+                    map.Send(pw, messageType);
+                }
+
+                foreach (var map in InstancedMaps)
+                {
+                    map.Send(pw, messageType);
+                }
             }
         }
 

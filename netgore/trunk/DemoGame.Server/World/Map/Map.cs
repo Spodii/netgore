@@ -5,11 +5,13 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
+using Lidgren.Network;
 using log4net;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
+using NetGore.Network;
 using NetGore.World;
 using SFML.Graphics;
 
@@ -315,7 +317,7 @@ namespace DemoGame.Server
                 {
                     using (var pw = ServerPacket.CreateDynamicEntity(de))
                     {
-                        Send(pw);
+                        Send(pw, ServerMessageType.Map);
                     }
                 }
             }
@@ -353,7 +355,7 @@ namespace DemoGame.Server
                 {
                     using (var pw = ServerPacket.RemoveDynamicEntity(dynamicEntity))
                     {
-                        Send(pw);
+                        Send(pw, ServerMessageType.Map);
                     }
                 }
             }
@@ -443,69 +445,69 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Send a message to every user in the map. This method is thread-safe.
+        /// Sends data to all users in the map. This method is thread-safe.
         /// </summary>
-        /// <param name="data">BitStream containing the data to send.</param>
-        /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
-        public void Send(BitStream data, bool reliable)
+        /// <param name="data">BitStream containing the data to send to the users.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="data"/>.</param>
+        public void Send(BitStream data, ServerMessageType messageType)
         {
-            Send(data, null, reliable);
-        }
-
-        /// <summary>
-        /// Send a packet to every user in the map. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send.</param>
-        /// <param name="skipUser">User to skip sending to.</param>
-        /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
-        public void Send(BitStream data, User skipUser = null, bool reliable = true)
-        {
-            // Check for valid data
-            if (data == null || data.Length < 1)
-            {
-                const string errmsg = "Attempted to send null or invalid data to the map.";
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-                Debug.Fail(errmsg);
+            if (_users.Count == 0)
                 return;
-            }
 
-            // Send the data to all users in the map
             foreach (var user in Users)
             {
-                if (user != null)
+                user.Send(data, messageType);
+            }
+        }
+
+        /// <summary>
+        /// Sends data to all users in the map. This method is thread-safe.
+        /// </summary>
+        /// <param name="message">GameMessage to send.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
+        public void Send(GameMessage message, ServerMessageType messageType)
+        {
+            Send(message, messageType, null);
+        }
+
+        /// <summary>
+        /// Sends data to all users in the map. This method is thread-safe.
+        /// </summary>
+        /// <param name="message">GameMessage to send.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
+        /// <param name="parameters">Message parameters.</param>
+        public void Send(GameMessage message, ServerMessageType messageType, params object[] parameters)
+        {
+            if (_users.Count == 0)
+                return;
+
+            using (var pw = ServerPacket.SendMessage(message, parameters))
+            {
+                foreach (var user in Users)
                 {
-                    if (user != skipUser)
-                        user.Send(data, reliable);
-                }
-                else
-                {
-                    const string errmsg = "Null User found in the Map's User list. This should never happen.";
-                    Debug.Fail(errmsg);
-                    if (log.IsErrorEnabled)
-                        log.Error(errmsg);
+                    user.Send(pw, messageType);
                 }
             }
         }
 
         /// <summary>
-        /// Sends the data to the specified user of all existing content on the map
+        /// Sends the data to the specified user of all existing content on the map.
         /// </summary>
-        /// <param name="user">User to send the map data to</param>
+        /// <param name="user">User to send the map data to.</param>
         void SendMapData(User user)
         {
             using (var pw = ServerPacket.GetWriter())
             {
                 // Tell the user to change the map
                 ServerPacket.SetMap(pw, ID);
-                user.Send(pw);
+                user.Send(pw, ServerMessageType.Map);
 
                 // Send dynamic entities
                 foreach (var dynamicEntity in DynamicEntities)
                 {
                     pw.Reset();
                     ServerPacket.CreateDynamicEntity(pw, dynamicEntity);
-                    user.Send(pw);
+                    user.Send(pw, ServerMessageType.Map);
 
                     // Perform special synchronizations for Characters
                     var character = dynamicEntity as Character;
@@ -519,7 +521,7 @@ namespace DemoGame.Server
                 // Now that the user know about the Map and every Entity on it, tell them which one is theirs
                 pw.Reset();
                 ServerPacket.SetUserChar(pw, user.MapEntityIndex);
-                user.Send(pw);
+                user.Send(pw, ServerMessageType.Map);
             }
         }
 
@@ -529,9 +531,10 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="origin">The <see cref="ISpatial"/> that the event comes from.</param>
         /// <param name="data">BitStream containing the data to send.</param>
-        public void SendToArea(ISpatial origin, BitStream data)
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="data"/>.</param>
+        public void SendToArea(ISpatial origin, BitStream data, ServerMessageType messageType)
         {
-            SendToArea(origin.Position + (origin.Size / 2f), data);
+            SendToArea(origin.Position + (origin.Size / 2f), data, messageType);
         }
 
         /// <summary>
@@ -540,7 +543,8 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="origin">Position in which the event creating the packet triggered.</param>
         /// <param name="data">BitStream containing the data to send.</param>
-        public void SendToArea(Vector2 origin, BitStream data)
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="data"/>.</param>
+        public void SendToArea(Vector2 origin, BitStream data, ServerMessageType messageType)
         {
             if (data == null)
                 return;
@@ -555,7 +559,7 @@ namespace DemoGame.Server
 
                 var p = user.Position;
                 if (p.X > min.X && p.Y > min.Y && p.X < max.X && p.Y < max.Y)
-                    user.Send(data);
+                    user.Send(data, messageType);
             }
         }
 
@@ -581,7 +585,7 @@ namespace DemoGame.Server
                         // Write the data into the PacketWriter, then send it to everyone on the map
                         pw.Reset();
                         ServerPacket.SynchronizeDynamicEntity(pw, dynamicEntity);
-                        Send(pw);
+                        Send(pw, ServerMessageType.MapDynamicEntityProperty);
                     }
 
                     // Check to synchronize the Position and Velocity
@@ -597,7 +601,7 @@ namespace DemoGame.Server
                             ServerPacket.UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);
                             foreach (var user in usersToSyncTo)
                             {
-                                user.Send(pw, false);
+                                user.Send(pw, ServerMessageType.MapDynamicEntitySpatialUpdate);
                             }
                         }
                     }

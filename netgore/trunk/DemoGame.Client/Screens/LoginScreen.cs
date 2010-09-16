@@ -198,8 +198,6 @@ namespace DemoGame.Client
 
         void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
         {
-            var clientSockets = (ClientSockets)sender;
-
             switch (newStatus)
             {
                 case NetConnectionStatus.Connected:
@@ -211,7 +209,7 @@ namespace DemoGame.Client
                         var pass = _cPasswordText.Text;
                         using (var pw = ClientPacket.Login(name, pass))
                         {
-                            _sockets.Send(pw);
+                            _sockets.Send(pw, ClientMessageType.System);
                         }
                     }
                     break;

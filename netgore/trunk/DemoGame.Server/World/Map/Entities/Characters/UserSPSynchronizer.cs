@@ -31,7 +31,7 @@ namespace DemoGame.Server
             {
                 using (var pw = ServerPacket.SetHP(hp))
                 {
-                    _user.Send(pw);
+                    _user.Send(pw, ServerMessageType.GUIUserStats);
                 }
             }
 
@@ -39,7 +39,7 @@ namespace DemoGame.Server
             {
                 using (var pw = ServerPacket.SetMP(mp))
                 {
-                    _user.Send(pw);
+                    _user.Send(pw, ServerMessageType.GUIUserStats);
                 }
             }
 

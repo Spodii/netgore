@@ -86,7 +86,7 @@ namespace DemoGame.Server
                 {
                     using (var pw = ServerPacket.StartCastingSkill(skill.SkillType, castingTime))
                     {
-                        ((User)_character).Send(pw);
+                        ((User)_character).Send(pw, ServerMessageType.GUIUserStatus);
                     }
                 }
             }
@@ -136,14 +136,14 @@ namespace DemoGame.Server
                 {
                     using (var pw = ServerPacket.SetSkillGroupCooldown(skill.CooldownGroup, skill.CooldownTime))
                     {
-                        ((User)_character).Send(pw);
+                        ((User)_character).Send(pw, ServerMessageType.GUIUserStatus);
                     }
                 }
 
                 // Notify the clients in view that the character used a skill
                 using (var pw = ServerPacket.UseSkill(_character.MapEntityIndex, null, skill.SkillType))
                 {
-                    _character.Map.SendToArea(_character, pw);
+                    _character.Map.SendToArea(_character, pw, ServerMessageType.MapEffect);
                 }
             }
         }

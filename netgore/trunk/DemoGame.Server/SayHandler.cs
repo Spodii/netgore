@@ -38,7 +38,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.Chat(text))
             {
-                user.Send(pw);
+                user.Send(pw, ServerMessageType.GUIChat);
             }
         }
 
@@ -53,7 +53,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.ChatSay(user.Name, user.MapEntityIndex, text))
             {
-                user.Map.SendToArea(user, pw);
+                user.Map.SendToArea(user, pw, ServerMessageType.GUIChat);
             }
         }
 
@@ -109,7 +109,7 @@ namespace DemoGame.Server
             {
                 using (var pw = ServerPacket.SendMessage(GameMessage.CommandShout, User.Name, message))
                 {
-                    World.Send(pw);
+                    World.Send(pw, ServerMessageType.GUIChat);
                 }
             }
 
@@ -126,7 +126,7 @@ namespace DemoGame.Server
                 if (string.IsNullOrEmpty(userName))
                 {
                     // Invalid message
-                    User.Send(GameMessage.CommandTellNoName);
+                    User.Send(GameMessage.CommandTellNoName, ServerMessageType.GUIChat);
                     return;
                 }
 
@@ -134,7 +134,7 @@ namespace DemoGame.Server
                 if (string.IsNullOrEmpty(message))
                 {
                     // No or invalid message
-                    User.Send(GameMessage.CommandTellNoMessage);
+                    User.Send(GameMessage.CommandTellNoMessage, ServerMessageType.GUIChat);
                     return;
                 }
 
@@ -144,15 +144,15 @@ namespace DemoGame.Server
                 if (target != null)
                 {
                     // Message to sender ("You tell...")
-                    User.Send(GameMessage.CommandTellSender, target.Name, message);
+                    User.Send(GameMessage.CommandTellSender, ServerMessageType.GUIChat, target.Name, message);
 
                     // Message to receivd ("X tells you...")
-                    target.Send(GameMessage.CommandTellReceiver, User.Name, message);
+                    target.Send(GameMessage.CommandTellReceiver, ServerMessageType.GUIChat, User.Name, message);
                 }
                 else
                 {
                     // User not found
-                    User.Send(GameMessage.CommandTellInvalidUser, userName);
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat, userName);
                 }
             }
 
@@ -166,7 +166,7 @@ namespace DemoGame.Server
                 var target = World.FindUser(userName);
                 if (target == null)
                 {
-                    User.Send(GameMessage.PeerTradingInvalidTarget);
+                    User.Send(GameMessage.PeerTradingInvalidTarget, ServerMessageType.GUI);
                     return;
                 }
 
@@ -184,7 +184,7 @@ namespace DemoGame.Server
             {
                 if (((IGuildMember)User).GuildRank < requiredRank)
                 {
-                    User.Send(GameMessage.GuildInsufficientPermissions, _guildSettings.GetRankName(requiredRank));
+                    User.Send(GameMessage.GuildInsufficientPermissions, ServerMessageType.GUI, _guildSettings.GetRankName(requiredRank));
                     return false;
                 }
 
@@ -200,29 +200,29 @@ namespace DemoGame.Server
             {
                 if (target == null)
                 {
-                    User.Send(GameMessage.GuildKickFailedInvalidUser, userName);
+                    User.Send(GameMessage.GuildKickFailedInvalidUser, ServerMessageType.GUI, userName);
                     return;
                 }
 
                 if (target.Guild != User.Guild)
                 {
-                    User.Send(GameMessage.GuildKickFailedNotInGuild, target.Name);
+                    User.Send(GameMessage.GuildKickFailedNotInGuild, ServerMessageType.GUI, target.Name);
                     return;
                 }
 
                 if (target.GuildRank > ((IGuildMember)User).GuildRank)
                 {
-                    User.Send(GameMessage.GuildKickFailedTooHighRank, target.Name);
+                    User.Send(GameMessage.GuildKickFailedTooHighRank, ServerMessageType.GUI, target.Name);
                     return;
                 }
 
                 if (!User.Guild.TryKickMember(User, target))
                 {
-                    User.Send(GameMessage.GuildKickFailedUnknownReason, target.Name);
+                    User.Send(GameMessage.GuildKickFailedUnknownReason, ServerMessageType.GUI, target.Name);
                     return;
                 }
 
-                User.Send(GameMessage.GuildKick, target.Name);
+                User.Send(GameMessage.GuildKick, ServerMessageType.GUI, target.Name);
             }
 
             /// <summary>
@@ -233,7 +233,7 @@ namespace DemoGame.Server
             {
                 if (((IGroupable)User).Group == null)
                 {
-                    User.Send(GameMessage.InvalidCommandMustBeInGroup);
+                    User.Send(GameMessage.InvalidCommandMustBeInGroup, ServerMessageType.GUI);
                     return false;
                 }
 
@@ -248,7 +248,7 @@ namespace DemoGame.Server
             {
                 if (((IGroupable)User).Group != null)
                 {
-                    User.Send(GameMessage.InvalidCommandMustNotBeInGroup);
+                    User.Send(GameMessage.InvalidCommandMustNotBeInGroup, ServerMessageType.GUI);
                     return false;
                 }
 
@@ -265,7 +265,7 @@ namespace DemoGame.Server
                 if (User.Permissions.IsSet(level))
                     return true;
 
-                User.Send(GameMessage.InsufficientPermissions);
+                User.Send(GameMessage.InsufficientPermissions, ServerMessageType.GUI);
                 return false;
             }
 
@@ -277,7 +277,7 @@ namespace DemoGame.Server
             {
                 if (User.Guild == null)
                 {
-                    User.Send(GameMessage.InvalidCommandMustBeInGuild);
+                    User.Send(GameMessage.InvalidCommandMustBeInGuild, ServerMessageType.GUI);
                     return false;
                 }
 
@@ -292,7 +292,7 @@ namespace DemoGame.Server
             {
                 if (User.Guild != null)
                 {
-                    User.Send(GameMessage.InvalidCommandMustNotBeInGuild);
+                    User.Send(GameMessage.InvalidCommandMustNotBeInGuild, ServerMessageType.GUI);
                     return false;
                 }
 
@@ -308,7 +308,7 @@ namespace DemoGame.Server
             {
                 using (var pw = ServerPacket.Chat(message))
                 {
-                    User.Send(pw);
+                    User.Send(pw, ServerMessageType.GUIChat);
                 }
             }
 
@@ -328,9 +328,9 @@ namespace DemoGame.Server
                 var group = GroupManager.TryCreateGroup(User);
 
                 if (group == null)
-                    User.Send(GameMessage.GroupCreateFailedUnknownReason);
+                    User.Send(GameMessage.GroupCreateFailedUnknownReason, ServerMessageType.GUI);
                 else
-                    User.Send(GameMessage.GroupCreated);
+                    User.Send(GameMessage.GroupCreated, ServerMessageType.GUI);
             }
 
             /// <summary>
@@ -347,13 +347,13 @@ namespace DemoGame.Server
 
                 if (target == null)
                 {
-                    User.Send(GameMessage.GroupInviteFailedInvalidUser, userName);
+                    User.Send(GameMessage.GroupInviteFailedInvalidUser, ServerMessageType.GUI, userName);
                     return;
                 }
 
                 if (target == User)
                 {
-                    User.Send(GameMessage.GroupInviteFailedCannotInviteSelf);
+                    User.Send(GameMessage.GroupInviteFailedCannotInviteSelf, ServerMessageType.GUI);
                     return;
                 }
 
@@ -361,9 +361,9 @@ namespace DemoGame.Server
                 {
                     // Invite failed
                     if (((IGroupable)target).Group != null)
-                        User.Send(GameMessage.GroupInviteFailedAlreadyInGroup, target.Name);
+                        User.Send(GameMessage.GroupInviteFailedAlreadyInGroup, ServerMessageType.GUI, target.Name);
                     else
-                        User.Send(GameMessage.GroupInviteFailedUnknownReason, target.Name);
+                        User.Send(GameMessage.GroupInviteFailedUnknownReason, ServerMessageType.GUI, target.Name);
                 }
                 else
                 {
@@ -372,7 +372,7 @@ namespace DemoGame.Server
                     {
                         foreach (var u in ((IGroupable)User).Group.Members.OfType<User>())
                         {
-                            u.Send(pw);
+                            u.Send(pw, ServerMessageType.GUI);
                         }
                     }
                 }
@@ -420,35 +420,35 @@ namespace DemoGame.Server
                 // Valid name
                 if (!_guildSettings.IsValidName(name))
                 {
-                    User.Send(GameMessage.GuildCreationFailedNameInvalid, name);
+                    User.Send(GameMessage.GuildCreationFailedNameInvalid, ServerMessageType.GUI, name);
                     return;
                 }
 
                 if (!_guildManager.IsNameAvailable(name))
                 {
-                    User.Send(GameMessage.GuildCreationFailedNameNotAvailable, name);
+                    User.Send(GameMessage.GuildCreationFailedNameNotAvailable, ServerMessageType.GUI, name);
                     return;
                 }
 
                 // Valid tag
                 if (!_guildSettings.IsValidTag(tag))
                 {
-                    User.Send(GameMessage.GuildCreationFailedTagInvalid, tag);
+                    User.Send(GameMessage.GuildCreationFailedTagInvalid, ServerMessageType.GUI, tag);
                     return;
                 }
 
                 if (!_guildManager.IsTagAvailable(tag))
                 {
-                    User.Send(GameMessage.GuildCreationFailedTagNotAvailable, tag);
+                    User.Send(GameMessage.GuildCreationFailedTagNotAvailable, ServerMessageType.GUI, tag);
                     return;
                 }
 
                 // Create
                 var guild = _guildManager.TryCreateGuild(User, name, tag);
                 if (guild == null)
-                    User.Send(GameMessage.GuildCreationFailedUnknownReason, name, tag);
+                    User.Send(GameMessage.GuildCreationFailedUnknownReason, ServerMessageType.GUI, name, tag);
                 else
-                    User.Send(GameMessage.GuildCreationSuccessful, name, tag);
+                    User.Send(GameMessage.GuildCreationSuccessful, ServerMessageType.GUI, name, tag);
             }
 
             /// <summary>
@@ -465,9 +465,9 @@ namespace DemoGame.Server
                 World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryDemoteMember(User, x));
 
                 if (success)
-                    User.Send(GameMessage.GuildDemote, userName);
+                    User.Send(GameMessage.GuildDemote, ServerMessageType.GUI, userName);
                 else
-                    User.Send(GameMessage.GuildDemoteFailed, userName);
+                    User.Send(GameMessage.GuildDemoteFailed, ServerMessageType.GUI, userName);
             }
 
             /// <summary>
@@ -508,28 +508,28 @@ namespace DemoGame.Server
                 var invitee = World.FindUser(toInvite);
                 if (invitee == null)
                 {
-                    User.Send(GameMessage.GuildInviteFailedInvalidUser, toInvite);
+                    User.Send(GameMessage.GuildInviteFailedInvalidUser, ServerMessageType.GUI, toInvite);
                     return;
                 }
 
                 if (invitee == User)
                 {
-                    User.Send(GameMessage.GuildInviteFailedCannotInviteSelf);
+                    User.Send(GameMessage.GuildInviteFailedCannotInviteSelf, ServerMessageType.GUI);
                     return;
                 }
 
                 if (invitee.Guild != null)
                 {
-                    User.Send(GameMessage.GuildInviteFailedAlreadyInGuild, invitee.Name);
+                    User.Send(GameMessage.GuildInviteFailedAlreadyInGuild, ServerMessageType.GUI, invitee.Name);
                     return;
                 }
 
                 var success = User.Guild.TryInviteMember(User, invitee);
 
                 if (!success)
-                    User.Send(GameMessage.GuildInviteFailedUnknownReason, invitee.Name);
+                    User.Send(GameMessage.GuildInviteFailedUnknownReason, ServerMessageType.GUI, invitee.Name);
                 else
-                    User.Send(GameMessage.GuildInviteSuccess, invitee.Name);
+                    User.Send(GameMessage.GuildInviteSuccess, ServerMessageType.GUI, invitee.Name);
             }
 
             /// <summary>
@@ -593,7 +593,7 @@ namespace DemoGame.Server
 
                 foreach (var guildMember in User.Guild.GetMembers().OfType<User>())
                 {
-                    guildMember.Send(GameMessage.GuildSay, User.Name, message);
+                    guildMember.Send(GameMessage.GuildSay, ServerMessageType.GUIChat, User.Name, message);
                 }
             }
 
@@ -608,7 +608,7 @@ namespace DemoGame.Server
                     return;
 
                 if (!User.TryJoinGuild(guildName))
-                    User.Send(GameMessage.GuildJoinFailedInvalidOrNoInvite, guildName);
+                    User.Send(GameMessage.GuildJoinFailedInvalidOrNoInvite, ServerMessageType.GUI, guildName);
             }
 
             /// <summary>
@@ -637,9 +637,9 @@ namespace DemoGame.Server
                 World.GuildMemberPerformer.Perform(userName, x => success = User.Guild.TryPromoteMember(User, x));
 
                 if (success)
-                    User.Send(GameMessage.GuildPromote, userName);
+                    User.Send(GameMessage.GuildPromote, ServerMessageType.GUI, userName);
                 else
-                    User.Send(GameMessage.GuildPromoteFailed, userName);
+                    User.Send(GameMessage.GuildPromoteFailed, ServerMessageType.GUI, userName);
             }
 
             /// <summary>
@@ -654,18 +654,18 @@ namespace DemoGame.Server
 
                 if (!_guildSettings.IsValidName(newName))
                 {
-                    User.Send(GameMessage.GuildRenameFailedInvalidValue, newName);
+                    User.Send(GameMessage.GuildRenameFailedInvalidValue, ServerMessageType.GUI, newName);
                     return;
                 }
 
                 if (!_guildManager.IsNameAvailable(newName))
                 {
-                    User.Send(GameMessage.GuildRenameFailedNameNotAvailable, newName);
+                    User.Send(GameMessage.GuildRenameFailedNameNotAvailable, ServerMessageType.GUI, newName);
                     return;
                 }
 
                 if (!User.Guild.TryChangeName(User, newName))
-                    User.Send(GameMessage.GuildRenameFailedUnknownReason, newName);
+                    User.Send(GameMessage.GuildRenameFailedUnknownReason, ServerMessageType.GUI, newName);
             }
 
             /// <summary>
@@ -680,18 +680,18 @@ namespace DemoGame.Server
 
                 if (!_guildSettings.IsValidTag(newTag))
                 {
-                    User.Send(GameMessage.GuildRetagFailedInvalidValue, newTag);
+                    User.Send(GameMessage.GuildRetagFailedInvalidValue, ServerMessageType.GUI, newTag);
                     return;
                 }
 
                 if (!_guildManager.IsTagAvailable(newTag))
                 {
-                    User.Send(GameMessage.GuildRetagFailedNameNotAvailable, newTag);
+                    User.Send(GameMessage.GuildRetagFailedNameNotAvailable, ServerMessageType.GUI, newTag);
                     return;
                 }
 
                 if (!User.Guild.TryChangeTag(User, newTag))
-                    User.Send(GameMessage.GuildRetagFailedUnknownReason, newTag);
+                    User.Send(GameMessage.GuildRetagFailedUnknownReason, ServerMessageType.GUI, newTag);
             }
 
             #endregion

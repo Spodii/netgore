@@ -239,7 +239,7 @@ namespace DemoGame.Client
                     var email = _cEmailText.Text;
                     using (var pw = ClientPacket.CreateNewAccount(name, pass, email))
                     {
-                        _sockets.Send(pw);
+                        _sockets.Send(pw, ClientMessageType.System);
                     }
                     break;
 

@@ -12,6 +12,7 @@ using NetGore.AI;
 using NetGore.Db;
 using NetGore.Features.Shops;
 using NetGore.Features.Skills;
+using NetGore.Network;
 using NetGore.NPCChat;
 using NetGore.Stats;
 using NetGore.World;
@@ -578,7 +579,7 @@ namespace DemoGame.Server
             // Abort if using an unknown weapon type
             if (weapon.WeaponType == WeaponType.Unknown)
             {
-                TrySend(GameMessage.CannotAttackWithWeapon, weapon.Name);
+                TrySend(GameMessage.CannotAttackWithWeapon, ServerMessageType.GUI, weapon.Name);
                 return;
             }
 
@@ -606,13 +607,13 @@ namespace DemoGame.Server
 
                 if (!Alliance.CanAttack(target.Alliance))
                 {
-                    TrySend(GameMessage.CannotAttackAllianceConflict, target.Name);
+                    TrySend(GameMessage.CannotAttackAllianceConflict, ServerMessageType.GUI, target.Name);
                     return;
                 }
 
                 if (this.GetDistance(target) > weapon.Range)
                 {
-                    TrySend(GameMessage.CannotAttackTooFarAway);
+                    TrySend(GameMessage.CannotAttackTooFarAway, ServerMessageType.GUI);
                     return;
                 }
             }
@@ -692,7 +693,7 @@ namespace DemoGame.Server
             var targetID = (target != null ? target.MapEntityIndex : (MapEntityIndex?)null);
             using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, targetID, weapon.ActionDisplayID))
             {
-                Map.SendToArea(this, charAttack);
+                Map.SendToArea(this, charAttack, ServerMessageType.MapEffect);
             }
 
             // Check that we managed to find a target
@@ -719,7 +720,7 @@ namespace DemoGame.Server
             // We can't do anything with ranged attacks if no target is given
             if (target == null)
             {
-                TrySend(GameMessage.CannotAttackNeedTarget);
+                TrySend(GameMessage.CannotAttackNeedTarget, ServerMessageType.GUI);
                 return;
             }
 
@@ -751,7 +752,7 @@ namespace DemoGame.Server
             // Attack
             using (var charAttack = ServerPacket.CharAttack(MapEntityIndex, target.MapEntityIndex, weapon.ActionDisplayID))
             {
-                Map.SendToArea(this, charAttack);
+                Map.SendToArea(this, charAttack, ServerMessageType.MapEffect);
             }
 
             OnAttacked();
@@ -856,7 +857,7 @@ namespace DemoGame.Server
             // Apply damage
             using (var pw = ServerPacket.CharDamage(MapEntityIndex, damage))
             {
-                Map.SendToArea(this, pw);
+                Map.SendToArea(this, pw, ServerMessageType.MapEffect);
             }
 
             var newHP = HP - damage;
@@ -972,7 +973,7 @@ namespace DemoGame.Server
         {
             using (var pw = ServerPacket.Emote(MapEntityIndex, emoticon))
             {
-                Map.SendToArea(this, pw);
+                Map.SendToArea(this, pw, ServerMessageType.MapEffect);
             }
         }
 
@@ -1835,26 +1836,28 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="IClientCommunicator"/>.
+        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="INetworkSender"/>.
         /// </summary>
         /// <param name="gameMessage">The game message.</param>
-        void TrySend(GameMessage gameMessage)
+        /// <param name="messageType">The type of message.</param>
+        void TrySend(GameMessage gameMessage, ServerMessageType messageType)
         {
-            var comm = this as IClientCommunicator;
+            var comm = this as INetworkSender;
             if (comm != null)
-                comm.Send(gameMessage);
+                comm.Send(gameMessage, messageType);
         }
 
         /// <summary>
-        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="IClientCommunicator"/>.
+        /// Tries to send data to the <see cref="Character"/> if they implement <see cref="INetworkSender"/>.
         /// </summary>
         /// <param name="gameMessage">The game message.</param>
+        /// <param name="messageType">The type of message.</param>
         /// <param name="parameters">The message parameters.</param>
-        void TrySend(GameMessage gameMessage, params object[] parameters)
+        void TrySend(GameMessage gameMessage, ServerMessageType messageType, params object[] parameters)
         {
-            var comm = this as IClientCommunicator;
+            var comm = this as INetworkSender;
             if (comm != null)
-                comm.Send(gameMessage, parameters);
+                comm.Send(gameMessage, messageType, parameters);
         }
 
         /// <summary>

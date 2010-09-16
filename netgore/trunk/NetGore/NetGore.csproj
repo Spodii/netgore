@@ -548,7 +548,7 @@
     <Compile Include="Network\PacketWriter\PacketWriterPool.cs" />
     <Compile Include="Network\Sockets\IIPSocket.cs" />
     <Compile Include="Network\Sockets\IPSocket.cs" />
-    <Compile Include="Network\Sockets\ISocketSender.cs" />
+    <Compile Include="Network\Sockets\INetworkSender.cs" />
     <Compile Include="Core\Parser.cs" />
     <Compile Include="Core\RandomHelper.cs" />
     <Compile Include="Scripting\ScriptLanguage.cs" />

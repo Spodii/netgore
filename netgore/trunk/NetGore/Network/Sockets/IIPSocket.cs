@@ -9,7 +9,7 @@ namespace NetGore.Network
     /// Interface for a connection made over IP that can be used to communicate with and control the connection with the
     /// other end.
     /// </summary>
-    public interface IIPSocket 
+    public interface IIPSocket : INetworkSender
     {
         /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
@@ -34,11 +34,6 @@ namespace NetGore.Network
         uint IP { get; }
 
         /// <summary>
-        /// Gets if this <see cref="IIPSocket"/> is currently connected.
-        /// </summary>
-        bool IsConnected { get; }
-
-        /// <summary>
         /// Gets the port as a 16-bit unsigned integer.
         /// </summary>
         ushort Port { get; }
@@ -53,36 +48,6 @@ namespace NetGore.Network
         /// Gets the time that this <see cref="IIPSocket"/> was created.
         /// </summary>
         TickCount TimeCreated { get; }
-
-        /// <summary>
-        /// Sends data over a reliable stream.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        void Send(BitStream data);
-
-        /// <summary>
-        /// Sends data over a stream.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        /// <param name="reliable">If true, the data is guarenteed to be received completely and in order. If false,
-        /// the data may be received out of order, or not at all. All data is guarenteed to be received in full if
-        /// it is received.</param>
-        void Send(BitStream data, bool reliable);
-
-        /// <summary>
-        /// Sends data over the reliable stream.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        void Send(byte[] data);
-
-        /// <summary>
-        /// Sends data over a stream.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        /// <param name="reliable">If true, the data is guarenteed to be received completely and in order. If false,
-        /// the data may be received out of order, or not at all. All data is guarenteed to be received in full if
-        /// it is received.</param>
-        void Send(byte[] data, bool reliable);
 
         /// <summary>
         /// Terminates this connection.

@@ -18,7 +18,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="inventory">The inventory.</param>
         /// <param name="socket">The socket.</param>
-        public InventoryInfoRequester(Inventory inventory, ISocketSender socket) : base(socket)
+        public InventoryInfoRequester(Inventory inventory, INetworkSender socket) : base(socket)
         {
             _inventory = inventory;
         }

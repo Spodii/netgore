@@ -28,7 +28,7 @@ namespace DemoGame.Server.Guilds
             if (!Owner.IsLoaded)
                 return;
 
-            Owner.Send(GameMessage.GuildDemotion, _guildSettings.GetRankName(rank));
+            Owner.Send(GameMessage.GuildDemotion, ServerMessageType.GUI, _guildSettings.GetRankName(rank));
         }
 
         /// <summary>
@@ -39,13 +39,13 @@ namespace DemoGame.Server.Guilds
         {
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteGuildInfo(x, guild)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
             if (!Owner.IsLoaded)
                 return;
 
-            Owner.Send(GameMessage.GuildJoin, guild.Name);
+            Owner.Send(GameMessage.GuildJoin, ServerMessageType.GUI, guild.Name);
 
             WorldStatsTracker.Instance.AddUserGuildChange(Owner, guild.ID);
         }
@@ -58,13 +58,13 @@ namespace DemoGame.Server.Guilds
         {
             using (var pw = ServerPacket.GuildInfo(x => UserGuildInformation.WriteGuildInfo(x, guild)))
             {
-                Owner.Send(pw);
+                Owner.Send(pw, ServerMessageType.GUI);
             }
 
             if (!Owner.IsLoaded)
                 return;
 
-            Owner.Send(GameMessage.GuildLeave, guild.Name);
+            Owner.Send(GameMessage.GuildLeave, ServerMessageType.GUI, guild.Name);
 
             WorldStatsTracker.Instance.AddUserGuildChange(Owner, null);
         }
@@ -78,7 +78,7 @@ namespace DemoGame.Server.Guilds
             if (!Owner.IsLoaded)
                 return;
 
-            Owner.Send(GameMessage.GuildPromotion, _guildSettings.GetRankName(rank));
+            Owner.Send(GameMessage.GuildPromotion, ServerMessageType.GUI, _guildSettings.GetRankName(rank));
         }
 
         /// <summary>

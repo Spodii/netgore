@@ -7,11 +7,14 @@ namespace DemoGame.Server
     /// <summary>
     /// Contains the different categories of messages that the server sends to the client.
     /// </summary>
+    /// <seealso cref="ServerMessageTypeExtensions"/>
     public enum ServerMessageType : byte
     {
+        // NOTE: Whenever adding to this, make sure you also add to ServerMessageTypeExtensions.GetDeliveryMethod()!
+
         /// <summary>
-        /// A general-purpose message. This will always be reliable and ordered. For organizational purposes,
-        /// it is best to avoid this type when possible.
+        /// A general-purpose message.
+        /// For organizational purposes, it is best to avoid this type when possible.
         /// </summary>
         General,
 
@@ -26,6 +29,11 @@ namespace DemoGame.Server
         /// <see cref="SyncValueAttribute"/>.
         /// </summary>
         MapDynamicEntityProperty,
+
+        /// <summary>
+        /// Messages related to a character's health, mana, stamina, and other status points, that are seen by everyone.
+        /// </summary>
+        MapCharacterSP,
 
         /// <summary>
         /// Messages related to effects on map that are independent of other states and other effects. This includes

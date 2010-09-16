@@ -1,5 +1,6 @@
 using System.Linq;
 using NetGore;
+using NetGore.Network;
 using NetGore.Stats;
 
 namespace DemoGame.Server
@@ -42,7 +43,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Synchronizes the User's stat values to the client.
         /// </summary>
-        public void UpdateClient(IClientCommunicator sendTo)
+        public void UpdateClient(INetworkSender sendTo)
         {
             if (!_anyStatsChanged)
                 return;
@@ -60,7 +61,7 @@ namespace DemoGame.Server
                     ServerPacket.UpdateStat(pw, stat, StatCollectionType);
                 }
 
-                sendTo.Send(pw);
+                sendTo.Send(pw, ServerMessageType.GUIUserStats);
             }
 
             _anyStatsChanged = false;

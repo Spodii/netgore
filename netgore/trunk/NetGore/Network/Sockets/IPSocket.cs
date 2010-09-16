@@ -1,8 +1,5 @@
-using System;
 using System.Linq;
-using System.Reflection;
 using Lidgren.Network;
-using log4net;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -16,6 +13,20 @@ namespace NetGore.Network
         readonly uint _address;
         readonly NetConnection _conn;
         readonly TickCount _timeCreated;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPSocket"/> class.
+        /// </summary>
+        /// <param name="conn">The <see cref="NetConnection"/> that this <see cref="IPSocket"/> is for.</param>
+        IPSocket(NetConnection conn)
+        {
+            _timeCreated = TickCount.Now;
+
+            _conn = conn;
+
+            var addressBytes = _conn.RemoteEndpoint.Address.GetAddressBytes();
+            _address = IPAddressHelper.IPv4AddressToUInt(addressBytes, 0);
+        }
 
         /// <summary>
         /// Creates an <see cref="IPSocket"/> for a <see cref="NetConnection"/> and stores it in the
@@ -38,44 +49,6 @@ namespace NetGore.Network
             return ret;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IPSocket"/> class.
-        /// </summary>
-        /// <param name="conn">The <see cref="NetConnection"/> that this <see cref="IPSocket"/> is for.</param>
-        IPSocket(NetConnection conn)
-        {
-            _timeCreated = TickCount.Now;
-
-            _conn = conn;
-
-            var addressBytes = _conn.RemoteEndpoint.Address.GetAddressBytes();
-            _address = IPAddressHelper.IPv4AddressToUInt(addressBytes, 0);
-        }
-
-        /// <summary>
-        /// Sends data over the connection.
-        /// </summary>
-        /// <param name="data">The data to send.</param>
-        /// <param name="method">The method to use to send the data.</param>
-        void Send(BitStream data, NetDeliveryMethod method)
-        {
-            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.LengthBytes);
-            data.CopyTo(msg);
-            _conn.SendMessage(msg, method);
-        }
-
-        /// <summary>
-        /// Sends data over the connection.
-        /// </summary>
-        /// <param name="data">The data to send.</param>
-        /// <param name="method">The method to use to send the data.</param>
-        void Send(byte[] data, NetDeliveryMethod method)
-        {
-            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.Length);
-            msg.Write(data);
-            _conn.SendMessage(msg, method);
-        }
-
         #region IIPSocket Members
 
         /// <summary>
@@ -86,14 +59,6 @@ namespace NetGore.Network
         public string Address
         {
             get { return IPAddressHelper.ToIPv4Address(_address) + ":" + _conn.RemoteEndpoint.Port; }
-        }
-
-        /// <summary>
-        /// Gets the status of the <see cref="IIPSocket"/>'s connection.
-        /// </summary>
-        public NetConnectionStatus Status
-        {
-            get { return _conn.Status; }
         }
 
         /// <summary>
@@ -129,13 +94,18 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Gets the status of the <see cref="IIPSocket"/>'s connection.
+        /// </summary>
+        public NetConnectionStatus Status
+        {
+            get { return _conn.Status; }
+        }
+
+        /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
         /// is not used in any way by the <see cref="IIPSocket"/> itself.
         /// </summary>
-        public object Tag
-        {
-            get;set;
-        }
+        public object Tag { get; set; }
 
         /// <summary>
         /// Gets the time that this <see cref="IIPSocket"/> was created.
@@ -146,54 +116,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Sends data over a reliable stream.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        public void Send(BitStream data)
-        {
-            Send(data, NetDeliveryMethod.ReliableOrdered);
-        }
-
-        /// <summary>
-        /// Sends data over a stream.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        /// <param name="reliable">If true, the data is guarenteed to be received completely and in order. If false,
-        /// the data may be received out of order, or not at all. All data is guarenteed to be received in full if
-        /// it is received.</param>
-        public void Send(BitStream data, bool reliable)
-        {
-            if (reliable)
-                Send(data, NetDeliveryMethod.ReliableOrdered);
-            else
-                Send(data, NetDeliveryMethod.Unreliable);
-        }
-
-        /// <summary>
-        /// Sends data over the reliable stream.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        public void Send(byte[] data)
-        {
-            Send(data, NetDeliveryMethod.ReliableOrdered);
-        }
-
-        /// <summary>
-        /// Sends data over a stream.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        /// <param name="reliable">If true, the data is guarenteed to be received completely and in order. If false,
-        /// the data may be received out of order, or not at all. All data is guarenteed to be received in full if
-        /// it is received.</param>
-        public void Send(byte[] data, bool reliable)
-        {
-            if (reliable)
-                Send(data, NetDeliveryMethod.ReliableOrdered);
-            else
-            Send(data, NetDeliveryMethod.Unreliable);
-        }
-
-        /// <summary>
         /// Terminates this connection.
         /// </summary>
         /// <param name="reason">A string containing the reason why the connection was terminated. Can be null or empty, but
@@ -201,6 +123,66 @@ namespace NetGore.Network
         public void Disconnect(string reason)
         {
             _conn.Disconnect(reason);
+        }
+
+        /// <summary>
+        /// Sends data to the other end of the connection.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
+        /// and sequencing will be handled.</param>
+        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
+        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
+        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value greater than or equal to 0 and
+        /// less than <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
+        /// <returns>
+        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
+        /// </returns>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
+        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
+        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than or equal to
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
+        public bool Send(BitStream data, NetDeliveryMethod deliveryMethod, int sequenceChannel = 0)
+        {
+            if (data == null || data.Length == 0)
+                return false;
+
+            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.LengthBytes);
+            data.CopyTo(msg);
+
+            var ret = _conn.SendMessage(msg, deliveryMethod, sequenceChannel);
+            return ret;
+        }
+
+        /// <summary>
+        /// Sends data to the other end of the connection.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
+        /// and sequencing will be handled.</param>
+        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
+        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
+        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value between 0 and
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
+        /// <returns>
+        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
+        /// </returns>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
+        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
+        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
+        public bool Send(byte[] data, NetDeliveryMethod deliveryMethod, int sequenceChannel = 0)
+        {
+            if (data == null || data.Length == 0)
+                return false;
+
+            var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.Length);
+            msg.Write(data);
+
+            var ret= _conn.SendMessage(msg, deliveryMethod, sequenceChannel);
+            return ret;
         }
 
         #endregion

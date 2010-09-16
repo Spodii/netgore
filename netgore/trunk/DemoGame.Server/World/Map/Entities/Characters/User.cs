@@ -9,6 +9,7 @@ using DemoGame.Server.Guilds;
 using DemoGame.Server.PeerTrading;
 using DemoGame.Server.Queries;
 using DemoGame.Server.Quests;
+using Lidgren.Network;
 using log4net;
 using NetGore;
 using NetGore.AI;
@@ -30,7 +31,7 @@ namespace DemoGame.Server
     /// <summary>
     /// A user-controlled character.
     /// </summary>
-    public class User : Character, IGuildMember, IClientCommunicator, IGroupable, IQuestPerformer<User>
+    public class User : Character, IGuildMember, INetworkSender, IGroupable, IQuestPerformer<User>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly DeleteCharacterQuestStatusKillsQuery _deleteCharacterQuestStatusKillsQuery;
@@ -101,19 +102,19 @@ namespace DemoGame.Server
             // Send the initial information
             using (var pw = ServerPacket.SetLevel(Level))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
             using (var pw = ServerPacket.SetCash(Cash))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
             using (var pw = ServerPacket.SetExp(Exp))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
             using (var pw = ServerPacket.SetStatPoints(StatPoints))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
         }
 
@@ -202,7 +203,7 @@ namespace DemoGame.Server
             // If any was added, send the notification
             using (var pw = ServerPacket.NotifyGetItem(item.Name, amount))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUI);
             }
         }
 
@@ -362,7 +363,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.NotifyExpCash(exp, cash))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUI);
             }
         }
 
@@ -488,7 +489,7 @@ namespace DemoGame.Server
             // Notify users on the map of the level-up
             using (var pw = ServerPacket.NotifyLevel(MapEntityIndex))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
         }
 
@@ -516,7 +517,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.SetCash(cash))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
         }
 
@@ -533,7 +534,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.SetExp(exp))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
         }
 
@@ -596,7 +597,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.SetLevel(newValue))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
         }
 
@@ -642,7 +643,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.SetStatPoints(newValue))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStats);
             }
         }
 
@@ -701,7 +702,7 @@ namespace DemoGame.Server
             // Send the item info
             using (var pw = ServerPacket.SendEquipmentItemInfo(slot, item))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIItemInfo);
             }
         }
 
@@ -734,7 +735,7 @@ namespace DemoGame.Server
             // Send the item info
             using (var pw = ServerPacket.SendInventoryItemInfo(slot, item))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIItemInfo);
             }
         }
 
@@ -772,7 +773,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.AddStatusEffect(ase.StatusEffect.StatusEffectType, ase.Power, timeLeft))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStatus);
             }
         }
 
@@ -787,7 +788,7 @@ namespace DemoGame.Server
 
             using (var pw = ServerPacket.RemoveStatusEffect(ase.StatusEffect.StatusEffectType))
             {
-                Send(pw);
+                Send(pw, ServerMessageType.GUIUserStatus);
             }
         }
 
@@ -833,7 +834,7 @@ namespace DemoGame.Server
                     using (
                         var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchaseSingular, itemTemplate.Name))
                     {
-                        Send(pw);
+                        Send(pw, ServerMessageType.GUI);
                     }
                 }
                 else
@@ -842,7 +843,7 @@ namespace DemoGame.Server
                         var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchasePlural, amount,
                                                           itemTemplate.Name))
                     {
-                        Send(pw);
+                        Send(pw, ServerMessageType.GUI);
                     }
                 }
                 return false;
@@ -895,7 +896,7 @@ namespace DemoGame.Server
             {
                 using (var pw = ServerPacket.SendMessage(GameMessage.ShopPurchaseSingular, itemTemplate.Name, chargeAmount))
                 {
-                    Send(pw);
+                    Send(pw, ServerMessageType.GUI);
                 }
             }
             else
@@ -904,7 +905,7 @@ namespace DemoGame.Server
                     var pw = ServerPacket.SendMessage(GameMessage.ShopPurchasePlural, amountPurchased, itemTemplate.Name,
                                                       chargeAmount))
                 {
-                    Send(pw);
+                    Send(pw, ServerMessageType.GUI);
                 }
 
                 if (ShoppingState != null && ShoppingState.ShoppingAt != null)
@@ -996,14 +997,14 @@ namespace DemoGame.Server
             {
                 using (var pw = ServerPacket.SendMessage(GameMessage.ShopSellItemSingular, invItem.Name, totalCash))
                 {
-                    Send(pw);
+                    Send(pw, ServerMessageType.GUI);
                 }
             }
             else
             {
                 using (var pw = ServerPacket.SendMessage(GameMessage.ShopSellItemPlural, amount, invItem.Name, totalCash))
                 {
-                    Send(pw);
+                    Send(pw, ServerMessageType.GUI);
                 }
 
                 if (ShoppingState != null && ShoppingState.ShoppingAt != null)
@@ -1042,19 +1043,19 @@ namespace DemoGame.Server
             // All of these checks should already be performed by PeerTradingSession.Create()
             if (!IsAlive || PeerTradeSession != null)
             {
-                Send(GameMessage.PeerTradingCannotStartTrade);
+                Send(GameMessage.PeerTradingCannotStartTrade, ServerMessageType.GUI);
                 return false;
             }
 
             if (!target.IsAlive || target.PeerTradeSession != null)
             {
-                Send(GameMessage.PeerTradingTargetCannotStartTrade);
+                Send(GameMessage.PeerTradingTargetCannotStartTrade, ServerMessageType.GUI);
                 return false;
             }
 
             if (target.Map != Map || this.GetDistance(target) > PeerTradingSettings.Instance.MaxDistance)
             {
-                Send(GameMessage.PeerTradingTooFarAway);
+                Send(GameMessage.PeerTradingTooFarAway, ServerMessageType.GUI);
                 return false;
             }
 
@@ -1068,7 +1069,7 @@ namespace DemoGame.Server
             // Check if the trade could not be started
             if (ts == null)
             {
-                Send(GameMessage.PeerTradingCannotStartTrade);
+                Send(GameMessage.PeerTradingCannotStartTrade, ServerMessageType.GUI);
                 return false;
             }
             else
@@ -1109,30 +1110,18 @@ namespace DemoGame.Server
                 Inventory.DecreaseItemAmount(slot);
         }
 
-        #region IClientCommunicator Members
-
         /// <summary>
-        /// Sends data to the User. This method is thread-safe.
+        /// Gets if data can be sent to this <see cref="User"/>.
         /// </summary>
-        /// <param name="data">BitStream containing the data to send to the User.</param>
-        public void Send(BitStream data)
-        {
-            Send(data, true);
-        }
-
-        /// <summary>
-        /// Sends data to the User. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send to the User.</param>
-        /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
-        public void Send(BitStream data, bool reliable)
+        /// <returns>True if the data sending can continue safely; otherwise false.</returns>
+        bool CheckIfCanSendToUser()
         {
             if (IsDisposed)
             {
-                const string errmsg = "Tried to send data to disposed User `{0}` [reliable = `{1}`]";
+                const string errmsg = "Tried to send data to disposed User `{0}`.";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this, reliable);
-                return;
+                    log.WarnFormat(errmsg, this);
+                return false;
             }
 
             if (_conn == null || !_conn.IsConnected)
@@ -1142,35 +1131,109 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, this);
                 DelayedDispose();
 
-                return;
+                return false;
             }
 
-            _conn.Send(data, reliable);
+            return true;
         }
 
+        #region IClientCommunicator Members
+
         /// <summary>
-        /// Sends data to the User.
+        /// Sends data to the client. This method is thread-safe.
         /// </summary>
-        /// <param name="message">GameMessage to send to the User.</param>
-        public void Send(GameMessage message)
+        /// <param name="data">BitStream containing the data to send to the User.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="data"/>.</param>
+        public void Send(BitStream data, ServerMessageType messageType)
         {
-            using (var pw = ServerPacket.SendMessage(message))
-            {
-                Send(pw);
-            }
+            if (!CheckIfCanSendToUser())
+                return;
+
+            _conn.Send(data, messageType);
         }
 
         /// <summary>
-        /// Sends data to the User.
+        /// Sends data to the client. This method is thread-safe.
         /// </summary>
         /// <param name="message">GameMessage to send to the User.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
+        public void Send(GameMessage message, ServerMessageType messageType)
+        {
+            Send(message, messageType, null);
+        }
+
+        /// <summary>
+        /// Sends data to the client. This method is thread-safe.
+        /// </summary>
+        /// <param name="message">GameMessage to send to the User.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
         /// <param name="parameters">Message parameters.</param>
-        public void Send(GameMessage message, params object[] parameters)
+        public void Send(GameMessage message, ServerMessageType messageType, params object[] parameters)
         {
             using (var pw = ServerPacket.SendMessage(message, parameters))
             {
-                Send(pw);
+                Send(pw, messageType);
             }
+        }
+
+        /// <summary>
+        /// Gets if the connection is alive and functional.
+        /// </summary>
+        bool INetworkSender.IsConnected
+        {
+            get { return _conn != null && _conn.IsConnected; }
+        }
+
+        /// <summary>
+        /// Sends data to the other end of the connection.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
+        /// and sequencing will be handled.</param>
+        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
+        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
+        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value greater than or equal to 0 and
+        /// less than <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
+        /// <returns>
+        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
+        /// </returns>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
+        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
+        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than or equal to
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
+        bool INetworkSender.Send(BitStream data, NetDeliveryMethod deliveryMethod, int sequenceChannel)
+        {
+            if (!CheckIfCanSendToUser())
+                return false;
+
+            return _conn.Send(data, deliveryMethod, sequenceChannel);
+        }
+
+        /// <summary>
+        /// Sends data to the other end of the connection.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
+        /// and sequencing will be handled.</param>
+        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
+        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
+        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value between 0 and
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
+        /// <returns>
+        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
+        /// </returns>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
+        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
+        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
+        bool INetworkSender.Send(byte[] data, NetDeliveryMethod deliveryMethod, int sequenceChannel)
+        {
+            if (!CheckIfCanSendToUser())
+                return false;
+
+            return _conn.Send(data, deliveryMethod, sequenceChannel);
         }
 
         #endregion
@@ -1295,7 +1358,7 @@ namespace DemoGame.Server
         void IGuildMember.SendGuildInvite(IGuildMember inviter, IGuild guild)
         {
             _guildMemberInfo.ReceiveInvite(guild, GetTime());
-            Send(GameMessage.GuildInvited, inviter.Name, guild.Name);
+            Send(GameMessage.GuildInvited, ServerMessageType.GUI, inviter.Name, guild.Name);
         }
 
         #endregion

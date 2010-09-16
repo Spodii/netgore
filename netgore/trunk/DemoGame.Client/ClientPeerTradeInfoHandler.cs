@@ -17,19 +17,19 @@ namespace DemoGame.Client
         /// <param name="args">The arguments for the message.</param>
         public delegate void GameMessageCallbackHandler(ClientPeerTradeInfoHandler sender, GameMessage gameMessage, string[] args);
 
-        ISocketSender _socketSender;
+        INetworkSender _networkSender;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPeerTradeInfoHandler"/> class.
         /// </summary>
-        /// <param name="socketSender">The <see cref="ISocketSender"/> used to communicate with the server.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="socketSender"/> is null.</exception>
-        public ClientPeerTradeInfoHandler(ISocketSender socketSender)
+        /// <param name="networkSender">The <see cref="INetworkSender"/> used to communicate with the server.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="networkSender"/> is null.</exception>
+        public ClientPeerTradeInfoHandler(INetworkSender networkSender)
         {
-            if (socketSender == null)
-                throw new ArgumentNullException("socketSender");
+            if (networkSender == null)
+                throw new ArgumentNullException("networkSender");
 
-            SocketSender = socketSender;
+            NetworkSender = networkSender;
         }
 
         /// <summary>
@@ -38,20 +38,20 @@ namespace DemoGame.Client
         public event GameMessageCallbackHandler GameMessageCallback;
 
         /// <summary>
-        /// Gets or sets the <see cref="ISocketSender"/> used to communicate with the server.
+        /// Gets or sets the <see cref="INetworkSender"/> used to communicate with the server.
         /// </summary>
-        public ISocketSender SocketSender
+        public INetworkSender NetworkSender
         {
-            get { return _socketSender; }
+            get { return _networkSender; }
             set
             {
-                if (_socketSender == value)
+                if (_networkSender == value)
                     return;
 
                 if (value == null)
                     throw new ArgumentNullException("value");
 
-                _socketSender = value;
+                _networkSender = value;
             }
         }
 
@@ -131,7 +131,7 @@ namespace DemoGame.Client
         /// <param name="bs">The data to send.</param>
         protected override void SendData(BitStream bs)
         {
-            SocketSender.Send(bs);
+            NetworkSender.Send(bs, ClientMessageType.GUI);
         }
     }
 }

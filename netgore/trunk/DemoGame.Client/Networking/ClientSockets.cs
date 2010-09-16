@@ -15,9 +15,8 @@ namespace DemoGame.Client
     /// <summary>
     /// The client socket manager.
     /// </summary>
-    public class ClientSockets : ClientSocketManager, IGetTime, ISocketSender
+    public class ClientSockets : ClientSocketManager, IGetTime
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static ClientSockets _instance;
 
         readonly IMessageProcessorManager _messageProcessorManager;
@@ -54,7 +53,8 @@ namespace DemoGame.Client
                 return ret;
 
             // Could not parse
-            return base.ParseCustomDisconnectMessage(msg);
+            ret = base.ParseCustomDisconnectMessage(msg);
+            return ret;
         }
 
         /// <summary>
@@ -168,68 +168,6 @@ namespace DemoGame.Client
         public TickCount GetTime()
         {
             return _packetHandler.GetTime();
-        }
-
-        #endregion
-
-        #region ISocketSender Members
-
-        /// <summary>
-        /// Sends data to the server.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send.</param>
-        public void Send(BitStream data)
-        {
-            var sock = RemoteSocket;
-            if (sock == null)
-            {
-                const string errmsg = "Could not send data - connection not established!";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
-            try
-            {
-                sock.Send(data);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to send data. Exception: {0}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
-                Debug.Fail(string.Format(errmsg, ex));
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously sends data to the socket.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        public void Send(byte[] data)
-        {
-            var sock = RemoteSocket;
-            if (sock == null)
-            {
-                const string errmsg = "Could not send data - connection not established!";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
-            try
-            {
-                sock.Send(data);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to send data. Exception: {0}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
-                Debug.Fail(string.Format(errmsg, ex));
-            }
         }
 
         #endregion

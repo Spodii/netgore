@@ -17,13 +17,13 @@ namespace DemoGame.Client
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly ItemEntity[] _buffer = new ItemEntity[GameData.MaxInventorySize];
 
-        readonly ISocketSender _socket;
+        readonly INetworkSender _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Inventory"/> class.
         /// </summary>
-        /// <param name="socket">The <see cref="ISocketSender"/> to use to communicate with the server.</param>
-        public Inventory(ISocketSender socket)
+        /// <param name="socket">The <see cref="INetworkSender"/> to use to communicate with the server.</param>
+        public Inventory(INetworkSender socket)
         {
             if (socket == null)
                 throw new ArgumentNullException("socket");
@@ -122,7 +122,7 @@ namespace DemoGame.Client
             // Drop
             using (var pw = ClientPacket.DropInventoryItem(slot, amount))
             {
-                _socket.Send(pw);
+                _socket.Send(pw, ClientMessageType.GUIItems);
             }
         }
 
@@ -188,7 +188,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.SellInventoryToShop(slot, amount))
             {
-                _socket.Send(pw);
+                _socket.Send(pw, ClientMessageType.GUIItems);
             }
         }
 
@@ -266,7 +266,7 @@ namespace DemoGame.Client
 
             using (var pw = ClientPacket.UseInventoryItem(slot))
             {
-                _socket.Send(pw);
+                _socket.Send(pw, ClientMessageType.GUIItems);
             }
         }
     }
