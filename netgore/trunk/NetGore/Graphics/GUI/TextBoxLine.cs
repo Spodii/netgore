@@ -13,6 +13,7 @@ namespace NetGore.Graphics.GUI
     {
         readonly List<StyledText> _texts;
         readonly bool _wasAutoBroken;
+
         string _lineText;
 
         /// <summary>

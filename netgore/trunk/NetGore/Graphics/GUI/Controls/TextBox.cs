@@ -340,8 +340,8 @@ namespace NetGore.Graphics.GUI
                 for (var i = 1; i < textLines.Count; i++)
                 {
                     var newLine = new TextBoxLine(_lines);
-                    newLine.Append(textLines[i]);
                     _lines.Insert(_lines.Count, newLine);
+                    newLine.Append(textLines[i]);
                 }
 
                 TruncateIfNeeded();
