@@ -574,6 +574,8 @@ namespace DemoGame.Server
             userAccount.SetUser(World, characterID);
 
             // Send the MOTD
+            // TODO: !! Fix MOTD
+            /*
             var user = userAccount.User;
             if (user != null && !string.IsNullOrEmpty(Server.MOTD))
             {
@@ -582,6 +584,7 @@ namespace DemoGame.Server
                     user.Send(pw, ServerMessageType.GUIChat);
                 }
             }
+            */
         }
 
         [MessageHandler((uint)ClientPacketID.SelectNPCChatDialogResponse)]

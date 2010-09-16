@@ -361,11 +361,10 @@ namespace DemoGame.Server
         /// in the <see cref="NetStats"/> from the last call.</param>
         protected override void LogNetStats(NetStats netStats)
         {
-            var args = new WorldStatsNetworkTable(when: Now(), connections: (uint)netStats.Connections,
-                                                  tcpRecv: (uint)netStats.TCPRecv, tcpRecvs: (uint)netStats.TCPReceives,
-                                                  tcpSends: (uint)netStats.TCPSends, tcpSent: (uint)netStats.TCPSent,
-                                                  udpRecv: (uint)netStats.UDPRecv, udpRecvs: (uint)netStats.UDPReceives,
-                                                  udpSends: (uint)netStats.UDPSends, udpSent: (uint)netStats.UDPSent, iD: 0);
+            var args = new WorldStatsNetworkTable(when: Now(), connections: (uint)netStats.Connections, connectionsRejected: (uint)netStats.RejectedConnections,
+                                                  recv: (uint)netStats.Recv, recvs: (uint)netStats.Receives,
+                                                  sends: (uint)netStats.Sends, sent: (uint)netStats.Sent,
+                                                  iD: 0);
 
             _networkQuery.Execute(args);
         }

@@ -182,7 +182,6 @@
     <Compile Include="DbObjs\DbExtensions\CharacterTemplateInventoryTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterTemplateQuestProviderTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterTemplateTableDbExtensions.cs" />
-    <Compile Include="DbObjs\DbExtensions\GameConstantTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\GuildEventTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\GuildMemberTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\GuildTableDbExtensions.cs" />
@@ -198,7 +197,6 @@
     <Compile Include="DbObjs\DbExtensions\QuestRequireStartQuestTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestRewardItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\QuestTableDbExtensions.cs" />
-    <Compile Include="DbObjs\DbExtensions\ServerSettingTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ServerTimeTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
@@ -213,7 +211,6 @@
     <Compile Include="DbObjs\DbExtensions\WorldStatsUserKillNpcTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsUserLevelTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\WorldStatsUserShoppingTableDbExtensions.cs" />
-    <Compile Include="DbObjs\GameConstantTable.cs" />
     <Compile Include="DbObjs\GuildEventTable.cs" />
     <Compile Include="DbObjs\GuildMemberTable.cs" />
     <Compile Include="DbObjs\GuildTable.cs" />
@@ -226,7 +223,6 @@
     <Compile Include="DbObjs\QuestRequireStartQuestTable.cs" />
     <Compile Include="DbObjs\QuestRewardItemTable.cs" />
     <Compile Include="DbObjs\QuestTable.cs" />
-    <Compile Include="DbObjs\ServerSettingTable.cs" />
     <Compile Include="DbObjs\ServerTimeTable.cs" />
     <Compile Include="DbObjs\ShopItemTable.cs" />
     <Compile Include="DbObjs\ShopTable.cs" />
@@ -414,8 +410,6 @@
     <Compile Include="Queries\Map\Spawn\SelectMapSpawnsOnMapQuery.cs" />
     <Compile Include="Queries\Map\Spawn\UpdateMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\UpdateMapQuery.cs" />
-    <Compile Include="Queries\Misc\SelectServerSettingsQuery.cs" />
-    <Compile Include="Queries\Misc\UpdateGameDataTableQuery.cs" />
     <Compile Include="Queries\Misc\UpdateServerTimeQuery.cs" />
     <Compile Include="Queries\ServerDbController.cs" />
     <Compile Include="Queries\Shop\SelectShopIDsQuery.cs" />
