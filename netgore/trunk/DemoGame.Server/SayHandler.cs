@@ -181,11 +181,13 @@ namespace DemoGame.Server
             /// <param name="username">The name of the user to ban.</param>
             /// <param name="duration">For how long to ban the user. For duration format, see <see cref="DurationParser"/>.</param>
             /// <param name="reason">The reason the user is to be banned.</param>
+            [SayCommand("BanUser")]
             public void BanUser(string username, string duration, string reason)
             {
+                // TODO: !! Implement
+
                 if (!GameData.UserName.IsValid(username))
                 {
-
                 }
             }
 
