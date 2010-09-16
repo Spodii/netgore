@@ -119,15 +119,18 @@ namespace DemoGame.Client
         /// <param name="disposing">Is the GC disposing the object, or is it an explicit call ?</param>
         protected override void Destroy(bool disposing)
         {
-            if (_globalAtlases != null)
+            if (disposing)
             {
-                foreach (var atlas in _globalAtlases)
+                if (_globalAtlases != null)
                 {
-                    atlas.Dispose();
+                    foreach (var atlas in _globalAtlases)
+                    {
+                        atlas.Dispose();
+                    }
                 }
-            }
 
-            _screenManager.Dispose();
+                _screenManager.Dispose();
+            }
 
             base.Destroy(disposing);
         }
