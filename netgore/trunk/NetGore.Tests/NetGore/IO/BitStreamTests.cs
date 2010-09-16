@@ -192,7 +192,7 @@ namespace NetGore.Tests.IO
 
             var dest = new BitStream(1024);
             dest.Write(src);
-            
+
             dest.PositionBits = 0;
 
             for (var i = 0; i < a.Length; i++)
@@ -516,14 +516,14 @@ namespace NetGore.Tests.IO
         {
             var bs = new BitStream();
 
-            for (int i = 2; i < 32; i++)
+            for (var i = 2; i < 32; i++)
             {
                 bs.Write(uint.MaxValue, i);
             }
 
             bs.PositionBits = 0;
 
-            for (int i = 2; i < 32; i++)
+            for (var i = 2; i < 32; i++)
             {
                 Assert.AreEqual((1 << i) - 1, bs.ReadUInt(i));
             }
@@ -805,15 +805,15 @@ namespace NetGore.Tests.IO
             bs.Write(62);
             bs.Write(true);
 
-            Assert.AreEqual(32+1, bs.LengthBits);
+            Assert.AreEqual(32 + 1, bs.LengthBits);
 
             bs.PositionBits = 0;
 
-            Assert.AreEqual(32+1, bs.LengthBits);
+            Assert.AreEqual(32 + 1, bs.LengthBits);
 
             bs.PositionBits = 0;
 
-            Assert.AreEqual(32+1, bs.LengthBits);
+            Assert.AreEqual(32 + 1, bs.LengthBits);
         }
 
         [Test]
@@ -826,7 +826,7 @@ namespace NetGore.Tests.IO
 
             bs.PositionBits = 0;
 
-            Assert.AreEqual(8*data.Length, bs.LengthBits);
+            Assert.AreEqual(8 * data.Length, bs.LengthBits);
         }
 
         [Test]

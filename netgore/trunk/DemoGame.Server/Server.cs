@@ -433,11 +433,10 @@ namespace DemoGame.Server
                 return;
             }
 
-
             // Try to log in the account
             UserAccount userAccount;
             var loginResult = UserAccount.Login(DbController, conn, name, password, out userAccount);
-    
+
             // Check that the login was successful
             if (loginResult != AccountLoginResult.Successful)
             {

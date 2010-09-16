@@ -121,7 +121,6 @@ namespace DemoGame.Client
 
         public static PacketWriter Login(string name, string password)
         {
-            
             var pw = GetWriter(ClientPacketID.Login);
             pw.Write(name);
             pw.Write(password);

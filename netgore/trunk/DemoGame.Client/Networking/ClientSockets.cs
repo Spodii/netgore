@@ -1,10 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using DemoGame.Client.Properties;
 using Lidgren.Network;
-using log4net;
 using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -22,40 +19,6 @@ namespace DemoGame.Client
         readonly IMessageProcessorManager _messageProcessorManager;
         readonly ClientPacketHandler _packetHandler;
         readonly IScreenManager _screenManager;
-
-        /// <summary>
-        /// When overridden in the derived class, parses the string sent from the server containing the reason why we
-        /// were disconnected. The message is specified when the server calls <see cref="IIPSocket.Disconnect"/>
-        /// with parameters.
-        /// </summary>
-        /// <param name="msg">The message that was sent containing the reason for disconnecting. Can be empty if the
-        /// server gave no reason.</param>
-        /// <returns>The parsed <paramref name="msg"/>, or the original <paramref name="msg"/> if no known way to parse
-        /// it was found.</returns>
-        protected override string ParseCustomDisconnectMessage(string msg)
-        {
-            if (string.IsNullOrEmpty(msg))
-                return base.ParseCustomDisconnectMessage(msg);
-
-            // Check for special messages defined by the network library
-            if (msg.StartsWith("Timed out", StringComparison.OrdinalIgnoreCase))
-                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectTimedOut);
-            if (msg.StartsWith("Failed to complete handshake", StringComparison.OrdinalIgnoreCase))
-                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
-            if (msg.StartsWith("Connection was reset by remote host", StringComparison.OrdinalIgnoreCase))
-                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
-            if (msg.StartsWith("Connection forcibly closed", StringComparison.OrdinalIgnoreCase))
-                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
-
-            // Try to parse as a GameMessage
-            var ret = GameMessageCollection.CurrentLanguage.TryGetMessageFromString(msg);
-            if (ret != null)
-                return ret;
-
-            // Could not parse
-            ret = base.ParseCustomDisconnectMessage(msg);
-            return ret;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientSockets"/> class.
@@ -157,6 +120,40 @@ namespace DemoGame.Client
 
             // Process the received data
             _messageProcessorManager.Process(sender, data);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, parses the string sent from the server containing the reason why we
+        /// were disconnected. The message is specified when the server calls <see cref="IIPSocket.Disconnect"/>
+        /// with parameters.
+        /// </summary>
+        /// <param name="msg">The message that was sent containing the reason for disconnecting. Can be empty if the
+        /// server gave no reason.</param>
+        /// <returns>The parsed <paramref name="msg"/>, or the original <paramref name="msg"/> if no known way to parse
+        /// it was found.</returns>
+        protected override string ParseCustomDisconnectMessage(string msg)
+        {
+            if (string.IsNullOrEmpty(msg))
+                return base.ParseCustomDisconnectMessage(msg);
+
+            // Check for special messages defined by the network library
+            if (msg.StartsWith("Timed out", StringComparison.OrdinalIgnoreCase))
+                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectTimedOut);
+            if (msg.StartsWith("Failed to complete handshake", StringComparison.OrdinalIgnoreCase))
+                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+            if (msg.StartsWith("Connection was reset by remote host", StringComparison.OrdinalIgnoreCase))
+                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+            if (msg.StartsWith("Connection forcibly closed", StringComparison.OrdinalIgnoreCase))
+                return GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+
+            // Try to parse as a GameMessage
+            var ret = GameMessageCollection.CurrentLanguage.TryGetMessageFromString(msg);
+            if (ret != null)
+                return ret;
+
+            // Could not parse
+            ret = base.ParseCustomDisconnectMessage(msg);
+            return ret;
         }
 
         #region IGetTime Members

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using NetGore.Db;
 
 namespace NetGore.Features.Banning
 {
     [DbControllerQuery]
-    internal sealed class StoredProcIsBanned : DbQueryReader<int>
+    sealed class StoredProcIsBanned : DbQueryReader<int>
     {
         static readonly string _queryStr = FormatQueryString("CALL ft_banning_isbanned(@accountID)");
 
@@ -15,8 +16,7 @@ namespace NetGore.Features.Banning
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public StoredProcIsBanned(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public StoredProcIsBanned(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 

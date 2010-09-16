@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using log4net;
@@ -13,17 +14,45 @@ namespace DemoGame
     /// </summary>
     public static class GameMessageHelper
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The delimiter used for delimiting the arguments of a <see cref="GameMessage"/> packed into a string
         /// </summary>
         public const string StringDelimiter = "|";
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// A cache of an empty string array.
         /// </summary>
         static readonly string[] _emptyStringArray = new string[0];
+
+        /// <summary>
+        /// Constructs a <see cref="GameMessage"/> with arguments as a string.
+        /// </summary>
+        /// <param name="gameMessage">The <see cref="GameMessage"/>.</param>
+        /// <param name="p">The message arguments.</param>
+        /// <returns>The <see cref="GameMessage"/> with its arguments combined into a string.</returns>
+        public static string AsString(GameMessage gameMessage, params object[] p)
+        {
+            Debug.Assert(EnumHelper<GameMessage>.IsDefined(gameMessage));
+
+            // When no parameters passed, just do a quick conversion to reduce garbage generation
+            if (p == null)
+                return ((int)gameMessage).ToString();
+
+            // Build the string
+            var sb = new StringBuilder();
+            sb.Append((int)gameMessage);
+
+            // Append all the parameters
+            for (var i = 0; i < p.Length; i++)
+            {
+                sb.Append(StringDelimiter);
+                sb.Append(p[i]);
+            }
+
+            return sb.ToString();
+        }
 
         /// <summary>
         /// Deconstructs a <see cref="GameMessage"/> and its arguments from a string.
@@ -38,7 +67,7 @@ namespace DemoGame
             if (string.IsNullOrEmpty(s))
                 throw new ArgumentException("Argument cannot be null or empty.", "s");
 
-            var split = s.Split(new string[] { StringDelimiter}, System.StringSplitOptions.None);
+            var split = s.Split(new string[] { StringDelimiter }, StringSplitOptions.None);
 
             // Get the GameMessage
             GameMessage gameMessage;
@@ -62,39 +91,13 @@ namespace DemoGame
             {
                 // Create an array to store the arguments
                 args = new string[split.Length - 1];
-                for (int i = 0; i < args.Length; i++)
+                for (var i = 0; i < args.Length; i++)
+                {
                     args[i] = split[i + 1];
+                }
             }
 
             return new KeyValuePair<GameMessage, string[]>(gameMessage, args);
-        }
-
-        /// <summary>
-        /// Constructs a <see cref="GameMessage"/> with arguments as a string.
-        /// </summary>
-        /// <param name="gameMessage">The <see cref="GameMessage"/>.</param>
-        /// <param name="p">The message arguments.</param>
-        /// <returns>The <see cref="GameMessage"/> with its arguments combined into a string.</returns>
-        public static string AsString(GameMessage gameMessage, params object[] p)
-        {
-            Debug.Assert(EnumHelper<GameMessage>.IsDefined(gameMessage));
-
-            // When no parameters passed, just do a quick conversion to reduce garbage generation
-            if (p == null)
-                return ((int)gameMessage).ToString();
-
-            // Build the string
-            StringBuilder sb = new StringBuilder();
-            sb.Append((int)gameMessage);
-
-            // Append all the parameters
-            for (int i = 0; i < p.Length; i++)
-            {
-                sb.Append(StringDelimiter);
-                sb.Append(p[i]);
-            }
-
-            return sb.ToString();
         }
     }
 }

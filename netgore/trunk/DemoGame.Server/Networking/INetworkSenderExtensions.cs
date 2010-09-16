@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
-using System.Text;
 using Lidgren.Network;
 using log4net;
 using NetGore.IO;
@@ -58,7 +55,8 @@ namespace DemoGame.Server
         /// <param name="message">GameMessage to send to the User.</param>
         /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
         /// <param name="parameters">Message parameters.</param>
-        public static void Send(this INetworkSender sender, GameMessage message, ServerMessageType messageType, params object[] parameters)
+        public static void Send(this INetworkSender sender, GameMessage message, ServerMessageType messageType,
+                                params object[] parameters)
         {
             using (var pw = ServerPacket.SendMessage(message, parameters))
             {

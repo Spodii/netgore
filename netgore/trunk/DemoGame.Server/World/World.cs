@@ -9,6 +9,7 @@ using log4net;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
+using NetGore.Features.Banning;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.World;
@@ -23,8 +24,8 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
-        readonly object _delayedDisposeQueueSync = new object();
         readonly Queue<IDisposable> _delayedDisposeQueue = new Queue<IDisposable>(4);
+        readonly object _delayedDisposeQueueSync = new object();
         readonly GuildMemberPerformer _guildMemberPerformer;
         readonly List<MapInstance> _instancedMaps = new List<MapInstance>();
         readonly object _instancedMapsSync = new object();
@@ -88,58 +89,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles the <see cref="BanningManager.AccountBanned"/> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="accountID">The account that was banned.</param>
-        void BanningManager_AccountBanned(NetGore.Features.Banning.IBanningManager<AccountID> sender, AccountID accountID)
-        {
-            // If the user is online, disconnect them
-            
-            // Get the name of the users in the account since we have no decent way to look it up a character by AccountID in memory
-            var q = DbController.GetQuery<SelectAccountCharacterNamesQuery>();
-            var accountChars = q.Execute(accountID);
-
-            // Check for all of the users by their name and, if they are online, disconnect them after we confirm that their
-            // account matches the accountID
-            foreach (var name in accountChars)
-            {
-                var c = FindUser(name);
-                if (c == null)
-                    continue;
-
-                var acc = c.GetAccount();
-                if (acc == null)
-                    continue;
-
-                if (acc.ID != accountID)
-                    continue;
-
-                c.DelayedDispose();
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="IDbController"/> used by this World.
         /// </summary>
         public IDbController DbController
         {
             get { return Server.DbController; }
-        }
-
-        /// <summary>
-        /// Pushes an object into a stack for delayed disposal. This is thread-safe and helps avoid issues with disposing
-        /// while in certain places (such as enumerating over a collection). Note that objects pushed into this stack
-        /// will be called for disposal once for each time they are added, so be sure to keep track of if an object
-        /// is disposed so you can avoid disposing multiple times.
-        /// </summary>
-        /// <param name="obj">The object to dispose.</param>
-        public void DelayedDispose(IDisposable obj)
-        {
-            lock (_delayedDisposeQueueSync)
-            {
-                _delayedDisposeQueue.Enqueue(obj);
-            }
         }
 
         public GuildMemberPerformer GuildMemberPerformer
@@ -229,6 +183,53 @@ namespace DemoGame.Server
             // TODO: If the user is already logged in, this will throw an exception. Will have to determine how to handle this scenario.
             user.Disposed += User_Disposed;
             _users.Add(user.Name, user);
+        }
+
+        /// <summary>
+        /// Handles the <see cref="BanningManager.AccountBanned"/> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="accountID">The account that was banned.</param>
+        void BanningManager_AccountBanned(IBanningManager<AccountID> sender, AccountID accountID)
+        {
+            // If the user is online, disconnect them
+
+            // Get the name of the users in the account since we have no decent way to look it up a character by AccountID in memory
+            var q = DbController.GetQuery<SelectAccountCharacterNamesQuery>();
+            var accountChars = q.Execute(accountID);
+
+            // Check for all of the users by their name and, if they are online, disconnect them after we confirm that their
+            // account matches the accountID
+            foreach (var name in accountChars)
+            {
+                var c = FindUser(name);
+                if (c == null)
+                    continue;
+
+                var acc = c.GetAccount();
+                if (acc == null)
+                    continue;
+
+                if (acc.ID != accountID)
+                    continue;
+
+                c.DelayedDispose();
+            }
+        }
+
+        /// <summary>
+        /// Pushes an object into a stack for delayed disposal. This is thread-safe and helps avoid issues with disposing
+        /// while in certain places (such as enumerating over a collection). Note that objects pushed into this stack
+        /// will be called for disposal once for each time they are added, so be sure to keep track of if an object
+        /// is disposed so you can avoid disposing multiple times.
+        /// </summary>
+        /// <param name="obj">The object to dispose.</param>
+        public void DelayedDispose(IDisposable obj)
+        {
+            lock (_delayedDisposeQueueSync)
+            {
+                _delayedDisposeQueue.Enqueue(obj);
+            }
         }
 
         /// <summary>

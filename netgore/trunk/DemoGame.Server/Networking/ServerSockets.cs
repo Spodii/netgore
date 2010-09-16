@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Lidgren.Network;
 using NetGore;
 using NetGore.IO;
@@ -14,15 +12,14 @@ namespace DemoGame.Server
     /// </summary>
     public class ServerSockets : ServerSocketManager
     {
-        readonly ServerPacketHandler _packetHandler;
         readonly IMessageProcessorManager _messageProcessorManager;
+        readonly ServerPacketHandler _packetHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerSockets"/> class.
         /// </summary>
         /// <param name="server">The <see cref="Server"/> instance.</param>
-        public ServerSockets(Server server)
-            : base(CommonConfig.Network.NetworkAppIdentifier, CommonConfig.Network.ServerPort)
+        public ServerSockets(Server server) : base(CommonConfig.Network.NetworkAppIdentifier, CommonConfig.Network.ServerPort)
         {
             _packetHandler = new ServerPacketHandler(server);
 
@@ -34,6 +31,29 @@ namespace DemoGame.Server
 #else
             _ppManager = new MessageProcessorManager(_packetHandler, EnumHelper<ClientPacketID>.BitsRequired);
 #endif
+        }
+
+        /// <summary>
+        /// Determines whether or not a connection request should be accepted.
+        /// </summary>
+        /// <param name="ip">The IPv4 address the remote connection is coming from.</param>
+        /// <param name="port">The port that the remote connection is coming from.</param>
+        /// <param name="data">The data sent along with the connection request.</param>
+        /// <returns>
+        /// If null or empty, the connection will be accepted. Otherwise, return a non-empty string containing the reason
+        /// as to why the connection is to be rejected to reject the connection.
+        /// </returns>
+        protected override string AcceptConnect(uint ip, ushort port, BitStream data)
+        {
+            // Check for too many connections from the IP
+            if (ServerConfig.MaxConnectionsPerIP > 0)
+            {
+                var connsFromIP = Connections.Count(x => x.IP == ip);
+                if (connsFromIP >= ServerConfig.MaxConnectionsPerIP)
+                    return GameMessageHelper.AsString(GameMessage.DisconnectTooManyConnectionsFromIP);
+            }
+
+            return base.AcceptConnect(ip, port, data);
         }
 
         /// <summary>
@@ -66,31 +86,6 @@ namespace DemoGame.Server
 
             // Process the data
             _messageProcessorManager.Process(sender, data);
-        }
-
-        /// <summary>
-        /// Determines whether or not a connection request should be accepted.
-        /// </summary>
-        /// <param name="ip">The IPv4 address the remote connection is coming from.</param>
-        /// <param name="port">The port that the remote connection is coming from.</param>
-        /// <param name="data">The data sent along with the connection request.</param>
-        /// <returns>
-        /// If null or empty, the connection will be accepted. Otherwise, return a non-empty string containing the reason
-        /// as to why the connection is to be rejected to reject the connection.
-        /// </returns>
-        protected override string AcceptConnect(uint ip, ushort port, BitStream data)
-        {
-            // Check for too many connections from the IP
-            if (ServerConfig.MaxConnectionsPerIP > 0)
-            {
-                var connsFromIP = Connections.Count(x => x.IP == ip);
-                if (connsFromIP >= ServerConfig.MaxConnectionsPerIP)
-                {
-                    return GameMessageHelper.AsString(GameMessage.DisconnectTooManyConnectionsFromIP);
-                }
-            }
-
-            return base.AcceptConnect(ip, port, data);
         }
 
         /// <summary>

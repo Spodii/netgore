@@ -9,9 +9,9 @@ namespace NetGore.AI
 
         public readonly byte[,] _grid;
 
-        byte _gridX;
-        byte _gridY;
-        double _log2gridY;
+        readonly byte _gridX;
+        readonly byte _gridY;
+        readonly double _log2gridY;
 
         public AIGrid(byte[,] Grid)
         {

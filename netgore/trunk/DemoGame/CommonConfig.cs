@@ -1,4 +1,6 @@
-﻿namespace DemoGame
+﻿using System.Linq;
+
+namespace DemoGame
 {
     /// <summary>
     /// Compile-time settings shared by the server and client. This should mostly just contain consts used by both the 
@@ -20,6 +22,21 @@
             public const string NetworkAppIdentifier = "NetGore";
 
             /// <summary>
+            /// The number of seconds between performing pings (which are used to determine the latency of the connection).
+            /// </summary>
+            public const float PingFrequency = 6;
+
+            /// <summary>
+            /// The port that the server listens on, and that the client uses when connecting to the server.
+            /// </summary>
+            public const int ServerPort = 44447;
+
+            /// <summary>
+            /// The simulated percentage of duplicated packets (range: 0.0f to 1.0f).
+            /// </summary>
+            public const float SimulatedDuplicatesChance = 0;
+
+            /// <summary>
             /// The simulated percentage of sent packets lost (range: 0.0f to 1.0f).
             /// </summary>
             public const float SimulatedLoss = 0;
@@ -33,21 +50,6 @@
             /// The simulated added random amount of one way latency, in seconds, for sent packets.
             /// </summary>
             public const float SimulatedRandomLatency = 0;
-
-            /// <summary>
-            /// The simulated percentage of duplicated packets (range: 0.0f to 1.0f).
-            /// </summary>
-            public const float SimulatedDuplicatesChance = 0;
-
-            /// <summary>
-            /// The number of seconds between performing pings (which are used to determine the latency of the connection).
-            /// </summary>
-            public const float PingFrequency = 6;
-
-            /// <summary>
-            /// The port that the server listens on, and that the client uses when connecting to the server.
-            /// </summary>
-            public const int ServerPort = 44447;
         }
     }
 }

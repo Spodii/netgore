@@ -90,6 +90,12 @@ namespace DemoGame.Client
             _sockets.PacketHandler.ReceivedLoginUnsuccessful += PacketHandler_ReceivedLoginUnsuccessful;
         }
 
+        void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
+        {
+            // Show the character selection screen
+            ScreenManager.ActiveScreen = ScreenManager.GetScreen<CharacterSelectionScreen>();
+        }
+
         void PacketHandler_ReceivedLoginUnsuccessful(ClientPacketHandler sender, IIPSocket conn, string e)
         {
             // Show the login screen
@@ -97,12 +103,6 @@ namespace DemoGame.Client
 
             // Display the message
             SetError(e);
-        }
-
-        void PacketHandler_ReceivedLoginSuccessful(ClientPacketHandler sender, IIPSocket conn)
-        {
-            // Show the character selection screen
-            ScreenManager.ActiveScreen = ScreenManager.GetScreen<CharacterSelectionScreen>();
         }
 
         /// <summary>
@@ -131,9 +131,58 @@ namespace DemoGame.Client
         {
             var sock = _sockets.RemoteSocket;
             _btnLogin.IsEnabled = (sock == null ||
-                                   !(sock.Status == NetConnectionStatus.Connected || sock.Status == NetConnectionStatus.Connecting || sock.Status == NetConnectionStatus.None));
+                                   !(sock.Status == NetConnectionStatus.Connected || sock.Status == NetConnectionStatus.Connecting ||
+                                     sock.Status == NetConnectionStatus.None));
 
             base.Update(gameTime);
+        }
+
+        void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
+        {
+            switch (newStatus)
+            {
+                case NetConnectionStatus.Connected:
+
+                    // When the status has changed to Connected, and this screen is active, send the login info
+                    if (ScreenManager.ActiveNonConsoleScreen == this)
+                    {
+                        var name = _cNameText.Text;
+                        var pass = _cPasswordText.Text;
+                        using (var pw = ClientPacket.Login(name, pass))
+                        {
+                            _sockets.Send(pw, ClientMessageType.System);
+                        }
+                    }
+                    break;
+
+                case NetConnectionStatus.Disconnected:
+
+                    // If any screen other than this screen or the new account screen is the active screen when we
+                    // receive a disconnect, set this screen as active
+                    if (
+                        !(ScreenManager.ActiveNonConsoleScreen is LoginScreen ||
+                          ScreenManager.ActiveNonConsoleScreen is NewAccountScreen))
+                        ScreenManager.ActiveScreen = this;
+
+                    // If this screen is the active screen, set the error text
+                    if (ScreenManager.ActiveNonConsoleScreen == this)
+                    {
+                        // If we were the ones to disconnect, clear the error
+                        if (sender.ClientDisconnected)
+                        {
+                            SetError(null);
+                            break;
+                        }
+
+                        // If no reason specified, use generic one
+                        if (string.IsNullOrEmpty(reason))
+                            reason = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
+
+                        SetError(reason);
+                    }
+
+                    break;
+            }
         }
 
         /// <summary>
@@ -194,52 +243,6 @@ namespace DemoGame.Client
             var clp = _cPasswordText.CursorLinePosition;
             _cPasswordText.Text = GameData.AccountPassword.AllowedChars.GetValidCharsOnly(_cPasswordText.Text);
             _cPasswordText.CursorLinePosition = clp;
-        }
-
-        void _sockets_StatusChanged(IClientSocketManager sender, NetConnectionStatus newStatus, string reason)
-        {
-            switch (newStatus)
-            {
-                case NetConnectionStatus.Connected:
-
-                    // When the status has changed to Connected, and this screen is active, send the login info
-                    if (ScreenManager.ActiveNonConsoleScreen == this)
-                    {
-                        var name = _cNameText.Text;
-                        var pass = _cPasswordText.Text;
-                        using (var pw = ClientPacket.Login(name, pass))
-                        {
-                            _sockets.Send(pw, ClientMessageType.System);
-                        }
-                    }
-                    break;
-
-                case NetConnectionStatus.Disconnected:
-
-                    // If any screen other than this screen or the new account screen is the active screen when we
-                    // receive a disconnect, set this screen as active
-                    if (!(ScreenManager.ActiveNonConsoleScreen is LoginScreen || ScreenManager.ActiveNonConsoleScreen is NewAccountScreen))
-                        ScreenManager.ActiveScreen = this;
-
-                    // If this screen is the active screen, set the error text
-                    if (ScreenManager.ActiveNonConsoleScreen == this)
-                    {
-                        // If we were the ones to disconnect, clear the error
-                        if (sender.ClientDisconnected)
-                        {
-                            SetError(null);
-                            break;
-                        }
-
-                        // If no reason specified, use generic one
-                        if (string.IsNullOrEmpty(reason))
-                            reason = GameMessageCollection.CurrentLanguage.GetMessage(GameMessage.DisconnectNoReasonSpecified);
-
-                        SetError(reason);
-                    }
-
-                    break;
-            }
         }
     }
 }

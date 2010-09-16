@@ -1,4 +1,6 @@
-﻿namespace NetGore.Network
+﻿using System.Linq;
+
+namespace NetGore.Network
 {
     /// <summary>
     /// Interface for a general purpose socket manager. Intended to be used with the more specific interfaces

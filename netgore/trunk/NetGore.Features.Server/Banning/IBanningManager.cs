@@ -2,7 +2,6 @@
 using System.Linq;
 using NetGore.Db;
 
-
 namespace NetGore.Features.Banning
 {
     /// <summary>

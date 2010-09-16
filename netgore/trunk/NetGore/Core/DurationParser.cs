@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace NetGore
@@ -26,7 +24,9 @@ namespace NetGore
     /// </example>
     public static class DurationParser
     {
-        static readonly Regex _regex = new Regex("(?<Value>[\\-0-9]+)\\s*(?<Unit>[a-z]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture | RegexOptions.CultureInvariant);
+        static readonly Regex _regex = new Regex("(?<Value>[\\-0-9]+)\\s*(?<Unit>[a-z]+)",
+                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture |
+                                                 RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Parses a duration of time from a string.
@@ -68,7 +68,7 @@ namespace NetGore
             var matches = _regex.Matches(str);
 
             ts = TimeSpan.Zero;
-      
+
             // Make sure we have a match
             if (matches.Count == 0)
             {
@@ -127,14 +127,14 @@ namespace NetGore
                     case "wk":
                     case "week":
                     case "weeks":
-                        ts+=TimeSpan.FromDays(value * 7);
+                        ts += TimeSpan.FromDays(value * 7);
                         break;
 
                     case "mon":
                     case "month":
                     case "months":
                         var now = DateTime.Now;
-                        ts+= now.AddMonths(value) - now;
+                        ts += now.AddMonths(value) - now;
                         break;
 
                     case "y":
@@ -142,7 +142,7 @@ namespace NetGore
                     case "year":
                     case "years":
                         var now2 = DateTime.Now;
-                        ts+= now2.AddYears(value) - now2;
+                        ts += now2.AddYears(value) - now2;
                         break;
 
                     default:

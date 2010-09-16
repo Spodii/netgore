@@ -1,4 +1,5 @@
-﻿using Lidgren.Network;
+﻿using System.Linq;
+using Lidgren.Network;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -9,7 +10,8 @@ namespace NetGore.Network
     /// <param name="sender">The <see cref="IClientSocketManager"/> the event came from.</param>
     /// <param name="newStatus">The new <see cref="NetConnectionStatus"/>.</param>
     /// <param name="reason">The reason for the status change.</param>
-    public delegate void ClientSocketManagerStatusChangedEventHandler(IClientSocketManager sender, NetConnectionStatus newStatus, string reason);
+    public delegate void ClientSocketManagerStatusChangedEventHandler(
+        IClientSocketManager sender, NetConnectionStatus newStatus, string reason);
 
     /// <summary>
     /// Interface for a manager of client sockets. Enforces the idea of outbound connections only, does not listen, and
@@ -19,10 +21,9 @@ namespace NetGore.Network
     public interface IClientSocketManager : ISocketManager
     {
         /// <summary>
-        /// Gets the <see cref="IIPSocket"/> used to communicate with the other end of the connection. Will be null if no
-        /// connection has been established.
+        /// Notifies listeners when the status of the connection has changed.
         /// </summary>
-        IIPSocket RemoteSocket { get; }
+        event ClientSocketManagerStatusChangedEventHandler StatusChanged;
 
         /// <summary>
         /// Gets if it was us, the client, who terminated the connection to the server. This will only be true when
@@ -37,9 +38,10 @@ namespace NetGore.Network
         bool IsConnected { get; }
 
         /// <summary>
-        /// Notifies listeners when the status of the connection has changed.
+        /// Gets the <see cref="IIPSocket"/> used to communicate with the other end of the connection. Will be null if no
+        /// connection has been established.
         /// </summary>
-        event ClientSocketManagerStatusChangedEventHandler StatusChanged;
+        IIPSocket RemoteSocket { get; }
 
         /// <summary>
         /// Attempts to connects to the server.

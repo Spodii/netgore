@@ -18,13 +18,19 @@ namespace NetGore.Network
         readonly NetServer _local;
 
         /// <summary>
+        /// The <see cref="BitStream"/> instance used for when passing data up to be processed.
+        /// </summary>
+        readonly BitStream _receiveBitStream = new BitStream(1024);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ServerSocketManager"/> class.
         /// </summary>
         /// <param name="appIdentifier">The application identifier string.</param>
         /// <param name="port">The port to listen on.</param>
         public ServerSocketManager(string appIdentifier, int port)
         {
-            var config = new NetPeerConfiguration(appIdentifier) { AcceptIncomingConnections = true, Port = port, MaximumConnections = 50 };
+            var config = new NetPeerConfiguration(appIdentifier)
+            { AcceptIncomingConnections = true, Port = port, MaximumConnections = 50 };
 
             // Disable some message types that will not be used by the server
             config.DisableMessageType(NetIncomingMessageType.NatIntroductionSuccess);
@@ -45,11 +51,66 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Determines whether or not a connection request should be accepted.
+        /// </summary>
+        /// <param name="ip">The IPv4 address the remote connection is coming from.</param>
+        /// <param name="port">The port that the remote connection is coming from.</param>
+        /// <param name="data">The data sent along with the connection request.</param>
+        /// <returns>
+        /// If null or empty, the connection will be accepted. Otherwise, return a non-empty string containing the reason
+        /// as to why the connection is to be rejected to reject the connection.
+        /// </returns>
+        protected virtual string AcceptConnect(uint ip, ushort port, BitStream data)
+        {
+            // Always accept connections by default
+            return null;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional configuring of the <see cref="NetPeerConfiguration"/> instance
         /// that will be used for this <see cref="ServerSocketManager"/>.
         /// </summary>
         protected virtual void InitNetPeerConfig(NetPeerConfiguration config)
         {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="IIPSocket"/> that the data came from.</param>
+        /// <param name="data">The data that was received. This <see cref="BitStream"/> instance is reused internally, so it
+        /// is vital that you do NOT hold a reference to it when this method returns. This should be no problem since you should
+        /// not be holding onto raw received data anyways, but if you must, you can always make a deep copy.</param>
+        protected virtual void OnReceiveData(IIPSocket sender, BitStream data)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the status of an <see cref="IIPSocket"/> changes.
+        /// </summary>
+        /// <param name="sender">The <see cref="IIPSocket"/> who's status has changed.</param>
+        /// <param name="status">The new status.</param>
+        /// <param name="reason">The reason for the status change.</param>
+        protected virtual void OnReceiveStatusChanged(IIPSocket sender, NetConnectionStatus status, string reason)
+        {
+        }
+
+        #region IServerSocketManager Members
+
+        /// <summary>
+        /// Gets the live connections to the server.
+        /// </summary>
+        public IEnumerable<IIPSocket> Connections
+        {
+            get { return _local.Connections.Select(x => x.Tag).OfType<IIPSocket>(); }
+        }
+
+        /// <summary>
+        /// Gets the number of live connections to the server.
+        /// </summary>
+        public int ConnectionsCount
+        {
+            get { return _local.ConnectionsCount; }
         }
 
         /// <summary>
@@ -104,10 +165,11 @@ namespace NetGore.Network
                         _receiveBitStream.PositionBits = 0;
 
                         // Ask the acception handler method if this connection will be accepted
-                        string rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, _receiveBitStream);
+                        var rejectMessage = AcceptConnect(ipSocket.IP, ipSocket.Port, _receiveBitStream);
 
                         if (log.IsDebugEnabled)
-                            log.DebugFormat("Received connection request from `{0}`. Accepted? {1}.", ipSocket, string.IsNullOrEmpty(rejectMessage));
+                            log.DebugFormat("Received connection request from `{0}`. Accepted? {1}.", ipSocket,
+                                            string.IsNullOrEmpty(rejectMessage));
 
                         // Approve or deny the connection accordingly
                         if (string.IsNullOrEmpty(rejectMessage))
@@ -124,8 +186,8 @@ namespace NetGore.Network
                         Debug.Assert(ipSocket != null);
 
                         // Read the status and reason
-                        NetConnectionStatus status = (NetConnectionStatus)incMsg.ReadByte();
-                        string reason = incMsg.ReadString();
+                        var status = (NetConnectionStatus)incMsg.ReadByte();
+                        var reason = incMsg.ReadString();
 
                         if (log.IsDebugEnabled)
                             log.DebugFormat("Socket `{0}` status changed to `{1}`. Reason: {2}", ipSocket, status, reason);
@@ -159,62 +221,6 @@ namespace NetGore.Network
             }
         }
 
-        /// <summary>
-        /// The <see cref="BitStream"/> instance used for when passing data up to be processed.
-        /// </summary>
-        readonly BitStream _receiveBitStream = new BitStream(1024);
-
-        /// <summary>
-        /// Determines whether or not a connection request should be accepted.
-        /// </summary>
-        /// <param name="ip">The IPv4 address the remote connection is coming from.</param>
-        /// <param name="port">The port that the remote connection is coming from.</param>
-        /// <param name="data">The data sent along with the connection request.</param>
-        /// <returns>
-        /// If null or empty, the connection will be accepted. Otherwise, return a non-empty string containing the reason
-        /// as to why the connection is to be rejected to reject the connection.
-        /// </returns>
-        protected virtual string AcceptConnect(uint ip, ushort port, BitStream data)
-        {
-            // Always accept connections by default
-            return null;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling received data from an <see cref="IIPSocket"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="IIPSocket"/> that the data came from.</param>
-        /// <param name="data">The data that was received. This <see cref="BitStream"/> instance is reused internally, so it
-        /// is vital that you do NOT hold a reference to it when this method returns. This should be no problem since you should
-        /// not be holding onto raw received data anyways, but if you must, you can always make a deep copy.</param>
-        protected virtual void OnReceiveData(IIPSocket sender, BitStream data)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the status of an <see cref="IIPSocket"/> changes.
-        /// </summary>
-        /// <param name="sender">The <see cref="IIPSocket"/> who's status has changed.</param>
-        /// <param name="status">The new status.</param>
-        /// <param name="reason">The reason for the status change.</param>
-        protected virtual void OnReceiveStatusChanged(IIPSocket sender, NetConnectionStatus status, string reason)
-        {
-        }
-
-        /// <summary>
-        /// Gets the number of live connections to the server.
-        /// </summary>
-        public int ConnectionsCount
-        {
-            get { return _local.ConnectionsCount; }
-        }
-
-        /// <summary>
-        /// Gets the live connections to the server.
-        /// </summary>
-        public IEnumerable<IIPSocket> Connections
-        {
-            get { return _local.Connections.Select(x => x.Tag).OfType<IIPSocket>(); }
-        }
+        #endregion
     }
 }

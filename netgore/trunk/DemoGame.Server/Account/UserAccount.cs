@@ -368,7 +368,7 @@ namespace DemoGame.Server
                     return false;
                 }
             }
-            
+
             // Check if the account exists
             var existingAccountID = dbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(name);
             if (existingAccountID.HasValue)

@@ -22,7 +22,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void ByteTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new byte[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -32,7 +32,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void DoubleTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new double[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -42,7 +42,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void FloatTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new float[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -52,7 +52,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void IntTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new int[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -62,7 +62,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void LongTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new long[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -72,7 +72,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void SByteTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new sbyte[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -82,7 +82,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void ShortTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new short[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -92,7 +92,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void StringTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new string[] { "1", "5", "81", "12", "52" };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -102,7 +102,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void UIntTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new uint[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
@@ -112,7 +112,7 @@ namespace NetGore.Tests.NetGore.IO
         [Test]
         public void UShortTest()
         {
-            var bs = new BitStream() ;
+            var bs = new BitStream();
             var v = new ushort[] { 1, 5, 81, 12, 52 };
             bs.Write(v);
             bs.PositionBits = 0;
