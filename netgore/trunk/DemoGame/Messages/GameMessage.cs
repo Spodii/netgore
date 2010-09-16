@@ -8,25 +8,76 @@ namespace DemoGame
     /// </summary>
     public enum GameMessage : ushort
     {
-        CannotAttackWithWeapon,
-        CannotAttackTooFarAway,
-        CannotAttackNeedTarget,
-        CannotAttackAllianceConflict,
+        #region Core: Misc
 
         /// <summary>
-        /// Do not have the <see cref="UserPermissions"/> level needed to perform an action.
+        /// Do not have the <see cref="UserPermissions"/> level needed to perform an action (can be any kind of action).
         /// </summary>
         InsufficientPermissions,
 
-        /// <summary>
-        /// Invalid Say chat command.
-        /// </summary>
-        InvalidCommand,
+        #endregion
+
+        #region Core: Combat messages
 
         /// <summary>
-        /// Message received when a User shouts.
+        /// The attacker tried to attack using a weapon that doesn't allow such an attack. Usually, this is for if they try
+        /// to attack with something that isn't a weapon.
         /// </summary>
-        CommandShout,
+        CannotAttackWithWeapon,
+
+        /// <summary>
+        /// The target that the attacker is trying to attack is too far away.
+        /// </summary>
+        CannotAttackTooFarAway,
+
+        /// <summary>
+        /// A target is required to perform the requested attack, but no target was given.
+        /// </summary>
+        CannotAttackNeedTarget,
+
+        /// <summary>
+        /// Cannot attack a character since the attacker's alliance does not let them.
+        /// </summary>
+        CannotAttackAllianceConflict,
+
+        #endregion
+
+        #region Core: General chat command responses
+
+        /// <summary>
+        /// The user the command was targeted at contain an invalid/illegal name.
+        /// </summary>
+        CommandGeneralInvalidUser,
+
+        /// <summary>
+        /// The user the command was targeted at does not exist (but the name is valid).
+        /// </summary>
+        CommandGeneralUnknownUser,
+
+        /// <summary>
+        /// An invalid parameter was supplied for the command.
+        /// </summary>
+        CommandGeneralInvalidParameter,
+
+        /// <summary>
+        /// The user the command was targeted at exists, but they are offline and this command requires them to be online.
+        /// </summary>
+        CommandGeneralUserOffline,
+
+        /// <summary>
+        /// The user the command was targeted cannot be the target for this command, or the one issuing the command is not
+        /// allowed to do it to the given user.
+        /// </summary>
+        CommandGeneralUserNotAllowed,
+
+        /// <summary>
+        /// Invalid/non-existent Say chat command.
+        /// </summary>
+        CommandGeneralInvalidCommand,
+
+        #endregion
+
+        #region Core: Specialized chat command responses
 
         /// <summary>
         /// Tell command contains no name.
@@ -57,6 +108,13 @@ namespace DemoGame
         /// Tell command contains the name of a User that exists, but is offline.
         /// </summary>
         CommandTellOfflineUser,
+
+        /// <summary>
+        /// Message received when a User shouts.
+        /// </summary>
+        CommandShout,
+
+        #endregion
 
         #region Core: Login failure reasons
 

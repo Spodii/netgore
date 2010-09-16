@@ -1,15 +1,12 @@
-CreateAccountSuccessful: "Account successfully created! You may now log in."
-CreateAccountInvalidName: "Invalid account name. Must be between 3 and 30 characters and contain only alphanumeric characters."
-CreateAccountInvalidPassword: "Invalid password. Must be between 3 and 30 characters and contain alphanumeric characters and/or punctuation."
-CreateAccountInvalidEmail: "Invalid email address."
-CreateAccountTooManyCreated: "Too many accounts have been created from your IP address recently. Please wait and try again later."
-CreateAccountAlreadyExists: "An account with that name already exists. Please try a different account name."
-CreateAccountUnknownError: "An unknown error has occured while trying to create the account. Please try again, or try a different account name."
+# Contains all the game message strings for English.
+# All lines that start with a #, /, \, or ' are ignored.
+# Try to keep this grouped in the same way it is grouped in the GameMessage.cs code file. Also,
+# keep most of the commenting effort in the GameMessage.cs so it can be utilized through intellisense
+# and so it doesn't have to be copied to each language file. But do add comments into here if it
+# is related to the language specifically.
 
-DisconnectTooManyConnectionsFromIP: "Connection rejected by the server since there are too many connections from your IP address."
-DisconnectUserDisposed: "The connection to the server has been lost."
-DisconnectNoReasonSpecified: "The connection to the server has been lost."
-DisconnectTimedOut: "The connection has timed out due to inactivity."
+
+
 
 InsufficientPermissions: "You do not have the permissions to do that."
 
@@ -18,14 +15,8 @@ CannotAttackTooFarAway: "The target is too far away to attack."
 CannotAttackNeedTarget: "You must select a target to attack first."
 CannotAttackAllianceConflict: "You feel you shouldn't attack $0."
 
-InvalidCommand: "Invalid command."
-InvalidCommandMustBeInGuild: "You must be in a guild to do that."
-InvalidCommandMustNotBeInGuild: "You cannot do that while in a guild."
-InvalidCommandMustBeInGroup: "You must be in a group to do that."
-InvalidCommandMustNotBeInGroup: "You cannot do that while in a group. To leave your group, type /leavegroup."
 
-CommandShout: "$0 shouts: \"$1\""
-
+########### Core: Specialized chat command responses ###########
 CommandTellNoName: "Tell what to whom?"
 CommandTellNoMessage: "What do you want to say?"
 CommandTellSender: "You tell $0: \"$1\""
@@ -33,10 +24,37 @@ CommandTellReceiver: "$0 tells you: \"$1\""
 CommandTellInvalidUser: "User $0 does not exist."
 CommandTellOfflineUser: "User $0 is currently offline."
 
+CommandShout: "$0 shouts: \"$1\""
+
+########### Core: General chat command responses ###########
+CommandGeneralInvalidUser: "$0 is not valid username."
+CommandGeneralUnknownUser: "No user with the name $0 exists."
+CommandGeneralInvalidParameter: "Invalid value `$1` entered for parameter `$0`."
+CommandGeneralUserOffline: "User $0 is currently offline."
+CommandGeneralUserNotAllowed: "You are not allowed to do that to $0."
+CommandGeneralInvalidCommand: "No such command exists."
+
+########### Core: Login failure reasons ###########
 LoginInvalidName: "Account with the given name does not exist."
 LoginInvalidPassword: "Incorrect password."
 LoginAccountInUse: "Account is already in use."
 
+########### Core: Account creation ###########
+CreateAccountSuccessful: "Account successfully created! You may now log in."
+CreateAccountInvalidName: "Invalid account name. Must be between 3 and 30 characters and contain only alphanumeric characters."
+CreateAccountInvalidPassword: "Invalid password. Must be between 3 and 30 characters and contain alphanumeric characters and/or punctuation."
+CreateAccountInvalidEmail: "Invalid email address."
+CreateAccountTooManyCreated: "Too many accounts have been created from your IP address recently. Please wait and try again later."
+CreateAccountAlreadyExists: "An account with that name already exists. Please try a different account name."
+CreateAccountUnknownError: "An unknown error has occured while trying to create the account. Please try again, or try a different account name."
+
+########### Core: Disconnect reasons ###########
+DisconnectTooManyConnectionsFromIP: "Connection rejected by the server since there are too many connections from your IP address."
+DisconnectUserDisposed: "The connection to the server has been lost."
+DisconnectNoReasonSpecified: "The connection to the server has been lost."
+DisconnectTimedOut: "The connection has timed out due to inactivity."
+
+########### Feature: Shops ###########
 ShopInsufficientFundsToPurchaseSingular: "You do not have enough money to purchase a $0."
 ShopInsufficientFundsToPurchasePlural: "You do not have enough money to purchase $0 $1s."
 ShopPurchaseSingular: "You purchased a $0 for $1 cash."
@@ -44,21 +62,7 @@ ShopPurchasePlural: "You purchased $0 $1s for $2 cash."
 ShopSellItemSingular: "You sell a $0 for $1 cash."
 ShopSellItemPlural: "You sell $0 $1s for $2 cash."
 
-GroupCreated: "You have created a new group."
-GroupCreateFailedUnknownReason: "Failed to create a new group."
-GroupInvited: "You have been invited to join $0's group. Type /joingroup to join."
-GroupInvite: "$0 has invited $1 to join the group."
-GroupInviteFailedCannotInviteSelf: "You cannot invite yourself into a group."
-GroupInviteFailedInvalidUser: "Failed to invite $0 to join the group. That user is either not online or does not exist."
-GroupInviteFailedAlreadyInGroup: "Failed to invite $0 to join the group since they are already in a group."
-GroupInviteFailedUnknownReason: "Failed to invite $0 to join the group."
-GroupJoinFailedGroupIsFull: "Failed to join $0's group - the group is already full."
-GroupJoinFailedUnknownReason: "Failed to join $0's group."
-GroupJoined: "You have joined $0's group."
-GroupLeave: "You have left the group."
-GroupMemberLeft: "$0 has left the group."
-GroupMemberJoined: "$0 has joined the group."
-
+########### Feature: Guilds ###########
 GuildCreationSuccessful: "Guild \"$0\" with tag \"$1\" successfully created."
 GuildCreationFailedUnknownReason: "Could not create guild \"$0\" with tag \"$1\" for an unknown reason."
 GuildCreationFailedNameInvalid: "Could not create guild - the name \"$0\" is invalid."
@@ -103,6 +107,31 @@ GuildJoinFailedInvalidOrNoInvite: "Unable to join guild $0 - the guild either do
 GuildLeave: "You have left guild \"$0\"."
 GuildSay: "[Guild] $0 says: \"$1\""
 
+########### Feature: Groups ###########
+InvalidCommandMustBeInGuild: "You must be in a guild to do that."
+InvalidCommandMustNotBeInGuild: "You cannot do that while in a guild."
+InvalidCommandMustBeInGroup: "You must be in a group to do that."
+InvalidCommandMustNotBeInGroup: "You cannot do that while in a group. To leave your group, type /leavegroup."
+
+GroupCreated: "You have created a new group."
+GroupCreateFailedUnknownReason: "Failed to create a new group."
+
+GroupInvited: "You have been invited to join $0's group. Type /joingroup to join."
+GroupInvite: "$0 has invited $1 to join the group."
+GroupInviteFailedCannotInviteSelf: "You cannot invite yourself into a group."
+GroupInviteFailedInvalidUser: "Failed to invite $0 to join the group. That user is either not online or does not exist."
+GroupInviteFailedAlreadyInGroup: "Failed to invite $0 to join the group since they are already in a group."
+GroupInviteFailedUnknownReason: "Failed to invite $0 to join the group."
+
+GroupJoinFailedGroupIsFull: "Failed to join $0's group - the group is already full."
+GroupJoinFailedUnknownReason: "Failed to join $0's group."
+GroupJoined: "You have joined $0's group."
+
+GroupLeave: "You have left the group."
+GroupMemberLeft: "$0 has left the group."
+GroupMemberJoined: "$0 has joined the group."
+
+########### Feature: PeerTrading ###########
 PeerTradingNotEnoughSpaceInInventory: "Unable to trade - you do not have enough room in your inventory!"
 PeerTradingInvalidTarget: "Cannot trade with that user - they are either not online or do not exist."
 PeerTradingTooFarAway: "You are too far away to trade with that user. Try getting closer to them."
@@ -115,6 +144,7 @@ PeerTradingTradeOpened: "You have started a trade with $0."
 PeerTradingItemsRecovered: "$0 of your items lost during your last trade have been recovered, but $1 still remains. Try to empty out some of your inventory, then log out and back in."
 PeerTradingItemsRecoveredNoRemaining: "All of your items ($0 total) lost during your last trade have been recovered and returned to you."
 
+########### Feature: Quests ###########
 QuestAccepted: "You have accepted a new quest!"
 QuestAcceptFailedAlreadyCompleted: "You cannot accept that quest since you have already completed it."
 QuestAcceptFailedAlreadyStarted: "You have already accepted that quest."
@@ -124,4 +154,5 @@ QuestCanceled: "You have canceled a quest."
 QuestFinished: "You have finished the quest!"
 QuestFinishFailedCannotGiveRewards: "Cannot turn in the quest because you cannot receive the quest's rewards! Make sure you have enough room in your inventory."
 
+########### Feature: Banning ###########
 AccountBanned: "Your account has been banned. The ban will expire in $0. Reason: $1"
