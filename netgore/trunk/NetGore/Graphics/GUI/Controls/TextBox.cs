@@ -288,6 +288,9 @@ namespace NetGore.Graphics.GUI
             get { return _lines.GetRawText(); }
             set
             {
+                if (StringComparer.Ordinal.Equals(_lines.GetRawText(), value))
+                    return;
+
                 CursorLinePosition = 0;
                 Clear();
                 Append(value);
