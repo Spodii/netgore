@@ -22,7 +22,8 @@ namespace DemoGame.Server.Queries
         /// <param name="connectionPool">The connection pool.</param>
         public InsertAccountBanQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
-            QueryAsserts.ContainsColumns(AccountBanTable.DbColumns, "account_id", "start_time","end_time", "issued_by", "reason","expired");
+            QueryAsserts.ContainsColumns(AccountBanTable.DbColumns, "account_id", "start_time", "end_time", "issued_by", "reason",
+                                         "expired");
         }
 
         /// <summary>

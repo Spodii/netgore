@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Lidgren.Network;
+using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using SFML.Graphics;
@@ -16,8 +16,8 @@ namespace DemoGame.Client
         TextBox _cNameText;
         TextBox _cPasswordText;
         Button _createAccountButton;
-        Label _statusLabel;
         ClientSockets _sockets = null;
+        Label _statusLabel;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NewAccountScreen"/> class.
@@ -101,20 +101,6 @@ namespace DemoGame.Client
             _sockets.PacketHandler.ReceivedCreateAccount -= PacketHandler_ReceivedCreateAccount;
 
             base.Dispose();
-        }
-
-        /// <summary>
-        /// Updates the screen if it is currently the active screen.
-        /// </summary>
-        /// <param name="gameTime">The current game time.</param>
-        public override void Update(NetGore.TickCount gameTime)
-        {
-            base.Update(gameTime);
-
-            if (_sockets.RemoteSocket == null || _sockets.RemoteSocket.Status == NetConnectionStatus.None || _sockets.RemoteSocket.Status == NetConnectionStatus.Disconnected)
-                _createAccountButton.IsEnabled = true;
-            else
-                _createAccountButton.IsEnabled = false;
         }
 
         /// <summary>
@@ -212,6 +198,21 @@ namespace DemoGame.Client
 
             _statusLabel.Text = message;
             _statusLabel.ForeColor = Color.Green;
+        }
+
+        /// <summary>
+        /// Updates the screen if it is currently the active screen.
+        /// </summary>
+        /// <param name="gameTime">The current game time.</param>
+        public override void Update(TickCount gameTime)
+        {
+            base.Update(gameTime);
+
+            if (_sockets.RemoteSocket == null || _sockets.RemoteSocket.Status == NetConnectionStatus.None ||
+                _sockets.RemoteSocket.Status == NetConnectionStatus.Disconnected)
+                _createAccountButton.IsEnabled = true;
+            else
+                _createAccountButton.IsEnabled = false;
         }
 
         /// <summary>

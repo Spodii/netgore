@@ -5,13 +5,11 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.DbObjs;
 using DemoGame.Server.Queries;
-using Lidgren.Network;
 using log4net;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
-using NetGore.Network;
 using NetGore.World;
 using SFML.Graphics;
 

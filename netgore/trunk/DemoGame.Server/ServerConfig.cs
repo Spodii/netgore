@@ -21,22 +21,6 @@ namespace DemoGame.Server
         public const bool AllowRemoteConnections = false;
 
         /// <summary>
-        /// The maximum accounts that can be created for a single IP address over a given period of time. The period
-        /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
-        /// </summary>
-        public const int MaxRecentlyCreatedAccounts = 4;
-
-        /// <summary>
-        /// The maximum number of connections allowed for a single IP address. Set to a value less than or equal to 0 to disable.
-        /// </summary>
-        public const int MaxConnectionsPerIP = 6;
-
-        /// <summary>
-        /// The maximum number of connections that can be made to the server.
-        /// </summary>
-        public const int MaxConnections = 100;
-
-        /// <summary>
         /// The amount of time an item may remain on the map before it is removed automatically.
         /// </summary>
         public const int DefaultMapItemLife = 1000 * 60 * 3;
@@ -50,10 +34,26 @@ namespace DemoGame.Server
         public const int MapItemExpirationUpdateRate = 1000 * 30;
 
         /// <summary>
+        /// The maximum number of connections that can be made to the server.
+        /// </summary>
+        public const int MaxConnections = 100;
+
+        /// <summary>
+        /// The maximum number of connections allowed for a single IP address. Set to a value less than or equal to 0 to disable.
+        /// </summary>
+        public const int MaxConnectionsPerIP = 6;
+
+        /// <summary>
         /// The maximum allowed distance allowed between two group members for them to be allowed to share rewards
         /// with the other group members.
         /// </summary>
         public const float MaxGroupShareDistance = 1000;
+
+        /// <summary>
+        /// The maximum accounts that can be created for a single IP address over a given period of time. The period
+        /// of time is defined by the query itself (CountRecentlyCreatedAccounts).
+        /// </summary>
+        public const int MaxRecentlyCreatedAccounts = 4;
 
         /// <summary>
         /// How often, in milliseconds, to wait between check to respawn <see cref="IRespawnable"/> entities.
@@ -120,6 +120,5 @@ namespace DemoGame.Server
         /// no weapon is specified (see: <see cref="World.UnarmedWeapon"/>).
         /// </summary>
         public static readonly ItemTemplateID UnarmedItemTemplateID = new ItemTemplateID(0);
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -16,8 +17,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="SelectAccountCharacterNamesQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectAccountCharacterNamesQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectAccountCharacterNamesQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name", "account_id");
         }

@@ -193,6 +193,5 @@ namespace NetGore.Features.Banning
         }
 
         #endregion
-
     }
 }

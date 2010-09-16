@@ -20,16 +20,6 @@ namespace DemoGame.Client
         readonly ScreenManager _screenManager;
         readonly ClientSockets _sockets;
 
-        /// <summary>
-        /// Gets the <see cref="IScreenManager"/> instance used to display the screens for the client.
-        /// </summary>
-        public IScreenManager ScreenManager { get { return _screenManager; } }
-
-        /// <summary>
-        /// Gets the <see cref="IClientSocketManager"/> instance used to let the client communicate with the server.
-        /// </summary>
-        public IClientSocketManager Sockets { get { return _sockets; } }
-
         IEnumerable<TextureAtlas> _globalAtlases;
 
         /// <summary>
@@ -71,6 +61,22 @@ namespace DemoGame.Client
             UseVerticalSync(true);
 
             KeyPressed += DemoGame_KeyPressed;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IScreenManager"/> instance used to display the screens for the client.
+        /// </summary>
+        public IScreenManager ScreenManager
+        {
+            get { return _screenManager; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IClientSocketManager"/> instance used to let the client communicate with the server.
+        /// </summary>
+        public IClientSocketManager Sockets
+        {
+            get { return _sockets; }
         }
 
         /// <summary>

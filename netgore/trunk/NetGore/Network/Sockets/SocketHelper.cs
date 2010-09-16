@@ -1,11 +1,12 @@
-﻿using Lidgren.Network;
+﻿using System.Linq;
+using Lidgren.Network;
 
 namespace NetGore.Network
 {
     /// <summary>
     /// Helper methods for sockets.
     /// </summary>
-    internal static class SocketHelper
+    static class SocketHelper
     {
         /// <summary>
         /// Gets a <see cref="NetOutgoingMessage"/>.

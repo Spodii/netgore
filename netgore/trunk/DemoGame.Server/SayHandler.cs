@@ -184,7 +184,8 @@ namespace DemoGame.Server
             {
                 if (((IGuildMember)User).GuildRank < requiredRank)
                 {
-                    User.Send(GameMessage.GuildInsufficientPermissions, ServerMessageType.GUI, _guildSettings.GetRankName(requiredRank));
+                    User.Send(GameMessage.GuildInsufficientPermissions, ServerMessageType.GUI,
+                              _guildSettings.GetRankName(requiredRank));
                     return false;
                 }
 

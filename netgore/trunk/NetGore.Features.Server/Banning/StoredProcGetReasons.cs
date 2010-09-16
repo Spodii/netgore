@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using NetGore.Db;
 
 namespace NetGore.Features.Banning
 {
     [DbControllerQuery]
-    internal sealed class StoredProcGetReasons : DbQueryReader<int>
+    sealed class StoredProcGetReasons : DbQueryReader<int>
     {
         static readonly string _queryStr = FormatQueryString("CALL ft_banning_get_reasons(@accountID)");
 
@@ -15,8 +16,7 @@ namespace NetGore.Features.Banning
         /// </summary>
         /// <param name="connectionPool">The <see cref="DbConnectionPool"/> to use for creating connections to execute the query on.</param>
         /// <exception cref="ArgumentNullException"><paramref name="connectionPool"/> is null.</exception>
-        public StoredProcGetReasons(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public StoredProcGetReasons(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
@@ -34,7 +34,7 @@ namespace NetGore.Features.Banning
             using (var r = ExecuteReader(accountID))
             {
                 // Check for any results
-                bool isValid = r.Read();
+                var isValid = r.Read();
                 if (isValid)
                 {
                     // Ensure we actually got valid results by checking if any of the two columns are now

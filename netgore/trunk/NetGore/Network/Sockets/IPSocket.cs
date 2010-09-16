@@ -181,7 +181,7 @@ namespace NetGore.Network
             var msg = SocketHelper.GetNetOutgoingMessage(_conn.Owner, data.Length);
             msg.Write(data);
 
-            var ret= _conn.SendMessage(msg, deliveryMethod, sequenceChannel);
+            var ret = _conn.SendMessage(msg, deliveryMethod, sequenceChannel);
             return ret;
         }
 

@@ -327,14 +327,14 @@ namespace DemoGame.Client
         void RecvCreateAccount(IIPSocket conn, BitStream r)
         {
             var successful = r.ReadBool();
-            string errorMessage = string.Empty;
+            var errorMessage = string.Empty;
 
             if (!successful)
             {
                 var failureGameMessage = r.ReadEnum<GameMessage>();
                 errorMessage = GameMessageCollection.CurrentLanguage.GetMessage(failureGameMessage);
             }
-    
+
             if (ReceivedCreateAccount != null)
                 ReceivedCreateAccount(conn, successful, errorMessage);
         }

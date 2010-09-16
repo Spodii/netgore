@@ -221,6 +221,33 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets if data can be sent to this <see cref="User"/>.
+        /// </summary>
+        /// <returns>True if the data sending can continue safely; otherwise false.</returns>
+        bool CheckIfCanSendToUser()
+        {
+            if (IsDisposed)
+            {
+                const string errmsg = "Tried to send data to disposed User `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                return false;
+            }
+
+            if (_conn == null || !_conn.IsConnected)
+            {
+                const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                DelayedDispose();
+
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, checks if enough time has elapesd since the Character died
         /// for them to be able to respawn.
         /// </summary>
@@ -307,6 +334,16 @@ namespace DemoGame.Server
         protected override StatCollection<StatType> CreateStats(StatCollectionType statCollectionType)
         {
             return new UserStats(statCollectionType);
+        }
+
+        /// <summary>
+        /// Gets this <see cref="User"/>'s <see cref="UserAccount"/>.
+        /// </summary>
+        /// <returns>This <see cref="User"/>'s <see cref="UserAccount"/>. Shouldn't be null, but may potentially be and the caller
+        /// should always be prepared for the value being null.</returns>
+        public UserAccount GetAccount()
+        {
+            return World.GetUserAccount(Conn);
         }
 
         /// <summary>
@@ -413,13 +450,6 @@ namespace DemoGame.Server
 
             _groupMemberInfo.HandleDisposed();
         }
-
-        /// <summary>
-        /// Gets this <see cref="User"/>'s <see cref="UserAccount"/>.
-        /// </summary>
-        /// <returns>This <see cref="User"/>'s <see cref="UserAccount"/>. Shouldn't be null, but may potentially be and the caller
-        /// should always be prepared for the value being null.</returns>
-        public UserAccount GetAccount() { return World.GetUserAccount(Conn); }
 
         /// <summary>
         /// When overridden in the derived class, allows for additional steps to be taken when saving.
@@ -671,6 +701,43 @@ namespace DemoGame.Server
         /// </summary>
         public override void RemoveAI()
         {
+        }
+
+        /// <summary>
+        /// Sends data to the client. This method is thread-safe.
+        /// </summary>
+        /// <param name="data">BitStream containing the data to send to the User.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="data"/>.</param>
+        public void Send(BitStream data, ServerMessageType messageType)
+        {
+            if (!CheckIfCanSendToUser())
+                return;
+
+            _conn.Send(data, messageType);
+        }
+
+        /// <summary>
+        /// Sends data to the client. This method is thread-safe.
+        /// </summary>
+        /// <param name="message">GameMessage to send to the User.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
+        public void Send(GameMessage message, ServerMessageType messageType)
+        {
+            Send(message, messageType, null);
+        }
+
+        /// <summary>
+        /// Sends data to the client. This method is thread-safe.
+        /// </summary>
+        /// <param name="message">GameMessage to send to the User.</param>
+        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
+        /// <param name="parameters">Message parameters.</param>
+        public void Send(GameMessage message, ServerMessageType messageType, params object[] parameters)
+        {
+            using (var pw = ServerPacket.SendMessage(message, parameters))
+            {
+                Send(pw, messageType);
+            }
         }
 
         /// <summary>
@@ -1110,134 +1177,6 @@ namespace DemoGame.Server
                 Inventory.DecreaseItemAmount(slot);
         }
 
-        /// <summary>
-        /// Gets if data can be sent to this <see cref="User"/>.
-        /// </summary>
-        /// <returns>True if the data sending can continue safely; otherwise false.</returns>
-        bool CheckIfCanSendToUser()
-        {
-            if (IsDisposed)
-            {
-                const string errmsg = "Tried to send data to disposed User `{0}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this);
-                return false;
-            }
-
-            if (_conn == null || !_conn.IsConnected)
-            {
-                const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                DelayedDispose();
-
-                return false;
-            }
-
-            return true;
-        }
-
-        #region IClientCommunicator Members
-
-        /// <summary>
-        /// Sends data to the client. This method is thread-safe.
-        /// </summary>
-        /// <param name="data">BitStream containing the data to send to the User.</param>
-        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="data"/>.</param>
-        public void Send(BitStream data, ServerMessageType messageType)
-        {
-            if (!CheckIfCanSendToUser())
-                return;
-
-            _conn.Send(data, messageType);
-        }
-
-        /// <summary>
-        /// Sends data to the client. This method is thread-safe.
-        /// </summary>
-        /// <param name="message">GameMessage to send to the User.</param>
-        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
-        public void Send(GameMessage message, ServerMessageType messageType)
-        {
-            Send(message, messageType, null);
-        }
-
-        /// <summary>
-        /// Sends data to the client. This method is thread-safe.
-        /// </summary>
-        /// <param name="message">GameMessage to send to the User.</param>
-        /// <param name="messageType">The <see cref="ServerMessageType"/> to use for sending the <paramref name="message"/>.</param>
-        /// <param name="parameters">Message parameters.</param>
-        public void Send(GameMessage message, ServerMessageType messageType, params object[] parameters)
-        {
-            using (var pw = ServerPacket.SendMessage(message, parameters))
-            {
-                Send(pw, messageType);
-            }
-        }
-
-        /// <summary>
-        /// Gets if the connection is alive and functional.
-        /// </summary>
-        bool INetworkSender.IsConnected
-        {
-            get { return _conn != null && _conn.IsConnected; }
-        }
-
-        /// <summary>
-        /// Sends data to the other end of the connection.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
-        /// and sequencing will be handled.</param>
-        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
-        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
-        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value greater than or equal to 0 and
-        /// less than <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
-        /// <returns>
-        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
-        /// </returns>
-        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
-        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
-        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than or equal to
-        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
-        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
-        bool INetworkSender.Send(BitStream data, NetDeliveryMethod deliveryMethod, int sequenceChannel)
-        {
-            if (!CheckIfCanSendToUser())
-                return false;
-
-            return _conn.Send(data, deliveryMethod, sequenceChannel);
-        }
-
-        /// <summary>
-        /// Sends data to the other end of the connection.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
-        /// and sequencing will be handled.</param>
-        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
-        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
-        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value between 0 and
-        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
-        /// <returns>
-        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
-        /// </returns>
-        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
-        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
-        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than
-        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
-        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
-        bool INetworkSender.Send(byte[] data, NetDeliveryMethod deliveryMethod, int sequenceChannel)
-        {
-            if (!CheckIfCanSendToUser())
-                return false;
-
-            return _conn.Send(data, deliveryMethod, sequenceChannel);
-        }
-
-        #endregion
-
         #region IGroupable Members
 
         /// <summary>
@@ -1359,6 +1298,70 @@ namespace DemoGame.Server
         {
             _guildMemberInfo.ReceiveInvite(guild, GetTime());
             Send(GameMessage.GuildInvited, ServerMessageType.GUI, inviter.Name, guild.Name);
+        }
+
+        #endregion
+
+        #region INetworkSender Members
+
+        /// <summary>
+        /// Gets if the connection is alive and functional.
+        /// </summary>
+        bool INetworkSender.IsConnected
+        {
+            get { return _conn != null && _conn.IsConnected; }
+        }
+
+        /// <summary>
+        /// Sends data to the other end of the connection.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
+        /// and sequencing will be handled.</param>
+        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
+        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
+        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value greater than or equal to 0 and
+        /// less than <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
+        /// <returns>
+        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
+        /// </returns>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
+        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
+        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than or equal to
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
+        bool INetworkSender.Send(BitStream data, NetDeliveryMethod deliveryMethod, int sequenceChannel)
+        {
+            if (!CheckIfCanSendToUser())
+                return false;
+
+            return _conn.Send(data, deliveryMethod, sequenceChannel);
+        }
+
+        /// <summary>
+        /// Sends data to the other end of the connection.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="deliveryMethod">The method to use to deliver the message. This determines how reliability, ordering,
+        /// and sequencing will be handled.</param>
+        /// <param name="sequenceChannel">The sequence channel to use to deliver the message. Only valid when
+        /// <paramref name="deliveryMethod"/> is not equal to <see cref="NetDeliveryMethod.Unreliable"/> or
+        /// <see cref="NetDeliveryMethod.ReliableUnordered"/>. Must also be a value between 0 and
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</param>
+        /// <returns>
+        /// True if the <paramref name="data"/> was successfully enqueued for sending; otherwise false.
+        /// </returns>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unreliable"/>
+        /// or <see cref="NetDeliveryMethod.ReliableUnordered"/> and <paramref name="sequenceChannel"/> is non-zero.</exception>
+        /// <exception cref="NetException"><paramref name="sequenceChannel"/> is less than 0 or greater than
+        /// <see cref="NetConstants.NetChannelsPerDeliveryMethod"/>.</exception>
+        /// <exception cref="NetException"><paramref name="deliveryMethod"/> equals <see cref="NetDeliveryMethod.Unknown"/>.</exception>
+        bool INetworkSender.Send(byte[] data, NetDeliveryMethod deliveryMethod, int sequenceChannel)
+        {
+            if (!CheckIfCanSendToUser())
+                return false;
+
+            return _conn.Send(data, deliveryMethod, sequenceChannel);
         }
 
         #endregion

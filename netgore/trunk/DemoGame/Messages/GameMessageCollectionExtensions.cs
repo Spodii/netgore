@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace DemoGame
 {
@@ -36,7 +37,7 @@ namespace DemoGame
             {
                 return null;
             }
-            catch (FormatException) 
+            catch (FormatException)
             {
                 return null;
             }

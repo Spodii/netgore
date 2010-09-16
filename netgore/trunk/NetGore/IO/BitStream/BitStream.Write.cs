@@ -743,7 +743,7 @@ namespace NetGore.IO
         {
             if (numBits > _bitsInt || numBits < 1)
                 throw new ArgumentOutOfRangeException("numBits", "Value must be between 1 and 32.");
- 
+
             Write(value.HasValue);
             if (value.HasValue)
                 WriteSigned(value.Value, numBits);

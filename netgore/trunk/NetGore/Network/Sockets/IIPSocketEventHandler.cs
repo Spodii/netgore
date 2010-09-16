@@ -1,4 +1,6 @@
-﻿namespace NetGore.Network
+﻿using System.Linq;
+
+namespace NetGore.Network
 {
     /// <summary>
     /// Handles events from the <see cref="IIPSocket"/>.

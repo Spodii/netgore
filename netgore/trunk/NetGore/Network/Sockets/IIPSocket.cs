@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 using Lidgren.Network;
-using NetGore.IO;
 
 namespace NetGore.Network
 {
@@ -19,11 +17,6 @@ namespace NetGore.Network
         string Address { get; }
 
         /// <summary>
-        /// Gets the status of the <see cref="IIPSocket"/>'s connection.
-        /// </summary>
-        NetConnectionStatus Status { get; }
-
-        /// <summary>
         /// Gets the average round-trip time of this connection in milliseconds.
         /// </summary>
         float AverageLatency { get; }
@@ -37,6 +30,11 @@ namespace NetGore.Network
         /// Gets the port as a 16-bit unsigned integer.
         /// </summary>
         ushort Port { get; }
+
+        /// <summary>
+        /// Gets the status of the <see cref="IIPSocket"/>'s connection.
+        /// </summary>
+        NetConnectionStatus Status { get; }
 
         /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag

@@ -50,6 +50,8 @@ namespace NetGore.IO
         /// </summary>
         const int _bitsUShort = sizeof(ushort) * 8;
 
+        const int _defaultBufferSize = 64;
+
         /// <summary>
         /// The 0-based index of the most significant bit in a byte.
         /// </summary>
@@ -63,14 +65,14 @@ namespace NetGore.IO
         byte[] _buffer;
 
         /// <summary>
-        /// Current position in the buffer in bits.
-        /// </summary>
-        int _positionBits = 0;
-
-        /// <summary>
         /// The number of bits in the buffer that contain valid data.
         /// </summary>
         int _lengthBits;
+
+        /// <summary>
+        /// Current position in the buffer in bits.
+        /// </summary>
+        int _positionBits = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BitStream"/> class.
@@ -88,8 +90,6 @@ namespace NetGore.IO
             _useEnumNames = useEnumNames;
             SetBuffer(buffer);
         }
-
-        const int _defaultBufferSize = 64;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BitStream"/> class.
@@ -119,7 +119,8 @@ namespace NetGore.IO
             {
                 if (value < Length)
                 {
-                    const string errmsg = "value must be greater than or equal to the LengthBytes." +
+                    const string errmsg =
+                        "value must be greater than or equal to the LengthBytes." +
                         " If you want to truncate the buffer below this value, change the length first before changing the buffer length.";
                     throw new ArgumentOutOfRangeException("value", errmsg);
                 }
@@ -134,22 +135,7 @@ namespace NetGore.IO
         /// </summary>
         public int Length
         {
-            get
-            {
-                return LengthBytes;
-            }
-        }
-
-        /// <summary>
-        /// Gets the length of the BitStream in full bytes. This value is always rounded up when there
-        /// are partial bytes written. For example, if you write anything, even just 1 bit, it will be greater than 0.
-        /// </summary>
-        public int LengthBytes
-        {
-            get
-            {
-                return (int)Math.Ceiling(_lengthBits / (float)_bitsByte);
-            }
+            get { return LengthBytes; }
         }
 
         /// <summary>
@@ -159,10 +145,7 @@ namespace NetGore.IO
         /// </summary>
         public int LengthBits
         {
-            get
-            {
-                return _lengthBits;
-            }
+            get { return _lengthBits; }
             set
             {
                 if (value < 0)
@@ -172,10 +155,17 @@ namespace NetGore.IO
 
                 // When the position exceeds the length, update the position
                 if (_positionBits > _lengthBits)
-                {
-                _positionBits = _lengthBits;
+                    _positionBits = _lengthBits;
             }
-            }
+        }
+
+        /// <summary>
+        /// Gets the length of the BitStream in full bytes. This value is always rounded up when there
+        /// are partial bytes written. For example, if you write anything, even just 1 bit, it will be greater than 0.
+        /// </summary>
+        public int LengthBytes
+        {
+            get { return (int)Math.Ceiling(_lengthBits / (float)_bitsByte); }
         }
 
         /// <summary>
@@ -184,11 +174,13 @@ namespace NetGore.IO
         public int PositionBits
         {
             get { return _positionBits; }
-            set { _positionBits = value;
+            set
+            {
+                _positionBits = value;
 
                 // When the position exceeds the length, update the length
-            if (_positionBits > _lengthBits)
-                _lengthBits = _positionBits;
+                if (_positionBits > _lengthBits)
+                    _lengthBits = _positionBits;
             }
         }
 
@@ -198,10 +190,12 @@ namespace NetGore.IO
         /// </summary>
         public int PositionBytes
         {
-            get {
+            get
+            {
                 var ret = PositionBits / _bitsByte;
                 Debug.Assert(ret == (int)Math.Floor(PositionBits / (float)_bitsByte));
-                return ret; }
+                return ret;
+            }
         }
 
         /// <summary>
@@ -231,14 +225,15 @@ namespace NetGore.IO
 #if DEBUG
             var startMsgLen = target.LengthBits;
 #endif
-            int i = 0;
+            var i = 0;
 
             var fullBytes = (int)Math.Floor(LengthBits / (float)_bitsByte);
 
             // Write full 32-bit integers
             while (i + 3 < fullBytes)
             {
-                var v = (_buffer[i] << (_bitsByte * 3)) | (_buffer[i + 1] << (_bitsByte * 2)) | (_buffer[i + 2] << (_bitsByte * 1)) | (_buffer[i + 3]);
+                var v = (_buffer[i] << (_bitsByte * 3)) | (_buffer[i + 1] << (_bitsByte * 2)) |
+                        (_buffer[i + 2] << (_bitsByte * 1)) | (_buffer[i + 3]);
                 i += 4;
                 target.Write((uint)v);
             }
@@ -717,7 +712,7 @@ namespace NetGore.IO
                     // the mask, stored in the right-most bits) and shifting it over to the position we want (giving
                     // us a mask for the bits we are writing), then using a bitwise NOT to create a mask for all the
                     // other bits. Finally, use a bitwise AND to zero out all bits that we will be writing to.
-                    byte clearMask = (byte)(mask << (bufferByteBitsLeft - bitsToWrite));
+                    var clearMask = (byte)(mask << (bufferByteBitsLeft - bitsToWrite));
                     clearMask = (byte)~clearMask;
                     newBufferValue &= clearMask;
 

@@ -7,19 +7,16 @@ namespace NetGore.AI
 {
     public class MemoryMap
     {
-
         //Holds some information about the list.
         const string _rootNodeName = "MemoryMap";
         ushort _cellSize;
         ushort _cellsX;
         ushort _cellsY;
+        bool _isInitialized = false;
 
         ushort _maxX;
         MemoryCell[,] _memoryCells;
         ushort _minY;
-
-        bool _isInitialized = false;
-
 
         /// <summary>
         /// Constructor for a MemoryMap, uses default value of 32 for MemoryCell dimensions. This constructor should be only used in an AI Editor environment.
@@ -112,7 +109,7 @@ namespace NetGore.AI
             _isInitialized = false;
 
             _memoryCells = null;
-            
+
             //Store map size values for use by MemoryMap
             _maxX = maxX;
             _minY = minY;
@@ -138,7 +135,7 @@ namespace NetGore.AI
 
             _isInitialized = true;
         }
-        
+
         /// <summary>
         /// Loads a <see cref="MemoryMap"/> into the current class.
         /// </summary>
@@ -154,13 +151,10 @@ namespace NetGore.AI
             }
 
             var read = new GenericValueReader(path, _rootNodeName);
-            
-            
-            _cellSize = read.ReadUShort("CellSize");
-            
-            Initialize(1024, 1024);
 
-            
+            _cellSize = read.ReadUShort("CellSize");
+
+            Initialize(1024, 1024);
 
             for (var X = 0; X < _cellsX; X++)
             {
@@ -171,7 +165,6 @@ namespace NetGore.AI
                 }
             }
         }
-
 
         /// <summary>
         /// Saves the current <see cref="MemoryMap"/> to a binary file.
@@ -204,21 +197,6 @@ namespace NetGore.AI
         }
 
         /// <summary>
-        /// Gets the weight specified for a particular cell in a <see cref="MemoryMap"/>.  Use only for Debug information. 
-        /// </summary>
-        /// <param name="xPos">X position on map.</param>
-        /// <param name="yPos">Y position on map.</param>
-        /// <returns>Integer indicating the weight of a particular cell.</returns>
-        public int WeightOfCell(double xPos, double yPos)
-        {
-            var cellX = (ushort)(xPos / _cellSize);
-            var cellY = (ushort)(yPos / _cellSize);
-
-            return _memoryCells[cellX, cellY].Weight;
-        }
-
-
-        /// <summary>
         /// Converts the more detailed information held in a <see cref="MemoryMap"/> to a raw byte array.
         /// </summary>
         /// <returns>The raw data of this <see cref="MemoryMap"/> in a two dimensional byte array.</returns>
@@ -234,6 +212,20 @@ namespace NetGore.AI
             }
 
             return temp;
+        }
+
+        /// <summary>
+        /// Gets the weight specified for a particular cell in a <see cref="MemoryMap"/>.  Use only for Debug information. 
+        /// </summary>
+        /// <param name="xPos">X position on map.</param>
+        /// <param name="yPos">Y position on map.</param>
+        /// <returns>Integer indicating the weight of a particular cell.</returns>
+        public int WeightOfCell(double xPos, double yPos)
+        {
+            var cellX = (ushort)(xPos / _cellSize);
+            var cellY = (ushort)(yPos / _cellSize);
+
+            return _memoryCells[cellX, cellY].Weight;
         }
     }
 }

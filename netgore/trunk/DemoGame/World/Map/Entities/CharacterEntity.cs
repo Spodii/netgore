@@ -47,8 +47,8 @@ namespace DemoGame
         [Browsable(false)]
         public bool CanJump
         {
-            get 
-            { 
+            get
+            {
 #if TOPDOWN
                 return false;
 #else

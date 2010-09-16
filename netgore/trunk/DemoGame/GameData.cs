@@ -13,46 +13,6 @@ namespace DemoGame
     public static class GameData
     {
         /// <summary>
-        /// Settings specific to the networking.
-        /// </summary>
-        public static class NetworkSettings
-        {
-            /// <summary>
-            /// Gets the IP address of the server.
-            /// </summary>
-            public static string ServerIP
-            {
-                get { 
-                    // TODO: Should be specified through file and only for the client
-                    return "127.0.0.1"; }
-            }
-
-            /// <summary>
-            /// Gets the port used by the server for handling pings.
-            /// </summary>
-            public static int ServerPingPort
-            {
-                get
-                {
-                    // TODO: !! Remove
-                    return 44446;
-                }
-            }
-
-            /// <summary>
-            /// Gets the port used by the server for TCP connections for the main game networking.
-            /// </summary>
-            public static int ServerTCPPort
-            {
-                get
-                {
-                    // TODO: !! Remove
-                    return 44445;
-                }
-            }
-        }
-
-        /// <summary>
         /// If a User is allowed to move while they have a chat dialog open with a NPC.
         /// </summary>
         public const bool AllowMovementWhileChattingToNPC = false;
@@ -293,6 +253,48 @@ namespace DemoGame
         public static int VelocityToMovementSpeed(float velocity)
         {
             return (int)(velocity * 10000.0f);
+        }
+
+        /// <summary>
+        /// Settings specific to the networking.
+        /// </summary>
+        public static class NetworkSettings
+        {
+            /// <summary>
+            /// Gets the IP address of the server.
+            /// </summary>
+            public static string ServerIP
+            {
+                get
+                {
+                    // TODO: Should be specified through file and only for the client
+                    return "127.0.0.1";
+                }
+            }
+
+            /// <summary>
+            /// Gets the port used by the server for handling pings.
+            /// </summary>
+            public static int ServerPingPort
+            {
+                get
+                {
+                    // TODO: !! Remove
+                    return 44446;
+                }
+            }
+
+            /// <summary>
+            /// Gets the port used by the server for TCP connections for the main game networking.
+            /// </summary>
+            public static int ServerTCPPort
+            {
+                get
+                {
+                    // TODO: !! Remove
+                    return 44445;
+                }
+            }
         }
     }
 }

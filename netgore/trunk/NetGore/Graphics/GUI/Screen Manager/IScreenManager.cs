@@ -19,6 +19,12 @@ namespace NetGore.Graphics.GUI
         event IScreenManagerEventHandler Updated;
 
         /// <summary>
+        /// Gets the currently active <see cref="IGameScreen"/> that is not the console. Same as
+        /// <see cref="IScreenManager.ActiveScreen"/> but wil lnever return the <see cref="IScreenManager.ConsoleScreen"/>.
+        /// </summary>
+        IGameScreen ActiveNonConsoleScreen { get; }
+
+        /// <summary>
         /// Gets or sets the currently active <see cref="IGameScreen"/>. If <see cref="IScreenManager.ShowConsole"/> is set
         /// and <see cref="IScreenManager.ConsoleScreen"/> is valid, then the console screen will be returned. Otherwise, it will
         /// be the current game screen.
@@ -26,12 +32,6 @@ namespace NetGore.Graphics.GUI
         /// <exception cref="ArgumentException"><paramref name="value"/> does not belong to this
         /// <see cref="IScreenManager"/>.</exception>
         IGameScreen ActiveScreen { get; set; }
-
-        /// <summary>
-        /// Gets the currently active <see cref="IGameScreen"/> that is not the console. Same as
-        /// <see cref="IScreenManager.ActiveScreen"/> but wil lnever return the <see cref="IScreenManager.ConsoleScreen"/>.
-        /// </summary>
-        IGameScreen ActiveNonConsoleScreen { get; }
 
         /// <summary>
         /// Gets the <see cref="IAudioManager"/> to be used by all of the <see cref="IGameScreen"/>s in this

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -16,8 +17,7 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="SelectAccountBansQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectAccountBansQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectAccountBansQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(AccountBanTable.DbColumns, "account_id");
         }
@@ -29,7 +29,7 @@ namespace DemoGame.Server.Queries
         /// <returns>The ban information for the given <paramref name="accountID"/>.</returns>
         public IEnumerable<IAccountBanTable> Execute(AccountID accountID)
         {
-            List<IAccountBanTable> ret = new List<IAccountBanTable>();
+            var ret = new List<IAccountBanTable>();
 
             using (var r = ExecuteReader(accountID))
             {

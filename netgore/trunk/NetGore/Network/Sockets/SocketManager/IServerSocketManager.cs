@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace NetGore.Network
 {
@@ -11,13 +11,13 @@ namespace NetGore.Network
     public interface IServerSocketManager : ISocketManager
     {
         /// <summary>
-        /// Gets the number of live connections to the server.
-        /// </summary>
-        int ConnectionsCount { get; }
-
-        /// <summary>
         /// Gets the live connections to the server.
         /// </summary>
         IEnumerable<IIPSocket> Connections { get; }
+
+        /// <summary>
+        /// Gets the number of live connections to the server.
+        /// </summary>
+        int ConnectionsCount { get; }
     }
 }
