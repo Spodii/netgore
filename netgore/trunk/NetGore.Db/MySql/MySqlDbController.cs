@@ -216,7 +216,7 @@ namespace NetGore.Db.MySql
                             // If the primary key is not in use, delete it
                             if (!pkInUse)
                             {
-                                const string msg = "Deleting primary key `{0}` from {1}.{2}.";
+                                const string msg = "Deleting pk `{0}` from {1}.{2}.";
                                 if (log.IsDebugEnabled)
                                     log.DebugFormat(msg, pk, schema, table);
 
@@ -250,6 +250,9 @@ namespace NetGore.Db.MySql
                     }
                 }
             }
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Deleted {0} unreferenced rows from {1}.{2} using column {3}.", ret, schema, table, column);
 
             return ret;
         }
