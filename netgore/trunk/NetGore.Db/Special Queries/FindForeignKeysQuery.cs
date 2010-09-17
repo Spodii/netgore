@@ -16,9 +16,9 @@ namespace NetGore.Db
         protected const string ColumnParameterName = "column";
 
         /// <summary>
-        /// The name of the parameter for the database name.
+        /// The name of the parameter for the schema name.
         /// </summary>
-        protected const string DbParameterName = "db";
+        protected const string SchemaParameterName = "schema";
 
         /// <summary>
         /// The name of the parameter for the table name.
@@ -41,9 +41,9 @@ namespace NetGore.Db
         /// <param name="table">The table of the primary key.</param>
         /// <param name="column">The column of the primary key.</param>
         /// <returns>The results of the query.</returns>
-        public IEnumerable<TableColumnPair> Execute(string database, string table, string column)
+        public IEnumerable<SchemaTableColumn> Execute(string database, string table, string column)
         {
-            var ret = new List<TableColumnPair>();
+            var ret = new List<SchemaTableColumn>();
 
             using (var r = ExecuteReader(new QueryArgs(database, table, column)))
             {
@@ -64,7 +64,7 @@ namespace NetGore.Db
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(DbParameterName, TableParameterName, ColumnParameterName);
+            return CreateParameters(SchemaParameterName, TableParameterName, ColumnParameterName);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="reader">The <see cref="IDataReader"/> to read from.</param>
         /// <returns>The values read from the <see cref="IDataReader"/>.</returns>
-        protected abstract TableColumnPair ReadRow(IDataReader reader);
+        protected abstract SchemaTableColumn ReadRow(IDataReader reader);
 
         /// <summary>
         /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
@@ -82,7 +82,7 @@ namespace NetGore.Db
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p[DbParameterName] = item.Database;
+            p[SchemaParameterName] = item.Database;
             p[TableParameterName] = item.Table;
             p[ColumnParameterName] = item.Column;
         }
