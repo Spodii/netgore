@@ -16,13 +16,13 @@ namespace NetGore.Db
         DbConnectionPool ConnectionPool { get; }
 
         /// <summary>
-        /// Gets the name of the table and column that reference a the given primary key.
+        /// Gets the schema, table, and column tuples for columns containing a reference to the specified primary key.
         /// </summary>
-        /// <param name="database">Database of the <paramref name="table"/>.</param>
+        /// <param name="database">Database or schema object that the <paramref name="table"/> belongs to.</param>
         /// <param name="table">The table of the primary key.</param>
         /// <param name="column">The column of the primary key.</param>
         /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
-        IEnumerable<TableColumnPair> GetPrimaryKeyReferences(string database, string table, string column);
+        IEnumerable<SchemaTableColumn> GetPrimaryKeyReferences(string database, string table, string column);
 
         /// <summary>
         /// Gets a query that was marked with the attribute DbControllerQueryAttribute.

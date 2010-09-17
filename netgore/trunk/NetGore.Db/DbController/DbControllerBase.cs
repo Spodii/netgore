@@ -232,11 +232,13 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets the name of the tables and columns that reference the given primary key. In other words, the foreign
-        /// keys for a given primary key.
+        /// Gets the schema, table, and column tuples for columns containing a reference to the specified primary key.
         /// </summary>
+        /// <param name="database">Database or schema object that the <paramref name="table"/> belongs to.</param>
+        /// <param name="table">The table of the primary key.</param>
+        /// <param name="column">The column of the primary key.</param>
         /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
-        public IEnumerable<TableColumnPair> GetPrimaryKeyReferences(string database, string table, string column)
+        public IEnumerable<SchemaTableColumn> GetPrimaryKeyReferences(string database, string table, string column)
         {
             // If still loading, make sure to wait until loading finishes
             while (_isLoading)
@@ -246,6 +248,7 @@ namespace NetGore.Db
 
             var query = GetFindForeignKeysQuery(_connectionPool);
             var results = query.Execute(database, table, column);
+
             return results;
         }
 

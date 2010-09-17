@@ -11,9 +11,8 @@ namespace NetGore.Db.MySql
     {
         static readonly string _queryStr =
             FormatQueryString(
-                "SELECT `TABLE_NAME`, `COLUMN_NAME`" + " FROM information_schema.KEY_COLUMN_USAGE" +
-                " WHERE `TABLE_SCHEMA` = {0} AND" + " `REFERENCED_TABLE_SCHEMA` = {0} AND" + " `REFERENCED_TABLE_NAME` = {1} AND" +
-                " `REFERENCED_COLUMN_NAME` = {2};", "@" + DbParameterName, "@" + TableParameterName, "@" + ColumnParameterName);
+                "SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `COLUMN_NAME` FROM information_schema.KEY_COLUMN_USAGE" +
+                " WHERE `REFERENCED_TABLE_SCHEMA` = {0} AND `REFERENCED_TABLE_NAME` = {1} AND `REFERENCED_COLUMN_NAME` = {2};", "@" + SchemaParameterName, "@" + TableParameterName, "@" + ColumnParameterName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FindForeignKeysQuery"/> class.
@@ -28,11 +27,12 @@ namespace NetGore.Db.MySql
         /// </summary>
         /// <param name="reader">The <see cref="IDataReader"/> to read from.</param>
         /// <returns>The values read from the <see cref="IDataReader"/>.</returns>
-        protected override TableColumnPair ReadRow(IDataReader reader)
+        protected override SchemaTableColumn ReadRow(IDataReader reader)
         {
+            var retSchema = reader.GetString("TABLE_SCHEMA");
             var retTable = reader.GetString("TABLE_NAME");
             var retColumn = reader.GetString("COLUMN_NAME");
-            return new TableColumnPair(retTable, retColumn);
+            return new SchemaTableColumn(retSchema, retTable, retColumn);
         }
     }
 }
