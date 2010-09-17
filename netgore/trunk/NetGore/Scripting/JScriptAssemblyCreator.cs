@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using log4net;
 using Microsoft.JScript;
 
 namespace NetGore.Scripting
@@ -140,6 +141,8 @@ namespace NetGore.Scripting
             return CreateAssemblyClassInvoker(asm, ClassName);
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Performs the actual compiling of the <see cref="Assembly"/>. Will be called by the
         /// <see cref="ScriptAssemblyCache"/> if the source didn't exist in the cache.
@@ -163,9 +166,24 @@ namespace NetGore.Scripting
 
             // Store the compilation errors
             if (results.Errors.Count > 0)
+            {
+                const string errmsg = "Error compiling JScript assembly: {0}";
+                if (log.IsErrorEnabled)
+                {
+                    foreach (var err in results.Errors.OfType<CompilerError>())
+                    {
+                        log.ErrorFormat(errmsg, err);
+                    }
+                }
+
+                System.Diagnostics.Debug.Assert(!results.Errors.HasErrors, "One or more errors when compiling JScript assembly.");
+
                 _compilationErrors = results.Errors.OfType<CompilerError>().ToImmutable();
+            }
             else
+            {
                 _compilationErrors = _emptyCompilerErrors;
+            }
 
             // Return the compiled assembly
             return results.CompiledAssembly;
