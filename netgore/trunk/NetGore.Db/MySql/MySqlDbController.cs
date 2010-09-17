@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
@@ -13,6 +13,8 @@ namespace NetGore.Db.MySql
     /// </summary>
     public class MySqlDbController : DbControllerBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MySqlDbController"/> class.
         /// </summary>
@@ -53,8 +55,6 @@ namespace NetGore.Db.MySql
             return "SELECT 1+5";
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// When overridden in the derived class, removes all of the primary keys from a table where there is no foreign keys for the
         /// respective primary key.
@@ -69,11 +69,11 @@ namespace NetGore.Db.MySql
             // How many keys to grab at a time. Larger value = greater memory usage, but fewer queries.
             const int batchSize = 5000;
 
-            int ret = 0;
+            var ret = 0;
 
             // Get all of the fully-qualified foreign key columns
             var foreignKeys = GetPrimaryKeyReferences(schema, table, column);
-            
+
             if (foreignKeys.Count() == 0)
             {
                 const string errmsg = "Aborted RemoveUnreferencedPrimaryKeys on {0}.{1}.{2} - no foreign key references found.";
@@ -96,7 +96,7 @@ namespace NetGore.Db.MySql
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("SELECT COUNT(*) FROM {0}.{1}", schema, table);
-                    using (var r = cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult))
+                    using (var r = cmd.ExecuteReader(CommandBehavior.SingleResult))
                     {
                         if (!r.Read())
                         {
@@ -121,15 +121,15 @@ namespace NetGore.Db.MySql
                     // Create the command to grab the primary keys
                     grabPKsCmd = conn.CreateCommand();
                     grabPKsCmd.CommandText = string.Format("SELECT `{0}` FROM {1}.{2} LIMIT @low, @high", column, schema, table);
-                    
-                    var grabPKsParamLow =grabPKsCmd.CreateParameter();
+
+                    var grabPKsParamLow = grabPKsCmd.CreateParameter();
                     grabPKsParamLow.ParameterName = "@low";
-                    grabPKsParamLow.DbType = System.Data.DbType.Int32;
+                    grabPKsParamLow.DbType = DbType.Int32;
                     grabPKsCmd.Parameters.Add(grabPKsParamLow);
-                    
-                    var grabPKsParamHigh =grabPKsCmd.CreateParameter();
+
+                    var grabPKsParamHigh = grabPKsCmd.CreateParameter();
                     grabPKsParamHigh.ParameterName = "@high";
-                    grabPKsParamHigh.DbType = System.Data.DbType.Int32;
+                    grabPKsParamHigh.DbType = DbType.Int32;
                     grabPKsCmd.Parameters.Add(grabPKsParamHigh);
 
                     // Create the command for deleting the row
@@ -146,7 +146,8 @@ namespace NetGore.Db.MySql
                     foreach (var fk in foreignKeys)
                     {
                         var cmd = conn.CreateCommand();
-                        cmd.CommandText = string.Format("SELECT COUNT(*) FROM {0}.{1} WHERE `{2}`=@value", fk.Schema, fk.Table, fk.Column);
+                        cmd.CommandText = string.Format("SELECT COUNT(*) FROM {0}.{1} WHERE `{2}`=@value", fk.Schema, fk.Table,
+                                                        fk.Column);
 
                         var p = cmd.CreateParameter();
                         p.ParameterName = "@value";
@@ -160,7 +161,7 @@ namespace NetGore.Db.MySql
                     /* SEARCH AND DESTROY */
 
                     // Loop as many times as we need for each batch to run
-                    int rowsLow = 0;
+                    var rowsLow = 0;
                     while (rowsLow < numRows)
                     {
                         // Grab all the primary key values for this batch
@@ -179,7 +180,7 @@ namespace NetGore.Db.MySql
                         // Loop though each primary key value
                         foreach (var pk in primaryKeys)
                         {
-                            bool pkInUse = false;
+                            var pkInUse = false;
 
                             // Loop through each queries for the foreign keys
                             foreach (var cmd in fkCmds)
@@ -188,14 +189,24 @@ namespace NetGore.Db.MySql
                                 cmd.Parameters[0].Value = pk;
 
                                 // Execute the query to see if there is any usages of the primary key
-                                using (var r = cmd.ExecuteReader(System.Data.CommandBehavior.SingleResult))
+                                using (var r = cmd.ExecuteReader(CommandBehavior.SingleResult))
                                 {
-                                    if (r.Read())
+                                    if (!r.Read())
                                     {
-                                        var count = r.GetInt32(0);
-                                        if (count > 0)
-                                            pkInUse = true;
+                                        const string errmsg = "Failed to read result for query: {0}";
+                                        if (log.IsErrorEnabled)
+                                            log.ErrorFormat(errmsg, cmd.CommandText);
+                                        Debug.Fail(string.Format(errmsg, cmd.CommandText));
+
+                                        // When we fail to read the result, completely skip this value just in case
+                                        // there is something wrong. Safer to not delete than to delete.
+                                        pkInUse = true;
+                                        break;
                                     }
+
+                                    var count = r.GetInt32(0);
+                                    if (count > 0)
+                                        pkInUse = true;
                                 }
 
                                 if (pkInUse)
