@@ -36,6 +36,11 @@ namespace GoreUpdater
         const int _numThreads = 3;
 
         /// <summary>
+        /// The number of FTP connections that may be open at once.
+        /// </summary>
+        const int _numConnections = 4;
+
+        /// <summary>
         /// A shared sync root for creating <see cref="WebRequest"/>s for all <see cref="FtpFileUploader"/>s.
         /// </summary>
         static readonly object _webRequestSync = new object();
@@ -164,7 +169,7 @@ namespace GoreUpdater
             req.KeepAlive = true;
             req.CachePolicy = _requestCachePolicy;
             req.ConnectionGroupName = _credentials.UserName + "@" + _hostRoot;
-            req.ServicePoint.ConnectionLimit = _numThreads;
+            req.ServicePoint.ConnectionLimit = _numConnections;
             req.Credentials = _credentials;
 
             return req;
