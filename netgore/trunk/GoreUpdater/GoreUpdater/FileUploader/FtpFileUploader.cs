@@ -187,8 +187,8 @@ namespace GoreUpdater
                 // Check if this job already exists
                 if (_jobsQueue.Any(x => x.AreJobsSame(job)) || _jobsActive.Any(x => x.AreJobsSame(job)))
                 {
-                    if (log.IsInfoEnabled)
-                        log.InfoFormat("Enqueueing job `{0}` failed: job already in queue.", job);
+                    if (log.IsDebugEnabled)
+                        log.DebugFormat("Enqueueing job `{0}` failed: job already in queue.", job);
 
                     return false;
                 }
@@ -196,8 +196,8 @@ namespace GoreUpdater
                 // Add the job
                 _jobsQueue.Enqueue(job);
 
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Enqueueing job `{0}` successful.", job);
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Enqueueing job `{0}` successful.", job);
             }
 
             return true;
