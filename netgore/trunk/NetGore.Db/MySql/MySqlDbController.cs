@@ -140,6 +140,8 @@ namespace NetGore.Db.MySql
                     deleteParam.ParameterName = "@value";
                     deleteCmd.Parameters.Add(deleteParam);
 
+                    deleteCmd.Prepare();
+
                     // Create a command for each of the individual foreign key references
                     foreach (var fk in foreignKeys)
                     {
@@ -149,6 +151,8 @@ namespace NetGore.Db.MySql
                         var p = cmd.CreateParameter();
                         p.ParameterName = "@value";
                         cmd.Parameters.Add(p);
+
+                        cmd.Prepare();
 
                         fkCmds.Add(cmd);
                     }
