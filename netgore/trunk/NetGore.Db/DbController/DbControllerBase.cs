@@ -49,7 +49,7 @@ namespace NetGore.Db
                 log.InfoFormat("Database connection pool created.");
 
             // Test the connection
-            TestConnectionPool(connectionString, _connectionPool);
+            _database = TestConnectionPoolAndGetDatabase(connectionString, _connectionPool);
 
             // Create the query objects (in a separate thread)
             ThreadPool.QueueUserWorkItem(ThreadPoolCallback);
@@ -116,6 +116,8 @@ namespace NetGore.Db
         /// <returns>The SQL query string used for when testing if the database connection is valid.</returns>
         protected abstract string GetTestQueryCommand();
 
+        readonly string _database;
+
         /// <summary>
         /// Populates the <see cref="_queryObjects"/> with the query objects.
         /// </summary>
@@ -164,15 +166,20 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="connectionString">The connection string used.</param>
         /// <param name="pool">The pool of connections.</param>
-        static void TestConnectionPool(string connectionString, IObjectPool<PooledDbConnection> pool)
+        /// <returns>The name of the database.</returns>
+        string TestConnectionPoolAndGetDatabase(string connectionString, IObjectPool<PooledDbConnection> pool)
         {
+            string database;
+
             try
             {
                 using (var poolableConn = pool.Acquire())
                 {
+                    database = poolableConn.Connection.Database;
+
                     using (var cmd = poolableConn.Connection.CreateCommand())
                     {
-                        cmd.CommandText = "SELECT 1+1";
+                        cmd.CommandText = GetTestQueryCommand();
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -181,6 +188,8 @@ namespace NetGore.Db
             {
                 throw CreateConnectionException(connectionString, ex);
             }
+
+            return database;
         }
 
         /// <summary>
@@ -232,6 +241,17 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// When overridden in the derived class, removes all of the primary keys from a table where there is no foreign keys for the
+        /// respective primary key.
+        /// For safety reasons, if a column has no foreign keys, the query will be aborted.
+        /// </summary>
+        /// <param name="schema">The schema or database name of the table.</param>
+        /// <param name="table">The table to check.</param>
+        /// <param name="column">The primary key column.</param>
+        /// <returns>The number of rows removed, or -1 if there were no foreign keys for the given column in the first place.</returns>
+        public abstract int RemoveUnreferencedPrimaryKeys(string schema, string table, string column);
+
+        /// <summary>
         /// Gets the schema, table, and column tuples for columns containing a reference to the specified primary key.
         /// </summary>
         /// <param name="database">Database or schema object that the <paramref name="table"/> belongs to.</param>
@@ -250,6 +270,14 @@ namespace NetGore.Db
             var results = query.Execute(database, table, column);
 
             return results;
+        }
+
+        /// <summary>
+        /// Gets the name of the database that this <see cref="IDbController"/> instance is connected to.
+        /// </summary>
+        public string Database
+        {
+            get { return _database; }
         }
 
         /// <summary>
