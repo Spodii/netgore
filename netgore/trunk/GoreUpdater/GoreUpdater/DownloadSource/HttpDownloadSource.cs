@@ -111,7 +111,7 @@ namespace GoreUpdater
             Debug.Assert(sender is WebClient);
 
             var downloadInfo = (AsyncDownloadInfo)e.UserState;
-            
+
             if (log.IsDebugEnabled)
                 log.DebugFormat("DownloadFileComplete received from `{0}`.", sender);
 
@@ -119,8 +119,11 @@ namespace GoreUpdater
             if (e.Cancelled || e.Error != null)
             {
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Download of file `{0}` to `{1}` using {2} failed (cancelled? {3}). Error: {4}", downloadInfo.RemoteFile,
-                        downloadInfo.LocalFilePath, sender, e.Cancelled, e.Error != null ? e.Error.ToString() : "[NULL]");
+                {
+                    log.InfoFormat("Download of file `{0}` to `{1}` using {2} failed (cancelled? {3}). Error: {4}",
+                                   downloadInfo.RemoteFile, downloadInfo.LocalFilePath, sender, e.Cancelled,
+                                   e.Error != null ? e.Error.ToString() : "[NULL]");
+                }
 
                 try
                 {
@@ -135,8 +138,10 @@ namespace GoreUpdater
             else
             {
                 if (log.IsInfoEnabled)
+                {
                     log.InfoFormat("Download of file `{0}` to `{1}` using {2} successful.", downloadInfo.RemoteFile,
-                        downloadInfo.LocalFilePath, sender);
+                                   downloadInfo.LocalFilePath, sender);
+                }
 
                 try
                 {
@@ -228,8 +233,10 @@ namespace GoreUpdater
         public bool Download(string remoteFile, string localFilePath, int? version)
         {
             if (log.IsDebugEnabled)
+            {
                 log.DebugFormat("Attempting Download on `{0}`. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}", this,
-                    remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]");
+                                remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]");
+            }
 
             var uriPath = RootPath;
 
@@ -261,8 +268,11 @@ namespace GoreUpdater
                 if (_webClients.Count == 0)
                 {
                     if (log.IsInfoEnabled)
-                        log.InfoFormat("Could not start download on `{0}` since no WebClients are available. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}", this,
-                            remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]");
+                    {
+                        log.InfoFormat(
+                            "Could not start download on `{0}` since no WebClients are available. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}",
+                            this, remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]");
+                    }
                     return false;
                 }
 
@@ -271,8 +281,11 @@ namespace GoreUpdater
                 wc.DownloadFileAsync(uri, localFilePath, new AsyncDownloadInfo(remoteFile, localFilePath));
 
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Starting download on `{0}` using WebClient {4}. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}", this,
+                {
+                    log.InfoFormat(
+                        "Starting download on `{0}` using WebClient {4}. RemoteFile: {1}. LocalFilePath: {2}. Version: {3}", this,
                         remoteFile, localFilePath, version.HasValue ? version.Value.ToString() : "[NULL]", wc);
+                }
             }
 
             return true;

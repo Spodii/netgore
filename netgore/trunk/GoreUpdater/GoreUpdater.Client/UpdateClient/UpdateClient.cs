@@ -14,6 +14,7 @@ namespace GoreUpdater
     /// </summary>
     public class UpdateClient
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly object _isRunningSync = new object();
         readonly UpdateClientSettings _settings;
         readonly object _stateSync = new object();
@@ -194,8 +195,6 @@ namespace GoreUpdater
             }
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Checks if the downloading with the <see cref="DownloadManager"/> has been completed.
         /// </summary>
@@ -303,7 +302,9 @@ namespace GoreUpdater
                                     if (ffc.IsMatch("\\" + relativePath))
                                     {
                                         if (log.IsDebugEnabled)
-                                            log.DebugFormat("Skipping deleting outdated client file `{0}` - matches one or more delete skip filters.", f);
+                                            log.DebugFormat(
+                                                "Skipping deleting outdated client file `{0}` - matches one or more delete skip filters.",
+                                                f);
                                         continue;
                                     }
 
@@ -314,7 +315,8 @@ namespace GoreUpdater
                                 }
                                 catch (Exception ex)
                                 {
-                                    const string errmsg = "Unexpected error while checking if file `{0}` should be deleted. Exception: {1}";
+                                    const string errmsg =
+                                        "Unexpected error while checking if file `{0}` should be deleted. Exception: {1}";
                                     if (log.IsErrorEnabled)
                                         log.ErrorFormat(errmsg, f, ex);
                                     Debug.Fail(string.Format(errmsg, f, ex));
@@ -414,7 +416,8 @@ namespace GoreUpdater
             Debug.Assert(sender == _dm, "Why did we get an event from a different IDownloadManager?");
 
             if (log.IsInfoEnabled)
-                log.InfoFormat("Successfully downloaded remote file `{0}` to `{1}` using `{2}`.", remoteFile, localFilePath, sender);
+                log.InfoFormat("Successfully downloaded remote file `{0}` to `{1}` using `{2}`.", remoteFile, localFilePath,
+                               sender);
 
             try
             {
@@ -442,8 +445,10 @@ namespace GoreUpdater
             _fileReplacer.AddJob(localFilePath, targetFilePath);
 
             if (log.IsInfoEnabled)
-                log.InfoFormat("Failed to move file `{0}` to `{1}` using `{2}`; adding job to IOfflineFileReplacer `{3}`.", localFilePath, 
-                    targetFilePath, sender, _fileReplacer);
+            {
+                log.InfoFormat("Failed to move file `{0}` to `{1}` using `{2}`; adding job to IOfflineFileReplacer `{3}`.",
+                               localFilePath, targetFilePath, sender, _fileReplacer);
+            }
 
             try
             {
@@ -503,8 +508,11 @@ namespace GoreUpdater
                     if (localFileInfo.Length != updateFileInfo.Size)
                     {
                         if (log.IsDebugEnabled)
-                            log.DebugFormat("Update check on file `{0}`: File needs update - size mismatch (current: {1}, expected: {2}).",
+                        {
+                            log.DebugFormat(
+                                "Update check on file `{0}`: File needs update - size mismatch (current: {1}, expected: {2}).",
                                 updateFileInfo.FilePath, localFileInfo.Length, updateFileInfo.Size);
+                        }
 
                         ret.Add(updateFileInfo.FilePath);
                         continue;
@@ -515,8 +523,11 @@ namespace GoreUpdater
                     if (!StringComparer.Ordinal.Equals(localFileHash, updateFileInfo.Hash))
                     {
                         if (log.IsDebugEnabled)
-                            log.DebugFormat("Update check on file `{0}`: File needs update - hash mismatch (current: {1}, expected: {2}).",
+                        {
+                            log.DebugFormat(
+                                "Update check on file `{0}`: File needs update - hash mismatch (current: {1}, expected: {2}).",
                                 updateFileInfo.FilePath, localFileHash, updateFileInfo.Hash);
+                        }
 
                         ret.Add(updateFileInfo.FilePath);
                         continue;
@@ -524,8 +535,9 @@ namespace GoreUpdater
                 }
                 catch (IOException ex)
                 {
-                    const string errmsg = "Failed to analyze file `{0}` to see if it needs to be updated. Will assume update is required. Exception: {1}";
-                    
+                    const string errmsg =
+                        "Failed to analyze file `{0}` to see if it needs to be updated. Will assume update is required. Exception: {1}";
+
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, updateFileInfo.FilePath, ex);
 
@@ -766,8 +778,10 @@ namespace GoreUpdater
             if (State != UpdateClientState.Completed)
             {
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Could not execute IOfflineFileReplacer `{0}` - state is `{1}` (expected: {2}).",
-                        _fileReplacer, State, UpdateClientState.Completed);
+                {
+                    log.InfoFormat("Could not execute IOfflineFileReplacer `{0}` - state is `{1}` (expected: {2}).", _fileReplacer,
+                                   State, UpdateClientState.Completed);
+                }
 
                 return false;
             }

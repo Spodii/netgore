@@ -104,8 +104,7 @@ namespace GoreUpdater
         public static VersionFileList Create(string rootDir, IEnumerable<string> filters)
         {
             if (log.IsDebugEnabled)
-                log.DebugFormat("VersionFileList.Create(rootDir: {0}, fiters: ...)",
-                    rootDir);
+                log.DebugFormat("VersionFileList.Create(rootDir: {0}, fiters: ...)", rootDir);
 
             var addFiles = new List<VersionFileInfo>();
 
@@ -145,8 +144,7 @@ namespace GoreUpdater
         public static VersionFileList CreateFromFile(string filePath)
         {
             if (log.IsDebugEnabled)
-                log.DebugFormat("VersionFileList.CreateFromFile(filePath: {0})",
-                    filePath);
+                log.DebugFormat("VersionFileList.CreateFromFile(filePath: {0})", filePath);
 
             var fileContents = File.ReadAllText(filePath);
             return CreateFromString(fileContents);
@@ -161,8 +159,7 @@ namespace GoreUpdater
         public static VersionFileList CreateFromString(string contents)
         {
             if (log.IsDebugEnabled)
-                log.DebugFormat("VersionFileList.CreateFromString(contents: {0})",
-                    contents);
+                log.DebugFormat("VersionFileList.CreateFromString(contents: {0})", contents);
 
             var lines = contents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 

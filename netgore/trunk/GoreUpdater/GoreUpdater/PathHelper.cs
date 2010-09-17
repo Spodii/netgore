@@ -12,6 +12,8 @@ namespace GoreUpdater
     /// </summary>
     public static class PathHelper
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The minimum version string length. Versions with less digits than this value will be prefixed with 0's.
         /// </summary>
@@ -67,8 +69,6 @@ namespace GoreUpdater
             return ret;
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Combines two paths and forces them to be in different directories. That is, the second path will always
         /// be either a file or sub-directory of the first path.
@@ -114,7 +114,7 @@ namespace GoreUpdater
         /// <returns>The new path.</returns>
         public static string ForceEndWithChar(string path, string endingChar, params string[] removeChars)
         {
-            string ret = path;
+            var ret = path;
 
             if (removeChars != null)
             {
@@ -128,7 +128,10 @@ namespace GoreUpdater
                 ret += endingChar;
 
             if (log.IsDebugEnabled)
-                log.DebugFormat("ForceEndWithChar(path: {0}, endingChar: {1}, removeChars: ({2})) -> {3}", path, endingChar, removeChars == null ? "[NULL]" : removeChars.Aggregate((x,y)=>x+","+y), ret);
+            {
+                log.DebugFormat("ForceEndWithChar(path: {0}, endingChar: {1}, removeChars: ({2})) -> {3}", path, endingChar,
+                                removeChars == null ? "[NULL]" : removeChars.Aggregate((x, y) => x + "," + y), ret);
+            }
 
             return ret;
         }

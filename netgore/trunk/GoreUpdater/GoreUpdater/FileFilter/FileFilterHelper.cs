@@ -53,7 +53,7 @@ namespace GoreUpdater
         /// <returns>The sanitized <paramref name="filePath"/>.</returns>
         public static string SanitizeFilePath(string filePath)
         {
-            string ret = filePath;
+            var ret = filePath;
 
             // Always start with the path separator
             if (!ret.StartsWith("\\"))

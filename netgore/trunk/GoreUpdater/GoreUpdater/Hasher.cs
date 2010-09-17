@@ -13,6 +13,8 @@ namespace GoreUpdater
     /// </summary>
     public static class Hasher
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Pool of objects for hashing.
         /// </summary>
@@ -49,8 +51,6 @@ namespace GoreUpdater
                 _hashers.Push(hasher);
             }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Gets the hash for a file.
