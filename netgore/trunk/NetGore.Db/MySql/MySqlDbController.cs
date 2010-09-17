@@ -67,7 +67,7 @@ namespace NetGore.Db.MySql
         public override int RemoveUnreferencedPrimaryKeys(string schema, string table, string column)
         {
             // How many keys to grab at a time. Larger value = greater memory usage, but fewer queries.
-            const int batchSize = 5;
+            const int batchSize = 5000;
 
             int ret = 0;
 
