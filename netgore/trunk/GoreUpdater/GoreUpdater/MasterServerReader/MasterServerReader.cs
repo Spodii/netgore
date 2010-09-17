@@ -69,8 +69,10 @@ namespace GoreUpdater
             var readVersion = stateObj.Version;
 
             if (log.IsDebugEnabled)
-                log.DebugFormat("Running MasterServerReader worker. UserState: {0}. ReadVersion: {1}. Callback: {2}",
-                    userState, readVersion.HasValue ? readVersion.Value.ToString() : "[NULL]", callback);
+            {
+                log.DebugFormat("Running MasterServerReader worker. UserState: {0}. ReadVersion: {1}. Callback: {2}", userState,
+                                readVersion.HasValue ? readVersion.Value.ToString() : "[NULL]", callback);
+            }
 
             var info = new MasterServerReadInfo();
             if (readVersion.HasValue)
@@ -592,7 +594,8 @@ namespace GoreUpdater
                             int version;
                             if (!int.TryParse(txt, out version))
                             {
-                                const string errmsg = "Failed to parse version file to integer (remote path: {0}, local path: {1}). Contents: `{2}`";
+                                const string errmsg =
+                                    "Failed to parse version file to integer (remote path: {0}, local path: {1}). Contents: `{2}`";
                                 if (log.IsErrorEnabled)
                                     log.ErrorFormat(errmsg, remoteFile, localFilePath, txt);
                                 _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, txt));
@@ -606,7 +609,8 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        const string errmsg = "Unexpected error while handling version file (remote path: {0}, local path: {1}). Exception: {2}";
+                        const string errmsg =
+                            "Unexpected error while handling version file (remote path: {0}, local path: {1}). Exception: {2}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, remoteFile, localFilePath, ex);
                         _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, ex));
@@ -628,7 +632,8 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        const string errmsg = "Unexpected error while handling version file (remote path: {0}, local path: {1}). Exception: {2}";
+                        const string errmsg =
+                            "Unexpected error while handling version file (remote path: {0}, local path: {1}). Exception: {2}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, remoteFile, localFilePath, ex);
                         _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, ex));
@@ -667,7 +672,8 @@ namespace GoreUpdater
                                     }
                                     catch (Exception ex)
                                     {
-                                        const string errmsg = "Failed to instantiate and/or execute downoaded master server using DownloadSourceDescriptor `{0}`. Exception: {1}";
+                                        const string errmsg =
+                                            "Failed to instantiate and/or execute downoaded master server using DownloadSourceDescriptor `{0}`. Exception: {1}";
                                         if (log.IsWarnEnabled)
                                             log.WarnFormat(errmsg, desc, ex);
                                         Debug.Fail(string.Format(errmsg, desc, ex));
@@ -678,7 +684,8 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        const string errmsg = "Unexpected error while handling master servers file (remote path: {0}, local path: {1}). Exception: {2}";
+                        const string errmsg =
+                            "Unexpected error while handling master servers file (remote path: {0}, local path: {1}). Exception: {2}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, remoteFile, localFilePath, ex);
                         _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, ex));
@@ -701,7 +708,8 @@ namespace GoreUpdater
                     }
                     catch (Exception ex)
                     {
-                        const string errmsg = "Unexpected error while handling download sources file (remote path: {0}, local path: {1}). Exception: {2}";
+                        const string errmsg =
+                            "Unexpected error while handling download sources file (remote path: {0}, local path: {1}). Exception: {2}";
                         if (log.IsErrorEnabled)
                             log.ErrorFormat(errmsg, remoteFile, localFilePath, ex);
                         _masterReadInfo.AppendError(string.Format(errmsg, remoteFile, localFilePath, ex));

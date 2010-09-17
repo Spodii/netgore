@@ -320,7 +320,8 @@ namespace GoreUpdater
             if (fileExists && SkipIfExists)
             {
                 if (log.IsDebugEnabled)
-                    log.DebugFormat("Skipping creating remote file `{0}` - file already exists and SkipIfExists is set.", remoteFile);
+                    log.DebugFormat("Skipping creating remote file `{0}` - file already exists and SkipIfExists is set.",
+                                    remoteFile);
                 return;
             }
 
@@ -432,7 +433,8 @@ namespace GoreUpdater
                         case FtpStatusCode.ActionNotTakenFileUnavailable:
                             if (requireExists)
                             {
-                                const string errmsg = "Failed to delete remote directory `{0}` when requireExists was set. Exception: {1}";
+                                const string errmsg =
+                                    "Failed to delete remote directory `{0}` when requireExists was set. Exception: {1}";
                                 if (log.IsErrorEnabled)
                                     log.ErrorFormat(errmsg, dirPath, ex);
                                 Debug.Fail(string.Format(errmsg, dirPath, ex));
@@ -492,7 +494,8 @@ namespace GoreUpdater
                         case FtpStatusCode.ActionNotTakenFileUnavailableOrBusy:
                             if (requireExists)
                             {
-                                const string errmsg = "Failed to delete remote file `{0}` when requireExists was set. Exception: {1}";
+                                const string errmsg =
+                                    "Failed to delete remote file `{0}` when requireExists was set. Exception: {1}";
                                 if (log.IsErrorEnabled)
                                     log.ErrorFormat(errmsg, filePath, ex);
                                 Debug.Fail(string.Format(errmsg, filePath, ex));
@@ -738,7 +741,8 @@ namespace GoreUpdater
                     {
                         if (resStream == null)
                         {
-                            const string errmsgResStreamNull = "Received null WebResponseStream for remote path `{0}`. Returning null.";
+                            const string errmsgResStreamNull =
+                                "Received null WebResponseStream for remote path `{0}`. Returning null.";
                             if (log.IsWarnEnabled)
                                 log.WarnFormat(errmsgResStreamNull, remotePath);
                             Debug.Fail(string.Format(errmsgResStreamNull, remotePath));
@@ -748,17 +752,21 @@ namespace GoreUpdater
                         using (var sr = new StreamReader(resStream))
                         {
                             var ret = new List<string>();
-                            
+
                             if (log.IsDebugEnabled)
-                                log.DebugFormat("Starting read of WebResponseStream `{0}` for remote path `{1}` using StreamReader `{2}`.", resStream,
-                                    remotePath, sr);
+                            {
+                                log.DebugFormat(
+                                    "Starting read of WebResponseStream `{0}` for remote path `{1}` using StreamReader `{2}`.",
+                                    resStream, remotePath, sr);
+                            }
 
                             while (!sr.EndOfStream)
                             {
                                 var s = sr.ReadLine();
 
                                 if (log.IsDebugEnabled)
-                                    log.DebugFormat("Read WebResponseStream line for remote path `{0}`: {1}", remotePath, s ?? "[NULL]");
+                                    log.DebugFormat("Read WebResponseStream line for remote path `{0}`: {1}", remotePath,
+                                                    s ?? "[NULL]");
 
                                 // Skip null lines
                                 if (s == null)
@@ -791,7 +799,8 @@ namespace GoreUpdater
                         case FtpStatusCode.ActionNotTakenFileUnavailable:
                             if (requireExists)
                             {
-                                const string errmsg = "FtpNListDir for path `{0}` failed when requireExists was set. Exception: {1}";
+                                const string errmsg =
+                                    "FtpNListDir for path `{0}` failed when requireExists was set. Exception: {1}";
                                 if (log.IsErrorEnabled)
                                     log.ErrorFormat(errmsg, remotePath, ex);
                                 Debug.Fail(string.Format(errmsg, remotePath, ex));
@@ -1087,6 +1096,30 @@ namespace GoreUpdater
             }
         }
 
+        /// <summary>
+        /// Invokes the <see cref="TestConnectionMessage"/> event.
+        /// </summary>
+        /// <param name="userState">State of the user.</param>
+        /// <param name="msg">The message.</param>
+        void WriteTestConnectionMessage(object userState, string msg)
+        {
+            if (TestConnectionMessage != null)
+            {
+                try
+                {
+                    TestConnectionMessage(this, msg, userState);
+                }
+                catch (NullReferenceException ex)
+                {
+                    Debug.Fail(ex.ToString());
+                }
+            }
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("TestConnectionMessage (userState: {0}): {1}", userState != null ? userState.ToString() : "[NULL]",
+                               msg);
+        }
+
         #region IFileUploader Members
 
         /// <summary>
@@ -1358,29 +1391,6 @@ namespace GoreUpdater
         }
 
         /// <summary>
-        /// Invokes the <see cref="TestConnectionMessage"/> event.
-        /// </summary>
-        /// <param name="userState">State of the user.</param>
-        /// <param name="msg">The message.</param>
-        void WriteTestConnectionMessage(object userState, string msg)
-        {
-            if (TestConnectionMessage != null)
-            {
-                try
-                {
-                    TestConnectionMessage(this, msg, userState);
-                }
-                catch (NullReferenceException ex)
-                {
-                    Debug.Fail(ex.ToString());
-                }
-            }
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("TestConnectionMessage (userState: {0}): {1}", userState != null ? userState.ToString() : "[NULL]", msg);
-        }
-
-        /// <summary>
         /// Tests the connection of the <see cref="IFileUploader"/> and ensures that the needed operations can be performed.
         /// The test runs synchronously.
         /// </summary>
@@ -1499,7 +1509,8 @@ namespace GoreUpdater
                 WriteTestConnectionMessage(userState, "Test file deleted");
 
                 // *** Directory create test ***
-                 WriteTestConnectionMessage(userState, "Creating sub-directories and creating a file inside those sub-directories...");
+                WriteTestConnectionMessage(userState,
+                                           "Creating sub-directories and creating a file inside those sub-directories...");
 
                 try
                 {

@@ -14,6 +14,7 @@ namespace GoreUpdater
     /// </summary>
     public class DownloadSourceDescriptor
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly string _rootPath;
         readonly DownloadSourceType _type;
 
@@ -82,7 +83,9 @@ namespace GoreUpdater
                 catch (Exception ex)
                 {
                     if (log.IsErrorEnabled)
-                        log.ErrorFormat("Failed to create DownloadSourceDescriptor from file `{0}` on the line `{1}`. Reason: {2}", filePath, line, ex);
+                        log.ErrorFormat(
+                            "Failed to create DownloadSourceDescriptor from file `{0}` on the line `{1}`. Reason: {2}", filePath,
+                            line, ex);
                     Debug.Print(ex.ToString());
                     desc = null;
                 }
@@ -91,14 +94,15 @@ namespace GoreUpdater
                 if (desc != null)
                 {
                     if (!ret.Any(x => x.IsIdenticalTo(desc)))
-                    {
                         ret.Add(desc);
-                    }
                     else
                     {
                         if (log.IsDebugEnabled)
-                            log.DebugFormat("Skipped DownloadSourceDescriptor from file `{0}` on the line `{1}` since" + 
+                        {
+                            log.DebugFormat(
+                                "Skipped DownloadSourceDescriptor from file `{0}` on the line `{1}` since" +
                                 " an identical DownloadSourceDescriptor was already found.", filePath, line);
+                        }
                     }
                 }
             }
@@ -143,8 +147,6 @@ namespace GoreUpdater
         {
             return string.Format("{0}|{1}", Type, RootPath);
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Creates an instance of the <see cref="IDownloadSource"/> described by this <see cref="DownloadSourceDescriptor"/>.

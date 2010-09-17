@@ -321,9 +321,7 @@ namespace GoreUpdater
                     _downloadFailedDictCount.Add(remoteFile, fails);
                 }
                 else
-                {
                     _downloadFailedDictCount[remoteFile]++;
-                }
 
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Job `{0}` failed (attempt #{1}; retry? {2})", remoteFile, fails + 1, fails <= MaxAttempts);
@@ -874,7 +872,8 @@ namespace GoreUpdater
                 if (!_downloadSources.Remove(downloadSource))
                 {
                     if (log.IsDebugEnabled)
-                        log.DebugFormat("Could not remove DownloadSource `{0}` - was not in the _downloadSources list.", downloadSource);
+                        log.DebugFormat("Could not remove DownloadSource `{0}` - was not in the _downloadSources list.",
+                                        downloadSource);
 
                     return false;
                 }
