@@ -832,9 +832,9 @@ namespace DemoGame.Server
             {
                 // Invalid map
                 const string errorMsg = "Received UseWorld from user `{0}`, but their map is null.";
-                Debug.Fail(string.Format(errorMsg, user));
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errorMsg, user);
+                Debug.Fail(string.Format(errorMsg, user));
                 return false;
             }
 
@@ -850,7 +850,7 @@ namespace DemoGame.Server
         /// <param name="map">When this method returns true, contains the <see cref="Map"/>.</param>
         /// <returns>True if the <paramref name="user"/> and <paramref name="map"/> were successfully found; otherwise
         /// false.</returns>
-        bool TryGetMap(IIPSocket conn, out User user, out Map map)
+        static bool TryGetMap(IIPSocket conn, out User user, out Map map)
         {
             if ((user = TryGetUser(conn)) == null)
             {
@@ -870,14 +870,15 @@ namespace DemoGame.Server
         /// there will be no <see cref="User"/>.</param>
         /// <returns>The <see cref="User"/> from the <paramref name="conn"/>, or null if no <see cref="User"/>
         /// could be found.</returns>
-        User TryGetUser(IIPSocket conn, bool errorOnFailure = true)
+        static User TryGetUser(IIPSocket conn, bool errorOnFailure = true)
         {
             // Check for a valid connection
             if (conn == null)
             {
                 const string errmsg = "conn is null.";
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
                 Debug.Fail(errmsg);
-                log.Warn(errmsg);
                 return null;
             }
 
@@ -890,8 +891,9 @@ namespace DemoGame.Server
                 if (errorOnFailure)
                 {
                     const string errmsg = "user is null.";
+                    if (log.IsErrorEnabled)
+                        log.Error(errmsg);
                     Debug.Fail(errmsg);
-                    log.Error(errmsg);
                 }
             }
 

@@ -60,6 +60,11 @@ namespace DemoGame
         CommandGeneralInvalidParameter,
 
         /// <summary>
+        /// Same as <see cref="GameMessage.CommandGeneralInvalidParameter"/>, but includes a details string for why it failed.
+        /// </summary>
+        CommandGeneralInvalidParameterEx,
+
+        /// <summary>
         /// The user the command was targeted at exists, but they are offline and this command requires them to be online.
         /// </summary>
         CommandGeneralUserOffline,
@@ -345,7 +350,25 @@ namespace DemoGame
 
         #region Feature: Banning
 
+        /// <summary>
+        /// Message shown to a user when they try to log in while banned.
+        /// </summary>
         AccountBanned,
+
+        /// <summary>
+        /// User was disconnected because they were just banned.
+        /// </summary>
+        DisconnectedBanned,
+
+        /// <summary>
+        /// Ban was successfully added for the given user.
+        /// </summary>
+        BanUserSuccessful,
+
+        /// <summary>
+        /// Ban failed to be added for the given user.
+        /// </summary>
+        BanUserFailed,
 
         #endregion
     }

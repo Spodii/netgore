@@ -38,22 +38,70 @@ namespace NetGore.Features.Banning
         /// </summary>
         /// <param name="accountID">The account to add the ban to.</param>
         /// <param name="length">How long the ban will last.</param>
-        /// <param name="reason">The reason for the ban. Strings longer than 255 characters will be truncated.</param>
+        /// <param name="reason">The reason for the ban.</param>
         /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
         /// <returns>True if the ban was successfully added; otherwise false.</returns>
-        bool TryAddBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy);
+        bool TryAddAccountBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy);
 
         /// <summary>
         /// Tries to add a ban to an account.
         /// </summary>
         /// <param name="accountID">The account to add the ban to.</param>
         /// <param name="length">How long the ban will last.</param>
-        /// <param name="reason">The reason for the ban. Strings longer than 255 characters will be truncated.</param>
+        /// <param name="reason">The reason for the ban.</param>
         /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
         /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be added.</param>
         /// <returns>
         /// True if the ban was successfully added; otherwise false.
         /// </returns>
-        bool TryAddBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy, out string failReason);
+        bool TryAddAccountBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy, out BanManagerFailReason failReason);
+
+        /// <summary>
+        /// Tries to add a ban to an account.
+        /// </summary>
+        /// <param name="accountName">The name of the account to ban.</param>
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        /// <returns>True if the ban was successfully added; otherwise false.</returns>
+        bool TryAddAccountBan(string accountName, TimeSpan length, string reason, string issuedBy);
+
+        /// <summary>
+        /// Tries to add a ban to an account.
+        /// </summary>
+        /// <param name="accountName">The name of the account to ban.</param>
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be added.</param>
+        /// <returns>
+        /// True if the ban was successfully added; otherwise false.
+        /// </returns>
+        bool TryAddAccountBan(string accountName, TimeSpan length, string reason, string issuedBy, out BanManagerFailReason failReason);
+
+        /// <summary>
+        /// Tries to add a ban to an account by specifying the user's name.
+        /// </summary>
+        /// <param name="userName">The name of the user to ban.</param>
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be added.</param>
+        /// <returns>
+        /// True if the ban was successfully added; otherwise false.
+        /// </returns>
+        bool TryAddUserBan(string userName, TimeSpan length, string reason, string issuedBy, out BanManagerFailReason failReason);
+
+        /// <summary>
+        /// Tries to add a ban to an account by specifying the user's name.
+        /// </summary>
+        /// <param name="userName">The name of the user to ban.</param>
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        /// <returns>
+        /// True if the ban was successfully added; otherwise false.
+        /// </returns>
+        bool TryAddUserBan(string userName, TimeSpan length, string reason, string issuedBy);
     }
 }

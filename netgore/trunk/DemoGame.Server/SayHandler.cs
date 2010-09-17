@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
 using System.Text;
+using DemoGame.DbObjs;
 using DemoGame.Server.Guilds;
 using NetGore;
+using NetGore.Features.Banning;
 using NetGore.Features.Groups;
 using NetGore.Features.Guilds;
 using NetGore.World;
@@ -173,26 +175,6 @@ namespace DemoGame.Server
                 User.TryStartPeerTrade(target);
             }
 
-            #region Banning
-
-            /// <summary>
-            /// Bans a user.
-            /// </summary>
-            /// <param name="username">The name of the user to ban.</param>
-            /// <param name="duration">For how long to ban the user. For duration format, see <see cref="DurationParser"/>.</param>
-            /// <param name="reason">The reason the user is to be banned.</param>
-            [SayCommand("BanUser")]
-            public void BanUser(string username, string duration, string reason)
-            {
-                // TODO: !! Implement
-
-                if (!GameData.UserName.IsValid(username))
-                {
-                }
-            }
-
-            #endregion
-
             #region Helper methods
 
             /// <summary>
@@ -331,6 +313,33 @@ namespace DemoGame.Server
                 {
                     User.Send(pw, ServerMessageType.GUIChat);
                 }
+            }
+
+            /// <summary>
+            /// Sends a chat message to the <see cref="User"/>. This is provided purely for convenience since it can
+            /// become quite redundant having to constantly create the <see cref="ServerPacket.Chat"/> calls.
+            /// </summary>
+            /// <param name="message">The message to send.</param>
+            /// <param name="args">The string formatting arguments.</param>
+            void UserChat(string message, params object[] args)
+            {
+                var msgFormatted = string.Format(message, args);
+                using (var pw = ServerPacket.Chat(msgFormatted))
+                {
+                    User.Send(pw, ServerMessageType.GUIChat);
+                }
+            }
+
+            void UserChat(IAccountBanTable banInfo, int index, int total)
+            {
+                UserChat("Ban {0} of {1}:", index, total);
+                UserChat("   BanID: {0}", banInfo.ID);
+                UserChat("   Issued by: {0}", banInfo.IssuedBy);
+                UserChat("   Start: {0}", banInfo.StartTime.ToString("U"));
+                UserChat("   End: {0}", banInfo.EndTime.ToString("U"));
+                UserChat("   Duration: {0}", (banInfo.EndTime - banInfo.StartTime).Duration());
+                UserChat("   Remaining (approx): {0}", (DateTime.Now - banInfo.EndTime).Duration());
+                UserChat("   Reason: {0}", banInfo.Reason);
             }
 
             #endregion
@@ -802,6 +811,99 @@ namespace DemoGame.Server
             #endregion
 
             #region Lesser Admin commands
+
+            /// <summary>
+            /// Displays the active ban information for a user.
+            /// </summary>
+            /// <param name="username">The name of the user to show the ban info for.</param>
+            [SayCommand("BanInfo")]
+            public void BanInfo(string username)
+            {
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                    return;
+
+                var banInfos = BanningManager.Instance.GetAccountBanInfo(username).Where(x => !x.Expired);
+
+                int count = banInfos.Count();
+                UserChat(string.Format("Active bans on user `{0}`: {1}", username, count));
+
+                int i = 1;
+                foreach (var banInfo in banInfos)
+                {
+                    UserChat(banInfo, i++, count);
+                }
+            }
+
+
+            /// <summary>
+            /// Displays all ban information for a user.
+            /// </summary>
+            /// <param name="username">The name of the user to show the ban info for.</param>
+            [SayCommand("BanHistory")]
+            public void BanHistory(string username)
+            {
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                    return;
+
+                var banInfos = BanningManager.Instance.GetAccountBanInfo(username);
+
+                int count = banInfos.Count();
+                UserChat(string.Format("All bans on user `{0}`: {1}", username, count));
+
+                int i = 1;
+                foreach (var banInfo in banInfos)
+                {
+                    UserChat(banInfo, i++, count);
+                }
+            }
+
+            /// <summary>
+            /// Bans a user.
+            /// </summary>
+            /// <param name="username">The name of the user to ban.</param>
+            /// <param name="duration">For how long to ban the user. For duration format, see <see cref="DurationParser"/>.</param>
+            /// <param name="reason">The reason the user is to be banned.</param>
+            [SayCommand("BanUser")]
+            public void BanUser(string username, string duration, string reason)
+            {
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                    return;
+
+                // Check for valid parameters
+                if (!GameData.UserName.IsValid(username))
+                {
+                    User.Send(GameMessage.CommandGeneralInvalidUser, ServerMessageType.GUI, username);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(duration))
+                {
+                    User.Send(GameMessage.CommandGeneralInvalidParameter, ServerMessageType.GUI, "duration");
+                    return;
+                }
+
+                // Parse the duration
+                TimeSpan dur;
+                string parseFailReason;
+                if (!DurationParser.TryParse(duration, out dur, out parseFailReason))
+                {
+                    User.Send(GameMessage.CommandGeneralInvalidParameterEx, ServerMessageType.GUI, "duration", parseFailReason);
+                    return;
+                }
+
+                // Perform the ban and notify the issuer if it was successful or not
+                BanManagerFailReason banFailReason;
+                if (!BanningManager.Instance.TryAddUserBan(username, dur, reason, User.Name, out banFailReason))
+                {
+                    // Ban failed
+                    User.Send(GameMessage.BanUserFailed, ServerMessageType.GUI, username, banFailReason.GetDetailedString());
+                }
+                else
+                {
+                    // Ban successful
+                    User.Send(GameMessage.BanUserSuccessful, ServerMessageType.GUI, username);
+                }
+            }
 
             /// <summary>
             /// Creates an instance of an item from a template and adds it to your inventory. Any items that cannot

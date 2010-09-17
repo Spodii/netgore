@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -9,35 +7,36 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectCharacterQuery : DbQueryReader<string>
+    public class SelectUserByNameQuery : DbQueryReader<string>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `name`=@name", CharacterTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `name`=@name", UserCharacterTable.TableName);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectCharacterQuery"/> class.
+        /// Initializes a new instance of the <see cref="SelectUserByNameQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public SelectUserByNameQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, _queryStr)
         {
-            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name");
+            QueryAsserts.ContainsColumns(UserCharacterTable.DbColumns, "name");
         }
 
         /// <summary>
-        /// Executes the query for the specified character.
+        /// Executes the query for the specified user.
         /// </summary>
-        /// <param name="characterName">The name of the character.</param>
-        /// <returns>The <see cref="ICharacterTable"/> for the character with the name <paramref name="characterName"/>, or
+        /// <param name="userName">The name of the user.</param>
+        /// <returns>The <see cref="IUserCharacterTable"/> for the user with the name <paramref name="userName"/>, or
         /// null if they do not exist.</returns>
-        public ICharacterTable Execute(string characterName)
+        public IUserCharacterTable Execute(string userName)
         {
-            CharacterTable ret;
+            UserCharacterTable ret;
 
-            using (var r = ExecuteReader(characterName))
+            using (var r = ExecuteReader(userName))
             {
                 if (!r.Read())
                     return null;
 
-                ret = new CharacterTable();
+                ret = new UserCharacterTable();
                 ret.ReadValues(r);
             }
 

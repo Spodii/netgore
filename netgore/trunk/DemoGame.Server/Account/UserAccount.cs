@@ -434,12 +434,14 @@ namespace DemoGame.Server
             return true;
         }
 
-        #region IDisposable Members
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        /// <param name="disconnectMessage">The message to use for when disconnecting the socket. When disposing an active connection,
+        /// this can provide the client a reason why they were disconnected. The default is
+        /// <see cref="GameMessage.DisconnectUserDisposed"/>.</param>
+        /// <param name="p">The arguments for the <paramref name="disconnectMessage"/>.</param>
+        public void Dispose(GameMessage disconnectMessage, params object[] p)
         {
             ThreadAsserts.IsMainThread();
 
@@ -448,13 +450,23 @@ namespace DemoGame.Server
 
             // Break the connection, if connected
             if (Socket != null)
-                Socket.Disconnect(GameMessage.DisconnectUserDisposed);
+                Socket.Disconnect(disconnectMessage, p);
 
             // Log the account out in the database
             _dbController.GetQuery<SetAccountCurrentIPNullQuery>().Execute(ID);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Disposed account `{0}`.", this);
+        }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(GameMessage.DisconnectUserDisposed);
         }
 
         #endregion

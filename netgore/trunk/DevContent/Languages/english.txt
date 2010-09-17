@@ -5,16 +5,14 @@
 # and so it doesn't have to be copied to each language file. But do add comments into here if it
 # is related to the language specifically.
 
-
-
-
+########### Core: Misc ###########
 InsufficientPermissions: "You do not have the permissions to do that."
 
+########### Core: Combat messages ###########
 CannotAttackWithWeapon: "You cannot attack with a $0."
 CannotAttackTooFarAway: "The target is too far away to attack."
 CannotAttackNeedTarget: "You must select a target to attack first."
 CannotAttackAllianceConflict: "You feel you shouldn't attack $0."
-
 
 ########### Core: Specialized chat command responses ###########
 CommandTellNoName: "Tell what to whom?"
@@ -30,6 +28,7 @@ CommandShout: "$0 shouts: \"$1\""
 CommandGeneralInvalidUser: "$0 is not valid username."
 CommandGeneralUnknownUser: "No user with the name $0 exists."
 CommandGeneralInvalidParameter: "Invalid value `$1` entered for parameter `$0`."
+CommandGeneralInvalidParameterEx: "Invalid value `$1` entered for parameter `$0`: $2"
 CommandGeneralUserOffline: "User $0 is currently offline."
 CommandGeneralUserNotAllowed: "You are not allowed to do that to $0."
 CommandGeneralInvalidCommand: "No such command exists."
@@ -156,3 +155,6 @@ QuestFinishFailedCannotGiveRewards: "Cannot turn in the quest because you cannot
 
 ########### Feature: Banning ###########
 AccountBanned: "Your account has been banned. The ban will expire in $0. Reason: $1"
+DisconnectedBanned: "Your account has been banned. The ban will expire in $0. Reason: $1"
+BanUserSuccessful: "You have successfully banned $0."
+BanUserFailed: "Failed to ban user $0: $1"
