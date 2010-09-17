@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -18,13 +19,15 @@ namespace DemoGame.Server.Queries
         /// <param name="connectionPool">The connection pool.</param>
         public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
+            QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name");
         }
 
         /// <summary>
-        /// Executes the specified character name.
+        /// Executes the query for the specified character.
         /// </summary>
         /// <param name="characterName">The name of the character.</param>
-        /// <returns>The ICharacterTable for the Character with the name <paramref name="characterName"/>.</returns>
+        /// <returns>The <see cref="ICharacterTable"/> for the character with the name <paramref name="characterName"/>, or
+        /// null if they do not exist.</returns>
         public ICharacterTable Execute(string characterName)
         {
             CharacterTable ret;

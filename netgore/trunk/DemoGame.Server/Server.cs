@@ -381,8 +381,7 @@ namespace DemoGame.Server
             string banReason;
             if (BanningManager.Instance.IsBanned(userAccount.ID, out banReason, out banMins))
             {
-                conn.Disconnect(GameMessage.AccountBanned, banMins, banReason);
-                userAccount.Dispose();
+                userAccount.Dispose(GameMessage.AccountBanned, banMins, banReason);
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Disconnected account `{0}` after successful login since they have been banned.", name);
                 return;

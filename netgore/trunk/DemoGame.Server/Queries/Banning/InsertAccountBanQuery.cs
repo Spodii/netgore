@@ -14,7 +14,7 @@ namespace DemoGame.Server.Queries
         static readonly string _queryStr =
             FormatQueryString(
                 "INSERT INTO `{0}` (`account_id`,`start_time`,`end_time`,`reason`,`issued_by`,`expired`)" +
-                " VALUES(@accountID,NOW(),NOW() + @secs,@reason,@issuedBy,0)", AccountBanTable.TableName);
+                " VALUES(@accountID,NOW(),DATE_ADD(NOW(), INTERVAL @secs SECOND),@reason,@issuedBy,0)", AccountBanTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsertAccountBanQuery"/> class.

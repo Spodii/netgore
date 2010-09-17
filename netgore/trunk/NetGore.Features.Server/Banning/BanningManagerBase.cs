@@ -57,14 +57,32 @@ namespace NetGore.Features.Banning
         /// </summary>
         /// <param name="accountID">The account to add the ban to.</param>
         /// <param name="length">How long the ban will last.</param>
-        /// <param name="reason">The reason for the ban. Strings longer than 255 characters will be truncated.</param>
+        /// <param name="reason">The reason for the ban.</param>
         /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
         /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be added.</param>
         /// <returns>
         /// True if the ban was successfully added; otherwise false.
         /// </returns>
         protected abstract bool TryAddBanInternal(TAccountID accountID, TimeSpan length, string reason, string issuedBy,
-                                                  out string failReason);
+                                                  out BanManagerFailReason failReason);
+
+        /// <summary>
+        /// When overridden in the derived class, gets the ID of an account from the account's name.
+        /// </summary>
+        /// <param name="accountName">The name of the account.</param>
+        /// <param name="accountID">When this method returns true, contains the ID of the account for the given
+        /// <paramref name="accountName"/>.</param>
+        /// <returns>True if the ID of the account for the given <paramref name="accountName"/> was found; otherwise false.</returns>
+        protected abstract bool TryGetAccountIDFromAccountName(string accountName, out TAccountID accountID);
+
+        /// <summary>
+        /// When overridden in the derived class, gets the ID of an account from the user's name.
+        /// </summary>
+        /// <param name="userName">The name of the user to get the account of.</param>
+        /// <param name="accountID">When this method returns true, contains the ID of the account for the given
+        /// <paramref name="userName"/>.</param>
+        /// <returns>True if the ID of the account for the given <paramref name="userName"/> was found; otherwise false.</returns>
+        protected abstract bool TryGetAccountIDFromUserName(string userName, out TAccountID accountID);
 
         #region IBanningManager<TAccountID> Members
 
@@ -107,13 +125,13 @@ namespace NetGore.Features.Banning
         /// </summary>
         /// <param name="accountID">The account to add the ban to.</param>
         /// <param name="length">How long the ban will last.</param>
-        /// <param name="reason">The reason for the ban. Strings longer than 255 characters will be truncated.</param>
+        /// <param name="reason">The reason for the ban.</param>
         /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
         /// <returns>True if the ban was successfully added; otherwise false.</returns>
-        public bool TryAddBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy)
+        public bool TryAddAccountBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy)
         {
-            string failReason;
-            return TryAddBan(accountID, length, reason, issuedBy, out failReason);
+            BanManagerFailReason failReason;
+            return TryAddAccountBan(accountID, length, reason, issuedBy, out failReason);
         }
 
         /// <summary>
@@ -121,36 +139,37 @@ namespace NetGore.Features.Banning
         /// </summary>
         /// <param name="accountID">The account to add the ban to.</param>
         /// <param name="length">How long the ban will last.</param>
-        /// <param name="reason">The reason for the ban. Strings longer than 255 characters will be truncated.</param>
+        /// <param name="reason">The reason for the ban.</param>
         /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
         /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be added.</param>
         /// <returns>
         /// True if the ban was successfully added; otherwise false.
         /// </returns>
-        public bool TryAddBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy, out string failReason)
+        public bool TryAddAccountBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy,
+                                     out BanManagerFailReason failReason)
         {
             // Check the parameters
             if (length.TotalMilliseconds < 0)
             {
-                failReason = "Invalid ban length - cannot use a negative time span.";
+                failReason = BanManagerFailReason.NegativeBanDuration;
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason);
+                    log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason.GetDetailedString());
                 return false;
             }
 
             if (string.IsNullOrEmpty(reason))
             {
-                failReason = "A valid reason must be given.";
+                failReason = BanManagerFailReason.NoReasonProvided;
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason);
+                    log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason.GetDetailedString());
                 return false;
             }
 
             if (string.IsNullOrEmpty(issuedBy))
             {
-                failReason = "A valid ban issuer must be given.";
+                failReason = BanManagerFailReason.NoIssuerProvided;
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason);
+                    log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason.GetDetailedString());
                 return false;
             }
 
@@ -159,21 +178,19 @@ namespace NetGore.Features.Banning
             {
                 if (!TryAddBanInternal(accountID, length, reason, issuedBy, out failReason))
                 {
-                    if (string.IsNullOrEmpty(failReason))
-                        failReason = "[Unspecified failure]";
-
                     if (log.IsInfoEnabled)
-                        log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason);
+                        log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason.GetDetailedString());
 
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                failReason = ex.Message;
+                failReason = BanManagerFailReason.ExceptionOccured;
 
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Failed to ban account `{0}`: {1}", accountID, failReason);
+                    log.InfoFormat("Failed to ban account `{0}`: {1}. Exception: {2}", accountID, failReason.GetDetailedString(),
+                                   ex);
 
                 return false;
             }
@@ -182,14 +199,102 @@ namespace NetGore.Features.Banning
             OnAccountBanned(accountID);
 
             if (AccountBanned != null)
-                AccountBanned(this, accountID);
+                AccountBanned(this, accountID, length, reason, issuedBy);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Successfully banned account `{0}` (length: {1}; reason: {2}; issuedBy: {3}).", accountID, length,
                                reason, issuedBy);
 
-            failReason = null;
+            failReason = BanManagerFailReason.Unknown;
             return true;
+        }
+
+        /// <summary>
+        /// Tries to add a ban to an account.
+        /// </summary>
+        /// <param name="accountName">The name of the account to ban.</param>
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        /// <returns>True if the ban was successfully added; otherwise false.</returns>
+        public bool TryAddAccountBan(string accountName, TimeSpan length, string reason, string issuedBy)
+        {
+            BanManagerFailReason failReason;
+            return TryAddAccountBan(accountName, length, reason, issuedBy, out failReason);
+        }
+
+        /// <summary>
+        /// Tries to add a ban to an account.
+        /// </summary>
+        /// <param name="accountName">The name of the account to ban.</param>
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be added.</param>
+        /// <returns>
+        /// True if the ban was successfully added; otherwise false.
+        /// </returns>
+        public bool TryAddAccountBan(string accountName, TimeSpan length, string reason, string issuedBy,
+                                     out BanManagerFailReason failReason)
+        {
+            // Get the account ID
+            TAccountID accountID;
+            if (!TryGetAccountIDFromAccountName(accountName, out accountID))
+            {
+                const string errmsg = "Failed to ban account `{0}`: {1}";
+                failReason = BanManagerFailReason.InvalidAccount;
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, accountName, failReason.GetDetailedString());
+                return false;
+            }
+
+            // Ban the account by ID
+            return TryAddAccountBan(accountID, length, reason, issuedBy, out failReason);
+        }
+
+        /// <summary>
+        /// Tries to add a ban to an account by specifying the user's name.
+        /// </summary>
+        /// <param name="userName">The name of the user to ban.</param>
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be added.</param>
+        /// <returns>
+        /// True if the ban was successfully added; otherwise false.
+        /// </returns>
+        public bool TryAddUserBan(string userName, TimeSpan length, string reason, string issuedBy,
+                                  out BanManagerFailReason failReason)
+        {
+            // Get the account ID
+            TAccountID accountID;
+            if (!TryGetAccountIDFromUserName(userName, out accountID))
+            {
+                const string errmsg = "Failed to ban user `{0}`: {1}";
+                failReason = BanManagerFailReason.InvalidUser;
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, userName, failReason.GetDetailedString());
+                return false;
+            }
+
+            // Ban the account by ID
+            return TryAddAccountBan(accountID, length, reason, issuedBy, out failReason);
+        }
+
+        /// <summary>
+        /// Tries to add a ban to an account by specifying the user's name.
+        /// </summary>
+        /// <param name="userName">The name of the user to ban.</param>
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        /// <returns>
+        /// True if the ban was successfully added; otherwise false.
+        /// </returns>
+        public bool TryAddUserBan(string userName, TimeSpan length, string reason, string issuedBy)
+        {
+            BanManagerFailReason failReason;
+            return TryAddUserBan(userName, length, reason, issuedBy, out failReason);
         }
 
         #endregion

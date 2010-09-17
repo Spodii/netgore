@@ -103,6 +103,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banning\BanManagerFailReason.cs" />
+    <Compile Include="Banning\BanManagerFailReasonExtensions.cs" />
     <Compile Include="Banning\BanningManagerAccountBannedEventHandler.cs" />
     <Compile Include="Banning\BanningManagerBase.cs" />
     <Compile Include="Banning\IBanningManager.cs" />

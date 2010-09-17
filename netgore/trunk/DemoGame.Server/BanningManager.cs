@@ -39,12 +39,40 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the bans for an account.
         /// </summary>
+        /// <param name="accountName">The name of the account to get the bans for.</param>
+        /// <returns>The bans for the given <paramref name="accountName"/>.</returns>
+        public IEnumerable<IAccountBanTable> GetAccountBanInfo(string accountName)
+        {
+            AccountID accID;
+            if (!TryGetAccountIDFromAccountName(accountName, out accID))
+                return Enumerable.Empty<IAccountBanTable>();
+
+            return GetAccountBanInfo(accID);
+        }
+
+        /// <summary>
+        /// Gets the bans for an account.
+        /// </summary>
         /// <param name="accountID">The ID of the account to get the bans for.</param>
         /// <returns>The bans for the given <paramref name="accountID"/>.</returns>
-        public IEnumerable<IAccountBanTable> GetBanInfo(AccountID accountID)
+        public IEnumerable<IAccountBanTable> GetAccountBanInfo(AccountID accountID)
         {
             var q = DbController.GetQuery<SelectAccountBansQuery>();
             return q.Execute(accountID);
+        }
+
+        /// <summary>
+        /// Gets the bans for an account.
+        /// </summary>
+        /// <param name="username">The name of the user to get the bans for.</param>
+        /// <returns>The bans placed on the account.</returns>
+        public IEnumerable<IAccountBanTable> GetUserBanInfo(string username)
+        {
+            AccountID accID;
+            if (!TryGetAccountIDFromUserName(username, out accID))
+                return Enumerable.Empty<IAccountBanTable>();
+
+            return GetAccountBanInfo(accID);
         }
 
         /// <summary>
@@ -62,26 +90,74 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="accountID">The account to add the ban to.</param>
         /// <param name="length">How long the ban will last.</param>
-        /// <param name="reason">The reason for the ban. Strings longer than 255 characters will be truncated.</param>
+        /// <param name="reason">The reason for the ban.</param>
         /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
         /// <param name="failReason">When this method returns false, contains the reason why the ban failed to be added.</param>
         /// <returns>
         /// True if the ban was successfully added; otherwise false.
         /// </returns>
         protected override bool TryAddBanInternal(AccountID accountID, TimeSpan length, string reason, string issuedBy,
-                                                  out string failReason)
+                                                  out BanManagerFailReason failReason)
         {
             var q = DbController.GetQuery<InsertAccountBanQuery>();
             var rowsAffected = q.Execute(accountID, length, reason, issuedBy);
 
             if (rowsAffected == 0)
             {
-                failReason = "Failed to insert the row into the database.";
+                failReason = BanManagerFailReason.FailedToAddToDatabase;
                 return false;
             }
             else
             {
-                failReason = null;
+                failReason = BanManagerFailReason.Unknown;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the ID of an account from the account's name.
+        /// </summary>
+        /// <param name="accountName">The name of the account.</param>
+        /// <param name="accountID">When this method returns true, contains the ID of the account for the given
+        /// <paramref name="accountName"/>.</param>
+        /// <returns>True if the ID of the account for the given <paramref name="accountName"/> was found; otherwise false.</returns>
+        protected override bool TryGetAccountIDFromAccountName(string accountName, out AccountID accountID)
+        {
+            var query = DbController.GetQuery<SelectAccountIDFromNameQuery>();
+            var acc = query.Execute(accountName);
+
+            if (!acc.HasValue)
+            {
+                accountID = new AccountID(0);
+                return false;
+            }
+            else
+            {
+                accountID = acc.Value;
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the ID of an account from the user's name.
+        /// </summary>
+        /// <param name="userName">The name of the user to get the account of.</param>
+        /// <param name="accountID">When this method returns true, contains the ID of the account for the given
+        /// <paramref name="userName"/>.</param>
+        /// <returns>True if the ID of the account for the given <paramref name="userName"/> was found; otherwise false.</returns>
+        protected override bool TryGetAccountIDFromUserName(string userName, out AccountID accountID)
+        {
+            var query = DbController.GetQuery<SelectUserByNameQuery>();
+            var chr = query.Execute(userName);
+
+            if (chr == null || !chr.AccountID.HasValue)
+            {
+                accountID = new AccountID(0);
+                return false;
+            }
+            else
+            {
+                accountID = chr.AccountID.Value;
                 return true;
             }
         }

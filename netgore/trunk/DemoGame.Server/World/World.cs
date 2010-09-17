@@ -190,7 +190,10 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="accountID">The account that was banned.</param>
-        void BanningManager_AccountBanned(IBanningManager<AccountID> sender, AccountID accountID)
+        /// <param name="length">How long the ban will last.</param>
+        /// <param name="reason">The reason for the ban.</param>
+        /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
+        void BanningManager_AccountBanned(IBanningManager<AccountID> sender, AccountID accountID, TimeSpan length, string reason, string issuedBy)
         {
             // If the user is online, disconnect them
 
@@ -213,7 +216,7 @@ namespace DemoGame.Server
                 if (acc.ID != accountID)
                     continue;
 
-                c.DelayedDispose();
+                acc.Dispose(GameMessage.DisconnectedBanned, length.TotalMinutes, reason);
             }
         }
 
@@ -288,7 +291,7 @@ namespace DemoGame.Server
         /// <returns>
         /// User bound to the connection if any, else null.
         /// </returns>
-        public User GetUser(IIPSocket conn, bool errorOnFailure)
+        public static User GetUser(IIPSocket conn, bool errorOnFailure)
         {
             var userAccount = GetUserAccount(conn);
             if (userAccount == null)
@@ -305,18 +308,7 @@ namespace DemoGame.Server
                     log.Error(errmsg);
             }
 
-            // No user bound to connection, perform manual search
-            var ret = _users.Values.FirstOrDefault(x => x.Conn == conn);
-            if (ret == null && errorOnFailure)
-            {
-                const string errmsg2 = "No user found on socket `{0}`.";
-                Debug.Fail(string.Format(errmsg2, conn));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg2, conn);
-            }
-
-            // Return value, which will be null if none found
-            return ret;
+            return null;
         }
 
         /// <summary>
