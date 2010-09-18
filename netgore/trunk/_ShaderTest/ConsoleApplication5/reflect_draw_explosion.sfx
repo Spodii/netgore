@@ -1,0 +1,51 @@
+// The distance multiplier to apply to the values unpacked from channels to get the offset. This decreases our resolution,
+// giving us a choppier image, but increases our range. Lower values give higher resolution but require smaller distances.
+// This MUST be the same in all the reflect_* effect files!
+const float DistanceMultiplier = 2.0;
+
+// The value of the reflection channels that will be used to not perform any reflection. Having this non-zero allows us to
+// reflect in both directions instead of just borrowing pixels in one direction. Of course, this also halves our max distance.
+// Logically, this value is 1/2. However, a slightly different number is used due to the behavior of floating-point numbers.
+// This MUST be the same in all the reflect_* effect files!
+const float BaseOffset = 0.4981;
+
+// The maximum alpha value allowed.
+const float MaxAlpha = 1.00;
+
+// The alpha multiplier. Greater values keep at MaxAlpha for longer, but fade out much faster.
+// Too low of values will just end up not reaching MaxAlpha, or not reaching it for long.
+const float AlphaMultiplier = 2.0;
+
+// A multiplier used on the distortion vector values to determine the intensity. A value of 1.0f will result
+// in using a distortion equal to that in the source noise image. Its recommended you manually edit the noise
+// texture's R and G channels to alter the intensity, but this value can still be used to give different intensities
+// to the same texture.
+uniform float Intensity = 0.1;
+
+// The maximum expected age of the effect. Unit does not matter as long as it is consistent.
+uniform float MaxAge = 2000.0;
+
+// The current age of the effect. Unit does not matter as long as it is consistent.
+uniform float Age;
+
+// The texture used to generate the noise.
+uniform sampler2D NoiseTexture;
+
+void main (void)
+{
+	vec4 noiseVec;
+	vec2 noiseXYVec;
+	float a;
+
+	// Get the noise from the texture
+	noiseVec = texture2D(NoiseTexture, gl_TexCoord[0].st);
+
+	// Calculate the noise vector
+	noiseXYVec = (noiseVec.xy / DistanceMultiplier) * Intensity;
+
+	// Calculate the alpha, which will let us fade out smoothly before the effect ends
+	a = clamp(noiseVec.a * AlphaMultiplier * ((MaxAge - Age) / MaxAge), 0.0f, MaxAlpha);
+
+	// Apply the coloring, using the transformation directly and unaltered from the noise texture
+	gl_FragColor = vec4(noiseXYVec.x, noiseXYVec.y, 0.0f, a);
+}
