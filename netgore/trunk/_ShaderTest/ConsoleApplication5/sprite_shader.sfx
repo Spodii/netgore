@@ -1,0 +1,17 @@
+// The input texture.
+uniform sampler2D tex;
+
+void main()
+{
+	// Get the color of the input texture, multiplied by the specified color.
+	vec4 pixel = texture2D(tex, gl_TexCoord[0].xy) * gl_Color;
+
+	// Get the average of the RGB channels.
+	float gray = (pixel.r + pixel.g + pixel.b) / 3.0;
+
+	// Apply the average of the RGB channels back to the RGB channels.
+	gl_FragColor = gray;
+
+	// Restore the original alpha value.
+	gl_FragColor.a = pixel.a;
+}
