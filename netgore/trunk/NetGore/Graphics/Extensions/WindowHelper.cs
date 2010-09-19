@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using log4net;
 using SFML;
@@ -31,76 +32,87 @@ namespace NetGore.Graphics
         /// </returns>
         public static RenderImage CreateBufferRenderImage(this Window w, RenderImage ri = null, bool disposeExisting = true)
         {
-            // Check if the provided RenderImage works for our needs
-            var mustRecreate = false;
             try
             {
-                if (ri == null || ri.IsDisposed || ri.Width != w.Width || ri.Height != w.Height)
-                    mustRecreate = true;
-            }
-            catch (InvalidOperationException)
-            {
-                mustRecreate = true;
-            }
-
-            // Create the buffer RenderImage if needed
-            if (!mustRecreate)
-                return ri;
-
-            // If there is an old Image, make sure to dispose of it... or at least try to
-            if (ri != null && disposeExisting)
-            {
+                // Check if the provided RenderImage works for our needs
+                var mustRecreate = false;
                 try
                 {
-                    if (!ri.IsDisposed)
-                        ri.Dispose();
+                    if (ri == null || ri.IsDisposed || ri.Width != w.Width || ri.Height != w.Height)
+                        mustRecreate = true;
                 }
                 catch (InvalidOperationException)
                 {
-                    // Ignore failure to dispose
+                    mustRecreate = true;
+                }
+
+                // Create the buffer RenderImage if needed
+                if (!mustRecreate)
+                    return ri;
+
+                // If there is an old Image, make sure to dispose of it... or at least try to
+                if (ri != null && disposeExisting)
+                {
+                    try
+                    {
+                        if (!ri.IsDisposed)
+                            ri.Dispose();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Ignore failure to dispose
+                    }
+                }
+
+                // Get the size to make the light map (same size of the window)
+                int width;
+                int height;
+                try
+                {
+                    width = (int)w.Width;
+                    height = (int)w.Height;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    const string errmsg =
+                        "Failed to create window buffer render image" +
+                        " - failed to get Window width/height. Will attempt again next frame. Exception: {0}";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+                    return null;
+                }
+
+                // Check for a valid RenderWindow size. These can be 0 when the RenderWindow has been minimized.
+                if (width <= 0 || height <= 0)
+                {
+                    const string errmsg =
+                        "Unable to create window buffer render image" +
+                        " - invalid Width/Height ({0},{1}) returned from Window. Most likely, the form was minimized.";
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat(errmsg, width, height);
+                    return null;
+                }
+
+                // Create the new Image
+                try
+                {
+                    ri = new RenderImage(w.Width, w.Height);
+                }
+                catch (LoadingFailedException ex)
+                {
+                    const string errmsg =
+                        "Failed to create window buffer render image" + " - construction of Image failed. Exception: {0}";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+                    return null;
                 }
             }
-
-            // Get the size to make the light map (same size of the window)
-            int width;
-            int height;
-            try
+            catch (Exception ex)
             {
-                width = (int)w.Width;
-                height = (int)w.Height;
-            }
-            catch (InvalidOperationException ex)
-            {
-                const string errmsg =
-                    "Failed to create window buffer render image" +
-                    " - failed to get Window width/height. Will attempt again next frame. Exception: {0}";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, ex);
-                return null;
-            }
-
-            // Check for a valid RenderWindow size. These can be 0 when the RenderWindow has been minimized.
-            if (width <= 0 || height <= 0)
-            {
-                const string errmsg =
-                    "Unable to create window buffer render image" +
-                    " - invalid Width/Height ({0},{1}) returned from Window. Most likely, the form was minimized.";
-                if (log.IsInfoEnabled)
-                    log.InfoFormat(errmsg, width, height);
-                return null;
-            }
-
-            // Create the new Image
-            try
-            {
-                ri = new RenderImage(w.Width, w.Height);
-            }
-            catch (LoadingFailedException ex)
-            {
-                const string errmsg =
-                    "Failed to create window buffer render image" + " - construction of Image failed. Exception: {0}";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, ex);
+                const string errmsg = "Completely unexpected exception in CreateBufferRenderImage. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+                Debug.Fail(string.Format(errmsg, ex));
                 return null;
             }
 
