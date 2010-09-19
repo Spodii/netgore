@@ -12,14 +12,32 @@ namespace NetGore.Graphics
     /// </summary>
     public class DrawingManager : IDrawingManager
     {
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Cache of <see cref="RenderImage.IsAvailable"/>. If false, we have to change the behavior a bit to render without
+        /// using a <see cref="RenderImage"/>.
+        /// </summary>
+        static readonly bool _supportsRenderImage;
+
         readonly ILightManager _lightManager;
+        readonly IRefractionManager _refractionManager;
         readonly SFML.Graphics.Sprite _lightMapSprite;
         readonly RenderWindow _rw;
         readonly ISpriteBatch _sb;
 
         Image _lightMap;
         DrawingManagerState _state = DrawingManagerState.Idle;
+
+        /// <summary>
+        /// Initializes the <see cref="DrawingManager"/> class.
+        /// </summary>
+        static DrawingManager()
+        {
+            // TODO: !! Add support for a DrawingManager that doesn't need RenderImage
+            _supportsRenderImage = RenderImage.IsAvailable;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingManager"/> class.
@@ -38,9 +56,14 @@ namespace NetGore.Graphics
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _lightManager = CreateLightManager();
+            _refractionManager = CreateRefractionManager();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            _lightManager.Initialize(_rw);
+            if (_lightManager != null)
+                _lightManager.Initialize(_rw);
+
+            if (_refractionManager != null)
+                _refractionManager.Initialize(_rw);
         }
 
         /// <summary>
@@ -50,6 +73,15 @@ namespace NetGore.Graphics
         protected virtual ILightManager CreateLightManager()
         {
             return new LightManager();
+        }
+
+        /// <summary>
+        /// Creates the <see cref="IRefractionManager"/> to use.
+        /// </summary>
+        /// <returns>The <see cref="IRefractionManager"/> to use.</returns>
+        protected virtual IRefractionManager CreateRefractionManager()
+        {
+            return new RefractionManager();
         }
 
         /// <summary>
@@ -72,6 +104,9 @@ namespace NetGore.Graphics
 
             if (_lightMapSprite != null)
                 _lightMapSprite.Dispose();
+
+            if (_refractionManager != null)
+                _refractionManager.Dispose();
         }
 
         /// <summary>
@@ -96,6 +131,14 @@ namespace NetGore.Graphics
         public ILightManager LightManager
         {
             get { return _lightManager; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IRefractionManager"/> used by this <see cref="IDrawingManager"/>.
+        /// </summary>
+        public IRefractionManager RefractionManager
+        {
+            get { return _refractionManager; }
         }
 
         /// <summary>

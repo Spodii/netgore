@@ -700,8 +700,20 @@ namespace DemoGame.Client
             _userLight.IsEnabled = true;
             _userLight.Teleport(UserChar.Position);
 
+            if (rndTmp.Next(0, 1000) == 0 && UserChar != null)
+            {
+                // TODO: !! Temp
+                var gi = GrhInfo.GetData("Textures", "explosion01");
+                var gd = new Grh(gi);
+                var fx = new ExplosionRefractionEffect(gd, UserChar);
+                DrawingManager.RefractionManager.Add(fx);
+            }
+
+
             base.Update(gameTime);
         }
+
+        SafeRandom rndTmp = new SafeRandom();
 
         void World_MapChanged(World world, Map oldMap, Map newMap)
         {

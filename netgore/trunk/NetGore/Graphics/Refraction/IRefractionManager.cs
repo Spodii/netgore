@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NetGore.IO;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace NetGore.Graphics
 {
@@ -14,9 +15,14 @@ namespace NetGore.Graphics
     {
         /// <summary>
         /// Gets or sets if this <see cref="IRefractionManager"/> is enabled.
-        /// If <see cref="Shader.IsAvailable"/> is false, this will always be false.
+        /// If <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this will always be false.
         /// </summary>
         bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Shader"/> to use to draw the refraction map.
+        /// </summary>
+        Shader Shader { get; set; }
 
         /// <summary>
         /// Gets if the <see cref="IRefractionManager"/> has been initialized.
@@ -28,9 +34,9 @@ namespace NetGore.Graphics
         /// can take place, but does not need to be drawn before <see cref="IRefractionEffect"/> are added to or removed
         /// from the collection.
         /// </summary>
-        /// <param name="renderWindow">The <see cref="RenderWindow"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="renderWindow"/> is null.</exception>
-        void Initialize(RenderWindow renderWindow);
+        /// <param name="window">The <see cref="Window"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="window"/> is null.</exception>
+        void Initialize(Window window);
 
         /// <summary>
         /// Draws all of the reflection effects in this <see cref="IRefractionManager"/>.
@@ -42,6 +48,14 @@ namespace NetGore.Graphics
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="IRefractionManager.IsInitialized"/> is false.</exception>
         Image Draw(ICamera2D camera);
+
+        /// <summary>
+        /// Draws the refraction map to a <see cref="RenderTarget"/>.
+        /// </summary>
+        /// <param name="camera">The camera describing the current view.</param>
+        /// <param name="target">The <see cref="RenderTarget"/> to draw the refraction map to.</param>
+        /// <param name="refractionMap">The refraction map to draw. If null, one will be generated.</param>
+        void DrawToTarget(ICamera2D camera, RenderTarget target, Image refractionMap = null);
 
         /// <summary>
         /// Updates the <see cref="IDrawingManager"/> and all components inside of it.
