@@ -1,167 +1,77 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore.Collections;
-using SFML;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace NetGore.Graphics
 {
-    /// <summary>
-    /// Manages multiple <see cref="ILight"/>s and the generation of the light map.
-    /// </summary>
-    public class LightManager : VirtualList<ILight>, ILightManager
+    public class LightManager : OffscreenRenderBufferManagerBase, ILightManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        Color _ambient;
+        readonly List<ILight> _list = new List<ILight>();
         Grh _defaultSprite;
-        Image _lightMap;
-        RenderWindow _rw;
-        ISpriteBatch _sb;
+
+        bool _isEnabled;
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        /// Initializes a new instance of the <see cref="LightManager"/> class.
         /// </summary>
-        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
-        /// only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposeManaged)
+        public LightManager()
         {
-            if (!disposeManaged)
-                return;
-
-            if (_lightMap != null && !_lightMap.IsDisposed)
-                _lightMap.Dispose();
+            // Try to enable
+            IsEnabled = true;
         }
 
         /// <summary>
-        /// Draws all of the lights in this <see cref="ILightManager"/>.
+        /// Gets or sets if this <see cref="ILightManager"/> is enabled.
+        /// If <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this will always be false.
         /// </summary>
-        /// <param name="camera">The camera describing the current view.</param>
-        /// <param name="recursionCount">The recursion count. When this number reaches its limit, any recursion
-        /// this method may normally do will not be attempted. Should be initially set to 0.</param>
-        /// <returns>
-        /// The <see cref="Image"/> containing the light map. If the light map failed to be generated
-        /// for whatever reason, a null value will be returned instead.
-        /// </returns>
-        /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
-        Image DrawInternal(ICamera2D camera, int recursionCount)
+        public bool IsEnabled
         {
-            // Check for too much recursion
-            if (++recursionCount > 8)
-                return null;
+            get { return _isEnabled; }
+            set
+            {
+                if (_isEnabled == value)
+                    return;
 
-            if (!IsInitialized)
-                throw new InvalidOperationException("You must initialize the ILightManager before drawing.");
+                // When going from disabled to enabled, make sure that shaders are supported
+                if (value && !Shader.IsAvailable)
+                {
+                    const string errmsg = "Cannot enable ILightManager since Shader.IsAvailable returned false.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg);
+                    return;
+                }
 
-            // Ensure the light map is ready
-            if (!PrepareLightMap())
-                return null;
+                _isEnabled = value;
+            }
+        }
 
-            // Clear the buffer with the ambient light color
-            _rw.Clear(Ambient);
-
+        /// <summary>
+        /// When overridden in the derived class, handles drawing to the buffer.
+        /// </summary>
+        /// <param name="rt">The <see cref="RenderTarget"/> to draw to.</param>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw to the <paramref name="rt"/>. The derived class
+        /// is required to handle making Begin()/End() calls on it.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> to use when drawing.</param>
+        /// <returns>True if the drawing was successful; false if there were any errors while drawing.</returns>
+        protected override bool HandleDrawBuffer(RenderTarget rt, ISpriteBatch sb, ICamera2D camera)
+        {
             // Draw the lights
-            _sb.Begin(BlendMode.Add, camera);
+            sb.Begin(BlendMode.Add, camera);
 
             foreach (var light in this)
             {
                 // TODO: Optimize by only drawing lights actually in view
-                light.Draw(_sb);
+                light.Draw(sb);
             }
 
-            _sb.End();
-
-            // Copy the screen buffer onto the light map image
-            if (!_lightMap.CopyScreen(_rw))
-                return null;
-
-            return _lightMap;
-        }
-
-        /// <summary>
-        /// Ensures the <see cref="_lightMap"/> <see cref="Image"/> is all ready.
-        /// </summary>
-        /// <returns>True if the light map <see cref="Image"/> was prepared; false if there was some issue in preparing the
-        /// <see cref="Image"/> and drawing cannot continue.</returns>
-        bool PrepareLightMap()
-        {
-            // TODO: !! Use WindowHelper.CreateBufferRenderImage();
-            // Ensure the light map is created and of the needed size
-            var mustRecreateLightMap = false;
-            try
-            {
-                if (_lightMap == null || _lightMap.IsDisposed || _lightMap.Width != _rw.Width || _lightMap.Height != _rw.Height)
-                    mustRecreateLightMap = true;
-            }
-            catch (InvalidOperationException)
-            {
-                mustRecreateLightMap = true;
-            }
-
-            // TODO: !! Use a RenderImage to draw the lights onto instead of drawing to the screen then copying back
-
-            // Create the light map Image if needed
-            if (mustRecreateLightMap)
-            {
-                // If there is an old Image, make sure to dispose of it... or at least try to
-                if (_lightMap != null)
-                {
-                    try
-                    {
-                        if (!_lightMap.IsDisposed)
-                            _lightMap.Dispose();
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        // Ignore failure to dispose
-                    }
-                }
-
-                // Get the size to make the light map (same size of the window)
-                int width;
-                int height;
-                try
-                {
-                    width = (int)_rw.Width;
-                    height = (int)_rw.Height;
-                }
-                catch (InvalidOperationException ex)
-                {
-                    const string errmsg =
-                        "Failed to create light map Image - failed to get RenderWindow width/height. Will attempt again next frame. Exception: {0}";
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, ex);
-                    return false;
-                }
-
-                // Check for a valid RenderWindow size. These can be 0 when the RenderWindow has been minimized.
-                if (width <= 0 || height <= 0)
-                {
-                    if (log.IsDebugEnabled)
-                    {
-                        log.DebugFormat(
-                            "Unable to recreate LightMap - invalid Width/Height ({0},{1}) returned from RenderWindow. Most likely, the form was minimized.",
-                            width, height);
-                    }
-                    return false;
-                }
-
-                // Create the new Image
-                try
-                {
-                    _lightMap = new Image(_rw.Width, _rw.Height) { Smooth = false };
-                }
-                catch (LoadingFailedException ex)
-                {
-                    const string errmsg =
-                        "Failed to create light map Image - construction of Image failed. Will attempt again next frame. Exception: {0}";
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, ex);
-                    return false;
-                }
-            }
+            sb.End();
 
             return true;
         }
@@ -169,12 +79,42 @@ namespace NetGore.Graphics
         #region ILightManager Members
 
         /// <summary>
+        /// Gets or sets the element at the specified index.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// The element at the specified index.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the
+        /// <see cref="T:System.Collections.Generic.IList`1"/>.
+        /// </exception>
+        /// <exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"/>
+        /// is read-only.
+        /// </exception>
+        public ILight this[int index]
+        {
+            get { return _list[index]; }
+            set { _list[index] = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the ambient light color. The alpha value has no affect and will always be set to 255.
         /// </summary>
         public Color Ambient
         {
-            get { return _ambient; }
-            set { _ambient = new Color(value.R, value.G, value.B, 255); }
+            get { return BufferClearColor; }
+            set { BufferClearColor = new Color(value, byte.MaxValue); }
+        }
+
+        /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        /// <returns>
+        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </returns>
+        public int Count
+        {
+            get { return _list.Count; }
         }
 
         /// <summary>
@@ -202,34 +142,84 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets if the <see cref="ILightManager"/> has been initialized.
+        /// Gets if the <see cref="IRefractionManager"/> has been initialized.
         /// </summary>
         public bool IsInitialized
         {
-            get { return _rw != null; }
+            get { return IsBufferInitialized; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </summary>
+        /// <returns>
+        /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
+        /// </returns>
+        bool ICollection<ILight>.IsReadOnly
+        {
+            get { return false; }
         }
 
         /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
-        public override void Add(ILight item)
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </exception>
+        public void Add(ILight item)
         {
             if (item.Sprite == null)
                 item.Sprite = DefaultSprite;
 
-            if (!Contains(item))
-                base.Add(item);
+            if (!_list.Contains(item))
+                _list.Add(item);
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
-        public void Dispose()
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </exception>
+        public void Clear()
         {
-            Dispose(true);
+            _list.Clear();
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <returns>
+        /// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
+        /// </returns>
+        public bool Contains(ILight item)
+        {
+            return _list.Contains(item);
+        }
+
+        /// <summary>
+        /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>,
+        /// starting at a particular <see cref="T:System.Array"/> index.
+        /// </summary>
+        /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from
+        /// <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.
+        /// </exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.
+        /// </exception>
+        /// <exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.
+        /// -or-
+        /// <paramref name="arrayIndex"/> is equal to or greater than the length of <paramref name="array"/>.
+        /// -or-
+        /// The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the
+        /// available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
+        /// -or-
+        /// Type <see cref="ILight"/> cannot be cast automatically to the type of the destination <paramref name="array"/>.
+        /// </exception>
+        public void CopyTo(ILight[] array, int arrayIndex)
+        {
+            _list.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -243,7 +233,64 @@ namespace NetGore.Graphics
         /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
         public Image Draw(ICamera2D camera)
         {
-            return DrawInternal(camera, 0);
+            return GetBuffer(camera);
+        }
+
+        /// <summary>
+        /// Draws the light map to a <see cref="RenderTarget"/>.
+        /// </summary>
+        /// <param name="camera">The camera describing the current view.</param>
+        /// <param name="target">The <see cref="RenderTarget"/> to draw the light map to.</param>
+        public void DrawToTarget(ICamera2D camera, RenderTarget target)
+        {
+            DrawBufferToTarget(target, camera);
+        }
+
+        /// <summary>
+        /// Prepares the <see cref="SFML.Graphics.Sprite"/> used to draw to a <see cref="RenderTarget"/>.
+        /// </summary>
+        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> to prepare.</param>
+        /// <param name="target">The <see cref="RenderTarget"/> begin drawn to.</param>
+        protected override void PrepareDrawToTargetSprite(SFML.Graphics.Sprite sprite, RenderTarget target)
+        {
+            base.PrepareDrawToTargetSprite(sprite, target);
+
+            // Always use alpha blending
+            sprite.BlendMode = BlendMode.Multiply;
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<ILight> GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"/>.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+        /// <returns>
+        /// The index of <paramref name="item"/> if found in the list; otherwise, -1.
+        /// </returns>
+        public int IndexOf(ILight item)
+        {
+            return _list.IndexOf(item);
         }
 
         /// <summary>
@@ -251,22 +298,55 @@ namespace NetGore.Graphics
         /// can take place, but does not need to be drawn before <see cref="ILight"/> are added to or removed
         /// from the collection.
         /// </summary>
-        /// <param name="renderWindow">The <see cref="RenderWindow"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="renderWindow"/> is null.</exception>
-        public void Initialize(RenderWindow renderWindow)
+        /// <param name="window">The <see cref="Window"/>.</param>
+        public void Initialize(Window window)
         {
-            if (renderWindow == null)
-                throw new ArgumentNullException("renderWindow");
+            InitializeRenderBuffer(window);
+        }
 
-            if (_lightMap != null && !_lightMap.IsDisposed)
-                _lightMap.Dispose();
+        /// <summary>
+        /// Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
+        /// <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the
+        /// <see cref="T:System.Collections.Generic.IList`1"/>.
+        /// </exception>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.
+        /// </exception>
+        public void Insert(int index, ILight item)
+        {
+            _list.Insert(index, item);
+        }
 
-            if (_sb != null && !_sb.IsDisposed)
-                _sb.Dispose();
+        /// <summary>
+        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+        /// <returns>
+        /// true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>;
+        /// otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original
+        /// <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </returns>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
+        /// </exception>
+        public bool Remove(ILight item)
+        {
+            return _list.Remove(item);
+        }
 
-            _rw = renderWindow;
-
-            _sb = new RoundedSpriteBatch(renderWindow);
+        /// <summary>
+        /// Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based index of the item to remove.</param>
+        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in
+        /// the <see cref="T:System.Collections.Generic.IList`1"/>.
+        /// </exception>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.
+        /// </exception>
+        public void RemoveAt(int index)
+        {
+            _list.RemoveAt(index);
         }
 
         /// <summary>

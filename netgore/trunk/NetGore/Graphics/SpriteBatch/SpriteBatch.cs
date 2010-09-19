@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text;
 using SFML.Graphics;
@@ -77,6 +78,16 @@ namespace NetGore.Graphics
             get { return _isDisposed; }
         }
 
+        bool _isStarted;
+
+        /// <summary>
+        /// Gets if this <see cref="ISpriteBatch"/> is currently inbetween calls to Begin() and End().
+        /// </summary>
+        public bool IsStarted
+        {
+            get { return _isStarted; }
+        }
+
         /// <summary>
         /// Gets or sets the name of this sprite batch.
         /// </summary>
@@ -115,6 +126,8 @@ namespace NetGore.Graphics
             TryRefreshCurrentView(_rt);
 
             _sprite.BlendMode = blendMode;
+
+            _isStarted = true;
         }
 
         /// <summary>
@@ -126,6 +139,8 @@ namespace NetGore.Graphics
         public virtual void Begin(BlendMode blendMode, ICamera2D camera)
         {
             Begin(blendMode, camera.Size, camera.Min + (camera.Size / 2f), camera.Rotation);
+
+            _isStarted = true;
         }
 
         /// <summary>
@@ -144,6 +159,8 @@ namespace NetGore.Graphics
             TryRefreshCurrentView(_rt);
 
             _sprite.BlendMode = blendMode;
+
+            _isStarted = true;
         }
 
         /// <summary>
@@ -468,6 +485,7 @@ namespace NetGore.Graphics
         /// </summary>
         public virtual void End()
         {
+            _isStarted = false;
         }
 
         #endregion

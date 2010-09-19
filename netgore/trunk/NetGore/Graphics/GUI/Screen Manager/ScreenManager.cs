@@ -92,7 +92,7 @@ namespace NetGore.Graphics.GUI
             _fps.Update(gameTime);
 
             // Clear the screen
-            _game.Clear(DrawingManager.ClearColor);
+            _game.Clear(DrawingManager.BackgroundColor);
 
             // Draw the active screen
             if (_activeScreen != null)
