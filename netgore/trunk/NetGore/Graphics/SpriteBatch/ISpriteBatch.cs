@@ -21,6 +21,11 @@ namespace NetGore.Graphics
         bool IsDisposed { get; }
 
         /// <summary>
+        /// Gets or sets the <see cref="RenderTarget"/> that this <see cref="SpriteBatch"/> is drawing to.
+        /// </summary>
+        RenderTarget RenderTarget { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of this sprite batch.
         /// </summary>
         string Name { set; get; }
