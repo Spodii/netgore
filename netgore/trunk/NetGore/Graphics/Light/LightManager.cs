@@ -87,6 +87,7 @@ namespace NetGore.Graphics
         /// <see cref="Image"/> and drawing cannot continue.</returns>
         bool PrepareLightMap()
         {
+            // TODO: !! Use WindowHelper.CreateBufferRenderImage();
             // Ensure the light map is created and of the needed size
             var mustRecreateLightMap = false;
             try
