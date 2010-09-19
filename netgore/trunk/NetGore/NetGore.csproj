@@ -181,6 +181,9 @@
     <Compile Include="Core\ExceptionSwallower.cs" />
     <Compile Include="Graphics\GUI\Controls\InputBox.cs" />
     <Compile Include="Graphics\GUI\Controls\TextEventArgsFilters.cs" />
+    <Compile Include="Graphics\Refraction\ExplosionRefractionEffect.cs" />
+    <Compile Include="Graphics\Refraction\IRefractionEffect.cs" />
+    <Compile Include="Graphics\Refraction\IRefractionManager.cs" />
     <Compile Include="IO\BitStream\BitStream.IValueReader.cs" />
     <Compile Include="IO\BitStream\BitStream.IValueWriter.cs" />
     <Compile Include="IO\BitStream\BitStream.Read.cs" />
@@ -744,5 +747,6 @@
   <ItemGroup>
     <None Include="_ProjectInfo.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

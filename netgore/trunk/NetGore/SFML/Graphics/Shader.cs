@@ -163,7 +163,7 @@ namespace SFML
             /// <param name="shader">String containing the shader code</param>
             /// <exception cref="LoadingFailedException" />
             ////////////////////////////////////////////////////////////
-            void LoadFromString(string shader)
+            public void LoadFromString(string shader)
             {
                 SetThis(sfShader_CreateFromMemory(shader));
 

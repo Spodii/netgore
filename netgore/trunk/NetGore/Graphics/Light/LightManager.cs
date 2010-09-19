@@ -9,7 +9,7 @@ using SFML.Graphics;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Manages multiple <see cref="ILight"/>s.
+    /// Manages multiple <see cref="ILight"/>s and the generation of the light map.
     /// </summary>
     public class LightManager : VirtualList<ILight>, ILightManager
     {

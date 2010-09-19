@@ -6,7 +6,7 @@ using SFML.Graphics;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Interface for a manager of multiple <see cref="ILight"/>s.
+    /// Interface for a manager of multiple <see cref="ILight"/>s and the generation of the light map.
     /// </summary>
     public interface ILightManager : IList<ILight>, IDisposable
     {
