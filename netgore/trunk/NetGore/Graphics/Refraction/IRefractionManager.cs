@@ -14,6 +14,7 @@ namespace NetGore.Graphics
     {
         /// <summary>
         /// Gets or sets if this <see cref="IRefractionManager"/> is enabled.
+        /// If <see cref="Shader.IsAvailable"/> is false, this will always be false.
         /// </summary>
         bool IsEnabled { get; set; }
 

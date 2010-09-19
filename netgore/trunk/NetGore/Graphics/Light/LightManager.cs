@@ -99,6 +99,8 @@ namespace NetGore.Graphics
                 mustRecreateLightMap = true;
             }
 
+            // TODO: !! Use a RenderImage to draw the lights onto instead of drawing to the screen then copying back
+
             // Create the light map Image if needed
             if (mustRecreateLightMap)
             {
