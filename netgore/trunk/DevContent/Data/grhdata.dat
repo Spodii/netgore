@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>194</Count>
+    <Count>198</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -1748,6 +1748,42 @@
         <Source>0,0,32,32</Source>
       </Texture>
     </Item193>
+    <Item194>
+      <Index>65</Index>
+      <Categorization>Textures.explosion01</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Textures/explosion01</Name>
+        <Source>0,0,256,256</Source>
+      </Texture>
+    </Item194>
+    <Item195>
+      <Index>187</Index>
+      <Categorization>Textures.noise01</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Textures/noise01</Name>
+        <Source>0,0,256,256</Source>
+      </Texture>
+    </Item195>
+    <Item196>
+      <Index>188</Index>
+      <Categorization>Textures.water01</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Textures/water01</Name>
+        <Source>0,0,512,256</Source>
+      </Texture>
+    </Item196>
+    <Item197>
+      <Index>189</Index>
+      <Categorization>Textures.wave01</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Textures/wave01</Name>
+        <Source>0,0,512,512</Source>
+      </Texture>
+    </Item197>
   </Stationary>
   <Animated>
     <Count>0</Count>

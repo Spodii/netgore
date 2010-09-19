@@ -1,12 +1,12 @@
 // The distance multiplier to apply to the values unpacked from channels to get the offset. This decreases our resolution,
 // giving us a choppier image, but increases our range. Lower values give higher resolution but require smaller distances.
-// This MUST be the same in all the reflect_* effect files!
+// This MUST be the same in all the refraction effects!
 const float DistanceMultiplier = 2.0;
 
 // The value of the reflection channels that will be used to not perform any reflection. Having this non-zero allows us to
 // reflect in both directions instead of just borrowing pixels in one direction. Of course, this also halves our max distance.
 // Logically, this value is 1/2. However, a slightly different number is used due to the behavior of floating-point numbers.
-// This MUST be the same in all the reflect_* effect files!
+// This MUST be the same in all the refraction effects!
 const float BaseOffset = 0.4981;
 
 // The maximum alpha value allowed.

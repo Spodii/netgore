@@ -17,9 +17,9 @@ namespace NetGore.Graphics
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         const ushort _defaultLifeSpan = 2000;
+        const float _defaultIntensity = 0.1f;
 
         static readonly Shader _defaultShader;
-        readonly Vector2 _expansionRate;
 
         readonly Grh _explosionMap;
         readonly ushort _lifeSpan;
@@ -45,7 +45,8 @@ namespace NetGore.Graphics
         {
             // Set the default values
             DefaultLifeSpan = _defaultLifeSpan;
-            DefaultExpansionRate = new Vector2(300, 300);
+            DefaultExpansionRate = new Vector2(1.5f, 1.5f);
+            DefaultIntensity = _defaultIntensity;
 
             // Check if shaders are supported
             if (!Shader.IsAvailable)
@@ -126,8 +127,6 @@ void main (void)
         /// <param name="positionProvider">The <see cref="ISpatial"/> that provides the position of this
         /// <see cref="ExplosionRefractionEffect"/>.</param>
         /// <param name="lifeSpan">The life span in milliseconds. If 0, the <see cref="DefaultLifeSpan"/> will be used.</param>
-        /// <param name="expansionRate">How fast the explosion effect expands in pixels per millisecond. If null,
-        /// <see cref="DefaultExpansionRate"/> will be used.</param>
         /// <param name="shader">The <see cref="Shader"/> to use to draw the explosion's refraction map. If null, the
         /// <see cref="ExplosionRefractionEffect.DefaultShader"/> will be used. If you provide your own shader, you must
         /// make sure that you either use the same effect parameters the default shader uses, or override this class
@@ -135,8 +134,8 @@ void main (void)
         /// you require.</param>
         /// <exception cref="ArgumentNullException"><paramref name="explosionMap"/> is null.</exception>
         public ExplosionRefractionEffect(Grh explosionMap, ISpatial positionProvider, ushort lifeSpan = (ushort)0,
-                                         Vector2? expansionRate = null, Shader shader = null) : this(explosionMap, 
-            positionProvider.Center, lifeSpan, expansionRate, shader)
+            Shader shader = null) : this(explosionMap, 
+            positionProvider.Center, lifeSpan, shader)
         {
             PositionProvider = positionProvider;
         }
@@ -147,16 +146,13 @@ void main (void)
         /// <param name="explosionMap">The sprite used to create the explosion's refraction map.</param>
         /// <param name="center">The world position of the effect.</param>
         /// <param name="lifeSpan">The life span in milliseconds. If 0, the <see cref="DefaultLifeSpan"/> will be used.</param>
-        /// <param name="expansionRate">How fast the explosion effect expands in pixels per millisecond. If null,
-        /// <see cref="DefaultExpansionRate"/> will be used.</param>
         /// <param name="shader">The <see cref="Shader"/> to use to draw the explosion's refraction map. If null, the
         /// <see cref="ExplosionRefractionEffect.DefaultShader"/> will be used. If you provide your own shader, you must
         /// make sure that you either use the same effect parameters the default shader uses, or override this class
         /// so you can override the <see cref="ExplosionRefractionEffect.SetShaderParameters"/> method and set the parameters
         /// you require.</param>
         /// <exception cref="ArgumentNullException"><paramref name="explosionMap"/> is null.</exception>
-        public ExplosionRefractionEffect(Grh explosionMap, Vector2 center, ushort lifeSpan = (ushort)0,
-                                         Vector2? expansionRate = null, Shader shader = null)
+        public ExplosionRefractionEffect(Grh explosionMap, Vector2 center, ushort lifeSpan = (ushort)0,Shader shader = null)
         {
             if (explosionMap == null)
                 throw new ArgumentNullException("explosionMap");
@@ -170,15 +166,14 @@ void main (void)
             else
                 _lifeSpan = 0;
 
-            if (!expansionRate.HasValue)
-                _expansionRate = DefaultExpansionRate;
-            else
-                _expansionRate = expansionRate.Value;
-
             if (shader == null)
                 _shader = DefaultShader;
             else
                 _shader = shader;
+
+            // Copy over the default values
+            Intensity = DefaultIntensity;
+            ExpansionRate = DefaultExpansionRate;
 
             // Ensure we are able to use the effect
             if (_shader == null)
@@ -192,18 +187,25 @@ void main (void)
         }
 
         /// <summary>
-        /// Gets or sets the default expansion rate for all <see cref="ExplosionRefractionEffect"/>s.
-        /// Default value is (300, 300).
+        /// Gets or sets the global default expansion rate for all <see cref="ExplosionRefractionEffect"/>s.
+        /// Default value is (1.5, 1.5).
         /// </summary>
-        [DefaultValue(typeof(Vector2), "{300, 300}")]
+        [DefaultValue(typeof(Vector2), "{1.5, 1.5}")]
         public static Vector2 DefaultExpansionRate { get; set; }
 
         /// <summary>
-        /// Gets or sets the default global lifespan, in milliseconds, for all <see cref="ExplosionRefractionEffect"/>s.
+        /// Gets or sets the global default lifespan, in milliseconds, for all <see cref="ExplosionRefractionEffect"/>s.
         /// Default value is 2000 (2 seconds).
         /// </summary>
         [DefaultValue(_defaultLifeSpan)]
         public static ushort DefaultLifeSpan { get; set; }
+
+        /// <summary>
+        /// Gets or sets the global default intensity for all <see cref="ExplosionRefractionEffect"/>.
+        /// Default value is 0.1.
+        /// </summary>
+        [DefaultValue(_defaultIntensity)]
+        public static float DefaultIntensity { get; set; }
 
         /// <summary>
         /// Gets the default <see cref="Shader"/> used for the <see cref="ExplosionRefractionEffect"/>.
@@ -217,12 +219,14 @@ void main (void)
         }
 
         /// <summary>
-        /// Gets how fast the explosion effect expands in pixels per millisecond.
+        /// Gets or sets the intensity of the explosion. This value should be on the range of 0.0 to 1.0.
         /// </summary>
-        public Vector2 ExpansionRate
-        {
-            get { return _expansionRate; }
-        }
+        public float Intensity { get; set; }
+
+        /// <summary>
+        /// Gets or sets how fast the explosion effect expands in pixels per millisecond.
+        /// </summary>
+        public Vector2 ExpansionRate { get; set; }
 
         /// <summary>
         /// Gets the sprite used to create the explosion's refraction map.
@@ -276,7 +280,10 @@ void main (void)
         {
             Shader.SetTexture("NoiseTexture", ExplosionMap.CurrentGrhData.Texture);
             Shader.SetParameter("MaxAge", _lifeSpan);
-            Shader.SetParameter("Age", currentTime - _startTime);
+            Shader.SetParameter("Intensity", Intensity);
+
+            var age = (int)currentTime - (int)_startTime;
+            Shader.SetParameter("Age", age);
         }
 
         #region IRefractionEffect Members
@@ -482,7 +489,7 @@ void main (void)
             _lastUpdateTime = currentTime;
 
             // Get the life of the effect
-            var totalElapsedTime = (int)(currentTime - _startTime);
+            var totalElapsedTime = (int)currentTime - _startTime;
             if (totalElapsedTime < 0)
                 totalElapsedTime = 0;
 

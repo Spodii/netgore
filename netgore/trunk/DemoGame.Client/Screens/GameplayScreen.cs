@@ -700,7 +700,7 @@ namespace DemoGame.Client
             _userLight.IsEnabled = true;
             _userLight.Teleport(UserChar.Position);
 
-            if (rndTmp.Next(0, 1000) == 0 && UserChar != null)
+            if (rndTmp.Next(0, 100) == 0 && UserChar != null)
             {
                 // TODO: !! Temp
                 var gi = GrhInfo.GetData("Textures", "explosion01");
