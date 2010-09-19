@@ -184,6 +184,7 @@
     <Compile Include="Graphics\Refraction\ExplosionRefractionEffect.cs" />
     <Compile Include="Graphics\Refraction\IRefractionEffect.cs" />
     <Compile Include="Graphics\Refraction\IRefractionManager.cs" />
+    <Compile Include="Graphics\Drawing Tools\OffscreenRenderBufferManagerBase.cs" />
     <Compile Include="Graphics\Refraction\RefractionManager.cs" />
     <Compile Include="Graphics\Extensions\ShaderHelper.cs" />
     <Compile Include="Graphics\Extensions\WindowHelper.cs" />

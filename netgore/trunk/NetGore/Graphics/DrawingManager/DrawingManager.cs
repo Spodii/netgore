@@ -7,37 +7,37 @@ using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    /// <summary>
-    /// Manages the preparation and tear-down for drawing.
-    /// </summary>
     public class DrawingManager : IDrawingManager
     {
+        // TODO: !! Add support for a DrawingManager that doesn't need RenderImage
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Cache of <see cref="RenderImage.IsAvailable"/>. If false, we have to change the behavior a bit to render without
-        /// using a <see cref="RenderImage"/>.
+        /// The <see cref="Color"/> to use when clearing the GUI. This needs to have an alpha of 0 since we will
+        /// be copying from the buffer onto the window, and if the world was drawn, we will be copying on top
+        /// of the world.
         /// </summary>
-        static readonly bool _supportsRenderImage;
+        static readonly Color _clearGUIBufferColor = new Color(0, 0, 0, 0);
+
+        readonly SFML.Graphics.Sprite _drawBufferToWindowSprite;
 
         readonly ILightManager _lightManager;
         readonly IRefractionManager _refractionManager;
-        readonly SFML.Graphics.Sprite _lightMapSprite;
         readonly RenderWindow _rw;
         readonly ISpriteBatch _sb;
 
-        Image _lightMap;
-        DrawingManagerState _state = DrawingManagerState.Idle;
+        RenderImage _buffer;
+        bool _isDisposed;
 
         /// <summary>
-        /// Initializes the <see cref="DrawingManager"/> class.
+        /// Contains if the last draw was to the world. This way, we can make sure to not draw the GUI twice or world twice
+        /// in a row without clearing. True for last drawing being to World, false for GUI.
         /// </summary>
-        static DrawingManager()
-        {
-            // TODO: !! Add support for a DrawingManager that doesn't need RenderImage
-            _supportsRenderImage = RenderImage.IsAvailable;
-        }
+        bool _lastDrawWasToWorld;
+
+        DrawingManagerState _state = DrawingManagerState.Idle;
+        ICamera2D _worldCamera;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingManager"/> class.
@@ -45,31 +45,35 @@ namespace NetGore.Graphics
         /// <param name="rw">The <see cref="RenderWindow"/>.</param>
         public DrawingManager(RenderWindow rw)
         {
-            ClearColor = new Color(100, 149, 237);
+            BackgroundColor = new Color(100, 149, 237);
 
             _rw = rw;
             _sb = new RoundedSpriteBatch(_rw);
 
             // Set up the sprite used to draw the light map
-            _lightMapSprite = new SFML.Graphics.Sprite
-            { BlendMode = BlendMode.Multiply, Color = Color.White, Rotation = 0, Scale = Vector2.One, Origin = Vector2.Zero };
+            _drawBufferToWindowSprite = new SFML.Graphics.Sprite
+            {
+                BlendMode = BlendMode.Alpha,
+                Color = Color.White,
+                Rotation = 0,
+                Scale = Vector2.One,
+                Origin = Vector2.Zero,
+                Position = Vector2.Zero
+            };
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _lightManager = CreateLightManager();
             _refractionManager = CreateRefractionManager();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            if (_lightManager != null)
-                _lightManager.Initialize(_rw);
-
-            if (_refractionManager != null)
-                _refractionManager.Initialize(_rw);
+            _lightManager.Initialize(_rw);
+            _refractionManager.Initialize(_rw);
         }
 
         /// <summary>
         /// Creates the <see cref="ILightManager"/> to use.
         /// </summary>
-        /// <returns>The <see cref="ILightManager"/> to use.</returns>
+        /// <returns>The <see cref="ILightManager"/> to use. Cannot be null.</returns>
         protected virtual ILightManager CreateLightManager()
         {
             return new LightManager();
@@ -78,7 +82,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Creates the <see cref="IRefractionManager"/> to use.
         /// </summary>
-        /// <returns>The <see cref="IRefractionManager"/> to use.</returns>
+        /// <returns>The <see cref="IRefractionManager"/> to use. Cannot be null.</returns>
         protected virtual IRefractionManager CreateRefractionManager()
         {
             return new RefractionManager();
@@ -87,43 +91,99 @@ namespace NetGore.Graphics
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to
-        /// release only unmanaged resources.</param>
+        /// <param name="disposeManaged"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release
+        /// only unmanaged resources.</param>
         protected virtual void Dispose(bool disposeManaged)
         {
             if (!disposeManaged)
                 return;
 
-            GC.SuppressFinalize(this);
-
-            if (_sb != null)
-                _sb.Dispose();
-
             if (_lightManager != null)
                 _lightManager.Dispose();
 
-            if (_lightMapSprite != null)
-                _lightMapSprite.Dispose();
-
             if (_refractionManager != null)
                 _refractionManager.Dispose();
+
+            if (_sb != null && !_sb.IsDisposed)
+                _sb.Dispose();
+
+            if (_drawBufferToWindowSprite != null && !_drawBufferToWindowSprite.IsDisposed)
+                _drawBufferToWindowSprite.Dispose();
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="DrawingManager"/> is reclaimed by garbage collection.
+        /// Draws an <see cref="Image"/> to the screen.
         /// </summary>
-        ~DrawingManager()
+        /// <param name="buffer">The <see cref="Image"/> to draw.</param>
+        /// <param name="blendMode">The <see cref="BlendMode"/> to use.</param>
+        void DrawBufferToScreen(Image buffer, BlendMode blendMode)
         {
-            Dispose(false);
+            _drawBufferToWindowSprite.BlendMode = blendMode;
+            _drawBufferToWindowSprite.Image = buffer;
+            _drawBufferToWindowSprite.Width = buffer.Width;
+            _drawBufferToWindowSprite.Height = buffer.Height;
+
+            _rw.Draw(_drawBufferToWindowSprite);
+        }
+
+        /// <summary>
+        /// Gets if the <see cref="RenderWindow"/> is available. If it is not, we cannot draw.
+        /// </summary>
+        /// <returns>True if the <see cref="RenderWindow"/> is available; otherwise false.</returns>
+        protected bool IsRenderWindowAvailable()
+        {
+            try
+            {
+                return !_rw.IsDisposed && _rw.IsOpened();
+            }
+            catch (ObjectDisposedException)
+            {
+                return false;
+            }
+            catch (Exception ex)
+            {
+                const string errmsg =
+                    "Unexpected exception occured while trying to get the state of RenderWindow `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, _rw, ex);
+                Debug.Fail(string.Format(errmsg, _rw, ex));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Ends a SpriteBatch without throwing any <see cref="Exception"/>s.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to end.</param>
+        void SafeEndSpriteBatch(ISpriteBatch sb)
+        {
+            try
+            {
+                sb.End();
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Exception occured while calling End() the SpriteBatch `{0}` on `{1}`. Exception: {2}";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, sb, this, ex);
+                Debug.Fail(string.Format(errmsg, sb, this, ex));
+            }
         }
 
         #region IDrawingManager Members
 
         /// <summary>
-        /// Gets or sets the <see cref="Color"/> to use when clearing the screen.
+        /// Gets or sets the background <see cref="Color"/>.
         /// </summary>
-        public Color ClearColor { get; set; }
+        public Color BackgroundColor { get; set; }
+
+        /// <summary>
+        /// Gets if this <see cref="IDrawingManager"/> has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
 
         /// <summary>
         /// Gets the <see cref="ILightManager"/> used by this <see cref="IDrawingManager"/>.
@@ -152,12 +212,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Begins drawing the graphical user interface, which is not affected by the camera.
         /// </summary>
-        /// <returns>
-        /// The <see cref="ISpriteBatch"/> to use to draw the GUI, or null if an unexpected
+        /// <returns>The <see cref="ISpriteBatch"/> to use to draw the GUI, or null if an unexpected
         /// error was encountered when preparing the <see cref="ISpriteBatch"/>. When null, all drawing
         /// should be aborted completely instead of trying to draw with a different <see cref="ISpriteBatch"/>
-        /// or manually recovering the error.
-        /// </returns>
+        /// or manually recovering the error.</returns>
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
         public ISpriteBatch BeginDrawGUI()
@@ -165,21 +223,46 @@ namespace NetGore.Graphics
             if (State != DrawingManagerState.Idle)
                 throw new InvalidOperationException("This method cannot be called while already busy drawing.");
 
-            _state = DrawingManagerState.DrawingGUI;
-
             try
             {
+                // Ensure the RenderWindow is available
+                if (!IsRenderWindowAvailable())
+                {
+                    if (log.IsInfoEnabled)
+                        log.Info("Skipping BeginDrawGUI() call - the RenderWindow is not available.");
+                    _state = DrawingManagerState.Idle;
+                    return null;
+                }
+
+                // If the last draw was also to the GUI, clear the screen
+                if (!_lastDrawWasToWorld)
+                    _rw.Clear(BackgroundColor);
+
+                _lastDrawWasToWorld = false;
+
+                // Ensure the buffer is set up
+                _buffer = _rw.CreateBufferRenderImage(_buffer);
+                if (_buffer == null)
+                    return null;
+
+                // Always clear the GUI with alpha = 0 since we will be copying it over the screen
+                _buffer.Clear(_clearGUIBufferColor);
+
+                // Set up the SpriteBatch
+                _sb.RenderTarget = _buffer;
                 _sb.Begin(BlendMode.Alpha);
+
+                // Change the state
+                _state = DrawingManagerState.DrawingGUI;
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                // Failed to Begin() the SpriteBatch - abort!
-                const string errmsg = "SpriteBatch.Begin() failed. Aborting drawing. Exception: {0}";
+                const string errmsg = "Failed to start drawing GUI on `{0}`. Exception: {1}";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
-
+                    log.ErrorFormat(errmsg, this, ex);
+                Debug.Fail(string.Format(errmsg, this, ex));
                 _state = DrawingManagerState.Idle;
-
+                SafeEndSpriteBatch(_sb);
                 return null;
             }
 
@@ -200,79 +283,50 @@ namespace NetGore.Graphics
         /// <see cref="DrawingManagerState.Idle"/>.</exception>
         public ISpriteBatch BeginDrawWorld(ICamera2D camera)
         {
-            return BeginDrawWorld(camera, true, false);
-        }
-
-        /// <summary>
-        /// Begins drawing of the world.
-        /// </summary>
-        /// <param name="camera">The camera describing the the current view of the world.</param>
-        /// <param name="useLighting">Whether or not the <see cref="IDrawingManager.LightManager"/> is used to
-        /// produce the world lighting.</param>
-        /// <param name="bypassClear">If true, the backbuffer will not be cleared before the drawing starts,
-        /// resulting in the new images being drawn on top of the previous frame instead of from a fresh screen.</param>
-        /// <returns>
-        /// The <see cref="ISpriteBatch"/> to use to draw the world objects, or null if an unexpected
-        /// error was encountered when preparing the <see cref="ISpriteBatch"/>. When null, all drawing
-        /// should be aborted completely instead of trying to draw with a different <see cref="ISpriteBatch"/>
-        /// or manually recovering the error.
-        /// </returns>
-        /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
-        /// <see cref="DrawingManagerState.Idle"/>.</exception>
-        public ISpriteBatch BeginDrawWorld(ICamera2D camera, bool useLighting, bool bypassClear)
-        {
             if (State != DrawingManagerState.Idle)
                 throw new InvalidOperationException("This method cannot be called while already busy drawing.");
 
-            _state = DrawingManagerState.DrawingWorld;
-
-            _lightMap = null;
-
             try
             {
-                // If using lighting, grab the light map
-                if (useLighting)
+                // Ensure the RenderWindow is available
+                if (!IsRenderWindowAvailable())
                 {
-                    try
-                    {
-                        _lightMap = _lightManager.Draw(camera);
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        const string errmsg = "Failed to create light map. Exception: {0}";
-                        if (log.IsErrorEnabled)
-                            log.ErrorFormat(errmsg, ex);
-                    }
-                }
-
-                // Clear the buffer
-                if (!bypassClear)
-                    _rw.Clear(ClearColor);
-
-                // Start the SpriteBatch
-                try
-                {
-                    _sb.Begin(BlendMode.Alpha, camera);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    // Failed to Begin() the SpriteBatch - abort!
-                    const string errmsg = "SpriteBatch.Begin() failed. Aborting drawing. Exception: {0}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, ex);
-
+                    if (log.IsInfoEnabled)
+                        log.Info("Skipping BeginDrawWorld() call - the RenderWindow is not available.");
                     _state = DrawingManagerState.Idle;
                     return null;
                 }
+
+                _worldCamera = camera;
+
+                // No matter what the last draw was, we clear the screen when drawing the world since the world drawing
+                // always comes first or not at all (makes no sense to draw the GUI then the world)
+                _rw.Clear(BackgroundColor);
+
+                _lastDrawWasToWorld = true;
+
+                // Ensure the buffer is set up
+                _buffer = _rw.CreateBufferRenderImage(_buffer);
+                if (_buffer == null)
+                    return null;
+
+                _buffer.Clear(BackgroundColor);
+
+                // Set up the SpriteBatch
+                _sb.RenderTarget = _buffer;
+                _sb.Begin(BlendMode.Alpha, camera);
+
+                // Change the state
+                _state = DrawingManagerState.DrawingWorld;
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to properly begin drawing due to an unhandled exception: {0}";
+                const string errmsg = "Failed to start drawing world on `{0}`. Exception: {1}";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
-                Debug.Fail(string.Format(errmsg, ex));
-
+                    log.ErrorFormat(errmsg, this, ex);
+                Debug.Fail(string.Format(errmsg, this, ex));
                 _state = DrawingManagerState.Idle;
+                SafeEndSpriteBatch(_sb);
                 return null;
             }
 
@@ -284,6 +338,11 @@ namespace NetGore.Graphics
         /// </summary>
         public void Dispose()
         {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
             Dispose(true);
         }
 
@@ -297,9 +356,32 @@ namespace NetGore.Graphics
             if (State != DrawingManagerState.DrawingGUI)
                 throw new InvalidOperationException("This method can only be called after BeginDrawGUI.");
 
-            _state = DrawingManagerState.Idle;
+            try
+            {
+                // Ensure the RenderWindow is available
+                if (!IsRenderWindowAvailable())
+                {
+                    if (log.IsInfoEnabled)
+                        log.Info("Skipping EndDrawGUI() call - the RenderWindow is not available.");
+                    _state = DrawingManagerState.Idle;
+                    return;
+                }
 
-            _sb.End();
+                _state = DrawingManagerState.Idle;
+
+                SafeEndSpriteBatch(_sb);
+
+                // Copy the GUI to the screen
+                _buffer.Display();
+                DrawBufferToScreen(_buffer.Image, BlendMode.Alpha);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg =
+                    "Unexpected exception on EndDrawGUI. The GUI will have to pass being drawn this frame. Exception: {0}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, ex);
+            }
         }
 
         /// <summary>
@@ -312,32 +394,76 @@ namespace NetGore.Graphics
             if (State != DrawingManagerState.DrawingWorld)
                 throw new InvalidOperationException("This method can only be called after BeginDrawWorld.");
 
-            _state = DrawingManagerState.Idle;
-
             try
             {
-                // We only have to go through all these extra steps if we are using a light map.
-                if (_lightMap != null)
+                // Ensure the RenderWindow is available
+                if (!IsRenderWindowAvailable())
                 {
-                    // Draw the light map onto the screen
-                    _lightMapSprite.Image = _lightMap;
-                    _lightMapSprite.Width = _rw.CurrentView.Size.X;
-                    _lightMapSprite.Height = _rw.CurrentView.Size.Y;
-                    _lightMapSprite.Position = _rw.ConvertCoords(0, 0).Round();
+                    if (log.IsInfoEnabled)
+                        log.Info("Skipping EndDrawWorld() call - the RenderWindow is not available.");
+                    _state = DrawingManagerState.Idle;
+                    return;
+                }
 
-                    _sb.Draw(_lightMapSprite);
+                _state = DrawingManagerState.Idle;
+
+                SafeEndSpriteBatch(_sb);
+
+                // Draw the lights
+                try
+                {
+                    if (LightManager.IsEnabled)
+                    {
+                        // Copy the lights onto the buffer
+                        LightManager.DrawToTarget(_worldCamera, _buffer);
+                    }
+                    else
+                    {
+                        // Don't have to take any alternate drawing route since lights are just drawn on top of the screen buffer
+                    }
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg =
+                        "Error on `{0}` while trying to draw the LightManager `{1}`." +
+                        " Lights will have to be skipped this frame. Exception: {2}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, LightManager, ex);
+                }
+
+                // Have to display the buffer since we will start referencing the image for it
+                _buffer.Display();
+
+                // Draw the refractions
+                try
+                {
+                    if (RefractionManager.IsEnabled)
+                    {
+                        // Pass the buffer to the refraction manager to draw to the screen
+                        RefractionManager.DrawToTarget(_worldCamera, _rw, _buffer.Image);
+                    }
+                    else
+                    {
+                        // Since the RefractionManager won't be handling copying to the screen for us, we will have to draw
+                        // to the screen manually
+                        DrawBufferToScreen(_buffer.Image, BlendMode.None);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    const string errmsg =
+                        "Error on `{0}` while trying to draw the RefractionManager `{1}`." +
+                        " Refractions will have to be skipped this frame. Exception: {2}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, RefractionManager, ex);
                 }
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to properly end drawing due to an unhandled exception: {0}";
+                const string errmsg =
+                    "Unexpected exception on EndDrawWorld. The world will have to pass being drawn this frame. Exception: {0}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, ex);
-                Debug.Fail(string.Format(errmsg, ex));
-            }
-            finally
-            {
-                _sb.End();
             }
         }
 
@@ -348,6 +474,7 @@ namespace NetGore.Graphics
         public void Update(TickCount currentTime)
         {
             LightManager.Update(currentTime);
+            RefractionManager.Update(currentTime);
         }
 
         #endregion

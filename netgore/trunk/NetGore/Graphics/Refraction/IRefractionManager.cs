@@ -22,7 +22,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the <see cref="Shader"/> to use to draw the refraction map.
         /// </summary>
-        Shader Shader { get; set; }
+        Shader DrawToTargetShader { get; set; }
 
         /// <summary>
         /// Gets if the <see cref="IRefractionManager"/> has been initialized.
@@ -54,8 +54,9 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="camera">The camera describing the current view.</param>
         /// <param name="target">The <see cref="RenderTarget"/> to draw the refraction map to.</param>
-        /// <param name="refractionMap">The refraction map to draw. If null, one will be generated.</param>
-        void DrawToTarget(ICamera2D camera, RenderTarget target, Image refractionMap = null);
+        /// <param name="colorMap">The <see cref="Image"/> to get the colors from. Typically, this is an <see cref="Image"/> of
+        /// the fully drawn game scene to apply refractions to.</param>
+        void DrawToTarget(ICamera2D camera, RenderTarget target, Image colorMap);
 
         /// <summary>
         /// Updates the <see cref="IDrawingManager"/> and all components inside of it.

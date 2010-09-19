@@ -21,6 +21,11 @@ namespace NetGore.Graphics
         bool IsDisposed { get; }
 
         /// <summary>
+        /// Gets if this <see cref="ISpriteBatch"/> is currently inbetween calls to Begin() and End().
+        /// </summary>
+        bool IsStarted { get; }
+
+        /// <summary>
         /// Gets or sets the <see cref="RenderTarget"/> that this <see cref="SpriteBatch"/> is drawing to.
         /// </summary>
         RenderTarget RenderTarget { get; set; }

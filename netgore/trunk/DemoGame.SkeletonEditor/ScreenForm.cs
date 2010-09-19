@@ -137,7 +137,7 @@ namespace DemoGame.SkeletonEditor
         internal void DrawGame()
         {
             // Screen
-            var sb = _drawingManager.BeginDrawWorld(_camera, false, true);
+            var sb = _drawingManager.BeginDrawWorld(_camera);
 
             try
             {
