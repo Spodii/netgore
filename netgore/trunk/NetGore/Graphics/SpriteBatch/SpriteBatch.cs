@@ -9,11 +9,11 @@ namespace NetGore.Graphics
     /// </summary>
     public class SpriteBatch : ISpriteBatch
     {
-        readonly RenderWindow _rw;
         readonly SFML.Graphics.Sprite _sprite = new SFML.Graphics.Sprite();
         readonly Text _str = new Text();
 
         bool _isDisposed;
+        RenderTarget _rt;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteBatch"/> class.
@@ -21,15 +21,7 @@ namespace NetGore.Graphics
         /// <param name="graphicsDevice">The graphics device.</param>
         public SpriteBatch(RenderWindow graphicsDevice)
         {
-            _rw = graphicsDevice;
-        }
-
-        /// <summary>
-        /// Gets the graphics device associated with this sprite batch.
-        /// </summary>
-        public RenderWindow GraphicsDevice
-        {
-            get { return _rw; }
+            _rt = graphicsDevice;
         }
 
         /// <summary>
@@ -58,6 +50,14 @@ namespace NetGore.Graphics
             return true;
         }
 
+        static void TryRefreshCurrentView(RenderTarget renderTarget)
+        {
+            if (renderTarget is RenderWindow)
+                ((RenderWindow)renderTarget).CurrentView = renderTarget.CurrentView;
+            else if (renderTarget is RenderImage)
+                ((RenderImage)renderTarget).CurrentView = renderTarget.CurrentView;
+        }
+
         #region ISpriteBatch Members
 
         /// <summary>
@@ -83,6 +83,15 @@ namespace NetGore.Graphics
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="RenderTarget"/> that this <see cref="SpriteBatch"/> is drawing to.
+        /// </summary>
+        public RenderTarget RenderTarget
+        {
+            get { return _rt; }
+            set { _rt = value; }
+        }
+
+        /// <summary>
         /// Gets or sets an object that uniquely identifies this sprite batch.
         /// </summary>
         public object Tag { get; set; }
@@ -97,10 +106,13 @@ namespace NetGore.Graphics
         /// <param name="rotation">The amount to rotation the view in degrees.</param>
         public void Begin(BlendMode blendMode, Vector2 size, Vector2 center, float rotation)
         {
-            _rw.CurrentView.Size = size;
-            _rw.CurrentView.Center = center;
-            _rw.CurrentView.Rotation = rotation;
-            _rw.CurrentView = _rw.CurrentView;
+            _rt.CurrentView.Size = size;
+            _rt.CurrentView.Center = center;
+            _rt.CurrentView.Rotation = rotation;
+
+            // We have to set the CurrentView property again, even though it didn't change, to make the changes
+            // to the CurrentView take affect
+            TryRefreshCurrentView(_rt);
 
             _sprite.BlendMode = blendMode;
         }
@@ -123,10 +135,13 @@ namespace NetGore.Graphics
         /// <param name="blendMode">Blending options to use when rendering.</param>
         public virtual void Begin(BlendMode blendMode)
         {
-            var v = new Vector2(_rw.Width, _rw.Height);
-            _rw.CurrentView.Size = v;
-            _rw.CurrentView.Center = v / 2f;
-            _rw.CurrentView = _rw.CurrentView;
+            var v = new Vector2(_rt.Width, _rt.Height);
+            _rt.CurrentView.Size = v;
+            _rt.CurrentView.Center = v / 2f;
+
+            // We have to set the CurrentView property again, even though it didn't change, to make the changes
+            // to the CurrentView take affect
+            TryRefreshCurrentView(_rt);
 
             _sprite.BlendMode = blendMode;
         }
@@ -158,7 +173,7 @@ namespace NetGore.Graphics
             if (sprite == null || !IsAssetValid(sprite.Image))
                 return;
 
-            _rw.Draw(sprite);
+            _rt.Draw(sprite);
         }
 
         /// <summary>
@@ -194,7 +209,7 @@ namespace NetGore.Graphics
             _sprite.Scale = new Vector2((float)destinationRectangle.Width / _sprite.SubRect.Width,
                                         (float)destinationRectangle.Height / _sprite.SubRect.Height);
 
-            _rw.Draw(_sprite);
+            _rt.Draw(_sprite);
         }
 
         /// <summary>
@@ -206,7 +221,7 @@ namespace NetGore.Graphics
             if (drawable == null)
                 return;
 
-            _rw.Draw(drawable);
+            _rt.Draw(drawable);
         }
 
         /// <summary>
@@ -271,7 +286,7 @@ namespace NetGore.Graphics
             _sprite.FlipY((effects & SpriteEffects.FlipVertically) != 0);
             _sprite.Scale = scale;
 
-            _rw.Draw(_sprite);
+            _rt.Draw(_sprite);
         }
 
         /// <summary>
@@ -371,7 +386,7 @@ namespace NetGore.Graphics
             _str.Style = style;
             _str.Size = spriteFont.DefaultSize;
 
-            _rw.Draw(_str);
+            _rt.Draw(_str);
         }
 
         /// <summary>
