@@ -18,10 +18,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="SpriteBatch"/> class.
         /// </summary>
-        /// <param name="graphicsDevice">The graphics device.</param>
-        public SpriteBatch(RenderWindow graphicsDevice)
+        /// <param name="renderTarget">The <see cref="RenderTarget"/> to draw to.</param>
+        public SpriteBatch(RenderTarget renderTarget)
         {
-            _rt = graphicsDevice;
+            _rt = renderTarget;
         }
 
         /// <summary>
