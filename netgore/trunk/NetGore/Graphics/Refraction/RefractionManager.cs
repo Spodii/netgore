@@ -238,6 +238,7 @@ void main (void)
         /// <see cref="Image"/> and drawing cannot continue.</returns>
         bool PrepareRefractionMap()
         {
+            // TODO: !! Use WindowHelper.CreateBufferRenderImage();
             // Ensure the refraction map is created and of the needed size
             var mustRecreateRefractionMap = false;
             try
