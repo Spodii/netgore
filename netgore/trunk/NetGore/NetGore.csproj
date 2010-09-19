@@ -184,6 +184,7 @@
     <Compile Include="Graphics\Refraction\ExplosionRefractionEffect.cs" />
     <Compile Include="Graphics\Refraction\IRefractionEffect.cs" />
     <Compile Include="Graphics\Refraction\IRefractionManager.cs" />
+    <Compile Include="Graphics\Refraction\RefractionManager.cs" />
     <Compile Include="IO\BitStream\BitStream.IValueReader.cs" />
     <Compile Include="IO\BitStream\BitStream.IValueWriter.cs" />
     <Compile Include="IO\BitStream\BitStream.Read.cs" />
