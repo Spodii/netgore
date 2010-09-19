@@ -10,6 +10,8 @@ namespace NetGore.Graphics
     /// </summary>
     public interface ILightManager : IList<ILight>, IDisposable
     {
+        // TODO: !! void DrawToTarget(ICamera2D camera, RenderTarget target, Image refractionMap = null);
+
         /// <summary>
         /// Gets or sets the ambient light color. The alpha value has no affect and will always be set to 255.
         /// </summary>

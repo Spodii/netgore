@@ -9,6 +9,8 @@ namespace NetGore.Graphics
     /// </summary>
     public interface IRefractionEffect : ISpatial, IDisposable
     {
+        // TODO: !! Draw order prioritization
+
         /// <summary>
         /// Gets or sets if this reflection effect is enabled.
         /// </summary>

@@ -108,9 +108,7 @@ void main (void)
             // Try to create the default shader
             try
             {
-                var s = new Shader(_defaultShader);
-                s.LoadFromString(defaultShaderCode);
-                _defaultShader = s;
+                _defaultShader = ShaderHelper.LoadFromMemory(defaultShaderCode);
             }
             catch (LoadingFailedException ex)
             {
@@ -119,6 +117,28 @@ void main (void)
                     log.ErrorFormat(errmsg, ex);
                 Debug.Fail(string.Format(errmsg, ex));
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExplosionRefractionEffect"/> class.
+        /// </summary>
+        /// <param name="explosionMap">The sprite used to create the explosion's refraction map.</param>
+        /// <param name="positionProvider">The <see cref="ISpatial"/> that provides the position of this
+        /// <see cref="ExplosionRefractionEffect"/>.</param>
+        /// <param name="lifeSpan">The life span in milliseconds. If 0, the <see cref="DefaultLifeSpan"/> will be used.</param>
+        /// <param name="expansionRate">How fast the explosion effect expands in pixels per millisecond. If null,
+        /// <see cref="DefaultExpansionRate"/> will be used.</param>
+        /// <param name="shader">The <see cref="Shader"/> to use to draw the explosion's refraction map. If null, the
+        /// <see cref="ExplosionRefractionEffect.DefaultShader"/> will be used. If you provide your own shader, you must
+        /// make sure that you either use the same effect parameters the default shader uses, or override this class
+        /// so you can override the <see cref="ExplosionRefractionEffect.SetShaderParameters"/> method and set the parameters
+        /// you require.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="explosionMap"/> is null.</exception>
+        public ExplosionRefractionEffect(Grh explosionMap, ISpatial positionProvider, ushort lifeSpan = (ushort)0,
+                                         Vector2? expansionRate = null, Shader shader = null) : this(explosionMap, 
+            positionProvider.Center, lifeSpan, expansionRate, shader)
+        {
+            PositionProvider = positionProvider;
         }
 
         /// <summary>
@@ -239,12 +259,12 @@ void main (void)
             if (Moved != null)
             {
                 var oldValue = Position;
-                _center = sender.Position;
+                _center = sender.Center;
                 Moved(this, oldValue);
             }
             else
             {
-                _center = sender.Position;
+                _center = sender.Center;
             }
         }
 
@@ -254,6 +274,9 @@ void main (void)
         /// <param name="currentTime">The current time in milliseconds.</param>
         protected virtual void SetShaderParameters(TickCount currentTime)
         {
+            Shader.SetTexture("NoiseTexture", ExplosionMap.CurrentGrhData.Texture);
+            Shader.SetParameter("MaxAge", _lifeSpan);
+            Shader.SetParameter("Age", currentTime - _startTime);
         }
 
         #region IRefractionEffect Members

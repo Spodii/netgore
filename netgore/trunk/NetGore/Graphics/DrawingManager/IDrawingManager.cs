@@ -20,6 +20,11 @@ namespace NetGore.Graphics
         ILightManager LightManager { get; }
 
         /// <summary>
+        /// Gets the <see cref="IRefractionManager"/> used by this <see cref="IDrawingManager"/>.
+        /// </summary>
+        IRefractionManager RefractionManager { get; }
+
+        /// <summary>
         /// Gets the <see cref="DrawingManagerState"/> describing the current drawing state.
         /// </summary>
         DrawingManagerState State { get; }
