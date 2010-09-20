@@ -23,6 +23,8 @@ namespace NetGore.Graphics
         /// </summary>
         public LightManager()
         {
+            Ambient = Color.White;
+
             // Try to enable
             IsEnabled = true;
         }
