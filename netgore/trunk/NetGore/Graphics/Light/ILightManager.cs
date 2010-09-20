@@ -17,12 +17,6 @@ namespace NetGore.Graphics
         Color Ambient { get; set; }
 
         /// <summary>
-        /// Gets or sets if this <see cref="ILightManager"/> is enabled.
-        /// If <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this will always be false.
-        /// </summary>
-        bool IsEnabled { get; set; }
-
-        /// <summary>
         /// Gets or sets the default sprite to use for all lights added to this <see cref="ILightManager"/>.
         /// When this value changes, all <see cref="ILight"/>s in this <see cref="ILightManager"/> who's
         /// <see cref="ILight.Sprite"/> is equal to the old value will have their sprite set to the new value.
@@ -35,16 +29,15 @@ namespace NetGore.Graphics
         Shader DrawToTargetShader { get; set; }
 
         /// <summary>
+        /// Gets or sets if this <see cref="ILightManager"/> is enabled.
+        /// If <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this will always be false.
+        /// </summary>
+        bool IsEnabled { get; set; }
+
+        /// <summary>
         /// Gets if the <see cref="ILightManager"/> has been initialized.
         /// </summary>
         bool IsInitialized { get; }
-
-        /// <summary>
-        /// Draws the light map to a <see cref="RenderTarget"/>.
-        /// </summary>
-        /// <param name="camera">The camera describing the current view.</param>
-        /// <param name="target">The <see cref="RenderTarget"/> to draw the light map to.</param>
-        void DrawToTarget(ICamera2D camera, RenderTarget target);
 
         /// <summary>
         /// Draws all of the lights in this <see cref="ILightManager"/>.
@@ -56,6 +49,13 @@ namespace NetGore.Graphics
         /// </returns>
         /// <exception cref="InvalidOperationException"><see cref="ILightManager.IsInitialized"/> is false.</exception>
         Image Draw(ICamera2D camera);
+
+        /// <summary>
+        /// Draws the light map to a <see cref="RenderTarget"/>.
+        /// </summary>
+        /// <param name="camera">The camera describing the current view.</param>
+        /// <param name="target">The <see cref="RenderTarget"/> to draw the light map to.</param>
+        void DrawToTarget(ICamera2D camera, RenderTarget target);
 
         /// <summary>
         /// Initializes the <see cref="ILightManager"/> so it can be drawn. This must be called before any drawing

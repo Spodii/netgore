@@ -43,15 +43,16 @@ namespace NetGore.Graphics
         {
             _sb = CreateSpriteBatch();
 
-            _drawToTargetSprite = new SFML.Graphics.Sprite { BlendMode = BlendMode.Alpha, Color = Color.White, Rotation = 0, Scale = Vector2.One, Origin = Vector2.Zero, Position = Vector2.Zero };
+            _drawToTargetSprite = new SFML.Graphics.Sprite
+            {
+                BlendMode = BlendMode.Alpha,
+                Color = Color.White,
+                Rotation = 0,
+                Scale = Vector2.One,
+                Origin = Vector2.Zero,
+                Position = Vector2.Zero
+            };
         }
-
-        /// <summary>
-        /// Gets or sets if the buffer clearing should be bypassed. If the buffer is recreated, it will
-        /// have to be cleared anyways. By default, this is false.
-        /// </summary>
-        [DefaultValue(false)]
-        protected bool BypassClear { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Color"/> to use when clearing the buffer.
@@ -62,6 +63,13 @@ namespace NetGore.Graphics
             get { return _bufferClearColor; }
             set { _bufferClearColor = value; }
         }
+
+        /// <summary>
+        /// Gets or sets if the buffer clearing should be bypassed. If the buffer is recreated, it will
+        /// have to be cleared anyways. By default, this is false.
+        /// </summary>
+        [DefaultValue(false)]
+        protected bool BypassClear { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Shader"/> to use when drawing the buffer to a <see cref="RenderTarget"/>.
@@ -144,18 +152,6 @@ namespace NetGore.Graphics
                     log.WarnFormat(errmsg, _ri, this, ex);
                 Debug.Fail(string.Format(errmsg, _ri, this, ex));
             }
-        }
-
-        /// <summary>
-        /// Handles the actual drawing of the buffer to a <see cref="RenderTarget"/>.
-        /// </summary>
-        /// <param name="buffer">The <see cref="Image"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
-        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> set up to draw the <paramref name="buffer"/>.</param>
-        /// <param name="target">The <see cref="RenderTarget"/> to draw the <paramref name="buffer"/> to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that was used during the creation of the buffer.</param>
-        protected virtual void HandleDrawBufferToTarget(Image buffer, SFML.Graphics.Sprite sprite, RenderTarget target, ICamera2D camera)
-        {
-            target.Draw(_drawToTargetSprite, DrawToTargetShader);
         }
 
         /// <summary>
@@ -275,6 +271,19 @@ namespace NetGore.Graphics
         /// <param name="camera">The <see cref="ICamera2D"/> to use when drawing.</param>
         /// <returns>True if the drawing was successful; false if there were any errors while drawing.</returns>
         protected abstract bool HandleDrawBuffer(RenderTarget rt, ISpriteBatch sb, ICamera2D camera);
+
+        /// <summary>
+        /// Handles the actual drawing of the buffer to a <see cref="RenderTarget"/>.
+        /// </summary>
+        /// <param name="buffer">The <see cref="Image"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
+        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> set up to draw the <paramref name="buffer"/>.</param>
+        /// <param name="target">The <see cref="RenderTarget"/> to draw the <paramref name="buffer"/> to.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> that was used during the creation of the buffer.</param>
+        protected virtual void HandleDrawBufferToTarget(Image buffer, SFML.Graphics.Sprite sprite, RenderTarget target,
+                                                        ICamera2D camera)
+        {
+            target.Draw(_drawToTargetSprite, DrawToTargetShader);
+        }
 
         /// <summary>
         /// Initializes the internal components of the buffer. This only needs to be called once.

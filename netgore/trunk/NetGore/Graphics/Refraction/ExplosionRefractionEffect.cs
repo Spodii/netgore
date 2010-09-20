@@ -16,8 +16,8 @@ namespace NetGore.Graphics
     public class ExplosionRefractionEffect : IRefractionEffect
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        const ushort _defaultLifeSpan = 2000;
         const float _defaultIntensity = 0.1f;
+        const ushort _defaultLifeSpan = 2000;
 
         static readonly Shader _defaultShader;
 
@@ -134,8 +134,7 @@ void main (void)
         /// you require.</param>
         /// <exception cref="ArgumentNullException"><paramref name="explosionMap"/> is null.</exception>
         public ExplosionRefractionEffect(Grh explosionMap, ISpatial positionProvider, ushort lifeSpan = (ushort)0,
-            Shader shader = null) : this(explosionMap, 
-            positionProvider.Center, lifeSpan, shader)
+                                         Shader shader = null) : this(explosionMap, positionProvider.Center, lifeSpan, shader)
         {
             PositionProvider = positionProvider;
         }
@@ -152,7 +151,7 @@ void main (void)
         /// so you can override the <see cref="ExplosionRefractionEffect.SetShaderParameters"/> method and set the parameters
         /// you require.</param>
         /// <exception cref="ArgumentNullException"><paramref name="explosionMap"/> is null.</exception>
-        public ExplosionRefractionEffect(Grh explosionMap, Vector2 center, ushort lifeSpan = (ushort)0,Shader shader = null)
+        public ExplosionRefractionEffect(Grh explosionMap, Vector2 center, ushort lifeSpan = (ushort)0, Shader shader = null)
         {
             if (explosionMap == null)
                 throw new ArgumentNullException("explosionMap");
@@ -194,18 +193,18 @@ void main (void)
         public static Vector2 DefaultExpansionRate { get; set; }
 
         /// <summary>
-        /// Gets or sets the global default lifespan, in milliseconds, for all <see cref="ExplosionRefractionEffect"/>s.
-        /// Default value is 2000 (2 seconds).
-        /// </summary>
-        [DefaultValue(_defaultLifeSpan)]
-        public static ushort DefaultLifeSpan { get; set; }
-
-        /// <summary>
         /// Gets or sets the global default intensity for all <see cref="ExplosionRefractionEffect"/>.
         /// Default value is 0.1.
         /// </summary>
         [DefaultValue(_defaultIntensity)]
         public static float DefaultIntensity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the global default lifespan, in milliseconds, for all <see cref="ExplosionRefractionEffect"/>s.
+        /// Default value is 2000 (2 seconds).
+        /// </summary>
+        [DefaultValue(_defaultLifeSpan)]
+        public static ushort DefaultLifeSpan { get; set; }
 
         /// <summary>
         /// Gets the default <see cref="Shader"/> used for the <see cref="ExplosionRefractionEffect"/>.
@@ -219,11 +218,6 @@ void main (void)
         }
 
         /// <summary>
-        /// Gets or sets the intensity of the explosion. This value should be on the range of 0.0 to 1.0.
-        /// </summary>
-        public float Intensity { get; set; }
-
-        /// <summary>
         /// Gets or sets how fast the explosion effect expands in pixels per millisecond.
         /// </summary>
         public Vector2 ExpansionRate { get; set; }
@@ -235,6 +229,11 @@ void main (void)
         {
             get { return _explosionMap; }
         }
+
+        /// <summary>
+        /// Gets or sets the intensity of the explosion. This value should be on the range of 0.0 to 1.0.
+        /// </summary>
+        public float Intensity { get; set; }
 
         /// <summary>
         /// Gets the lifespan of this effect in milliseconds.
@@ -267,9 +266,7 @@ void main (void)
                 Moved(this, oldValue);
             }
             else
-            {
                 _center = sender.Center;
-            }
         }
 
         /// <summary>

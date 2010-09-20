@@ -1,4 +1,6 @@
-﻿namespace NetGore.Db
+﻿using System.Linq;
+
+namespace NetGore.Db
 {
     /// <summary>
     /// Contains the database schema, table, and column for a fully qualified column reference.

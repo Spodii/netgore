@@ -34,6 +34,7 @@ namespace DemoGame.Client
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
+        readonly SafeRandom rndTmp = new SafeRandom();
 
         AvailableQuestsForm _availableQuestsForm;
         Panel _cScreen;
@@ -709,11 +710,8 @@ namespace DemoGame.Client
                 DrawingManager.RefractionManager.Add(fx);
             }
 
-
             base.Update(gameTime);
         }
-
-        SafeRandom rndTmp = new SafeRandom();
 
         void World_MapChanged(World world, Map oldMap, Map newMap)
         {

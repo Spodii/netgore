@@ -14,8 +14,7 @@ namespace NetGore.Graphics
         /// Initializes a new instance of the <see cref="RoundedSpriteBatch"/> class.
         /// </summary>
         /// <param name="renderTarget">The <see cref="RenderTarget"/> to draw to.</param>
-        public RoundedSpriteBatch(RenderTarget renderTarget)
-            : base(renderTarget)
+        public RoundedSpriteBatch(RenderTarget renderTarget) : base(renderTarget)
         {
         }
 

@@ -1,4 +1,6 @@
-﻿namespace NetGore.Features.Banning
+﻿using System.Linq;
+
+namespace NetGore.Features.Banning
 {
     /// <summary>
     /// Describes the different reasons why an attempt to add a ban fails.

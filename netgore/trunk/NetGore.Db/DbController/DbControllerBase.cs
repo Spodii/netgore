@@ -19,6 +19,7 @@ namespace NetGore.Db
         static readonly List<DbControllerBase> _instances = new List<DbControllerBase>();
 
         readonly DbConnectionPool _connectionPool;
+        readonly string _database;
         readonly Dictionary<Type, object> _queryObjects = new Dictionary<Type, object>();
 
         bool _disposed;
@@ -116,8 +117,6 @@ namespace NetGore.Db
         /// <returns>The SQL query string used for when testing if the database connection is valid.</returns>
         protected abstract string GetTestQueryCommand();
 
-        readonly string _database;
-
         /// <summary>
         /// Populates the <see cref="_queryObjects"/> with the query objects.
         /// </summary>
@@ -212,6 +211,14 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets the name of the database that this <see cref="IDbController"/> instance is connected to.
+        /// </summary>
+        public string Database
+        {
+            get { return _database; }
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public virtual void Dispose()
@@ -241,17 +248,6 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// When overridden in the derived class, removes all of the primary keys from a table where there is no foreign keys for the
-        /// respective primary key.
-        /// For safety reasons, if a column has no foreign keys, the query will be aborted.
-        /// </summary>
-        /// <param name="schema">The schema or database name of the table.</param>
-        /// <param name="table">The table to check.</param>
-        /// <param name="column">The primary key column.</param>
-        /// <returns>The number of rows removed, or -1 if there were no foreign keys for the given column in the first place.</returns>
-        public abstract int RemoveUnreferencedPrimaryKeys(string schema, string table, string column);
-
-        /// <summary>
         /// Gets the schema, table, and column tuples for columns containing a reference to the specified primary key.
         /// </summary>
         /// <param name="database">Database or schema object that the <paramref name="table"/> belongs to.</param>
@@ -270,14 +266,6 @@ namespace NetGore.Db
             var results = query.Execute(database, table, column);
 
             return results;
-        }
-
-        /// <summary>
-        /// Gets the name of the database that this <see cref="IDbController"/> instance is connected to.
-        /// </summary>
-        public string Database
-        {
-            get { return _database; }
         }
 
         /// <summary>
@@ -342,6 +330,17 @@ namespace NetGore.Db
 
             return ret;
         }
+
+        /// <summary>
+        /// When overridden in the derived class, removes all of the primary keys from a table where there is no foreign keys for the
+        /// respective primary key.
+        /// For safety reasons, if a column has no foreign keys, the query will be aborted.
+        /// </summary>
+        /// <param name="schema">The schema or database name of the table.</param>
+        /// <param name="table">The table to check.</param>
+        /// <param name="column">The primary key column.</param>
+        /// <returns>The number of rows removed, or -1 if there were no foreign keys for the given column in the first place.</returns>
+        public abstract int RemoveUnreferencedPrimaryKeys(string schema, string table, string column);
 
         #endregion
     }

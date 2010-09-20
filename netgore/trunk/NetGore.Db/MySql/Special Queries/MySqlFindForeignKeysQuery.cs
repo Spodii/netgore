@@ -12,7 +12,8 @@ namespace NetGore.Db.MySql
         static readonly string _queryStr =
             FormatQueryString(
                 "SELECT `TABLE_SCHEMA`, `TABLE_NAME`, `COLUMN_NAME` FROM information_schema.KEY_COLUMN_USAGE" +
-                " WHERE `REFERENCED_TABLE_SCHEMA` = {0} AND `REFERENCED_TABLE_NAME` = {1} AND `REFERENCED_COLUMN_NAME` = {2};", "@" + SchemaParameterName, "@" + TableParameterName, "@" + ColumnParameterName);
+                " WHERE `REFERENCED_TABLE_SCHEMA` = {0} AND `REFERENCED_TABLE_NAME` = {1} AND `REFERENCED_COLUMN_NAME` = {2};",
+                "@" + SchemaParameterName, "@" + TableParameterName, "@" + ColumnParameterName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FindForeignKeysQuery"/> class.

@@ -75,8 +75,8 @@ namespace DemoGame.Client
 
             var textBoxPos = new Vector2(60, _cPasswordText.Position.Y + _cPasswordText.Size.Y + 20);
             var textBoxSize = new Vector2(cScreen.ClientSize.X - (textBoxPos.X * 2), cScreen.ClientSize.Y - textBoxPos.Y - 60);
-            _cError = new TextBox(cScreen, textBoxPos, textBoxSize) { ForeColor = Color.Red, Border = null,
-             CanFocus = false, IsMultiLine = true, IsEnabled = false};
+            _cError = new TextBox(cScreen, textBoxPos, textBoxSize)
+            { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
 
             // Create the menu buttons
             var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "Back");
