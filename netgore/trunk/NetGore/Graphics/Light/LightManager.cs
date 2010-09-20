@@ -28,31 +28,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets if this <see cref="ILightManager"/> is enabled.
-        /// If <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this will always be false.
-        /// </summary>
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set
-            {
-                if (_isEnabled == value)
-                    return;
-
-                // When going from disabled to enabled, make sure that shaders are supported
-                if (value && !Shader.IsAvailable)
-                {
-                    const string errmsg = "Cannot enable ILightManager since Shader.IsAvailable returned false.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg);
-                    return;
-                }
-
-                _isEnabled = value;
-            }
-        }
-
-        /// <summary>
         /// When overridden in the derived class, handles drawing to the buffer.
         /// </summary>
         /// <param name="rt">The <see cref="RenderTarget"/> to draw to.</param>
@@ -74,6 +49,19 @@ namespace NetGore.Graphics
             sb.End();
 
             return true;
+        }
+
+        /// <summary>
+        /// Prepares the <see cref="SFML.Graphics.Sprite"/> used to draw to a <see cref="RenderTarget"/>.
+        /// </summary>
+        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> to prepare.</param>
+        /// <param name="target">The <see cref="RenderTarget"/> begin drawn to.</param>
+        protected override void PrepareDrawToTargetSprite(SFML.Graphics.Sprite sprite, RenderTarget target)
+        {
+            base.PrepareDrawToTargetSprite(sprite, target);
+
+            // Always use alpha blending
+            sprite.BlendMode = BlendMode.Multiply;
         }
 
         #region ILightManager Members
@@ -138,6 +126,31 @@ namespace NetGore.Graphics
                     if (light.Sprite == oldValue)
                         light.Sprite = _defaultSprite;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets if this <see cref="ILightManager"/> is enabled.
+        /// If <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this will always be false.
+        /// </summary>
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set
+            {
+                if (_isEnabled == value)
+                    return;
+
+                // When going from disabled to enabled, make sure that shaders are supported
+                if (value && !Shader.IsAvailable)
+                {
+                    const string errmsg = "Cannot enable ILightManager since Shader.IsAvailable returned false.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg);
+                    return;
+                }
+
+                _isEnabled = value;
             }
         }
 
@@ -244,19 +257,6 @@ namespace NetGore.Graphics
         public void DrawToTarget(ICamera2D camera, RenderTarget target)
         {
             DrawBufferToTarget(target, camera);
-        }
-
-        /// <summary>
-        /// Prepares the <see cref="SFML.Graphics.Sprite"/> used to draw to a <see cref="RenderTarget"/>.
-        /// </summary>
-        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> to prepare.</param>
-        /// <param name="target">The <see cref="RenderTarget"/> begin drawn to.</param>
-        protected override void PrepareDrawToTargetSprite(SFML.Graphics.Sprite sprite, RenderTarget target)
-        {
-            base.PrepareDrawToTargetSprite(sprite, target);
-
-            // Always use alpha blending
-            sprite.BlendMode = BlendMode.Multiply;
         }
 
         /// <summary>

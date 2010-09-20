@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Text;
 using SFML.Graphics;
@@ -14,6 +13,7 @@ namespace NetGore.Graphics
         readonly Text _str = new Text();
 
         bool _isDisposed;
+        bool _isStarted;
         RenderTarget _rt;
 
         /// <summary>
@@ -77,8 +77,6 @@ namespace NetGore.Graphics
         {
             get { return _isDisposed; }
         }
-
-        bool _isStarted;
 
         /// <summary>
         /// Gets if this <see cref="ISpriteBatch"/> is currently inbetween calls to Begin() and End().

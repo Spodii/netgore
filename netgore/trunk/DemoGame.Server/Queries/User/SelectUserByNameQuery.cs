@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -9,14 +10,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectUserByNameQuery : DbQueryReader<string>
     {
-        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `name`=@name", UserCharacterTable.TableName);
+        static readonly string _queryStr = FormatQueryString("SELECT * FROM `{0}` WHERE `name`=@name",
+                                                             UserCharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectUserByNameQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectUserByNameQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectUserByNameQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(UserCharacterTable.DbColumns, "name");
         }

@@ -120,6 +120,18 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Checks if the given line is one that should be ignored. Typically, this means checking if a line starts with
+        /// comment characters. By default, lines starting with a hash (#), slash (\ or /), and apostrophe (') are ignored.
+        /// Blank lines are always ignored.
+        /// </summary>
+        /// <param name="fileLine">The line to check.</param>
+        /// <returns>True if the line should be ignored; otherwise false.</returns>
+        protected virtual bool IsLineToIgnore(string fileLine)
+        {
+            return fileLine.StartsWith("#") || fileLine.StartsWith("\\") || fileLine.StartsWith("'");
+        }
+
+        /// <summary>
         /// Loads the messages from a file.
         /// </summary>
         /// <param name="filePath">The full path of the file to load the message from.</param>
@@ -238,18 +250,6 @@ namespace NetGore.IO
             id = default(T);
             msg = null;
             return false;
-        }
-
-        /// <summary>
-        /// Checks if the given line is one that should be ignored. Typically, this means checking if a line starts with
-        /// comment characters. By default, lines starting with a hash (#), slash (\ or /), and apostrophe (') are ignored.
-        /// Blank lines are always ignored.
-        /// </summary>
-        /// <param name="fileLine">The line to check.</param>
-        /// <returns>True if the line should be ignored; otherwise false.</returns>
-        protected virtual bool IsLineToIgnore(string fileLine)
-        {
-            return fileLine.StartsWith("#") || fileLine.StartsWith("\\") || fileLine.StartsWith("'");
         }
 
         #region IMessageCollection<T> Members

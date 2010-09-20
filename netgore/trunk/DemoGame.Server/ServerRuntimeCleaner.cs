@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -52,6 +50,25 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Removes all entries from the items table that has no foreign key references.
+        /// </summary>
+        void RemoveUnreferencedItems()
+        {
+            LogCleanupRoutine("Removing ununused item instances");
+
+            if (ItemTable.DbKeyColumns.Count() != 1)
+            {
+                const string errmsg = "Cannot execute cleanup routine - expected only one primary key column.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            DbController.RemoveUnreferencedPrimaryKeys(DbController.Database, ItemTable.TableName, ItemTable.DbKeyColumns.First());
+        }
+
+        /// <summary>
         /// Runs all of the clean-up operations.
         /// </summary>
         void RunAll()
@@ -75,25 +92,6 @@ namespace DemoGame.Server
 
             // Set the current_ip on all accounts null
             DbController.GetQuery<SetAccountCurrentIPsNullQuery>().Execute();
-        }
-
-        /// <summary>
-        /// Removes all entries from the items table that has no foreign key references.
-        /// </summary>
-        void RemoveUnreferencedItems()
-        {
-            LogCleanupRoutine("Removing ununused item instances");
-
-            if (ItemTable.DbKeyColumns.Count() != 1)
-            {
-                const string errmsg = "Cannot execute cleanup routine - expected only one primary key column.";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
-            DbController.RemoveUnreferencedPrimaryKeys(DbController.Database, ItemTable.TableName, ItemTable.DbKeyColumns.First());
         }
     }
 }

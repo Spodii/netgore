@@ -1,5 +1,6 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,6 +15,7 @@ namespace NetGore.Scripting
     /// </summary>
     public class JScriptAssemblyCreator
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly CompilerError[] _emptyCompilerErrors = new CompilerError[0];
         static readonly ScriptAssemblyCache _scriptAssemblyCache = ScriptAssemblyCache.Instance;
         readonly List<string> _members = new List<string>();
@@ -141,8 +143,6 @@ namespace NetGore.Scripting
             return CreateAssemblyClassInvoker(asm, ClassName);
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Performs the actual compiling of the <see cref="Assembly"/>. Will be called by the
         /// <see cref="ScriptAssemblyCache"/> if the source didn't exist in the cache.
@@ -176,14 +176,12 @@ namespace NetGore.Scripting
                     }
                 }
 
-                System.Diagnostics.Debug.Assert(!results.Errors.HasErrors, "One or more errors when compiling JScript assembly.");
+                Debug.Assert(!results.Errors.HasErrors, "One or more errors when compiling JScript assembly.");
 
                 _compilationErrors = results.Errors.OfType<CompilerError>().ToImmutable();
             }
             else
-            {
                 _compilationErrors = _emptyCompilerErrors;
-            }
 
             // Return the compiled assembly
             return results.CompiledAssembly;

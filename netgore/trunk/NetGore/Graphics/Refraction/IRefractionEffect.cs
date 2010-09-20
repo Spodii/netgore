@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NetGore.World;
 using SFML.Graphics;
 
@@ -15,6 +16,14 @@ namespace NetGore.Graphics
         /// Gets or sets if this reflection effect is enabled.
         /// </summary>
         bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// Gets if this effect has expired. Not all effects have to expire. This is not the same as <see cref="IRefractionEffect.IsEnabled"/>
+        /// since expired effects are completely destroyed and removed, while disabled effects can still be enabled again. Once this
+        /// value is true, it should remain true and the effect should cease being used.
+        /// Disposing an <see cref="IRefractionEffect"/> will force it to be expired.
+        /// </summary>
+        bool IsExpired { get; }
 
         /// <summary>
         /// Gets or sets an <see cref="ISpatial"/> that provides the position to use. If set, the
@@ -52,13 +61,5 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="currentTime">The current game time in milliseconds.</param>
         void Update(TickCount currentTime);
-
-        /// <summary>
-        /// Gets if this effect has expired. Not all effects have to expire. This is not the same as <see cref="IRefractionEffect.IsEnabled"/>
-        /// since expired effects are completely destroyed and removed, while disabled effects can still be enabled again. Once this
-        /// value is true, it should remain true and the effect should cease being used.
-        /// Disposing an <see cref="IRefractionEffect"/> will force it to be expired.
-        /// </summary>
-        bool IsExpired { get; }
     }
 }

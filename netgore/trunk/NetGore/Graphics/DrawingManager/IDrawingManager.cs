@@ -15,6 +15,11 @@ namespace NetGore.Graphics
         Color BackgroundColor { get; set; }
 
         /// <summary>
+        /// Gets if this <see cref="IDrawingManager"/> has been disposed.
+        /// </summary>
+        bool IsDisposed { get; }
+
+        /// <summary>
         /// Gets the <see cref="ILightManager"/> used by this <see cref="IDrawingManager"/>.
         /// </summary>
         ILightManager LightManager { get; }
@@ -67,11 +72,6 @@ namespace NetGore.Graphics
         /// <exception cref="InvalidOperationException"><see cref="IDrawingManager.State"/> is not equal to
         /// <see cref="DrawingManagerState.DrawingWorld"/>.</exception>
         void EndDrawWorld();
-
-        /// <summary>
-        /// Gets if this <see cref="IDrawingManager"/> has been disposed.
-        /// </summary>
-        bool IsDisposed { get; }
 
         /// <summary>
         /// Updates the <see cref="IDrawingManager"/> and all components inside of it.

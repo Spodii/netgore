@@ -193,7 +193,8 @@ namespace DemoGame.Server
         /// <param name="length">How long the ban will last.</param>
         /// <param name="reason">The reason for the ban.</param>
         /// <param name="issuedBy">The name of the user or source that issued the ban.</param>
-        void BanningManager_AccountBanned(IBanningManager<AccountID> sender, AccountID accountID, TimeSpan length, string reason, string issuedBy)
+        void BanningManager_AccountBanned(IBanningManager<AccountID> sender, AccountID accountID, TimeSpan length, string reason,
+                                          string issuedBy)
         {
             // If the user is online, disconnect them
 

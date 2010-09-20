@@ -813,29 +813,6 @@ namespace DemoGame.Server
             #region Lesser Admin commands
 
             /// <summary>
-            /// Displays the active ban information for a user.
-            /// </summary>
-            /// <param name="username">The name of the user to show the ban info for.</param>
-            [SayCommand("BanInfo")]
-            public void BanInfo(string username)
-            {
-                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
-                    return;
-
-                var banInfos = BanningManager.Instance.GetAccountBanInfo(username).Where(x => !x.Expired);
-
-                int count = banInfos.Count();
-                UserChat(string.Format("Active bans on user `{0}`: {1}", username, count));
-
-                int i = 1;
-                foreach (var banInfo in banInfos)
-                {
-                    UserChat(banInfo, i++, count);
-                }
-            }
-
-
-            /// <summary>
             /// Displays all ban information for a user.
             /// </summary>
             /// <param name="username">The name of the user to show the ban info for.</param>
@@ -847,10 +824,32 @@ namespace DemoGame.Server
 
                 var banInfos = BanningManager.Instance.GetAccountBanInfo(username);
 
-                int count = banInfos.Count();
+                var count = banInfos.Count();
                 UserChat(string.Format("All bans on user `{0}`: {1}", username, count));
 
-                int i = 1;
+                var i = 1;
+                foreach (var banInfo in banInfos)
+                {
+                    UserChat(banInfo, i++, count);
+                }
+            }
+
+            /// <summary>
+            /// Displays the active ban information for a user.
+            /// </summary>
+            /// <param name="username">The name of the user to show the ban info for.</param>
+            [SayCommand("BanInfo")]
+            public void BanInfo(string username)
+            {
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                    return;
+
+                var banInfos = BanningManager.Instance.GetAccountBanInfo(username).Where(x => !x.Expired);
+
+                var count = banInfos.Count();
+                UserChat(string.Format("Active bans on user `{0}`: {1}", username, count));
+
+                var i = 1;
                 foreach (var banInfo in banInfos)
                 {
                     UserChat(banInfo, i++, count);

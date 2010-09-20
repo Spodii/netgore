@@ -27,6 +27,7 @@ namespace NetGore.Graphics
         static readonly Shader _defaultShader;
 
         readonly List<IRefractionEffect> _list = new List<IRefractionEffect>();
+        Image _colorMap;
 
         bool _isEnabled;
 
@@ -162,6 +163,37 @@ void main (void)
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Handles the actual drawing of the buffer to a <see cref="RenderTarget"/>.
+        /// </summary>
+        /// <param name="buffer">The <see cref="Image"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
+        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> set up to draw the <paramref name="buffer"/>.</param>
+        /// <param name="target">The <see cref="RenderTarget"/> to draw the <paramref name="buffer"/> to.</param>
+        /// <param name="camera">The <see cref="ICamera2D"/> that was used during the creation of the buffer.</param>
+        protected override void HandleDrawBufferToTarget(Image buffer, SFML.Graphics.Sprite sprite, RenderTarget target,
+                                                         ICamera2D camera)
+        {
+            try
+            {
+                // Set up the shader
+                if (DrawToTargetShader != null)
+                {
+                    DrawToTargetShader.SetTexture("ColorMap", _colorMap);
+                    DrawToTargetShader.SetTexture("NoiseMap", buffer);
+                    DrawToTargetShader.Bind();
+                }
+
+                // Draw to the target
+                target.Draw(sprite, DrawToTargetShader);
+            }
+            finally
+            {
+                // Tear down the shader
+                if (DrawToTargetShader != null)
+                    DrawToTargetShader.Unbind();
+            }
         }
 
         /// <summary>
@@ -325,8 +357,6 @@ void main (void)
             return GetBuffer(camera);
         }
 
-        Image _colorMap;
-
         /// <summary>
         /// Draws the refraction map to a <see cref="RenderTarget"/>.
         /// </summary>
@@ -338,38 +368,6 @@ void main (void)
         {
             _colorMap = colorMap;
             DrawBufferToTarget(target, camera);
-        }
-
-        /// <summary>
-        /// Handles the actual drawing of the buffer to a <see cref="RenderTarget"/>.
-        /// </summary>
-        /// <param name="buffer">The <see cref="Image"/> of the buffer that is to be drawn to the <paramref name="target"/>.</param>
-        /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> set up to draw the <paramref name="buffer"/>.</param>
-        /// <param name="target">The <see cref="RenderTarget"/> to draw the <paramref name="buffer"/> to.</param>
-        /// <param name="camera">The <see cref="ICamera2D"/> that was used during the creation of the buffer.</param>
-        protected override void HandleDrawBufferToTarget(Image buffer, SFML.Graphics.Sprite sprite, RenderTarget target, ICamera2D camera)
-        {
-            try
-            {
-                // Set up the shader
-                if (DrawToTargetShader != null)
-                {
-                    DrawToTargetShader.SetTexture("ColorMap", _colorMap);
-                    DrawToTargetShader.SetTexture("NoiseMap", buffer);
-                    DrawToTargetShader.Bind();
-                }
-
-                // Draw to the target
-                target.Draw(sprite, DrawToTargetShader);
-            }
-            finally
-            {
-                // Tear down the shader
-                if (DrawToTargetShader != null)
-                {
-                    DrawToTargetShader.Unbind();
-                }
-            }
         }
 
         /// <summary>

@@ -16,14 +16,9 @@ namespace NetGore.Db
         DbConnectionPool ConnectionPool { get; }
 
         /// <summary>
-        /// Removes all of the primary keys from a table where there is no foreign keys for the respective primary key.
-        /// For safety reasons, if a column has no foreign keys, the query will be aborted.
+        /// Gets the name of the database that this <see cref="IDbController"/> instance is connected to.
         /// </summary>
-        /// <param name="schema">The schema or database name of the table.</param>
-        /// <param name="table">The table to check.</param>
-        /// <param name="column">The primary key column.</param>
-        /// <returns>The number of rows removed, or -1 if there were no foreign keys for the given column in the first place.</returns>
-        int RemoveUnreferencedPrimaryKeys(string schema, string table, string column);
+        string Database { get; }
 
         /// <summary>
         /// Gets the schema, table, and column tuples for columns containing a reference to the specified primary key.
@@ -33,11 +28,6 @@ namespace NetGore.Db
         /// <param name="column">The column of the primary key.</param>
         /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
         IEnumerable<SchemaTableColumn> GetPrimaryKeyReferences(string database, string table, string column);
-
-        /// <summary>
-        /// Gets the name of the database that this <see cref="IDbController"/> instance is connected to.
-        /// </summary>
-        string Database { get; }
 
         /// <summary>
         /// Gets a query that was marked with the attribute DbControllerQueryAttribute.
@@ -53,5 +43,15 @@ namespace NetGore.Db
         /// <param name="table">The table.</param>
         /// <returns>All of the column names in the given <paramref name="table"/>.</returns>
         IEnumerable<string> GetTableColumns(string table);
+
+        /// <summary>
+        /// Removes all of the primary keys from a table where there is no foreign keys for the respective primary key.
+        /// For safety reasons, if a column has no foreign keys, the query will be aborted.
+        /// </summary>
+        /// <param name="schema">The schema or database name of the table.</param>
+        /// <param name="table">The table to check.</param>
+        /// <param name="column">The primary key column.</param>
+        /// <returns>The number of rows removed, or -1 if there were no foreign keys for the given column in the first place.</returns>
+        int RemoveUnreferencedPrimaryKeys(string schema, string table, string column);
     }
 }

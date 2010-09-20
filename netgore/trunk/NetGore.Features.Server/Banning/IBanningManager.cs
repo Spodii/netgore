@@ -54,7 +54,8 @@ namespace NetGore.Features.Banning
         /// <returns>
         /// True if the ban was successfully added; otherwise false.
         /// </returns>
-        bool TryAddAccountBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy, out BanManagerFailReason failReason);
+        bool TryAddAccountBan(TAccountID accountID, TimeSpan length, string reason, string issuedBy,
+                              out BanManagerFailReason failReason);
 
         /// <summary>
         /// Tries to add a ban to an account.
@@ -77,7 +78,8 @@ namespace NetGore.Features.Banning
         /// <returns>
         /// True if the ban was successfully added; otherwise false.
         /// </returns>
-        bool TryAddAccountBan(string accountName, TimeSpan length, string reason, string issuedBy, out BanManagerFailReason failReason);
+        bool TryAddAccountBan(string accountName, TimeSpan length, string reason, string issuedBy,
+                              out BanManagerFailReason failReason);
 
         /// <summary>
         /// Tries to add a ban to an account by specifying the user's name.
