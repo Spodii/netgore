@@ -291,9 +291,13 @@ void main (void)
         public event SpatialEventHandler<Vector2> Moved;
 
         /// <summary>
-        /// Notifies listeners when this <see cref="IRefractionEffect"/> has been resized.
+        /// Unused by <see cref="ExplosionRefractionEffect"/>.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Resized;
+        event SpatialEventHandler<Vector2> ISpatial.Resized
+        {
+            add { }
+            remove { }
+        }
 
         /// <summary>
         /// Gets the center position of the <see cref="IRefractionEffect"/>.

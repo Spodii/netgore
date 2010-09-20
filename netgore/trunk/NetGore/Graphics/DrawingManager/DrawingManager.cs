@@ -9,7 +9,7 @@ namespace NetGore.Graphics
 {
     public class DrawingManager : IDrawingManager
     {
-        // TODO: !! Add support for a DrawingManager that doesn't need RenderImage
+        // FUTURE: !! Add support for a DrawingManager that doesn't need RenderImage
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
