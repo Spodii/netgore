@@ -169,6 +169,15 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
         /// </summary>
+        public ScreenForm()
+        {
+            _switches = Enumerable.Empty<KeyValuePair<CommandLineSwitch, string[]>>();
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenForm"/> class.
+        /// </summary>
         /// <param name="switches">The command-line switches.</param>
         public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
@@ -790,7 +799,10 @@ namespace DemoGame.MapEditor
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (DesignMode)
+            {
+                base.OnFormClosing(e);
                 return;
+            }
 
             GrhInfo.Save(ContentPaths.Dev);
             SettingsManager.Save();
@@ -804,10 +816,10 @@ namespace DemoGame.MapEditor
         /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            base.OnKeyDown(e);
+
             if (DesignMode)
                 return;
-
-            base.OnKeyDown(e);
 
             var focusControl = FindFocusControl(this);
             if (focusControl != null)
@@ -864,7 +876,10 @@ namespace DemoGame.MapEditor
         protected override void OnKeyUp(KeyEventArgs e)
         {
             if (DesignMode)
+            {
+                base.OnKeyUp(e);
                 return;
+            }
 
             var startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
 
@@ -914,15 +929,15 @@ namespace DemoGame.MapEditor
         {
             base.OnLoad(e);
 
+            // Make sure we skip doing all of this loading when in design mode
+            if (DesignMode)
+                return;
+
             Show();
             Refresh();
 
             numZoom.Minimum = (decimal)_minCameraScale * 100;
             numZoom.Maximum = (decimal)_maxCameraScale * 100;
-
-            // Make sure we skip doing all of this loading when in design mode
-            if (DesignMode)
-                return;
 
             scTabsAndSelected.Panel2Collapsed = true;
 
