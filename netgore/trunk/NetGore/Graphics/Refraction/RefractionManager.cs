@@ -175,25 +175,12 @@ void main (void)
         protected override void HandleDrawBufferToTarget(Image buffer, SFML.Graphics.Sprite sprite, RenderTarget target,
                                                          ICamera2D camera)
         {
-            try
-            {
-                // Set up the shader
-                if (DrawToTargetShader != null)
-                {
-                    DrawToTargetShader.SetTexture("ColorMap", _colorMap);
-                    DrawToTargetShader.SetTexture("NoiseMap", buffer);
-                    DrawToTargetShader.Bind();
-                }
+            // Set up the shader
+            DrawToTargetShader.SetTexture("ColorMap", _colorMap);
+            DrawToTargetShader.SetTexture("NoiseMap", buffer);
 
-                // Draw to the target
-                target.Draw(sprite, DrawToTargetShader);
-            }
-            finally
-            {
-                // Tear down the shader
-                if (DrawToTargetShader != null)
-                    DrawToTargetShader.Unbind();
-            }
+            // Draw to the target
+            target.Draw(sprite, DrawToTargetShader);
         }
 
         /// <summary>
