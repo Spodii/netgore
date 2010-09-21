@@ -507,12 +507,6 @@ namespace DemoGame.MapEditor
                 }
             }
 
-            // End drawing with lighting, start drawing world without lighting
-            DrawingManager.EndDrawWorld();
-            sb = DrawingManager.BeginDrawWorld(Camera);
-            if (sb == null)
-                return;
-
             // Border
             _mapBorderDrawer.Draw(sb, Map, _camera);
 
@@ -605,7 +599,7 @@ namespace DemoGame.MapEditor
 
             // End map rendering
             DrawingManager.EndDrawWorld();
-
+            
             // Begin GUI rendering
             sb = DrawingManager.BeginDrawGUI();
             if (sb == null)
