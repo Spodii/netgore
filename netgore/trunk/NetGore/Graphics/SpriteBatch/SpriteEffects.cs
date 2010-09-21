@@ -15,13 +15,18 @@ namespace NetGore.Graphics
         None = 0,
 
         /// <summary>
-        /// Rotate 180 degrees about the Y axis before rendering.
+        /// Flips the sprite horizontally before rendering.
         /// </summary>
         FlipHorizontally = 1 << 0,
 
         /// <summary>
-        /// Rotate 180 degrees about the X axis before rendering.
+        /// Flips the sprite vertically before rendering.
         /// </summary>
-        FlipVertically = 1 << 1
+        FlipVertically = 1 << 1,
+
+        /// <summary>
+        /// Flips the both vertically and horizontally before rendering.
+        /// </summary>
+        FlipVerticalHorizontal = FlipVertically | FlipHorizontally,
     }
 }
