@@ -952,6 +952,9 @@ namespace DemoGame
             var path = contentPath.Maps.Join(mapID + EngineSettings.DataFileSuffix);
             Save(path, dynamicEntityFactory);
 
+            if (!_memoryMap.IsInitialized)
+                _memoryMap.Initialize((ushort)Size.X, (ushort)Size.Y);
+
             _memoryMap.SaveMemoryMap(contentPath, mapID.GetRawValue());
 
             if (Saved != null)
