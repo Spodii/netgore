@@ -172,6 +172,7 @@ namespace NetGore.Graphics
             _drawToTargetSprite.Width = bufferImage.Width;
             _drawToTargetSprite.Height = bufferImage.Height;
             _drawToTargetSprite.Position = target.ConvertCoords(0, 0).Round();
+            _drawToTargetSprite.SubRect = new IntRect(0, 0, (int)bufferImage.Width, (int)bufferImage.Height);
             PrepareDrawToTargetSprite(_drawToTargetSprite, target);
 
             // Draw to the target
