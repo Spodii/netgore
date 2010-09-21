@@ -118,11 +118,17 @@ namespace NetGore.Graphics
         /// <param name="blendMode">The <see cref="BlendMode"/> to use.</param>
         void DrawBufferToScreen(Image buffer, BlendMode blendMode)
         {
+            var size = new Vector2(buffer.Width, buffer.Height);
+
             _drawBufferToWindowSprite.BlendMode = blendMode;
             _drawBufferToWindowSprite.Image = buffer;
-            _drawBufferToWindowSprite.Width = buffer.Width;
-            _drawBufferToWindowSprite.Height = buffer.Height;
+            _drawBufferToWindowSprite.Width = size.X;
+            _drawBufferToWindowSprite.Height = size.Y;
+            _drawBufferToWindowSprite.SubRect = new IntRect(0, 0, (int)size.X, (int)size.Y);
 
+            _rw.CurrentView.Size = size;
+            _rw.CurrentView.Center = size / 2f;
+            
             _rw.Draw(_drawBufferToWindowSprite);
         }
 
