@@ -613,6 +613,7 @@ namespace DemoGame.MapEditor
 
             // End GUI rendering
             DrawingManager.EndDrawGUI();
+            
         }
 
         /// <summary>

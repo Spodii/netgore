@@ -247,7 +247,7 @@ namespace NetGore.Graphics
                 _lastDrawWasToWorld = false;
 
                 // Ensure the buffer is set up
-                _buffer = _rw.CreateBufferRenderImage(_buffer, false);
+                _buffer = _rw.CreateBufferRenderImage(_buffer);
                 _sb.RenderTarget = _buffer;
 
                 if (_buffer == null)
@@ -324,7 +324,7 @@ namespace NetGore.Graphics
                 _lastDrawWasToWorld = true;
 
                 // Ensure the buffer is set up
-                _buffer = _rw.CreateBufferRenderImage(_buffer, false);
+                _buffer = _rw.CreateBufferRenderImage(_buffer);
                 _sb.RenderTarget = _buffer;
 
                 if (_buffer == null)
