@@ -255,9 +255,20 @@ namespace NetGore.Graphics
                 // Change the state
                 _state = DrawingManagerState.DrawingGUI;
             }
+            catch (AccessViolationException ex)
+            {
+                // More frequent and less concerning exception
+                const string errmsg = "Failed to start drawing GUI on `{0}`. Device was probably lost. Exception: {1}";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, ex);
+                _state = DrawingManagerState.Idle;
+                SafeEndSpriteBatch(_sb);
+                return null;
+            }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to start drawing GUI on `{0}`. Exception: {1}";
+                // Unexpected exception
+                const string errmsg = "Failed to start drawing GUI on `{0}` due to unexpected exception. Exception: {1}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this, ex);
                 Debug.Fail(string.Format(errmsg, this, ex));
@@ -319,9 +330,20 @@ namespace NetGore.Graphics
                 // Change the state
                 _state = DrawingManagerState.DrawingWorld;
             }
+            catch (AccessViolationException ex)
+            {
+                // More frequent and less concerning exception
+                const string errmsg = "Failed to start drawing world on `{0}`. Device was probably lost. Exception: {1}";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, ex);
+                _state = DrawingManagerState.Idle;
+                SafeEndSpriteBatch(_sb);
+                return null;
+            }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to start drawing world on `{0}`. Exception: {1}";
+                // Unexpected exception
+                const string errmsg = "Failed to start drawing world on `{0}` due to unexpected exception. Exception: {1}";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this, ex);
                 Debug.Fail(string.Format(errmsg, this, ex));
@@ -358,16 +380,15 @@ namespace NetGore.Graphics
 
             try
             {
+                _state = DrawingManagerState.Idle;
+
                 // Ensure the RenderWindow is available
                 if (!IsRenderWindowAvailable())
                 {
                     if (log.IsInfoEnabled)
                         log.Info("Skipping EndDrawGUI() call - the RenderWindow is not available.");
-                    _state = DrawingManagerState.Idle;
                     return;
                 }
-
-                _state = DrawingManagerState.Idle;
 
                 SafeEndSpriteBatch(_sb);
 
@@ -375,12 +396,21 @@ namespace NetGore.Graphics
                 _buffer.Display();
                 DrawBufferToScreen(_buffer.Image, BlendMode.Alpha);
             }
+            catch (AccessViolationException ex)
+            {
+                // More frequently and less concerning exception
+                const string errmsg =
+                    "EndDrawGUI failed on `{0}`. Device was probably lost. The GUI will have to skip being drawn this frame. Exception: {1}";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, ex);
+            }
             catch (Exception ex)
             {
+                // Unexpected exception
                 const string errmsg =
-                    "Unexpected exception on EndDrawGUI. The GUI will have to pass being drawn this frame. Exception: {0}";
+                    "EndDrawGUI failed on `{0}` due to unexpected exception. The GUI will have to skip being drawn this frame. Exception: {1}";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
+                    log.ErrorFormat(errmsg, this, ex);
             }
         }
 
@@ -396,16 +426,15 @@ namespace NetGore.Graphics
 
             try
             {
+                _state = DrawingManagerState.Idle;
+
                 // Ensure the RenderWindow is available
                 if (!IsRenderWindowAvailable())
                 {
                     if (log.IsInfoEnabled)
                         log.Info("Skipping EndDrawWorld() call - the RenderWindow is not available.");
-                    _state = DrawingManagerState.Idle;
                     return;
                 }
-
-                _state = DrawingManagerState.Idle;
 
                 SafeEndSpriteBatch(_sb);
 
@@ -424,6 +453,10 @@ namespace NetGore.Graphics
                 }
                 catch (Exception ex)
                 {
+                    // Do not catch AccessViolationException - let that be handled by the outer block
+                    if (ex is AccessViolationException)
+                        throw;
+
                     const string errmsg =
                         "Error on `{0}` while trying to draw the LightManager `{1}`." +
                         " Lights will have to be skipped this frame. Exception: {2}";
@@ -451,6 +484,10 @@ namespace NetGore.Graphics
                 }
                 catch (Exception ex)
                 {
+                    // Do not catch AccessViolationException - let that be handled by the outer block
+                    if (ex is AccessViolationException)
+                        throw;
+
                     const string errmsg =
                         "Error on `{0}` while trying to draw the RefractionManager `{1}`." +
                         " Refractions will have to be skipped this frame. Exception: {2}";
@@ -458,12 +495,21 @@ namespace NetGore.Graphics
                         log.ErrorFormat(errmsg, this, RefractionManager, ex);
                 }
             }
+            catch (AccessViolationException ex)
+            {
+                // More frequently and less concerning exception
+                const string errmsg =
+                    "EndDrawWorld failed on `{0}`. Device was probably lost. The world will have to skip being drawn this frame. Exception: {1}";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, ex);
+            }
             catch (Exception ex)
             {
+                // Unexpected exception
                 const string errmsg =
-                    "Unexpected exception on EndDrawWorld. The world will have to pass being drawn this frame. Exception: {0}";
+                    "EndDrawWorld failed on `{0}` due to unexpected exception. The world will have to skip being drawn this frame. Exception: {1}";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, ex);
+                    log.ErrorFormat(errmsg, this, ex);
             }
         }
 
