@@ -150,7 +150,8 @@ namespace SFML
 
                 if (disposing)
                 {
-                    myDefaultView.Dispose();
+                    // NOTE: myDefaultView disposal removed since it seemed to keep causing an AccessViolationException when calling Dipose(true)
+                    //myDefaultView.Dispose();
                     myImage.Dispose();
                 }
 

@@ -36,10 +36,6 @@ namespace NetGore.Graphics
         {
             try
             {
-                // TODO: I cannot seem to get the RenderImage to recreate when it needs to be resized... so this if block will make it create each RenderImage only once
-                if (ri != null)
-                    return ri;
-       
                 // Check if the provided RenderImage works for our needs
                 var mustRecreate = false;
                 try
