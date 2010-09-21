@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Map>
+  <Header>
+    <Name />
+    <HasMusic>False</HasMusic>
+    <MusicID>0</MusicID>
+    <Size>960,640</Size>
+    <Indoors>False</Indoors>
+  </Header>
+  <Walls>
+    <Count>0</Count>
+  </Walls>
+  <DynamicEntities>
+    <Count>0</Count>
+  </DynamicEntities>
+  <Misc>
+    <MapGrhs>
+      <UsedIndicies>
+        <Count>0</Count>
+      </UsedIndicies>
+      <MapGrhs>
+        <Count>0</Count>
+      </MapGrhs>
+    </MapGrhs>
+    <BackgroundImages>
+      <Count>0</Count>
+    </BackgroundImages>
+    <Lighting>
+      <Ambient>255,255,255,255</Ambient>
+      <Lights>
+        <Count>0</Count>
+      </Lights>
+    </Lighting>
+    <ParticleEffects>
+      <Count>0</Count>
+    </ParticleEffects>
+  </Misc>
+</Map>

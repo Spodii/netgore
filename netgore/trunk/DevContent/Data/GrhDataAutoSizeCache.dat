@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <AutoGrhDataSizes>
   <Item>
-    <Count>350</Count>
+    <Count>351</Count>
     <Item0>
       <AssetName>Grh/Map/Platform/Grass/Top-Left</AssetName>
       <FileSize>305</FileSize>
@@ -2452,5 +2452,12 @@
       <Height>28</Height>
       <Width>10</Width>
     </Item349>
+    <Item350>
+      <AssetName>Grh/Map/Checkered/bgwall/mid_03</AssetName>
+      <FileSize>147</FileSize>
+      <GrhIndex>371</GrhIndex>
+      <Height>32</Height>
+      <Width>32</Width>
+    </Item350>
   </Item>
 </AutoGrhDataSizes>
