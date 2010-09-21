@@ -126,9 +126,9 @@ namespace NetGore.Graphics
             _drawBufferToWindowSprite.Height = size.Y;
             _drawBufferToWindowSprite.SubRect = new IntRect(0, 0, (int)size.X, (int)size.Y);
 
-            _rw.CurrentView.Size = size;
-            _rw.CurrentView.Center = size / 2f;
-            
+            _rw.CurrentView.Reset(new FloatRect(0, 0, size.X, size.Y));
+            _rw.CurrentView = _rw.CurrentView;
+
             _rw.Draw(_drawBufferToWindowSprite);
         }
 
