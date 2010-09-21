@@ -44,6 +44,23 @@ namespace NetGore.Graphics
                 }
                 catch (InvalidOperationException)
                 {
+                    // Common exception that occurs when the RenderImage is invalid or corrupt - recreate and do not report
+                    mustRecreate = true;
+                }
+                catch (AccessViolationException)
+                {
+                    // Common exception that occurs when the RenderImage is invalid or corrupt - recreate and do not report
+                    mustRecreate = true;
+                }
+                catch (Exception ex)
+                {
+                    // Recreate during any exception, but when its not one we know is fine to ignore, report it
+                    const string errmsg = "Unexpected exception when reading properties of a RenderImage. Forcing recreation. Exception: {0}";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+
+                    Debug.Fail(string.Format(errmsg, ex));
+
                     mustRecreate = true;
                 }
 
@@ -59,9 +76,13 @@ namespace NetGore.Graphics
                         if (!ri.IsDisposed)
                             ri.Dispose();
                     }
-                    catch (InvalidOperationException)
+                    catch (Exception ex)
                     {
+                        const string errmsg = "Failed to dispose RenderImage. This is usually not a concern. Exception: {0}";
+
                         // Ignore failure to dispose
+                        if (log.IsInfoEnabled)
+                            log.InfoFormat(errmsg, ex);
                     }
                 }
 

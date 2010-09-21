@@ -75,6 +75,7 @@ namespace NetGore.Graphics
                     break;
 
                 case BackgroundLayerLayout.Tiled:
+                    // TODO: Add tiling support
                     throw new NotImplementedException("No support for tiling yet...");
             }
 
@@ -86,6 +87,7 @@ namespace NetGore.Graphics
                     break;
 
                 case BackgroundLayerLayout.Tiled:
+                    // TODO: Add tiling support
                     throw new NotImplementedException("No support for tiling yet...");
             }
 
