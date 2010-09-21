@@ -204,10 +204,17 @@ namespace NetGore.Graphics
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw with.</param>
         public void Draw(ISpriteBatch spriteBatch)
         {
-            if (Sprite == null || !IsEnabled)
+            // Skip when not enabled
+            if (!IsEnabled)
                 return;
 
-            Sprite.Draw(spriteBatch, Position - (Size / 2f), Color, SpriteEffects.None, Rotation, Vector2.Zero, Size / Sprite.Size);
+            // Make sure we have a valid sprite
+            var s = Sprite;
+            if (s == null)
+                return;
+
+            // Draw
+            s.Draw(spriteBatch, Position - (Size / 2f), Color, SpriteEffects.None, Rotation, Vector2.Zero, Size / s.Size);
         }
 
         /// <summary>
@@ -276,8 +283,14 @@ namespace NetGore.Graphics
         /// <param name="currentTime">The current game time in milliseconds.</param>
         public void Update(TickCount currentTime)
         {
-            if (Sprite != null)
-                Sprite.Update(currentTime);
+            // Skip when not enabled
+            if (!IsEnabled)
+                return;
+
+            // Update our sprite (if we have one)
+            var s = Sprite;
+            if (s != null)
+                s.Update(currentTime);
         }
 
         /// <summary>

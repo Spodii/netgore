@@ -187,10 +187,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates a duplicate (deep copy) of the Grh.
+        /// Creates a duplicate (deep copy) of the <see cref="Grh"/>.
         /// </summary>
-        /// <returns>Duplicate of the Grh.</returns>
-        public Grh Duplicate()
+        /// <returns>The deep copy of the <see cref="Grh"/>.</returns>
+        public Grh DeepCopy()
         {
             return new Grh(_grhData, _anim, _lastUpdated) { _frame = _frame };
         }

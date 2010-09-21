@@ -17,9 +17,9 @@ namespace NetGore.Graphics
         Color Ambient { get; set; }
 
         /// <summary>
-        /// Gets or sets the default sprite to use for all lights added to this <see cref="ILightManager"/>.
-        /// When this value changes, all <see cref="ILight"/>s in this <see cref="ILightManager"/> who's
-        /// <see cref="ILight.Sprite"/> is equal to the old value will have their sprite set to the new value.
+        /// Gets or sets the default sprite to use for all lights added to this <see cref="ILightManager"/>
+        /// that do not have a sprite set. Only sprites added that do not already have a <see cref="ILight.Sprite"/>
+        /// set will have this sprite set on them.
         /// </summary>
         Grh DefaultSprite { get; set; }
 

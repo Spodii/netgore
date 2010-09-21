@@ -109,8 +109,8 @@ namespace NetGore.Graphics
 
         /// <summary>
         /// Gets or sets the default sprite to use for all lights added to this <see cref="ILightManager"/>.
-        /// When this value changes, all <see cref="ILight"/>s in this <see cref="ILightManager"/> who's
-        /// <see cref="ILight.Sprite"/> is equal to the old value will have their sprite set to the new value.
+        /// This only applies to new lights added to this <see cref="ILightManager"/> where no sprite is
+        /// specified. Existing lights are never affected by this property.
         /// </summary>
         public Grh DefaultSprite
         {
@@ -120,14 +120,7 @@ namespace NetGore.Graphics
                 if (_defaultSprite == value)
                     return;
 
-                var oldValue = _defaultSprite;
                 _defaultSprite = value;
-
-                foreach (var light in this)
-                {
-                    if (light.Sprite == oldValue)
-                        light.Sprite = _defaultSprite;
-                }
             }
         }
 
@@ -184,7 +177,7 @@ namespace NetGore.Graphics
         public void Add(ILight item)
         {
             if (item.Sprite == null)
-                item.Sprite = DefaultSprite;
+                item.Sprite = DefaultSprite.DeepCopy();
 
             if (!_list.Contains(item))
                 _list.Add(item);
@@ -357,6 +350,12 @@ namespace NetGore.Graphics
         /// <param name="currentTime">The current game time in milliseconds.</param>
         public void Update(TickCount currentTime)
         {
+            // Update the default sprite
+            var ds = DefaultSprite;
+            if (ds != null)
+                ds.Update(currentTime);
+
+            // Update the individual lights
             foreach (var light in this)
             {
                 light.Update(currentTime);
