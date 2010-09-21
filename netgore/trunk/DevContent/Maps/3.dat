@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Map>
   <Header>
-    <Name />
+    <Name>Checkered</Name>
     <HasMusic>False</HasMusic>
     <MusicID>0</MusicID>
     <Size>1600,960</Size>
