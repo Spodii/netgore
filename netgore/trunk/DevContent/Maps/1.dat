@@ -56,16 +56,25 @@
     </Item8>
   </Walls>
   <DynamicEntities>
-    <Count>1</Count>
+    <Count>2</Count>
     <Item0>
       <DynamicEntityType>TeleportEntity</DynamicEntityType>
       <Size>23,56</Size>
       <Weight>1</Weight>
       <Destination>575,160</Destination>
       <DestinationMap>2</DestinationMap>
-      <Position>837,677</Position>
+      <Position>771,100</Position>
       <Velocity>0,0</Velocity>
     </Item0>
+    <Item1>
+      <DynamicEntityType>TeleportEntity</DynamicEntityType>
+      <Size>32,64</Size>
+      <Weight>0</Weight>
+      <Destination>230,750</Destination>
+      <DestinationMap>3</DestinationMap>
+      <Position>833,667</Position>
+      <Velocity>0,0</Velocity>
+    </Item1>
   </DynamicEntities>
   <Misc>
     <MapGrhs>
@@ -84,14 +93,14 @@
         <Item10>147</Item10>
       </UsedIndicies>
       <MapGrhs>
-        <Count>24</Count>
+        <Count>25</Count>
         <Item0>
           <GrhIndex>125</GrhIndex>
           <Color>255,255,255,255</Color>
           <IsForeground>False</IsForeground>
           <LayerDepth>0</LayerDepth>
           <Origin>0,0</Origin>
-          <Position>832,672</Position>
+          <Position>768,96</Position>
           <Rotation>0</Rotation>
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
@@ -349,6 +358,17 @@
           <Scale>0.5,0.5</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item23>
+        <Item24>
+          <GrhIndex>125</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>832,672</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item24>
       </MapGrhs>
     </MapGrhs>
     <BackgroundImages>
@@ -387,7 +407,7 @@
           <Sprite>176</Sprite>
         </Item0>
         <Item1>
-          <Position>815,149</Position>
+          <Position>848,701</Position>
           <Size>128,128</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>
@@ -395,7 +415,7 @@
           <Sprite>176</Sprite>
         </Item1>
         <Item2>
-          <Position>846,703</Position>
+          <Position>784,131</Position>
           <Size>128,128</Size>
           <Color>255,255,255,255</Color>
           <Rotation>0</Rotation>
