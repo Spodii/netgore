@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using SFML;
 using SFML.Graphics;
@@ -35,6 +36,10 @@ namespace NetGore.Graphics
         {
             try
             {
+                // TODO: I cannot seem to get the RenderImage to recreate when it needs to be resized... so this if block will make it create each RenderImage only once
+                if (ri != null)
+                    return ri;
+       
                 // Check if the provided RenderImage works for our needs
                 var mustRecreate = false;
                 try
@@ -58,8 +63,6 @@ namespace NetGore.Graphics
                     const string errmsg = "Unexpected exception when reading properties of a RenderImage. Forcing recreation. Exception: {0}";
                     if (log.IsWarnEnabled)
                         log.WarnFormat(errmsg, ex);
-
-                    Debug.Fail(string.Format(errmsg, ex));
 
                     mustRecreate = true;
                 }
@@ -87,12 +90,12 @@ namespace NetGore.Graphics
                 }
 
                 // Get the size to make the new RenderImage (same size of the window)
-                int width;
-                int height;
+                uint width;
+                uint height;
                 try
                 {
-                    width = (int)w.Width;
-                    height = (int)w.Height;
+                    width = w.Width;
+                    height = w.Height;
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -104,7 +107,7 @@ namespace NetGore.Graphics
                     return null;
                 }
 
-                // Check for a valid RenderWindow size. These can be 0 when the RenderWindow has been minimized.
+                // Check for a valid RenderWindow size. These can be 0 when the window has been minimized.
                 if (width <= 0 || height <= 0)
                 {
                     const string errmsg =
@@ -118,7 +121,7 @@ namespace NetGore.Graphics
                 // Create the new RenderImage
                 try
                 {
-                    ri = new RenderImage(w.Width, w.Height);
+                    ri = new RenderImage(width, height);
                 }
                 catch (LoadingFailedException ex)
                 {

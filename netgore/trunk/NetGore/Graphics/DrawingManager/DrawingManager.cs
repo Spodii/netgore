@@ -242,14 +242,15 @@ namespace NetGore.Graphics
 
                 // Ensure the buffer is set up
                 _buffer = _rw.CreateBufferRenderImage(_buffer);
+                _sb.RenderTarget = _buffer;
+
                 if (_buffer == null)
                     return null;
 
                 // Always clear the GUI with alpha = 0 since we will be copying it over the screen
                 _buffer.Clear(_clearGUIBufferColor);
 
-                // Set up the SpriteBatch
-                _sb.RenderTarget = _buffer;
+                // Start up the SpriteBatch
                 _sb.Begin(BlendMode.Alpha);
 
                 // Change the state
@@ -318,13 +319,14 @@ namespace NetGore.Graphics
 
                 // Ensure the buffer is set up
                 _buffer = _rw.CreateBufferRenderImage(_buffer);
+                _sb.RenderTarget = _buffer;
+
                 if (_buffer == null)
                     return null;
 
                 _buffer.Clear(BackgroundColor);
 
-                // Set up the SpriteBatch
-                _sb.RenderTarget = _buffer;
+                // Start up the SpriteBatch
                 _sb.Begin(BlendMode.Alpha, camera);
 
                 // Change the state
@@ -390,6 +392,15 @@ namespace NetGore.Graphics
                     return;
                 }
 
+                // Ensure the buffer is available
+                if (_buffer == null || _buffer.IsDisposed)
+                {
+                    const string errmsg = "Skipping EndDrawWorld() call - the _buffer is not available.";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg);
+                    return;
+                }
+
                 SafeEndSpriteBatch(_sb);
 
                 // Copy the GUI to the screen
@@ -433,6 +444,15 @@ namespace NetGore.Graphics
                 {
                     if (log.IsInfoEnabled)
                         log.Info("Skipping EndDrawWorld() call - the RenderWindow is not available.");
+                    return;
+                }
+
+                // Ensure the buffer is available
+                if (_buffer == null || _buffer.IsDisposed)
+                {
+                    const string errmsg = "Skipping EndDrawWorld() call - the _buffer is not available.";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg);
                     return;
                 }
 
