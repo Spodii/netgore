@@ -169,6 +169,8 @@ namespace NetGore.Graphics
 
             // Set up the sprite
             _drawToTargetSprite.Image = bufferImage;
+            _drawToTargetSprite.Width = bufferImage.Width;
+            _drawToTargetSprite.Height = bufferImage.Height;
             _drawToTargetSprite.Position = target.ConvertCoords(0, 0).Round();
             PrepareDrawToTargetSprite(_drawToTargetSprite, target);
 
@@ -202,11 +204,10 @@ namespace NetGore.Graphics
             {
                 // Get the RenderTarget
                 var rt = GetRenderImage();
+                _sb.RenderTarget = rt;
+
                 if (rt == null)
                     return null;
-
-                // Set up the SpriteBatch
-                _sb.RenderTarget = rt;
 
                 // Draw the buffer using the user code
                 try
@@ -251,13 +252,6 @@ namespace NetGore.Graphics
 
             if (!BypassClear || _ri != oldRI)
                 _ri.Clear(BufferClearColor);
-
-            if (_ri != oldRI)
-            {
-                _drawToTargetSprite.Image = _ri.Image;
-                _drawToTargetSprite.Width = _ri.Width;
-                _drawToTargetSprite.Height = _ri.Height;
-            }
 
             return _ri;
         }
