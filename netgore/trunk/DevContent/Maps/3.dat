@@ -1946,87 +1946,106 @@
     </Item386>
   </Walls>
   <DynamicEntities>
-    <Count>0</Count>
+    <Count>2</Count>
+    <Item0>
+      <DynamicEntityType>TeleportEntity</DynamicEntityType>
+      <Size>32,64</Size>
+      <Weight>0</Weight>
+      <Destination>960,640</Destination>
+      <DestinationMap>1</DestinationMap>
+      <Position>32,766</Position>
+      <Velocity>0,0</Velocity>
+    </Item0>
+    <Item1>
+      <DynamicEntityType>TeleportEntity</DynamicEntityType>
+      <Size>32,64</Size>
+      <Weight>0</Weight>
+      <Destination>280,860</Destination>
+      <DestinationMap>4</DestinationMap>
+      <Position>1534,769</Position>
+      <Velocity>0,0</Velocity>
+    </Item1>
   </DynamicEntities>
   <Misc>
     <MapGrhs>
       <UsedIndicies>
-        <Count>72</Count>
-        <Item0>298</Item0>
-        <Item1>299</Item1>
-        <Item2>300</Item2>
-        <Item3>301</Item3>
-        <Item4>302</Item4>
-        <Item5>304</Item5>
-        <Item6>305</Item6>
-        <Item7>306</Item7>
-        <Item8>307</Item8>
-        <Item9>308</Item9>
-        <Item10>309</Item10>
-        <Item11>310</Item11>
-        <Item12>311</Item12>
-        <Item13>312</Item13>
-        <Item14>313</Item14>
-        <Item15>314</Item15>
-        <Item16>315</Item16>
-        <Item17>316</Item17>
-        <Item18>317</Item18>
-        <Item19>318</Item19>
-        <Item20>319</Item20>
-        <Item21>320</Item21>
-        <Item22>321</Item22>
-        <Item23>322</Item23>
-        <Item24>323</Item24>
-        <Item25>324</Item25>
-        <Item26>325</Item26>
-        <Item27>326</Item27>
-        <Item28>327</Item28>
-        <Item29>328</Item29>
-        <Item30>329</Item30>
-        <Item31>330</Item31>
-        <Item32>331</Item32>
-        <Item33>332</Item33>
-        <Item34>333</Item34>
-        <Item35>335</Item35>
-        <Item36>336</Item36>
-        <Item37>337</Item37>
-        <Item38>338</Item38>
-        <Item39>339</Item39>
-        <Item40>340</Item40>
-        <Item41>341</Item41>
-        <Item42>342</Item42>
-        <Item43>343</Item43>
-        <Item44>344</Item44>
-        <Item45>345</Item45>
-        <Item46>346</Item46>
-        <Item47>347</Item47>
-        <Item48>348</Item48>
-        <Item49>349</Item49>
-        <Item50>350</Item50>
-        <Item51>351</Item51>
-        <Item52>352</Item52>
-        <Item53>353</Item53>
-        <Item54>354</Item54>
-        <Item55>355</Item55>
-        <Item56>356</Item56>
-        <Item57>357</Item57>
-        <Item58>358</Item58>
-        <Item59>359</Item59>
-        <Item60>360</Item60>
-        <Item61>361</Item61>
-        <Item62>362</Item62>
-        <Item63>363</Item63>
-        <Item64>364</Item64>
-        <Item65>365</Item65>
-        <Item66>366</Item66>
-        <Item67>367</Item67>
-        <Item68>368</Item68>
-        <Item69>369</Item69>
-        <Item70>370</Item70>
-        <Item71>371</Item71>
+        <Count>73</Count>
+        <Item0>125</Item0>
+        <Item1>298</Item1>
+        <Item2>299</Item2>
+        <Item3>300</Item3>
+        <Item4>301</Item4>
+        <Item5>302</Item5>
+        <Item6>304</Item6>
+        <Item7>305</Item7>
+        <Item8>306</Item8>
+        <Item9>307</Item9>
+        <Item10>308</Item10>
+        <Item11>309</Item11>
+        <Item12>310</Item12>
+        <Item13>311</Item13>
+        <Item14>312</Item14>
+        <Item15>313</Item15>
+        <Item16>314</Item16>
+        <Item17>315</Item17>
+        <Item18>316</Item18>
+        <Item19>317</Item19>
+        <Item20>318</Item20>
+        <Item21>319</Item21>
+        <Item22>320</Item22>
+        <Item23>321</Item23>
+        <Item24>322</Item24>
+        <Item25>323</Item25>
+        <Item26>324</Item26>
+        <Item27>325</Item27>
+        <Item28>326</Item28>
+        <Item29>327</Item29>
+        <Item30>328</Item30>
+        <Item31>329</Item31>
+        <Item32>330</Item32>
+        <Item33>331</Item33>
+        <Item34>332</Item34>
+        <Item35>333</Item35>
+        <Item36>335</Item36>
+        <Item37>336</Item37>
+        <Item38>337</Item38>
+        <Item39>338</Item39>
+        <Item40>339</Item40>
+        <Item41>340</Item41>
+        <Item42>341</Item42>
+        <Item43>342</Item43>
+        <Item44>343</Item44>
+        <Item45>344</Item45>
+        <Item46>345</Item46>
+        <Item47>346</Item47>
+        <Item48>347</Item48>
+        <Item49>348</Item49>
+        <Item50>349</Item50>
+        <Item51>350</Item51>
+        <Item52>351</Item52>
+        <Item53>352</Item53>
+        <Item54>353</Item54>
+        <Item55>354</Item55>
+        <Item56>355</Item56>
+        <Item57>356</Item57>
+        <Item58>357</Item58>
+        <Item59>358</Item59>
+        <Item60>359</Item60>
+        <Item61>360</Item61>
+        <Item62>361</Item62>
+        <Item63>362</Item63>
+        <Item64>363</Item64>
+        <Item65>364</Item65>
+        <Item66>365</Item66>
+        <Item67>366</Item67>
+        <Item68>367</Item68>
+        <Item69>368</Item69>
+        <Item70>369</Item70>
+        <Item71>370</Item71>
+        <Item72>371</Item72>
       </UsedIndicies>
       <MapGrhs>
-        <Count>805</Count>
+        <Count>808</Count>
         <Item0>
           <GrhIndex>333</GrhIndex>
           <Color>255,255,255,255</Color>
@@ -10882,6 +10901,39 @@
           <Scale>1,1</Scale>
           <SpriteEffects>None</SpriteEffects>
         </Item804>
+        <Item805>
+          <GrhIndex>125</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>32,768</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item805>
+        <Item806>
+          <GrhIndex>125</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>1248,128</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item806>
+        <Item807>
+          <GrhIndex>125</GrhIndex>
+          <Color>255,255,255,255</Color>
+          <IsForeground>False</IsForeground>
+          <LayerDepth>0</LayerDepth>
+          <Origin>0,0</Origin>
+          <Position>1536,768</Position>
+          <Rotation>0</Rotation>
+          <Scale>1,1</Scale>
+          <SpriteEffects>None</SpriteEffects>
+        </Item807>
       </MapGrhs>
     </MapGrhs>
     <BackgroundImages>
@@ -10930,7 +10982,23 @@
     <Lighting>
       <Ambient>255,255,255,255</Ambient>
       <Lights>
-        <Count>0</Count>
+        <Count>2</Count>
+        <Item0>
+          <Position>48,800</Position>
+          <Size>256,256</Size>
+          <Color>255,255,255,255</Color>
+          <Rotation>0</Rotation>
+          <IsEnabled>True</IsEnabled>
+          <Sprite>176</Sprite>
+        </Item0>
+        <Item1>
+          <Position>1267,160</Position>
+          <Size>256,256</Size>
+          <Color>255,255,0,255</Color>
+          <Rotation>0</Rotation>
+          <IsEnabled>True</IsEnabled>
+          <Sprite>176</Sprite>
+        </Item1>
       </Lights>
     </Lighting>
     <ParticleEffects>
