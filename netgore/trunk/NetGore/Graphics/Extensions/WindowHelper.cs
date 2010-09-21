@@ -86,7 +86,7 @@ namespace NetGore.Graphics
                     }
                 }
 
-                // Get the size to make the light map (same size of the window)
+                // Get the size to make the new RenderImage (same size of the window)
                 int width;
                 int height;
                 try
@@ -115,7 +115,7 @@ namespace NetGore.Graphics
                     return null;
                 }
 
-                // Create the new Image
+                // Create the new RenderImage
                 try
                 {
                     ri = new RenderImage(w.Width, w.Height);
