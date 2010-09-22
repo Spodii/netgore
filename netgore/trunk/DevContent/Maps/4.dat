@@ -1176,7 +1176,7 @@
       </Item3>
     </BackgroundImages>
     <Lighting>
-      <Ambient>50,50,50,255</Ambient>
+      <Ambient>170,100,100,255</Ambient>
       <Lights>
         <Count>9</Count>
         <Item0>
