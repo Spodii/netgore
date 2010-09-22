@@ -21,7 +21,7 @@ namespace NetGore.Graphics
 
         static readonly Shader _defaultShader;
 
-        readonly Grh _explosionMap;
+        readonly Grh _explosionNoise;
         readonly ushort _lifeSpan;
         readonly Shader _shader;
         readonly TickCount _startTime;
@@ -123,7 +123,7 @@ void main (void)
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosionRefractionEffect"/> class.
         /// </summary>
-        /// <param name="explosionMap">The sprite used to create the explosion's refraction map.</param>
+        /// <param name="explosionNoise">The sprite used to create the explosion's refraction map.</param>
         /// <param name="positionProvider">The <see cref="ISpatial"/> that provides the position of this
         /// <see cref="ExplosionRefractionEffect"/>.</param>
         /// <param name="lifeSpan">The life span in milliseconds. If 0, the <see cref="DefaultLifeSpan"/> will be used.</param>
@@ -132,9 +132,9 @@ void main (void)
         /// make sure that you either use the same effect parameters the default shader uses, or override this class
         /// so you can override the <see cref="ExplosionRefractionEffect.SetShaderParameters"/> method and set the parameters
         /// you require.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="explosionMap"/> is null.</exception>
-        public ExplosionRefractionEffect(Grh explosionMap, ISpatial positionProvider, ushort lifeSpan = (ushort)0,
-                                         Shader shader = null) : this(explosionMap, positionProvider.Center, lifeSpan, shader)
+        /// <exception cref="ArgumentNullException"><paramref name="explosionNoise"/> is null.</exception>
+        public ExplosionRefractionEffect(Grh explosionNoise, ISpatial positionProvider, ushort lifeSpan = (ushort)0,
+                                         Shader shader = null) : this(explosionNoise, positionProvider.Center, lifeSpan, shader)
         {
             PositionProvider = positionProvider;
         }
@@ -142,7 +142,7 @@ void main (void)
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosionRefractionEffect"/> class.
         /// </summary>
-        /// <param name="explosionMap">The sprite used to create the explosion's refraction map.</param>
+        /// <param name="explosionNoise">The sprite used to create the explosion's refraction map.</param>
         /// <param name="center">The world position of the effect.</param>
         /// <param name="lifeSpan">The life span in milliseconds. If 0, the <see cref="DefaultLifeSpan"/> will be used.</param>
         /// <param name="shader">The <see cref="Shader"/> to use to draw the explosion's refraction map. If null, the
@@ -150,13 +150,13 @@ void main (void)
         /// make sure that you either use the same effect parameters the default shader uses, or override this class
         /// so you can override the <see cref="ExplosionRefractionEffect.SetShaderParameters"/> method and set the parameters
         /// you require.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="explosionMap"/> is null.</exception>
-        public ExplosionRefractionEffect(Grh explosionMap, Vector2 center, ushort lifeSpan = (ushort)0, Shader shader = null)
+        /// <exception cref="ArgumentNullException"><paramref name="explosionNoise"/> is null.</exception>
+        public ExplosionRefractionEffect(Grh explosionNoise, Vector2 center, ushort lifeSpan = (ushort)0, Shader shader = null)
         {
-            if (explosionMap == null)
-                throw new ArgumentNullException("explosionMap");
+            if (explosionNoise == null)
+                throw new ArgumentNullException("explosionNoise");
 
-            _explosionMap = explosionMap;
+            _explosionNoise = explosionNoise;
             _startTime = TickCount.Now;
             _center = center;
 
@@ -225,9 +225,9 @@ void main (void)
         /// <summary>
         /// Gets the sprite used to create the explosion's refraction map.
         /// </summary>
-        public Grh ExplosionMap
+        public Grh ExplosionNoise
         {
-            get { return _explosionMap; }
+            get { return _explosionNoise; }
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ void main (void)
         /// <param name="currentTime">The current time in milliseconds.</param>
         protected virtual void SetShaderParameters(TickCount currentTime)
         {
-            Shader.SetTexture("NoiseTexture", ExplosionMap.CurrentGrhData.Texture);
+            Shader.SetTexture("NoiseTexture", ExplosionNoise.CurrentGrhData.Texture);
             Shader.SetParameter("MaxAge", _lifeSpan);
             Shader.SetParameter("Intensity", Intensity);
 
@@ -437,7 +437,7 @@ void main (void)
                 {
                     Shader.Bind();
 
-                    ExplosionMap.Draw(spriteBatch, dest);
+                    ExplosionNoise.Draw(spriteBatch, dest);
                 }
                 finally
                 {
@@ -505,7 +505,7 @@ void main (void)
             _size = ExpansionRate * totalElapsedTime;
 
             // Update the sprite
-            ExplosionMap.Update(currentTime);
+            ExplosionNoise.Update(currentTime);
         }
 
         #endregion
