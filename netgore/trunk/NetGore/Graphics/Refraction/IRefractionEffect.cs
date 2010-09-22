@@ -13,7 +13,7 @@ namespace NetGore.Graphics
         // TODO: !! Draw order prioritization
 
         /// <summary>
-        /// Gets or sets if this reflection effect is enabled.
+        /// Gets or sets if this refraction effect is enabled.
         /// </summary>
         bool IsEnabled { get; set; }
 

@@ -133,6 +133,7 @@ void main (void)
         /// so you can override the <see cref="ExplosionRefractionEffect.SetShaderParameters"/> method and set the parameters
         /// you require.</param>
         /// <exception cref="ArgumentNullException"><paramref name="explosionNoise"/> is null.</exception>
+        /// <exception cref="NullReferenceException"><paramref name="positionProvider"/> is null.</exception>
         public ExplosionRefractionEffect(Grh explosionNoise, ISpatial positionProvider, ushort lifeSpan = (ushort)0,
                                          Shader shader = null) : this(explosionNoise, positionProvider.Center, lifeSpan, shader)
         {
@@ -160,15 +161,12 @@ void main (void)
             _startTime = TickCount.Now;
             _center = center;
 
+            _shader = shader ?? DefaultShader;
+
             if (lifeSpan <= 0)
                 _lifeSpan = DefaultLifeSpan;
             else
                 _lifeSpan = 0;
-
-            if (shader == null)
-                _shader = DefaultShader;
-            else
-                _shader = shader;
 
             // Copy over the default values
             Intensity = DefaultIntensity;
@@ -177,7 +175,7 @@ void main (void)
             // Ensure we are able to use the effect
             if (_shader == null)
             {
-                const string errmsg = "Shaders not supported or unable to acquire default shader. Expiring effect...";
+                const string errmsg = "Shaders not supported or unable to acquire a valid default shader. Expiring effect...";
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
                 Debug.Fail(errmsg);
@@ -266,7 +264,9 @@ void main (void)
                 Moved(this, oldValue);
             }
             else
+            {
                 _center = sender.Center;
+            }
         }
 
         /// <summary>
@@ -309,10 +309,10 @@ void main (void)
         }
 
         /// <summary>
-        /// Gets or sets if this reflection effect is enabled.
+        /// Gets or sets if this refraction effect is enabled.
         /// </summary>
-        [DisplayName("Enabled")]
-        [Description("If this light is enabled.")]
+        [DisplayName("IsEnabled")]
+        [Description("If this refraction effect is enabled.")]
         [DefaultValue(true)]
         [Browsable(true)]
         public bool IsEnabled { get; set; }
@@ -412,6 +412,9 @@ void main (void)
                 return;
 
             _isDisposed = true;
+
+            if (_positionProvider != null)
+                _positionProvider.Moved -= PositionProvider_Moved;
         }
 
         /// <summary>
@@ -420,14 +423,14 @@ void main (void)
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to draw with.</param>
         public virtual void Draw(ISpriteBatch spriteBatch)
         {
-            if (_isDisposed)
+            if (IsExpired || !IsEnabled)
                 return;
 
             // Update the effect's parameters
             SetShaderParameters(_lastUpdateTime);
 
             // Draw
-            var dest = new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
+            var dest = ToRectangle();
 
             var oldBlendMode = spriteBatch.BlendMode;
             try
@@ -456,6 +459,7 @@ void main (void)
         /// <param name="offset">The amount to move from the current position.</param>
         public void Move(Vector2 offset)
         {
+            if (PositionProvider == null)
             Position += offset;
         }
 
@@ -465,7 +469,8 @@ void main (void)
         /// <param name="newPosition">The new position.</param>
         public void Teleport(Vector2 newPosition)
         {
-            Position = newPosition;
+            if (PositionProvider == null)
+                Position = newPosition;
         }
 
         /// <summary>
@@ -484,7 +489,7 @@ void main (void)
         /// <param name="currentTime">The current game time in milliseconds.</param>
         public virtual void Update(TickCount currentTime)
         {
-            if (_isDisposed)
+            if (IsExpired)
                 return;
 
             _lastUpdateTime = currentTime;
