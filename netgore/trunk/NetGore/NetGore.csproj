@@ -188,6 +188,7 @@
     <Compile Include="Graphics\Refraction\RefractionManager.cs" />
     <Compile Include="Graphics\Extensions\ShaderHelper.cs" />
     <Compile Include="Graphics\Extensions\WindowHelper.cs" />
+    <Compile Include="Graphics\Refraction\WaterRefractionEffect.cs" />
     <Compile Include="IO\BitStream\BitStream.IValueReader.cs" />
     <Compile Include="IO\BitStream\BitStream.IValueWriter.cs" />
     <Compile Include="IO\BitStream\BitStream.Read.cs" />
