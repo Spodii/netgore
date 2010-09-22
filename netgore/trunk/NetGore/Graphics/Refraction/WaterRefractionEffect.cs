@@ -17,11 +17,15 @@ namespace NetGore.Graphics
     public class WaterRefractionEffect : IRefractionEffect
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const float _defaultWaterAlpha = 0.38f;
+        const float _defaultWaveIntensity = 0.01f;
+        const float _defaultWaveSpeed = 0.5f;
 
         static readonly Shader _defaultShader;
-        readonly Shader _shader;
 
+        readonly Shader _shader;
         readonly Grh _waveNoise;
+
         bool _isDisposed;
 
         Vector2 _position;
@@ -34,6 +38,9 @@ namespace NetGore.Graphics
         static WaterRefractionEffect()
         {
             // Set the default values
+            DefaultWaterAlpha = _defaultWaterAlpha;
+            DefaultWaveSpeed = _defaultWaveSpeed;
+            DefaultWaveIntensity = _defaultWaveIntensity;
 
             // Check if shaders are supported
             if (!Shader.IsAvailable)
@@ -134,7 +141,9 @@ void main (void)
             _shader = shader ?? DefaultShader;
 
             // Copy over the default values
-            // TODO:
+            WaveIntensity = DefaultWaveIntensity;
+            WaveSpeed = DefaultWaveSpeed;
+            WaveIntensity = DefaultWaveIntensity;
 
             // Ensure we are able to use the effect
             if (_shader == null)
@@ -178,6 +187,27 @@ void main (void)
         }
 
         /// <summary>
+        /// Gets or sets the default <see cref="WaterRefractionEffect.WaterAlpha"/> value for new instances.
+        /// The default value is 0.38f.
+        /// </summary>
+        [DefaultValue(_defaultWaterAlpha)]
+        public static float DefaultWaterAlpha { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default <see cref="WaterRefractionEffect.WaveIntensity"/> value for new instances.
+        /// The default value is 0.01f.
+        /// </summary>
+        [DefaultValue(_defaultWaveIntensity)]
+        public static float DefaultWaveIntensity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default <see cref="WaterRefractionEffect.WaveSpeed"/> value for new instances.
+        /// The default value is 0.5f.
+        /// </summary>
+        [DefaultValue(_defaultWaveSpeed)]
+        public static float DefaultWaveSpeed { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="Shader"/> being used by this effect to draw the water's refraction map.
         /// </summary>
         public Shader Shader
@@ -186,12 +216,38 @@ void main (void)
         }
 
         /// <summary>
+        /// Gets or sets the modifier for the water's alpha value. A lower alpha value results in less transparent water, making
+        /// it harder to see what is under the water. This is just a modifier of the alpha of the wave noise texture,
+        /// allowing you to give different alpha values without having to change the texture. This value should be between
+        /// 0.0f and 1.0f, where 0.0f is completely opaque water (cannot see anything under it) and 1.0f is completely transparent
+        /// water (resulting in nothing being shown).
+        /// </summary>
+        public float WaterAlpha { get; set; }
+
+        /// <summary>
+        /// Gets or sets the refraction intensity of the waves. A greater value results in a higher intensity. This does not
+        /// make the waves actually bigger, but makes them have a greater influence on the refraction, thus making them more
+        /// prominent. A reasonable value is often a very small one (around 0.005f to 0.05f), but depends completely on the
+        /// <see cref="WaveNoise"/> sprite used.
+        /// The default value is 0.01f.
+        /// </summary>
+        [DefaultValue(_defaultWaveIntensity)]
+        public float WaveIntensity { get; set; }
+
+        /// <summary>
         /// Gets the sprite used to create the waves on the water's refraction map.
         /// </summary>
         public Grh WaveNoise
         {
             get { return _waveNoise; }
         }
+
+        /// <summary>
+        /// Gets or sets the speed of the waves. The greater the value, the faster the wave noise texture moves, making the
+        /// waves look faster. A reasonable value is around 0.1f to 0.9f.
+        /// </summary>
+        [DefaultValue(_defaultWaveSpeed)]
+        public float WaveSpeed { get; set; }
 
         /// <summary>
         /// Handles when the <see cref="IRefractionEffect.PositionProvider"/> moves.
@@ -218,9 +274,9 @@ void main (void)
         protected virtual void SetShaderParameters(TickCount currentTime)
         {
             Shader.SetTexture("WaveNoiseTexture", WaveNoise.CurrentGrhData.Texture);
-            Shader.SetParameter("WaveIntensity", 0.01f); // TODO: Make param
-            Shader.SetParameter("WaveSpeedMultiplier", 0.5f); // TODO: Make param
-            Shader.SetParameter("WaterAlphaModifier", 0.38f); // TODO: Make param
+            Shader.SetParameter("WaveIntensity", WaveIntensity);
+            Shader.SetParameter("WaveSpeedMultiplier", WaveSpeed);
+            Shader.SetParameter("WaterAlphaModifier", WaterAlpha);
             Shader.SetParameter("Time", currentTime);
         }
 
