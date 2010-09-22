@@ -42,8 +42,8 @@ namespace DemoGame.Server
         /// <param name="position">The position to spawn the <paramref name="user"/> at.</param>
         public static void GetUserRespawnPosition(User user, out MapID mapID, out Vector2 position)
         {
-            mapID = new MapID(1);
-            position = new Vector2(765, 45);
+            mapID = new MapID(3);
+            position = new Vector2(1024, 600);
         }
     }
 }
