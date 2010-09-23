@@ -193,6 +193,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Screens\GameMenuScreenBase.cs" />
     <Compile Include="Screens\CharacterSelectionScreen.cs" />
     <Compile Include="Screens\ConsoleScreen.cs" />
     <Compile Include="Screens\CreateCharacterScreen.cs" />

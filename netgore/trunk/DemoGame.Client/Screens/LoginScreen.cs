@@ -9,7 +9,7 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
-    class LoginScreen : GameScreen
+    class LoginScreen : GameMenuScreenBase
     {
         public const string ScreenName = "login";
 
@@ -25,19 +25,6 @@ namespace DemoGame.Client
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
         public LoginScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
-            PlayMusic = false;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
-        /// <see cref="GameScreen"/>.
-        /// </summary>
-        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
-        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
-        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
-        protected override Font GetScreenManagerFont(IScreenManager screenManager)
-        {
-            return GameScreenHelper.DefaultScreenFont;
         }
 
         /// <summary>
@@ -73,15 +60,17 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
+            base.Initialize();
+
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the login fields
-            new Label(cScreen, new Vector2(60, 260)) { Text = "Name:" };
+            GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Name:");
             _cNameText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40)) { IsMultiLine = false, Text = "Spodi" };
             _cNameText.KeyPressed += cNameText_KeyPressed;
             _cNameText.TextChanged += cNameText_TextChanged;
 
-            new Label(cScreen, new Vector2(60, 320)) { Text = "Password:" };
+            GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320), "Password:");
             _cPasswordText = new MaskedTextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
             { IsMultiLine = false, Text = "qwerty123" };
             _cPasswordText.KeyPressed += cPasswordText_KeyPressed;
