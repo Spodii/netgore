@@ -639,6 +639,9 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected override void OnTextEntered(TextEventArgs e)
         {
+            if (!IsEnabled)
+                return;
+
             if (IgnoreKeysHandler != null && IgnoreKeysHandler(e))
                 return;
 
