@@ -292,10 +292,10 @@ namespace DemoGame.Client
         /// </summary>
         public override void Deactivate()
         {
-            base.Deactivate();
-
             SoundManager.Stop3D();
             ControlBorder.RemoveGlobalColorTransformation(GlobalControlBorderTransformer);
+
+            base.Deactivate();
         }
 
         /// <summary>

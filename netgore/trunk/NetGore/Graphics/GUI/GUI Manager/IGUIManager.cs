@@ -117,6 +117,12 @@ namespace NetGore.Graphics.GUI
         void Draw(ISpriteBatch spriteBatch);
 
         /// <summary>
+        /// Gets or sets if this <see cref="IGUIManager"/> is enabled. When disabled, it can still draw, but it will
+        /// not handle any input.
+        /// </summary>
+        bool IsEnabled { get; set; }
+
+        /// <summary>
         /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManager"/>, including all
         /// child <see cref="Control"/>s.
         /// </summary>

@@ -46,13 +46,13 @@ namespace DemoGame.Client
         /// </summary>
         public override void Activate()
         {
+            base.Activate();
+
             // No reason to be connected while at the login screen
             if (_sockets.IsConnected)
                 _sockets.Disconnect();
 
             SetError(null);
-
-            base.Activate();
         }
 
         /// <summary>
@@ -62,6 +62,8 @@ namespace DemoGame.Client
         public override void Deactivate()
         {
             SetError(null);
+
+            base.Deactivate();
         }
 
         /// <summary>

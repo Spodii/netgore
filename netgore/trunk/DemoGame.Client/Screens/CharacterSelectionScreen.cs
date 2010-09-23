@@ -45,12 +45,12 @@ namespace DemoGame.Client
         /// </summary>
         public override void Activate()
         {
+            base.Activate();
+
             if (_sockets == null)
                 _sockets = ClientSockets.Instance;
 
             _sockets.PacketHandler.AccountCharacterInfos.AccountCharactersLoaded += HandleCharInfosUpdated;
-
-            base.Activate();
         }
 
         void ClickButton_CharacterSelection(object sender, MouseButtonEventArgs e)
