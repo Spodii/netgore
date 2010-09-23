@@ -11007,7 +11007,7 @@
         <Item0>
           <RefractionEffectType>WaterRefractionEffect</RefractionEffectType>
           <RefractionEffect>
-			<Magnification>1.0</Magnification>
+			<Magnification>1.5</Magnification>
             <Position>0,896</Position>
             <Size>1600,64</Size>
             <WaterAlpha>0.38</WaterAlpha>
