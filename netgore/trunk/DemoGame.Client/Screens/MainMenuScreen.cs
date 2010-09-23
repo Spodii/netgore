@@ -26,7 +26,7 @@ namespace DemoGame.Client
         /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
         protected override Font GetScreenManagerFont(IScreenManager screenManager)
         {
-            return GameScreenHelper.GetScreenDefaultFont(screenManager);
+            return GameScreenHelper.DefaultScreenFont;
         }
 
         /// <summary>

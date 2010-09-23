@@ -73,7 +73,7 @@ namespace DemoGame.Client
         /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
         protected override Font GetScreenManagerFont(IScreenManager screenManager)
         {
-            return GameScreenHelper.GetScreenDefaultFont(screenManager);
+            return GameScreenHelper.DefaultScreenFont;
         }
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace DemoGame.Client
         void InitializeGUI()
         {
             // Set up the fonts
-            _guiFont = ScreenManager.Content.LoadFont("Font/Arial", 14, ContentLevel.Global);
+            _guiFont = ScreenManager.Content.LoadFont("Font/FullComp", 14, ContentLevel.Global);
             GUIManager.Font = _guiFont;
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
