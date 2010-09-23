@@ -288,6 +288,19 @@ namespace NetGore.Graphics.GUI
             }
 
             /// <summary>
+            /// Handles when the <see cref="TextControl.Font"/> has changed.
+            /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+            /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
+            /// </summary>
+            protected override void OnFontChanged()
+            {
+                base.OnFontChanged();
+
+                // Make sure we resize the textbox to fit the text
+                ResizeToFitText(MaxChatBubbleWidth);
+            }
+
+            /// <summary>
             /// Handles when the <see cref="TextControl.Text"/> has changed.
             /// This is called immediately before <see cref="TextControl.TextChanged"/>.
             /// Override this method instead of using an event hook on <see cref="TextControl.TextChanged"/> when possible.
@@ -310,6 +323,7 @@ namespace NetGore.Graphics.GUI
 
                 IsBoundToParentArea = false;
                 IsMultiLine = true;
+                IsEnabled = false;
                 Border = ControlBorder.Empty;
                 CanFocus = false;
                 CanDrag = false;
