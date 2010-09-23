@@ -9,7 +9,7 @@ using SFML.Window;
 
 namespace DemoGame.Client
 {
-    class CharacterSelectionScreen : GameScreen
+    class CharacterSelectionScreen : GameMenuScreenBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string ScreenName = "character selection";
@@ -24,19 +24,6 @@ namespace DemoGame.Client
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
         public CharacterSelectionScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
-            PlayMusic = false;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
-        /// <see cref="GameScreen"/>.
-        /// </summary>
-        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
-        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
-        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
-        protected override Font GetScreenManagerFont(IScreenManager screenManager)
-        {
-            return GameScreenHelper.DefaultScreenFont;
         }
 
         /// <summary>
@@ -109,6 +96,8 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
+            base.Initialize();
+
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
@@ -125,8 +114,6 @@ namespace DemoGame.Client
                 characterButton.Clicked += ClickButton_CharacterSelection;
                 _characterButtons[i] = characterButton;
             }
-
-            base.Initialize();
         }
     }
 }

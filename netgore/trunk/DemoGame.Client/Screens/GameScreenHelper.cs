@@ -14,23 +14,9 @@ namespace DemoGame.Client
     /// </summary>
     public static class GameScreenHelper
     {
-        static readonly MouseEventHandler _menuButtonMouseEnter;
-        static readonly MouseEventHandler _menuButtonMouseLeave;
-
-        /// <summary>
-        /// The color of the menu text's border.
-        /// </summary>
-        static readonly Color _menuTextBorderColor = Color.Black;
-
-        /// <summary>
-        /// The color of the menu text when the mouse is not over it.
-        /// </summary>
-        static readonly Color _menuTextColor = Color.White;
-
-        /// <summary>
-        /// The color of the menu text when the mouse is over it.
-        /// </summary>
-        static readonly Color _menuTextMouseOverColor = Color.Green;
+        static readonly Font _defaultChatFont;
+        static readonly Font _defaultMenuButtonFont;
+        static readonly Font _defaultScreenFont;
 
         /// <summary>
         /// Initializes the <see cref="GameScreenHelper"/> class.
@@ -39,43 +25,47 @@ namespace DemoGame.Client
         {
             var content = ContentManager.Create();
 
-            _menuButtonMouseEnter = button_MouseEnter;
-            _menuButtonMouseLeave = button_MouseLeave;
-
             _defaultChatFont = content.LoadFont("Font/Arial", 14, ContentLevel.Global);
             _defaultScreenFont = content.LoadFont("Font/FullComp", 24, ContentLevel.Global);
             _defaultMenuButtonFont = content.LoadFont("Font/If", 42, ContentLevel.Global);
         }
 
-        static readonly Font _defaultChatFont;
-        static readonly Font _defaultScreenFont;
-        static readonly Font _defaultMenuButtonFont;
-
         /// <summary>
         /// Gets the default <see cref="Font"/> for chat text.
         /// </summary>
-        public static Font DefaultChatFont { get { return _defaultChatFont; } }
-
-        /// <summary>
-        /// Gets the default font for a <see cref="GameScreen"/>.
-        /// </summary>
-        public static Font DefaultScreenFont { get { return _defaultScreenFont; } }
+        public static Font DefaultChatFont
+        {
+            get { return _defaultChatFont; }
+        }
 
         /// <summary>
         /// Gets the default menu button <see cref="Font"/>.
         /// </summary>
-        public static Font DefaultMenuButtonFont { get { return _defaultMenuButtonFont; } }
+        public static Font DefaultMenuButtonFont
+        {
+            get { return _defaultMenuButtonFont; }
+        }
 
         /// <summary>
-        /// Creates the buttons for the primary menu links.
+        /// Gets the default font for a <see cref="GameScreen"/>.
+        /// </summary>
+        public static Font DefaultScreenFont
+        {
+            get { return _defaultScreenFont; }
+        }
+
+        /// <summary>
+        /// Creates the <see cref="Control"/>s for the primary menu links.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> for the screen.</param>
         /// <param name="parent">The parent control to attach the buttons to.</param>
         /// <param name="names">The unique name of the buttons.</param>
         /// <returns>
-        /// The menu buttons, where the name is the key.
+        /// The menu <see cref="Control"/>s, where the unique name is the key and the <see cref="Control"/> instance
+        /// is the value.
         /// </returns>
-        public static IDictionary<string, Control> CreateMenuButtons(IScreenManager screenManager, Control parent, params string[] names)
+        public static IDictionary<string, Control> CreateMenuButtons(IScreenManager screenManager, Control parent,
+                                                                     params string[] names)
         {
             const float spacing = 10;
             var buttonSize = new Vector2(225, 40);
@@ -86,15 +76,12 @@ namespace DemoGame.Client
             var pos = bottomButtonPosition;
             for (var i = names.Length - 1; i >= 0; i--)
             {
-                var c = new MenuButtonLabel(parent, pos) { Text = names[i], Border = null, ForeColor = _menuTextColor, Font = DefaultMenuButtonFont };
+                var c = new MenuButton(parent, pos) { Text = names[i], Border = null };
 
                 c.Position = new Vector2(parent.ClientSize.X - c.ClientSize.X - 50, c.Position.Y);
 
                 var fontSize = c.Font.MeasureString(c.Text);
                 c.ClientSize = fontSize;
-
-                c.MouseEnter += _menuButtonMouseEnter;
-                c.MouseLeave += _menuButtonMouseLeave;
 
                 pos.Y -= spacing + c.Size.Y;
 
@@ -105,39 +92,39 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the MouseEnter event of the menu button controls.
+        /// Creates a <see cref="Label"/> for labels in the menu.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SFML.Window.MouseMoveEventArgs"/> instance containing the event data.</param>
-        static void button_MouseEnter(object sender, MouseMoveEventArgs e)
+        /// <param name="parent">The parent.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="text">The initial text to display.</param>
+        /// <returns>The <see cref="Label"/> instance.</returns>
+        public static Label CreateMenuLabel(Control parent, Vector2 position, string text)
         {
-            var c = (Label)sender;
-            c.ForeColor = _menuTextMouseOverColor;
-        }
-
-        /// <summary>
-        /// Handles the MouseLeave event of the menu button controls.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SFML.Window.MouseMoveEventArgs"/> instance containing the event data.</param>
-        static void button_MouseLeave(object sender, MouseMoveEventArgs e)
-        {
-            var c = (Label)sender;
-            c.ForeColor = _menuTextColor;
+            return new MenuLabel(parent, position) { Text = text };
         }
 
         /// <summary>
         /// A <see cref="Label"/> specifically for menu buttons.
         /// </summary>
-        class MenuButtonLabel : Label
+        class MenuButton : Label
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="MenuButtonLabel"/> class.
+            /// The color of the text's border.
+            /// </summary>
+            static readonly Color _textBorderColor = Color.Black;
+
+            /// <summary>
+            /// The color of the text when the mouse is not over it.
+            /// </summary>
+            static readonly Color _textColor = Color.White;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MenuButton"/> class.
             /// </summary>
             /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
             /// <param name="position">Position of the Control reletive to its parent.</param>
             /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
-            public MenuButtonLabel(Control parent, Vector2 position) : base(parent, position)
+            public MenuButton(Control parent, Vector2 position) : base(parent, position)
             {
             }
 
@@ -151,7 +138,102 @@ namespace DemoGame.Client
                 if (string.IsNullOrEmpty(Text) || Font == null)
                     return;
 
-                spriteBatch.DrawStringShaded(Font, Text, ScreenPosition + position, ForeColor, _menuTextBorderColor);
+                spriteBatch.DrawStringShaded(Font, Text, ScreenPosition + position, ForeColor, _textBorderColor);
+            }
+
+            /// <summary>
+            /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+            /// base class's method to ensure that changes to settings are hierchical.
+            /// </summary>
+            protected override void SetDefaultValues()
+            {
+                base.SetDefaultValues();
+
+                ForeColor = _textColor;
+                Font = DefaultMenuButtonFont;
+            }
+
+
+            /// <summary>
+            /// Handles when the mouse has entered the area of the <see cref="Control"/>.
+            /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
+            /// Override this method instead of using an event hook on <see cref="Control.MouseEnter"/> when possible.
+            /// </summary>
+            /// <param name="e">The event args.</param>
+            protected override void OnMouseEnter(MouseMoveEventArgs e)
+            {
+                base.OnMouseEnter(e);
+
+                ForeColor = _textMouseOverColor;
+            }
+
+            /// <summary>
+            /// The color of the text when the mouse is over it.
+            /// </summary>
+            static readonly Color _textMouseOverColor = Color.Green;
+
+            /// <summary>
+            /// Handles when the mouse has left the area of the <see cref="Control"/>.
+            /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
+            /// Override this method instead of using an event hook on <see cref="Control.MouseLeave"/> when possible.
+            /// </summary>
+            /// <param name="e">The event args.</param>
+            protected override void OnMouseLeave(MouseMoveEventArgs e)
+            {
+                base.OnMouseLeave(e);
+
+                ForeColor = _textColor;
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="Label"/> specifically for menu labels.
+        /// </summary>
+        class MenuLabel : Label
+        {
+            /// <summary>
+            /// The color of the text's border.
+            /// </summary>
+            static readonly Color _textBorderColor = Color.Black;
+
+            /// <summary>
+            /// The color of the text when the mouse is not over it.
+            /// </summary>
+            static readonly Color _textColor = Color.White;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MenuLabel"/> class.
+            /// </summary>
+            /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
+            /// <param name="position">Position of the Control reletive to its parent.</param>
+            /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
+            public MenuLabel(Control parent, Vector2 position) : base(parent, position)
+            {
+            }
+
+            /// <summary>
+            /// Draws the text for the control.
+            /// </summary>
+            /// <param name="spriteBatch"><see cref="ISpriteBatch"/> to draw to.</param>
+            /// <param name="position">Position relative to the Control to draw the text.</param>
+            protected override void DrawText(ISpriteBatch spriteBatch, Vector2 position)
+            {
+                if (string.IsNullOrEmpty(Text) || Font == null)
+                    return;
+
+                spriteBatch.DrawStringShaded(Font, Text, ScreenPosition + position, ForeColor, _textBorderColor);
+            }
+
+            /// <summary>
+            /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+            /// base class's method to ensure that changes to settings are hierchical.
+            /// </summary>
+            protected override void SetDefaultValues()
+            {
+                base.SetDefaultValues();
+
+                ForeColor = _textColor;
+                Font = DefaultScreenFont;
             }
         }
     }
