@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using log4net;
 using SFML;
 using SFML.Graphics;
@@ -56,7 +55,8 @@ namespace NetGore.Graphics
                 catch (Exception ex)
                 {
                     // Recreate during any exception, but when its not one we know is fine to ignore, report it
-                    const string errmsg = "Unexpected exception when reading properties of a RenderImage. Forcing recreation. Exception: {0}";
+                    const string errmsg =
+                        "Unexpected exception when reading properties of a RenderImage. Forcing recreation. Exception: {0}";
                     if (log.IsWarnEnabled)
                         log.WarnFormat(errmsg, ex);
 

@@ -19,11 +19,6 @@ namespace NetGore.AI
         ushort _minY;
 
         /// <summary>
-        /// Gets if this <see cref="MemoryMap"/> has been initialized.
-        /// </summary>
-        public bool IsInitialized { get { return _isInitialized; } }
-
-        /// <summary>
         /// Constructor for a MemoryMap, uses default value of 32 for MemoryCell dimensions. This constructor should be only used in an AI Editor environment.
         /// </summary>
         public MemoryMap()
@@ -84,6 +79,14 @@ namespace NetGore.AI
         /// Default value is <see cref="GenericValueIOFormat.Binary"/>.
         /// </summary>
         public static GenericValueIOFormat? EncodingFormat { get; set; }
+
+        /// <summary>
+        /// Gets if this <see cref="MemoryMap"/> has been initialized.
+        /// </summary>
+        public bool IsInitialized
+        {
+            get { return _isInitialized; }
+        }
 
         /// <summary>
         /// Returns the underlying detailed information about the <see cref="MemoryMap"/>.

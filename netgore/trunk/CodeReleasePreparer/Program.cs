@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using InstallationValidator;
-using NetGore;
-using SFML.Graphics;
 
 namespace CodeReleasePreparer
 {

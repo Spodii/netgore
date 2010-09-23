@@ -46,9 +46,8 @@ namespace InstallationValidator
             // Create the tests
             _tests = new ITestable[]
             {
-                new LocateMySqlExe(), new DatabaseFileExists(), new LoadDbConnectionSettings(),
-                new ConnectToDatabase(), new DatabaseExists(), new DatabaseVersion(), new LoadSchemaFile(),
-                new DatabasePopulated()
+                new LocateMySqlExe(), new DatabaseFileExists(), new LoadDbConnectionSettings(), new ConnectToDatabase(),
+                new DatabaseExists(), new DatabaseVersion(), new LoadSchemaFile(), new DatabasePopulated()
             };
 
             // Populate the test list

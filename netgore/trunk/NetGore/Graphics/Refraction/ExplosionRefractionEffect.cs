@@ -265,9 +265,7 @@ void main (void)
                 Moved(this, oldValue);
             }
             else
-            {
                 _center = sender.Center;
-            }
         }
 
         /// <summary>
@@ -461,7 +459,7 @@ void main (void)
         public void Move(Vector2 offset)
         {
             if (PositionProvider == null)
-            Position += offset;
+                Position += offset;
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,26 +18,6 @@ namespace GoreUpdater.Manager
         public MainForm()
         {
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            // Warn if trying to close while jobs are active
-            if (_settings.FileServers.OfType<ServerInfoBase>().Concat(_settings.MasterServers.OfType<ServerInfoBase>()).Any(x => x.IsBusySyncing))
-            {
-                const string msg = "One or more servers are busy synchronizing. Are you sure you wish to close?" +
-                    "{0}{0}It is highly recommended you press `Cancel` and wait for synchronization to finish.";
-                if (MessageBox.Show(string.Format(msg, Environment.NewLine), "Busy synchronizing", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
-                {
-                    e.Cancel = true;
-                }
-            }
-
-            base.OnClosing(e);
         }
 
         /// <summary>
@@ -74,6 +55,28 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            // Warn if trying to close while jobs are active
+            if (
+                _settings.FileServers.OfType<ServerInfoBase>().Concat(_settings.MasterServers.OfType<ServerInfoBase>()).Any(
+                    x => x.IsBusySyncing))
+            {
+                const string msg =
+                    "One or more servers are busy synchronizing. Are you sure you wish to close?" +
+                    "{0}{0}It is highly recommended you press `Cancel` and wait for synchronization to finish.";
+                if (MessageBox.Show(string.Format(msg, Environment.NewLine), "Busy synchronizing", MessageBoxButtons.OKCancel) ==
+                    DialogResult.Cancel)
+                    e.Cancel = true;
+            }
+
+            base.OnClosing(e);
+        }
+
+        /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
@@ -104,23 +107,23 @@ namespace GoreUpdater.Manager
         {
             try
             {
-            // Create the new form, using Invoke() calls to ensure that we have no issues if this is called from another thread
-            // for whatever reason (better safe than sorry!)
-            Invoke((Action)delegate
-            {
-                var frm = new AddServerForm(isMasterServer);
-                frm.Show();
-                frm.Focus();
-
-                btnFSNew.Enabled = false;
-                btnMSNew.Enabled = false;
-
-                frm.FormClosed += delegate
+                // Create the new form, using Invoke() calls to ensure that we have no issues if this is called from another thread
+                // for whatever reason (better safe than sorry!)
+                Invoke((Action)delegate
                 {
-                    btnFSNew.Invoke((Action)(() => btnFSNew.Enabled = true));
-                    btnMSNew.Invoke((Action)(() => btnMSNew.Enabled = true));
-                };
-            });
+                    var frm = new AddServerForm(isMasterServer);
+                    frm.Show();
+                    frm.Focus();
+
+                    btnFSNew.Enabled = false;
+                    btnMSNew.Enabled = false;
+
+                    frm.FormClosed += delegate
+                    {
+                        btnFSNew.Invoke((Action)(() => btnFSNew.Enabled = true));
+                        btnMSNew.Invoke((Action)(() => btnMSNew.Enabled = true));
+                    };
+                });
             }
             catch (Exception ex)
             {
@@ -136,38 +139,38 @@ namespace GoreUpdater.Manager
         {
             try
             {
-            // Use Invoke to ensure we are in the correct thread
-            lb.Invoke((Action)delegate
-            {
-                // Store the selected item so we can restore it when done
-                var selected = lb.SelectedItem;
-
-                // Remove the update listener from existing items to make sure we don't add it twice (no harm in removing
-                // the event hook if it doesn't exist to begin with)
-                foreach (var s in lb.Items.OfType<ServerInfoBase>())
+                // Use Invoke to ensure we are in the correct thread
+                lb.Invoke((Action)delegate
                 {
-                    s.ServerChanged -= changedEventHandler;
-                    s.ProgressChanged -= changedEventHandler;
-                }
+                    // Store the selected item so we can restore it when done
+                    var selected = lb.SelectedItem;
 
-                // Add the update listener to all items (after double-checking that the event listener isn't attached)
-                foreach (var s in servers)
-                {
-                    s.ServerChanged -= changedEventHandler;
-                    s.ProgressChanged -= changedEventHandler;
+                    // Remove the update listener from existing items to make sure we don't add it twice (no harm in removing
+                    // the event hook if it doesn't exist to begin with)
+                    foreach (var s in lb.Items.OfType<ServerInfoBase>())
+                    {
+                        s.ServerChanged -= changedEventHandler;
+                        s.ProgressChanged -= changedEventHandler;
+                    }
 
-                    s.ServerChanged += changedEventHandler;
-                    s.ProgressChanged += changedEventHandler;
-                }
+                    // Add the update listener to all items (after double-checking that the event listener isn't attached)
+                    foreach (var s in servers)
+                    {
+                        s.ServerChanged -= changedEventHandler;
+                        s.ProgressChanged -= changedEventHandler;
 
-                // Re-add all items
-                lb.Items.Clear();
-                lb.Items.AddRange(servers.Cast<object>().ToArray());
+                        s.ServerChanged += changedEventHandler;
+                        s.ProgressChanged += changedEventHandler;
+                    }
 
-                // Restore the selected item if it is still in the list
-                if (servers.Any(x => x == selected))
-                    lb.SelectedItem = selected;
-            });
+                    // Re-add all items
+                    lb.Items.Clear();
+                    lb.Items.AddRange(servers.Cast<object>().ToArray());
+
+                    // Restore the selected item if it is still in the list
+                    if (servers.Any(x => x == selected))
+                        lb.SelectedItem = selected;
+                });
             }
             catch (Exception ex)
             {
@@ -181,7 +184,8 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_FileServerListChanged(ManagerSettings sender)
         {
-            try{
+            try
+            {
                 UpdateServerListBox(lstFS, sender.FileServers.Cast<ServerInfoBase>(), FileServerInfo_ServerChanged);
             }
             catch (Exception ex)
@@ -196,7 +200,8 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_LiveVersionChanged(ManagerSettings sender)
         {
-            try{
+            try
+            {
                 lblLiveVersion.Invoke((Action)(() => lblLiveVersion.Text = sender.LiveVersion.ToString()));
             }
             catch (Exception ex)
@@ -210,13 +215,15 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         void _settings_MasterServerListChanged(ManagerSettings sender)
-        {try{
-            UpdateServerListBox(lstMS, sender.MasterServers.Cast<ServerInfoBase>(), MasterServerInfo_ServerChanged);
-        }
-        catch (Exception ex)
         {
-            Debug.Fail(ex.ToString());
-        }
+            try
+            {
+                UpdateServerListBox(lstMS, sender.MasterServers.Cast<ServerInfoBase>(), MasterServerInfo_ServerChanged);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -225,7 +232,8 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_NextVersionCreated(ManagerSettings sender)
         {
-            try{
+            try
+            {
                 btnChangeLiveVersion.Enabled = sender.DoesNextVersionExist();
             }
             catch (Exception ex)

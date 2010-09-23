@@ -18,11 +18,11 @@ namespace NetGore.Graphics
     public class WaterRefractionEffect : IRefractionEffect, IPersistable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        const float _defaultMagnification = 1.0f;
 
         const float _defaultWaterAlpha = 0.38f;
         const float _defaultWaveIntensity = 0.01f;
         const float _defaultWaveSpeed = 0.5f;
-        const float _defaultMagnification = 1.0f;
         const string _valueKeyWaveNoise = "WaveNoiseGrh";
 
         static readonly Shader _defaultShader;
@@ -202,6 +202,13 @@ void main (void)
         }
 
         /// <summary>
+        /// Gets or sets the default <see cref="WaterRefractionEffect.Magnification"/> value for new instances.
+        /// The default value is 1.0f.
+        /// </summary>
+        [DefaultValue(_defaultMagnification)]
+        public static float DefaultMagnification { get; set; }
+
+        /// <summary>
         /// Gets the default <see cref="Shader"/> used for the <see cref="WaterRefractionEffect"/>.
         /// This is used to draw the water's refraction noise to the refraction map.
         /// When <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this value will always be null.
@@ -227,18 +234,21 @@ void main (void)
         public static float DefaultWaveIntensity { get; set; }
 
         /// <summary>
-        /// Gets or sets the default <see cref="WaterRefractionEffect.Magnification"/> value for new instances.
-        /// The default value is 1.0f.
-        /// </summary>
-        [DefaultValue(_defaultMagnification)]
-        public static float DefaultMagnification { get; set; }
-
-        /// <summary>
         /// Gets or sets the default <see cref="WaterRefractionEffect.WaveSpeed"/> value for new instances.
         /// The default value is 0.5f.
         /// </summary>
         [DefaultValue(_defaultWaveSpeed)]
         public static float DefaultWaveSpeed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount that the water magnifies the reflected image. Ignoring magnification resulting from the wave
+        /// texture, a value of 1.0f would result in the objects in the reflected image being the same height as the original
+        /// image. A value of 0.5f would result in the reflected images being twice the size of their original size, and as a
+        /// result show only half the amount it normally would. Similarly, 1.5f would make the reflected images half their
+        /// size and show twice as much.
+        /// </summary>
+        [SyncValue]
+        public float Magnification { get; set; }
 
         /// <summary>
         /// Gets the <see cref="Shader"/> being used by this effect to draw the water's refraction map.
@@ -267,16 +277,6 @@ void main (void)
         /// </summary>
         [SyncValue]
         public float WaveIntensity { get; set; }
-
-        /// <summary>
-        /// Gets or sets the amount that the water magnifies the reflected image. Ignoring magnification resulting from the wave
-        /// texture, a value of 1.0f would result in the objects in the reflected image being the same height as the original
-        /// image. A value of 0.5f would result in the reflected images being twice the size of their original size, and as a
-        /// result show only half the amount it normally would. Similarly, 1.5f would make the reflected images half their
-        /// size and show twice as much.
-        /// </summary>
-        [SyncValue]
-        public float Magnification { get; set; }
 
         /// <summary>
         /// Gets the sprite used to create the waves on the water's refraction map.

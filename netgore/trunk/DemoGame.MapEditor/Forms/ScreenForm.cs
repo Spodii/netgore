@@ -599,7 +599,7 @@ namespace DemoGame.MapEditor
 
             // End map rendering
             DrawingManager.EndDrawWorld();
-            
+
             // Begin GUI rendering
             sb = DrawingManager.BeginDrawGUI();
             if (sb == null)
@@ -613,7 +613,6 @@ namespace DemoGame.MapEditor
 
             // End GUI rendering
             DrawingManager.EndDrawGUI();
-            
         }
 
         /// <summary>
@@ -1078,7 +1077,6 @@ namespace DemoGame.MapEditor
                 {
                     DrawingManager.LightManager.Add(light);
                 }
-
 
                 // Remove the refraction effects from the old map
                 if (oldMap != null)
