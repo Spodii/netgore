@@ -7,6 +7,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
+using NetGore.World;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -42,6 +43,9 @@ namespace DemoGame.Client
             LoadGrhInfo();
             _screenManager.DrawingManager.LightManager.DefaultSprite = new Grh(GrhInfo.GetData("Effect", "light"));
 
+            // Set up our custom chat bubbles
+            ChatBubble.CreateChatBubbleInstance = CreateChatBubbleInstanceHandler;
+
             // Create the screens
             new GameplayScreen(ScreenManager);
             new MainMenuScreen(ScreenManager);
@@ -61,6 +65,18 @@ namespace DemoGame.Client
             UseVerticalSync(true);
 
             KeyPressed += DemoGame_KeyPressed;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="ChatBubble.CreateChatBubbleInstance"/> to create custom <see cref="ChatBubble"/>s.
+        /// </summary>
+        /// <param name="parent">The parent <see cref="Control"/>.</param>
+        /// <param name="owner">The <see cref="Entity"/> the chat bubble is for.</param>
+        /// <param name="text">The text to display.</param>
+        /// <returns>The <see cref="ChatBubble"/> instance.</returns>
+        static ChatBubble CreateChatBubbleInstanceHandler(Control parent, Entity owner, string text)
+        {
+            return new GameChatBubble(parent, owner, text);
         }
 
         /// <summary>

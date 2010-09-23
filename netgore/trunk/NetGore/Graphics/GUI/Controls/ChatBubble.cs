@@ -35,7 +35,10 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Initializes a new instance of the <see cref="ChatBubble"/> class.
         /// </summary>
-        ChatBubble(Control parent, Entity owner, string text) : base(parent, Vector2.Zero, Vector2.Zero)
+        /// <param name="parent">The parent <see cref="Control"/>.</param>
+        /// <param name="owner">The <see cref="Entity"/> that this <see cref="ChatBubble"/> is for.</param>
+        /// <param name="text">The text to display.</param>
+        public ChatBubble(Control parent, Entity owner, string text) : base(parent, Vector2.Zero, Vector2.Zero)
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
@@ -310,6 +313,7 @@ namespace NetGore.Graphics.GUI
                 Border = ControlBorder.Empty;
                 CanFocus = false;
                 CanDrag = false;
+                Font = ((ChatBubble)Parent).Font;
             }
         }
     }

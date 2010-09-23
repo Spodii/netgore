@@ -31,23 +31,25 @@ namespace DemoGame.Client
         /// <param name="pos">The pos.</param>
         public ChatForm(Control parent, Vector2 pos) : base(parent, pos, new Vector2(300, 150))
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-
             // Create the input and output TextBoxes
             _input = new TextBox(this, Vector2.Zero, new Vector2(32, 32))
             {
                 IsMultiLine = false,
                 IsEnabled = true,
-                Font = Font,
+                Font = GameScreenHelper.DefaultChatFont,
                 MaxInputTextLength = GameData.MaxClientSayLength,
                 BorderColor = new Color(255, 255, 255, 100)
             };
-            _input.KeyPressed += Input_KeyPressed;
 
             _output = new TextBox(this, Vector2.Zero, new Vector2(32, 32))
-            { IsMultiLine = true, IsEnabled = false, Font = Font, BorderColor = new Color(255, 255, 255, 100) };
+            {
+                IsMultiLine = true,
+                IsEnabled = false,
+                Font = GameScreenHelper.DefaultChatFont,
+                BorderColor = new Color(255, 255, 255, 100)
+            };
 
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            _input.KeyPressed += Input_KeyPressed;
 
             // Force the initial repositioning
             RepositionTextBoxes();

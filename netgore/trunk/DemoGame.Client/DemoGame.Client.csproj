@@ -145,6 +145,7 @@
     <Compile Include="ActionDisplayScripts.cs" />
     <Compile Include="ClientPeerTradeInfoHandler.cs" />
     <Compile Include="ClientConfig.cs" />
+    <Compile Include="Controls\GameChatBubble.cs" />
     <Compile Include="Controls\GameMenuForm.cs" />
     <Compile Include="Controls\IQuickBarItemProvider.cs" />
     <Compile Include="Controls\NPCChatDialogForm.cs" />

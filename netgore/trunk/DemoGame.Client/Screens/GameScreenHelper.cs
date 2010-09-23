@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.Content;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
@@ -13,16 +14,6 @@ namespace DemoGame.Client
     /// </summary>
     public static class GameScreenHelper
     {
-        /// <summary>
-        /// The menu button font name.
-        /// </summary>
-        const string _menuButtonFont = "Font/If";
-        
-        /// <summary>
-        /// The menu button font size.
-        /// </summary>
-        const int _menuButtonFontSize = 42;
-
         static readonly MouseEventHandler _menuButtonMouseEnter;
         static readonly MouseEventHandler _menuButtonMouseLeave;
 
@@ -46,29 +37,34 @@ namespace DemoGame.Client
         /// </summary>
         static GameScreenHelper()
         {
+            var content = ContentManager.Create();
+
             _menuButtonMouseEnter = button_MouseEnter;
             _menuButtonMouseLeave = button_MouseLeave;
+
+            _defaultChatFont = content.LoadFont("Font/Arial", 14, ContentLevel.Global);
+            _defaultScreenFont = content.LoadFont("Font/FullComp", 24, ContentLevel.Global);
+            _defaultMenuButtonFont = content.LoadFont("Font/If", 42, ContentLevel.Global);
         }
+
+        static readonly Font _defaultChatFont;
+        static readonly Font _defaultScreenFont;
+        static readonly Font _defaultMenuButtonFont;
+
+        /// <summary>
+        /// Gets the default <see cref="Font"/> for chat text.
+        /// </summary>
+        public static Font DefaultChatFont { get { return _defaultChatFont; } }
 
         /// <summary>
         /// Gets the default font for a <see cref="GameScreen"/>.
         /// </summary>
-        /// <param name="screenManager">The <see cref="IScreenManager"/> for the <see cref="GameScreen"/>.</param>
-        /// <returns>The <see cref="Font"/>.</returns>
-        public static Font GetScreenDefaultFont(IScreenManager screenManager)
-        {
-            return screenManager.Content.LoadFont("Font/If", 24, NetGore.Content.ContentLevel.Global);
-        }
+        public static Font DefaultScreenFont { get { return _defaultScreenFont; } }
 
         /// <summary>
-        /// Gets the menu button <see cref="Font"/>.
+        /// Gets the default menu button <see cref="Font"/>.
         /// </summary>
-        /// <param name="screenManager">The <see cref="IScreenManager"/> for the screen the <see cref="Font"/> is for.</param>
-        /// <returns>The <see cref="Font"/> to use.</returns>
-        static Font GetMenuButtonFont(IScreenManager screenManager)
-        {
-            return screenManager.Content.LoadFont(_menuButtonFont, _menuButtonFontSize, NetGore.Content.ContentLevel.Global);
-        }
+        public static Font DefaultMenuButtonFont { get { return _defaultMenuButtonFont; } }
 
         /// <summary>
         /// Creates the buttons for the primary menu links.
@@ -86,13 +82,11 @@ namespace DemoGame.Client
             var bottomButtonPosition = GameData.ScreenSize - buttonSize - new Vector2(50, 50);
 
             var ret = new Dictionary<string, Control>(StringComparer.OrdinalIgnoreCase);
-            var font = GetMenuButtonFont(screenManager);
 
             var pos = bottomButtonPosition;
             for (var i = names.Length - 1; i >= 0; i--)
             {
-                var c = new MenuButtonLabel(parent, pos)
-                { Text = names[i], Border = null, ForeColor = _menuTextColor, Font = font };
+                var c = new MenuButtonLabel(parent, pos) { Text = names[i], Border = null, ForeColor = _menuTextColor, Font = DefaultMenuButtonFont };
 
                 c.Position = new Vector2(parent.ClientSize.X - c.ClientSize.X - 50, c.Position.Y);
 
