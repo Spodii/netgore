@@ -255,7 +255,7 @@ namespace NetGore.Graphics
         /// no tinting.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public virtual void Draw(Image texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color,
-            Shader shader = null)
+                                 Shader shader = null)
         {
             Draw(texture, destinationRectangle, sourceRectangle, color, 0f, Vector2.Zero, SpriteEffects.None, shader);
         }
@@ -376,7 +376,8 @@ namespace NetGore.Graphics
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public virtual void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
-                                       Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
+                                       Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular,
+                                       Shader shader = null)
         {
             if (!IsAssetValid(spriteFont))
                 return;
@@ -398,7 +399,7 @@ namespace NetGore.Graphics
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public virtual void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin,
-                                       Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader= null)
+                                       Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
         {
             if (!IsAssetValid(spriteFont) || string.IsNullOrEmpty(text))
                 return;
@@ -412,7 +413,7 @@ namespace NetGore.Graphics
             _str.Scale = scale;
             _str.Style = style;
             _str.Size = spriteFont.DefaultSize;
-            
+
             _rt.Draw(_str, shader);
         }
 

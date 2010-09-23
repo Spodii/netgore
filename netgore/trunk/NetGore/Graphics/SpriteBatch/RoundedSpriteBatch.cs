@@ -45,7 +45,7 @@ namespace NetGore.Graphics
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public override void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, Shader shader = null)
         {
-            base.Draw(texture, position.Round(), sourceRectangle, color ,shader);
+            base.Draw(texture, position.Round(), sourceRectangle, color, shader);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace NetGore.Graphics
         /// <param name="effects">Rotations to apply prior to rendering.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public override void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation,
-                                  Vector2 origin, float scale, SpriteEffects effects= SpriteEffects.None, Shader shader = null)
+                                  Vector2 origin, float scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null)
         {
             base.Draw(texture, position.Round(), sourceRectangle, color, rotation, origin, scale, effects, shader);
         }
@@ -117,7 +117,7 @@ namespace NetGore.Graphics
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public override void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, float scale, Text.Styles style = Text.Styles.Regular, Shader shader =null)
+                                        Vector2 origin, float scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
         {
             base.DrawString(spriteFont, text, position.Round(), color, rotation, origin, scale, style, shader);
         }
@@ -136,7 +136,8 @@ namespace NetGore.Graphics
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public override void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader = null)
+                                        Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular,
+                                        Shader shader = null)
         {
             base.DrawString(spriteFont, text, position.Round(), color, rotation, origin, scale, style, shader);
         }
@@ -187,7 +188,8 @@ namespace NetGore.Graphics
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         public override void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation,
-                                        Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader= null)
+                                        Vector2 origin, Vector2 scale, Text.Styles style = Text.Styles.Regular,
+                                        Shader shader = null)
         {
             base.DrawString(spriteFont, text, position.Round(), color, rotation, origin, scale, style, shader);
         }
