@@ -55,7 +55,7 @@ namespace NetGore.Graphics
             // Try to create the default shader
             try
             {
-                string code = Settings.Default.WaterRefractionEffectShader;
+                string code = Resources.WaterRefractionEffectShader;
                 _defaultShader = ShaderHelper.LoadFromMemory(code);
             }
             catch (LoadingFailedException ex)

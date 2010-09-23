@@ -67,6 +67,21 @@ namespace NetGore.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to // The distance multiplier to apply to the values unpacked from channels to get the offset. This decreases our resolution,
+        ///// giving us a choppier image, but increases our range. Lower values give higher resolution but require smaller distances.
+        ///// This MUST be the same in all the refraction effects!
+        ///const float DistanceMultiplier = 2.0;
+        ///
+        ///// The value of the reflection channels that will be used to not perform any reflection. Having this non-zero allows us to
+        ///// reflect in both directions instead of j [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ExplosionRefractionEffectShader {
+            get {
+                return ResourceManager.GetString("ExplosionRefractionEffectShader", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Joint {
             get {
                 object obj = ResourceManager.GetObject("Joint", resourceCulture);
@@ -99,6 +114,21 @@ namespace NetGore.Properties {
             get {
                 object obj = ResourceManager.GetObject("Triangle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to // The distance multiplier to apply to the values unpacked from channels to get the offset. This decreases our resolution,
+        ///// giving us a choppier image, but increases our range. Lower values give higher resolution but require smaller distances.
+        ///// This MUST be the same in all the refraction effects!
+        ///const float DistanceMultiplier = 2.0;
+        ///
+        ///// The value of the reflection channels that will be used to not perform any reflection. Having this non-zero allows us to
+        ///// reflect in both directions instead of j [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string WaterRefractionEffectShader {
+            get {
+                return ResourceManager.GetString("WaterRefractionEffectShader", resourceCulture);
             }
         }
     }

@@ -56,7 +56,7 @@ namespace NetGore.Graphics
             // Try to create the default shader
             try
             {
-                string code = Settings.Default.ExplosionRefractionEffectShader;
+                string code = Resources.ExplosionRefractionEffectShader;
                 _defaultShader = ShaderHelper.LoadFromMemory(code);
             }
             catch (LoadingFailedException ex)

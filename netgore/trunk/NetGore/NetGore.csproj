@@ -202,11 +202,6 @@
     <Compile Include="Network\Sockets\SocketManager\IServerSocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\ISocketManager.cs" />
     <Compile Include="Network\Sockets\SocketManager\ServerSocketManager.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="World\Entities\IInventory.cs" />
     <Compile Include="World\Map\MapEvent\IDelayedMapEvent.cs" />
     <Compile Include="World\Map\MapEvent\TimeDelayedMapEvent.cs" />
@@ -722,10 +717,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Resources\Blank.png" />
   </ItemGroup>
   <ItemGroup>
