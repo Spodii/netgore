@@ -53,6 +53,8 @@ namespace GoreUpdater.Manager
             txtPassword.Text = _server.Password;
             txtUser.Text = _server.User;
             cmbType.SelectedItem = _server.FileUploaderType;
+            cmbDownloadType.SelectedItem = _server.DownloadSourceType;
+            txtDownloadHost.Text = _server.DownloadHost;
         }
 
         /// <summary>
