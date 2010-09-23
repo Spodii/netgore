@@ -13,7 +13,7 @@ namespace DemoGame.Client
     {
         public const string ScreenName = "login";
 
-        Button _btnLogin;
+        Control _btnLogin;
         TextBox _cError;
         TextBox _cNameText;
         MaskedTextBox _cPasswordText;
@@ -26,6 +26,18 @@ namespace DemoGame.Client
         public LoginScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
             PlayMusic = false;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
+        /// <see cref="GameScreen"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
+        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
+        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
+        protected override Font GetScreenManagerFont(IScreenManager screenManager)
+        {
+            return GameScreenHelper.GetScreenDefaultFont(screenManager);
         }
 
         /// <summary>
@@ -79,7 +91,7 @@ namespace DemoGame.Client
             { ForeColor = Color.Red, Border = null, CanFocus = false, IsMultiLine = true, IsEnabled = false };
 
             // Create the menu buttons
-            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "Back");
+            var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Login", "Back");
             _btnLogin = menuButtons["Login"];
             _btnLogin.Clicked += delegate { _sockets.Connect(); };
             menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };

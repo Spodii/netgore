@@ -28,6 +28,18 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
+        /// <see cref="GameScreen"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
+        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
+        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
+        protected override Font GetScreenManagerFont(IScreenManager screenManager)
+        {
+            return GameScreenHelper.GetScreenDefaultFont(screenManager);
+        }
+
+        /// <summary>
         /// Handles screen activation, which occurs every time the screen becomes the current
         /// active screen. Objects in here often will want to be destroyed on Deactivate().
         /// </summary>
@@ -100,7 +112,7 @@ namespace DemoGame.Client
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
-            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Log out");
+            var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Log out");
             menuButtons["Log out"].Clicked += ClickButton_LogOut;
 
             // Create the character controls

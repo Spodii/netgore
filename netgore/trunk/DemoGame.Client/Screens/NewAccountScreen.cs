@@ -15,7 +15,7 @@ namespace DemoGame.Client
         TextBox _cEmailText;
         TextBox _cNameText;
         TextBox _cPasswordText;
-        Button _createAccountButton;
+        Control _createAccountButton;
         ClientSockets _sockets = null;
         Label _statusLabel;
 
@@ -26,6 +26,18 @@ namespace DemoGame.Client
         public NewAccountScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
             PlayMusic = false;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
+        /// <see cref="GameScreen"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
+        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
+        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
+        protected override Font GetScreenManagerFont(IScreenManager screenManager)
+        {
+            return GameScreenHelper.GetScreenDefaultFont(screenManager);
         }
 
         /// <summary>
@@ -131,7 +143,7 @@ namespace DemoGame.Client
             { IsMultiLine = false, Text = string.Empty };
 
             // Create the menu buttons
-            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Create Account", "Back");
+            var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Create Account", "Back");
             menuButtons["Create Account"].Clicked += ClickButton_CreateAccount;
             menuButtons["Back"].Clicked += delegate { ScreenManager.SetScreen(MainMenuScreen.ScreenName); };
 
@@ -226,8 +238,6 @@ namespace DemoGame.Client
             // Make sure we are the active screen
             if (ScreenManager.ActiveNonConsoleScreen != this)
                 return;
-
-            var clientSockets = (ClientSockets)sender;
 
             switch (newStatus)
             {

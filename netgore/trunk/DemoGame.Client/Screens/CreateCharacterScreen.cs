@@ -11,7 +11,7 @@ namespace DemoGame.Client
     {
         public const string ScreenName = "character creation";
 
-        Button _btnCreateCharacter;
+        Control _btnCreateCharacter;
         Label _cError;
         ClientSockets _sockets = null;
         TextBox _txtName;
@@ -23,6 +23,18 @@ namespace DemoGame.Client
         public CreateCharacterScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
         {
             PlayMusic = false;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
+        /// <see cref="GameScreen"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
+        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
+        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
+        protected override Font GetScreenManagerFont(IScreenManager screenManager)
+        {
+            return GameScreenHelper.GetScreenDefaultFont(screenManager);
         }
 
         /// <summary>
@@ -75,7 +87,7 @@ namespace DemoGame.Client
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
-            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Create character", "Back");
+            var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Create character", "Back");
             _btnCreateCharacter = menuButtons["Create character"];
             _btnCreateCharacter.Clicked += ClickButton_CreateCharacter;
             menuButtons["Back"].Clicked += ClickButton_Back;
