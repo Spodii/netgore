@@ -18,6 +18,18 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
+        /// <see cref="GameScreen"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
+        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
+        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
+        protected override Font GetScreenManagerFont(IScreenManager screenManager)
+        {
+            return GameScreenHelper.GetScreenDefaultFont(screenManager);
+        }
+
+        /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
         /// use this instead of the constructor. This is invoked only once.
@@ -27,7 +39,8 @@ namespace DemoGame.Client
             var cScreen = new Panel(GUIManager, Vector2.Zero, ScreenManager.ScreenSize);
 
             // Create the menu buttons
-            var menuButtons = GameScreenHelper.CreateMenuButtons(cScreen, "Login", "New Account", "Options", "Quit");
+            var menuButtons = GameScreenHelper.CreateMenuButtons(ScreenManager, cScreen, "Login", "New Account", "Options", "Quit");
+
             menuButtons["Login"].Clicked += delegate { ScreenManager.SetScreen(LoginScreen.ScreenName); };
             menuButtons["New Account"].Clicked += delegate { ScreenManager.SetScreen(NewAccountScreen.ScreenName); };
             menuButtons["Options"].Clicked += delegate
