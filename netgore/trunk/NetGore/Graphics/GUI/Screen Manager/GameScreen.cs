@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NetGore.Audio;
+using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
 {
@@ -34,9 +35,23 @@ namespace NetGore.Graphics.GUI
 
             _screenManager = screenManager;
             _name = name;
-            _guiManager = ScreenManager.CreateGUIManager(ScreenManager.DefaultFont);
+
+            var font = GetScreenManagerFont(ScreenManager) ?? screenManager.DefaultFont;
+            _guiManager = ScreenManager.CreateGUIManager(font);
 
             screenManager.Add(this);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
+        /// <see cref="GameScreen"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
+        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
+        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
+        protected virtual Font GetScreenManagerFont(IScreenManager screenManager)
+        {
+            return screenManager.DefaultFont;
         }
 
         /// <summary>
