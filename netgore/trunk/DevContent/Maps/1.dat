@@ -424,6 +424,11 @@
         </Item2>
       </Lights>
     </Lighting>
+	<Refraction>
+		<RefractionEffects>
+			<Count>0</Count>
+		</RefractionEffects>
+	</Refraction>
     <ParticleEffects>
       <Count>1</Count>
       <Item0>

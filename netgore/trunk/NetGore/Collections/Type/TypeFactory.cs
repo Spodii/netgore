@@ -97,7 +97,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all of the <see cref="Types"/>s in this <see cref="TypeFactory"/>.
+        /// Gets an IEnumerable of all of the <see cref="Type"/>s in this <see cref="TypeFactory"/>.
         /// </summary>
         public IEnumerable<Type> Types
         {

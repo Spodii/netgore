@@ -1253,6 +1253,11 @@
         </Item8>
       </Lights>
     </Lighting>
+	<Refraction>
+		<RefractionEffects>
+			<Count>0</Count>
+		</RefractionEffects>
+	</Refraction>
     <ParticleEffects>
       <Count>0</Count>
     </ParticleEffects>

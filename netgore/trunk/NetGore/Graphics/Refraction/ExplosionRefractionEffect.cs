@@ -171,6 +171,7 @@ void main (void)
             // Copy over the default values
             Intensity = DefaultIntensity;
             ExpansionRate = DefaultExpansionRate;
+            IsEnabled = true;
 
             // Ensure we are able to use the effect
             if (_shader == null)

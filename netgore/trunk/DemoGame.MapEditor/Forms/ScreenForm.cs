@@ -1062,9 +1062,9 @@ namespace DemoGame.MapEditor
                 c.IMap = newMap;
             }
 
-            // Remove all lights for the old map from the light manager
             if (oldMap != newMap)
             {
+                // Remove all lights for the old map from the light manager
                 if (oldMap != null)
                 {
                     foreach (var light in oldMap.Lights)
@@ -1077,6 +1077,22 @@ namespace DemoGame.MapEditor
                 foreach (var light in newMap.Lights)
                 {
                     DrawingManager.LightManager.Add(light);
+                }
+
+
+                // Remove the refraction effects from the old map
+                if (oldMap != null)
+                {
+                    foreach (var fx in oldMap.RefractionEffects)
+                    {
+                        DrawingManager.RefractionManager.Remove(fx);
+                    }
+                }
+
+                // Add the refraction effects for the new map
+                foreach (var fx in newMap.RefractionEffects)
+                {
+                    DrawingManager.RefractionManager.Add(fx);
                 }
             }
 
