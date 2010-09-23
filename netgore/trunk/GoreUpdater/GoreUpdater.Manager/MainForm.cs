@@ -104,13 +104,17 @@ namespace GoreUpdater.Manager
                 foreach (var s in lb.Items.OfType<ServerInfoBase>())
                 {
                     s.ServerChanged -= changedEventHandler;
+                    s.ProgressChanged -= changedEventHandler;
                 }
 
                 // Add the update listener to all items (after double-checking that the event listener isn't attached)
                 foreach (var s in servers)
                 {
                     s.ServerChanged -= changedEventHandler;
+                    s.ProgressChanged -= changedEventHandler;
+
                     s.ServerChanged += changedEventHandler;
+                    s.ProgressChanged += changedEventHandler;
                 }
 
                 // Re-add all items

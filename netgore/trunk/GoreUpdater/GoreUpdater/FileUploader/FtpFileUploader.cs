@@ -1149,6 +1149,20 @@ namespace GoreUpdater
         public event FileUploaderDownloadErrorEventHandler DownloadError;
 
         /// <summary>
+        /// Gets the number of jobs remaining. Includes both queued and in-progress jobs.
+        /// </summary>
+        public int JobsRemaining
+        {
+            get
+            {
+                lock (_jobsSync)
+                {
+                    return _jobsActive.Count + _jobsQueue.Count;
+                }
+            }
+        }
+
+        /// <summary>
         /// Notifies listeners when the <see cref="IFileUploader.TestConnection"/> method has produced a message
         /// related to the status of the connection testing. This only contains status update messages, not error
         /// messages.

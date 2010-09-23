@@ -25,6 +25,7 @@ namespace GoreUpdater.Manager
 
         readonly object _infoSync = new object();
         readonly object _syncVersionSync = new object();
+        readonly Timer _updateJobCountTimer;
 
         /// <summary>
         /// A queue of versions to check if synchronized and, if not, to start synchronizing.
@@ -40,6 +41,7 @@ namespace GoreUpdater.Manager
         string _host;
         bool _isBusySyncing;
         bool _isDisposed = false;
+        int _lastJobsRemaining = int.MinValue;
         string _password;
         string _user;
 
@@ -61,6 +63,8 @@ namespace GoreUpdater.Manager
             _password = password;
             _fileDownloaderType = downloadType;
             _downloadHost = downloadHost;
+
+            _updateJobCountTimer = new Timer(InvokeProgressChanged, null, 1000, 1000);
 
             // Listen for when any versions change
             _settings.LiveVersionChanged += _settings_LiveVersionChanged;
@@ -87,6 +91,11 @@ namespace GoreUpdater.Manager
 
             _workerThread.Start();
         }
+
+        /// <summary>
+        /// Notifies listeners when the progress of the server has changed.
+        /// </summary>
+        public event ServerInfoEventHandler ProgressChanged;
 
         /// <summary>
         /// Notifies listeners when the server settings or state has changed.
@@ -155,6 +164,14 @@ namespace GoreUpdater.Manager
         public bool IsDisposed
         {
             get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Gets the number of jobs remaining. Includes both queued and in-progress jobs.
+        /// </summary>
+        public int JobsRemaining
+        {
+            get { return _fileUploader.JobsRemaining; }
         }
 
         /// <summary>
@@ -322,6 +339,32 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Checks if the FileUploader's jobs remaining count has changed and, if it does, invokes ProgressChanged.
+        /// </summary>
+        /// <param name="dummy">Dummy argument - unused.</param>
+        void InvokeProgressChanged(object dummy = null)
+        {
+            var fu = _fileUploader;
+            if (fu == null)
+                return;
+
+            var jr = fu.JobsRemaining;
+            if (jr == _lastJobsRemaining)
+                return;
+
+            _lastJobsRemaining = jr;
+
+            try
+            {
+                if (ProgressChanged != null)
+                    ProgressChanged(this);
+            }
+            catch (NullReferenceException)
+            {
+            }
+        }
+
+        /// <summary>
         /// Recreates the <see cref="IFileUploader"/> and starts updating again.
         /// </summary>
         void RecreateFileUploader()
@@ -332,6 +375,8 @@ namespace GoreUpdater.Manager
 
             // Create the new uploader
             _fileUploader = CreateFileUploader(FileUploaderType, Host, User, Password);
+
+            _lastJobsRemaining = int.MinValue;
 
             // Start the synchronization of the live and next version
             EnqueueSyncVersion(_settings.LiveVersion);
