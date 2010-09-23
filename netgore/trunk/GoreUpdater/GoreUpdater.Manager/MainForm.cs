@@ -30,7 +30,7 @@ namespace GoreUpdater.Manager
             {
                 const string msg = "One or more servers are busy synchronizing. Are you sure you wish to close?" +
                     "{0}{0}It is highly recommended you press `Cancel` and wait for synchronization to finish.";
-                if (MessageBox.Show(string.Format(msg, Environment.NewLine), "Busy synchronizing", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.Cancel)
+                if (MessageBox.Show(string.Format(msg, Environment.NewLine), "Busy synchronizing", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                 {
                     e.Cancel = true;
                 }
