@@ -20,11 +20,11 @@ namespace DemoGame.Client
     {
         const string _bgImagesNodeName = "BackgroundImages";
         const string _lightingNodeName = "Lighting";
-        const string _refractionEffectsNodeName = "Refraction";
-        const string _refractionEffectListNodeName = "RefractionEffects";
         const string _lightsNodeName = "Lights";
         const string _mapGrhsNodeName = "MapGrhs";
         const string _particleEffectsNodeName = "ParticleEffects";
+        const string _refractionEffectListNodeName = "RefractionEffects";
+        const string _refractionEffectsNodeName = "Refraction";
         const string _usedIndiciesNodeName = "UsedIndicies";
 
         static readonly GameTimeSettings _gameTimeSettings = GameTimeSettings.Instance;
@@ -36,7 +36,6 @@ namespace DemoGame.Client
 
         readonly DrawableSorter _drawableSorter = new DrawableSorter();
         readonly List<ILight> _lights = new List<ILight>();
-        readonly List<IRefractionEffect> _refractionEffects = new List<IRefractionEffect>();
 
         readonly List<ITemporaryMapEffect> _mapEffects = new List<ITemporaryMapEffect>(32);
 
@@ -46,6 +45,7 @@ namespace DemoGame.Client
         readonly List<MapGrh> _mapGrhs = new List<MapGrh>(128);
 
         readonly MapParticleEffectCollection _particleEffects = new MapParticleEffectCollection();
+        readonly List<IRefractionEffect> _refractionEffects = new List<IRefractionEffect>();
         Color _ambientLight = Color.White;
 
         TextureAtlas _atlas;
@@ -101,15 +101,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the refraction effects on the map.
-        /// </summary>
-        [Browsable(false)]
-        public IEnumerable<IRefractionEffect> RefractionEffects
-        {
-            get { return _refractionEffects; }
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of all the <see cref="ITemporaryMapEffect"/>s.
         /// </summary>
         [Browsable(false)]
@@ -134,6 +125,15 @@ namespace DemoGame.Client
         public MapParticleEffectCollection ParticleEffects
         {
             get { return _particleEffects; }
+        }
+
+        /// <summary>
+        /// Gets the refraction effects on the map.
+        /// </summary>
+        [Browsable(false)]
+        public IEnumerable<IRefractionEffect> RefractionEffects
+        {
+            get { return _refractionEffects; }
         }
 
         /// <summary>
@@ -170,16 +170,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Adds a refraction effect to the map as long as it does not already exist in the map's refraction effect collection.
-        /// </summary>
-        /// <param name="fx">The <see cref="IRefractionEffect"/> to add.</param>
-        public void AddRefractionEffect(IRefractionEffect fx)
-        {
-            if (!_refractionEffects.Contains(fx))
-                _refractionEffects.Add(fx);
-        }
-
-        /// <summary>
         /// Adds a MapGrh to the map
         /// </summary>
         /// <param name="mg">MapGrh to add to the map</param>
@@ -197,6 +187,16 @@ namespace DemoGame.Client
             // Add to the MapGrh list and spatial
             _mapGrhs.Add(mg);
             Spatial.Add(mg);
+        }
+
+        /// <summary>
+        /// Adds a refraction effect to the map as long as it does not already exist in the map's refraction effect collection.
+        /// </summary>
+        /// <param name="fx">The <see cref="IRefractionEffect"/> to add.</param>
+        public void AddRefractionEffect(IRefractionEffect fx)
+        {
+            if (!_refractionEffects.Contains(fx))
+                _refractionEffects.Add(fx);
         }
 
         /// <summary>
@@ -347,22 +347,6 @@ namespace DemoGame.Client
             }
         }
 
-        void LoadRefractionEffects(IValueReader reader)
-        {
-            reader = reader.ReadNode(_refractionEffectsNodeName);
-
-            _refractionEffects.Clear();
-
-            var loadedFx = reader.ReadManyNodes(_refractionEffectListNodeName, RefractionEffectFactory.Read);
-
-            _refractionEffects.AddRange(loadedFx);
-
-            foreach (var fx in loadedFx)
-            {
-                fx.Tag = this;
-            }
-        }
-
         void LoadLighting(IValueReader reader)
         {
             reader = reader.ReadNode(_lightingNodeName);
@@ -391,6 +375,22 @@ namespace DemoGame.Client
             LoadLighting(reader);
             _particleEffects.Read(reader, _particleEffectsNodeName);
             LoadRefractionEffects(reader);
+        }
+
+        void LoadRefractionEffects(IValueReader reader)
+        {
+            reader = reader.ReadNode(_refractionEffectsNodeName);
+
+            _refractionEffects.Clear();
+
+            var loadedFx = reader.ReadManyNodes(_refractionEffectListNodeName, RefractionEffectFactory.Read);
+
+            _refractionEffects.AddRange(loadedFx);
+
+            foreach (var fx in loadedFx)
+            {
+                fx.Tag = this;
+            }
         }
 
         /// <summary>
@@ -484,16 +484,6 @@ namespace DemoGame.Client
             w.WriteEndNode(_lightingNodeName);
         }
 
-        void SaveRefractionEffects(IValueWriter w)
-        {
-            w.WriteStartNode(_refractionEffectsNodeName);
-            {
-                var validFx = _refractionEffects.Where(x=> RefractionEffectFactory.IsValidType(x.GetType())).ToImmutable();
-                w.WriteManyNodes(_refractionEffectListNodeName, validFx, RefractionEffectFactory.Write);
-            }
-            w.WriteEndNode(_refractionEffectsNodeName);
-        }
-
         /// <summary>
         /// When overridden in the derived class, saves misc map information specific to the derived class.
         /// </summary>
@@ -505,6 +495,16 @@ namespace DemoGame.Client
             SaveLighting(w);
             _particleEffects.Write(w, _particleEffectsNodeName);
             SaveRefractionEffects(w);
+        }
+
+        void SaveRefractionEffects(IValueWriter w)
+        {
+            w.WriteStartNode(_refractionEffectsNodeName);
+            {
+                var validFx = _refractionEffects.Where(x => RefractionEffectFactory.IsValidType(x.GetType())).ToImmutable();
+                w.WriteManyNodes(_refractionEffectListNodeName, validFx, RefractionEffectFactory.Write);
+            }
+            w.WriteEndNode(_refractionEffectsNodeName);
         }
 
         /// <summary>

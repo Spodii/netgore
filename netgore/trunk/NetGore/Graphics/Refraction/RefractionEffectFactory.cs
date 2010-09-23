@@ -138,7 +138,7 @@ namespace NetGore.Graphics
 
             string typeName = null;
             if (asPersistable != null)
-                 typeName = Instance[re.GetType()];
+                typeName = Instance[re.GetType()];
 
             if (typeName == null)
             {

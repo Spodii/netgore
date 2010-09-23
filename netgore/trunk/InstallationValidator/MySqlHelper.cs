@@ -69,31 +69,6 @@ namespace InstallationValidator
             ImportDatabaseContents();
         }
 
-        static string TryGetMySqlPathFromRegistry()
-        {
-            try
-            {
-                var software = Registry.LocalMachine.OpenSubKey("Software");
-                if (software == null)
-                    return null;
-
-                var mysqlab = software.OpenSubKey("MYSQL AB");
-                if (mysqlab == null) return null;
-
-                var mysql51 = mysqlab.OpenSubKey("MySql Server 5.1");
-                if (mysql51 == null)
-                    return null;
-
-                return mysql51.GetValue("Location").ToString();
-            }
-            catch (Exception ex)
-            {
-                Debug.Fail(ex.ToString());
-
-                return null;
-            }
-        }
-
         /// <summary>
         /// Finds the path to a MySql file.
         /// </summary>
@@ -108,9 +83,10 @@ namespace InstallationValidator
             if (path1 == path2)
                 path1 = path2.Replace(" (x86)", string.Empty);
 
-            var filePath = FileFinder.Find(fileName, regPath) ?? FileFinder.Find(fileName, path1) ?? FileFinder.Find(fileName, path2);
+            var filePath = FileFinder.Find(fileName, regPath) ??
+                           FileFinder.Find(fileName, path1) ?? FileFinder.Find(fileName, path2);
 
-             return filePath;
+            return filePath;
         }
 
         /// <summary>
@@ -326,6 +302,32 @@ namespace InstallationValidator
 
             retStr = string.Empty;
             return true;
+        }
+
+        static string TryGetMySqlPathFromRegistry()
+        {
+            try
+            {
+                var software = Registry.LocalMachine.OpenSubKey("Software");
+                if (software == null)
+                    return null;
+
+                var mysqlab = software.OpenSubKey("MYSQL AB");
+                if (mysqlab == null)
+                    return null;
+
+                var mysql51 = mysqlab.OpenSubKey("MySql Server 5.1");
+                if (mysql51 == null)
+                    return null;
+
+                return mysql51.GetValue("Location").ToString();
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+
+                return null;
+            }
         }
 
         /// <summary>

@@ -31,14 +31,14 @@ namespace GoreUpdater
         const int _jobFailedTimeout = 1000;
 
         /// <summary>
-        /// The number of uploading threads for each <see cref="FtpFileUploader"/> instance.
-        /// </summary>
-        const int _numThreads = 3;
-
-        /// <summary>
         /// The number of FTP connections that may be open at once.
         /// </summary>
         const int _numConnections = 4;
+
+        /// <summary>
+        /// The number of uploading threads for each <see cref="FtpFileUploader"/> instance.
+        /// </summary>
+        const int _numThreads = 3;
 
         /// <summary>
         /// A shared sync root for creating <see cref="WebRequest"/>s for all <see cref="FtpFileUploader"/>s.
@@ -1149,20 +1149,6 @@ namespace GoreUpdater
         public event FileUploaderDownloadErrorEventHandler DownloadError;
 
         /// <summary>
-        /// Gets the number of jobs remaining. Includes both queued and in-progress jobs.
-        /// </summary>
-        public int JobsRemaining
-        {
-            get
-            {
-                lock (_jobsSync)
-                {
-                    return _jobsActive.Count + _jobsQueue.Count;
-                }
-            }
-        }
-
-        /// <summary>
         /// Notifies listeners when the <see cref="IFileUploader.TestConnection"/> method has produced a message
         /// related to the status of the connection testing. This only contains status update messages, not error
         /// messages.
@@ -1203,6 +1189,20 @@ namespace GoreUpdater
         public bool IsDisposed
         {
             get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Gets the number of jobs remaining. Includes both queued and in-progress jobs.
+        /// </summary>
+        public int JobsRemaining
+        {
+            get
+            {
+                lock (_jobsSync)
+                {
+                    return _jobsActive.Count + _jobsQueue.Count;
+                }
+            }
         }
 
         /// <summary>
