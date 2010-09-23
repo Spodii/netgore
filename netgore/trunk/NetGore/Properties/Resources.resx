@@ -144,10 +144,10 @@ const float AlphaMultiplier = 2.0;
 // in using a distortion equal to that in the source noise image. Its recommended you manually edit the noise
 // texture's R and G channels to alter the intensity, but this value can still be used to give different intensities
 // to the same texture.
-uniform float Intensity = 0.1;
+uniform float Intensity;
 
 // The maximum expected age of the effect. Unit does not matter as long as it is consistent.
-uniform float MaxAge = 2000.0;
+uniform float MaxAge;
 
 // The current age of the effect. Unit does not matter as long as it is consistent.
 uniform float Age;
@@ -168,10 +168,10 @@ void main (void)
 	noiseXYVec = (noiseVec.xy / DistanceMultiplier) * Intensity;
 
 	// Calculate the alpha, which will let us fade out smoothly before the effect ends
-	a = clamp(noiseVec.a * AlphaMultiplier * ((MaxAge - Age) / MaxAge), 0.0f, MaxAlpha);
+	a = clamp(noiseVec.a * AlphaMultiplier * ((MaxAge - Age) / MaxAge), 0.0, MaxAlpha);
 
 	// Apply the coloring, using the transformation directly and unaltered from the noise texture
-	gl_FragColor = vec4(noiseXYVec.x, noiseXYVec.y, 0.0f, a);
+	gl_FragColor = vec4(noiseXYVec.x, noiseXYVec.y, 0.0, a);
 }</value>
     <comment>The GLSL code for the ExplosionRefractionEffect's default shader.</comment>
   </data>
@@ -207,27 +207,27 @@ uniform sampler2D WaveNoiseTexture;
 
 // The intensity of the waves. Greater value = higher intensity. Changing the wave noise texture itself is also
 // a good way to go about altering the intensity and just the overall pattern of the waves.
-uniform float WaveIntensity = 0.01;
+uniform float WaveIntensity;
 
 // The current time in milliseconds.
 uniform float Time;
 
 // The wave speed multiplier. The greater the value, the faster the waves move.
-uniform float WaveSpeedMultiplier = 0.5;
+uniform float WaveSpeedMultiplier;
 
 // The alpha value of the water. A lower alpha makes the water less transparent, making it harder to see the original
 // graphics under it. This is just a modifier of the alpha of the wave noise texture, allowing you to give different
 // alpha values without having to change the texture.
-uniform float WaterAlphaModifier = 0.38;
+uniform float WaterAlphaModifier;
 
 // The ratio of the size of the drawn image over the height of the texture. That is, DrawHeight / TextureHeight.
-// For example, if you draw a 512x512 texture with a size of 256x256 pixels, this value will be 0.5f.
+// For example, if you draw a 512x512 texture with a size of 256x256 pixels, this value will be 0.5.
 uniform float DrawTextureHeightRatio;
 
 // The amount to magnify the water's refraction. 0.5f results in the images in the water being twice the height of
 // the real world (and thus shows half the world), while 2.0f results in images in the water being half the height
 // of the real world (and shows twice as much).
-uniform float Magnification = 1.0;
+uniform float Magnification;
 
 void main (void)
 {
@@ -236,8 +236,8 @@ void main (void)
 	vec2 newRG;
     float refractValue;
 
-	// Get the noise vector for the waves, using the time so we can move, and mod to stay in the range of (0.0f, 1.0f).
-	waveNoiseOffsetVec = mod(gl_TexCoord[0].st + (Time * 0.0005f * WaveSpeedMultiplier), 1.0f);
+	// Get the noise vector for the waves, using the time so we can move, and mod to stay in the range of (0.0, 1.0).
+	waveNoiseOffsetVec = mod(gl_TexCoord[0].st + (Time * 0.0005 * WaveSpeedMultiplier), 1.0);
 
 	// Add the noise from the waves.
 	noiseVec = texture2D(WaveNoiseTexture, waveNoiseOffsetVec).rgba;
@@ -250,11 +250,11 @@ void main (void)
     refractValue = (gl_TexCoord[0].y * DrawTextureHeightRatio) / DistanceMultiplier;
 	newRG.y += refractValue * (1.0 + Magnification);
 
-	// Clamp it all into the range of (0.0f, 1.0f)
-	newRG = clamp(newRG, 0.0f, 1.0f);
+	// Clamp it all into the range of (0.0, 1.0)
+	newRG = clamp(newRG, 0.0, 1.0);
 
 	// Apply the color.
-	gl_FragColor = vec4(newRG.x, newRG.y, 0.0f, clamp(noiseVec.a - WaterAlphaModifier, 0.0f, 1.0f));
+	gl_FragColor = vec4(newRG.x, newRG.y, 0.0, clamp(noiseVec.a - WaterAlphaModifier, 0.0, 1.0));
 }</value>
     <comment>The GLSL code for the WaterRefractionEffect's default shader.</comment>
   </data>
