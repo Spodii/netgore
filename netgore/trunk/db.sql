@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-09-22 00:19:37',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
+INSERT INTO `account` VALUES (0,'Test','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-02-11 17:52:28','2010-02-11 18:03:56',16777343,NULL),(1,'Spodi','3fc0a7acf087f549ac2b266baf94b8b1','spodi@netgore.com','2009-09-07 15:43:16','2010-09-22 19:41:58',16777343,NULL),(2,'Spodit','3fc0a7acf087f549ac2b266baf94b8b1','test@test.com','2010-08-06 15:00:47','2010-08-18 00:41:59',16777343,NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +121,7 @@ CREATE TABLE `account_ips` (
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`,`ip`),
   CONSTRAINT `account_ips_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB AUTO_INCREMENT=22;
+) TYPE=InnoDB AUTO_INCREMENT=6;
 
 --
 -- Dumping data for table `account_ips`
@@ -129,6 +129,7 @@ CREATE TABLE `account_ips` (
 
 LOCK TABLES `account_ips` WRITE;
 /*!40000 ALTER TABLE `account_ips` DISABLE KEYS */;
+INSERT INTO `account_ips` VALUES (1,1,16777343,'2010-09-22 19:36:07'),(2,1,16777343,'2010-09-22 19:37:31'),(3,1,16777343,'2010-09-22 19:38:24'),(4,1,16777343,'2010-09-22 19:39:00'),(5,1,16777343,'2010-09-22 19:41:58');
 /*!40000 ALTER TABLE `account_ips` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,12 +262,12 @@ CREATE TABLE `character` (
   `shop_id` smallint(5) unsigned DEFAULT NULL,
   `chat_dialog` smallint(5) unsigned DEFAULT NULL,
   `ai_id` smallint(5) unsigned DEFAULT NULL,
-  `load_map_id` smallint(5) unsigned NOT NULL DEFAULT '1',
-  `load_x` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `load_y` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `respawn_map_id` smallint(5) unsigned DEFAULT '1',
-  `respawn_x` float NOT NULL DEFAULT '50',
-  `respawn_y` float NOT NULL DEFAULT '50',
+  `load_map_id` smallint(5) unsigned NOT NULL DEFAULT '3',
+  `load_x` smallint(5) unsigned NOT NULL DEFAULT '1024',
+  `load_y` smallint(5) unsigned NOT NULL DEFAULT '600',
+  `respawn_map_id` smallint(5) unsigned DEFAULT '3',
+  `respawn_x` float NOT NULL DEFAULT '1024',
+  `respawn_y` float NOT NULL DEFAULT '600',
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `move_speed` smallint(5) unsigned NOT NULL DEFAULT '1800',
   `cash` int(11) NOT NULL DEFAULT '0',
@@ -303,7 +304,7 @@ CREATE TABLE `character` (
 
 LOCK TABLES `character` WRITE;
 /*!40000 ALTER TABLE `character` DISABLE KEYS */;
-INSERT INTO `character` VALUES (0,0,NULL,'Test',0,NULL,NULL,NULL,1,765,45,1,765,45,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',255,NULL,NULL,NULL,1,765,45,1,765,45,1,1800,201385,30,880,143,100,100,100,100,1,1,1,1,3,1),(2,NULL,1,'Test A',0,NULL,NULL,1,2,535,1201,2,800,250,1,1800,3012,12,810,527,3,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,NULL,NULL,1,2,3,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,2,NULL,'testchar',0,NULL,NULL,NULL,1,765,45,1,765,45,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
+INSERT INTO `character` VALUES (0,0,NULL,'Test',0,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1),(1,1,NULL,'Spodi',255,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,201385,30,880,143,100,100,100,100,1,1,1,1,3,1),(2,NULL,1,'Test A',0,NULL,NULL,1,2,535,1201,2,800,250,1,1800,3012,12,810,527,3,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',0,NULL,NULL,1,2,3,1330,2,500,250,1,1800,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,2,NULL,'testchar',0,NULL,NULL,NULL,3,1024,600,3,1024,600,1,1800,0,1,0,0,50,50,50,50,1,1,1,1,1,1);
 /*!40000 ALTER TABLE `character` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -681,7 +682,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(4,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(5,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(6,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(7,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(8,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(9,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(10,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(11,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(12,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(13,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1);
+INSERT INTO `item` VALUES (1,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(2,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(3,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(4,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(5,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(6,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(7,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(8,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(9,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',3,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(10,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(11,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(12,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(13,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',9,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(23,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',8,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(29,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',6,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1),(30,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(32,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(33,3,2,1,20,24,24,'Titanium Sword','A sword made out of titanium',1,96,100,0,0,0,0,0,5,10,0,0,0,0,0,0,NULL,NULL),(35,7,2,3,200,11,9,'Rock','Nothing says \"I fight dirty\" quite like a large rock',5,182,1,0,0,0,0,0,2,6,0,0,0,3,0,8,NULL,1);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1006,7 +1007,7 @@ CREATE TABLE `server_time` (
 
 LOCK TABLES `server_time` WRITE;
 /*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
-INSERT INTO `server_time` VALUES ('2010-09-22 00:20:42');
+INSERT INTO `server_time` VALUES ('2010-09-22 19:42:13');
 /*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1161,6 +1162,7 @@ CREATE TABLE `world_stats_count_item_create` (
 
 LOCK TABLES `world_stats_count_item_create` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_item_create` DISABLE KEYS */;
+INSERT INTO `world_stats_count_item_create` VALUES (0,6,'2010-09-23 02:41:56'),(3,46,'2010-09-23 02:42:08'),(5,11,'2010-09-23 02:41:57'),(7,276,'2010-09-23 02:42:08');
 /*!40000 ALTER TABLE `world_stats_count_item_create` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1302,6 +1304,7 @@ CREATE TABLE `world_stats_count_user_kill_npc` (
 
 LOCK TABLES `world_stats_count_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` DISABLE KEYS */;
+INSERT INTO `world_stats_count_user_kill_npc` VALUES (1,1,5,'2010-09-23 02:42:08');
 /*!40000 ALTER TABLE `world_stats_count_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1346,7 +1349,7 @@ CREATE TABLE `world_stats_network` (
   `connections` mediumint(8) unsigned NOT NULL COMMENT 'Connections made with the server (accepted connections).',
   `connections_rejected` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=1093;
+) TYPE=MyISAM AUTO_INCREMENT=1099;
 
 --
 -- Dumping data for table `world_stats_network`
@@ -1354,6 +1357,7 @@ CREATE TABLE `world_stats_network` (
 
 LOCK TABLES `world_stats_network` WRITE;
 /*!40000 ALTER TABLE `world_stats_network` DISABLE KEYS */;
+INSERT INTO `world_stats_network` VALUES (1093,'2010-09-23 02:35:37',0,0,0,0,0,0),(1094,'2010-09-23 02:36:07',0,0,0,0,0,0),(1095,'2010-09-23 02:37:28',0,0,0,0,0,0),(1096,'2010-09-23 02:38:24',0,0,0,0,0,0),(1097,'2010-09-23 02:39:00',0,0,0,0,0,0),(1098,'2010-09-23 02:41:58',0,0,0,0,0,0);
 /*!40000 ALTER TABLE `world_stats_network` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1538,7 +1542,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
   CONSTRAINT `world_stats_user_kill_npc_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_2` FOREIGN KEY (`npc_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `world_stats_user_kill_npc_ibfk_3` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) TYPE=InnoDB;
+) TYPE=InnoDB AUTO_INCREMENT=6;
 
 --
 -- Dumping data for table `world_stats_user_kill_npc`
@@ -1546,6 +1550,7 @@ CREATE TABLE `world_stats_user_kill_npc` (
 
 LOCK TABLES `world_stats_user_kill_npc` WRITE;
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` DISABLE KEYS */;
+INSERT INTO `world_stats_user_kill_npc` VALUES (1,1,1,30,482,754,0,0,3,'2010-09-23 02:36:19'),(2,1,1,30,1039,594,0,0,3,'2010-09-23 02:37:58'),(3,1,1,30,1086,594,0,0,3,'2010-09-23 02:38:02'),(4,1,1,30,1042,594,0,0,3,'2010-09-23 02:39:19'),(5,1,1,30,1033,594,0,0,3,'2010-09-23 02:42:08');
 /*!40000 ALTER TABLE `world_stats_user_kill_npc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1911,4 +1916,4 @@ DELIMITER ;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-09-22  0:26:22
+-- Dump completed on 2010-09-22 19:48:37

@@ -97,14 +97,14 @@ namespace DemoGame.Server
         /// position position.
         /// </summary>
         /// <seealso cref="InvalidUserLoadPosition"/>
-        public static readonly MapID InvalidUserLoadMap = new MapID(1);
+        public static readonly MapID InvalidUserLoadMap = new MapID(3);
 
         /// <summary>
         /// The position to use for a <see cref="User"/> who does not have a valid <see cref="MapID"/> or position to use for their
         /// position position.
         /// </summary>
         /// <seealso cref="InvalidUserLoadMap"/>
-        public static readonly Vector2 InvalidUserLoadPosition = new Vector2(765, 45);
+        public static readonly Vector2 InvalidUserLoadPosition = new Vector2(1024, 600);
 
         /// <summary>
         /// The <see cref="ItemTemplateID"/> that represents the template of the item used for attacking when
