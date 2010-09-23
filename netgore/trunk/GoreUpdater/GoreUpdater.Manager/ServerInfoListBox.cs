@@ -56,7 +56,12 @@ namespace GoreUpdater.Manager
             e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
             // Draw the text
-            e.Graphics.DrawString(item.Host, e.Font, Brushes.Black, textRect);
+            var txt = item.Host;
+            var jobsRemaining = item.JobsRemaining;
+            if (jobsRemaining > 0)
+                txt += " [" + jobsRemaining + " left]";
+
+            e.Graphics.DrawString(txt, e.Font, Brushes.Black, textRect);
 
             // Draw the focus rectangle
             e.DrawFocusRectangle();
