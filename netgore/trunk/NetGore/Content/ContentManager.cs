@@ -666,7 +666,7 @@ namespace NetGore.Content
             public override string ToString()
             {
                 if (FileName.Length > 15)
-                    return "Image [..." + FileName.Substring(10) + "]";
+                    return "Image [..." + FileName.Substring(FileName.Length - 10, 10) + "]";
                 else
                     return "Image [" + FileName + "]";
             }
