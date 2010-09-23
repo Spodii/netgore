@@ -93,6 +93,7 @@ namespace NetGore.Graphics
         /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin.</param>
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
+        /// <param name="shader">The shader to use on the text being drawn.</param>
         void Draw(Image texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation,
                   Vector2 origin, SpriteEffects effects = SpriteEffects.None, Shader shader = null);
 
@@ -145,7 +146,7 @@ namespace NetGore.Graphics
         /// <param name="effects">Rotations to apply prior to rendering.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin,
-                  Vector2 scale, SpriteEffects effects = SpriteEffects.None, Shader shader= null);
+                  Vector2 scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null);
 
         /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
@@ -235,7 +236,7 @@ namespace NetGore.Graphics
         /// <param name="style">How to style the drawn string.</param>
         /// <param name="shader">The shader to use on the text being drawn.</param>
         void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation, Vector2 origin,
-                        float scale = 1.0f, Text.Styles style = Text.Styles.Regular, Shader shader =null);
+                        float scale = 1.0f, Text.Styles style = Text.Styles.Regular, Shader shader = null);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
