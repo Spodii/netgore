@@ -474,6 +474,9 @@ namespace GoreUpdater.Manager
 
             _isDisposed = true;
 
+            if (_updateJobCountTimer != null)
+            _updateJobCountTimer.Dispose();
+
             // Remove the event listeners
             _settings.NextVersionCreated -= _settings_NextVersionCreated;
             _settings.LiveVersionChanged -= _settings_LiveVersionChanged;

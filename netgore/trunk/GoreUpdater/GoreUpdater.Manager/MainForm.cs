@@ -20,13 +20,40 @@ namespace GoreUpdater.Manager
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            // Warn if trying to close while jobs are active
+            if (_settings.FileServers.OfType<ServerInfoBase>().Concat(_settings.MasterServers.OfType<ServerInfoBase>()).Any(x => x.IsBusySyncing))
+            {
+                const string msg = "One or more servers are busy synchronizing. Are you sure you wish to close?" +
+                    "{0}{0}It is highly recommended you press `Cancel` and wait for synchronization to finish.";
+                if (MessageBox.Show(string.Format(msg, Environment.NewLine), "Busy synchronizing", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
+
+            base.OnClosing(e);
+        }
+
+        /// <summary>
         /// Handles the ServerChanged event of a <see cref="FileServerInfo"/> instance.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         void FileServerInfo_ServerChanged(ServerInfoBase sender)
         {
-            // Refresh the display of the item in the ListBox
-            lstFS.Invoke((Action)(() => lstFS.RefreshItem(sender)));
+            try
+            {
+                // Refresh the display of the item in the ListBox
+                lstFS.Invoke((Action)(() => lstFS.RefreshItem(sender)));
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -35,8 +62,15 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void MasterServerInfo_ServerChanged(ServerInfoBase sender)
         {
-            // Refresh the display of the item in the ListBox
-            lstMS.Invoke((Action)(() => lstMS.RefreshItem(sender)));
+            try
+            {
+                // Refresh the display of the item in the ListBox
+                lstMS.Invoke((Action)(() => lstMS.RefreshItem(sender)));
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -68,6 +102,8 @@ namespace GoreUpdater.Manager
         /// <param name="isMasterServer">True if it is a master server to add; false for file server.</param>
         void ShowAddNewServerForm(bool isMasterServer)
         {
+            try
+            {
             // Create the new form, using Invoke() calls to ensure that we have no issues if this is called from another thread
             // for whatever reason (better safe than sorry!)
             Invoke((Action)delegate
@@ -85,6 +121,11 @@ namespace GoreUpdater.Manager
                     btnMSNew.Invoke((Action)(() => btnMSNew.Enabled = true));
                 };
             });
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -93,6 +134,8 @@ namespace GoreUpdater.Manager
         static void UpdateServerListBox(ServerInfoListBox lb, IEnumerable<ServerInfoBase> servers,
                                         ServerInfoEventHandler changedEventHandler)
         {
+            try
+            {
             // Use Invoke to ensure we are in the correct thread
             lb.Invoke((Action)delegate
             {
@@ -125,6 +168,11 @@ namespace GoreUpdater.Manager
                 if (servers.Any(x => x == selected))
                     lb.SelectedItem = selected;
             });
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -133,7 +181,13 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_FileServerListChanged(ManagerSettings sender)
         {
-            UpdateServerListBox(lstFS, sender.FileServers.Cast<ServerInfoBase>(), FileServerInfo_ServerChanged);
+            try{
+                UpdateServerListBox(lstFS, sender.FileServers.Cast<ServerInfoBase>(), FileServerInfo_ServerChanged);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -142,7 +196,13 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_LiveVersionChanged(ManagerSettings sender)
         {
-            lblLiveVersion.Invoke((Action)(() => lblLiveVersion.Text = sender.LiveVersion.ToString()));
+            try{
+                lblLiveVersion.Invoke((Action)(() => lblLiveVersion.Text = sender.LiveVersion.ToString()));
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -150,8 +210,13 @@ namespace GoreUpdater.Manager
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         void _settings_MasterServerListChanged(ManagerSettings sender)
-        {
+        {try{
             UpdateServerListBox(lstMS, sender.MasterServers.Cast<ServerInfoBase>(), MasterServerInfo_ServerChanged);
+        }
+        catch (Exception ex)
+        {
+            Debug.Fail(ex.ToString());
+        }
         }
 
         /// <summary>
@@ -160,7 +225,13 @@ namespace GoreUpdater.Manager
         /// <param name="sender">The source of the event.</param>
         void _settings_NextVersionCreated(ManagerSettings sender)
         {
-            btnChangeLiveVersion.Enabled = sender.DoesNextVersionExist();
+            try{
+                btnChangeLiveVersion.Enabled = sender.DoesNextVersionExist();
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
         }
 
         /// <summary>
