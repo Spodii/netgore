@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>351</Count>
+    <Count>350</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -3144,15 +3144,6 @@
       </Texture>
     </Item348>
     <Item349>
-      <Index>188</Index>
-      <Categorization>Textures.water01</Categorization>
-      <AutomaticSize>True</AutomaticSize>
-      <Texture>
-        <Name>Grh/Textures/water01</Name>
-        <Source>0,0,512,256</Source>
-      </Texture>
-    </Item349>
-    <Item350>
       <Index>189</Index>
       <Categorization>Textures.wave01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3160,7 +3151,7 @@
         <Name>Grh/Textures/wave01</Name>
         <Source>0,0,512,512</Source>
       </Texture>
-    </Item350>
+    </Item349>
   </Stationary>
   <Animated>
     <Count>0</Count>
