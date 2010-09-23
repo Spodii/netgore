@@ -474,6 +474,42 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets if this <see cref="IGUIManager"/> is enabled. When disabled, it can still draw, but it will
+        /// not handle any input.
+        /// </summary>
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set { if (_isEnabled == value)
+                return;
+
+            _isEnabled = value;
+
+            OnEnabledChanged(value);
+            }
+        }
+
+        bool _isEnabled;
+
+        /// <summary>
+        /// Handles when the <see cref="IGUIManager.IsEnabled"/> property changes.
+        /// </summary>
+        /// <param name="isEnabled">True if the <see cref="IGUIManager"/> has become enabled; otherwise false.</param>
+        protected virtual void OnEnabledChanged(bool isEnabled)
+        {
+            if (!isEnabled)
+            {
+                // If we had a control under the cursor, get rid of it
+                if (_underCursor != null)
+                {
+                    var mme = new MouseMoveEvent { X = (int)CursorPosition.X, Y = (int)CursorPosition.Y };
+                    var mmeArgs = new MouseMoveEventArgs(mme);
+                    _underCursor.SendMouseLeaveEvent(mmeArgs);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManager"/>, including all
         /// child <see cref="Control"/>s.
         /// </summary>

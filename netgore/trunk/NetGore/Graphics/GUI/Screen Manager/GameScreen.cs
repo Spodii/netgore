@@ -173,6 +173,8 @@ namespace NetGore.Graphics.GUI
         public virtual void Activate()
         {
             UpdateMusic();
+
+            GUIManager.IsEnabled = true;
         }
 
         /// <summary>
@@ -181,6 +183,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public virtual void Deactivate()
         {
+            GUIManager.IsEnabled = false;
         }
 
         /// <summary>

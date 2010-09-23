@@ -46,13 +46,13 @@ namespace DemoGame.Client
         /// </summary>
         public override void Activate()
         {
+            base.Activate();
+
             SetMessage(null);
 
             // If we are already connected to the server for some reason, disconnect
             if (_sockets.IsConnected)
                 _sockets.Disconnect();
-
-            base.Activate();
         }
 
         /// <summary>

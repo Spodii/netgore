@@ -43,6 +43,8 @@ namespace DemoGame.Client
         /// </summary>
         public override void Activate()
         {
+            base.Activate();
+
             if (_sockets == null)
                 _sockets = ClientSockets.Instance;
 
@@ -50,8 +52,6 @@ namespace DemoGame.Client
             _cError.IsVisible = false;
 
             _sockets.PacketHandler.ReceivedCreateAccountCharacter += PacketHandler_ReceivedCreateAccountCharacter;
-
-            base.Activate();
         }
 
         void ClickButton_Back(object sender, MouseButtonEventArgs e)

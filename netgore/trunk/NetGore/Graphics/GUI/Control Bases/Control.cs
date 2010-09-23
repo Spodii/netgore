@@ -486,7 +486,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         bool CanReceiveInputEvent
         {
-            get { return IsVisible && IsEnabled && !IsDisposed; }
+            get { return IsVisible && !IsDisposed; }
         }
 
         /// <summary>
@@ -1740,6 +1740,9 @@ namespace NetGore.Graphics.GUI
         internal void SendKeyReleasedEvent(KeyEventArgs e)
         {
             if (!CanReceiveInputEvent)
+                return;
+
+            if (!IsEnabled)
                 return;
 
             InvokeKeyReleased(e);
