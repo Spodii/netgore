@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore.IO;
 using NetGore.World;
 using SFML;
 using SFML.Graphics;
@@ -14,12 +15,15 @@ namespace NetGore.Graphics
     /// A refraction effect that mirrors the image above it, optionally compresses or explodes it, and applies
     /// a moving noise map to simulate water.
     /// </summary>
-    public class WaterRefractionEffect : IRefractionEffect
+    public class WaterRefractionEffect : IRefractionEffect, IPersistable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         const float _defaultWaterAlpha = 0.38f;
         const float _defaultWaveIntensity = 0.01f;
         const float _defaultWaveSpeed = 0.5f;
+        const float _defaultMagnification = 1.0f;
+        const string _valueKeyWaveNoise = "WaveNoiseGrh";
 
         static readonly Shader _defaultShader;
 
@@ -41,6 +45,7 @@ namespace NetGore.Graphics
             DefaultWaterAlpha = _defaultWaterAlpha;
             DefaultWaveSpeed = _defaultWaveSpeed;
             DefaultWaveIntensity = _defaultWaveIntensity;
+            DefaultMagnification = _defaultMagnification;
 
             // Check if shaders are supported
             if (!Shader.IsAvailable)
@@ -77,14 +82,24 @@ uniform float WaveSpeedMultiplier = 0.5;
 // alpha values without having to change the texture.
 uniform float WaterAlphaModifier = 0.38;
 
+// The ratio of the size of the drawn image over the height of the texture. That is, DrawHeight / TextureHeight.
+// For example, if you draw a 512x512 texture with a size of 256x256 pixels, this value will be 0.5f.
+uniform float DrawTextureHeightRatio;
+
+// The amount to magnify the water's refraction. 0.5f results in the images in the water being twice the height of
+// the real world (and thus shows half the world), while 2.0f results in images in the water being half the height
+// of the real world (and shows twice as much).
+uniform float Magnification = 1.0;
+
 void main (void)
 {
 	vec4 noiseVec;
 	vec2 waveNoiseOffsetVec;
 	vec2 newRG;
+    float refractValue;
 
 	// Get the noise vector for the waves, using the time so we can move, and mod to stay in the range of (0.0f, 1.0f).
-	waveNoiseOffsetVec = mod(gl_TexCoord[0].st + (Time * 0.01f * WaveSpeedMultiplier), 1.0f);
+	waveNoiseOffsetVec = mod(gl_TexCoord[0].st + (Time * 0.0005f * WaveSpeedMultiplier), 1.0f);
 
 	// Add the noise from the waves.
 	noiseVec = texture2D(WaveNoiseTexture, waveNoiseOffsetVec).rgba;
@@ -94,7 +109,8 @@ void main (void)
 
 	// For the vertical offset, we also need to add the texture offset, which allows us to properly reflect. Adding is used
 	// because we reflect what is above us.
-	newRG.y += gl_TexCoord[0].t / DistanceMultiplier;
+    refractValue = (gl_TexCoord[0].y * DrawTextureHeightRatio) / DistanceMultiplier;
+	newRG.y += refractValue * (1.0 + Magnification);
 
 	// Clamp it all into the range of (0.0f, 1.0f)
 	newRG = clamp(newRG, 0.0f, 1.0f);
@@ -143,7 +159,9 @@ void main (void)
             // Copy over the default values
             WaveIntensity = DefaultWaveIntensity;
             WaveSpeed = DefaultWaveSpeed;
-            WaveIntensity = DefaultWaveIntensity;
+            WaterAlpha = DefaultWaterAlpha;
+            Magnification = DefaultMagnification;
+            IsEnabled = true;
 
             // Ensure we are able to use the effect
             if (_shader == null)
@@ -176,6 +194,14 @@ void main (void)
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="WaterRefractionEffect"/> class.
+        /// </summary>
+        protected WaterRefractionEffect() : this(new Grh(), Vector2.Zero, new Vector2(32))
+        {
+            // NOTE: This constructor is only provided for the RefractionEffectFactory
+        }
+
+        /// <summary>
         /// Gets the default <see cref="Shader"/> used for the <see cref="WaterRefractionEffect"/>.
         /// This is used to draw the water's refraction noise to the refraction map.
         /// When <see cref="SFML.Graphics.Shader.IsAvailable"/> is false, this value will always be null.
@@ -201,6 +227,13 @@ void main (void)
         public static float DefaultWaveIntensity { get; set; }
 
         /// <summary>
+        /// Gets or sets the default <see cref="WaterRefractionEffect.Magnification"/> value for new instances.
+        /// The default value is 1.0f.
+        /// </summary>
+        [DefaultValue(_defaultMagnification)]
+        public static float DefaultMagnification { get; set; }
+
+        /// <summary>
         /// Gets or sets the default <see cref="WaterRefractionEffect.WaveSpeed"/> value for new instances.
         /// The default value is 0.5f.
         /// </summary>
@@ -210,6 +243,7 @@ void main (void)
         /// <summary>
         /// Gets the <see cref="Shader"/> being used by this effect to draw the water's refraction map.
         /// </summary>
+        [Browsable(false)]
         public Shader Shader
         {
             get { return _shader; }
@@ -222,6 +256,7 @@ void main (void)
         /// 0.0f and 1.0f, where 0.0f is completely opaque water (cannot see anything under it) and 1.0f is completely transparent
         /// water (resulting in nothing being shown).
         /// </summary>
+        [SyncValue]
         public float WaterAlpha { get; set; }
 
         /// <summary>
@@ -229,10 +264,19 @@ void main (void)
         /// make the waves actually bigger, but makes them have a greater influence on the refraction, thus making them more
         /// prominent. A reasonable value is often a very small one (around 0.005f to 0.05f), but depends completely on the
         /// <see cref="WaveNoise"/> sprite used.
-        /// The default value is 0.01f.
         /// </summary>
-        [DefaultValue(_defaultWaveIntensity)]
+        [SyncValue]
         public float WaveIntensity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount that the water magnifies the reflected image. Ignoring magnification resulting from the wave
+        /// texture, a value of 1.0f would result in the objects in the reflected image being the same height as the original
+        /// image. A value of 0.5f would result in the reflected images being twice the size of their original size, and as a
+        /// result show only half the amount it normally would. Similarly, 1.5f would make the reflected images half their
+        /// size and show twice as much.
+        /// </summary>
+        [SyncValue]
+        public float Magnification { get; set; }
 
         /// <summary>
         /// Gets the sprite used to create the waves on the water's refraction map.
@@ -246,7 +290,7 @@ void main (void)
         /// Gets or sets the speed of the waves. The greater the value, the faster the wave noise texture moves, making the
         /// waves look faster. A reasonable value is around 0.1f to 0.9f.
         /// </summary>
-        [DefaultValue(_defaultWaveSpeed)]
+        [SyncValue]
         public float WaveSpeed { get; set; }
 
         /// <summary>
@@ -277,8 +321,40 @@ void main (void)
             Shader.SetParameter("WaveIntensity", WaveIntensity);
             Shader.SetParameter("WaveSpeedMultiplier", WaveSpeed);
             Shader.SetParameter("WaterAlphaModifier", WaterAlpha);
+            Shader.SetParameter("DrawTextureHeightRatio", Size.Y / WaveNoise.CurrentGrhData.Texture.Height);
+            Shader.SetParameter("Magnification", 1.0f); // TODO: !!
             Shader.SetParameter("Time", currentTime);
         }
+
+        #region IPersistable Members
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        void IPersistable.ReadState(IValueReader reader)
+        {
+            PersistableHelper.Read(this, reader);
+
+            // Manually handle the WaveNoise sprite
+            var grhIndex = reader.ReadGrhIndex(_valueKeyWaveNoise);
+            _waveNoise.SetGrh(grhIndex);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        void IPersistable.WriteState(IValueWriter writer)
+        {
+            PersistableHelper.Write(this, writer);
+
+            // Manually handle the WaveNoise sprite
+            writer.Write(_valueKeyWaveNoise, WaveNoise.GrhData.GrhIndex);
+        }
+
+        #endregion
 
         #region IRefractionEffect Members
 
@@ -315,6 +391,7 @@ void main (void)
         /// value is true, it should remain true and the effect should cease being used.
         /// Disposing an <see cref="IRefractionEffect"/> will force it to be expired.
         /// </summary>
+        [Browsable(false)]
         public bool IsExpired
         {
             get { return _isDisposed; }
@@ -332,6 +409,7 @@ void main (void)
         /// Gets or sets the world coordinates of the top-left corner of this <see cref="ISpatial"/>.
         /// Setting this value is valid only when the <see cref="PositionProvider"/> is null.
         /// </summary>
+        [SyncValue]
         public Vector2 Position
         {
             get { return _position; }
@@ -373,6 +451,7 @@ void main (void)
         /// <summary>
         /// Gets or sets the size of this <see cref="ISpatial"/>.
         /// </summary>
+        [SyncValue]
         public Vector2 Size
         {
             get { return _size; }
@@ -383,6 +462,7 @@ void main (void)
         /// Gets or sets an object that can be used to identify or store information about this <see cref="IRefractionEffect"/>.
         /// This property is purely optional.
         /// </summary>
+        [Browsable(false)]
         public object Tag { get; set; }
 
         /// <summary>
@@ -405,13 +485,15 @@ void main (void)
             if (IsExpired || !IsEnabled)
                 return;
 
+            SetShaderParameters(TickCount.Now);
+
             // Draw
             var dest = ToRectangle();
 
             var oldBlendMode = spriteBatch.BlendMode;
             try
             {
-                spriteBatch.BlendMode = BlendMode.Add;
+                spriteBatch.BlendMode = BlendMode.None;
                 try
                 {
                     Shader.Bind();

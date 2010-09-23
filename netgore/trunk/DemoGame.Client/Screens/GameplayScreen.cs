@@ -749,6 +749,21 @@ namespace DemoGame.Client
             {
                 DrawingManager.LightManager.Add(light);
             }
+
+            // Remove the refraction effects from the old map
+            if (oldMap != null)
+            {
+                foreach (var fx in oldMap.RefractionEffects)
+                {
+                    DrawingManager.RefractionManager.Remove(fx);
+                }
+            }
+
+            // Add the refraction effects for the new map
+            foreach (var fx in newMap.RefractionEffects)
+            {
+                DrawingManager.RefractionManager.Add(fx);
+            }
         }
 
         void availableQuestsForm_QuestAccepted(Control sender, IQuestDescription args)

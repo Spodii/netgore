@@ -11001,6 +11001,23 @@
         </Item1>
       </Lights>
     </Lighting>
+    <Refraction>
+      <RefractionEffects>
+        <Count>1</Count>
+        <Item0>
+          <RefractionEffectType>WaterRefractionEffect</RefractionEffectType>
+          <RefractionEffect>
+			<Magnification>1.0</Magnification>
+            <Position>0,896</Position>
+            <Size>1600,64</Size>
+            <WaterAlpha>0.38</WaterAlpha>
+            <WaveIntensity>0.01</WaveIntensity>
+            <WaveSpeed>0.5</WaveSpeed>
+            <WaveNoiseGrh>189</WaveNoiseGrh>
+          </RefractionEffect>
+        </Item0>
+      </RefractionEffects>
+    </Refraction>
     <ParticleEffects>
       <Count>0</Count>
     </ParticleEffects>
