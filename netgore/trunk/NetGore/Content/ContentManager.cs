@@ -722,7 +722,7 @@ namespace NetGore.Content
             public override string ToString()
             {
                 if (FileName.Length > 15)
-                    return "SoundBuffer [..." + FileName.Substring(10) + "]";
+                    return "SoundBuffer [..." + FileName.Substring(FileName.Length - 10, 10) + "]";
                 else
                     return "SoundBuffer [" + FileName + "]";
             }
