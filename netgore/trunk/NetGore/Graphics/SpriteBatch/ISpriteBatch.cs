@@ -76,7 +76,8 @@ namespace NetGore.Graphics
         /// can provide a slight performance boost when drawing a large number of sprites with identical state.
         /// </summary>
         /// <param name="sprite">The <see cref="SFML.Graphics.Sprite"/> to draw.</param>
-        void Draw(SFML.Graphics.Sprite sprite);
+        /// <param name="shader">The <see cref="Shader"/> to use while drawing.</param>
+        void Draw(SFML.Graphics.Sprite sprite, Shader shader = null);
 
         /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
@@ -93,13 +94,14 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
         void Draw(Image texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation,
-                  Vector2 origin, SpriteEffects effects);
+                  Vector2 origin, SpriteEffects effects = SpriteEffects.None, Shader shader = null);
 
         /// <summary>
         /// Draws a raw <see cref="Drawable"/> object.
         /// </summary>
         /// <param name="drawable">The object to draw.</param>
-        void Draw(Drawable drawable);
+        /// <param name="shader">The shader to use on the text being drawn.</param>
+        void Draw(Drawable drawable, Shader shader = null);
 
         /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
@@ -112,7 +114,8 @@ namespace NetGore.Graphics
         /// Use null to draw the entire texture.</param>
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
-        void Draw(Image texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color);
+        /// <param name="shader">The shader to use on the text being drawn.</param>
+        void Draw(Image texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, Shader shader = null);
 
         /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
@@ -123,7 +126,8 @@ namespace NetGore.Graphics
         /// If this rectangle is not the same size as sourceRectangle, the sprite is scaled to fit.</param>
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
-        void Draw(Image texture, Rectangle destinationRectangle, Color color);
+        /// <param name="shader">The shader to use on the text being drawn.</param>
+        void Draw(Image texture, Rectangle destinationRectangle, Color color, Shader shader = null);
 
         /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
@@ -139,8 +143,9 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
+        /// <param name="shader">The shader to use on the text being drawn.</param>
         void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin,
-                  Vector2 scale, SpriteEffects effects);
+                  Vector2 scale, SpriteEffects effects = SpriteEffects.None, Shader shader= null);
 
         /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
@@ -156,8 +161,9 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Uniform multiple by which to scale the sprite width and height.</param>
         /// <param name="effects">Rotations to apply prior to rendering.</param>
+        /// <param name="shader">The shader to use on the text being drawn.</param>
         void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin,
-                  float scale, SpriteEffects effects);
+                  float scale, SpriteEffects effects = SpriteEffects.None, Shader shader = null);
 
         /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
@@ -169,7 +175,8 @@ namespace NetGore.Graphics
         /// Use null to draw the entire texture.</param>
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
-        void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color);
+        /// <param name="shader">The shader to use on the text being drawn.</param>
+        void Draw(Image texture, Vector2 position, Rectangle? sourceRectangle, Color color, Shader shader = null);
 
         /// <summary>
         /// Adds a sprite to the batch of sprites to be rendered, specifying the texture, destination, and source rectangles,
@@ -179,7 +186,8 @@ namespace NetGore.Graphics
         /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
         /// <param name="color">The color channel modulation to use. Use <see cref="Color.White"/> for full color with
         /// no tinting.</param>
-        void Draw(Image texture, Vector2 position, Color color);
+        /// <param name="shader">The shader to use on the text being drawn.</param>
+        void Draw(Image texture, Vector2 position, Color color, Shader shader = null);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
@@ -193,8 +201,9 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the string. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
+        /// <param name="shader">The shader to use on the text being drawn.</param>
         void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation, Vector2 origin,
-                        Vector2 scale, Text.Styles style);
+                        Vector2 scale, Text.Styles style = Text.Styles.Regular, Shader shader = null);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
@@ -208,8 +217,9 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the string. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
+        /// <param name="shader">The shader to use on the text being drawn.</param>
         void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale,
-                        Text.Styles style);
+                        Text.Styles style = Text.Styles.Regular, Shader shader = null);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
@@ -223,8 +233,9 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the string. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
+        /// <param name="shader">The shader to use on the text being drawn.</param>
         void DrawString(Font spriteFont, StringBuilder text, Vector2 position, Color color, float rotation, Vector2 origin,
-                        float scale, Text.Styles style);
+                        float scale = 1.0f, Text.Styles style = Text.Styles.Regular, Shader shader =null);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
@@ -238,8 +249,9 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the string. Specify (0,0) for the upper-left corner.</param>
         /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
         /// <param name="style">How to style the drawn string.</param>
+        /// <param name="shader">The shader to use on the text being drawn.</param>
         void DrawString(Font spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale,
-                        Text.Styles style);
+                        Text.Styles style = Text.Styles.Regular, Shader shader = null);
 
         /// <summary>
         /// Adds a mutable sprite string to the batch of sprites to be rendered, specifying the font, output text,
