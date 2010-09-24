@@ -377,7 +377,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Background</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item41>
     <Item42>
@@ -386,7 +386,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Bottom</Name>
-        <Source>0,0,7,5</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item42>
     <Item43>
@@ -395,7 +395,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/BottomLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item43>
     <Item44>
@@ -404,7 +404,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/BottomRight</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item44>
     <Item45>
@@ -413,7 +413,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Left</Name>
-        <Source>0,0,5,7</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item45>
     <Item46>
@@ -422,7 +422,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Background</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item46>
     <Item47>
@@ -431,7 +431,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Bottom</Name>
-        <Source>0,0,7,5</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item47>
     <Item48>
@@ -440,7 +440,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/BottomLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item48>
     <Item49>
@@ -449,7 +449,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/BottomRight</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item49>
     <Item50>
@@ -458,7 +458,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Left</Name>
-        <Source>0,0,5,7</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item50>
     <Item51>
@@ -467,7 +467,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Right</Name>
-        <Source>0,0,5,7</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item51>
     <Item52>
@@ -476,7 +476,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/Top</Name>
-        <Source>0,0,7,5</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item52>
     <Item53>
@@ -485,7 +485,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item53>
     <Item54>
@@ -494,7 +494,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/MouseOver/TopRight</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item54>
     <Item55>
@@ -503,7 +503,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Background</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item55>
     <Item56>
@@ -512,7 +512,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Bottom</Name>
-        <Source>0,0,7,5</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item56>
     <Item57>
@@ -521,7 +521,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item57>
     <Item58>
@@ -530,7 +530,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/BottomRight</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item58>
     <Item59>
@@ -539,7 +539,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Left</Name>
-        <Source>0,0,5,7</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item59>
     <Item60>
@@ -548,7 +548,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Right</Name>
-        <Source>0,0,5,7</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item60>
     <Item61>
@@ -557,7 +557,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/Top</Name>
-        <Source>0,0,7,5</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item61>
     <Item62>
@@ -566,7 +566,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/TopLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item62>
     <Item63>
@@ -575,7 +575,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Pressed/TopRight</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item63>
     <Item64>
@@ -584,7 +584,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Right</Name>
-        <Source>0,0,5,7</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item64>
     <Item65>
@@ -593,7 +593,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/Top</Name>
-        <Source>0,0,7,5</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item65>
     <Item66>
@@ -602,7 +602,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/TopLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item66>
     <Item67>
@@ -611,7 +611,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Button/TopRight</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item67>
     <Item68>
@@ -620,7 +620,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/Background</Name>
-        <Source>0,0,312,172</Source>
+        <Source>0,0,64,64</Source>
       </Texture>
     </Item68>
     <Item69>
@@ -629,7 +629,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/Bottom</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item69>
     <Item70>
@@ -656,7 +656,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/Left</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item72>
     <Item73>
@@ -665,7 +665,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Background</Name>
-        <Source>0,0,312,172</Source>
+        <Source>0,0,64,64</Source>
       </Texture>
     </Item73>
     <Item74>
@@ -674,7 +674,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Bottom</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item74>
     <Item75>
@@ -701,7 +701,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Left</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item77>
     <Item78>
@@ -710,7 +710,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Right</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item78>
     <Item79>
@@ -719,7 +719,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/MouseOver/Top</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item79>
     <Item80>
@@ -746,7 +746,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/Right</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item82>
     <Item83>
@@ -755,7 +755,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Character Slot/Top</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item83>
     <Item84>
@@ -782,7 +782,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Background</Name>
-        <Source>0,0,64,64</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item86>
     <Item87>
@@ -791,7 +791,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Bottom</Name>
-        <Source>0,0,64,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item87>
     <Item88>
@@ -818,7 +818,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Left</Name>
-        <Source>0,0,4,64</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item90>
     <Item91>
@@ -827,7 +827,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Right</Name>
-        <Source>0,0,4,64</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item91>
     <Item92>
@@ -836,7 +836,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Top</Name>
-        <Source>0,0,64,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item92>
     <Item93>
@@ -917,7 +917,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Background</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item101>
     <Item102>
@@ -926,7 +926,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Bottom</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,1,6</Source>
       </Texture>
     </Item102>
     <Item103>
@@ -980,7 +980,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Left</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,6,1</Source>
       </Texture>
     </Item108>
     <Item109>
@@ -989,7 +989,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Right</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,6,1</Source>
       </Texture>
     </Item109>
     <Item110>
@@ -998,7 +998,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Form/Top</Name>
-        <Source>0,0,6,22</Source>
+        <Source>0,0,1,22</Source>
       </Texture>
     </Item110>
     <Item111>
@@ -1025,7 +1025,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Background</Name>
-        <Source>0,0,64,64</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item113>
     <Item114>
@@ -1034,7 +1034,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Bottom</Name>
-        <Source>0,0,64,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item114>
     <Item115>
@@ -1061,7 +1061,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Center</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item117>
     <Item118>
@@ -1070,7 +1070,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Left</Name>
-        <Source>0,0,4,64</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item118>
     <Item119>
@@ -1079,7 +1079,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Right</Name>
-        <Source>0,0,4,64</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item119>
     <Item120>
@@ -1160,7 +1160,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Top</Name>
-        <Source>0,0,64,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item128>
     <Item129>
@@ -1187,7 +1187,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Background</Name>
-        <Source>0,0,64,64</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item131>
     <Item132>
@@ -1196,7 +1196,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Bottom</Name>
-        <Source>0,0,64,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item132>
     <Item133>
@@ -1223,7 +1223,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Left</Name>
-        <Source>0,0,4,64</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item135>
     <Item136>
@@ -1232,7 +1232,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Right</Name>
-        <Source>0,0,4,64</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item136>
     <Item137>
@@ -1241,7 +1241,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Top</Name>
-        <Source>0,0,64,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item137>
     <Item138>
@@ -1268,7 +1268,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Background</Name>
-        <Source>0,0,64,64</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item140>
     <Item141>
@@ -1277,7 +1277,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Bottom</Name>
-        <Source>0,0,64,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item141>
     <Item142>
@@ -1304,7 +1304,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Center</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,1,1</Source>
       </Texture>
     </Item144>
     <Item145>
@@ -1313,7 +1313,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Left</Name>
-        <Source>0,0,4,64</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item145>
     <Item146>
@@ -1322,7 +1322,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Right</Name>
-        <Source>0,0,4,64</Source>
+        <Source>0,0,4,1</Source>
       </Texture>
     </Item146>
     <Item147>
@@ -1331,7 +1331,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Top</Name>
-        <Source>0,0,64,4</Source>
+        <Source>0,0,1,4</Source>
       </Texture>
     </Item147>
     <Item148>
