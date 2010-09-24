@@ -14,6 +14,7 @@ namespace DemoGame.Client
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public const string ScreenName = "character selection";
         const string _unusedCharacterSlotText = "unused";
+        const string _title = "Select Character";
 
         Button[] _characterButtons;
         ClientSockets _sockets = null;
@@ -22,7 +23,8 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="CharacterSelectionScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public CharacterSelectionScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
+        public CharacterSelectionScreen(IScreenManager screenManager)
+            : base(screenManager, ScreenName, _title)
         {
         }
 

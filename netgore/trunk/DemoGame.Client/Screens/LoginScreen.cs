@@ -12,6 +12,7 @@ namespace DemoGame.Client
     class LoginScreen : GameMenuScreenBase
     {
         public const string ScreenName = "login";
+        const string _title = "Account Login";
 
         Control _btnLogin;
         TextBox _cError;
@@ -23,7 +24,8 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="LoginScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public LoginScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
+        public LoginScreen(IScreenManager screenManager)
+            : base(screenManager, ScreenName, _title)
         {
         }
 

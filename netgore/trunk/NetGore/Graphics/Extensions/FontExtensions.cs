@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -21,15 +22,25 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="font">The <see cref="Font"/>.</param>
         /// <param name="str">The string to measure.</param>
+        /// <param name="fontSize">The size of the font. If equal to 0, the <see cref="Font.DefaultSize"/>
+        /// will be used instead.</param>
         /// <returns>The size of the <paramref name="str"/>.</returns>
-        public static Vector2 MeasureString(this Font font, string str)
+        public static Vector2 MeasureString(this Font font, string str, uint fontSize = 0u)
         {
+            if (fontSize <= 0)
+                fontSize = font.DefaultSize;
+
             lock (_textSync)
             {
                 try
                 {
+                    Debug.Assert(_text.Scale == Vector2.One);
+                    Debug.Assert(!_text.IsDisposed);
+                    Debug.Assert(_text.Rotation == 0.0f);
+                    Debug.Assert(_text.Style == Text.Styles.Regular);
+
                     _text.Font = font;
-                    _text.Size = font.DefaultSize;
+                    _text.Size = fontSize;
                     _text.DisplayedString = str;
 
                     var r = _text.GetRect();
@@ -56,8 +67,10 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="font">The <see cref="Font"/>.</param>
         /// <param name="str">The string to measure.</param>
+        /// <param name="fontSize">The size of the font. If equal to 0, the <see cref="Font.DefaultSize"/>
+        /// will be used instead.</param>
         /// <returns>The size of the <paramref name="str"/>.</returns>
-        public static Vector2 MeasureString(this Font font, StringBuilder str)
+        public static Vector2 MeasureString(this Font font, StringBuilder str, uint fontSize = 0u)
         {
             return MeasureString(font, str.ToString());
         }

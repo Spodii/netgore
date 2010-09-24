@@ -73,6 +73,18 @@ namespace DemoGame.Client
             PlayMusic = true;
         }
 
+        /// <summary>
+        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
+        /// <see cref="GameScreen"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
+        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
+        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
+        protected override Font GetScreenManagerFont(IScreenManager screenManager)
+        {
+            return GameScreenHelper.DefaultScreenFont;
+        }
+
         public AvailableQuestsForm AvailableQuestsForm
         {
             get { return _availableQuestsForm; }
@@ -455,7 +467,7 @@ namespace DemoGame.Client
         void InitializeGUI()
         {
             // Set up the fonts
-            _guiFont = ScreenManager.Content.LoadFont("Font/FullComp", 14, ContentLevel.Global);
+            _guiFont = GameScreenHelper.DefaultGameGUIFont;
             GUIManager.Font = _guiFont;
             GUIManager.Tooltip.Font = _guiFont;
             Character.NameFont = _guiFont;
