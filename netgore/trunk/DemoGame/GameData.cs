@@ -43,8 +43,10 @@ namespace DemoGame
 
         /// <summary>
         /// Maximum number of characters allowed in a single account.
+        /// If you update this value, you must also update the `max_character_count` parameter in the
+        /// stored database function `CreateUserOnAccount`.
         /// </summary>
-        public const byte MaxCharactersPerAccount = 10;
+        public const byte MaxCharactersPerAccount = 9;
 
         /// <summary>
         /// Maximum length of a Say packet's string from the client to the server.
