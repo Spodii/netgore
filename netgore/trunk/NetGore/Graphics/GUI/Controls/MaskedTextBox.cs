@@ -118,20 +118,5 @@ namespace NetGore.Graphics.GUI
             else
                 CursorLinePosition = Text.Length;
         }
-
-        /// <summary>
-        /// Updates the <see cref="Control"/>. This is called for every <see cref="Control"/>, even if it is disabled or
-        /// not visible.
-        /// </summary>
-        /// <param name="currentTime">The current time in milliseconds.</param>
-        protected override void UpdateControl(TickCount currentTime)
-        {
-            base.UpdateControl(currentTime);
-
-            if (string.IsNullOrEmpty(Text))
-                CursorLinePosition = 0;
-            else
-                CursorLinePosition = Text.Length;
-        }
     }
 }
