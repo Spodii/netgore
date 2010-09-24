@@ -10,6 +10,7 @@ namespace DemoGame.Client
     class CreateCharacterScreen : GameMenuScreenBase
     {
         public const string ScreenName = "character creation";
+        const string _title = "Create Character";
 
         Control _btnCreateCharacter;
         Label _cError;
@@ -20,7 +21,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="CreateCharacterScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public CreateCharacterScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
+        public CreateCharacterScreen(IScreenManager screenManager) : base(screenManager, ScreenName,_title)
         {
         }
 

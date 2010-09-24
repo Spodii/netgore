@@ -11,6 +11,7 @@ namespace DemoGame.Client
     class NewAccountScreen : GameMenuScreenBase
     {
         public const string ScreenName = "new account";
+        const string _title = "New Account";
 
         TextBox _cEmailText;
         TextBox _cNameText;
@@ -23,7 +24,8 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="NewAccountScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public NewAccountScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
+        public NewAccountScreen(IScreenManager screenManager)
+            : base(screenManager, ScreenName, _title)
         {
         }
 

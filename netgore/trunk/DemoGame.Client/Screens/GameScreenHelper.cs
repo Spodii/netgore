@@ -17,6 +17,8 @@ namespace DemoGame.Client
         static readonly Font _defaultChatFont;
         static readonly Font _defaultMenuButtonFont;
         static readonly Font _defaultScreenFont;
+        static readonly Font _defaultMenuTitleFont;
+        static readonly Font _defaultGameGUIFont;
 
         /// <summary>
         /// Initializes the <see cref="GameScreenHelper"/> class.
@@ -25,9 +27,11 @@ namespace DemoGame.Client
         {
             var content = ContentManager.Create();
 
+            _defaultGameGUIFont = content.LoadFont("Font/Lavi", 14, ContentLevel.Global);
             _defaultChatFont = content.LoadFont("Font/Arial", 14, ContentLevel.Global);
-            _defaultScreenFont = content.LoadFont("Font/FullComp", 24, ContentLevel.Global);
-            _defaultMenuButtonFont = content.LoadFont("Font/If", 42, ContentLevel.Global);
+            _defaultScreenFont = content.LoadFont("Font/Adler", 24, ContentLevel.Global);
+            _defaultMenuButtonFont = content.LoadFont("Font/Biometric Joe", 36, ContentLevel.Global);
+            _defaultMenuTitleFont = content.LoadFont("Font/If", 72, ContentLevel.Global);
         }
 
         /// <summary>
@@ -36,6 +40,22 @@ namespace DemoGame.Client
         public static Font DefaultChatFont
         {
             get { return _defaultChatFont; }
+        }
+
+        /// <summary>
+        /// Gets the default <see cref="Font"/> for the game GUI.
+        /// </summary>
+        public static Font DefaultGameGUIFont
+        {
+            get { return _defaultGameGUIFont; }
+        }
+
+        /// <summary>
+        /// Gets the default <see cref="Font"/> for the title on the menu screens.
+        /// </summary>
+        public static Font DefaultMenuTitleFont
+        {
+            get { return _defaultMenuTitleFont; }
         }
 
         /// <summary>
@@ -67,24 +87,38 @@ namespace DemoGame.Client
         public static IDictionary<string, Control> CreateMenuButtons(IScreenManager screenManager, Control parent,
                                                                      params string[] names)
         {
-            const float spacing = 10;
-            var buttonSize = new Vector2(225, 40);
-            var bottomButtonPosition = GameData.ScreenSize - buttonSize - new Vector2(50, 50);
+            // The offset from the side of the screen
+            Vector2 baseOffset = new Vector2(25f);
 
+            // The spacing between each button
+            const float spacing = 10f;
+
+            var clientSize = parent == null ? screenManager.ScreenSize : parent.ClientSize;
+            float sumSize = 0f;
             var ret = new Dictionary<string, Control>(StringComparer.OrdinalIgnoreCase);
 
-            var pos = bottomButtonPosition;
+            // Create each button in reverse (so the items at the end of the list end up at the bottom)
             for (var i = names.Length - 1; i >= 0; i--)
             {
-                var c = new MenuButton(parent, pos) { Text = names[i], Border = null };
+                // Create the button
+                var c = new MenuButton(parent, Vector2.One) { Text = names[i] };
 
-                c.Position = new Vector2(parent.ClientSize.X - c.ClientSize.X - 50, c.Position.Y);
+                // Measure the size of the text
+                var textSize = c.Font.MeasureString(c.Text);
 
-                var fontSize = c.Font.MeasureString(c.Text);
-                c.ClientSize = fontSize;
+                // Get the position
+                var newPos = (clientSize - baseOffset - textSize);
+                
+                // Offset on the y-axis by the sum size
+                newPos.Y -= sumSize;
 
-                pos.Y -= spacing + c.Size.Y;
+                // Update the sumSize
+                sumSize += textSize.Y + spacing;
 
+                // Set the new position
+                c.Position = newPos;
+
+                // Add to the return collection
                 ret.Add(names[i], c);
             }
 

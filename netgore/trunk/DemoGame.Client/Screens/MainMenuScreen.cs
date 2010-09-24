@@ -7,12 +7,14 @@ namespace DemoGame.Client
     class MainMenuScreen : GameMenuScreenBase
     {
         public const string ScreenName = "main menu";
+        const string _title = "NetGore";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainMenuScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public MainMenuScreen(IScreenManager screenManager) : base(screenManager, ScreenName)
+        public MainMenuScreen(IScreenManager screenManager)
+            : base(screenManager, ScreenName, _title)
         {
         }
 
