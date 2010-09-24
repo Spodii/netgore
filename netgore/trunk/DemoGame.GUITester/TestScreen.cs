@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame.Client;
 using NetGore;
 using NetGore.Graphics.GUI;
 using SFML.Graphics;
@@ -8,7 +9,7 @@ using SFML.Window;
 
 namespace DemoGame.GUITester
 {
-    sealed class TestScreen : GameScreen
+    sealed class TestScreen : GameMenuScreenBase
     {
         static readonly SafeRandom rnd = new SafeRandom();
 
@@ -21,8 +22,20 @@ namespace DemoGame.GUITester
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
         /// <exception cref="ArgumentNullException"><paramref name="screenManager"/> is null.</exception>
-        public TestScreen(IScreenManager screenManager) : base(screenManager, "TestScreen")
+        public TestScreen(IScreenManager screenManager) : base(screenManager, "TestScreen", "Test Screen")
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
+        /// <see cref="GameScreen"/>.
+        /// </summary>
+        /// <param name="screenManager">The <see cref="IScreenManager"/> for this screen.</param>
+        /// <returns>The <see cref="Font"/> to use for this <see cref="GameScreen"/>. If null, the
+        /// <see cref="IScreenManager.DefaultFont"/> for this <see cref="GameScreen"/> will be used instead.</returns>
+        protected override Font GetScreenManagerFont(IScreenManager screenManager)
+        {
+            return GameScreenHelper.DefaultGameGUIFont;
         }
 
         void DragControl(Control sender)

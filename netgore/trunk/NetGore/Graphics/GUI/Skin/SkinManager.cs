@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using NetGore.IO;
+using SFML.Graphics;
 
 namespace NetGore.Graphics.GUI
 {
@@ -73,8 +75,41 @@ namespace NetGore.Graphics.GUI
             var t = GetSprite(fullSubCategory, "Top");
             var tr = GetSprite(fullSubCategory, "TopRight");
 
-            return new ControlBorder(tl, t, tr, r, br, b, bl, l, bg);
+            // Create the control
+            var ret = new ControlBorder(tl, t, tr, r, br, b, bl, l, bg);
+
+            // Grab whatever sprite is not null (if any)
+            var texturePath =TryGetTexturePath(tl, t, tr, r, br, b, bl, l, bg);
+            if (!string.IsNullOrEmpty(texturePath))
+            {
+                // Load the draw styles file
+                string drawStyleFilePath = Path.GetDirectoryName(texturePath);
+                if (!drawStyleFilePath.EndsWith(Path.DirectorySeparatorChar.ToString()) && !drawStyleFilePath.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+                    drawStyleFilePath += Path.DirectorySeparatorChar;
+                drawStyleFilePath += _borderStylesFileName;
+
+                ret.TrySetDrawStyles(drawStyleFilePath);
+            }
+
+            return ret;
         }
+
+        /// <summary>
+        /// Tries to get the first valid texture path from a collection of <see cref="ISprite"/>s.
+        /// </summary>
+        /// <param name="sprites">The <see cref="ISprite"/>s.</param>
+        /// <returns>The path to the first found valid texture, or null if none found.</returns>
+        static string TryGetTexturePath(params ISprite[] sprites)
+        {
+            if (sprites == null || sprites.Length == 0)
+                return null;
+
+            var lazyImages = sprites.Where(x => x != null && x.Texture != null).Select(x => x.Texture).OfType<LazyImage>();
+            var validFileNames = lazyImages.Where(x => !string.IsNullOrEmpty(x.FileName)).Select(x=>x.FileName);
+            return validFileNames.FirstOrDefault();
+        }
+
+        const string _borderStylesFileName = "BorderStyles.txt";
 
         /// <summary>
         /// Gets the <see cref="SpriteCategory"/> for a <see cref="Control"/> relative to the skin's root.

@@ -17,7 +17,7 @@ namespace DemoGame.GUITester
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
         /// </summary>
-        public Game1() : base(new VideoMode(800, 600), "GUI test bench", Styles.Titlebar | Styles.Close)
+        public Game1() : base(new VideoMode(1024, 768), "GUI test bench", Styles.Titlebar | Styles.Close)
         {
             UseVerticalSync(true);
             ShowMouseCursor(true);
