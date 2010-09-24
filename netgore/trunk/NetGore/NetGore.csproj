@@ -179,6 +179,8 @@
     <Compile Include="Core\Time.cs" />
     <Compile Include="AI\AINode.cs" />
     <Compile Include="Core\ExceptionSwallower.cs" />
+    <Compile Include="Graphics\GUI\ControlBorder\ControlBorderDrawStyle.cs" />
+    <Compile Include="Graphics\GUI\ControlBorder\ControlBorderSpriteType.cs" />
     <Compile Include="Graphics\GUI\Controls\InputBox.cs" />
     <Compile Include="Graphics\GUI\Controls\TextEventArgsFilters.cs" />
     <Compile Include="Graphics\Refraction\ExplosionRefractionEffect.cs" />
@@ -244,7 +246,7 @@
     <Compile Include="Graphics\GUI\Control Bases\Control.cs" />
     <Compile Include="Graphics\GUI\Control Bases\SpriteControl.cs" />
     <Compile Include="Graphics\GUI\Control Bases\TextControl.cs" />
-    <Compile Include="Graphics\GUI\ControlBorder.cs" />
+    <Compile Include="Graphics\GUI\ControlBorder\ControlBorder.cs" />
     <Compile Include="Graphics\GUI\Controls\Button.cs" />
     <Compile Include="Graphics\GUI\Controls\CheckBox.cs" />
     <Compile Include="Graphics\GUI\Controls\Form.cs" />

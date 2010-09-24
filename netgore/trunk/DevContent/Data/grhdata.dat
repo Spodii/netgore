@@ -782,7 +782,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Background</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,64,64</Source>
       </Texture>
     </Item86>
     <Item87>
@@ -791,7 +791,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Bottom</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,64,4</Source>
       </Texture>
     </Item87>
     <Item88>
@@ -800,7 +800,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item88>
     <Item89>
@@ -809,7 +809,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/BottomRight</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item89>
     <Item90>
@@ -818,7 +818,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Left</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,64</Source>
       </Texture>
     </Item90>
     <Item91>
@@ -827,7 +827,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Right</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,64</Source>
       </Texture>
     </Item91>
     <Item92>
@@ -836,7 +836,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/Top</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,64,4</Source>
       </Texture>
     </Item92>
     <Item93>
@@ -845,7 +845,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopLeft</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item93>
     <Item94>
@@ -854,7 +854,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/Chat Bubble/TopRight</Name>
-        <Source>0,0,5,5</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item94>
     <Item95>
@@ -1025,7 +1025,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Background</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,64,64</Source>
       </Texture>
     </Item113>
     <Item114>
@@ -1034,7 +1034,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Bottom</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,64,4</Source>
       </Texture>
     </Item114>
     <Item115>
@@ -1070,7 +1070,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Left</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,4,64</Source>
       </Texture>
     </Item118>
     <Item119>
@@ -1079,7 +1079,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Right</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,4,64</Source>
       </Texture>
     </Item119>
     <Item120>
@@ -1160,7 +1160,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/ListBox/Top</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,64,4</Source>
       </Texture>
     </Item128>
     <Item129>
@@ -1187,7 +1187,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Background</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,64,64</Source>
       </Texture>
     </Item131>
     <Item132>
@@ -1196,7 +1196,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Bottom</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,64,4</Source>
       </Texture>
     </Item132>
     <Item133>
@@ -1205,7 +1205,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomLeft</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item133>
     <Item134>
@@ -1214,7 +1214,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomRight</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item134>
     <Item135>
@@ -1223,7 +1223,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Left</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,4,64</Source>
       </Texture>
     </Item135>
     <Item136>
@@ -1232,7 +1232,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Right</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,4,64</Source>
       </Texture>
     </Item136>
     <Item137>
@@ -1241,7 +1241,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/Top</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,64,4</Source>
       </Texture>
     </Item137>
     <Item138>
@@ -1250,7 +1250,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopLeft</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item138>
     <Item139>
@@ -1259,7 +1259,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/SkillCastProgressBar/TopRight</Name>
-        <Source>0,0,6,6</Source>
+        <Source>0,0,4,4</Source>
       </Texture>
     </Item139>
     <Item140>
@@ -1268,7 +1268,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Background</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,64,64</Source>
       </Texture>
     </Item140>
     <Item141>
@@ -1277,7 +1277,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Bottom</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,64,4</Source>
       </Texture>
     </Item141>
     <Item142>
@@ -1313,7 +1313,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Left</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,4,64</Source>
       </Texture>
     </Item145>
     <Item146>
@@ -1322,7 +1322,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Right</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,4,64</Source>
       </Texture>
     </Item146>
     <Item147>
@@ -1331,7 +1331,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>Grh/GUI/Default/Controls/TextBox/Top</Name>
-        <Source>0,0,4,4</Source>
+        <Source>0,0,64,4</Source>
       </Texture>
     </Item147>
     <Item148>

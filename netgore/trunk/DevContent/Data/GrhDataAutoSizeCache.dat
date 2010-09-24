@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <AutoGrhDataSizes>
   <Item>
-    <Count>358</Count>
+    <Count>367</Count>
     <Item0>
       <AssetName>Grh/Map/Platform/Grass/Top-Left</AssetName>
       <FileSize>305</FileSize>
@@ -53,63 +53,63 @@
     </Item6>
     <Item7>
       <AssetName>Grh/GUI/Default/Controls/TextBox/Bottom</AssetName>
-      <FileSize>119</FileSize>
+      <FileSize>130</FileSize>
       <GrhIndex>8</GrhIndex>
       <Height>4</Height>
-      <Width>4</Width>
+      <Width>64</Width>
     </Item7>
     <Item8>
       <AssetName>Grh/GUI/Default/Controls/TextBox/BottomLeft</AssetName>
-      <FileSize>126</FileSize>
+      <FileSize>128</FileSize>
       <GrhIndex>9</GrhIndex>
       <Height>4</Height>
       <Width>4</Width>
     </Item8>
     <Item9>
       <AssetName>Grh/GUI/Default/Controls/TextBox/BottomRight</AssetName>
-      <FileSize>128</FileSize>
+      <FileSize>134</FileSize>
       <GrhIndex>10</GrhIndex>
       <Height>4</Height>
       <Width>4</Width>
     </Item9>
     <Item10>
       <AssetName>Grh/GUI/Default/Controls/TextBox/Left</AssetName>
-      <FileSize>122</FileSize>
+      <FileSize>132</FileSize>
       <GrhIndex>11</GrhIndex>
-      <Height>4</Height>
+      <Height>64</Height>
       <Width>4</Width>
     </Item10>
     <Item11>
       <AssetName>Grh/GUI/Default/Controls/TextBox/Right</AssetName>
-      <FileSize>120</FileSize>
+      <FileSize>135</FileSize>
       <GrhIndex>12</GrhIndex>
-      <Height>4</Height>
+      <Height>64</Height>
       <Width>4</Width>
     </Item11>
     <Item12>
       <AssetName>Grh/GUI/Default/Controls/TextBox/Top</AssetName>
-      <FileSize>120</FileSize>
+      <FileSize>131</FileSize>
       <GrhIndex>13</GrhIndex>
       <Height>4</Height>
-      <Width>4</Width>
+      <Width>64</Width>
     </Item12>
     <Item13>
       <AssetName>Grh/GUI/Default/Controls/TextBox/TopLeft</AssetName>
-      <FileSize>124</FileSize>
+      <FileSize>129</FileSize>
       <GrhIndex>14</GrhIndex>
       <Height>4</Height>
       <Width>4</Width>
     </Item13>
     <Item14>
       <AssetName>Grh/GUI/Default/Controls/TextBox/TopRight</AssetName>
-      <FileSize>127</FileSize>
+      <FileSize>133</FileSize>
       <GrhIndex>15</GrhIndex>
       <Height>4</Height>
       <Width>4</Width>
     </Item14>
     <Item15>
       <AssetName>Grh/GUI/Default/Controls/Form/Background</AssetName>
-      <FileSize>117</FileSize>
+      <FileSize>134</FileSize>
       <GrhIndex>16</GrhIndex>
       <Height>6</Height>
       <Width>6</Width>
@@ -410,17 +410,17 @@
     </Item57>
     <Item58>
       <AssetName>Grh/GUI/Default/Controls/TextBox/Background</AssetName>
-      <FileSize>115</FileSize>
+      <FileSize>281</FileSize>
       <GrhIndex>59</GrhIndex>
-      <Height>4</Height>
-      <Width>4</Width>
+      <Height>64</Height>
+      <Width>64</Width>
     </Item58>
     <Item59>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/Bottom</AssetName>
-      <FileSize>134</FileSize>
+      <FileSize>130</FileSize>
       <GrhIndex>60</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>4</Height>
+      <Width>64</Width>
     </Item59>
     <Item60>
       <AssetName>Grh/GUI/Default/Controls/Form/Buttons/Close</AssetName>
@@ -711,17 +711,17 @@
     </Item100>
     <Item101>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/BottomLeft</AssetName>
-      <FileSize>156</FileSize>
+      <FileSize>128</FileSize>
       <GrhIndex>102</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>4</Height>
+      <Width>4</Width>
     </Item101>
     <Item102>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/BottomRight</AssetName>
-      <FileSize>153</FileSize>
+      <FileSize>134</FileSize>
       <GrhIndex>103</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>4</Height>
+      <Width>4</Width>
     </Item102>
     <Item103>
       <AssetName>Grh/Character/Top Down/Zombie/Down</AssetName>
@@ -732,45 +732,45 @@
     </Item103>
     <Item104>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/Left</AssetName>
-      <FileSize>136</FileSize>
+      <FileSize>132</FileSize>
       <GrhIndex>105</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>64</Height>
+      <Width>4</Width>
     </Item104>
     <Item105>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/Right</AssetName>
-      <FileSize>132</FileSize>
+      <FileSize>135</FileSize>
       <GrhIndex>106</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>64</Height>
+      <Width>4</Width>
     </Item105>
     <Item106>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/Top</AssetName>
-      <FileSize>135</FileSize>
+      <FileSize>131</FileSize>
       <GrhIndex>107</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>4</Height>
+      <Width>64</Width>
     </Item106>
     <Item107>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/TopLeft</AssetName>
-      <FileSize>150</FileSize>
+      <FileSize>129</FileSize>
       <GrhIndex>108</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>4</Height>
+      <Width>4</Width>
     </Item107>
     <Item108>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/TopRight</AssetName>
-      <FileSize>156</FileSize>
+      <FileSize>133</FileSize>
       <GrhIndex>109</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>4</Height>
+      <Width>4</Width>
     </Item108>
     <Item109>
       <AssetName>Grh/GUI/Default/Controls/Chat Bubble/Background</AssetName>
-      <FileSize>128</FileSize>
+      <FileSize>281</FileSize>
       <GrhIndex>110</GrhIndex>
-      <Height>5</Height>
-      <Width>5</Width>
+      <Height>64</Height>
+      <Width>64</Width>
     </Item109>
     <Item110>
       <AssetName>Grh/Character/Top Down/Zombie/Left</AssetName>
@@ -872,52 +872,52 @@
     </Item123>
     <Item124>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/Background</AssetName>
-      <FileSize>115</FileSize>
+      <FileSize>281</FileSize>
       <GrhIndex>126</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>64</Height>
+      <Width>64</Width>
     </Item124>
     <Item125>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/Bottom</AssetName>
-      <FileSize>131</FileSize>
+      <FileSize>130</FileSize>
       <GrhIndex>127</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>4</Height>
+      <Width>64</Width>
     </Item125>
     <Item126>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomLeft</AssetName>
-      <FileSize>155</FileSize>
+      <FileSize>128</FileSize>
       <GrhIndex>128</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>4</Height>
+      <Width>4</Width>
     </Item126>
     <Item127>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/BottomRight</AssetName>
-      <FileSize>156</FileSize>
+      <FileSize>134</FileSize>
       <GrhIndex>129</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>4</Height>
+      <Width>4</Width>
     </Item127>
     <Item128>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/Left</AssetName>
-      <FileSize>127</FileSize>
+      <FileSize>132</FileSize>
       <GrhIndex>130</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>64</Height>
+      <Width>4</Width>
     </Item128>
     <Item129>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/Right</AssetName>
-      <FileSize>126</FileSize>
+      <FileSize>135</FileSize>
       <GrhIndex>131</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>64</Height>
+      <Width>4</Width>
     </Item129>
     <Item130>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/Top</AssetName>
-      <FileSize>133</FileSize>
+      <FileSize>131</FileSize>
       <GrhIndex>132</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>4</Height>
+      <Width>64</Width>
     </Item130>
     <Item131>
       <AssetName>Grh/GUI/Default/Toolbar/Equipped</AssetName>
@@ -1061,28 +1061,28 @@
     </Item150>
     <Item151>
       <AssetName>Grh/GUI/Default/Controls/ListBox/Background</AssetName>
-      <FileSize>115</FileSize>
+      <FileSize>281</FileSize>
       <GrhIndex>153</GrhIndex>
-      <Height>4</Height>
-      <Width>4</Width>
+      <Height>64</Height>
+      <Width>64</Width>
     </Item151>
     <Item152>
       <AssetName>Grh/GUI/Default/Controls/ListBox/Bottom</AssetName>
-      <FileSize>119</FileSize>
+      <FileSize>130</FileSize>
       <GrhIndex>154</GrhIndex>
       <Height>4</Height>
-      <Width>4</Width>
+      <Width>64</Width>
     </Item152>
     <Item153>
       <AssetName>Grh/GUI/Default/Controls/ListBox/BottomLeft</AssetName>
-      <FileSize>126</FileSize>
+      <FileSize>128</FileSize>
       <GrhIndex>155</GrhIndex>
       <Height>4</Height>
       <Width>4</Width>
     </Item153>
     <Item154>
       <AssetName>Grh/GUI/Default/Controls/ListBox/BottomRight</AssetName>
-      <FileSize>128</FileSize>
+      <FileSize>134</FileSize>
       <GrhIndex>156</GrhIndex>
       <Height>4</Height>
       <Width>4</Width>
@@ -1124,35 +1124,35 @@
     </Item159>
     <Item160>
       <AssetName>Grh/GUI/Default/Controls/ListBox/Left</AssetName>
-      <FileSize>122</FileSize>
+      <FileSize>132</FileSize>
       <GrhIndex>162</GrhIndex>
-      <Height>4</Height>
+      <Height>64</Height>
       <Width>4</Width>
     </Item160>
     <Item161>
       <AssetName>Grh/GUI/Default/Controls/ListBox/Right</AssetName>
-      <FileSize>120</FileSize>
+      <FileSize>135</FileSize>
       <GrhIndex>163</GrhIndex>
-      <Height>4</Height>
+      <Height>64</Height>
       <Width>4</Width>
     </Item161>
     <Item162>
       <AssetName>Grh/GUI/Default/Controls/ListBox/Top</AssetName>
-      <FileSize>120</FileSize>
+      <FileSize>131</FileSize>
       <GrhIndex>164</GrhIndex>
       <Height>4</Height>
-      <Width>4</Width>
+      <Width>64</Width>
     </Item162>
     <Item163>
       <AssetName>Grh/GUI/Default/Controls/ListBox/TopLeft</AssetName>
-      <FileSize>124</FileSize>
+      <FileSize>129</FileSize>
       <GrhIndex>165</GrhIndex>
       <Height>4</Height>
       <Width>4</Width>
     </Item163>
     <Item164>
       <AssetName>Grh/GUI/Default/Controls/ListBox/TopRight</AssetName>
-      <FileSize>127</FileSize>
+      <FileSize>133</FileSize>
       <GrhIndex>166</GrhIndex>
       <Height>4</Height>
       <Width>4</Width>
@@ -1432,17 +1432,17 @@
     </Item203>
     <Item204>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/TopLeft</AssetName>
-      <FileSize>148</FileSize>
+      <FileSize>129</FileSize>
       <GrhIndex>218</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>4</Height>
+      <Width>4</Width>
     </Item204>
     <Item205>
       <AssetName>Grh/GUI/Default/Controls/SkillCastProgressBar/TopRight</AssetName>
-      <FileSize>157</FileSize>
+      <FileSize>133</FileSize>
       <GrhIndex>219</GrhIndex>
-      <Height>6</Height>
-      <Width>6</Width>
+      <Height>4</Height>
+      <Width>4</Width>
     </Item205>
     <Item206>
       <AssetName>Grh/Map/Winter/cliff/dry_bottom_04</AssetName>
@@ -2508,5 +2508,68 @@
       <Height>4</Height>
       <Width>4</Width>
     </Item357>
+    <Item358>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/Background</AssetName>
+      <FileSize>1819</FileSize>
+      <GrhIndex>379</GrhIndex>
+      <Height>172</Height>
+      <Width>312</Width>
+    </Item358>
+    <Item359>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/Bottom</AssetName>
+      <FileSize>122</FileSize>
+      <GrhIndex>380</GrhIndex>
+      <Height>4</Height>
+      <Width>4</Width>
+    </Item359>
+    <Item360>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/BottomLeft</AssetName>
+      <FileSize>141</FileSize>
+      <GrhIndex>381</GrhIndex>
+      <Height>4</Height>
+      <Width>4</Width>
+    </Item360>
+    <Item361>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/BottomRight</AssetName>
+      <FileSize>134</FileSize>
+      <GrhIndex>382</GrhIndex>
+      <Height>4</Height>
+      <Width>4</Width>
+    </Item361>
+    <Item362>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/Left</AssetName>
+      <FileSize>123</FileSize>
+      <GrhIndex>383</GrhIndex>
+      <Height>4</Height>
+      <Width>4</Width>
+    </Item362>
+    <Item363>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/Right</AssetName>
+      <FileSize>124</FileSize>
+      <GrhIndex>384</GrhIndex>
+      <Height>4</Height>
+      <Width>4</Width>
+    </Item363>
+    <Item364>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/Top</AssetName>
+      <FileSize>123</FileSize>
+      <GrhIndex>385</GrhIndex>
+      <Height>4</Height>
+      <Width>4</Width>
+    </Item364>
+    <Item365>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/TopLeft</AssetName>
+      <FileSize>137</FileSize>
+      <GrhIndex>386</GrhIndex>
+      <Height>4</Height>
+      <Width>4</Width>
+    </Item365>
+    <Item366>
+      <AssetName>Grh/GUI/Default/Controls/Character Slot/MouseOver/TopRight</AssetName>
+      <FileSize>135</FileSize>
+      <GrhIndex>387</GrhIndex>
+      <Height>4</Height>
+      <Width>4</Width>
+    </Item366>
   </Item>
 </AutoGrhDataSizes>
