@@ -78,20 +78,36 @@ namespace NetGore.Graphics.GUI
             // Create the control
             var ret = new ControlBorder(tl, t, tr, r, br, b, bl, l, bg);
 
-            // Grab whatever sprite is not null (if any)
-            var texturePath =TryGetTexturePath(tl, t, tr, r, br, b, bl, l, bg);
-            if (!string.IsNullOrEmpty(texturePath))
+            // Try to load the user-defined border drawing styles
+            var borderDrawStylesFile = GetBorderDrawStylesFilePath(fullSubCategory);
+            if (!string.IsNullOrEmpty(borderDrawStylesFile))
             {
-                // Load the draw styles file
-                string drawStyleFilePath = Path.GetDirectoryName(texturePath);
-                if (!drawStyleFilePath.EndsWith(Path.DirectorySeparatorChar.ToString()) && !drawStyleFilePath.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
-                    drawStyleFilePath += Path.DirectorySeparatorChar;
-                drawStyleFilePath += _borderStylesFileName;
-
-                ret.TrySetDrawStyles(drawStyleFilePath);
+                ret.TrySetDrawStyles(borderDrawStylesFile);
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets the file path to the file containing the <see cref="ControlBorderDrawStyle"/>s for a <see cref="ControlBorder"/>.
+        /// </summary>
+        /// <param name="fullSubCategory">The full sub-category of the border.</param>
+        /// <returns>The path to the border draw styles file.</returns>
+        string GetBorderDrawStylesFilePath(SpriteCategory fullSubCategory)
+        {
+            // Get the sprite category for the current skin
+            var spriteCat = GetSpriteCategory(CurrentSkin, fullSubCategory);
+
+            // Replace the sprite categorization delimiters with path separators
+            var spritePath = spriteCat.ToString().Replace(SpriteCategorization.Delimiter, Path.DirectorySeparatorChar.ToString());
+
+            // Take the sprite category, now formatted as a path, and prefix the full qualified path to the Grhs
+            var borderStylesFile = ContentPaths.Build.Grhs.Join(spritePath);
+
+            // Append the name of the file
+            borderStylesFile = borderStylesFile.Join(_borderStylesFileName);
+
+            return borderStylesFile;
         }
 
         /// <summary>
