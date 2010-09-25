@@ -21,6 +21,21 @@ namespace NetGore.Graphics.GUI
         readonly Entity _owner;
         readonly ChatBubbleText _textControl;
 
+        /// <summary>
+        /// Clears all <see cref="ChatBubble"/> instances that were created with <see cref="ChatBubble.Create"/>.
+        /// </summary>
+        public static void ClearAll()
+        {
+            IEnumerable<ChatBubble> toDispose;
+            lock (_chatBubblesSync)
+            {
+                toDispose = _chatBubbles.Values.ToImmutable();
+            }
+
+            foreach (var cb in toDispose)
+                cb.Dispose();
+        }
+
         TickCount _deathTime;
 
         /// <summary>
@@ -47,7 +62,7 @@ namespace NetGore.Graphics.GUI
 
             _owner = owner;
             _deathTime = (TickCount)(TickCount.Now + Lifespan);
-            _textControl = new ChatBubbleText(this, text);
+            _textControl = new ChatBubbleText(this, text) { Font = Font };
 
             _owner.Disposed += ChatBubble_Owner_Disposed;
         }
@@ -57,7 +72,11 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public string ChatText
         {
-            get { return _textControl.Text; }
+            get {
+                if (_textControl == null)
+                    return string.Empty;
+                else
+                return _textControl.Text; }
         }
 
         /// <summary>
@@ -116,7 +135,7 @@ namespace NetGore.Graphics.GUI
             {
                 // If the ChatBubble already exists for the given Entity, reuse that one
                 ChatBubble c;
-                if (_chatBubbles.TryGetValue(owner, out c))
+                if (_chatBubbles.TryGetValue(owner, out c) && c != null)
                 {
                     c._textControl.ChangeTextAndResize(text);
                     c._deathTime = (TickCount)(TickCount.Now + Lifespan);
@@ -136,12 +155,34 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
+        /// </summary>
+        protected override void OnFontChanged()
+        {
+            base.OnFontChanged();
+
+            if (_textControl != null)
+                _textControl.Font = Font;
+        }
+
+        /// <summary>
         /// Disposes of the Control and all its resources.
         /// </summary>
         /// <param name="disposeManaged">If true, managed resources need to be disposed. If false,
         /// this was raised by a destructor which means the managed resources are already disposed.</param>
         protected override void Dispose(bool disposeManaged)
         {
+            if (Owner == null)
+            {
+                const string errmsg = "ChatBubble `{0}` has no owner.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
             // Remove the bubble from the dictionary
             lock (_chatBubblesSync)
             {
@@ -323,11 +364,11 @@ namespace NetGore.Graphics.GUI
 
                 IsBoundToParentArea = false;
                 IsMultiLine = true;
-                IsEnabled = false;
                 Border = ControlBorder.Empty;
                 CanFocus = false;
                 CanDrag = false;
                 Font = ((ChatBubble)Parent).Font;
+                IsEnabled = false;
             }
         }
     }
