@@ -34,6 +34,8 @@
     <SccProvider>
     </SccProvider>
     <NoWin32Manifest>true</NoWin32Manifest>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -48,8 +50,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -283,7 +283,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)DevContent\CopyContent.exe" "$(SolutionDir)DevContent" "$(TargetDir)Content"</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)DevContent\CopyContent.exe" "$(SolutionDir)DevContent" "$(TargetDir)Content" --clean="[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]"</PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

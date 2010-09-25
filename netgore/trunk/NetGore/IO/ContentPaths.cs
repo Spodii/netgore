@@ -485,8 +485,12 @@ namespace NetGore.IO
         /// <param name="build">The path to the build directory. If null, <see cref="ContentPaths.Build"/> will be used.</param>
         /// <param name="copyContentFile">The path to the CopyContent.exe program file. If null, the file will be searched
         /// for in the <paramref name="dev"/> path.</param>
-        /// <returns>True if the process was successfully run; otherwise false.</returns>
-        public static bool TryCopyContent(ContentPaths dev = null, ContentPaths build = null, string copyContentFile = null)
+        /// <param name="userArgs">The additional arguments to pass to the CopyContent program..</param>
+        /// <returns>
+        /// True if the process was successfully run; otherwise false.
+        /// </returns>
+        public static bool TryCopyContent(ContentPaths dev = null, ContentPaths build = null, string copyContentFile = null,
+            string userArgs = null)
         {
             // Use the default dev/build paths if not defined
             if (dev == null)
@@ -515,7 +519,11 @@ namespace NetGore.IO
             }
 
             // Try to run the program
-            var pi = new ProcessStartInfo(copyContentFile, string.Format("\"{0}\" \"{1}\"", dev.Root, build.Root))
+            var arguments = string.Format("\"{0}\" \"{1}\"", dev.Root, build.Root);
+            if (!string.IsNullOrEmpty(userArgs))
+                arguments += userArgs;
+
+            var pi = new ProcessStartInfo(copyContentFile, arguments)
             { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
 
             try
