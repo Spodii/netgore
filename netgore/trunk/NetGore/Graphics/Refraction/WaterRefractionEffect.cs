@@ -300,7 +300,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Resized;
+        public event SpatialEventHandler<Vector2> Resized; // TODO: !! Use
 
         /// <summary>
         /// Gets the center position of the <see cref="ISpatial"/>.
