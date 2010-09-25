@@ -20,7 +20,7 @@ namespace NetGore.Graphics.GUI
 
         readonly EditableTextHandler _editableTextHandler;
         readonly TextBoxLines _lines = new TextBoxLines();
-        readonly NumCharsToDrawCache _numCharsToDraw;
+        readonly NumCharsToDrawCache _numCharsToDraw = new NumCharsToDrawCache();
 
         int _bufferTruncateSize = 100;
 
@@ -58,7 +58,7 @@ namespace NetGore.Graphics.GUI
         /// <exception cref="NullReferenceException"><paramref name="parent"/> is null.</exception>
         public TextBox(Control parent, Vector2 position, Vector2 clientSize) : base(parent, position, clientSize)
         {
-            _numCharsToDraw = new NumCharsToDrawCache(this);
+            _numCharsToDraw.TextBox = this;
             _editableTextHandler = new EditableTextHandler(this);
 
             // Set the initial line length and number of visible lines
@@ -75,7 +75,7 @@ namespace NetGore.Graphics.GUI
         /// <exception cref="ArgumentNullException"><paramref name="guiManager"/> is null.</exception>
         public TextBox(IGUIManager guiManager, Vector2 position, Vector2 clientSize) : base(guiManager, position, clientSize)
         {
-            _numCharsToDraw = new NumCharsToDrawCache(this);
+            _numCharsToDraw.TextBox = this;
             _editableTextHandler = new EditableTextHandler(this);
 
             // Set the initial line length and number of visible lines
@@ -608,6 +608,9 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected override void OnKeyPressed(KeyEventArgs e)
         {
+            if (_editableTextHandler == null)
+                return;
+                
             _editableTextHandler.HandleKey(e);
 
             base.OnKeyPressed(e);
@@ -639,6 +642,9 @@ namespace NetGore.Graphics.GUI
         /// <param name="e">The event args.</param>
         protected override void OnTextEntered(TextEventArgs e)
         {
+            if (_editableTextHandler == null)
+                return;
+
             if (!IsEnabled)
                 return;
 
@@ -939,17 +945,9 @@ namespace NetGore.Graphics.GUI
         {
             const short _invalidateValue = -1;
 
-            readonly TextBox _textBox;
             short _value = _invalidateValue;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="NumCharsToDrawCache"/> class.
-            /// </summary>
-            /// <param name="textBox">The parent <see cref="TextBox"/>.</param>
-            public NumCharsToDrawCache(TextBox textBox)
-            {
-                _textBox = textBox;
-            }
+            public TextBox TextBox {get;set;}
 
             /// <summary>
             /// Gets the number of characters to draw.
@@ -978,11 +976,14 @@ namespace NetGore.Graphics.GUI
             /// </summary>
             void Update()
             {
-                var currLine = _textBox._lines.CurrentLine;
+                if (TextBox == null)
+                    return;
+
+                var currLine = TextBox._lines.CurrentLine;
 
                 _value =
                     (short)
-                    currLine.CountFittingCharactersLeft(_textBox.Font, _textBox.LineCharBufferOffset, (int)_textBox.ClientSize.X);
+                    currLine.CountFittingCharactersLeft(TextBox.Font, TextBox.LineCharBufferOffset, (int)TextBox.ClientSize.X);
             }
 
             /// <summary>
