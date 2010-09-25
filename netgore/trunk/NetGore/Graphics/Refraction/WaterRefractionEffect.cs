@@ -256,7 +256,7 @@ namespace NetGore.Graphics
             Shader.SetParameter("WaveSpeedMultiplier", WaveSpeed);
             Shader.SetParameter("WaterAlphaModifier", WaterAlpha);
             Shader.SetParameter("DrawTextureHeightRatio", Size.Y / WaveNoise.CurrentGrhData.Texture.Height);
-            Shader.SetParameter("Magnification", 1.0f); // TODO: !!
+            Shader.SetParameter("Magnification", Magnification);
             Shader.SetParameter("Time", currentTime);
         }
 
