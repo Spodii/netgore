@@ -30,7 +30,7 @@ namespace DemoGame.MapEditor
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
 
             // Ensure the content is copied over
-            if (!ContentPaths.TryCopyContent())
+            if (!ContentPaths.TryCopyContent(userArgs: "--clean=\"[Engine,Font,Fx,Grh,Languages,Maps,Music,Skeletons,Sounds]\""))
             {
                 const string errmsg =
                     "Failed to copy the content from the dev to build path." +
