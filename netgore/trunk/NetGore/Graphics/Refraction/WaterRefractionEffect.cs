@@ -132,7 +132,7 @@ namespace NetGore.Graphics
         /// </summary>
         protected WaterRefractionEffect() : this(new Grh(), Vector2.Zero, new Vector2(32))
         {
-            // NOTE: This constructor is only provided for the RefractionEffectFactory
+            // This constructor is only provided for the RefractionEffectFactory
         }
 
         /// <summary>
@@ -237,12 +237,16 @@ namespace NetGore.Graphics
             // Avoid needless calculations on finding the position when there are no listeners for Moved
             if (Moved != null)
             {
+                // Moved has listener(s)
                 var oldValue = Position;
                 _position = sender.Position;
                 Moved(this, oldValue);
             }
             else
+            {
+                // No Moved listeners
                 _position = sender.Position;
+            }
         }
 
         /// <summary>
@@ -300,7 +304,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies listeners when this <see cref="ISpatial"/> has been resized.
         /// </summary>
-        public event SpatialEventHandler<Vector2> Resized; // TODO: !! Use
+        public event SpatialEventHandler<Vector2> Resized;
 
         /// <summary>
         /// Gets the center position of the <see cref="ISpatial"/>.
@@ -352,7 +356,14 @@ namespace NetGore.Graphics
                 if (PositionProvider != null)
                     return;
 
+                if (_position == value)
+                    return;
+
+                var oldPos = _position;
                 _position = value;
+
+                if (Moved != null)
+                    Moved(this, oldPos);
             }
         }
 
@@ -389,7 +400,17 @@ namespace NetGore.Graphics
         public Vector2 Size
         {
             get { return _size; }
-            set { _size = value; }
+            set
+            {
+                if (_size == value)
+                    return;
+
+                var oldSize = _size;
+                _size = value;
+
+                if (Resized != null)
+                    Resized(this, oldSize);
+            }
         }
 
         /// <summary>
