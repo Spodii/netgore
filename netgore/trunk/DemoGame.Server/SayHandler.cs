@@ -25,7 +25,8 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="SayHandler"/> class.
         /// </summary>
         /// <param name="server">Server that the commands are coming from.</param>
-        public SayHandler(Server server) : base(new SayCommands(server))
+        public SayHandler(Server server)
+            : base(new SayCommands(server))
         {
         }
 
@@ -936,6 +937,76 @@ namespace DemoGame.Server
                     UserChat(remainder.Amount + " units could not be added to your inventory.");
                     remainder.Dispose();
                 }
+            }
+
+            [SayCommand(("Warp"))]
+            public void Warp(MapID mapId, int x, int y)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                // Check for a valid map
+                if (!MapBase.IsMapIDValid(mapId))
+                {
+                    UserChat("Invalid map ID: " + mapId);
+                    return;
+                }
+
+                //Move the user
+                User.Teleport(World.GetMap(mapId), new Vector2(x, y));
+            }
+
+            [SayCommand(("Summon"))]
+            public void Summon(string userName)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                var target = World.FindUser(userName);
+
+                if (target == null)
+                {
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                    return;
+                }
+
+                target.Teleport(User.Map, User.Position);
+            }
+
+            [SayCommand("Approach")]
+            public void Approach(string userName)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                //Get the user we want.
+                var target = World.FindUser(userName);
+
+                if (target == null)
+                {
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                    return;
+                }
+
+                User.Teleport(target.Map, target.Position);
+            }
+
+            [SayCommand("Kick")]
+            public void Kick(string userName, string reason)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                //Get the user we want.
+                var target = World.FindUser(userName);
+
+                if (target == null)
+                {
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                    return;
+                }
+
+                target.Conn.Disconnect(GameMessage.UserKicked, reason);
             }
 
             #endregion

@@ -371,5 +371,11 @@ namespace DemoGame
         BanUserFailed,
 
         #endregion
+
+        #region Feature: Kicking
+
+        UserKicked,
+
+        #endregion
     }
 }
