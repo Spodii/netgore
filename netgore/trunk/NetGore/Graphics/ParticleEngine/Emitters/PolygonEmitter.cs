@@ -92,6 +92,22 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
+        /// </summary>
+        /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
+        public override ParticleEmitter DeepCopy()
+        {
+            var ret = new PolygonEmitter();
+            CopyValuesTo(ret);
+            ret.Closed = Closed;
+            ret.Points.AddRange(Points);
+            ret.PolygonOrigin = PolygonOrigin;
+            ret.Rotation = Rotation;
+            ret.Scale = Scale;
+            return ret;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, generates the offset and normalized force vectors to
         /// release the <see cref="Particle"/> at.
         /// </summary>
