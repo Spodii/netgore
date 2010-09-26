@@ -926,7 +926,7 @@ namespace NetGore.Tests.IO
 
                 if (i % 2 == 0)
                 {
-                    bs.Seek(BitStreamSeekOrigin.Current, bits);
+                    bs.SeekBits(bits, System.IO.SeekOrigin.Current);
                     continue;
                 }
 

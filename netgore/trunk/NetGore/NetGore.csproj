@@ -524,7 +524,6 @@
     <Compile Include="Core\Extensions\IsBetweenExtensions.cs" />
     <Compile Include="Core\Extensions\StackExtensions.cs" />
     <Compile Include="IO\BitStream\BitStream.cs" />
-    <Compile Include="IO\BitStream\BitStreamSeekOrigin.cs" />
     <Compile Include="IO\ContentPaths.cs" />
     <Compile Include="IO\PathString.cs" />
     <Compile Include="IO\MessageCollectionBase.cs" />
