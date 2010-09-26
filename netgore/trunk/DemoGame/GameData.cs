@@ -273,30 +273,6 @@ namespace DemoGame
                     return "127.0.0.1";
                 }
             }
-
-            /// <summary>
-            /// Gets the port used by the server for handling pings.
-            /// </summary>
-            public static int ServerPingPort
-            {
-                get
-                {
-                    // TODO: !! Remove
-                    return 44446;
-                }
-            }
-
-            /// <summary>
-            /// Gets the port used by the server for TCP connections for the main game networking.
-            /// </summary>
-            public static int ServerTCPPort
-            {
-                get
-                {
-                    // TODO: !! Remove
-                    return 44445;
-                }
-            }
         }
     }
 }

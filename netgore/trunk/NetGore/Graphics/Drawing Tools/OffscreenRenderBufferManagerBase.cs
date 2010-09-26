@@ -15,8 +15,6 @@ namespace NetGore.Graphics
     /// </summary>
     public abstract class OffscreenRenderBufferManagerBase
     {
-        // TODO: !! Use RenderImage.IsAvailable to see if we can even use the render buffer
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly Color _defaultColor = new Color(0, 0, 0, 255);
 
