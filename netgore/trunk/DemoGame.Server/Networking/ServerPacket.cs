@@ -499,9 +499,9 @@ namespace DemoGame.Server
             }
         }
 
-        public static PacketWriter SetSkillGroupCooldown(byte skillGroup, ushort cooldownTime)
+        public static PacketWriter SkillSetGroupCooldown(byte skillGroup, ushort cooldownTime)
         {
-            var pw = GetWriter(ServerPacketID.SetSkillGroupCooldown);
+            var pw = GetWriter(ServerPacketID.SkillSetGroupCooldown);
             pw.Write(skillGroup);
             pw.Write(cooldownTime);
             return pw;
@@ -531,9 +531,9 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter StartCastingSkill(SkillType skillType, ushort castTime)
+        public static PacketWriter SkillStartCasting(SkillType skillType, ushort castTime)
         {
-            var pw = GetWriter(ServerPacketID.StartCastingSkill);
+            var pw = GetWriter(ServerPacketID.SkillStartCasting);
             pw.WriteEnum(skillType);
             pw.Write(castTime);
             return pw;
@@ -664,9 +664,9 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter UseSkill(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
+        public static PacketWriter SkillUse(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
         {
-            var pw = GetWriter(ServerPacketID.UseSkill);
+            var pw = GetWriter(ServerPacketID.SkillUse);
             pw.Write(user);
 
             if (target.HasValue)

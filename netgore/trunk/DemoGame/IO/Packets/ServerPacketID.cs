@@ -41,7 +41,6 @@ namespace DemoGame
         QuestInfo,
         RemoveDynamicEntity,
         RemoveStatusEffect,
-        StartCastingSkill,
         SendAccountCharacters,
         SendEquipmentItemInfo,
         SendInventoryItemInfo,
@@ -58,10 +57,12 @@ namespace DemoGame
         SetInventorySlot,
         SetLevel,
         SetProvidedQuests,
-        SetSkillGroupCooldown,
         SetStatPoints,
         SetMap,
         SetUserChar,
+        SkillSetGroupCooldown,
+        SkillStartCasting,
+        SkillUse,
         StartChatDialog,
         StartQuestChatDialog,
         StartShopping,
@@ -70,6 +71,5 @@ namespace DemoGame
         UpdateStat,
         UpdateVelocityAndPosition,
         UseEntity,
-        UseSkill
     }
 }

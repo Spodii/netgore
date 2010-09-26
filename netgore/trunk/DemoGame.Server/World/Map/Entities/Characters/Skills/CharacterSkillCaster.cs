@@ -84,7 +84,7 @@ namespace DemoGame.Server
 
                 if (_character is User)
                 {
-                    using (var pw = ServerPacket.StartCastingSkill(skill.SkillType, castingTime))
+                    using (var pw = ServerPacket.SkillStartCasting(skill.SkillType, castingTime))
                     {
                         ((User)_character).Send(pw, ServerMessageType.GUIUserStatus);
                     }
@@ -134,14 +134,14 @@ namespace DemoGame.Server
                 // Notify the user about the new cooldown
                 if (_character is User)
                 {
-                    using (var pw = ServerPacket.SetSkillGroupCooldown(skill.CooldownGroup, skill.CooldownTime))
+                    using (var pw = ServerPacket.SkillSetGroupCooldown(skill.CooldownGroup, skill.CooldownTime))
                     {
                         ((User)_character).Send(pw, ServerMessageType.GUIUserStatus);
                     }
                 }
 
                 // Notify the clients in view that the character used a skill
-                using (var pw = ServerPacket.UseSkill(_character.MapEntityIndex, null, skill.SkillType))
+                using (var pw = ServerPacket.SkillUse(_character.MapEntityIndex, null, skill.SkillType))
                 {
                     _character.Map.SendToArea(_character, pw, ServerMessageType.MapEffect);
                 }
