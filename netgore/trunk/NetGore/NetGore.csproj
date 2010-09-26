@@ -177,7 +177,6 @@
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
     <Compile Include="Core\Strings\CharTypeExtensions.cs" />
     <Compile Include="Core\Time.cs" />
-    <Compile Include="AI\AINode.cs" />
     <Compile Include="Core\ExceptionSwallower.cs" />
     <Compile Include="Graphics\GUI\ControlBorder\ControlBorderDrawStyle.cs" />
     <Compile Include="Graphics\GUI\ControlBorder\ControlBorderSpriteType.cs" />
@@ -585,19 +584,13 @@
     <Compile Include="World\AlignmentHelper.cs" />
     <Compile Include="AI\AIAttribute.cs" />
     <Compile Include="AI\AIFactoryBase.cs" />
-    <Compile Include="AI\AIGrid.cs" />
     <Compile Include="AI\AIID.cs" />
     <Compile Include="AI\AIIDTypeConverter.cs" />
-    <Compile Include="AI\Heuristics.cs" />
     <Compile Include="AI\IAI.cs" />
     <Compile Include="World\Alignment.cs" />
     <Compile Include="Core\CommandLineSwitchHelper.cs" />
     <Compile Include="Core\ConsoleInputBuffer.cs" />
     <Compile Include="AI\IAIFactory.cs" />
-    <Compile Include="AI\IPathFinder.cs" />
-    <Compile Include="AI\MemoryCell.cs" />
-    <Compile Include="AI\MemoryMap.cs" />
-    <Compile Include="AI\PathFinder.cs" />
     <Compile Include="World\Entities\IDynamicEntityFactory.cs" />
     <Compile Include="World\Entities\IUpdateableEntity.cs" />
     <Compile Include="World\Entities\IUsableEntity.cs" />
