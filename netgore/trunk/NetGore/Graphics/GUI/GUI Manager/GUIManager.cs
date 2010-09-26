@@ -26,6 +26,7 @@ namespace NetGore.Graphics.GUI
         IDragDropProvider _draggedDragDropProvider;
         IDragDropProvider _dropOntoControl;
         Control _focusedControl = null;
+        bool _isEnabled;
         Control _lastPressedControl;
         Vector2 _screenSize;
         Control _underCursor;
@@ -182,6 +183,24 @@ namespace NetGore.Graphics.GUI
 
             // No child controls contained the point, so we found the deepest control containing the point
             return root;
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="IGUIManager.IsEnabled"/> property changes.
+        /// </summary>
+        /// <param name="isEnabled">True if the <see cref="IGUIManager"/> has become enabled; otherwise false.</param>
+        protected virtual void OnEnabledChanged(bool isEnabled)
+        {
+            if (!isEnabled)
+            {
+                // If we had a control under the cursor, get rid of it
+                if (_underCursor != null)
+                {
+                    var mme = new MouseMoveEvent { X = (int)CursorPosition.X, Y = (int)CursorPosition.Y };
+                    var mmeArgs = new MouseMoveEventArgs(mme);
+                    _underCursor.SendMouseLeaveEvent(mmeArgs);
+                }
+            }
         }
 
         /// <summary>
@@ -369,6 +388,24 @@ namespace NetGore.Graphics.GUI
         public Font Font { get; set; }
 
         /// <summary>
+        /// Gets or sets if this <see cref="IGUIManager"/> is enabled. When disabled, it can still draw, but it will
+        /// not handle any input.
+        /// </summary>
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set
+            {
+                if (_isEnabled == value)
+                    return;
+
+                _isEnabled = value;
+
+                OnEnabledChanged(value);
+            }
+        }
+
+        /// <summary>
         /// Gets the <see cref="Control"/> that was last the <see cref="IGUIManager.PressedControl"/>. Unlike
         /// <see cref="IGUIManager.PressedControl"/>, this value will not be set to null when the mouse button is raised.
         /// </summary>
@@ -471,42 +508,6 @@ namespace NetGore.Graphics.GUI
 
             // Draw the tooltip
             Tooltip.Draw(spriteBatch);
-        }
-
-        /// <summary>
-        /// Gets or sets if this <see cref="IGUIManager"/> is enabled. When disabled, it can still draw, but it will
-        /// not handle any input.
-        /// </summary>
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set { if (_isEnabled == value)
-                return;
-
-            _isEnabled = value;
-
-            OnEnabledChanged(value);
-            }
-        }
-
-        bool _isEnabled;
-
-        /// <summary>
-        /// Handles when the <see cref="IGUIManager.IsEnabled"/> property changes.
-        /// </summary>
-        /// <param name="isEnabled">True if the <see cref="IGUIManager"/> has become enabled; otherwise false.</param>
-        protected virtual void OnEnabledChanged(bool isEnabled)
-        {
-            if (!isEnabled)
-            {
-                // If we had a control under the cursor, get rid of it
-                if (_underCursor != null)
-                {
-                    var mme = new MouseMoveEvent { X = (int)CursorPosition.X, Y = (int)CursorPosition.Y };
-                    var mmeArgs = new MouseMoveEventArgs(mme);
-                    _underCursor.SendMouseLeaveEvent(mmeArgs);
-                }
-            }
         }
 
         /// <summary>

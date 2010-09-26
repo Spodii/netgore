@@ -44,7 +44,7 @@ namespace DemoGame.Client
         void ClickButton_CharacterSelection(object sender, MouseButtonEventArgs e)
         {
             var src = (CharacterSlotControl)sender;
-            var slot = (byte)src.Slot;
+            var slot = src.Slot;
 
             AccountCharacterInfo charInfo;
             if (!_sockets.PacketHandler.AccountCharacterInfos.TryGetInfo(slot, out charInfo))

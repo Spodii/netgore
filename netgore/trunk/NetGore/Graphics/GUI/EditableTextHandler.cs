@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Security;
+using System.Text;
 using Microsoft.Win32;
 using SFML.Window;
 
@@ -87,6 +88,31 @@ namespace NetGore.Graphics.GUI
             get { return _source; }
         }
 
+        /// <summary>
+        /// Checks if a character is valid to be inserted.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns>True if the character <paramref name="c"/> can be inserted into the <see cref="TextBox"/>; otherwise false.</returns>
+        static bool CanInsertChar(string c)
+        {
+            var asciiCode = Encoding.ASCII.GetBytes(c);
+
+            // Invalid length
+            if (asciiCode.Length <= 0)
+                return false;
+
+            // Length greather than 1... foreign characters? Whatever it is, probably want to allow it.
+            if (asciiCode.Length > 1)
+                return true;
+
+            // Do not allow ASCII characters below 32 since we either handles those on a specific
+            // case-by-case basis, or not at all
+            if (asciiCode[0] < 32)
+                return false;
+
+            return true;
+        }
+
         public void HandleKey(KeyEventArgs e)
         {
             switch (e.Code)
@@ -107,31 +133,6 @@ namespace NetGore.Graphics.GUI
                     Source.MoveCursor(MoveCursorDirection.Down);
                     break;
             }
-        }
-
-        /// <summary>
-        /// Checks if a character is valid to be inserted.
-        /// </summary>
-        /// <param name="c">The character to check.</param>
-        /// <returns>True if the character <paramref name="c"/> can be inserted into the <see cref="TextBox"/>; otherwise false.</returns>
-        static bool CanInsertChar(string c)
-        {
-            var asciiCode = System.Text.Encoding.ASCII.GetBytes(c);
-
-            // Invalid length
-            if (asciiCode.Length <= 0)
-                return false;
-
-            // Length greather than 1... foreign characters? Whatever it is, probably want to allow it.
-            if (asciiCode.Length > 1)
-                return true;
-
-            // Do not allow ASCII characters below 32 since we either handles those on a specific
-            // case-by-case basis, or not at all
-            if (asciiCode[0] < 32)
-                return false;
-
-            return true;
         }
 
         /// <summary>

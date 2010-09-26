@@ -490,7 +490,7 @@ namespace NetGore.IO
         /// True if the process was successfully run; otherwise false.
         /// </returns>
         public static bool TryCopyContent(ContentPaths dev = null, ContentPaths build = null, string copyContentFile = null,
-            string userArgs = null)
+                                          string userArgs = null)
         {
             // Use the default dev/build paths if not defined
             if (dev == null)

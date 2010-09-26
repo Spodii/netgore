@@ -68,18 +68,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles the <see cref="ChatBubble.CreateChatBubbleInstance"/> to create custom <see cref="ChatBubble"/>s.
-        /// </summary>
-        /// <param name="parent">The parent <see cref="Control"/>.</param>
-        /// <param name="owner">The <see cref="Entity"/> the chat bubble is for.</param>
-        /// <param name="text">The text to display.</param>
-        /// <returns>The <see cref="ChatBubble"/> instance.</returns>
-        static ChatBubble CreateChatBubbleInstanceHandler(Control parent, Entity owner, string text)
-        {
-            return new GameChatBubble(parent, owner, text);
-        }
-
-        /// <summary>
         /// Gets the <see cref="IScreenManager"/> instance used to display the screens for the client.
         /// </summary>
         public IScreenManager ScreenManager
@@ -116,6 +104,18 @@ namespace DemoGame.Client
 
             // Everything else, return global
             return ContentLevel.Global;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="ChatBubble.CreateChatBubbleInstance"/> to create custom <see cref="ChatBubble"/>s.
+        /// </summary>
+        /// <param name="parent">The parent <see cref="Control"/>.</param>
+        /// <param name="owner">The <see cref="Entity"/> the chat bubble is for.</param>
+        /// <param name="text">The text to display.</param>
+        /// <returns>The <see cref="ChatBubble"/> instance.</returns>
+        static ChatBubble CreateChatBubbleInstanceHandler(Control parent, Entity owner, string text)
+        {
+            return new GameChatBubble(parent, owner, text);
         }
 
         /// <summary>

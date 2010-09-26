@@ -26,6 +26,14 @@ namespace DemoGame.GUITester
         {
         }
 
+        void DragControl(Control sender)
+        {
+            var s = (TextControl)sender;
+            s.Text = s.Position.ToString();
+
+            _dragLbl.Text = "Screen Position: " + s.ScreenPosition;
+        }
+
         /// <summary>
         /// Gets the <see cref="Font"/> to use as the default font for the <see cref="IGUIManager"/> for this
         /// <see cref="GameScreen"/>.
@@ -36,14 +44,6 @@ namespace DemoGame.GUITester
         protected override Font GetScreenManagerFont(IScreenManager screenManager)
         {
             return GameScreenHelper.DefaultGameGUIFont;
-        }
-
-        void DragControl(Control sender)
-        {
-            var s = (TextControl)sender;
-            s.Text = s.Position.ToString();
-
-            _dragLbl.Text = "Screen Position: " + s.ScreenPosition;
         }
 
         /// <summary>

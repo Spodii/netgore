@@ -14,6 +14,8 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class SkinManager : ISkinManager
     {
+        const string _borderStylesFileName = "BorderStyles.txt";
+
         readonly Dictionary<string, ControlBorder> _borderCache =
             new Dictionary<string, ControlBorder>(StringComparer.OrdinalIgnoreCase);
 
@@ -81,9 +83,7 @@ namespace NetGore.Graphics.GUI
             // Try to load the user-defined border drawing styles
             var borderDrawStylesFile = GetBorderDrawStylesFilePath(fullSubCategory);
             if (!string.IsNullOrEmpty(borderDrawStylesFile))
-            {
                 ret.TrySetDrawStyles(borderDrawStylesFile);
-            }
 
             return ret;
         }
@@ -109,23 +109,6 @@ namespace NetGore.Graphics.GUI
 
             return borderStylesFile;
         }
-
-        /// <summary>
-        /// Tries to get the first valid texture path from a collection of <see cref="ISprite"/>s.
-        /// </summary>
-        /// <param name="sprites">The <see cref="ISprite"/>s.</param>
-        /// <returns>The path to the first found valid texture, or null if none found.</returns>
-        static string TryGetTexturePath(params ISprite[] sprites)
-        {
-            if (sprites == null || sprites.Length == 0)
-                return null;
-
-            var lazyImages = sprites.Where(x => x != null && x.Texture != null).Select(x => x.Texture).OfType<LazyImage>();
-            var validFileNames = lazyImages.Where(x => !string.IsNullOrEmpty(x.FileName)).Select(x=>x.FileName);
-            return validFileNames.FirstOrDefault();
-        }
-
-        const string _borderStylesFileName = "BorderStyles.txt";
 
         /// <summary>
         /// Gets the <see cref="SpriteCategory"/> for a <see cref="Control"/> relative to the skin's root.
@@ -174,6 +157,21 @@ namespace NetGore.Graphics.GUI
                     control.LoadSkin(this);
                 }
             }
+        }
+
+        /// <summary>
+        /// Tries to get the first valid texture path from a collection of <see cref="ISprite"/>s.
+        /// </summary>
+        /// <param name="sprites">The <see cref="ISprite"/>s.</param>
+        /// <returns>The path to the first found valid texture, or null if none found.</returns>
+        static string TryGetTexturePath(params ISprite[] sprites)
+        {
+            if (sprites == null || sprites.Length == 0)
+                return null;
+
+            var lazyImages = sprites.Where(x => x != null && x.Texture != null).Select(x => x.Texture).OfType<LazyImage>();
+            var validFileNames = lazyImages.Where(x => !string.IsNullOrEmpty(x.FileName)).Select(x => x.FileName);
+            return validFileNames.FirstOrDefault();
         }
 
         #region ISkinManager Members

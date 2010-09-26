@@ -610,7 +610,7 @@ namespace NetGore.Graphics.GUI
         {
             if (_editableTextHandler == null)
                 return;
-                
+
             _editableTextHandler.HandleKey(e);
 
             base.OnKeyPressed(e);
@@ -947,7 +947,7 @@ namespace NetGore.Graphics.GUI
 
             short _value = _invalidateValue;
 
-            public TextBox TextBox {get;set;}
+            public TextBox TextBox { get; set; }
 
             /// <summary>
             /// Gets the number of characters to draw.

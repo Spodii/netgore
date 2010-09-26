@@ -15,10 +15,10 @@ namespace DemoGame.Client
     public static class GameScreenHelper
     {
         static readonly Font _defaultChatFont;
-        static readonly Font _defaultMenuButtonFont;
-        static readonly Font _defaultScreenFont;
-        static readonly Font _defaultMenuTitleFont;
         static readonly Font _defaultGameGUIFont;
+        static readonly Font _defaultMenuButtonFont;
+        static readonly Font _defaultMenuTitleFont;
+        static readonly Font _defaultScreenFont;
 
         /// <summary>
         /// Initializes the <see cref="GameScreenHelper"/> class.
@@ -51,19 +51,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the default <see cref="Font"/> for the title on the menu screens.
-        /// </summary>
-        public static Font DefaultMenuTitleFont
-        {
-            get { return _defaultMenuTitleFont; }
-        }
-
-        /// <summary>
         /// Gets the default menu button <see cref="Font"/>.
         /// </summary>
         public static Font DefaultMenuButtonFont
         {
             get { return _defaultMenuButtonFont; }
+        }
+
+        /// <summary>
+        /// Gets the default <see cref="Font"/> for the title on the menu screens.
+        /// </summary>
+        public static Font DefaultMenuTitleFont
+        {
+            get { return _defaultMenuTitleFont; }
         }
 
         /// <summary>
@@ -88,13 +88,13 @@ namespace DemoGame.Client
                                                                      params string[] names)
         {
             // The offset from the side of the screen
-            Vector2 baseOffset = new Vector2(25f);
+            var baseOffset = new Vector2(25f);
 
             // The spacing between each button
             const float spacing = 10f;
 
             var clientSize = parent == null ? screenManager.ScreenSize : parent.ClientSize;
-            float sumSize = 0f;
+            var sumSize = 0f;
             var ret = new Dictionary<string, Control>(StringComparer.OrdinalIgnoreCase);
 
             // Create each button in reverse (so the items at the end of the list end up at the bottom)
@@ -108,7 +108,7 @@ namespace DemoGame.Client
 
                 // Get the position
                 var newPos = (clientSize - baseOffset - textSize);
-                
+
                 // Offset on the y-axis by the sum size
                 newPos.Y -= sumSize;
 
@@ -153,6 +153,11 @@ namespace DemoGame.Client
             static readonly Color _textColor = Color.White;
 
             /// <summary>
+            /// The color of the text when the mouse is over it.
+            /// </summary>
+            static readonly Color _textMouseOverColor = Color.Green;
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="MenuButton"/> class.
             /// </summary>
             /// <param name="parent">Parent <see cref="Control"/> of this <see cref="Control"/>.</param>
@@ -176,19 +181,6 @@ namespace DemoGame.Client
             }
 
             /// <summary>
-            /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
-            /// base class's method to ensure that changes to settings are hierchical.
-            /// </summary>
-            protected override void SetDefaultValues()
-            {
-                base.SetDefaultValues();
-
-                ForeColor = _textColor;
-                Font = DefaultMenuButtonFont;
-            }
-
-
-            /// <summary>
             /// Handles when the mouse has entered the area of the <see cref="Control"/>.
             /// This is called immediately before <see cref="Control.OnMouseEnter"/>.
             /// Override this method instead of using an event hook on <see cref="Control.MouseEnter"/> when possible.
@@ -202,11 +194,6 @@ namespace DemoGame.Client
             }
 
             /// <summary>
-            /// The color of the text when the mouse is over it.
-            /// </summary>
-            static readonly Color _textMouseOverColor = Color.Green;
-
-            /// <summary>
             /// Handles when the mouse has left the area of the <see cref="Control"/>.
             /// This is called immediately before <see cref="Control.OnMouseLeave"/>.
             /// Override this method instead of using an event hook on <see cref="Control.MouseLeave"/> when possible.
@@ -217,6 +204,18 @@ namespace DemoGame.Client
                 base.OnMouseLeave(e);
 
                 ForeColor = _textColor;
+            }
+
+            /// <summary>
+            /// Sets the default values for the <see cref="Control"/>. This should always begin with a call to the
+            /// base class's method to ensure that changes to settings are hierchical.
+            /// </summary>
+            protected override void SetDefaultValues()
+            {
+                base.SetDefaultValues();
+
+                ForeColor = _textColor;
+                Font = DefaultMenuButtonFont;
             }
         }
 
