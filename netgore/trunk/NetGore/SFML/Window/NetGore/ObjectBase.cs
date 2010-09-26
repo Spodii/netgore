@@ -109,6 +109,7 @@ namespace SFML
         ////////////////////////////////////////////////////////////
         public virtual void Dispose()
         {
+            // NOTE: Custom change to virtual to support lazy objects
             Dispose(true);
             GC.SuppressFinalize(this);
         }

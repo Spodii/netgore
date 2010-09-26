@@ -10,57 +10,72 @@ namespace SFML
     namespace Graphics
     {
         ////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Structure describing a glyph (a visual character)
+        /// </summary>
+        ////////////////////////////////////////////////////////////
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Glyph
+        {
+            /// <summary>Offset to move horizontically to the next character</summary>
+            public int Advance;
+
+            /// <summary>Bounding rectangle of the glyph, in coordinates relative to the baseline</summary>
+            public IntRect Rectangle;
+
+            /// <summary>Texture coordinates of the glyph inside the font's image</summary>
+            public FloatRect TexCoords;
+        }
 
         ////////////////////////////////////////////////////////////
         /// <summary>
         /// Font is the low-level class for loading and
         /// manipulating character fonts. This class is meant to
-        /// be used by Text
+        /// be used by String2D
         /// </summary>
         ////////////////////////////////////////////////////////////
         public class Font : ObjectBase
         {
             ////////////////////////////////////////////////////////////
-
             static Font ourDefaultFont = null;
             readonly Dictionary<uint, Image> myImages = new Dictionary<uint, Image>();
-            uint _defaultSize = 30;
+            uint _defaultSize = 36;
 
             #region Imports
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfFont_Copy(IntPtr Font);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfFont_CreateFromFile(string Filename);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern unsafe IntPtr sfFont_CreateFromMemory(char* Data, uint SizeInBytes);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfFont_Destroy(IntPtr This);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfFont_GetDefaultFont();
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern Glyph sfFont_GetGlyph(IntPtr This, uint codePoint, uint characterSize, bool bold);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfFont_GetImage(IntPtr This, uint characterSize);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern int sfFont_GetKerning(IntPtr This, uint first, uint second, uint characterSize);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern int sfFont_GetLineSpacing(IntPtr This, uint characterSize);
 
@@ -186,6 +201,7 @@ namespace SFML
             /// <exception cref="LoadingFailedException"/>
             protected internal bool EnsureLoaded(string filename)
             {
+                // NOTE: Custom method
                 if (ThisRaw != IntPtr.Zero)
                     return true;
 
@@ -222,6 +238,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Glyph GetGlyph(uint codePoint, bool bold)
             {
+                // NOTE: Custom method
                 return GetGlyph(codePoint, DefaultSize, bold);
             }
 
@@ -245,6 +262,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public Image GetImage()
             {
+                // NOTE: Custom method
                 return GetImage(DefaultSize);
             }
 
@@ -272,6 +290,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public int GetKerning(uint first, uint second)
             {
+                // NOTE: Custom method
                 return GetKerning(first, second, DefaultSize);
             }
 
@@ -295,6 +314,7 @@ namespace SFML
             ////////////////////////////////////////////////////////////
             public int GetLineSpacing()
             {
+                // NOTE: Custom method
                 return GetLineSpacing(DefaultSize);
             }
 

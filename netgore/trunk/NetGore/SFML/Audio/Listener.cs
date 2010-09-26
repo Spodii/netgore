@@ -60,27 +60,27 @@ namespace SFML
 
             #region Imports
 
-            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfListener_GetDirection(out float X, out float Y, out float Z);
 
-            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern float sfListener_GetGlobalVolume();
 
-            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfListener_GetPosition(out float X, out float Y, out float Z);
 
-            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfListener_SetDirection(float X, float Y, float Z);
 
-            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfListener_SetGlobalVolume(float Volume);
 
-            [DllImport("csfml-audio", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-audio", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfListener_SetPosition(float X, float Y, float Z);
 
