@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>365</Count>
+    <Count>377</Count>
     <Item0>
       <Index>152</Index>
       <Categorization>Background.desert</Categorization>
@@ -3090,6 +3090,15 @@
       </Texture>
     </Item342>
     <Item343>
+      <Index>54</Index>
+      <Categorization>Particle.ankh alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/ankh alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item343>
+    <Item344>
       <Index>67</Index>
       <Categorization>Particle.ball</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3097,8 +3106,17 @@
         <Name>Grh/Particle/ball</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item343>
-    <Item344>
+    </Item344>
+    <Item345>
+      <Index>157</Index>
+      <Categorization>Particle.ball alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/ball alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item345>
+    <Item346>
       <Index>68</Index>
       <Categorization>Particle.raindrop</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3106,8 +3124,17 @@
         <Name>Grh/Particle/raindrop</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item344>
-    <Item345>
+    </Item346>
+    <Item347>
+      <Index>388</Index>
+      <Categorization>Particle.raindrop alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/raindrop alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item347>
+    <Item348>
       <Index>69</Index>
       <Categorization>Particle.shield</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3115,8 +3142,17 @@
         <Name>Grh/Particle/shield</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item345>
-    <Item346>
+    </Item348>
+    <Item349>
+      <Index>389</Index>
+      <Categorization>Particle.shield alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/shield alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item349>
+    <Item350>
       <Index>70</Index>
       <Categorization>Particle.skull</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3124,8 +3160,17 @@
         <Name>Grh/Particle/skull</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item346>
-    <Item347>
+    </Item350>
+    <Item351>
+      <Index>390</Index>
+      <Categorization>Particle.skull alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/skull alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item351>
+    <Item352>
       <Index>72</Index>
       <Categorization>Particle.snow</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3133,8 +3178,17 @@
         <Name>Grh/Particle/snow</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item347>
-    <Item348>
+    </Item352>
+    <Item353>
+      <Index>391</Index>
+      <Categorization>Particle.snow alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/snow alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item353>
+    <Item354>
       <Index>71</Index>
       <Categorization>Particle.snow sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3142,8 +3196,17 @@
         <Name>Grh/Particle/snow sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item348>
-    <Item349>
+    </Item354>
+    <Item355>
+      <Index>392</Index>
+      <Categorization>Particle.snow sharp alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/snow sharp alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item355>
+    <Item356>
       <Index>73</Index>
       <Categorization>Particle.sparkle</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3151,8 +3214,17 @@
         <Name>Grh/Particle/sparkle</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item349>
-    <Item350>
+    </Item356>
+    <Item357>
+      <Index>393</Index>
+      <Categorization>Particle.sparkle alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/sparkle alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item357>
+    <Item358>
       <Index>74</Index>
       <Categorization>Particle.splatter</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3160,8 +3232,17 @@
         <Name>Grh/Particle/splatter</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item350>
-    <Item351>
+    </Item358>
+    <Item359>
+      <Index>394</Index>
+      <Categorization>Particle.splatter alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/splatter alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item359>
+    <Item360>
       <Index>62</Index>
       <Categorization>Particle.Sprite.blood</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3169,8 +3250,8 @@
         <Name>Grh/Particle/Sprite/blood</Name>
         <Source>0,0,8,8</Source>
       </Texture>
-    </Item351>
-    <Item352>
+    </Item360>
+    <Item361>
       <Index>76</Index>
       <Categorization>Particle.star</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3178,8 +3259,17 @@
         <Name>Grh/Particle/star</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item352>
-    <Item353>
+    </Item361>
+    <Item362>
+      <Index>395</Index>
+      <Categorization>Particle.star alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/star alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item362>
+    <Item363>
       <Index>75</Index>
       <Categorization>Particle.star sharp</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3187,8 +3277,17 @@
         <Name>Grh/Particle/star sharp</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item353>
-    <Item354>
+    </Item363>
+    <Item364>
+      <Index>396</Index>
+      <Categorization>Particle.star sharp alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/star sharp alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item364>
+    <Item365>
       <Index>77</Index>
       <Categorization>Particle.sword</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3196,8 +3295,17 @@
         <Name>Grh/Particle/sword</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item354>
-    <Item355>
+    </Item365>
+    <Item366>
+      <Index>397</Index>
+      <Categorization>Particle.sword alpha</Categorization>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>Grh/Particle/sword alpha</Name>
+        <Source>0,0,32,32</Source>
+      </Texture>
+    </Item366>
+    <Item367>
       <Index>183</Index>
       <Categorization>Quest.can start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3205,8 +3313,8 @@
         <Name>Grh/Quest/can start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item355>
-    <Item356>
+    </Item367>
+    <Item368>
       <Index>186</Index>
       <Categorization>Quest.cannot start</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3214,8 +3322,8 @@
         <Name>Grh/Quest/cannot start</Name>
         <Source>0,0,11,20</Source>
       </Texture>
-    </Item356>
-    <Item357>
+    </Item368>
+    <Item369>
       <Index>184</Index>
       <Categorization>Quest.started</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3223,8 +3331,8 @@
         <Name>Grh/Quest/started</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item357>
-    <Item358>
+    </Item369>
+    <Item370>
       <Index>185</Index>
       <Categorization>Quest.turnin</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3232,8 +3340,8 @@
         <Name>Grh/Quest/turnin</Name>
         <Source>0,0,4,20</Source>
       </Texture>
-    </Item358>
-    <Item359>
+    </Item370>
+    <Item371>
       <Index>140</Index>
       <Categorization>SkillIcon.heal</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3241,8 +3349,8 @@
         <Name>Grh/SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item359>
-    <Item360>
+    </Item371>
+    <Item372>
       <Index>142</Index>
       <Categorization>SkillIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3250,8 +3358,8 @@
         <Name>Grh/SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item360>
-    <Item361>
+    </Item372>
+    <Item373>
       <Index>141</Index>
       <Categorization>StatusIcon.strengthen</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3259,8 +3367,8 @@
         <Name>Grh/StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item361>
-    <Item362>
+    </Item373>
+    <Item374>
       <Index>65</Index>
       <Categorization>Textures.explosion01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3268,8 +3376,8 @@
         <Name>Grh/Textures/explosion01</Name>
         <Source>0,0,256,256</Source>
       </Texture>
-    </Item362>
-    <Item363>
+    </Item374>
+    <Item375>
       <Index>187</Index>
       <Categorization>Textures.noise01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3277,8 +3385,8 @@
         <Name>Grh/Textures/noise01</Name>
         <Source>0,0,256,256</Source>
       </Texture>
-    </Item363>
-    <Item364>
+    </Item375>
+    <Item376>
       <Index>189</Index>
       <Categorization>Textures.wave01</Categorization>
       <AutomaticSize>True</AutomaticSize>
@@ -3286,7 +3394,7 @@
         <Name>Grh/Textures/wave01</Name>
         <Source>0,0,512,512</Source>
       </Texture>
-    </Item364>
+    </Item376>
   </Stationary>
   <Animated>
     <Count>0</Count>
