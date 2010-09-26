@@ -109,7 +109,6 @@ namespace DemoGame.Server
 
                 case NetConnectionStatus.Connected:
                     // Send the server time to the client
-                    // TODO: !! Probably will have to add something on the client to allow them to request updates to the time every few (10?) minutes to stay synchronized
                     using (var pw = ServerPacket.SetGameTime(DateTime.Now))
                     {
                         sender.Send(pw, ServerMessageType.GUI);

@@ -252,6 +252,12 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter SynchronizeGameTime()
+        {
+            var pw = GetWriter(ClientPacketID.SynchronizeGameTime);
+            return pw;
+        }
+
         public static PacketWriter UnequipItem(EquipmentSlot slot)
         {
             var pw = GetWriter(ClientPacketID.UnequipItem);
