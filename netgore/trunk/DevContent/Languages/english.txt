@@ -52,6 +52,7 @@ DisconnectTooManyConnectionsFromIP: "Connection rejected by the server since the
 DisconnectUserDisposed: "The connection to the server has been lost."
 DisconnectNoReasonSpecified: "The connection to the server has been lost."
 DisconnectTimedOut: "The connection has timed out due to inactivity."
+DisconnectUserKicked: "You've been kicked from the server!\nReason: $0"
 
 ########### Feature: Shops ###########
 ShopInsufficientFundsToPurchaseSingular: "You do not have enough money to purchase a $0."
@@ -158,6 +159,3 @@ AccountBanned: "Your account has been banned. The ban will expire in " + GetTime
 DisconnectedBanned: "Your account has been banned. The ban will expire in " + GetTimeSpanString($0 * 60) + ".\nReason: $1"
 BanUserSuccessful: "You have successfully banned $0."
 BanUserFailed: "Failed to ban user $0: $1"
-
-########### Feature: Kicking ###########
-UserKicked: "You've been kicked from the server!\nReason: $0"
