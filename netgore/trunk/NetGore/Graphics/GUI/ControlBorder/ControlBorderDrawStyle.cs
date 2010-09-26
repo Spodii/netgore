@@ -1,4 +1,6 @@
-﻿namespace NetGore.Graphics.GUI
+﻿using System.Linq;
+
+namespace NetGore.Graphics.GUI
 {
     /// <summary>
     /// The different ways that a <see cref="ControlBorder"/> can be drawn.

@@ -603,6 +603,30 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="ISprite"/> for the given <see cref="ControlBorderSpriteType"/>.
+        /// </summary>
+        /// <param name="spriteType">The type of <see cref="ControlBorderSpriteType"/>.</param>
+        /// <param name="value">The <see cref="ControlBorderDrawStyle"/> to assign to the <paramref name="spriteType"/>.</param>
+        public void SetDrawStyle(ControlBorderSpriteType spriteType, ControlBorderDrawStyle value)
+        {
+            _drawStyles[(int)spriteType] = value;
+
+            UpdateCanDraw();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISprite"/> for the given <see cref="ControlBorderSpriteType"/>.
+        /// </summary>
+        /// <param name="spriteType">The type of <see cref="ControlBorderSpriteType"/>.</param>
+        /// <param name="value">The <see cref="ISprite"/> to assign to the <paramref name="spriteType"/>.</param>
+        public void SetSprite(ControlBorderSpriteType spriteType, ISprite value)
+        {
+            _sprites[(int)spriteType] = value;
+
+            UpdateCanDraw();
+        }
+
+        /// <summary>
         /// Loads the <see cref="ControlBorderDrawStyle"/>s from file.
         /// </summary>
         /// <param name="filePath">The path to the file to load the <see cref="ControlBorderDrawStyle"/>s from.</param>
@@ -631,30 +655,6 @@ namespace NetGore.Graphics.GUI
 
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISprite"/> for the given <see cref="ControlBorderSpriteType"/>.
-        /// </summary>
-        /// <param name="spriteType">The type of <see cref="ControlBorderSpriteType"/>.</param>
-        /// <param name="value">The <see cref="ControlBorderDrawStyle"/> to assign to the <paramref name="spriteType"/>.</param>
-        public void SetDrawStyle(ControlBorderSpriteType spriteType, ControlBorderDrawStyle value)
-        {
-            _drawStyles[(int)spriteType] = value;
-
-            UpdateCanDraw();
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISprite"/> for the given <see cref="ControlBorderSpriteType"/>.
-        /// </summary>
-        /// <param name="spriteType">The type of <see cref="ControlBorderSpriteType"/>.</param>
-        /// <param name="value">The <see cref="ISprite"/> to assign to the <paramref name="spriteType"/>.</param>
-        public void SetSprite(ControlBorderSpriteType spriteType, ISprite value)
-        {
-            _sprites[(int)spriteType] = value;
-
-            UpdateCanDraw();
         }
 
         /// <summary>

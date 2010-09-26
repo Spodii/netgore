@@ -21,21 +21,6 @@ namespace NetGore.Graphics.GUI
         readonly Entity _owner;
         readonly ChatBubbleText _textControl;
 
-        /// <summary>
-        /// Clears all <see cref="ChatBubble"/> instances that were created with <see cref="ChatBubble.Create"/>.
-        /// </summary>
-        public static void ClearAll()
-        {
-            IEnumerable<ChatBubble> toDispose;
-            lock (_chatBubblesSync)
-            {
-                toDispose = _chatBubbles.Values.ToImmutable();
-            }
-
-            foreach (var cb in toDispose)
-                cb.Dispose();
-        }
-
         TickCount _deathTime;
 
         /// <summary>
@@ -72,11 +57,13 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public string ChatText
         {
-            get {
+            get
+            {
                 if (_textControl == null)
                     return string.Empty;
                 else
-                return _textControl.Text; }
+                    return _textControl.Text;
+            }
         }
 
         /// <summary>
@@ -123,6 +110,23 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Clears all <see cref="ChatBubble"/> instances that were created with <see cref="ChatBubble.Create"/>.
+        /// </summary>
+        public static void ClearAll()
+        {
+            IEnumerable<ChatBubble> toDispose;
+            lock (_chatBubblesSync)
+            {
+                toDispose = _chatBubbles.Values.ToImmutable();
+            }
+
+            foreach (var cb in toDispose)
+            {
+                cb.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Creates a <see cref="ChatBubble"/> instance.
         /// </summary>
         /// <param name="parent">The parent.</param>
@@ -152,19 +156,6 @@ namespace NetGore.Graphics.GUI
 
                 return c;
             }
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="TextControl.Font"/> has changed.
-        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
-        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
-        /// </summary>
-        protected override void OnFontChanged()
-        {
-            base.OnFontChanged();
-
-            if (_textControl != null)
-                _textControl.Font = Font;
         }
 
         /// <summary>
@@ -249,6 +240,19 @@ namespace NetGore.Graphics.GUI
         public override void LoadSkin(ISkinManager skinManager)
         {
             Border = skinManager.GetBorder("Chat Bubble");
+        }
+
+        /// <summary>
+        /// Handles when the <see cref="TextControl.Font"/> has changed.
+        /// This is called immediately before <see cref="TextControl.FontChanged"/>.
+        /// Override this method instead of using an event hook on <see cref="TextControl.FontChanged"/> when possible.
+        /// </summary>
+        protected override void OnFontChanged()
+        {
+            base.OnFontChanged();
+
+            if (_textControl != null)
+                _textControl.Font = Font;
         }
 
         /// <summary>

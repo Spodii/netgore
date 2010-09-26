@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NetGore.Content;
+﻿using System.Linq;
 using NetGore.Graphics.GUI;
 using NetGore.World;
-using SFML.Graphics;
 
 namespace DemoGame.Client
 {

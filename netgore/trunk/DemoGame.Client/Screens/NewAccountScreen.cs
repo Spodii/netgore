@@ -24,8 +24,7 @@ namespace DemoGame.Client
         /// Initializes a new instance of the <see cref="NewAccountScreen"/> class.
         /// </summary>
         /// <param name="screenManager">The <see cref="IScreenManager"/> to add this <see cref="GameScreen"/> to.</param>
-        public NewAccountScreen(IScreenManager screenManager)
-            : base(screenManager, ScreenName, _title)
+        public NewAccountScreen(IScreenManager screenManager) : base(screenManager, ScreenName, _title)
         {
         }
 
@@ -125,11 +124,11 @@ namespace DemoGame.Client
             _cNameText = new TextBox(cScreen, new Vector2(220, 180), new Vector2(200, 40))
             { IsMultiLine = false, Text = string.Empty };
 
-            GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260),"Password:");
+            GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 260), "Password:");
             _cPasswordText = new TextBox(cScreen, new Vector2(220, 260), new Vector2(200, 40))
             { IsMultiLine = false, Text = string.Empty };
 
-            GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320),"Email:");
+            GameScreenHelper.CreateMenuLabel(cScreen, new Vector2(60, 320), "Email:");
             _cEmailText = new TextBox(cScreen, new Vector2(220, 320), new Vector2(200, 40))
             { IsMultiLine = false, Text = string.Empty };
 
