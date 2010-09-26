@@ -17,8 +17,8 @@ namespace NetGore.Features.ActionDisplays
         const string _keyParticleEffect = "ParticleEffect";
         const string _keyScript = "Script";
         const string _keySoundID = "SoundID";
-        GrhIndex _grhIndex;
 
+        GrhIndex _grhIndex;
         ActionDisplayID _id;
         string _particleEffect;
         string _script;
