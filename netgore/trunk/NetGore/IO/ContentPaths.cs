@@ -521,7 +521,7 @@ namespace NetGore.IO
             // Try to run the program
             var arguments = string.Format("\"{0}\" \"{1}\"", dev.Root, build.Root);
             if (!string.IsNullOrEmpty(userArgs))
-                arguments += userArgs;
+                arguments += " " + userArgs;
 
             var pi = new ProcessStartInfo(copyContentFile, arguments)
             { CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden };
