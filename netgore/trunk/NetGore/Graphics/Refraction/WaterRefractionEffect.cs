@@ -315,6 +315,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the drawing priority of this <see cref="IRefractionEffect"/>. The value is relative to other
+        /// <see cref="IRefractionEffect"/>s. <see cref="IRefractionEffect"/>s with lower values are drawn first.
+        /// </summary>
+        public virtual int DrawPriority
+        {
+            get { return -100000; }
+        }
+
+        /// <summary>
         /// Gets or sets if this refraction effect is enabled.
         /// </summary>
         [DisplayName("IsEnabled")]
