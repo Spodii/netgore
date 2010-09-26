@@ -369,6 +369,12 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
+        /// </summary>
+        /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
+        public abstract ParticleEmitter DeepCopy();
+
+        /// <summary>
         /// Copies the values in this <see cref="ParticleEmitter"/> to another.
         /// </summary>
         /// <param name="destination">The <see cref="ParticleEmitter"/> to copy the values to.</param>
@@ -386,6 +392,7 @@ namespace NetGore.Graphics.ParticleEngine
             destination.ReleaseSpeed = ReleaseSpeed;
             destination.Sprite.SetGrh(Sprite.GrhData, Sprite.AnimType, Sprite.LastUpdated);
             destination.ParticleModifiers = ParticleModifiers.DeepCopy();
+            destination.EmitterModifiers = EmitterModifiers.DeepCopy();
         }
 
         /// <summary>

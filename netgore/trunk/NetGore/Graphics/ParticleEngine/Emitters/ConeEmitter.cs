@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
@@ -43,6 +44,19 @@ namespace NetGore.Graphics.ParticleEngine
         {
             get { return _direction; }
             set { _direction = value; }
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
+        /// </summary>
+        /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
+        public override ParticleEmitter DeepCopy()
+        {
+            var ret = new ConeEmitter();
+            CopyValuesTo(ret);
+            ret.ConeAngle = ConeAngle;
+            ret.Direction = Direction;
+            return ret;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -9,6 +10,17 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public class PointEmitter : ParticleEmitter
     {
+        /// <summary>
+        /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
+        /// </summary>
+        /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
+        public override ParticleEmitter DeepCopy()
+        {
+            var ret = new PointEmitter();
+            CopyValuesTo(ret);
+            return ret;
+        }
+
         /// <summary>
         /// When overridden in the derived class, generates the offset and normalized force vectors to
         /// release the <see cref="Particle"/> at.

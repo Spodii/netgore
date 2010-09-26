@@ -1406,11 +1406,7 @@ namespace DemoGame.MapEditor
                         if (em == null)
                             return;
 
-                        newEmitter = (ParticleEmitter)TypeFactory.GetTypeInstance(em.GetType());
-                        if (newEmitter == null)
-                            return;
-
-                        em.CopyValuesTo(newEmitter);
+                        newEmitter = em.DeepCopy();
                     }
                 }
                 finally
