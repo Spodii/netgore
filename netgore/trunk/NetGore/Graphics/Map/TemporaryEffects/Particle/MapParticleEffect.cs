@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Graphics.ParticleEngine;
 
 namespace NetGore.Graphics
@@ -10,10 +12,12 @@ namespace NetGore.Graphics
     /// </summary>
     public class MapParticleEffect : ITemporaryMapEffect
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly ParticleEmitter _emitter;
         readonly bool _isForeground;
 
-        bool _killed = false;
+        bool _isAlive = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapParticleEffect"/> class.
@@ -46,14 +50,16 @@ namespace NetGore.Graphics
         /// </summary>
         protected void Kill()
         {
-            if (_killed)
+            if (!IsAlive)
             {
                 const string errmsg = "Tried to kill dead MapParticleEffcet `{0}`. This should only be called once.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
                 return;
             }
 
-            _killed = true;
+            _isAlive = false;
 
             _emitter.Kill();
 
@@ -63,7 +69,7 @@ namespace NetGore.Graphics
 
         /// <summary>
         /// When overridden in the derived class, performs the additional updating that this <see cref="MapParticleEffect"/>
-        /// needs to do such as checking if it is time to kill the effect. This method will not be called after the effect has been killed.
+        /// needs to do. This method will not be called after the effect has been killed.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         protected virtual void UpdateEffect(TickCount currentTime)
@@ -84,7 +90,7 @@ namespace NetGore.Graphics
         /// </summary>
         public bool IsAlive
         {
-            get { return !_killed || _emitter.ActiveParticles > 0; }
+            get { return _isAlive; }
         }
 
         /// <summary>
@@ -103,6 +109,9 @@ namespace NetGore.Graphics
         /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
         public void Draw(ISpriteBatch sb)
         {
+            if (!IsAlive)
+                return;
+
             _emitter.Draw(sb);
         }
 
@@ -115,10 +124,18 @@ namespace NetGore.Graphics
             if (!IsAlive)
                 return;
 
+            // Check if the effect died off
+            if (_emitter.IsExpired)
+            {
+                Kill();
+                return;
+            }
+
+            // Update the emitter
             _emitter.Update(currentTime);
 
-            if (!_killed)
-                UpdateEffect(currentTime);
+            // Allow for the derived class to update its own logic
+            UpdateEffect(currentTime);
         }
 
         #endregion
