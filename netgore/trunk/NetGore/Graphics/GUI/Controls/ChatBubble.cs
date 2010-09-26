@@ -205,6 +205,15 @@ namespace NetGore.Graphics.GUI
         /// <returns>The position to use to draw the <see cref="ChatBubble"/>.</returns>
         protected virtual Vector2 GetDrawOffset()
         {
+            if (Owner == null)
+            {
+                const string errmsg = "ChatBubble `{0}`'s owner is null.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return Vector2.Zero;
+            }
+
             // Get the top-left corner (using the default implementation if needed)
             Vector2 p;
             if (GetTopLeftCornerHandler != null)
