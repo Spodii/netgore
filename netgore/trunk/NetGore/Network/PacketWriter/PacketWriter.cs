@@ -13,7 +13,7 @@ namespace NetGore.Network
     /// Exception since it was likely lost and the equivilant of a memory leak. It is preferred that a
     /// PacketWriter is never constructed directly, and is only used from the PacketWriterPool.
     /// </summary>
-    public class PacketWriter : BitStream, IPoolable, IDisposable
+    public class PacketWriter : BitStream, IPoolable
     {
         readonly IObjectPool<PacketWriter> _objectPool;
 
@@ -32,20 +32,6 @@ namespace NetGore.Network
         {
             _objectPool.Free(this);
         }
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Returns the PacketWriter back to the ObjectPool whence it came. After this is called, it is
-        /// recommended to never, ever try to interact with the object directly. Treat it like you would if
-        /// the object was destroyed.
-        /// </summary>
-        public void Dispose()
-        {
-            HandleDispose();
-        }
-
-        #endregion
 
         #region IPoolable Members
 
