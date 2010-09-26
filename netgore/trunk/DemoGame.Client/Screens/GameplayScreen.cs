@@ -209,6 +209,8 @@ namespace DemoGame.Client
         {
             base.Activate();
 
+            ChatBubble.ClearAll();
+
             // Make sure to clear some stuff (text boxes, etc) that persists for the screen. Stuff that persists for the map only,
             // such as effects, should not need to be cleared here since it should be cleared when the map is set or changes.
             SoundManager.Stop3D();
@@ -293,6 +295,8 @@ namespace DemoGame.Client
         /// </summary>
         public override void Deactivate()
         {
+            ChatBubble.ClearAll();
+
             SoundManager.Stop3D();
             ControlBorder.RemoveGlobalColorTransformation(GlobalControlBorderTransformer);
 
@@ -718,6 +722,8 @@ namespace DemoGame.Client
 
         void World_MapChanged(World world, Map oldMap, Map newMap)
         {
+            ChatBubble.ClearAll();
+
             // Stop all sounds
             SoundManager.Stop();
 
