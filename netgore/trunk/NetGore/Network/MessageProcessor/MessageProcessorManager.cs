@@ -174,12 +174,16 @@ namespace NetGore.Network
         /// <returns>True if all of the bits in the <paramref name="bitStream"/> are unset; otherwise false.</returns>
         static bool RestOfStreamIsZero(BitStream bitStream)
         {
-            while (bitStream.PositionBits < bitStream.LengthBits)
+            // Read 32 bits at a time
+            while (bitStream.PositionBits + 32 <= bitStream.LengthBits)
             {
-                // TODO: !! Optimize by using bitStream.ReadInt() to read up to 32 bits at once
-                if (bitStream.ReadBool())
+                if (bitStream.ReadUInt() != 0)
                     return false;
             }
+
+            // Read the remaining bits
+            if (bitStream.ReadUInt(bitStream.LengthBits  - bitStream.PositionBits) != 0)
+                return false;
 
             return true;
         }
