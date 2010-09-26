@@ -66,7 +66,7 @@ namespace NetGore.Network
         /// </summary>
         public float AverageLatency
         {
-            get { return _conn.AverageRoundtripTime; }
+            get { return _conn.AverageRoundtripTime * 1000f; }
         }
 
         /// <summary>
