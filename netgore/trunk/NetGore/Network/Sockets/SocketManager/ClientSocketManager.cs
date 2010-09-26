@@ -243,8 +243,12 @@ namespace NetGore.Network
                                 break;
 
                             case NetConnectionStatus.Disconnecting:
-                                // Disconnecting only is set when we are the ones disconnecting
-                                _clientDisconnected = true;
+                                // Disconnecting only is set when we are the ones disconnecting. However, we want to set _clientDisconnected
+                                // only when we didn't disconnect due to an error (like the connection couldn't be made in the first place).
+                                if (string.IsNullOrEmpty(reason))
+                                    _clientDisconnected = true;
+                                else
+                                    _clientDisconnected = false;
                                 break;
                         }
 
