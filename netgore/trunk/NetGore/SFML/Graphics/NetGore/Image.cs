@@ -104,8 +104,31 @@ namespace SFML
                 {
                     fixed (Color* PixelsPtr = pixels)
                     {
-                        var width = (uint)pixels.GetLength(0);
-                        var height = (uint)pixels.GetLength(1);
+                        var Width = (uint)pixels.GetLength(0);
+                        var Height = (uint)pixels.GetLength(1);
+                        SetThis(sfImage_CreateFromPixels(Width, Height, (byte*)PixelsPtr));
+                    }
+                }
+
+                if (This == IntPtr.Zero)
+                    throw new LoadingFailedException("image");
+            }
+
+            ////////////////////////////////////////////////////////////
+            /// <summary>
+            /// Construct the image directly from an array of pixels
+            /// </summary>
+            /// <param name="width">Image width</param>
+            /// <param name="height">Image height</param>
+            /// <param name="pixels">array containing the pixels</param>
+            /// <exception cref="LoadingFailedException" />
+            ////////////////////////////////////////////////////////////
+            public Image(uint width, uint height, byte[] pixels) : base(IntPtr.Zero)
+            {
+                unsafe
+                {
+                    fixed (byte* PixelsPtr = pixels)
+                    {
                         SetThis(sfImage_CreateFromPixels(width, height, PixelsPtr));
                     }
                 }
@@ -377,92 +400,92 @@ namespace SFML
                 {
                     fixed (Color* PixelsPtr = pixels)
                     {
-                        var width = pixels.GetLength(0);
-                        var height = pixels.GetLength(1);
-                        sfImage_UpdatePixels(This, PixelsPtr, new IntRect((int)x, (int)y, width, height));
+                        var Width = pixels.GetLength(0);
+                        var Height = pixels.GetLength(1);
+                        sfImage_UpdatePixels(This, PixelsPtr, new IntRect((int)x, (int)y, Width, Height));
                     }
                 }
             }
 
             #region Imports
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfImage_Bind(IntPtr This);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfImage_Copy(IntPtr Image);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfImage_CopyImage(IntPtr This, IntPtr Source, uint DestX, uint DestY, IntRect SourceRect);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfImage_CopyScreen(IntPtr This, IntPtr Window, IntRect SourceRect);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfImage_Create();
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfImage_CreateFromColor(uint Width, uint Height, Color Col);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfImage_CreateFromFile(string Filename);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern unsafe IntPtr sfImage_CreateFromMemory(char* Data, uint Size);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
-            static extern unsafe IntPtr sfImage_CreateFromPixels(uint Width, uint Height, Color* Pixels);
+            static extern unsafe IntPtr sfImage_CreateFromPixels(uint Width, uint Height, byte* Pixels);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfImage_CreateMaskFromColor(IntPtr This, Color Col, byte Alpha);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfImage_Destroy(IntPtr This);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern uint sfImage_GetHeight(IntPtr This);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern Color sfImage_GetPixel(IntPtr This, uint X, uint Y);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern IntPtr sfImage_GetPixelsPtr(IntPtr This);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern uint sfImage_GetWidth(IntPtr This);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfImage_IsSmooth(IntPtr This);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern bool sfImage_SaveToFile(IntPtr This, string Filename);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfImage_SetPixel(IntPtr This, uint X, uint Y, Color Col);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern void sfImage_SetSmooth(IntPtr This, bool Smooth);
 
-            [DllImport("csfml-graphics", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("csfml2-graphics", CallingConvention = CallingConvention.Cdecl)]
             [SuppressUnmanagedCodeSecurity]
             static extern unsafe void sfImage_UpdatePixels(IntPtr This, Color* Pixels, IntRect Rectangle);
 

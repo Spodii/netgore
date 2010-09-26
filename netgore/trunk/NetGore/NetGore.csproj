@@ -435,7 +435,6 @@
     <Compile Include="SFML\Graphics\FloatRect.cs" />
     <Compile Include="SFML\Graphics\NetGore\Image.cs" />
     <Compile Include="SFML\Graphics\NetGore\Font.cs" />
-    <Compile Include="SFML\Graphics\Glyph.cs" />
     <Compile Include="SFML\Graphics\NetGore\LazyFont.cs" />
     <Compile Include="SFML\Graphics\NetGore\LazyImage.cs" />
     <Compile Include="SFML\Audio\NetGore\LazySoundBuffer.cs" />
@@ -474,7 +473,7 @@
     <Compile Include="SFML\Graphics\NetGore\ValueTypes\Vector4.cs" />
     <Compile Include="SFML\Graphics\PostFx.cs" />
     <Compile Include="SFML\Graphics\IntRect.cs" />
-    <Compile Include="SFML\Graphics\RenderImage.cs" />
+    <Compile Include="SFML\Graphics\NetGore\RenderImage.cs" />
     <Compile Include="SFML\Graphics\RenderTarget.cs" />
     <Compile Include="SFML\Graphics\RenderWindow.cs" />
     <Compile Include="SFML\Graphics\Shader.cs" />
@@ -689,15 +688,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="csfml-audio.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="csfml-graphics.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="csfml-window.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="CustomValueTypeTemplate.txt" />
     <None Include="libsndfile-1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -756,6 +746,19 @@
   <ItemGroup>
     <None Include="_ProjectInfo.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="SFML\version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="csfml2-audio.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="csfml2-graphics.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="csfml2-window.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
