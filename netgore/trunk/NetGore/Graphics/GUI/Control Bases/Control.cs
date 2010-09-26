@@ -120,8 +120,6 @@ namespace NetGore.Graphics.GUI
             else
                 _root = Parent.Root;
 
-            Initialize();
-
             if (Parent != null)
             {
                 // Check that the parent isn't disposed
@@ -1028,16 +1026,6 @@ namespace NetGore.Graphics.GUI
                 Parent.SetTopMostChild(this);
 
             InvokeFocused();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, provides a place to initialize the <see cref="Control"/> before any events for the
-        /// <see cref="Control"/> are invoked. This will be called before the derived class's constructor, and only called once
-        /// for each instance. Derived classes should call the base method at the start of the overridden method to ensure
-        /// the call hierarchy is maintained in the expected order.
-        /// </summary>
-        protected virtual void Initialize()
-        {
         }
 
         /// <summary>
