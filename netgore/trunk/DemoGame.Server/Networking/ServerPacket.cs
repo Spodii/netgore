@@ -531,11 +531,32 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SkillStartCasting(SkillType skillType, ushort castTime)
+        public static PacketWriter SkillStartCasting_ToUser(SkillType skillType, ushort castTime)
         {
-            var pw = GetWriter(ServerPacketID.SkillStartCasting);
+            var pw = GetWriter(ServerPacketID.SkillStartCasting_ToUser);
             pw.WriteEnum(skillType);
             pw.Write(castTime);
+            return pw;
+        }
+
+        public static PacketWriter SkillStartCasting_ToMap(MapEntityIndex entityIndex, SkillType skillType)
+        {
+            var pw = GetWriter(ServerPacketID.SkillStartCasting_ToMap);
+            pw.Write(entityIndex);
+            pw.WriteEnum(skillType);
+            return pw;
+        }
+
+        public static PacketWriter SkillStopCasting_ToUser()
+        {
+            var pw = GetWriter(ServerPacketID.SkillStopCasting_ToUser);
+            return pw;
+        }
+
+        public static PacketWriter SkillStopCasting_ToMap(MapEntityIndex entityIndex)
+        {
+            var pw = GetWriter(ServerPacketID.SkillStopCasting_ToMap);
+            pw.Write(entityIndex);
             return pw;
         }
 

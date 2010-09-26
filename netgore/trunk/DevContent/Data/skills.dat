@@ -8,6 +8,14 @@
 			<Description>Me heal you long time!</Description>
 			<Icon>140</Icon>
 			<CooldownGroup>0</CooldownGroup>
+			<StartCastingActionDisplay>
+				<HasValue>false</HasValue>
+				<Value>0</Value>
+			</StartCastingActionDisplay>
+			<CastActionDisplay>
+				<HasValue>true</HasValue>
+				<Value>1</Value>
+			</CastActionDisplay>
 		</Item0>
 		<Item1>
 			<DisplayName>Strengthen</DisplayName>
@@ -15,6 +23,14 @@
 			<Description>Makes you stronger! Grr!!!</Description>
 			<Icon>142</Icon>
 			<CooldownGroup>1</CooldownGroup>
+			<StartCastingActionDisplay>
+				<HasValue>false</HasValue>
+				<Value>0</Value>
+			</StartCastingActionDisplay>
+			<CastActionDisplay>
+				<HasValue>false</HasValue>
+				<Value>0</Value>
+			</CastActionDisplay>
 		</Item1>
 	</SkillInfos>
 </SkillInfoManager>

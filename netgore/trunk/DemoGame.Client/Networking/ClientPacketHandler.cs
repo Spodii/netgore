@@ -790,13 +790,64 @@ namespace DemoGame.Client
             World.UserCharIndex = mapCharIndex;
         }
 
-        [MessageHandler((uint)ServerPacketID.SkillStartCasting)]
-        void RecvSkillStartCasting(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ServerPacketID.SkillStartCasting_ToUser)]
+        void RecvSkillStartCasting_ToUser(IIPSocket conn, BitStream r)
         {
             var skillType = r.ReadEnum<SkillType>();
             var castTime = r.ReadUShort();
 
             GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
+        }
+
+        [MessageHandler((uint)ServerPacketID.SkillStartCasting_ToMap)]
+        void RecvSkillStartCasting_ToMap(IIPSocket conn, BitStream r)
+        {
+            var casterEntityIndex = r.ReadMapEntityIndex();
+            var skillType = r.ReadEnum<SkillType>();
+
+            // Get the SkillInfo for the skill being used
+            var skillInfo = SkillInfoManager.Instance[skillType];
+            if (skillInfo == null)
+            {
+                const string errmsg = "EntityIndex `{0}` started casting unknown SkillType `{1}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, casterEntityIndex, skillType);
+                Debug.Fail(string.Format(errmsg, casterEntityIndex, skillType));
+                return;
+            }
+
+            // Get the entity
+            var casterEntity = Map.GetDynamicEntity(casterEntityIndex);
+            if (casterEntity == null)
+                return;
+
+            // If an ActionDisplay is available for this skill, display it
+            if (skillInfo.StartCastingActionDisplay.HasValue)
+            {
+                // TODO: !! Create the ActionDisplay for casting
+            }
+        }
+
+        // TODO: !! Create a local method to use for every call to get a DynamicEntity. In it, handle the error checking and logging crap.
+
+        [MessageHandler((uint)ServerPacketID.SkillStopCasting_ToUser)]
+        void RecvSkillStopCasting_ToUser(IIPSocket conn, BitStream r)
+        {
+            GameplayScreen.SkillCastProgressBar.StopCasting();
+        }
+
+        [MessageHandler((uint)ServerPacketID.SkillStopCasting_ToMap)]
+        void RecvSkillStopCasting_ToMap(IIPSocket conn, BitStream r)
+        {
+            var casterEntityIndex = r.ReadMapEntityIndex();
+
+            // Get the entity
+            var casterEntity = Map.GetDynamicEntity(casterEntityIndex);
+            if (casterEntity == null)
+                return;
+
+            // Stop any casting ActionDisplay for the entity
+            // TODO: !! ...
         }
 
         [MessageHandler((uint)ServerPacketID.StartChatDialog)]
@@ -993,14 +1044,29 @@ namespace DemoGame.Client
                 return;
             }
 
+            // TODO: !! Replace this message here with the display of the skills
             if (target != null)
                 GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", user.Name, skillType, target.Name));
             else
                 GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", user.Name, skillType));
 
-            // If the character that used the skill is our client's character, hide the skill cast progress bar
-            if (user == User && skillType == GameplayScreen.SkillCastProgressBar.CurrentSkillType)
-                GameplayScreen.SkillCastProgressBar.StopCasting();
+            // Get the SkillInfo for the skill being used
+            var skillInfo = SkillInfoManager.Instance[skillType];
+            if (skillInfo == null)
+            {
+                const string errmsg = "Entity `{0}` started casting unknown SkillType `{1}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, user, skillType);
+                Debug.Fail(string.Format(errmsg, user, skillType));
+            }
+            else
+            {
+                // If an ActionDisplay is available for this skill, display it
+                if (skillInfo.CastActionDisplay.HasValue)
+                {
+                    // TODO: !! Create the ActionDisplay for casting
+                }
+            }
         }
 
         #region IGetTime Members

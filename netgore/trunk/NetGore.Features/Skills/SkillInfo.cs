@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.Features.ActionDisplays;
 using NetGore.IO;
 
 namespace NetGore.Features.Skills
@@ -8,6 +9,13 @@ namespace NetGore.Features.Skills
     /// </summary>
     public class SkillInfo<T> : IPersistable
     {
+        /// <summary>
+        /// Gets or sets (protected) the <see cref="ActionDisplayID"/> to use the skill is casted.
+        /// Only applicable when the skill is casted successfully.
+        /// </summary>
+        [SyncValue]
+        public ActionDisplayID? CastActionDisplay { get; protected set; }
+
         /// <summary>
         /// Gets or sets (protected) the cooldown group of skills the skill belongs to.
         /// </summary>
@@ -31,6 +39,13 @@ namespace NetGore.Features.Skills
         /// </summary>
         [SyncValue]
         public GrhIndex Icon { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets (protected) the <see cref="ActionDisplayID"/> to use when starting to cast the skill.
+        /// Only applicable when the skill has a casting time. When it is casted immediately, this is not used.
+        /// </summary>
+        [SyncValue]
+        public ActionDisplayID? StartCastingActionDisplay { get; protected set; }
 
         /// <summary>
         /// Gets or sets (protected) the actual type of skill that this information is for.
