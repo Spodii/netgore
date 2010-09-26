@@ -9,5 +9,11 @@ namespace DemoGame.Client
     /// </summary>
     public static class ClientConfig
     {
+        /// <summary>
+        /// How frequently, in milliseconds, the game time is re-acquired from the server.
+        /// Synchronizing only helps with dealing with systems that have an internal clock that runs too slow or too fast.
+        /// Default is 10 minutes.
+        /// </summary>
+        public const int SyncGameTimeFrequency = 1000 * 60 * 10; 
     }
 }

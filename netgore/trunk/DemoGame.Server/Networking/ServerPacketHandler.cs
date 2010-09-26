@@ -656,6 +656,16 @@ namespace DemoGame.Server
             user.ChatState.StartChat(npc);
         }
 
+        [MessageHandler((uint)ClientPacketID.SynchronizeGameTime)]
+        void RecvSynchronizeGameTime(IIPSocket conn, BitStream r)
+        {
+            // Just reply immediately with the current game time
+            using (var pw = ServerPacket.SetGameTime(DateTime.Now))
+            {
+                conn.Send(pw, ServerMessageType.GUI);
+            }
+        }
+
         [MessageHandler((uint)ClientPacketID.SwapInventorySlots)]
         void RecvSwapInventorySlots(IIPSocket conn, BitStream r)
         {

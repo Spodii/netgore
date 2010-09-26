@@ -35,6 +35,7 @@ namespace DemoGame.Client
         readonly SkeletonManager _skelManager = SkeletonManager.Create(ContentPaths.Build);
         readonly ISkillCooldownManager _skillCooldownManager = new SkillCooldownManager();
 
+        TickCount _nextSyncGameTime = TickCount.Now+ ClientConfig.SyncGameTimeFrequency;
         AvailableQuestsForm _availableQuestsForm;
         Panel _cScreen;
         CharacterTargeter _characterTargeter;
@@ -716,6 +717,16 @@ namespace DemoGame.Client
 
             _userLight.IsEnabled = true;
             _userLight.Teleport(UserChar.Position);
+            
+            // Periodically synchronize the game time
+            if (Socket != null && _nextSyncGameTime < gameTime)
+            {
+                _nextSyncGameTime = gameTime + ClientConfig.SyncGameTimeFrequency;
+                using (var pw = ClientPacket.SynchronizeGameTime())
+                {
+                    Socket.Send(pw, ClientMessageType.System);
+                }
+            }
 
             base.Update(gameTime);
         }
