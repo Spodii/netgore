@@ -158,3 +158,6 @@ AccountBanned: "Your account has been banned. The ban will expire in " + GetTime
 DisconnectedBanned: "Your account has been banned. The ban will expire in " + GetTimeSpanString($0 * 60) + ".\nReason: $1"
 BanUserSuccessful: "You have successfully banned $0."
 BanUserFailed: "Failed to ban user $0: $1"
+
+########### Feature: Kicking ###########
+UserKicked: "You've been kicked from the server!\nReason: $0"
