@@ -10,7 +10,11 @@ namespace NetGore.Graphics
     /// </summary>
     public interface IRefractionEffect : ISpatial, IDisposable
     {
-        // TODO: !! Draw order prioritization
+        /// <summary>
+        /// Gets the drawing priority of this <see cref="IRefractionEffect"/>. The value is relative to other
+        /// <see cref="IRefractionEffect"/>s. <see cref="IRefractionEffect"/>s with lower values are drawn first.
+        /// </summary>
+        int DrawPriority { get; }
 
         /// <summary>
         /// Gets or sets if this refraction effect is enabled.
