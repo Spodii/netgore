@@ -767,8 +767,8 @@ namespace DemoGame.Client
                 character.ProvidedQuests = questIDs;
         }
 
-        [MessageHandler((uint)ServerPacketID.SetSkillGroupCooldown)]
-        void RecvSetSkillGroupCooldown(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ServerPacketID.SkillSetGroupCooldown)]
+        void RecvSkillSetGroupCooldown(IIPSocket conn, BitStream r)
         {
             var skillGroup = r.ReadByte();
             var cooldownTime = r.ReadUShort();
@@ -790,8 +790,8 @@ namespace DemoGame.Client
             World.UserCharIndex = mapCharIndex;
         }
 
-        [MessageHandler((uint)ServerPacketID.StartCastingSkill)]
-        void RecvStartCastingSkill(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ServerPacketID.SkillStartCasting)]
+        void RecvSkillStartCasting(IIPSocket conn, BitStream r)
         {
             var skillType = r.ReadEnum<SkillType>();
             var castTime = r.ReadUShort();
@@ -970,8 +970,8 @@ namespace DemoGame.Client
             asUsable.Use(usedBy);
         }
 
-        [MessageHandler((uint)ServerPacketID.UseSkill)]
-        void RecvUseSkill(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ServerPacketID.SkillUse)]
+        void RecvSkillUse(IIPSocket conn, BitStream r)
         {
             var userID = r.ReadMapEntityIndex();
             var hasTarget = r.ReadBool();
