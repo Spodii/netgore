@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Lidgren.Network;
 
 // FUTURE: Add a Debug check to see if Write operations result in data loss
-// TODO: !! Inherit from Stream
 
 namespace NetGore.IO
 {
@@ -13,7 +13,7 @@ namespace NetGore.IO
     /// A stream that supports performing I/O on a bit level. No parts of this class are
     /// guarenteed to be thread safe.
     /// </summary>
-    public partial class BitStream : IValueReader, IValueWriter
+    public partial class BitStream : Stream, IValueReader, IValueWriter
     {
         /// <summary>
         /// Default maximum length of a string when the maximum length is not specified.
@@ -130,12 +130,173 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Unused by the <see cref="BitStream"/>.
+        /// </summary>
+        public override void Flush()
+        {
+        }
+
+        /// <summary>
+        /// Sets the position within the current stream.
+        /// </summary>
+        /// <param name="byteOffset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
+        /// <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"/> indicating the reference point
+        /// used to obtain the new position.</param>
+        /// <returns>
+        /// The new position within the current stream.
+        /// </returns>
+        public override long Seek(long byteOffset, SeekOrigin origin)
+        {
+            return SeekBits((int)(byteOffset * _bitsByte), origin) * _bitsByte;
+        }
+
+        /// <summary>
+        /// Sets the position within the current stream.
+        /// </summary>
+        /// <param name="bitOffset">A bit offset relative to the <paramref name="origin"/> parameter.</param>
+        /// <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"/> indicating the reference point
+        /// used to obtain the new position.</param>
+        /// <returns>
+        /// The new position within the current stream.
+        /// </returns>
+        public int SeekBits(int bitOffset, SeekOrigin origin)
+        {
+            switch (origin)
+            {
+                case SeekOrigin.Begin:
+                    PositionBits = bitOffset;
+                    break;
+
+                case SeekOrigin.Current:
+                    PositionBits += bitOffset;
+                    break;
+
+                case SeekOrigin.End:
+                    PositionBits = LengthBits - bitOffset;
+                    break;
+
+            }
+
+            return PositionBits;
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, sets the length of the current stream.
+        /// </summary>
+        /// <param name="value">The desired length of the current stream in bytes.</param>
+        public override void SetLength(long value)
+        {
+            LengthBits = (int)(value * _bitsByte);
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, reads a sequence of bytes from the current stream and advances the position
+        /// within the stream by the number of bytes read.
+        /// </summary>
+        /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array
+        /// with the values between <paramref name="offset"/> and (<paramref name="offset"/> + <paramref name="count"/> - 1)
+        /// replaced by the bytes read from the current source.</param>
+        /// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin storing the data
+        /// read from the current stream.</param>
+        /// <param name="count">The maximum number of bytes to be read from the current stream.</param>
+        /// <returns>
+        /// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many
+        /// bytes are not currently available, or zero (0) if the end of the stream has been reached.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentException">The sum of <paramref name="offset"/> and <paramref name="count"/> is
+        /// larger than the buffer length.</exception>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="buffer"/> is null.</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset"/> or <paramref name="count"/> is negative.</exception>
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
+            if (offset < 0)
+                throw new ArgumentOutOfRangeException("offset");
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count");
+            if (offset + count > buffer.Length)
+                throw new ArgumentException("The sum of the offset and count is greater than the buffer length.");
+
+            // Find the number of full bytes remaining
+            int bytesRemaining = (int)Math.Floor(((float)LengthBits - PositionBits) / _bitsByte);
+            Debug.Assert(bytesRemaining >= 0);
+
+            // Find the number of bytes we should read
+            int bytesToRead = Math.Min(count, bytesRemaining);
+            Debug.Assert(bytesToRead >= 0);
+
+            // Read one byte at a time
+            for (int i = 0; i < bytesToRead; i++)
+            {
+                buffer[i + offset] = ReadByte();
+            }
+
+            return bytesToRead;
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, gets a value indicating whether the current stream supports reading.
+        /// </summary>
+        /// <returns>
+        /// true if the stream supports reading; otherwise, false.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public override bool CanRead
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
+        /// </summary>
+        /// <returns>
+        /// true if the stream supports seeking; otherwise, false.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public override bool CanSeek
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, gets a value indicating whether the current stream supports writing.
+        /// </summary>
+        /// <returns>
+        /// true if the stream supports writing; otherwise, false.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public override bool CanWrite
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Gets the length of the BitStream in full bytes. This value is always rounded up when there
         /// are partial bytes written. For example, if you write anything, even just 1 bit, it will be greater than 0.
         /// </summary>
-        public int Length
+        public override long Length
         {
             get { return LengthBytes; }
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, gets or sets the position within the current stream.
+        /// </summary>
+        /// <value></value>
+        /// <returns>
+        /// The current position within the stream.
+        /// </returns>
+        public override long Position
+        {
+            get
+            {
+                return PositionBytes;
+            }
+            set
+            {
+                PositionBits = (int)(value * _bitsByte);
+            }
         }
 
         /// <summary>
@@ -346,7 +507,7 @@ namespace NetGore.IO
             if (bitsToMove == 0)
                 return;
 
-            Seek(BitStreamSeekOrigin.Current, bitsToMove);
+            SeekBits(bitsToMove, SeekOrigin.Current);
         }
 
         /// <summary>
@@ -500,25 +661,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Moves the stream's cursor to the specified location.
-        /// </summary>
-        /// <param name="origin">Origin to move from.</param>
-        /// <param name="bits">Number of bits to move.</param>
-        public void Seek(BitStreamSeekOrigin origin, int bits)
-        {
-            switch (origin)
-            {
-                case BitStreamSeekOrigin.Beginning:
-                    PositionBits = bits;
-                    break;
-
-                case BitStreamSeekOrigin.Current:
-                    PositionBits += bits;
-                    break;
-            }
-        }
-
-        /// <summary>
         /// Sets a new internal buffer for the BitStream.
         /// </summary>
         /// <param name="buffer">The new buffer.</param>
@@ -557,7 +699,7 @@ namespace NetGore.IO
         /// </summary>
         public void TrimExcess()
         {
-            Array.Resize(ref _buffer, Length);
+            Array.Resize(ref _buffer, (int)Length);
         }
 
         void WriteSigned(int value, int numBits)

@@ -485,7 +485,7 @@ namespace NetGore.IO
         /// <param name="value">Array of values to write</param>
         /// <param name="offset">Initial index of array <paramref name="value"/> to start with</param>
         /// <param name="length">Number of indices to write</param>
-        public void Write(byte[] value, int offset, int length)
+        public override void Write(byte[] value, int offset, int length)
         {
             // FUTURE: Would be more efficient if I grab 4 bytes at a time when possible
             for (var i = offset; i < offset + length; i++)
