@@ -8,7 +8,6 @@ using System.Reflection;
 using DemoGame.DbObjs;
 using log4net;
 using NetGore;
-using NetGore.AI;
 using NetGore.Audio;
 using NetGore.Collections;
 using NetGore.IO;
@@ -65,7 +64,6 @@ namespace DemoGame
         /// </summary>
         readonly IGetTime _getTime;
 
-        readonly MemoryMap _memoryMap = new MemoryMap();
 
         readonly ISpatialCollection _spatialCollection;
 
@@ -155,11 +153,6 @@ namespace DemoGame
             }
         }
 
-        [Browsable(false)]
-        public MemoryMap MemoryMap
-        {
-            get { return _memoryMap; }
-        }
 
         /// <summary>
         /// Gets or sets the ID of the music to play for the map, or empty or null if there is no music.
@@ -738,8 +731,6 @@ namespace DemoGame
         {
             var path = GetMapFilePath(contentPath, ID);
             Load(path, loadDynamicEntities, dynamicEntityFactory);
-            _memoryMap.Initialize((ushort)Width, (ushort)Height);
-            _memoryMap.LoadMemoryMap(contentPath, ID.GetRawValue());
         }
 
         /// <summary>
@@ -952,10 +943,7 @@ namespace DemoGame
             var path = contentPath.Maps.Join(mapID + EngineSettings.DataFileSuffix);
             Save(path, dynamicEntityFactory);
 
-            if (!_memoryMap.IsInitialized)
-                _memoryMap.Initialize((ushort)Size.X, (ushort)Size.Y);
-
-            _memoryMap.SaveMemoryMap(contentPath, mapID.GetRawValue());
+            
 
             if (Saved != null)
                 Saved(this);

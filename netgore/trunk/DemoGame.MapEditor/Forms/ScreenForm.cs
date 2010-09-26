@@ -545,57 +545,7 @@ namespace DemoGame.MapEditor
                     FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
             }
 
-            if (chkAIGrid.Checked)
-            {
-                var visibleArea = Map.Camera.GetViewArea();
-                visibleArea.Inflate(50, 50);
-
-                var B = new Color(100, 100, 100, 100);
-
-                // TODO: Horrible performance. Instead of using visibleArea.Contains(), just loop over the actual visible area.
-                var mm = Map.MemoryMap;
-                for (var X = 0; X < mm.CellsX; X++)
-                {
-                    for (var Y = 0; Y < mm.CellsY; Y++)
-                    {
-                        if (visibleArea.Contains(mm.MemoryCells[X, Y].Location))
-                        {
-                            var cellArea = mm.MemoryCells[X, Y].GetArea(mm.CellSize);
-
-                            if (mm.MemoryCells[X, Y].DebugStatus == 0)
-                            {
-                                Color C;
-                                if (mm.MemoryCells[X, Y].Weight == 0)
-                                    C = new Color(0, 100, 255, 150);
-                                else
-                                {
-                                    C = new Color(255, 255, 255);
-                                    C.A = (byte)MathHelper.Clamp(mm.MemoryCells[X, Y].Weight * 1.5f, 0, 255);
-                                }
-                                RenderRectangle.Draw(sb, cellArea, C, B);
-                            }
-
-                            if (mm.MemoryCells[X, Y].DebugStatus == 1)
-                            {
-                                // Start debug node.
-                                RenderRectangle.Draw(sb, cellArea, Color.Green, B);
-                            }
-
-                            if (mm.MemoryCells[X, Y].DebugStatus == 2)
-                            {
-                                // End debug node.
-                                RenderRectangle.Draw(sb, cellArea, Color.Red, B);
-                            }
-
-                            if (mm.MemoryCells[X, Y].DebugStatus == 3)
-                            {
-                                // Found path.
-                                RenderRectangle.Draw(sb, cellArea, Color.LightBlue, B);
-                            }
-                        }
-                    }
-                }
-            }
+           
 
             // End map rendering
             DrawingManager.EndDrawWorld();

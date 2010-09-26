@@ -67,7 +67,6 @@ namespace DemoGame.MapEditor
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.btnShowMinimap = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.chkAIGrid = new NetGore.EditorTools.PersistableCheckBox();
             this.chkLightSources = new NetGore.EditorTools.PersistableCheckBox();
             this.chkDrawSpawnAreas = new NetGore.EditorTools.PersistableCheckBox();
             this.chkDrawBackground = new NetGore.EditorTools.PersistableCheckBox();
@@ -233,7 +232,7 @@ namespace DemoGame.MapEditor
             // 
             this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.GameScreen.Camera = null;
-            this.GameScreen.CursorPos = new Vector2(0F, 0F);
+            this.GameScreen.CursorPos = new SFML.Graphics.Vector2(0F, 0F);
             this.GameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GameScreen.DrawHandler = null;
             this.GameScreen.Location = new System.Drawing.Point(0, 0);
@@ -340,10 +339,13 @@ namespace DemoGame.MapEditor
             // 
             this.treeGrhs.AllowDrop = true;
             this.treeGrhs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeGrhs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawAll;
+            this.treeGrhs.ImageIndex = 0;
             this.treeGrhs.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.treeGrhs.LabelEdit = true;
             this.treeGrhs.Location = new System.Drawing.Point(0, 0);
             this.treeGrhs.Name = "treeGrhs";
+            this.treeGrhs.SelectedImageIndex = 0;
             this.treeGrhs.ShowNodeToolTips = true;
             this.treeGrhs.Size = new System.Drawing.Size(320, 302);
             this.treeGrhs.Sorted = true;
@@ -388,7 +390,7 @@ namespace DemoGame.MapEditor
             this.lstBGItems.Location = new System.Drawing.Point(0, 0);
             this.lstBGItems.Map = null;
             this.lstBGItems.Name = "lstBGItems";
-            this.lstBGItems.Size = new System.Drawing.Size(320, 264);
+            this.lstBGItems.Size = new System.Drawing.Size(320, 273);
             this.lstBGItems.TabIndex = 1;
             this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
             // 
@@ -453,7 +455,7 @@ namespace DemoGame.MapEditor
             this.lstMapParticleEffects.Location = new System.Drawing.Point(0, 0);
             this.lstMapParticleEffects.Map = null;
             this.lstMapParticleEffects.Name = "lstMapParticleEffects";
-            this.lstMapParticleEffects.Size = new System.Drawing.Size(320, 264);
+            this.lstMapParticleEffects.Size = new System.Drawing.Size(320, 273);
             this.lstMapParticleEffects.TabIndex = 4;
             this.lstMapParticleEffects.SelectedIndexChanged += new System.EventHandler(this.lstMapParticleEffects_SelectedIndexChanged);
             // 
@@ -517,7 +519,7 @@ namespace DemoGame.MapEditor
             this.lstNPCSpawns.Location = new System.Drawing.Point(0, 0);
             this.lstNPCSpawns.Map = null;
             this.lstNPCSpawns.Name = "lstNPCSpawns";
-            this.lstNPCSpawns.Size = new System.Drawing.Size(320, 264);
+            this.lstNPCSpawns.Size = new System.Drawing.Size(320, 273);
             this.lstNPCSpawns.TabIndex = 6;
             this.lstNPCSpawns.SelectedIndexChanged += new System.EventHandler(this.lstNPCSpawns_SelectedIndexChanged);
             // 
@@ -568,7 +570,6 @@ namespace DemoGame.MapEditor
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.chkAIGrid);
             this.groupBox3.Controls.Add(this.chkLightSources);
             this.groupBox3.Controls.Add(this.chkDrawSpawnAreas);
             this.groupBox3.Controls.Add(this.chkDrawBackground);
@@ -583,16 +584,6 @@ namespace DemoGame.MapEditor
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Display Options";
-            // 
-            // chkAIGrid
-            // 
-            this.chkAIGrid.AutoSize = true;
-            this.chkAIGrid.Location = new System.Drawing.Point(120, 90);
-            this.chkAIGrid.Name = "chkAIGrid";
-            this.chkAIGrid.Size = new System.Drawing.Size(90, 17);
-            this.chkAIGrid.TabIndex = 18;
-            this.chkAIGrid.Text = "Show AI Map";
-            this.chkAIGrid.UseVisualStyleBackColor = true;
             // 
             // chkLightSources
             // 
@@ -919,7 +910,6 @@ namespace DemoGame.MapEditor
         private NPCSpawnsListBox lstNPCSpawns;
         private System.Windows.Forms.Button btnDeleteSpawn;
         private System.Windows.Forms.Button btnAddSpawn;
-        private PersistableCheckBox chkAIGrid;
         private System.Windows.Forms.ToolTip tt;
         private System.Windows.Forms.Button btnShowMinimap;
     }
