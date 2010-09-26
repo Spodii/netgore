@@ -201,6 +201,11 @@ namespace DemoGame
         /// </summary>
         DisconnectTimedOut,
 
+        /// <summary>
+        /// The user was forcibly disconnected from the server by an administrator.
+        /// </summary>
+        DisconnectUserKicked,
+
         #endregion
 
         #region Feature: Shops
@@ -369,12 +374,6 @@ namespace DemoGame
         /// Ban failed to be added for the given user.
         /// </summary>
         BanUserFailed,
-
-        #endregion
-
-        #region Feature: Kicking
-
-        UserKicked,
 
         #endregion
     }

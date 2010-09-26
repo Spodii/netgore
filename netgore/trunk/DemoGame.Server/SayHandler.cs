@@ -952,7 +952,7 @@ namespace DemoGame.Server
                     return;
                 }
 
-                //Move the user
+                // Move the user
                 User.Teleport(World.GetMap(mapId), new Vector2(x, y));
             }
 
@@ -962,14 +962,17 @@ namespace DemoGame.Server
                 if (!RequirePermissionLevel(UserPermissions.Moderator))
                     return;
 
+                // Get the user we want
                 var target = World.FindUser(userName);
 
+                // Check that the user could be found
                 if (target == null)
                 {
                     User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
                     return;
                 }
 
+                // Target user was found, so teleport them to the user that issued the command 
                 target.Teleport(User.Map, User.Position);
             }
 
@@ -979,15 +982,17 @@ namespace DemoGame.Server
                 if (!RequirePermissionLevel(UserPermissions.Moderator))
                     return;
 
-                //Get the user we want.
+                // Get the user we want
                 var target = World.FindUser(userName);
 
+                // Check that the user could be found
                 if (target == null)
                 {
                     User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
                     return;
                 }
 
+                // Target user was found, so teleport the user that issued the command to the target user
                 User.Teleport(target.Map, target.Position);
             }
 
@@ -997,16 +1002,18 @@ namespace DemoGame.Server
                 if (!RequirePermissionLevel(UserPermissions.Moderator))
                     return;
 
-                //Get the user we want.
+                // Get the user we want
                 var target = World.FindUser(userName);
 
+                // Check that the user could be found
                 if (target == null)
                 {
                     User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
                     return;
                 }
 
-                target.Conn.Disconnect(GameMessage.UserKicked, reason);
+                // User was found, so disconnect them and give the reason for the disconnect
+                target.Conn.Disconnect(GameMessage.DisconnectUserKicked, reason);
             }
 
             #endregion
