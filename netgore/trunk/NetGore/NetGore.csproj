@@ -120,6 +120,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\PropertySyncAIID.cs" />
     <Compile Include="Audio\AudioManager.cs" />
     <Compile Include="Audio\IAudioManager.cs" />
     <Compile Include="Audio\Music\IMusicInfo.cs" />
@@ -130,6 +131,8 @@
     <Compile Include="Audio\Sound\ISoundManagerExtensions.cs" />
     <Compile Include="Audio\Music\MusicInfo.cs" />
     <Compile Include="Audio\Music\MusicManager.cs" />
+    <Compile Include="Audio\Sound\PropertySyncMusicID.cs" />
+    <Compile Include="Audio\Music\PropertySyncSoundID.cs" />
     <Compile Include="Audio\Sound\SoundInfo.cs" />
     <Compile Include="Audio\Sound\SoundManager.cs" />
     <Compile Include="Core\Asserts\ThreadAsserts.cs" />

@@ -20,6 +20,11 @@ namespace NetGore.Graphics
         bool IsAlive { get; }
 
         /// <summary>
+        /// Forcibly kills the effect.
+        /// </summary>
+        void Kill();
+
+        /// <summary>
         /// Gets if the <see cref="ITemporaryMapEffect"/> is in the foreground. If true, it will be drawn after the
         /// <see cref="MapRenderLayer.SpriteForeground"/> layer. If false, it will be drawn after the
         /// <see cref="MapRenderLayer.SpriteBackground"/> layer.

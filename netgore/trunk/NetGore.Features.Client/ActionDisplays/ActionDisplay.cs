@@ -11,13 +11,6 @@ namespace NetGore.Features.ActionDisplays
     /// </summary>
     public class ActionDisplay : IPersistable
     {
-        const string _keyGrhIndex = "GrhIndex";
-        const string _keyHasSound = "HasSound";
-        const string _keyID = "ID";
-        const string _keyParticleEffect = "ParticleEffect";
-        const string _keyScript = "Script";
-        const string _keySoundID = "SoundID";
-
         GrhIndex _grhIndex;
         ActionDisplayID _id;
         string _particleEffect;
@@ -46,6 +39,7 @@ namespace NetGore.Features.ActionDisplays
         /// Gets or sets the <see cref="GrhIndex"/> to use. If set to <see cref="NetGore.GrhIndex.Invalid"/>, no sprite
         /// will be displayed.
         /// </summary>
+        [SyncValue]
         public GrhIndex GrhIndex
         {
             get { return _grhIndex; }
@@ -55,14 +49,21 @@ namespace NetGore.Features.ActionDisplays
         /// <summary>
         /// Gets the ID of this <see cref="ActionDisplay"/>.
         /// </summary>
+        [SyncValue]
         public ActionDisplayID ID
         {
-            get { return _id; }
+            get { return _id; } // ReSharper disable UnusedMember.Local
+            private set // ReSharper restore UnusedMember.Local
+            {
+                // Private setter required for SyncValueAttribute
+                _id = value;
+            }
         }
 
         /// <summary>
         /// Gets or sets the name of the particle effect to display.
         /// </summary>
+        [SyncValue]
         public string ParticleEffect
         {
             get { return _particleEffect; }
@@ -74,6 +75,7 @@ namespace NetGore.Features.ActionDisplays
         /// Scripts are identified using the <see cref="ActionDisplayScriptAttribute"/>. The script is what
         /// determines how the actual usage of the parameters is handled. Without a script, nothing can be displayed.
         /// </summary>
+        [SyncValue]
         public string Script
         {
             get { return _script; }
@@ -83,6 +85,7 @@ namespace NetGore.Features.ActionDisplays
         /// <summary>
         /// Gets or sets the ID of the sound to play when showing this action.
         /// </summary>
+        [SyncValue]
         public SoundID? Sound
         {
             get { return _sound; }
@@ -123,6 +126,8 @@ namespace NetGore.Features.ActionDisplays
         /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
         void IPersistable.ReadState(IValueReader reader)
         {
+            PersistableHelper.Read(this, reader);
+            /*
             _id = reader.ReadActionDisplayID(_keyID);
 
             var hasSound = reader.ReadBool(_keyHasSound);
@@ -131,7 +136,7 @@ namespace NetGore.Features.ActionDisplays
 
             _script = reader.ReadString(_keyScript);
             _grhIndex = reader.ReadGrhIndex(_keyGrhIndex);
-            _particleEffect = reader.ReadString(_keyParticleEffect);
+            _particleEffect = reader.ReadString(_keyParticleEffect);*/
         }
 
         /// <summary>
@@ -140,6 +145,8 @@ namespace NetGore.Features.ActionDisplays
         /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
         void IPersistable.WriteState(IValueWriter writer)
         {
+            PersistableHelper.Write(this, writer);
+            /*
             writer.Write(_keyID, ID);
 
             writer.Write(_keyHasSound, Sound.HasValue);
@@ -147,7 +154,7 @@ namespace NetGore.Features.ActionDisplays
 
             writer.Write(_keyScript, Script);
             writer.Write(_keyGrhIndex, GrhIndex);
-            writer.Write(_keyParticleEffect, ParticleEffect);
+            writer.Write(_keyParticleEffect, ParticleEffect);*/
         }
 
         #endregion
