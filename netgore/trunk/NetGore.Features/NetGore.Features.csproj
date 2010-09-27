@@ -128,10 +128,12 @@
     <Compile Include="Guilds\IGuildManagerExtensions.cs" />
     <Compile Include="Guilds\IGuildMember.cs" />
     <Compile Include="Guilds\IValueReaderWriterExtensions.cs" />
+    <Compile Include="Guilds\PropertySyncGuildID.cs" />
     <Compile Include="Guilds\UserGuildInformation.cs" />
     <Compile Include="Guilds\GuildRank.cs" />
     <Compile Include="Guilds\GuildSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quests\PropertySyncQuestID.cs" />
     <Compile Include="Quests\QuestID.cs" />
     <Compile Include="Quests\QuestIDTypeConverter.cs" />
     <Compile Include="Quests\QuestSettings.cs" />
