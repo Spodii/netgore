@@ -60,6 +60,7 @@ namespace NetGore.EditorTools
                              new EditorTypes(typeof(Color), typeof(SFMLColorEditor)),
                              new EditorTypes(typeof(Color?), typeof(SFMLColorEditor)),
                              new EditorTypes(typeof(ParticleModifierCollection), typeof(ParticleModifierCollectionEditor)),
+                             new EditorTypes(typeof(PolygonPointCollection), typeof(PolygonPointCollectionEditor)),
                              new EditorTypes(typeof(EmitterModifierCollection), typeof(EmitterModifierCollectionEditor)));
         }
 
