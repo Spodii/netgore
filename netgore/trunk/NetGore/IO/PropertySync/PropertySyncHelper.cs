@@ -62,6 +62,17 @@ namespace NetGore.IO.PropertySync
                 // Grab the attribute so we can find out what type this class handles
                 var attrib = (PropertySyncHandlerAttribute)attribs[0];
 
+                // Make sure the handler doesn't already exist
+                if (_propertySyncTypes.ContainsKey(attrib.HandledType))
+                {
+                    const string errmsg = "Duplicate PropertySync implementations for type `{0}`. Implementations: `{1}` and `{2}`.";
+                    var existingPST = _propertySyncTypes[attrib.HandledType];
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, attrib.HandledType, existingPST, type);
+                    Debug.Fail(string.Format(errmsg, attrib.HandledType, existingPST, type));
+                    continue;
+                }
+
                 // Store the handled type
                 _propertySyncTypes.Add(attrib.HandledType, type);
 
@@ -71,23 +82,13 @@ namespace NetGore.IO.PropertySync
                     try
                     {
                         var nullableType = typeof(Nullable<>).MakeGenericType(attrib.HandledType);
-                        var psType = typeof(PropertySyncNullable<>).MakeGenericType(attrib.HandledType);
-                        _propertySyncTypes.Add(nullableType, psType);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                    }
-                    catch (NotSupportedException)
-                    {
-                    }
-                    catch (ArgumentException)
-                    {
-                    }
-                    catch (TypeLoadException)
-                    {
-                    }
-                    catch (TargetInvocationException)
-                    {
+
+                        // Make sure the key doesn't already exist
+                        if (!_propertySyncTypes.ContainsKey(nullableType))
+                        {
+                            var psType = typeof(PropertySyncNullable<>).MakeGenericType(attrib.HandledType);
+                            _propertySyncTypes.Add(nullableType, psType);
+                        }
                     }
                     catch (Exception ex)
                     {

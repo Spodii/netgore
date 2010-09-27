@@ -26,6 +26,28 @@ namespace NetGore.Graphics
             _expireTime = (TickCount)(TickCount.Now + life);
         }
 
+        bool _terminateWhenDoneLooping = false;
+
+        /// <summary>
+        /// Forcibly kills the effect.
+        /// </summary>
+        /// <param name="immediate">When false and the <see cref="Grh"/> is animated, the animation will finish
+        /// before terminating.</param>
+        public override void Kill(bool immediate)
+        {
+            if (!immediate && Grh != null && Grh.AnimType != AnimType.None)
+            {
+                if (Grh.AnimType == AnimType.Loop)
+                    Grh.AnimType = AnimType.LoopOnce;
+
+                _terminateWhenDoneLooping = true;
+
+                return;
+            }
+
+            base.Kill(immediate);
+        }
+
         /// <summary>
         /// When overridden in the derived class, performs the additional updating that this <see cref="MapGrhEffect"/>
         /// needs to do such as checking if it is time to kill the effect. This method should be overridden instead of
@@ -34,8 +56,14 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current game time.</param>
         protected override void UpdateEffect(TickCount currentTime)
         {
+            if (_terminateWhenDoneLooping && Grh.AnimType == AnimType.None)
+            {
+                Kill(true);
+                return;
+            }
+
             if (TickCount.Now >= _expireTime)
-                Kill();
+                Kill(true);
         }
     }
 }

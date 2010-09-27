@@ -827,8 +827,8 @@ namespace DemoGame.Client
                 var ad = ActionDisplayScripts.ActionDisplays[skillInfo.StartCastingActionDisplay.Value];
                 if (ad != null)
                 {
-                    ad.Execute(Map, casterEntity, null);
                     casterEntity.IsCastingSkill = true;
+                    ad.Execute(Map, casterEntity, null);
                 }
             }
         }
