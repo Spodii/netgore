@@ -20,12 +20,12 @@ namespace NetGore.Audio
         /// <summary>
         /// The default <see cref="Sound.Attenuation"/> property value for <see cref="Sound"/>s.
         /// </summary>
-        const float _attenuation = 1f;
+        const float _attenuation = 20f;
 
         /// <summary>
         /// The default <see cref="Sound.MinDistance"/> property value for <see cref="Sound"/>s.
         /// </summary>
-        const float _minDistance = 300f;
+        const float _minDistance = 424.26f;
 
         /// <summary>
         /// How frequently, in milliseconds, the sounds are updated.
@@ -165,6 +165,7 @@ namespace NetGore.Audio
             snd.Loop = false;
             snd.Attenuation = _attenuation;
             snd.MinDistance = _minDistance;
+            snd.RelativeToListener = false;
 
             return snd;
         }
