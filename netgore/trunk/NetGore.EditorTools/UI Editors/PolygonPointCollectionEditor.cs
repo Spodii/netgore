@@ -51,8 +51,8 @@ namespace NetGore.EditorTools
 
             PolygonPointCollectionEditor Editor { get; set; }
             Button btnCancel { get; set; }
-            Label lblInstruction { get; set; }
             Button btnOk { get; set; }
+            Label lblInstruction { get; set; }
             TextBox txtEntry { get; set; }
 
             /// <summary>
@@ -76,14 +76,14 @@ namespace NetGore.EditorTools
                 txtEntry.ScrollBars = ScrollBars.Both;
                 txtEntry.WordWrap = false;
                 txtEntry.Anchor = AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Top;
-                txtEntry.KeyDown += uxTextEntry_KeyDown;
+                txtEntry.KeyDown += txtEntry_KeyDown;
                 btnOk.Location = new Point(0xb9, 0x112);
                 btnOk.Size = new Size(0x4b, 0x17);
                 btnOk.TabIndex = 1;
                 btnOk.Text = "OK";
                 btnOk.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
                 btnOk.DialogResult = DialogResult.OK;
-                btnOk.Click += uxOK_Click;
+                btnOk.Click += btnOK_Click;
                 btnCancel.Location = new Point(0x108, 0x112);
                 btnCancel.Size = new Size(0x4b, 0x17);
                 btnCancel.TabIndex = 2;
@@ -131,11 +131,11 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Handles the Click event of the uxOK control.
+            /// Handles the Click event of the btnOk control.
             /// </summary>
             /// <param name="sender">The source of the event.</param>
             /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-            void uxOK_Click(object sender, EventArgs e)
+            void btnOK_Click(object sender, EventArgs e)
             {
                 var separator = new char[] { '\n' };
                 var trimChars = new char[] { '\r' };
@@ -198,11 +198,11 @@ namespace NetGore.EditorTools
             }
 
             /// <summary>
-            /// Handles the KeyDown event of the uxTextEntry control.
+            /// Handles the KeyDown event of the txtEntry control.
             /// </summary>
             /// <param name="sender">The source of the event.</param>
             /// <param name="e">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
-            void uxTextEntry_KeyDown(object sender, KeyEventArgs e)
+            void txtEntry_KeyDown(object sender, KeyEventArgs e)
             {
                 if (e.KeyCode == Keys.Escape)
                 {
