@@ -17,6 +17,12 @@ namespace DemoGame.Client
     {
         static readonly IEnumerable<QuestID> _emptyQuestIDs = new QuestID[0];
 
+        /// <summary>
+        /// Delegate for handling events from the <see cref="Character"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="Character"/> the event came from.</param>
+        public delegate void CharacterEventHandler(Character sender);
+
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
 
         IEnumerable<QuestID> _providedQuests = _emptyQuestIDs;
@@ -27,11 +33,35 @@ namespace DemoGame.Client
         Color _color = Color.White;
         bool _isVisible = true;
         Vector2 _lastScreenPosition;
+        bool _isCastingSkill;
 
 #if !TOPDOWN
         CharacterState _lastState = CharacterState.Idle;
 #endif
         Map _map;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Character.IsCastingSkill"/> property has changed.
+        /// </summary>
+        public event CharacterEventHandler IsCastingSkillChanged;
+
+        /// <summary>
+        /// Gets or sets if this <see cref="Character"/> is currently casting a skill.
+        /// </summary>
+        public bool IsCastingSkill
+        {
+            get { return _isCastingSkill; }
+            set
+            {
+                if (_isCastingSkill == value)
+                    return;
+
+                _isCastingSkill = value;
+
+                if (IsCastingSkillChanged != null)
+                    IsCastingSkillChanged(this);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CharacterEntity"/> class.
@@ -172,6 +202,21 @@ namespace DemoGame.Client
         protected override IMap GetIMap()
         {
             return _map;
+        }
+
+        /// <summary>
+        /// Performs the actual disposing of the Entity. This is called by the base Entity class when
+        /// a request has been made to dispose of the Entity. This is guarenteed to only be called once.
+        /// All classes that override this method should be sure to call base.DisposeHandler() after
+        /// handling what it needs to dispose.
+        /// </summary>
+        /// <param name="disposeManaged">When true, <see cref="IDisposable.Dispose"/> was explicitly called and managed resources need to be
+        /// disposed. When false, managed resources do not need to be disposed since this object was garbage-collected.</param>
+        protected override void HandleDispose(bool disposeManaged)
+        {
+            IsCastingSkill = false;
+
+            base.HandleDispose(disposeManaged);
         }
 
         /// <summary>

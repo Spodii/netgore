@@ -24,16 +24,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Kills this <see cref="MapGrhEffect"/>. This should happen once and only once for every <see cref="MapGrhEffect"/>.
+        /// Forcibly kills the effect.
         /// </summary>
-        protected void Kill()
+        public void Kill()
         {
             if (!IsAlive)
-            {
-                const string errmsg = "Tried to kill dead MapGrhEffect `{0}`. This should only be called once.";
-                Debug.Fail(string.Format(errmsg, this));
                 return;
-            }
 
             _isAlive = false;
 

@@ -355,7 +355,9 @@ namespace DemoGame.Server
         /// Disposes of the ItemEntity, freeing its ID and existance in the database. Once disposed, an ItemEntity
         /// should never be used again.
         /// </summary>
-        protected override void HandleDispose()
+        /// <param name="disposeManaged">When true, <see cref="IDisposable.Dispose"/> was explicitly called and managed resources need to be
+        /// disposed. When false, managed resources do not need to be disposed since this object was garbage-collected.</param>
+        protected override void HandleDispose(bool disposeManaged)
         {
             // Delete the ItemEntity from the database
             _queryDeleteItem.Execute(ID);
@@ -363,7 +365,7 @@ namespace DemoGame.Server
             // Free the ItemEntity's ID
             _queryIDCreator.FreeID(ID);
 
-            base.HandleDispose();
+            base.HandleDispose(disposeManaged);
         }
 
         /// <summary>

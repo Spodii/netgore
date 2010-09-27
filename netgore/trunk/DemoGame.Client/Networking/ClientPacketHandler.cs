@@ -817,14 +817,19 @@ namespace DemoGame.Client
             }
 
             // Get the entity
-            var casterEntity = Map.GetDynamicEntity(casterEntityIndex);
+            var casterEntity = Map.GetDynamicEntity<Character>(casterEntityIndex);
             if (casterEntity == null)
                 return;
 
             // If an ActionDisplay is available for this skill, display it
             if (skillInfo.StartCastingActionDisplay.HasValue)
             {
-                // TODO: !! Create the ActionDisplay for casting
+                var ad = ActionDisplayScripts.ActionDisplays[skillInfo.StartCastingActionDisplay.Value];
+                if (ad != null)
+                {
+                    ad.Execute(Map, casterEntity, null);
+                    casterEntity.IsCastingSkill = true;
+                }
             }
         }
 
@@ -842,12 +847,12 @@ namespace DemoGame.Client
             var casterEntityIndex = r.ReadMapEntityIndex();
 
             // Get the entity
-            var casterEntity = Map.GetDynamicEntity(casterEntityIndex);
+            var casterEntity = Map.GetDynamicEntity<Character>(casterEntityIndex);
             if (casterEntity == null)
                 return;
 
-            // Stop any casting ActionDisplay for the entity
-            // TODO: !! ...
+            // Set the entity as not casting
+            casterEntity.IsCastingSkill = false;
         }
 
         [MessageHandler((uint)ServerPacketID.StartChatDialog)]
@@ -1024,31 +1029,31 @@ namespace DemoGame.Client
         [MessageHandler((uint)ServerPacketID.SkillUse)]
         void RecvSkillUse(IIPSocket conn, BitStream r)
         {
-            var userID = r.ReadMapEntityIndex();
+            var casterEntityIndex = r.ReadMapEntityIndex();
             var hasTarget = r.ReadBool();
-            MapEntityIndex? targetID = null;
+            MapEntityIndex? targetEntityIndex = null;
             if (hasTarget)
-                targetID = r.ReadMapEntityIndex();
+                targetEntityIndex = r.ReadMapEntityIndex();
             var skillType = r.ReadEnum<SkillType>();
 
-            var user = Map.GetDynamicEntity<CharacterEntity>(userID);
-            CharacterEntity target = null;
-            if (targetID.HasValue)
-                target = Map.GetDynamicEntity<CharacterEntity>(targetID.Value);
+            var casterEntity = Map.GetDynamicEntity<CharacterEntity>(casterEntityIndex);
+            CharacterEntity targetEntity = null;
+            if (targetEntityIndex.HasValue)
+                targetEntity = Map.GetDynamicEntity<CharacterEntity>(targetEntityIndex.Value);
 
-            if (user == null)
+            if (casterEntity == null)
             {
                 const string errmsg = "Read an invalid MapEntityIndex `{0}` in UseSkill for the skill user.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, userID);
+                    log.ErrorFormat(errmsg, casterEntityIndex);
                 return;
             }
 
             // TODO: !! Replace this message here with the display of the skills
-            if (target != null)
-                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", user.Name, skillType, target.Name));
+            if (targetEntity != null)
+                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", casterEntity.Name, skillType, targetEntity.Name));
             else
-                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", user.Name, skillType));
+                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", casterEntity.Name, skillType));
 
             // Get the SkillInfo for the skill being used
             var skillInfo = SkillInfoManager.Instance[skillType];
@@ -1056,15 +1061,17 @@ namespace DemoGame.Client
             {
                 const string errmsg = "Entity `{0}` started casting unknown SkillType `{1}`.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, user, skillType);
-                Debug.Fail(string.Format(errmsg, user, skillType));
+                    log.ErrorFormat(errmsg, casterEntity, skillType);
+                Debug.Fail(string.Format(errmsg, casterEntity, skillType));
             }
             else
             {
                 // If an ActionDisplay is available for this skill, display it
                 if (skillInfo.CastActionDisplay.HasValue)
                 {
-                    // TODO: !! Create the ActionDisplay for casting
+                    var ad = ActionDisplayScripts.ActionDisplays[skillInfo.CastActionDisplay.Value];
+                    if (ad != null)
+                        ad.Execute(Map, casterEntity, targetEntity);
                 }
             }
         }

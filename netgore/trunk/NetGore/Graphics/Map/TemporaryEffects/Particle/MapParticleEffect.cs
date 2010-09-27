@@ -46,18 +46,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Kills this <see cref="MapParticleEffect"/>. This should happen once and only once for every <see cref="MapParticleEffect"/>.
+        /// Forcibly kills the effect.
         /// </summary>
-        protected void Kill()
+        public void Kill()
         {
             if (!IsAlive)
-            {
-                const string errmsg = "Tried to kill dead MapParticleEffcet `{0}`. This should only be called once.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
                 return;
-            }
 
             _isAlive = false;
 

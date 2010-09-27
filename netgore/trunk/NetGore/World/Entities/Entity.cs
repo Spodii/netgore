@@ -269,7 +269,9 @@ namespace NetGore.World
         /// All classes that override this method should be sure to call base.DisposeHandler() after
         /// handling what it needs to dispose.
         /// </summary>
-        protected virtual void HandleDispose()
+        /// <param name="disposeManaged">When true, <see cref="IDisposable.Dispose"/> was explicitly called and managed resources need to be
+        /// disposed. When false, managed resources do not need to be disposed since this object was garbage-collected.</param>
+        protected virtual void HandleDispose(bool disposeManaged)
         {
         }
 
@@ -472,6 +474,8 @@ namespace NetGore.World
             if (IsDisposed)
                 return;
 
+            GC.SuppressFinalize(this);
+
             _isDisposed = true;
 
             // Notify listeners that the Entity is being disposed
@@ -479,7 +483,7 @@ namespace NetGore.World
                 Disposed(this);
 
             // Handle the disposing
-            HandleDispose();
+            HandleDispose(true);
         }
 
         #endregion

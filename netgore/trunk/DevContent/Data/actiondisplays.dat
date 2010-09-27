@@ -4,19 +4,33 @@
     <Count>1</Count>
 	<Item0>
       <ID>0</ID>
-      <HasSound>True</HasSound>
-      <SoundID>1</SoundID>
+	  <Sound>
+		  <HasValue>True</HasValue>
+		  <Value>1</Value>
+	  </Sound>
       <Script>Melee</Script>
       <GrhIndex>0</GrhIndex>
       <ParticleEffect>blood</ParticleEffect>
     </Item0>
     <Item1>
       <ID>1</ID>
-      <HasSound>True</HasSound>
-      <SoundID>1</SoundID>
+	  <Sound>
+		  <HasValue>True</HasValue>
+		  <Value>1</Value>
+	  </Sound>
       <Script>Projectile</Script>
       <GrhIndex>182</GrhIndex>
       <ParticleEffect>blood</ParticleEffect>
     </Item1>
+    <Item2>
+      <ID>2</ID>
+	  <Sound>
+		  <HasValue>False</HasValue>
+		  <Value>0</Value>
+	  </Sound>
+      <Script>Projectile</Script>
+      <GrhIndex>182</GrhIndex>
+      <ParticleEffect>blood</ParticleEffect>
+    </Item2>
   </ActionDisplays>
 </ActionDisplayCollection>

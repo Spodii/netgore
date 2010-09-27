@@ -437,11 +437,13 @@ namespace DemoGame.Server
         /// All classes that override this method should be sure to call base.DisposeHandler() after
         /// handling what it needs to dispose.
         /// </summary>
-        protected override void HandleDispose()
+        /// <param name="disposeManaged">When true, <see cref="IDisposable.Dispose"/> was explicitly called and managed resources need to be
+        /// disposed. When false, managed resources do not need to be disposed since this object was garbage-collected.</param>
+        protected override void HandleDispose(bool disposeManaged)
         {
             CancelPeerTradeIfTrading();
 
-            base.HandleDispose();
+            base.HandleDispose(disposeManaged);
 
             // Remove the User from being the active User in the account
             var account = GetAccount();

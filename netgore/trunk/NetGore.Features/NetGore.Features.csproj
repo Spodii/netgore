@@ -101,7 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionDisplays\ActionDisplayID.cs" />
-    <Compile Include="ActionDisplays\PropertySyncDisplayActionID.cs" />
+    <Compile Include="ActionDisplays\PropertySyncActionDisplayID.cs" />
     <Compile Include="Emoticons\EmoticonInfo.cs" />
     <Compile Include="Emoticons\EmoticonInfoManager.cs" />
     <Compile Include="GameTime\GameDateTime.cs" />
@@ -136,6 +136,7 @@
     <Compile Include="Quests\QuestIDTypeConverter.cs" />
     <Compile Include="Quests\QuestSettings.cs" />
     <Compile Include="Quests\UserQuestInformation.cs" />
+    <Compile Include="Shops\PropertySyncShopID.cs" />
     <Compile Include="Shops\ShopID.cs" />
     <Compile Include="Shops\ShopIDTypeConverter.cs" />
     <Compile Include="Shops\ShopItemIndex.cs" />
