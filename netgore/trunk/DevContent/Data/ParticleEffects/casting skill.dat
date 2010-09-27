@@ -6,10 +6,10 @@
     <BlendMode>Add</BlendMode>
     <Budget>5000</Budget>
     <Life>
-      <Min>1490</Min>
-      <Max>1490</Max>
+      <Min>500</Min>
+      <Max>500</Max>
     </Life>
-    <Origin>363.5,275.5</Origin>
+    <Origin>333,263</Origin>
     <ReleaseAmount>
       <Min>1</Min>
       <Max>1</Max>
@@ -31,16 +31,16 @@
       <Max>0.6</Max>
     </ReleaseScale>
     <ReleaseSpeed>
-      <Min>-89</Min>
-      <Max>-89</Max>
+      <Min>-150</Min>
+      <Max>-150</Max>
     </ReleaseSpeed>
     <Grh>393</Grh>
     <CustomValues>
       <Perimeter>True</Perimeter>
       <Radiate>True</Radiate>
       <Radius>
-        <Min>250</Min>
-        <Max>250</Max>
+        <Min>125</Min>
+        <Max>125</Max>
       </Radius>
     </CustomValues>
     <ParticleModifiers>
@@ -61,7 +61,7 @@
         <CustomValues>
           <Position>0,0</Position>
           <Radius>4000</Radius>
-          <Strength>100</Strength>
+          <Strength>300</Strength>
         </CustomValues>
       </Item1>
     </ParticleModifiers>
