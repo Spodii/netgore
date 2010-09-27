@@ -29,7 +29,7 @@ namespace DemoGame.Server
             m.Stats.EnableFileOutput(ContentPaths.Build.Root.Join("netstats_in" + EngineSettings.DataFileSuffix));
             _messageProcessorManager = m;
 #else
-            _ppManager = new MessageProcessorManager(_packetHandler, EnumHelper<ClientPacketID>.BitsRequired);
+            _messageProcessorManager = new MessageProcessorManager(_packetHandler, EnumHelper<ClientPacketID>.BitsRequired);
 #endif
         }
 
