@@ -38,6 +38,18 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Forcibly kills the effect.
+        /// </summary>
+        /// <param name="immediate">If false, the effect will continue to run until the target is reached.</param>
+        public override void Kill(bool immediate)
+        {
+            if (!immediate)
+                return;
+
+            base.Kill(immediate);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, performs the additional updating that this <see cref="MapGrhEffect"/>
         /// needs to do such as checking if it is time to kill the effect. This method should be overridden instead of
         /// <see cref="MapGrh.Update"/>. This method will not be called after the effect has been killed.
@@ -56,7 +68,7 @@ namespace NetGore.Graphics
 
             // Check if we are close enough to the target
             if (Position.QuickDistance(_target.Center) < 8)
-                Kill();
+                Kill(true);
         }
     }
 }

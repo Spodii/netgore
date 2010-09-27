@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -46,22 +47,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Forcibly kills the effect.
-        /// </summary>
-        public void Kill()
-        {
-            if (!IsAlive)
-                return;
-
-            _isAlive = false;
-
-            _emitter.Kill();
-
-            if (Died != null)
-                Died(this);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, performs the additional updating that this <see cref="MapParticleEffect"/>
         /// needs to do. This method will not be called after the effect has been killed.
         /// </summary>
@@ -85,6 +70,27 @@ namespace NetGore.Graphics
         public bool IsAlive
         {
             get { return _isAlive; }
+        }
+
+        /// <summary>
+        /// Forcibly kills the effect.
+        /// </summary>
+        /// <param name="immediate">If true, the emitter will stop emitting and existing particles will be given time
+        /// to expire.</param>
+        public void Kill(bool immediate)
+        {
+            if (!IsAlive)
+                return;
+
+            _emitter.Kill();
+
+            if (!immediate)
+                return;
+
+            _isAlive = false;
+
+            if (Died != null)
+                Died(this);
         }
 
         /// <summary>
@@ -121,7 +127,7 @@ namespace NetGore.Graphics
             // Check if the effect died off
             if (_emitter.IsExpired)
             {
-                Kill();
+                Kill(true);
                 return;
             }
 

@@ -9,12 +9,12 @@
 			<Icon>140</Icon>
 			<CooldownGroup>0</CooldownGroup>
 			<StartCastingActionDisplay>
-				<HasValue>false</HasValue>
-				<Value>0</Value>
+				<HasValue>true</HasValue>
+				<Value>2</Value>
 			</StartCastingActionDisplay>
 			<CastActionDisplay>
-				<HasValue>true</HasValue>
-				<Value>1</Value>
+				<HasValue>false</HasValue>
+				<Value>0</Value>
 			</CastActionDisplay>
 		</Item0>
 		<Item1>
@@ -24,8 +24,8 @@
 			<Icon>142</Icon>
 			<CooldownGroup>1</CooldownGroup>
 			<StartCastingActionDisplay>
-				<HasValue>false</HasValue>
-				<Value>0</Value>
+				<HasValue>true</HasValue>
+				<Value>2</Value>
 			</StartCastingActionDisplay>
 			<CastActionDisplay>
 				<HasValue>false</HasValue>

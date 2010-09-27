@@ -188,7 +188,6 @@
     <Compile Include="IO\PropertySyncCharacterTemplateID.cs" />
     <Compile Include="IO\PropertySyncItemID.cs" />
     <Compile Include="IO\PropertySyncItemTemplateID.cs" />
-    <Compile Include="IO\PropertySyncQuestID.cs" />
     <Compile Include="IO\PropertySyncSkillType.cs" />
     <Compile Include="IO\PropertySyncSPValueType.cs" />
     <Compile Include="IO\PropertySyncWeaponType.cs" />

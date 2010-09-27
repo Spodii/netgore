@@ -62,7 +62,7 @@ namespace NetGore.Graphics
             if (currentTime >= _endTime)
             {
                 Emitter.Origin = _targetPosition;
-                Kill();
+                Kill(true);
                 return;
             }
 

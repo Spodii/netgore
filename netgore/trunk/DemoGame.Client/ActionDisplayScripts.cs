@@ -104,8 +104,7 @@ namespace DemoGame.Client
         /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
         /// <param name="map">The map that the entities are on.</param>
         /// <param name="source">The <see cref="Entity"/> that this action came from (the invoker of the action).</param>
-        /// <param name="target">The <see cref="Entity"/> that this action is targeting. It is possible that this will be
-        /// equal to the <paramref name="source"/> or be null.</param>
+        /// <param name="target">Unused by this script.</param>
         [ActionDisplayScript("CastingSkill")]
         public static void AD_CastingSkill(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
         {
@@ -133,7 +132,7 @@ namespace DemoGame.Client
             PlaySoundSimple(actionDisplay, source);
 
             // Check if we can properly display the effect
-            if (drawableMap != null && target != null && source != target)
+            if (drawableMap != null)
             {
                 // Show the graphic going from the source to target
                 if (actionDisplay.GrhIndex != GrhIndex.Invalid)
@@ -153,8 +152,8 @@ namespace DemoGame.Client
                 var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
                 if (emitter != null)
                 {
-                    // Effect that just takes place on the target
-                    emitter.Origin = target.Center;
+                    // Effect that just takes place on the caster
+                    emitter.Origin = source.Center;
                     emitter.SetEmitterLife(maxEffectLife);
                     var effect = new MapParticleEffect(emitter, true);
                     drawableMap.AddTemporaryMapEffect(effect);
@@ -226,7 +225,7 @@ namespace DemoGame.Client
 
             // Kill each effect
             foreach (var fx in value)
-                fx.Kill();
+                fx.Kill(false);
         }
 
         /// <summary>

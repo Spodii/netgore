@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ActionDisplayCollection>
   <ActionDisplays>
-    <Count>1</Count>
+    <Count>3</Count>
 	<Item0>
       <ID>0</ID>
 	  <Sound>
@@ -28,9 +28,9 @@
 		  <HasValue>False</HasValue>
 		  <Value>0</Value>
 	  </Sound>
-      <Script>Projectile</Script>
-      <GrhIndex>182</GrhIndex>
-      <ParticleEffect>blood</ParticleEffect>
+      <Script>CastingSkill</Script>
+      <GrhIndex>0</GrhIndex>
+      <ParticleEffect>casting skill</ParticleEffect>
     </Item2>
   </ActionDisplays>
 </ActionDisplayCollection>

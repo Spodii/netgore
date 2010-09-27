@@ -26,7 +26,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Forcibly kills the effect.
         /// </summary>
-        public void Kill()
+        /// <param name="immediate">If true, the effect will be killed immediately and <see cref="IsAlive"/> will be
+        /// false by the time the method returns. If false, the effect is allowed to enter itself into a "terminating" state,
+        /// allowing it to cleanly transition the effect out.</param>
+        public virtual void Kill(bool immediate)
         {
             if (!IsAlive)
                 return;
