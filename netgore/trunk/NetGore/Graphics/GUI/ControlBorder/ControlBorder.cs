@@ -15,6 +15,22 @@ namespace NetGore.Graphics.GUI
     public class ControlBorder
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// The maximum draw calls that are to be made before a Debug.Error() is produced. This is an indicated that
+        /// the <see cref="ControlBorder"/> is simply drawing way too much and that you either are using 
+        /// <see cref="ControlBorderDrawStyle.Tile"/> when you meant to use <see cref="ControlBorderDrawStyle.Stretch"/>,
+        /// your <see cref="ControlBorder"/> is larger than anticipated, or that the <see cref="ISprite"/> used to draw
+        /// the border is too small. This is not an error, but rather more of a warning, and only shows in debug.
+        /// </summary>
+        const int _maxDrawCallsBeforeDebugWarning = 30;
+
+        /// <summary>
+        /// The message to display when <see cref="_maxDrawCallsBeforeDebugWarning"/> is exceeded.
+        /// </summary>
+        const string _maxDrawCallsBeforeDebugWarningMessage =
+            "Too many draw calls being made to draw the ControlBorder - performance will suffer. See ControlBorder code for details.";
+
         static readonly object _drawSync = new object();
         static readonly ControlBorder _empty;
         static readonly List<Func<Control, Color, Color>> _globalColorTransformations = new List<Func<Control, Color, Color>>();
@@ -368,12 +384,23 @@ namespace NetGore.Graphics.GUI
             Draw(sb, region, color);
         }
 
+        /// <summary>
+        /// Draws a <see cref="ISprite"/> tiled on the X axis.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="minX">The starting X coordinate to draw at.</param>
+        /// <param name="maxX">The ending X coordinate to draw at.</param>
+        /// <param name="y">The Y coordinate to draw at.</param>
+        /// <param name="s">The <see cref="ISprite"/> to draw.</param>
+        /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
         static void DrawRepeatX(ISpriteBatch sb, int minX, int maxX, int y, ISprite s, Color color)
         {
             var src = s.Source;
             var destSize = maxX - minX;
             var fullSprites = destSize / s.Source.Width;
             var remainder = destSize % s.Source.Width;
+
+            Debug.Assert(fullSprites < _maxDrawCallsBeforeDebugWarning, _maxDrawCallsBeforeDebugWarningMessage);
 
             // Set the sprite in general
             _repeatSprite.Color = color;
@@ -404,6 +431,16 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Draws a <see cref="ISprite"/> tiled on both the X and Y axis.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="minX">The starting X coordinate to draw at.</param>
+        /// <param name="maxX">The ending X coordinate to draw at.</param>
+        /// <param name="minY">The starting Y coordinate to draw at.</param>
+        /// <param name="maxY">The ending Y coordinate to draw at.</param>
+        /// <param name="s">The <see cref="ISprite"/> to draw.</param>
+        /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
         static void DrawRepeatXY(ISpriteBatch sb, int minX, int maxX, int minY, int maxY, ISprite s, Color color)
         {
             var src = s.Source;
@@ -413,6 +450,9 @@ namespace NetGore.Graphics.GUI
             var fullSpritesY = destSizeY / s.Source.Height;
             var remainderX = destSizeX % s.Source.Width;
             var remainderY = destSizeY % s.Source.Height;
+
+            Debug.Assert((fullSpritesX + fullSpritesY) < (_maxDrawCallsBeforeDebugWarning * 2),
+                         _maxDrawCallsBeforeDebugWarningMessage);
 
             // Set the sprite in general
             _repeatSprite.Color = color;
@@ -475,12 +515,23 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Draws a <see cref="ISprite"/> tiled on the Y axis.
+        /// </summary>
+        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
+        /// <param name="minY">The starting Y coordinate to draw at.</param>
+        /// <param name="maxY">The ending Y coordinate to draw at.</param>
+        /// <param name="x">The X coordinate to draw at.</param>
+        /// <param name="s">The <see cref="ISprite"/> to draw.</param>
+        /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
         static void DrawRepeatY(ISpriteBatch sb, int minY, int maxY, int x, ISprite s, Color color)
         {
             var src = s.Source;
             var destSize = maxY - minY;
             var fullSprites = destSize / s.Source.Height;
             var remainder = destSize % s.Source.Height;
+
+            Debug.Assert(fullSprites < _maxDrawCallsBeforeDebugWarning, _maxDrawCallsBeforeDebugWarningMessage);
 
             // Set the sprite in general
             _repeatSprite.Color = color;
