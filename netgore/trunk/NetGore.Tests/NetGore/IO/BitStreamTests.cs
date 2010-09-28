@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using NetGore.IO;
 using NUnit.Framework;
@@ -926,7 +927,7 @@ namespace NetGore.Tests.IO
 
                 if (i % 2 == 0)
                 {
-                    bs.SeekBits(bits, System.IO.SeekOrigin.Current);
+                    bs.SeekBits(bits, SeekOrigin.Current);
                     continue;
                 }
 

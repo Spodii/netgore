@@ -25,8 +25,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="SayHandler"/> class.
         /// </summary>
         /// <param name="server">Server that the commands are coming from.</param>
-        public SayHandler(Server server)
-            : base(new SayCommands(server))
+        public SayHandler(Server server) : base(new SayCommands(server))
         {
         }
 
@@ -814,6 +813,43 @@ namespace DemoGame.Server
             #region Lesser Admin commands
 
             /// <summary>
+            /// Sends a message globally to the entire world.
+            /// </summary>
+            /// <param name="message">The message to announce.</param>
+            [SayCommand("Announce")]
+            public void Announce(string message)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                World.Send(GameMessage.CommandAnnounce, ServerMessageType.GUIChat, message);
+            }
+
+            /// <summary>
+            /// Warps the user to the player specified.
+            /// </summary>
+            /// <param name="userName">The name of the player to approach.</param>
+            [SayCommand("Approach")]
+            public void Approach(string userName)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                // Get the user we want
+                var target = World.FindUser(userName);
+
+                // Check that the user could be found
+                if (target == null)
+                {
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                    return;
+                }
+
+                // Target user was found, so teleport the user that issued the command to the target user
+                User.Teleport(target.Map, target.Position);
+            }
+
+            /// <summary>
             /// Displays all ban information for a user.
             /// </summary>
             /// <param name="username">The name of the user to show the ban info for.</param>
@@ -940,26 +976,71 @@ namespace DemoGame.Server
             }
 
             /// <summary>
-            /// Warps the user to the specified map and position.
+            /// Desummons all NPCs on the current map.
             /// </summary>
-            /// <param name="mapId">The mapID to be warped to.</param>
-            /// <param name="x">The position along the x-axis to be warped to.</param>
-            /// <param name="y">The position along the y-axis to be warped to.</param>
-            [SayCommand(("Warp"))]
-            public void Warp(MapID mapId, int x, int y)
+            [SayCommand("Dethrall")]
+            public void Dethrall()
+            {
+                var userMap = User.Map;
+                if (userMap == null)
+                    return;
+
+                // Get the thralled NPCs
+                var toKill = userMap.NPCs.OfType<ThralledNPC>().Where(x => x.IsAlive).ToImmutable();
+
+                // Kill all the found thralled NPCs
+                foreach (var thralledNPC in toKill)
+                {
+                    thralledNPC.Kill();
+                }
+            }
+
+            /// <summary>
+            /// Kicks the specified user from the world.
+            /// </summary>
+            /// <param name="userName">The player to kick.</param>
+            /// <param name="reason">The reason the player is being kicked.</param>
+            [SayCommand("Kick")]
+            public void Kick(string userName, string reason)
             {
                 if (!RequirePermissionLevel(UserPermissions.Moderator))
                     return;
 
-                // Check for a valid map
-                if (!MapBase.IsMapIDValid(mapId))
+                // Get the user we want
+                var target = World.FindUser(userName);
+
+                // Check that the user could be found
+                if (target == null)
                 {
-                    UserChat("Invalid map ID: " + mapId);
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
                     return;
                 }
 
-                // Move the user
-                User.Teleport(World.GetMap(mapId), new Vector2(x, y));
+                // User was found, so disconnect them and give the reason for the disconnect
+                target.Conn.Disconnect(GameMessage.DisconnectUserKicked, reason);
+            }
+
+            /// <summary>
+            /// Kills the specified user.
+            /// </summary>
+            /// <param name="userName">The player to kill.</param>
+            [SayCommand("Kill")]
+            public void Kill(string userName)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                // Get the user we want
+                var target = World.FindUser(userName);
+
+                // Check that the user could be found
+                if (target == null)
+                {
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                    return;
+                }
+
+                target.Kill();
             }
 
             /// <summary>
@@ -987,56 +1068,6 @@ namespace DemoGame.Server
             }
 
             /// <summary>
-            /// Warps the user to the player specified.
-            /// </summary>
-            /// <param name="userName">The name of the player to approach.</param>
-            [SayCommand("Approach")]
-            public void Approach(string userName)
-            {
-                if (!RequirePermissionLevel(UserPermissions.Moderator))
-                    return;
-
-                // Get the user we want
-                var target = World.FindUser(userName);
-
-                // Check that the user could be found
-                if (target == null)
-                {
-                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
-                    return;
-                }
-
-                // Target user was found, so teleport the user that issued the command to the target user
-                User.Teleport(target.Map, target.Position);
-            }
-
-            /// <summary>
-            /// Kicks the specified user from the world.
-            /// </summary>
-            /// <param name="userName">The player to kick.</param>
-            /// <param name="reason">The reason the player is being kicked.</param>
-            [SayCommand("Kick")]
-            public void Kick(string userName, string reason)
-            {
-                if (!RequirePermissionLevel(UserPermissions.Moderator))
-                    return;
-
-                // Get the user we want
-                var target = World.FindUser(userName);
-
-                // Check that the user could be found
-                if (target == null)
-                {
-                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
-                    return;
-                }
-
-                // User was found, so disconnect them and give the reason for the disconnect
-                target.Conn.Disconnect(GameMessage.DisconnectUserKicked, reason);
-
-            }
-
-            /// <summary>
             /// Summons NPCs on the current map.
             /// </summary>
             /// <param name="id">The ID of the NPCs to spawn.</param>
@@ -1055,64 +1086,27 @@ namespace DemoGame.Server
             }
 
             /// <summary>
-            /// Desummons all NPCs on the current map.
+            /// Warps the user to the specified map and position.
             /// </summary>
-            [SayCommand("Dethrall")]
-            public void Dethrall()
-            {
-                var userMap = User.Map;
-                if (userMap == null)
-                    return;
-
-                // Get the thralled NPCs
-                var toKill = userMap.NPCs.OfType<ThralledNPC>().Where(x => x.IsAlive).ToImmutable();
-
-                // Kill all the found thralled NPCs
-                foreach (var thralledNPC in toKill)
-                {
-                    thralledNPC.Kill();
-                }
-            }
-
-
-            /// <summary>
-            /// Kills the specified user.
-            /// </summary>
-            /// <param name="userName">The player to kill.</param>
-            [SayCommand("Kill")]
-            public void Kill(string userName)
+            /// <param name="mapId">The mapID to be warped to.</param>
+            /// <param name="x">The position along the x-axis to be warped to.</param>
+            /// <param name="y">The position along the y-axis to be warped to.</param>
+            [SayCommand(("Warp"))]
+            public void Warp(MapID mapId, int x, int y)
             {
                 if (!RequirePermissionLevel(UserPermissions.Moderator))
                     return;
 
-                // Get the user we want
-                var target = World.FindUser(userName);
-
-                // Check that the user could be found
-                if (target == null)
+                // Check for a valid map
+                if (!MapBase.IsMapIDValid(mapId))
                 {
-                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                    UserChat("Invalid map ID: " + mapId);
                     return;
                 }
 
-                target.Kill();
-
+                // Move the user
+                User.Teleport(World.GetMap(mapId), new Vector2(x, y));
             }
-
-            /// <summary>
-            /// Sends a message globally to the entire world.
-            /// </summary>
-            /// <param name="message">The message to announce.</param>
-            [SayCommand("Announce")]
-            public void Announce(string message)
-            {
-                if (!RequirePermissionLevel(UserPermissions.Moderator))
-                    return;
-
-                World.Send(GameMessage.CommandAnnounce, ServerMessageType.GUIChat, message);
-            }
-
-
 
             #endregion
 

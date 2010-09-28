@@ -1,4 +1,5 @@
-﻿using NetGore.IO;
+﻿using System.Linq;
+using NetGore.IO;
 using NetGore.IO.PropertySync;
 
 namespace DemoGame
@@ -13,8 +14,7 @@ namespace DemoGame
         /// Initializes a new instance of the <see cref="PropertySyncAllianceID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncAllianceID(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncAllianceID(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

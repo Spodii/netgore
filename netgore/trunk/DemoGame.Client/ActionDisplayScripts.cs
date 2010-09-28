@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
 using NetGore.Audio;
-using NetGore.Collections;
 using NetGore.Content;
 using NetGore.Features.ActionDisplays;
 using NetGore.Graphics;
@@ -23,7 +21,18 @@ namespace DemoGame.Client
     [ActionDisplayScriptCollection]
     public static class ActionDisplayScripts
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ActionDisplayCollection _actionDisplays;
+
+        /// <summary>
+        /// A dictionary containing the <see cref="Character"/>s who have active <see cref="ITemporaryMapEffect"/>s out
+        /// that are for casting a skill. This allows us to terminate the <see cref="ITemporaryMapEffect"/>s when they
+        /// stop casting.
+        /// </summary>
+        static readonly Dictionary<Character, List<ITemporaryMapEffect>> _activeCastingSkillEffects =
+            new Dictionary<Character, List<ITemporaryMapEffect>>();
+
+        static readonly object _activeCastingSkillEffectsSync = new object();
         static readonly IAudioManager _audioManager;
         static readonly IContentManager _contentManager;
 
@@ -44,6 +53,112 @@ namespace DemoGame.Client
         public static ActionDisplayCollection ActionDisplays
         {
             get { return _actionDisplays; }
+        }
+
+        /// <summary>
+        /// A generic <see cref="ActionDisplay"/> script used for displaying skills being casted. The created effects
+        /// last until <see cref="Character.IsCastingSkill"/> is set to false on the <paramref name="source"/>.
+        /// </summary>
+        /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
+        /// <param name="map">The map that the entities are on.</param>
+        /// <param name="source">The <see cref="Entity"/> that this action came from (the invoker of the action).</param>
+        /// <param name="target">Unused by this script.</param>
+        [ActionDisplayScript("CastingSkill")]
+        public static void AD_CastingSkill(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
+        {
+            // The maximum life the effects will have. This way, if the entity gets stuck with IsCastingSkill set to true,
+            // the effects will at least go away eventually. Make sure that this is not greater than the longest possible
+            // time to cast a skill.
+            const int maxEffectLife = 1000 * 20;
+
+            var drawableMap = map as IDrawableMap;
+            var sourceAsCharacter = source as Character;
+
+            var castingEffects = new List<ITemporaryMapEffect>();
+
+            // Make sure we have a valid source
+            if (sourceAsCharacter == null)
+            {
+                const string errmsg = "AD_CastingSkill requires a Character as the source, but the source ({0}) is type `{1}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, sourceAsCharacter, source.GetType());
+                Debug.Fail(string.Format(errmsg, sourceAsCharacter, source.GetType()));
+                return;
+            }
+
+            // Play the sound
+            PlaySoundSimple(actionDisplay, source);
+
+            // Check if we can properly display the effect
+            if (drawableMap != null)
+            {
+                // Show the graphic going from the source to target
+                if (actionDisplay.GrhIndex != GrhIndex.Invalid)
+                {
+                    var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
+                    if (gd != null)
+                    {
+                        // Make the effect loop indefinitely
+                        var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
+                        var effect = new MapGrhEffectTimed(grh, source.Center, true, maxEffectLife);
+                        drawableMap.AddTemporaryMapEffect(effect);
+                        castingEffects.Add(effect);
+                    }
+                }
+
+                // Show the particle effect
+                var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
+                if (emitter != null)
+                {
+                    // Effect that just takes place on the caster
+                    emitter.Origin = source.Center;
+                    emitter.SetEmitterLife(maxEffectLife);
+                    var effect = new TemporaryMapParticleEffect(emitter, true);
+                    drawableMap.AddTemporaryMapEffect(effect);
+                    castingEffects.Add(effect);
+                }
+            }
+
+            // Make sure we have at least one valid effect. If not, there is nothing more to do.
+            if (castingEffects.Count <= 0)
+                return;
+
+            // Add the list of effects to our local dictionary
+            lock (_activeCastingSkillEffectsSync)
+            {
+                // Make sure they don't already have effects in the dictionary
+                RemoveFromActiveCastingSkillEffects(sourceAsCharacter);
+
+                // Add to the dictionary
+                _activeCastingSkillEffects.Add(sourceAsCharacter, castingEffects);
+            }
+
+            // Attach the listener for the IsCastingSkill
+            sourceAsCharacter.IsCastingSkillChanged += AD_CastingSkill_Character_IsCastingSkillChanged;
+
+            // If the source already finished casting the skill, destroy them now since we probably missed the event
+            if (!sourceAsCharacter.IsCastingSkill)
+                RemoveFromActiveCastingSkillEffects(sourceAsCharacter);
+        }
+
+        /// <summary>
+        /// An event callback for <see cref="Character.IsCastingSkillChanged"/> for the
+        /// the <see cref="AD_CastingSkill"/> <see cref="ActionDisplay"/> script.
+        /// </summary>
+        /// <param name="sender">The <see cref="Character"/> who's <see cref="Character.IsCastingSkillChanged"/> event
+        /// was invoked.</param>
+        static void AD_CastingSkill_Character_IsCastingSkillChanged(Character sender)
+        {
+            Debug.Assert(sender.IsCastingSkill == false);
+
+            // Remove the event hook
+            sender.IsCastingSkillChanged -= AD_CastingSkill_Character_IsCastingSkillChanged;
+
+            // Remove their active effects for casting skills
+            lock (_activeCastingSkillEffectsSync)
+            {
+                RemoveFromActiveCastingSkillEffects(sender);
+            }
         }
 
         /// <summary>
@@ -94,147 +209,6 @@ namespace DemoGame.Client
                 }
             }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// A generic <see cref="ActionDisplay"/> script used for displaying skills being casted. The created effects
-        /// last until <see cref="Character.IsCastingSkill"/> is set to false on the <paramref name="source"/>.
-        /// </summary>
-        /// <param name="actionDisplay">The <see cref="ActionDisplay"/> being used.</param>
-        /// <param name="map">The map that the entities are on.</param>
-        /// <param name="source">The <see cref="Entity"/> that this action came from (the invoker of the action).</param>
-        /// <param name="target">Unused by this script.</param>
-        [ActionDisplayScript("CastingSkill")]
-        public static void AD_CastingSkill(ActionDisplay actionDisplay, IMap map, Entity source, Entity target)
-        {
-            // The maximum life the effects will have. This way, if the entity gets stuck with IsCastingSkill set to true,
-            // the effects will at least go away eventually. Make sure that this is not greater than the longest possible
-            // time to cast a skill.
-            const int maxEffectLife = 1000 * 20;
-
-            var drawableMap = map as IDrawableMap;
-            var sourceAsCharacter = source as Character;
-
-            List<ITemporaryMapEffect> castingEffects = new List<ITemporaryMapEffect>();
-
-            // Make sure we have a valid source
-            if (sourceAsCharacter == null)
-            {
-                const string errmsg = "AD_CastingSkill requires a Character as the source, but the source ({0}) is type `{1}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, sourceAsCharacter, source.GetType());
-                Debug.Fail(string.Format(errmsg, sourceAsCharacter, source.GetType()));
-                return;
-            }
-
-            // Play the sound
-            PlaySoundSimple(actionDisplay, source);
-
-            // Check if we can properly display the effect
-            if (drawableMap != null)
-            {
-                // Show the graphic going from the source to target
-                if (actionDisplay.GrhIndex != GrhIndex.Invalid)
-                {
-                    var gd = GrhInfo.GetData(actionDisplay.GrhIndex);
-                    if (gd != null)
-                    {
-                        // Make the effect loop indefinitely
-                        var grh = new Grh(gd, AnimType.Loop, TickCount.Now);
-                        var effect = new MapGrhEffectTimed(grh, source.Center, true, maxEffectLife);
-                        drawableMap.AddTemporaryMapEffect(effect);
-                        castingEffects.Add(effect);
-                    }
-                }
-
-                // Show the particle effect
-                var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
-                if (emitter != null)
-                {
-                    // Effect that just takes place on the caster
-                    emitter.Origin = source.Center;
-                    emitter.SetEmitterLife(maxEffectLife);
-                    var effect = new TemporaryMapParticleEffect(emitter, true);
-                    drawableMap.AddTemporaryMapEffect(effect);
-                    castingEffects.Add(effect);
-                }
-            }
-            
-            // Make sure we have at least one valid effect. If not, there is nothing more to do.
-            if (castingEffects.Count <= 0)
-                return;
-
-            // Add the list of effects to our local dictionary
-            lock (_activeCastingSkillEffectsSync)
-            {
-                // Make sure they don't already have effects in the dictionary
-                RemoveFromActiveCastingSkillEffects(sourceAsCharacter);
-
-                // Add to the dictionary
-                _activeCastingSkillEffects.Add(sourceAsCharacter, castingEffects);
-            }
-            
-            // Attach the listener for the IsCastingSkill
-            sourceAsCharacter.IsCastingSkillChanged += AD_CastingSkill_Character_IsCastingSkillChanged;
-
-            // If the source already finished casting the skill, destroy them now since we probably missed the event
-            if (!sourceAsCharacter.IsCastingSkill)
-            {
-                RemoveFromActiveCastingSkillEffects(sourceAsCharacter);
-            }
-        }
-
-        /// <summary>
-        /// An event callback for <see cref="Character.IsCastingSkillChanged"/> for the
-        /// the <see cref="AD_CastingSkill"/> <see cref="ActionDisplay"/> script.
-        /// </summary>
-        /// <param name="sender">The <see cref="Character"/> who's <see cref="Character.IsCastingSkillChanged"/> event
-        /// was invoked.</param>
-        static void AD_CastingSkill_Character_IsCastingSkillChanged(Character sender)
-        {
-            Debug.Assert(sender.IsCastingSkill == false);
-
-            // Remove the event hook
-            sender.IsCastingSkillChanged -= AD_CastingSkill_Character_IsCastingSkillChanged;
-
-            // Remove their active effects for casting skills
-            lock (_activeCastingSkillEffectsSync)
-            {
-                RemoveFromActiveCastingSkillEffects(sender);
-            }
-        }
-
-        /// <summary>
-        /// Removes the <see cref="ITemporaryMapEffect"/>s for the given <see cref="Character"/> from the
-        /// <see cref="_activeCastingSkillEffects"/> dictionary. Acquire the <see cref="_activeCastingSkillEffectsSync"/>
-        /// lock before calling this!
-        /// </summary>
-        /// <param name="key">The <see cref="Character"/> to remove the effects for.</param>
-        static void RemoveFromActiveCastingSkillEffects(Character key)
-        {
-            List<ITemporaryMapEffect> value;
-            if (!_activeCastingSkillEffects.TryGetValue(key, out value))
-            {
-                // They were not in the dictionary
-                return;
-            }
-
-            // Remove from the dictionary
-            _activeCastingSkillEffects.Remove(key);
-
-            // Kill each effect
-            foreach (var fx in value)
-                fx.Kill(false);
-        }
-
-        /// <summary>
-        /// A dictionary containing the <see cref="Character"/>s who have active <see cref="ITemporaryMapEffect"/>s out
-        /// that are for casting a skill. This allows us to terminate the <see cref="ITemporaryMapEffect"/>s when they
-        /// stop casting.
-        /// </summary>
-        static readonly Dictionary<Character, List<ITemporaryMapEffect>> _activeCastingSkillEffects = new Dictionary<Character, List<ITemporaryMapEffect>>();
-        static readonly object _activeCastingSkillEffectsSync = new object();
 
         /// <summary>
         /// A basic <see cref="ActionDisplay"/> script for projectiles.
@@ -322,6 +296,31 @@ namespace DemoGame.Client
                 _audioManager.SoundManager.Play(actionDisplay.Sound.Value, attackerAsAudioEmitter);
             else
                 _audioManager.SoundManager.Play(actionDisplay.Sound.Value, source.Center);
+        }
+
+        /// <summary>
+        /// Removes the <see cref="ITemporaryMapEffect"/>s for the given <see cref="Character"/> from the
+        /// <see cref="_activeCastingSkillEffects"/> dictionary. Acquire the <see cref="_activeCastingSkillEffectsSync"/>
+        /// lock before calling this!
+        /// </summary>
+        /// <param name="key">The <see cref="Character"/> to remove the effects for.</param>
+        static void RemoveFromActiveCastingSkillEffects(Character key)
+        {
+            List<ITemporaryMapEffect> value;
+            if (!_activeCastingSkillEffects.TryGetValue(key, out value))
+            {
+                // They were not in the dictionary
+                return;
+            }
+
+            // Remove from the dictionary
+            _activeCastingSkillEffects.Remove(key);
+
+            // Kill each effect
+            foreach (var fx in value)
+            {
+                fx.Kill(false);
+            }
         }
     }
 }

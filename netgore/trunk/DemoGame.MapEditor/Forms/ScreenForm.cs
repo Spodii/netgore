@@ -9,7 +9,6 @@ using DemoGame.MapEditor.Forms;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Audio;
-using NetGore.Collections;
 using NetGore.Content;
 using NetGore.Db;
 using NetGore.Db.MySql;
@@ -544,8 +543,6 @@ namespace DemoGame.MapEditor
                 else
                     FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
             }
-
-           
 
             // End map rendering
             DrawingManager.EndDrawWorld();

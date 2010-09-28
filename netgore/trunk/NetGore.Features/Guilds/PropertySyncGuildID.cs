@@ -1,4 +1,5 @@
-﻿using NetGore.IO;
+﻿using System.Linq;
+using NetGore.IO;
 using NetGore.IO.PropertySync;
 
 namespace NetGore.Features.Guilds
@@ -13,8 +14,7 @@ namespace NetGore.Features.Guilds
         /// Initializes a new instance of the <see cref="PropertySyncGuildID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncGuildID(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncGuildID(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

@@ -13,6 +13,8 @@ namespace NetGore.Graphics
         /// </summary>
         readonly TickCount _expireTime;
 
+        bool _terminateWhenDoneLooping = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MapGrhEffectTimed"/> class.
         /// </summary>
@@ -25,8 +27,6 @@ namespace NetGore.Graphics
         {
             _expireTime = (TickCount)(TickCount.Now + life);
         }
-
-        bool _terminateWhenDoneLooping = false;
 
         /// <summary>
         /// Forcibly kills the effect.

@@ -8,7 +8,8 @@ namespace NetGore.EditorTools
     /// <summary>
     /// A <see cref="ListBox"/> containing the particle effects on a map.
     /// </summary>
-    public abstract class MapParticleEffectsListBoxBase<TMap> : MapItemListBox<TMap, ParticleEffectReference> where TMap : class, IMap
+    public abstract class MapParticleEffectsListBoxBase<TMap> : MapItemListBox<TMap, ParticleEffectReference>
+        where TMap : class, IMap
     {
     }
 }

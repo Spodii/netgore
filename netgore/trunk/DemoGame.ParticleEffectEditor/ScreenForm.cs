@@ -56,7 +56,7 @@ namespace DemoGame.ParticleEffectEditor
 
                 pgEffect.SelectedObject = Emitter;
                 if (Emitter != null)
-                cmbEmitter.SelectedItem = Emitter.GetType();
+                    cmbEmitter.SelectedItem = Emitter.GetType();
             }
         }
 
@@ -153,9 +153,7 @@ namespace DemoGame.ParticleEffectEditor
             }
 
             if (Emitter.IsExpired)
-            {
                 Emitter.Reset();
-            }
         }
 
         /// <summary>

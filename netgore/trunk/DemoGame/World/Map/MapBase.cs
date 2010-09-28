@@ -64,7 +64,6 @@ namespace DemoGame
         /// </summary>
         readonly IGetTime _getTime;
 
-
         readonly ISpatialCollection _spatialCollection;
 
         /// <summary>
@@ -152,7 +151,6 @@ namespace DemoGame
                 }
             }
         }
-
 
         /// <summary>
         /// Gets or sets the ID of the music to play for the map, or empty or null if there is no music.
@@ -942,8 +940,6 @@ namespace DemoGame
         {
             var path = contentPath.Maps.Join(mapID + EngineSettings.DataFileSuffix);
             Save(path, dynamicEntityFactory);
-
-            
 
             if (Saved != null)
                 Saved(this);
