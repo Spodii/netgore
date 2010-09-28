@@ -1296,7 +1296,7 @@ namespace DemoGame.MapEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnDeleteEmitter_Click(object sender, EventArgs e)
         {
-            var selectedEmitters = SelectedObjs.SelectedObjects.OfType<ParticleEmitter>().ToImmutable();
+            var selectedEmitters = SelectedObjs.SelectedObjects.OfType<ParticleEffectReference>().ToImmutable();
             if (selectedEmitters.IsEmpty())
                 return;
 
@@ -1341,7 +1341,7 @@ namespace DemoGame.MapEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnNewEmitter_Click(object sender, EventArgs e)
         {
-            ParticleEmitter newEmitter = null;
+            ParticleEffectReference newEmitter = null;
 
             // Create the selection form
             using (var f = new ParticleEmitterUITypeEditorForm(null))
@@ -1356,7 +1356,7 @@ namespace DemoGame.MapEditor
                         if (em == null)
                             return;
 
-                        newEmitter = em.DeepCopy();
+                        newEmitter = new ParticleEffectReference(em.Name);
                     }
                 }
                 finally
@@ -1370,8 +1370,7 @@ namespace DemoGame.MapEditor
                 return;
 
             // Set up the new emitter and add it to the map
-            newEmitter.Origin = Camera.Center;
-            newEmitter.SetEmitterLife(-1);
+            newEmitter.Position = Camera.Center;
             newEmitter.Update(GetTime());
             Map.ParticleEffects.Add(newEmitter);
         }

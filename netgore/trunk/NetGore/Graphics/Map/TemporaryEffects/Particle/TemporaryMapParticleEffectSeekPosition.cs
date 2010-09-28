@@ -5,7 +5,7 @@ using SFML.Graphics;
 
 namespace NetGore.Graphics
 {
-    public class MapParticleEffectSeekPosition : MapParticleEffect
+    public class TemporaryMapParticleEffectSeekPosition : TemporaryMapParticleEffect
     {
         readonly TickCount _endTime;
         readonly Vector2 _startPosition;
@@ -14,14 +14,14 @@ namespace NetGore.Graphics
         readonly Vector2 _velocity;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapParticleEffect"/> class.
+        /// Initializes a new instance of the <see cref="TemporaryMapParticleEffect"/> class.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/>.</param>
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
         /// <param name="target">The destination position.</param>
         /// <param name="speed">How fast this object moves towards the target in pixels per second.</param>
-        public MapParticleEffectSeekPosition(ParticleEmitter emitter, bool isForeground, Vector2 target, float speed)
+        public TemporaryMapParticleEffectSeekPosition(ParticleEmitter emitter, bool isForeground, Vector2 target, float speed)
             : base(emitter, isForeground)
         {
             var position = emitter.Origin;
@@ -52,7 +52,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// When overridden in the derived class, performs the additional updating that this <see cref="MapParticleEffect"/>
+        /// When overridden in the derived class, performs the additional updating that this <see cref="TemporaryMapParticleEffect"/>
         /// needs to do such as checking if it is time to kill the effect. This method will not be called after the effect has been killed.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>

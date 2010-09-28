@@ -89,7 +89,7 @@ namespace DemoGame.Client
                     // Effect that just takes place on the target and dies very quickly
                     emitter.Origin = target.Center;
                     emitter.SetEmitterLife(100);
-                    var effect = new MapParticleEffect(emitter, true);
+                    var effect = new TemporaryMapParticleEffect(emitter, true);
                     drawableMap.AddTemporaryMapEffect(effect);
                 }
             }
@@ -155,7 +155,7 @@ namespace DemoGame.Client
                     // Effect that just takes place on the caster
                     emitter.Origin = source.Center;
                     emitter.SetEmitterLife(maxEffectLife);
-                    var effect = new MapParticleEffect(emitter, true);
+                    var effect = new TemporaryMapParticleEffect(emitter, true);
                     drawableMap.AddTemporaryMapEffect(effect);
                     castingEffects.Add(effect);
                 }
@@ -286,7 +286,7 @@ namespace DemoGame.Client
                     // Effect that just takes place on the target and dies very quickly
                     emitter.Origin = target.Center;
                     emitter.SetEmitterLife(100);
-                    var effect = new MapParticleEffect(emitter, true);
+                    var effect = new TemporaryMapParticleEffect(emitter, true);
                     drawableMap.AddTemporaryMapEffect(effect);
                 }
             }

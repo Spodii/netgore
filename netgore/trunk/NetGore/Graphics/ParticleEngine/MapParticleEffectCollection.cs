@@ -5,9 +5,9 @@ using NetGore.IO;
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
-    /// A collection of <see cref="ParticleEmitter"/>s on a Map.
+    /// A collection of <see cref="ParticleEffectReference"/>s.
     /// </summary>
-    public class MapParticleEffectCollection : List<ParticleEmitter>
+    public class MapParticleEffectCollection : List<ParticleEffectReference>
     {
         /// <summary>
         /// Reads the <see cref="MapParticleEffectCollection"/>'s items.
@@ -17,7 +17,7 @@ namespace NetGore.Graphics.ParticleEngine
         public void Read(IValueReader reader, string nodeName)
         {
             Clear();
-            var emitters = reader.ReadManyNodes(nodeName, ParticleEmitterFactory.Read);
+            var emitters = reader.ReadManyNodes(nodeName, r => new ParticleEffectReference(r));
             AddRange(emitters);
         }
 
@@ -28,7 +28,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="nodeName">The name of the collection node.</param>
         public void Write(IValueWriter writer, string nodeName)
         {
-            writer.WriteManyNodes(nodeName, ToArray(), ParticleEmitterFactory.Write);
+            writer.WriteManyNodes(nodeName, ToArray(), (w, v) => v.WriteState(w));
         }
     }
 }
