@@ -69,8 +69,8 @@ namespace NetGore.Graphics.ParticleEngine
         /// Gets or sets the rotation factor for the polygon.
         /// </summary>
         [Category(_emitterCategoryName)]
-        [Description("The origin mode of the polygon for the given points.")]
-        [DisplayName("Polygon Origin")]
+        [Description("The amount to rotate the polygon in radians.")]
+        [DisplayName("Polygon Rotation")]
         [DefaultValue(_defaultRotation)]
         public float Rotation
         {
