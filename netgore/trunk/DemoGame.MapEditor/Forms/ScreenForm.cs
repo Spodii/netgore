@@ -1497,14 +1497,14 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Handles the SelectedIndexChanged event of the lstMapParticleEffects control.
+        /// Handles the SelectedIndexChanged event of the lstMapEffects control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void lstMapParticleEffects_SelectedIndexChanged(object sender, EventArgs e)
+        void lstMapEffects_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstMapParticleEffects.SelectedItem != null)
-                SelectedObjs.SetSelected(lstMapParticleEffects.SelectedItem);
+            if (lstMapEffects.SelectedItem != null)
+                SelectedObjs.SetSelected(lstMapEffects.SelectedItem);
         }
 
         /// <summary>
