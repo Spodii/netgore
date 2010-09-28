@@ -939,6 +939,12 @@ namespace DemoGame.Server
                 }
             }
 
+            /// <summary>
+            /// Warps the user to the specified map and position.
+            /// </summary>
+            /// <param name="mapId">The mapID to be warped to.</param>
+            /// <param name="x">The position along the x-axis to be warped to.</param>
+            /// <param name="y">The position along the y-axis to be warped to.</param>
             [SayCommand(("Warp"))]
             public void Warp(MapID mapId, int x, int y)
             {
@@ -956,6 +962,10 @@ namespace DemoGame.Server
                 User.Teleport(World.GetMap(mapId), new Vector2(x, y));
             }
 
+            /// <summary>
+            /// Warps the specified player to the user of the command.
+            /// </summary>
+            /// <param name="userName">The name of the player to summon.</param>
             [SayCommand(("Summon"))]
             public void Summon(string userName)
             {
@@ -976,6 +986,10 @@ namespace DemoGame.Server
                 target.Teleport(User.Map, User.Position);
             }
 
+            /// <summary>
+            /// Warps the user to the player specified.
+            /// </summary>
+            /// <param name="userName">The name of the player to approach.</param>
             [SayCommand("Approach")]
             public void Approach(string userName)
             {
@@ -996,6 +1010,11 @@ namespace DemoGame.Server
                 User.Teleport(target.Map, target.Position);
             }
 
+            /// <summary>
+            /// Kicks the specified user from the world.
+            /// </summary>
+            /// <param name="userName">The player to kick.</param>
+            /// <param name="reason">The reason the player is being kicked.</param>
             [SayCommand("Kick")]
             public void Kick(string userName, string reason)
             {
@@ -1014,7 +1033,80 @@ namespace DemoGame.Server
 
                 // User was found, so disconnect them and give the reason for the disconnect
                 target.Conn.Disconnect(GameMessage.DisconnectUserKicked, reason);
+
             }
+
+            /// <summary>
+            /// Summons NPCs on the current map.
+            /// </summary>
+            /// <param name="id">The ID of the NPCs to spawn.</param>
+            /// <param name="amount">The amount of NPCs to spawn.</param>
+            [SayCommand("Thrall")]
+            public void Thrall(CharacterTemplateID id, int amount)
+            {
+                if (!RequirePermissionLevel(UserPermissions.LesserAdmin))
+                    return;
+
+                for (var i = 0; i < amount; i++)
+                {
+                    //Create a ThralledNPC and add it to the world.
+                    var npc = new ThralledNPC(World, CharacterTemplateManager.Instance[id], User.Map, User.Position);
+                }
+            }
+
+            /// <summary>
+            /// Desummons all NPCs on the current map.
+            /// </summary>
+            [SayCommand("Dethrall")]
+            public void Dethrall()
+            {
+                foreach (var npc in User.Map.NPCs)
+                {
+                    //If an NPC is detected, simply kill it. Should we despawn in a cleaner way?
+                    if (npc is ThralledNPC)
+                        npc.Kill();
+                }
+            }
+
+
+            /// <summary>
+            /// Kills the specified user.
+            /// </summary>
+            /// <param name="userName">The player to kill.</param>
+            [SayCommand("Kill")]
+            public void Kill(string userName)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                // Get the user we want
+                var target = World.FindUser(userName);
+
+                // Check that the user could be found
+                if (target == null)
+                {
+                    User.Send(GameMessage.CommandTellInvalidUser, ServerMessageType.GUIChat);
+                    return;
+                }
+
+                target.Kill();
+
+            }
+
+            /// <summary>
+            /// Sends a message globally to the entire world.
+            /// </summary>
+            /// <param name="message">The message to announce.</param>
+            [SayCommand("Announce")]
+            public void Announce(string message)
+            {
+                if (!RequirePermissionLevel(UserPermissions.Moderator))
+                    return;
+
+                World.Send(GameMessage.CommandAnnounce, ServerMessageType.GUIChat, message);
+            }
+
+
 
             #endregion
 

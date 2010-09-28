@@ -21,6 +21,7 @@ CommandTellSender: "You tell $0: \"$1\""
 CommandTellReceiver: "$0 tells you: \"$1\""
 CommandTellInvalidUser: "User $0 does not exist."
 CommandTellOfflineUser: "User $0 is currently offline."
+CommandAnnounce: "ANNOUNCEMENT: $0"
 
 CommandShout: "$0 shouts: \"$1\""
 
