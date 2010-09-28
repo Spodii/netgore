@@ -5,10 +5,11 @@
     <Name>fountain</Name>
     <BlendMode>Add</BlendMode>
     <Budget>1000</Budget>
-    <Life>
+	<EmitterLife>-1</EmitterLife>
+    <ParticleLife>
       <Min>4000</Min>
       <Max>4000</Max>
-    </Life>
+    </ParticleLife>
     <Origin>135,144</Origin>
     <ReleaseAmount>
       <Min>1</Min>

@@ -14,10 +14,10 @@ namespace NetGore.Graphics.ParticleEngine
         const bool _defaultPerimeter = false;
         const bool _defaultRadiate = false;
         const string _emitterCategoryName = "Circle Emitter";
-
         const string _perimeterKeyName = "Perimeter";
         const string _radiateKeyName = "Radiate";
         const string _radiusKeyName = "Radius";
+
         bool _perimeter = _defaultPerimeter;
         bool _radiate = _defaultRadiate;
         VariableFloat _radius = 50;
