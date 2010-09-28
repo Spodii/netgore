@@ -546,7 +546,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the quests that this quest provider provides.
         /// </summary>
-        public IEnumerable<IQuest<User>> Quests
+        public virtual IEnumerable<IQuest<User>> Quests
         {
             get { return _quests; }
         }
