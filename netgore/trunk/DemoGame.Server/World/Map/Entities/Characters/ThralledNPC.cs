@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using SFML.Graphics;
 
 namespace DemoGame.Server
@@ -10,12 +12,17 @@ namespace DemoGame.Server
     /// </summary>
     public class ThralledNPC : NPC
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public ThralledNPC(World parent, CharacterTemplate template, Map map, Vector2 position)
             : base(parent, template, map, position)
         {
             // This NPC should never respawn. Once it's dead, that should be it!
             RespawnMapID = null;
             RespawnPosition = Vector2.Zero;
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Created ThralledNPC `{0}` on map `{1}` at `{2}` with template `{3}`.", this, Map, Position, template);
         }
 
         /// <summary>
