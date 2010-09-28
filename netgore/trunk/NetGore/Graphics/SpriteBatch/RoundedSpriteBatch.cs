@@ -7,6 +7,8 @@ namespace NetGore.Graphics
     /// <summary>
     /// An implementation of the <see cref="SpriteBatch"/> that rounds all the drawing positions to prevent
     /// sprites and text from drawing blurred.
+    /// This class is NOT thread-safe! If you wish to use threaded rendering, you must use a separate <see cref="ISpriteBatch"/>
+    /// for each thread or manually add thread safety.
     /// </summary>
     public class RoundedSpriteBatch : SpriteBatch
     {

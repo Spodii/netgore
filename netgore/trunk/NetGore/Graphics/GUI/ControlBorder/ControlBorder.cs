@@ -26,20 +26,35 @@ namespace NetGore.Graphics.GUI
         const int _maxDrawCallsBeforeDebugWarning = 30;
 
         /// <summary>
-        /// The message to display when <see cref="_maxDrawCallsBeforeDebugWarning"/> is exceeded.
+        /// Checks that the amount being drawn for a tiled draw call is a sane amount.
         /// </summary>
-        const string _maxDrawCallsBeforeDebugWarningMessage =
-            "Too many draw calls being made to draw the ControlBorder (sprite: {0}) - performance will suffer." +
-            "Either use a larger sprite, or use ControlBorderDrawStyle.Stretch instead of ControlBorderDrawStyle.Tile.";
+        /// <param name="min">The starting draw coordinate.</param>
+        /// <param name="max">The ending draw coordinate.</param>
+        /// <param name="spriteSize">The size of the sprite being drawn.</param>
+        /// <param name="side">The <see cref="ControlBorderSpriteType"/>.</param>
+        [Conditional("DEBUG")]
+        void AssertSaneDrawTilingAmount(int min, int max, float spriteSize, ControlBorderSpriteType side)
+        {
+            const string errmsg = 
+            "Too many draw calls being made to draw the ControlBorder `{0}` on side `{1}` - performance will suffer." +
+            " Either use a larger sprite, or use ControlBorderDrawStyle.Stretch instead of ControlBorderDrawStyle.Tile." + 
+            " This may also be an indication that you are using ControlBorderDrawStyle.Tile unintentionally.";
+
+            int drawCalls = (int)((max - min) / spriteSize);
+            if (drawCalls <= _maxDrawCallsBeforeDebugWarning)
+                return;
+
+            if (log.IsWarnEnabled)
+                log.WarnFormat(errmsg, this, side);
+
+            Debug.Fail(string.Format(errmsg, this, side));
+        }
 
         static readonly object _drawSync = new object();
         static readonly ControlBorder _empty;
         static readonly List<Func<Control, Color, Color>> _globalColorTransformations = new List<Func<Control, Color, Color>>();
         static readonly object _globalColorTransformationsSync = new object();
         static readonly int _numSprites;
-
-        static readonly SFML.Graphics.Sprite _repeatSprite = new SFML.Graphics.Sprite
-        { BlendMode = BlendMode.Alpha, Scale = Vector2.One, Rotation = 0f, Origin = Vector2.Zero };
 
         readonly ControlBorderDrawStyle[] _drawStyles;
         readonly ISprite[] _sprites;
@@ -281,7 +296,9 @@ namespace NetGore.Graphics.GUI
                             break;
 
                         case ControlBorderDrawStyle.Tile:
-                            DrawRepeatXY(sb, r.X, r.Right, r.Y, r.Bottom, _bg, color);
+                            AssertSaneDrawTilingAmount(r.X, r.Right, _bg.Size.X, ControlBorderSpriteType.Background);
+                            AssertSaneDrawTilingAmount(r.Y, r.Bottom, _bg.Size.Y, ControlBorderSpriteType.Background);
+                            sb.DrawTiledXY(r.X, r.Right, r.Y, r.Bottom, _bg, color);
                             break;
                     }
                 }
@@ -295,7 +312,8 @@ namespace NetGore.Graphics.GUI
                         break;
 
                     case ControlBorderDrawStyle.Tile:
-                        DrawRepeatX(sb, r.X, r.Right, r.Y, _t, color);
+                        AssertSaneDrawTilingAmount(r.X, r.Right, _t.Size.X, ControlBorderSpriteType.Top);
+                        sb.DrawTiledX(r.X, r.Right, r.Y, _t, color);
                         break;
                 }
 
@@ -308,7 +326,8 @@ namespace NetGore.Graphics.GUI
                         break;
 
                     case ControlBorderDrawStyle.Tile:
-                        DrawRepeatY(sb, r.Y, r.Bottom, r.X, _l, color);
+                        AssertSaneDrawTilingAmount(r.Y, r.Bottom, _l.Size.Y, ControlBorderSpriteType.Left);
+                        sb.DrawTiledY(r.Y, r.Bottom, r.X, _l, color);
                         break;
                 }
 
@@ -321,7 +340,8 @@ namespace NetGore.Graphics.GUI
                         break;
 
                     case ControlBorderDrawStyle.Tile:
-                        DrawRepeatY(sb, r.Y, r.Bottom, r.X, _r, color);
+                        AssertSaneDrawTilingAmount(r.Y, r.Bottom, _r.Size.Y, ControlBorderSpriteType.Right);
+                        sb.DrawTiledY(r.Y, r.Bottom, r.X, _r, color);
                         break;
                 }
 
@@ -334,7 +354,8 @@ namespace NetGore.Graphics.GUI
                         break;
 
                     case ControlBorderDrawStyle.Tile:
-                        DrawRepeatX(sb, r.X, r.Right, r.Y, _b, color);
+                        AssertSaneDrawTilingAmount(r.X, r.Right, _b.Size.X, ControlBorderSpriteType.Bottom);
+                        sb.DrawTiledX(r.X, r.Right, r.Y, _b, color);
                         break;
                 }
 
@@ -385,183 +406,7 @@ namespace NetGore.Graphics.GUI
             Draw(sb, region, color);
         }
 
-        /// <summary>
-        /// Draws a <see cref="ISprite"/> tiled on the X axis.
-        /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="minX">The starting X coordinate to draw at.</param>
-        /// <param name="maxX">The ending X coordinate to draw at.</param>
-        /// <param name="y">The Y coordinate to draw at.</param>
-        /// <param name="s">The <see cref="ISprite"/> to draw.</param>
-        /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
-        static void DrawRepeatX(ISpriteBatch sb, int minX, int maxX, int y, ISprite s, Color color)
-        {
-            var src = s.Source;
-            var destSize = maxX - minX;
-            var fullSprites = destSize / s.Source.Width;
-            var remainder = destSize % s.Source.Width;
-
-            Debug.Assert(fullSprites < _maxDrawCallsBeforeDebugWarning, string.Format(_maxDrawCallsBeforeDebugWarningMessage, s));
-
-            // Set the sprite in general
-            _repeatSprite.Color = color;
-            _repeatSprite.Image = s.Texture;
-            _repeatSprite.Scale = Vector2.One;
-
-            // Set up the sprite for the full pieces
-            if (fullSprites > 0)
-            {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, src.Height);
-
-                // Draw all the full pieces
-                for (var x = 0; x < fullSprites; x++)
-                {
-                    _repeatSprite.Position = new Vector2(minX + (x * src.Width), y);
-                    sb.Draw(_repeatSprite);
-                }
-            }
-
-            // Draw the remaining partial piece
-            if (remainder > 0)
-            {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, remainder, src.Height);
-                _repeatSprite.Position = new Vector2(maxX - remainder, y);
-                _repeatSprite.Width = remainder;
-
-                sb.Draw(_repeatSprite);
-            }
-        }
-
-        /// <summary>
-        /// Draws a <see cref="ISprite"/> tiled on both the X and Y axis.
-        /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="minX">The starting X coordinate to draw at.</param>
-        /// <param name="maxX">The ending X coordinate to draw at.</param>
-        /// <param name="minY">The starting Y coordinate to draw at.</param>
-        /// <param name="maxY">The ending Y coordinate to draw at.</param>
-        /// <param name="s">The <see cref="ISprite"/> to draw.</param>
-        /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
-        static void DrawRepeatXY(ISpriteBatch sb, int minX, int maxX, int minY, int maxY, ISprite s, Color color)
-        {
-            var src = s.Source;
-            var destSizeX = maxX - minX;
-            var destSizeY = maxY - minY;
-            var fullSpritesX = destSizeX / s.Source.Width;
-            var fullSpritesY = destSizeY / s.Source.Height;
-            var remainderX = destSizeX % s.Source.Width;
-            var remainderY = destSizeY % s.Source.Height;
-
-            Debug.Assert((fullSpritesX + fullSpritesY) < (_maxDrawCallsBeforeDebugWarning * 2),
-                         string.Format(_maxDrawCallsBeforeDebugWarningMessage, s));
-
-            // Set the sprite in general
-            _repeatSprite.Color = color;
-            _repeatSprite.Image = s.Texture;
-            _repeatSprite.Scale = Vector2.One;
-
-            // Set up the sprite for the full pieces
-            if (fullSpritesX > 0 || fullSpritesY > 0)
-            {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, src.Height);
-
-                // Draw all the full pieces
-                for (var x = 0; x < fullSpritesX; x++)
-                {
-                    for (var y = 0; y < fullSpritesY; y++)
-                    {
-                        _repeatSprite.Position = new Vector2(minX + (x * src.Width), minY + (y * src.Height));
-                        sb.Draw(_repeatSprite);
-                    }
-                }
-            }
-
-            // Draw the remaining partial pieces on the sides
-            if (remainderX > 0 && fullSpritesY > 0)
-            {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, remainderX, src.Height);
-                _repeatSprite.Width = remainderX;
-                _repeatSprite.Height = src.Height;
-
-                float x = maxX - remainderX;
-                for (var y = 0; y < fullSpritesY; y++)
-                {
-                    _repeatSprite.Position = new Vector2(x, minY + (y * src.Height));
-                    sb.Draw(_repeatSprite);
-                }
-            }
-
-            if (remainderY > 0 && fullSpritesX > 0)
-            {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, remainderY);
-                _repeatSprite.Width = src.Width;
-                _repeatSprite.Height = remainderY;
-
-                float y = maxY - remainderY;
-                for (var x = 0; x < fullSpritesX; x++)
-                {
-                    _repeatSprite.Position = new Vector2(minX + (x * src.Width), y);
-                    sb.Draw(_repeatSprite);
-                }
-            }
-
-            // Draw the single partial piece partial for both axis (bottom-right corner)
-            if (remainderX > 0 && remainderY > 0)
-            {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, remainderX, remainderY);
-                _repeatSprite.Width = remainderX;
-                _repeatSprite.Height = remainderY;
-                _repeatSprite.Position = new Vector2(maxX - remainderX, maxY - remainderY);
-                sb.Draw(_repeatSprite);
-            }
-        }
-
-        /// <summary>
-        /// Draws a <see cref="ISprite"/> tiled on the Y axis.
-        /// </summary>
-        /// <param name="sb">The <see cref="ISpriteBatch"/> to draw to.</param>
-        /// <param name="minY">The starting Y coordinate to draw at.</param>
-        /// <param name="maxY">The ending Y coordinate to draw at.</param>
-        /// <param name="x">The X coordinate to draw at.</param>
-        /// <param name="s">The <see cref="ISprite"/> to draw.</param>
-        /// <param name="color">The color to draw the <see cref="ISprite"/>.</param>
-        static void DrawRepeatY(ISpriteBatch sb, int minY, int maxY, int x, ISprite s, Color color)
-        {
-            var src = s.Source;
-            var destSize = maxY - minY;
-            var fullSprites = destSize / s.Source.Height;
-            var remainder = destSize % s.Source.Height;
-
-            Debug.Assert(fullSprites < _maxDrawCallsBeforeDebugWarning, string.Format(_maxDrawCallsBeforeDebugWarningMessage, s));
-
-            // Set the sprite in general
-            _repeatSprite.Color = color;
-            _repeatSprite.Image = s.Texture;
-            _repeatSprite.Scale = Vector2.One;
-
-            // Set up the sprite for the full pieces
-            if (fullSprites > 0)
-            {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, src.Height);
-
-                // Draw all the full pieces
-                for (var y = 0; y < fullSprites; y++)
-                {
-                    _repeatSprite.Position = new Vector2(x, minY + (y * src.Height));
-                    sb.Draw(_repeatSprite);
-                }
-            }
-
-            // Draw the remaining partial piece
-            if (remainder > 0)
-            {
-                _repeatSprite.SubRect = new IntRect(src.X, src.Y, src.Width, remainder);
-                _repeatSprite.Position = new Vector2(x, maxY - remainder);
-                _repeatSprite.Height = remainder;
-
-                sb.Draw(_repeatSprite);
-            }
-        }
+        
 
         /// <summary>
         /// Gets the <see cref="ControlBorderDrawStyle"/> for the given <see cref="ControlBorderSpriteType"/>.
