@@ -56,7 +56,7 @@ namespace DemoGame.MapEditor
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.tpEffects = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.lstMapParticleEffects = new DemoGame.MapEditor.MapParticleEffectsListBox();
+            this.lstMapEffects = new DemoGame.MapEditor.MapParticleEffectsListBox();
             this.btnDeleteEmitter = new System.Windows.Forms.Button();
             this.btnNewEmitter = new System.Windows.Forms.Button();
             this.tpNPCs = new System.Windows.Forms.TabPage();
@@ -438,7 +438,7 @@ namespace DemoGame.MapEditor
             // 
             // splitContainer6.Panel1
             // 
-            this.splitContainer6.Panel1.Controls.Add(this.lstMapParticleEffects);
+            this.splitContainer6.Panel1.Controls.Add(this.lstMapEffects);
             // 
             // splitContainer6.Panel2
             // 
@@ -448,16 +448,16 @@ namespace DemoGame.MapEditor
             this.splitContainer6.SplitterDistance = 273;
             this.splitContainer6.TabIndex = 4;
             // 
-            // lstMapParticleEffects
+            // lstMapEffects
             // 
-            this.lstMapParticleEffects.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstMapParticleEffects.FormattingEnabled = true;
-            this.lstMapParticleEffects.Location = new System.Drawing.Point(0, 0);
-            this.lstMapParticleEffects.Map = null;
-            this.lstMapParticleEffects.Name = "lstMapParticleEffects";
-            this.lstMapParticleEffects.Size = new System.Drawing.Size(320, 273);
-            this.lstMapParticleEffects.TabIndex = 4;
-            this.lstMapParticleEffects.SelectedIndexChanged += new System.EventHandler(this.lstMapParticleEffects_SelectedIndexChanged);
+            this.lstMapEffects.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMapEffects.FormattingEnabled = true;
+            this.lstMapEffects.Location = new System.Drawing.Point(0, 0);
+            this.lstMapEffects.Map = null;
+            this.lstMapEffects.Name = "lstMapEffects";
+            this.lstMapEffects.Size = new System.Drawing.Size(320, 273);
+            this.lstMapEffects.TabIndex = 4;
+            this.lstMapEffects.SelectedIndexChanged += new System.EventHandler(this.lstMapEffects_SelectedIndexChanged);
             // 
             // btnDeleteEmitter
             // 
@@ -895,7 +895,7 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnNewBGLayer;
         private BackgroundItemListBox lstBGItems;
         private System.Windows.Forms.SplitContainer splitContainer6;
-        private MapParticleEffectsListBox lstMapParticleEffects;
+        private MapParticleEffectsListBox lstMapEffects;
         public GameScreenControl GameScreen;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.Panel panToolBar;
