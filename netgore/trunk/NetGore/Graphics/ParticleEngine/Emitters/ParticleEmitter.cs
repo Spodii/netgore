@@ -77,7 +77,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         TickCount _lastUpdateTime = TickCount.MinValue;
         int _life = -1;
-        TickCount _nextReleaseTime;
+        TickCount _nextReleaseTime = TickCount.MinValue;
         Vector2 _origin;
         ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
         TickCount _timeCreated = TickCount.Now;
@@ -509,7 +509,8 @@ namespace NetGore.Graphics.ParticleEngine
 
         /// <summary>
         /// When overridden in the derived class, resets the variables for the <see cref="ParticleEmitter"/> in the derived
-        /// class to make it like this instance is starting over from the start.
+        /// class to make it like this instance is starting over from the start. This only resets state variables such as
+        /// the time the effect was created and how long it has to live, not properties such as position and emitting style.
         /// </summary>
         protected virtual void HandleReset()
         {
@@ -592,7 +593,8 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Forces the <see cref="ParticleEmitter"/> to be reset, essentially making it like it is a new instance.
+        /// Forces the <see cref="ParticleEmitter"/> to be reset from the start. This only resets state variables such as
+        /// the time the effect was created and how long it has to live, not properties such as position and emitting style.
         /// Has no effect when disposed.
         /// </summary>
         public void Reset()
@@ -609,6 +611,8 @@ namespace NetGore.Graphics.ParticleEngine
             HandleReset();
 
             _timeCreated = TickCount.Now;
+            _lastUpdateTime = TickCount.MinValue;
+            _nextReleaseTime = TickCount.MinValue;
         }
 
         /// <summary>
@@ -653,17 +657,24 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="currentTime">The current time.</param>>
         public void Update(TickCount currentTime)
         {
+            bool forceEmit = false;
+
             // Get the elapsed time
-            // On the first update, just assume 10 ms have elapsed
+            // On the first update, just assume 33 ms have elapsed
             int elapsedTime;
 
-            if (_lastUpdateTime == int.MinValue)
+            if (_lastUpdateTime == TickCount.MinValue)
             {
+                // This is the very first update
+                forceEmit = true;
                 _nextReleaseTime = currentTime;
-                elapsedTime = 10;
+                elapsedTime = 33;
             }
             else
+            {
+                // Not the first update
                 elapsedTime = (int)Math.Min(MaxDeltaTime, currentTime - _lastUpdateTime);
+            }
 
             _lastUpdateTime = currentTime;
 
@@ -684,7 +695,7 @@ namespace NetGore.Graphics.ParticleEngine
             Sprite.Update(currentTime);
 
             // Check to spawn more particles
-            if (RemainingLife != 0 && ReleaseAmount.Max > 0 && ReleaseRate.Max > 0)
+            if (forceEmit || (RemainingLife != 0 && ReleaseAmount.Max > 0 && ReleaseRate.Max > 0))
             {
                 // Do not allow the releasing catch-up time to exceed the _maxDeltaTime
                 if (_nextReleaseTime < currentTime - MaxDeltaTime)
@@ -692,7 +703,7 @@ namespace NetGore.Graphics.ParticleEngine
 
                 // Keep calculating the releases until we catch up to the current time
                 var amountToRelease = 0;
-                while (_nextReleaseTime < currentTime)
+                while (_nextReleaseTime <= currentTime)
                 {
                     amountToRelease += ReleaseAmount.GetNext();
                     _nextReleaseTime += ReleaseRate.GetNext();
