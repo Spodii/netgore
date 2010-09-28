@@ -66,6 +66,25 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Cache of an empty enumerable of quests.
+        /// </summary>
+        static readonly IEnumerable<IQuest<User>> _emptyQuests = Enumerable.Empty<IQuest<User>>();
+
+        /// <summary>
+        /// Gets the quests that this <see cref="NPC"/> should provide.
+        /// </summary>
+        /// <param name="charTemplate">The <see cref="CharacterTemplate"/> that this <see cref="NPC"/> was loaded from.</param>
+        /// <returns>The quests that this <see cref="NPC"/> should provide. Return an empty or null collection to make
+        /// this <see cref="NPC"/> not provide any quests.</returns>
+        protected virtual IEnumerable<IQuest<User>> GetProvidedQuests(CharacterTemplate charTemplate)
+        {
+            if (charTemplate == null)
+                return _emptyQuests;
+
+            return charTemplate.Quests;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NPC"/> class.
         /// </summary>
         /// <param name="parent">World that the NPC belongs to.</param>
@@ -86,7 +105,7 @@ namespace DemoGame.Server
             _respawnSecs = v.Respawn;
             _giveExp = v.GiveExp;
             _giveCash = v.GiveCash;
-            _quests = template.Quests;
+            _quests = GetProvidedQuests(template) ?? _emptyQuests;
             _chatDialog = v.ChatDialog.HasValue ? _npcChatManager[v.ChatDialog.Value] : null;
             SetShopFromID(v.ShopID);
 
@@ -393,7 +412,7 @@ namespace DemoGame.Server
 
             _giveCash = v.GiveCash;
             _giveExp = v.GiveExp;
-            _quests = template.Quests;
+            _quests = GetProvidedQuests(template) ?? _emptyQuests;
 
             if (v.ChatDialog.HasValue)
                 _chatDialog = _npcChatManager[v.ChatDialog.Value];
@@ -546,7 +565,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the quests that this quest provider provides.
         /// </summary>
-        public virtual IEnumerable<IQuest<User>> Quests
+        public IEnumerable<IQuest<User>> Quests
         {
             get { return _quests; }
         }
