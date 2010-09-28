@@ -19,6 +19,20 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the quests that this <see cref="NPC"/> should provide.
+        /// </summary>
+        /// <param name="charTemplate">The <see cref="CharacterTemplate"/> that this <see cref="NPC"/> was loaded from.</param>
+        /// <returns>
+        /// The quests that this <see cref="NPC"/> should provide. Return an empty or null collection to make
+        /// this <see cref="NPC"/> not provide any quests.
+        /// </returns>
+        protected override IEnumerable<NetGore.Features.Quests.IQuest<User>> GetProvidedQuests(CharacterTemplate charTemplate)
+        {
+            // Never use quests for a thralled NPC
+            return null;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, handles additional loading stuff.
         /// </summary>
         /// <param name="v">The ICharacterTable containing the database values for this Character.</param>
@@ -41,23 +55,6 @@ namespace DemoGame.Server
             }
             protected set
             {
-            }
-        }
-
-        /// <summary>
-        /// Cache of an empty enumerable of quests.
-        /// </summary>
-        static readonly IEnumerable<NetGore.Features.Quests.IQuest<User>> _emptyQuests = Enumerable.Empty<NetGore.Features.Quests.IQuest<User>>();
-
-        /// <summary>
-        /// Gets the quests that this quest provider provides.
-        /// Always returns an empty collection for a <see cref="ThralledNPC"/>.
-        /// </summary>
-        public override IEnumerable<NetGore.Features.Quests.IQuest<User>> Quests
-        {
-            get
-            {
-                return _emptyQuests;
             }
         }
 
