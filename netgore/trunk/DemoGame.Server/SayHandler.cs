@@ -1049,8 +1049,8 @@ namespace DemoGame.Server
 
                 for (var i = 0; i < amount; i++)
                 {
-                    //Create a ThralledNPC and add it to the world.
-                    var npc = new ThralledNPC(World, CharacterTemplateManager.Instance[id], User.Map, User.Position);
+                    // Create a ThralledNPC and add it to the world
+                    new ThralledNPC(World, CharacterTemplateManager.Instance[id], User.Map, User.Position);
                 }
             }
 
@@ -1060,11 +1060,17 @@ namespace DemoGame.Server
             [SayCommand("Dethrall")]
             public void Dethrall()
             {
-                foreach (var npc in User.Map.NPCs)
+                var userMap = User.Map;
+                if (userMap == null)
+                    return;
+
+                // Get the thralled NPCs
+                var toKill = userMap.NPCs.OfType<ThralledNPC>().Where(x => x.IsAlive).ToImmutable();
+
+                // Kill all the found thralled NPCs
+                foreach (var thralledNPC in toKill)
                 {
-                    //If an NPC is detected, simply kill it. Should we despawn in a cleaner way?
-                    if (npc is ThralledNPC)
-                        npc.Kill();
+                    thralledNPC.Kill();
                 }
             }
 
