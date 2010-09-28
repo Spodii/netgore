@@ -29,7 +29,8 @@ namespace NetGore.Graphics.GUI
         /// The message to display when <see cref="_maxDrawCallsBeforeDebugWarning"/> is exceeded.
         /// </summary>
         const string _maxDrawCallsBeforeDebugWarningMessage =
-            "Too many draw calls being made to draw the ControlBorder - performance will suffer. See ControlBorder code for details.";
+            "Too many draw calls being made to draw the ControlBorder (sprite: {0}) - performance will suffer." +
+            "Either use a larger sprite, or use ControlBorderDrawStyle.Stretch instead of ControlBorderDrawStyle.Tile.";
 
         static readonly object _drawSync = new object();
         static readonly ControlBorder _empty;
@@ -400,7 +401,7 @@ namespace NetGore.Graphics.GUI
             var fullSprites = destSize / s.Source.Width;
             var remainder = destSize % s.Source.Width;
 
-            Debug.Assert(fullSprites < _maxDrawCallsBeforeDebugWarning, _maxDrawCallsBeforeDebugWarningMessage);
+            Debug.Assert(fullSprites < _maxDrawCallsBeforeDebugWarning, string.Format(_maxDrawCallsBeforeDebugWarningMessage, s));
 
             // Set the sprite in general
             _repeatSprite.Color = color;
@@ -452,7 +453,7 @@ namespace NetGore.Graphics.GUI
             var remainderY = destSizeY % s.Source.Height;
 
             Debug.Assert((fullSpritesX + fullSpritesY) < (_maxDrawCallsBeforeDebugWarning * 2),
-                         _maxDrawCallsBeforeDebugWarningMessage);
+                         string.Format(_maxDrawCallsBeforeDebugWarningMessage, s));
 
             // Set the sprite in general
             _repeatSprite.Color = color;
@@ -531,7 +532,7 @@ namespace NetGore.Graphics.GUI
             var fullSprites = destSize / s.Source.Height;
             var remainder = destSize % s.Source.Height;
 
-            Debug.Assert(fullSprites < _maxDrawCallsBeforeDebugWarning, _maxDrawCallsBeforeDebugWarningMessage);
+            Debug.Assert(fullSprites < _maxDrawCallsBeforeDebugWarning, string.Format(_maxDrawCallsBeforeDebugWarningMessage, s));
 
             // Set the sprite in general
             _repeatSprite.Color = color;
