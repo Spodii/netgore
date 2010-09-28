@@ -11,7 +11,7 @@ namespace NetGore.Graphics
     /// A <see cref="ITemporaryMapEffect"/> for a <see cref="ParticleEmitter"/>. Simply displays a <see cref="ParticleEmitter"/> at
     /// for a brief amount of time. Derived classes can override some methods to provide more advanced operations.
     /// </summary>
-    public class MapParticleEffect : ITemporaryMapEffect
+    public class TemporaryMapParticleEffect : ITemporaryMapEffect
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -21,12 +21,12 @@ namespace NetGore.Graphics
         bool _isAlive = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MapParticleEffect"/> class.
+        /// Initializes a new instance of the <see cref="TemporaryMapParticleEffect"/> class.
         /// </summary>
         /// <param name="emitter">The <see cref="ParticleEmitter"/>.</param>
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
-        public MapParticleEffect(ParticleEmitter emitter, bool isForeground)
+        public TemporaryMapParticleEffect(ParticleEmitter emitter, bool isForeground)
         {
             _isForeground = isForeground;
             _emitter = emitter;
@@ -39,7 +39,7 @@ namespace NetGore.Graphics
         protected bool AutoKillWhenNoParticles { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="ParticleEmitter"/> used by this <see cref="MapParticleEffect"/>.
+        /// Gets the <see cref="ParticleEmitter"/> used by this <see cref="TemporaryMapParticleEffect"/>.
         /// </summary>
         protected ParticleEmitter Emitter
         {
@@ -47,7 +47,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// When overridden in the derived class, performs the additional updating that this <see cref="MapParticleEffect"/>
+        /// When overridden in the derived class, performs the additional updating that this <see cref="TemporaryMapParticleEffect"/>
         /// needs to do. This method will not be called after the effect has been killed.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>

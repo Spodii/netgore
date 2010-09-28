@@ -178,6 +178,7 @@
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\Extensions\Vector3Extensions.cs" />
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
+    <Compile Include="Graphics\ParticleEngine\ParticleEffectReference.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncInventorySlot.cs" />
     <Compile Include="Core\Strings\CharTypeExtensions.cs" />
     <Compile Include="Core\Time.cs" />
@@ -320,8 +321,8 @@
     <Compile Include="Graphics\Map\TemporaryEffects\Grh\MapGrhEffectSeekPosition.cs" />
     <Compile Include="Graphics\Map\TemporaryEffects\Grh\MapGrhEffectSeekSpatial.cs" />
     <Compile Include="Graphics\Map\TemporaryEffects\Grh\MapGrhEffectTimed.cs" />
-    <Compile Include="Graphics\Map\TemporaryEffects\Particle\MapParticleEffect.cs" />
-    <Compile Include="Graphics\Map\TemporaryEffects\Particle\MapParticleEffectSeekPosition.cs" />
+    <Compile Include="Graphics\Map\TemporaryEffects\Particle\TemporaryMapParticleEffect.cs" />
+    <Compile Include="Graphics\Map\TemporaryEffects\Particle\TemporaryMapParticleEffectSeekPosition.cs" />
     <Compile Include="Graphics\Map\TemporaryEffects\TemporaryMapEffectDiedHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifier.cs" />
     <Compile Include="Graphics\ParticleEngine\EmitterModifiers\Core\EmitterModifierCollection.cs" />

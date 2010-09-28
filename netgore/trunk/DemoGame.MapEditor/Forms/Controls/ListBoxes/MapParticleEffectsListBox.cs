@@ -12,7 +12,7 @@ namespace DemoGame.MapEditor
         /// When overridden in the derived class, gets an IEnumerable of objects to be used in this MapItemListBox.
         /// </summary>
         /// <returns>An IEnumerable of objects to be used in this MapItemListBox.</returns>
-        protected override IEnumerable<ParticleEmitter> GetItems()
+        protected override IEnumerable<ParticleEffectReference> GetItems()
         {
             return Map.ParticleEffects;
         }
