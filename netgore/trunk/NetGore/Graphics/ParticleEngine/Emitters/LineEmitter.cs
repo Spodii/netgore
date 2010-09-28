@@ -20,6 +20,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _emitterCategoryName = "Line Emitter";
         const string _lengthKeyName = "Length";
         const string _rectilinearKeyName = "Rectilinear";
+
         bool _emitBothWays = _defaultEmitBothWays;
 
         /// <summary>
@@ -31,6 +32,17 @@ namespace NetGore.Graphics.ParticleEngine
         int _length = _defaultLength;
         bool _rectilinear = _defaultRectilinear;
         Matrix _rotationMatrix = Matrix.CreateRotationZ(_defaultAngle);
+
+        /// <summary>
+        /// When overridden in the derived class, resets the variables for the <see cref="ParticleEmitter"/> in the derived
+        /// class to make it like this instance is starting over from the start.
+        /// </summary>
+        protected override void HandleReset()
+        {
+            _flip = false;
+
+            base.HandleReset();
+        }
 
         /// <summary>
         /// Gets or sets the rotation in radians of the line around its center point.

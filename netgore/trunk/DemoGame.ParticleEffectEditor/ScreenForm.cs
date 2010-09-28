@@ -151,6 +151,11 @@ namespace DemoGame.ParticleEffectEditor
                 _lastEmitterName = Emitter.Name;
                 Text = _defaultTitle + " - " + _lastEmitterName;
             }
+
+            if (Emitter.IsExpired)
+            {
+                Emitter.Reset();
+            }
         }
 
         /// <summary>

@@ -5,10 +5,11 @@
     <Name>Casting Skill</Name>
     <BlendMode>Add</BlendMode>
     <Budget>5000</Budget>
-    <Life>
+	<EmitterLife>-1</EmitterLife>
+    <ParticleLife>
       <Min>500</Min>
       <Max>500</Max>
-    </Life>
+    </ParticleLife>
     <Origin>333,263</Origin>
     <ReleaseAmount>
       <Min>1</Min>

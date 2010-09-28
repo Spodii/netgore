@@ -5,10 +5,11 @@
     <Name>test</Name>
     <BlendMode>Add</BlendMode>
     <Budget>5000</Budget>
-    <Life>
+	<EmitterLife>-1</EmitterLife>
+    <ParticleLife>
       <Min>2000</Min>
       <Max>2000</Max>
-    </Life>
+    </ParticleLife>
     <Origin>328,227</Origin>
     <ReleaseAmount>
       <Min>1</Min>

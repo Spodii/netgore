@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -13,6 +15,8 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public abstract class ParticleEmitter : IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// The default name given to a <see cref="ParticleEmitter"/>.
         /// </summary>
@@ -39,7 +43,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         const int _initialParticleArraySize = 64;
 
-        const string _lifeKeyName = "Life";
+        const string _particleLifeKeyName = "ParticleLife";
         const string _nameKeyName = "Name";
         const string _originKeyName = "Origin";
         const string _particleCategoryName = "Particle";
@@ -50,6 +54,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _releaseRotationKeyName = "ReleaseRotation";
         const string _releaseScaleKeyName = "ReleaseScale";
         const string _releaseSpeedKeyName = "ReleaseSpeed";
+        const string _emitterLifeKeyName = "EmitterLife";
 
         static readonly IEnumerable<Type> _emitterTypes =
             TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes).OrderBy(x => x.Name).ToCompact();
@@ -63,7 +68,6 @@ namespace NetGore.Graphics.ParticleEngine
 
         int _budget;
         EmitterModifierCollection _emitterModifiers = new EmitterModifierCollection();
-        TickCount _expirationTime = TickCount.MaxValue;
         bool _isDisposed = false;
 
         /// <summary>
@@ -72,9 +76,12 @@ namespace NetGore.Graphics.ParticleEngine
         int _lastAliveIndex = -1;
 
         TickCount _lastUpdateTime = TickCount.MinValue;
+        int _life = -1;
         TickCount _nextReleaseTime;
         Vector2 _origin;
         ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
+        TickCount _timeCreated = TickCount.Now;
+        bool _wasKilled;
 
         /// <summary>
         /// Initializes the <see cref="ParticleEmitter"/> class.
@@ -95,7 +102,7 @@ namespace NetGore.Graphics.ParticleEngine
             // Set some default values
             Name = DefaultName;
             BlendMode = _defaultBlendMode;
-            Life = new VariableInt(2000);
+            ParticleLife = new VariableInt(2000);
             ReleaseAmount = new VariableUShort(1);
             ReleaseColor = new VariableColor(Color.White);
             ReleaseRate = new VariableUShort(100);
@@ -159,6 +166,26 @@ namespace NetGore.Graphics.ParticleEngine
         public static int DefaultBudget { get; set; }
 
         /// <summary>
+        /// Gets or sets how long, in milliseconds, the emitter lives after being created. If less than 0, it lives
+        /// indefinitely.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("How long, in milliseconds, the emitter lives. If less than 0, it lives indefinitely.")]
+        [DisplayName("Life")]
+        [DefaultValue(-1)]
+        public int EmitterLife
+        {
+            get { return _life; }
+            set
+            {
+                if (_life == value)
+                    return;
+
+                _life = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the collection of modifiers to use on the <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
@@ -193,7 +220,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Browsable(false)]
         public bool HasInfiniteLife
         {
-            get { return _expirationTime == TickCount.MaxValue; }
+            get { return _timeCreated < 0; }
         }
 
         /// <summary>
@@ -241,7 +268,7 @@ namespace NetGore.Graphics.ParticleEngine
         [Description("How long in milliseconds each Particle emitted lives after being emitted.")]
         [DisplayName("Life")]
         [DefaultValue(typeof(VariableInt), "2000")]
-        public VariableInt Life { get; set; }
+        public VariableInt ParticleLife { get; set; }
 
         /// <summary>
         /// Gets or sets the unique name of the particle effect.
@@ -349,10 +376,17 @@ namespace NetGore.Graphics.ParticleEngine
         {
             get
             {
+                if (_wasKilled)
+                    return 0;
+
                 if (HasInfiniteLife)
                     return -1;
 
-                return Math.Max(0, (int)_expirationTime - (int)TickCount.Now);
+                if (_life < 0)
+                    return -1;
+
+                var ret = Math.Max(0, _life - ((int)TickCount.Now - (int)_timeCreated));
+                return ret;
             }
         }
 
@@ -369,12 +403,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
-        /// </summary>
-        /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
-        public abstract ParticleEmitter DeepCopy();
-
-        /// <summary>
         /// Copies the values in this <see cref="ParticleEmitter"/> to another.
         /// </summary>
         /// <param name="destination">The <see cref="ParticleEmitter"/> to copy the values to.</param>
@@ -382,7 +410,7 @@ namespace NetGore.Graphics.ParticleEngine
         {
             destination.BlendMode = BlendMode;
             destination.Budget = Budget;
-            destination.Life = Life;
+            destination.ParticleLife = ParticleLife;
             destination.Origin = Origin;
             destination.ReleaseAmount = ReleaseAmount;
             destination.ReleaseColor = ReleaseColor;
@@ -394,6 +422,12 @@ namespace NetGore.Graphics.ParticleEngine
             destination.ParticleModifiers = ParticleModifiers.DeepCopy();
             destination.EmitterModifiers = EmitterModifiers.DeepCopy();
         }
+
+        /// <summary>
+        /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
+        /// </summary>
+        /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
+        public abstract ParticleEmitter DeepCopy();
 
         /// <summary>
         /// Draws the <see cref="ParticleEmitter"/>.
@@ -474,12 +508,20 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// When overridden in the derived class, resets the variables for the <see cref="ParticleEmitter"/> in the derived
+        /// class to make it like this instance is starting over from the start.
+        /// </summary>
+        protected virtual void HandleReset()
+        {
+        }
+
+        /// <summary>
         /// Kills the <see cref="ParticleEmitter"/>, which stops it from emitting any more particles but keeps any
         /// existing particles alive.
         /// </summary>
         public void Kill()
         {
-            _expirationTime = TickCount.Now;
+            _wasKilled = true;
         }
 
         /// <summary>
@@ -492,7 +534,8 @@ namespace NetGore.Graphics.ParticleEngine
             Name = reader.ReadString(_nameKeyName);
             BlendMode = reader.ReadEnum<BlendMode>(_blendModeKeyName);
             Budget = reader.ReadInt(_budgetKeyName);
-            Life = reader.ReadVariableInt(_lifeKeyName);
+            EmitterLife = reader.ReadInt(_emitterLifeKeyName);
+            ParticleLife = reader.ReadVariableInt(_particleLifeKeyName);
             Origin = reader.ReadVector2(_originKeyName);
             ReleaseAmount = reader.ReadVariableUShort(_releaseAmountKeyName);
             ReleaseColor = reader.ReadVariableColor(_releaseColorKeyName);
@@ -554,7 +597,7 @@ namespace NetGore.Graphics.ParticleEngine
                 // Set up the particle
                 particle.Momentum = Vector2.Zero;
                 particle.LifeStart = currentTime;
-                particle.LifeEnd = (TickCount)(currentTime + Life.GetNext());
+                particle.LifeEnd = (TickCount)(currentTime + ParticleLife.GetNext());
                 particle.Rotation = ReleaseRotation.GetNext();
                 particle.Scale = ReleaseScale.GetNext();
                 ReleaseColor.GetNext(ref particle.Color);
@@ -579,6 +622,26 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
+        /// Forces the <see cref="ParticleEmitter"/> to be reset, essentially making it like it is a new instance.
+        /// Has no effect when disposed.
+        /// </summary>
+        public void Reset()
+        {
+            if (IsDisposed)
+            {
+                const string errmsg = "Tried to reset a disposed ParticleEffect `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
+            HandleReset();
+
+            _timeCreated = TickCount.Now;
+        }
+
+        /// <summary>
         /// Sets the life of the <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <param name="totalLife">The total life of the <see cref="ParticleEmitter"/> in milliseconds. If less
@@ -586,9 +649,9 @@ namespace NetGore.Graphics.ParticleEngine
         public void SetEmitterLife(int totalLife)
         {
             if (totalLife <= 0)
-                _expirationTime = TickCount.MaxValue;
+                _life = -1;
             else
-                _expirationTime = (TickCount)(TickCount.Now + totalLife);
+                _life = (int)(TickCount.Now + totalLife);
         }
 
         /// <summary>
@@ -715,7 +778,8 @@ namespace NetGore.Graphics.ParticleEngine
             writer.Write(_nameKeyName, Name);
             writer.Write(_blendModeKeyName, BlendMode);
             writer.Write(_budgetKeyName, Budget);
-            writer.Write(_lifeKeyName, Life);
+            writer.Write(_emitterLifeKeyName, EmitterLife);
+            writer.Write(_particleLifeKeyName, ParticleLife);
             writer.Write(_originKeyName, Origin);
             writer.Write(_releaseAmountKeyName, ReleaseAmount);
             writer.Write(_releaseColorKeyName, ReleaseColor);
