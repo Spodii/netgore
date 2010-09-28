@@ -140,7 +140,8 @@ namespace NetGore.Graphics.ParticleEngine
 
         /// <summary>
         /// When overridden in the derived class, resets the variables for the <see cref="ParticleEmitter"/> in the derived
-        /// class to make it like this instance is starting over from the start.
+        /// class to make it like this instance is starting over from the start. This only resets state variables such as
+        /// the time the effect was created and how long it has to live, not properties such as position and emitting style.
         /// </summary>
         protected override void HandleReset()
         {
