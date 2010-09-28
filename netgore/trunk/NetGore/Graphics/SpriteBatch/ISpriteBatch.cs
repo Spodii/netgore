@@ -7,6 +7,9 @@ namespace NetGore.Graphics
 {
     /// <summary>
     /// Interface for an object that can batch the drawing of multiple 2D sprites and text.
+    /// Classes that implement this interface are NOT guarenteed to be thread-safe! If you wish to use
+    /// threaded rendering, you must use a separate <see cref="ISpriteBatch"/> for each thread or manually
+    /// add thread safety.
     /// </summary>
     public interface ISpriteBatch : IDisposable
     {

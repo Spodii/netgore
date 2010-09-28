@@ -6,6 +6,8 @@ namespace NetGore.Graphics
 {
     /// <summary>
     /// An implementation of <see cref="ISpriteBatch"/> using the <see cref="RenderWindow"/>.
+    /// This class is NOT thread-safe! If you wish to use threaded rendering, you must use a separate <see cref="ISpriteBatch"/>
+    /// for each thread or manually add thread safety.
     /// </summary>
     public class SpriteBatch : ISpriteBatch
     {
