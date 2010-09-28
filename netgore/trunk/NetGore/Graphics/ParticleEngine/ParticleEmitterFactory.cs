@@ -181,7 +181,7 @@ namespace NetGore.Graphics.ParticleEngine
 
             // Grab the reader for the emitter node, then read the values into the emitter
             var emitterReader = reader.ReadNode(_emitterNodeName);
-            emitter.Read(emitterReader);
+            emitter.ReadState(emitterReader);
 
             return emitter;
         }
@@ -215,7 +215,7 @@ namespace NetGore.Graphics.ParticleEngine
             writer.Write(_emitterTypeKeyName, Instance.GetTypeName(emitter.GetType()));
             writer.WriteStartNode(_emitterNodeName);
             {
-                emitter.Write(writer);
+                emitter.WriteState(writer);
             }
             writer.WriteEndNode(_emitterNodeName);
         }

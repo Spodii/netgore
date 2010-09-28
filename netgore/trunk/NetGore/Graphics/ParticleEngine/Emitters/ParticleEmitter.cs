@@ -13,7 +13,7 @@ namespace NetGore.Graphics.ParticleEngine
     /// <summary>
     /// Base class for all emitters of <see cref="Particle"/>s.
     /// </summary>
-    public abstract class ParticleEmitter : IDisposable
+    public abstract class ParticleEmitter : IDisposable, IPersistable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -35,6 +35,7 @@ namespace NetGore.Graphics.ParticleEngine
         const BlendMode _defaultBlendMode = BlendMode.Add;
         const int _defaultBudget = 5000;
         const string _emitterCategoryName = "Emitter";
+        const string _emitterLifeKeyName = "EmitterLife";
         const string _emitterModifiersNodeName = "EmitterModifiers";
         const string _grhIndexKeyName = "Grh";
 
@@ -43,10 +44,10 @@ namespace NetGore.Graphics.ParticleEngine
         /// </summary>
         const int _initialParticleArraySize = 64;
 
-        const string _particleLifeKeyName = "ParticleLife";
         const string _nameKeyName = "Name";
         const string _originKeyName = "Origin";
         const string _particleCategoryName = "Particle";
+        const string _particleLifeKeyName = "ParticleLife";
         const string _particleModifiersNodeName = "ParticleModifiers";
         const string _releaseAmountKeyName = "ReleaseAmount";
         const string _releaseColorKeyName = "ReleaseColor";
@@ -54,7 +55,6 @@ namespace NetGore.Graphics.ParticleEngine
         const string _releaseRotationKeyName = "ReleaseRotation";
         const string _releaseScaleKeyName = "ReleaseScale";
         const string _releaseSpeedKeyName = "ReleaseSpeed";
-        const string _emitterLifeKeyName = "EmitterLife";
 
         static readonly IEnumerable<Type> _emitterTypes =
             TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes).OrderBy(x => x.Name).ToCompact();
@@ -262,15 +262,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the life of each <see cref="Particle"/> emitted.
-        /// </summary>
-        [Category(_particleCategoryName)]
-        [Description("How long in milliseconds each Particle emitted lives after being emitted.")]
-        [DisplayName("Life")]
-        [DefaultValue(typeof(VariableInt), "2000")]
-        public VariableInt ParticleLife { get; set; }
-
-        /// <summary>
         /// Gets or sets the unique name of the particle effect.
         /// </summary>
         [Category(_emitterCategoryName)]
@@ -290,6 +281,15 @@ namespace NetGore.Graphics.ParticleEngine
             get { return _origin; }
             set { _origin = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the life of each <see cref="Particle"/> emitted.
+        /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("How long in milliseconds each Particle emitted lives after being emitted.")]
+        [DisplayName("Life")]
+        [DefaultValue(typeof(VariableInt), "2000")]
+        public VariableInt ParticleLife { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
@@ -525,36 +525,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Reads the <see cref="ParticleEmitter"/> settings from an <see cref="IValueReader"/>.
-        /// </summary>
-        /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        public void Read(IValueReader reader)
-        {
-            // Read the primary values
-            Name = reader.ReadString(_nameKeyName);
-            BlendMode = reader.ReadEnum<BlendMode>(_blendModeKeyName);
-            Budget = reader.ReadInt(_budgetKeyName);
-            EmitterLife = reader.ReadInt(_emitterLifeKeyName);
-            ParticleLife = reader.ReadVariableInt(_particleLifeKeyName);
-            Origin = reader.ReadVector2(_originKeyName);
-            ReleaseAmount = reader.ReadVariableUShort(_releaseAmountKeyName);
-            ReleaseColor = reader.ReadVariableColor(_releaseColorKeyName);
-            ReleaseRate = reader.ReadVariableUShort(_releaseRateKeyName);
-            ReleaseRotation = reader.ReadVariableFloat(_releaseRotationKeyName);
-            ReleaseScale = reader.ReadVariableFloat(_releaseScaleKeyName);
-            ReleaseSpeed = reader.ReadVariableFloat(_releaseSpeedKeyName);
-            Sprite.SetGrh(reader.ReadGrhIndex(_grhIndexKeyName));
-
-            // Read the custom values
-            var customValuesReader = reader.ReadNode(_customValuesNodeName);
-            ReadCustomValues(customValuesReader);
-
-            // Read the modifier collection
-            ParticleModifiers.Read(_particleModifiersNodeName, reader);
-            EmitterModifiers.Read(_emitterModifiersNodeName, reader);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, reads all custom state values from the <paramref name="reader"/>.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read the state values from.</param>
@@ -769,10 +739,71 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Writes the <see cref="ParticleEmitter"/> to an <see cref="IValueWriter"/>.
+        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
         /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write to.</param>
-        public void Write(IValueWriter writer)
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
+        protected abstract void WriteCustomValues(IValueWriter writer);
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
+            // Dispose the particles so they can be used again
+            foreach (var particle in particles)
+            {
+                if (particle != null && !particle.IsDisposed)
+                    particle.Dispose();
+            }
+        }
+
+        #endregion
+
+        #region IPersistable Members
+
+        /// <summary>
+        /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
+        /// same order as they were written.
+        /// </summary>
+        /// <param name="reader">The <see cref="IValueReader"/> to read the values from.</param>
+        public void ReadState(IValueReader reader)
+        {
+            // Read the primary values
+            Name = reader.ReadString(_nameKeyName);
+            BlendMode = reader.ReadEnum<BlendMode>(_blendModeKeyName);
+            Budget = reader.ReadInt(_budgetKeyName);
+            EmitterLife = reader.ReadInt(_emitterLifeKeyName);
+            ParticleLife = reader.ReadVariableInt(_particleLifeKeyName);
+            Origin = reader.ReadVector2(_originKeyName);
+            ReleaseAmount = reader.ReadVariableUShort(_releaseAmountKeyName);
+            ReleaseColor = reader.ReadVariableColor(_releaseColorKeyName);
+            ReleaseRate = reader.ReadVariableUShort(_releaseRateKeyName);
+            ReleaseRotation = reader.ReadVariableFloat(_releaseRotationKeyName);
+            ReleaseScale = reader.ReadVariableFloat(_releaseScaleKeyName);
+            ReleaseSpeed = reader.ReadVariableFloat(_releaseSpeedKeyName);
+            Sprite.SetGrh(reader.ReadGrhIndex(_grhIndexKeyName));
+
+            // Read the custom values
+            var customValuesReader = reader.ReadNode(_customValuesNodeName);
+            ReadCustomValues(customValuesReader);
+
+            // Read the modifier collection
+            ParticleModifiers.Read(_particleModifiersNodeName, reader);
+            EmitterModifiers.Read(_emitterModifiersNodeName, reader);
+        }
+
+        /// <summary>
+        /// Writes the state of the object to an <see cref="IValueWriter"/>.
+        /// </summary>
+        /// <param name="writer">The <see cref="IValueWriter"/> to write the values to.</param>
+        public void WriteState(IValueWriter writer)
         {
             // Write the primary values
             writer.Write(_nameKeyName, Name);
@@ -799,32 +830,6 @@ namespace NetGore.Graphics.ParticleEngine
             // Write the modifier collection
             ParticleModifiers.Write(_particleModifiersNodeName, writer);
             EmitterModifiers.Write(_emitterModifiersNodeName, writer);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, writes all custom state values to the <paramref name="writer"/>.
-        /// </summary>
-        /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
-        protected abstract void WriteCustomValues(IValueWriter writer);
-
-        #region IDisposable Members
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_isDisposed)
-                return;
-
-            _isDisposed = true;
-
-            // Dispose the particles so they can be used again
-            foreach (var particle in particles)
-            {
-                if (particle != null && !particle.IsDisposed)
-                    particle.Dispose();
-            }
         }
 
         #endregion
