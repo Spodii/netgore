@@ -448,6 +448,7 @@
     <Compile Include="World\Map\Entities\Characters\NPC.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="World\Map\Entities\Characters\ThralledNPC.cs" />
     <Compile Include="World\Map\Entities\Characters\UserChatDialogState.cs" />
     <Compile Include="World\Map\Entities\Characters\UserShoppingState.cs" />
     <Compile Include="World\Map\Entities\Characters\UserSPSynchronizer.cs" />
