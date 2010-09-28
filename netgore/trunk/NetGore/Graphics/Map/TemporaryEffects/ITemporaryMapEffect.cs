@@ -20,14 +20,6 @@ namespace NetGore.Graphics
         bool IsAlive { get; }
 
         /// <summary>
-        /// Forcibly kills the effect.
-        /// </summary>
-        /// <param name="immediate">If true, the effect will be killed immediately and <see cref="IsAlive"/> will be
-        /// false by the time the method returns. If false, the effect is allowed to enter itself into a "terminating" state,
-        /// allowing it to cleanly transition the effect out.</param>
-        void Kill(bool immediate);
-
-        /// <summary>
         /// Gets if the <see cref="ITemporaryMapEffect"/> is in the foreground. If true, it will be drawn after the
         /// <see cref="MapRenderLayer.SpriteForeground"/> layer. If false, it will be drawn after the
         /// <see cref="MapRenderLayer.SpriteBackground"/> layer.
@@ -39,6 +31,14 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="sb"><see cref="ISpriteBatch"/> the object can use to draw itself with.</param>
         void Draw(ISpriteBatch sb);
+
+        /// <summary>
+        /// Forcibly kills the effect.
+        /// </summary>
+        /// <param name="immediate">If true, the effect will be killed immediately and <see cref="IsAlive"/> will be
+        /// false by the time the method returns. If false, the effect is allowed to enter itself into a "terminating" state,
+        /// allowing it to cleanly transition the effect out.</param>
+        void Kill(bool immediate);
 
         /// <summary>
         /// Updates the map effect.

@@ -34,17 +34,6 @@ namespace NetGore.Graphics.ParticleEngine
         Matrix _rotationMatrix = Matrix.CreateRotationZ(_defaultAngle);
 
         /// <summary>
-        /// When overridden in the derived class, resets the variables for the <see cref="ParticleEmitter"/> in the derived
-        /// class to make it like this instance is starting over from the start.
-        /// </summary>
-        protected override void HandleReset()
-        {
-            _flip = false;
-
-            base.HandleReset();
-        }
-
-        /// <summary>
         /// Gets or sets the rotation in radians of the line around its center point.
         /// </summary>
         [Category(_emitterCategoryName)]
@@ -147,6 +136,17 @@ namespace NetGore.Graphics.ParticleEngine
             }
             else
                 GetForce(RandomHelper.NextFloat(MathHelper.TwoPi), out force);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, resets the variables for the <see cref="ParticleEmitter"/> in the derived
+        /// class to make it like this instance is starting over from the start.
+        /// </summary>
+        protected override void HandleReset()
+        {
+            _flip = false;
+
+            base.HandleReset();
         }
 
         /// <summary>

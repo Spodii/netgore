@@ -499,14 +499,6 @@ namespace DemoGame.Server
             }
         }
 
-        public static PacketWriter SkillSetGroupCooldown(byte skillGroup, ushort cooldownTime)
-        {
-            var pw = GetWriter(ServerPacketID.SkillSetGroupCooldown);
-            pw.Write(skillGroup);
-            pw.Write(cooldownTime);
-            return pw;
-        }
-
         public static PacketWriter SetStatPoints(int statPoints)
         {
             var pw = GetWriter(ServerPacketID.SetStatPoints);
@@ -531,11 +523,11 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SkillStartCasting_ToUser(SkillType skillType, ushort castTime)
+        public static PacketWriter SkillSetGroupCooldown(byte skillGroup, ushort cooldownTime)
         {
-            var pw = GetWriter(ServerPacketID.SkillStartCasting_ToUser);
-            pw.WriteEnum(skillType);
-            pw.Write(castTime);
+            var pw = GetWriter(ServerPacketID.SkillSetGroupCooldown);
+            pw.Write(skillGroup);
+            pw.Write(cooldownTime);
             return pw;
         }
 
@@ -547,9 +539,11 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SkillStopCasting_ToUser()
+        public static PacketWriter SkillStartCasting_ToUser(SkillType skillType, ushort castTime)
         {
-            var pw = GetWriter(ServerPacketID.SkillStopCasting_ToUser);
+            var pw = GetWriter(ServerPacketID.SkillStartCasting_ToUser);
+            pw.WriteEnum(skillType);
+            pw.Write(castTime);
             return pw;
         }
 
@@ -557,6 +551,30 @@ namespace DemoGame.Server
         {
             var pw = GetWriter(ServerPacketID.SkillStopCasting_ToMap);
             pw.Write(entityIndex);
+            return pw;
+        }
+
+        public static PacketWriter SkillStopCasting_ToUser()
+        {
+            var pw = GetWriter(ServerPacketID.SkillStopCasting_ToUser);
+            return pw;
+        }
+
+        public static PacketWriter SkillUse(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
+        {
+            var pw = GetWriter(ServerPacketID.SkillUse);
+            pw.Write(user);
+
+            if (target.HasValue)
+            {
+                pw.Write(true);
+                pw.Write(target.Value);
+            }
+            else
+                pw.Write(false);
+
+            pw.WriteEnum(skillType);
+
             return pw;
         }
 
@@ -682,24 +700,6 @@ namespace DemoGame.Server
             var pw = GetWriter(ServerPacketID.UseEntity);
             pw.Write(usedEntity);
             pw.Write(usedBy);
-            return pw;
-        }
-
-        public static PacketWriter SkillUse(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
-        {
-            var pw = GetWriter(ServerPacketID.SkillUse);
-            pw.Write(user);
-
-            if (target.HasValue)
-            {
-                pw.Write(true);
-                pw.Write(target.Value);
-            }
-            else
-                pw.Write(false);
-
-            pw.WriteEnum(skillType);
-
             return pw;
         }
     }

@@ -1,4 +1,5 @@
-﻿using NetGore.IO;
+﻿using System.Linq;
+using NetGore.IO;
 using NetGore.IO.PropertySync;
 
 namespace NetGore.Audio
@@ -13,8 +14,7 @@ namespace NetGore.Audio
         /// Initializes a new instance of the <see cref="PropertySyncMusicID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncMusicID(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncMusicID(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

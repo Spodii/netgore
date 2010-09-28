@@ -182,7 +182,7 @@ namespace NetGore.Network
             }
 
             // Read the remaining bits
-            if (bitStream.ReadUInt(bitStream.LengthBits  - bitStream.PositionBits) != 0)
+            if (bitStream.ReadUInt(bitStream.LengthBits - bitStream.PositionBits) != 0)
                 return false;
 
             return true;

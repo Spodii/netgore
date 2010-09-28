@@ -14,6 +14,6 @@ namespace DemoGame.Client
         /// Synchronizing only helps with dealing with systems that have an internal clock that runs too slow or too fast.
         /// Default is 10 minutes.
         /// </summary>
-        public const int SyncGameTimeFrequency = 1000 * 60 * 10; 
+        public const int SyncGameTimeFrequency = 1000 * 60 * 10;
     }
 }

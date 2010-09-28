@@ -65,7 +65,8 @@ namespace NetGore.IO.PropertySync
                 // Make sure the handler doesn't already exist
                 if (_propertySyncTypes.ContainsKey(attrib.HandledType))
                 {
-                    const string errmsg = "Duplicate PropertySync implementations for type `{0}`. Implementations: `{1}` and `{2}`.";
+                    const string errmsg =
+                        "Duplicate PropertySync implementations for type `{0}`. Implementations: `{1}` and `{2}`.";
                     var existingPST = _propertySyncTypes[attrib.HandledType];
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, attrib.HandledType, existingPST, type);

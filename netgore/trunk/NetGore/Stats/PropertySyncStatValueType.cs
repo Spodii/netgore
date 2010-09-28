@@ -1,4 +1,5 @@
-﻿using NetGore.IO;
+﻿using System.Linq;
+using NetGore.IO;
 using NetGore.IO.PropertySync;
 
 namespace NetGore.Stats
@@ -13,8 +14,7 @@ namespace NetGore.Stats
         /// Initializes a new instance of the <see cref="PropertySyncStatValueType"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncStatValueType(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncStatValueType(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

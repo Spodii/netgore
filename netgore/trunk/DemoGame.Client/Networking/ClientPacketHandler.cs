@@ -767,15 +767,6 @@ namespace DemoGame.Client
                 character.ProvidedQuests = questIDs;
         }
 
-        [MessageHandler((uint)ServerPacketID.SkillSetGroupCooldown)]
-        void RecvSkillSetGroupCooldown(IIPSocket conn, BitStream r)
-        {
-            var skillGroup = r.ReadByte();
-            var cooldownTime = r.ReadUShort();
-
-            GameplayScreen.SkillCooldownManager.SetCooldown(skillGroup, cooldownTime, GetTime());
-        }
-
         [MessageHandler((uint)ServerPacketID.SetStatPoints)]
         void RecvSetStatPoints(IIPSocket conn, BitStream r)
         {
@@ -790,13 +781,13 @@ namespace DemoGame.Client
             World.UserCharIndex = mapCharIndex;
         }
 
-        [MessageHandler((uint)ServerPacketID.SkillStartCasting_ToUser)]
-        void RecvSkillStartCasting_ToUser(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ServerPacketID.SkillSetGroupCooldown)]
+        void RecvSkillSetGroupCooldown(IIPSocket conn, BitStream r)
         {
-            var skillType = r.ReadEnum<SkillType>();
-            var castTime = r.ReadUShort();
+            var skillGroup = r.ReadByte();
+            var cooldownTime = r.ReadUShort();
 
-            GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
+            GameplayScreen.SkillCooldownManager.SetCooldown(skillGroup, cooldownTime, GetTime());
         }
 
         [MessageHandler((uint)ServerPacketID.SkillStartCasting_ToMap)]
@@ -833,13 +824,16 @@ namespace DemoGame.Client
             }
         }
 
-        // TODO: !! Create a local method to use for every call to get a DynamicEntity. In it, handle the error checking and logging crap.
-
-        [MessageHandler((uint)ServerPacketID.SkillStopCasting_ToUser)]
-        void RecvSkillStopCasting_ToUser(IIPSocket conn, BitStream r)
+        [MessageHandler((uint)ServerPacketID.SkillStartCasting_ToUser)]
+        void RecvSkillStartCasting_ToUser(IIPSocket conn, BitStream r)
         {
-            GameplayScreen.SkillCastProgressBar.StopCasting();
+            var skillType = r.ReadEnum<SkillType>();
+            var castTime = r.ReadUShort();
+
+            GameplayScreen.SkillCastProgressBar.StartCasting(skillType, castTime);
         }
+
+        // TODO: !! Create a local method to use for every call to get a DynamicEntity. In it, handle the error checking and logging crap.
 
         [MessageHandler((uint)ServerPacketID.SkillStopCasting_ToMap)]
         void RecvSkillStopCasting_ToMap(IIPSocket conn, BitStream r)
@@ -853,6 +847,63 @@ namespace DemoGame.Client
 
             // Set the entity as not casting
             casterEntity.IsCastingSkill = false;
+        }
+
+        [MessageHandler((uint)ServerPacketID.SkillStopCasting_ToUser)]
+        void RecvSkillStopCasting_ToUser(IIPSocket conn, BitStream r)
+        {
+            GameplayScreen.SkillCastProgressBar.StopCasting();
+        }
+
+        [MessageHandler((uint)ServerPacketID.SkillUse)]
+        void RecvSkillUse(IIPSocket conn, BitStream r)
+        {
+            var casterEntityIndex = r.ReadMapEntityIndex();
+            var hasTarget = r.ReadBool();
+            MapEntityIndex? targetEntityIndex = null;
+            if (hasTarget)
+                targetEntityIndex = r.ReadMapEntityIndex();
+            var skillType = r.ReadEnum<SkillType>();
+
+            var casterEntity = Map.GetDynamicEntity<CharacterEntity>(casterEntityIndex);
+            CharacterEntity targetEntity = null;
+            if (targetEntityIndex.HasValue)
+                targetEntity = Map.GetDynamicEntity<CharacterEntity>(targetEntityIndex.Value);
+
+            if (casterEntity == null)
+            {
+                const string errmsg = "Read an invalid MapEntityIndex `{0}` in UseSkill for the skill user.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, casterEntityIndex);
+                return;
+            }
+
+            // TODO: !! Replace this message here with the display of the skills
+            if (targetEntity != null)
+                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", casterEntity.Name, skillType,
+                                                                targetEntity.Name));
+            else
+                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", casterEntity.Name, skillType));
+
+            // Get the SkillInfo for the skill being used
+            var skillInfo = SkillInfoManager.Instance[skillType];
+            if (skillInfo == null)
+            {
+                const string errmsg = "Entity `{0}` started casting unknown SkillType `{1}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, casterEntity, skillType);
+                Debug.Fail(string.Format(errmsg, casterEntity, skillType));
+            }
+            else
+            {
+                // If an ActionDisplay is available for this skill, display it
+                if (skillInfo.CastActionDisplay.HasValue)
+                {
+                    var ad = ActionDisplayScripts.ActionDisplays[skillInfo.CastActionDisplay.Value];
+                    if (ad != null)
+                        ad.Execute(Map, casterEntity, targetEntity);
+                }
+            }
         }
 
         [MessageHandler((uint)ServerPacketID.StartChatDialog)]
@@ -1024,56 +1075,6 @@ namespace DemoGame.Client
 
             // Use it
             asUsable.Use(usedBy);
-        }
-
-        [MessageHandler((uint)ServerPacketID.SkillUse)]
-        void RecvSkillUse(IIPSocket conn, BitStream r)
-        {
-            var casterEntityIndex = r.ReadMapEntityIndex();
-            var hasTarget = r.ReadBool();
-            MapEntityIndex? targetEntityIndex = null;
-            if (hasTarget)
-                targetEntityIndex = r.ReadMapEntityIndex();
-            var skillType = r.ReadEnum<SkillType>();
-
-            var casterEntity = Map.GetDynamicEntity<CharacterEntity>(casterEntityIndex);
-            CharacterEntity targetEntity = null;
-            if (targetEntityIndex.HasValue)
-                targetEntity = Map.GetDynamicEntity<CharacterEntity>(targetEntityIndex.Value);
-
-            if (casterEntity == null)
-            {
-                const string errmsg = "Read an invalid MapEntityIndex `{0}` in UseSkill for the skill user.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, casterEntityIndex);
-                return;
-            }
-
-            // TODO: !! Replace this message here with the display of the skills
-            if (targetEntity != null)
-                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", casterEntity.Name, skillType, targetEntity.Name));
-            else
-                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", casterEntity.Name, skillType));
-
-            // Get the SkillInfo for the skill being used
-            var skillInfo = SkillInfoManager.Instance[skillType];
-            if (skillInfo == null)
-            {
-                const string errmsg = "Entity `{0}` started casting unknown SkillType `{1}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, casterEntity, skillType);
-                Debug.Fail(string.Format(errmsg, casterEntity, skillType));
-            }
-            else
-            {
-                // If an ActionDisplay is available for this skill, display it
-                if (skillInfo.CastActionDisplay.HasValue)
-                {
-                    var ad = ActionDisplayScripts.ActionDisplays[skillInfo.CastActionDisplay.Value];
-                    if (ad != null)
-                        ad.Execute(Map, casterEntity, targetEntity);
-                }
-            }
         }
 
         #region IGetTime Members

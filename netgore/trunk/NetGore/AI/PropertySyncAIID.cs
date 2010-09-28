@@ -1,4 +1,5 @@
-﻿using NetGore.IO;
+﻿using System.Linq;
+using NetGore.IO;
 using NetGore.IO.PropertySync;
 
 namespace NetGore.AI
@@ -13,8 +14,7 @@ namespace NetGore.AI
         /// Initializes a new instance of the <see cref="PropertySyncAIID"/> class.
         /// </summary>
         /// <param name="syncValueAttributeInfo">The <see cref="SyncValueAttributeInfo"/>.</param>
-        public PropertySyncAIID(SyncValueAttributeInfo syncValueAttributeInfo)
-            : base(syncValueAttributeInfo)
+        public PropertySyncAIID(SyncValueAttributeInfo syncValueAttributeInfo) : base(syncValueAttributeInfo)
         {
         }
 

@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Linq;
 using SFML.Graphics;
 
@@ -24,23 +23,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Forcibly kills the effect.
-        /// </summary>
-        /// <param name="immediate">If true, the effect will be killed immediately and <see cref="IsAlive"/> will be
-        /// false by the time the method returns. If false, the effect is allowed to enter itself into a "terminating" state,
-        /// allowing it to cleanly transition the effect out.</param>
-        public virtual void Kill(bool immediate)
-        {
-            if (!IsAlive)
-                return;
-
-            _isAlive = false;
-
-            if (Died != null)
-                Died(this);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, performs the additional updating that this <see cref="MapGrhEffect"/>
         /// needs to do such as checking if it is time to kill the effect. This method should be overridden instead of
         /// <see cref="MapGrh.Update"/>. This method will not be called after the effect has been killed.
@@ -63,6 +45,23 @@ namespace NetGore.Graphics
         public bool IsAlive
         {
             get { return _isAlive; }
+        }
+
+        /// <summary>
+        /// Forcibly kills the effect.
+        /// </summary>
+        /// <param name="immediate">If true, the effect will be killed immediately and <see cref="IsAlive"/> will be
+        /// false by the time the method returns. If false, the effect is allowed to enter itself into a "terminating" state,
+        /// allowing it to cleanly transition the effect out.</param>
+        public virtual void Kill(bool immediate)
+        {
+            if (!IsAlive)
+                return;
+
+            _isAlive = false;
+
+            if (Died != null)
+                Died(this);
         }
 
         /// <summary>

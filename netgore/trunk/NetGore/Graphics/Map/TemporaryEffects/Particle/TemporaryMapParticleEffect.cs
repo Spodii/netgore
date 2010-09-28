@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -73,27 +71,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Forcibly kills the effect.
-        /// </summary>
-        /// <param name="immediate">If true, the emitter will stop emitting and existing particles will be given time
-        /// to expire.</param>
-        public void Kill(bool immediate)
-        {
-            if (!IsAlive)
-                return;
-
-            _emitter.Kill();
-
-            if (!immediate)
-                return;
-
-            _isAlive = false;
-
-            if (Died != null)
-                Died(this);
-        }
-
-        /// <summary>
         /// Gets if the <see cref="ITemporaryMapEffect"/> is in the foreground. If true, it will be drawn after the
         /// <see cref="MapRenderLayer.SpriteForeground"/> layer. If false, it will be drawn after the
         /// <see cref="MapRenderLayer.SpriteBackground"/> layer.
@@ -113,6 +90,27 @@ namespace NetGore.Graphics
                 return;
 
             _emitter.Draw(sb);
+        }
+
+        /// <summary>
+        /// Forcibly kills the effect.
+        /// </summary>
+        /// <param name="immediate">If true, the emitter will stop emitting and existing particles will be given time
+        /// to expire.</param>
+        public void Kill(bool immediate)
+        {
+            if (!IsAlive)
+                return;
+
+            _emitter.Kill();
+
+            if (!immediate)
+                return;
+
+            _isAlive = false;
+
+            if (Died != null)
+                Died(this);
         }
 
         /// <summary>
