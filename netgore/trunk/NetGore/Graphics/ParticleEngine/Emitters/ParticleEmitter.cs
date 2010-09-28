@@ -27,7 +27,7 @@ namespace NetGore.Graphics.ParticleEngine
         /// time is greater than this value, is will be reduced to this value. This is to prevent ugly side-effects
         /// from emitters trying to play too much catch-up. Recommended to keep this at the default value.
         /// </summary>
-        public const int MaxDeltaTime = 200;
+        public const int MaxDeltaTime = 100;
 
         const string _blendModeKeyName = "BlendMode";
         const string _budgetKeyName = "Budget";
