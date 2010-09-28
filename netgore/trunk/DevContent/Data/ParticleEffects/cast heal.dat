@@ -5,7 +5,7 @@
     <Name>cast heal</Name>
     <BlendMode>Add</BlendMode>
     <Budget>5000</Budget>
-	<EmitterLife>-1</EmitterLife>
+	<EmitterLife>1000</EmitterLife>
     <ParticleLife>
       <Min>2000</Min>
       <Max>2000</Max>

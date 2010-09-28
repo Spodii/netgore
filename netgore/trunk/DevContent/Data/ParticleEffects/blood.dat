@@ -5,12 +5,12 @@
     <Name>blood</Name>
     <BlendMode>Alpha</BlendMode>
     <Budget>100</Budget>
-	<EmitterLife>-1</EmitterLife>
+    <EmitterLife>1</EmitterLife>
     <ParticleLife>
       <Min>100</Min>
       <Max>500</Max>
     </ParticleLife>
-    <Origin>314,198</Origin>
+    <Origin>105,148</Origin>
     <ReleaseAmount>
       <Min>15</Min>
       <Max>25</Max>
