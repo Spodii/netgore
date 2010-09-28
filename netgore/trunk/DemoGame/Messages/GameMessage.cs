@@ -119,6 +119,11 @@ namespace DemoGame
         /// </summary>
         CommandShout,
 
+        /// <summary>
+        /// Message recived from Administrator sent globally.
+        /// </summary>
+        CommandAnnounce,
+
         #endregion
 
         #region Core: Login failure reasons
