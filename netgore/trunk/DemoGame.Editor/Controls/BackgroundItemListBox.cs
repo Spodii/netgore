@@ -4,7 +4,7 @@ using DemoGame.Client;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     public class BackgroundItemListBox : MapItemListBox<Map, BackgroundImage>
     {
