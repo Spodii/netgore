@@ -46,32 +46,72 @@ namespace DemoGame.Editor
             NetGore.EditorTools.Docking.TabGradient tabGradient6 = new NetGore.EditorTools.Docking.TabGradient();
             NetGore.EditorTools.Docking.TabGradient tabGradient7 = new NetGore.EditorTools.Docking.TabGradient();
             this.msMenu = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsTools = new System.Windows.Forms.ToolStrip();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
+            this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMenu
             // 
+            this.msMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem});
             this.msMenu.Location = new System.Drawing.Point(0, 0);
             this.msMenu.Name = "msMenu";
-            this.msMenu.Size = new System.Drawing.Size(650, 24);
+            this.msMenu.Size = new System.Drawing.Size(687, 24);
             this.msMenu.TabIndex = 0;
             this.msMenu.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.closeToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mapToolStripMenuItem,
+            this.miniMapToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.viewToolStripMenuItem.Text = "Screens";
+            // 
+            // mapToolStripMenuItem
+            // 
+            this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
+            this.mapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mapToolStripMenuItem.Text = "Map";
+            this.mapToolStripMenuItem.Click += new System.EventHandler(this.mapToolStripMenuItem_Click);
             // 
             // tsTools
             // 
             this.tsTools.Location = new System.Drawing.Point(0, 24);
             this.tsTools.Name = "tsTools";
-            this.tsTools.Size = new System.Drawing.Size(650, 25);
+            this.tsTools.Size = new System.Drawing.Size(687, 25);
             this.tsTools.TabIndex = 1;
             this.tsTools.Text = "toolStrip1";
             // 
             // ssStatus
             // 
-            this.ssStatus.Location = new System.Drawing.Point(0, 452);
+            this.ssStatus.Location = new System.Drawing.Point(0, 499);
             this.ssStatus.Name = "ssStatus";
-            this.ssStatus.Size = new System.Drawing.Size(650, 22);
+            this.ssStatus.Size = new System.Drawing.Size(687, 22);
             this.ssStatus.TabIndex = 2;
             this.ssStatus.Text = "statusStrip1";
             // 
@@ -83,7 +123,7 @@ namespace DemoGame.Editor
             this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
             this.dockPanel.Location = new System.Drawing.Point(0, 49);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(650, 403);
+            this.dockPanel.Size = new System.Drawing.Size(687, 450);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -130,18 +170,27 @@ namespace DemoGame.Editor
             this.dockPanel.Skin = dockPanelSkin1;
             this.dockPanel.TabIndex = 5;
             // 
+            // miniMapToolStripMenuItem
+            // 
+            this.miniMapToolStripMenuItem.Name = "miniMapToolStripMenuItem";
+            this.miniMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.miniMapToolStripMenuItem.Text = "Mini-Map";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 474);
+            this.ClientSize = new System.Drawing.Size(687, 521);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.ssStatus);
             this.Controls.Add(this.tsTools);
             this.Controls.Add(this.msMenu);
+            this.IsMdiContainer = true;
             this.MainMenuStrip = this.msMenu;
             this.Name = "MainForm";
             this.Text = "NetGore Editor";
+            this.msMenu.ResumeLayout(false);
+            this.msMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -153,6 +202,11 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStrip tsTools;
         private System.Windows.Forms.StatusStrip ssStatus;
         private DockPanel dockPanel;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miniMapToolStripMenuItem;
     }
 }
 
