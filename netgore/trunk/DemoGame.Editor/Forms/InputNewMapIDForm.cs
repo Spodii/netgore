@@ -6,7 +6,7 @@ using NetGore.EditorTools;
 using NetGore.IO;
 using NetGore.World;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     public partial class InputNewMapIDForm : Form
     {

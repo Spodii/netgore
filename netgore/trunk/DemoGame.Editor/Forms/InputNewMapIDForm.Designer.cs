@@ -1,4 +1,4 @@
-﻿namespace DemoGame.MapEditor
+﻿namespace DemoGame.Editor
 {
     partial class InputNewMapIDForm
     {
