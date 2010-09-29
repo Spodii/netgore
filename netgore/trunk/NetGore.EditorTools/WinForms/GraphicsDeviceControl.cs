@@ -159,6 +159,28 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Changes the handle that this <see cref="GraphicsDeviceControl"/> draws to.
+        /// </summary>
+        /// <param name="newHandle">The new handle to draw to.</param>
+        public void ChangeHandle(IntPtr newHandle)
+        {
+            // Check for an existing RenderWindow instance
+            if (_rw != null)
+            {
+                // If the handle is already being used, return
+                if (_rw.SystemHandle == newHandle)
+                    return;
+
+                // If the RenderWindow has not been disposed, dispose of it first
+                if (!_rw.IsDisposed)
+                    _rw.Dispose();
+            }
+
+            // Create the new RenderWindow
+            _rw = new RenderWindow(newHandle);
+        }
+
+        /// <summary>
         /// Initializes the control.
         /// </summary>
         protected override void OnCreateControl()

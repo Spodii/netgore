@@ -53,6 +53,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.ContextMenuStrip = this.cmsMenu;
+            this.Controls.Add(this.gameScreen);
             this.Name = "MapForm";
             this.Text = "Map";
             this.cmsMenu.ResumeLayout(false);
@@ -64,5 +65,6 @@
 
         private System.Windows.Forms.ContextMenuStrip cmsMenu;
         private System.Windows.Forms.ToolStripMenuItem resetSizeToolStripMenuItem;
+        private GameScreenControl gameScreen;
     }
 }
