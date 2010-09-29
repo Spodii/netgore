@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.cmsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.resetSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mapScreen = new MapScreenControl();
             this.cmsMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,13 +48,22 @@
             this.resetSizeToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
             this.resetSizeToolStripMenuItem.Text = "Reset Size";
             // 
+            // mapScreen
+            // 
+            this.mapScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mapScreen.Location = new System.Drawing.Point(0, 0);
+            this.mapScreen.Name = "mapScreen";
+            this.mapScreen.Size = new System.Drawing.Size(784, 562);
+            this.mapScreen.TabIndex = 1;
+            this.mapScreen.Text = "Map Screen";
+            // 
             // MapForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.ContextMenuStrip = this.cmsMenu;
-            this.Controls.Add(this.gameScreen);
+            this.Controls.Add(this.mapScreen);
             this.Name = "MapForm";
             this.Text = "Map";
             this.cmsMenu.ResumeLayout(false);
@@ -65,6 +75,6 @@
 
         private System.Windows.Forms.ContextMenuStrip cmsMenu;
         private System.Windows.Forms.ToolStripMenuItem resetSizeToolStripMenuItem;
-        private GameScreenControl gameScreen;
+        private MapScreenControl mapScreen;
     }
 }

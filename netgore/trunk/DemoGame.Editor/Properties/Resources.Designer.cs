@@ -59,5 +59,61 @@ namespace DemoGame.Editor.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap cursor_entities {
+            get {
+                object obj = ResourceManager.GetObject("cursor_entities", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_entitiesadd {
+            get {
+                object obj = ResourceManager.GetObject("cursor_entitiesadd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_grhs {
+            get {
+                object obj = ResourceManager.GetObject("cursor_grhs", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_grhsadd {
+            get {
+                object obj = ResourceManager.GetObject("cursor_grhsadd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_lights {
+            get {
+                object obj = ResourceManager.GetObject("cursor_lights", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_lightsadd {
+            get {
+                object obj = ResourceManager.GetObject("cursor_lightsadd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_walls {
+            get {
+                object obj = ResourceManager.GetObject("cursor_walls", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap cursor_wallsadd {
+            get {
+                object obj = ResourceManager.GetObject("cursor_wallsadd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@ using DemoGame.Server;
 using NetGore.Graphics;
 using SFML.Graphics;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Draws the MapSpawnValues on a Map.

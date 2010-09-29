@@ -159,6 +159,14 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Allows derived classes to handle when the <see cref="RenderWindow"/> is created or re-created.
+        /// </summary>
+        /// <param name="newRenderWindow">The current <see cref="RenderWindow"/>.</param>
+        protected virtual void OnRenderWindowCreated(RenderWindow newRenderWindow)
+        {
+        }
+
+        /// <summary>
         /// Changes the handle that this <see cref="GraphicsDeviceControl"/> draws to.
         /// </summary>
         /// <param name="newHandle">The new handle to draw to.</param>

@@ -1,13 +1,13 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.MapEditor.Properties;
+using DemoGame.Editor.Properties;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
-    sealed class AddLightCursor : EditorCursor<ScreenForm>
+    sealed class AddLightCursor : EditorCursor<MapScreenControl>
     {
         static readonly ISprite _lightSprite = SystemSprites.Lightblub;
 

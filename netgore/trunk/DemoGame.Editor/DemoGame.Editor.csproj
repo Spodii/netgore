@@ -43,6 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLineSwitch.cs" />
+    <Compile Include="Cursors\AddEntityCursor.cs" />
+    <Compile Include="Cursors\AddGrhCursor.cs" />
+    <Compile Include="Cursors\AddLightCursor.cs" />
+    <Compile Include="Cursors\AddWallCursor.cs" />
+    <Compile Include="Cursors\EntityCursor.cs" />
+    <Compile Include="Cursors\GrhCursor.cs" />
+    <Compile Include="Cursors\LightCursor.cs" />
+    <Compile Include="Cursors\WallCursor.cs" />
+    <Compile Include="Forms\MapScreenControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Global.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,6 +68,9 @@
     <Compile Include="Forms\MapForm.Designer.cs">
       <DependentUpon>MapForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapEditorCharacter.cs" />
+    <Compile Include="MapEditorDynamicEntityFactory.cs" />
+    <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\ChildWindowForm.cs">
@@ -63,6 +79,8 @@
     <Compile Include="Forms\ChildWindowForm.Designer.cs">
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TransBox.cs" />
+    <Compile Include="TransBoxType.cs" />
     <EmbeddedResource Include="Forms\ChildWindowForm.resx">
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -142,6 +160,30 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_entitiesadd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_grhs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_grhsadd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_lights.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_lightsadd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_walls.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor_wallsadd.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

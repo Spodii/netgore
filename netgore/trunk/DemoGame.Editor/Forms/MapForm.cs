@@ -1,134 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using NetGore.EditorTools;
-using NetGore.Graphics;
-using NetGore.World;
-using SFML.Graphics;
+﻿using System.Linq;
 
 namespace DemoGame.Editor
 {
+    /// <summary>
+    /// A form that displays a <see cref="MapBase"/> and provides interactive editing of it.
+    /// </summary>
     public partial class MapForm : ChildWindowForm
     {
-        public class GameScreenControl : GraphicsDeviceControl, IMapBoundControl
-        {
-            Vector2 _cursorPos;
-            MouseButtons _mouseButton;
-
-            /// <summary>
-            /// Gets or sets the camera used to view the map.
-            /// </summary>
-            [Browsable(false)]
-            public ICamera2D Camera { get; set; }
-
-            /// <summary>
-            /// Gets or sets the current position of the cursor in the world.
-            /// </summary>
-            [Browsable(false)]
-            public Vector2 CursorPos
-            {
-                get { return _cursorPos; }
-                set { _cursorPos = value; }
-            }
-
-            /// <summary>
-            /// Gets or sets the method used to draw this control.
-            /// </summary>
-            public Action<ISpriteBatch> DrawHandler { get; set; }
-
-            /// <summary>
-            /// Gets the <see cref="MouseButtons"/> current pressed.
-            /// </summary>
-            [Browsable(false)]
-            public MouseButtons MouseButton
-            {
-                get { return _mouseButton; }
-            }
-
-            /// <summary>
-            /// Gets or sets the method used to update this control.
-            /// </summary>
-            public Action UpdateHandler { get; set; }
-
-            /// <summary>
-            /// Derived classes override this to draw themselves using the GraphicsDevice.
-            /// </summary>
-            /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
-            protected override void Draw(ISpriteBatch spriteBatch)
-            {
-                if (UpdateHandler != null)
-                    UpdateHandler();
-
-                if (DrawHandler != null)
-                    DrawHandler(spriteBatch);
-            }
-
-            /// <summary>
-            /// Handles MouseDown events.
-            /// </summary>
-            /// <param name="e">Event args.</param>
-            protected override void OnMouseDown(MouseEventArgs e)
-            {
-                base.OnMouseDown(e);
-
-                _mouseButton = e.Button;
-
-                // TODO: !!
-                //if (((IMapBoundControl)this).IMap != null)
-                //    Focus();
-            }
-
-            /// <summary>
-            /// Raises the <see cref="E:System.Windows.Forms.Control.MouseMove"/> event.
-            /// </summary>
-            /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-            protected override void OnMouseMove(MouseEventArgs e)
-            {
-                base.OnMouseMove(e);
-
-                _mouseButton = e.Button;
-
-                if (Camera != null)
-                    _cursorPos = Camera.ToWorld(e.X, e.Y);
-            }
-
-            /// <summary>
-            /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
-            /// </summary>
-            /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-            protected override void OnMouseUp(MouseEventArgs e)
-            {
-                base.OnMouseUp(e);
-
-                _mouseButton = e.Button;
-            }
-
-            #region IMapBoundControl Members
-
-            /// <summary>
-            /// Gets or sets the current <see cref="IMapBoundControl.IMap"/>.
-            /// </summary>
-            IMap IMapBoundControl.IMap { get; set; }
-
-            #endregion
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapForm"/> class.
+        /// </summary>
         public MapForm()
         {
             InitializeComponent();
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            Debug.WriteLine(Handle);
         }
     }
 }

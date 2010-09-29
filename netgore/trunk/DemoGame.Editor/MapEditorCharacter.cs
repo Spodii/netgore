@@ -8,7 +8,7 @@ using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     public class MapEditorCharacter : Character
     {

@@ -126,15 +126,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineSwitch.cs" />
-    <Compile Include="Cursors\AddEntityCursor.cs" />
-    <Compile Include="Cursors\AddGrhCursor.cs" />
-    <Compile Include="Cursors\AddLightCursor.cs" />
-    <Compile Include="Cursors\AddWallCursor.cs" />
-    <Compile Include="Cursors\EntityCursor.cs" />
-    <Compile Include="Cursors\GrhCursor.cs" />
-    <Compile Include="Cursors\LightCursor.cs" />
-    <Compile Include="Cursors\WallCursor.cs" />
     <Compile Include="Forms\Controls\GameScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -162,9 +153,6 @@
     <Compile Include="Forms\MiniMapForm.Designer.cs">
       <DependentUpon>MiniMapForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MapEditorCharacter.cs" />
-    <Compile Include="MapEditorDynamicEntityFactory.cs" />
-    <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="Forms\ScreenForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,8 +184,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <BaseApplicationManifest Include="Properties\app.manifest" />
-    <Compile Include="TransBox.cs" />
-    <Compile Include="TransBoxType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoGame.Client\DemoGame.Client.csproj">

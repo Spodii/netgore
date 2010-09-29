@@ -24,7 +24,6 @@ namespace NetGore.Graphics
 
         readonly ILightManager _lightManager;
         readonly IRefractionManager _refractionManager;
-        readonly RenderWindow _rw;
         readonly ISpriteBatch _sb;
 
         RenderImage _buffer;
@@ -35,6 +34,8 @@ namespace NetGore.Graphics
         /// in a row without clearing. True for last drawing being to World, false for GUI.
         /// </summary>
         bool _lastDrawWasToWorld;
+
+        RenderWindow _rw;
 
         DrawingManagerState _state = DrawingManagerState.Idle;
         ICamera2D _worldCamera;
@@ -68,6 +69,23 @@ namespace NetGore.Graphics
 
             _lightManager.Initialize(_rw);
             _refractionManager.Initialize(_rw);
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="RenderWindow"/> to draw to.
+        /// </summary>
+        public RenderWindow RenderWindow
+        {
+            get { return _rw; }
+            set
+            {
+                if (_rw == value)
+                    return;
+
+                _rw = value;
+
+                OnRenderWindowChanged(_rw);
+            }
         }
 
         /// <summary>
@@ -155,6 +173,22 @@ namespace NetGore.Graphics
                 Debug.Fail(string.Format(errmsg, _rw, ex));
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Allows derived classes to handle when the <see cref="RenderWindow"/> changes.
+        /// </summary>
+        /// <param name="newRenderWindow">The new <see cref="RenderWindow"/>.</param>
+        protected virtual void OnRenderWindowChanged(RenderWindow newRenderWindow)
+        {
+            if (_sb != null)
+                _sb.RenderTarget = newRenderWindow;
+
+            if (LightManager != null)
+                LightManager.Initialize(newRenderWindow);
+
+            if (RefractionManager != null)
+                RefractionManager.Initialize(newRenderWindow);
         }
 
         /// <summary>

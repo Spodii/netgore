@@ -6,7 +6,7 @@ using NetGore.Graphics;
 using NetGore.World;
 using SFML.Graphics;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Describes an entity transformation box

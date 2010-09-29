@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     /// <summary>
     /// States how a transformation box can modify the target

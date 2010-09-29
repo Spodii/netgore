@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
-using DemoGame.MapEditor.Properties;
+using DemoGame.Editor.Properties;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML.Graphics;
 using Image = System.Drawing.Image;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
-    sealed class LightCursor : EditorCursor<ScreenForm>
+    sealed class LightCursor : EditorCursor<MapScreenControl>
     {
         ILight _selectedLight;
         Vector2 _selectedLightOffset;

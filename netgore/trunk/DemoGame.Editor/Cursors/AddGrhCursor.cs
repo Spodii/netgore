@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.MapEditor.Properties;
+using DemoGame.Editor.Properties;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML;
 using SFML.Graphics;
 using Image = System.Drawing.Image;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
-    sealed class AddGrhCursor : EditorCursor<ScreenForm>
+    sealed class AddGrhCursor : EditorCursor<MapScreenControl>
     {
         /// <summary>
         /// Color of the Grh preview when placing new Grhs.
@@ -77,8 +77,8 @@ namespace DemoGame.MapEditor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
-            var grh = Container.SelectedGrh;
-            if (grh.GrhData == null)
+            var grhToPlace = GlobalConfig.Instance.Map.GrhToPlace;
+            if (grhToPlace.GrhData == null)
                 return;
 
             Vector2 drawPos;
@@ -90,7 +90,7 @@ namespace DemoGame.MapEditor
             // If we fail to draw the selected Grh, just ignore it
             try
             {
-                grh.Draw(spriteBatch, drawPos, _drawPreviewColor);
+                grhToPlace.Draw(spriteBatch, drawPos, _drawPreviewColor);
             }
             catch (ObjectDisposedException)
             {
@@ -148,8 +148,10 @@ namespace DemoGame.MapEditor
             switch (e.Button)
             {
                 case MouseButtons.Left:
+                    var grhToPlace = GlobalConfig.Instance.Map.GrhToPlace;
+
                     // Check for a valid MapGrh
-                    if (Container.SelectedGrh.GrhData == null)
+                    if (grhToPlace.GrhData == null)
                         return;
 
                     // Find the position the MapGrh will be created at
@@ -160,12 +162,12 @@ namespace DemoGame.MapEditor
                         drawPos = cursorPos;
 
                     // Check if a MapGrh of the same type already exists at the location
-                    var selGrhGrhIndex = Container.SelectedGrh.GrhData.GrhIndex;
+                    var selGrhGrhIndex = grhToPlace.GrhData.GrhIndex;
                     if (Container.Map.MapGrhs.Any(x => x.Position == drawPos && x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
                         return;
 
                     // Add the MapGrh to the map
-                    var g = new Grh(Container.SelectedGrh.GrhData, AnimType.Loop, Container.GetTime());
+                    var g = new Grh(grhToPlace.GrhData, AnimType.Loop, Container.GetTime());
                     Container.Map.AddMapGrh(new MapGrh(g, drawPos, _mnuForeground.Checked));
 
                     break;

@@ -5,7 +5,7 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.World;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     class MapEditorDynamicEntityFactory : DynamicEntityFactoryBase
     {
