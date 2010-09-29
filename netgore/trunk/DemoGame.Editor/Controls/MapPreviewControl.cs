@@ -6,7 +6,7 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using SFML.Graphics;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     /// <summary>
     /// Draws a preview of the whole map into the control, no matter the size of the map or control.
