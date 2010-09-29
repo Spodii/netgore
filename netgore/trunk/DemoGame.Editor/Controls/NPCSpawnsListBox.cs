@@ -7,7 +7,7 @@ using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.World;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     /// <summary>
     /// A ListBox specifically for the MapSpawnValues on a Map.

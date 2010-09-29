@@ -4,7 +4,7 @@ using DemoGame.Client;
 using NetGore.EditorTools;
 using NetGore.Graphics.ParticleEngine;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     public class MapParticleEffectsListBox : MapParticleEffectsListBoxBase<Map>
     {

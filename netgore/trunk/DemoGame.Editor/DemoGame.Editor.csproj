@@ -44,6 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineSwitch.cs" />
+    <Compile Include="Controls\BackgroundItemListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MapParticleEffectsListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\NPCSpawnsListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Cursors\AddEntityCursor.cs" />
     <Compile Include="Cursors\AddGrhCursor.cs" />
     <Compile Include="Cursors\AddLightCursor.cs" />
@@ -183,9 +192,7 @@
       <Name>NetGore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\cursor_entitiesadd.png" />
   </ItemGroup>

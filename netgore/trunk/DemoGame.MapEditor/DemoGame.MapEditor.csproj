@@ -129,15 +129,6 @@
     <Compile Include="Forms\Controls\GameScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\Controls\ListBoxes\BackgroundItemListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\ListBoxes\MapParticleEffectsListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\ListBoxes\NPCSpawnsListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\Controls\MapPreviewControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -243,6 +234,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="_ProjectInfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\Controls\ListBoxes\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
