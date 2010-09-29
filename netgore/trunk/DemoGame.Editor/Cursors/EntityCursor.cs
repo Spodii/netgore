@@ -21,10 +21,14 @@ namespace DemoGame.Editor
         Vector2 _toolTipPos;
 
         /// <summary>
-        /// Property to access the MSC. Provided purely for the means of shortening the
-        /// code
+        /// Property to access the <see cref="MapScreenControl"/>. Provided purely for convenience.
         /// </summary>
         MapScreenControl MSC { get { return Container.MapScreenControl; } }
+
+        /// <summary>
+        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
+        /// </summary>
+        static SelectedObjectsManager<object> SOM { get { return GlobalConfig.Instance.Map.SelectedObjsManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityCursor"/> class.
@@ -129,10 +133,10 @@ namespace DemoGame.Editor
                 return;
 
             // Set the selected entity to the first entity we find at the cursor
-            Container.SelectedObjs.SetSelected(GetEntityUnderCursor(Container));
+            SOM.SetSelected(GetEntityUnderCursor(Container));
 
             // Set the offset
-            var focusedEntity = Container.SelectedObjs.Focused as Entity;
+            var focusedEntity = SOM.Focused as Entity;
             if (focusedEntity != null)
                 _selectionOffset = MSC.CursorPos - focusedEntity.Position;
         }
@@ -148,7 +152,7 @@ namespace DemoGame.Editor
             if (map == null || !map.IsInMapBoundaries(MSC.CursorPos))
                 return;
 
-            var focusedEntity = Container.SelectedObjs.Focused as Entity;
+            var focusedEntity = SOM.Focused as Entity;
 
             if (focusedEntity != null)
             {
@@ -196,12 +200,12 @@ namespace DemoGame.Editor
         /// </summary>
         public override void PressDelete()
         {
-            foreach (var selected in Container.SelectedObjs.SelectedObjects.OfType<Entity>())
+            foreach (var selected in SOM.SelectedObjects.OfType<Entity>())
             {
                 selected.Dispose();
             }
 
-            Container.SelectedObjs.Clear();
+            SOM.Clear();
         }
     }
 }

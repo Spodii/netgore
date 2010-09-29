@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -10,31 +11,19 @@ namespace NetGore.EditorTools
     /// </summary>
     public class SelectedObjectsManager<T> where T : class
     {
-        readonly PropertyGrid _propertyGrid;
         readonly EventHandler _selectedIndexChangedHandler;
-        readonly ListBox _selectedListBox;
         readonly List<T> _selectedObjs = new List<T>();
-
         T _focused;
+
+        PropertyGrid _propertyGrid;
+        ListBox _selectedListBox;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectedObjectsManager{T}"/> class.
         /// </summary>
-        /// <param name="propertyGrid">The <see cref="PropertyGrid"/> used to display the properties of the
-        /// focused object.</param>
-        /// <param name="selectedListBox">The <see cref="ListBox"/> used to display the selected objects.</param>
-        public SelectedObjectsManager(PropertyGrid propertyGrid, ListBox selectedListBox)
+        public SelectedObjectsManager()
         {
-            if (propertyGrid == null)
-                throw new ArgumentNullException("propertyGrid");
-            if (selectedListBox == null)
-                throw new ArgumentNullException("selectedListBox");
-
-            _propertyGrid = propertyGrid;
-            _selectedListBox = selectedListBox;
-
             _selectedIndexChangedHandler = SelectedListBox_SelectedIndexChanged;
-            _selectedListBox.SelectedIndexChanged += _selectedIndexChangedHandler;
         }
 
         /// <summary>
@@ -72,6 +61,30 @@ namespace NetGore.EditorTools
         public PropertyGrid PropertyGrid
         {
             get { return _propertyGrid; }
+            set
+            {
+                if (_propertyGrid == value)
+                    return;
+
+                _propertyGrid = value;
+
+                if (_propertyGrid != null)
+                {
+                    // Update the PropertyGrid's selection
+                    if (SelectedListBox != null && SelectedListBox.SelectedItems.Count > 1)
+                    {
+                        // Select many
+                        var objs = new List<T>(SelectedListBox.SelectedItems.OfType<T>());
+                        if (objs.Count > 0)
+                            PropertyGrid.SelectedObjects = objs.ToArray();
+                    }
+                    else
+                    {
+                        // Select only the focused
+                        _propertyGrid.SelectedObject = Focused;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -80,6 +93,19 @@ namespace NetGore.EditorTools
         public ListBox SelectedListBox
         {
             get { return _selectedListBox; }
+            set
+            {
+                if (_selectedListBox == value)
+                    return;
+
+                _selectedListBox = value;
+
+                if (_selectedListBox != null)
+                {
+                    // Update the SelectedListBox's items
+                    ChangeSelected();
+                }
+            }
         }
 
         /// <summary>
@@ -108,11 +134,15 @@ namespace NetGore.EditorTools
         /// </summary>
         protected virtual void ChangeFocused()
         {
-            SelectedListBox.SelectedIndexChanged -= _selectedIndexChangedHandler;
-            SelectedListBox.SelectedItem = Focused;
-            SelectedListBox.SelectedIndexChanged += _selectedIndexChangedHandler;
+            if (SelectedListBox != null)
+            {
+                SelectedListBox.SelectedIndexChanged -= _selectedIndexChangedHandler;
+                SelectedListBox.SelectedItem = Focused;
+                SelectedListBox.SelectedIndexChanged += _selectedIndexChangedHandler;
+            }
 
-            PropertyGrid.SelectedObject = Focused;
+            if (PropertyGrid != null)
+                PropertyGrid.SelectedObject = Focused;
         }
 
         /// <summary>
@@ -120,12 +150,15 @@ namespace NetGore.EditorTools
         /// </summary>
         protected virtual void ChangeSelected()
         {
-            SelectedListBox.SelectedIndexChanged -= _selectedIndexChangedHandler;
+            if (SelectedListBox != null)
+            {
+                SelectedListBox.SelectedIndexChanged -= _selectedIndexChangedHandler;
 
-            SelectedListBox.SynchronizeItemList(SelectedObjects);
-            SelectedListBox.SelectedItem = Focused;
+                SelectedListBox.SynchronizeItemList(SelectedObjects);
+                SelectedListBox.SelectedItem = Focused;
 
-            SelectedListBox.SelectedIndexChanged += _selectedIndexChangedHandler;
+                SelectedListBox.SelectedIndexChanged += _selectedIndexChangedHandler;
+            }
         }
 
         /// <summary>
@@ -159,21 +192,18 @@ namespace NetGore.EditorTools
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void SelectedListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (SelectedListBox == null)
+                return;
+
+            Debug.Assert(sender == SelectedListBox);
+
             Focused = SelectedListBox.SelectedItem as T;
             if (Focused == null)
                 return;
 
             if (SelectedListBox.SelectedItems.Count > 1)
             {
-                var objs = new List<T>(SelectedListBox.SelectedItems.Count);
-                foreach (var item in 
-                    SelectedListBox.SelectedItems)
-                {
-                    var o = item as T;
-                    if (o != null)
-                        objs.Add(o);
-                }
-
+                var objs = new List<T>(SelectedListBox.SelectedItems.OfType<T>());
                 if (objs.Count > 0)
                     PropertyGrid.SelectedObjects = objs.ToArray();
             }
@@ -256,6 +286,7 @@ namespace NetGore.EditorTools
         {
             // Notify that the collection has changed
             ChangeSelected();
+
             if (SelectedChanged != null)
                 SelectedChanged(this);
 

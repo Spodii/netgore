@@ -24,6 +24,11 @@ namespace DemoGame.Editor
         Vector2 _mouseDragStart = Vector2.Zero;
 
         /// <summary>
+        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
+        /// </summary>
+        static SelectedObjectsManager<object> SOM { get { return GlobalConfig.Instance.Map.SelectedObjsManager; } }
+
+        /// <summary>
         /// Property to access the MSC. Provided purely for the means of shortening the
         /// code
         /// </summary>
@@ -258,7 +263,7 @@ namespace DemoGame.Editor
                     var oldMaxX = selEntity.Max.X;
                     map.SafeTeleportEntity(selEntity, new Vector2(cursorPos.X, selEntity.Position.Y));
                     if (_mnuSnapToGrid.Checked)
-                        Container.Grid.SnapToGridPosition(selEntity);
+                        MSC.Grid.SnapToGridPosition(selEntity);
                     selEntity.Resize(new Vector2(oldMaxX - selEntity.Position.X, selEntity.Size.Y));
                 }
 
@@ -266,14 +271,14 @@ namespace DemoGame.Editor
                 {
                     selEntity.Resize(new Vector2(selEntity.Size.X, cursorPos.Y - selEntity.Position.Y));
                     if (_mnuSnapToGrid.Checked)
-                        Container.Grid.SnapToGridSize(selEntity);
+                        MSC.Grid.SnapToGridSize(selEntity);
                 }
 
                 if (((Container.SelectedTransBox.TransType & TransBoxType.Right) > 0) && selEntity.Position.X < cursorPos.X)
                 {
                     selEntity.Resize(new Vector2(cursorPos.X - selEntity.Position.X, selEntity.Size.Y));
                     if (_mnuSnapToGrid.Checked)
-                        Container.Grid.SnapToGridSize(selEntity);
+                        MSC.Grid.SnapToGridSize(selEntity);
                 }
             }
 
@@ -353,7 +358,7 @@ namespace DemoGame.Editor
             }
 
             // Update the selected walls list
-            Container.SelectedObjs.SetManySelected(_selectedWalls.OfType<object>());
+            SOM.SetManySelected(_selectedWalls.OfType<object>());
 
             _mouseDragStart = Vector2.Zero;
         }
@@ -369,7 +374,7 @@ namespace DemoGame.Editor
             }
 
             _selectedWalls.Clear();
-            Container.SelectedObjs.Clear();
+            SOM.Clear();
         }
 
         /// <summary>

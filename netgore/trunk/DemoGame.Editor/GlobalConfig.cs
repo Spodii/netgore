@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using NetGore.EditorTools;
 using NetGore.Graphics;
+using NetGore.World;
 
 namespace DemoGame.Editor
 {
@@ -51,10 +53,27 @@ namespace DemoGame.Editor
         /// </summary>
         public class MapConfig
         {
+            readonly SelectedObjectsManager<object> _selectedObjsManager = new SelectedObjectsManager<object>();
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MapConfig"/> class.
+            /// </summary>
+            internal MapConfig()
+            {
+            }
+
             /// <summary>
             /// Gets or sets the <see cref="Grh"/> that has been selected to be placed on the map.
             /// </summary>
             public Grh GrhToPlace { get; set; }
+
+            /// <summary>
+            /// Gets the <see cref="SelectedObjectsManager{T}"/> that contains the currently selected map objects.
+            /// </summary>
+            public SelectedObjectsManager<object> SelectedObjsManager
+            {
+                get { return _selectedObjsManager; }
+            }
         }
     }
 }
