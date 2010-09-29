@@ -7,9 +7,15 @@ using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
-    sealed class AddLightCursor : EditorCursor<MapScreenControl>
+    sealed class AddLightCursor : EditorCursor<EditMapForm>
     {
         static readonly ISprite _lightSprite = SystemSprites.Lightblub;
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
@@ -50,7 +56,7 @@ namespace DemoGame.Editor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
-            var cursorPos = Container.CursorPos;
+            var cursorPos = MSC.CursorPos;
             _lightSprite.Draw(spriteBatch, cursorPos);
         }
 
@@ -63,9 +69,9 @@ namespace DemoGame.Editor
             if (e.Button != MouseButtons.Left)
                 return;
 
-            var light = new Light { Tag = Container.Map, Position = Container.CursorPos };
-            Container.DrawingManager.LightManager.Add(light);
-            Container.Map.AddLight(light);
+            var light = new Light { Tag = MSC.Map, Position = MSC.CursorPos };
+            MSC.DrawingManager.LightManager.Add(light);
+            MSC.Map.AddLight(light);
         }
     }
 }

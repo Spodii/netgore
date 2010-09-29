@@ -1,6 +1,6 @@
 ﻿namespace DemoGame.Editor
 {
-    partial class MapForm
+    partial class EditMapForm
     {
         /// <summary>
         /// Required designer variable.
@@ -64,7 +64,7 @@
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.ContextMenuStrip = this.cmsMenu;
             this.Controls.Add(this.mapScreen);
-            this.Name = "MapForm";
+            this.Name = "EditMapForm";
             this.Text = "Map";
             this.cmsMenu.ResumeLayout(false);
             this.ResumeLayout(false);

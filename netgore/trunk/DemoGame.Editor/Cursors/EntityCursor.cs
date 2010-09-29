@@ -10,7 +10,7 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class EntityCursor : EditorCursor<MapScreenControl>
+    sealed class EntityCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuIgnoreWalls;
@@ -19,6 +19,12 @@ namespace DemoGame.Editor
         string _toolTip = string.Empty;
         object _toolTipObject = null;
         Vector2 _toolTipPos;
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityCursor"/> class.
@@ -61,7 +67,7 @@ namespace DemoGame.Editor
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             if (!string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(Container.RenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(MSC.RenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -77,10 +83,10 @@ namespace DemoGame.Editor
             return _contextMenu;
         }
 
-        Entity GetEntityUnderCursor(ScreenForm screen)
+        Entity GetEntityUnderCursor(EditMapForm screen)
         {
-            var cursorPos = screen.CursorPos;
-            return screen.Map.Spatial.Get<Entity>(cursorPos, GetEntityUnderCursorFilter);
+            var cursorPos = screen.MapScreenControl.CursorPos;
+            return screen.MapScreenControl.Map.Spatial.Get<Entity>(cursorPos, GetEntityUnderCursorFilter);
         }
 
         bool GetEntityUnderCursorFilter(Entity entity)
@@ -128,7 +134,7 @@ namespace DemoGame.Editor
             // Set the offset
             var focusedEntity = Container.SelectedObjs.Focused as Entity;
             if (focusedEntity != null)
-                _selectionOffset = Container.CursorPos - focusedEntity.Position;
+                _selectionOffset = MSC.CursorPos - focusedEntity.Position;
         }
 
         /// <summary>
@@ -138,8 +144,8 @@ namespace DemoGame.Editor
         public override void MouseMove(MouseEventArgs e)
         {
             // Get the map and ensure a valid cursor position
-            var map = Container.Map;
-            if (map == null || !map.IsInMapBoundaries(Container.CursorPos))
+            var map = MSC.Map;
+            if (map == null || !map.IsInMapBoundaries(MSC.CursorPos))
                 return;
 
             var focusedEntity = Container.SelectedObjs.Focused as Entity;
@@ -151,7 +157,7 @@ namespace DemoGame.Editor
                     if (Container.KeyEventArgs.Control)
                     {
                         // Resize the entity
-                        var size = Container.CursorPos - focusedEntity.Position;
+                        var size = MSC.CursorPos - focusedEntity.Position;
                         if (size.X < 4)
                             size.X = 4;
                         if (size.Y < 4)
@@ -161,7 +167,7 @@ namespace DemoGame.Editor
                     else
                     {
                         // Move the entity
-                        map.SafeTeleportEntity(focusedEntity, Container.CursorPos - _selectionOffset);
+                        map.SafeTeleportEntity(focusedEntity, MSC.CursorPos - _selectionOffset);
                     }
                 }
             }
@@ -180,7 +186,7 @@ namespace DemoGame.Editor
                     _toolTipObject = hoverEntity;
                     _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X,
                                              hoverEntity.Size.Y);
-                    _toolTipPos = GetToolTipPos(Container.RenderFont, _toolTip, hoverEntity);
+                    _toolTipPos = GetToolTipPos(MSC.RenderFont, _toolTip, hoverEntity);
                 }
             }
         }

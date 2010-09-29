@@ -10,7 +10,7 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class AddGrhCursor : EditorCursor<MapScreenControl>
+    sealed class AddGrhCursor : EditorCursor<EditMapForm>
     {
         /// <summary>
         /// Color of the Grh preview when placing new Grhs.
@@ -20,6 +20,12 @@ namespace DemoGame.Editor
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuForeground;
         readonly MenuItem _mnuSnapToGrid;
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddGrhCursor"/> class.
@@ -83,9 +89,9 @@ namespace DemoGame.Editor
 
             Vector2 drawPos;
             if (_mnuSnapToGrid.Checked)
-                drawPos = Container.Grid.AlignDown(Container.CursorPos);
+                drawPos = MSC.Grid.AlignDown(MSC.CursorPos);
             else
-                drawPos = Container.CursorPos;
+                drawPos = MSC.CursorPos;
 
             // If we fail to draw the selected Grh, just ignore it
             try
@@ -142,7 +148,7 @@ namespace DemoGame.Editor
         /// <param name="e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            var cursorPos = Container.CursorPos;
+            var cursorPos = MSC.CursorPos;
 
             // On left-click place the Grh on the map
             switch (e.Button)
@@ -157,29 +163,29 @@ namespace DemoGame.Editor
                     // Find the position the MapGrh will be created at
                     Vector2 drawPos;
                     if (_mnuSnapToGrid.Checked)
-                        drawPos = Container.Grid.AlignDown(cursorPos);
+                        drawPos = MSC.Grid.AlignDown(cursorPos);
                     else
                         drawPos = cursorPos;
 
                     // Check if a MapGrh of the same type already exists at the location
                     var selGrhGrhIndex = grhToPlace.GrhData.GrhIndex;
-                    if (Container.Map.MapGrhs.Any(x => x.Position == drawPos && x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
+                    if (MSC.Map.MapGrhs.Any(x => x.Position == drawPos && x.Grh.GrhData.GrhIndex == selGrhGrhIndex))
                         return;
 
                     // Add the MapGrh to the map
-                    var g = new Grh(grhToPlace.GrhData, AnimType.Loop, Container.GetTime());
-                    Container.Map.AddMapGrh(new MapGrh(g, drawPos, _mnuForeground.Checked));
+                    var g = new Grh(grhToPlace.GrhData, AnimType.Loop, MSC.GetTime());
+                    MSC.Map.AddMapGrh(new MapGrh(g, drawPos, _mnuForeground.Checked));
 
                     break;
 
                 case MouseButtons.Right:
                     while (true)
                     {
-                        var mapGrh = Container.Map.Spatial.Get<MapGrh>(cursorPos);
+                        var mapGrh = MSC.Map.Spatial.Get<MapGrh>(cursorPos);
                         if (mapGrh == null)
                             break;
 
-                        Container.Map.RemoveMapGrh(mapGrh);
+                        MSC.Map.RemoveMapGrh(mapGrh);
                     }
 
                     break;

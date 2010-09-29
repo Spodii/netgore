@@ -13,7 +13,7 @@ using Point = System.Drawing.Point;
 
 namespace DemoGame.Editor
 {
-    sealed class WallCursor : EditorCursor<MapScreenControl>
+    sealed class WallCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
@@ -22,6 +22,12 @@ namespace DemoGame.Editor
 
         MouseButtons _mouseDragButton = MouseButtons.None;
         Vector2 _mouseDragStart = Vector2.Zero;
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WallCursor"/> class.
@@ -80,7 +86,7 @@ namespace DemoGame.Editor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public override void DrawSelection(ISpriteBatch spriteBatch)
         {
-            var cursorPos = Container.CursorPos;
+            var cursorPos = MSC.CursorPos;
 
             if (_mouseDragStart == Vector2.Zero || _mouseDragButton == MouseButtons.None || Container.SelectedTransBox != null)
                 return;
@@ -127,10 +133,10 @@ namespace DemoGame.Editor
         /// <param name="e">Mouse events.</param>
         public override void MouseDown(MouseEventArgs e)
         {
-            var cursorPos = Container.CursorPos;
+            var cursorPos = MSC.CursorPos;
 
             // Set the dragging values
-            _mouseDragStart = Container.Camera.ToWorld(e.X, e.Y);
+            _mouseDragStart = MSC.Camera.ToWorld(e.X, e.Y);
             _mouseDragButton = e.Button;
 
             if (e.Button != MouseButtons.Left)
@@ -153,7 +159,7 @@ namespace DemoGame.Editor
             else
             {
                 // Check for wall collision for quick dragging
-                var w = Container.Map.Spatial.Get<WallEntityBase>(cursorPos);
+                var w = MSC.Map.Spatial.Get<WallEntityBase>(cursorPos);
                 if (w == null)
                     return;
 
@@ -169,11 +175,11 @@ namespace DemoGame.Editor
                 // Set the cursor to the center of the move box
                 cursorPos = moveBox.Position;
                 cursorPos += (moveBox.Size / 2f).Ceiling();
-                Container.CursorPos = cursorPos;
+                MSC.CursorPos = cursorPos;
 
                 // Get the system cursor to the center of the box, too
-                var pts = Container.GameScreen.PointToScreen(Container.GameScreen.Location);
-                var screenPos = Container.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
+                var pts = MSC.PointToScreen(MSC.Location);
+                var screenPos = MSC.Camera.ToScreen(cursorPos) + new Vector2(pts.X, pts.Y);
                 Cursor.Position = new Point((int)screenPos.X, (int)screenPos.Y);
 
                 // Set the move box as selected
@@ -190,8 +196,8 @@ namespace DemoGame.Editor
             if (Container.SelectedTransBox == null)
                 return;
 
-            var cursorPos = Container.CursorPos;
-            var map = Container.Map;
+            var cursorPos = MSC.CursorPos;
+            var map = MSC.Map;
             var selEntity = Container.SelectedTransBox.Entity;
 
             if (Container.SelectedTransBox.TransType == TransBoxType.Move)
@@ -231,7 +237,7 @@ namespace DemoGame.Editor
 
                     // Wall-to-grid snapping
                     if (_mnuSnapToGrid.Checked)
-                        Container.Grid.Align(selEntity);
+                        MSC.Grid.Align(selEntity);
                 }
             }
             else
@@ -242,7 +248,7 @@ namespace DemoGame.Editor
                     var oldMaxY = selEntity.Max.Y;
                     map.SafeTeleportEntity(selEntity, new Vector2(selEntity.Position.X, cursorPos.Y));
                     if (_mnuSnapToGrid.Checked)
-                        Container.Grid.SnapToGridPosition(selEntity);
+                        MSC.Grid.SnapToGridPosition(selEntity);
 
                     selEntity.Resize(new Vector2(selEntity.Size.X, oldMaxY - selEntity.Position.Y));
                 }
@@ -304,7 +310,7 @@ namespace DemoGame.Editor
         /// <param name="e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            var mouseDragEnd = Container.Camera.ToWorld(e.X, e.Y);
+            var mouseDragEnd = MSC.Camera.ToWorld(e.X, e.Y);
 
             if (_mouseDragStart != Vector2.Zero && Container.SelectedTransBox == null)
             {
@@ -313,7 +319,7 @@ namespace DemoGame.Editor
                 var size = max - min;
 
                 var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                var selectAreaObjs = Container.Map.Spatial.GetMany<WallEntityBase>(rect);
+                var selectAreaObjs = MSC.Map.Spatial.GetMany<WallEntityBase>(rect);
                 if (e.Button == MouseButtons.Left)
                 {
                     // Selection dragging
@@ -359,7 +365,7 @@ namespace DemoGame.Editor
         {
             foreach (var selectedWall in _selectedWalls)
             {
-                Container.Map.RemoveEntity(selectedWall);
+                MSC.Map.RemoveEntity(selectedWall);
             }
 
             _selectedWalls.Clear();
@@ -379,7 +385,7 @@ namespace DemoGame.Editor
             else
             {
                 // Find the TransBox being hovered over (if any)
-                var cursorRect = new Rectangle((int)Container.CursorPos.X, (int)Container.CursorPos.Y, 1, 1);
+                var cursorRect = new Rectangle((int)MSC.CursorPos.X, (int)MSC.CursorPos.Y, 1, 1);
                 foreach (var box in Container.TransBoxes)
                 {
                     var boxRect = new Rectangle((int)box.Position.X, (int)box.Position.Y, box.Area.Width, box.Area.Height);

@@ -9,13 +9,19 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class AddEntityCursor : EditorCursor<MapScreenControl>
+    sealed class AddEntityCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem[] _menuEntityTypeChild;
         readonly MenuItem _mnuEntityType;
 
         Type _selectedType;
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddEntityCursor"/> class.
@@ -93,11 +99,11 @@ namespace DemoGame.Editor
 
             // Create the Entity
             var entity = (Entity)Activator.CreateInstance(_selectedType);
-            Container.Map.AddEntity(entity);
+            MSC.Map.AddEntity(entity);
 
             // Move to the center of the screen
             entity.Size = new Vector2(64);
-            entity.Position = Container.CursorPos - (entity.Size / 2f);
+            entity.Position = MSC.CursorPos - (entity.Size / 2f);
         }
     }
 }
