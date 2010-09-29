@@ -257,7 +257,7 @@ namespace DemoGame.Editor
                     var selectAreaObjs = MSC.Map.Spatial.GetMany<MapGrh>(rect);
                     _selectedMapGrhs.AddRange(selectAreaObjs);
 
-                    Container.SelectedObjs.SetManySelected(_selectedMapGrhs.OfType<object>());
+                    SOM.SetManySelected(_selectedMapGrhs.OfType<object>());
 
                     // Move transbox
                     if (_selectedMapGrhs.Count > 1)

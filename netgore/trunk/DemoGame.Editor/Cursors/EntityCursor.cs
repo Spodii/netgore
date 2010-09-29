@@ -71,7 +71,7 @@ namespace DemoGame.Editor
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             if (!string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(MSC.RenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(GlobalConfig.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace DemoGame.Editor
                     _toolTipObject = hoverEntity;
                     _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X,
                                              hoverEntity.Size.Y);
-                    _toolTipPos = GetToolTipPos(MSC.RenderFont, _toolTip, hoverEntity);
+                    _toolTipPos = GetToolTipPos(GlobalConfig.Instance.DefaultRenderFont, _toolTip, hoverEntity);
                 }
             }
         }
