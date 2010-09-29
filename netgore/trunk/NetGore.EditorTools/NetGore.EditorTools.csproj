@@ -126,6 +126,119 @@
   <ItemGroup>
     <Compile Include="AutoCompleteSources.cs" />
     <Compile Include="ControlHelper.cs" />
+    <Compile Include="Docking\AutoHideStripBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockAreasEditor.cs" />
+    <Compile Include="Docking\DockContent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Docking\DockContentCollection.cs" />
+    <Compile Include="Docking\DockContentEventArgs.cs" />
+    <Compile Include="Docking\DockContentHandler.cs" />
+    <Compile Include="Docking\DockOutlineBase.cs" />
+    <Compile Include="Docking\DockPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPane.SplitterControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPaneCaptionBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPaneCollection.cs" />
+    <Compile Include="Docking\DockPanel.AutoHideWindow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPanel.DockDragHandler.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPanel.DragHandler.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPanel.FocusManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPanel.MdiClientController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPanel.Persistor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPanel.SplitterDragHandler.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockPanelExtender.cs" />
+    <Compile Include="Docking\DockPaneStripBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockWindow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockWindow.SplitterControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockWindowCollection.cs" />
+    <Compile Include="Docking\DragForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Docking\DummyControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\Enums\DockAlignment.cs" />
+    <Compile Include="Docking\Enums\DockAreas.cs" />
+    <Compile Include="Docking\Enums\DockState.cs" />
+    <Compile Include="Docking\Enums\DocumentStyle.cs" />
+    <Compile Include="Docking\Enums\DocumentTabStripLocation.cs" />
+    <Compile Include="Docking\FloatWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Docking\FloatWindowCollection.cs" />
+    <Compile Include="Docking\GetPersistStringCallback.cs" />
+    <Compile Include="Docking\Helpers\DockHelper.cs" />
+    <Compile Include="Docking\Helpers\DrawHelper.cs" />
+    <Compile Include="Docking\Helpers\ResourceHelper.cs" />
+    <Compile Include="Docking\Helpers\Win32Helper.cs" />
+    <Compile Include="Docking\IContentFocusManager.FocusManager.cs" />
+    <Compile Include="Docking\InertButtonBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\Interfaces\Interfaces.cs" />
+    <Compile Include="Docking\LocalizedCategoryAttribute.cs" />
+    <Compile Include="Docking\LocalizedDescriptionAttribute.cs" />
+    <Compile Include="Docking\MeasurePane.cs" />
+    <Compile Include="Docking\Measures.cs" />
+    <Compile Include="Docking\NestedDockingStatus.cs" />
+    <Compile Include="Docking\NestedPaneCollection.cs" />
+    <Compile Include="Docking\Resources.Designer.cs" />
+    <Compile Include="Docking\Skin\DockPanelSkin.cs" />
+    <Compile Include="Docking\SplitterBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\Strings.Designer.cs" />
+    <Compile Include="Docking\VisibleNestedPaneCollection.cs" />
+    <Compile Include="Docking\VS2005AutoHideStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\VS2005DockPaneCaption.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\VS2005DockPaneStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\Win32\Enums\FlagsSetWindowPos.cs" />
+    <Compile Include="Docking\Win32\Enums\GetWindowLongIndex.cs" />
+    <Compile Include="Docking\Win32\Enums\HitTest.cs" />
+    <Compile Include="Docking\Win32\Enums\HookType.cs" />
+    <Compile Include="Docking\Win32\Enums\Msgs.cs" />
+    <Compile Include="Docking\Win32\Enums\ScrollBars.cs" />
+    <Compile Include="Docking\Win32\Enums\ShowWindowStyles.cs" />
+    <Compile Include="Docking\Win32\Enums\WindowExStyles.cs" />
+    <Compile Include="Docking\Win32\Enums\WindowStyles.cs" />
+    <Compile Include="Docking\Win32\NativeMethods.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\PropertyGridExtensions.cs" />
@@ -333,6 +446,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Docking\Resources.resx" />
+    <EmbeddedResource Include="Docking\Strings.resx" />
     <EmbeddedResource Include="Grh\AutomaticGrhData\GrhDataUpdaterProgressForm.resx">
       <DependentUpon>GrhDataUpdaterProgressForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -381,6 +496,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="_ProjectInfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Docking\DockPanel.bmp" />
+    <Content Include="Docking\license.txt" />
+    <Content Include="Docking\Resources\DockIndicator_PaneDiamond.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PaneDiamond_Bottom.bmp" />
+    <Content Include="Docking\Resources\Dockindicator_PaneDiamond_Fill.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PaneDiamond_Hotspot.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PaneDiamond_HotspotIndex.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PaneDiamond_Left.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PaneDiamond_Right.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PaneDiamond_Top.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelBottom.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelBottom_Active.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelFill.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelFill_Active.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelLeft.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelLeft_Active.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelRight.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelRight_Active.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelTop.bmp" />
+    <Content Include="Docking\Resources\DockIndicator_PanelTop_Active.bmp" />
+    <Content Include="Docking\Resources\DockPane_AutoHide.bmp" />
+    <Content Include="Docking\Resources\DockPane_Close.bmp" />
+    <Content Include="Docking\Resources\DockPane_Dock.bmp" />
+    <Content Include="Docking\Resources\DockPane_Option.bmp" />
+    <Content Include="Docking\Resources\DockPane_OptionOverflow.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

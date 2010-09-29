@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.DbEditor", "DemoGa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Features.Editor", "NetGore.Features.Editor\NetGore.Features.Editor.csproj", "{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Editor", "DemoGame.Editor\DemoGame.Editor.csproj", "{5F863755-2701-4934-9445-73EF9C1749BF}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -351,6 +353,22 @@ Global
 		{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}.ReleaseClient|x86.ActiveCfg = Release|x86
 		{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}.ReleaseTopDown|x86.ActiveCfg = ReleaseTopDown|x86
 		{DDDDF506-B0C3-4EC9-95FC-5AB4645BDB77}.ReleaseTopDown|x86.Build.0 = ReleaseTopDown|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Debug|x86.ActiveCfg = Debug|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Debug|x86.Build.0 = Debug|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugDbClassGen|x86.Build.0 = Debug|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugTopDown|x86.ActiveCfg = Debug|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.DebugTopDown|x86.Build.0 = Debug|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Mono|x86.ActiveCfg = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Mono|x86.Build.0 = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.MonoTopDown|x86.ActiveCfg = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.MonoTopDown|x86.Build.0 = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Release|x86.ActiveCfg = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.Release|x86.Build.0 = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseClient|x86.ActiveCfg = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseClient|x86.Build.0 = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseTopDown|x86.ActiveCfg = Release|x86
+		{5F863755-2701-4934-9445-73EF9C1749BF}.ReleaseTopDown|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
