@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
     enum CommandLineSwitch
     {

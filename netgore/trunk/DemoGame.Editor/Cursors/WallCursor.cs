@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.MapEditor.Properties;
+using DemoGame.Editor.Properties;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
@@ -11,9 +11,9 @@ using SFML.Graphics;
 using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
 
-namespace DemoGame.MapEditor
+namespace DemoGame.Editor
 {
-    sealed class WallCursor : EditorCursor<ScreenForm>
+    sealed class WallCursor : EditorCursor<MapScreenControl>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
