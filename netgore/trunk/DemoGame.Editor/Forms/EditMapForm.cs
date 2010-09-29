@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Client;
 using NetGore.EditorTools;
@@ -7,40 +8,27 @@ namespace DemoGame.Editor
 {
     /// <summary>
     /// A form that displays a <see cref="Map"/> and provides interactive editing of it.
-    /// There may be only one instance of this class.
     /// </summary>
     public sealed partial class EditMapForm : ChildWindowForm
     {
-        static readonly EditMapForm _instance;
+        readonly List<TransBox> _transBoxes = new List<TransBox>(9);
         EditorCursorManager<EditMapForm> _cursorManager;
-
-        /// <summary>
-        /// Initializes the <see cref="EditMapForm"/> class.
-        /// </summary>
-        static EditMapForm()
-        {
-            _instance = new EditMapForm();
-        }
+        TransBox _selTransBox;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditMapForm"/> class.
         /// </summary>
-        EditMapForm()
+        public EditMapForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Gets the <see cref="EditorCursorManager{T}"/> used by this form.
+        /// </summary>
         public EditorCursorManager<EditMapForm> CursorManager
         {
             get { return _cursorManager; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="EditMapForm"/> instance.
-        /// </summary>
-        public static EditMapForm Instance
-        {
-            get { return _instance; }
         }
 
         /// <summary>
@@ -49,6 +37,23 @@ namespace DemoGame.Editor
         public MapScreenControl MapScreenControl
         {
             get { return mapScreen; }
+        }
+
+        /// <summary>
+        /// Gets or sets the selected transformation box.
+        /// </summary>
+        public TransBox SelectedTransBox
+        {
+            get { return _selTransBox; }
+            set { _selTransBox = value; }
+        }
+
+        /// <summary>
+        /// Gets the list of the current <see cref="TransBox"/>es.
+        /// </summary>
+        public List<TransBox> TransBoxes
+        {
+            get { return _transBoxes; }
         }
 
         /// <summary>
@@ -61,12 +66,24 @@ namespace DemoGame.Editor
             return true;
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             _cursorManager = new EditorCursorManager<EditMapForm>(this, null, EditMapCursorsForm.Instance, mapScreen,
                                                                   AllowEditorCursorChange);
+
+            _cursorManager.CurrentCursorChanged += _cursorManager_CurrentCursorChanged;
+        }
+
+        void _cursorManager_CurrentCursorChanged(EditorCursorManager<EditMapForm> sender)
+        {
+            SelectedTransBox = null;
+            TransBoxes.Clear();
         }
     }
 }
