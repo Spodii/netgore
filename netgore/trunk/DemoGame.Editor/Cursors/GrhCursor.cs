@@ -11,16 +11,22 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class GrhCursor : EditorCursor<MapScreenControl>
+    sealed class GrhCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
         readonly List<MapGrh> _selectedMapGrhs = new List<MapGrh>();
-        Vector2 _lastCursorPos;
 
+        Vector2 _lastCursorPos;
         TransBox _mapGrhMoveBox = null;
         Vector2 _mouseDragStart = Vector2.Zero;
         Vector2 _selectedEntityOffset = Vector2.Zero;
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "GrhCursor" /> class.
@@ -74,7 +80,7 @@ namespace DemoGame.Editor
         /// <param name = "spriteBatch">The <see cref = "ISpriteBatch" /> to use to draw.</param>
         public override void DrawSelection(ISpriteBatch spriteBatch)
         {
-            var cursorPos = Container.CursorPos;
+            var cursorPos = MSC.CursorPos;
 
             if (_mouseDragStart == Vector2.Zero || Container.SelectedTransBox != null)
                 return;
@@ -118,8 +124,8 @@ namespace DemoGame.Editor
                 return;
             }
 
-            var cursorPos = Container.CursorPos;
-            var cursorGrh = Container.Map.Spatial.Get<MapGrh>(cursorPos);
+            var cursorPos = MSC.CursorPos;
+            var cursorGrh = MSC.Map.Spatial.Get<MapGrh>(cursorPos);
 
             if (cursorGrh != null)
             {
@@ -148,7 +154,7 @@ namespace DemoGame.Editor
                     _mapGrhMoveBox = null;
                     _selectedMapGrhs.Clear();
                 }
-                _mouseDragStart = Container.Camera.ToWorld(e.X, e.Y);
+                _mouseDragStart = MSC.Camera.ToWorld(e.X, e.Y);
             }
         }
 
@@ -158,7 +164,7 @@ namespace DemoGame.Editor
         /// <param name = "e">Mouse events.</param>
         public override void MouseMove(MouseEventArgs e)
         {
-            var cursorPos = Container.CursorPos;
+            var cursorPos = MSC.CursorPos;
 
             if (_selectedMapGrhs.Count == 1)
             {
@@ -187,7 +193,7 @@ namespace DemoGame.Editor
                     {
                         var pos = cursorPos - _selectedEntityOffset;
                         if (_mnuSnapToGrid.Checked)
-                            pos = Container.Grid.AlignDown(pos);
+                            pos = MSC.Grid.AlignDown(pos);
                         mg.Position = pos;
                     }
                 }
@@ -219,7 +225,7 @@ namespace DemoGame.Editor
         /// <param name = "e">Mouse events.</param>
         public override void MouseUp(MouseEventArgs e)
         {
-            var cursorPos = Container.CursorPos;
+            var cursorPos = MSC.CursorPos;
 
             switch (e.Button)
             {
@@ -237,13 +243,13 @@ namespace DemoGame.Editor
 
                     _selectedMapGrhs.Clear();
 
-                    var mouseDragEnd = Container.Camera.ToWorld(e.X, e.Y);
+                    var mouseDragEnd = MSC.Camera.ToWorld(e.X, e.Y);
                     var min = _mouseDragStart.Min(mouseDragEnd);
                     var max = _mouseDragStart.Max(mouseDragEnd);
                     var size = max - min;
 
                     var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
-                    var selectAreaObjs = Container.Map.Spatial.GetMany<MapGrh>(rect);
+                    var selectAreaObjs = MSC.Map.Spatial.GetMany<MapGrh>(rect);
                     _selectedMapGrhs.AddRange(selectAreaObjs);
 
                     Container.SelectedObjs.SetManySelected(_selectedMapGrhs.OfType<object>());
@@ -293,7 +299,7 @@ namespace DemoGame.Editor
             // Delete all selected
             foreach (var mg in toDelete)
             {
-                Container.Map.RemoveMapGrh(mg);
+                MSC.Map.RemoveMapGrh(mg);
             }
         }
 
@@ -306,7 +312,7 @@ namespace DemoGame.Editor
             var isOverBox = false;
             if (_mapGrhMoveBox != null)
             {
-                var cursorRect = new Rectangle((int)Container.CursorPos.X, (int)Container.CursorPos.Y, 1, 1);
+                var cursorRect = new Rectangle((int)MSC.CursorPos.X, (int)MSC.CursorPos.Y, 1, 1);
                 var boxPos = _mapGrhMoveBox.Position;
                 var boxRect = new Rectangle((int)boxPos.X, (int)boxPos.Y, _mapGrhMoveBox.Area.Width, _mapGrhMoveBox.Area.Height);
                 isOverBox = cursorRect.Intersects(boxRect);

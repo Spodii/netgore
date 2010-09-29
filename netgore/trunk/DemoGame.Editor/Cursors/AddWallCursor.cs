@@ -8,10 +8,16 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class AddWallCursor : EditorCursor<MapScreenControl>
+    sealed class AddWallCursor : EditorCursor<EditMapForm>
     {
         readonly ContextMenu _contextMenu;
         readonly MenuItem _mnuSnapToGrid;
+
+        /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddWallCursor"/> class.
@@ -74,10 +80,10 @@ namespace DemoGame.Editor
             Container.CursorManager.SelectedCursor = Container.CursorManager.TryGetCursor<WallCursor>();
 
             // Create the new wall
-            var w = new WallEntity(Container.Camera.ToWorld(e.X, e.Y), Vector2.One);
-            Container.Map.AddEntity(w);
+            var w = new WallEntity(MSC.Camera.ToWorld(e.X, e.Y), Vector2.One);
+            MSC.Map.AddEntity(w);
             if (_mnuSnapToGrid.Checked)
-                Container.Grid.Align(w);
+                MSC.Grid.Align(w);
 
             // Create the transformation boxes for the wall and select the bottom/right one
             Container.TransBoxes.Clear();

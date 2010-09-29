@@ -11,7 +11,7 @@ namespace DemoGame.Editor
 {
     public partial class MainForm : Form
     {
-        readonly MapForm _mapForm = new MapForm();
+        readonly EditMapForm _editMapForm = new EditMapForm();
 
         public MainForm()
         {
@@ -25,7 +25,7 @@ namespace DemoGame.Editor
 
         private void mapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _mapForm.Show(dockPanel);
+            _editMapForm.Show(dockPanel);
         }
     }
 }

@@ -9,7 +9,7 @@ using Image = System.Drawing.Image;
 
 namespace DemoGame.Editor
 {
-    sealed class LightCursor : EditorCursor<MapScreenControl>
+    sealed class LightCursor : EditorCursor<EditMapForm>
     {
         ILight _selectedLight;
         Vector2 _selectedLightOffset;
@@ -63,9 +63,9 @@ namespace DemoGame.Editor
         /// <returns>The <see cref="ILight"/> under the cursor, or null if no <see cref="ILight"/> is under the cursor.</returns>
         ILight FindMouseOverLight()
         {
-            var cursorPos = Container.CursorPos;
+            var cursorPos = MSC.CursorPos;
 
-            var closestLight = Container.Map.Lights.MinElementOrDefault(x => cursorPos.QuickDistance(x.Center));
+            var closestLight = MSC.Map.Lights.MinElementOrDefault(x => cursorPos.QuickDistance(x.Center));
             if (closestLight == null)
                 return null;
 
@@ -76,6 +76,12 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Property to access the MSC. Provided purely for the means of shortening the
+        /// code
+        /// </summary>
+        MapScreenControl MSC { get { return Container.MapScreenControl; } }
+
+        /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
         /// <param name="e">Mouse events.</param>
@@ -83,7 +89,7 @@ namespace DemoGame.Editor
         {
             _selectedLight = FindMouseOverLight();
             if (_selectedLight != null)
-                _selectedLightOffset = Container.CursorPos - _selectedLight.Center;
+                _selectedLightOffset = MSC.CursorPos - _selectedLight.Center;
 
             Container.SelectedObjs.SetSelected(_selectedLight);
 
@@ -99,7 +105,7 @@ namespace DemoGame.Editor
             if (_selectedLight != null)
             {
                 // Move the light if dragging one
-                _selectedLight.Teleport(Container.CursorPos - _selectedLightOffset);
+                _selectedLight.Teleport(MSC.CursorPos - _selectedLightOffset);
 
                 _toolTipObj = null;
             }
@@ -123,10 +129,10 @@ namespace DemoGame.Editor
         public override void PressDelete()
         {
             var light = Container.SelectedObjs.Focused as ILight;
-            if (light != null && light.Tag == Container.Map)
+            if (light != null && light.Tag == MSC.Map)
             {
-                Container.Map.RemoveLight(light);
-                Container.DrawingManager.LightManager.Remove(light);
+                MSC.Map.RemoveLight(light);
+                MSC.DrawingManager.LightManager.Remove(light);
                 Container.SelectedObjs.Clear();
             }
         }
@@ -150,7 +156,7 @@ namespace DemoGame.Editor
                 return;
 
             _toolTip = string.Format("{0}\n{1} ({2}x{3})", light, light.Position, light.Size.X, light.Size.Y);
-            _toolTipPos = EntityCursor.GetToolTipPos(Container.RenderFont, _toolTip, light);
+            _toolTipPos = EntityCursor.GetToolTipPos(MSC.RenderFont, _toolTip, light);
             _toolTipPos.X = light.Position.X + 5;
         }
     }
