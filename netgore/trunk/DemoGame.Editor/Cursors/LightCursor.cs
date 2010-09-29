@@ -82,6 +82,11 @@ namespace DemoGame.Editor
         MapScreenControl MSC { get { return Container.MapScreenControl; } }
 
         /// <summary>
+        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
+        /// </summary>
+        static SelectedObjectsManager<object> SOM { get { return GlobalConfig.Instance.Map.SelectedObjsManager; } }
+
+        /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
         /// </summary>
         /// <param name="e">Mouse events.</param>
@@ -91,7 +96,7 @@ namespace DemoGame.Editor
             if (_selectedLight != null)
                 _selectedLightOffset = MSC.CursorPos - _selectedLight.Center;
 
-            Container.SelectedObjs.SetSelected(_selectedLight);
+            SOM.SetSelected(_selectedLight);
 
             _toolTipObj = null;
         }
@@ -128,12 +133,12 @@ namespace DemoGame.Editor
         /// </summary>
         public override void PressDelete()
         {
-            var light = Container.SelectedObjs.Focused as ILight;
+            var light = SOM.Focused as ILight;
             if (light != null && light.Tag == MSC.Map)
             {
                 MSC.Map.RemoveLight(light);
                 MSC.DrawingManager.LightManager.Remove(light);
-                Container.SelectedObjs.Clear();
+                SOM.Clear();
             }
         }
 

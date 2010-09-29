@@ -23,6 +23,11 @@ namespace DemoGame.Editor
         Vector2 _selectedEntityOffset = Vector2.Zero;
 
         /// <summary>
+        /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
+        /// </summary>
+        static SelectedObjectsManager<object> SOM { get { return GlobalConfig.Instance.Map.SelectedObjsManager; } }
+
+        /// <summary>
         /// Property to access the MSC. Provided purely for the means of shortening the
         /// code
         /// </summary>
@@ -133,7 +138,7 @@ namespace DemoGame.Editor
                 _selectedEntityOffset = cursorPos - cursorGrh.Position;
                 _selectedMapGrhs.Clear();
                 _selectedMapGrhs.Add(cursorGrh);
-                Container.SelectedObjs.SetSelected(cursorGrh);
+                SOM.SetSelected(cursorGrh);
             }
             else
             {
@@ -276,7 +281,7 @@ namespace DemoGame.Editor
         public override void MoveMouseWheel(int amount)
         {
             // Change the layer for the focused MapGrh
-            var mapGrh = Container.SelectedObjs.Focused as MapGrh;
+            var mapGrh = SOM.Focused as MapGrh;
             if (mapGrh == null)
                 return;
 
@@ -289,10 +294,10 @@ namespace DemoGame.Editor
         public override void PressDelete()
         {
             // Find the stuff to delete
-            var toDelete = Container.SelectedObjs.SelectedObjects.OfType<MapGrh>().ToImmutable();
+            var toDelete = SOM.SelectedObjects.OfType<MapGrh>().ToImmutable();
 
             // Clear selection
-            Container.SelectedObjs.Clear();
+            SOM.Clear();
             _selectedMapGrhs.Clear();
             _mapGrhMoveBox = null;
 
