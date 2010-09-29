@@ -54,7 +54,7 @@ namespace DemoGame.Editor
 
             // Draw the tooltip
             if (_toolTipObj != null && !string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(GlobalConfig.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
         /// </summary>
-        static SelectedObjectsManager<object> SOM { get { return GlobalConfig.Instance.Map.SelectedObjsManager; } }
+        static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }
 
         /// <summary>
         /// When overridden in the derived class, handles when a mouse button has been pressed.
@@ -161,7 +161,7 @@ namespace DemoGame.Editor
                 return;
 
             _toolTip = string.Format("{0}\n{1} ({2}x{3})", light, light.Position, light.Size.X, light.Size.Y);
-            _toolTipPos = EntityCursor.GetToolTipPos(GlobalConfig.Instance.DefaultRenderFont, _toolTip, light);
+            _toolTipPos = EntityCursor.GetToolTipPos(GlobalState.Instance.DefaultRenderFont, _toolTip, light);
             _toolTipPos.X = light.Position.X + 5;
         }
     }

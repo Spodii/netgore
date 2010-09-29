@@ -25,7 +25,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
         /// </summary>
-        static SelectedObjectsManager<object> SOM { get { return GlobalConfig.Instance.Map.SelectedObjsManager; } }
+        static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }
 
         /// <summary>
         /// Property to access the MSC. Provided purely for the means of shortening the
@@ -173,7 +173,7 @@ namespace DemoGame.Editor
 
             if (_selectedMapGrhs.Count == 1)
             {
-                if (Container.KeyEventArgs.Alt)
+                if (Input.IsAltDown)
                 {
                     // Rotate
                     var hDelta = cursorPos.Y - _lastCursorPos.Y;
@@ -182,7 +182,7 @@ namespace DemoGame.Editor
                         mg.Rotation += hDelta * 0.02f;
                     }
                 }
-                else if (Container.KeyEventArgs.Control)
+                else if (Input.IsCtrlDown)
                 {
                     // Scale
                     var delta = (cursorPos - _lastCursorPos).Sum();
@@ -323,11 +323,11 @@ namespace DemoGame.Editor
                 isOverBox = cursorRect.Intersects(boxRect);
             }
 
-            if (isOverBox || _selectedMapGrhs.Count != 0 && Container.MouseButton == MouseButtons.Left)
+            if (isOverBox || _selectedMapGrhs.Count != 0)
             {
-                if (Container.KeyEventArgs.Alt)
+                if (Input.IsAltDown)
                     Container.Cursor = Cursors.NoMoveVert;
-                else if (Container.KeyEventArgs.Control)
+                else if (Input.IsCtrlDown)
                     Container.Cursor = Cursors.SizeNWSE;
                 else
                     Container.Cursor = Cursors.SizeAll;

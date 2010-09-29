@@ -73,7 +73,8 @@
     <Compile Include="Forms\SelectedMapObjectsForm.Designer.cs">
       <DependentUpon>SelectedMapObjectsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalConfig.cs" />
+    <Compile Include="GlobalState.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

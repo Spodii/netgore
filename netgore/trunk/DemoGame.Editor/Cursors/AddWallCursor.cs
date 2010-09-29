@@ -97,7 +97,7 @@ namespace DemoGame.Editor
                 }
             }
 
-            GlobalConfig.Instance.Map.SelectedObjsManager.SetSelected(w);
+            GlobalState.Instance.Map.SelectedObjsManager.SetSelected(w);
         }
     }
 }

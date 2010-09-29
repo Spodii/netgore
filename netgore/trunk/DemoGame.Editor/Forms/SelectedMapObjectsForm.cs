@@ -37,7 +37,7 @@ namespace DemoGame.Editor.Forms
         {
             base.OnLoad(e);
 
-            var som = GlobalConfig.Instance.Map.SelectedObjsManager;
+            var som = GlobalState.Instance.Map.SelectedObjsManager;
             som.SelectedListBox = lstItems;
             som.PropertyGrid = pgSelected;
         }

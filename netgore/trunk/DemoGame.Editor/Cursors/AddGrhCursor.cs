@@ -83,7 +83,7 @@ namespace DemoGame.Editor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
-            var grhToPlace = GlobalConfig.Instance.Map.GrhToPlace;
+            var grhToPlace = GlobalState.Instance.Map.GrhToPlace;
             if (grhToPlace.GrhData == null)
                 return;
 
@@ -154,7 +154,7 @@ namespace DemoGame.Editor
             switch (e.Button)
             {
                 case MouseButtons.Left:
-                    var grhToPlace = GlobalConfig.Instance.Map.GrhToPlace;
+                    var grhToPlace = GlobalState.Instance.Map.GrhToPlace;
 
                     // Check for a valid MapGrh
                     if (grhToPlace.GrhData == null)
