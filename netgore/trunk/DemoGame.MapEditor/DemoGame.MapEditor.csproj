@@ -126,9 +126,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\Controls\GameScreenControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\ScreenForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,13 +204,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="_ProjectInfo.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\Controls\ListBoxes\" />
+    <Folder Include="Forms\Controls\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

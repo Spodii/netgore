@@ -2,9 +2,10 @@ using System.Linq;
 
 namespace DemoGame.Editor
 {
-    enum CommandLineSwitch
+    /// <summary>
+    /// The command-line switches that can be used in this application.
+    /// </summary>
+    public enum CommandLineSwitch
     {
-        SaveAllMaps,
-        Close
     }
 }
