@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using SFML.Graphics;
 
 // Thanks goes out to the open source particle engine ProjectMercury, which a lot of the particle engine concepts
@@ -15,6 +17,8 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public sealed class Particle : IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         static readonly Stack<Particle> _freeParticles = new Stack<Particle>();
 
         /// <summary>
@@ -106,13 +110,17 @@ namespace NetGore.Graphics.ParticleEngine
                 {
                     free = _freeParticles.Pop();
                 }
-                catch (InvalidOperationException)
+                catch (Exception ex)
                 {
-                    Debug.Fail("Huh... did someone try calling Create() from another thread?");
+                    const string errmsg =
+                        "Failed to pop particle from _freeParticles even though Count was > 0. Threading issue maybe? Exception: {0}";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+                    Debug.Fail(string.Format(errmsg, ex));
                     return new Particle();
                 }
 
-                Debug.Assert(free._isDisposed);
+                Debug.Assert(free._isDisposed, "Uh-oh, we had a undisposed Particle in the free stack! How did this happen!?");
                 free._isDisposed = false;
                 return free;
             }

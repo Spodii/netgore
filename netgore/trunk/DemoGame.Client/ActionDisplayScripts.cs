@@ -107,13 +107,13 @@ namespace DemoGame.Client
                 }
 
                 // Show the particle effect
-                var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
-                if (emitter != null)
+                var pe = ParticleEffectManager.Instance.TryCreateEffect(actionDisplay.ParticleEffect);
+                if (pe != null)
                 {
                     // Effect that just takes place on the caster
-                    emitter.Origin = source.Center;
-                    emitter.SetEmitterLife(maxEffectLife);
-                    var effect = new TemporaryMapParticleEffect(emitter, true);
+                    pe.Position = source.Center;
+                    pe.Life = maxEffectLife;
+                    var effect = new TemporaryMapParticleEffect(pe, true);
                     drawableMap.AddTemporaryMapEffect(effect);
                     castingEffects.Add(effect);
                 }
@@ -198,13 +198,13 @@ namespace DemoGame.Client
                 }
 
                 // Show the particle effect
-                var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
-                if (emitter != null)
+                var pe = ParticleEffectManager.Instance.TryCreateEffect(actionDisplay.ParticleEffect);
+                if (pe != null)
                 {
                     // Effect that just takes place on the target and dies very quickly
-                    emitter.Origin = target.Center;
-                    emitter.SetEmitterLife(100);
-                    var effect = new TemporaryMapParticleEffect(emitter, true);
+                    pe.Position = target.Center;
+                    pe.Life = 100;
+                    var effect = new TemporaryMapParticleEffect(pe, true);
                     drawableMap.AddTemporaryMapEffect(effect);
                 }
             }
@@ -247,20 +247,13 @@ namespace DemoGame.Client
                 }
 
                 // Show the particle effect
-                var emitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, actionDisplay.ParticleEffect);
-                if (emitter != null)
+                var pe = ParticleEffectManager.Instance.TryCreateEffect(actionDisplay.ParticleEffect);
+                if (pe != null)
                 {
-                    /* 
-                    // Effect that seeks out the target
-                    emitter.Origin = source.Center;
-                    var effect = new MapParticleEffectSeekPosition(emitter, true, target.Center, 100);
-                    drawableMap.AddTemporaryMapEffect(effect);
-                    */
-
                     // Effect that just takes place on the target and dies very quickly
-                    emitter.Origin = target.Center;
-                    emitter.SetEmitterLife(100);
-                    var effect = new TemporaryMapParticleEffect(emitter, true);
+                    pe.Position = target.Center;
+                    pe.Life = 100;
+                    var effect = new TemporaryMapParticleEffect(pe, true);
                     drawableMap.AddTemporaryMapEffect(effect);
                 }
             }

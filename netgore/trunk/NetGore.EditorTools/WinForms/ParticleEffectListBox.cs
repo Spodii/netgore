@@ -37,7 +37,7 @@ namespace NetGore.EditorTools
             if (DesignMode)
                 return Enumerable.Empty<string>();
 
-            return ParticleEmitterFactory.GetEffectsInPath(ContentPaths.Dev);
+            return ParticleEffectManager.Instance.ParticleEffectNames;
         }
 
         /// <summary>

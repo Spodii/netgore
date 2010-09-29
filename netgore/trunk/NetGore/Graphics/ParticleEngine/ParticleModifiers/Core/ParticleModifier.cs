@@ -125,7 +125,7 @@ namespace NetGore.Graphics.ParticleEngine
         public static ParticleModifier Read(IValueReader reader)
         {
             // Get the type
-            var typeName = reader.ReadString(_typeKeyName);
+            var typeName = reader.ReadString(_typeKeyName).Trim();
 
             // Create the instance
             ParticleModifier modifier;

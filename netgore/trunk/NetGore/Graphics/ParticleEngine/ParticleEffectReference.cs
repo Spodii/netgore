@@ -14,7 +14,7 @@ namespace NetGore.Graphics.ParticleEngine
         const string _categoryName = "Map Particle Effect";
 
         string _particleEffectName;
-        ParticleEmitter _particleEmitter;
+        IParticleEffect _particleEffect;
         Vector2 _position;
 
         /// <summary>
@@ -42,6 +42,7 @@ namespace NetGore.Graphics.ParticleEngine
         [SyncValue]
         [Category(_categoryName)]
         [DisplayName("Particle Effect Name")]
+        [Description("The name of the particle effect to use.")]
         [Browsable(true)]
         public string ParticleEffectName
         {
@@ -53,26 +54,26 @@ namespace NetGore.Graphics.ParticleEngine
 
                 _particleEffectName = value;
 
-                ParticleEmitter = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, _particleEffectName);
+                ParticleEffect = ParticleEffectManager.Instance.TryCreateEffect(_particleEffectName);
 
-                if (ParticleEmitter != null)
-                    ParticleEmitter.Origin = Position;
+                if (ParticleEffect != null)
+                    ParticleEffect.Position = Position;
             }
         }
 
         /// <summary>
-        /// Gets the <see cref="ParticleEmitter"/> instance. Can be null.
+        /// Gets the <see cref="ParticleEffect"/> instance. Can be null.
         /// </summary>
         [Browsable(false)]
-        protected ParticleEmitter ParticleEmitter
+        protected IParticleEffect ParticleEffect
         {
-            get { return _particleEmitter; }
+            get { return _particleEffect; }
             private set
             {
-                if (_particleEmitter == value)
+                if (_particleEffect == value)
                     return;
 
-                _particleEmitter = value;
+                _particleEffect = value;
             }
         }
 
@@ -93,8 +94,8 @@ namespace NetGore.Graphics.ParticleEngine
 
                 _position = value;
 
-                if (ParticleEmitter != null)
-                    ParticleEmitter.Origin = Position;
+                if (ParticleEffect != null)
+                    ParticleEffect.Position = Position;
             }
         }
 
@@ -104,10 +105,10 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
         public void Draw(ISpriteBatch sb)
         {
-            if (ParticleEmitter == null)
+            if (ParticleEffect == null)
                 return;
 
-            ParticleEmitter.Draw(sb);
+            ParticleEffect.Draw(sb);
         }
 
         /// <summary>
@@ -116,13 +117,13 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="currentTime">The current game time.</param>
         public void Update(TickCount currentTime)
         {
-            if (ParticleEmitter == null)
+            if (ParticleEffect == null)
                 return;
 
-            ParticleEmitter.Update(currentTime);
+            ParticleEffect.Update(currentTime);
 
-            if (ParticleEmitter.IsExpired)
-                ParticleEmitter.Reset();
+            if (ParticleEffect.IsExpired)
+                ParticleEffect.Reset();
         }
 
         #region IPersistable Members

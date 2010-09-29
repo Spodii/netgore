@@ -178,6 +178,13 @@
     <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\Extensions\Vector3Extensions.cs" />
     <Compile Include="Core\Extensions\Vector4Extensions.cs" />
+    <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEngine\Effect\IParticleEffectEventHandler.cs" />
+    <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffectConfig.cs" />
+    <Compile Include="Graphics\ParticleEngine\Effect\ParticleEffectManager.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\IParticleEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngine\Emitters\IParticleEmitterEventHandler.cs" />
     <Compile Include="Graphics\ParticleEngine\ParticleEffectReference.cs" />
     <Compile Include="IO\PropertySync\Syncs\PropertySyncInventorySlot.cs" />
     <Compile Include="Core\Strings\CharTypeExtensions.cs" />

@@ -28,6 +28,15 @@ namespace NetGore.Graphics.ParticleEngine
         Matrix _scaleMatrix = Matrix.CreateScale(_defaultScale);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PolygonEmitter"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        public PolygonEmitter(IParticleEffect owner) : base(owner)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets if the polygon is closed. If true, the last point will be connected to the first.
         /// </summary>
         [Category(_emitterCategoryName)]
@@ -95,9 +104,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
         /// </summary>
         /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
-        public override ParticleEmitter DeepCopy()
+        public override ParticleEmitter DeepCopy(IParticleEffect newOwner)
         {
-            var ret = new PolygonEmitter();
+            var ret = new PolygonEmitter(newOwner);
             CopyValuesTo(ret);
             ret.Closed = Closed;
             ret.Points.AddRange(Points);

@@ -24,6 +24,15 @@ namespace NetGore.Graphics.ParticleEngine
         int _width = _defaultWidth;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="RectEmitter"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        public RectEmitter(IParticleEffect owner) : base(owner)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the height of the rectangle.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than or
@@ -82,9 +91,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
         /// </summary>
         /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
-        public override ParticleEmitter DeepCopy()
+        public override ParticleEmitter DeepCopy(IParticleEffect newOwner)
         {
-            var ret = new RectEmitter();
+            var ret = new RectEmitter(newOwner);
             CopyValuesTo(ret);
             ret.Height = Height;
             ret.Perimeter = Perimeter;

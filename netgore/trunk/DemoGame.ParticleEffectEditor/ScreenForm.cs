@@ -20,12 +20,12 @@ namespace DemoGame.ParticleEffectEditor
         readonly Stopwatch _watch = new Stopwatch();
 
         IContentManager _content;
-        ParticleEmitter _emitter;
+        IParticleEffect _particleEffect;
 
         /// <summary>
         /// Keeps track of the last emitter name. Used to update the form's title.
         /// </summary>
-        string _lastEmitterName = string.Empty;
+        string _lastName = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenForm"/> class.
@@ -44,19 +44,21 @@ namespace DemoGame.ParticleEffectEditor
         /// <summary>
         /// Gets or sets the current <see cref="ParticleEmitter"/>.
         /// </summary>
-        public ParticleEmitter Emitter
+        public IParticleEffect ParticleEffect
         {
-            get { return _emitter; }
+            get { return _particleEffect; }
             set
             {
-                if (_emitter == value)
+                if (_particleEffect == value)
                     return;
 
-                _emitter = value;
+                _particleEffect = value;
 
-                pgEffect.SelectedObject = Emitter;
-                if (Emitter != null)
-                    cmbEmitter.SelectedItem = Emitter.GetType();
+                pgEffect.SelectedObject = ParticleEffect;
+
+                // TODO: !!
+                //if (ParticleEffect != null)
+                //    cmbEmitter.SelectedItem = ParticleEffect.GetType();
             }
         }
 
@@ -66,17 +68,25 @@ namespace DemoGame.ParticleEffectEditor
         }
 
         /// <summary>
-        /// Creates the initial <see cref="ParticleEmitter"/> to display.
+        /// Creates the initial <see cref="IParticleEffect"/> to display.
         /// </summary>
-        /// <returns>The initial <see cref="ParticleEmitter"/> to display.</returns>
-        ParticleEmitter CreateInitialEmitter()
+        /// <returns>The initial <see cref="IParticleEffect"/> to display.</returns>
+        IParticleEffect CreateInitialParticleEffect()
         {
-            var ret = new PointEmitter { Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f, ReleaseRate = 35 };
-            ret.Sprite.SetGrh(GrhInfo.GetData(new SpriteCategorization(_defaultCategory, "ball")));
+            // Try to load an existing particle effect is possible
+            var existing = ParticleEffectManager.Instance.ParticleEffectNames.Select(x => ParticleEffectManager.Instance.TryCreateEffect(x)).FirstOrDefault(x => x != null);
+            if (existing != null)
+                return existing;
+
+            // Create a new particle effect
+            var ret = new ParticleEffect();
+
+            var emitter = new PointEmitter(ret) { Origin = new Vector2(GameScreen.Width, GameScreen.Height) / 2f, ReleaseRate = 35 };
+            emitter.Sprite.SetGrh(GrhInfo.GetData(new SpriteCategorization(_defaultCategory, "ball")));
 
             var colorModifier = new ParticleColorModifier
             { ReleaseColor = new Color(0, 255, 0, 255), UltimateColor = new Color(0, 0, 255, 175) };
-            ret.ParticleModifiers.Add(colorModifier);
+            emitter.ParticleModifiers.Add(colorModifier);
 
             return ret;
         }
@@ -90,7 +100,7 @@ namespace DemoGame.ParticleEffectEditor
             // Clear the background
             RenderWindow.Clear(Color.Black);
             spriteBatch.Begin();
-            Emitter.Draw(spriteBatch);
+            ParticleEffect.Draw(spriteBatch);
             spriteBatch.End();
         }
 
@@ -112,7 +122,7 @@ namespace DemoGame.ParticleEffectEditor
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                Emitter.Origin = new Vector2(e.X, e.Y);
+                ParticleEffect.Position = new Vector2(e.X, e.Y);
         }
 
         /// <summary>
@@ -133,7 +143,7 @@ namespace DemoGame.ParticleEffectEditor
             CustomUITypeEditors.AddEditors();
 
             // Set the initial emitter
-            Emitter = CreateInitialEmitter();
+            ParticleEffect = CreateInitialParticleEffect();
         }
 
         /// <summary>
@@ -141,19 +151,20 @@ namespace DemoGame.ParticleEffectEditor
         /// </summary>
         public void UpdateGame()
         {
-            if (Emitter == null)
+            if (ParticleEffect == null || ParticleEffect.IsDisposed)
                 return;
 
-            Emitter.Update(GetTime());
+            ParticleEffect.Update(GetTime());
 
-            if (Emitter.Name != _lastEmitterName)
+            // Update the name to display on the form
+            if (ParticleEffect.Name != _lastName)
             {
-                _lastEmitterName = Emitter.Name;
-                Text = _defaultTitle + " - " + _lastEmitterName;
+                _lastName = ParticleEffect.Name;
+                Text = _defaultTitle + " - " + _lastName;
             }
 
-            if (Emitter.IsExpired)
-                Emitter.Reset();
+            if (ParticleEffect.IsExpired)
+                ParticleEffect.Reset();
         }
 
         /// <summary>
@@ -163,12 +174,15 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnLoad_Click(object sender, EventArgs e)
         {
+            // TODO: !!
+            /*
             string filePath;
-            ParticleEmitter emitter;
-            var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out emitter);
+            ParticleEmitter pe;
+            var wasSuccessful = FileDialogs.TryOpenParticleEffect(out filePath, out pe);
 
             if (wasSuccessful)
-                Emitter = emitter;
+                ParticleEffect = pe;
+            */
         }
 
         /// <summary>
@@ -178,11 +192,12 @@ namespace DemoGame.ParticleEffectEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnSave_Click(object sender, EventArgs e)
         {
-            if (Emitter == null)
+            if (ParticleEffect == null)
                 return;
-
+            // TODO: !!
+            /*
             // Check if using the default name
-            if (StringComparer.Ordinal.Equals(ParticleEmitter.DefaultName, Emitter.Name))
+            if (StringComparer.Ordinal.Equals(ParticleEmitter.DefaultName, ParticleEffect.Name))
             {
                 const string changeNameMsg =
                     "You should change the particle emitter's name from the default name before saving.{0}To do so, change the Name property of the emitter.";
@@ -191,7 +206,7 @@ namespace DemoGame.ParticleEffectEditor
             }
 
             // Check if the emitter already exists
-            if (ParticleEmitterFactory.EmitterExists(ContentPaths.Dev, Emitter.Name))
+            if (ParticleEmitterFactory.EmitterExists(ContentPaths.Dev, ParticleEffect.Name))
             {
                 const string overwriteMsg = "An emitter named `{0}` already exists. Do you wish to overwrite?";
                 if (MessageBox.Show(string.Format(overwriteMsg, Emitter.Name), "Overwrite?", MessageBoxButtons.YesNo) ==
@@ -208,10 +223,13 @@ namespace DemoGame.ParticleEffectEditor
 
             const string savedMsg = "The particle emitter `{0}` was successfully saved.";
             MessageBox.Show(string.Format(savedMsg, Emitter.Name), "Saved", MessageBoxButtons.OK);
+            */
         }
 
         void cmbEmitter_SelectedEmitterChanged(ParticleEmitterComboBox sender, ParticleEmitter emitter)
         {
+            // TODO: !!
+            /*
             // Ensure the selected emitter is valid
             if (_emitter == null || emitter == null)
                 return;
@@ -223,6 +241,7 @@ namespace DemoGame.ParticleEffectEditor
             // Copy over the values of this emitter to the new emitter, and use the new emitter
             _emitter.CopyValuesTo(emitter);
             Emitter = emitter;
+            */
         }
 
         #region IGetTime Members

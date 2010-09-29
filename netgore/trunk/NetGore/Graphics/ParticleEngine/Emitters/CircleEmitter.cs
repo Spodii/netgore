@@ -23,6 +23,15 @@ namespace NetGore.Graphics.ParticleEngine
         VariableFloat _radius = 50;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CircleEmitter"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        public CircleEmitter(IParticleEffect owner) : base(owner)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets if <see cref="Particle"/>s are emitted only from the perimeter. If true,
         /// <see cref="Particle"/>s will only be emitted on the perimeter of the circle.
         /// </summary>
@@ -67,9 +76,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
         /// </summary>
         /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
-        public override ParticleEmitter DeepCopy()
+        public override ParticleEmitter DeepCopy(IParticleEffect newOwner)
         {
-            var ret = new CircleEmitter();
+            var ret = new CircleEmitter(newOwner);
             CopyValuesTo(ret);
             ret.Perimeter = Perimeter;
             ret.Radiate = Radiate;
