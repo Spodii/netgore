@@ -26,7 +26,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
         /// </summary>
-        static SelectedObjectsManager<object> SOM { get { return GlobalConfig.Instance.Map.SelectedObjsManager; } }
+        static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }
 
         /// <summary>
         /// Property to access the MSC. Provided purely for the means of shortening the
@@ -329,7 +329,7 @@ namespace DemoGame.Editor
                 {
                     // Selection dragging
                     // When holding down control, add to the selection by not deleting current selection
-                    if (!Container.KeyEventArgs.Control)
+                    if (!Input.IsCtrlDown)
                         _selectedWalls.Clear();
 
                     // Add all selected to the list if they are not already in it

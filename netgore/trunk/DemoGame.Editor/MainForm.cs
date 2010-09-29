@@ -27,5 +27,10 @@ namespace DemoGame.Editor
         {
             _editMapForm.Show(dockPanel);
         }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+        }
     }
 }

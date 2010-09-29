@@ -50,10 +50,10 @@ namespace DemoGame.Editor
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsTools = new System.Windows.Forms.ToolStrip();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
-            this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,9 +95,15 @@ namespace DemoGame.Editor
             // mapToolStripMenuItem
             // 
             this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
-            this.mapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mapToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.mapToolStripMenuItem.Text = "Map";
             this.mapToolStripMenuItem.Click += new System.EventHandler(this.mapToolStripMenuItem_Click);
+            // 
+            // miniMapToolStripMenuItem
+            // 
+            this.miniMapToolStripMenuItem.Name = "miniMapToolStripMenuItem";
+            this.miniMapToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.miniMapToolStripMenuItem.Text = "Mini-Map";
             // 
             // tsTools
             // 
@@ -170,12 +176,6 @@ namespace DemoGame.Editor
             this.dockPanel.Skin = dockPanelSkin1;
             this.dockPanel.TabIndex = 5;
             // 
-            // miniMapToolStripMenuItem
-            // 
-            this.miniMapToolStripMenuItem.Name = "miniMapToolStripMenuItem";
-            this.miniMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.miniMapToolStripMenuItem.Text = "Mini-Map";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -186,6 +186,7 @@ namespace DemoGame.Editor
             this.Controls.Add(this.tsTools);
             this.Controls.Add(this.msMenu);
             this.IsMdiContainer = true;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.msMenu;
             this.Name = "MainForm";
             this.Text = "NetGore Editor";

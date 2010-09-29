@@ -28,7 +28,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
         /// </summary>
-        static SelectedObjectsManager<object> SOM { get { return GlobalConfig.Instance.Map.SelectedObjsManager; } }
+        static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityCursor"/> class.
@@ -71,7 +71,7 @@ namespace DemoGame.Editor
         public override void DrawInterface(ISpriteBatch spriteBatch)
         {
             if (!string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(GlobalConfig.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(GlobalState.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace DemoGame.Editor
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (Container.KeyEventArgs.Control)
+                    if (Input.IsCtrlDown)
                     {
                         // Resize the entity
                         var size = MSC.CursorPos - focusedEntity.Position;
@@ -190,7 +190,7 @@ namespace DemoGame.Editor
                     _toolTipObject = hoverEntity;
                     _toolTip = string.Format("{0}\n{1} ({2}x{3})", hoverEntity, hoverEntity.Position, hoverEntity.Size.X,
                                              hoverEntity.Size.Y);
-                    _toolTipPos = GetToolTipPos(GlobalConfig.Instance.DefaultRenderFont, _toolTip, hoverEntity);
+                    _toolTipPos = GetToolTipPos(GlobalState.Instance.DefaultRenderFont, _toolTip, hoverEntity);
                 }
             }
         }
