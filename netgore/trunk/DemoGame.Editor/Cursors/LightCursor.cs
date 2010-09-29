@@ -54,7 +54,7 @@ namespace DemoGame.Editor
 
             // Draw the tooltip
             if (_toolTipObj != null && !string.IsNullOrEmpty(_toolTip))
-                spriteBatch.DrawStringShaded(Container.RenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
+                spriteBatch.DrawStringShaded(GlobalConfig.Instance.DefaultRenderFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace DemoGame.Editor
                 return;
 
             _toolTip = string.Format("{0}\n{1} ({2}x{3})", light, light.Position, light.Size.X, light.Size.Y);
-            _toolTipPos = EntityCursor.GetToolTipPos(MSC.RenderFont, _toolTip, light);
+            _toolTipPos = EntityCursor.GetToolTipPos(GlobalConfig.Instance.DefaultRenderFont, _toolTip, light);
             _toolTipPos.X = light.Position.X + 5;
         }
     }

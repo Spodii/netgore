@@ -1,7 +1,8 @@
 ﻿using System.Linq;
+using NetGore.Content;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using NetGore.World;
+using SFML.Graphics;
 
 namespace DemoGame.Editor
 {
@@ -14,7 +15,14 @@ namespace DemoGame.Editor
     {
         static readonly GlobalConfig _instance;
 
+        readonly IContentManager _contentManager;
         readonly MapConfig _mapConfig;
+        readonly Font _defaultRenderFont;
+
+        /// <summary>
+        /// Gets the default <see cref="Font"/> to use for writing to rendered screens.
+        /// </summary>
+        public Font DefaultRenderFont { get { return _defaultRenderFont; } }
 
         /// <summary>
         /// Initializes the <see cref="GlobalConfig"/> class.
@@ -30,6 +38,17 @@ namespace DemoGame.Editor
         GlobalConfig()
         {
             _mapConfig = new MapConfig();
+            _contentManager = NetGore.Content.ContentManager.Create();
+
+            _defaultRenderFont = ContentManager.LoadFont("Font/Arial", 16, ContentLevel.Global);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IContentManager"/> used by all parts of the editor.
+        /// </summary>
+        public IContentManager ContentManager
+        {
+            get { return _contentManager; }
         }
 
         /// <summary>
