@@ -15,11 +15,8 @@ namespace NetGore.Graphics.ParticleEngine
     /// </summary>
     public class ParticleEmitterFactory : TypeFactory
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         const string _emitterNodeName = "Emitter";
         const string _emitterTypeKeyName = "EmitterType";
-        const string _rootNodeName = "ParticleEffect";
 
         /// <summary>
         /// The only instance of the <see cref="ParticleEmitterFactory"/>.
@@ -42,7 +39,7 @@ namespace NetGore.Graphics.ParticleEngine
                 IsClass = true,
                 IsAbstract = false,
                 RequireConstructor = true,
-                ConstructorParameters = Type.EmptyTypes,
+                ConstructorParameters = new Type[] { typeof(IParticleEffect)},
                 Subclass = typeof(ParticleEmitter)
             };
 
@@ -60,14 +57,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="GenericValueIOFormat"/> to use for when an instance of this class
-        /// writes itself out to a new <see cref="GenericValueWriter"/>. If null, the format to use
-        /// will be inherited from <see cref="GenericValueWriter.DefaultFormat"/>.
-        /// Default value is null.
-        /// </summary>
-        public static GenericValueIOFormat? EncodingFormat { get; set; }
-
-        /// <summary>
         /// Gets the <see cref="ParticleEmitterFactory"/> instance.
         /// </summary>
         public static ParticleEmitterFactory Instance
@@ -76,94 +65,14 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Checks if a <see cref="ParticleEmitter"/> exists.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
-        /// <param name="emitterName">The name of the <see cref="ParticleEmitter"/>.</param>
-        /// <returns>True if the <see cref="ParticleEmitter"/> exists; false is it does not exist or any
-        /// of the parameters are invalid.</returns>
-        public static bool EmitterExists(ContentPaths contentPath, string emitterName)
-        {
-            if (contentPath == null || string.IsNullOrEmpty(emitterName))
-                return false;
-
-            var filePath = GetFilePath(contentPath, emitterName);
-            return File.Exists(filePath);
-        }
-
-        /// <summary>
-        /// Gets the name of a particle effect from the file path.
-        /// </summary>
-        /// <param name="filePath">The file path for the particle effect.</param>
-        /// <returns>The name of the particle effect, or "Unnamed" if the <paramref name="filePath"/> is invalid.</returns>
-        public static string GetEffectNameFromPath(string filePath)
-        {
-            try
-            {
-                return Path.GetFileNameWithoutExtension(filePath);
-            }
-            catch (ArgumentException)
-            {
-                return filePath ?? "Unnamed";
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of all the <see cref="ParticleEmitter"/> files in a given <see cref="ContentPaths"/>.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/> to get the effect files from.</param>
-        /// <returns>The name of all the <see cref="ParticleEmitter"/> files in the <paramref name="contentPath"/>.</returns>
-        public static IEnumerable<string> GetEffectsInPath(ContentPaths contentPath)
-        {
-            var files = Directory.GetFiles(contentPath.ParticleEffects, "*" + EngineSettings.DataFileSuffix,
-                                           SearchOption.TopDirectoryOnly);
-            var names = files.Select(GetEffectNameFromPath);
-            return names.ToImmutable();
-        }
-
-        /// <summary>
-        /// Gets the file path for a <see cref="ParticleEmitter"/> by name.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/>.</param>
-        /// <param name="emitterName">The name of the <see cref="ParticleEmitter"/>.</param>
-        /// <returns>The path for the <see cref="ParticleEmitter"/>.</returns>
-        static string GetFilePath(ContentPaths contentPath, string emitterName)
-        {
-            return contentPath.ParticleEffects.Join(emitterName + EngineSettings.DataFileSuffix);
-        }
-
-        /// <summary>
-        /// Loads a <see cref="ParticleEmitter"/> from file.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/> to load from.</param>
-        /// <param name="emitterName">The unique name of the <see cref="ParticleEmitter"/>.</param>
-        /// <returns>The loaded <see cref="ParticleEmitter"/>, or null if the emitter does not exist or was not valid.</returns>
-        public static ParticleEmitter LoadEmitter(ContentPaths contentPath, string emitterName)
-        {
-            var filePath = GetFilePath(contentPath, emitterName);
-
-            // Ensure the file exists
-            if (!File.Exists(filePath))
-                return null;
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Loading ParticleEmitter `{0}` from `{1}`.", emitterName, filePath);
-
-            // Get the reader and read the emitter
-            var reader = new GenericValueReader(filePath, _rootNodeName);
-            var emitter = Read(reader);
-
-            Debug.Assert(emitter.Name.Equals(emitterName, StringComparison.OrdinalIgnoreCase));
-
-            return emitter;
-        }
-
-        /// <summary>
         /// Reads a <see cref="ParticleEmitter"/> from an <see cref="IValueReader"/>.
         /// </summary>
         /// <param name="reader">The <see cref="IValueReader"/> to read from.</param>
-        /// <returns>The <see cref="ParticleEmitter"/> read from the <paramref name="reader"/>.</returns>
-        public static ParticleEmitter Read(IValueReader reader)
+        /// <param name="owner">The <see cref="IParticleEffect"/> to add the read <see cref="ParticleEmitter"/> to.</param>
+        /// <returns>
+        /// The <see cref="ParticleEmitter"/> read from the <paramref name="reader"/>.
+        /// </returns>
+        public static ParticleEmitter Read(IValueReader reader, IParticleEffect owner)
         {
             // Get the type name
             var emitterTypeString = reader.ReadString(_emitterTypeKeyName);
@@ -172,7 +81,7 @@ namespace NetGore.Graphics.ParticleEngine
             ParticleEmitter emitter;
             try
             {
-                emitter = (ParticleEmitter)Instance.GetTypeInstance(emitterTypeString);
+                emitter = (ParticleEmitter)Instance.GetTypeInstance(emitterTypeString, owner);
             }
             catch (KeyNotFoundException ex)
             {
@@ -184,25 +93,6 @@ namespace NetGore.Graphics.ParticleEngine
             emitter.ReadState(emitterReader);
 
             return emitter;
-        }
-
-        /// <summary>
-        /// Saves a <see cref="ParticleEmitter"/> to file.
-        /// </summary>
-        /// <param name="contentPath">The <see cref="ContentPaths"/> to save to.</param>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to save.</param>
-        public static void SaveEmitter(ContentPaths contentPath, ParticleEmitter emitter)
-        {
-            var filePath = GetFilePath(contentPath, emitter.Name);
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Saving ParticleEmitter `{0}` to `{1}`.", emitter, filePath);
-
-            // Create the writer and begin writing
-            using (var writer = new GenericValueWriter(filePath, _rootNodeName, EncodingFormat))
-            {
-                Write(writer, emitter);
-            }
         }
 
         /// <summary>

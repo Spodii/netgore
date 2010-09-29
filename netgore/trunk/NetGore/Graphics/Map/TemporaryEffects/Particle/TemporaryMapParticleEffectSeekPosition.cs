@@ -16,15 +16,15 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporaryMapParticleEffect"/> class.
         /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/>.</param>
+        /// <param name="pe">The <see cref="IParticleEffect"/>.</param>
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
         /// <param name="target">The destination position.</param>
         /// <param name="speed">How fast this object moves towards the target in pixels per second.</param>
-        public TemporaryMapParticleEffectSeekPosition(ParticleEmitter emitter, bool isForeground, Vector2 target, float speed)
-            : base(emitter, isForeground)
+        public TemporaryMapParticleEffectSeekPosition(IParticleEffect pe, bool isForeground, Vector2 target, float speed)
+            : base(pe, isForeground)
         {
-            var position = emitter.Origin;
+            var position = pe.Position;
 
             speed = speed / 1000f;
 
@@ -61,7 +61,7 @@ namespace NetGore.Graphics
             // Check if enough time has elapsed for us to reach the target position
             if (currentTime >= _endTime)
             {
-                Emitter.Origin = _targetPosition;
+                ParticleEffect.Position = _targetPosition;
                 Kill(true);
                 return;
             }
@@ -69,7 +69,7 @@ namespace NetGore.Graphics
             // Recalculate the position based on the elapsed time. Recalculate the complete position each time since the computational
             // cost is pretty much the same, and this way doesn't fall victim to accumulated rounding errors
             var elapsedTime = currentTime - _startTime;
-            Emitter.Origin = _startPosition + (_velocity * elapsedTime);
+            ParticleEffect.Position = _startPosition + (_velocity * elapsedTime);
         }
     }
 }

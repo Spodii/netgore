@@ -133,10 +133,10 @@ namespace DemoGame.MapEditor
         Direction _editGrhSelectedWallDir;
 
         /// <summary>
-        /// If set to a value other than null, the selected <see cref="ParticleEmitter"/> on this form
+        /// If set to a value other than null, the selected <see cref="IParticleEffect"/> on this form
         /// will be drawn instead of the map.
         /// </summary>
-        ParticleEmitterUITypeEditorForm _emitterSelectionForm = null;
+        ParticleEffectUITypeEditorForm _particleEffectSelectionForm = null;
 
         /// <summary>
         /// The default font.
@@ -466,11 +466,11 @@ namespace DemoGame.MapEditor
                 return;
             }
 
-            // Draw the selected ParticleEmitter if needed
-            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null &&
-                !_emitterSelectionForm.SelectedItem.IsDisposed)
+            // Draw the selected ParticleEffect if needed
+            if (_particleEffectSelectionForm != null && _particleEffectSelectionForm.SelectedItem != null &&
+                !_particleEffectSelectionForm.SelectedItem.IsDisposed)
             {
-                DrawParticleEmitterOnly(sb, _emitterSelectionForm.SelectedItem);
+                DrawParticleEffectOnly(sb, _particleEffectSelectionForm.SelectedItem);
                 return;
             }
 
@@ -563,19 +563,19 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Draws a <see cref="ParticleEmitter"/> as the only item on the screen.
+        /// Draws a <see cref="IParticleEffect"/> as the only item on the screen.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to draw with.</param>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/> to draw.</param>
-        void DrawParticleEmitterOnly(ISpriteBatch sb, ParticleEmitter emitter)
+        /// <param name="particleEffect">The <see cref="IParticleEffect"/> to draw.</param>
+        void DrawParticleEffectOnly(ISpriteBatch sb, IParticleEffect particleEffect)
         {
             // Start drawing
             sb.Begin(BlendMode.Alpha, Camera);
 
             try
             {
-                if (_emitterSelectionForm.SelectedItem != null)
-                    _emitterSelectionForm.SelectedItem.Draw(sb);
+                if (_particleEffectSelectionForm.SelectedItem != null)
+                    _particleEffectSelectionForm.SelectedItem.Draw(sb);
             }
             finally
             {
@@ -1240,13 +1240,16 @@ namespace DemoGame.MapEditor
             _currentTime = currTime;
 
             // Update stuff in selection forms (moving it to the center of the camera so it draws centered)
-            if (_emitterSelectionForm != null && _emitterSelectionForm.SelectedItem != null &&
-                !_emitterSelectionForm.SelectedItem.IsDisposed)
+            if (_particleEffectSelectionForm != null)
             {
-                var originalOrigin = _emitterSelectionForm.SelectedItem.Origin;
-                _emitterSelectionForm.SelectedItem.Origin = Camera.Center;
-                _emitterSelectionForm.SelectedItem.Update(_currentTime);
-                _emitterSelectionForm.SelectedItem.Origin = originalOrigin;
+                var pe = _particleEffectSelectionForm.SelectedItem;
+                if (pe != null && !pe.IsDisposed)
+                {
+                    var originalPos = pe.Position;
+                    pe.Position = Camera.Center;
+                    pe.Update(_currentTime);
+                    pe.Position = originalPos;
+                }
             }
 
             // Check for a map
@@ -1341,9 +1344,9 @@ namespace DemoGame.MapEditor
             ParticleEffectReference newEmitter = null;
 
             // Create the selection form
-            using (var f = new ParticleEmitterUITypeEditorForm(null))
+            using (var f = new ParticleEffectUITypeEditorForm(null))
             {
-                _emitterSelectionForm = f;
+                _particleEffectSelectionForm = f;
 
                 try
                 {
@@ -1359,7 +1362,7 @@ namespace DemoGame.MapEditor
                 finally
                 {
                     // Clear the selected form
-                    _emitterSelectionForm = null;
+                    _particleEffectSelectionForm = null;
                 }
             }
 

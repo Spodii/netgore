@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
 
@@ -10,12 +11,21 @@ namespace NetGore.Graphics.ParticleEngine
     public class PointEmitter : ParticleEmitter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PointEmitter"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        public PointEmitter(IParticleEffect owner) : base(owner)
+        {
+        }
+
+        /// <summary>
         /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
         /// </summary>
         /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
-        public override ParticleEmitter DeepCopy()
+        public override ParticleEmitter DeepCopy(IParticleEffect newOwner)
         {
-            var ret = new PointEmitter();
+            var ret = new PointEmitter(newOwner);
             CopyValuesTo(ret);
             return ret;
         }

@@ -8,49 +8,18 @@ using NetGore.NPCChat;
 
 namespace NetGore.EditorTools
 {
-    public class ParticleEmitterUITypeEditorForm : UITypeEditorListForm<ParticleEmitter>
+    public class ParticleEffectUITypeEditorForm : UITypeEditorListForm<IParticleEffect>
     {
         readonly object _selected;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParticleEmitterUITypeEditorForm"/> class.
+        /// Initializes a new instance of the <see cref="ParticleEffectUITypeEditorForm"/> class.
         /// </summary>
         /// <param name="selected">The currently selected <see cref="NPCChatDialogBase"/>.
         /// Multiple different types are supported. Can be null.</param>
-        public ParticleEmitterUITypeEditorForm(object selected)
+        public ParticleEffectUITypeEditorForm(object selected)
         {
             _selected = selected;
-        }
-
-        /// <summary>
-        /// Loads the <see cref="ParticleEmitter"/> instances from their name, only returning those
-        /// who were created without error.
-        /// </summary>
-        /// <param name="emitterNames">The <see cref="ParticleEmitter"/> names.</param>
-        /// <returns>The <see cref="ParticleEmitter"/>s that successfully loaded.</returns>
-        static IEnumerable<ParticleEmitter> EmitterLoader(IEnumerable<string> emitterNames)
-        {
-            var ret = new List<ParticleEmitter>();
-
-            foreach (var name in emitterNames)
-            {
-                try
-                {
-                    var pe = ParticleEmitterFactory.LoadEmitter(ContentPaths.Build, name);
-                    pe.SetEmitterLife(-1);
-                    ret.Add(pe);
-                }
-                catch (ParticleEmitterNotFoundException ex)
-                {
-                    Debug.Fail(ex.ToString());
-                }
-                catch (Exception ex)
-                {
-                    Debug.Fail(ex.ToString());
-                }
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -58,7 +27,7 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="item">The item to get the display string for.</param>
         /// <returns>The string to display for the <paramref name="item"/>.</returns>
-        protected override string GetItemDisplayString(ParticleEmitter item)
+        protected override string GetItemDisplayString(IParticleEffect item)
         {
             return item.Name;
         }
@@ -67,11 +36,12 @@ namespace NetGore.EditorTools
         /// When overridden in the derived class, gets the items to add to the list.
         /// </summary>
         /// <returns>The items to add to the list.</returns>
-        protected override IEnumerable<ParticleEmitter> GetListItems()
+        protected override IEnumerable<IParticleEffect> GetListItems()
         {
-            var emitterNames = ParticleEmitterFactory.GetEffectsInPath(ContentPaths.Build);
-            var validEffects = EmitterLoader(emitterNames);
-            return validEffects.OrderBy(x => x.Name, NaturalStringComparer.Instance);
+            var names = ParticleEffectManager.Instance.ParticleEffectNames;
+            var instances = names.Select(x => ParticleEffectManager.Instance.TryCreateEffect(x));
+            var validInstances = instances.Where(x => x != null);
+            return validInstances.OrderBy(x => x.Name, NaturalStringComparer.Instance);
         }
 
         /// <summary>
@@ -82,7 +52,7 @@ namespace NetGore.EditorTools
         /// <returns>
         /// If the given <paramref name="item"/> is valid to be used as the returned item.
         /// </returns>
-        protected override bool IsItemValid(ParticleEmitter item)
+        protected override bool IsItemValid(IParticleEffect item)
         {
             return item != null;
         }
@@ -94,7 +64,7 @@ namespace NetGore.EditorTools
         /// <returns>
         /// The item that will be selected by default.
         /// </returns>
-        protected override ParticleEmitter SetDefaultSelectedItem(IEnumerable<ParticleEmitter> items)
+        protected override IParticleEffect SetDefaultSelectedItem(IEnumerable<IParticleEffect> items)
         {
             if (_selected == null)
                 return base.SetDefaultSelectedItem(items);
@@ -107,10 +77,10 @@ namespace NetGore.EditorTools
                 return items.FirstOrDefault(x => stringComp.Equals(x.Name, asString));
             }
 
-            if (_selected is ParticleEmitter)
+            if (_selected is IParticleEffect)
             {
-                var asEmitter = (ParticleEmitter)_selected;
-                return items.FirstOrDefault(x => stringComp.Equals(x.Name, asEmitter));
+                var asPE = (IParticleEffect)_selected;
+                return items.FirstOrDefault(x => stringComp.Equals(x.Name, asPE));
             }
 
             return base.SetDefaultSelectedItem(items);

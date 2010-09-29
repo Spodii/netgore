@@ -11,9 +11,9 @@ using SFML.Graphics;
 namespace NetGore.Graphics.ParticleEngine
 {
     /// <summary>
-    /// Base class for all emitters of <see cref="Particle"/>s.
+    /// Base class for all <see cref="IParticleEmitter"/>s.
     /// </summary>
-    public abstract class ParticleEmitter : IDisposable, IPersistable
+    public abstract class ParticleEmitter : IParticleEmitter
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -57,12 +57,14 @@ namespace NetGore.Graphics.ParticleEngine
         const string _releaseSpeedKeyName = "ReleaseSpeed";
 
         static readonly IEnumerable<Type> _emitterTypes =
-            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), Type.EmptyTypes).OrderBy(x => x.Name).ToCompact();
+            TypeHelper.FindTypesThatInherit(typeof(ParticleEmitter), new Type[] { typeof(IParticleEffect) }).OrderBy(x => x.Name).ToCompact();
 
         /// <summary>
         /// The array of <see cref="Particle"/>s.
         /// </summary>
         protected Particle[] particles;
+
+        readonly IParticleEffect _owner;
 
         readonly Grh _sprite = new Grh();
 
@@ -77,6 +79,7 @@ namespace NetGore.Graphics.ParticleEngine
 
         TickCount _lastUpdateTime = TickCount.MinValue;
         int _life = -1;
+        string _name;
         TickCount _nextReleaseTime = TickCount.MinValue;
         Vector2 _origin;
         ParticleModifierCollection _particleModifiers = new ParticleModifierCollection();
@@ -94,8 +97,15 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Initializes a new instance of the <see cref="ParticleEmitter"/> class.
         /// </summary>
-        protected ParticleEmitter()
+        /// <param name="owner">The <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        protected ParticleEmitter(IParticleEffect owner)
         {
+            if (owner == null)
+                throw new ArgumentNullException("owner");
+
+            _owner = owner;
+
             _budget = DefaultBudget;
             particles = new Particle[_initialParticleArraySize];
 
@@ -112,96 +122,25 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets the number of living <see cref="Particle"/>s.
-        /// </summary>
-        [Browsable(false)]
-        public int ActiveParticles
-        {
-            get { return _lastAliveIndex + 1; }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="BlendMode"/> to use when rendering the <see cref="Particle"/>s
-        /// emitted by this <see cref="ParticleEmitter"/>.
-        /// </summary>
-        [Category(_emitterCategoryName)]
-        [Description("The blending mode to use when rendering Particles from this emitter.")]
-        [DisplayName("Blend Mode")]
-        [DefaultValue(_defaultBlendMode)]
-        public BlendMode BlendMode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the maximum number of live particles this <see cref="ParticleEmitter"/> may create at
-        /// any given time.
-        /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> less than or equal to zero.</exception>
-        [Category(_emitterCategoryName)]
-        [Description("The maximum number of live Particles that this emitter may have out at once.")]
-        [DisplayName("Budget")]
-        [DefaultValue(_defaultBudget)]
-        public int Budget
-        {
-            get { return _budget; }
-            set
-            {
-                if (_budget == value)
-                    return;
-
-                if (_budget < 1)
-                    throw new ArgumentOutOfRangeException("value", "Value must be greater than 0.");
-
-                _budget = value;
-
-                Array.Resize(ref particles, _budget);
-
-                if (_lastAliveIndex >= particles.Length - 1)
-                    _lastAliveIndex = particles.Length - 1;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the default budget to give to new <see cref="ParticleEmitter"/>s when no budget
         /// is explicitly given.
         /// </summary>
         public static int DefaultBudget { get; set; }
 
         /// <summary>
-        /// Gets or sets how long, in milliseconds, the emitter lives after being created. If less than 0, it lives
-        /// indefinitely.
+        /// Gets the <see cref="StringComparer"/> to use when comparing the name of <see cref="ParticleEmitter"/>s.
         /// </summary>
-        [Category(_emitterCategoryName)]
-        [Description("How long, in milliseconds, the emitter lives. If less than 0, it lives indefinitely.")]
-        [DisplayName("Life")]
-        [DefaultValue(-1)]
-        public int EmitterLife
+        public static StringComparer EmitterNameComparer
         {
-            get { return _life; }
-            set
-            {
-                if (_life == value)
-                    return;
-
-                _life = value;
-            }
+            get { return StringComparer.OrdinalIgnoreCase; }
         }
 
         /// <summary>
-        /// Gets or sets the collection of modifiers to use on the <see cref="ParticleEmitter"/>.
+        /// Gets the <see cref="StringComparison"/> to use when comparing the name of <see cref="ParticleEmitter"/>s.
         /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        [Category(_emitterCategoryName)]
-        [Description("Collection of modifiers for the actual emitter.")]
-        [DisplayName("Emitter Modifiers")]
-        public EmitterModifierCollection EmitterModifiers
+        public static StringComparison EmitterNameComparison
         {
-            get { return _emitterModifiers; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _emitterModifiers = value;
-            }
+            get { return StringComparison.OrdinalIgnoreCase; }
         }
 
         /// <summary>
@@ -210,46 +149,6 @@ namespace NetGore.Graphics.ParticleEngine
         public static IEnumerable<Type> EmitterTypes
         {
             get { return _emitterTypes; }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="ParticleEmitter"/> has an infinite life span. If true,
-        /// it will never expire automatically. If false, the amount of time remaining can be found
-        /// from <see cref="RemainingLife"/>.
-        /// </summary>
-        [Browsable(false)]
-        public bool HasInfiniteLife
-        {
-            get { return _timeCreated < 0; }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="ParticleEmitter"/> has been disposed.
-        /// </summary>
-        [Browsable(false)]
-        public bool IsDisposed
-        {
-            get { return _isDisposed; }
-        }
-
-        /// <summary>
-        /// Gets if the <see cref="ParticleEmitter"/> is expired and all <see cref="Particle"/>s it has spawned
-        /// have expired.
-        /// </summary>
-        /// <returns>True if the <see cref="ParticleEmitter"/> is ready to be disposed; otherwise false.</returns>
-        [Browsable(false)]
-        public bool IsExpired
-        {
-            get
-            {
-                if (RemainingLife != 0)
-                    return false;
-
-                if (ActiveParticles > 0)
-                    return false;
-
-                return true;
-            }
         }
 
         /// <summary>
@@ -262,144 +161,12 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Gets or sets the unique name of the particle effect.
+        /// Performs the real name changing of this <see cref="ParticleEmitter"/>. Must only be invoked by <see cref="IParticleEffect"/>.
         /// </summary>
-        [Category(_emitterCategoryName)]
-        [Description("The unique name of the particle effect.")]
-        [DisplayName("Name")]
-        [DefaultValue(DefaultName)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the origin of this <see cref="ParticleEmitter"/>.
-        /// </summary>
-        [Category(_emitterCategoryName)]
-        [Description("The origin of the emitter.")]
-        [DisplayName("Origin")]
-        public Vector2 Origin
+        /// <param name="newName">The new name.</param>
+        internal void ChangeName(string newName)
         {
-            get { return _origin; }
-            set { _origin = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the life of each <see cref="Particle"/> emitted.
-        /// </summary>
-        [Category(_particleCategoryName)]
-        [Description("How long in milliseconds each Particle emitted lives after being emitted.")]
-        [DisplayName("Life")]
-        [DefaultValue(typeof(VariableInt), "2000")]
-        public VariableInt ParticleLife { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
-        /// <see cref="ParticleEmitter"/>.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        [Category(_emitterCategoryName)]
-        [Description("Collection of modifiers for individual particles.")]
-        [DisplayName("Particle Modifiers")]
-        public ParticleModifierCollection ParticleModifiers
-        {
-            get { return _particleModifiers; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _particleModifiers = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the number of <see cref="Particle"/>s that are emitted at each release.
-        /// </summary>
-        [Category(_emitterCategoryName)]
-        [Description("How many Particles are emitted on each release (see Release Rate).")]
-        [DisplayName("Amount")]
-        [DefaultValue(typeof(VariableUShort), "1")]
-        public VariableUShort ReleaseAmount { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial color of the <see cref="Particle"/> when emitted.
-        /// </summary>
-        [Category(_particleCategoryName)]
-        [Description("The color of a Particle when it is released.")]
-        [DisplayName("Color")]
-        [DefaultValue(typeof(VariableColor), "{255, 255, 255, 255}")]
-        public VariableColor ReleaseColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the rate in milliseconds that <see cref="Particle"/>s are emitted.
-        /// </summary>
-        [Category(_emitterCategoryName)]
-        [Description("The rate in milliseconds that Particles are released from this emitter.")]
-        [DisplayName("Rate")]
-        [DefaultValue(typeof(VariableUShort), "100")]
-        public VariableUShort ReleaseRate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial rotation in radians of the <see cref="Particle"/> when emitted.
-        /// </summary>
-        [Category(_particleCategoryName)]
-        [Description("The angle in radians released Particles will be facing.")]
-        [DisplayName("Rotation")]
-        [DefaultValue(typeof(VariableFloat), "0")]
-        public VariableFloat ReleaseRotation { get; set; }
-
-        /// <summary>
-        /// Gets or sets the initial scale of the <see cref="Particle"/> when emitted.
-        /// </summary>
-        [Category(_particleCategoryName)]
-        [Description("The magnification multiplier of released Particles, where 1.0 is the normal sprite size.")]
-        [DisplayName("Scale")]
-        [DefaultValue(typeof(VariableFloat), "1")]
-        public VariableFloat ReleaseScale { get; set; }
-
-        /// <summary>
-        /// Gets or sets the speed of <see cref="Particle"/>s when released.
-        /// </summary>
-        [Category(_particleCategoryName)]
-        [Description("The speed released Particles will be moving, where 0.0 is no movement.")]
-        [DisplayName("Speed")]
-        [DefaultValue(typeof(VariableFloat), "50")]
-        public VariableFloat ReleaseSpeed { get; set; }
-
-        /// <summary>
-        /// Gets the amount of time remaining for the <see cref="ParticleEmitter"/> before it is
-        /// automatically terminated. If -1, it will never be terminated automatically.
-        /// </summary>
-        /// <returns>The number of milliseconds remaining in the <see cref="ParticleEmitter"/>'s life, or
-        /// zero if the emitter has already expired, or -1 if the emitter does not expire.</returns>
-        [Browsable(false)]
-        public int RemainingLife
-        {
-            get
-            {
-                if (_wasKilled)
-                    return 0;
-
-                if (HasInfiniteLife)
-                    return -1;
-
-                if (_life < 0)
-                    return -1;
-
-                var ret = Math.Max(0, _life - ((int)TickCount.Now - (int)_timeCreated));
-                return ret;
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ISprite"/> to draw the <see cref="Particle"/>s.
-        /// </summary>
-        [Category(_emitterCategoryName)]
-        [Browsable(true)]
-        [DisplayName("GrhData")]
-        [Description("The GrhData that is drawn for the emitted particles.")]
-        public Grh Sprite
-        {
-            get { return _sprite; }
+            _name = newName;
         }
 
         /// <summary>
@@ -426,14 +193,17 @@ namespace NetGore.Graphics.ParticleEngine
         /// <summary>
         /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
         /// </summary>
-        /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
-        public abstract ParticleEmitter DeepCopy();
+        /// <param name="newOwner">The owner of the new <see cref="ParticleEmitter"/>.</param>
+        /// <returns>
+        /// A deep copy of this <see cref="ParticleEmitter"/> with the <paramref name="newOwner"/> set.
+        /// </returns>
+        public abstract ParticleEmitter DeepCopy(IParticleEffect newOwner);
 
         /// <summary>
         /// Draws the <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <param name="sb">The <see cref="ISpriteBatch"/> to use to draw.</param>
-        public void Draw(ISpriteBatch sb)
+        internal void Draw(ISpriteBatch sb)
         {
             // Check if we can even draw anything
             if (Sprite == null || ActiveParticles <= 0)
@@ -452,7 +222,7 @@ namespace NetGore.Graphics.ParticleEngine
             for (var i = 0; i < ActiveParticles; i++)
             {
                 var p = particles[i];
-                Sprite.Draw(sb, p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
+                Sprite.Draw(sb, Owner.Position + p.Position, p.Color, SpriteEffects.None, p.Rotation, origin, p.Scale);
             }
 
             // Restore the blend mode
@@ -593,29 +363,6 @@ namespace NetGore.Graphics.ParticleEngine
         }
 
         /// <summary>
-        /// Forces the <see cref="ParticleEmitter"/> to be reset from the start. This only resets state variables such as
-        /// the time the effect was created and how long it has to live, not properties such as position and emitting style.
-        /// Has no effect when disposed.
-        /// </summary>
-        public void Reset()
-        {
-            if (IsDisposed)
-            {
-                const string errmsg = "Tried to reset a disposed ParticleEffect `{0}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-                return;
-            }
-
-            HandleReset();
-
-            _timeCreated = TickCount.Now;
-            _lastUpdateTime = TickCount.MinValue;
-            _nextReleaseTime = TickCount.MinValue;
-        }
-
-        /// <summary>
         /// Sets the life of the <see cref="ParticleEmitter"/>.
         /// </summary>
         /// <param name="totalLife">The total life of the <see cref="ParticleEmitter"/> in milliseconds. If less
@@ -655,9 +402,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// Updates the <see cref="ParticleEmitter"/> and all <see cref="Particle"/>s it has created.
         /// </summary>
         /// <param name="currentTime">The current time.</param>>
-        public void Update(TickCount currentTime)
+        internal void Update(TickCount currentTime)
         {
-            bool forceEmit = false;
+            var forceEmit = false;
 
             // Get the elapsed time
             // On the first update, just assume 33 ms have elapsed
@@ -755,10 +502,309 @@ namespace NetGore.Graphics.ParticleEngine
         /// <param name="writer">The <see cref="IValueWriter"/> to write the state values to.</param>
         protected abstract void WriteCustomValues(IValueWriter writer);
 
-        #region IDisposable Members
+        #region IParticleEmitter Members
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Notifies listeners when this <see cref="IParticleEmitter"/> has bene disposed.
+        /// </summary>
+        public event IParticleEmitterEventHandler Disposed;
+
+        /// <summary>
+        /// Gets the number of living <see cref="Particle"/>s.
+        /// </summary>
+        [Browsable(false)]
+        public int ActiveParticles
+        {
+            get { return _lastAliveIndex + 1; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="BlendMode"/> to use when rendering the <see cref="Particle"/>s
+        /// emitted by this <see cref="ParticleEmitter"/>.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The blending mode to use when rendering Particles from this emitter.")]
+        [DisplayName("Blend Mode")]
+        [DefaultValue(_defaultBlendMode)]
+        public BlendMode BlendMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum number of live particles this <see cref="ParticleEmitter"/> may create at
+        /// any given time.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> less than or equal to zero.</exception>
+        [Category(_emitterCategoryName)]
+        [Description("The maximum number of live Particles that this emitter may have out at once.")]
+        [DisplayName("Budget")]
+        [DefaultValue(_defaultBudget)]
+        public int Budget
+        {
+            get { return _budget; }
+            set
+            {
+                if (_budget == value)
+                    return;
+
+                if (_budget < 1)
+                    throw new ArgumentOutOfRangeException("value", "Value must be greater than 0.");
+
+                _budget = value;
+
+                Array.Resize(ref particles, _budget);
+
+                if (_lastAliveIndex >= particles.Length - 1)
+                    _lastAliveIndex = particles.Length - 1;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets how long, in milliseconds, the emitter lives after being created. If less than 0, it lives
+        /// indefinitely.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("How long, in milliseconds, the emitter lives. If less than 0, it lives indefinitely.")]
+        [DisplayName("Life")]
+        [DefaultValue(-1)]
+        public int EmitterLife
+        {
+            get { return _life; }
+            set
+            {
+                if (_life == value)
+                    return;
+
+                _life = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the collection of modifiers to use on the <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        [Category(_emitterCategoryName)]
+        [Description("Collection of modifiers for the actual emitter.")]
+        [DisplayName("Emitter Modifiers")]
+        public EmitterModifierCollection EmitterModifiers
+        {
+            get { return _emitterModifiers; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _emitterModifiers = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="ParticleEmitter"/> has an infinite life span. If true,
+        /// it will never expire automatically. If false, the amount of time remaining can be found
+        /// from <see cref="RemainingLife"/>.
+        /// </summary>
+        [Browsable(false)]
+        public bool HasInfiniteLife
+        {
+            get { return _timeCreated < 0; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="ParticleEmitter"/> has been disposed.
+        /// </summary>
+        [Browsable(false)]
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Gets if the <see cref="ParticleEmitter"/> is expired and all <see cref="Particle"/>s it has spawned
+        /// have expired.
+        /// </summary>
+        /// <returns>True if the <see cref="ParticleEmitter"/> is ready to be disposed; otherwise false.</returns>
+        [Browsable(false)]
+        public bool IsExpired
+        {
+            get
+            {
+                if (RemainingLife != 0)
+                    return false;
+
+                if (ActiveParticles > 0)
+                    return false;
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the <see cref="IParticleEmitter"/> that is unique to the <see cref="IParticleEmitter.Owner"/>.
+        /// If set to a value that is not unique in the owner <see cref="IParticleEffect"/>, then a unique name will be generated.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The name of the particle emitter, unique to the particle effect.")]
+        [DisplayName("Name")]
+        [DefaultValue(DefaultName)]
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                // This property does not actually change the name directly. Instead, it forwards the new name request to
+                // IParticleEffect and then ChangeName() is invoked if successful.
+
+                // Check for a new value
+                if (EmitterNameComparer.Equals(_name, value))
+                    return;
+
+                // Get a name guaranteed to be unique
+                var newName = Owner.GenerateUniqueEmitterName(value);
+
+                // Let the owner know about the new name
+                Owner.TryRenameEmitter(this, newName);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the origin of this <see cref="ParticleEmitter"/>.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The origin of the emitter.")]
+        [DisplayName("Origin")]
+        public Vector2 Origin
+        {
+            get { return _origin; }
+            set { _origin = value; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.
+        /// </summary>
+        public IParticleEffect Owner
+        {
+            get { return _owner; }
+        }
+
+        /// <summary>
+        /// Gets or sets the life of each <see cref="Particle"/> emitted.
+        /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("How long in milliseconds each Particle emitted lives after being emitted.")]
+        [DisplayName("Life")]
+        [DefaultValue(typeof(VariableInt), "2000")]
+        public VariableInt ParticleLife { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of modifiers to use on the <see cref="Particle"/>s from this
+        /// <see cref="ParticleEmitter"/>.
+        /// </summary>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+        [Category(_emitterCategoryName)]
+        [Description("Collection of modifiers for individual particles.")]
+        [DisplayName("Particle Modifiers")]
+        public ParticleModifierCollection ParticleModifiers
+        {
+            get { return _particleModifiers; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _particleModifiers = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the number of <see cref="Particle"/>s that are emitted at each release.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("How many Particles are emitted on each release (see Release Rate).")]
+        [DisplayName("Amount")]
+        [DefaultValue(typeof(VariableUShort), "1")]
+        public VariableUShort ReleaseAmount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial color of the <see cref="Particle"/> when emitted.
+        /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("The color of a Particle when it is released.")]
+        [DisplayName("Color")]
+        [DefaultValue(typeof(VariableColor), "{255, 255, 255, 255}")]
+        public VariableColor ReleaseColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the rate in milliseconds that <see cref="Particle"/>s are emitted.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Description("The rate in milliseconds that Particles are released from this emitter.")]
+        [DisplayName("Rate")]
+        [DefaultValue(typeof(VariableUShort), "100")]
+        public VariableUShort ReleaseRate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial rotation in radians of the <see cref="Particle"/> when emitted.
+        /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("The angle in radians released Particles will be facing.")]
+        [DisplayName("Rotation")]
+        [DefaultValue(typeof(VariableFloat), "0")]
+        public VariableFloat ReleaseRotation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initial scale of the <see cref="Particle"/> when emitted.
+        /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("The magnification multiplier of released Particles, where 1.0 is the normal sprite size.")]
+        [DisplayName("Scale")]
+        [DefaultValue(typeof(VariableFloat), "1")]
+        public VariableFloat ReleaseScale { get; set; }
+
+        /// <summary>
+        /// Gets or sets the speed of <see cref="Particle"/>s when released.
+        /// </summary>
+        [Category(_particleCategoryName)]
+        [Description("The speed released Particles will be moving, where 0.0 is no movement.")]
+        [DisplayName("Speed")]
+        [DefaultValue(typeof(VariableFloat), "50")]
+        public VariableFloat ReleaseSpeed { get; set; }
+
+        /// <summary>
+        /// Gets the amount of time remaining for the <see cref="ParticleEmitter"/> before it is
+        /// automatically terminated. If less than zero, it will never be terminated automatically.
+        /// If zero, this <see cref="IParticleEmitter"/> is no longer emitting particles.
+        /// </summary>
+        [Browsable(false)]
+        public int RemainingLife
+        {
+            get
+            {
+                if (_wasKilled)
+                    return 0;
+
+                if (HasInfiniteLife)
+                    return -1;
+
+                if (_life < 0)
+                    return -1;
+
+                var ret = Math.Max(0, _life - ((int)TickCount.Now - (int)_timeCreated));
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ISprite"/> to draw the <see cref="Particle"/>s.
+        /// </summary>
+        [Category(_emitterCategoryName)]
+        [Browsable(true)]
+        [DisplayName("GrhData")]
+        [Description("The GrhData that is drawn for the emitted particles.")]
+        public Grh Sprite
+        {
+            get { return _sprite; }
+        }
+
+        /// <summary>
+        /// Immediately terminates the <see cref="IParticleEmitter"/> and all <see cref="Particle"/>s in it.
         /// </summary>
         public void Dispose()
         {
@@ -773,11 +819,10 @@ namespace NetGore.Graphics.ParticleEngine
                 if (particle != null && !particle.IsDisposed)
                     particle.Dispose();
             }
+
+            if (Disposed != null)
+                Disposed(this);
         }
-
-        #endregion
-
-        #region IPersistable Members
 
         /// <summary>
         /// Reads the state of the object from an <see cref="IValueReader"/>. Values should be read in the exact
@@ -808,6 +853,29 @@ namespace NetGore.Graphics.ParticleEngine
             // Read the modifier collection
             ParticleModifiers.Read(_particleModifiersNodeName, reader);
             EmitterModifiers.Read(_emitterModifiersNodeName, reader);
+        }
+
+        /// <summary>
+        /// Forces the <see cref="IParticleEmitter"/> to be reset from the start. This only resets state variables such as
+        /// the time the effect was created and how long it has to live, not properties such as position and emitting style.
+        /// Has no effect when disposed.
+        /// </summary>
+        public void Reset()
+        {
+            if (IsDisposed)
+            {
+                const string errmsg = "Tried to reset a disposed ParticleEffect `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
+            HandleReset();
+
+            _timeCreated = TickCount.Now;
+            _lastUpdateTime = TickCount.MinValue;
+            _nextReleaseTime = TickCount.MinValue;
         }
 
         /// <summary>

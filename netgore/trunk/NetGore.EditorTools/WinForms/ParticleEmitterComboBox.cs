@@ -58,6 +58,8 @@ namespace NetGore.EditorTools
         /// <param name="item">The new selected value.</param>
         protected override void OnTypedSelectedItemChanged(Type item)
         {
+            // TODO: !!
+            /*
             base.OnTypedSelectedItemChanged(item);
 
             if (DesignMode)
@@ -70,6 +72,7 @@ namespace NetGore.EditorTools
 
             if (emitter != null)
                 SelectedEmitterChanged(this, emitter);
+            */
         }
     }
 }

@@ -6,14 +6,12 @@ using NetGore.Graphics.ParticleEngine;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// A <see cref="ITemporaryMapEffect"/> for a <see cref="ParticleEmitter"/>. Simply displays a <see cref="ParticleEmitter"/> at
+    /// A <see cref="ITemporaryMapEffect"/> for a <see cref="IParticleEffect"/>. Simply displays a <see cref="IParticleEffect"/> at
     /// for a brief amount of time. Derived classes can override some methods to provide more advanced operations.
     /// </summary>
     public class TemporaryMapParticleEffect : ITemporaryMapEffect
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        readonly ParticleEmitter _emitter;
+        readonly IParticleEffect _particleEffect;
         readonly bool _isForeground;
 
         bool _isAlive = true;
@@ -21,27 +19,27 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="TemporaryMapParticleEffect"/> class.
         /// </summary>
-        /// <param name="emitter">The <see cref="ParticleEmitter"/>.</param>
+        /// <param name="particleEffect">The <see cref="IParticleEffect"/>.</param>
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
-        public TemporaryMapParticleEffect(ParticleEmitter emitter, bool isForeground)
+        public TemporaryMapParticleEffect(IParticleEffect particleEffect, bool isForeground)
         {
             _isForeground = isForeground;
-            _emitter = emitter;
+            _particleEffect = particleEffect;
         }
 
         /// <summary>
-        /// Gets or sets if the effect will be killed automatically if the <see cref="Emitter"/> runs out of live particles.
+        /// Gets or sets if the effect will be killed automatically if the <see cref="ParticleEffect"/> runs out of live particles.
         /// Default value is false.
         /// </summary>
         protected bool AutoKillWhenNoParticles { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="ParticleEmitter"/> used by this <see cref="TemporaryMapParticleEffect"/>.
+        /// Gets the <see cref="IParticleEffect"/> used by this <see cref="TemporaryMapParticleEffect"/>.
         /// </summary>
-        protected ParticleEmitter Emitter
+        protected IParticleEffect ParticleEffect
         {
-            get { return _emitter; }
+            get { return _particleEffect; }
         }
 
         /// <summary>
@@ -89,20 +87,20 @@ namespace NetGore.Graphics
             if (!IsAlive)
                 return;
 
-            _emitter.Draw(sb);
+            _particleEffect.Draw(sb);
         }
 
         /// <summary>
         /// Forcibly kills the effect.
         /// </summary>
-        /// <param name="immediate">If true, the emitter will stop emitting and existing particles will be given time
+        /// <param name="immediate">If true, the particle effect will stop emitting and existing particles will be given time
         /// to expire.</param>
         public void Kill(bool immediate)
         {
             if (!IsAlive)
                 return;
 
-            _emitter.Kill();
+            _particleEffect.Kill();
 
             if (!immediate)
                 return;
@@ -123,14 +121,14 @@ namespace NetGore.Graphics
                 return;
 
             // Check if the effect died off
-            if (_emitter.IsExpired)
+            if (_particleEffect.IsExpired)
             {
                 Kill(true);
                 return;
             }
 
-            // Update the emitter
-            _emitter.Update(currentTime);
+            // Update the ParticleEffect
+            _particleEffect.Update(currentTime);
 
             // Allow for the derived class to update its own logic
             UpdateEffect(currentTime);

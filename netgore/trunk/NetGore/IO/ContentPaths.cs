@@ -93,7 +93,7 @@ namespace NetGore.IO
         /// <summary>
         /// The relative path to the Particle Effects directory from the Contents directory.
         /// </summary>
-        public static readonly string ParticleEffectsFolder = DataFolder + Path.DirectorySeparatorChar + "ParticleEffects";
+        public static readonly PathString ParticleEffectsFolder = DataFolder + Path.DirectorySeparatorChar + "ParticleEffects";
 
         static readonly PathString _appRoot;
         static readonly ContentPaths _buildPaths;

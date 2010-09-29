@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using NetGore.IO;
 using SFML.Graphics;
@@ -18,6 +19,15 @@ namespace NetGore.Graphics.ParticleEngine
 
         float _coneAngle = _defaultConeAngle;
         float _direction = _defaultDirection;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConeEmitter"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        public ConeEmitter(IParticleEffect owner) : base(owner)
+        {
+        }
 
         /// <summary>
         /// Gets or sets the angle (in radians) from edge to edge of the emitter beam.
@@ -49,9 +59,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
         /// </summary>
         /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
-        public override ParticleEmitter DeepCopy()
+        public override ParticleEmitter DeepCopy(IParticleEffect newOwner)
         {
-            var ret = new ConeEmitter();
+            var ret = new ConeEmitter(newOwner);
             CopyValuesTo(ret);
             ret.ConeAngle = ConeAngle;
             ret.Direction = Direction;

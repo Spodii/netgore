@@ -34,6 +34,15 @@ namespace NetGore.Graphics.ParticleEngine
         Matrix _rotationMatrix = Matrix.CreateRotationZ(_defaultAngle);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LineEmitter"/> class.
+        /// </summary>
+        /// <param name="owner">The <see cref="IParticleEffect"/> that owns this <see cref="IParticleEmitter"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="owner"/> is null.</exception>
+        public LineEmitter(IParticleEffect owner) : base(owner)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the rotation in radians of the line around its center point.
         /// </summary>
         [Category(_emitterCategoryName)]
@@ -96,9 +105,9 @@ namespace NetGore.Graphics.ParticleEngine
         /// Creates a deep copy of this <see cref="ParticleEmitter"/> instance.
         /// </summary>
         /// <returns>A deep copy of this <see cref="ParticleEmitter"/>.</returns>
-        public override ParticleEmitter DeepCopy()
+        public override ParticleEmitter DeepCopy(IParticleEffect newOwner)
         {
-            var ret = new LineEmitter();
+            var ret = new LineEmitter(newOwner);
             CopyValuesTo(ret);
             ret.Angle = Angle;
             ret.EmitBothWays = EmitBothWays;

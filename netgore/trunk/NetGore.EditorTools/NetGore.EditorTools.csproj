@@ -185,7 +185,7 @@
     <Compile Include="UI Editors\NPCChatDialogUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI Editors\ParticleEmitterUITypeEditorForm.cs">
+    <Compile Include="UI Editors\ParticleEffectUITypeEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI Editors\SoundEditor.cs" />
