@@ -19,35 +19,14 @@ namespace DemoGame.Editor
     /// </summary>
     public class MapScreenControl : GraphicsDeviceControl, IMapBoundControl, IGetTime
     {
+        readonly ICamera2D _camera;
         readonly ScreenGrid _grid;
+        Vector2 _cameraVelocity = Vector2.Zero;
 
-        DrawingManager _drawingManager;
         Vector2 _cursorPos;
+        DrawingManager _drawingManager;
+        TickCount _lastUpdateTime = TickCount.MinValue;
         Map _map;
-        MouseButtons _mouseButton;
-
-        /// <summary>
-        /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
-        /// </summary>
-        /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
-        protected override void OnRenderWindowCreated(RenderWindow newRenderWindow)
-        {
-            base.OnRenderWindowCreated(newRenderWindow);
-
-            // Update the DrawingManager
-            if (_drawingManager == null || _drawingManager.IsDisposed)
-                _drawingManager = new DrawingManager(newRenderWindow);
-            else
-                _drawingManager.RenderWindow = newRenderWindow;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IDrawingManager"/> used to display the map.
-        /// </summary>
-        public IDrawingManager DrawingManager
-        {
-            get { return _drawingManager; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MapScreenControl"/> class.
@@ -60,17 +39,6 @@ namespace DemoGame.Editor
             _grid = new ScreenGrid();
             _camera = new Camera2D(new Vector2(ClientSize.Width, ClientSize.Height));
         }
-
-        public void ChangeMap(MapID mapID)
-        {
-            if (Map != null && Map.ID == mapID)
-                return;
-
-            Map = new Map(mapID, Camera, this);
-            Map.Load(ContentPaths.Dev, false, MapEditorDynamicEntityFactory.Instance);
-        }
-
-        readonly ICamera2D _camera;
 
         /// <summary>
         /// Gets the camera used to view the map.
@@ -92,6 +60,14 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Gets the <see cref="IDrawingManager"/> used to display the map.
+        /// </summary>
+        public IDrawingManager DrawingManager
+        {
+            get { return _drawingManager; }
+        }
+
+        /// <summary>
         /// Gets the <see cref="ScreenGrid"/> to display for the <see cref="Map"/>.
         /// </summary>
         [Browsable(false)]
@@ -110,77 +86,25 @@ namespace DemoGame.Editor
             set { _map = value; }
         }
 
-        /// <summary>
-        /// Gets the <see cref="MouseButtons"/> current pressed.
-        /// </summary>
-        [Browsable(false)]
-        public MouseButtons MouseButton
+        public void ChangeMap(MapID mapID)
         {
-            get { return _mouseButton; }
+            if (Map != null && Map.ID == mapID)
+                return;
+
+            Map = new Map(mapID, Camera, this);
+            Map.Load(ContentPaths.Dev, false, MapEditorDynamicEntityFactory.Instance);
         }
 
-        TickCount _lastUpdateTime = TickCount.MinValue;
-
-        /// <summary>
-        /// When overridden in the derived class, draws the graphics to the control.
-        /// </summary>
-        /// <param name="currentTime">The current time.</param>
-        protected override void HandleDraw(TickCount currentTime)
+        protected virtual void DrawMapGUI(ISpriteBatch sb)
         {
-            int deltaTime;
-            if (_lastUpdateTime == TickCount.MinValue)
-            {
-                deltaTime = 30;
-            }
-            else
-            {
-                deltaTime = Math.Max(5, (int)(currentTime - _lastUpdateTime));
-            }
+            // Cursor coordinates
+            var font = GlobalState.Instance.DefaultRenderFont;
 
-            _lastUpdateTime = currentTime;
+            var cursorPosText = CursorPos.ToString();
+            var cursorPosTextPos = new Vector2(ClientSize.Width, ClientSize.Height) - font.MeasureString(cursorPosText) -
+                                   new Vector2(4);
 
-            DrawingManager.Update(currentTime);
-
-            _camera.Min += _cameraVelocity * (deltaTime / 1000f);
-
-            // Update
-            UpdateMap(currentTime, deltaTime);
-
-            // Draw the world
-            var worldSB = DrawingManager.BeginDrawWorld(Camera);
-            if (worldSB != null)
-            {
-                DrawMapWorld(worldSB);
-                DrawingManager.EndDrawWorld();
-            }
-
-            // Draw the GUI
-            var guiSB = DrawingManager.BeginDrawGUI();
-            if (guiSB != null)
-            {
-                DrawMapGUI(guiSB);
-                DrawingManager.EndDrawGUI();
-            }
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-
-            var clientSize = new Vector2(ClientSize.Width, ClientSize.Height);
-            Camera.Size = clientSize * Camera.Scale;
-        }
-
-        protected virtual void UpdateMap(TickCount currentTime, int deltaTime)
-        {
-            Cursor = Cursors.Default;
-
-            if (Map != null)
-                Map.Update(deltaTime);
+            sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
         }
 
         protected virtual void DrawMapWorld(ISpriteBatch sb)
@@ -226,7 +150,7 @@ namespace DemoGame.Editor
 
             // Grid
             // TODO: !! if (chkDrawGrid.Checked)
-                Grid.Draw(sb, Camera);
+            Grid.Draw(sb, Camera);
 
             // Light sources
             // TODO: !! if (chkLightSources.Checked)
@@ -254,16 +178,42 @@ namespace DemoGame.Editor
             */
         }
 
-        protected virtual void DrawMapGUI(ISpriteBatch sb)
+        /// <summary>
+        /// When overridden in the derived class, draws the graphics to the control.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        protected override void HandleDraw(TickCount currentTime)
         {
-            // Cursor coordinates
-            var font = GlobalState.Instance.DefaultRenderFont;
+            int deltaTime;
+            if (_lastUpdateTime == TickCount.MinValue)
+                deltaTime = 30;
+            else
+                deltaTime = Math.Max(5, (int)(currentTime - _lastUpdateTime));
 
-            var cursorPosText = CursorPos.ToString();
-            var cursorPosTextPos = new Vector2(ClientSize.Width, ClientSize.Height) -
-                                   font.MeasureString(cursorPosText) - new Vector2(4);
+            _lastUpdateTime = currentTime;
 
-            sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
+            DrawingManager.Update(currentTime);
+
+            _camera.Min += _cameraVelocity * (deltaTime / 1000f);
+
+            // Update
+            UpdateMap(currentTime, deltaTime);
+
+            // Draw the world
+            var worldSB = DrawingManager.BeginDrawWorld(Camera);
+            if (worldSB != null)
+            {
+                DrawMapWorld(worldSB);
+                DrawingManager.EndDrawWorld();
+            }
+
+            // Draw the GUI
+            var guiSB = DrawingManager.BeginDrawGUI();
+            if (guiSB != null)
+            {
+                DrawMapGUI(guiSB);
+                DrawingManager.EndDrawGUI();
+            }
         }
 
         /// <summary>
@@ -282,53 +232,6 @@ namespace DemoGame.Editor
             // Add an event hook to the tick timer so we can update ourself
             GlobalState.Instance.Tick -= InvokeDrawing;
             GlobalState.Instance.Tick += InvokeDrawing;
-        }
-
-        /// <summary>
-        /// Handles MouseDown events.
-        /// </summary>
-        /// <param name="e">Event args.</param>
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            _mouseButton = e.Button;
-
-            if (((IMapBoundControl)this).IMap != null)
-                Focus();
-        }
-
-        Vector2 _cameraVelocity = Vector2.Zero;
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnLostFocus(EventArgs e)
-        {
-            base.OnLostFocus(e);
-
-            _cameraVelocity = Vector2.Zero;
-        }
-
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            base.OnKeyUp(e);
-
-            // Update the camera velocity
-            var s = Settings.Default;
-            if (e.KeyCode == s.Screen_ScrollLeft || e.KeyCode == s.Screen_ScrollRight)
-            {
-                _cameraVelocity.X = 0;
-            }
-            else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollUp)
-            {
-                _cameraVelocity.Y = 0;
-            }
         }
 
         /// <summary>
@@ -360,21 +263,52 @@ namespace DemoGame.Editor
             // Update the camera velocity
             var s = Settings.Default;
             if (e.KeyCode == s.Screen_ScrollLeft)
-            {
                 _cameraVelocity.X = -s.Screen_ScrollPixelsPerSec;
-            }
             else if (e.KeyCode == s.Screen_ScrollRight)
-            {
                 _cameraVelocity.X = s.Screen_ScrollPixelsPerSec;
-            }
             else if (e.KeyCode == s.Screen_ScrollUp)
-            {
                 _cameraVelocity.Y = -s.Screen_ScrollPixelsPerSec;
-            }
             else if (e.KeyCode == s.Screen_ScrollDown)
-            {
                 _cameraVelocity.Y = s.Screen_ScrollPixelsPerSec;
-            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+            // Update the camera velocity
+            var s = Settings.Default;
+            if (e.KeyCode == s.Screen_ScrollLeft || e.KeyCode == s.Screen_ScrollRight)
+                _cameraVelocity.X = 0;
+            else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollUp)
+                _cameraVelocity.Y = 0;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+
+            _cameraVelocity = Vector2.Zero;
+        }
+
+        /// <summary>
+        /// Handles MouseDown events.
+        /// </summary>
+        /// <param name="e">Event args.</param>
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (((IMapBoundControl)this).IMap != null)
+                Focus();
         }
 
         /// <summary>
@@ -385,21 +319,43 @@ namespace DemoGame.Editor
         {
             base.OnMouseMove(e);
 
-            _mouseButton = e.Button;
-
             if (Camera != null)
                 _cursorPos = Camera.ToWorld(e.X, e.Y);
         }
 
         /// <summary>
-        /// Raises the <see cref="E:System.Windows.Forms.Control.MouseUp"/> event.
+        /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
         /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event data.</param>
-        protected override void OnMouseUp(MouseEventArgs e)
+        /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
+        protected override void OnRenderWindowCreated(RenderWindow newRenderWindow)
         {
-            base.OnMouseUp(e);
+            base.OnRenderWindowCreated(newRenderWindow);
 
-            _mouseButton = e.Button;
+            // Update the DrawingManager
+            if (_drawingManager == null || _drawingManager.IsDisposed)
+                _drawingManager = new DrawingManager(newRenderWindow);
+            else
+                _drawingManager.RenderWindow = newRenderWindow;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            var clientSize = new Vector2(ClientSize.Width, ClientSize.Height);
+            Camera.Size = clientSize * Camera.Scale;
+        }
+
+        protected virtual void UpdateMap(TickCount currentTime, int deltaTime)
+        {
+            Cursor = Cursors.Default;
+
+            if (Map != null)
+                Map.Update(deltaTime);
         }
 
         #region IGetTime Members
