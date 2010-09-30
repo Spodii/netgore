@@ -54,7 +54,7 @@ namespace DemoGame.Editor
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolBar = new ToolBar();
+            this.tbGlobal = new DemoGame.Editor.ToolBar();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
             this.msMenu.SuspendLayout();
@@ -114,10 +114,11 @@ namespace DemoGame.Editor
             this.miniMapToolStripMenuItem.Name = "miniMapToolStripMenuItem";
             resources.ApplyResources(this.miniMapToolStripMenuItem, "miniMapToolStripMenuItem");
             // 
-            // toolBar
+            // tbGlobal
             // 
-            resources.ApplyResources(this.toolBar, "toolBar");
-            this.toolBar.Name = "toolBar";
+            this.tbGlobal.AllowItemReorder = true;
+            resources.ApplyResources(this.tbGlobal, "tbGlobal");
+            this.tbGlobal.Name = "tbGlobal";
             // 
             // ssStatus
             // 
@@ -182,7 +183,7 @@ namespace DemoGame.Editor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.ssStatus);
-            this.Controls.Add(this.toolBar);
+            this.Controls.Add(this.tbGlobal);
             this.Controls.Add(this.msMenu);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.msMenu;
@@ -197,7 +198,7 @@ namespace DemoGame.Editor
         #endregion
 
         private System.Windows.Forms.MenuStrip msMenu;
-        private ToolBar toolBar;
+        private ToolBar tbGlobal;
         private System.Windows.Forms.StatusStrip ssStatus;
         private DockPanel dockPanel;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;

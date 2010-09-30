@@ -21,8 +21,8 @@ namespace DemoGame.Editor
         {
             base.OnLoad(e);
 
-            toolBar.AddTool(ToolManager.Instance.TryGetTool<TestToolA>());
-            toolBar.AddTool(ToolManager.Instance.TryGetTool<TestToolB>());
+            ToolManager.Instance.TryGetTool<TestToolA>().ToolBarControl.ToolBar = tbGlobal;
+            ToolManager.Instance.TryGetTool<TestToolB>().ToolBarControl.ToolBar = tbGlobal;
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)

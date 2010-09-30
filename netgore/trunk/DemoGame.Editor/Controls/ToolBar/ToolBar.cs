@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -11,7 +9,7 @@ using NetGore;
 namespace DemoGame.Editor
 {
     /// <summary>
-    /// A <see cref="ToolStrip"/> for displaying the <see cref="ToolBase"/>s in the <see cref="ToolManager"/>.
+    /// A <see cref="ToolStrip"/> for displaying the <see cref="Tool"/>s in the <see cref="ToolManager"/>.
     /// </summary>
     public class ToolBar : ToolStrip
     {
@@ -26,9 +24,9 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Creates the <see cref="IToolBarControl"/> for a <see cref="ToolBase"/>.
+        /// Creates the <see cref="IToolBarControl"/> for a <see cref="Tool"/>.
         /// </summary>
-        /// <param name="tool">The <see cref="ToolBase"/> to create the control for.</param>
+        /// <param name="tool">The <see cref="Tool"/> to create the control for.</param>
         /// <param name="controlType">The type of control.</param>
         /// <returns>The <see cref="IToolBarControl"/> for the <paramref name="tool"/> using the given
         /// <paramref name="controlType"/>, or null if the <paramref name="controlType"/> is
@@ -36,7 +34,7 @@ namespace DemoGame.Editor
         /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="controlType"/> does not contain a defined value of the
         /// <see cref="ToolBarControlType"/> enum.</exception>
-        public static IToolBarControl CreateToolControl(ToolBase tool, ToolBarControlType controlType)
+        public static IToolBarControl CreateToolControl(Tool tool, ToolBarControlType controlType)
         {
             if (tool == null)
                 throw new ArgumentNullException("tool");
@@ -70,24 +68,11 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Adds a tool to the <see cref="ToolBar"/>.
-        /// </summary>
-        /// <param name="tool">The <see cref="ToolBase"/> to add.</param>
-        public void AddTool(ToolBase tool)
-        {
-            var c = TryGetToolStripItem(tool);
-            if (c == null)
-                return;
-
-            Items.Add(c);
-        }
-
-        /// <summary>
-        /// Tries to get the <see cref="ToolStripItem"/> for a <see cref="ToolBase"/>.
+        /// Tries to get the <see cref="ToolStripItem"/> for a <see cref="Tool"/>.
         /// </summary>
         /// <param name="tool">The tool to get the <see cref="ToolStripItem"/> for.</param>
         /// <returns>The <see cref="ToolStripItem"/> for the <paramref name="tool"/>, or null if unable to get it.</returns>
-        protected static ToolStripItem TryGetToolStripItem(ToolBase tool)
+        protected static ToolStripItem TryGetToolStripItem(Tool tool)
         {
             if (tool == null)
             {
@@ -119,19 +104,37 @@ namespace DemoGame.Editor
             return tool.ToolBarControl as ToolStripItem;
         }
 
+        static class Helper
+        {
+            internal static void SetToolBarProperty(ToolStripItem toolBarItem, ToolBar value)
+            {
+                // If the value did not change, then... don't change it
+                if (toolBarItem.Owner == value)
+                    return;
+
+                // Remove from the old owner
+                if (toolBarItem.Owner != null)
+                    toolBarItem.Owner.Items.Remove(toolBarItem);
+
+                // Add to the new ToolBar
+                if (value != null)
+                    value.Items.Add(toolBarItem);
+            }
+        }
+
         /// <summary>
         /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Button"/>.
         /// </summary>
         internal sealed class ToolBarItemButton : ToolStripButton, IToolBarControl, IToolBarButtonSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemButton"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="ToolBase"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemButton(ToolBase tool)
+            public ToolBarItemButton(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -148,6 +151,26 @@ namespace DemoGame.Editor
             {
                 Text = Tool.Name;
                 Name = Tool.Name;
+            }
+
+            /// <summary>
+            /// Raises the <see cref="E:System.Windows.Forms.ToolStripItem.OwnerChanged"/> event.
+            /// </summary>
+            /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+            protected override void OnOwnerChanged(EventArgs e)
+            {
+                base.OnOwnerChanged(e);
+
+                // If we changed to something that is not a ToolBar, get it out of there!
+                if (!(Owner is ToolBar))
+                {
+                    const string errmsg = "Attempted to add ToolBar item `{0}` to regular ToolStrip `{1}`!";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, Owner);
+                    Debug.Fail(string.Format(errmsg, this, Owner));
+
+                    Owner.Items.Remove(this);
+                }
             }
 
             #region IToolBarControl Members
@@ -174,11 +197,24 @@ namespace DemoGame.Editor
             }
 
             /// <summary>
-            /// Gets the <see cref="ToolBase"/> for this item.
+            /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
+            }
+
+            /// <summary>
+            /// Gets or sets the <see cref="ToolBar"/> that this control is on.
+            /// </summary>
+            public ToolBar ToolBar
+            {
+                get
+                {
+                    Debug.Assert(Owner == null || Owner is ToolBar);
+                    return Owner as ToolBar;
+                }
+                set { Helper.SetToolBarProperty(this, value); }
             }
 
             #endregion
@@ -189,14 +225,14 @@ namespace DemoGame.Editor
         /// </summary>
         internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl, IToolBarLabelSettings
         {
-            readonly ToolBase _tool;
+            readonly Tool _tool;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemLabel"/> class.
             /// </summary>
-            /// <param name="tool">The <see cref="ToolBase"/> the control is for.</param>
+            /// <param name="tool">The <see cref="Editor.Tool"/> the control is for.</param>
             /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemLabel(ToolBase tool)
+            public ToolBarItemLabel(Tool tool)
             {
                 if (tool == null)
                     throw new ArgumentNullException("tool");
@@ -239,11 +275,24 @@ namespace DemoGame.Editor
             }
 
             /// <summary>
-            /// Gets the <see cref="ToolBase"/> for this item.
+            /// Gets the <see cref="Editor.Tool"/> for this item.
             /// </summary>
-            public ToolBase Tool
+            public Tool Tool
             {
                 get { return _tool; }
+            }
+
+            /// <summary>
+            /// Gets or sets the <see cref="ToolBar"/> that this control is on.
+            /// </summary>
+            public ToolBar ToolBar
+            {
+                get
+                {
+                    Debug.Assert(Owner == null || Owner is ToolBar);
+                    return Owner as ToolBar;
+                }
+                set { Helper.SetToolBarProperty(this, value); }
             }
 
             #endregion
