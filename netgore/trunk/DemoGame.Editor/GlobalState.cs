@@ -1,10 +1,13 @@
 ﻿using System.Linq;
+using DemoGame.Client;
 using DemoGame.Server.Queries;
+using NetGore.Audio;
 using NetGore.Content;
 using NetGore.Db;
 using NetGore.Db.MySql;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using NetGore.IO;
 using SFML.Graphics;
 
 namespace DemoGame.Editor
@@ -32,6 +35,14 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Ensures the <see cref="GlobalState"/> is initailized.
+        /// </summary>
+        public static void Initailize()
+        {
+            // Calling this will invoke the static constructor, creating the instance, and ultimately setting everything up
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GlobalState"/> class.
         /// </summary>
         GlobalState()
@@ -45,6 +56,18 @@ namespace DemoGame.Editor
                                                                        x => dbConnSettings.PromptEditFileMessageBox(x));
 
             _defaultRenderFont = ContentManager.LoadFont("Font/Arial", 16, ContentLevel.Global);
+
+            Character.NameFont = DefaultRenderFont;
+
+            GrhInfo.Load(ContentPaths.Dev, ContentManager);
+            AutomaticGrhDataSizeUpdater.Instance.UpdateSizes();
+
+            // Grab the audio manager instances, which will ensure that they are property initialized
+            // before something that can't pass it an ContentManager tries to get an instance
+            AudioManager.GetInstance(ContentManager);
+
+            // Set the custom UITypeEditors
+            EditorTools.CustomUITypeEditors.AddEditors(DbController);
         }
 
         /// <summary>

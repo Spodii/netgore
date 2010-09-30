@@ -27,8 +27,9 @@ namespace DemoGame.Editor
             {
             }
 
-            // Initialize the engine settings
+            // Initialize stuff
             EngineSettingsInitializer.Initialize();
+            GlobalState.Initailize();
 
             // Get the command-line switches
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();

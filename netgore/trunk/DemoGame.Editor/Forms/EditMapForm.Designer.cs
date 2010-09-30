@@ -50,17 +50,14 @@
             // 
             // mapScreen
             // 
-            this.mapScreen.Camera = null;
             this.mapScreen.CursorPos = new SFML.Graphics.Vector2(0F, 0F);
             this.mapScreen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mapScreen.DrawHandler = null;
             this.mapScreen.Location = new System.Drawing.Point(0, 0);
             this.mapScreen.Map = null;
             this.mapScreen.Name = "mapScreen";
             this.mapScreen.Size = new System.Drawing.Size(784, 562);
             this.mapScreen.TabIndex = 1;
             this.mapScreen.Text = "Map Screen";
-            this.mapScreen.UpdateHandler = null;
             // 
             // EditMapForm
             // 

@@ -6,13 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using NetGore.Graphics;
 
 namespace DemoGame.Editor
 {
     public partial class MainForm : Form
     {
-        readonly EditMapForm _editMapForm = new EditMapForm();
-
         public MainForm()
         {
             InitializeComponent();
@@ -23,14 +22,12 @@ namespace DemoGame.Editor
             Close();
         }
 
-        private void mapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _editMapForm.Show(dockPanel);
-        }
-
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // TODO: !!
+            var frm = new EditMapForm();
+            frm.MapScreenControl.ChangeMap(new NetGore.World.MapID(1));
+
+            frm.Show(dockPanel);
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
