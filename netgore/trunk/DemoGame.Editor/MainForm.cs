@@ -18,11 +18,9 @@ namespace DemoGame.Editor
 
             ToolBar.GlobalToolBar = tbGlobal;
             ToolBar.NonGlobalToolBar = tbNonGlobal;
-        }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
+            // HACK: Force the ToolManager to initialize. Won't be needed when we load the settings here instead.
+            var x = ToolManager.Instance;
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
