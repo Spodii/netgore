@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
+using DemoGame.Editor.Properties;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
@@ -139,6 +140,8 @@ namespace DemoGame.Editor
             _lastUpdateTime = currentTime;
 
             DrawingManager.Update(currentTime);
+
+            _camera.Min += _cameraVelocity * (deltaTime / 1000f);
 
             // Update
             UpdateMap(currentTime, deltaTime);
@@ -293,6 +296,83 @@ namespace DemoGame.Editor
 
             if (((IMapBoundControl)this).IMap != null)
                 Focus();
+        }
+
+        Vector2 _cameraVelocity = Vector2.Zero;
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.LostFocus"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+
+            _cameraVelocity = Vector2.Zero;
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyUp"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+            // Update the camera velocity
+            var s = Settings.Default;
+            if (e.KeyCode == s.Screen_ScrollLeft || e.KeyCode == s.Screen_ScrollRight)
+            {
+                _cameraVelocity.X = 0;
+            }
+            else if (e.KeyCode == s.Screen_ScrollDown || e.KeyCode == s.Screen_ScrollUp)
+            {
+                _cameraVelocity.Y = 0;
+            }
+        }
+
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            base.OnKeyPress(e);
+        }
+
+        protected override bool IsInputKey(Keys keyData)
+        {
+            var s = Settings.Default;
+
+            if (keyData == s.Screen_ScrollLeft || keyData == s.Screen_ScrollRight || keyData == s.Screen_ScrollUp ||
+                keyData == s.Screen_ScrollDown)
+                return true;
+
+            return base.IsInputKey(keyData);
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.KeyDown"/> event.
+        /// </summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event data.</param>
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            // Update the camera velocity
+            var s = Settings.Default;
+            if (e.KeyCode == s.Screen_ScrollLeft)
+            {
+                _cameraVelocity.X = -s.Screen_ScrollPixelsPerSec;
+            }
+            else if (e.KeyCode == s.Screen_ScrollRight)
+            {
+                _cameraVelocity.X = s.Screen_ScrollPixelsPerSec;
+            }
+            else if (e.KeyCode == s.Screen_ScrollUp)
+            {
+                _cameraVelocity.Y = -s.Screen_ScrollPixelsPerSec;
+            }
+            else if (e.KeyCode == s.Screen_ScrollDown)
+            {
+                _cameraVelocity.Y = s.Screen_ScrollPixelsPerSec;
+            }
         }
 
         /// <summary>

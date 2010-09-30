@@ -30,6 +30,7 @@ namespace DemoGame.Editor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             NetGore.EditorTools.Docking.DockPanelSkin dockPanelSkin1 = new NetGore.EditorTools.Docking.DockPanelSkin();
             NetGore.EditorTools.Docking.AutoHideStripSkin autoHideStripSkin1 = new NetGore.EditorTools.Docking.AutoHideStripSkin();
             NetGore.EditorTools.Docking.DockPanelGradient dockPanelGradient1 = new NetGore.EditorTools.Docking.DockPanelGradient();
@@ -64,11 +65,8 @@ namespace DemoGame.Editor
             this.msMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem});
-            this.msMenu.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.msMenu, "msMenu");
             this.msMenu.Name = "msMenu";
-            this.msMenu.Size = new System.Drawing.Size(687, 24);
-            this.msMenu.TabIndex = 0;
-            this.msMenu.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -76,8 +74,7 @@ namespace DemoGame.Editor
             this.mapToolStripMenuItem1,
             this.closeToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
             // 
             // mapToolStripMenuItem1
             // 
@@ -85,28 +82,24 @@ namespace DemoGame.Editor
             this.loadToolStripMenuItem,
             this.newToolStripMenuItem});
             this.mapToolStripMenuItem1.Name = "mapToolStripMenuItem1";
-            this.mapToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.mapToolStripMenuItem1.Text = "Map";
+            resources.ApplyResources(this.mapToolStripMenuItem1, "mapToolStripMenuItem1");
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.loadToolStripMenuItem.Text = "Load";
+            resources.ApplyResources(this.loadToolStripMenuItem, "loadToolStripMenuItem");
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newToolStripMenuItem.Text = "New";
+            resources.ApplyResources(this.newToolStripMenuItem, "newToolStripMenuItem");
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeToolStripMenuItem.Text = "Close";
+            resources.ApplyResources(this.closeToolStripMenuItem, "closeToolStripMenuItem");
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
@@ -114,40 +107,30 @@ namespace DemoGame.Editor
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miniMapToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.viewToolStripMenuItem.Text = "Screens";
+            resources.ApplyResources(this.viewToolStripMenuItem, "viewToolStripMenuItem");
             // 
             // miniMapToolStripMenuItem
             // 
             this.miniMapToolStripMenuItem.Name = "miniMapToolStripMenuItem";
-            this.miniMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.miniMapToolStripMenuItem.Text = "Mini-Map";
+            resources.ApplyResources(this.miniMapToolStripMenuItem, "miniMapToolStripMenuItem");
             // 
             // tsTools
             // 
-            this.tsTools.Location = new System.Drawing.Point(0, 24);
+            resources.ApplyResources(this.tsTools, "tsTools");
             this.tsTools.Name = "tsTools";
-            this.tsTools.Size = new System.Drawing.Size(687, 25);
-            this.tsTools.TabIndex = 1;
-            this.tsTools.Text = "toolStrip1";
             // 
             // ssStatus
             // 
-            this.ssStatus.Location = new System.Drawing.Point(0, 499);
+            resources.ApplyResources(this.ssStatus, "ssStatus");
             this.ssStatus.Name = "ssStatus";
-            this.ssStatus.Size = new System.Drawing.Size(687, 22);
-            this.ssStatus.TabIndex = 2;
-            this.ssStatus.Text = "statusStrip1";
             // 
             // dockPanel
             // 
             this.dockPanel.ActiveAutoHideContent = null;
             this.dockPanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            resources.ApplyResources(this.dockPanel, "dockPanel");
             this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.dockPanel.Location = new System.Drawing.Point(0, 49);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(687, 450);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -192,22 +175,18 @@ namespace DemoGame.Editor
             dockPaneStripSkin1.ToolWindowGradient = dockPaneStripToolWindowGradient1;
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this.dockPanel.Skin = dockPanelSkin1;
-            this.dockPanel.TabIndex = 5;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(687, 521);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.ssStatus);
             this.Controls.Add(this.tsTools);
             this.Controls.Add(this.msMenu);
             this.IsMdiContainer = true;
-            this.KeyPreview = true;
             this.MainMenuStrip = this.msMenu;
             this.Name = "MainForm";
-            this.Text = "NetGore Editor";
             this.msMenu.ResumeLayout(false);
             this.msMenu.PerformLayout();
             this.ResumeLayout(false);
