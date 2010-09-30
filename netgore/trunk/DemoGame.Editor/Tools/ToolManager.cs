@@ -11,6 +11,12 @@ namespace DemoGame.Editor.Tools
 {
     public class ToolManager
     {
+        /// <summary>
+        /// Delegate for handling events from the <see cref="ToolManager"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="ToolManager"/> the event came from.</param>
+        public delegate void EventHandler(ToolManager sender);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ToolManager _instance;
 
@@ -57,6 +63,30 @@ namespace DemoGame.Editor.Tools
         public IEnumerable<ToolBase> Tools
         {
             get { return _tools.Values; }
+        }
+
+        /// <summary>
+        /// Sets the event listeners for a <see cref="ToolBase"/>.
+        /// </summary>
+        /// <param name="tool">The <see cref="ToolBase"/> to set the events on.</param>
+        /// <param name="add">True if the events should be added; false if they should be removed.</param>
+        void SetToolListeners(ToolBase tool, bool add)
+        {
+            if (add)
+            {
+                // When adding the events, always remove them first just to make sure that we do not add the event listeners
+                // twice. There is no harm in removing an event that is not there, but this is harm if we get invoked twice for
+                // the same event.
+                SetToolListeners(tool, false);
+
+                // Add the events
+                tool.Disposed += tool_Disposed;
+            }
+            else
+            {
+                // Remove the events
+                tool.Disposed -= tool_Disposed;
+            }
         }
 
         /// <summary>
@@ -112,6 +142,9 @@ namespace DemoGame.Editor.Tools
 
                 Debug.Assert(tool.GetType() == loadedType);
 
+                // Add the event hooks
+                SetToolListeners(tool, true);
+
                 // Add to the collection
                 try
                 {
@@ -135,6 +168,36 @@ namespace DemoGame.Editor.Tools
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, loadedType, ex);
                 Debug.Fail(string.Format(errmsg, loadedType, ex));
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="ToolBase.Disposed"/> event of a <see cref="ToolBase"/> in this <see cref="ToolManager"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="ToolBase"/> the event came from.</param>
+        void tool_Disposed(ToolBase sender)
+        {
+            if (sender == null)
+            {
+                Debug.Fail("How the hell was the sender null?");
+                return;
+            }
+
+            try
+            {
+                // Remove the event hooks
+                SetToolListeners(sender, false);
+
+                // Remove the tool
+                var wasRemoved = _tools.Remove(sender.GetType());
+                Debug.Assert(wasRemoved);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to remove tool `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, sender, ex);
+                Debug.Fail(string.Format(errmsg, sender, ex));
             }
         }
     }
