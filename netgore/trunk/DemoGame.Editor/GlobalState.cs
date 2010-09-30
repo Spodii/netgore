@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Server.Queries;
+using NetGore;
 using NetGore.Audio;
 using NetGore.Content;
 using NetGore.Db;
@@ -9,6 +12,7 @@ using NetGore.EditorTools;
 using NetGore.Graphics;
 using NetGore.IO;
 using SFML.Graphics;
+using CustomUITypeEditors = DemoGame.EditorTools.CustomUITypeEditors;
 
 namespace DemoGame.Editor
 {
@@ -19,12 +23,19 @@ namespace DemoGame.Editor
     /// </summary>
     public class GlobalState
     {
+        /// <summary>
+        /// Delegate for handling the <see cref="GlobalState.Tick"/> event.
+        /// </summary>
+        /// <param name="currentTime">The current <see cref="TickCount"/>.</param>
+        public delegate void TickEventHandler(TickCount currentTime);
+
         static readonly GlobalState _instance;
 
         readonly IContentManager _contentManager;
         readonly IDbController _dbController;
         readonly Font _defaultRenderFont;
         readonly MapState _mapState;
+        readonly Timer _timer;
 
         /// <summary>
         /// Initializes the <see cref="GlobalState"/> class.
@@ -35,18 +46,12 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Ensures the <see cref="GlobalState"/> is initailized.
-        /// </summary>
-        public static void Initailize()
-        {
-            // Calling this will invoke the static constructor, creating the instance, and ultimately setting everything up
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GlobalState"/> class.
         /// </summary>
         GlobalState()
         {
+            ThreadAsserts.IsMainThread();
+
             _mapState = new MapState();
             _contentManager = NetGore.Content.ContentManager.Create();
 
@@ -67,8 +72,18 @@ namespace DemoGame.Editor
             AudioManager.GetInstance(ContentManager);
 
             // Set the custom UITypeEditors
-            EditorTools.CustomUITypeEditors.AddEditors(DbController);
+            CustomUITypeEditors.AddEditors(DbController);
+
+            // Set up the timer
+            _timer = new Timer { Interval = 1000 / 60 };
+            _timer.Tick += _timer_Tick;
+            _timer.Start();
         }
+
+        /// <summary>
+        /// An event that is raised once every time updates and draws should take place.
+        /// </summary>
+        public event TickEventHandler Tick;
 
         /// <summary>
         /// Gets the <see cref="IContentManager"/> used by all parts of the editor.
@@ -108,6 +123,29 @@ namespace DemoGame.Editor
         public MapState Map
         {
             get { return _mapState; }
+        }
+
+        /// <summary>
+        /// Ensures the <see cref="GlobalState"/> is initailized.
+        /// </summary>
+        public static void Initailize()
+        {
+            // Calling this will invoke the static constructor, creating the instance, and ultimately setting everything up
+        }
+
+        /// <summary>
+        /// Handles the Tick event of the _timer control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void _timer_Tick(object sender, EventArgs e)
+        {
+            ThreadAsserts.IsMainThread();
+
+            var now = TickCount.Now;
+
+            if (Tick != null)
+                Tick(now);
         }
 
         /// <summary>

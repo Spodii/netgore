@@ -121,28 +121,27 @@ namespace DemoGame.Editor
         TickCount _lastUpdateTime = TickCount.MinValue;
 
         /// <summary>
-        /// Derived classes override this to draw themselves using the GraphicsDevice.
+        /// When overridden in the derived class, draws the graphics to the control.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
-        protected override void Draw(ISpriteBatch spriteBatch)
+        /// <param name="currentTime">The current time.</param>
+        protected override void HandleDraw(TickCount currentTime)
         {
-            var currTime = GetTime();
-
             int deltaTime;
             if (_lastUpdateTime == TickCount.MinValue)
             {
                 deltaTime = 30;
             }
-            else{
-                deltaTime = Math.Max(5, (int)(currTime - _lastUpdateTime));
+            else
+            {
+                deltaTime = Math.Max(5, (int)(currentTime - _lastUpdateTime));
             }
 
-            _lastUpdateTime = currTime;
+            _lastUpdateTime = currentTime;
 
-            DrawingManager.Update(currTime);
+            DrawingManager.Update(currentTime);
 
             // Update
-            UpdateMap(currTime, deltaTime);
+            UpdateMap(currentTime, deltaTime);
 
             // Draw the world
             var worldSB = DrawingManager.BeginDrawWorld(Camera);
@@ -276,6 +275,10 @@ namespace DemoGame.Editor
                 return;
 
             _drawingManager = new DrawingManager(RenderWindow);
+
+            // Add an event hook to the tick timer so we can update ourself
+            GlobalState.Instance.Tick -= InvokeDrawing;
+            GlobalState.Instance.Tick += InvokeDrawing;
         }
 
         /// <summary>

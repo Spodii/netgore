@@ -33,13 +33,14 @@ namespace NetGore.EditorTools
         static readonly StringFormat _errorMessageStringFormat = new StringFormat
         { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
+        string _lastDrawError = null;
+
         /// <summary>
         /// The last time a message was painted using PaintUsingSystemDrawing().
         /// </summary>
         TickCount _lastSystemPaintTime;
 
         RenderWindow _rw;
-        ISpriteBatch _spriteBatch;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphicsDeviceControl"/> class.
@@ -49,6 +50,8 @@ namespace NetGore.EditorTools
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ForeColor = Color.White;
             BackColor = Color.Black;
+            DoubleBuffered = false;
+            ResizeRedraw = false;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
@@ -84,26 +87,46 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets the <see cref="ISpriteBatch"/> used to draw to this <see cref="GraphicsDeviceControl"/>.
-        /// </summary>
-        [Browsable(false)]
-        public ISpriteBatch SpriteBatch
-        {
-            get { return _spriteBatch; }
-        }
-
-        /// <summary>
         /// Attempts to begin drawing the control. Returns an error message string
         /// if this was not possible, which can happen if the graphics device is
         /// lost, or if we are running inside the Form designer.
         /// </summary>
         string BeginDraw()
         {
+            if (IsDisposed)
+                return "Control is disposed.";
+
+            if (_rw == null || _rw.IsDisposed)
+                return "RenderWindow is null or disposed.";
+
+            if (RecreatingHandle)
+                return "Handle is being recreated...";
+
+            if (_rw.SystemHandle != Handle && Handle != IntPtr.Zero)
+                RecreateRenderWindow(Handle);
+
             // If we have no graphics device we must be running in the designer
             if (DesignMode || _rw == null)
                 return Text + Environment.NewLine + Environment.NewLine + GetType();
 
             return null;
+        }
+
+        void RecreateRenderWindow(IntPtr handle)
+        {
+            if (_rw != null)
+            {
+                if (!_rw.IsDisposed)
+                    _rw.Dispose();
+
+                _rw = null;
+            }
+
+            _rw = new RenderWindow(handle);
+            _rw.UseVerticalSync(false);
+            _rw.Show(true);
+
+            OnRenderWindowCreated(_rw);
         }
 
         /// <summary>
@@ -112,35 +135,24 @@ namespace NetGore.EditorTools
         /// <param name="disposing">If true, disposes of managed resources</param>
         protected override void Dispose(bool disposing)
         {
-            if (!DesignMode)
+            if (!DesignMode && !disposing && _rw != null)
             {
-                if (_rw != null)
+                try
                 {
-                    try
-                    {
-                        _rw.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        const string errmsg = "Failed to dispose RenderWindow: {0}";
-                        if (log.IsWarnEnabled)
-                            log.WarnFormat(errmsg, ex);
-                        Debug.Fail(string.Format(errmsg, ex));
-                    }
-
-                    _rw = null;
+                    _rw.Dispose();
                 }
+                catch (Exception ex)
+                {
+                    const string errmsg = "Failed to dispose RenderWindow: {0}";
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, ex);
+                    Debug.Fail(string.Format(errmsg, ex));
+                }
+
+                _rw = null;
             }
 
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, draws the graphics to the control.
-        /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
-        protected virtual void Draw(ISpriteBatch spriteBatch)
-        {
         }
 
         /// <summary>
@@ -152,6 +164,14 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// When overridden in the derived class, draws the graphics to the control.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        protected virtual void HandleDraw(TickCount currentTime)
+        {
+        }
+
+        /// <summary>
         /// Derived classes override this to initialize their drawing code.
         /// </summary>
         protected virtual void Initialize()
@@ -159,33 +179,27 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Allows derived classes to handle when the <see cref="RenderWindow"/> is created or re-created.
+        /// Invokes this control to draw itself.
         /// </summary>
-        /// <param name="newRenderWindow">The current <see cref="RenderWindow"/>.</param>
-        protected virtual void OnRenderWindowCreated(RenderWindow newRenderWindow)
+        /// <param name="currentTime">The current time.</param>
+        public void InvokeDrawing(TickCount currentTime)
         {
-        }
-
-        /// <summary>
-        /// Changes the handle that this <see cref="GraphicsDeviceControl"/> draws to.
-        /// </summary>
-        /// <param name="newHandle">The new handle to draw to.</param>
-        public void ChangeHandle(IntPtr newHandle)
-        {
-            // Check for an existing RenderWindow instance
-            if (_rw != null)
+            try
             {
-                // If the handle is already being used, return
-                if (_rw.SystemHandle == newHandle)
+                _lastDrawError = BeginDraw();
+                if (_lastDrawError != null)
                     return;
 
-                // If the RenderWindow has not been disposed, dispose of it first
-                if (!_rw.IsDisposed)
-                    _rw.Dispose();
+                HandleDraw(currentTime);
+                EndDraw();
             }
-
-            // Create the new RenderWindow
-            _rw = new RenderWindow(newHandle);
+            catch (Exception ex)
+            {
+                const string errmsg = "Exception thrown while drawing on `{0}`: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this, ex);
+                _lastDrawError = "Exception thrown while drawing: " + ex;
+            }
         }
 
         /// <summary>
@@ -196,10 +210,7 @@ namespace NetGore.EditorTools
             // Don't create the RenderWindow in the designer
             if (!DesignMode)
             {
-                _rw = new RenderWindow(Handle);
-
-                // Create our SpriteBatch
-                _spriteBatch = new RoundedSpriteBatch(_rw);
+                RecreateRenderWindow(Handle);
 
                 // Give derived classes a chance to initialize themselves
                 Initialize();
@@ -232,33 +243,8 @@ namespace NetGore.EditorTools
         protected override void OnPaint(PaintEventArgs e)
         {
             // In design mode, use some custom, basic drawing
-            if (DesignMode)
-            {
-                PaintUsingSystemDrawing(e.Graphics, Name);
-                return;
-            }
-
-            var beginDrawError = BeginDraw();
-
-            // Check if BeginDraw() created an error before attempting to actually draw
-            if (string.IsNullOrEmpty(beginDrawError))
-            {
-                // Draw the control using the RenderWindow
-                try
-                {
-                    RenderWindow.Clear(SFML.Graphics.Color.CornflowerBlue);
-                    Draw(SpriteBatch);
-                    EndDraw();
-                }
-                catch (InvalidOperationException ex)
-                {
-                    beginDrawError = ex.ToString();
-                }
-            }
-
-            // If BeginDraw failed, show an error message using System.Drawing
-            if (!string.IsNullOrEmpty(beginDrawError))
-                PaintUsingSystemDrawing(e.Graphics, beginDrawError);
+            if (DesignMode || _lastDrawError != null)
+                PaintUsingSystemDrawing(e.Graphics, _lastDrawError ?? Name);
         }
 
         /// <summary>
@@ -267,8 +253,16 @@ namespace NetGore.EditorTools
         /// <param name="pevent">Event args.</param>
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            if (DesignMode)
+            if (DesignMode || _lastDrawError != null)
                 base.OnPaintBackground(pevent);
+        }
+
+        /// <summary>
+        /// Allows derived classes to handle when the <see cref="RenderWindow"/> is created or re-created.
+        /// </summary>
+        /// <param name="newRenderWindow">The current <see cref="RenderWindow"/>.</param>
+        protected virtual void OnRenderWindowCreated(RenderWindow newRenderWindow)
+        {
         }
 
         /// <summary>

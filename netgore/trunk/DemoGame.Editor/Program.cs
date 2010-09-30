@@ -20,7 +20,12 @@ namespace DemoGame.Editor
         [STAThread]
         static void Main(string[] args)
         {
+            ThreadAsserts.IsMainThread();
+
             log.Info("Starting editor...");
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
             // NOTE: Forces SFML to load early on instead of later, causing a LoaderLock exception. Can probably be removed later.
             using (new SFML.Graphics.Image())
@@ -46,8 +51,6 @@ namespace DemoGame.Editor
             }
 
             // Start up the application
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
         }
     }
