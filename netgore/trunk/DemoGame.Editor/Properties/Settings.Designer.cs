@@ -22,5 +22,65 @@ namespace DemoGame.Editor.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Left")]
+        public global::System.Windows.Forms.Keys Screen_ScrollLeft {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Screen_ScrollLeft"]));
+            }
+            set {
+                this["Screen_ScrollLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Right")]
+        public global::System.Windows.Forms.Keys Screen_ScrollRight {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Screen_ScrollRight"]));
+            }
+            set {
+                this["Screen_ScrollRight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Up")]
+        public global::System.Windows.Forms.Keys Screen_ScrollUp {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Screen_ScrollUp"]));
+            }
+            set {
+                this["Screen_ScrollUp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Down")]
+        public global::System.Windows.Forms.Keys Screen_ScrollDown {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["Screen_ScrollDown"]));
+            }
+            set {
+                this["Screen_ScrollDown"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public float Screen_ScrollPixelsPerSec {
+            get {
+                return ((float)(this["Screen_ScrollPixelsPerSec"]));
+            }
+            set {
+                this["Screen_ScrollPixelsPerSec"] = value;
+            }
+        }
     }
 }
