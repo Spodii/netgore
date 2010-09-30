@@ -331,11 +331,13 @@ namespace DemoGame.Editor
             }
         }
 
-        protected override void OnKeyPress(KeyPressEventArgs e)
-        {
-            base.OnKeyPress(e);
-        }
-
+        /// <summary>
+        /// Determines whether the specified key is a regular input key or a special key that requires preprocessing.
+        /// </summary>
+        /// <param name="keyData">One of the <see cref="T:System.Windows.Forms.Keys"/> values.</param>
+        /// <returns>
+        /// true if the specified key is a regular input key; otherwise, false.
+        /// </returns>
         protected override bool IsInputKey(Keys keyData)
         {
             var s = Settings.Default;
