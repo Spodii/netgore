@@ -51,13 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tools\IToolBarControl.cs" />
+    <Compile Include="Tools\Base\IToolBarControl.cs" />
     <Compile Include="Controls\ToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\ToolBarControlType.cs" />
-    <Compile Include="Tools\ToolBase.cs" />
-    <Compile Include="Tools\ToolManager.cs" />
+    <Compile Include="Tools\Base\ToolBarControlType.cs" />
+    <Compile Include="Tools\Base\ToolBase.cs" />
+    <Compile Include="Tools\Base\ToolManager.cs" />
     <Compile Include="CommandLineSwitch.cs" />
     <Compile Include="Controls\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
@@ -131,6 +131,7 @@
     <Compile Include="Forms\ChildWindowForm.Designer.cs">
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\TestToolA.cs" />
     <Compile Include="TransBox.cs" />
     <Compile Include="TransBoxType.cs" />
     <EmbeddedResource Include="Forms\ChildWindowForm.resx">
