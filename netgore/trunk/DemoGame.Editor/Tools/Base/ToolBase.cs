@@ -150,24 +150,6 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets or sets (protected) the <see cref="Image"/> to use when displaying this tool in a <see cref="ToolBar"/>.
-        /// </summary>
-        public Image ToolBarIcon
-        {
-            get { return _toolBarIcon; }
-            set
-            {
-                if (_toolBarIcon == value)
-                    return;
-
-                var oldValue = _toolBarIcon;
-                _toolBarIcon = value;
-
-                OnToolbarIconChanged(oldValue, value);
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="ToolManager"/> that this tool is in.
         /// </summary>
         public ToolManager ToolManager

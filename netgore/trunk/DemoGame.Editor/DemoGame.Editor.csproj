@@ -135,6 +135,7 @@
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\TestToolA.cs" />
+    <Compile Include="Tools\TestToolB.cs" />
     <Compile Include="TransBox.cs" />
     <Compile Include="TransBoxType.cs" />
     <EmbeddedResource Include="Forms\ChildWindowForm.resx">
