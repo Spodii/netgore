@@ -7,7 +7,7 @@ using log4net;
 using NetGore;
 using NetGore.Collections;
 
-namespace DemoGame.Editor.AddOns
+namespace DemoGame.Editor.Tools
 {
     public class ToolManager
     {
