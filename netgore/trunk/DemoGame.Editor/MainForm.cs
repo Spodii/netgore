@@ -28,9 +28,14 @@ namespace DemoGame.Editor
             _editMapForm.Show(dockPanel);
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            base.OnKeyDown(e);
+            // TODO: !!
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // TODO: !!
         }
     }
 }
