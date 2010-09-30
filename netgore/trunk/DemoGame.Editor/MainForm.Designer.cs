@@ -47,12 +47,11 @@ namespace DemoGame.Editor
             NetGore.EditorTools.Docking.TabGradient tabGradient7 = new NetGore.EditorTools.Docking.TabGradient();
             this.msMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsTools = new System.Windows.Forms.ToolStrip();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
@@ -80,13 +79,6 @@ namespace DemoGame.Editor
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
-            // 
             // mapToolStripMenuItem1
             // 
             this.mapToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -110,26 +102,25 @@ namespace DemoGame.Editor
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mapToolStripMenuItem,
             this.miniMapToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.viewToolStripMenuItem.Text = "Screens";
             // 
-            // mapToolStripMenuItem
-            // 
-            this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
-            this.mapToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
-            this.mapToolStripMenuItem.Text = "Map";
-            this.mapToolStripMenuItem.Click += new System.EventHandler(this.mapToolStripMenuItem_Click);
-            // 
             // miniMapToolStripMenuItem
             // 
             this.miniMapToolStripMenuItem.Name = "miniMapToolStripMenuItem";
-            this.miniMapToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.miniMapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.miniMapToolStripMenuItem.Text = "Mini-Map";
             // 
             // tsTools
@@ -233,7 +224,6 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem miniMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mapToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;

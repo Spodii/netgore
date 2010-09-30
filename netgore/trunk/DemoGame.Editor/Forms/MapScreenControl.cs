@@ -6,6 +6,7 @@ using DemoGame.Client;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
+using NetGore.IO;
 using NetGore.World;
 using SFML.Graphics;
 
@@ -56,13 +57,28 @@ namespace DemoGame.Editor
                 return;
 
             _grid = new ScreenGrid();
+            _camera = new Camera2D(new Vector2(ClientSize.Width, ClientSize.Height));
         }
 
+        public void ChangeMap(MapID mapID)
+        {
+            if (Map != null && Map.ID == mapID)
+                return;
+
+            Map = new Map(mapID, Camera, this);
+            Map.Load(ContentPaths.Dev, false, MapEditorDynamicEntityFactory.Instance);
+        }
+
+        readonly ICamera2D _camera;
+
         /// <summary>
-        /// Gets or sets the camera used to view the map.
+        /// Gets the camera used to view the map.
         /// </summary>
         [Browsable(false)]
-        public ICamera2D Camera { get; set; }
+        public ICamera2D Camera
+        {
+            get { return _camera; }
+        }
 
         /// <summary>
         /// Gets or sets the current position of the cursor in the world.
@@ -73,11 +89,6 @@ namespace DemoGame.Editor
             get { return _cursorPos; }
             set { _cursorPos = value; }
         }
-
-        /// <summary>
-        /// Gets or sets the method used to draw this control.
-        /// </summary>
-        public Action<ISpriteBatch> DrawHandler { get; set; }
 
         /// <summary>
         /// Gets the <see cref="ScreenGrid"/> to display for the <see cref="Map"/>.
@@ -107,10 +118,7 @@ namespace DemoGame.Editor
             get { return _mouseButton; }
         }
 
-        /// <summary>
-        /// Gets or sets the method used to update this control.
-        /// </summary>
-        public Action UpdateHandler { get; set; }
+        TickCount _lastUpdateTime = TickCount.MinValue;
 
         /// <summary>
         /// Derived classes override this to draw themselves using the GraphicsDevice.
@@ -118,11 +126,142 @@ namespace DemoGame.Editor
         /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
         protected override void Draw(ISpriteBatch spriteBatch)
         {
-            if (UpdateHandler != null)
-                UpdateHandler();
+            var currTime = GetTime();
 
-            if (DrawHandler != null)
-                DrawHandler(spriteBatch);
+            int deltaTime;
+            if (_lastUpdateTime == TickCount.MinValue)
+            {
+                deltaTime = 30;
+            }
+            else{
+                deltaTime = Math.Max(5, (int)(currTime - _lastUpdateTime));
+            }
+
+            _lastUpdateTime = currTime;
+
+            DrawingManager.Update(currTime);
+
+            // Update
+            UpdateMap(currTime, deltaTime);
+
+            // Draw the world
+            var worldSB = DrawingManager.BeginDrawWorld(Camera);
+            if (worldSB != null)
+            {
+                DrawMapWorld(worldSB);
+                DrawingManager.EndDrawWorld();
+            }
+
+            // Draw the GUI
+            var guiSB = DrawingManager.BeginDrawGUI();
+            if (guiSB != null)
+            {
+                DrawMapGUI(guiSB);
+                DrawingManager.EndDrawGUI();
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Forms.Control.Resize"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            var clientSize = new Vector2(ClientSize.Width, ClientSize.Height);
+            Camera.Size = clientSize * Camera.Scale;
+        }
+
+        protected virtual void UpdateMap(TickCount currentTime, int deltaTime)
+        {
+            Cursor = Cursors.Default;
+
+            if (Map != null)
+                Map.Update(deltaTime);
+        }
+
+        protected virtual void DrawMapWorld(ISpriteBatch sb)
+        {
+            // Check for a valid map
+            if (Map == null)
+                return;
+
+            DrawingManager.LightManager.Ambient = Map.AmbientLight;
+
+            Map.Draw(sb);
+
+            // TODO: !! MapGrh bound walls
+            /*
+            if (chkDrawAutoWalls.Checked)
+            {
+                foreach (var mg in Map.MapGrhs)
+                {
+                    if (!_camera.InView(mg.Grh, mg.Position))
+                        continue;
+
+                    var boundWalls = _mapGrhWalls[mg.Grh.GrhData];
+                    if (boundWalls == null)
+                        continue;
+
+                    foreach (var wall in boundWalls)
+                    {
+                        EntityDrawer.Draw(sb, Camera, wall, mg.Position);
+                    }
+                }
+            }
+            */
+
+            // TODO: !! Border
+            /*
+            _mapBorderDrawer.Draw(sb, Map, _camera);
+            */
+
+            // TODO: !! Selection area
+            /*
+            CursorManager.DrawSelection(sb);
+            */
+
+            // Grid
+            // TODO: !! if (chkDrawGrid.Checked)
+                Grid.Draw(sb, Camera);
+
+            // Light sources
+            // TODO: !! if (chkLightSources.Checked)
+            {
+                var offset = AddLightCursor.LightSprite.Size / 2f;
+                foreach (var light in DrawingManager.LightManager)
+                {
+                    AddLightCursor.LightSprite.Draw(sb, light.Position - offset);
+                }
+            }
+
+            // TODO: !! Tool interface
+            //CursorManager.DrawInterface(sb);
+
+            // Focused selected object (don't draw it for lights, though)
+            /*
+            var som = GlobalState.Instance.Map.SelectedObjsManager;
+            foreach (var selected in som.SelectedObjects.Where(x => !(x is ILight)))
+            {
+                if (selected == som.Focused)
+                    _focusedSpatialDrawer.DrawFocused(selected as ISpatial, sb);
+                else
+                    FocusedSpatialDrawer.DrawNotFocused(selected as ISpatial, sb);
+            }
+            */
+        }
+
+        protected virtual void DrawMapGUI(ISpriteBatch sb)
+        {
+            // Cursor coordinates
+            var font = GlobalState.Instance.DefaultRenderFont;
+
+            var cursorPosText = CursorPos.ToString();
+            var cursorPosTextPos = new Vector2(ClientSize.Width, ClientSize.Height) -
+                                   font.MeasureString(cursorPosText) - new Vector2(4);
+
+            sb.DrawStringShaded(font, cursorPosText, cursorPosTextPos, Color.White, Color.Black);
         }
 
         /// <summary>

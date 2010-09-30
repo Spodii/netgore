@@ -21,13 +21,13 @@ namespace NetGore.EditorTools
         public delegate void EditorCursorManagerEventHandler(EditorCursorManager<TContainer> sender);
 
         readonly Func<EditorCursor<TContainer>, bool> _allowCursorEventChecker;
-        readonly TContainer _container;
         readonly Control _cursorContainer;
         readonly List<PictureBox> _cursorControls = new List<PictureBox>();
         readonly List<EditorCursor<TContainer>> _cursors = new List<EditorCursor<TContainer>>();
         readonly Control _gameScreen;
         readonly ToolTip _toolTip;
 
+        TContainer _container;
         EditorCursor<TContainer> _lastCurrentCursor;
         EditorCursor<TContainer> _selectedAltCursor;
         EditorCursor<TContainer> _selectedCursor;
@@ -76,11 +76,12 @@ namespace NetGore.EditorTools
         public event EditorCursorManagerEventHandler CurrentCursorChanged;
 
         /// <summary>
-        /// Gets the container used by the cursors in this manager.
+        /// Gets or sets the container used by the cursors in this manager.
         /// </summary>
         public TContainer Container
         {
             get { return _container; }
+            set { _container = value; }
         }
 
         /// <summary>

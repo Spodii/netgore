@@ -77,7 +77,7 @@ namespace DemoGame.Editor
         public override void MouseDown(MouseEventArgs e)
         {
             // Switch to the wall editing tool
-            Container.CursorManager.SelectedCursor = Container.CursorManager.TryGetCursor<WallCursor>();
+            // TODO: !! Container.CursorManager.SelectedCursor = Container.CursorManager.TryGetCursor<WallCursor>();
 
             // Create the new wall
             var w = new WallEntity(MSC.Camera.ToWorld(e.X, e.Y), Vector2.One);

@@ -1231,37 +1231,6 @@ namespace DemoGame.MapEditor
         /// </summary>
         void UpdateGame()
         {
-            // Restore to the default cursor
-            Cursor = Cursors.Default;
-
-            // Update the time
-            var currTime = (TickCount)_stopWatch.ElapsedMilliseconds;
-            var deltaTime = currTime - _currentTime;
-            _currentTime = currTime;
-
-            // Update stuff in selection forms (moving it to the center of the camera so it draws centered)
-            if (_particleEffectSelectionForm != null)
-            {
-                var pe = _particleEffectSelectionForm.SelectedItem;
-                if (pe != null && !pe.IsDisposed)
-                {
-                    var originalPos = pe.Position;
-                    pe.Position = Camera.Center;
-                    pe.Update(_currentTime);
-                    pe.Position = originalPos;
-                }
-            }
-
-            // Check for a map
-            if (Map == null)
-                return;
-
-            if (treeGrhs.NeedsToDraw)
-            {
-                UpdateEditGrhView();
-                return;
-            }
-
             // Move the camera
             _camera.Min += _moveCamera;
 
