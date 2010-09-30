@@ -317,7 +317,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Button"/>.
         /// </summary>
-        internal sealed class ToolBarItemButton : ToolStripButton, IToolBarControl
+        internal sealed class ToolBarItemButton : ToolStripButton, IToolBarControl, IToolBarButtonSettings
         {
             readonly ToolBase _tool;
 
@@ -334,8 +334,6 @@ namespace DemoGame.Editor
                 _tool = tool;
 
                 Initialize();
-
-                _tool.ToolBarIconChanged += _tool_ToolbarIconChanged;
             }
 
             /// <summary>
@@ -347,12 +345,20 @@ namespace DemoGame.Editor
                 Image = Tool.ToolBarIcon;
             }
 
-            void _tool_ToolbarIconChanged(ToolBase sender, Image oldValue, Image newValue)
-            {
-                Image = newValue;
-            }
-
             #region IToolBarControl Members
+
+            /// <summary>
+            /// Gets the <see cref="IToolBarControlSettings"/> for this control. Can be safely up-casted to the appropriate
+            /// interface for a more specific type using the <see cref="IToolBarControl.ControlType"/> property.
+            /// </summary>
+            /// <example>
+            /// When <see cref="IToolBarControl.ControlType"/> equals <see cref="ToolBarControlType.Button"/>, the
+            /// <see cref="IToolBarControl.ControlSettings"/> can be up-casted to <see cref="IToolBarButtonSettings"/>.
+            /// </example>
+            public IToolBarControlSettings ControlSettings
+            {
+                get { return this; }
+            }
 
             /// <summary>
             /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
@@ -376,7 +382,7 @@ namespace DemoGame.Editor
         /// <summary>
         /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Label"/>.
         /// </summary>
-        internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl
+        internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl, IToolBarLabelSettings
         {
             readonly ToolBase _tool;
 
@@ -404,6 +410,19 @@ namespace DemoGame.Editor
             }
 
             #region IToolBarControl Members
+
+            /// <summary>
+            /// Gets the <see cref="IToolBarControlSettings"/> for this control. Can be safely up-casted to the appropriate
+            /// interface for a more specific type using the <see cref="IToolBarControl.ControlType"/> property.
+            /// </summary>
+            /// <example>
+            /// When <see cref="IToolBarControl.ControlType"/> equals <see cref="ToolBarControlType.Button"/>, the
+            /// <see cref="IToolBarControl.ControlSettings"/> can be up-casted to <see cref="IToolBarButtonSettings"/>.
+            /// </example>
+            public IToolBarControlSettings ControlSettings
+            {
+                get { return this; }
+            }
 
             /// <summary>
             /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.

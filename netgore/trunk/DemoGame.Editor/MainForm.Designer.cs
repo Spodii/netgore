@@ -54,7 +54,7 @@ namespace DemoGame.Editor
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolBar = new System.Windows.Forms.ToolStrip();
+            this.toolBar = new ToolBar();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
             this.msMenu.SuspendLayout();
@@ -197,7 +197,7 @@ namespace DemoGame.Editor
         #endregion
 
         private System.Windows.Forms.MenuStrip msMenu;
-        private System.Windows.Forms.ToolStrip toolBar;
+        private ToolBar toolBar;
         private System.Windows.Forms.StatusStrip ssStatus;
         private DockPanel dockPanel;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
