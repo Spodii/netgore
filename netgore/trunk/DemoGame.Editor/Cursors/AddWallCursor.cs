@@ -29,6 +29,33 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Completely clears the state of the cursor.
+        /// </summary>
+        void ClearState()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            ClearState();
+        }
+
+        /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
         /// </summary>
         public override Image CursorImage

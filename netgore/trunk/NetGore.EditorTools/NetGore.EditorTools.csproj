@@ -239,6 +239,8 @@
     <Compile Include="Docking\Win32\Enums\WindowExStyles.cs" />
     <Compile Include="Docking\Win32\Enums\WindowStyles.cs" />
     <Compile Include="Docking\Win32\NativeMethods.cs" />
+    <Compile Include="Editor Cursors\EditorCursor.cs" />
+    <Compile Include="Editor Cursors\EditorCursorManager.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\DbConnectionSettingsExtensions.cs" />
     <Compile Include="Extensions\PropertyGridExtensions.cs" />
@@ -272,8 +274,6 @@
     <Compile Include="UI Editors\GrhUITypeEditorForm.Designer.cs">
       <DependentUpon>GrhUITypeEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor Cursors\EditorCursor.cs" />
-    <Compile Include="Editor Cursors\EditorCursorManager.cs" />
     <Compile Include="UI Editors\EmitterModifierCollectionEditor.cs" />
     <Compile Include="UI Editors\GrhEditor.cs" />
     <Compile Include="Persistable Controls\PersistableCheckBox.cs">
@@ -524,6 +524,7 @@
     <Content Include="Docking\Resources\DockPane_Option.bmp" />
     <Content Include="Docking\Resources\DockPane_OptionOverflow.bmp" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

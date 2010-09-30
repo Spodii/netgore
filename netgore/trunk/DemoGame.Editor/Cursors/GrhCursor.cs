@@ -23,6 +23,38 @@ namespace DemoGame.Editor
         Vector2 _selectedEntityOffset = Vector2.Zero;
 
         /// <summary>
+        /// Completely clears the state of the cursor.
+        /// </summary>
+        void ClearState()
+        {
+            _lastCursorPos = Vector2.Zero;
+            _mapGrhMoveBox = null;
+            _mouseDragStart = Vector2.Zero;
+            _selectedEntityOffset = Vector2.Zero;
+            _selectedMapGrhs.Clear();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            ClearState();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
+
+        /// <summary>
         /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
         /// </summary>
         static SelectedObjectsManager<object> SOM { get { return GlobalState.Instance.Map.SelectedObjsManager; } }

@@ -16,6 +16,8 @@ namespace DemoGame.Editor
     /// </summary>
     public sealed partial class EditMapCursorsForm : ChildWindowForm
     {
+        readonly EditorCursorManager<MapScreenControl> _cursorManager;
+
         /// <summary>
         /// Gets the <see cref="EditMapCursorsForm"/> instance.
         /// </summary>
@@ -28,7 +30,7 @@ namespace DemoGame.Editor
         /// </summary>
         static EditMapCursorsForm()
         {
-            _instance = new EditMapCursorsForm(); 
+            _instance = new EditMapCursorsForm();
         }
 
         /// <summary>
@@ -37,6 +39,8 @@ namespace DemoGame.Editor
         EditMapCursorsForm()
         {
             InitializeComponent();
+
+            // TODO: !! _cursorManager  = new EditorCursorManager<MapScreenControl>(null, null, this, 
         }
     }
 }

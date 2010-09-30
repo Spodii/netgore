@@ -22,6 +22,33 @@ namespace DemoGame.Editor
         /// code
         /// </summary>
         MapScreenControl MSC { get { return Container.MapScreenControl; } }
+        
+        /// <summary>
+        /// Completely clears the state of the cursor.
+        /// </summary>
+        void ClearState()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            ClearState();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddEntityCursor"/> class.
