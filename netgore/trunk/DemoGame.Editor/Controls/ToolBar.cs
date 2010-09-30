@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -14,7 +15,9 @@ namespace DemoGame.Editor
     /// </summary>
     public class ToolBar : ToolStrip
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly List<ToolBase> _tools = new List<ToolBase>();
+
         ToolManager _toolManager;
 
         /// <summary>
@@ -32,15 +35,6 @@ namespace DemoGame.Editor
                 _toolManager = value;
 
                 OnToolManagerChanged(oldValue, value);
-            }
-        }
-
-        protected virtual void OnToolManagerChanged(ToolManager oldValue, ToolManager newValue)
-        {
-            // TODO: !!
-            // Remove tools from the old ToolManager
-            if (oldValue != null)
-            {
             }
         }
 
@@ -77,7 +71,7 @@ namespace DemoGame.Editor
                     c = new ToolBarItemLabel(tool);
                     break;
 
-                default :
+                default:
                     const string errmsg = "ToolBarControlType `{0}` is not supported - could not create control for tool `{1}`.";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, controlType, tool);
@@ -86,33 +80,110 @@ namespace DemoGame.Editor
             }
 
             // Set up the common event hooks
-            SetEventHooks(tool, true);
+            IToolBarControlManagement.SetEventHooks(tool, true);
 
             return (IToolBarControl)c;
         }
 
-        /// <summary>
-        /// Sets the event hooks on a <see cref="ToolBase"/>.
-        /// </summary>
-        /// <param name="tool">The <see cref="ToolBase"/> to set the event hooks on.</param>
-        /// <param name="add">True to add the event hooks, or false to remove them.</param>
-        static void SetEventHooks(ToolBase tool, bool add)
+        protected virtual void OnToolManagerChanged(ToolManager oldValue, ToolManager newValue)
         {
-            if (add)
-            {
-                // When adding the events, always remove them first just to make sure that we do not add the event listeners
-                // twice. There is no harm in removing an event that is not there, but this is harm if we get invoked twice for
-                // the same event.
-                SetEventHooks(tool, false);
+            // Remove the old tools
+            _tools.Clear();
+            Items.Clear();
 
-                // Add the event hooks
-                tool.ToolBarIconChanged += tool_ToolBarIconChanged;
-            }
-            else
+            if (oldValue != null)
             {
-                // Remove the event hooks
-                tool.ToolBarIconChanged -= tool_ToolBarIconChanged;
+                foreach (var tool in oldValue.Tools)
+                {
+                    tool.CanShowInToolbarChanged -= allToolManagerTools_CanShowInToolbarChanged;
+                    tool.Disposed -= allToolManagerTools_Disposed;
+                    tool.ToolBarPriorityChanged -= allToolManagerTools_ToolBarPriorityChanged;
+                }
             }
+
+            // Add the tools for the new ToolManager
+            if (newValue != null)
+            {
+                foreach (var tool in newValue.Tools)
+                {
+                    UpdateToolBarStatus(tool);
+
+                    tool.CanShowInToolbarChanged += allToolManagerTools_CanShowInToolbarChanged;
+                    tool.Disposed += allToolManagerTools_Disposed;
+                    tool.ToolBarPriorityChanged += allToolManagerTools_ToolBarPriorityChanged;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Re-organizes the <see cref="ToolBar"/>'s items to obey the priority order.
+        /// </summary>
+        void OrganizeToolBar()
+        {
+            var isOrganized = true;
+
+            // Sort the list
+            _tools.Sort(ToolBarItemSorter);
+
+            // Check if already organized
+            if (_tools.Count != Items.Count)
+                isOrganized = false;
+
+            if (isOrganized)
+            {
+                for (var i = 0; i < _tools.Count; i++)
+                {
+                    if (_tools[i] != ((IToolBarControl)Items[i]).Tool)
+                    {
+                        isOrganized = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isOrganized)
+                return;
+
+            // Clear the items and re-add them in the proper order
+            Items.Clear();
+            var sortedItems = _tools.Select(x => x.ToolBarControl).Cast<ToolStripItem>().ToArray();
+            Items.AddRange(sortedItems);
+        }
+
+        /// <summary>
+        /// Gets if a <see cref="ToolBase"/> should be in the <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="tool">The <see cref="ToolBase"/> to check.</param>
+        /// <returns>True if it should be in the <see cref="ToolBar"/>; otherwise false.</returns>
+        bool ShouldToolBeInToolBar(ToolBase tool)
+        {
+            if (tool == null)
+                return false;
+
+            if (tool.IsDisposed)
+                return false;
+
+            if (!tool.CanShowInToolbar)
+                return false;
+
+            if (tool.ToolBarControl == null)
+                return false;
+
+            if (tool.ToolManager != ToolManager)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Compares two <see cref="ToolBase"/>s so they can be sorted.
+        /// </summary>
+        /// <param name="l">The left argument.</param>
+        /// <param name="r">The right argument.</param>
+        /// <returns>The comparison result.</returns>
+        static int ToolBarItemSorter(ToolBase l, ToolBase r)
+        {
+            return l.ToolBarPriority.CompareTo(r.ToolBarPriority);
         }
 
         /// <summary>
@@ -152,74 +223,101 @@ namespace DemoGame.Editor
             return tool.ToolBarControl as ToolStripItem;
         }
 
-        /// <summary>
-        /// Handles the <see cref="ToolBase.ToolBarIconChanged"/> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        static void tool_ToolBarIconChanged(ToolBase sender, System.Drawing.Image oldValue, System.Drawing.Image newValue)
+        void UpdateToolBarStatus(ToolBase tool)
         {
-            var c = TryGetToolStripItem(sender);
-            if (c == null)
-                return;
+            var add = ShouldToolBeInToolBar(tool);
+            var mustReorganize = false;
 
-            c.Image = sender.ToolBarIcon;
+            if (add)
+            {
+                // Make sure it is in the toolbar
+                if (!_tools.Contains(tool))
+                {
+                    _tools.Add(tool);
+                    mustReorganize = true;
+                }
+            }
+            else
+            {
+                // Make sure its not in the toolbar
+                if (_tools.Contains(tool))
+                {
+                    _tools.Remove(tool);
+                    mustReorganize = true;
+                }
+            }
+
+            // Re-organize
+            if (mustReorganize)
+                OrganizeToolBar();
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        void allToolManagerTools_CanShowInToolbarChanged(ToolBase sender, bool oldValue, bool newValue)
+        {
+            UpdateToolBarStatus(sender);
+        }
+
+        void allToolManagerTools_Disposed(ToolBase sender)
+        {
+            UpdateToolBarStatus(sender);
+        }
+
+        void allToolManagerTools_ToolBarPriorityChanged(ToolBase sender, int oldValue, int newValue)
+        {
+            if (_tools.Contains(sender))
+                UpdateToolBarStatus(sender);
+        }
 
         /// <summary>
-        /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Label"/>.
+        /// Logical grouping of stuff related to the <see cref="IToolBarControl"/> management and updating a <see cref="ToolBase"/>'s
+        /// <see cref="ToolBar"/> control when the <see cref="ToolBase"/> raises certain events.
         /// </summary>
-        sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl
+        static class IToolBarControlManagement
         {
-            readonly ToolBase _tool;
-
             /// <summary>
-            /// Initializes a new instance of the <see cref="ToolBarItemLabel"/> class.
+            /// Sets the event hooks on a <see cref="ToolBase"/>.
             /// </summary>
-            /// <param name="tool">The <see cref="ToolBase"/> the control is for.</param>
-            /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
-            public ToolBarItemLabel(ToolBase tool)
+            /// <param name="tool">The <see cref="ToolBase"/> to set the event hooks on.</param>
+            /// <param name="add">True to add the event hooks, or false to remove them.</param>
+            internal static void SetEventHooks(ToolBase tool, bool add)
             {
-                if (tool == null)
-                    throw new ArgumentNullException("tool");
+                if (add)
+                {
+                    // When adding the events, always remove them first just to make sure that we do not add the event listeners
+                    // twice. There is no harm in removing an event that is not there, but this is harm if we get invoked twice for
+                    // the same event.
+                    SetEventHooks(tool, false);
 
-                _tool = tool;
-
-                Initialize();
+                    // Add the event hooks
+                    tool.ToolBarIconChanged += tool_ToolBarIconChanged;
+                }
+                else
+                {
+                    // Remove the event hooks
+                    tool.ToolBarIconChanged -= tool_ToolBarIconChanged;
+                }
             }
 
             /// <summary>
-            /// Gets the <see cref="ToolBase"/> for this item.
+            /// Handles the <see cref="ToolBase.ToolBarIconChanged"/> event.
             /// </summary>
-            public ToolBase Tool
+            /// <param name="sender">The sender.</param>
+            /// <param name="oldValue">The old value.</param>
+            /// <param name="newValue">The new value.</param>
+            static void tool_ToolBarIconChanged(ToolBase sender, Image oldValue, Image newValue)
             {
-                get { return _tool; }
-            }
+                var c = TryGetToolStripItem(sender);
+                if (c == null)
+                    return;
 
-            /// <summary>
-            /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
-            /// </summary>
-            public ToolBarControlType ControlType
-            {
-                get { return ToolBarControlType.Button; }
-            }
-
-            /// <summary>
-            /// Initializes the control with the initial values.
-            /// </summary>
-            void Initialize()
-            {
-                Text = Tool.Name;
+                c.Image = sender.ToolBarIcon;
             }
         }
 
         /// <summary>
         /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Button"/>.
         /// </summary>
-        sealed class ToolBarItemButton : ToolStripButton, IToolBarControl
+        internal sealed class ToolBarItemButton : ToolStripButton, IToolBarControl
         {
             readonly ToolBase _tool;
 
@@ -240,18 +338,21 @@ namespace DemoGame.Editor
                 _tool.ToolBarIconChanged += _tool_ToolbarIconChanged;
             }
 
-            void _tool_ToolbarIconChanged(ToolBase sender, System.Drawing.Image oldValue, System.Drawing.Image newValue)
+            /// <summary>
+            /// Initializes the control with the initial values.
+            /// </summary>
+            void Initialize()
+            {
+                Text = Tool.Name;
+                Image = Tool.ToolBarIcon;
+            }
+
+            void _tool_ToolbarIconChanged(ToolBase sender, Image oldValue, Image newValue)
             {
                 Image = newValue;
             }
 
-            /// <summary>
-            /// Gets the <see cref="ToolBase"/> for this item.
-            /// </summary>
-            public ToolBase Tool
-            {
-                get { return _tool; }
-            }
+            #region IToolBarControl Members
 
             /// <summary>
             /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
@@ -262,13 +363,65 @@ namespace DemoGame.Editor
             }
 
             /// <summary>
+            /// Gets the <see cref="ToolBase"/> for this item.
+            /// </summary>
+            public ToolBase Tool
+            {
+                get { return _tool; }
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Label"/>.
+        /// </summary>
+        internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl
+        {
+            readonly ToolBase _tool;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ToolBarItemLabel"/> class.
+            /// </summary>
+            /// <param name="tool">The <see cref="ToolBase"/> the control is for.</param>
+            /// <exception cref="ArgumentNullException"><paramref name="tool"/> is null.</exception>
+            public ToolBarItemLabel(ToolBase tool)
+            {
+                if (tool == null)
+                    throw new ArgumentNullException("tool");
+
+                _tool = tool;
+
+                Initialize();
+            }
+
+            /// <summary>
             /// Initializes the control with the initial values.
             /// </summary>
             void Initialize()
             {
                 Text = Tool.Name;
-                Image = Tool.ToolBarIcon;
             }
+
+            #region IToolBarControl Members
+
+            /// <summary>
+            /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
+            /// </summary>
+            public ToolBarControlType ControlType
+            {
+                get { return ToolBarControlType.Button; }
+            }
+
+            /// <summary>
+            /// Gets the <see cref="ToolBase"/> for this item.
+            /// </summary>
+            public ToolBase Tool
+            {
+                get { return _tool; }
+            }
+
+            #endregion
         }
     }
 }

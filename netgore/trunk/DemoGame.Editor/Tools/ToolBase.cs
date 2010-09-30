@@ -81,6 +81,11 @@ namespace DemoGame.Editor
         public event ValueChangedEventHandler<Image> ToolBarIconChanged;
 
         /// <summary>
+        /// Notifies listeners when the <see cref="ToolBarPriority"/> property has changed.
+        /// </summary>
+        public event ValueChangedEventHandler<int> ToolBarPriorityChanged;
+
+        /// <summary>
         /// Gets or sets if this tool can be shown in the <see cref="ToolBar"/>. This does not mean that the tool will be shown in the
         /// <see cref="ToolBar"/>, just if it is allowed to be.
         /// Default is true.
@@ -113,7 +118,8 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets if this tool is enabled.
+        /// Gets if this tool is enabled. An enabled tool can still exist in a <see cref="ToolBar"/> and receive input, but
+        /// it does not perform updates or drawing.
         /// Default is false.
         /// </summary>
         [DefaultValue(false)]
@@ -133,6 +139,29 @@ namespace DemoGame.Editor
             }
         }
 
+        int _toolBarPriority;
+
+        /// <summary>
+        /// Gets or sets the priority of this <see cref="ToolBase"/> in the <see cref="ToolBar"/>. <see cref="ToolBase"/>s with a lower
+        /// priority will appear before those with a higher priority.
+        /// </summary>
+        public int ToolBarPriority
+        {
+            get { return _toolBarPriority; }
+            set
+            {
+                if (_toolBarPriority == value)
+                    return;
+
+                var oldValue = ToolBarPriority;
+                _toolBarPriority = value;
+
+                OnToolBarPriorityChanged(oldValue, value);
+                if (ToolBarPriorityChanged != null)
+                    ToolBarPriorityChanged(this, oldValue, value);
+            }
+        }
+
         /// <summary>
         /// Gets the name of the tool. While it is recommended that a tool's name is unique, it is not required.
         /// This property is immutable.
@@ -145,6 +174,8 @@ namespace DemoGame.Editor
         /// <summary>
         /// Gets the <see cref="IToolBarControl"/> to use for displaying this <see cref="ToolBase"/> in a <see cref="ToolBar"/>.
         /// This property is set in the <see cref="ToolBase"/>'s constructor and remains the same throughout the life of the object.
+        /// This can be null when the derived class sets the <see cref="ToolBarControlType"/> to
+        /// <see cref="ToolBarControlType.None"/>.
         /// </summary>
         public IToolBarControl ToolBarControl
         {
@@ -214,6 +245,10 @@ namespace DemoGame.Editor
         {
             _isDisposed = true;
             Dispose(false);
+        }
+
+        protected virtual void OnToolBarPriorityChanged(int oldValue, int newValue)
+        {
         }
 
         protected virtual void OnCanShowInToolBarChanged(bool oldValue, bool newValue)
