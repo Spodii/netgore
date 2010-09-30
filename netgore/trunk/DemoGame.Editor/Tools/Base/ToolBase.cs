@@ -76,16 +76,6 @@ namespace DemoGame.Editor
         public event ValueChangedEventHandler<bool> EnabledChanged;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="ToolBarIcon"/> property has changed.
-        /// </summary>
-        public event ValueChangedEventHandler<Image> ToolBarIconChanged;
-
-        /// <summary>
-        /// Notifies listeners when the <see cref="ToolBarPriority"/> property has changed.
-        /// </summary>
-        public event ValueChangedEventHandler<int> ToolBarPriorityChanged;
-
-        /// <summary>
         /// Gets or sets if this tool can be shown in the <see cref="ToolBar"/>. This does not mean that the tool will be shown in the
         /// <see cref="ToolBar"/>, just if it is allowed to be.
         /// Default is true.
@@ -139,29 +129,6 @@ namespace DemoGame.Editor
             }
         }
 
-        int _toolBarPriority;
-
-        /// <summary>
-        /// Gets or sets the priority of this <see cref="ToolBase"/> in the <see cref="ToolBar"/>. <see cref="ToolBase"/>s with a lower
-        /// priority will appear before those with a higher priority.
-        /// </summary>
-        public int ToolBarPriority
-        {
-            get { return _toolBarPriority; }
-            set
-            {
-                if (_toolBarPriority == value)
-                    return;
-
-                var oldValue = ToolBarPriority;
-                _toolBarPriority = value;
-
-                OnToolBarPriorityChanged(oldValue, value);
-                if (ToolBarPriorityChanged != null)
-                    ToolBarPriorityChanged(this, oldValue, value);
-            }
-        }
-
         /// <summary>
         /// Gets the name of the tool. While it is recommended that a tool's name is unique, it is not required.
         /// This property is immutable.
@@ -197,8 +164,6 @@ namespace DemoGame.Editor
                 _toolBarIcon = value;
 
                 OnToolbarIconChanged(oldValue, value);
-                if (ToolBarIconChanged != null)
-                    ToolBarIconChanged(this, oldValue, value);
             }
         }
 
