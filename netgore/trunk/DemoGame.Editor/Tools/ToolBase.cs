@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace DemoGame.Editor.AddOns
+namespace DemoGame.Editor.Tools
 {
     /// <summary>
     /// The base class for tools in the editor.
