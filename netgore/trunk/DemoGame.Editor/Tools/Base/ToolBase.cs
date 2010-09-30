@@ -29,7 +29,7 @@ namespace DemoGame.Editor
         readonly IToolBarControl _toolBarControl;
         readonly ToolManager _toolManager;
 
-        bool _canShowInToolbar;
+        bool _canShowInToolbar = true;
         bool _isDisposed;
         bool _isEnabled;
         Image _toolBarIcon;
