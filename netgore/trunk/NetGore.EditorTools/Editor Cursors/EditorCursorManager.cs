@@ -20,7 +20,6 @@ namespace NetGore.EditorTools
         /// <param name="sender">The object the event came from.</param>
         public delegate void EditorCursorManagerEventHandler(EditorCursorManager<TContainer> sender);
 
-        readonly Func<EditorCursor<TContainer>, bool> _allowCursorEventChecker;
         readonly Control _cursorContainer;
         readonly List<PictureBox> _cursorControls = new List<PictureBox>();
         readonly List<EditorCursor<TContainer>> _cursors = new List<EditorCursor<TContainer>>();
@@ -42,10 +41,7 @@ namespace NetGore.EditorTools
         /// <param name="cursorContainer">The <see cref="Control"/> that the cursors are to be added to.</param>
         /// <param name="gameScreen">The <see cref="Control"/> that contains the actual game screen. Mouse
         /// events for cursors will be added to this.</param>
-        /// <param name="allowCursorEventChecker">Func that checks if a cursor event is allowed to be executed. This
-        /// way you can prevent cursor events at certain times.</param>
-        public EditorCursorManager(TContainer container, ToolTip toolTip, Control cursorContainer, Control gameScreen,
-                                   Func<EditorCursor<TContainer>, bool> allowCursorEventChecker)
+        public EditorCursorManager(TContainer container, ToolTip toolTip, Control cursorContainer, Control gameScreen)
         {
             if (Equals(container, default(TContainer)))
                 throw new ArgumentNullException("container");
@@ -58,7 +54,6 @@ namespace NetGore.EditorTools
             _toolTip = toolTip;
             _cursorContainer = cursorContainer;
             _gameScreen = gameScreen;
-            _allowCursorEventChecker = allowCursorEventChecker;
 
             LoadTypeInstances();
 
@@ -363,34 +358,34 @@ namespace NetGore.EditorTools
         /// </summary>
         public void Update()
         {
-            var cursor = GetCurrentCursor();
+            var c = GetCurrentCursor();
 
-            if (cursor != null)
-                cursor.UpdateCursor();
+            if (c != null)
+                c.UpdateCursor();
         }
 
         void _gameScreen_MouseDown(object sender, MouseEventArgs e)
         {
-            var cursor = GetCurrentCursor();
+            var c = GetCurrentCursor();
 
-            if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseDown(e);
+            if (c != null)
+                c.MouseDown(e);
         }
 
         void _gameScreen_MouseMove(object sender, MouseEventArgs e)
         {
-            var cursor = GetCurrentCursor();
+            var c = GetCurrentCursor();
 
-            if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseMove(e);
+            if (c != null)
+                c.MouseMove(e);
         }
 
         void _gameScreen_MouseUp(object sender, MouseEventArgs e)
         {
-            var cursor = GetCurrentCursor();
+            var c = GetCurrentCursor();
 
-            if (cursor != null && _allowCursorEventChecker(cursor))
-                cursor.MouseUp(e);
+            if (c != null)
+                c.MouseUp(e);
         }
     }
 }

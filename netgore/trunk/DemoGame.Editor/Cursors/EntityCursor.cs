@@ -21,6 +21,37 @@ namespace DemoGame.Editor
         Vector2 _toolTipPos;
 
         /// <summary>
+        /// Completely clears the state of the cursor.
+        /// </summary>
+        void ClearState()
+        {
+            _toolTip = string.Empty;
+            _selectionOffset = Vector2.Zero;
+            _toolTipObject = null;
+            _toolTipPos = Vector2.Zero;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            ClearState();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
+
+        /// <summary>
         /// Property to access the <see cref="MapScreenControl"/>. Provided purely for convenience.
         /// </summary>
         MapScreenControl MSC { get { return Container.MapScreenControl; } }

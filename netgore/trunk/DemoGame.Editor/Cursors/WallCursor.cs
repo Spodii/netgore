@@ -22,6 +22,26 @@ namespace DemoGame.Editor
 
         MouseButtons _mouseDragButton = MouseButtons.None;
         Vector2 _mouseDragStart = Vector2.Zero;
+        
+        /// <summary>
+        /// Completely clears the state of the cursor.
+        /// </summary>
+        void ClearState()
+        {
+            _selectedWalls.Clear();
+            _mouseDragButton = MouseButtons.None;
+            _mouseDragStart = Vector2.Zero;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            ClearState();
+        }
 
         /// <summary>
         /// Property to access the <see cref="SelectedObjectsManager{T}"/>. Provided purely for convenience.
@@ -73,15 +93,9 @@ namespace DemoGame.Editor
         /// </summary>
         public override void Activate()
         {
-            _selectedWalls.Clear();
-        }
+            base.Activate();
 
-        /// <summary>
-        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
-        /// </summary>
-        public override void Deactivate()
-        {
-            _selectedWalls.Clear();
+            ClearState();
         }
 
         /// <summary>

@@ -16,6 +16,38 @@ namespace DemoGame.Editor
         string _toolTip = string.Empty;
         object _toolTipObj = null;
         Vector2 _toolTipPos;
+        
+        /// <summary>
+        /// Completely clears the state of the cursor.
+        /// </summary>
+        void ClearState()
+        {
+            _selectedLight = null;
+            _selectedLightOffset = Vector2.Zero;
+            _toolTip = string.Empty;
+            _toolTipObj = null;
+            _toolTipPos = Vector2.Zero;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor is no longer the active cursor.
+        /// </summary>
+        public override void Deactivate()
+        {
+            base.Deactivate();
+
+            ClearState();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for handling when the cursor becomes the active cursor.
+        /// </summary>
+        public override void Activate()
+        {
+            base.Activate();
+
+            ClearState();
+        }
 
         /// <summary>
         /// Gets the cursor's <see cref="System.Drawing.Image"/>.
