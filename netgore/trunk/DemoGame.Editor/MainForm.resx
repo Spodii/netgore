@@ -188,31 +188,31 @@
   <data name="&gt;&gt;msMenu.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <metadata name="toolBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="tbGlobal.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>116, 17</value>
   </metadata>
-  <data name="toolBar.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tbGlobal.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 24</value>
   </data>
-  <data name="toolBar.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tbGlobal.Size" type="System.Drawing.Size, System.Drawing">
     <value>687, 25</value>
   </data>
-  <data name="toolBar.TabIndex" type="System.Int32, mscorlib">
+  <data name="tbGlobal.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="toolBar.Text" xml:space="preserve">
+  <data name="tbGlobal.Text" xml:space="preserve">
     <value>toolStrip1</value>
   </data>
-  <data name="&gt;&gt;toolBar.Name" xml:space="preserve">
-    <value>toolBar</value>
+  <data name="&gt;&gt;tbGlobal.Name" xml:space="preserve">
+    <value>tbGlobal</value>
   </data>
-  <data name="&gt;&gt;toolBar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;tbGlobal.Type" xml:space="preserve">
+    <value>DemoGame.Editor.ToolBar, DemoGame.Editor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;toolBar.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tbGlobal.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;toolBar.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbGlobal.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <metadata name="ssStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

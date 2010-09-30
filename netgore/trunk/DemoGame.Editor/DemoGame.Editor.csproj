@@ -59,7 +59,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ToolBar\ToolBarControlType.cs" />
-    <Compile Include="Tools\Base\ToolBase.cs" />
+    <Compile Include="Tools\Base\Tool.cs" />
     <Compile Include="Tools\Base\ToolManager.cs" />
     <Compile Include="CommandLineSwitch.cs" />
     <Compile Include="Controls\BackgroundItemListBox.cs">

@@ -7,23 +7,26 @@ using NetGore;
 namespace DemoGame.Editor
 {
     /// <summary>
-    /// The base class for tools in the editor.
+    /// The base class for tools in the editor. <see cref="Tool"/>s are the primary component in the editor for expanding on the
+    /// functions and displays of the editor. They can be global to the whole editor, or valid only to specific screens. They can
+    /// be shown in a <see cref="ToolBar"/>, but can also be completely invisible to the user interface and function purely in the
+    /// background.
     /// </summary>
-    public abstract class ToolBase : IDisposable
+    public abstract class Tool : IDisposable
     {
         /// <summary>
-        /// Delegate for handling events from the <see cref="ToolBase"/>.
+        /// Delegate for handling events from the <see cref="Tool"/>.
         /// </summary>
-        /// <param name="sender">The <see cref="ToolBase"/> the event came from.</param>
-        public delegate void EventHandler(ToolBase sender);
+        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
+        public delegate void EventHandler(Tool sender);
 
         /// <summary>
-        /// Delegate for handling events from the <see cref="ToolBase"/>.
+        /// Delegate for handling events from the <see cref="Tool"/>.
         /// </summary>
-        /// <param name="sender">The <see cref="ToolBase"/> the event came from.</param>
+        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
         /// <param name="oldValue">The old (previous) value.</param>
         /// <param name="newValue">The new (current) value.</param>
-        public delegate void ValueChangedEventHandler<in T>(ToolBase sender, T oldValue, T newValue);
+        public delegate void ValueChangedEventHandler<in T>(Tool sender, T oldValue, T newValue);
 
         readonly string _name;
         readonly IToolBarControl _toolBarControl;
@@ -32,20 +35,19 @@ namespace DemoGame.Editor
         bool _canShowInToolbar = true;
         bool _isDisposed;
         bool _isEnabled;
-        Image _toolBarIcon;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ToolBase"/> class.
+        /// Initializes a new instance of the <see cref="Tool"/> class.
         /// </summary>
         /// <param name="name">The name of the tool.</param>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
-        /// <param name="toolBarControlType">The <see cref="ToolBarControlType"/> to use for displaying this <see cref="ToolBase"/>
+        /// <param name="toolBarControlType">The <see cref="ToolBarControlType"/> to use for displaying this <see cref="Tool"/>
         /// in a toolbar.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is null or empty.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="toolManager"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarControlType"/> does not contain a defined value of the
         /// <see cref="ToolBarControlType"/> enum.</exception>
-        protected ToolBase(string name, ToolManager toolManager, ToolBarControlType toolBarControlType)
+        protected Tool(string name, ToolManager toolManager, ToolBarControlType toolBarControlType)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
@@ -108,8 +110,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets if this tool is enabled. An enabled tool can still exist in a <see cref="ToolBar"/> and receive input, but
-        /// it does not perform updates or drawing.
+        /// Gets if this tool is enabled. When disabled, this <see cref="Tool"/> will not perform regular updating and drawing.
         /// Default is false.
         /// </summary>
         [DefaultValue(false)]
@@ -139,8 +140,8 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// Gets the <see cref="IToolBarControl"/> to use for displaying this <see cref="ToolBase"/> in a <see cref="ToolBar"/>.
-        /// This property is set in the <see cref="ToolBase"/>'s constructor and remains the same throughout the life of the object.
+        /// Gets the <see cref="IToolBarControl"/> to use for displaying this <see cref="Tool"/> in a <see cref="ToolBar"/>.
+        /// This property is set in the <see cref="Tool"/>'s constructor and remains the same throughout the life of the object.
         /// This can be null when the derived class sets the <see cref="ToolBarControlType"/> to
         /// <see cref="ToolBarControlType.None"/>.
         /// </summary>
@@ -186,9 +187,9 @@ namespace DemoGame.Editor
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="ToolBase"/> is reclaimed by garbage collection.
+        /// <see cref="Tool"/> is reclaimed by garbage collection.
         /// </summary>
-        ~ToolBase()
+        ~Tool()
         {
             _isDisposed = true;
             Dispose(false);
@@ -203,7 +204,7 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
-        /// When overridden in the derived class, allows for handling the <see cref="ToolBase.EnabledChanged"/> event.
+        /// When overridden in the derived class, allows for handling the <see cref="Tool.EnabledChanged"/> event.
         /// </summary>
         /// <param name="oldValue">The old (previous) value.</param>
         /// <param name="newValue">The new (current) value.</param>
@@ -254,7 +255,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="enable">When true, try to set to enabled. When false, try to set to disabled.</param>
         /// <returns>True if the tool's enabled state was changed to the value given by <paramref name="enable"/> or
-        /// <paramref name="enable"/> already equals the current <see cref="ToolBase.IsEnabled"/> state; false if the
+        /// <paramref name="enable"/> already equals the current <see cref="Tool.IsEnabled"/> state; false if the
         /// state failed to change.</returns>
         public bool TrySetEnabled(bool enable)
         {

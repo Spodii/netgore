@@ -20,6 +20,11 @@ namespace DemoGame.Editor
         Image Image { get; set; }
 
         /// <summary>
+        /// Gets or sets the <see cref="ToolBar"/> that this control is on.
+        /// </summary>
+        ToolBar ToolBar {get;set;}
+
+        /// <summary>
         /// Gets or sets how the <see cref="IToolBarControlSettings.Image"/> should be aligned on the control
         /// The default value is <see cref="System.Drawing.ContentAlignment.MiddleLeft"/>.
         /// </summary>

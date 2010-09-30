@@ -1,7 +1,7 @@
 ﻿namespace DemoGame.Editor
 {
     /// <summary>
-    /// The different types of controls that a <see cref="ToolBase"/> can display itself as in a <see cref="ToolBar"/>.
+    /// The different types of controls that a <see cref="Tool"/> can display itself as in a <see cref="ToolBar"/>.
     /// </summary>
     public enum ToolBarControlType : byte
     {

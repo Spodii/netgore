@@ -1,14 +1,14 @@
 ﻿namespace DemoGame.Editor
 {
     /// <summary>
-    /// Interface for a <see cref="ToolBase"/>'s control used in a <see cref="ToolBar"/>.
+    /// Interface for a <see cref="Editor.Tool"/>'s control used in a <see cref="ToolBar"/>.
     /// </summary>
     public interface IToolBarControl : IToolBarControlSettings
     {
         /// <summary>
-        /// Gets the <see cref="ToolBase"/> that this control is for.
+        /// Gets the <see cref="Editor.Tool"/> that this control is for.
         /// </summary>
-        ToolBase Tool { get; }
+        Tool Tool { get; }
 
         /// <summary>
         /// Gets the <see cref="IToolBarControlSettings"/> for this control. Can be safely up-casted to the appropriate
