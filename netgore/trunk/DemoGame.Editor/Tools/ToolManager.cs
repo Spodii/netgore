@@ -7,9 +7,12 @@ using log4net;
 using NetGore;
 using NetGore.Collections;
 
-namespace DemoGame.Editor.Tools
+namespace DemoGame.Editor
 {
-    public class ToolManager
+    /// <summary>
+    /// The manager for the <see cref="ToolBase"/>s. Contains an instance of all the available <see cref="ToolBase"/>s.
+    /// </summary>
+    public sealed class ToolManager
     {
         /// <summary>
         /// Delegate for handling events from the <see cref="ToolManager"/>.
@@ -17,10 +20,27 @@ namespace DemoGame.Editor.Tools
         /// <param name="sender">The <see cref="ToolManager"/> the event came from.</param>
         public delegate void EventHandler(ToolManager sender);
 
+        /// <summary>
+        /// Delegate for handling events from the <see cref="ToolManager"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="ToolManager"/> the event came from.</param>
+        /// <param name="tool">The <see cref="ToolBase"/> that the event relates to.</param>
+        public delegate void ToolEventHandler(ToolManager sender, ToolBase tool);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly ToolManager _instance;
 
         readonly Dictionary<Type, ToolBase> _tools = new Dictionary<Type, ToolBase>();
+
+        /// <summary>
+        /// Notifies listeners when a <see cref="ToolBase"/> instance has been added to this <see cref="ToolManager"/>.
+        /// </summary>
+        public event ToolEventHandler ToolAdded;
+
+        /// <summary>
+        /// Notifies listeners when a <see cref="ToolBase"/> instance has been removed from this <see cref="ToolManager"/>.
+        /// </summary>
+        public event ToolEventHandler ToolRemoved;
 
         /// <summary>
         /// Initializes the <see cref="ToolManager"/> class.
@@ -46,7 +66,7 @@ namespace DemoGame.Editor.Tools
 
             var filter = tfc.GetFilter();
 
-            new TypeFactory(filter, TypeFactory_TypeLoaded);
+            new TypeFactory(filter, typeFactory_TypeLoaded);
         }
 
         /// <summary>
@@ -121,7 +141,7 @@ namespace DemoGame.Editor.Tools
         /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        void TypeFactory_TypeLoaded(TypeFactory typeFactory, Type loadedType, string name)
+        void typeFactory_TypeLoaded(TypeFactory typeFactory, Type loadedType, string name)
         {
             try
             {
@@ -161,6 +181,10 @@ namespace DemoGame.Editor.Tools
 
                     return;
                 }
+
+                // Notify listeners
+                if (ToolAdded != null)
+                    ToolAdded(this, tool);
             }
             catch (Exception ex)
             {
@@ -190,6 +214,13 @@ namespace DemoGame.Editor.Tools
 
                 // Remove the tool
                 var wasRemoved = _tools.Remove(sender.GetType());
+
+                if (wasRemoved)
+                {
+                    if (ToolRemoved != null)
+                        ToolRemoved(this, sender);
+                }
+
                 Debug.Assert(wasRemoved);
             }
             catch (Exception ex)
