@@ -147,7 +147,7 @@ namespace DemoGame.Editor
             void Initialize()
             {
                 Text = Tool.Name;
-                Image = Tool.ToolBarIcon;
+                Name = Tool.Name;
             }
 
             #region IToolBarControl Members
@@ -212,6 +212,7 @@ namespace DemoGame.Editor
             void Initialize()
             {
                 Text = Tool.Name;
+                Name = Tool.Name;
             }
 
             #region IToolBarControl Members
