@@ -16,6 +16,47 @@ namespace DemoGame.Editor
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// Gets or sets the global <see cref="ToolBar"/>.
+        /// </summary>
+        public static ToolBar GlobalToolBar { get; set; }
+
+        /// <summary>
+        /// Gets or sets the non-global <see cref="ToolBar"/>.
+        /// </summary>
+        public static ToolBar NonGlobalToolBar { get; set; }
+
+        public static void AddToToolBar(Tool tool)
+        {
+            if (!tool.CanShowInToolbar)
+                return;
+
+            if (tool.ToolBarControl.IsOnToolBar)
+                return;
+
+            var c = TryGetToolStripItem(tool);
+            if (c == null)
+                return;
+
+            var tb = GetToolBar(tool.ToolBarVisibility);
+
+            Debug.Assert(!tb.Items.Contains(c));
+
+            tb.Items.Add(c);
+        }
+
+        public static ToolBar GetToolBar(ToolBarVisibility visibility)
+        {
+            switch (visibility)
+            {
+                case ToolBarVisibility.Global:
+                    return GlobalToolBar;
+
+                default:
+                    return NonGlobalToolBar;
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ToolBar"/> class.
         /// </summary>
         public ToolBar()
@@ -104,24 +145,6 @@ namespace DemoGame.Editor
             return tool.ToolBarControl as ToolStripItem;
         }
 
-        static class Helper
-        {
-            internal static void SetToolBarProperty(ToolStripItem toolBarItem, ToolBar value)
-            {
-                // If the value did not change, then... don't change it
-                if (toolBarItem.Owner == value)
-                    return;
-
-                // Remove from the old owner
-                if (toolBarItem.Owner != null)
-                    toolBarItem.Owner.Items.Remove(toolBarItem);
-
-                // Add to the new ToolBar
-                if (value != null)
-                    value.Items.Add(toolBarItem);
-            }
-        }
-
         /// <summary>
         /// A <see cref="ToolStripItem"/> for a <see cref="IToolBarControl"/> of type <see cref="ToolBarControlType.Button"/>.
         /// </summary>
@@ -189,6 +212,16 @@ namespace DemoGame.Editor
             }
 
             /// <summary>
+            /// Gets if this control is currently on a <see cref="ToolBar"/>.
+            /// </summary>
+            public bool IsOnToolBar
+            {
+                get {
+                    Debug.Assert(Owner == null || Owner is ToolBar);
+                    return (Owner as ToolBar) != null; }
+            }
+
+            /// <summary>
             /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.
             /// </summary>
             public ToolBarControlType ControlType
@@ -204,19 +237,6 @@ namespace DemoGame.Editor
                 get { return _tool; }
             }
 
-            /// <summary>
-            /// Gets or sets the <see cref="ToolBar"/> that this control is on.
-            /// </summary>
-            public ToolBar ToolBar
-            {
-                get
-                {
-                    Debug.Assert(Owner == null || Owner is ToolBar);
-                    return Owner as ToolBar;
-                }
-                set { Helper.SetToolBarProperty(this, value); }
-            }
-
             #endregion
         }
 
@@ -226,6 +246,18 @@ namespace DemoGame.Editor
         internal sealed class ToolBarItemLabel : ToolStripLabel, IToolBarControl, IToolBarLabelSettings
         {
             readonly Tool _tool;
+
+            /// <summary>
+            /// Gets if this control is currently on a <see cref="ToolBar"/>.
+            /// </summary>
+            public bool IsOnToolBar
+            {
+                get
+                {
+                    Debug.Assert(Owner == null || Owner is ToolBar);
+                    return (Owner as ToolBar) != null;
+                }
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ToolBarItemLabel"/> class.
@@ -280,19 +312,6 @@ namespace DemoGame.Editor
             public Tool Tool
             {
                 get { return _tool; }
-            }
-
-            /// <summary>
-            /// Gets or sets the <see cref="ToolBar"/> that this control is on.
-            /// </summary>
-            public ToolBar ToolBar
-            {
-                get
-                {
-                    Debug.Assert(Owner == null || Owner is ToolBar);
-                    return Owner as ToolBar;
-                }
-                set { Helper.SetToolBarProperty(this, value); }
             }
 
             #endregion
