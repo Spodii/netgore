@@ -17,6 +17,13 @@ namespace DemoGame.Editor
             InitializeComponent();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            toolBar.ToolManager = ToolManager.Instance;
+        }
+
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();

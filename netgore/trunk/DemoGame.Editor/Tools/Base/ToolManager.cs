@@ -149,7 +149,7 @@ namespace DemoGame.Editor
                 ToolBase tool;
                 try
                 {
-                    tool = (ToolBase)TypeFactory.GetTypeInstance(loadedType);
+                    tool = (ToolBase)TypeFactory.GetTypeInstance(loadedType, this);
                 }
                 catch (Exception ex)
                 {
