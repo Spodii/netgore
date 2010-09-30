@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ToolBarStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tools\ToolBase.cs" />
     <Compile Include="Tools\ToolManager.cs" />
     <Compile Include="CommandLineSwitch.cs" />
