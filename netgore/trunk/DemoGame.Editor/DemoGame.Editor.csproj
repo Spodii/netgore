@@ -51,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tools\ToolBase.cs" />
+    <Compile Include="Tools\ToolManager.cs" />
     <Compile Include="CommandLineSwitch.cs" />
     <Compile Include="Controls\BackgroundItemListBox.cs">
       <SubType>Component</SubType>
