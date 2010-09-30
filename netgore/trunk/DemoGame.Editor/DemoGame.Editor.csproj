@@ -134,6 +134,7 @@
     <Compile Include="Forms\ChildWindowForm.Designer.cs">
       <DependentUpon>ChildWindowForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ToolBar\ToolBarVisibility.cs" />
     <Compile Include="Tools\TestToolA.cs" />
     <Compile Include="Tools\TestToolB.cs" />
     <Compile Include="TransBox.cs" />

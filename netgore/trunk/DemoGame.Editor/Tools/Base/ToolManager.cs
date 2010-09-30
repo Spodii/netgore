@@ -33,16 +33,6 @@ namespace DemoGame.Editor
         readonly Dictionary<Type, Tool> _tools = new Dictionary<Type, Tool>();
 
         /// <summary>
-        /// Notifies listeners when a <see cref="Tool"/> instance has been added to this <see cref="ToolManager"/>.
-        /// </summary>
-        public event ToolEventHandler ToolAdded;
-
-        /// <summary>
-        /// Notifies listeners when a <see cref="Tool"/> instance has been removed from this <see cref="ToolManager"/>.
-        /// </summary>
-        public event ToolEventHandler ToolRemoved;
-
-        /// <summary>
         /// Initializes the <see cref="ToolManager"/> class.
         /// </summary>
         static ToolManager()
@@ -68,6 +58,16 @@ namespace DemoGame.Editor
 
             new TypeFactory(filter, typeFactory_TypeLoaded);
         }
+
+        /// <summary>
+        /// Notifies listeners when a <see cref="Tool"/> instance has been added to this <see cref="ToolManager"/>.
+        /// </summary>
+        public event ToolEventHandler ToolAdded;
+
+        /// <summary>
+        /// Notifies listeners when a <see cref="Tool"/> instance has been removed from this <see cref="ToolManager"/>.
+        /// </summary>
+        public event ToolEventHandler ToolRemoved;
 
         /// <summary>
         /// Gets the <see cref="ToolManager"/> instance.
@@ -136,6 +136,43 @@ namespace DemoGame.Editor
         }
 
         /// <summary>
+        /// Handles the <see cref="Tool.Disposed"/> event of a <see cref="Tool"/> in this <see cref="ToolManager"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
+        void tool_Disposed(Tool sender)
+        {
+            if (sender == null)
+            {
+                Debug.Fail("How the hell was the sender null?");
+                return;
+            }
+
+            try
+            {
+                // Remove the event hooks
+                SetToolListeners(sender, false);
+
+                // Remove the tool
+                var wasRemoved = _tools.Remove(sender.GetType());
+
+                if (wasRemoved)
+                {
+                    if (ToolRemoved != null)
+                        ToolRemoved(this, sender);
+                }
+
+                Debug.Assert(wasRemoved);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to remove tool `{0}`. Exception: {1}";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, sender, ex);
+                Debug.Fail(string.Format(errmsg, sender, ex));
+            }
+        }
+
+        /// <summary>
         /// Handles when a new type has been loaded into a <see cref="TypeFactory"/>.
         /// </summary>
         /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
@@ -192,43 +229,6 @@ namespace DemoGame.Editor
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, loadedType, ex);
                 Debug.Fail(string.Format(errmsg, loadedType, ex));
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="Tool.Disposed"/> event of a <see cref="Tool"/> in this <see cref="ToolManager"/>.
-        /// </summary>
-        /// <param name="sender">The <see cref="Tool"/> the event came from.</param>
-        void tool_Disposed(Tool sender)
-        {
-            if (sender == null)
-            {
-                Debug.Fail("How the hell was the sender null?");
-                return;
-            }
-
-            try
-            {
-                // Remove the event hooks
-                SetToolListeners(sender, false);
-
-                // Remove the tool
-                var wasRemoved = _tools.Remove(sender.GetType());
-
-                if (wasRemoved)
-                {
-                    if (ToolRemoved != null)
-                        ToolRemoved(this, sender);
-                }
-
-                Debug.Assert(wasRemoved);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to remove tool `{0}`. Exception: {1}";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, sender, ex);
-                Debug.Fail(string.Format(errmsg, sender, ex));
             }
         }
     }

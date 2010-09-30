@@ -3,7 +3,7 @@
     /// <summary>
     /// Interface for a <see cref="Editor.Tool"/>'s control used in a <see cref="ToolBar"/>.
     /// </summary>
-    public interface IToolBarControl : IToolBarControlSettings
+    public interface IToolBarControl
     {
         /// <summary>
         /// Gets the <see cref="Editor.Tool"/> that this control is for.
@@ -19,6 +19,11 @@
         /// <see cref="IToolBarControl.ControlSettings"/> can be up-casted to <see cref="IToolBarButtonSettings"/>.
         /// </example>
         IToolBarControlSettings ControlSettings { get; }
+
+        /// <summary>
+        /// Gets if this control is currently on a <see cref="ToolBar"/>.
+        /// </summary>
+        bool IsOnToolBar { get; }
 
         /// <summary>
         /// Gets the <see cref="ToolBarControlType"/> that describes the type of this control.

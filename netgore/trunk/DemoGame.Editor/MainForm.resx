@@ -186,34 +186,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;msMenu.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <metadata name="tbGlobal.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>116, 17</value>
-  </metadata>
-  <data name="tbGlobal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 24</value>
-  </data>
-  <data name="tbGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>687, 25</value>
-  </data>
-  <data name="tbGlobal.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tbGlobal.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;tbGlobal.Name" xml:space="preserve">
-    <value>tbGlobal</value>
-  </data>
-  <data name="&gt;&gt;tbGlobal.Type" xml:space="preserve">
-    <value>DemoGame.Editor.ToolBar, DemoGame.Editor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;tbGlobal.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tbGlobal.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <metadata name="ssStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>206, 17</value>
@@ -240,17 +213,17 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ssStatus.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="dockPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="dockPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 49</value>
+    <value>0, 24</value>
   </data>
   <data name="dockPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>687, 450</value>
+    <value>687, 475</value>
   </data>
   <data name="dockPanel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -265,7 +238,61 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;dockPanel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <metadata name="tbNonGlobal.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>496, 17</value>
+  </metadata>
+  <data name="tbNonGlobal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 49</value>
+  </data>
+  <data name="tbNonGlobal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>687, 25</value>
+  </data>
+  <data name="tbNonGlobal.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="tbNonGlobal.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;tbNonGlobal.Name" xml:space="preserve">
+    <value>tbNonGlobal</value>
+  </data>
+  <data name="&gt;&gt;tbNonGlobal.Type" xml:space="preserve">
+    <value>DemoGame.Editor.ToolBar, DemoGame.Editor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tbNonGlobal.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tbNonGlobal.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <metadata name="tbGlobal.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>398, 17</value>
+  </metadata>
+  <data name="tbGlobal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 24</value>
+  </data>
+  <data name="tbGlobal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>687, 25</value>
+  </data>
+  <data name="tbGlobal.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="tbGlobal.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;tbGlobal.Name" xml:space="preserve">
+    <value>tbGlobal</value>
+  </data>
+  <data name="&gt;&gt;tbGlobal.Type" xml:space="preserve">
+    <value>DemoGame.Editor.ToolBar, DemoGame.Editor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tbGlobal.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tbGlobal.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -275,6 +302,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>687, 521</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>NetGore Editor</value>

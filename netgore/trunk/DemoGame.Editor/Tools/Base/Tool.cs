@@ -31,10 +31,25 @@ namespace DemoGame.Editor
         readonly string _name;
         readonly IToolBarControl _toolBarControl;
         readonly ToolManager _toolManager;
+        readonly ToolBarVisibility _toolBarVisibility;
 
         bool _canShowInToolbar = true;
         bool _isDisposed;
         bool _isEnabled;
+
+        /// <summary>
+        /// Gets the visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.
+        /// </summary>
+        public ToolBarVisibility ToolBarVisibility { get { return _toolBarVisibility; } }
+
+        /// <summary>
+        /// Tries to add this <see cref="Tool"/> to the appropriate <see cref="ToolBar"/> if it is not already on the
+        /// <see cref="ToolBar"/>.
+        /// </summary>
+        public void AddToToolBar()
+        {
+            ToolBar.AddToToolBar(this);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tool"/> class.
@@ -43,11 +58,14 @@ namespace DemoGame.Editor
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
         /// <param name="toolBarControlType">The <see cref="ToolBarControlType"/> to use for displaying this <see cref="Tool"/>
         /// in a toolbar.</param>
+        /// <param name="toolBarVisibility">The visibility of this <see cref="Tool"/> in a <see cref="ToolBar"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is null or empty.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="toolManager"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarControlType"/> does not contain a defined value of the
         /// <see cref="ToolBarControlType"/> enum.</exception>
-        protected Tool(string name, ToolManager toolManager, ToolBarControlType toolBarControlType)
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarVisibility"/> does not contain a defined value of the
+        /// <see cref="ToolBarVisibility"/> enum.</exception>
+        protected Tool(string name, ToolManager toolManager, ToolBarControlType toolBarControlType, ToolBarVisibility toolBarVisibility)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
@@ -55,11 +73,17 @@ namespace DemoGame.Editor
                 throw new ArgumentNullException("toolManager");
             if (!EnumHelper<ToolBarControlType>.IsDefined(toolBarControlType))
                 throw new ArgumentOutOfRangeException("toolBarControlType");
+            if (!EnumHelper<ToolBarVisibility>.IsDefined(toolBarVisibility))
+                throw new ArgumentOutOfRangeException("toolBarVisibility");
 
             _name = name;
             _toolManager = toolManager;
+            _toolBarVisibility = toolBarVisibility;
 
             _toolBarControl = ToolBar.CreateToolControl(this, toolBarControlType);
+
+            // TODO: !! Grab from the tool settings if this should be shown on the toolbar
+            AddToToolBar();
         }
 
         /// <summary>

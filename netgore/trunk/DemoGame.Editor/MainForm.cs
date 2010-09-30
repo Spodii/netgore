@@ -15,14 +15,14 @@ namespace DemoGame.Editor
         public MainForm()
         {
             InitializeComponent();
+
+            ToolBar.GlobalToolBar = tbGlobal;
+            ToolBar.NonGlobalToolBar = tbNonGlobal;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            ToolManager.Instance.TryGetTool<TestToolA>().ToolBarControl.ToolBar = tbGlobal;
-            ToolManager.Instance.TryGetTool<TestToolB>().ToolBarControl.ToolBar = tbGlobal;
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
