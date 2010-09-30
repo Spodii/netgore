@@ -51,11 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\IToolBarControl.cs" />
+    <Compile Include="Tools\IToolBarControl.cs" />
     <Compile Include="Controls\ToolBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ToolBarControlType.cs" />
+    <Compile Include="Tools\ToolBarControlType.cs" />
     <Compile Include="Tools\ToolBase.cs" />
     <Compile Include="Tools\ToolManager.cs" />
     <Compile Include="CommandLineSwitch.cs" />
