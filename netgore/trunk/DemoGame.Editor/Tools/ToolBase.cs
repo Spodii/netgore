@@ -2,8 +2,9 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using NetGore;
 
-namespace DemoGame.Editor.Tools
+namespace DemoGame.Editor
 {
     /// <summary>
     /// The base class for tools in the editor.
@@ -25,28 +26,38 @@ namespace DemoGame.Editor.Tools
         public delegate void ValueChangedEventHandler<in T>(ToolBase sender, T oldValue, T newValue);
 
         readonly string _name;
+        readonly IToolBarControl _toolBarControl;
         readonly ToolManager _toolManager;
-        bool _canShowInToolbar;
 
+        bool _canShowInToolbar;
         bool _isDisposed;
         bool _isEnabled;
+        Image _toolBarIcon;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolBase"/> class.
         /// </summary>
         /// <param name="name">The name of the tool.</param>
         /// <param name="toolManager">The <see cref="ToolManager"/>.</param>
+        /// <param name="toolBarControlType">The <see cref="ToolBarControlType"/> to use for displaying this <see cref="ToolBase"/>
+        /// in a toolbar.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is null or empty.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="toolManager"/> is null.</exception>
-        protected ToolBase(string name, ToolManager toolManager)
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="toolBarControlType"/> does not contain a defined value of the
+        /// <see cref="ToolBarControlType"/> enum.</exception>
+        protected ToolBase(string name, ToolManager toolManager, ToolBarControlType toolBarControlType)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
             if (toolManager == null)
                 throw new ArgumentNullException("toolManager");
+            if (!EnumHelper<ToolBarControlType>.IsDefined(toolBarControlType))
+                throw new ArgumentOutOfRangeException("toolBarControlType");
 
             _name = name;
             _toolManager = toolManager;
+
+            _toolBarControl = ToolBar.CreateToolControl(this, toolBarControlType);
         }
 
         /// <summary>
@@ -65,13 +76,13 @@ namespace DemoGame.Editor.Tools
         public event ValueChangedEventHandler<bool> EnabledChanged;
 
         /// <summary>
-        /// Notifies listeners when the <see cref="ToolbarIcon"/> property has changed.
+        /// Notifies listeners when the <see cref="ToolBarIcon"/> property has changed.
         /// </summary>
-        public event ValueChangedEventHandler<Image> ToolbarIconChanged;
+        public event ValueChangedEventHandler<Image> ToolBarIconChanged;
 
         /// <summary>
-        /// Gets or sets if this tool can be shown in the toolbar. This does not mean that the tool will be shown in the toolbar,
-        /// just if it is allowed to be.
+        /// Gets or sets if this tool can be shown in the <see cref="ToolBar"/>. This does not mean that the tool will be shown in the
+        /// <see cref="ToolBar"/>, just if it is allowed to be.
         /// Default is true.
         /// </summary>
         [DefaultValue(true)]
@@ -85,7 +96,7 @@ namespace DemoGame.Editor.Tools
 
                 _canShowInToolbar = value;
 
-                OnCanShowInToolbarChanged(!CanShowInToolbar, CanShowInToolbar);
+                OnCanShowInToolBarChanged(!CanShowInToolbar, CanShowInToolbar);
                 if (CanShowInToolbarChanged != null)
                     CanShowInToolbarChanged(this, !CanShowInToolbar, CanShowInToolbar);
             }
@@ -129,6 +140,35 @@ namespace DemoGame.Editor.Tools
         public string Name
         {
             get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IToolBarControl"/> to use for displaying this <see cref="ToolBase"/> in a <see cref="ToolBar"/>.
+        /// This property is set in the <see cref="ToolBase"/>'s constructor and remains the same throughout the life of the object.
+        /// </summary>
+        public IToolBarControl ToolBarControl
+        {
+            get { return _toolBarControl; }
+        }
+
+        /// <summary>
+        /// Gets or sets (protected) the <see cref="Image"/> to use when displaying this tool in a <see cref="ToolBar"/>.
+        /// </summary>
+        public Image ToolBarIcon
+        {
+            get { return _toolBarIcon; }
+            set
+            {
+                if (_toolBarIcon == value)
+                    return;
+
+                var oldValue = _toolBarIcon;
+                _toolBarIcon = value;
+
+                OnToolbarIconChanged(oldValue, value);
+                if (ToolBarIconChanged != null)
+                    ToolBarIconChanged(this, oldValue, value);
+            }
         }
 
         /// <summary>
@@ -176,39 +216,7 @@ namespace DemoGame.Editor.Tools
             Dispose(false);
         }
 
-        Image _toolbarIcon;
-
-        /// <summary>
-        /// Gets or sets (protected) the <see cref="Image"/> to use when displaying this tool in the toolbar.
-        /// </summary>
-        public Image ToolbarIcon
-        {
-            get { return _toolbarIcon; }
-            set
-            {
-                if (_toolbarIcon == value)
-                    return;
-
-                var oldValue = _toolbarIcon;
-                _toolbarIcon = value;
-
-                OnToolbarIconChanged(oldValue, value);
-                if (ToolbarIconChanged != null)
-                    ToolbarIconChanged(this, oldValue, value);
-            }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="Image"/> to display for this <see cref="ToolBase"/> in
-        /// the toolbar.
-        /// </summary>
-        /// <returns>The <see cref="Image"/> to display in the toolbar, or null if it cannot be added to the toolbar.</returns>
-        protected virtual Image GetToolbarIcon()
-        {
-            return null;
-        }
-
-        protected virtual void OnCanShowInToolbarChanged(bool oldValue, bool newValue)
+        protected virtual void OnCanShowInToolBarChanged(bool oldValue, bool newValue)
         {
         }
 
@@ -222,16 +230,6 @@ namespace DemoGame.Editor.Tools
         }
 
         protected virtual void OnToolbarIconChanged(Image oldValue, Image newValue)
-        {
-
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when the tool is clicked in the toolbar.
-        /// </summary>
-        /// <param name="oldValue">The old (previous) value.</param>
-        /// <param name="newValue">The new (current) value.</param>
-        protected virtual void OnToolbarClicked(bool oldValue, bool newValue)
         {
         }
 
