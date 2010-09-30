@@ -16,26 +16,13 @@ namespace DemoGame.Editor
     public class ToolBar : ToolStrip
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly List<ToolBase> _tools = new List<ToolBase>();
-
-        ToolManager _toolManager;
 
         /// <summary>
-        /// Gets or sets the <see cref="ToolManager"/> to use to get the tools to display on this control.
+        /// Initializes a new instance of the <see cref="ToolBar"/> class.
         /// </summary>
-        public ToolManager ToolManager
+        public ToolBar()
         {
-            get { return _toolManager; }
-            set
-            {
-                if (_toolManager == value)
-                    return;
-
-                var oldValue = ToolManager;
-                _toolManager = value;
-
-                OnToolManagerChanged(oldValue, value);
-            }
+            AllowItemReorder = true;
         }
 
         /// <summary>
@@ -79,111 +66,20 @@ namespace DemoGame.Editor
                     return null;
             }
 
-            // Set up the common event hooks
-            IToolBarControlManagement.SetEventHooks(tool, true);
-
             return (IToolBarControl)c;
         }
 
-        protected virtual void OnToolManagerChanged(ToolManager oldValue, ToolManager newValue)
-        {
-            // Remove the old tools
-            _tools.Clear();
-            Items.Clear();
-
-            if (oldValue != null)
-            {
-                foreach (var tool in oldValue.Tools)
-                {
-                    tool.CanShowInToolbarChanged -= allToolManagerTools_CanShowInToolbarChanged;
-                    tool.Disposed -= allToolManagerTools_Disposed;
-                    tool.ToolBarPriorityChanged -= allToolManagerTools_ToolBarPriorityChanged;
-                }
-            }
-
-            // Add the tools for the new ToolManager
-            if (newValue != null)
-            {
-                foreach (var tool in newValue.Tools)
-                {
-                    UpdateToolBarStatus(tool);
-
-                    tool.CanShowInToolbarChanged += allToolManagerTools_CanShowInToolbarChanged;
-                    tool.Disposed += allToolManagerTools_Disposed;
-                    tool.ToolBarPriorityChanged += allToolManagerTools_ToolBarPriorityChanged;
-                }
-            }
-        }
-
         /// <summary>
-        /// Re-organizes the <see cref="ToolBar"/>'s items to obey the priority order.
+        /// Adds a tool to the <see cref="ToolBar"/>.
         /// </summary>
-        void OrganizeToolBar()
+        /// <param name="tool">The <see cref="ToolBase"/> to add.</param>
+        public void AddTool(ToolBase tool)
         {
-            var isOrganized = true;
-
-            // Sort the list
-            _tools.Sort(ToolBarItemSorter);
-
-            // Check if already organized
-            if (_tools.Count != Items.Count)
-                isOrganized = false;
-
-            if (isOrganized)
-            {
-                for (var i = 0; i < _tools.Count; i++)
-                {
-                    if (_tools[i] != ((IToolBarControl)Items[i]).Tool)
-                    {
-                        isOrganized = false;
-                        break;
-                    }
-                }
-            }
-
-            if (isOrganized)
+            var c = TryGetToolStripItem(tool);
+            if (c == null)
                 return;
 
-            // Clear the items and re-add them in the proper order
-            Items.Clear();
-            var sortedItems = _tools.Select(x => x.ToolBarControl).Cast<ToolStripItem>().ToArray();
-            Items.AddRange(sortedItems);
-        }
-
-        /// <summary>
-        /// Gets if a <see cref="ToolBase"/> should be in the <see cref="ToolBar"/>.
-        /// </summary>
-        /// <param name="tool">The <see cref="ToolBase"/> to check.</param>
-        /// <returns>True if it should be in the <see cref="ToolBar"/>; otherwise false.</returns>
-        bool ShouldToolBeInToolBar(ToolBase tool)
-        {
-            if (tool == null)
-                return false;
-
-            if (tool.IsDisposed)
-                return false;
-
-            if (!tool.CanShowInToolbar)
-                return false;
-
-            if (tool.ToolBarControl == null)
-                return false;
-
-            if (tool.ToolManager != ToolManager)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Compares two <see cref="ToolBase"/>s so they can be sorted.
-        /// </summary>
-        /// <param name="l">The left argument.</param>
-        /// <param name="r">The right argument.</param>
-        /// <returns>The comparison result.</returns>
-        static int ToolBarItemSorter(ToolBase l, ToolBase r)
-        {
-            return l.ToolBarPriority.CompareTo(r.ToolBarPriority);
+            Items.Add(c);
         }
 
         /// <summary>
@@ -191,7 +87,7 @@ namespace DemoGame.Editor
         /// </summary>
         /// <param name="tool">The tool to get the <see cref="ToolStripItem"/> for.</param>
         /// <returns>The <see cref="ToolStripItem"/> for the <paramref name="tool"/>, or null if unable to get it.</returns>
-        static ToolStripItem TryGetToolStripItem(ToolBase tool)
+        protected static ToolStripItem TryGetToolStripItem(ToolBase tool)
         {
             if (tool == null)
             {
@@ -221,97 +117,6 @@ namespace DemoGame.Editor
             }
 
             return tool.ToolBarControl as ToolStripItem;
-        }
-
-        void UpdateToolBarStatus(ToolBase tool)
-        {
-            var add = ShouldToolBeInToolBar(tool);
-            var mustReorganize = false;
-
-            if (add)
-            {
-                // Make sure it is in the toolbar
-                if (!_tools.Contains(tool))
-                {
-                    _tools.Add(tool);
-                    mustReorganize = true;
-                }
-            }
-            else
-            {
-                // Make sure its not in the toolbar
-                if (_tools.Contains(tool))
-                {
-                    _tools.Remove(tool);
-                    mustReorganize = true;
-                }
-            }
-
-            // Re-organize
-            if (mustReorganize)
-                OrganizeToolBar();
-        }
-
-        void allToolManagerTools_CanShowInToolbarChanged(ToolBase sender, bool oldValue, bool newValue)
-        {
-            UpdateToolBarStatus(sender);
-        }
-
-        void allToolManagerTools_Disposed(ToolBase sender)
-        {
-            UpdateToolBarStatus(sender);
-        }
-
-        void allToolManagerTools_ToolBarPriorityChanged(ToolBase sender, int oldValue, int newValue)
-        {
-            if (_tools.Contains(sender))
-                UpdateToolBarStatus(sender);
-        }
-
-        /// <summary>
-        /// Logical grouping of stuff related to the <see cref="IToolBarControl"/> management and updating a <see cref="ToolBase"/>'s
-        /// <see cref="ToolBar"/> control when the <see cref="ToolBase"/> raises certain events.
-        /// </summary>
-        static class IToolBarControlManagement
-        {
-            /// <summary>
-            /// Sets the event hooks on a <see cref="ToolBase"/>.
-            /// </summary>
-            /// <param name="tool">The <see cref="ToolBase"/> to set the event hooks on.</param>
-            /// <param name="add">True to add the event hooks, or false to remove them.</param>
-            internal static void SetEventHooks(ToolBase tool, bool add)
-            {
-                if (add)
-                {
-                    // When adding the events, always remove them first just to make sure that we do not add the event listeners
-                    // twice. There is no harm in removing an event that is not there, but this is harm if we get invoked twice for
-                    // the same event.
-                    SetEventHooks(tool, false);
-
-                    // Add the event hooks
-                    tool.ToolBarIconChanged += tool_ToolBarIconChanged;
-                }
-                else
-                {
-                    // Remove the event hooks
-                    tool.ToolBarIconChanged -= tool_ToolBarIconChanged;
-                }
-            }
-
-            /// <summary>
-            /// Handles the <see cref="ToolBase.ToolBarIconChanged"/> event.
-            /// </summary>
-            /// <param name="sender">The sender.</param>
-            /// <param name="oldValue">The old value.</param>
-            /// <param name="newValue">The new value.</param>
-            static void tool_ToolBarIconChanged(ToolBase sender, Image oldValue, Image newValue)
-            {
-                var c = TryGetToolStripItem(sender);
-                if (c == null)
-                    return;
-
-                c.Image = sender.ToolBarIcon;
-            }
         }
 
         /// <summary>

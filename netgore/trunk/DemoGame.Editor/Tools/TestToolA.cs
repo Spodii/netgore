@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DemoGame.Editor.Tools
+namespace DemoGame.Editor
 {
     public class TestToolA : ToolBase
     {
         public TestToolA(ToolManager toolManager)
             : base("Test Tool A", toolManager, ToolBarControlType.Label)
         {
-            ToolBarPriority = -1;
         }
     }
 
@@ -19,7 +18,6 @@ namespace DemoGame.Editor.Tools
         public TestToolB(ToolManager toolManager)
             : base("Test Tool B", toolManager, ToolBarControlType.Button)
         {
-            ToolBarPriority = 1;
         }
     }
 }
