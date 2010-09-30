@@ -14,6 +14,7 @@ namespace DemoGame.Editor
     class MapPreviewControl : GraphicsDeviceControl
     {
         readonly ICamera2D _camera = new Camera2D(Vector2.Zero);
+        readonly SpriteBatch _spriteBatch = new SpriteBatch(null);
 
         /// <summary>
         /// Gets or sets the camera used to view the map. The <see cref="ICamera2D.Map"/> property must be
@@ -23,10 +24,21 @@ namespace DemoGame.Editor
         public ICamera2D Camera { get; set; }
 
         /// <summary>
-        /// Derived classes override this to draw themselves using the GraphicsDevice.
+        /// Allows derived classes to handle when the <see cref="GraphicsDeviceControl.RenderWindow"/> is created or re-created.
         /// </summary>
-        /// <param name="spriteBatch">The <see cref="ISpriteBatch"/> to use for drawing.</param>
-        protected override void Draw(ISpriteBatch spriteBatch)
+        /// <param name="newRenderWindow">The current <see cref="GraphicsDeviceControl.RenderWindow"/>.</param>
+        protected override void OnRenderWindowCreated(RenderWindow newRenderWindow)
+        {
+            base.OnRenderWindowCreated(newRenderWindow);
+
+            _spriteBatch.RenderTarget = newRenderWindow;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, draws the graphics to the control.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        protected override void HandleDraw(NetGore.TickCount currentTime)
         {
             // Clear the background
             RenderWindow.Clear(Color.Black);
@@ -45,28 +57,32 @@ namespace DemoGame.Editor
             _camera.Min = Vector2.Zero;
 
             // Begin drawing
-            spriteBatch.Begin(BlendMode.Alpha, _camera);
+            _spriteBatch.Begin(BlendMode.Alpha, _camera);
+            try
+            {
+                // Store the current map values
+                var oldDrawParticles = map.DrawParticles;
+                var oldCamera = map.Camera;
+                var oldDrawFilter = map.DrawFilter;
 
-            // Store the current map values
-            var oldDrawParticles = map.DrawParticles;
-            var oldCamera = map.Camera;
-            var oldDrawFilter = map.DrawFilter;
+                // Set our custom map values
+                map.DrawParticles = false;
+                map.Camera = _camera;
+                map.DrawFilter = null;
 
-            // Set our custom map values
-            map.DrawParticles = false;
-            map.Camera = _camera;
-            map.DrawFilter = null;
+                // Draw the map
+                map.Draw(_spriteBatch);
 
-            // Draw the map
-            map.Draw(spriteBatch);
-
-            // Restore the old values
-            map.DrawParticles = oldDrawParticles;
-            map.Camera = oldCamera;
-            map.DrawFilter = oldDrawFilter;
-
-            // End drawing
-            spriteBatch.End();
+                // Restore the old values
+                map.DrawParticles = oldDrawParticles;
+                map.Camera = oldCamera;
+                map.DrawFilter = oldDrawFilter;
+            }
+            finally
+            {
+                // End drawing
+                _spriteBatch.End();
+            }
         }
 
         void FocusCameraAtScreenPoint(MouseEventArgs e)
