@@ -49,7 +49,7 @@ namespace DemoGame.Editor
                 // Update the visibility of all ToolBars
                 foreach (var tb in _toolBars)
                 {
-                    if (tb.Key == _currentToolBarVisibility)
+                    if (tb.Key == _currentToolBarVisibility || tb.Key == ToolBarVisibility.Global)
                         tb.Value.Visible = true;
                     else
                         tb.Value.Visible = false;
@@ -59,6 +59,7 @@ namespace DemoGame.Editor
 
         /// <summary>
         /// Gets or sets the visibility of this <see cref="ToolBar"/>. This value should NOT be changed after it is set!
+        /// If set to <see cref="Editor.ToolBarVisibility.None"/>, it won't automatically show any tools, making it quite useless.
         /// </summary>
         [Browsable(true)]
         [Description("The ToolBarVisibility handled by this ToolBar.")]
@@ -68,6 +69,9 @@ namespace DemoGame.Editor
             get { return _visibility; }
             set
             {
+                if (_visibility == value)
+                    return;
+
                 var oldValue = _visibility;
                 _visibility = value;
 
@@ -102,6 +106,12 @@ namespace DemoGame.Editor
                         _toolBars[value] = this;
                     }
                 }
+
+                // Set the visibility based on the CurrentToolBarVisibility
+                if (value == CurrentToolBarVisibility || value == ToolBarVisibility.Global)
+                    Visible = true;
+                else
+                    Visible = false;
             }
         }
 
