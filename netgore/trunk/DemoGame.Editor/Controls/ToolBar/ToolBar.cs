@@ -170,8 +170,28 @@ namespace DemoGame.Editor
                     c = new ToolBarItemButton(tool);
                     break;
 
+                case ToolBarControlType.ComboBox:
+                    c = new ToolBarItemComboBox(tool);
+                    break;
+
+                case ToolBarControlType.DropDownButton:
+                    c = new ToolBarItemDropDownButton(tool);
+                    break;
+
                 case ToolBarControlType.Label:
                     c = new ToolBarItemLabel(tool);
+                    break;
+
+                case ToolBarControlType.ProgressBar:
+                    c = new ToolBarItemProgressBar(tool);
+                    break;
+
+                case ToolBarControlType.SplitButton:
+                    c = new ToolBarItemSplitButton(tool);
+                    break;
+
+                case ToolBarControlType.TextBox:
+                    c = new ToolBarItemTextBox(tool);
                     break;
 
                 default:
