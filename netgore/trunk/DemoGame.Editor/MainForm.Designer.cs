@@ -56,7 +56,7 @@ namespace DemoGame.Editor
             this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
-            this.tbNonGlobal = new DemoGame.Editor.ToolBar();
+            this.tbMap = new DemoGame.Editor.ToolBar();
             this.tbGlobal = new DemoGame.Editor.ToolBar();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
@@ -173,24 +173,26 @@ namespace DemoGame.Editor
             this.dockPanel.Skin = dockPanelSkin1;
             this.dockPanel.Click += new System.EventHandler(this.dockPanel_Click);
             // 
-            // tbNonGlobal
+            // tbMap
             // 
-            this.tbNonGlobal.AllowItemReorder = true;
-            resources.ApplyResources(this.tbNonGlobal, "tbNonGlobal");
-            this.tbNonGlobal.Name = "tbNonGlobal";
+            this.tbMap.AllowItemReorder = true;
+            resources.ApplyResources(this.tbMap, "tbMap");
+            this.tbMap.Name = "tbMap";
+            this.tbMap.ToolBarVisibility = DemoGame.Editor.ToolBarVisibility.Map;
             // 
             // tbGlobal
             // 
             this.tbGlobal.AllowItemReorder = true;
             resources.ApplyResources(this.tbGlobal, "tbGlobal");
             this.tbGlobal.Name = "tbGlobal";
+            this.tbGlobal.ToolBarVisibility = DemoGame.Editor.ToolBarVisibility.Global;
             // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dockPanel);
-            this.Controls.Add(this.tbNonGlobal);
+            this.Controls.Add(this.tbMap);
             this.Controls.Add(this.tbGlobal);
             this.Controls.Add(this.ssStatus);
             this.Controls.Add(this.msMenu);
@@ -216,7 +218,7 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private ToolBar tbGlobal;
-        private ToolBar tbNonGlobal;
+        private ToolBar tbMap;
         private DockPanel dockPanel;
     }
 }

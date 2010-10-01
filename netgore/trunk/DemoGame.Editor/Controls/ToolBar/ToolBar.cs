@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -15,9 +17,13 @@ namespace DemoGame.Editor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        static readonly Dictionary<ToolBarVisibility, ToolBar> _toolBars =
+            new Dictionary<ToolBarVisibility, ToolBar>(EnumComparer<ToolBarVisibility>.Instance);
+
         static ToolBarVisibility _currentToolBarVisibility = ToolBarVisibility.Global;
-        static ToolBar _globalToolBar;
-        static ToolBar _nonGlobalToolBar;
+
+        bool _hasVisibilityBeenSet;
+        ToolBarVisibility _visibility;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolBar"/> class.
@@ -40,57 +46,69 @@ namespace DemoGame.Editor
 
                 _currentToolBarVisibility = value;
 
-                if (_currentToolBarVisibility == ToolBarVisibility.Global)
+                // Update the visibility of all ToolBars
+                foreach (var tb in _toolBars)
                 {
-                    if (NonGlobalToolBar != null)
-                        NonGlobalToolBar.Visible = false;
-                }
-                else
-                {
-                    if (NonGlobalToolBar != null)
-                        NonGlobalToolBar.Visible = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the global <see cref="ToolBar"/>.
-        /// </summary>
-        public static ToolBar GlobalToolBar
-        {
-            get { return _globalToolBar; }
-            set
-            {
-                if (_globalToolBar == value)
-                    return;
-
-                _globalToolBar = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the non-global <see cref="ToolBar"/>.
-        /// </summary>
-        public static ToolBar NonGlobalToolBar
-        {
-            get { return _nonGlobalToolBar; }
-            set
-            {
-                if (_nonGlobalToolBar == value)
-                    return;
-
-                _nonGlobalToolBar = value;
-
-                if (_nonGlobalToolBar != null)
-                {
-                    if (CurrentToolBarVisibility == ToolBarVisibility.Global)
-                        _nonGlobalToolBar.Visible = false;
+                    if (tb.Key == _currentToolBarVisibility)
+                        tb.Value.Visible = true;
                     else
-                        _nonGlobalToolBar.Visible = true;
+                        tb.Value.Visible = false;
                 }
             }
         }
 
+        /// <summary>
+        /// Gets or sets the visibility of this <see cref="ToolBar"/>. This value should NOT be changed after it is set!
+        /// </summary>
+        [Browsable(true)]
+        [Description("The ToolBarVisibility handled by this ToolBar.")]
+        [DefaultValue(ToolBarVisibility.None)]
+        public ToolBarVisibility ToolBarVisibility
+        {
+            get { return _visibility; }
+            set
+            {
+                var oldValue = _visibility;
+                _visibility = value;
+
+                // Check if we already set this value
+                if (_hasVisibilityBeenSet)
+                    Debug.Fail("You already set the visibility for this ToolBar!");
+
+                _hasVisibilityBeenSet = true;
+
+                // Remove from the old key
+                if (oldValue != ToolBarVisibility.None)
+                {
+                    if (_toolBars.ContainsKey(oldValue) && _toolBars[oldValue] == this)
+                        _toolBars.Remove(oldValue);
+                }
+
+                // Add to the new key
+                if (value != ToolBarVisibility.None)
+                {
+                    if (!_toolBars.ContainsKey(value))
+                    {
+                        _toolBars.Add(value, this);
+                    }
+                    else
+                    {
+                        const string errmsg = "Setting ToolBar `{0}` as the ToolBar with visibility `{1}`, though ToolBar `{2}` was already there." +
+                            " Make sure you do not have multiple ToolBars with the same ToolBarVisibility.";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, this, value, _toolBars[value]);
+                        Debug.Fail(string.Format(errmsg, this, value, _toolBars[value]));
+
+                        _toolBars[value] = this;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a <see cref="Tool"/> go its <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="tool">The <see cref="Tool"/> to add to its <see cref="ToolBar"/>.</param>
         public static void AddToToolBar(Tool tool)
         {
             if (!tool.CanShowInToolbar)
@@ -104,10 +122,38 @@ namespace DemoGame.Editor
                 return;
 
             var tb = GetToolBar(tool.ToolBarVisibility);
+            if (tb == null)
+                return;
 
             Debug.Assert(!tb.Items.Contains(c));
 
             tb.Items.Add(c);
+
+            Debug.Assert(tb.Items.Contains(c));
+        }
+
+        /// <summary>
+        /// Removes a <see cref="Tool"/> from its <see cref="ToolBar"/>.
+        /// </summary>
+        /// <param name="tool">The <see cref="Tool"/> to remove from its <see cref="ToolBar"/>.</param>
+        public static void RemoveFromToolBar(Tool tool)
+        {
+            if (!tool.ToolBarControl.IsOnToolBar)
+                return;
+
+            var c = TryGetToolStripItem(tool);
+            if (c == null)
+                return;
+
+            var tb = GetToolBar(tool.ToolBarVisibility);
+            if (tb == null)
+                return;
+
+            Debug.Assert(tb.Items.Contains(c));
+
+            tb.Items.Remove(c);
+
+            Debug.Assert(!tb.Items.Contains(c));
         }
 
         /// <summary>
@@ -154,16 +200,36 @@ namespace DemoGame.Editor
             return (IToolBarControl)c;
         }
 
+        /// <summary>
+        /// Gets the <see cref="ToolBar"/> for a given <see cref="ToolBarVisibility"/> level.
+        /// </summary>
+        /// <param name="visibility">The <see cref="ToolBarVisibility"/> of the <see cref="ToolBar"/> to get.</param>
+        /// <returns>The <see cref="ToolBar"/> for the given <paramref name="visibility"/>, or null if none exists
+        /// for the given <paramref name="visibility"/>.</returns>
         public static ToolBar GetToolBar(ToolBarVisibility visibility)
         {
-            switch (visibility)
+            // Make sure its a legal value
+            if (visibility == ToolBarVisibility.None || !EnumHelper<ToolBarVisibility>.IsDefined(visibility))
             {
-                case ToolBarVisibility.Global:
-                    return GlobalToolBar;
-
-                default:
-                    return NonGlobalToolBar;
+                const string errmsg = "Invalid ToolBarVisibility value `{0}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, visibility);
+                Debug.Fail(string.Format(errmsg, visibility));
+                return null;
             }
+
+            // Try to get the value
+            ToolBar ret;
+            if (!_toolBars.TryGetValue(visibility, out ret))
+            {
+                const string errmsg = "No ToolBar found for ToolBarVisibility `{0}`. Did you forget to create a ToolBar for that visibility?";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, visibility);
+                Debug.Fail(string.Format(errmsg, visibility));
+                return null;
+            }
+
+            return ret;
         }
 
         /// <summary>
