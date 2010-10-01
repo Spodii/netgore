@@ -55,9 +55,9 @@ namespace DemoGame.Editor
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miniMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
-            this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
             this.tbNonGlobal = new DemoGame.Editor.ToolBar();
             this.tbGlobal = new DemoGame.Editor.ToolBar();
+            this.dockPanel = new NetGore.EditorTools.Docking.DockPanel();
             this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,6 +120,18 @@ namespace DemoGame.Editor
             resources.ApplyResources(this.ssStatus, "ssStatus");
             this.ssStatus.Name = "ssStatus";
             // 
+            // tbNonGlobal
+            // 
+            this.tbNonGlobal.AllowItemReorder = true;
+            resources.ApplyResources(this.tbNonGlobal, "tbNonGlobal");
+            this.tbNonGlobal.Name = "tbNonGlobal";
+            // 
+            // tbGlobal
+            // 
+            this.tbGlobal.AllowItemReorder = true;
+            resources.ApplyResources(this.tbGlobal, "tbGlobal");
+            this.tbGlobal.Name = "tbGlobal";
+            // 
             // dockPanel
             // 
             this.dockPanel.ActiveAutoHideContent = null;
@@ -172,25 +184,13 @@ namespace DemoGame.Editor
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this.dockPanel.Skin = dockPanelSkin1;
             // 
-            // tbNonGlobal
-            // 
-            this.tbNonGlobal.AllowItemReorder = true;
-            resources.ApplyResources(this.tbNonGlobal, "tbNonGlobal");
-            this.tbNonGlobal.Name = "tbNonGlobal";
-            // 
-            // tbGlobal
-            // 
-            this.tbGlobal.AllowItemReorder = true;
-            resources.ApplyResources(this.tbGlobal, "tbGlobal");
-            this.tbGlobal.Name = "tbGlobal";
-            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.tbNonGlobal);
             this.Controls.Add(this.tbGlobal);
-            this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.ssStatus);
             this.Controls.Add(this.msMenu);
             this.IsMdiContainer = true;
@@ -207,7 +207,6 @@ namespace DemoGame.Editor
 
         private System.Windows.Forms.MenuStrip msMenu;
         private System.Windows.Forms.StatusStrip ssStatus;
-        private DockPanel dockPanel;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
@@ -217,6 +216,7 @@ namespace DemoGame.Editor
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private ToolBar tbGlobal;
         private ToolBar tbNonGlobal;
+        private DockPanel dockPanel;
     }
 }
 

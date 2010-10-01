@@ -15,15 +15,82 @@ namespace DemoGame.Editor
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        static ToolBarVisibility _currentToolBarVisibility = ToolBarVisibility.Global;
+        static ToolBar _nonGlobalToolBar;
+        static ToolBar _globalToolBar;
+
         /// <summary>
         /// Gets or sets the global <see cref="ToolBar"/>.
         /// </summary>
-        public static ToolBar GlobalToolBar { get; set; }
+        public static ToolBar GlobalToolBar
+        {
+            get
+            {
+                return _globalToolBar;
+            }
+            set
+            {
+                if (_globalToolBar == value)
+                    return;
+
+                _globalToolBar = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the non-global <see cref="ToolBar"/>.
         /// </summary>
-        public static ToolBar NonGlobalToolBar { get; set; }
+        public static ToolBar NonGlobalToolBar
+        {
+            get
+            {
+                return _nonGlobalToolBar;
+            }
+            set
+            {
+                if (_nonGlobalToolBar == value)
+                    return;
+
+                _nonGlobalToolBar = value;
+
+                if (_nonGlobalToolBar != null)
+                {
+                    if (CurrentToolBarVisibility == ToolBarVisibility.Global)
+                        _nonGlobalToolBar.Visible = false;
+                    else
+                        _nonGlobalToolBar.Visible = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the current <see cref="ToolBarVisibility"/>.
+        /// </summary>
+        public static ToolBarVisibility CurrentToolBarVisibility
+        {
+            get
+            {
+                return _currentToolBarVisibility;
+            }
+            set
+            {
+                if (_currentToolBarVisibility == value)
+                    return;
+
+                _currentToolBarVisibility = value;
+
+                if (_currentToolBarVisibility == ToolBarVisibility.Global)
+                {
+                    if (NonGlobalToolBar != null)
+                        NonGlobalToolBar.Visible = false;
+                }
+                else
+                {
+                    if (NonGlobalToolBar != null)
+                        NonGlobalToolBar.Visible = true;
+                }
+            }
+        }
 
         public static void AddToToolBar(Tool tool)
         {

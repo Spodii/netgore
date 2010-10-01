@@ -69,6 +69,7 @@
             this.HideOnClose = false;
             this.Name = "EditMapForm";
             this.Text = "Map";
+            this.ToolBarVisibility = DemoGame.Editor.ToolBarVisibility.Map;
             this.cmsMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
